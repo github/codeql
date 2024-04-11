@@ -9,9 +9,9 @@ class User < ApplicationRecord
     # BAD: possible untrusted input interpolated into SQL fragment
     find(:first, :conditions => "name='#{name}' and pass='#{pass}'")
     # BAD: interpolation in array argument
-    # find(:first, conditions: ["name='#{name}' and pass='#{pass}'"])
+    find(:first, conditions: ["name='#{name}' and pass='#{pass}'"])
     # GOOD: using SQL parameters
-    # find(:first, conditions: ["name = ? and pass = ?", name, pass])
+    find(:first, conditions: ["name = ? and pass = ?", name, pass])
   end
 
   def self.from(user_group_id)

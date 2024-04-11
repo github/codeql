@@ -1,6 +1,16 @@
 edges
 | ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
+| ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
+| ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:14:56:14:59 | name | provenance |  |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
+| ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
+| ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:14:62:14:65 | pass | provenance |  |
+| ActiveRecordInjection.rb:12:30:12:66 | call to [] [element 0] | ActiveRecordInjection.rb:12:30:12:66 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:12:30:12:66 | call to [] [element 0] | provenance |  |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] [element 1] | ActiveRecordInjection.rb:14:30:14:66 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] [element 2] | ActiveRecordInjection.rb:14:30:14:66 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:14:56:14:59 | name | ActiveRecordInjection.rb:14:30:14:66 | call to [] [element 1] | provenance |  |
+| ActiveRecordInjection.rb:14:62:14:65 | pass | ActiveRecordInjection.rb:14:30:14:66 | call to [] [element 2] | provenance |  |
 | ActiveRecordInjection.rb:24:22:24:30 | condition | ActiveRecordInjection.rb:27:16:27:24 | condition | provenance |  |
 | ActiveRecordInjection.rb:39:30:39:35 | call to params | ActiveRecordInjection.rb:39:30:39:44 | ...[...] | provenance |  |
 | ActiveRecordInjection.rb:43:18:43:23 | call to params | ActiveRecordInjection.rb:43:18:43:32 | ...[...] | provenance |  |
@@ -99,6 +109,14 @@ nodes
 | ActiveRecordInjection.rb:8:25:8:28 | name | semmle.label | name |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | semmle.label | pass |
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | semmle.label | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:12:30:12:66 | call to [] | semmle.label | call to [] |
+| ActiveRecordInjection.rb:12:30:12:66 | call to [] [element 0] | semmle.label | call to [] [element 0] |
+| ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | semmle.label | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] | semmle.label | call to [] |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] [element 2] | semmle.label | call to [] [element 2] |
+| ActiveRecordInjection.rb:14:56:14:59 | name | semmle.label | name |
+| ActiveRecordInjection.rb:14:62:14:65 | pass | semmle.label | pass |
 | ActiveRecordInjection.rb:24:22:24:30 | condition | semmle.label | condition |
 | ActiveRecordInjection.rb:27:16:27:24 | condition | semmle.label | condition |
 | ActiveRecordInjection.rb:39:30:39:35 | call to params | semmle.label | call to params |
@@ -230,6 +248,10 @@ subpaths
 #select
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:74:23:74:28 | call to params | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:23:74:28 | call to params | user-provided value |
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:74:38:74:43 | call to params | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:38:74:43 | call to params | user-provided value |
+| ActiveRecordInjection.rb:12:30:12:66 | call to [] | ActiveRecordInjection.rb:74:23:74:28 | call to params | ActiveRecordInjection.rb:12:30:12:66 | call to [] | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:23:74:28 | call to params | user-provided value |
+| ActiveRecordInjection.rb:12:30:12:66 | call to [] | ActiveRecordInjection.rb:74:38:74:43 | call to params | ActiveRecordInjection.rb:12:30:12:66 | call to [] | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:38:74:43 | call to params | user-provided value |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] | ActiveRecordInjection.rb:74:23:74:28 | call to params | ActiveRecordInjection.rb:14:30:14:66 | call to [] | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:23:74:28 | call to params | user-provided value |
+| ActiveRecordInjection.rb:14:30:14:66 | call to [] | ActiveRecordInjection.rb:74:38:74:43 | call to params | ActiveRecordInjection.rb:14:30:14:66 | call to [] | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:38:74:43 | call to params | user-provided value |
 | ActiveRecordInjection.rb:27:16:27:24 | condition | ActiveRecordInjection.rb:171:21:171:26 | call to params | ActiveRecordInjection.rb:27:16:27:24 | condition | This SQL query depends on a $@. | ActiveRecordInjection.rb:171:21:171:26 | call to params | user-provided value |
 | ActiveRecordInjection.rb:39:30:39:44 | ...[...] | ActiveRecordInjection.rb:39:30:39:35 | call to params | ActiveRecordInjection.rb:39:30:39:44 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:39:30:39:35 | call to params | user-provided value |
 | ActiveRecordInjection.rb:43:18:43:32 | ...[...] | ActiveRecordInjection.rb:43:18:43:23 | call to params | ActiveRecordInjection.rb:43:18:43:32 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:43:18:43:23 | call to params | user-provided value |
