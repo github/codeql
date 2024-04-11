@@ -32,7 +32,8 @@ load(
 )
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("@rules_kotlin//kotlin:core.bzl", "kt_kotlinc_options")
-load("@codeql_kotlin_defaults//:defaults.bzl", "kotlin_extractor_defaults")
+
+package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
 
 _for_embeddable = repo_name().endswith("codeql_kotlin_embeddable")
 
@@ -141,31 +142,18 @@ _resources = [
         tools = [":generate_dbscheme"],
         visibility = ["@codeql_kotlin_embeddable//:__pkg__"],
     ),
-    alias(
-        name = "%s-standalone" % _common_extractor_name_prefix,
-        actual = "%s-standalone-%s" % (
+    [
+        alias(
+            name = n,
+            actual = "//java/kotlin-extractor/defaults:%s" % n,
+            visibility = ["//visibility:public"],
+        )
+        for n in (
+            "%s-standalone" % _common_extractor_name_prefix,
+            "%s-embeddable" % _common_extractor_name_prefix,
             _common_extractor_name_prefix,
-            kotlin_extractor_defaults.extractor_version,
-        ),
-        visibility = ["//visibility:public"],
-    ),
-    alias(
-        name = "%s-embeddable" % _common_extractor_name_prefix,
-        actual = "%s-embeddable-%s" % (
-            _common_extractor_name_prefix,
-            kotlin_extractor_defaults.extractor_version,
-        ),
-        visibility = ["//visibility:public"],
-    ),
-    alias(
-        name = _common_extractor_name_prefix,
-        actual = "%s-%s-%s" % (
-            _common_extractor_name_prefix,
-            kotlin_extractor_defaults.variant,
-            kotlin_extractor_defaults.extractor_version,
-        ),
-        visibility = ["//visibility:public"],
-    ),
+        )
+    ],
     alias(
         name = "kotlin-extractor",
         actual = _common_extractor_name_prefix,
@@ -180,13 +168,8 @@ _resources = [
         ) for variant in ("standalone", "embeddable") for version in VERSIONS],
         visibility = ["//visibility:public"],
     ),
-    genrule(
-        name = "default-version-printer",
-        outs = ["print-default-version.sh"],
-        cmd = "echo echo %s > $@" % kotlin_extractor_defaults.version,
-    ),
     sh_binary(
         name = "print-default-version",
-        srcs = [":default-version-printer"],
+        srcs = ["//java/kotlin-extractor/defaults:default-version-printer"],
     ),
 ) if not _for_embeddable else None
