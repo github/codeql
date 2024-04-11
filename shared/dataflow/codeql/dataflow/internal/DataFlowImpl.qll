@@ -1493,10 +1493,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         private signature module FwdFlowInInputSig {
-          default predicate callRestriction(DataFlowCall call) { any() }
-
-          bindingset[p, apa]
-          default predicate parameterRestriction(ParamNodeEx p, ApApprox apa) { any() }
+          bindingset[call, p, apa]
+          default predicate callEdgeRestriction(DataFlowCall call, ParamNodeEx p, ApApprox apa) {
+            any()
+          }
         }
 
         /**
@@ -1518,8 +1518,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             boolean allowsFieldFlow, ApApprox apa
           ) {
             PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa) and
-            I::callRestriction(call) and
-            I::parameterRestriction(p, apa)
+            I::callEdgeRestriction(call, p, apa)
           }
 
           pragma[nomagic]
@@ -1859,9 +1858,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         private module FwdFlowThroughRestriction implements FwdFlowInInputSig {
-          predicate callRestriction = PrevStage::callMayFlowThroughRev/1;
-
-          predicate parameterRestriction = PrevStage::parameterMayFlowThrough/2;
+          bindingset[call, p, apa]
+          predicate callEdgeRestriction(DataFlowCall call, ParamNodeEx p, ApApprox apa) {
+            PrevStage::parameterMayFlowThrough(p, pragma[only_bind_into](apa)) and
+            flowThroughOutOfCall(call, _, _, _, _, pragma[only_bind_into](apa), _)
+          }
         }
 
         /**
