@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["spacedriveapp/spacedrive", "*", "inputs.setup-arg", "code-injection", "generated"]

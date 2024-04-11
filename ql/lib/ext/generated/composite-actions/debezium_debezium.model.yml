@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["debezium/debezium", "*", "inputs.path-core", "code-injection", "generated"]

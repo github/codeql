@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dnsjava/dnsjava", "*", "inputs.name", "code-injection", "generated"]
+     - ["dnsjava/dnsjava", "*", "inputs.filename", "code-injection", "generated"]
+     - ["dnsjava/dnsjava", "*", "inputs.path", "code-injection", "generated"]

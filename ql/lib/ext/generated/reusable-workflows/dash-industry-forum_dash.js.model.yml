@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dash-industry-forum/dash.js/.github/workflows/deploy.yml", "*", "inputs.deploy_path", "code-injection", "generated"]
+     - ["dash-industry-forum/dash.js/.github/workflows/deploy.yml", "*", "inputs.envname", "code-injection", "generated"]

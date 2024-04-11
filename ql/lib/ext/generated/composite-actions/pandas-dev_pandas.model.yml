@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pandas-dev/pandas", "*", "inputs.meson_args", "code-injection", "generated"]
+     - ["pandas-dev/pandas", "*", "inputs.editable", "code-injection", "generated"]
+     - ["pandas-dev/pandas", "*", "inputs.cflags_adds", "code-injection", "generated"]

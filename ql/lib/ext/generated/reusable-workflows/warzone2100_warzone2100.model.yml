@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["warzone2100/warzone2100/.github/workflows/publish_web_build.yml", "*", "inputs.architecture", "code-injection", "generated"]

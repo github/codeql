@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["sonic-pi-net/sonic-pi", "*", "inputs.command", "code-injection", "generated"]
+     - ["sonic-pi-net/sonic-pi", "*", "inputs.container-version", "code-injection", "generated"]
+     - ["sonic-pi-net/sonic-pi", "*", "inputs.container", "code-injection", "generated"]

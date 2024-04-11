@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["nanasess/setup-php", "*", "input.php-version", "command-injection"]
+      - ["nanasess/setup-php", "*", "input.php-version", "command-injection", "manual"]

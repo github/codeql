@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["aws/karpenter-provider-aws", "*", "inputs.account_id", "code-injection", "generated"]
+     - ["aws/karpenter-provider-aws", "*", "inputs.cluster_name", "code-injection", "generated"]

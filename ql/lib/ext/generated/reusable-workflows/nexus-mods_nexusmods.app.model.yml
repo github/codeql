@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-windows-pupnet.yaml", "*", "inputs.AppVersion", "code-injection", "generated"]
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-windows-pupnet.yaml", "*", "inputs.PupNetVersion", "code-injection", "generated"]
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-linux-pupnet.yaml", "*", "inputs.AppVersion", "code-injection", "generated"]
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-linux-pupnet.yaml", "*", "inputs.PupNetVersion", "code-injection", "generated"]

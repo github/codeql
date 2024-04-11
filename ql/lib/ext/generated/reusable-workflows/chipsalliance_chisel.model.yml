@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["chipsalliance/chisel/.github/workflows/test.yml", "*", "inputs.scala", "code-injection", "generated"]
+     - ["chipsalliance/chisel/.github/workflows/test.yml", "*", "inputs.circt", "code-injection", "generated"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["square/workflow-kotlin", "*", "inputs.commit-message", "code-injection", "generated"]
+     - ["square/workflow-kotlin", "*", "inputs.fix-task", "code-injection", "generated"]
+     - ["square/workflow-kotlin", "*", "inputs.personal-access-token", "code-injection", "generated"]

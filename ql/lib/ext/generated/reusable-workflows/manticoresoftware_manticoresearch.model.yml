@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "inputs.CTEST_END", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "inputs.CTEST_START", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/test_template.yml", "*", "inputs.xml_command", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/test_template.yml", "*", "inputs.artifact_name", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "inputs.cmake_command", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "inputs.artifact_name", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "inputs.CTEST_CONFIGURATION_TYPE", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "inputs.arch", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "inputs.DISTR", "code-injection", "generated"]

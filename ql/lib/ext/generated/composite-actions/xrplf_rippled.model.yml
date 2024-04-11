@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["xrplf/rippled", "*", "inputs.configuration", "code-injection", "generated"]
+     - ["xrplf/rippled", "*", "inputs.cmake-target", "code-injection", "generated"]
+     - ["xrplf/rippled", "*", "inputs.cmake-args", "code-injection", "generated"]

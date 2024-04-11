@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["modin-project/modin", "*", "inputs.parallel", "code-injection", "generated"]
+     - ["modin-project/modin", "*", "inputs.runner", "code-injection", "generated"]
+     - ["modin-project/modin", "*", "inputs.activate-environment", "code-injection", "generated"]

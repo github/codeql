@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["github/codeql-action", "*", "input.output", "output.sarif-output", "taint"]
+      - ["github/codeql-action", "*", "input.output", "output.sarif-output", "taint", "manual"]

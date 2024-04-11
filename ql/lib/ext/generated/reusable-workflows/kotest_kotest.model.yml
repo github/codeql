@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kotest/kotest/.github/workflows/run-gradle.yml", "*", "inputs.task", "code-injection", "generated"]

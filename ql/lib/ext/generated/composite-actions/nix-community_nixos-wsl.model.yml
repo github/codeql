@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nix-community/nixos-wsl", "*", "inputs.filename", "code-injection", "generated"]
+     - ["nix-community/nixos-wsl", "*", "inputs.expression", "code-injection", "generated"]

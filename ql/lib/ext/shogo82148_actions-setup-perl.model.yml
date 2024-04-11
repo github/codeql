@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["shogo82148/actions-setup-perl", "*", "input.working-directory", "env.PERL5LIB", "taint"]
+      - ["shogo82148/actions-setup-perl", "*", "input.working-directory", "env.PERL5LIB", "taint", "manual"]

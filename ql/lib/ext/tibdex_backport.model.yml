@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["tibdex/backport", "*", "input.body_template", "code-injection"]
-      - ["tibdex/backport", "*", "input.head_template", "code-injection"]
-      - ["tibdex/backport", "*", "input.labels_template", "code-injection"]
-      - ["tibdex/backport", "*", "input.title_template", "code-injection"]
+      - ["tibdex/backport", "*", "input.body_template", "code-injection", "manual"]
+      - ["tibdex/backport", "*", "input.head_template", "code-injection", "manual"]
+      - ["tibdex/backport", "*", "input.labels_template", "code-injection", "manual"]
+      - ["tibdex/backport", "*", "input.title_template", "code-injection", "manual"]

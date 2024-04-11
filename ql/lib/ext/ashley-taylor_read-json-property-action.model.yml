@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["ashley-taylor/read-json-property-action", "*", "input.json", "output.value", "taint"]
+      - ["ashley-taylor/read-json-property-action", "*", "input.json", "output.value", "taint", "manual"]

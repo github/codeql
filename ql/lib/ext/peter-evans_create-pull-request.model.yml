@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["peter-evans/create-pull-request", "*", "input.branch", "command-injection"]
+      - ["peter-evans/create-pull-request", "*", "input.branch", "command-injection", "manual"]

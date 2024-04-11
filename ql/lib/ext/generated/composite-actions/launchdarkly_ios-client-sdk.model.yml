@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["launchdarkly/ios-client-sdk", "*", "inputs.ios-sim", "code-injection", "generated"]

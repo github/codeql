@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["obsproject/obs-studio", "*", "inputs.failCondition", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.checkGlob", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.playtestBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.steamPassword", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.steamUser", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.preview", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.stableBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.betaBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.nightlyBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.tagName", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.customLink", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.customTitle", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.urlPrefix", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "inputs.sparklePrivateKey", "code-injection", "generated"]

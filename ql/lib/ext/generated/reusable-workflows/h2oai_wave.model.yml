@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["h2oai/wave/.github/workflows/wave-bundle-docker-build-publish.yaml", "*", "inputs.build-version", "code-injection", "generated"]
+     - ["h2oai/wave/.github/workflows/wave-bundle-docker-build-publish.yaml", "*", "inputs.wave-app-name", "code-injection", "generated"]
+     - ["h2oai/wave/.github/workflows/wave-bundle-docker-build-publish.yaml", "*", "inputs.working-directory", "code-injection", "generated"]

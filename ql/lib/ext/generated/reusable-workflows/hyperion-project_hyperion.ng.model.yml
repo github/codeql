@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["hyperion-project/hyperion.ng/.github/workflows/qt5_6.yml", "*", "inputs.pull_request_number", "code-injection", "generated"]
+     - ["hyperion-project/hyperion.ng/.github/workflows/qt5_6.yml", "*", "inputs.qt_version", "code-injection", "generated"]
+     - ["hyperion-project/hyperion.ng/.github/workflows/qt5_6.yml", "*", "inputs.event_name", "code-injection", "generated"]

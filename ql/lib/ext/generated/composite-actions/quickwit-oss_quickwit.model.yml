@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["quickwit-oss/quickwit", "*", "inputs.target", "code-injection", "generated"]
+     - ["quickwit-oss/quickwit", "*", "inputs.version", "code-injection", "generated"]

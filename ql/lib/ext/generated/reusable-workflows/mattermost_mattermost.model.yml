@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "inputs.name", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "inputs.drivername", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "inputs.datasource", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/mmctl-test-template.yml", "*", "inputs.datasource", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/esrupgrade-common.yml", "*", "inputs.db-dump-url", "code-injection", "generated"]

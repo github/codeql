@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["schemastore/schemastore/src/test/github-workflow/reusable-workflow.yaml", "*", "inputs.constraints", "code-injection", "generated"]
+     - ["schemastore/schemastore/src/negative_test/github-workflow/reusable-workflow-input-must-declare-type.yaml", "*", "inputs.constraints", "code-injection", "generated"]

@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.runtime", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.registry", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.container-image", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.gadget_tag", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.gadget_repository", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.dnstester_image", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.image_tag", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.container_repo", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.kubernetes_architecture", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.kubernetes_distribution", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.test-step-conclusion", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.test-summary-suffix", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "inputs.test-log-file", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["azure/azure-datafactory", "*", "inputs.directory", "code-injection", "generated"]
+     - ["azure/azure-datafactory", "*", "inputs.path", "code-injection", "generated"]

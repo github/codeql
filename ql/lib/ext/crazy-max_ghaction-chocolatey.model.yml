@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["crazy-max/ghaction-chocolatey", "*", "input.args", "command-injection"]
+      - ["crazy-max/ghaction-chocolatey", "*", "input.args", "command-injection", "manual"]

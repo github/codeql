@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ruby/ruby.wasm/.github/workflows/build.yml", "*", "inputs.prerel_name", "code-injection", "generated"]

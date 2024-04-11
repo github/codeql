@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["larsoner/circleci-artifacts-redirector-action", "*", "input.artifact-path", "output.url", "taint"]
+      - ["larsoner/circleci-artifacts-redirector-action", "*", "input.artifact-path", "output.url", "taint", "manual"]

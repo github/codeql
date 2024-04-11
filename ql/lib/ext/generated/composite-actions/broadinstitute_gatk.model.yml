@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["broadinstitute/gatk", "*", "inputs.identifier", "code-injection", "generated"]
+     - ["broadinstitute/gatk", "*", "inputs.repo-path", "code-injection", "generated"]
+     - ["broadinstitute/gatk", "*", "inputs.CROMWELL_VERSION", "code-injection", "generated"]

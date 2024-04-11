@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kserve/kserve", "*", "inputs.directory", "code-injection", "generated"]
+     - ["kserve/kserve", "*", "inputs.deployment-mode", "code-injection", "generated"]
+     - ["kserve/kserve", "*", "inputs.network-layer", "code-injection", "generated"]

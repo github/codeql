@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["game-ci/unity-test-runner", "*", "input.artifactsPath", "output.artifactsPath", "taint"]
+      - ["game-ci/unity-test-runner", "*", "input.artifactsPath", "output.artifactsPath", "taint", "manual"]

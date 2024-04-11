@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["medic/cht-core", "*", "inputs.hostname", "code-injection", "generated"]
+     - ["medic/cht-core", "*", "inputs.password", "code-injection", "generated"]
+     - ["medic/cht-core", "*", "inputs.username", "code-injection", "generated"]

@@ -6,7 +6,6 @@ private import actions
 private import codeql.util.Unit
 private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.ExternalFlow
-private import codeql.actions.Ast::Utils as Utils
 private import codeql.actions.security.ArtifactPoisoningQuery
 
 /**

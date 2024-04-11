@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["citusdata/citus", "*", "inputs.flags", "code-injection", "generated"]
+     - ["citusdata/citus", "*", "inputs.pg_major", "code-injection", "generated"]
+     - ["citusdata/citus", "*", "inputs.count", "code-injection", "generated"]

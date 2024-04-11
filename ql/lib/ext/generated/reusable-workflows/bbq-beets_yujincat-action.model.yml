@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["bbq-beets/yujincat-action/.github/workflows/test-referInputs.yml", "*", "inputs.shell", "code-injection", "generated"]
+     - ["bbq-beets/yujincat-action/.github/workflows/test-referInputs.yml", "*", "inputs.environment", "code-injection", "generated"]

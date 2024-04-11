@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "inputs.base-pr-branch", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "inputs.head-pr-branch", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "inputs.reference-files", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "inputs.target-folder", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/codeql-analysis.yml", "*", "inputs.build-command", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/check-dist.yml", "*", "inputs.dist-path", "code-injection", "generated"]

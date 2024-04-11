@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["datadog/dd-trace-go/.github/workflows/smoke-tests.yml", "*", "inputs.go-libddwaf-ref", "code-injection", "generated"]

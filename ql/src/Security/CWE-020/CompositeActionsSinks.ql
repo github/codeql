@@ -21,7 +21,9 @@ private module MyConfig implements DataFlow::ConfigSig {
     exists(CompositeAction c | c.getAnInput() = source.asExpr())
   }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof CodeInjectionSink and not externallyDefinedSink(sink, "code-injection")
+  }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;

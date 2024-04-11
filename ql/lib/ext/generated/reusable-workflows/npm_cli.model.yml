@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["npm/cli/.github/workflows/node-integration.yml", "*", "inputs.npmVersion", "code-injection", "generated"]
+     - ["npm/cli/.github/workflows/node-integration.yml", "*", "inputs.nodeVersion", "code-injection", "generated"]

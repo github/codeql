@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["newrelic/node-newrelic/.github/workflows/release-creation.yml", "*", "inputs.changelog_file", "code-injection", "generated"]
+     - ["newrelic/node-newrelic/.github/workflows/release-creation.yml", "*", "inputs.workflows", "code-injection", "generated"]
+     - ["newrelic/node-newrelic/.github/workflows/prep-release.yml", "*", "inputs.changelog_file", "code-injection", "generated"]
+     - ["newrelic/node-newrelic/.github/workflows/prep-release.yml", "*", "inputs.release_type", "code-injection", "generated"]

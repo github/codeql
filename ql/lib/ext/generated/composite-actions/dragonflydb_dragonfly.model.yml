@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dragonflydb/dragonfly", "*", "inputs.gspace-secret", "code-injection", "generated"]
+     - ["dragonflydb/dragonfly", "*", "inputs.filter", "code-injection", "generated"]
+     - ["dragonflydb/dragonfly", "*", "inputs.dfly-executable", "code-injection", "generated"]
+     - ["dragonflydb/dragonfly", "*", "inputs.build-folder-name", "code-injection", "generated"]

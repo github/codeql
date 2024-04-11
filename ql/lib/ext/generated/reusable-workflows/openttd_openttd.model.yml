@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["openttd/openttd/.github/workflows/release-windows.yml", "*", "inputs.survey_key", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/upload-steam.yml", "*", "inputs.trigger_type", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/upload-cdn.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/release-macos.yml", "*", "inputs.survey_key", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/release-linux.yml", "*", "inputs.survey_key", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/release-docs.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/ci-windows.yml", "*", "inputs.arch", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/ci-macos.yml", "*", "inputs.full_arch", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/ci-macos.yml", "*", "inputs.extra-cmake-parameters", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/ci-macos.yml", "*", "inputs.arch", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/ci-linux.yml", "*", "inputs.extra-cmake-parameters", "code-injection", "generated"]
+     - ["openttd/openttd/.github/workflows/ci-linux.yml", "*", "inputs.libraries", "code-injection", "generated"]

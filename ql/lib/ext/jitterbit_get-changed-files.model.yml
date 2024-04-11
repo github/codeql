@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["jitterbit/get-changed-files", "*", "output.all", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.added", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.modified", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.removed", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.renamed", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.added_modified", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.deleted", "PR changed files"]
+      - ["jitterbit/get-changed-files", "*", "output.all", "PR changed files", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.added", "PR changed files", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.modified", "PR changed files", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.removed", "PR changed files", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.renamed", "PR changed files", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.added_modified", "PR changed files", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.deleted", "PR changed files", "manual"]

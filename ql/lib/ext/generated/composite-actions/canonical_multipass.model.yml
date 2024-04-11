@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["canonical/multipass", "*", "inputs.release-tag-re", "code-injection", "generated"]
+     - ["canonical/multipass", "*", "inputs.release-branch-re", "code-injection", "generated"]

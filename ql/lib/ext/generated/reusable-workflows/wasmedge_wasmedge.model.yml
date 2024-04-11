@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["wasmedge/wasmedge/.github/workflows/reusable-create-source-tarball.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-windows.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-windows-msvc.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-ubuntu.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-manylinux.yml", "*", "inputs.version", "code-injection", "generated"]

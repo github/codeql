@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pennylaneai/pennylane", "*", "inputs.requirements_file", "code-injection", "generated"]
+     - ["pennylaneai/pennylane", "*", "inputs.additional_pip_packages", "code-injection", "generated"]

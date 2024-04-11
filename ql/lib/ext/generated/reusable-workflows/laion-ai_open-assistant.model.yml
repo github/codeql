@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["laion-ai/open-assistant/.github/workflows/docker-build.yaml", "*", "inputs.context", "code-injection", "generated"]

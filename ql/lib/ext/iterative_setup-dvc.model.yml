@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["iterative/setup-dvc", "*", "input.version", "command-injection"]
+      - ["iterative/setup-dvc", "*", "input.version", "command-injection", "manual"]

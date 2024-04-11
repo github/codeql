@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kubernetes-sigs/karpenter", "*", "inputs.k8sVersion", "code-injection", "generated"]

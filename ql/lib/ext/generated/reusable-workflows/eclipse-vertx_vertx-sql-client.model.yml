@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["eclipse-vertx/vertx-sql-client/.github/workflows/ci.yml", "*", "inputs.profile", "code-injection", "generated"]

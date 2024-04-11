@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["scala-native/scala-native", "*", "inputs.llvm-version", "code-injection", "generated"]
+     - ["scala-native/scala-native", "*", "inputs.scala-version", "code-injection", "generated"]

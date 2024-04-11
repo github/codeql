@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["fluxcd/flux2", "*", "inputs.bindir", "code-injection", "generated"]
+     - ["fluxcd/flux2", "*", "inputs.token", "code-injection", "generated"]
+     - ["fluxcd/flux2", "*", "inputs.version", "code-injection", "generated"]

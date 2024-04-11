@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["opensearch-project/opensearch-net", "*", "inputs.version", "code-injection", "generated"]
+     - ["opensearch-project/opensearch-net", "*", "inputs.build_script", "code-injection", "generated"]
+     - ["opensearch-project/opensearch-net", "*", "inputs.plugins_output_directory", "code-injection", "generated"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["eksctl-io/eksctl", "*", "inputs.token", "code-injection", "generated"]
+     - ["eksctl-io/eksctl", "*", "inputs.email", "code-injection", "generated"]
+     - ["eksctl-io/eksctl", "*", "inputs.name", "code-injection", "generated"]

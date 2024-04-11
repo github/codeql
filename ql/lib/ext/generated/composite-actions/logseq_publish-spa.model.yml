@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["logseq/publish-spa", "*", "inputs.accent-color", "code-injection", "generated"]
+     - ["logseq/publish-spa", "*", "inputs.theme-mode", "code-injection", "generated"]
+     - ["logseq/publish-spa", "*", "inputs.graph-directory", "code-injection", "generated"]
+     - ["logseq/publish-spa", "*", "inputs.output-directory", "code-injection", "generated"]

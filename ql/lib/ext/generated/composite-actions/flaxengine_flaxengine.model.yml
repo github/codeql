@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["flaxengine/flaxengine", "*", "inputs.vulkan-version", "code-injection", "generated"]

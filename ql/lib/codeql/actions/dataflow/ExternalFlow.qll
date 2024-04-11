@@ -8,9 +8,10 @@ private import actions
  *    - action: Fully-qualified action name (NWO)
  *    - version: Either '*' or a specific SHA/Tag
  *    - output arg: To node (prefixed with either `env.` or `output.`)
+ *    - provenance: verification of the model
  */
-predicate sourceModel(string action, string version, string output, string kind) {
-  Extensions::sourceModel(action, version, output, kind)
+predicate sourceModel(string action, string version, string output, string kind, string provenance) {
+  Extensions::sourceModel(action, version, output, kind, provenance)
 }
 
 /**
@@ -21,9 +22,12 @@ predicate sourceModel(string action, string version, string output, string kind)
  *    - input arg: From node (prefixed with either `env.` or `input.`)
  *    - output arg: To node (prefixed with either `env.` or `output.`)
  *    - kind: Either 'Taint' or 'Value'
+ *    - provenance: verification of the model
  */
-predicate summaryModel(string action, string version, string input, string output, string kind) {
-  Extensions::summaryModel(action, version, input, output, kind)
+predicate summaryModel(
+  string action, string version, string input, string output, string kind, string provenance
+) {
+  Extensions::summaryModel(action, version, input, output, kind, provenance)
 }
 
 /**
@@ -33,14 +37,15 @@ predicate summaryModel(string action, string version, string input, string outpu
  *    - version: Either '*' or a specific SHA/Tag
  *    - input: sink node (prefixed with either `env.` or `input.`)
  *    - kind: sink kind
+ *    - provenance: verification of the model
  */
-predicate sinkModel(string action, string version, string input, string kind) {
-  Extensions::sinkModel(action, version, input, kind)
+predicate sinkModel(string action, string version, string input, string kind, string provenance) {
+  Extensions::sinkModel(action, version, input, kind, provenance)
 }
 
 predicate externallyDefinedSource(DataFlow::Node source, string sourceType, string fieldName) {
   exists(Uses uses, string action, string version, string kind |
-    sourceModel(action, version, fieldName, kind) and
+    sourceModel(action, version, fieldName, kind, _) and
     uses.getCallee() = action.toLowerCase() and
     (
       if version.trim() = "*"
@@ -63,7 +68,7 @@ predicate externallyDefinedStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
 ) {
   exists(Uses uses, string action, string version, string input, string output |
-    summaryModel(action, version, input, output, "taint") and
+    summaryModel(action, version, input, output, "taint", _) and
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output.", "")) and
     uses.getCallee() = action.toLowerCase() and
     (
@@ -85,7 +90,7 @@ predicate externallyDefinedStoreStep(
 
 predicate externallyDefinedSink(DataFlow::Node sink, string kind) {
   exists(Uses uses, string action, string version, string input |
-    sinkModel(action, version, input, kind) and
+    sinkModel(action, version, input, kind, _) and
     uses.getCallee() = action.toLowerCase() and
     (
       if input.trim().matches("env.%")

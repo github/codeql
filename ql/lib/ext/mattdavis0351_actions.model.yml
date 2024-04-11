@@ -3,14 +3,14 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["mattdavis0351/actions", "*", "input.image-name", "output.imageUrl", "taint"]
-      - ["mattdavis0351/actions", "*", "input.tag", "output.imageUrl", "taint"]
+      - ["mattdavis0351/actions", "*", "input.image-name", "output.imageUrl", "taint", "manual"]
+      - ["mattdavis0351/actions", "*", "input.tag", "output.imageUrl", "taint", "manual"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["mattdavis0351/actions", "*", "input.repo-token", "command-injection"]
-      - ["mattdavis0351/actions", "*", "input.dockerfile-location", "command-injection"]
-      - ["mattdavis0351/actions", "*", "input.image-name", "command-injection"]
-      - ["mattdavis0351/actions", "*", "input.dockerfile-name", "command-injection"]
-      - ["mattdavis0351/actions", "*", "input.tag", "command-injection"]
+      - ["mattdavis0351/actions", "*", "input.repo-token", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.dockerfile-location", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.image-name", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.dockerfile-name", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.tag", "command-injection", "manual"]

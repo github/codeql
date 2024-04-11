@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["urbit/urbit/.github/workflows/shared.yml", "*", "inputs.pace", "code-injection", "generated"]
+     - ["urbit/urbit/.github/workflows/shared.yml", "*", "inputs.next", "code-injection", "generated"]

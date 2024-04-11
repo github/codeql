@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ocaml/dune", "*", "inputs.OCAML_COMPILER", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "inputs.DKML_COMPILER", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "inputs.DISKUV_OPAM_REPOSITORY", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "inputs.CONF_DKML_CROSS_TOOLCHAIN", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "inputs.FDOPEN_OPAMEXE_BOOTSTRAP", "code-injection", "generated"]

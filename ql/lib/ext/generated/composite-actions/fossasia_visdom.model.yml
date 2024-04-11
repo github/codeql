@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["fossasia/visdom", "*", "inputs.loadprbuild", "code-injection", "generated"]
+     - ["fossasia/visdom", "*", "inputs.usebasebranch", "code-injection", "generated"]

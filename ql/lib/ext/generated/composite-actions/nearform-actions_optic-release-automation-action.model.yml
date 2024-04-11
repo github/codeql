@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nearform-actions/optic-release-automation-action", "*", "inputs.build-command", "code-injection", "generated"]
+     - ["nearform-actions/optic-release-automation-action", "*", "inputs.actor-name", "code-injection", "generated"]
+     - ["nearform-actions/optic-release-automation-action", "*", "inputs.actor-email", "code-injection", "generated"]

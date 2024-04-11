@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.clean-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.deploy-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.wait-between-retries", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.retries-on-failure", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.check-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.build-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.pre-build-command", "code-injection", "generated"]

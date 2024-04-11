@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["datadog/dd-trace-py/.github/workflows/lib-inject-publish.yml", "*", "inputs.ddtrace-version", "code-injection", "generated"]
+     - ["datadog/dd-trace-py/.github/workflows/build-and-publish-image.yml", "*", "inputs.context", "code-injection", "generated"]

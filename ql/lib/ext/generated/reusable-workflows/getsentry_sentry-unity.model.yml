@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["getsentry/sentry-unity/.github/workflows/sdk.yml", "*", "inputs.target", "code-injection", "generated"]
+     - ["getsentry/sentry-unity/.github/workflows/android-smoke-test.yml", "*", "inputs.api-level", "code-injection", "generated"]

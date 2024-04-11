@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["octokit/request-action", "*", "input.route", "request-forgery"]
+      - ["octokit/request-action", "*", "input.route", "request-forgery", "manual"]

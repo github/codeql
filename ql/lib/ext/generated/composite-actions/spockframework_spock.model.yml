@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["spockframework/spock", "*", "inputs.additional-java-version", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["step-security/harden-runner", "*", "input.allowed-endpoints", "command-injection"]
+      - ["step-security/harden-runner", "*", "input.allowed-endpoints", "command-injection", "manual"]

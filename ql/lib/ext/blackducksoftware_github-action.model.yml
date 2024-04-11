@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["blackducksoftware/github-action", "*", "input.args", "command-injection"]
-      - ["blackducksoftware/github-action", "*", "input.blackduck.url", "command-injection"]
-      - ["blackducksoftware/github-action", "*", "input.blackduck.api.token", "command-injection"]
+      - ["blackducksoftware/github-action", "*", "input.args", "command-injection", "manual"]
+      - ["blackducksoftware/github-action", "*", "input.blackduck.url", "command-injection", "manual"]
+      - ["blackducksoftware/github-action", "*", "input.blackduck.api.token", "command-injection", "manual"]

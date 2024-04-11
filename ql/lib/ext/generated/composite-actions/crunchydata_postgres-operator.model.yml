@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["crunchydata/postgres-operator", "*", "inputs.k3s-channel", "code-injection", "generated"]

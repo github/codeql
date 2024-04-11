@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["elastic/apm-agent-dotnet", "*", "inputs.project", "code-injection", "generated"]
+     - ["elastic/apm-agent-dotnet", "*", "inputs.name", "code-injection", "generated"]

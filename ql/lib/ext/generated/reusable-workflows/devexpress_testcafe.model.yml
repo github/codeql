@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["devexpress/testcafe/.github/workflows/test-server.yml", "*", "inputs.test-script", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "inputs.test-script", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "inputs.display", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "inputs.matrix-jobs-count", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-client.yml", "*", "inputs.test-script", "code-injection", "generated"]

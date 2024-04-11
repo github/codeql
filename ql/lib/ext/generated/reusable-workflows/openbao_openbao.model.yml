@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["openbao/openbao/.github/workflows/test-run-acc-tests-for-path.yml", "*", "inputs.path", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-run-acc-tests-for-path.yml", "*", "inputs.name", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "inputs.name", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "inputs.go-arch", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "inputs.binary-tests", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "inputs.total-runners", "code-injection", "generated"]

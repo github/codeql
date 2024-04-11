@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nocodb/nocodb/.github/workflows/playwright-test-workflow.yml", "*", "inputs.shard", "code-injection", "generated"]
+     - ["nocodb/nocodb/.github/workflows/playwright-test-workflow.yml", "*", "inputs.db", "code-injection", "generated"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["mailu/mailu/.github/workflows/build_test_deploy.yml", "*", "inputs.pinned_mailu_version", "code-injection", "generated"]
+     - ["mailu/mailu/.github/workflows/build_test_deploy.yml", "*", "inputs.mailu_version", "code-injection", "generated"]
+     - ["mailu/mailu/.github/workflows/build_test_deploy.yml", "*", "inputs.docker_org", "code-injection", "generated"]

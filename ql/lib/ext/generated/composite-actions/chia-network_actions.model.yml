@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["chia-network/actions", "*", "inputs.keypair_path", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "inputs.role_name", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "inputs.backend_name", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "inputs.vault_url", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "inputs.ttl", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "inputs.vault_token", "code-injection", "generated"]

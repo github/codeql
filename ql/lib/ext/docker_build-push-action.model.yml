@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["docker/build-push-action", "*", "input.context", "code-injection"]
+      - ["docker/build-push-action", "*", "input.context", "code-injection", "manual"]

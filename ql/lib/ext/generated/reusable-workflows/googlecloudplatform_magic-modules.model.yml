@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["googlecloudplatform/magic-modules/.github/workflows/build-downstream.yml", "*", "inputs.repo", "code-injection", "generated"]

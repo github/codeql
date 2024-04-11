@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["checkstyle/checkstyle/.github/workflows/release-upload-all-jar.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-update-xdoc-with-releasenotes.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-update-github-page.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-update-github-io.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-publish-releasenotes-twitter.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-new-milestone-and-issues-in-other-repos.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-maven-prepare.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-maven-perform.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-copy-github-io-to-sourceforge.yml", "*", "inputs.version", "code-injection", "generated"]

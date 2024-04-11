@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["milvus-io/milvus", "*", "inputs.tag", "code-injection", "generated"]

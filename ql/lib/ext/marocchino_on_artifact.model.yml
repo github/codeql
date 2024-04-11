@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["marocchino/on_artifact", "*", "output.*", "Downloaded artifact"]
+      - ["marocchino/on_artifact", "*", "output.*", "Downloaded artifact", "manual"]

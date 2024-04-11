@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["hashicorp/boundary/.github/workflows/test-cli-ui_oss.yml", "*", "inputs.artifact-name", "code-injection", "generated"]

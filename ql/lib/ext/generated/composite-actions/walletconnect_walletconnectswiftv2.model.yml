@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.js-client-api-host", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.project-id", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.relay-endpoint", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.gm-dapp-host", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.gm-dapp-project-secret", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.gm-dapp-project-id", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.explorer-endpoint", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "inputs.notify-endpoint", "code-injection", "generated"]

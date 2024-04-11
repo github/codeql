@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["preactjs/preact/.github/workflows/run-bench.yml", "*", "inputs.benchmark", "code-injection", "generated"]
+     - ["preactjs/preact/.github/workflows/run-bench.yml", "*", "inputs.trace", "code-injection", "generated"]

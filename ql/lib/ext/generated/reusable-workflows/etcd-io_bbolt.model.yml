@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["etcd-io/bbolt/.github/workflows/robustness_template.yaml", "*", "inputs.testTimeout", "code-injection", "generated"]
+     - ["etcd-io/bbolt/.github/workflows/robustness_template.yaml", "*", "inputs.count", "code-injection", "generated"]

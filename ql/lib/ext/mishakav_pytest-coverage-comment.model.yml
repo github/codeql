@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["mishakav/pytest-coverage-comment", "*", "input.multiple-files", "output.summaryReport", "taint"]
+      - ["mishakav/pytest-coverage-comment", "*", "input.multiple-files", "output.summaryReport", "taint", "manual"]
