@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["open-telemetry/opentelemetry-java-instrumentation/.github/workflows/reusable-workflow-notification.yml", "*", "inputs.success", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-java-instrumentation/.github/workflows/reusable-smoke-test-images.yml", "*", "inputs.project", "code-injection", "generated"]

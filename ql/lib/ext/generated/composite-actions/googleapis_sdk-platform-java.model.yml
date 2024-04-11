@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["googleapis/sdk-platform-java", "*", "inputs.bom-path", "code-injection", "generated"]

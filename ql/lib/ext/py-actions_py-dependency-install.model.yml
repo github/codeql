@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["py-actions/py-dependency-install", "*", "input.path", "command-injection"]
+      - ["py-actions/py-dependency-install", "*", "input.path", "command-injection", "manual"]

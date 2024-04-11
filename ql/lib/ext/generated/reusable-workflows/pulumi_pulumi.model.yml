@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pulumi/pulumi/.github/workflows/ci-run-test.yml", "*", "inputs.test-command", "code-injection", "generated"]
+     - ["pulumi/pulumi/.github/workflows/ci-run-test.yml", "*", "inputs.test-name", "code-injection", "generated"]
+     - ["pulumi/pulumi/.github/workflows/ci-dev-release.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["pulumi/pulumi/.github/workflows/ci-build-binaries.yml", "*", "inputs.arch", "code-injection", "generated"]
+     - ["pulumi/pulumi/.github/workflows/ci-build-binaries.yml", "*", "inputs.os", "code-injection", "generated"]

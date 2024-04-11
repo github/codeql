@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["mastodon/mastodon", "*", "inputs.additional-system-dependencies", "code-injection", "generated"]

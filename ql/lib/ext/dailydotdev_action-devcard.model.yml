@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["dailydotdev/action-devcard", "*", "input.commit_branch", "sql-injection"]
-      - ["dailydotdev/action-devcard", "*", "input.commit_filename", "sql-injection"]
+      - ["dailydotdev/action-devcard", "*", "input.commit_branch", "sql-injection", "manual"]
+      - ["dailydotdev/action-devcard", "*", "input.commit_filename", "sql-injection", "manual"]

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "inputs.stage", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "inputs.targets_optional", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "inputs.targets", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "inputs.targets_pre", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/docker_hub.yml", "*", "inputs.dockerhub_repository", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/docker.yml", "*", "inputs.timeout", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/docker.yml", "*", "inputs.docker_push_repository", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["octokit/graphql-action", "*", "input.query", "request-forgery"]
+      - ["octokit/graphql-action", "*", "input.query", "request-forgery", "manual"]

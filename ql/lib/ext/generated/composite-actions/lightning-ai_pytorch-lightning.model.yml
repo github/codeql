@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.name", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.pkg-folder", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.pip-flags", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.pkg-extra", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.pkg-name", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.nb-dirs", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.wheel-dir", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "inputs.torch-url", "code-injection", "generated"]

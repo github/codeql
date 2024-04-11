@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "inputs.target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "inputs.source_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "inputs.dry_run", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "inputs.target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "inputs.source_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "inputs.dry_run", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "inputs.short_target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "inputs.short_target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "inputs.target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "inputs.source_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "inputs.dry_run", "code-injection", "generated"]

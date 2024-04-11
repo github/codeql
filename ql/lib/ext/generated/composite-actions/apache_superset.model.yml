@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["apache/superset", "*", "inputs.requirements-type", "code-injection", "generated"]

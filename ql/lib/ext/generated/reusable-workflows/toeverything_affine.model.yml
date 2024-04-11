@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["toeverything/affine/.github/workflows/build-server-image.yml", "*", "inputs.flavor", "code-injection", "generated"]

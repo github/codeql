@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["vuetifyjs/vuetify", "*", "inputs.name", "code-injection", "generated"]
+     - ["vuetifyjs/vuetify", "*", "inputs.path", "code-injection", "generated"]
+     - ["vuetifyjs/vuetify", "*", "inputs.npm-tag", "code-injection", "generated"]
+     - ["vuetifyjs/vuetify", "*", "inputs.release-id", "code-injection", "generated"]

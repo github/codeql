@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["auth0/auth0.swift", "*", "inputs.platform", "code-injection", "generated"]

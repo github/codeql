@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["amannn/action-semantic-pull-request", "*", "output.error_message", "PR title"]
+      - ["amannn/action-semantic-pull-request", "*", "output.error_message", "PR title", "manual"]

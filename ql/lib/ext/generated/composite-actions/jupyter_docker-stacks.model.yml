@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["jupyter/docker-stacks", "*", "inputs.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks", "*", "inputs.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks", "*", "inputs.platform", "code-injection", "generated"]

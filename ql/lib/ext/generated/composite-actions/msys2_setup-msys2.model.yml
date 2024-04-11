@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["msys2/setup-msys2", "*", "inputs.systems", "code-injection", "generated"]

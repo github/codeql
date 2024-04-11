@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["wazuh/wazuh", "*", "inputs.target", "code-injection", "generated"]
+     - ["wazuh/wazuh", "*", "inputs.doxygen_config", "code-injection", "generated"]
+     - ["wazuh/wazuh", "*", "inputs.path", "code-injection", "generated"]

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nasa/fprime/.github/workflows/reusable-project-builder.yml", "*", "inputs.target_platform", "code-injection", "generated"]
+     - ["nasa/fprime/.github/workflows/reusable-project-builder.yml", "*", "inputs.fprime_location", "code-injection", "generated"]
+     - ["nasa/fprime/.github/workflows/reusable-get-pr-branch.yml", "*", "inputs.default_target_ref", "code-injection", "generated"]
+     - ["nasa/fprime/.github/workflows/reusable-get-pr-branch.yml", "*", "inputs.target_repository", "code-injection", "generated"]

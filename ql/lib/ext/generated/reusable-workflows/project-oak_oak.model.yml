@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["project-oak/oak/.github/workflows/reusable_provenance.yaml", "*", "inputs.ent-public-key", "code-injection", "generated"]
+     - ["project-oak/oak/.github/workflows/reusable_provenance.yaml", "*", "inputs.build-config-path", "code-injection", "generated"]

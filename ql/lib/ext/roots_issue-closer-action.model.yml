@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["roots/issue-closer-action", "*", "input.issue-close-message", "code-injection"]
-      - ["roots/issue-closer-action", "*", "input.pr-close-message", "code-injection"]
+      - ["roots/issue-closer-action", "*", "input.issue-close-message", "code-injection", "manual"]
+      - ["roots/issue-closer-action", "*", "input.pr-close-message", "code-injection", "manual"]

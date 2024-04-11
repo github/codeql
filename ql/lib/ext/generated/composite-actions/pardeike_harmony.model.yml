@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pardeike/harmony", "*", "inputs.architecture", "code-injection", "generated"]
+     - ["pardeike/harmony", "*", "inputs.build_configuration", "code-injection", "generated"]
+     - ["pardeike/harmony", "*", "inputs.target_framework_array", "code-injection", "generated"]
+     - ["pardeike/harmony", "*", "inputs.target_framework", "code-injection", "generated"]

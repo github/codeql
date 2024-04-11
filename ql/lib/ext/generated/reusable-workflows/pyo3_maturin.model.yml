@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pyo3/maturin/.github/workflows/downstream.yml", "*", "inputs.manifest-dir", "code-injection", "generated"]

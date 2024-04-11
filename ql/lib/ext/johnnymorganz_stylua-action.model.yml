@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["johnnymorganz/stylua-action", "*", "input.args", "command-injection"]
+      - ["johnnymorganz/stylua-action", "*", "input.args", "command-injection", "manual"]

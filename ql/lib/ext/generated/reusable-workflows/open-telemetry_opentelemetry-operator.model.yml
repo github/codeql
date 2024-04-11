@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["open-telemetry/opentelemetry-operator/.github/workflows/reusable-publish-autoinstrumentation-e2e-images.yaml", "*", "inputs.language", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-operator/.github/workflows/reusable-operator-hub-release.yaml", "*", "inputs.org", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-operator/.github/workflows/reusable-operator-hub-release.yaml", "*", "inputs.repo", "code-injection", "generated"]

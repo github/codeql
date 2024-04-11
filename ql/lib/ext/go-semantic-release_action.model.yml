@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["go-semantic-release/action", "*", "input.bin", "command-injection"]
+      - ["go-semantic-release/action", "*", "input.bin", "command-injection", "manual"]

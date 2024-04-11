@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["neo4j-contrib/neo4j-apoc-procedures", "*", "inputs.project-name", "code-injection", "generated"]
+     - ["neo4j-contrib/neo4j-apoc-procedures", "*", "inputs.gradle-command", "code-injection", "generated"]

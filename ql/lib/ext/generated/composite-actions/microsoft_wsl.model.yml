@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["microsoft/wsl", "*", "inputs.comment", "code-injection", "generated"]
+     - ["microsoft/wsl", "*", "inputs.similar_issues_text", "code-injection", "generated"]

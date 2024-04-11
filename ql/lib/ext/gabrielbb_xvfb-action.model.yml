@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["gabrielbb/xvfb-action", "*", "input.run", "command-injection"]
-      - ["gabrielbb/xvfb-action", "*", "input.options", "command-injection"]
+      - ["gabrielbb/xvfb-action", "*", "input.run", "command-injection", "manual"]
+      - ["gabrielbb/xvfb-action", "*", "input.options", "command-injection", "manual"]

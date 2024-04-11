@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["redhat-plumbers-in-action/download-artifact", "*", "output.*", "Downloaded artifact"]
+      - ["redhat-plumbers-in-action/download-artifact", "*", "output.*", "Downloaded artifact", "manual"]
 

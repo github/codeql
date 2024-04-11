@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["gr2m/create-or-update-pull-request-action", "*", "input.branch", "command-injection"]
-      - ["gr2m/create-or-update-pull-request-action", "*", "input.path", "command-injection"]
-      - ["gr2m/create-or-update-pull-request-action", "*", "input.commit-message", "command-injection"]
-      - ["gr2m/create-or-update-pull-request-action", "*", "input.author", "command-injection"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.branch", "command-injection", "manual"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.path", "command-injection", "manual"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.commit-message", "command-injection", "manual"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.author", "command-injection", "manual"]

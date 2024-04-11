@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ubisoft/sharpmake/.github/workflows/build.yml", "*", "inputs.framework", "code-injection", "generated"]
+     - ["ubisoft/sharpmake/.github/workflows/build.yml", "*", "inputs.configuration", "code-injection", "generated"]

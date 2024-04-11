@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["jamesives/github-pages-deploy-action", "*", "input.branch", "command-injection"]
-      - ["jamesives/github-pages-deploy-action", "*", "input.commit-message", "command-injection"]
-      - ["jamesives/github-pages-deploy-action", "*", "input.git-config-email", "command-injection"]
-      - ["jamesives/github-pages-deploy-action", "*", "input.git-config-name", "command-injection"]
-      - ["jamesives/github-pages-deploy-action", "*", "input.target-folder", "command-injection"]
-      - ["jamesives/github-pages-deploy-action", "*", "input.tag", "command-injection"]
+      - ["jamesives/github-pages-deploy-action", "*", "input.branch", "command-injection", "manual"]
+      - ["jamesives/github-pages-deploy-action", "*", "input.commit-message", "command-injection", "manual"]
+      - ["jamesives/github-pages-deploy-action", "*", "input.git-config-email", "command-injection", "manual"]
+      - ["jamesives/github-pages-deploy-action", "*", "input.git-config-name", "command-injection", "manual"]
+      - ["jamesives/github-pages-deploy-action", "*", "input.target-folder", "command-injection", "manual"]
+      - ["jamesives/github-pages-deploy-action", "*", "input.tag", "command-injection", "manual"]

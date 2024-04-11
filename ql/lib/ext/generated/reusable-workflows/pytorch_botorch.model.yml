@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pytorch/botorch/.github/workflows/reusable_website.yml", "*", "inputs.release_tag", "code-injection", "generated"]

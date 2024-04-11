@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["filecoin-project/venus/.github/workflows/common_go.yml", "*", "inputs.test_timeout", "code-injection", "generated"]
+     - ["filecoin-project/venus/.github/workflows/common_go.yml", "*", "inputs.log_level", "code-injection", "generated"]
+     - ["filecoin-project/venus/.github/workflows/common_build_upload.yml", "*", "inputs.bin_name", "code-injection", "generated"]
+     - ["filecoin-project/venus/.github/workflows/common_build_upload.yml", "*", "inputs.has_ffi", "code-injection", "generated"]

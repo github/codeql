@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["jsocol/django-ratelimit", "*", "inputs.django-version", "code-injection", "generated"]

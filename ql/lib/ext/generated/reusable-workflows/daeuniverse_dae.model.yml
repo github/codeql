@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["daeuniverse/dae/.github/workflows/seed-build.yml", "*", "inputs.pr-number", "code-injection", "generated"]
+     - ["daeuniverse/dae/.github/workflows/seed-build.yml", "*", "inputs.build-type", "code-injection", "generated"]

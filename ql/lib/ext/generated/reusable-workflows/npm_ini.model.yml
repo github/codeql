@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["npm/ini/.github/workflows/release-integration.yml", "*", "inputs.releases", "code-injection", "generated"]

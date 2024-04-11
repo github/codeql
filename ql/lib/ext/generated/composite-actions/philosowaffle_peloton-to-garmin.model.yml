@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["philosowaffle/peloton-to-garmin", "*", "inputs.framework", "code-injection", "generated"]
+     - ["philosowaffle/peloton-to-garmin", "*", "inputs.os", "code-injection", "generated"]

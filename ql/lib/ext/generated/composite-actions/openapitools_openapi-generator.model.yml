@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["openapitools/openapi-generator", "*", "inputs.args", "code-injection", "generated"]
+     - ["openapitools/openapi-generator", "*", "inputs.name", "code-injection", "generated"]
+     - ["openapitools/openapi-generator", "*", "inputs.goal", "code-injection", "generated"]

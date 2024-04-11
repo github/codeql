@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["agoric/agoric-sdk", "*", "inputs.xsnap-random-init", "code-injection", "generated"]
+     - ["agoric/agoric-sdk", "*", "inputs.path", "code-injection", "generated"]
+     - ["agoric/agoric-sdk", "*", "inputs.ignore-endo-branch", "code-injection", "generated"]
+     - ["agoric/agoric-sdk", "*", "inputs.codecov-token", "code-injection", "generated"]
+     - ["agoric/agoric-sdk", "*", "inputs.datadog-token", "code-injection", "generated"]
+     - ["agoric/agoric-sdk", "*", "inputs.datadog-site", "code-injection", "generated"]

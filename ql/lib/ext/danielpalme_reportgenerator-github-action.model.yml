@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["danielpalme/reportgenerator-github-action", "*", "input.toolpath", "command-injection"]
+      - ["danielpalme/reportgenerator-github-action", "*", "input.toolpath", "command-injection", "manual"]

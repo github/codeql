@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["archivesspace/archivesspace", "*", "inputs.mysql-connector-url", "code-injection", "generated"]

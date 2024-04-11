@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["hitobito/hitobito/.github/workflows/sbom.yml", "*", "inputs.project_name", "code-injection", "generated"]
+     - ["hitobito/hitobito/.github/workflows/sbom.yml", "*", "inputs.dependency_track_url", "code-injection", "generated"]

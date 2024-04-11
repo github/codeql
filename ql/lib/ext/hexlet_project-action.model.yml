@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["hexlet/project-action", "*", "input.mount-path", "env.PWD", "taint"]
+      - ["hexlet/project-action", "*", "input.mount-path", "env.PWD", "taint", "manual"]

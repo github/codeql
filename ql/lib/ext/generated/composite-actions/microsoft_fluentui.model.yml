@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["microsoft/fluentui", "*", "inputs.workspaces", "code-injection", "generated"]

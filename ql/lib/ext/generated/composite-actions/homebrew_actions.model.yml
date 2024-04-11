@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["homebrew/actions", "*", "inputs.casks", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.formulae", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.signing_key", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.workflow-name", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.collapse", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.step_name", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.result_path", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.workdir", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "inputs.script", "code-injection", "generated"]

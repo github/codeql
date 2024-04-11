@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["uyuni-project/uyuni/.github/workflows/acceptance_tests_common.yml", "*", "inputs.server_id", "code-injection", "generated"]
+     - ["uyuni-project/uyuni/.github/workflows/acceptance_tests_common.yml", "*", "inputs.secondary_tests", "code-injection", "generated"]

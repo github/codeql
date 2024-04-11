@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["freeradius/freeradius-server", "*", "inputs.gcc_ver", "code-injection", "generated"]
+     - ["freeradius/freeradius-server", "*", "inputs.llvm_ver", "code-injection", "generated"]
+     - ["freeradius/freeradius-server", "*", "inputs.sql_mysql_test_server", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["fastify/fastify/.github/workflows/citgm-package.yml", "*", "inputs.package", "code-injection", "generated"]

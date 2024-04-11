@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "inputs.doc_base_name", "code-injection", "generated"]
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "inputs.base_file", "code-injection", "generated"]
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "inputs.doc_base_file", "code-injection", "generated"]
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "inputs.base_folder", "code-injection", "generated"]

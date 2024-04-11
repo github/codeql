@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ferretdb/ferretdb/.github/workflows/_integration.yml", "*", "inputs.task", "code-injection", "generated"]

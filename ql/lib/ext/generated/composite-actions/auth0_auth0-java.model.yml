@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["auth0/auth0-java", "*", "inputs.signing-password", "code-injection", "generated"]
+     - ["auth0/auth0-java", "*", "inputs.signing-key", "code-injection", "generated"]
+     - ["auth0/auth0-java", "*", "inputs.ossr-password", "code-injection", "generated"]
+     - ["auth0/auth0-java", "*", "inputs.ossr-username", "code-injection", "generated"]

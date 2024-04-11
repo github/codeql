@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["stefanprodan/podinfo", "*", "inputs.version", "code-injection", "generated"]
+     - ["stefanprodan/podinfo", "*", "inputs.arch", "code-injection", "generated"]

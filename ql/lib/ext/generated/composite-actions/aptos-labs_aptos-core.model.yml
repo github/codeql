@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["aptos-labs/aptos-core", "*", "inputs.GIT_CREDENTIALS", "code-injection", "generated"]
+     - ["aptos-labs/aptos-core", "*", "inputs.GCP_DOCKER_ARTIFACT_REPO", "code-injection", "generated"]
+     - ["aptos-labs/aptos-core", "*", "inputs.IMAGE_TAG", "code-injection", "generated"]

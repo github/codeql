@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["python-poetry/poetry", "*", "inputs.args", "code-injection", "generated"]

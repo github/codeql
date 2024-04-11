@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["element-hq/element-desktop/.github/workflows/build_windows.yaml", "*", "inputs.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "inputs.config", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "inputs.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "inputs.base-url", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "inputs.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_linux.yaml", "*", "inputs.version", "code-injection", "generated"]

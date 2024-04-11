@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["werf/werf/.github/workflows/_test_unit.yml", "*", "inputs.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_unit.yml", "*", "inputs.packages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_unit.yml", "*", "inputs.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_regular.yml", "*", "inputs.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_regular.yml", "*", "inputs.packages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_regular.yml", "*", "inputs.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_per-k8s-version.yml", "*", "inputs.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_per-k8s-version-and-container-registry.yml", "*", "inputs.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_per-container-registry.yml", "*", "inputs.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "inputs.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "inputs.scope", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "inputs.packages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "inputs.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_per-k8s-version.yml", "*", "inputs.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_per-k8s-version.yml", "*", "inputs.scope", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_per-k8s-version.yml", "*", "inputs.packages", "code-injection", "generated"]

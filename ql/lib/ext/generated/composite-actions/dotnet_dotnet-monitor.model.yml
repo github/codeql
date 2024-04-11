@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dotnet/dotnet-monitor", "*", "inputs.files_to_commit", "code-injection", "generated"]

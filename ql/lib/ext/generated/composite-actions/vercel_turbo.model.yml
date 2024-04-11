@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["vercel/turbo", "*", "inputs.extra-flags", "code-injection", "generated"]

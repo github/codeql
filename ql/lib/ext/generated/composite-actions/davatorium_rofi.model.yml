@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["davatorium/rofi", "*", "inputs.logfile", "code-injection", "generated"]
+     - ["davatorium/rofi", "*", "inputs.windowmode", "code-injection", "generated"]
+     - ["davatorium/rofi", "*", "inputs.cc", "code-injection", "generated"]

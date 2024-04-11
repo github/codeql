@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["paambaati/codeclimate-action", "*", "input.coverageCommand", "command-injection"]
+      - ["paambaati/codeclimate-action", "*", "input.coverageCommand", "command-injection", "manual"]

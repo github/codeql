@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kanidm/kanidm/.github/workflows/kanidm_individual_book.yml", "*", "inputs.tag", "code-injection", "generated"]

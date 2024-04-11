@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["microcks/microcks/.github/workflows/package-native.yml", "*", "inputs.image-tag", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["getsentry/sentry-dart/.github/workflows/analyze.yml", "*", "inputs.panaThreshold", "code-injection", "generated"]
+     - ["getsentry/sentry-dart/.github/workflows/analyze.yml", "*", "inputs.sdk", "code-injection", "generated"]

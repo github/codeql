@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["adap/flower", "*", "inputs.poetry-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "inputs.setuptools-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "inputs.pip-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "inputs.python-version", "code-injection", "generated"]

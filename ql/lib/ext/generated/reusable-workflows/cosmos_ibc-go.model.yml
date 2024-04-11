@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.upgrade-plan-name", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.chain-upgrade-tag", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.relayer-type", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.relayer-tag", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.relayer-image", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.chain-b-tag", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.chain-a-tag", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.chain-image", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.test", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "inputs.test-entry-point", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-compatibility-workflow-call.yaml", "*", "inputs.test-suite", "code-injection", "generated"]
+     - ["cosmos/ibc-go/.github/workflows/e2e-compatibility-workflow-call.yaml", "*", "inputs.test-file-directory", "code-injection", "generated"]

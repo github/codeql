@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["cloudfoundry/cloud_controller/ng", "*", "inputs.BOSH_CLI_VERSION", "code-injection", "generated"]

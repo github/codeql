@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["olafurpg/setup-scala", "*", "input.jabba-version", "command-injection"]
+      - ["olafurpg/setup-scala", "*", "input.jabba-version", "command-injection", "manual"]

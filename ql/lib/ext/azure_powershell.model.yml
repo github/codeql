@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["azure/powershell", "*", "input.azPSVersion", "command-injection"]
+      - ["azure/powershell", "*", "input.azPSVersion", "command-injection", "manual"]

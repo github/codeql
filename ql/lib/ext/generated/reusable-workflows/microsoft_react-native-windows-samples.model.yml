@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-upgradesample.yml", "*", "inputs.extraRunWindowsArgs", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-upgradesample.yml", "*", "inputs.platform", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-upgradesample.yml", "*", "inputs.extraInitWindowsArgs", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-upgradesample.yml", "*", "inputs.reactNativeWindowsVersion", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-upgradesample.yml", "*", "inputs.sampleName", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-buildsample.yml", "*", "inputs.extraRunWindowsArgs", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-buildsample.yml", "*", "inputs.platform", "code-injection", "generated"]
+     - ["microsoft/react-native-windows-samples/.github/workflows/template-buildsample.yml", "*", "inputs.sampleName", "code-injection", "generated"]

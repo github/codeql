@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["ros-tooling/setup-ros", "*", "input.required-ros-distributions", "command-injection"]
+      - ["ros-tooling/setup-ros", "*", "input.required-ros-distributions", "command-injection", "manual"]

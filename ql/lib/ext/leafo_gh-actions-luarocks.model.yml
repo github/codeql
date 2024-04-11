@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["leafo/gh-actions-luarocks", "*", "input.withLuaPath", "command-injection"]
+      - ["leafo/gh-actions-luarocks", "*", "input.withLuaPath", "command-injection", "manual"]

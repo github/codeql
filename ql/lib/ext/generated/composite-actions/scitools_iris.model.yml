@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["scitools/iris", "*", "inputs.version", "code-injection", "generated"]
+     - ["scitools/iris", "*", "inputs.install_packages", "code-injection", "generated"]
+     - ["scitools/iris", "*", "inputs.env_name", "code-injection", "generated"]

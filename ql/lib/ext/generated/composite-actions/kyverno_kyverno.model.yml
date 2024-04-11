@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kyverno/kyverno", "*", "inputs.version", "code-injection", "generated"]
+     - ["kyverno/kyverno", "*", "inputs.sbom-name", "code-injection", "generated"]
+     - ["kyverno/kyverno", "*", "inputs.makefile-target", "code-injection", "generated"]

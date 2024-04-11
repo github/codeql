@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["emqx/emqx", "*", "inputs.profile", "code-injection", "generated"]
+     - ["emqx/emqx", "*", "inputs.otp", "code-injection", "generated"]
+     - ["emqx/emqx", "*", "inputs.os", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["msys2/setup-msys2/.github/workflows/PKGBUILD.yml", "*", "inputs.test", "code-injection", "generated"]
+     - ["msys2/setup-msys2/.github/workflows/PKGBUILD.yml", "*", "inputs.path", "code-injection", "generated"]

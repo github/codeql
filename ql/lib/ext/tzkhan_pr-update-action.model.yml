@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["tzkhan/pr-update-action", "*", "output.headMatch", ""]
+      - ["tzkhan/pr-update-action", "*", "output.headMatch", "", "manual"]

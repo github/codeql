@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["hyperledger/aries-cloudagent-python", "*", "inputs.TEST_SCOPE", "code-injection", "generated"]

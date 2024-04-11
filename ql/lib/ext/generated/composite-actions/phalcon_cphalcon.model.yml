@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["phalcon/cphalcon", "*", "inputs.target-name", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.ext-path", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.pecl", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.arch", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.msvc", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.ts", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.php_version", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "inputs.php-version", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kubescape/kubescape", "*", "inputs.ORIGINAL_TAG", "code-injection", "generated"]
+     - ["kubescape/kubescape", "*", "inputs.SUB_STRING", "code-injection", "generated"]

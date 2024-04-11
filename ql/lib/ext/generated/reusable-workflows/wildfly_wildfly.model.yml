@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "inputs.build-arguments", "code-injection", "generated"]
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "inputs.test-arguments", "code-injection", "generated"]
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "inputs.maven-repo-path", "code-injection", "generated"]
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build.yml", "*", "inputs.git-log-number", "code-injection", "generated"]

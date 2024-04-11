@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["vkcom/vkui", "*", "inputs.next_version", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "inputs.package_name", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "inputs.npm_tag", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "inputs.prev_version", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "inputs.new_version", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "inputs.pre_id", "code-injection", "generated"]

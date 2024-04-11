@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["devexpress/devextreme", "*", "inputs.name", "code-injection", "generated"]
+     - ["devexpress/devextreme", "*", "inputs.result", "code-injection", "generated"]
+     - ["devexpress/devextreme", "*", "inputs.path", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["iterative/setup-cml", "*", "input.version", "command-injection"]
+      - ["iterative/setup-cml", "*", "input.version", "command-injection", "manual"]

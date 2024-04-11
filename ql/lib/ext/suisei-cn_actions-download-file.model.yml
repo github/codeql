@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["suisei-cn/actions-download-file", "*", "input.filename", "output.filename", "taint"]
+      - ["suisei-cn/actions-download-file", "*", "input.filename", "output.filename", "taint", "manual"]

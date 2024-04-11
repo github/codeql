@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["inria/spoon/.github/workflows/jreleaser.yml", "*", "inputs.release-script-to-run", "code-injection", "generated"]

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["hashicorp/terraform", "*", "inputs.target-terraform-branch", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "inputs.target-terraform-version", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "inputs.target-arch", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "inputs.target-os", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "inputs.target-equivalence-test-version", "code-injection", "generated"]

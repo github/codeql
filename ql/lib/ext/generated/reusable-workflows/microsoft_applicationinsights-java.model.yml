@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["microsoft/applicationinsights-java/.github/workflows/reusable-scheduled-job-notification.yml", "*", "inputs.success", "code-injection", "generated"]

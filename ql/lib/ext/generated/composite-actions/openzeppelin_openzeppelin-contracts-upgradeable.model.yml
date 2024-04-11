@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.out_layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.ref_layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.buildinfo", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.out_report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "inputs.ref_report", "code-injection", "generated"]

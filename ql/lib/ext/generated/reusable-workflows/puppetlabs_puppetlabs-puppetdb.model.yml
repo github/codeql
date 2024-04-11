@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["puppetlabs/puppetlabs-puppetdb/.github/workflows/module_spec.yml", "*", "inputs.ignore_dependency_check", "code-injection", "generated"]
+     - ["puppetlabs/puppetlabs-puppetdb/.github/workflows/module_acceptance.yml", "*", "inputs.debug", "code-injection", "generated"]
+     - ["puppetlabs/puppetlabs-puppetdb/.github/workflows/matrix.yml", "*", "inputs.flags", "code-injection", "generated"]

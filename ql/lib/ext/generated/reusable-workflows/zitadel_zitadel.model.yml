@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["zitadel/zitadel/.github/workflows/release.yml", "*", "inputs.image_name", "code-injection", "generated"]
+     - ["zitadel/zitadel/.github/workflows/release.yml", "*", "inputs.build_image_name", "code-injection", "generated"]
+     - ["zitadel/zitadel/.github/workflows/container.yml", "*", "inputs.build_image_name", "code-injection", "generated"]
+     - ["zitadel/zitadel/.github/workflows/compile.yml", "*", "inputs.version", "code-injection", "generated"]

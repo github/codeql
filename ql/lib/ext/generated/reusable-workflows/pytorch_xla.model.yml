@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pytorch/xla/.github/workflows/_test.yml", "*", "inputs.test-script", "code-injection", "generated"]

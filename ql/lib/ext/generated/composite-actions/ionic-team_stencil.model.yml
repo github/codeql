@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ionic-team/stencil", "*", "inputs.paths", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "inputs.output", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "inputs.tag", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "inputs.version", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "inputs.filename", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "inputs.path", "code-injection", "generated"]

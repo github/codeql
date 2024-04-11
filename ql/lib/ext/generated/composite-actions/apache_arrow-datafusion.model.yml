@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["apache/arrow-datafusion", "*", "inputs.rust-version", "code-injection", "generated"]

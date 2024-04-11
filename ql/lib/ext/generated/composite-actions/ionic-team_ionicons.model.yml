@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ionic-team/ionicons", "*", "inputs.paths", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.output", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.totalShards", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.shard", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.folder", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.tag", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.version", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.filename", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "inputs.path", "code-injection", "generated"]

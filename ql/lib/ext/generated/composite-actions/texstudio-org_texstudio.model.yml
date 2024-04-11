@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["texstudio-org/texstudio", "*", "inputs.file", "code-injection", "generated"]

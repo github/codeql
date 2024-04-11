@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["awslabs/amazon-eks-ami", "*", "inputs.max_resource_age_duration", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "inputs.aws_region", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "inputs.ami_id", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "inputs.k8s_version", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "inputs.os_distro", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "inputs.additional_arguments", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "inputs.build_id", "code-injection", "generated"]

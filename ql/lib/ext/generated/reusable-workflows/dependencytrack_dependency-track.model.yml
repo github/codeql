@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dependencytrack/dependency-track/.github/workflows/_meta-build.yaml", "*", "inputs.app-version", "code-injection", "generated"]

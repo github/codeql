@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["vert-x3/vertx-hazelcast/.github/workflows/it.yml", "*", "inputs.hz", "code-injection", "generated"]
+     - ["vert-x3/vertx-hazelcast/.github/workflows/ci.yml", "*", "inputs.hz", "code-injection", "generated"]

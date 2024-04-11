@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["expo/expo-github-action", "*", "input.command", "command-injection"]
-      - ["expo/expo-github-action", "*", "input.packager", "command-injection"]
+      - ["expo/expo-github-action", "*", "input.command", "command-injection", "manual"]
+      - ["expo/expo-github-action", "*", "input.packager", "command-injection", "manual"]

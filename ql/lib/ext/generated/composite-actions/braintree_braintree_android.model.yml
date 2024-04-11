@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["braintree/braintree/android", "*", "inputs.version", "code-injection", "generated"]
+     - ["braintree/braintree/android", "*", "inputs.module", "code-injection", "generated"]
+     - ["braintree/braintree/android", "*", "inputs.signing_file_path", "code-injection", "generated"]
+     - ["braintree/braintree/android", "*", "inputs.signing_key_file", "code-injection", "generated"]
