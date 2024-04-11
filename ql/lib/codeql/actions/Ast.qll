@@ -25,14 +25,17 @@ module Utils {
   }
 
   bindingset[line, var]
-  predicate extractAssignment(string line, string var, string key, string value) {
+  private predicate extractLineAssignment(string line, string var, string key, string value) {
     exists(string assignment |
+      // single line assignment
       assignment =
-        line.regexpCapture("(echo|Write-Output)\\s+(.*)\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_" +
+        line.regexpCapture("(echo|Write-Output)\\s+(.*)>>\\s*(\"|')?\\$(\\{)?GITHUB_" +
             var.toUpperCase() + "(\\})?(\"|')?", 2) and
+      count(assignment.splitAt("=")) = 2 and
       key = trimQuotes(assignment.splitAt("=", 0)) and
       value = trimQuotes(assignment.splitAt("=", 1))
       or
+      // workflow command assignment
       assignment =
         line.regexpCapture("(echo|Write-Output)\\s+(\"|')?::set-" + var.toLowerCase() +
             "\\s+name=(.*)(\"|')?", 3).regexpReplaceAll("^\"", "").regexpReplaceAll("\"$", "") and
@@ -41,20 +44,59 @@ module Utils {
     )
   }
 
-  predicate writeToGitHubEnv(Run run, string key, string value) {
-    exists(string script, string line |
-      script = run.getScript() and
-      line = script.splitAt("\n") and
-      Utils::extractAssignment(line, "ENV", key, value)
+  bindingset[var]
+  private string multilineAssignmentRegex(string var) {
+    result =
+      ".*(echo|Write-Output)\\s+(.*)<<\\s*([A-Z]*)EOF(.+)(echo|Write-Output)\\s+(\"|')?([A-Z]*)EOF(\"|')?\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_"
+        + var.toUpperCase() + "(\\})?(\"|')?.*"
+  }
+
+  bindingset[var]
+  private string multilineBlockAssignmentRegex(string var) {
+    result =
+      ".*\\{(\\s|::NEW_LINE::)*(echo|Write-Output)\\s+(.*)<<\\s*([A-Z]*)EOF(.+)(echo|Write-Output)\\s+(\"|')?([A-Z]*)EOF(\"|')?(\\s|::NEW_LINE::)*\\}\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_"
+        + var.toUpperCase() + "(\\})?(\"|')?.*"
+  }
+
+  bindingset[script, var]
+  private predicate extractMultilineAssignment(string script, string var, string key, string value) {
+    // multiline assignment
+    exists(string flattenedScript |
+      flattenedScript = script.replaceAll("\n", "::NEW_LINE::") and
+      value =
+        "$(" +
+          trimQuotes(flattenedScript.regexpCapture(multilineAssignmentRegex(var), 4))
+              .regexpReplaceAll("\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_" + var.toUpperCase() +
+                  "(\\})?(\"|')?", "")
+              .replaceAll("::NEW_LINE::", "\n")
+              .trim()
+              .splitAt("\n") + ")" and
+      key = trimQuotes(flattenedScript.regexpCapture(multilineAssignmentRegex(var), 2))
+    )
+    or
+    // multiline block assignment
+    exists(string flattenedScript |
+      flattenedScript = script.replaceAll("\n", "::NEW_LINE::") and
+      value =
+        "$(" +
+          trimQuotes(flattenedScript.regexpCapture(multilineBlockAssignmentRegex(var), 5))
+              .regexpReplaceAll("\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_" + var.toUpperCase() +
+                  "(\\})?(\"|')?", "")
+              .replaceAll("::NEW_LINE::", "\n")
+              .trim()
+              .splitAt("\n") + ")" and
+      key = trimQuotes(flattenedScript.regexpCapture(multilineBlockAssignmentRegex(var), 3))
     )
   }
 
+  predicate writeToGitHubEnv(Run run, string key, string value) {
+    extractLineAssignment(run.getScript().splitAt("\n"), "ENV", key, value) or
+    extractMultilineAssignment(run.getScript(), "ENV", key, value)
+  }
+
   predicate writeToGitHubOutput(Run run, string key, string value) {
-    exists(string script, string line |
-      script = run.getScript() and
-      line = script.splitAt("\n") and
-      Utils::extractAssignment(line, "OUTPUT", key, value)
-    )
+    extractLineAssignment(run.getScript().splitAt("\n"), "OUTPUT", key, value) or
+    extractMultilineAssignment(run.getScript(), "OUTPUT", key, value)
   }
 }
 

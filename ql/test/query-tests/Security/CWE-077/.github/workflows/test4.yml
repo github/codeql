@@ -1,0 +1,43 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+    branches:
+      - main
+      - 14.0.x
+
+    types:
+      - opened
+      - reopened
+
+jobs:
+  updateJira:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo PR_TITLE=$(echo $TITLE) >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PR_TITLE<<EOF" >> $GITHUB_ENV
+          echo "$TITLE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - run: |
+          echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"
+          ls | grep -E "*.(tar.gz|zip)$" >> "${GITHUB_ENV}"
+          ls | grep -E "*.(txt|md)$" >> "${GITHUB_ENV}"
+          echo "EOF" >> "${GITHUB_ENV}"
+      - run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            curl https://example.com
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+

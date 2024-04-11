@@ -17,4 +17,11 @@ jobs:
           unzip artifact_name.zip -d foo
       - name: Env Var Injection
         run: |
-          echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV
+          echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"
+          ls | grep -E "*.(tar.gz|zip)$" >> "${GITHUB_ENV}"
+          ls | grep -E "*.(txt|md)$" >> "${GITHUB_ENV}"
+          echo "EOF" >> "${GITHUB_ENV}"
+
+
+
+

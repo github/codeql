@@ -8,3 +8,5 @@
 | .github/workflows/artifactpoisoning41.yml:13:9:21:6 | Run Step | Potential artifact poisoning. |
 | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | Potential artifact poisoning. |
 | .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | Potential artifact poisoning. |
+| .github/workflows/artifactpoisoning52.yml:13:9:15:6 | Run Step | Potential artifact poisoning. |
+| .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | Potential artifact poisoning. |

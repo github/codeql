@@ -36,17 +36,34 @@ class AdditionalTaintStep extends Unit {
  *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
  */
 predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string varName, string output |
-    c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output\\.", "")) and
+  exists(Run run, string varName, string key, string value |
+    c = any(DataFlow::FieldContent ct | ct.getName() = key.replaceAll("output\\.", "")) and
     run.getInScopeEnvVarExpr(varName) = pred.asExpr() and
-    exists(string script, string line |
-      script = run.getScript() and
-      line = script.splitAt("\n") and
-      Utils::extractAssignment(line, "OUTPUT", output, _) and
-      line.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
-    ) and
+    Utils::writeToGitHubOutput(run, key, value) and
+    value.matches("%$" + ["", "{", "ENV{"] + varName + "%") and
     succ.asExpr() = run
   )
+}
+
+/**
+ * Holds if a Run step declares an environment variable, uses it in its script to set another env var.
+ * e.g.
+ *    env:
+ *      BODY: ${{ github.event.comment.body }}
+ *    run: |
+ *      echo "foo=$(echo $BODY)" >> $GITHUB_ENV
+ */
+predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Run run, string varName, string value |
+    run.getInScopeEnvVarExpr(varName) = pred.asExpr() and
+    Utils::writeToGitHubEnv(run, _, value) and
+    value.indexOf("$" + ["", "{", "ENV{"] + varName) > 0 and
+    succ.asExpr() = run
+  )
+}
+
+class EnvToRunTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) { envToRunStep(node1, node2) }
 }
 
 /**
