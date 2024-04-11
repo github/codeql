@@ -83,7 +83,6 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImpl::Public
 private import codeql.mad.ModelValidation as SharedModelVal
 
-/** Holds if `package` have MaD framework coverage. */
 private predicate relevantPackage(string package) {
   sourceModel(package, _, _, _, _, _, _, _, _, _) or
   sinkModel(package, _, _, _, _, _, _, _, _, _) or
@@ -96,19 +95,10 @@ private predicate packageLink(string shortpkg, string longpkg) {
   longpkg.prefix(longpkg.indexOf(".")) = shortpkg
 }
 
-/**
- * Holds if `package` has MaD framework coverage and it is not a subpackage of
- * any other package with MaD framework coverage.
- */
 private predicate canonicalPackage(string package) {
   relevantPackage(package) and not packageLink(_, package)
 }
 
-/**
- * Holds if `package` and `subpkg` have MaD framework coverage, `subpkg` is a
- * subpackage of `package` (or they are the same), and `package` is not a
- * subpackage of any other package with MaD framework coverage.
- */
 private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
   canonicalPackage(package) and
   (subpkg = package or packageLink(package, subpkg))
@@ -116,8 +106,7 @@ private predicate canonicalPackageHasASubpackage(string package, string subpkg) 
 
 /**
  * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
- * which have MaD framework coverage (including `package` itself).
+ * kind `(kind, part)`.
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
   pkgs = strictcount(string subpkg | canonicalPackageHasASubpackage(package, subpkg)) and
