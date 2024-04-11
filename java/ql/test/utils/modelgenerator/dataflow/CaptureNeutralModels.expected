@@ -14,7 +14,6 @@
 | p;Pojo;getFloatArray;();summary;df-generated |
 | p;Pojo;getIntValue;();summary;df-generated |
 | p;Pojo;getPrimitiveArray;();summary;df-generated |
-| p;PrivateFlowViaPublicInterface$SPI;openStream;();summary;df-generated |
 | p;PrivateFlowViaPublicInterface$SPI;openStreamNone;();summary;df-generated |
 | p;PrivateFlowViaPublicInterface;createAnSPIWithoutTrackingFile;(File);summary;df-generated |
 | p;Sinks;copyFileToDirectory;(Path,Path,CopyOption[]);summary;df-generated |

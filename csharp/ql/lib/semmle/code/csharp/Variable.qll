@@ -408,7 +408,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
    * }
    * ```
    */
-  override Expr getInitializer() { result = this.getChildExpr(0).getChildExpr(0) }
+  final override Expr getInitializer() { result = this.getChildExpr(0).getChildExpr(0) }
 
   /**
    * Holds if this field has an initial value. For example, the initial
@@ -515,6 +515,4 @@ class EnumConstant extends MemberConstant {
    * ```
    */
   predicate hasExplicitValue() { exists(this.getInitializer()) }
-
-  override Expr getInitializer() { result = this.getChildExpr(0) }
 }

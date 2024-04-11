@@ -80,6 +80,7 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;Member[ParamDecoratorSource].DecoratedParameter;test-source",
         "testlib;Member[MethodDecorator].DecoratedMember.Parameter[0];test-source",
         "testlib;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.Parameter[0];test-source",
+        "testlib;Member[BaseClass].Instance.Member[baseclassSource].ReturnValue;test-source",
       ]
   }
 }
