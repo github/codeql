@@ -57,7 +57,7 @@ module MassAssignment {
   /** Holds if `h` is an empty hash or contains an empty hash at one if its (possibly nested) values. */
   private predicate hasEmptyHash(Expr e) {
     e instanceof HashLiteral and
-    count(e.(HashLiteral).getAKeyValuePair()) = 0
+    not exists(e.(HashLiteral).getAKeyValuePair())
     or
     hasEmptyHash(e.(HashLiteral).getAKeyValuePair().getValue())
     or
