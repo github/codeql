@@ -1,7 +1,7 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with MaD flow models specified
+ * Provides classes and predicates for dealing with flow models specified
  * in data extensions and CSV format.
  *
  * The CSV specification has the following columns:
@@ -11,6 +11,9 @@
  *   `package; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Neutrals:
+ *   `package; type; name; signature; kind; provenance`
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
