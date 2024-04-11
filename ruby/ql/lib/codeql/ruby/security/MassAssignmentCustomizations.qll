@@ -4,6 +4,7 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.dataflow.RemoteFlowSources
@@ -55,22 +56,22 @@ module MassAssignment {
   }
 
   /** Holds if `h` is an empty hash or contains an empty hash at one if its (possibly nested) values. */
-  private predicate hasEmptyHash(Expr e) {
-    e instanceof HashLiteral and
-    not exists(e.(HashLiteral).getAKeyValuePair())
+  private predicate hasEmptyHash(ExprCfgNode e) {
+    e instanceof ExprNodes::HashLiteralCfgNode and
+    not exists(e.(ExprNodes::HashLiteralCfgNode).getAKeyValuePair())
     or
-    hasEmptyHash(e.(HashLiteral).getAKeyValuePair().getValue())
+    hasEmptyHash(e.(ExprNodes::HashLiteralCfgNode).getAKeyValuePair().getValue())
     or
-    hasEmptyHash(e.(Pair).getValue())
+    hasEmptyHash(e.(ExprNodes::PairCfgNode).getValue())
     or
-    hasEmptyHash(e.(ArrayLiteral).getAnElement())
+    hasEmptyHash(e.(ExprNodes::ArrayLiteralCfgNode).getAnArgument())
   }
 
   /** A call to `permit` that fully specifies the permitted parameters. */
   private class PermitCallSanitizer extends Sanitizer, DataFlow::CallNode {
     PermitCallSanitizer() {
       this.getMethodName() = "permit" and
-      not hasEmptyHash(this.getArgument(_).asExpr().getExpr())
+      not hasEmptyHash(this.getArgument(_).getExprNode())
     }
   }
 
@@ -78,7 +79,7 @@ module MassAssignment {
   private class PermitCallMassPermit extends MassPermit instanceof DataFlow::CallNode {
     PermitCallMassPermit() {
       this.(DataFlow::CallNode).getMethodName() = "permit" and
-      hasEmptyHash(this.(DataFlow::CallNode).getArgument(_).asExpr().getExpr())
+      hasEmptyHash(this.(DataFlow::CallNode).getArgument(_).getExprNode())
     }
 
     override DataFlow::Node getParamsArgument() { result = this.(DataFlow::CallNode).getReceiver() }
