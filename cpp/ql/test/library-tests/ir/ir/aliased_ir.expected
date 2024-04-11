@@ -870,40 +870,83 @@ coroutines.cpp:
 #   96|     v96_8(void)                = ^IndirectReadSideEffect[-1]               : &:r96_1, m95_16
 #   96|     m96_9(promise_type)        = ^IndirectMayWriteSideEffect[-1]           : &:r96_1
 #   96|     m96_10(promise_type)       = Chi                                       : total:m95_16, partial:m96_9
+#   96|     v96_11(void)               = CopyValue                                 : r96_5
+#-----|     r0_6(glval<promise_type>)  = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_7(glval<unknown>)       = FunctionAddress[return_void]              : 
+#-----|     v0_8(void)                 = Call[return_void]                         : func:r0_7, this:r0_6
+#-----|     m0_9(unknown)              = ^CallSideEffect                           : ~m96_7
+#-----|     m0_10(unknown)             = Chi                                       : total:m96_7, partial:m0_9
+#-----|     v0_11(void)                = ^IndirectReadSideEffect[-1]               : &:r0_6, m96_10
+#-----|     m0_12(promise_type)        = ^IndirectMayWriteSideEffect[-1]           : &:r0_6
+#-----|     m0_13(promise_type)        = Chi                                       : total:m96_10, partial:m0_12
+#   97|     v97_1(void)                = NoOp                                      : 
+#-----|     v0_14(void)                = NoOp                                      : 
+#-----|   Goto (back edge) -> Block 1
+
+#-----|   Block 1
+#-----|     v0_15(void)                       = NoOp                                      : 
+#   95|     r95_17(glval<promise_type>)       = VariableAddress[(unnamed local variable)] : 
+#   95|     r95_18(glval<unknown>)            = FunctionAddress[final_suspend]            : 
+#   95|     r95_19(suspend_always)            = Call[final_suspend]                       : func:r95_18, this:r95_17
+#   95|     m95_20(unknown)                   = ^CallSideEffect                           : ~m0_10
+#   95|     m95_21(unknown)                   = Chi                                       : total:m0_10, partial:m95_20
+#   95|     v95_22(void)                      = ^IndirectReadSideEffect[-1]               : &:r95_17, m0_13
+#   95|     m95_23(promise_type)              = ^IndirectMayWriteSideEffect[-1]           : &:r95_17
+#   95|     m95_24(promise_type)              = Chi                                       : total:m0_13, partial:m95_23
+#-----|     v0_16(void)                       = CopyValue                                 : r95_19
+#   95|     r95_25(glval<co_returnable_void>) = VariableAddress[#return]                  : 
+#   95|     v95_26(void)                      = ReturnValue                               : &:r95_25, ~m95_21
+#   95|     v95_27(void)                      = AliasedUse                                : ~m95_21
+#   95|     v95_28(void)                      = ExitFunction                              : 
 
 #   99| co_returnable_value co_yield_value_value(int)
 #   99|   Block 0
-#   99|     v99_1(void)                 = EnterFunction                             : 
-#   99|     m99_2(unknown)              = AliasedDefinition                         : 
-#   99|     m99_3(unknown)              = InitializeNonLocal                        : 
-#   99|     m99_4(unknown)              = Chi                                       : total:m99_2, partial:m99_3
-#   99|     r99_5(glval<int>)           = VariableAddress[i]                        : 
-#   99|     m99_6(int)                  = InitializeParameter[i]                    : &:r99_5
-#-----|     r0_1(glval<int>)            = VariableAddress[i]                        : 
-#-----|     r0_2(glval<int>)            = VariableAddress[i]                        : 
-#-----|     r0_3(int)                   = Load[i]                                   : &:r0_2, m99_6
-#-----|     m0_4(int)                   = Store[i]                                  : &:r0_1, r0_3
-#   99|     r99_7(glval<promise_type>)  = VariableAddress[(unnamed local variable)] : 
-#   99|     m99_8(promise_type)         = Uninitialized[(unnamed local variable)]   : &:r99_7
-#   99|     r99_9(glval<promise_type>)  = VariableAddress[(unnamed local variable)] : 
-#   99|     r99_10(glval<unknown>)      = FunctionAddress[initial_suspend]          : 
-#   99|     r99_11(suspend_always)      = Call[initial_suspend]                     : func:r99_10, this:r99_9
-#   99|     m99_12(unknown)             = ^CallSideEffect                           : ~m99_4
-#   99|     m99_13(unknown)             = Chi                                       : total:m99_4, partial:m99_12
-#   99|     v99_14(void)                = ^IndirectReadSideEffect[-1]               : &:r99_9, m99_8
-#   99|     m99_15(promise_type)        = ^IndirectMayWriteSideEffect[-1]           : &:r99_9
-#   99|     m99_16(promise_type)        = Chi                                       : total:m99_8, partial:m99_15
-#-----|     v0_5(void)                  = CopyValue                                 : r99_11
-#  100|     r100_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
-#  100|     r100_2(glval<unknown>)      = FunctionAddress[yield_value]              : 
-#  100|     r100_3(glval<int>)          = VariableAddress[i]                        : 
-#  100|     r100_4(int)                 = Load[i]                                   : &:r100_3, m0_4
-#  100|     r100_5(suspend_always)      = Call[yield_value]                         : func:r100_2, this:r100_1, 0:r100_4
-#  100|     m100_6(unknown)             = ^CallSideEffect                           : ~m99_13
-#  100|     m100_7(unknown)             = Chi                                       : total:m99_13, partial:m100_6
-#  100|     v100_8(void)                = ^IndirectReadSideEffect[-1]               : &:r100_1, m99_16
-#  100|     m100_9(promise_type)        = ^IndirectMayWriteSideEffect[-1]           : &:r100_1
-#  100|     m100_10(promise_type)       = Chi                                       : total:m99_16, partial:m100_9
+#   99|     v99_1(void)                        = EnterFunction                             : 
+#   99|     m99_2(unknown)                     = AliasedDefinition                         : 
+#   99|     m99_3(unknown)                     = InitializeNonLocal                        : 
+#   99|     m99_4(unknown)                     = Chi                                       : total:m99_2, partial:m99_3
+#   99|     r99_5(glval<int>)                  = VariableAddress[i]                        : 
+#   99|     m99_6(int)                         = InitializeParameter[i]                    : &:r99_5
+#-----|     r0_1(glval<int>)                   = VariableAddress[i]                        : 
+#-----|     r0_2(glval<int>)                   = VariableAddress[i]                        : 
+#-----|     r0_3(int)                          = Load[i]                                   : &:r0_2, m99_6
+#-----|     m0_4(int)                          = Store[i]                                  : &:r0_1, r0_3
+#   99|     r99_7(glval<promise_type>)         = VariableAddress[(unnamed local variable)] : 
+#   99|     m99_8(promise_type)                = Uninitialized[(unnamed local variable)]   : &:r99_7
+#   99|     r99_9(glval<promise_type>)         = VariableAddress[(unnamed local variable)] : 
+#   99|     r99_10(glval<unknown>)             = FunctionAddress[initial_suspend]          : 
+#   99|     r99_11(suspend_always)             = Call[initial_suspend]                     : func:r99_10, this:r99_9
+#   99|     m99_12(unknown)                    = ^CallSideEffect                           : ~m99_4
+#   99|     m99_13(unknown)                    = Chi                                       : total:m99_4, partial:m99_12
+#   99|     v99_14(void)                       = ^IndirectReadSideEffect[-1]               : &:r99_9, m99_8
+#   99|     m99_15(promise_type)               = ^IndirectMayWriteSideEffect[-1]           : &:r99_9
+#   99|     m99_16(promise_type)               = Chi                                       : total:m99_8, partial:m99_15
+#-----|     v0_5(void)                         = CopyValue                                 : r99_11
+#  100|     r100_1(glval<promise_type>)        = VariableAddress[(unnamed local variable)] : 
+#  100|     r100_2(glval<unknown>)             = FunctionAddress[yield_value]              : 
+#  100|     r100_3(glval<int>)                 = VariableAddress[i]                        : 
+#  100|     r100_4(int)                        = Load[i]                                   : &:r100_3, m0_4
+#  100|     r100_5(suspend_always)             = Call[yield_value]                         : func:r100_2, this:r100_1, 0:r100_4
+#  100|     m100_6(unknown)                    = ^CallSideEffect                           : ~m99_13
+#  100|     m100_7(unknown)                    = Chi                                       : total:m99_13, partial:m100_6
+#  100|     v100_8(void)                       = ^IndirectReadSideEffect[-1]               : &:r100_1, m99_16
+#  100|     m100_9(promise_type)               = ^IndirectMayWriteSideEffect[-1]           : &:r100_1
+#  100|     m100_10(promise_type)              = Chi                                       : total:m99_16, partial:m100_9
+#  100|     v100_11(void)                      = CopyValue                                 : r100_5
+#-----|     v0_6(void)                         = NoOp                                      : 
+#   99|     r99_17(glval<promise_type>)        = VariableAddress[(unnamed local variable)] : 
+#   99|     r99_18(glval<unknown>)             = FunctionAddress[final_suspend]            : 
+#   99|     r99_19(suspend_always)             = Call[final_suspend]                       : func:r99_18, this:r99_17
+#   99|     m99_20(unknown)                    = ^CallSideEffect                           : ~m100_7
+#   99|     m99_21(unknown)                    = Chi                                       : total:m100_7, partial:m99_20
+#   99|     v99_22(void)                       = ^IndirectReadSideEffect[-1]               : &:r99_17, m100_10
+#   99|     m99_23(promise_type)               = ^IndirectMayWriteSideEffect[-1]           : &:r99_17
+#   99|     m99_24(promise_type)               = Chi                                       : total:m100_10, partial:m99_23
+#-----|     v0_7(void)                         = CopyValue                                 : r99_19
+#   99|     r99_25(glval<co_returnable_value>) = VariableAddress[#return]                  : 
+#   99|     v99_26(void)                       = ReturnValue                               : &:r99_25, ~m99_21
+#   99|     v99_27(void)                       = AliasedUse                                : ~m99_21
+#   99|     v99_28(void)                       = ExitFunction                              : 
 
 #  103| co_returnable_void co_yield_and_return_void(int)
 #  103|   Block 0
@@ -938,6 +981,34 @@ coroutines.cpp:
 #  104|     v104_8(void)                = ^IndirectReadSideEffect[-1]               : &:r104_1, m103_16
 #  104|     m104_9(promise_type)        = ^IndirectMayWriteSideEffect[-1]           : &:r104_1
 #  104|     m104_10(promise_type)       = Chi                                       : total:m103_16, partial:m104_9
+#  104|     v104_11(void)               = CopyValue                                 : r104_5
+#-----|     r0_6(glval<promise_type>)   = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_7(glval<unknown>)        = FunctionAddress[return_void]              : 
+#-----|     v0_8(void)                  = Call[return_void]                         : func:r0_7, this:r0_6
+#-----|     m0_9(unknown)               = ^CallSideEffect                           : ~m104_7
+#-----|     m0_10(unknown)              = Chi                                       : total:m104_7, partial:m0_9
+#-----|     v0_11(void)                 = ^IndirectReadSideEffect[-1]               : &:r0_6, m104_10
+#-----|     m0_12(promise_type)         = ^IndirectMayWriteSideEffect[-1]           : &:r0_6
+#-----|     m0_13(promise_type)         = Chi                                       : total:m104_10, partial:m0_12
+#  105|     v105_1(void)                = NoOp                                      : 
+#-----|     v0_14(void)                 = NoOp                                      : 
+#-----|   Goto (back edge) -> Block 1
+
+#-----|   Block 1
+#-----|     v0_15(void)                        = NoOp                                      : 
+#  103|     r103_17(glval<promise_type>)       = VariableAddress[(unnamed local variable)] : 
+#  103|     r103_18(glval<unknown>)            = FunctionAddress[final_suspend]            : 
+#  103|     r103_19(suspend_always)            = Call[final_suspend]                       : func:r103_18, this:r103_17
+#  103|     m103_20(unknown)                   = ^CallSideEffect                           : ~m0_10
+#  103|     m103_21(unknown)                   = Chi                                       : total:m0_10, partial:m103_20
+#  103|     v103_22(void)                      = ^IndirectReadSideEffect[-1]               : &:r103_17, m0_13
+#  103|     m103_23(promise_type)              = ^IndirectMayWriteSideEffect[-1]           : &:r103_17
+#  103|     m103_24(promise_type)              = Chi                                       : total:m0_13, partial:m103_23
+#-----|     v0_16(void)                        = CopyValue                                 : r103_19
+#  103|     r103_25(glval<co_returnable_void>) = VariableAddress[#return]                  : 
+#  103|     v103_26(void)                      = ReturnValue                               : &:r103_25, ~m103_21
+#  103|     v103_27(void)                      = AliasedUse                                : ~m103_21
+#  103|     v103_28(void)                      = ExitFunction                              : 
 
 #  108| co_returnable_value co_yield_and_return_value(int)
 #  108|   Block 0
@@ -972,6 +1043,38 @@ coroutines.cpp:
 #  109|     v109_8(void)                = ^IndirectReadSideEffect[-1]               : &:r109_1, m108_16
 #  109|     m109_9(promise_type)        = ^IndirectMayWriteSideEffect[-1]           : &:r109_1
 #  109|     m109_10(promise_type)       = Chi                                       : total:m108_16, partial:m109_9
+#  109|     v109_11(void)               = CopyValue                                 : r109_5
+#-----|     r0_6(glval<promise_type>)   = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_7(glval<unknown>)        = FunctionAddress[return_value]             : 
+#  110|     r110_1(glval<int>)          = VariableAddress[i]                        : 
+#  110|     r110_2(int)                 = Load[i]                                   : &:r110_1, m0_4
+#  110|     r110_3(int)                 = Constant[1]                               : 
+#  110|     r110_4(int)                 = Add                                       : r110_2, r110_3
+#-----|     v0_8(void)                  = Call[return_value]                        : func:r0_7, this:r0_6, 0:r110_4
+#-----|     m0_9(unknown)               = ^CallSideEffect                           : ~m109_7
+#-----|     m0_10(unknown)              = Chi                                       : total:m109_7, partial:m0_9
+#-----|     v0_11(void)                 = ^IndirectReadSideEffect[-1]               : &:r0_6, m109_10
+#-----|     m0_12(promise_type)         = ^IndirectMayWriteSideEffect[-1]           : &:r0_6
+#-----|     m0_13(promise_type)         = Chi                                       : total:m109_10, partial:m0_12
+#  110|     v110_5(void)                = NoOp                                      : 
+#-----|     v0_14(void)                 = NoOp                                      : 
+#-----|   Goto (back edge) -> Block 1
+
+#-----|   Block 1
+#-----|     v0_15(void)                         = NoOp                                      : 
+#  108|     r108_17(glval<promise_type>)        = VariableAddress[(unnamed local variable)] : 
+#  108|     r108_18(glval<unknown>)             = FunctionAddress[final_suspend]            : 
+#  108|     r108_19(suspend_always)             = Call[final_suspend]                       : func:r108_18, this:r108_17
+#  108|     m108_20(unknown)                    = ^CallSideEffect                           : ~m0_10
+#  108|     m108_21(unknown)                    = Chi                                       : total:m0_10, partial:m108_20
+#  108|     v108_22(void)                       = ^IndirectReadSideEffect[-1]               : &:r108_17, m0_13
+#  108|     m108_23(promise_type)               = ^IndirectMayWriteSideEffect[-1]           : &:r108_17
+#  108|     m108_24(promise_type)               = Chi                                       : total:m0_13, partial:m108_23
+#-----|     v0_16(void)                         = CopyValue                                 : r108_19
+#  108|     r108_25(glval<co_returnable_value>) = VariableAddress[#return]                  : 
+#  108|     v108_26(void)                       = ReturnValue                               : &:r108_25, ~m108_21
+#  108|     v108_27(void)                       = AliasedUse                                : ~m108_21
+#  108|     v108_28(void)                       = ExitFunction                              : 
 
 destructors_for_temps.cpp:
 #    9| void ClassWithConstructor::ClassWithConstructor(ClassWithConstructor&&)
