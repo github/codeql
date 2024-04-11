@@ -193,6 +193,8 @@ module ModelValidation {
     predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
@@ -208,6 +210,10 @@ module ModelValidation {
       or
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
+      or
+      neutralModel(package, type, name, signature, _, provenance) and
+      ext = "" and
+      pred = "neutral"
     |
       not package.replaceAll("$ANYVERSION", "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
@@ -243,9 +249,13 @@ pragma[nomagic]
 private predicate elementSpec(
   string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(package, type, subtypes, name, signature, ext, _, _, _, _) or
-  sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _) or
+  sourceModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
 private string paramsStringPart(Function f, int i) {
