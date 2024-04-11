@@ -5,16 +5,20 @@
 /**
  * Holds if a source model exists for the given parameters.
  */
-extensible predicate sourceModel(string action, string version, string output, string kind);
+extensible predicate sourceModel(
+  string action, string version, string output, string kind, string provenance
+);
 
 /**
  * Holds if a summary model exists for the given parameters.
  */
 extensible predicate summaryModel(
-  string action, string version, string input, string output, string kind
+  string action, string version, string input, string output, string kind, string provenance
 );
 
 /**
  * Holds if a sink model exists for the given parameters.
  */
-extensible predicate sinkModel(string action, string version, string input, string kind);
+extensible predicate sinkModel(
+  string action, string version, string input, string kind, string provenance
+);
