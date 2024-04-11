@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["spring-cloud/spring-cloud-dataflow/.github/workflows/build-images.yml", "*", "inputs.version", "code-injection", "generated"]

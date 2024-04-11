@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["tribler/tribler/.github/workflows/pytest_custom_ipv8.yml", "*", "inputs.ipv8-git-ref", "code-injection", "generated"]

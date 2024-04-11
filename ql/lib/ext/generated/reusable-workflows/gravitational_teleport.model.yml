@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["gravitational/teleport/.github/workflows/update-ami-ids.yaml", "*", "inputs.version", "code-injection", "generated"]

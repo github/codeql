@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["bridgecrewio/checkov/tests/github_actions/resources/.github/workflows/docker-slsa.yaml", "*", "inputs.REGISTRY", "code-injection", "generated"]
+     - ["bridgecrewio/checkov/tests/github_actions/resources/.github/workflows/docker-slsa.yaml", "*", "inputs.IMAGE_NAME", "code-injection", "generated"]
+     - ["bridgecrewio/checkov/tests/github_actions/resources/.github/workflows/docker-slsa.yaml", "*", "inputs.IMAGE_TAG", "code-injection", "generated"]

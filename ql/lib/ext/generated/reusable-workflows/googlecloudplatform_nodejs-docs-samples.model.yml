@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["googlecloudplatform/nodejs-docs-samples/.github/workflows/test.yaml", "*", "inputs.path", "code-injection", "generated"]
+     - ["googlecloudplatform/nodejs-docs-samples/.github/workflows/test.yaml", "*", "inputs.name", "code-injection", "generated"]

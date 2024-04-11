@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["celo-org/celo-blockchain/.github/workflows/add-docker-tag.yaml", "*", "inputs.destination-tag", "code-injection", "generated"]
+     - ["celo-org/celo-blockchain/.github/workflows/add-docker-tag.yaml", "*", "inputs.origin-tag", "code-injection", "generated"]

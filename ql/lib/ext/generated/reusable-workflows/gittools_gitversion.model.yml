@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["gittools/gitversion/.github/workflows/_artifacts_linux.yml", "*", "inputs.arch", "code-injection", "generated"]

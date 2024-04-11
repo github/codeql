@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["plantuml/plantuml/.github/workflows/native-image.yml", "*", "inputs.release-version", "code-injection", "generated"]

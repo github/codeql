@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["mamba-org/mamba/.github/workflows/windows_impl.yml", "*", "inputs.build_type", "code-injection", "generated"]
+     - ["mamba-org/mamba/.github/workflows/unix_impl.yml", "*", "inputs.build_type", "code-injection", "generated"]

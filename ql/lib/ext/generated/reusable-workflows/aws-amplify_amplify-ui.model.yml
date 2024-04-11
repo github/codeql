@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["aws-amplify/amplify-ui/.github/workflows/reusable-tagged-publish.yml", "*", "inputs.dist-tag", "code-injection", "generated"]

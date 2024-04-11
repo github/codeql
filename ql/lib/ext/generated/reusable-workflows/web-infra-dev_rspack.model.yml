@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["web-infra-dev/rspack/.github/workflows/reusable-build.yml", "*", "inputs.profile", "code-injection", "generated"]
+     - ["web-infra-dev/rspack/.github/workflows/reusable-build.yml", "*", "inputs.target", "code-injection", "generated"]

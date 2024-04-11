@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "inputs.patch", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "inputs.minor", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "inputs.major", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "inputs.preName", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "inputs.pre", "code-injection", "generated"]

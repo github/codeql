@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["apache/spark/.github/workflows/build_and_test.yml", "*", "inputs.branch", "code-injection", "generated"]
+     - ["apache/spark/.github/workflows/build_and_test.yml", "*", "inputs.jobs", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dragonwell-project/dragonwell11/.github/workflows/test.yml", "*", "inputs.platform", "code-injection", "generated"]

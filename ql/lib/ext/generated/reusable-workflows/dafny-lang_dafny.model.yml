@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["dafny-lang/dafny/.github/workflows/publish-release-reusable.yml", "*", "inputs.name", "code-injection", "generated"]
+     - ["dafny-lang/dafny/.github/workflows/publish-release-reusable.yml", "*", "inputs.tag_name", "code-injection", "generated"]
+     - ["dafny-lang/dafny/.github/workflows/integration-tests-reusable.yml", "*", "inputs.all_platforms", "code-injection", "generated"]
+     - ["dafny-lang/dafny/.github/workflows/integration-tests-reusable.yml", "*", "inputs.num_shards", "code-injection", "generated"]

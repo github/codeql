@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["rancher/dashboard/.github/workflows/build-extension-charts.yml", "*", "inputs.tagged_release", "code-injection", "generated"]
+     - ["rancher/dashboard/.github/workflows/build-extension-charts.yml", "*", "inputs.target_branch", "code-injection", "generated"]
+     - ["rancher/dashboard/.github/workflows/build-extension-catalog.yml", "*", "inputs.tagged_release", "code-injection", "generated"]
+     - ["rancher/dashboard/.github/workflows/build-extension-catalog.yml", "*", "inputs.registry_target", "code-injection", "generated"]

@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "inputs.build_mode", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "inputs.release_branch", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "inputs.images_tag", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "inputs.quay_org", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend.yml", "*", "inputs.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend-tempo.yml", "*", "inputs.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend-multicluster-primary-remote.yml", "*", "inputs.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend-multicluster-multi-primary.yml", "*", "inputs.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-backend.yml", "*", "inputs.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-backend-multicluster-external-controlplane.yml", "*", "inputs.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/build-frontend.yml", "*", "inputs.target_branch", "code-injection", "generated"]

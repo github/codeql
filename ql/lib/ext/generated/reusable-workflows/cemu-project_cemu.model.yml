@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["cemu-project/cemu/.github/workflows/build.yml", "*", "inputs.experimentalversion", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["ibm/sarama/.github/workflows/fvt.yml", "*", "inputs.kafka-version", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["aio-libs/yarl/.github/workflows/reusable-build-wheel.yml", "*", "inputs.wheel-tags-to-skip", "code-injection", "generated"]
+     - ["aio-libs/yarl/.github/workflows/reusable-build-wheel.yml", "*", "inputs.qemu", "code-injection", "generated"]

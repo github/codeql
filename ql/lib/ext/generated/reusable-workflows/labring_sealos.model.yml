@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["labring/sealos/.github/workflows/services.yml", "*", "inputs.push_image_tag", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/services.yml", "*", "inputs.push_image", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/objectstorage.yaml", "*", "inputs.build_from", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/objectstorage.yaml", "*", "inputs.push_image_tag", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/objectstorage.yaml", "*", "inputs.push_image", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/import-patch-image.yml", "*", "inputs.arch", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/frontend.yml", "*", "inputs.push_image_tag", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/frontend.yml", "*", "inputs.push_image", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/controllers.yml", "*", "inputs.push_image_tag", "code-injection", "generated"]
+     - ["labring/sealos/.github/workflows/controllers.yml", "*", "inputs.push_image", "code-injection", "generated"]

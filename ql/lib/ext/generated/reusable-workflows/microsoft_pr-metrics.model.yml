@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["microsoft/pr-metrics/.github/workflows/release-phase-1-internal.yml", "*", "inputs.patch", "code-injection", "generated"]

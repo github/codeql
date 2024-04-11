@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["cryptomator/cryptomator/.github/workflows/get-version.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["cryptomator/cryptomator/.github/workflows/av-whitelist.yml", "*", "inputs.url", "code-injection", "generated"]

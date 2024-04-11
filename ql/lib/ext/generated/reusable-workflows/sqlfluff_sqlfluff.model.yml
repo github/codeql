@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["sqlfluff/sqlfluff/.github/workflows/ci-test-python.yml", "*", "inputs.marks", "code-injection", "generated"]
+     - ["sqlfluff/sqlfluff/.github/workflows/ci-test-python.yml", "*", "inputs.python-version", "code-injection", "generated"]
+     - ["sqlfluff/sqlfluff/.github/workflows/ci-test-dbt.yml", "*", "inputs.dbt-version", "code-injection", "generated"]

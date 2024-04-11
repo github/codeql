@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pyo3/pyo3/.github/workflows/build.yml", "*", "inputs.extra-features", "code-injection", "generated"]

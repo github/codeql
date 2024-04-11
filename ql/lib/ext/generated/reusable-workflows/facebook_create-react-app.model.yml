@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["facebook/create-react-app/.github/workflows/e2e-base.yml", "*", "inputs.testScript", "code-injection", "generated"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["flyteorg/flyte/.github/workflows/publish.yml", "*", "inputs.before-build", "code-injection", "generated"]
+     - ["flyteorg/flyte/.github/workflows/integration.yml", "*", "inputs.component", "code-injection", "generated"]
+     - ["flyteorg/flyte/.github/workflows/component_docker_build.yml", "*", "inputs.component", "code-injection", "generated"]

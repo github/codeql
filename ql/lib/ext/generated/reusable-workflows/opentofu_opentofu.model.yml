@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "inputs.package-name", "code-injection", "generated"]
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "inputs.product-version", "code-injection", "generated"]
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "inputs.goarch", "code-injection", "generated"]
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "inputs.goos", "code-injection", "generated"]

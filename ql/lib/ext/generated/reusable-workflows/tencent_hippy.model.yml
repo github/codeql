@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["tencent/hippy/.github/workflows/reuse_get_workflow_output.yml", "*", "inputs.workflow_run", "code-injection", "generated"]
+     - ["tencent/hippy/.github/workflows/reuse_classify_commits.yml", "*", "inputs.pull_request_number", "code-injection", "generated"]
+     - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "inputs.pull_request_head_sha", "code-injection", "generated"]
+     - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "inputs.pull_request_number", "code-injection", "generated"]

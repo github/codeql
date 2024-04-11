@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["tiann/kernelsu/.github/workflows/ksud.yml", "*", "inputs.target", "code-injection", "generated"]
+     - ["tiann/kernelsu/.github/workflows/avd-kernel.yml", "*", "inputs.manifest_name", "code-injection", "generated"]
+     - ["tiann/kernelsu/.github/workflows/wsa-kernel.yml", "*", "inputs.arch", "code-injection", "generated"]

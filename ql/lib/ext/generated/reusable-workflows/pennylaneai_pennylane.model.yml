@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["pennylaneai/pennylane/.github/workflows/unit-test.yml", "*", "inputs.pytest_test_directory", "code-injection", "generated"]
+     - ["pennylaneai/pennylane/.github/workflows/unit-test.yml", "*", "inputs.job_name", "code-injection", "generated"]
+     - ["pennylaneai/pennylane/.github/workflows/interface-unit-tests.yml", "*", "inputs.run_lightened_ci", "code-injection", "generated"]

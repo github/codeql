@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["rocketchat/rocket.chat/.github/workflows/ci-test-e2e.yml", "*", "inputs.total-shard", "code-injection", "generated"]

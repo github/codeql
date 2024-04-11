@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["chia-network/actions/.github/workflows/docker-build.yaml", "*", "inputs.docker-context", "code-injection", "generated"]
+     - ["chia-network/actions/.github/workflows/docker-build.yaml", "*", "inputs.image_subpath", "code-injection", "generated"]

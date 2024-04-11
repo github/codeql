@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["jupyter/docker-stacks/.github/workflows/docker-tag-push.yml", "*", "inputs.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-tag-push.yml", "*", "inputs.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-tag-push.yml", "*", "inputs.platform", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-merge-tags.yml", "*", "inputs.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-merge-tags.yml", "*", "inputs.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-build-test-upload.yml", "*", "inputs.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-build-test-upload.yml", "*", "inputs.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-build-test-upload.yml", "*", "inputs.platform", "code-injection", "generated"]

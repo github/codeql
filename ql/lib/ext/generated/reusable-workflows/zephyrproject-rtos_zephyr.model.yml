@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["zephyrproject-rtos/zephyr/.github/workflows/ready-to-merge.yml", "*", "inputs.needs_context", "code-injection", "generated"]
