@@ -40,7 +40,7 @@ DataFlowCallable viableCallable(DataFlowCall call) {
   result = defaultViableCallable(call)
   or
   // Additional call targets
-  result =
+  result.getUnderlyingCallable() =
     any(AdditionalCallTarget additional)
         .viableTarget(call.asCallInstruction().getUnconvertedResultExpression())
 }

@@ -2681,5 +2681,5 @@ class AdditionalCallTarget extends Unit {
   /**
    * Gets a viable target for `call`.
    */
-  abstract DataFlowCallable viableTarget(Call call);
+  abstract Declaration viableTarget(Call call);
 }
