@@ -99,7 +99,7 @@ private predicate canonicalPackage(string package) {
   relevantPackage(package) and not packageLink(_, package)
 }
 
-private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
+private predicate canonicalPkgLink(string package, string subpkg) {
   canonicalPackage(package) and
   (subpkg = package or packageLink(package, subpkg))
 }
@@ -109,13 +109,13 @@ private predicate canonicalPackageHasASubpackage(string package, string subpkg) 
  * kind `(kind, part)`.
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPackageHasASubpackage(package, subpkg)) and
+  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
   (
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string output, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
+        canonicalPkgLink(package, subpkg) and
         sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance, _)
       )
     or
@@ -123,7 +123,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
+        canonicalPkgLink(package, subpkg) and
         sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance, _)
       )
     or
@@ -131,7 +131,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input, string output, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
+        canonicalPkgLink(package, subpkg) and
         summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance,
           _)
       )
