@@ -1728,6 +1728,1710 @@ complex.c:
 #  144|             Type = [LongDoubleType] long double
 #  144|             ValueCategory = prvalue
 #  145|     getStmt(72): [ReturnStmt] return ...
+coroutines.cpp:
+#    4| [CopyAssignmentOperator] std::coroutine_traits<co_returnable_value, int>& std::coroutine_traits<co_returnable_value, int>::operator=(std::coroutine_traits<co_returnable_value, int> const&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const coroutine_traits<co_returnable_value, int> &
+#    4| [MoveAssignmentOperator] std::coroutine_traits<co_returnable_value, int>& std::coroutine_traits<co_returnable_value, int>::operator=(std::coroutine_traits<co_returnable_value, int>&&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] coroutine_traits<co_returnable_value, int> &&
+#    4| [CopyAssignmentOperator] std::coroutine_traits<co_returnable_void, int>& std::coroutine_traits<co_returnable_void, int>::operator=(std::coroutine_traits<co_returnable_void, int> const&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const coroutine_traits<co_returnable_void, int> &
+#    4| [MoveAssignmentOperator] std::coroutine_traits<co_returnable_void, int>& std::coroutine_traits<co_returnable_void, int>::operator=(std::coroutine_traits<co_returnable_void, int>&&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] coroutine_traits<co_returnable_void, int> &&
+#    4| [CopyAssignmentOperator] std::coroutine_traits<co_returnable_void>& std::coroutine_traits<co_returnable_void>::operator=(std::coroutine_traits<co_returnable_void> const&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const coroutine_traits<co_returnable_void> &
+#    4| [MoveAssignmentOperator] std::coroutine_traits<co_returnable_void>& std::coroutine_traits<co_returnable_void>::operator=(std::coroutine_traits<co_returnable_void>&&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] coroutine_traits<co_returnable_void> &&
+#   12| [Constructor] void std::coroutine_handle<Promise>::coroutine_handle()
+#   12|   <params>: 
+#   13| [Constructor] void std::coroutine_handle<Promise>::coroutine_handle(std::nullptr_t)
+#   13|   <params>: 
+#   13|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   13|         Type = [UsingAliasTypedefType] nullptr_t
+#   14| [CopyConstructor] void std::coroutine_handle<Promise>::coroutine_handle(std::coroutine_handle<Promise> const&)
+#   14|   <params>: 
+#   14|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   14|         Type = [LValueReferenceType] const coroutine_handle<Promise> &
+#   14| [CopyConstructor] void std::coroutine_handle<co_returnable_value::promise_type>::coroutine_handle(std::coroutine_handle<co_returnable_value::promise_type> const&)
+#   14|   <params>: 
+#   14|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   14|         Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   14| [CopyConstructor] void std::coroutine_handle<co_returnable_void::promise_type>::coroutine_handle(std::coroutine_handle<co_returnable_void::promise_type> const&)
+#   14|   <params>: 
+#   14|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   14|         Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   15| [MoveConstructor] void std::coroutine_handle<Promise>::coroutine_handle(std::coroutine_handle<Promise>&&)
+#   15|   <params>: 
+#   15|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   15|         Type = [RValueReferenceType] coroutine_handle<Promise> &&
+#   17| [MemberFunction] std::coroutine_handle<Promise> std::coroutine_handle<Promise>::from_promise(Promise&)
+#   17|   <params>: 
+#   17|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   17|         Type = [LValueReferenceType] Promise &
+#   18| [MemberFunction] std::coroutine_handle<Promise>& std::coroutine_handle<Promise>::operator=(std::nullptr_t)
+#   18|   <params>: 
+#   18|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   18|         Type = [UsingAliasTypedefType] nullptr_t
+#   19| [CopyAssignmentOperator] std::coroutine_handle<Promise>& std::coroutine_handle<Promise>::operator=(std::coroutine_handle<Promise> const&)
+#   19|   <params>: 
+#   19|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   19|         Type = [LValueReferenceType] const coroutine_handle<Promise> &
+#   20| [MoveAssignmentOperator] std::coroutine_handle<Promise>& std::coroutine_handle<Promise>::operator=(std::coroutine_handle<Promise>&&)
+#   20|   <params>: 
+#   20|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   20|         Type = [RValueReferenceType] coroutine_handle<Promise> &&
+#   21| [ConstMemberFunction,ConversionOperator] std::coroutine_handle<Promise> std::coroutine_handle<Promise>::operator std::coroutine_handle<Promise>() const
+#   21|   <params>: 
+#   23| [ConstMemberFunction] bool std::coroutine_handle<Promise>::done() const
+#   23|   <params>: 
+#   24| [ConstMemberFunction,ConversionOperator] bool std::coroutine_handle<Promise>::operator bool() const
+#   24|   <params>: 
+#   26| [ConstMemberFunction] void std::coroutine_handle<Promise>::operator()() const
+#   26|   <params>: 
+#   27| [ConstMemberFunction] void std::coroutine_handle<Promise>::resume() const
+#   27|   <params>: 
+#   29| [ConstMemberFunction] void std::coroutine_handle<Promise>::destroy() const
+#   29|   <params>: 
+#   31| [ConstMemberFunction] Promise& std::coroutine_handle<Promise>::promise() const
+#   31|   <params>: 
+#   33| [ConstMemberFunction] void* std::coroutine_handle<Promise>::address() const
+#   33|   <params>: 
+#   34| [MemberFunction] std::coroutine_handle<Promise> std::coroutine_handle<Promise>::from_address(void*)
+#   34|   <params>: 
+#   34|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   34|         Type = [VoidPointerType] void *
+#   38| [Operator,TemplateFunction,TopLevelFunction] bool std::operator==<Promise>(std::coroutine_handle<Promise>, std::coroutine_handle<Promise>)
+#   38|   <params>: 
+#   38|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   38|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<Promise>
+#   38|     getParameter(1): [Parameter] (unnamed parameter 1)
+#   38|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<Promise>
+#   40| [CopyAssignmentOperator] std::suspend_always& std::suspend_always::operator=(std::suspend_always const&)
+#   40|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const suspend_always &
+#   40| [MoveAssignmentOperator] std::suspend_always& std::suspend_always::operator=(std::suspend_always&&)
+#   40|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] suspend_always &&
+#   41| [ConstMemberFunction] bool std::suspend_always::await_ready() const
+#   41|   <params>: 
+#   42| [ConstMemberFunction,TemplateFunction] void std::suspend_always::await_suspend<Promise>(std::coroutine_handle<Promise>) const
+#   42|   <params>: 
+#   42|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   42|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<Promise>
+#   42| [ConstMemberFunction,FunctionTemplateInstantiation] void std::suspend_always::await_suspend<co_returnable_value::promise_type>(std::coroutine_handle<co_returnable_value::promise_type>) const
+#   42|   <params>: 
+#   42|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   42|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   42| [ConstMemberFunction,FunctionTemplateInstantiation] void std::suspend_always::await_suspend<co_returnable_void::promise_type>(std::coroutine_handle<co_returnable_void::promise_type>) const
+#   42|   <params>: 
+#   42|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   42|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   43| [ConstMemberFunction] void std::suspend_always::await_resume() const
+#   43|   <params>: 
+#   47| [CopyAssignmentOperator] co_returnable_void& co_returnable_void::operator=(co_returnable_void const&)
+#   47|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const co_returnable_void &
+#   50| [Constructor] void co_returnable_void::co_returnable_void(std::coroutine_handle<co_returnable_void::promise_type>)
+#   50|   <params>: 
+#   50|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   50|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   52| [CopyConstructor] void co_returnable_void::co_returnable_void(co_returnable_void&)
+#   52|   <params>: 
+#   52|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   52|         Type = [LValueReferenceType] co_returnable_void &
+#   53| [MoveConstructor] void co_returnable_void::co_returnable_void(co_returnable_void&&)
+#   53|   <params>: 
+#   53|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   53|         Type = [RValueReferenceType] co_returnable_void &&
+#   56| [CopyAssignmentOperator] co_returnable_void::promise_type& co_returnable_void::promise_type::operator=(co_returnable_void::promise_type const public&)
+#   56|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const promise_type &
+#   56| [MoveAssignmentOperator] co_returnable_void::promise_type& co_returnable_void::promise_type::operator=(co_returnable_void::promise_type&&)
+#   56|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] promise_type &&
+#   57| [MemberFunction] std::coroutine_handle<co_returnable_void::promise_type> co_returnable_void::promise_type::get_return_object()
+#   57|   <params>: 
+#   58| [MemberFunction] std::suspend_always co_returnable_void::promise_type::initial_suspend()
+#   58|   <params>: 
+#   59| [MemberFunction] std::suspend_always co_returnable_void::promise_type::final_suspend()
+#   59|   <params>: 
+#   61| [MemberFunction] void co_returnable_void::promise_type::return_void()
+#   61|   <params>: 
+#   62| [MemberFunction] void co_returnable_void::promise_type::unhandled_exception()
+#   62|   <params>: 
+#   64| [MemberFunction] std::suspend_always co_returnable_void::promise_type::yield_value(int)
+#   64|   <params>: 
+#   64|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   64|         Type = [IntType] int
+#   67| [CopyAssignmentOperator] co_returnable_value& co_returnable_value::operator=(co_returnable_value const&)
+#   67|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const co_returnable_value &
+#   70| [Constructor] void co_returnable_value::co_returnable_value(std::coroutine_handle<co_returnable_value::promise_type>)
+#   70|   <params>: 
+#   70|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   70|         Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   72| [CopyConstructor] void co_returnable_value::co_returnable_value(co_returnable_value&)
+#   72|   <params>: 
+#   72|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   72|         Type = [LValueReferenceType] co_returnable_value &
+#   73| [MoveConstructor] void co_returnable_value::co_returnable_value(co_returnable_value&&)
+#   73|   <params>: 
+#   73|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   73|         Type = [RValueReferenceType] co_returnable_value &&
+#   76| [CopyAssignmentOperator] co_returnable_value::promise_type& co_returnable_value::promise_type::operator=(co_returnable_value::promise_type const public&)
+#   76|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const promise_type &
+#   76| [MoveAssignmentOperator] co_returnable_value::promise_type& co_returnable_value::promise_type::operator=(co_returnable_value::promise_type&&)
+#   76|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] promise_type &&
+#   77| [MemberFunction] std::coroutine_handle<co_returnable_value::promise_type> co_returnable_value::promise_type::get_return_object()
+#   77|   <params>: 
+#   78| [MemberFunction] std::suspend_always co_returnable_value::promise_type::initial_suspend()
+#   78|   <params>: 
+#   79| [MemberFunction] std::suspend_always co_returnable_value::promise_type::final_suspend()
+#   79|   <params>: 
+#   81| [MemberFunction] void co_returnable_value::promise_type::return_value(int)
+#   81|   <params>: 
+#   81|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   81|         Type = [IntType] int
+#   82| [MemberFunction] void co_returnable_value::promise_type::unhandled_exception()
+#   82|   <params>: 
+#   84| [MemberFunction] std::suspend_always co_returnable_value::promise_type::yield_value(int)
+#   84|   <params>: 
+#   84|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   84|         Type = [IntType] int
+#   87| [TopLevelFunction] co_returnable_void co_return_void()
+#   87|   <params>: 
+#   87|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [DeclStmt] declaration
+#   87|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   87|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|     getStmt(1): [TryStmt] try { ... }
+#-----|       getStmt(): [BlockStmt] { ... }
+#-----|         getStmt(0): [ExprStmt] ExprStmt
+#-----|           getExpr(): [CoAwaitExpr] co_await ...
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#   87|             getOperand(): [FunctionCall] call to initial_suspend
+#   87|                 Type = [Struct] suspend_always
+#   87|                 ValueCategory = prvalue
+#   87|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   87|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                   ValueCategory = lvalue
+#   87|             getChild(1): [FunctionCall] call to await_ready
+#   87|                 Type = [BoolType] bool
+#   87|                 ValueCategory = prvalue
+#   87|               getQualifier(): [PointerDereferenceExpr] * ...
+#   87|                   Type = [Struct] suspend_always
+#   87|                   ValueCategory = lvalue
+#   87|                 getOperand(): [AddressOfExpr] & ...
+#   87|                     Type = [PointerType] suspend_always *
+#   87|                     ValueCategory = prvalue
+#   87|                   getOperand(): [FunctionCall] call to initial_suspend
+#   87|                       Type = [Struct] suspend_always
+#   87|                       ValueCategory = prvalue
+#   87|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#   87|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                         ValueCategory = lvalue
+#   87|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   87|                       Type = [Struct] suspend_always
+#   87|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#   87|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   87|                   Conversion = [GlvalueConversion] glvalue conversion
+#   87|                   Type = [SpecifiedType] const suspend_always
+#   87|                   ValueCategory = lvalue
+#-----|             getChild(2): [CommaExpr] ... , ...
+#-----|                 Type = [VoidType] void
+#-----|                 ValueCategory = prvalue
+#-----|               getLeftOperand(): [AssignExpr] ... = ...
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue
+#-----|                 getLValue(): [VariableAccess] (unnamed local variable)
+#-----|                     Type = [BoolType] bool
+#-----|                     ValueCategory = lvalue
+#-----|                 getRValue(): [Literal] 1
+#-----|                     Type = [BoolType] bool
+#-----|                     Value = [Literal] 1
+#-----|                     ValueCategory = prvalue
+#   87|               getRightOperand(): [FunctionCall] call to await_resume
+#   87|                   Type = [VoidType] void
+#   87|                   ValueCategory = prvalue
+#   87|                 getQualifier(): [PointerDereferenceExpr] * ...
+#   87|                     Type = [Struct] suspend_always
+#   87|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const suspend_always
+#-----|                     ValueCategory = lvalue
+#   87|             getChild(3): [FunctionCall] call to await_suspend
+#   87|                 Type = [VoidType] void
+#   87|                 ValueCategory = prvalue
+#   87|               getQualifier(): [PointerDereferenceExpr] * ...
+#   87|                   Type = [Struct] suspend_always
+#   87|                   ValueCategory = lvalue
+#   87|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#   87|                   Type = [VoidType] void
+#   87|                   ValueCategory = prvalue
+#   87|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#   87|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   87|                     ValueCategory = lvalue
+#   87|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   87|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   87|                     ValueCategory = prvalue
+#   87|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   87|                       Conversion = [GlvalueConversion] glvalue conversion
+#   87|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   87|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#   87|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   87|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   87|                   ValueCategory = lvalue
+#   88|         getStmt(1): [CoReturnStmt] co_return ...
+#-----|           getChild(0): [FunctionCall] call to return_void
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#-----|             getQualifier(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 ValueCategory = lvalue
+#-----|         getStmt(2): [GotoStmt] goto ...
+#-----|       getChild(1): [Handler] <handler>
+#-----|         getBlock(): [CatchAnyBlock] { ... }
+#-----|           getStmt(0): [IfStmt] if (...) ... 
+#-----|             getCondition(): [NotExpr] ! ...
+#-----|                 Type = [BoolType] bool
+#-----|                 ValueCategory = prvalue
+#-----|               getOperand(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue(load)
+#-----|             getThen(): [ExprStmt] ExprStmt
+#-----|               getExpr(): [ReThrowExpr] re-throw exception 
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|           getStmt(1): [ExprStmt] ExprStmt
+#   87|             getExpr(): [FunctionCall] call to unhandled_exception
+#   87|                 Type = [VoidType] void
+#   87|                 ValueCategory = prvalue
+#   87|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   87|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                   ValueCategory = lvalue
+#-----|     getStmt(2): [LabelStmt] label ...:
+#-----|     getStmt(3): [ExprStmt] ExprStmt
+#-----|       getExpr(): [CoAwaitExpr] co_await ...
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#   87|         getOperand(): [FunctionCall] call to final_suspend
+#   87|             Type = [Struct] suspend_always
+#   87|             ValueCategory = prvalue
+#   87|           getQualifier(): [VariableAccess] (unnamed local variable)
+#   87|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|               ValueCategory = lvalue
+#   87|         getChild(1): [FunctionCall] call to await_ready
+#   87|             Type = [BoolType] bool
+#   87|             ValueCategory = prvalue
+#   87|           getQualifier(): [PointerDereferenceExpr] * ...
+#   87|               Type = [Struct] suspend_always
+#   87|               ValueCategory = lvalue
+#   87|             getOperand(): [AddressOfExpr] & ...
+#   87|                 Type = [PointerType] suspend_always *
+#   87|                 ValueCategory = prvalue
+#   87|               getOperand(): [FunctionCall] call to final_suspend
+#   87|                   Type = [Struct] suspend_always
+#   87|                   ValueCategory = prvalue
+#   87|                 getQualifier(): [VariableAccess] (unnamed local variable)
+#   87|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                     ValueCategory = lvalue
+#   87|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   87|                   Type = [Struct] suspend_always
+#   87|                   ValueCategory = lvalue
+#-----|             getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [PointerType] suspend_always *
+#-----|                 ValueCategory = prvalue(load)
+#   87|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   87|               Conversion = [GlvalueConversion] glvalue conversion
+#   87|               Type = [SpecifiedType] const suspend_always
+#   87|               ValueCategory = lvalue
+#   87|         getChild(2): [FunctionCall] call to await_resume
+#   87|             Type = [VoidType] void
+#   87|             ValueCategory = prvalue
+#   87|           getQualifier(): [PointerDereferenceExpr] * ...
+#   87|               Type = [Struct] suspend_always
+#   87|               ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   87|         getChild(3): [FunctionCall] call to await_suspend
+#   87|             Type = [VoidType] void
+#   87|             ValueCategory = prvalue
+#   87|           getQualifier(): [PointerDereferenceExpr] * ...
+#   87|               Type = [Struct] suspend_always
+#   87|               ValueCategory = lvalue
+#   87|           getArgument(0): [ConstructorCall] call to coroutine_handle
+#   87|               Type = [VoidType] void
+#   87|               ValueCategory = prvalue
+#   87|             getArgument(0): [VariableAccess] (unnamed local variable)
+#   87|                 Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   87|                 ValueCategory = lvalue
+#   87|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   87|                 Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   87|                 ValueCategory = prvalue
+#   87|               getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   87|                   Conversion = [GlvalueConversion] glvalue conversion
+#   87|                   Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   87|                   ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   87|           getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   87|               Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   87|               ValueCategory = lvalue
+#   91| [TopLevelFunction] co_returnable_value co_return_int(int)
+#   91|   <params>: 
+#   91|     getParameter(0): [Parameter] i
+#   91|         Type = [IntType] int
+#   91|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
+#-----|     getStmt(1): [DeclStmt] declaration
+#   91|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   91|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|     getStmt(2): [TryStmt] try { ... }
+#-----|       getStmt(): [BlockStmt] { ... }
+#-----|         getStmt(0): [ExprStmt] ExprStmt
+#-----|           getExpr(): [CoAwaitExpr] co_await ...
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#   91|             getOperand(): [FunctionCall] call to initial_suspend
+#   91|                 Type = [Struct] suspend_always
+#   91|                 ValueCategory = prvalue
+#   91|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   91|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                   ValueCategory = lvalue
+#   91|             getChild(1): [FunctionCall] call to await_ready
+#   91|                 Type = [BoolType] bool
+#   91|                 ValueCategory = prvalue
+#   91|               getQualifier(): [PointerDereferenceExpr] * ...
+#   91|                   Type = [Struct] suspend_always
+#   91|                   ValueCategory = lvalue
+#   91|                 getOperand(): [AddressOfExpr] & ...
+#   91|                     Type = [PointerType] suspend_always *
+#   91|                     ValueCategory = prvalue
+#   91|                   getOperand(): [FunctionCall] call to initial_suspend
+#   91|                       Type = [Struct] suspend_always
+#   91|                       ValueCategory = prvalue
+#   91|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#   91|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                         ValueCategory = lvalue
+#   91|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   91|                       Type = [Struct] suspend_always
+#   91|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#   91|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   91|                   Conversion = [GlvalueConversion] glvalue conversion
+#   91|                   Type = [SpecifiedType] const suspend_always
+#   91|                   ValueCategory = lvalue
+#-----|             getChild(2): [CommaExpr] ... , ...
+#-----|                 Type = [VoidType] void
+#-----|                 ValueCategory = prvalue
+#-----|               getLeftOperand(): [AssignExpr] ... = ...
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue
+#-----|                 getLValue(): [VariableAccess] (unnamed local variable)
+#-----|                     Type = [BoolType] bool
+#-----|                     ValueCategory = lvalue
+#-----|                 getRValue(): [Literal] 1
+#-----|                     Type = [BoolType] bool
+#-----|                     Value = [Literal] 1
+#-----|                     ValueCategory = prvalue
+#   91|               getRightOperand(): [FunctionCall] call to await_resume
+#   91|                   Type = [VoidType] void
+#   91|                   ValueCategory = prvalue
+#   91|                 getQualifier(): [PointerDereferenceExpr] * ...
+#   91|                     Type = [Struct] suspend_always
+#   91|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const suspend_always
+#-----|                     ValueCategory = lvalue
+#   91|             getChild(3): [FunctionCall] call to await_suspend
+#   91|                 Type = [VoidType] void
+#   91|                 ValueCategory = prvalue
+#   91|               getQualifier(): [PointerDereferenceExpr] * ...
+#   91|                   Type = [Struct] suspend_always
+#   91|                   ValueCategory = lvalue
+#   91|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#   91|                   Type = [VoidType] void
+#   91|                   ValueCategory = prvalue
+#   91|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#   91|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   91|                     ValueCategory = lvalue
+#   91|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   91|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   91|                     ValueCategory = prvalue
+#   91|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   91|                       Conversion = [GlvalueConversion] glvalue conversion
+#   91|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   91|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#   91|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   91|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   91|                   ValueCategory = lvalue
+#   92|         getStmt(1): [CoReturnStmt] co_return ...
+#-----|           getChild(0): [FunctionCall] call to return_value
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#-----|             getQualifier(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 ValueCategory = lvalue
+#   92|             getArgument(0): [VariableAccess] i
+#   92|                 Type = [IntType] int
+#   92|                 ValueCategory = prvalue(load)
+#-----|         getStmt(2): [GotoStmt] goto ...
+#-----|       getChild(1): [Handler] <handler>
+#-----|         getBlock(): [CatchAnyBlock] { ... }
+#-----|           getStmt(0): [IfStmt] if (...) ... 
+#-----|             getCondition(): [NotExpr] ! ...
+#-----|                 Type = [BoolType] bool
+#-----|                 ValueCategory = prvalue
+#-----|               getOperand(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue(load)
+#-----|             getThen(): [ExprStmt] ExprStmt
+#-----|               getExpr(): [ReThrowExpr] re-throw exception 
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|           getStmt(1): [ExprStmt] ExprStmt
+#   91|             getExpr(): [FunctionCall] call to unhandled_exception
+#   91|                 Type = [VoidType] void
+#   91|                 ValueCategory = prvalue
+#   91|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   91|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                   ValueCategory = lvalue
+#-----|     getStmt(3): [LabelStmt] label ...:
+#-----|     getStmt(4): [ExprStmt] ExprStmt
+#-----|       getExpr(): [CoAwaitExpr] co_await ...
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#   91|         getOperand(): [FunctionCall] call to final_suspend
+#   91|             Type = [Struct] suspend_always
+#   91|             ValueCategory = prvalue
+#   91|           getQualifier(): [VariableAccess] (unnamed local variable)
+#   91|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|               ValueCategory = lvalue
+#   91|         getChild(1): [FunctionCall] call to await_ready
+#   91|             Type = [BoolType] bool
+#   91|             ValueCategory = prvalue
+#   91|           getQualifier(): [PointerDereferenceExpr] * ...
+#   91|               Type = [Struct] suspend_always
+#   91|               ValueCategory = lvalue
+#   91|             getOperand(): [AddressOfExpr] & ...
+#   91|                 Type = [PointerType] suspend_always *
+#   91|                 ValueCategory = prvalue
+#   91|               getOperand(): [FunctionCall] call to final_suspend
+#   91|                   Type = [Struct] suspend_always
+#   91|                   ValueCategory = prvalue
+#   91|                 getQualifier(): [VariableAccess] (unnamed local variable)
+#   91|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                     ValueCategory = lvalue
+#   91|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   91|                   Type = [Struct] suspend_always
+#   91|                   ValueCategory = lvalue
+#-----|             getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [PointerType] suspend_always *
+#-----|                 ValueCategory = prvalue(load)
+#   91|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   91|               Conversion = [GlvalueConversion] glvalue conversion
+#   91|               Type = [SpecifiedType] const suspend_always
+#   91|               ValueCategory = lvalue
+#   91|         getChild(2): [FunctionCall] call to await_resume
+#   91|             Type = [VoidType] void
+#   91|             ValueCategory = prvalue
+#   91|           getQualifier(): [PointerDereferenceExpr] * ...
+#   91|               Type = [Struct] suspend_always
+#   91|               ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   91|         getChild(3): [FunctionCall] call to await_suspend
+#   91|             Type = [VoidType] void
+#   91|             ValueCategory = prvalue
+#   91|           getQualifier(): [PointerDereferenceExpr] * ...
+#   91|               Type = [Struct] suspend_always
+#   91|               ValueCategory = lvalue
+#   91|           getArgument(0): [ConstructorCall] call to coroutine_handle
+#   91|               Type = [VoidType] void
+#   91|               ValueCategory = prvalue
+#   91|             getArgument(0): [VariableAccess] (unnamed local variable)
+#   91|                 Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   91|                 ValueCategory = lvalue
+#   91|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   91|                 Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   91|                 ValueCategory = prvalue
+#   91|               getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   91|                   Conversion = [GlvalueConversion] glvalue conversion
+#   91|                   Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   91|                   ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   91|           getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   91|               Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   91|               ValueCategory = lvalue
+#   95| [TopLevelFunction] co_returnable_void co_yield_value_void(int)
+#   95|   <params>: 
+#   95|     getParameter(0): [Parameter] i
+#   95|         Type = [IntType] int
+#   95|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
+#-----|     getStmt(1): [DeclStmt] declaration
+#   95|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   95|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|     getStmt(2): [TryStmt] try { ... }
+#-----|       getStmt(): [BlockStmt] { ... }
+#-----|         getStmt(0): [ExprStmt] ExprStmt
+#-----|           getExpr(): [CoAwaitExpr] co_await ...
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#   95|             getOperand(): [FunctionCall] call to initial_suspend
+#   95|                 Type = [Struct] suspend_always
+#   95|                 ValueCategory = prvalue
+#   95|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   95|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                   ValueCategory = lvalue
+#   95|             getChild(1): [FunctionCall] call to await_ready
+#   95|                 Type = [BoolType] bool
+#   95|                 ValueCategory = prvalue
+#   95|               getQualifier(): [PointerDereferenceExpr] * ...
+#   95|                   Type = [Struct] suspend_always
+#   95|                   ValueCategory = lvalue
+#   95|                 getOperand(): [AddressOfExpr] & ...
+#   95|                     Type = [PointerType] suspend_always *
+#   95|                     ValueCategory = prvalue
+#   95|                   getOperand(): [FunctionCall] call to initial_suspend
+#   95|                       Type = [Struct] suspend_always
+#   95|                       ValueCategory = prvalue
+#   95|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#   95|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                         ValueCategory = lvalue
+#   95|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   95|                       Type = [Struct] suspend_always
+#   95|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#   95|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   95|                   Conversion = [GlvalueConversion] glvalue conversion
+#   95|                   Type = [SpecifiedType] const suspend_always
+#   95|                   ValueCategory = lvalue
+#-----|             getChild(2): [CommaExpr] ... , ...
+#-----|                 Type = [VoidType] void
+#-----|                 ValueCategory = prvalue
+#-----|               getLeftOperand(): [AssignExpr] ... = ...
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue
+#-----|                 getLValue(): [VariableAccess] (unnamed local variable)
+#-----|                     Type = [BoolType] bool
+#-----|                     ValueCategory = lvalue
+#-----|                 getRValue(): [Literal] 1
+#-----|                     Type = [BoolType] bool
+#-----|                     Value = [Literal] 1
+#-----|                     ValueCategory = prvalue
+#   95|               getRightOperand(): [FunctionCall] call to await_resume
+#   95|                   Type = [VoidType] void
+#   95|                   ValueCategory = prvalue
+#   95|                 getQualifier(): [PointerDereferenceExpr] * ...
+#   95|                     Type = [Struct] suspend_always
+#   95|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const suspend_always
+#-----|                     ValueCategory = lvalue
+#   95|             getChild(3): [FunctionCall] call to await_suspend
+#   95|                 Type = [VoidType] void
+#   95|                 ValueCategory = prvalue
+#   95|               getQualifier(): [PointerDereferenceExpr] * ...
+#   95|                   Type = [Struct] suspend_always
+#   95|                   ValueCategory = lvalue
+#   95|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#   95|                   Type = [VoidType] void
+#   95|                   ValueCategory = prvalue
+#   95|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#   95|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   95|                     ValueCategory = lvalue
+#   95|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   95|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   95|                     ValueCategory = prvalue
+#   95|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   95|                       Conversion = [GlvalueConversion] glvalue conversion
+#   95|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   95|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#   95|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   95|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   95|                   ValueCategory = lvalue
+#   96|         getStmt(1): [ExprStmt] ExprStmt
+#   96|           getExpr(): [CoYieldExpr] co_yield ...
+#   96|               Type = [VoidType] void
+#   96|               ValueCategory = prvalue
+#   96|             getOperand(): [FunctionCall] call to yield_value
+#   96|                 Type = [Struct] suspend_always
+#   96|                 ValueCategory = prvalue
+#   96|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   96|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   96|                   ValueCategory = lvalue
+#   96|               getArgument(0): [VariableAccess] i
+#   96|                   Type = [IntType] int
+#   96|                   ValueCategory = prvalue(load)
+#   96|             getChild(1): [FunctionCall] call to await_ready
+#   96|                 Type = [BoolType] bool
+#   96|                 ValueCategory = prvalue
+#   96|               getQualifier(): [PointerDereferenceExpr] * ...
+#   96|                   Type = [Struct] suspend_always
+#   96|                   ValueCategory = lvalue
+#   96|                 getOperand(): [AddressOfExpr] & ...
+#   96|                     Type = [PointerType] suspend_always *
+#   96|                     ValueCategory = prvalue
+#   96|                   getOperand(): [FunctionCall] call to yield_value
+#   96|                       Type = [Struct] suspend_always
+#   96|                       ValueCategory = prvalue
+#   96|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#   96|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   96|                         ValueCategory = lvalue
+#   96|                     getArgument(0): [VariableAccess] i
+#   96|                         Type = [IntType] int
+#   96|                         ValueCategory = prvalue(load)
+#   96|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   96|                       Type = [Struct] suspend_always
+#   96|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#   96|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   96|                   Conversion = [GlvalueConversion] glvalue conversion
+#   96|                   Type = [SpecifiedType] const suspend_always
+#   96|                   ValueCategory = lvalue
+#   96|             getChild(2): [FunctionCall] call to await_resume
+#   96|                 Type = [VoidType] void
+#   96|                 ValueCategory = prvalue
+#   96|               getQualifier(): [PointerDereferenceExpr] * ...
+#   96|                   Type = [Struct] suspend_always
+#   96|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#   96|             getChild(3): [FunctionCall] call to await_suspend
+#   96|                 Type = [VoidType] void
+#   96|                 ValueCategory = prvalue
+#   96|               getQualifier(): [PointerDereferenceExpr] * ...
+#   96|                   Type = [Struct] suspend_always
+#   96|                   ValueCategory = lvalue
+#   96|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#   96|                   Type = [VoidType] void
+#   96|                   ValueCategory = prvalue
+#   96|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#   96|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   96|                     ValueCategory = lvalue
+#   96|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   96|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   96|                     ValueCategory = prvalue
+#   96|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   96|                       Conversion = [GlvalueConversion] glvalue conversion
+#   96|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   96|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#   96|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   96|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   96|                   ValueCategory = lvalue
+#   97|         getStmt(2): [CoReturnStmt] co_return ...
+#-----|           getChild(0): [FunctionCall] call to return_void
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#-----|             getQualifier(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 ValueCategory = lvalue
+#-----|         getStmt(3): [GotoStmt] goto ...
+#-----|       getChild(1): [Handler] <handler>
+#-----|         getBlock(): [CatchAnyBlock] { ... }
+#-----|           getStmt(0): [IfStmt] if (...) ... 
+#-----|             getCondition(): [NotExpr] ! ...
+#-----|                 Type = [BoolType] bool
+#-----|                 ValueCategory = prvalue
+#-----|               getOperand(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue(load)
+#-----|             getThen(): [ExprStmt] ExprStmt
+#-----|               getExpr(): [ReThrowExpr] re-throw exception 
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|           getStmt(1): [ExprStmt] ExprStmt
+#   95|             getExpr(): [FunctionCall] call to unhandled_exception
+#   95|                 Type = [VoidType] void
+#   95|                 ValueCategory = prvalue
+#   95|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   95|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                   ValueCategory = lvalue
+#-----|     getStmt(3): [LabelStmt] label ...:
+#-----|     getStmt(4): [ExprStmt] ExprStmt
+#-----|       getExpr(): [CoAwaitExpr] co_await ...
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#   95|         getOperand(): [FunctionCall] call to final_suspend
+#   95|             Type = [Struct] suspend_always
+#   95|             ValueCategory = prvalue
+#   95|           getQualifier(): [VariableAccess] (unnamed local variable)
+#   95|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|               ValueCategory = lvalue
+#   95|         getChild(1): [FunctionCall] call to await_ready
+#   95|             Type = [BoolType] bool
+#   95|             ValueCategory = prvalue
+#   95|           getQualifier(): [PointerDereferenceExpr] * ...
+#   95|               Type = [Struct] suspend_always
+#   95|               ValueCategory = lvalue
+#   95|             getOperand(): [AddressOfExpr] & ...
+#   95|                 Type = [PointerType] suspend_always *
+#   95|                 ValueCategory = prvalue
+#   95|               getOperand(): [FunctionCall] call to final_suspend
+#   95|                   Type = [Struct] suspend_always
+#   95|                   ValueCategory = prvalue
+#   95|                 getQualifier(): [VariableAccess] (unnamed local variable)
+#   95|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                     ValueCategory = lvalue
+#   95|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   95|                   Type = [Struct] suspend_always
+#   95|                   ValueCategory = lvalue
+#-----|             getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [PointerType] suspend_always *
+#-----|                 ValueCategory = prvalue(load)
+#   95|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   95|               Conversion = [GlvalueConversion] glvalue conversion
+#   95|               Type = [SpecifiedType] const suspend_always
+#   95|               ValueCategory = lvalue
+#   95|         getChild(2): [FunctionCall] call to await_resume
+#   95|             Type = [VoidType] void
+#   95|             ValueCategory = prvalue
+#   95|           getQualifier(): [PointerDereferenceExpr] * ...
+#   95|               Type = [Struct] suspend_always
+#   95|               ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   95|         getChild(3): [FunctionCall] call to await_suspend
+#   95|             Type = [VoidType] void
+#   95|             ValueCategory = prvalue
+#   95|           getQualifier(): [PointerDereferenceExpr] * ...
+#   95|               Type = [Struct] suspend_always
+#   95|               ValueCategory = lvalue
+#   95|           getArgument(0): [ConstructorCall] call to coroutine_handle
+#   95|               Type = [VoidType] void
+#   95|               ValueCategory = prvalue
+#   95|             getArgument(0): [VariableAccess] (unnamed local variable)
+#   95|                 Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   95|                 ValueCategory = lvalue
+#   95|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   95|                 Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   95|                 ValueCategory = prvalue
+#   95|               getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   95|                   Conversion = [GlvalueConversion] glvalue conversion
+#   95|                   Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   95|                   ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   95|           getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   95|               Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   95|               ValueCategory = lvalue
+#   99| [TopLevelFunction] co_returnable_value co_yield_value_value(int)
+#   99|   <params>: 
+#   99|     getParameter(0): [Parameter] i
+#   99|         Type = [IntType] int
+#   99|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
+#-----|     getStmt(1): [DeclStmt] declaration
+#   99|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   99|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|     getStmt(2): [TryStmt] try { ... }
+#-----|       getStmt(): [BlockStmt] { ... }
+#-----|         getStmt(0): [ExprStmt] ExprStmt
+#-----|           getExpr(): [CoAwaitExpr] co_await ...
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#   99|             getOperand(): [FunctionCall] call to initial_suspend
+#   99|                 Type = [Struct] suspend_always
+#   99|                 ValueCategory = prvalue
+#   99|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   99|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                   ValueCategory = lvalue
+#   99|             getChild(1): [FunctionCall] call to await_ready
+#   99|                 Type = [BoolType] bool
+#   99|                 ValueCategory = prvalue
+#   99|               getQualifier(): [PointerDereferenceExpr] * ...
+#   99|                   Type = [Struct] suspend_always
+#   99|                   ValueCategory = lvalue
+#   99|                 getOperand(): [AddressOfExpr] & ...
+#   99|                     Type = [PointerType] suspend_always *
+#   99|                     ValueCategory = prvalue
+#   99|                   getOperand(): [FunctionCall] call to initial_suspend
+#   99|                       Type = [Struct] suspend_always
+#   99|                       ValueCategory = prvalue
+#   99|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#   99|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                         ValueCategory = lvalue
+#   99|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   99|                       Type = [Struct] suspend_always
+#   99|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#   99|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   99|                   Conversion = [GlvalueConversion] glvalue conversion
+#   99|                   Type = [SpecifiedType] const suspend_always
+#   99|                   ValueCategory = lvalue
+#-----|             getChild(2): [CommaExpr] ... , ...
+#-----|                 Type = [VoidType] void
+#-----|                 ValueCategory = prvalue
+#-----|               getLeftOperand(): [AssignExpr] ... = ...
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue
+#-----|                 getLValue(): [VariableAccess] (unnamed local variable)
+#-----|                     Type = [BoolType] bool
+#-----|                     ValueCategory = lvalue
+#-----|                 getRValue(): [Literal] 1
+#-----|                     Type = [BoolType] bool
+#-----|                     Value = [Literal] 1
+#-----|                     ValueCategory = prvalue
+#   99|               getRightOperand(): [FunctionCall] call to await_resume
+#   99|                   Type = [VoidType] void
+#   99|                   ValueCategory = prvalue
+#   99|                 getQualifier(): [PointerDereferenceExpr] * ...
+#   99|                     Type = [Struct] suspend_always
+#   99|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const suspend_always
+#-----|                     ValueCategory = lvalue
+#   99|             getChild(3): [FunctionCall] call to await_suspend
+#   99|                 Type = [VoidType] void
+#   99|                 ValueCategory = prvalue
+#   99|               getQualifier(): [PointerDereferenceExpr] * ...
+#   99|                   Type = [Struct] suspend_always
+#   99|                   ValueCategory = lvalue
+#   99|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#   99|                   Type = [VoidType] void
+#   99|                   ValueCategory = prvalue
+#   99|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#   99|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   99|                     ValueCategory = lvalue
+#   99|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   99|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   99|                     ValueCategory = prvalue
+#   99|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   99|                       Conversion = [GlvalueConversion] glvalue conversion
+#   99|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   99|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#   99|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   99|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   99|                   ValueCategory = lvalue
+#  100|         getStmt(1): [ExprStmt] ExprStmt
+#  100|           getExpr(): [CoYieldExpr] co_yield ...
+#  100|               Type = [VoidType] void
+#  100|               ValueCategory = prvalue
+#  100|             getOperand(): [FunctionCall] call to yield_value
+#  100|                 Type = [Struct] suspend_always
+#  100|                 ValueCategory = prvalue
+#  100|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  100|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  100|                   ValueCategory = lvalue
+#  100|               getArgument(0): [VariableAccess] i
+#  100|                   Type = [IntType] int
+#  100|                   ValueCategory = prvalue(load)
+#  100|             getChild(1): [FunctionCall] call to await_ready
+#  100|                 Type = [BoolType] bool
+#  100|                 ValueCategory = prvalue
+#  100|               getQualifier(): [PointerDereferenceExpr] * ...
+#  100|                   Type = [Struct] suspend_always
+#  100|                   ValueCategory = lvalue
+#  100|                 getOperand(): [AddressOfExpr] & ...
+#  100|                     Type = [PointerType] suspend_always *
+#  100|                     ValueCategory = prvalue
+#  100|                   getOperand(): [FunctionCall] call to yield_value
+#  100|                       Type = [Struct] suspend_always
+#  100|                       ValueCategory = prvalue
+#  100|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#  100|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  100|                         ValueCategory = lvalue
+#  100|                     getArgument(0): [VariableAccess] i
+#  100|                         Type = [IntType] int
+#  100|                         ValueCategory = prvalue(load)
+#  100|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  100|                       Type = [Struct] suspend_always
+#  100|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#  100|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  100|                   Conversion = [GlvalueConversion] glvalue conversion
+#  100|                   Type = [SpecifiedType] const suspend_always
+#  100|                   ValueCategory = lvalue
+#  100|             getChild(2): [FunctionCall] call to await_resume
+#  100|                 Type = [VoidType] void
+#  100|                 ValueCategory = prvalue
+#  100|               getQualifier(): [PointerDereferenceExpr] * ...
+#  100|                   Type = [Struct] suspend_always
+#  100|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  100|             getChild(3): [FunctionCall] call to await_suspend
+#  100|                 Type = [VoidType] void
+#  100|                 ValueCategory = prvalue
+#  100|               getQualifier(): [PointerDereferenceExpr] * ...
+#  100|                   Type = [Struct] suspend_always
+#  100|                   ValueCategory = lvalue
+#  100|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#  100|                   Type = [VoidType] void
+#  100|                   ValueCategory = prvalue
+#  100|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#  100|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  100|                     ValueCategory = lvalue
+#  100|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  100|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  100|                     ValueCategory = prvalue
+#  100|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  100|                       Conversion = [GlvalueConversion] glvalue conversion
+#  100|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  100|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  100|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  100|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  100|                   ValueCategory = lvalue
+#-----|       getChild(1): [Handler] <handler>
+#-----|         getBlock(): [CatchAnyBlock] { ... }
+#-----|           getStmt(0): [IfStmt] if (...) ... 
+#-----|             getCondition(): [NotExpr] ! ...
+#-----|                 Type = [BoolType] bool
+#-----|                 ValueCategory = prvalue
+#-----|               getOperand(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue(load)
+#-----|             getThen(): [ExprStmt] ExprStmt
+#-----|               getExpr(): [ReThrowExpr] re-throw exception 
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|           getStmt(1): [ExprStmt] ExprStmt
+#   99|             getExpr(): [FunctionCall] call to unhandled_exception
+#   99|                 Type = [VoidType] void
+#   99|                 ValueCategory = prvalue
+#   99|               getQualifier(): [VariableAccess] (unnamed local variable)
+#   99|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                   ValueCategory = lvalue
+#-----|     getStmt(3): [LabelStmt] label ...:
+#-----|     getStmt(4): [ExprStmt] ExprStmt
+#-----|       getExpr(): [CoAwaitExpr] co_await ...
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#   99|         getOperand(): [FunctionCall] call to final_suspend
+#   99|             Type = [Struct] suspend_always
+#   99|             ValueCategory = prvalue
+#   99|           getQualifier(): [VariableAccess] (unnamed local variable)
+#   99|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|               ValueCategory = lvalue
+#   99|         getChild(1): [FunctionCall] call to await_ready
+#   99|             Type = [BoolType] bool
+#   99|             ValueCategory = prvalue
+#   99|           getQualifier(): [PointerDereferenceExpr] * ...
+#   99|               Type = [Struct] suspend_always
+#   99|               ValueCategory = lvalue
+#   99|             getOperand(): [AddressOfExpr] & ...
+#   99|                 Type = [PointerType] suspend_always *
+#   99|                 ValueCategory = prvalue
+#   99|               getOperand(): [FunctionCall] call to final_suspend
+#   99|                   Type = [Struct] suspend_always
+#   99|                   ValueCategory = prvalue
+#   99|                 getQualifier(): [VariableAccess] (unnamed local variable)
+#   99|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                     ValueCategory = lvalue
+#   99|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   99|                   Type = [Struct] suspend_always
+#   99|                   ValueCategory = lvalue
+#-----|             getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [PointerType] suspend_always *
+#-----|                 ValueCategory = prvalue(load)
+#   99|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#   99|               Conversion = [GlvalueConversion] glvalue conversion
+#   99|               Type = [SpecifiedType] const suspend_always
+#   99|               ValueCategory = lvalue
+#   99|         getChild(2): [FunctionCall] call to await_resume
+#   99|             Type = [VoidType] void
+#   99|             ValueCategory = prvalue
+#   99|           getQualifier(): [PointerDereferenceExpr] * ...
+#   99|               Type = [Struct] suspend_always
+#   99|               ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   99|         getChild(3): [FunctionCall] call to await_suspend
+#   99|             Type = [VoidType] void
+#   99|             ValueCategory = prvalue
+#   99|           getQualifier(): [PointerDereferenceExpr] * ...
+#   99|               Type = [Struct] suspend_always
+#   99|               ValueCategory = lvalue
+#   99|           getArgument(0): [ConstructorCall] call to coroutine_handle
+#   99|               Type = [VoidType] void
+#   99|               ValueCategory = prvalue
+#   99|             getArgument(0): [VariableAccess] (unnamed local variable)
+#   99|                 Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   99|                 ValueCategory = lvalue
+#   99|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   99|                 Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#   99|                 ValueCategory = prvalue
+#   99|               getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#   99|                   Conversion = [GlvalueConversion] glvalue conversion
+#   99|                   Type = [SpecifiedType] const coroutine_handle<promise_type>
+#   99|                   ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#   99|           getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   99|               Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#   99|               ValueCategory = lvalue
+#  103| [TopLevelFunction] co_returnable_void co_yield_and_return_void(int)
+#  103|   <params>: 
+#  103|     getParameter(0): [Parameter] i
+#  103|         Type = [IntType] int
+#  103|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
+#-----|     getStmt(1): [DeclStmt] declaration
+#  103|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#  103|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|     getStmt(2): [TryStmt] try { ... }
+#-----|       getStmt(): [BlockStmt] { ... }
+#-----|         getStmt(0): [ExprStmt] ExprStmt
+#-----|           getExpr(): [CoAwaitExpr] co_await ...
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#  103|             getOperand(): [FunctionCall] call to initial_suspend
+#  103|                 Type = [Struct] suspend_always
+#  103|                 ValueCategory = prvalue
+#  103|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  103|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                   ValueCategory = lvalue
+#  103|             getChild(1): [FunctionCall] call to await_ready
+#  103|                 Type = [BoolType] bool
+#  103|                 ValueCategory = prvalue
+#  103|               getQualifier(): [PointerDereferenceExpr] * ...
+#  103|                   Type = [Struct] suspend_always
+#  103|                   ValueCategory = lvalue
+#  103|                 getOperand(): [AddressOfExpr] & ...
+#  103|                     Type = [PointerType] suspend_always *
+#  103|                     ValueCategory = prvalue
+#  103|                   getOperand(): [FunctionCall] call to initial_suspend
+#  103|                       Type = [Struct] suspend_always
+#  103|                       ValueCategory = prvalue
+#  103|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#  103|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                         ValueCategory = lvalue
+#  103|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  103|                       Type = [Struct] suspend_always
+#  103|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#  103|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  103|                   Conversion = [GlvalueConversion] glvalue conversion
+#  103|                   Type = [SpecifiedType] const suspend_always
+#  103|                   ValueCategory = lvalue
+#-----|             getChild(2): [CommaExpr] ... , ...
+#-----|                 Type = [VoidType] void
+#-----|                 ValueCategory = prvalue
+#-----|               getLeftOperand(): [AssignExpr] ... = ...
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue
+#-----|                 getLValue(): [VariableAccess] (unnamed local variable)
+#-----|                     Type = [BoolType] bool
+#-----|                     ValueCategory = lvalue
+#-----|                 getRValue(): [Literal] 1
+#-----|                     Type = [BoolType] bool
+#-----|                     Value = [Literal] 1
+#-----|                     ValueCategory = prvalue
+#  103|               getRightOperand(): [FunctionCall] call to await_resume
+#  103|                   Type = [VoidType] void
+#  103|                   ValueCategory = prvalue
+#  103|                 getQualifier(): [PointerDereferenceExpr] * ...
+#  103|                     Type = [Struct] suspend_always
+#  103|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const suspend_always
+#-----|                     ValueCategory = lvalue
+#  103|             getChild(3): [FunctionCall] call to await_suspend
+#  103|                 Type = [VoidType] void
+#  103|                 ValueCategory = prvalue
+#  103|               getQualifier(): [PointerDereferenceExpr] * ...
+#  103|                   Type = [Struct] suspend_always
+#  103|                   ValueCategory = lvalue
+#  103|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#  103|                   Type = [VoidType] void
+#  103|                   ValueCategory = prvalue
+#  103|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#  103|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  103|                     ValueCategory = lvalue
+#  103|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  103|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  103|                     ValueCategory = prvalue
+#  103|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  103|                       Conversion = [GlvalueConversion] glvalue conversion
+#  103|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  103|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  103|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  103|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  103|                   ValueCategory = lvalue
+#  104|         getStmt(1): [ExprStmt] ExprStmt
+#  104|           getExpr(): [CoYieldExpr] co_yield ...
+#  104|               Type = [VoidType] void
+#  104|               ValueCategory = prvalue
+#  104|             getOperand(): [FunctionCall] call to yield_value
+#  104|                 Type = [Struct] suspend_always
+#  104|                 ValueCategory = prvalue
+#  104|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  104|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  104|                   ValueCategory = lvalue
+#  104|               getArgument(0): [VariableAccess] i
+#  104|                   Type = [IntType] int
+#  104|                   ValueCategory = prvalue(load)
+#  104|             getChild(1): [FunctionCall] call to await_ready
+#  104|                 Type = [BoolType] bool
+#  104|                 ValueCategory = prvalue
+#  104|               getQualifier(): [PointerDereferenceExpr] * ...
+#  104|                   Type = [Struct] suspend_always
+#  104|                   ValueCategory = lvalue
+#  104|                 getOperand(): [AddressOfExpr] & ...
+#  104|                     Type = [PointerType] suspend_always *
+#  104|                     ValueCategory = prvalue
+#  104|                   getOperand(): [FunctionCall] call to yield_value
+#  104|                       Type = [Struct] suspend_always
+#  104|                       ValueCategory = prvalue
+#  104|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#  104|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  104|                         ValueCategory = lvalue
+#  104|                     getArgument(0): [VariableAccess] i
+#  104|                         Type = [IntType] int
+#  104|                         ValueCategory = prvalue(load)
+#  104|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  104|                       Type = [Struct] suspend_always
+#  104|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#  104|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  104|                   Conversion = [GlvalueConversion] glvalue conversion
+#  104|                   Type = [SpecifiedType] const suspend_always
+#  104|                   ValueCategory = lvalue
+#  104|             getChild(2): [FunctionCall] call to await_resume
+#  104|                 Type = [VoidType] void
+#  104|                 ValueCategory = prvalue
+#  104|               getQualifier(): [PointerDereferenceExpr] * ...
+#  104|                   Type = [Struct] suspend_always
+#  104|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  104|             getChild(3): [FunctionCall] call to await_suspend
+#  104|                 Type = [VoidType] void
+#  104|                 ValueCategory = prvalue
+#  104|               getQualifier(): [PointerDereferenceExpr] * ...
+#  104|                   Type = [Struct] suspend_always
+#  104|                   ValueCategory = lvalue
+#  104|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#  104|                   Type = [VoidType] void
+#  104|                   ValueCategory = prvalue
+#  104|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#  104|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  104|                     ValueCategory = lvalue
+#  104|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  104|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  104|                     ValueCategory = prvalue
+#  104|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  104|                       Conversion = [GlvalueConversion] glvalue conversion
+#  104|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  104|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  104|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  104|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  104|                   ValueCategory = lvalue
+#  105|         getStmt(2): [CoReturnStmt] co_return ...
+#-----|           getChild(0): [FunctionCall] call to return_void
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#-----|             getQualifier(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 ValueCategory = lvalue
+#-----|         getStmt(3): [GotoStmt] goto ...
+#-----|       getChild(1): [Handler] <handler>
+#-----|         getBlock(): [CatchAnyBlock] { ... }
+#-----|           getStmt(0): [IfStmt] if (...) ... 
+#-----|             getCondition(): [NotExpr] ! ...
+#-----|                 Type = [BoolType] bool
+#-----|                 ValueCategory = prvalue
+#-----|               getOperand(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue(load)
+#-----|             getThen(): [ExprStmt] ExprStmt
+#-----|               getExpr(): [ReThrowExpr] re-throw exception 
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|           getStmt(1): [ExprStmt] ExprStmt
+#  103|             getExpr(): [FunctionCall] call to unhandled_exception
+#  103|                 Type = [VoidType] void
+#  103|                 ValueCategory = prvalue
+#  103|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  103|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                   ValueCategory = lvalue
+#-----|     getStmt(3): [LabelStmt] label ...:
+#-----|     getStmt(4): [ExprStmt] ExprStmt
+#-----|       getExpr(): [CoAwaitExpr] co_await ...
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#  103|         getOperand(): [FunctionCall] call to final_suspend
+#  103|             Type = [Struct] suspend_always
+#  103|             ValueCategory = prvalue
+#  103|           getQualifier(): [VariableAccess] (unnamed local variable)
+#  103|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|               ValueCategory = lvalue
+#  103|         getChild(1): [FunctionCall] call to await_ready
+#  103|             Type = [BoolType] bool
+#  103|             ValueCategory = prvalue
+#  103|           getQualifier(): [PointerDereferenceExpr] * ...
+#  103|               Type = [Struct] suspend_always
+#  103|               ValueCategory = lvalue
+#  103|             getOperand(): [AddressOfExpr] & ...
+#  103|                 Type = [PointerType] suspend_always *
+#  103|                 ValueCategory = prvalue
+#  103|               getOperand(): [FunctionCall] call to final_suspend
+#  103|                   Type = [Struct] suspend_always
+#  103|                   ValueCategory = prvalue
+#  103|                 getQualifier(): [VariableAccess] (unnamed local variable)
+#  103|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                     ValueCategory = lvalue
+#  103|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  103|                   Type = [Struct] suspend_always
+#  103|                   ValueCategory = lvalue
+#-----|             getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [PointerType] suspend_always *
+#-----|                 ValueCategory = prvalue(load)
+#  103|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  103|               Conversion = [GlvalueConversion] glvalue conversion
+#  103|               Type = [SpecifiedType] const suspend_always
+#  103|               ValueCategory = lvalue
+#  103|         getChild(2): [FunctionCall] call to await_resume
+#  103|             Type = [VoidType] void
+#  103|             ValueCategory = prvalue
+#  103|           getQualifier(): [PointerDereferenceExpr] * ...
+#  103|               Type = [Struct] suspend_always
+#  103|               ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#  103|         getChild(3): [FunctionCall] call to await_suspend
+#  103|             Type = [VoidType] void
+#  103|             ValueCategory = prvalue
+#  103|           getQualifier(): [PointerDereferenceExpr] * ...
+#  103|               Type = [Struct] suspend_always
+#  103|               ValueCategory = lvalue
+#  103|           getArgument(0): [ConstructorCall] call to coroutine_handle
+#  103|               Type = [VoidType] void
+#  103|               ValueCategory = prvalue
+#  103|             getArgument(0): [VariableAccess] (unnamed local variable)
+#  103|                 Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  103|                 ValueCategory = lvalue
+#  103|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  103|                 Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  103|                 ValueCategory = prvalue
+#  103|               getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  103|                   Conversion = [GlvalueConversion] glvalue conversion
+#  103|                   Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  103|                   ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#  103|           getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  103|               Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  103|               ValueCategory = lvalue
+#  108| [TopLevelFunction] co_returnable_value co_yield_and_return_value(int)
+#  108|   <params>: 
+#  108|     getParameter(0): [Parameter] i
+#  108|         Type = [IntType] int
+#  108|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
+#-----|     getStmt(1): [DeclStmt] declaration
+#  108|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#  108|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|     getStmt(2): [TryStmt] try { ... }
+#-----|       getStmt(): [BlockStmt] { ... }
+#-----|         getStmt(0): [ExprStmt] ExprStmt
+#-----|           getExpr(): [CoAwaitExpr] co_await ...
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#  108|             getOperand(): [FunctionCall] call to initial_suspend
+#  108|                 Type = [Struct] suspend_always
+#  108|                 ValueCategory = prvalue
+#  108|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  108|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                   ValueCategory = lvalue
+#  108|             getChild(1): [FunctionCall] call to await_ready
+#  108|                 Type = [BoolType] bool
+#  108|                 ValueCategory = prvalue
+#  108|               getQualifier(): [PointerDereferenceExpr] * ...
+#  108|                   Type = [Struct] suspend_always
+#  108|                   ValueCategory = lvalue
+#  108|                 getOperand(): [AddressOfExpr] & ...
+#  108|                     Type = [PointerType] suspend_always *
+#  108|                     ValueCategory = prvalue
+#  108|                   getOperand(): [FunctionCall] call to initial_suspend
+#  108|                       Type = [Struct] suspend_always
+#  108|                       ValueCategory = prvalue
+#  108|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#  108|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                         ValueCategory = lvalue
+#  108|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  108|                       Type = [Struct] suspend_always
+#  108|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#  108|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  108|                   Conversion = [GlvalueConversion] glvalue conversion
+#  108|                   Type = [SpecifiedType] const suspend_always
+#  108|                   ValueCategory = lvalue
+#-----|             getChild(2): [CommaExpr] ... , ...
+#-----|                 Type = [VoidType] void
+#-----|                 ValueCategory = prvalue
+#-----|               getLeftOperand(): [AssignExpr] ... = ...
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue
+#-----|                 getLValue(): [VariableAccess] (unnamed local variable)
+#-----|                     Type = [BoolType] bool
+#-----|                     ValueCategory = lvalue
+#-----|                 getRValue(): [Literal] 1
+#-----|                     Type = [BoolType] bool
+#-----|                     Value = [Literal] 1
+#-----|                     ValueCategory = prvalue
+#  108|               getRightOperand(): [FunctionCall] call to await_resume
+#  108|                   Type = [VoidType] void
+#  108|                   ValueCategory = prvalue
+#  108|                 getQualifier(): [PointerDereferenceExpr] * ...
+#  108|                     Type = [Struct] suspend_always
+#  108|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const suspend_always
+#-----|                     ValueCategory = lvalue
+#  108|             getChild(3): [FunctionCall] call to await_suspend
+#  108|                 Type = [VoidType] void
+#  108|                 ValueCategory = prvalue
+#  108|               getQualifier(): [PointerDereferenceExpr] * ...
+#  108|                   Type = [Struct] suspend_always
+#  108|                   ValueCategory = lvalue
+#  108|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#  108|                   Type = [VoidType] void
+#  108|                   ValueCategory = prvalue
+#  108|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#  108|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  108|                     ValueCategory = lvalue
+#  108|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  108|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  108|                     ValueCategory = prvalue
+#  108|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  108|                       Conversion = [GlvalueConversion] glvalue conversion
+#  108|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  108|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  108|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  108|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  108|                   ValueCategory = lvalue
+#  109|         getStmt(1): [ExprStmt] ExprStmt
+#  109|           getExpr(): [CoYieldExpr] co_yield ...
+#  109|               Type = [VoidType] void
+#  109|               ValueCategory = prvalue
+#  109|             getOperand(): [FunctionCall] call to yield_value
+#  109|                 Type = [Struct] suspend_always
+#  109|                 ValueCategory = prvalue
+#  109|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  109|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  109|                   ValueCategory = lvalue
+#  109|               getArgument(0): [VariableAccess] i
+#  109|                   Type = [IntType] int
+#  109|                   ValueCategory = prvalue(load)
+#  109|             getChild(1): [FunctionCall] call to await_ready
+#  109|                 Type = [BoolType] bool
+#  109|                 ValueCategory = prvalue
+#  109|               getQualifier(): [PointerDereferenceExpr] * ...
+#  109|                   Type = [Struct] suspend_always
+#  109|                   ValueCategory = lvalue
+#  109|                 getOperand(): [AddressOfExpr] & ...
+#  109|                     Type = [PointerType] suspend_always *
+#  109|                     ValueCategory = prvalue
+#  109|                   getOperand(): [FunctionCall] call to yield_value
+#  109|                       Type = [Struct] suspend_always
+#  109|                       ValueCategory = prvalue
+#  109|                     getQualifier(): [VariableAccess] (unnamed local variable)
+#  109|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  109|                         ValueCategory = lvalue
+#  109|                     getArgument(0): [VariableAccess] i
+#  109|                         Type = [IntType] int
+#  109|                         ValueCategory = prvalue(load)
+#  109|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  109|                       Type = [Struct] suspend_always
+#  109|                       ValueCategory = lvalue
+#-----|                 getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [PointerType] suspend_always *
+#-----|                     ValueCategory = prvalue(load)
+#  109|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  109|                   Conversion = [GlvalueConversion] glvalue conversion
+#  109|                   Type = [SpecifiedType] const suspend_always
+#  109|                   ValueCategory = lvalue
+#  109|             getChild(2): [FunctionCall] call to await_resume
+#  109|                 Type = [VoidType] void
+#  109|                 ValueCategory = prvalue
+#  109|               getQualifier(): [PointerDereferenceExpr] * ...
+#  109|                   Type = [Struct] suspend_always
+#  109|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  109|             getChild(3): [FunctionCall] call to await_suspend
+#  109|                 Type = [VoidType] void
+#  109|                 ValueCategory = prvalue
+#  109|               getQualifier(): [PointerDereferenceExpr] * ...
+#  109|                   Type = [Struct] suspend_always
+#  109|                   ValueCategory = lvalue
+#  109|               getArgument(0): [ConstructorCall] call to coroutine_handle
+#  109|                   Type = [VoidType] void
+#  109|                   ValueCategory = prvalue
+#  109|                 getArgument(0): [VariableAccess] (unnamed local variable)
+#  109|                     Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  109|                     ValueCategory = lvalue
+#  109|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  109|                     Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  109|                     ValueCategory = prvalue
+#  109|                   getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  109|                       Conversion = [GlvalueConversion] glvalue conversion
+#  109|                       Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  109|                       ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const suspend_always
+#-----|                   ValueCategory = lvalue
+#  109|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  109|                   Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  109|                   ValueCategory = lvalue
+#  110|         getStmt(2): [CoReturnStmt] co_return ...
+#-----|           getChild(0): [FunctionCall] call to return_value
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+#-----|             getQualifier(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 ValueCategory = lvalue
+#  110|             getArgument(0): [AddExpr] ... + ...
+#  110|                 Type = [IntType] int
+#  110|                 ValueCategory = prvalue
+#  110|               getLeftOperand(): [VariableAccess] i
+#  110|                   Type = [IntType] int
+#  110|                   ValueCategory = prvalue(load)
+#  110|               getRightOperand(): [Literal] 1
+#  110|                   Type = [IntType] int
+#  110|                   Value = [Literal] 1
+#  110|                   ValueCategory = prvalue
+#  110|             getArgument(0).getFullyConverted(): [ParenthesisExpr] (...)
+#  110|                 Type = [IntType] int
+#  110|                 ValueCategory = prvalue
+#-----|         getStmt(3): [GotoStmt] goto ...
+#-----|       getChild(1): [Handler] <handler>
+#-----|         getBlock(): [CatchAnyBlock] { ... }
+#-----|           getStmt(0): [IfStmt] if (...) ... 
+#-----|             getCondition(): [NotExpr] ! ...
+#-----|                 Type = [BoolType] bool
+#-----|                 ValueCategory = prvalue
+#-----|               getOperand(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [BoolType] bool
+#-----|                   ValueCategory = prvalue(load)
+#-----|             getThen(): [ExprStmt] ExprStmt
+#-----|               getExpr(): [ReThrowExpr] re-throw exception 
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|           getStmt(1): [ExprStmt] ExprStmt
+#  108|             getExpr(): [FunctionCall] call to unhandled_exception
+#  108|                 Type = [VoidType] void
+#  108|                 ValueCategory = prvalue
+#  108|               getQualifier(): [VariableAccess] (unnamed local variable)
+#  108|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                   ValueCategory = lvalue
+#-----|     getStmt(3): [LabelStmt] label ...:
+#-----|     getStmt(4): [ExprStmt] ExprStmt
+#-----|       getExpr(): [CoAwaitExpr] co_await ...
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#  108|         getOperand(): [FunctionCall] call to final_suspend
+#  108|             Type = [Struct] suspend_always
+#  108|             ValueCategory = prvalue
+#  108|           getQualifier(): [VariableAccess] (unnamed local variable)
+#  108|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|               ValueCategory = lvalue
+#  108|         getChild(1): [FunctionCall] call to await_ready
+#  108|             Type = [BoolType] bool
+#  108|             ValueCategory = prvalue
+#  108|           getQualifier(): [PointerDereferenceExpr] * ...
+#  108|               Type = [Struct] suspend_always
+#  108|               ValueCategory = lvalue
+#  108|             getOperand(): [AddressOfExpr] & ...
+#  108|                 Type = [PointerType] suspend_always *
+#  108|                 ValueCategory = prvalue
+#  108|               getOperand(): [FunctionCall] call to final_suspend
+#  108|                   Type = [Struct] suspend_always
+#  108|                   ValueCategory = prvalue
+#  108|                 getQualifier(): [VariableAccess] (unnamed local variable)
+#  108|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                     ValueCategory = lvalue
+#  108|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  108|                   Type = [Struct] suspend_always
+#  108|                   ValueCategory = lvalue
+#-----|             getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [PointerType] suspend_always *
+#-----|                 ValueCategory = prvalue(load)
+#  108|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#  108|               Conversion = [GlvalueConversion] glvalue conversion
+#  108|               Type = [SpecifiedType] const suspend_always
+#  108|               ValueCategory = lvalue
+#  108|         getChild(2): [FunctionCall] call to await_resume
+#  108|             Type = [VoidType] void
+#  108|             ValueCategory = prvalue
+#  108|           getQualifier(): [PointerDereferenceExpr] * ...
+#  108|               Type = [Struct] suspend_always
+#  108|               ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#  108|         getChild(3): [FunctionCall] call to await_suspend
+#  108|             Type = [VoidType] void
+#  108|             ValueCategory = prvalue
+#  108|           getQualifier(): [PointerDereferenceExpr] * ...
+#  108|               Type = [Struct] suspend_always
+#  108|               ValueCategory = lvalue
+#  108|           getArgument(0): [ConstructorCall] call to coroutine_handle
+#  108|               Type = [VoidType] void
+#  108|               ValueCategory = prvalue
+#  108|             getArgument(0): [VariableAccess] (unnamed local variable)
+#  108|                 Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  108|                 ValueCategory = lvalue
+#  108|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  108|                 Type = [LValueReferenceType] const coroutine_handle<promise_type> &
+#  108|                 ValueCategory = prvalue
+#  108|               getExpr(): [CStyleCast] (const coroutine_handle<promise_type>)...
+#  108|                   Conversion = [GlvalueConversion] glvalue conversion
+#  108|                   Type = [SpecifiedType] const coroutine_handle<promise_type>
+#  108|                   ValueCategory = lvalue
+#-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
+#-----|               Conversion = [GlvalueConversion] glvalue conversion
+#-----|               Type = [SpecifiedType] const suspend_always
+#-----|               ValueCategory = lvalue
+#  108|           getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  108|               Type = [ClassTemplateInstantiation,Struct] coroutine_handle<promise_type>
+#  108|               ValueCategory = lvalue
 destructors_for_temps.cpp:
 #    1| [CopyAssignmentOperator] ClassWithDestructor2& ClassWithDestructor2::operator=(ClassWithDestructor2 const&)
 #    1|   <params>: 
@@ -15440,6 +17144,8 @@ ir.cpp:
 # 1911|         Type = [CTypedefType,NestedTypedefType] pointer
 # 1911|   getEntryPoint(): [BlockStmt] { ... }
 # 1912|     getStmt(0): [DeclStmt] declaration
+# 1912|       getDeclarationEntry(0): [TypeDeclarationEntry] declaration of _Res
+# 1912|           Type = [CTypedefType,LocalTypedefType] _Res
 # 1913|     getStmt(1): [ReturnStmt] return ...
 # 1913|       getExpr(): [VariableAccess] p
 # 1913|           Type = [CTypedefType,NestedTypedefType] pointer
@@ -15547,6 +17253,10 @@ ir.cpp:
 # 1924|   <params>: 
 # 1924|   getEntryPoint(): [BlockStmt] { ... }
 # 1925|     getStmt(0): [DeclStmt] declaration
+# 1925|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1925|           Type = [ArrayType] int[10]
+# 1925|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+# 1925|           Type = [ArrayType] int[10]
 # 1926|     getStmt(1): [ExprStmt] ExprStmt
 # 1926|       getExpr(): [AssignExpr] ... = ...
 # 1926|           Type = [IntType] int
@@ -15642,7 +17352,11 @@ ir.cpp:
 # 1939|   <params>: 
 # 1939|   getEntryPoint(): [BlockStmt] { ... }
 # 1940|     getStmt(0): [DeclStmt] declaration
+# 1940|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of g
+# 1940|           Type = [IntType] int
 # 1941|     getStmt(1): [DeclStmt] declaration
+# 1941|       getDeclarationEntry(0): [FunctionDeclarationEntry] declaration of z
+# 1941|           Type = [IntType] int
 # 1942|     getStmt(2): [ReturnStmt] return ...
 # 1942|       getExpr(): [VariableAccess] g
 # 1942|           Type = [IntType] int

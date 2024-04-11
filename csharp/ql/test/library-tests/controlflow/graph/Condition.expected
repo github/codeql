@@ -1127,28 +1127,28 @@ conditionBlock
 | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:68:21:68:26 | break; | false |
 | BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:68:21:68:26 | break; | true |
 | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | BreakInTry.cs:68:21:68:26 | [finally: return] break; | true |
-| ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:28:3:38 | call to method ToString | false |
-| ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:40:3:49 | call to method ToLower | false |
-| ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:40:3:49 | call to method ToLower | false |
-| ConditionalAccess.cs:5:10:5:11 | enter M2 | ConditionalAccess.cs:5:28:5:34 | access to property Length | false |
+| ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:38 | call to method ToString | false |
+| ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:49 | call to method ToLower | false |
+| ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:49 | call to method ToLower | false |
+| ConditionalAccess.cs:5:10:5:11 | enter M2 | ConditionalAccess.cs:5:26:5:34 | access to property Length | false |
 | ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | false |
 | ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | true |
 | ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | true |
 | ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | true |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | false |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | true |
-| ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:27:9:33 | access to property Length | false |
-| ConditionalAccess.cs:11:9:11:10 | enter M5 | ConditionalAccess.cs:13:15:13:21 | access to property Length | false |
+| ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:25:9:33 | access to property Length | false |
+| ConditionalAccess.cs:11:9:11:10 | enter M5 | ConditionalAccess.cs:13:13:13:21 | access to property Length | false |
 | ConditionalAccess.cs:13:25:13:25 | 0 | ConditionalAccess.cs:14:20:14:20 | 0 | true |
 | ConditionalAccess.cs:13:25:13:25 | 0 | ConditionalAccess.cs:16:20:16:20 | 1 | false |
 | ConditionalAccess.cs:19:12:19:13 | enter M6 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | false |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | true |
-| ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:24:27:24:37 | call to method ToString | true |
+| ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:24:17:24:37 | call to method ToString | true |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | true |
-| ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:24:27:24:37 | call to method ToString | false |
+| ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:24:17:24:37 | call to method ToString | false |
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:25:31:25:31 | access to local variable s | false |
-| ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:25:31:25:31 | access to local variable s | false |
-| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:14:35:24 | call to method Out | false |
+| ConditionalAccess.cs:24:17:24:37 | call to method ToString | ConditionalAccess.cs:25:31:25:31 | access to local variable s | false |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:9:35:24 | call to method Out | false |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | true |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | false |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:7:13:7:16 | [false] !... | true |
@@ -1691,7 +1691,7 @@ conditionBlock
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:22:8:24 | String arg | false |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 (normal) | true |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ | false |
-| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:29:20:38 | call to method ToArray<String> | false |
+| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:27:20:38 | call to method ToArray<String> | false |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 (normal) | true |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x | false |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | exit M4 (normal) | true |
@@ -2072,7 +2072,7 @@ conditionBlock
 | Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:86:24:86:27 | true | false |
 | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:96:24:96:27 | true | true |
 | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:98:16:98:20 | false | false |
-| Switch.cs:101:9:101:10 | enter M9 | Switch.cs:103:19:103:25 | access to property Length | false |
+| Switch.cs:101:9:101:10 | enter M9 | Switch.cs:103:17:103:25 | access to property Length | false |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:28:105:28 | 0 | true |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:106:13:106:19 | case ...: | false |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:106:28:106:28 | 1 | false |
@@ -2103,6 +2103,7 @@ conditionBlock
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:37:125:46 | [false] ... => ... | true |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:42:125:46 | false | true |
 | Switch.cs:125:42:125:46 | false | Switch.cs:125:37:125:46 | [false] ... => ... | false |
+| Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:16:131:66 | call to method ToString | true |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | true |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:28:131:40 | [non-null] ... => ... | true |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:28:131:40 | [null] ... => ... | true |
@@ -2110,14 +2111,13 @@ conditionBlock
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:43:131:43 | _ | false |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:43:131:51 | [null] ... => ... | false |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:48:131:51 | null | false |
-| Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:56:131:66 | call to method ToString | true |
-| Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | Switch.cs:131:56:131:66 | call to method ToString | false |
+| Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | Switch.cs:131:16:131:66 | call to method ToString | false |
+| Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:131:16:131:66 | call to method ToString | false |
 | Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | false |
-| Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:131:56:131:66 | call to method ToString | false |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:16:131:66 | call to method ToString | false |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | false |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:28:131:40 | [non-null] ... => ... | false |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:28:131:40 | [null] ... => ... | true |
-| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | false |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:51 | [null] ... => ... | true |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null | true |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:43:131:51 | [null] ... => ... | true |
