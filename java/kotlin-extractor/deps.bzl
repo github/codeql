@@ -54,6 +54,7 @@ def _walk(dir):
 
 def _embeddable_source_impl(repository_ctx):
     src_dir = repository_ctx.path(Label("//java/kotlin-extractor:src"))
+    repository_ctx.watch_tree(src_dir)
     for src in _walk(src_dir):
         contents = repository_ctx.read(src)
         contents = contents.replace(
