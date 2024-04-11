@@ -1020,21 +1020,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate sinkNode = Stage1::sinkNode/2;
 
-    private predicate sourceLabel(NodeEx node, string label) {
+    private predicate sourceModel(NodeEx node, string model) {
       sourceNode(node, _) and
       exists(Node n | n = node.asNode() |
-        exists(string model | knownSourceModel(n, model) and label = model)
+        knownSourceModel(n, model)
         or
-        not knownSourceModel(n, _) and label = ""
+        not knownSourceModel(n, _) and model = ""
       )
     }
 
-    private predicate sinkLabel(NodeEx node, string label) {
+    private predicate sinkModel(NodeEx node, string model) {
       sinkNode(node, _) and
       exists(Node n | n = node.asNode() |
-        exists(string model | knownSinkModel(n, model) and label = model)
+        knownSinkModel(n, model)
         or
-        not knownSinkModel(n, _) and label = ""
+        not knownSinkModel(n, _) and model = ""
       )
     }
 
@@ -1048,21 +1048,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[noinline]
-    private predicate localFlowStepNodeCand1(NodeEx node1, NodeEx node2, string label) {
-      exists(string model |
-        Stage1::revFlow(node2) and
-        localFlowStepEx(node1, node2, model) and
-        label = model
-      )
+    private predicate localFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
+      Stage1::revFlow(node2) and
+      localFlowStepEx(node1, node2, model)
     }
 
     pragma[noinline]
-    private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, string label) {
-      exists(string model |
-        Stage1::revFlow(node2) and
-        additionalLocalFlowStep(node1, node2, model) and
-        label = model
-      )
+    private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
+      Stage1::revFlow(node2) and
+      additionalLocalFlowStep(node1, node2, model)
     }
 
     pragma[nomagic]
@@ -3495,7 +3489,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         sc instanceof SummaryCtxNone and
         t = node.getDataFlowType() and
         ap = TAccessPathNil() and
-        summaryLabel = ""
+        summaryLabel = "-"
         or
         // ... or a step from an existing PathNode to another node.
         pathStep(_, node, state, cc, sc, t, ap, summaryLabel, _)
@@ -3685,7 +3679,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       abstract FlowState getState();
 
       /** Holds if this node is a source. */
-      abstract predicate isSource(string label);
+      abstract predicate isSource(string model);
 
       abstract PathNodeImpl getASuccessorImpl(string label);
 
@@ -3858,11 +3852,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
       query predicate edges(PathNode a, PathNode b, string key, string val) {
-        exists(string label |
-          a.(PathNodeImpl).getANonHiddenSuccessor(label) = b and
-          key = "provenance" and
-          val = label
-        )
+        a.(PathNodeImpl).getANonHiddenSuccessor(val) = b and
+        key = "provenance"
       }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
@@ -3918,10 +3909,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       private predicate isSourceWithLabel(string labelprefix) {
-        exists(string label |
-          this.isSource(label) and
-          label != "" and
-          labelprefix = "Src:" + label + " "
+        exists(string model |
+          this.isSource(model) and
+          model != "" and
+          labelprefix = "Src:" + model + " "
         )
       }
 
@@ -3937,29 +3928,29 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         // a final step to a sink
-        exists(string l2, string l3 | result = this.getSuccMid(l2).projectToSink(l3) |
+        exists(string l2, string sinkmodel | result = this.getSuccMid(l2).projectToSink(sinkmodel) |
           not this.isSourceWithLabel(_) and
-          if l3 != "" then label = l2 + " Sink:" + l3 else label = l2
+          if sinkmodel != "" then label = l2 + " Sink:" + sinkmodel else label = l2
           or
           exists(string l1 |
             this.isSourceWithLabel(l1) and
-            if l3 != "" then label = l1 + l2 + " Sink:" + l3 else label = l1 + l2
+            if sinkmodel != "" then label = l1 + l2 + " Sink:" + sinkmodel else label = l1 + l2
           )
         )
       }
 
-      override predicate isSource(string label) {
+      override predicate isSource(string model) {
         sourceNode(node, state) and
-        sourceLabel(node, label) and
+        sourceModel(node, model) and
         sourceCallCtx(cc) and
         sc instanceof SummaryCtxNone and
         t = node.getDataFlowType() and
         ap = TAccessPathNil()
       }
 
-      predicate isAtSink(string label) {
+      predicate isAtSink(string model) {
         sinkNode(node, state) and
-        sinkLabel(node, label) and
+        sinkModel(node, model) and
         ap instanceof AccessPathNil and
         if hasSinkCallCtx()
         then
@@ -3978,8 +3969,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         else any()
       }
 
-      PathNodeSink projectToSink(string label) {
-        this.isAtSink(label) and
+      PathNodeSink projectToSink(string model) {
+        this.isAtSink(model) and
         result.getNodeEx() = node and
         result.getState() = state
       }
@@ -4004,8 +3995,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         result = TPathNodeSinkGroup(this.getSinkGroup()) and label = ""
       }
 
-      override predicate isSource(string label) {
-        sourceNode(node, state) and sourceLabel(node, label)
+      override predicate isSource(string model) {
+        sourceNode(node, state) and sourceModel(node, model)
       }
 
       string getSinkGroup() { Config::sinkGrouping(node.asNode(), result) }
@@ -4024,7 +4015,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         result.getSourceGroup() = sourceGroup and label = ""
       }
 
-      override predicate isSource(string label) { none() }
+      override predicate isSource(string model) { none() }
 
       override string toString() { result = sourceGroup }
 
@@ -4042,7 +4033,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override PathNodeImpl getASuccessorImpl(string label) { none() }
 
-      override predicate isSource(string label) { none() }
+      override predicate isSource(string model) { none() }
 
       override string toString() { result = sinkGroup }
 
@@ -4110,7 +4101,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       t = mid.getType() and
       ap = mid.getAp() and
       isStoreStep = false and
-      summaryLabel = "" and
+      summaryLabel = "-" and
       label = ""
       or
       additionalJumpStep(mid.getNodeExOutgoing(), node, label) and
@@ -4121,7 +4112,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       t = node.getDataFlowType() and
       ap = TAccessPathNil() and
       isStoreStep = false and
-      summaryLabel = ""
+      summaryLabel = "-"
       or
       additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
       cc instanceof CallContextAny and
@@ -4130,7 +4121,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       t = node.getDataFlowType() and
       ap = TAccessPathNil() and
       isStoreStep = false and
-      summaryLabel = "" and
+      summaryLabel = "-" and
       label = ""
       or
       exists(Content c, DataFlowType t0, AccessPath ap0 |
@@ -4155,7 +4146,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       t = mid.getType() and
       ap = mid.getAp() and
       isStoreStep = false and
-      summaryLabel = "" and
+      (if sc instanceof SummaryCtxNone then summaryLabel = "-" else summaryLabel = "") and
       label = ""
       or
       pathOutOfCallable(mid, node, state, cc) and
@@ -4163,7 +4154,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ap = mid.getAp() and
       sc instanceof SummaryCtxNone and
       isStoreStep = false and
-      summaryLabel = "" and
+      summaryLabel = "-" and
       label = ""
       or
       pathThroughCallable(mid, node, state, cc, t, ap, label) and
