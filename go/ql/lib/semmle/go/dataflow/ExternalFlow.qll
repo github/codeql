@@ -76,11 +76,12 @@
 
 private import go
 import internal.ExternalFlowExtensions
+private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
+private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImpl::Public
 private import codeql.mad.ModelValidation as SharedModelVal
 
 private predicate relevantPackage(string package) {
