@@ -1276,6 +1276,9 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
     expr instanceof UnaryPlusExpr and result instanceof Opcode::CopyValue
     or
     expr instanceof UnaryMinusExpr and result instanceof Opcode::Negate
+    or
+    // TODO: Use a new opcode to represent "awaiting the value"
+    expr instanceof CoAwaitExpr and result instanceof Opcode::CopyValue
   }
 
   private TranslatedExpr getOperand() {
