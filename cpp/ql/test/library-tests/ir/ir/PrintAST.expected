@@ -1923,6 +1923,8 @@ coroutines.cpp:
 #   87|   <params>: 
 #   87|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
+#   87|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   87|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|     getStmt(1): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2115,7 +2117,15 @@ coroutines.cpp:
 #   91|         Type = [IntType] int
 #   91|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
+#   91|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   91|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2209,7 +2219,7 @@ coroutines.cpp:
 #-----|             getQualifier(): [VariableAccess] (unnamed local variable)
 #-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|                 ValueCategory = lvalue
-#   92|             getArgument(0): [VariableAccess] variable access
+#   92|             getArgument(0): [VariableAccess] i
 #   92|                 Type = [IntType] int
 #   92|                 ValueCategory = prvalue(load)
 #-----|         getStmt(2): [GotoStmt] goto ...
@@ -2311,7 +2321,15 @@ coroutines.cpp:
 #   95|         Type = [IntType] int
 #   95|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
+#   95|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   95|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2408,7 +2426,7 @@ coroutines.cpp:
 #   96|               getQualifier(): [VariableAccess] (unnamed local variable)
 #   96|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #   96|                   ValueCategory = lvalue
-#   96|               getArgument(0): [VariableAccess] variable access
+#   96|               getArgument(0): [VariableAccess] i
 #   96|                   Type = [IntType] int
 #   96|                   ValueCategory = prvalue(load)
 #   96|             getChild(1): [FunctionCall] call to await_ready
@@ -2426,7 +2444,7 @@ coroutines.cpp:
 #   96|                     getQualifier(): [VariableAccess] (unnamed local variable)
 #   96|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #   96|                         ValueCategory = lvalue
-#   96|                     getArgument(0): [VariableAccess] variable access
+#   96|                     getArgument(0): [VariableAccess] i
 #   96|                         Type = [IntType] int
 #   96|                         ValueCategory = prvalue(load)
 #   96|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
@@ -2581,7 +2599,15 @@ coroutines.cpp:
 #   99|         Type = [IntType] int
 #   99|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
+#   99|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#   99|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2678,7 +2704,7 @@ coroutines.cpp:
 #  100|               getQualifier(): [VariableAccess] (unnamed local variable)
 #  100|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #  100|                   ValueCategory = lvalue
-#  100|               getArgument(0): [VariableAccess] variable access
+#  100|               getArgument(0): [VariableAccess] i
 #  100|                   Type = [IntType] int
 #  100|                   ValueCategory = prvalue(load)
 #  100|             getChild(1): [FunctionCall] call to await_ready
@@ -2696,7 +2722,7 @@ coroutines.cpp:
 #  100|                     getQualifier(): [VariableAccess] (unnamed local variable)
 #  100|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #  100|                         ValueCategory = lvalue
-#  100|                     getArgument(0): [VariableAccess] variable access
+#  100|                     getArgument(0): [VariableAccess] i
 #  100|                         Type = [IntType] int
 #  100|                         ValueCategory = prvalue(load)
 #  100|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
@@ -2843,7 +2869,15 @@ coroutines.cpp:
 #  103|         Type = [IntType] int
 #  103|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
+#  103|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#  103|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2940,7 +2974,7 @@ coroutines.cpp:
 #  104|               getQualifier(): [VariableAccess] (unnamed local variable)
 #  104|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #  104|                   ValueCategory = lvalue
-#  104|               getArgument(0): [VariableAccess] variable access
+#  104|               getArgument(0): [VariableAccess] i
 #  104|                   Type = [IntType] int
 #  104|                   ValueCategory = prvalue(load)
 #  104|             getChild(1): [FunctionCall] call to await_ready
@@ -2958,7 +2992,7 @@ coroutines.cpp:
 #  104|                     getQualifier(): [VariableAccess] (unnamed local variable)
 #  104|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #  104|                         ValueCategory = lvalue
-#  104|                     getArgument(0): [VariableAccess] variable access
+#  104|                     getArgument(0): [VariableAccess] i
 #  104|                         Type = [IntType] int
 #  104|                         ValueCategory = prvalue(load)
 #  104|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
@@ -3113,7 +3147,15 @@ coroutines.cpp:
 #  108|         Type = [IntType] int
 #  108|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
+#-----|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of i
+#-----|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for i
+#-----|           getExpr(): [VariableAccess] i
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
+#  108|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
+#  108|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -3210,7 +3252,7 @@ coroutines.cpp:
 #  109|               getQualifier(): [VariableAccess] (unnamed local variable)
 #  109|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #  109|                   ValueCategory = lvalue
-#  109|               getArgument(0): [VariableAccess] variable access
+#  109|               getArgument(0): [VariableAccess] i
 #  109|                   Type = [IntType] int
 #  109|                   ValueCategory = prvalue(load)
 #  109|             getChild(1): [FunctionCall] call to await_ready
@@ -3228,7 +3270,7 @@ coroutines.cpp:
 #  109|                     getQualifier(): [VariableAccess] (unnamed local variable)
 #  109|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
 #  109|                         ValueCategory = lvalue
-#  109|                     getArgument(0): [VariableAccess] variable access
+#  109|                     getArgument(0): [VariableAccess] i
 #  109|                         Type = [IntType] int
 #  109|                         ValueCategory = prvalue(load)
 #  109|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
@@ -3287,7 +3329,7 @@ coroutines.cpp:
 #  110|             getArgument(0): [AddExpr] ... + ...
 #  110|                 Type = [IntType] int
 #  110|                 ValueCategory = prvalue
-#  110|               getLeftOperand(): [VariableAccess] variable access
+#  110|               getLeftOperand(): [VariableAccess] i
 #  110|                   Type = [IntType] int
 #  110|                   ValueCategory = prvalue(load)
 #  110|               getRightOperand(): [Literal] 1
