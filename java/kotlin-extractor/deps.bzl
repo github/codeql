@@ -73,12 +73,9 @@ def _get_default_version(repository_ctx):
     default_version = repository_ctx.getenv("CODEQL_KOTLIN_SINGLE_VERSION")
     if default_version:
         return default_version
-    kotlinc = repository_ctx.which("kotlinc")
-    if not kotlinc:
+    if not repository_ctx.which("kotlinc"):
         return DEFAULT_VERSION
-    if repository_ctx.os.name == "windows" and not kotlinc.basename.endswith(".bat"):
-        kotlinc = repository_ctx.path("%s.bat" % kotlinc)
-    res = repository_ctx.execute([kotlinc, "-version"])
+    res = repository_ctx.execute(["kotlinc", "-version"])
     if not res:
         fail("kotlinc -version failed: %s" % res.stderr)
     out = (res.stdout or res.stderr).split(" ")
