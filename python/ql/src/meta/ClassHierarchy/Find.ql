@@ -580,7 +580,7 @@ where
     newModelFullyQualified = subclass.getFullyQualifiedName()
   ) and
   fullyQualifiedToYamlFormat(newModelFullyQualified, type2, path) and
-  not Extensions::typeModel(spec, type2, path) and
+  not Extensions::typeModel(spec, type2, path, _) and
   (
     not newModelFullyQualified.regexpMatch("(?i).*tests?_?.*")
     or

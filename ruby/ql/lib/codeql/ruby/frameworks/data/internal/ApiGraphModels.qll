@@ -229,64 +229,71 @@ private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row
 private predicate typeVariableModel(string row) { any(TypeVariableModelCsv s).row(inversePad(row)) }
 
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(string type, string path, string kind) {
+predicate sourceModel(string type, string path, string kind, string provenance) {
   exists(string row |
     sourceModel(row) and
     row.splitAt(";", 0) = type and
     row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind
+    row.splitAt(";", 2) = kind and
+    row.splitAt(";", 3) = provenance
   )
   or
-  Extensions::sourceModel(type, path, kind)
+  Extensions::sourceModel(type, path, kind, provenance)
 }
 
 /** Holds if a sink model exists for the given parameters. */
-private predicate sinkModel(string type, string path, string kind) {
+private predicate sinkModel(string type, string path, string kind, string provenance) {
   exists(string row |
     sinkModel(row) and
     row.splitAt(";", 0) = type and
     row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind
+    row.splitAt(";", 2) = kind and
+    row.splitAt(";", 3) = provenance
   )
   or
-  Extensions::sinkModel(type, path, kind)
+  Extensions::sinkModel(type, path, kind, provenance)
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
-private predicate summaryModel(string type, string path, string input, string output, string kind) {
+private predicate summaryModel(
+  string type, string path, string input, string output, string kind, string provenance
+) {
   exists(string row |
     summaryModel(row) and
     row.splitAt(";", 0) = type and
     row.splitAt(";", 1) = path and
     row.splitAt(";", 2) = input and
     row.splitAt(";", 3) = output and
-    row.splitAt(";", 4) = kind
+    row.splitAt(";", 4) = kind and
+    row.splitAt(";", 5) = provenance
   )
   or
-  Extensions::summaryModel(type, path, input, output, kind)
+  Extensions::summaryModel(type, path, input, output, kind, provenance)
 }
 
 /** Holds if a type model exists for the given parameters. */
-private predicate typeModel(string type1, string type2, string path) {
+private predicate typeModel(string type1, string type2, string path, string provenance) {
   exists(string row |
     typeModel(row) and
     row.splitAt(";", 0) = type1 and
     row.splitAt(";", 1) = type2 and
-    row.splitAt(";", 2) = path
+    row.splitAt(";", 2) = path and
+    row.splitAt(";", 3) = provenance
   )
   or
-  Extensions::typeModel(type1, type2, path)
+  Extensions::typeModel(type1, type2, path, provenance)
 }
 
 /** Holds if a type variable model exists for the given parameters. */
-private predicate typeVariableModel(string name, string path) {
+private predicate typeVariableModel(string name, string path, string provenance) {
   exists(string row |
     typeVariableModel(row) and
     row.splitAt(";", 0) = name and
-    row.splitAt(";", 1) = path
+    row.splitAt(";", 1) = path and
+    row.splitAt(";", 2) = provenance
   )
   or
-  Extensions::typeVariableModel(name, path)
+  Extensions::typeVariableModel(name, path, provenance)
 }
 
 /**
@@ -294,10 +301,10 @@ private predicate typeVariableModel(string name, string path) {
  */
 predicate isRelevantType(string type) {
   (
-    sourceModel(type, _, _) or
-    sinkModel(type, _, _) or
-    summaryModel(type, _, _, _, _) or
-    typeModel(_, type, _)
+    sourceModel(type, _, _, _) or
+    sinkModel(type, _, _, _) or
+    summaryModel(type, _, _, _, _, _) or
+    typeModel(_, type, _, _)
   ) and
   (
     Specific::isTypeUsed(type)
@@ -306,7 +313,7 @@ predicate isRelevantType(string type) {
   )
   or
   exists(string other | isRelevantType(other) |
-    typeModel(type, other, _)
+    typeModel(type, other, _, _)
     or
     Specific::hasImplicitTypeModel(type, other)
   )
@@ -319,10 +326,10 @@ pragma[nomagic]
 predicate isRelevantFullPath(string type, string path) {
   isRelevantType(type) and
   (
-    sourceModel(type, path, _) or
-    sinkModel(type, path, _) or
-    summaryModel(type, path, _, _, _) or
-    typeModel(_, type, path)
+    sourceModel(type, path, _, _) or
+    sinkModel(type, path, _, _) or
+    summaryModel(type, path, _, _, _, _) or
+    typeModel(_, type, path, _)
   )
 }
 
@@ -331,11 +338,11 @@ private predicate accessPathRange(string s) {
   isRelevantFullPath(_, s)
   or
   exists(string type | isRelevantType(type) |
-    summaryModel(type, _, s, _, _) or
-    summaryModel(type, _, _, s, _)
+    summaryModel(type, _, s, _, _, _) or
+    summaryModel(type, _, _, s, _, _)
   )
   or
-  typeVariableModel(_, s)
+  typeVariableModel(_, s, _)
 }
 
 import AccessPath<accessPathRange/1>
@@ -418,7 +425,7 @@ private class TypeModelDefEntry extends API::EntryPoint {
 pragma[nomagic]
 private API::Node getNodeFromType(string type) {
   exists(string type2, AccessPath path2 |
-    typeModel(type, type2, path2) and
+    typeModel(type, type2, path2, _) and
     result = getNodeFromPath(type2, path2)
   )
   or
@@ -471,7 +478,7 @@ pragma[nomagic]
 private AccessPath getSubPathAt(AccessPath path, int n) {
   exists(string typeVarName |
     path.getToken(n).getAnArgument("TypeVar") = typeVarName and
-    typeVariableModel(typeVarName, result)
+    typeVariableModel(typeVarName, result, _)
   )
 }
 
@@ -543,7 +550,7 @@ private API::Node getNodeFromPath(string type, AccessPath path) {
 
 pragma[nomagic]
 private predicate typeStepModel(string type, AccessPath basePath, AccessPath output) {
-  summaryModel(type, basePath, "", output, "type")
+  summaryModel(type, basePath, "", output, "type", _)
 }
 
 pragma[nomagic]
@@ -623,7 +630,7 @@ module ModelOutput {
     cached
     API::Node getASourceNode(string kind) {
       exists(string type, string path |
-        sourceModel(type, path, kind) and
+        sourceModel(type, path, kind, _) and
         result = getNodeFromPath(type, path)
       )
     }
@@ -634,7 +641,7 @@ module ModelOutput {
     cached
     API::Node getASinkNode(string kind) {
       exists(string type, string path |
-        sinkModel(type, path, kind) and
+        sinkModel(type, path, kind, _) and
         result = getNodeFromPath(type, path)
       )
     }
@@ -647,7 +654,7 @@ module ModelOutput {
       string type, string path, string input, string output, string kind
     ) {
       isRelevantType(type) and
-      summaryModel(type, path, input, output, kind)
+      summaryModel(type, path, input, output, kind, _)
     }
 
     /**
@@ -655,7 +662,7 @@ module ModelOutput {
      */
     cached
     predicate resolvedSummaryBase(string type, string path, Specific::InvokeNode baseNode) {
-      summaryModel(type, path, _, _, _) and
+      summaryModel(type, path, _, _, _, _) and
       baseNode = getInvocationFromPath(type, path)
     }
 
@@ -664,7 +671,7 @@ module ModelOutput {
      */
     cached
     predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
-      summaryModel(type, path, _, _, _) and
+      summaryModel(type, path, _, _, _, _) and
       baseNode = getNodeFromPath(type, path)
     }
 
@@ -681,11 +688,11 @@ module ModelOutput {
   private import codeql.mad.ModelValidation as SharedModelVal
 
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
-    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind) }
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, kind) }
+    predicate sinkKind(string kind) { sinkModel(_, _, kind, _) }
 
-    predicate sourceKind(string kind) { sourceModel(_, _, kind) }
+    predicate sourceKind(string kind) { sourceModel(_, _, kind, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
@@ -715,7 +722,7 @@ module ModelOutput {
     or
     // Check names and arguments of access path tokens
     exists(AccessPath path, AccessPathToken token |
-      (isRelevantFullPath(_, path) or typeVariableModel(_, path)) and
+      (isRelevantFullPath(_, path) or typeVariableModel(_, path, _)) and
       token = path.getToken(_)
     |
       not isValidTokenNameInIdentifyingAccessPath(token.getName()) and
