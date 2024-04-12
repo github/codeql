@@ -13,9 +13,13 @@ private import Shared
 /**
  * Holds if some proper prefix of `(type, path)` evaluated to `node`, where `remainingPath`
  * is bound to the suffix of `path` that was not evaluated yet.
+ *
+ * See concrete examples in `TypeGraphExport`.
  */
 bindingset[type, path]
-predicate partiallyEvaluatedModel(string type, string path, API::Node node, string remainingPath) {
+private predicate partiallyEvaluatedModel(
+  string type, string path, API::Node node, string remainingPath
+) {
   exists(int n, AccessPath accessPath |
     accessPath = path and
     getNodeFromPath(type, accessPath, n) = node and
