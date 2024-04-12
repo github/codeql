@@ -69,7 +69,7 @@ signature module ModelExportSig {
   predicate shouldContain(API::Node node);
 
   /**
-   * Holds if a named must be generated for `node` if it is to be included in the exported graph.
+   * Holds if `node` must be named if it is part of the exported graph.
    */
   default predicate mustBeNamed(API::Node node) { none() }
 
