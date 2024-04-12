@@ -122,6 +122,24 @@ a, b = MS_spread_all(SOURCE)
 SINK(a)  # $ flow="SOURCE, l:-1 -> a"
 SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
+from foo import MS_Class, MS_Class_transitive
+
+# Class summaries
+class_via_positional = MS_Class(SOURCE)
+SINK(class_via_positional)  # $ flow="SOURCE, l:-1 -> class_via_positional"
+
+class_via_kw = MS_Class(x = SOURCE)
+SINK(class_via_kw)  # $ flow="SOURCE, l:-1 -> class_via_kw"
+
+class C(MS_Class_transitive):
+    pass
+
+subclass_via_positional = C(SOURCE)
+SINK(subclass_via_positional)  # $ flow="SOURCE, l:-1 -> subclass_via_positional"
+
+subclass_via_kw = C(x = SOURCE)
+SINK(subclass_via_kw)  # $ flow="SOURCE, l:-1 -> subclass_via_kw"
+
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
 
