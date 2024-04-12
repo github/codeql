@@ -49,7 +49,7 @@ signature module GraphExportSig<LocationSig Location, WithLocation<Location>::No
   predicate suggestedName(Node node, string name);
 
   /**
-   * Holds if `node` must be named if it part of the exported graph.
+   * Holds if `node` must be named if it is part of the exported graph.
    */
   predicate mustBeNamed(Node node);
 
