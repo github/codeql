@@ -1,5 +1,5 @@
 edges
-| test.c:8:27:8:30 | **argv | test.c:17:11:17:18 | *fileName | provenance |  |
+| test.c:8:27:8:30 | **argv | test.c:17:11:17:18 | *fileName | provenance | TaintFunction |
 | test.c:8:27:8:30 | **argv | test.c:32:11:32:18 | *fileName | provenance |  |
 | test.c:8:27:8:30 | **argv | test.c:57:10:57:16 | *access to array | provenance |  |
 | test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | *fileName | provenance |  |

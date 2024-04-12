@@ -45,6 +45,7 @@ module IR {
       this instanceof MkNextNode or
       this instanceof MkImplicitTrue or
       this instanceof MkCaseCheckNode or
+      this instanceof MkTypeSwitchImplicitVariable or
       this instanceof MkImplicitLowerSliceBound or
       this instanceof MkImplicitUpperSliceBound or
       this instanceof MkImplicitMaxSliceBound or
@@ -166,6 +167,9 @@ module IR {
       this instanceof MkImplicitTrue and result = "implicit true"
       or
       this instanceof MkCaseCheckNode and result = "case"
+      or
+      this instanceof MkTypeSwitchImplicitVariable and
+      result = "type switch implicit variable declaration"
       or
       this instanceof MkImplicitLowerSliceBound and result = "implicit lower bound"
       or
@@ -1266,6 +1270,52 @@ module IR {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       cc.getExpr(i).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /**
+   * An instruction corresponding to the implicit declaration of the variable
+   * `lv` in case clause `cc` and its assignment of the value `switchExpr` from
+   * the guard. This only occurs in case clauses in a type switch statement
+   * which declares a variable in its guard.
+   *
+   * For example, consider this type switch statement:
+   *
+   * ```go
+   * switch y := x.(type) {
+   * case Type1:
+   *   f(y)
+   *   ...
+   * }
+   * ```
+   *
+   * The `y` inside the case clause is actually a local variable with type
+   * `Type1` that is implicitly declared at the top of the case clause. In
+   * default clauses and case clauses which list more than one type, the type
+   * of the implicitly declared variable is the type of `switchExpr`.
+   */
+  class TypeSwitchImplicitVariableInstruction extends Instruction, MkTypeSwitchImplicitVariable {
+    CaseClause cc;
+    LocalVariable lv;
+    Expr switchExpr;
+
+    TypeSwitchImplicitVariableInstruction() {
+      this = MkTypeSwitchImplicitVariable(cc, lv, switchExpr)
+    }
+
+    override predicate writes(ValueEntity v, Instruction rhs) {
+      v = lv and
+      rhs = evalExprInstruction(switchExpr)
+    }
+
+    override ControlFlow::Root getRoot() { result.isRootOf(cc) }
+
+    override string toString() { result = "implicit type switch variable declaration" }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      cc.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 

@@ -8,7 +8,7 @@ edges
 | ldap3_remote.py:126:5:126:8 | ControlFlowNode for host | ldap3_remote.py:127:18:127:21 | ControlFlowNode for host | provenance |  |
 | ldap3_remote.py:126:12:126:31 | ControlFlowNode for BinaryExpr | ldap3_remote.py:126:5:126:8 | ControlFlowNode for host | provenance |  |
 | ldap3_remote.py:138:5:138:8 | ControlFlowNode for host | ldap3_remote.py:139:18:139:21 | ControlFlowNode for host | provenance |  |
-| ldap3_remote.py:138:21:138:27 | ControlFlowNode for request | ldap3_remote.py:138:5:138:8 | ControlFlowNode for host | provenance |  |
+| ldap3_remote.py:138:21:138:27 | ControlFlowNode for request | ldap3_remote.py:138:5:138:8 | ControlFlowNode for host | provenance | AdditionalTaintStep |
 nodes
 | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |

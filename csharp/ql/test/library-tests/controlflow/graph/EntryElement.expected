@@ -828,23 +828,23 @@
 | ConditionalAccess.cs:1:7:1:23 | call to constructor Object | ConditionalAccess.cs:1:7:1:23 | call to constructor Object |
 | ConditionalAccess.cs:1:7:1:23 | {...} | ConditionalAccess.cs:1:7:1:23 | {...} |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
-| ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
-| ConditionalAccess.cs:3:40:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
+| ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
+| ConditionalAccess.cs:3:26:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:26:5:26 | access to parameter s |
-| ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:26 | access to parameter s |
+| ConditionalAccess.cs:5:26:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:26 | access to parameter s |
+| ConditionalAccess.cs:7:38:7:55 | access to property Length | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 |
-| ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
+| ConditionalAccess.cs:9:25:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
 | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
-| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
 | ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:38:9:38 | 0 |
 | ConditionalAccess.cs:12:5:17:5 | {...} | ConditionalAccess.cs:12:5:17:5 | {...} |
 | ConditionalAccess.cs:13:9:16:21 | if (...) ... | ConditionalAccess.cs:13:9:16:21 | if (...) ... |
 | ConditionalAccess.cs:13:13:13:13 | access to parameter s | ConditionalAccess.cs:13:13:13:13 | access to parameter s |
+| ConditionalAccess.cs:13:13:13:21 | access to property Length | ConditionalAccess.cs:13:13:13:13 | access to parameter s |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:13:13:13:13 | access to parameter s |
-| ConditionalAccess.cs:13:15:13:21 | access to property Length | ConditionalAccess.cs:13:13:13:13 | access to parameter s |
 | ConditionalAccess.cs:13:25:13:25 | 0 | ConditionalAccess.cs:13:25:13:25 | 0 |
 | ConditionalAccess.cs:13:25:13:25 | (...) ... | ConditionalAccess.cs:13:25:13:25 | 0 |
 | ConditionalAccess.cs:14:13:14:21 | return ...; | ConditionalAccess.cs:14:20:14:20 | 0 |
@@ -852,23 +852,23 @@
 | ConditionalAccess.cs:16:13:16:21 | return ...; | ConditionalAccess.cs:16:20:16:20 | 1 |
 | ConditionalAccess.cs:16:20:16:20 | 1 | ConditionalAccess.cs:16:20:16:20 | 1 |
 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 |
-| ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 |
+| ConditionalAccess.cs:19:40:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:22:5:26:5 | {...} |
 | ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:9:23:39 | ... ...; |
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:23:26:23:29 | null |
+| ConditionalAccess.cs:23:17:23:38 | access to property Length | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:23:18:23:29 | (...) ... | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:23:26:23:29 | null | ConditionalAccess.cs:23:26:23:29 | null |
-| ConditionalAccess.cs:23:32:23:38 | access to property Length | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:9:24:38 | ... ...; |
 | ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
+| ConditionalAccess.cs:24:17:24:37 | call to method ToString | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
 | ConditionalAccess.cs:24:18:24:24 | (...) ... | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
 | ConditionalAccess.cs:24:24:24:24 | access to parameter i | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
-| ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
 | ConditionalAccess.cs:25:9:25:32 | ... = ... | ConditionalAccess.cs:25:13:25:14 | "" |
 | ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:9:25:33 | ...; |
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:13:25:14 | "" |
-| ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:13:25:14 | "" |
+| ConditionalAccess.cs:25:13:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:13:25:14 | "" |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:31:25:31 | access to local variable s |
 | ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:32:30:32 | 0 |
 | ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:32:30:32 | 0 |
@@ -878,8 +878,8 @@
 | ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:13:34:13 | 0 |
 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | this access |
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | this access |
+| ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | this access |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:25 | ...; |
-| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | this access |
 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
 | ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
 | ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
@@ -1680,8 +1680,8 @@
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e |
+| Foreach.cs:20:27:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e |
-| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:21:11:21:11 | ; |
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:25:5:28:5 | {...} |
@@ -2592,7 +2592,7 @@
 | Switch.cs:102:5:109:5 | {...} | Switch.cs:102:5:109:5 | {...} |
 | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:103:9:107:9 | switch (...) {...} |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:17:103:17 | access to parameter s |
-| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:17:103:17 | access to parameter s |
+| Switch.cs:103:17:103:25 | access to property Length | Switch.cs:103:17:103:17 | access to parameter s |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:13:105:19 | case ...: |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:18:105:18 | 0 |
 | Switch.cs:105:21:105:29 | return ...; | Switch.cs:105:28:105:28 | 0 |
@@ -2640,6 +2640,7 @@
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; |
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:130:5:132:5 | {...} |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:131:17:131:17 | access to parameter o |
+| Switch.cs:131:16:131:66 | call to method ToString | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s |
@@ -2648,7 +2649,6 @@
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | _ |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:135:5:142:5 | {...} | Switch.cs:135:5:142:5 | {...} |
 | Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:136:9:141:9 | switch (...) {...} |
 | Switch.cs:136:17:136:17 | access to parameter i | Switch.cs:136:17:136:17 | access to parameter i |

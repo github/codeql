@@ -243,7 +243,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void AddDefaultPackageSource(string nugetConfig)
         {
             logger.LogInfo("Adding default package source...");
-            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source https://api.nuget.org/v3/index.json -ConfigFile \"{nugetConfig}\"", out var _);
+            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {DependencyManager.PublicNugetFeed} -ConfigFile \"{nugetConfig}\"", out var _);
         }
 
         public void Dispose()

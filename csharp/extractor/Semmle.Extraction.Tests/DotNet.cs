@@ -10,6 +10,7 @@ namespace Semmle.Extraction.Tests
     {
         private readonly IList<string> output;
         private string lastArgs = "";
+        public string WorkingDirectory { get; private set; } = "";
         public bool Success { get; set; } = true;
 
         public DotNetCliInvokerStub(IList<string> output)
@@ -30,6 +31,12 @@ namespace Semmle.Extraction.Tests
             lastArgs = args;
             output = this.output;
             return Success;
+        }
+
+        public bool RunCommand(string args, string? workingDirectory, out IList<string> output)
+        {
+            WorkingDirectory = workingDirectory ?? "";
+            return RunCommand(args, out output);
         }
 
         public string GetLastArgs() => lastArgs;
@@ -261,6 +268,37 @@ namespace Semmle.Extraction.Tests
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("exec myarg1 myarg2", lastArgs);
+        }
+
+        [Fact]
+        public void TestNugetFeeds()
+        {
+            // Setup
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+
+            // Execute
+            dotnet.GetNugetFeeds("abc");
+
+            // Verify
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
+            Assert.Equal("nuget list source --format Short --configfile \"abc\"", lastArgs);
+        }
+
+        [Fact]
+        public void TestNugetFeedsFromFolder()
+        {
+            // Setup
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+
+            // Execute
+            dotnet.GetNugetFeedsFromFolder("abc");
+
+            // Verify
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
+            Assert.Equal("nuget list source --format Short", lastArgs);
+            Assert.Equal("abc", dotnetCliInvoker.WorkingDirectory);
         }
     }
 }

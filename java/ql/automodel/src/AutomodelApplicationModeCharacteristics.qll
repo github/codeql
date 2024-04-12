@@ -259,7 +259,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     |
       sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
       ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
-        provenance)
+        provenance, _)
     )
     or
     isCustomSink(e, kind) and provenance = "custom-sink"
@@ -272,7 +272,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     |
       sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
       ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
-        provenance)
+        provenance, _)
     )
   }
 
