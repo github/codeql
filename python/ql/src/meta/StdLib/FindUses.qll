@@ -63,7 +63,11 @@ predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string
               .replaceAll("!.", "]InstanceMember[")
               .replaceAll(".", "].Member[")
               .replaceAll("]InstanceMember[", "].Subclass.Instance.Member[") + "]"
-      ).replaceAll(".Member[__init__].", "").replaceAll("Member[__init__].", "").replaceAll("!", "")
+      )
+          .replaceAll(".Member[__init__].", "")
+          .replaceAll("Member[__init__].", "")
+          .replaceAll("!", "")
+          .replaceAll("Instance.Member[__init__]", "Call")
   )
 }
 
