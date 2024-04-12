@@ -76,6 +76,9 @@ def _get_default_version(repository_ctx):
     kotlinc = repository_ctx.which("kotlinc")
     if not kotlinc:
         return DEFAULT_VERSION
+    if repository_ctx.os.name == "windows" and not kotlinc.basename.endswith(".exe"):
+        # for some reason the result from `which` can fail to have exe
+        kotlinc = repository_ctx.path("%s.exe" % kotlinc)
     res = repository_ctx.execute([kotlinc, "-version"])
     if not res:
         fail("kotlinc -version failed: %s" % res.stderr)
