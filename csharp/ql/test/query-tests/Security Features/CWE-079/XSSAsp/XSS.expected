@@ -27,7 +27,7 @@ edges
 | XSS.cs:85:27:85:53 | access to property QueryString : NameValueCollection | XSS.cs:85:27:85:61 | access to indexer : String | provenance | MaD:11896 |
 | XSS.cs:85:27:85:61 | access to indexer : String | XSS.cs:85:20:85:23 | access to local variable name : String | provenance |  |
 | XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:1802 |
-| XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:24669 |
+| XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:24661 |
 | XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:20:94:23 | access to local variable name : String | provenance |  |
 | XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:27:94:61 | access to indexer : String | provenance | MaD:11896 |
 | XSS.cs:94:27:94:61 | access to indexer : String | XSS.cs:94:20:94:23 | access to local variable name : String | provenance |  |

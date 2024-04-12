@@ -9423,7 +9423,6 @@
 | System.Net;DownloadProgressChangedEventHandler;false;BeginInvoke;(System.Object,System.Net.DownloadProgressChangedEventArgs,System.AsyncCallback,System.Object);;Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | System.Net;DownloadStringCompletedEventArgs;false;get_Result;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Net;DownloadStringCompletedEventHandler;false;BeginInvoke;(System.Object,System.Net.DownloadStringCompletedEventArgs,System.AsyncCallback,System.Object);;Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
-| System.Net;FileWebRequest;false;get_Headers;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Net;FileWebRequest;false;get_RequestUri;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Net;FileWebResponse;false;GetResponseStream;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Net;FileWebResponse;false;get_Headers;();;Argument[this];ReturnValue;taint;df-generated |
