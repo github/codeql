@@ -15,7 +15,7 @@ predicate envVarInjectionFromExprSink(DataFlow::Node sink) {
 }
 
 predicate envVarInjectionFromFileSink(DataFlow::Node sink) {
-  exists(Run run, ArtifactDownloadStep step, string value |
+  exists(Run run, UntrustedArtifactDownloadStep step, string value |
     sink.asExpr() = run and
     step.getAFollowingStep() = run and
     Utils::writeToGitHubEnv(run, _, value) and

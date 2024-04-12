@@ -170,7 +170,7 @@ private class CompositeActionInputSource extends RemoteFlowSource {
  * A downloadeded artifact.
  */
 private class ArtifactToOptionSource extends RemoteFlowSource {
-  ArtifactToOptionSource() { this.asExpr() instanceof ArtifactDownloadStep }
+  ArtifactToOptionSource() { this.asExpr() instanceof UntrustedArtifactDownloadStep }
 
   override string getSourceType() { result = "Step output from Artifact" }
 }

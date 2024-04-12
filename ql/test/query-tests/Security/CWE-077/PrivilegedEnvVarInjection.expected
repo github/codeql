@@ -5,6 +5,8 @@ edges
 | .github/workflows/test3.yml:24:7:31:4 | Uses Step | .github/workflows/test3.yml:39:7:44:4 | Run Step |
 | .github/workflows/test4.yml:22:19:22:56 | github.event.pull_request.title | .github/workflows/test4.yml:21:9:25:6 | Run Step |
 | .github/workflows/test4.yml:26:19:26:56 | github.event.pull_request.title | .github/workflows/test4.yml:25:9:31:6 | Run Step |
+| .github/workflows/test4.yml:32:19:32:56 | github.event.pull_request.title | .github/workflows/test4.yml:31:9:37:6 | Run Step |
+| .github/workflows/test4.yml:38:19:38:56 | github.event.pull_request.title | .github/workflows/test4.yml:37:9:45:6 | Run Step |
 nodes
 | .github/workflows/sonar-source.yml:17:9:37:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/sonar-source.yml:39:9:45:6 | Run Step | semmle.label | Run Step |
@@ -18,6 +20,10 @@ nodes
 | .github/workflows/test4.yml:22:19:22:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test4.yml:25:9:31:6 | Run Step | semmle.label | Run Step |
 | .github/workflows/test4.yml:26:19:26:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:31:9:37:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/test4.yml:32:19:32:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:37:9:45:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/test4.yml:38:19:38:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 subpaths
 #select
 | .github/workflows/sonar-source.yml:39:9:45:6 | Run Step | .github/workflows/sonar-source.yml:17:9:37:6 | Uses Step | .github/workflows/sonar-source.yml:39:9:45:6 | Run Step | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/sonar-source.yml:39:9:45:6 | Run Step | Run Step |
@@ -27,3 +33,5 @@ subpaths
 | .github/workflows/test3.yml:39:7:44:4 | Run Step | .github/workflows/test3.yml:24:7:31:4 | Uses Step | .github/workflows/test3.yml:39:7:44:4 | Run Step | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test3.yml:39:7:44:4 | Run Step | Run Step |
 | .github/workflows/test4.yml:21:9:25:6 | Run Step | .github/workflows/test4.yml:22:19:22:56 | github.event.pull_request.title | .github/workflows/test4.yml:21:9:25:6 | Run Step | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test4.yml:21:9:25:6 | Run Step | Run Step |
 | .github/workflows/test4.yml:25:9:31:6 | Run Step | .github/workflows/test4.yml:26:19:26:56 | github.event.pull_request.title | .github/workflows/test4.yml:25:9:31:6 | Run Step | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test4.yml:25:9:31:6 | Run Step | Run Step |
+| .github/workflows/test4.yml:31:9:37:6 | Run Step | .github/workflows/test4.yml:32:19:32:56 | github.event.pull_request.title | .github/workflows/test4.yml:31:9:37:6 | Run Step | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test4.yml:31:9:37:6 | Run Step | Run Step |
+| .github/workflows/test4.yml:37:9:45:6 | Run Step | .github/workflows/test4.yml:38:19:38:56 | github.event.pull_request.title | .github/workflows/test4.yml:37:9:45:6 | Run Step | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test4.yml:37:9:45:6 | Run Step | Run Step |

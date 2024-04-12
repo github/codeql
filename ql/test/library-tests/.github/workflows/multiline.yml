@@ -8,22 +8,26 @@ jobs:
   Test:
     runs-on: ubuntu-latest
     steps:
-      run: |
-        echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT
-        echo -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT
-        echo "CHANGELOGEOF" >> $GITHUB_OUTPUT
-      run: |
-        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-        echo "status<<$EOF" >> $GITHUB_OUTPUT
-        echo "$(cat status.output.json)" >> $GITHUB_OUTPUT
-        echo "$EOF" >> $GITHUB_OUTPUT
-      run: |
-        echo "response<<$EOF" >> $GITHUB_OUTPUT
-        echo $output >> $GITHUB_OUTPUT
-        echo "$EOF" >> $GITHUB_OUTPUT
       - run: |
-        {
-          echo 'JSON_RESPONSE<<EOF'
-          ls | grep -E "*.(tar.gz|zip)$"
-          echo EOF
-        } >> "$GITHUB_ENV"
+          echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT
+          echo -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT
+          echo "CHANGELOGEOF" >> $GITHUB_OUTPUT
+      - run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "status<<$EOF" >> $GITHUB_OUTPUT
+          echo "$(cat status.output.json)" >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+      - run: |
+          echo "response<<$EOF" >> $GITHUB_OUTPUT
+          echo $output >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+      - run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            ls | grep -E "*.(tar.gz|zip)$"
+            echo EOF
+          } >> "$GITHUB_ENV"
+      - run: |
+          cat <<-"EOF" > event.json
+            ${{ toJson(github.event) }}
+          EOF

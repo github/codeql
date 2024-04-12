@@ -28,16 +28,23 @@ jobs:
           echo "PR_TITLE<<EOF" >> $GITHUB_ENV
           echo "$TITLE" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-      - run: |
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
           echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"
-          ls | grep -E "*.(tar.gz|zip)$" >> "${GITHUB_ENV}"
-          ls | grep -E "*.(txt|md)$" >> "${GITHUB_ENV}"
+          echo "$TITLE" >> "${GITHUB_ENV}"
           echo "EOF" >> "${GITHUB_ENV}"
-      - run: |
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
           {
             echo 'JSON_RESPONSE<<EOF'
-            curl https://example.com
+            echo "$TITLE" >> "$GITHUB_ENV"
             echo EOF
           } >> "$GITHUB_ENV"
+      - run: |
+          cat <<-"EOF" >> "$GITHUB_ENV"
+            echo "$TITLE"
+          EOF
 
 

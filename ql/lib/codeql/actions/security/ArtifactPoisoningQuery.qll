@@ -11,11 +11,11 @@ string unzipDirArgRegexp() {
   result = "-d\\s+'([^ ]+)'.*"
 }
 
-abstract class ArtifactDownloadStep extends Step {
+abstract class UntrustedArtifactDownloadStep extends Step {
   abstract string getPath();
 }
 
-class DownloadArtifactActionStep extends ArtifactDownloadStep, UsesStep {
+class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep {
   DownloadArtifactActionStep() {
     this.getCallee() =
       [
@@ -62,7 +62,7 @@ class DownloadArtifactActionStep extends ArtifactDownloadStep, UsesStep {
   }
 }
 
-class LegitLabsDownloadArtifactActionStep extends ArtifactDownloadStep, UsesStep {
+class LegitLabsDownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep {
   LegitLabsDownloadArtifactActionStep() {
     this.getCallee() = "Legit-Labs/action-download-artifact" and
     (
@@ -94,7 +94,7 @@ class LegitLabsDownloadArtifactActionStep extends ArtifactDownloadStep, UsesStep
   }
 }
 
-class ActionsGitHubScriptDownloadStep extends ArtifactDownloadStep, UsesStep {
+class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, UsesStep {
   string script;
 
   ActionsGitHubScriptDownloadStep() {
@@ -148,7 +148,7 @@ class ActionsGitHubScriptDownloadStep extends ArtifactDownloadStep, UsesStep {
   }
 }
 
-class GHRunArtifactDownloadStep extends ArtifactDownloadStep, Run {
+class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
   string script;
 
   GHRunArtifactDownloadStep() {
@@ -187,7 +187,7 @@ class GHRunArtifactDownloadStep extends ArtifactDownloadStep, Run {
   }
 }
 
-class DirectArtifactDownloadStep extends ArtifactDownloadStep, Run {
+class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
   string script;
 
   DirectArtifactDownloadStep() {
@@ -232,7 +232,7 @@ abstract class PoisonableStep extends Step { }
 
 class CommandExecutionRunStep extends PoisonableStep, Run {
   CommandExecutionRunStep() {
-    exists(ArtifactDownloadStep step |
+    exists(UntrustedArtifactDownloadStep step |
       step.getAFollowingStep() = this and
       // Heuristic:
       // Run step with a command starting with `./xxxx`, `sh xxxx`, `node xxxx`, ...
@@ -246,7 +246,7 @@ class CommandExecutionRunStep extends PoisonableStep, Run {
 
 class EnvVarInjectionRunStep extends PoisonableStep, Run {
   EnvVarInjectionRunStep() {
-    exists(ArtifactDownloadStep step, string value |
+    exists(UntrustedArtifactDownloadStep step, string value |
       step.getAFollowingStep() = this and
       // Heuristic:
       // Run step with env var definition based on file content.

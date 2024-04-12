@@ -1,2 +1,521 @@
-ERROR: Could not resolve predicate extractLineAssignment/4 (test.ql:85,5-33)
-ERROR: Could not resolve predicate extractLineAssignment/4 (test.ql:103,5-33)
+files
+| .github/workflows/expression_nodes.yml:0:0:0:0 | .github/workflows/expression_nodes.yml |
+| .github/workflows/multiline.yml:0:0:0:0 | .github/workflows/multiline.yml |
+| .github/workflows/test.yml:0:0:0:0 | .github/workflows/test.yml |
+workflows
+| .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/test.yml:1:1:40:53 | on: push |
+reusableWorkflows
+compositeActions
+jobs
+| .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+localJobs
+| .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+extJobs
+steps
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
+runSteps
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | LINE 1echo '${{ github.event.comment.body }}' |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | echo ${{ steps.source.outputs.all_changed_files }} |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | ${{ github.event.pull_request.head.ref }} |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink | echo ${{needs.job1.outputs.job_output}} |
+runExprs
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | .github/workflows/expression_nodes.yml:7:27:7:58 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | .github/workflows/expression_nodes.yml:9:25:9:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | .github/workflows/expression_nodes.yml:11:25:11:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | .github/workflows/expression_nodes.yml:12:24:12:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:17:25:17:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:18:24:18:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
+uses
+| .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+stepUses
+| .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+usesArgs
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step | source | .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files |
+runStepChildren
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:26:13:26:23 | simplesink1 |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:28:13:28:23 | simplesink2 |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:29:14:29:54 | ${{ github.event.pull_request.head.ref }} |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:39:13:39:16 | sink |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} |
+parentNodes
+| .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:5:14:5:26 | ubuntu-latest | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:5:14:5:26 | ubuntu-latest | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
+| .github/workflows/expression_nodes.yml:7:27:7:58 | github.event.comment.body | .github/workflows/expression_nodes.yml:7:14:7:58 | LINE 1echo '${{ github.event.comment.body }}' |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n | .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step |
+| .github/workflows/expression_nodes.yml:9:25:9:56 | github.event.comment.body | .github/workflows/expression_nodes.yml:8:14:9:57 | LINE 1 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step |
+| .github/workflows/expression_nodes.yml:11:25:11:56 | github.event.comment.body | .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:12:24:12:51 | github.event.issue.body | .github/workflows/expression_nodes.yml:10:14:12:53 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n | .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:13:14:15:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}'\n |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n | .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step |
+| .github/workflows/expression_nodes.yml:17:25:17:56 | github.event.comment.body | .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:18:24:18:51 | github.event.issue.body | .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body | .github/workflows/expression_nodes.yml:16:14:19:57 | LINE 1 echo '${{ github.event.comment.body }}'\nLINE 2 echo '${{github.event.issue.body}}'\nLINE 3 echo '${{ github.event.comment.body }}'\n |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' | .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
+| .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:9:5:33:14 | Job: Test | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:11:9:15:6 | Run Step |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:15:9:20:6 | Run Step |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:20:9:24:6 | Run Step |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:24:9:30:6 | Run Step |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:5:5:31:2 | Job: job1 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:5:14:5:26 | ubuntu-latest | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:5:14:5:26 | ubuntu-latest | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node | .github/workflows/test.yml:8:7:10:4 | Job outputs node |
+| .github/workflows/test.yml:8:19:8:49 | ${{ steps.step.outputs.value }} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:8:19:8:49 | ${{ steps.step.outputs.value }} | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:8:19:8:49 | ${{ steps.step.outputs.value }} | .github/workflows/test.yml:8:7:10:4 | Job outputs node |
+| .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value | .github/workflows/test.yml:8:19:8:49 | ${{ steps.step.outputs.value }} |
+| .github/workflows/test.yml:11:9:15:6 | Uses Step | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:11:15:11:33 | actions/checkout@v4 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:11:15:11:33 | actions/checkout@v4 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:11:15:11:33 | actions/checkout@v4 | .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:13:24:13:24 | 0 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:13:24:13:24 | 0 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:13:24:13:24 | 0 | .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:15:15:15:31 | Get changed files | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:15:15:15:31 | Get changed files | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:15:15:15:31 | Get changed files | .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:16:13:16:18 | source | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:16:13:16:18 | source | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:16:13:16:18 | source | .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:17:15:17:42 | tj-actions/changed-files@v40 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:17:15:17:42 | tj-actions/changed-files@v40 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:17:15:17:42 | tj-actions/changed-files@v40 | .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:19:15:19:43 | Remove foo from changed files | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:19:15:19:43 | Remove foo from changed files | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:19:15:19:43 | Remove foo from changed files | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:20:13:20:16 | step | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:20:13:20:16 | step | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:20:13:20:16 | step | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:21:15:21:55 | mad9000/actions-find-and-replace-string@3 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:21:15:21:55 | mad9000/actions-find-and-replace-string@3 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:21:15:21:55 | mad9000/actions-find-and-replace-string@3 | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:23:19:23:63 | ${{ steps.source.outputs.all_changed_files }} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:23:19:23:63 | ${{ steps.source.outputs.all_changed_files }} | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:23:19:23:63 | ${{ steps.source.outputs.all_changed_files }} | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files | .github/workflows/test.yml:23:19:23:63 | ${{ steps.source.outputs.all_changed_files }} |
+| .github/workflows/test.yml:24:17:24:21 | foo | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:24:17:24:21 | foo | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:24:17:24:21 | foo | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:25:20:25:21 |  | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:25:20:25:21 |  | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:25:20:25:21 |  | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:26:13:26:23 | simplesink1 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:26:13:26:23 | simplesink1 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:26:13:26:23 | simplesink1 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 |
+| .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 |
+| .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files | .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:28:13:28:23 | simplesink2 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:28:13:28:23 | simplesink2 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:28:13:28:23 | simplesink2 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 |
+| .github/workflows/test.yml:29:14:29:54 | ${{ github.event.pull_request.head.ref }} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:29:14:29:54 | ${{ github.event.pull_request.head.ref }} | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:29:14:29:54 | ${{ github.event.pull_request.head.ref }} | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 |
+| .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref | .github/workflows/test.yml:29:14:29:54 | ${{ github.event.pull_request.head.ref }} |
+| .github/workflows/test.yml:32:5:40:53 | Job: job2 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:32:14:32:26 | ubuntu-latest | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:32:14:32:26 | ubuntu-latest | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
+| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
+| .github/workflows/test.yml:34:10:34:24 | always() | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
+| .github/workflows/test.yml:34:11:34:25 | always() | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
+| .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:36:12:36:15 | job1 |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:39:13:39:16 | sink | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:39:13:39:16 | sink | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:39:13:39:16 | sink | .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
+| .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} | .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
+| .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} |
+cfgNodes
+| .github/workflows/expression_nodes.yml:1:1:21:47 | enter on: issue_comment |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | exit on: issue_comment |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | exit on: issue_comment (normal) |
+| .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
+| .github/workflows/expression_nodes.yml:7:27:7:58 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step |
+| .github/workflows/expression_nodes.yml:9:25:9:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step |
+| .github/workflows/expression_nodes.yml:11:25:11:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:12:24:12:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step |
+| .github/workflows/expression_nodes.yml:17:25:17:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:18:24:18:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
+| .github/workflows/multiline.yml:1:1:33:14 | enter on:  |
+| .github/workflows/multiline.yml:1:1:33:14 | exit on:  |
+| .github/workflows/multiline.yml:1:1:33:14 | exit on:  (normal) |
+| .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/test.yml:1:1:40:53 | enter on: push |
+| .github/workflows/test.yml:1:1:40:53 | exit on: push |
+| .github/workflows/test.yml:1:1:40:53 | exit on: push (normal) |
+| .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node |
+| .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value |
+| .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 |
+| .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 |
+| .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref |
+| .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
+| .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
+dfNodes
+| .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step |
+| .github/workflows/expression_nodes.yml:7:27:7:58 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step |
+| .github/workflows/expression_nodes.yml:9:25:9:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step |
+| .github/workflows/expression_nodes.yml:11:25:11:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:12:24:12:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step |
+| .github/workflows/expression_nodes.yml:17:25:17:56 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:18:24:18:51 | github.event.issue.body |
+| .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
+| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/test.yml:5:5:31:2 | Job: job1 |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node |
+| .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value |
+| .github/workflows/test.yml:11:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
+| .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 |
+| .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 |
+| .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref |
+| .github/workflows/test.yml:32:5:40:53 | Job: job2 |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink |
+| .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
+argumentNodes
+| .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files |
+usesIds
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source | source |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step | step |
+nodeLocations
+| .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber | .github/workflows/expression_nodes.yml:5:5:21:47 | .github/workflows/expression_nodes.yml@5:5:21:47 |
+| .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | .github/workflows/expression_nodes.yml:7:9:8:6 | .github/workflows/expression_nodes.yml@7:9:8:6 |
+| .github/workflows/expression_nodes.yml:7:27:7:58 | github.event.comment.body | .github/workflows/expression_nodes.yml:7:27:7:58 | .github/workflows/expression_nodes.yml@7:27:7:58 |
+| .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | .github/workflows/expression_nodes.yml:8:9:10:6 | .github/workflows/expression_nodes.yml@8:9:10:6 |
+| .github/workflows/expression_nodes.yml:9:25:9:56 | github.event.comment.body | .github/workflows/expression_nodes.yml:9:25:9:56 | .github/workflows/expression_nodes.yml@9:25:9:56 |
+| .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | .github/workflows/expression_nodes.yml:10:9:13:6 | .github/workflows/expression_nodes.yml@10:9:13:6 |
+| .github/workflows/expression_nodes.yml:11:25:11:56 | github.event.comment.body | .github/workflows/expression_nodes.yml:11:25:11:56 | .github/workflows/expression_nodes.yml@11:25:11:56 |
+| .github/workflows/expression_nodes.yml:12:24:12:51 | github.event.issue.body | .github/workflows/expression_nodes.yml:12:24:12:51 | .github/workflows/expression_nodes.yml@12:24:12:51 |
+| .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | .github/workflows/expression_nodes.yml:13:9:16:6 | .github/workflows/expression_nodes.yml@13:9:16:6 |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:14:9:15:46 | .github/workflows/expression_nodes.yml@14:9:15:46 |
+| .github/workflows/expression_nodes.yml:14:9:15:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:14:9:15:46 | .github/workflows/expression_nodes.yml@14:9:15:46 |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:16:9:20:6 | .github/workflows/expression_nodes.yml@16:9:20:6 |
+| .github/workflows/expression_nodes.yml:17:25:17:56 | github.event.comment.body | .github/workflows/expression_nodes.yml:17:25:17:56 | .github/workflows/expression_nodes.yml@17:25:17:56 |
+| .github/workflows/expression_nodes.yml:18:24:18:51 | github.event.issue.body | .github/workflows/expression_nodes.yml:18:24:18:51 | .github/workflows/expression_nodes.yml@18:24:18:51 |
+| .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body | .github/workflows/expression_nodes.yml:19:24:19:55 | .github/workflows/expression_nodes.yml@19:24:19:55 |
+| .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:20:9:21:47 | .github/workflows/expression_nodes.yml@20:9:21:47 |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:20:14:21:46 | .github/workflows/expression_nodes.yml@20:14:21:46 |
+| .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:20:14:21:46 | .github/workflows/expression_nodes.yml@20:14:21:46 |
+| .github/workflows/multiline.yml:9:5:33:14 | Job: Test | .github/workflows/multiline.yml:9:5:33:14 | .github/workflows/multiline.yml@9:5:33:14 |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | .github/workflows/multiline.yml:11:9:15:6 | .github/workflows/multiline.yml@11:9:15:6 |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:15:9:20:6 | .github/workflows/multiline.yml@15:9:20:6 |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | .github/workflows/multiline.yml:20:9:24:6 | .github/workflows/multiline.yml@20:9:24:6 |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:24:9:30:6 | .github/workflows/multiline.yml@24:9:30:6 |
+| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:30:9:33:14 | .github/workflows/multiline.yml@30:9:33:14 |
+| .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) | .github/workflows/multiline.yml:32:13:32:39 | .github/workflows/multiline.yml@32:13:32:39 |
+| .github/workflows/test.yml:5:5:31:2 | Job: job1 | .github/workflows/test.yml:5:5:31:2 | .github/workflows/test.yml@5:5:31:2 |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node | .github/workflows/test.yml:8:7:10:4 | .github/workflows/test.yml@8:7:10:4 |
+| .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value | .github/workflows/test.yml:8:20:8:50 | .github/workflows/test.yml@8:20:8:50 |
+| .github/workflows/test.yml:11:9:15:6 | Uses Step | .github/workflows/test.yml:11:9:15:6 | .github/workflows/test.yml@11:9:15:6 |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source | .github/workflows/test.yml:15:9:19:6 | .github/workflows/test.yml@15:9:19:6 |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step | .github/workflows/test.yml:19:9:26:6 | .github/workflows/test.yml@19:9:26:6 |
+| .github/workflows/test.yml:23:20:23:64 | steps.source.outputs.all_changed_files | .github/workflows/test.yml:23:20:23:64 | .github/workflows/test.yml@23:20:23:64 |
+| .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:26:9:28:6 | .github/workflows/test.yml@26:9:28:6 |
+| .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files | .github/workflows/test.yml:27:20:27:64 | .github/workflows/test.yml@27:20:27:64 |
+| .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:28:9:31:2 | .github/workflows/test.yml@28:9:31:2 |
+| .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref | .github/workflows/test.yml:29:15:29:55 | .github/workflows/test.yml@29:15:29:55 |
+| .github/workflows/test.yml:32:5:40:53 | Job: job2 | .github/workflows/test.yml:32:5:40:53 | .github/workflows/test.yml@32:5:40:53 |
+| .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:39:9:40:53 | .github/workflows/test.yml@39:9:40:53 |
+| .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output | .github/workflows/test.yml:40:20:40:53 | .github/workflows/test.yml@40:20:40:53 |
+scopes
+| .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/test.yml:1:1:40:53 | on: push |
+sources
+| ahmadnassri/action-changed-files | * | output.files | PR changed files | manual |
+| ahmadnassri/action-changed-files | * | output.json | PR changed files | manual |
+| amannn/action-semantic-pull-request | * | output.error_message | PR title | manual |
+| cypress-io/github-action | * | env.GH_BRANCH | PR branch | manual |
+| dawidd6/action-download-artifact | * | output.artifacts | Artifact details | manual |
+| dorny/paths-filter | * | output.changes | PR changed files | manual |
+| franzdiebold/github-env-vars-action | * | output.CI_PR_DESCRIPTION | PR body | manual |
+| franzdiebold/github-env-vars-action | * | output.CI_PR_TITLE | PR title | manual |
+| jitterbit/get-changed-files | * | output.added | PR changed files | manual |
+| jitterbit/get-changed-files | * | output.added_modified | PR changed files | manual |
+| jitterbit/get-changed-files | * | output.all | PR changed files | manual |
+| jitterbit/get-changed-files | * | output.deleted | PR changed files | manual |
+| jitterbit/get-changed-files | * | output.modified | PR changed files | manual |
+| jitterbit/get-changed-files | * | output.removed | PR changed files | manual |
+| jitterbit/get-changed-files | * | output.renamed | PR changed files | manual |
+| khan/pull-request-comment-trigger | * | output.comment_body | Comment body | manual |
+| marocchino/on_artifact | * | output.* | Downloaded artifact | manual |
+| redhat-plumbers-in-action/download-artifact | * | output.* | Downloaded artifact | manual |
+| tj-actions/branch-names | * | output.current_branch | PR current branch | manual |
+| tj-actions/branch-names | * | output.head_ref_branch | PR head branch | manual |
+| tj-actions/branch-names | * | output.ref_branch | Branch tirggering workflow run | manual |
+| tj-actions/changed-files | * | output.added_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.all_changed_and_modified_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.all_changed_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.all_modified_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.all_old_new_renamed_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.changed_keys | PR changed files | manual |
+| tj-actions/changed-files | * | output.copied_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.deleted_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.modified_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.modified_keys | PR changed files | manual |
+| tj-actions/changed-files | * | output.other_changed_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.other_deleted_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.other_modified_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.renamed_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.type_changed_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.unknown_files | PR changed files | manual |
+| tj-actions/changed-files | * | output.unmerged_files | PR changed files | manual |
+| tj-actions/verify-changed-files | * | output.changed-files | PR changed files | manual |
+| trilom/file-changes-action | * | output.files | PR changed files | manual |
+| trilom/file-changes-action | * | output.files_added | PR changed files | manual |
+| trilom/file-changes-action | * | output.files_modified | PR changed files | manual |
+| trilom/file-changes-action | * | output.files_removed | PR changed files | manual |
+| tzkhan/pr-update-action | * | output.headMatch |  | manual |
+| xt0rted/slash-command-action | * | output.command-arguments |  | manual |
+summaries
+| akhileshns/heroku-deploy | * | input.branch | output.status | taint | manual |
+| android-actions/setup-android | * | input.cmdline-tools-version | output.ANDROID_COMMANDLINE_TOOLS_VERSION | taint | manual |
+| apple-actions/import-codesign-certs | * | input.keychain-password | output.keychain-password | taint | manual |
+| ashley-taylor/read-json-property-action | * | input.json | output.value | taint | manual |
+| ashley-taylor/regex-property-action | * | input.replacement | output.value | taint | manual |
+| ashley-taylor/regex-property-action | * | input.value | output.value | taint | manual |
+| aszc/change-string-case-action | * | input.replace-with | output.lowercase | taint | manual |
+| aszc/change-string-case-action | * | input.replace-with | output.uppercase | taint | manual |
+| aszc/change-string-case-action | * | input.string | output.capitalized | taint | manual |
+| aws-actions/configure-aws-credentials | * | input.aws-access-key-id | env.AWS_ACCESS_KEY_ID | taint | manual |
+| aws-actions/configure-aws-credentials | * | input.aws-access-key-id | secret.AWS_ACCESS_KEY_ID | taint | manual |
+| aws-actions/configure-aws-credentials | * | input.aws-secret-access-key | env.AWS_SECRET_ACCESS_KEY | taint | manual |
+| aws-actions/configure-aws-credentials | * | input.aws-secret-access-key | secret.AWS_SECRET_ACCESS_KEY | taint | manual |
+| aws-actions/configure-aws-credentials | * | input.aws-session-token | env.AWS_SESSION_TOKEN | taint | manual |
+| aws-actions/configure-aws-credentials | * | input.aws-session-token | secret.AWS_SESSION_TOKEN | taint | manual |
+| bobheadxi/deployments | * | input.env | output.env | taint | manual |
+| bufbuild/buf-breaking-action | * | input.buf_token | env.BUF_TOKEN | taint | manual |
+| bufbuild/buf-lint-action | * | input.buf_token | env.BUF_TOKEN | taint | manual |
+| cachix/cachix-action | * | input.signingKey | env.CACHIX_SIGNING_KEY | taint | manual |
+| coursier/cache-action | * | input.path | env.COURSIER_CACHE | taint | manual |
+| crazy-max/ghaction-import-gpg | * | input.fingerprint | output.fingerprint | taint | manual |
+| csexton/release-asset-action | * | input.release-url | output.url | taint | manual |
+| delaguardo/setup-clojure | * | input.boot | env.BOOT_VERSION | taint | manual |
+| frabert/replace-string-action | * | input.replace-with | output.replaced | taint | manual |
+| frabert/replace-string-action | * | input.string | output.replaced | taint | manual |
+| game-ci/unity-test-runner | * | input.artifactsPath | output.artifactsPath | taint | manual |
+| getsentry/action-release | * | input.version | output.version | taint | manual |
+| getsentry/action-release | * | input.version_prefix | output.version | taint | manual |
+| github/codeql-action | * | input.output | output.sarif-output | taint | manual |
+| gradle/gradle-build-action | * | input.build-scan-terms-of-service-agree | env.BUILD_SCAN_TERMS_OF_SERVICE_AGREE | taint | manual |
+| gradle/gradle-build-action | * | input.build-scan-terms-of-service-url | env.BUILD_SCAN_TERMS_OF_SERVICE_URL | taint | manual |
+| gradle/gradle-build-action | * | input.cache-encryption-key | env.GRADLE_ENCRYPTION_KEY | taint | manual |
+| haya14busa/action-cond | * | input.if_false | output.value | taint | manual |
+| haya14busa/action-cond | * | input.if_true | output.value | taint | manual |
+| hexlet/project-action | * | input.mount-path | env.PWD | taint | manual |
+| jsdaniell/create-json | * | input.dir | output.successfully | taint | manual |
+| jsdaniell/create-json | * | input.json | output.successfully | taint | manual |
+| jsdaniell/create-json | * | input.name | output.successfully | taint | manual |
+| jwalton/gh-ecr-push | * | input.image | output.imageUrl | taint | manual |
+| larsoner/circleci-artifacts-redirector-action | * | input.artifact-path | output.url | taint | manual |
+| mad9000/actions-find-and-replace-string | * | input.replace | output.value | taint | manual |
+| mad9000/actions-find-and-replace-string | * | input.source | output.value | taint | manual |
+| mattdavis0351/actions | * | input.image-name | output.imageUrl | taint | manual |
+| mattdavis0351/actions | * | input.tag | output.imageUrl | taint | manual |
+| metro-digital/setup-tools-for-waas | * | input.gcp_sa_key | env.GCLOUD_PROJECT | taint | manual |
+| mishakav/pytest-coverage-comment | * | input.multiple-files | output.summaryReport | taint | manual |
+| mymindstorm/setup-emsdk | * | input.actions-cache-folder | env.EMSDK | taint | manual |
+| ruby/setup-ruby | * | input.ruby-version | output.ruby-prefix | taint | manual |
+| salsify/action-detect-and-tag-new-version | * | input.tag-template | output.tag | taint | manual |
+| shallwefootball/upload-s3-action | * | input.destination_dir | output.object_key | taint | manual |
+| shogo82148/actions-setup-perl | * | input.working-directory | env.PERL5LIB | taint | manual |
+| suisei-cn/actions-download-file | * | input.filename | output.filename | taint | manual |
+| timheuer/base64-to-file | * | input.fileDir | output.filePath | taint | manual |
+| timheuer/base64-to-file | * | input.fileName | output.filePath | taint | manual |
+calls
+| .github/workflows/test.yml:11:9:15:6 | Uses Step | actions/checkout |
+| .github/workflows/test.yml:15:9:19:6 | Uses Step: source | tj-actions/changed-files |
+| .github/workflows/test.yml:19:9:26:6 | Uses Step: step | mad9000/actions-find-and-replace-string |
+needs
+| .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
+testNormalizeExpr
+| foo['bar'] == baz | foo.bar == baz |
+| github.event.pull_request.user["login"] | github.event.pull_request.user.login |
+| github.event.pull_request.user['login'] | github.event.pull_request.user.login |
+| github.event.pull_request['user']['login'] | github.event.pull_request.user.login |
+writeToGitHubEnv
+| id1 | $(<pr-id1.txt) |
+| id2 | $(<pr-id2.txt) |
+| id3 | $(<pr-id3.txt) |
+| sha1 | $(<test-results1/sha-number) |
+| sha2 | $(<test-results2/sha-number) |
+| sha3 | $(<test-results3/sha-number) |
+writeToGitHubOutput
+| id1 | $(<pr-id1.txt) |
+| id2 | $(<pr-id2.txt) |
+| id3 | $(<pr-id3.txt) |
+| sha1 | $(<test-results1/sha-number) |
+| sha2 | $(<test-results2/sha-number) |
+| sha3 | $(<test-results3/sha-number) |
+| sha4 | $(<test-results4/sha-number) |
+| sha5 | $(<test-results5/sha-number) |
+| sha6 | $(<test-results6/sha-number) |

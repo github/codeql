@@ -56,6 +56,7 @@ predicate nodeIsHidden(Node node) { none() }
 
 class DataFlowExpr extends Cfg::Node {
   DataFlowExpr() {
+    this.getAstNode() instanceof Job or
     this.getAstNode() instanceof Expression or
     this.getAstNode() instanceof Uses or
     this.getAstNode() instanceof Run or
@@ -136,10 +137,12 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 newtype TContent =
   TFieldContent(string name) {
-    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env, matrix or inputs
+    // We only use field flow for env, steps and jobs outputs
+    // not for accessing other context fields such as matrix or inputs
     name = any(StepsExpression a).getFieldName() or
     name = any(NeedsExpression a).getFieldName() or
-    name = any(JobsExpression a).getFieldName()
+    name = any(JobsExpression a).getFieldName() or
+    name = any(EnvExpression a).getFieldName()
   }
 
 predicate forceHighPrecision(Content c) { c instanceof FieldContent }
@@ -292,7 +295,8 @@ predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
     (
       access instanceof NeedsExpression or
       access instanceof StepsExpression or
-      access instanceof JobsExpression
+      access instanceof JobsExpression or
+      access instanceof EnvExpression
     ) and
     c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
     node1.asExpr() = access.getTarget() and
@@ -330,7 +334,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   fieldStoreStep(node1, node2, c) or
   externallyDefinedStoreStep(node1, node2, c) or
   envToOutputStoreStep(node1, node2, c) or
-  artifactToOutputStoreStep(node1, node2, c)
+  artifactToOutputStoreStep(node1, node2, c) or
+  envToEnvStoreStep(node1, node2, c) or
+  artifactToEnvStoreStep(node1, node2, c)
 }
 
 /**

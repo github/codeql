@@ -25,7 +25,7 @@ module Utils {
   }
 
   bindingset[line, var]
-  private predicate extractLineAssignment(string line, string var, string key, string value) {
+  predicate extractLineAssignment(string line, string var, string key, string value) {
     exists(string assignment |
       // single line assignment
       assignment =
@@ -59,7 +59,7 @@ module Utils {
   }
 
   bindingset[script, var]
-  private predicate extractMultilineAssignment(string script, string var, string key, string value) {
+  predicate extractMultilineAssignment(string script, string var, string key, string value) {
     // multiline assignment
     exists(string flattenedScript |
       flattenedScript = script.replaceAll("\n", "::NEW_LINE::") and

@@ -1010,6 +1010,9 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
       s.getInScopeEnvVarExpr(fieldName) = result and
       s.getAChildNode*() = this
     )
+    or
+    // Some Run steps may store taint in the enclosing job so we need to check the enclosing job
+    result = this.getEnclosingJob()
   }
 }
 

@@ -2,7 +2,8 @@ edges
 | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced |
 | .github/workflows/argus_case_study.yml:17:25:17:53 | github.event.issue.title | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE |
 | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] |
-| .github/workflows/artifactpoisoning1.yml:14:9:20:6 | Uses Step | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] |
+| .github/workflows/artifactpoisoning1.yml:14:9:20:6 | Uses Step | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr |
+| .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] |
 | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] | .github/workflows/artifactpoisoning1.yml:34:67:34:92 | steps.pr.outputs.id |
 | .github/workflows/artifactpoisoning2.yml:13:9:19:6 | Uses Step: pr | .github/workflows/artifactpoisoning2.yml:22:17:22:42 | steps.pr.outputs.id |
 | .github/workflows/changed-files.yml:16:9:20:6 | Uses Step: changed-files | .github/workflows/changed-files.yml:22:24:22:75 | steps.changed-files.outputs.all_changed_files |
@@ -74,6 +75,7 @@ nodes
 | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | semmle.label | env.ISSUE_TITLE |
 | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced | semmle.label | steps.remove_quotations.outputs.replaced |
 | .github/workflows/artifactpoisoning1.yml:14:9:20:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr | semmle.label | Run Step: pr |
 | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] | semmle.label | Run Step: pr [id] |
 | .github/workflows/artifactpoisoning1.yml:34:67:34:92 | steps.pr.outputs.id | semmle.label | steps.pr.outputs.id |
 | .github/workflows/artifactpoisoning2.yml:13:9:19:6 | Uses Step: pr | semmle.label | Uses Step: pr |

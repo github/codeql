@@ -23,28 +23,6 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
- * Holds if a Run step declares an environment variable, uses it in its script and sets an output in its script.
- * e.g.
- *  - name: Extract and Clean Initial URL
- *    id: extract-url
- *    env:
- *      BODY: ${{ github.event.comment.body }}
- *    run: |
- *      echo "::set-output name=foo::$BODY"
- *      echo "foo=$(echo $BODY)" >> $GITHUB_OUTPUT
- *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
- */
-predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string varName, string key, string value |
-    c = any(DataFlow::FieldContent ct | ct.getName() = key.replaceAll("output\\.", "")) and
-    run.getInScopeEnvVarExpr(varName) = pred.asExpr() and
-    Utils::writeToGitHubOutput(run, key, value) and
-    value.matches("%$" + ["", "{", "ENV{"] + varName + "%") and
-    succ.asExpr() = run
-  )
-}
-
-/**
  * Holds if a Run step declares an environment variable, uses it in its script to set another env var.
  * e.g.
  *    env:
@@ -66,34 +44,78 @@ class EnvToRunTaintStep extends AdditionalTaintStep {
 }
 
 /**
+ * Holds if a Run step declares an environment variable, uses it in its script and sets an output in its script.
+ * e.g.
+ *  - name: Extract and Clean Initial URL
+ *    id: extract-url
+ *    env:
+ *      BODY: ${{ github.event.comment.body }}
+ *    run: |
+ *      echo "::set-output name=foo::$BODY"
+ *      echo "foo=$(echo $BODY)" >> $GITHUB_OUTPUT
+ *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
+ */
+predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+  exists(Run run, string varName, string key, string value |
+    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
+    pred.asExpr() = run.getInScopeEnvVarExpr(varName) and
+    succ.asExpr() = run and
+    Utils::writeToGitHubOutput(run, key, value) and
+    value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
+  )
+}
+
+predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+  exists(Run run, string varName, string key, string value |
+    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
+    pred.asExpr() = run.getInScopeEnvVarExpr(varName) and
+    // we store the taint on the enclosing job since the may not exist an implicit env attribute
+    succ.asExpr() = run.getEnclosingJob() and
+    Utils::writeToGitHubEnv(run, key, value) and
+    value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
+  )
+}
+
+/**
  * A downloaded artifact that gets assigned to a Run step output.
  * - uses: actions/download-artifact@v2
  * - run: echo "::set-output name=id::$(<pr-id.txt)"
  */
 predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string key, string value, ArtifactDownloadStep download |
+  exists(Run run, string key, string value, UntrustedArtifactDownloadStep download |
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
-    pred.asExpr() = download and
+    pred.asExpr() = run and
     succ.asExpr() = run and
-    Utils::writeToGitHubOutput(run, key, value) and
+    (
+      Utils::writeToGitHubOutput(run, key, value) or
+      Utils::writeToGitHubEnv(run, key, value)
+    ) and
     value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+  )
+}
+
+predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+  exists(Run run, string key, string value, UntrustedArtifactDownloadStep download |
+    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
+    download.getAFollowingStep() = run and
+    pred.asExpr() = run and
+    // we store the taint on the enclosing job since the may not exist an implicit env attribute
+    succ.asExpr() = run.getEnclosingJob() and
+    Utils::writeToGitHubEnv(run, key, value) and
+    value.regexpMatch([".*\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\).*"])
   )
 }
 
 /**
  * A download artifact step followed by a step that may use downloaded artifacts.
  */
-predicate artifactDownloadToUseStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(ArtifactDownloadStep download, Run run |
-    pred.asExpr() = download and
-    succ.asExpr() = run and
-    download.getAFollowingStep() = run
-  )
-}
-
 class ArtifactDownloadToUseTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    artifactDownloadToUseStep(node1, node2)
+    exists(UntrustedArtifactDownloadStep download, Run run |
+      node1.asExpr() = download and
+      node2.asExpr() = run and
+      download.getAFollowingStep() = run
+    )
   }
 }
