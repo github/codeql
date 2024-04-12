@@ -14,10 +14,10 @@ predicate hasDuplicateFunctionEntryPointLocation(Function func) {
 
 predicate hasDuplicateFunctionEntryPoint(Function func) { count(func.getEntryPoint()) > 1 }
 
-predicate hasNonUniqueDeclarationEntry(DeclStmt stmt, int i) {
+predicate hasDuplicateDeclarationEntry(DeclStmt stmt, int i) {
   strictcount(stmt.getDeclarationEntry(i)) > 1
 }
 
 select count(Function f | hasDuplicateFunctionEntryPoint(f)) as duplicateFunctionEntryPoint,
   count(Function f | hasDuplicateFunctionEntryPointLocation(f)) as duplicateFunctionEntryPointLocation,
-  count(DeclStmt stmt, int i | hasNonUniqueDeclarationEntry(stmt, i)) as nonUniqueDeclarationEntry
+  count(DeclStmt stmt, int i | hasDuplicateDeclarationEntry(stmt, i)) as duplicateDeclarationEntry
