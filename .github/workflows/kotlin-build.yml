@@ -25,4 +25,4 @@ jobs:
           bazel query //java/kotlin-extractor/...
           # only build the default version as a sanity check that we can build from `codeql`
           # the full official build will be checked by QLucie
-          bazel build //java/kotlin-extactor
+          bazel build //java/kotlin-extractor
