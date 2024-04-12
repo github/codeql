@@ -80,7 +80,11 @@ def _get_default_version(repository_ctx):
     if not res:
         fail("kotlinc -version failed: %s" % res.stderr)
     out = (res.stdout or res.stderr).split(" ")
+    if "kotlinc-jvm" not in out:
+        fail("kotlinc -version output does not contain 'kotlinc-jvm': %s" % out)
     kotlinc_jvm_index = out.index("kotlinc-jvm")
+    if kotlinc_jvm_index + 1 >= len(out):
+        fail("kotlinc -version output does not contain a version after 'kotlinc-jvm': %s" % out)
     return out[kotlinc_jvm_index + 1]
 
 def _get_available_version(version):
