@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private static readonly HashSet<string> binaryFileExtensions = [".dll", ".exe"]; // TODO: add more binary file extensions.
 
         private readonly ILogger logger;
-        private readonly Lazy<FileInfo[]> all;
+        private readonly FileInfo[] all;
         private readonly Lazy<FileInfo[]> allNonBinary;
         private readonly Lazy<string[]> smallNonBinary;
         private readonly Lazy<string[]> sources;
@@ -29,8 +29,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             SourceDir = sourceDir;
             this.logger = logger;
 
-            all = new Lazy<FileInfo[]>(GetAllFiles);
-            allNonBinary = new Lazy<FileInfo[]>(() => all.Value.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToArray());
+            all = GetAllFiles();
+            allNonBinary = new Lazy<FileInfo[]>(() => all.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToArray());
             smallNonBinary = new Lazy<string[]>(() =>
             {
                 var ret = SelectSmallFiles(allNonBinary.Value).SelectFileNames().ToArray();
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             globalJsons = new Lazy<string[]>(() => allNonBinary.Value.SelectFileNamesByName("global.json").ToArray());
             razorViews = new Lazy<string[]>(() => SelectTextFileNamesByExtension("razor view", ".cshtml", ".razor"));
 
-            rootNugetConfig = new Lazy<string?>(() => all.Value.SelectRootFiles(SourceDir).SelectFileNamesByName("nuget.config").FirstOrDefault());
+            rootNugetConfig = new Lazy<string?>(() => all.SelectRootFiles(SourceDir).SelectFileNamesByName("nuget.config").FirstOrDefault());
         }
 
         private string[] SelectTextFileNamesByExtension(string filetype, params string[] extensions)
@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private string[] SelectBinaryFileNamesByExtension(string filetype, params string[] extensions)
         {
-            var ret = all.Value.SelectFileNamesByExtension(extensions).ToArray();
+            var ret = all.SelectFileNamesByExtension(extensions).ToArray();
             logger.LogInfo($"Found {ret.Length} {filetype} files in {SourceDir}.");
             return ret;
         }
