@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     }
                     else
                     {
-                        logger.LogInfo($"AssemblyLookupLocation: Skipping {dll.FullName}.");
+                        logger.LogDebug($"AssemblyLookupLocation: Skipping {dll.FullName}.");
                     }
                 }
             }
@@ -68,19 +68,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 else
                 {
-                    logger.LogInfo($"AssemblyLookupLocation: Skipping {path}.");
+                    logger.LogDebug($"AssemblyLookupLocation: Skipping {path}.");
                 }
                 return dllsToIndex;
             }
 
             if (Directory.Exists(path))
             {
-                logger.LogInfo($"AssemblyLookupLocation: Finding reference DLLs in {path}...");
+                logger.LogDebug($"AssemblyLookupLocation: Finding reference DLLs in {path}...");
                 AddReferenceDirectory(dllsToIndex, logger);
             }
             else
             {
-                logger.LogInfo("AssemblyLookupLocation: Path not found: " + path);
+                logger.LogDebug("AssemblyLookupLocation: Path not found: " + path);
             }
             return dllsToIndex;
         }

@@ -361,7 +361,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             allPackageDirectories
                 .Where(package => !dependencies.Packages.Contains(package))
                 .Order()
-                .ForEach(package => logger.LogInfo($"Unused package: {package}"));
+                .ForEach(package => logger.LogDebug($"Unused package: {package}"));
         }
 
         private ICollection<string> GetAllPackageDirectories()
