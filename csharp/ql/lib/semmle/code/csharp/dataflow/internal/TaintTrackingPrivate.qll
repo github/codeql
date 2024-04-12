@@ -150,21 +150,24 @@ private module Cached {
    * in all global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    localTaintStepCommon(nodeFrom, nodeTo)
-    or
-    // Taint members
-    readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContent(), nodeTo)
-    or
-    // Although flow through collections is modeled precisely using stores/reads, we still
-    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
-    // tracking configurations where the source is a collection
-    readStep(nodeFrom, TElementContent(), nodeTo)
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      localTaintStepCommon(nodeFrom, nodeTo)
+      or
+      // Taint members
+      readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContent(), nodeTo)
+      or
+      // Although flow through collections is modeled precisely using stores/reads, we still
+      // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+      // tracking configurations where the source is a collection
+      readStep(nodeFrom, TElementContent(), nodeTo)
+      or
+      nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+    ) and
+    model = ""
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
-    or
-    nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
   }
 }
 

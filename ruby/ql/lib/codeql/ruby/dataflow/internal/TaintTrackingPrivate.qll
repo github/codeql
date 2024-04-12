@@ -77,38 +77,41 @@ private module Cached {
    * in all global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // value of `case` expression into variables in patterns
-    exists(
-      CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprCfgNode value,
-      CfgNodes::ExprNodes::InClauseCfgNode clause, Ssa::Definition def
-    |
-      nodeFrom.asExpr() = value and
-      value = case.getValue() and
-      clause = case.getBranch(_) and
-      def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
-      def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
-      not LocalFlow::ssaDefAssigns(def, value)
-    )
-    or
-    // operation involving `nodeFrom`
-    exists(CfgNodes::ExprNodes::OperationCfgNode op |
-      op = nodeTo.asExpr() and
-      op.getAnOperand() = nodeFrom.asExpr() and
-      not op.getExpr() =
-        any(Expr e |
-          // included in normal data-flow
-          e instanceof AssignExpr or
-          e instanceof BinaryLogicalOperation or
-          // has flow summary
-          e instanceof SplatExpr
-        )
-    )
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      // value of `case` expression into variables in patterns
+      exists(
+        CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprCfgNode value,
+        CfgNodes::ExprNodes::InClauseCfgNode clause, Ssa::Definition def
+      |
+        nodeFrom.asExpr() = value and
+        value = case.getValue() and
+        clause = case.getBranch(_) and
+        def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
+        def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
+        not LocalFlow::ssaDefAssigns(def, value)
+      )
+      or
+      // operation involving `nodeFrom`
+      exists(CfgNodes::ExprNodes::OperationCfgNode op |
+        op = nodeTo.asExpr() and
+        op.getAnOperand() = nodeFrom.asExpr() and
+        not op.getExpr() =
+          any(Expr e |
+            // included in normal data-flow
+            e instanceof AssignExpr or
+            e instanceof BinaryLogicalOperation or
+            // has flow summary
+            e instanceof SplatExpr
+          )
+      )
+    ) and
+    model = ""
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
     or
-    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo) and model = "AdditionalTaintStep"
     or
     // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
@@ -119,7 +122,8 @@ private module Cached {
       c.isKnownOrUnknownElement(_)
       or
       c.isAnyElement()
-    )
+    ) and
+    model = ""
   }
 
   cached
@@ -136,7 +140,7 @@ private module Cached {
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     DataFlow::localFlowStep(nodeFrom, nodeTo) or
-    defaultAdditionalTaintStep(nodeFrom, nodeTo) or
+    defaultAdditionalTaintStep(nodeFrom, nodeTo, _) or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     summaryThroughStepTaint(nodeFrom, nodeTo, _)

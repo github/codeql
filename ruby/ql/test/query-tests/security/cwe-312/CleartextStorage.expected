@@ -20,8 +20,8 @@ edges
 | app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" | app/controllers/users_controller.rb:35:5:35:16 | new_password | provenance |  |
 | app/controllers/users_controller.rb:42:5:42:16 | new_password | app/controllers/users_controller.rb:44:21:44:32 | new_password | provenance |  |
 | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | app/controllers/users_controller.rb:42:5:42:16 | new_password | provenance |  |
-| app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | provenance |  |
-| app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | provenance |  |
+| app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | provenance | AdditionalTaintStep |
+| app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | provenance | AdditionalTaintStep |
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:58:5:58:16 | new_password | provenance |  |
 | app/models/user.rb:3:5:3:16 | new_password | app/models/user.rb:5:27:5:38 | new_password | provenance |  |
 | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | app/models/user.rb:3:5:3:16 | new_password | provenance |  |

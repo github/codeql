@@ -15,6 +15,6 @@ class IncludeSummarizedCallable extends SummarizedCallableImplFinal {
   predicate relevantSummary(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
-    this.propagatesFlow(input, output, preservesValue)
+    this.propagatesFlow(input, output, preservesValue, _)
   }
 }

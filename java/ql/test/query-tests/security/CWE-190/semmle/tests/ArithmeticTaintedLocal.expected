@@ -1,27 +1,27 @@
 edges
 | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | provenance |  |
 | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | provenance |  |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | provenance |  |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | provenance |  |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:42966 |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:42966 |
 | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | provenance |  |
 | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | provenance |  |
-| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | provenance |  |
-| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | provenance |  |
-| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | provenance |  |
-| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | provenance |  |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | provenance | MaD:42932 |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | provenance | MaD:42932 |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | provenance | MaD:42933 |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | provenance | MaD:42933 |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | provenance |  |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | provenance |  |
-| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance |  |
-| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:32:17:32:20 | data | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:40:17:40:20 | data | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:50:17:50:20 | data | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:64:20:64:23 | data : Number | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:95:37:95:40 | data | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:118:9:118:12 | data : Number | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:119:10:119:13 | data : Number | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:120:10:120:13 | data : Number | provenance |  |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:121:10:121:13 | data : Number | provenance |  |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance | MaD:43114 |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance | MaD:43114 |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:32:17:32:20 | data | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:40:17:40:20 | data | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:50:17:50:20 | data | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:64:20:64:23 | data : Number | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:95:37:95:40 | data | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:118:9:118:12 | data : Number | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:119:10:119:13 | data : Number | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:120:10:120:13 | data : Number | provenance | TaintPreservingCallable |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:121:10:121:13 | data : Number | provenance | TaintPreservingCallable |
 | ArithmeticTainted.java:64:4:64:10 | tainted [post update] : Holder [dat] : Number | ArithmeticTainted.java:66:18:66:24 | tainted : Holder [dat] : Number | provenance |  |
 | ArithmeticTainted.java:64:20:64:23 | data : Number | ArithmeticTainted.java:64:4:64:10 | tainted [post update] : Holder [dat] : Number | provenance |  |
 | ArithmeticTainted.java:64:20:64:23 | data : Number | Holder.java:12:22:12:26 | d : Number | provenance |  |
