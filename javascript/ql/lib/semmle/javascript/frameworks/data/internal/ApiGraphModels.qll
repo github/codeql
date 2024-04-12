@@ -76,6 +76,8 @@ private import codeql.dataflow.internal.AccessPathSyntax
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
   /**
+   * DEPRECATED: Use the extensible predicate `sourceModel` instead.
+   *
    * A unit class for adding additional source model rows.
    *
    * Extend this class to add additional source definitions.
@@ -100,6 +102,8 @@ module ModelInput {
    * A unit class for adding additional sink model rows.
    *
    * Extend this class to add additional sink definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `sinkModel` instead.
    */
   deprecated class SinkModelCsv extends Unit {
     /**
@@ -119,6 +123,8 @@ module ModelInput {
    * A unit class for adding additional summary model rows.
    *
    * Extend this class to add additional flow summary definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `summaryModel` instead.
    */
   deprecated class SummaryModelCsv extends Unit {
     /**
@@ -141,6 +147,9 @@ module ModelInput {
    * A unit class for adding additional type model rows.
    *
    * Extend this class to add additional type definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `typeModel` or the class
+   * `TypeModel` instead.
    */
   deprecated class TypeModelCsv extends Unit {
     /**
@@ -186,6 +195,8 @@ module ModelInput {
 
   /**
    * A unit class for adding additional type variable model rows.
+   *
+   * DEPRECATED: Use the extensible predicate `typeVariableModel` instead.
    */
   deprecated class TypeVariableModelCsv extends Unit {
     /**
