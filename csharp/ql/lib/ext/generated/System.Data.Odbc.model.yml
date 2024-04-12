@@ -61,7 +61,6 @@ extensions:
       - ["System.Data.Odbc", "OdbcErrorCollection", False, "get_SyncRoot", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["System.Data.Odbc", "OdbcException", False, "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Data.Odbc", "OdbcException", False, "get_Errors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Data.Odbc", "OdbcException", False, "get_Source", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Data.Odbc", "OdbcInfoMessageEventArgs", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Data.Odbc", "OdbcInfoMessageEventArgs", False, "get_Errors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Data.Odbc", "OdbcInfoMessageEventArgs", False, "get_Message", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

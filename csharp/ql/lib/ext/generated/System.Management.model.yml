@@ -284,7 +284,5 @@ extensions:
       - ["System.Management", "WqlEventQuery", "WqlEventQuery", "(System.String,System.TimeSpan)", "summary", "df-generated"]
       - ["System.Management", "WqlEventQuery", "WqlEventQuery", "(System.String,System.TimeSpan,System.String)", "summary", "df-generated"]
       - ["System.Management", "WqlEventQuery", "WqlEventQuery", "(System.String,System.TimeSpan,System.String,System.TimeSpan,System.String[],System.String)", "summary", "df-generated"]
-      - ["System.Management", "WqlEventQuery", "get_QueryLanguage", "()", "summary", "df-generated"]
       - ["System.Management", "WqlObjectQuery", "Clone", "()", "summary", "df-generated"]
       - ["System.Management", "WqlObjectQuery", "WqlObjectQuery", "(System.String)", "summary", "df-generated"]
-      - ["System.Management", "WqlObjectQuery", "get_QueryLanguage", "()", "summary", "df-generated"]
