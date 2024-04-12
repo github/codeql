@@ -36,6 +36,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly TemporaryDirectory legacyPackageDirectory;
         private readonly TemporaryDirectory missingPackageDirectory;
         private readonly TemporaryDirectory tempWorkingDirectory;
+        private readonly FileProvider fileProvider;
         private readonly bool cleanupTempWorkingDirectory;
 
         private readonly Lazy<Runtime> runtimeLazy;
@@ -79,20 +80,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
 
-            logger.LogInfo($"Finding files in {srcDir}...");
-
-            var allFiles = GetAllFiles().ToList();
-            var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
-            var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
-            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(logger).SelectFileNames().ToList();
-            this.fileContent = new FileContent(logger, smallNonBinaryFiles);
-            this.nonGeneratedSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
-            this.generatedSources = new();
-            var allProjects = allNonBinaryFiles.SelectFileNamesByExtension(".csproj").ToList();
-            var allSolutions = allNonBinaryFiles.SelectFileNamesByExtension(".sln").ToList();
-            var dllLocations = allFiles.SelectFileNamesByExtension(".dll").Select(x => new AssemblyLookupLocation(x)).ToHashSet();
-
-            logger.LogInfo($"Found {allFiles.Count} files, {nonGeneratedSources.Count} source files, {allProjects.Count} project files, {allSolutions.Count} solution files, {dllLocations.Count} DLLs.");
+            this.fileProvider = new FileProvider(sourceDir, logger);
+            this.fileContent = new FileContent(logger, this.fileProvider.SmallNonBinary);
+            this.nonGeneratedSources = fileProvider.Sources.ToList();
+            this.generatedSources = [];
 
             void startCallback(string s, bool silent)
             {
@@ -104,7 +95,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
             }
 
-            DotNet.WithDotNet(SystemBuildActions.Instance, logger, smallNonBinaryFiles, tempWorkingDirectory.ToString(), shouldCleanUp: false, ensureDotNetAvailable: true, version: null, installDir =>
+            DotNet.WithDotNet(SystemBuildActions.Instance, logger, fileProvider.GlobalJsons, tempWorkingDirectory.ToString(), shouldCleanUp: false, ensureDotNetAvailable: true, version: null, installDir =>
             {
                 this.dotnetPath = installDir;
                 return BuildScript.Success;
@@ -121,13 +112,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 throw;
             }
 
-            RestoreNugetPackages(allNonBinaryFiles, allProjects, allSolutions, dllLocations);
+            var dllLocations = fileProvider.Dlls.Select(x => new AssemblyLookupLocation(x)).ToHashSet();
+            RestoreNugetPackages(dllLocations);
             // Find DLLs in the .Net / Asp.Net Framework
             // This needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
             var frameworkLocations = AddFrameworkDlls(dllLocations);
 
             assemblyCache = new AssemblyCache(dllLocations, frameworkLocations, logger);
-            AnalyseSolutions(allSolutions);
+            AnalyseSolutions(fileProvider.Solutions);
 
             foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
             {
@@ -154,7 +146,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 shouldExtractWebViews)
             {
                 CompilationInfos.Add(("WebView extraction enabled", "1"));
-                GenerateSourceFilesFromWebViews(allNonBinaryFiles);
+                GenerateSourceFilesFromWebViews();
             }
             else
             {
@@ -171,8 +163,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo("Build analysis summary:");
             logger.LogInfo($"{nonGeneratedSources.Count,align} source files found on the filesystem");
             logger.LogInfo($"{generatedSources.Count,align} source files have been generated");
-            logger.LogInfo($"{allSolutions.Count,align} solution files found on the filesystem");
-            logger.LogInfo($"{allProjects.Count,align} project files found on the filesystem");
+            logger.LogInfo($"{fileProvider.Solutions.Count,align} solution files found on the filesystem");
+            logger.LogInfo($"{fileProvider.Projects.Count,align} project files found on the filesystem");
             logger.LogInfo($"{usedReferences.Keys.Count,align} resolved references");
             logger.LogInfo($"{unresolvedReferences.Count,align} unresolved references");
             logger.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
@@ -182,8 +174,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.AddRange([
                 ("Source files on filesystem", nonGeneratedSources.Count.ToString()),
                 ("Source files generated", generatedSources.Count.ToString()),
-                ("Solution files on filesystem", allSolutions.Count.ToString()),
-                ("Project files on filesystem", allProjects.Count.ToString()),
+                ("Solution files on filesystem", fileProvider.Solutions.Count.ToString()),
+                ("Project files on filesystem", fileProvider.Projects.Count.ToString()),
                 ("Resolved references", usedReferences.Keys.Count.ToString()),
                 ("Unresolved references", unresolvedReferences.Count.ToString()),
                 ("Resolved assembly conflicts", conflictedReferences.ToString()),
@@ -467,15 +459,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void GenerateSourceFilesFromWebViews(List<FileInfo> allFiles)
+        private void GenerateSourceFilesFromWebViews()
         {
-            var views = allFiles.SelectFileNamesByExtension(".cshtml", ".razor").ToArray();
-            if (views.Length == 0)
+            var views = fileProvider.RazorViews;
+            if (views.Count == 0)
             {
                 return;
             }
 
-            logger.LogInfo($"Found {views.Length} cshtml and razor files.");
+            logger.LogInfo($"Found {views.Count} cshtml and razor files.");
 
             if (!IsAspNetCoreDetected())
             {
@@ -501,38 +493,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     logger.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
                 }
             }
-        }
-
-        private IEnumerable<FileInfo> GetAllFiles()
-        {
-            IEnumerable<FileInfo> files = sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true });
-
-            if (dotnetPath != null)
-            {
-                files = files.Where(f => !f.FullName.StartsWith(dotnetPath, StringComparison.OrdinalIgnoreCase));
-            }
-
-            files = files.Where(f =>
-            {
-                try
-                {
-                    if (f.Exists)
-                    {
-                        return true;
-                    }
-
-                    logger.LogWarning($"File {f.FullName} could not be processed.");
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    logger.LogWarning($"File {f.FullName} could not be processed: {ex.Message}");
-                    return false;
-                }
-            });
-
-            files = new FilePathFilter(sourceDir, logger).Filter(files);
-            return files;
         }
 
         /// <summary>
