@@ -75,16 +75,12 @@ def _get_default_version(repository_ctx):
         return default_version
     if not repository_ctx.which("kotlinc"):
         return DEFAULT_VERSION
-    res = repository_ctx.execute(["kotlinc", "-version"])
-    if not res:
-        fail("kotlinc -version failed: %s" % res.stderr)
-    out = (res.stdout or res.stderr).split(" ")
-    if "kotlinc-jvm" not in out:
-        fail("kotlinc -version output does not contain 'kotlinc-jvm': %s" % out)
-    kotlinc_jvm_index = out.index("kotlinc-jvm")
-    if kotlinc_jvm_index + 1 >= len(out):
-        fail("kotlinc -version output does not contain a version after 'kotlinc-jvm': %s" % out)
-    return out[kotlinc_jvm_index + 1]
+    kotlin_plugin_versions = repository_ctx.path(Label("//java/kotlin-extractor:current_kotlin_version.py"))
+    python = repository_ctx.which("python3") or repository_ctx.which("python")
+    res = repository_ctx.execute([python, kotlin_plugin_versions])
+    if res.return_code != 0:
+        fail(res.stderr)
+    return res.stdout.strip()
 
 def _get_available_version(version):
     for available_version in reversed(VERSIONS):
