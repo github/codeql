@@ -20,13 +20,12 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   DataFlow::localFlowStep(nodeFrom, nodeTo)
   or
   // taint flow step
-  localAdditionalTaintStep(nodeFrom, nodeTo)
+  localAdditionalTaintStep(nodeFrom, nodeTo, _)
   or
   // models-as-data summarized flow for local data flow (i.e. special case for flow
   // through calls to modeled functions, without relying on global dataflow to join
   // the dots).
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
-  localAdditionalTaintStep(nodeFrom, nodeTo, _)
 }
 
 /**
@@ -55,7 +54,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   // models-as-data summarized flow
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), false)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
   or
   // object->field conflation for content that is a `TaintInheritingContent`.
   exists(DataFlow::ContentSet f |

@@ -1969,14 +1969,13 @@ private module Cached {
   cached
   predicate localFlowStep(Node nodeFrom, Node nodeTo) {
     // common dataflow steps
-    simpleLocalFlowStep(nodeFrom, nodeTo)
+    simpleLocalFlowStep(nodeFrom, nodeTo, _)
     or
     // models-as-data summarized flow for local data flow (i.e. special case for flow
     // through calls to modeled functions, without relying on global dataflow to join
     // the dots).
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
-  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo, _) }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
     nodeFrom != nodeTo and
@@ -2084,13 +2083,12 @@ private module Cached {
     // Reverse flow: data that flows from the definition node back into the indirection returned
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
-    reverseFlow(nodeFrom, nodeTo)
+    reverseFlow(nodeFrom, nodeTo) and
+    model = ""
     or
     // models-as-data summarized flow
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), true)
-    reverseFlow(nodeFrom, nodeTo) and
-    model = ""
+      nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {

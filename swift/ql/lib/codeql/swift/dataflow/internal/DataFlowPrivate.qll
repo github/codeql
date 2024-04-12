@@ -323,10 +323,9 @@ private module Cached {
   /** This is the local flow predicate that is exposed. */
   cached
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
-    localFlowStepCommon(nodeFrom, nodeTo)
+    localFlowStepCommon(nodeFrom, nodeTo, _)
     or
     // models-as-data summarized flow
-    localFlowStepCommon(nodeFrom, nodeTo, _) or
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
