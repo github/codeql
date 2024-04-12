@@ -9,7 +9,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplSpecific as DataFlowImp
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 
-module Input implements InputSig<DataFlowImplSpecific::RubyDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
   class SummarizedCallableBase = string;
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
@@ -146,7 +146,7 @@ module Input implements InputSig<DataFlowImplSpecific::RubyDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::RubyDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::RubyDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {

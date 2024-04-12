@@ -12,12 +12,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     public class FilePathFilter
     {
         private readonly string rootFolder;
-        private readonly IProgressMonitor progressMonitor;
+        private readonly ILogger logger;
 
-        public FilePathFilter(DirectoryInfo sourceDir, IProgressMonitor progressMonitor)
+        public FilePathFilter(DirectoryInfo sourceDir, ILogger logger)
         {
             rootFolder = FileUtils.ConvertToUnix(sourceDir.FullName.ToLowerInvariant());
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
         }
 
         private class FileInclusion(string path, bool include)
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IEnumerable<FileInfo> Filter(IEnumerable<FileInfo> files)
         {
-            var filters = (Environment.GetEnvironmentVariable("LGTM_INDEX_FILTERS") ?? string.Empty).Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var filters = (Environment.GetEnvironmentVariable("LGTM_INDEX_FILTERS") ?? string.Empty).Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
             if (filters.Length == 0)
             {
                 return files;
@@ -55,12 +55,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 else
                 {
-                    progressMonitor.Log(Severity.Info, $"Invalid filter: {filter}");
+                    logger.LogInfo($"Invalid filter: {filter}");
                     continue;
                 }
 
                 var regex = new FilePattern(filterText).RegexPattern;
-                progressMonitor.Log(Severity.Info, $"Filtering {(include ? "in" : "out")} files matching '{regex}'. Original glob filter: '{filter}'");
+                logger.LogInfo($"Filtering {(include ? "in" : "out")} files matching '{regex}'. Original glob filter: '{filter}'");
                 pathFilters.Add(new PathFilter(new Regex(regex, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), include));
             }
 
@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 if (!include)
                 {
-                    progressMonitor.Log(Severity.Info, $"Excluding '{f.FileInfo.FullName}'");
+                    logger.LogInfo($"Excluding '{f.FileInfo.FullName}'");
                 }
 
                 return include;

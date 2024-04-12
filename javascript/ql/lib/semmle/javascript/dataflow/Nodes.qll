@@ -1262,6 +1262,12 @@ module ClassNode {
     result.getFile() = f
   }
 
+  pragma[nomagic]
+  private DataFlow::NewNode getAnInstantiationInFile(string name, File f) {
+    result = AccessPath::getAReferenceTo(name).(DataFlow::LocalSourceNode).getAnInstantiation() and
+    result.getFile() = f
+  }
+
   /**
    * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
    */
@@ -1273,7 +1279,7 @@ module ClassNode {
   }
 
   /**
-   * A function definition with prototype manipulation as a `ClassNode` instance.
+   * A function definition, targeted by a `new`-call or with prototype manipulation, seen as a `ClassNode` instance.
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
     override Function astNode;
@@ -1284,9 +1290,12 @@ module ClassNode {
       (
         exists(getAFunctionValueWithPrototype(function))
         or
-        exists(string name |
-          this = AccessPath::getAnAssignmentTo(name) and
+        function = any(NewNode new).getCalleeNode().analyze().getAValue()
+        or
+        exists(string name | this = AccessPath::getAnAssignmentTo(name) |
           exists(getAPrototypeReferenceInFile(name, this.getFile()))
+          or
+          exists(getAnInstantiationInFile(name, this.getFile()))
         )
       )
     }

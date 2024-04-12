@@ -1,3 +1,35 @@
+## 0.9.13
+
+No user-facing changes.
+
+## 0.9.12
+
+No user-facing changes.
+
+## 0.9.11
+
+No user-facing changes.
+
+## 0.9.10
+
+### New Queries
+
+* The query `py/nosql-injection` for finding NoSQL injection vulnerabilities is now part of the default security suite.
+
+## 0.9.9
+
+No user-facing changes.
+
+## 0.9.8
+
+No user-facing changes.
+
+## 0.9.7
+
+### Minor Analysis Improvements
+
+- Added modeling of YARL's `is_absolute` method and checks of the `netloc` of a parsed URL as sanitizers for the `py/url-redirection` query, leading to fewer false positives.
+
 ## 0.9.6
 
 No user-facing changes.

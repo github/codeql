@@ -49,6 +49,15 @@ predicate gapInChildren(Element e, int i) {
   not e instanceof Annotation and
   // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
   not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule()) and
+  // Pattern case statements can have a gap at -3 when they have more than one pattern but no guard.
+  not (
+    i = -3 and count(e.(PatternCase).getAPattern()) > 1 and not exists(e.(PatternCase).getGuard())
+  ) and
+  // Pattern case statements may have some missing type accesses, depending on the nature of the direct child
+  not (
+    (i = -2 or i < -4) and
+    e instanceof PatternCase
+  ) and
   // Instanceof with a record pattern is not expected to have a type access in position 1
   not (i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr) and
   // RecordPatternExpr extracts type-accesses only for its LocalVariableDeclExpr children

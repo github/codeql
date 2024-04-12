@@ -39,9 +39,6 @@ predicate maybeUsedInFnvFunction(Variable v, Operation xor, Operation mul, LoopS
   loop.getAChild*() = xor.getEnclosingStmt()
 }
 
-/** DEPRECATED: Alias for maybeUsedInFnvFunction */
-deprecated predicate maybeUsedInFNVFunction = maybeUsedInFnvFunction/4;
-
 /**
  * Holds if the arguments are used in a way that resembles an Elf-Hash hash function
  * where there is a loop statement `loop` where the variable `v` is used in an xor `xor` expression

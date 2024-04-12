@@ -6490,6 +6490,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:607:10:607:16 | call to _strinc | taint.cpp:609:8:609:12 | dest1 |  |
 | taint.cpp:607:18:607:23 | source | taint.cpp:607:10:607:16 | call to _strinc | TAINT |
 | taint.cpp:607:26:607:31 | locale | taint.cpp:607:10:607:16 | call to _strinc | TAINT |
+| taint.cpp:607:26:607:31 | locale | taint.cpp:607:26:607:31 | ref arg locale | TAINT |
 | taint.cpp:607:26:607:31 | ref arg locale | taint.cpp:606:82:606:87 | locale |  |
 | taint.cpp:607:26:607:31 | ref arg locale | taint.cpp:611:25:611:30 | locale |  |
 | taint.cpp:608:7:608:11 | ref arg dest1 | taint.cpp:606:52:606:56 | dest1 |  |
@@ -6501,6 +6502,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:611:10:611:16 | call to _strinc | taint.cpp:613:8:613:12 | dest2 |  |
 | taint.cpp:611:18:611:22 | clean | taint.cpp:611:10:611:16 | call to _strinc | TAINT |
 | taint.cpp:611:25:611:30 | locale | taint.cpp:611:10:611:16 | call to _strinc | TAINT |
+| taint.cpp:611:25:611:30 | locale | taint.cpp:611:25:611:30 | ref arg locale | TAINT |
 | taint.cpp:611:25:611:30 | ref arg locale | taint.cpp:606:82:606:87 | locale |  |
 | taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:606:65:606:69 | dest2 |  |
 | taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:613:8:613:12 | dest2 |  |
@@ -6657,6 +6659,24 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:745:27:745:32 | buffer | taint.cpp:745:19:745:25 | call to realloc | TAINT |
 | taint.cpp:746:9:746:15 | * ... | taint.cpp:746:8:746:15 | * ... | TAINT |
 | taint.cpp:746:10:746:15 | buffer | taint.cpp:746:9:746:15 | * ... | TAINT |
+| taint.cpp:751:31:751:34 | path | taint.cpp:751:31:751:34 | path |  |
+| taint.cpp:751:31:751:34 | path | taint.cpp:752:10:752:13 | path |  |
+| taint.cpp:751:31:751:34 | path | taint.cpp:753:10:753:13 | path |  |
+| taint.cpp:751:43:751:46 | data | taint.cpp:751:43:751:46 | data |  |
+| taint.cpp:751:43:751:46 | data | taint.cpp:753:22:753:25 | data |  |
+| taint.cpp:752:10:752:13 | ref arg path | taint.cpp:751:31:751:34 | path |  |
+| taint.cpp:752:10:752:13 | ref arg path | taint.cpp:753:10:753:13 | path |  |
+| taint.cpp:752:16:752:19 | %s | taint.cpp:752:10:752:13 | ref arg path | TAINT |
+| taint.cpp:752:22:752:26 | abc | taint.cpp:752:10:752:13 | ref arg path | TAINT |
+| taint.cpp:753:10:753:13 | ref arg path | taint.cpp:751:31:751:34 | path |  |
+| taint.cpp:753:16:753:19 | %s | taint.cpp:753:10:753:13 | ref arg path | TAINT |
+| taint.cpp:753:22:753:25 | data | taint.cpp:753:10:753:13 | ref arg path | TAINT |
+| taint.cpp:753:22:753:25 | ref arg data | taint.cpp:751:43:751:46 | data |  |
+| taint.cpp:757:7:757:10 | path | taint.cpp:758:21:758:24 | path |  |
+| taint.cpp:757:7:757:10 | path | taint.cpp:759:8:759:11 | path |  |
+| taint.cpp:758:21:758:24 | ref arg path | taint.cpp:759:8:759:11 | path |  |
+| taint.cpp:759:8:759:11 | path | taint.cpp:759:7:759:11 | * ... |  |
+| taint.cpp:769:37:769:42 | call to source | taint.cpp:770:7:770:9 | obj |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

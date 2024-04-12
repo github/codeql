@@ -1,3 +1,52 @@
+## 0.12.10
+
+### New Features
+
+* Added a `TaintInheritingContent` class that can be extended to model taint flowing from a qualifier to a field.
+* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant. 
+* Added a predicate `GuardCondition.ensuresEq/4` to query whether a basic block is guarded by an expression being equal to a constant.
+* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant. 
+* Added a predicate `GuardCondition.ensuresLt/4` to query whether a basic block is guarded by an expression being less than a constant.
+* Added a predicate `GuardCondition.valueControls` to query whether a basic block is guarded by a particular `case` of a `switch` statement.
+
+### Minor Analysis Improvements
+
+* Added destructors for temporary objects with extended lifetimes to the intermediate representation.
+
+## 0.12.9
+
+No user-facing changes.
+
+## 0.12.8
+
+No user-facing changes.
+
+## 0.12.7
+
+### Minor Analysis Improvements
+
+* Added destructors for named objects to the intermediate representation.
+
+## 0.12.6
+
+### New Features
+
+* A `getInitialization` predicate was added to the `RangeBasedForStmt` class that yields the C++20-style initializer of the range-based `for` statement when it exists.
+
+## 0.12.5
+
+### New Features
+
+* Added the `PreprocBlock.qll` library to this repository.  This library offers a view of `#if`, `#elif`, `#else` and similar directives as a tree with navigable parent-child relationships.
+* Added a new `ThrowingFunction` abstract class that can be used to model an external function that may throw an exception.
+
+## 0.12.4
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `XML`, `SSA`, `SAL`, `SQL`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `StrcatFunction` class, use `semmle.code.cpp.models.implementations.Strcat.qll` instead.
+
 ## 0.12.3
 
 ### Deprecated APIs

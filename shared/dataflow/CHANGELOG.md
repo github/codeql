@@ -1,3 +1,35 @@
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Path explanations now include flow that goes through callbacks passed into library functions. For example, if `map` is a library function, then in `result = map(xs, x => x + 1)` we will now include the step from `x` to `x + 1` in the path explanation, instead of going directly from `xs` to `result`. Note that this change does not affect actual query results, but only how path explanations are computed.
+
+## 0.2.3
+
+No user-facing changes.
+
+## 0.2.2
+
+No user-facing changes.
+
+## 0.2.1
+
+No user-facing changes.
+
+## 0.2.0
+
+### Breaking Changes
+
+* The `edges` predicate contained in `PathGraph` now contains two additional columns for propagating model provenance information. This is primarily an internal change without any impact on any APIs, except for specialised queries making use of `MergePathGraph` in conjunction with custom `PathGraph` implementations. Such queries will need to be updated to reference the two new columns. This is expected to be very rare, as `MergePathGraph` is an advanced feature, but it is a breaking change for any such affected queries.
+
+## 0.1.8
+
+No user-facing changes.
+
+## 0.1.7
+
+No user-facing changes.
+
 ## 0.1.6
 
 ### Deprecated APIs

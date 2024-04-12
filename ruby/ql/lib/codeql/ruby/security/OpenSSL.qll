@@ -139,9 +139,6 @@ module Ciphers {
       ]
   }
 
-  /** DEPRECATED: Alias for isOpenSslCipher */
-  deprecated predicate isOpenSSLCipher = isOpenSslCipher/1;
-
   /**
    * Gets the canonical cipher name in cases where this isn't simply an
    * upcased version of the provided name. This may be because a default block
@@ -269,9 +266,6 @@ module Ciphers {
     name.toUpperCase().regexpMatch(getInsecureAlgorithmRegex())
   }
 
-  /** DEPRECATED: Alias for isWeakOpenSslCipher */
-  deprecated predicate isWeakOpenSSLCipher = isWeakOpenSslCipher/1;
-
   /**
    * Holds if `name` is the name of an OpenSSL cipher that is known to be strong.
    */
@@ -281,9 +275,6 @@ module Ciphers {
     // exclude algorithms that include a weak component
     not name.toUpperCase().regexpMatch(getInsecureAlgorithmRegex())
   }
-
-  /** DEPRECATED: Alias for isStrongOpenSslCipher */
-  deprecated predicate isStrongOpenSSLCipher = isStrongOpenSslCipher/1;
 }
 
 private import Ciphers
@@ -333,9 +324,6 @@ class OpenSslCipher extends MkOpenSslCipher {
   /** Gets the encryption algorithm used by this cipher. */
   Cryptography::EncryptionAlgorithm getAlgorithm() { result.matchesName(this.getCanonicalName()) }
 }
-
-/** DEPRECATED: Alias for OpenSslCipher */
-deprecated class OpenSSLCipher = OpenSslCipher;
 
 /** `OpenSSL::Cipher` or `OpenSSL::Cipher::Cipher` */
 private API::Node cipherApi() {

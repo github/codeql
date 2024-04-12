@@ -533,3 +533,15 @@ int non_exhaustive_switch_2(State s) {
 	}
 	return 0;
 }
+
+class StaticMethodClass{
+    public:
+    static int get(){
+        return 1;
+    }
+};
+
+int static_method_false_positive(){
+    StaticMethodClass *t;
+	int i = t->get(); // GOOD: the `get` method is static and this is equivalent to StaticMethodClass::get()
+}

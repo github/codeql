@@ -1,13 +1,14 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
-from django.utils.http import url_has_allowed_host_and_scheme
-from django.views import View
+from flask import Flask, request, redirect
+from urllib.parse import urlparse
 
-class RedirectView(View):
-    def get(self, request, *args, **kwargs):
-        target = request.GET.get('target', '')
-        if url_has_allowed_host_and_scheme(target, allowed_hosts=None):
-            return HttpResponseRedirect(target)
-        else:
-            # ignore the target and redirect to the home page
-            return redirect('/')
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    target = request.args.get('target', '')
+    target = target.replace('\\', '')
+    if not urlparse(target).netloc:
+        # relative path, safe to redirect
+        return redirect(target, code=302)
+    # ignore the target and redirect to the home page
+    return redirect('/', code=302)

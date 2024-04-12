@@ -1,3 +1,50 @@
+## 0.11.13
+
+No user-facing changes.
+
+## 0.11.12
+
+No user-facing changes.
+
+## 0.11.11
+
+No user-facing changes.
+
+## 0.11.10
+
+### Minor Analysis Improvements
+
+* Fixed missing flow for dictionary updates (`d[<key>] = ...`) when `<key>` is a string constant not used in dictionary literals or as name of keyword-argument.
+* Fixed flow for iterable unpacking (`a,b = my_tuple`) when it occurs on top-level (module) scope.
+
+## 0.11.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+* Added modeling of the `psycopg` PyPI package as a SQL database library.
+
+## 0.11.8
+
+### Minor Analysis Improvements
+
+* Added `html.escape` as a sanitizer for HTML.
+
+### Bug Fixes
+
+* Fixed the `a` (ASCII) inline flag not being recognized by the regular expression library.
+
+## 0.11.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `LDAP`, `HTTP`, `URL`, `CGI` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `localSourceStoreStep` predicate, use `flowsToStoreStep` instead.
+* Deleted the deprecated `iteration_defined_variable` predicate from the `SSA` library.
+* Deleted various deprecated predicates from the points-to libraries.
+* Deleted the deprecated `semmle/python/security/OverlyLargeRangeQuery.qll`, `semmle/python/security/regexp/ExponentialBackTracking.qll`, `semmle/python/security/regexp/NfaUtils.qll`, and `semmle/python/security/regexp/NfaUtils.qll` files.
+* The diagnostic query `py/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Python files, now considers any Python file seen during extraction, even one with some errors, to be extracted / scanned.
+
 ## 0.11.6
 
 ### Major Analysis Improvements

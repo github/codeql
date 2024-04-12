@@ -1,7 +1,6 @@
 /** Provides predicates for working with fully qualified names. */
 
 private import csharp
-private import dotnet
 
 /**
  * Holds if namespace `n` has the qualified name `qualifier`.`name`.
@@ -9,8 +8,8 @@ private import dotnet
  * For example if the qualified name is `System.Collections.Generic`, then
  * `qualifier`=`System.Collections` and `name`=`Generic`.
  */
-predicate namespaceHasQualifiedName(DotNet::Namespace n, string qualifier, string name) {
-  if n instanceof DotNet::GlobalNamespace
+predicate namespaceHasQualifiedName(Namespace n, string qualifier, string name) {
+  if n instanceof GlobalNamespace
   then qualifier = "" and name = ""
   else (
     exists(string pqualifier, string pname |
@@ -49,11 +48,20 @@ module QualifiedName<QualifiedNameInputSig Input> {
     )
   }
 
+  pragma[nomagic]
+  private string getTypeArgumentsQualifiedName(ConstructedGeneric cg, int i) {
+    result = getFullName(cg.getTypeArgument(i))
+  }
+
   /** Gets the concatenation of the `getFullName` of type arguments. */
   language[monotonicAggregates]
   private string getTypeArgumentsQualifiedNames(ConstructedGeneric cg) {
     result =
-      strictconcat(Type t, int i | t = cg.getTypeArgument(i) | getFullName(t), "," order by i)
+      strictconcat(int i |
+        exists(cg.getTypeArgument(i))
+      |
+        getTypeArgumentsQualifiedName(cg, i), "," order by i
+      )
   }
 
   /** Holds if declaration `d` has the qualified name `qualifier`.`name`. */
@@ -209,5 +217,30 @@ predicate splitQualifiedName(string qualifiedName, string qualifier, string name
     not qualifiedName.regexpMatch(nameSplitter) and
     qualifier = "" and
     name = qualifiedName
+  )
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Gets the fully qualified name of this declaration, including types, for example
+ * the fully qualified name with types of `M` on line 3 is `N.C.M(int, string)` in
+ *
+ * ```csharp
+ * namespace N {
+ *   class C {
+ *     void M(int i, string s) { }
+ *   }
+ * }
+ * ```
+ */
+bindingset[d]
+string getFullyQualifiedNameWithTypes(Declaration d) {
+  exists(string fullqual, string qual, string name |
+    d.getDeclaringType().hasFullyQualifiedName(qual, name) and
+    fullqual = getQualifiedName(qual, name) and
+    if d instanceof NestedType
+    then result = fullqual + "+" + d.toStringWithTypes()
+    else result = fullqual + "." + d.toStringWithTypes()
   )
 }

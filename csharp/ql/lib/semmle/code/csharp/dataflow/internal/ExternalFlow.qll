@@ -47,15 +47,13 @@
  *
  *    For sources, an `output` can be either "", "Argument[n]", "Argument[n1..n2]",
  *    "Parameter", "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
- *    - "": Selects a read of a selected field, property, or parameter.
+ *    - "": Selects a read of a selected field or property.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
  *      The arguments are zero-indexed, and `this` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
  *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
- *      "Parameter" is also allowed in case the selected element is already a
- *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `this` specifies the value of `this`).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
@@ -99,9 +97,9 @@ private import semmle.code.csharp.commons.QualifiedName
 private import codeql.mad.ModelValidation as SharedModelVal
 
 private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _, _)
+  sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
+  sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
+  summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
 }
 
 private predicate namespaceLink(string shortns, string longns) {
@@ -131,7 +129,7 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
         string ext, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance, _)
       )
     or
     part = "sink" and
@@ -139,7 +137,7 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
         string ext, string input, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance, _)
       )
     or
     part = "summary" and
@@ -147,7 +145,7 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
         string ext, string input, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
       )
   )
 }
@@ -157,10 +155,10 @@ module ModelValidation {
   private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
   private predicate getRelevantAccessPath(string path) {
-    summaryModel(_, _, _, _, _, _, path, _, _, _) or
-    summaryModel(_, _, _, _, _, _, _, path, _, _) or
-    sinkModel(_, _, _, _, _, _, path, _, _) or
-    sourceModel(_, _, _, _, _, _, path, _, _)
+    summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
+    summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
+    sinkModel(_, _, _, _, _, _, path, _, _, _) or
+    sourceModel(_, _, _, _, _, _, path, _, _, _)
   }
 
   private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
@@ -171,9 +169,9 @@ module ModelValidation {
 
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
+      sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -193,9 +191,9 @@ module ModelValidation {
 
   private string getInvalidModelOutput() {
     exists(string pred, AccessPath output, AccessPathToken part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(output, part) and
@@ -210,11 +208,11 @@ module ModelValidation {
   }
 
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
-    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
     predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
@@ -226,11 +224,11 @@ module ModelValidation {
       string pred, string namespace, string type, string name, string signature, string ext,
       string provenance
     |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
+      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
       or
       neutralModel(namespace, type, name, signature, _, provenance) and
@@ -270,11 +268,11 @@ module ModelValidation {
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
   neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = false
 }
@@ -395,14 +393,14 @@ Declaration interpretElement(
  * A callable where there exists a MaD sink model that applies to it.
  */
 class SinkCallable extends Callable {
-  SinkCallable() { SourceSinkInterpretationInput::sinkElement(this, _, _) }
+  SinkCallable() { SourceSinkInterpretationInput::sinkElement(this, _, _, _, _) }
 }
 
 /**
  * A callable where there exists a MaD source model that applies to it.
  */
 class SourceCallable extends Callable {
-  SourceCallable() { SourceSinkInterpretationInput::sourceElement(this, _, _) }
+  SourceCallable() { SourceSinkInterpretationInput::sourceElement(this, _, _, _, _) }
 }
 
 cached
@@ -412,9 +410,9 @@ private module Cached {
    * model.
    */
   cached
-  predicate sourceNode(Node node, string kind) {
+  predicate sourceNode(Node node, string kind, string model) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSourceNode(n, kind) and n.asNode() = node
+      isSourceNode(n, kind, model) and n.asNode() = node
     )
   }
 
@@ -423,14 +421,26 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(Node node, string kind) {
+  predicate sinkNode(Node node, string kind, string model) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSinkNode(n, kind) and n.asNode() = node
+      isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
 }
 
 import Cached
+
+/**
+ * Holds if `node` is specified as a source with the given kind in a MaD flow
+ * model.
+ */
+predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a sink with the given kind in a MaD flow
+ * model.
+ */
+predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
 /** Holds if the summary should apply for all overrides of `c`. */
 predicate isBaseCallableOrPrototype(UnboundCallable c) {
@@ -519,12 +529,15 @@ string asPartialNeutralModel(UnboundCallable c) {
 }
 
 private predicate interpretSummary(
-  UnboundCallable c, string input, string output, string kind, string provenance
+  UnboundCallable c, string input, string output, string kind, string provenance, string model
 ) {
   exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    QlBuiltins::ExtensionId madId
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) and
+    model = "MaD:" + madId.toString() and
     c = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
@@ -538,18 +551,22 @@ private predicate interpretNeutral(UnboundCallable c, string kind, string proven
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
+  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
 
-  private predicate relevantSummaryElementManual(string input, string output, string kind) {
+  private predicate relevantSummaryElementManual(
+    string input, string output, string kind, string model
+  ) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance) and
+      interpretSummary(this, input, output, kind, provenance, model) and
       provenance.isManual()
     )
   }
 
-  private predicate relevantSummaryElementGenerated(string input, string output, string kind) {
+  private predicate relevantSummaryElementGenerated(
+    string input, string output, string kind, string model
+  ) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance) and
+      interpretSummary(this, input, output, kind, provenance, model) and
       provenance.isGenerated()
     ) and
     not exists(Provenance provenance |
@@ -558,19 +575,21 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     )
   }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
     exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind)
+      this.relevantSummaryElementManual(input, output, kind, model)
       or
-      not this.relevantSummaryElementManual(_, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind)
+      not this.relevantSummaryElementManual(_, _, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind, model)
     |
       if kind = "value" then preservesValue = true else preservesValue = false
     )
   }
 
   override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance)
+    interpretSummary(this, _, _, _, provenance, _)
   }
 }
 

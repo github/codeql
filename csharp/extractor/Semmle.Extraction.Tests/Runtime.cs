@@ -19,24 +19,17 @@ namespace Semmle.Extraction.Tests
 
         public bool New(string folder) => true;
 
-        public bool RestoreProjectToDirectory(string project, string directory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null)
-        {
-            assets = Array.Empty<string>();
-            return true;
-        }
-
-        public bool RestoreSolutionToDirectory(string solution, string directory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects, out IEnumerable<string> assets)
-        {
-            projects = Array.Empty<string>();
-            assets = Array.Empty<string>();
-            return true;
-        }
+        public RestoreResult Restore(RestoreSettings restoreSettings) => new(true, Array.Empty<string>());
 
         public IList<string> GetListedRuntimes() => runtimes;
 
         public IList<string> GetListedSdks() => sdks;
 
         public bool Exec(string execArgs) => true;
+
+        public IList<string> GetNugetFeeds(string nugetConfig) => [];
+
+        public IList<string> GetNugetFeedsFromFolder(string folderPath) => [];
     }
 
     public class RuntimeTests

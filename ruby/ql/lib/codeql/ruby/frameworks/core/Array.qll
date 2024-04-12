@@ -1855,7 +1855,8 @@ module Enumerable {
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
-      output = "Argument[block].Parameter[0]" and
+      // For `Hash#map`, the value flows to parameter 1
+      output = "Argument[block].Parameter[0, 1]" and
       preservesValue = true
       or
       input = "Argument[block].ReturnValue" and

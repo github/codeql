@@ -255,6 +255,15 @@ module Stmts {
     }
   }
 
+  private class ThenStmtTree extends AstStandardPostOrderTree {
+    override ThenStmt ast;
+
+    final override ControlFlowElement getChildNode(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getResult()
+    }
+  }
+
   private class FailTree extends AstLeafTree {
     override FailStmt ast;
   }

@@ -119,7 +119,14 @@ class Entity extends @object {
    */
   Scope getScope() { objectscopes(this, result) }
 
-  /** Gets the declaring identifier for this entity. */
+  /**
+   * Gets the declaring identifier for this entity, if any.
+   *
+   * Note that type switch statements which declare a new variable in the guard
+   * actually have a new variable (of the right type) implicitly declared at
+   * the beginning of each case clause, and these do not have a syntactic
+   * declaration.
+   */
   Ident getDeclaration() { result.declares(this) }
 
   /** Gets a reference to this entity. */
@@ -130,6 +137,15 @@ class Entity extends @object {
 
   /** Gets a textual representation of this entity. */
   string toString() { result = this.getName() }
+
+  private predicate hasRealLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // take the location of the declaration if there is one
+    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable())
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -142,15 +158,16 @@ class Entity extends @object {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     // take the location of the declaration if there is one
-    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    or
-    // otherwise fall back on dummy location
-    not exists(this.getDeclaration()) and
-    filepath = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
+    if this.hasRealLocationInfo(_, _, _, _, _)
+    then this.hasRealLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    else (
+      // otherwise fall back on dummy location
+      filepath = "" and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
+    )
   }
 }
 

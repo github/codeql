@@ -19,3 +19,12 @@ extensions:
       - ["System.Diagnostics", "TraceListenerCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Diagnostics", "TraceListenerCollection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Diagnostics", "TraceListenerCollection", False, "set_Item", "(System.Int32,System.Diagnostics.TraceListener)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Diagnostics", "ProcessStartInfo", "set_Arguments", "(System.String)", "summary", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", "set_FileName", "(System.String)", "summary", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", "set_UserName", "(System.String)", "summary", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", "set_Verb", "(System.String)", "summary", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", "set_WorkingDirectory", "(System.String)", "summary", "manual"]

@@ -1,4 +1,5 @@
 /cpp/ @github/codeql-c-analysis
+/cpp/autobuilder/ @github/codeql-c-extractor
 /csharp/ @github/codeql-csharp
 /go/ @github/codeql-go
 /java/ @github/codeql-java
@@ -25,6 +26,7 @@
 
 # Bazel (excluding BUILD.bazel files)
 WORKSPACE.bazel @github/codeql-ci-reviewers
+MODULE.bazel @github/codeql-ci-reviewers
 .bazelversion @github/codeql-ci-reviewers
 .bazelrc @github/codeql-ci-reviewers
 **/*.bzl @github/codeql-ci-reviewers

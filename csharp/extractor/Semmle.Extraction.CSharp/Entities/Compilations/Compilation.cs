@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -8,6 +9,8 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Compilation : CachedEntity<object>
     {
+        internal readonly ConcurrentDictionary<string, int> messageCounts = new();
+
         private static (string Cwd, string[] Args) settings;
         private static int hashCode;
 
@@ -39,7 +42,33 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.compilation_assembly(this, assembly);
 
             // Arguments
-            Compilation.Settings.Args.ForEach((arg, index) => trapFile.compilation_args(this, index, arg));
+            var expandedIndex = 0;
+            for (var i = 0; i < Compilation.Settings.Args.Length; i++)
+            {
+                var arg = Compilation.Settings.Args[i];
+                trapFile.compilation_args(this, i, arg);
+
+                if (CommandLineExtensions.IsFileArgument(arg))
+                {
+                    try
+                    {
+                        var rspFileContent = System.IO.File.ReadAllText(arg[1..]);
+                        var rspArgs = CommandLineParser.SplitCommandLineIntoArguments(rspFileContent, removeHashComments: true);
+                        foreach (var rspArg in rspArgs)
+                        {
+                            trapFile.compilation_expanded_args(this, expandedIndex++, rspArg);
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        Context.ExtractionError($"Couldn't read compiler argument file: {arg}. {exc.Message}", null, null, exc.StackTrace);
+                    }
+                }
+                else
+                {
+                    trapFile.compilation_expanded_args(this, expandedIndex++, arg);
+                }
+            }
 
             // Files
             Context.Compilation.SyntaxTrees.Select(tree => File.Create(Context, tree.FilePath)).ForEach((file, index) => trapFile.compilation_compiling_files(this, index, file));
@@ -52,10 +81,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 .ForEach((file, index) => trapFile.compilation_referencing_files(this, index, file));
 
             // Diagnostics
-            Context.Compilation
-                .GetDiagnostics()
-                .Select(d => new Diagnostic(Context, d))
-                .ForEach((diag, index) => trapFile.diagnostic_for(diag, this, 0, index));
+            var diags = Context.Compilation.GetDiagnostics();
+            diags.ForEach((diag, index) => new CompilerDiagnostic(Context, diag, this, index));
+
+            var diagCounts = diags.GroupBy(diag => diag.Id).ToDictionary(group => group.Key, group => group.Count());
+            diagCounts.ForEach(pair => trapFile.compilation_info(this, $"Compiler diagnostic count for {pair.Key}", pair.Value.ToString()));
         }
 
         public void PopulatePerformance(PerformanceMetrics p)

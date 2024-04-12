@@ -2,6 +2,7 @@
  * Provides C#-specific definitions for use in the data flow library.
  */
 
+private import semmle.code.csharp.Location
 private import codeql.dataflow.DataFlow
 
 module Private {
@@ -13,7 +14,7 @@ module Public {
   import DataFlowPublic
 }
 
-module CsharpDataFlow implements InputSig {
+module CsharpDataFlow implements InputSig<Location> {
   import Private
   import Public
 
@@ -24,4 +25,8 @@ module CsharpDataFlow implements InputSig {
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate neverSkipInPathGraph(Node n) {
+    exists(n.(AssignableDefinitionNode).getDefinition().getTargetAccess())
+  }
 }

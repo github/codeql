@@ -6,6 +6,7 @@ private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
 private import SsaInternals as Ssa
+private import semmle.code.cpp.ir.dataflow.FlowSteps
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -14,7 +15,7 @@ private import SsaInternals as Ssa
 predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   DataFlow::localFlowStep(nodeFrom, nodeTo)
   or
-  localAdditionalTaintStep(nodeFrom, nodeTo)
+  localAdditionalTaintStep(nodeFrom, nodeTo, _)
 }
 
 /**
@@ -23,10 +24,11 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  * different objects.
  */
 cached
-predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+  operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction()) and
+  model = ""
   or
-  modeledTaintStep(nodeFrom, nodeTo)
+  modeledTaintStep(nodeFrom, nodeTo, model)
   or
   // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
   // indirection of the pointer arithmetic instruction. This provides flow from `source`
@@ -34,9 +36,18 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   exists(PointerArithmeticInstruction pai, int indirectionIndex |
     nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
     hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
-  )
+  ) and
+  model = ""
   or
-  any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo)
+  any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo) and
+  model = ""
+  or
+  // object->field conflation for content that is a `TaintInheritingContent`.
+  exists(DataFlow::ContentSet f |
+    readStep(nodeFrom, f, nodeTo) and
+    f.getAReadContent() instanceof TaintInheritingContent
+  ) and
+  model = ""
 }
 
 /**
@@ -113,8 +124,8 @@ predicate localExprTaint(Expr e1, Expr e2) {
  * Holds if the additional step from `src` to `sink` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink)
+predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
+  localAdditionalTaintStep(src, sink, model)
 }
 
 /**
@@ -134,7 +145,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * Holds if taint can flow from `nodeIn` to `nodeOut` through a call to a
  * modeled function.
  */
-predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
+predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut, string model) {
   // Normal taint steps
   exists(CallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut |
     call.getStaticCallTarget() = func and
@@ -143,7 +154,8 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     nodeIn = callInput(call, modelIn) and nodeOut = callOutput(call, modelOut)
     or
     exists(int d | nodeIn = callInput(call, modelIn, d) and nodeOut = callOutput(call, modelOut, d))
-  )
+  ) and
+  model = "TaintFunction"
   or
   // Taint flow from one argument to another and data flow from an argument to a
   // return value. This happens in functions like `strcat` and `memcpy`. We
@@ -160,7 +172,8 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     func.(TaintFunction).hasTaintFlow(modelIn, modelMidOut) and
     func.(DataFlowFunction).hasDataFlow(modelMidIn, modelOut) and
     modelMidOut.isParameterDeref(indexMid) and
-    modelMidIn.isParameter(indexMid)
+    modelMidIn.isParameter(indexMid) and
+    model = "TaintFunction"
   )
   or
   // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
@@ -173,9 +186,11 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     indirectArgument.hasAddressOperandAndIndirectionIndex(nodeIn.asOperand(), _) and
     call.getStaticCallTarget() = func and
     (
-      func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+      func.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
+      model = "DataFlowFunction"
       or
-      func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+      func.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
+      model = "TaintFunction"
     ) and
     nodeOut = callOutput(call, modelOut)
   )

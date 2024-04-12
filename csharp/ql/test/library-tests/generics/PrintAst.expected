@@ -370,24 +370,18 @@ generics.cs:
 #   60|       0: [TypeParameter] T
 #   63|     5: [Field] NumRows
 #   63|       -1: [TypeMention] int
-#   63|       1: [AssignExpr] ... = ...
-#   63|         0: [MemberConstantAccess] access to constant NumRows
-#   63|         1: [IntLiteral] 26
+#   63|       1: [IntLiteral] 26
 #   64|     6: [Field] NumCols
 #   64|       -1: [TypeMention] int
-#   64|       1: [AssignExpr] ... = ...
-#   64|         0: [MemberConstantAccess] access to constant NumCols
-#   64|         1: [IntLiteral] 10
+#   64|       1: [IntLiteral] 10
 #   66|     7: [Field] cells
 #   66|       -1: [TypeMention] T[,]
 #   66|         1: [TypeMention] T
-#   66|       1: [AssignExpr] ... = ...
-#   66|         0: [FieldAccess] access to field cells
-#   66|         1: [ArrayCreation] array creation of type T[,]
-#   66|           -1: [TypeMention] T[,]
-#   66|             1: [TypeMention] T
-#   66|           0: [MemberConstantAccess] access to constant NumRows
-#   66|           1: [MemberConstantAccess] access to constant NumCols
+#   66|       1: [ArrayCreation] array creation of type T[,]
+#   66|         -1: [TypeMention] T[,]
+#   66|           1: [TypeMention] T
+#   66|         0: [MemberConstantAccess] access to constant NumRows
+#   66|         1: [MemberConstantAccess] access to constant NumCols
 #   68|     8: [Indexer] Item
 #   68|       -1: [TypeMention] int
 #-----|       1: (Parameters)

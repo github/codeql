@@ -1,3 +1,95 @@
+## 0.9.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `ODASA_SNAPSHOT` legacy environment variable.
+
+### Minor Analysis Improvements
+
+* Increased the precision of some dataflow models of the class `java.net.URL` by distinguishing the parts of a URL.
+* The Java extractor and QL libraries now support Java 22, including support for anonymous variables, lambda parameters and patterns.
+* Pattern cases with multiple patterns and that fall through to or from other pattern cases are now supported. The `PatternCase` class gains the new `getPatternAtIndex` and `getAPattern` predicates, and deprecates `getPattern`.
+* Added a `path-injection` sink for the `open` methods of the `android.os.ParcelFileDescriptor` class.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Java expressions with erroneous types (e.g. the result of a call whose callee couldn't be resolved during extraction) are now given a CodeQL `ErrorType` more often.
+
+### Bug Fixes
+
+* Fixed the Java autobuilder overriding the version of Maven used by a project when the Maven wrapper `mvnw` is in use and the `maven-wrapper.jar` file is not present in the repository.
+* Some flow steps related to `android.text.Editable.toString` that were accidentally disabled have been re-enabled.
+
+## 0.8.9
+
+### Deprecated APIs
+
+* The `PathCreation` class in `PathCreation.qll` has been deprecated.
+
+### Minor Analysis Improvements
+
+* An extension point for sanitizers of the query `java/unvalidated-url-redirection` has been added.
+* Added models for the following packages:
+
+  * java.io
+  * java.lang
+  * java.net
+  * java.net.http
+  * java.nio.file
+  * java.util.zip
+  * javax.servlet
+  * org.apache.commons.io
+  * org.apache.hadoop.fs
+  * org.apache.hadoop.fs.s3a
+  * org.eclipse.jetty.client
+  * org.gradle.api.file
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * com.fasterxml.jackson.databind
+  * javax.servlet
+* Added the `java.util.Date` and `java.util.UUID` classes to the list of types in the `SimpleTypeSanitizer` class in `semmle.code.java.security.Sanitizers`.
+
+## 0.8.7
+
+### New Features
+
+* Added a new library `semmle.code.java.security.Sanitizers` which contains a new sanitizer class `SimpleTypeSanitizer`, which represents nodes which cannot realistically carry taint for most queries (e.g. primitives, their boxed equivalents, and numeric types).
+* Converted definitions of `isBarrier` and sanitizer classes to use `SimpleTypeSanitizer` instead of checking if `node.getType()` is `PrimitiveType` or `BoxedType`.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `EJB`, `JMX`, `NFE`, `DNS` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `semmle/code/java/security/OverlyLargeRangeQuery.qll`, `semmle/code/java/security/regexp/ExponentialBackTracking.qll`, `semmle/code/java/security/regexp/NfaUtils.qll`, and `semmle/code/java/security/regexp/NfaUtils.qll` files.
+* Improved models for `java.lang.Throwable` and `java.lang.Exception`, and the `valueOf` method of `java.lang.String`.
+* Added taint tracking for the following GSON methods:
+  * `com.google.gson.stream.JsonReader` constructor
+  * `com.google.gson.stream.JsonWriter` constructor
+  * `com.google.gson.JsonObject.getAsJsonArray`
+  * `com.google.gson.JsonObject.getAsJsonObject`
+  * `com.google.gson.JsonObject.getAsJsonPrimitive`
+  * `com.google.gson.JsonParser.parseReader`
+  * `com.google.gson.JsonParser.parseString`
+* Added a dataflow model for `java.awt.Desktop.browse(URI)`.
+
+### Bug Fixes
+
+* Fixed regular expressions containing flags not being parsed correctly in some cases.
+
 ## 0.8.6
 
 ### Deprecated APIs

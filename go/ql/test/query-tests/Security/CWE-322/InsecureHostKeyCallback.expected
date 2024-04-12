@@ -1,20 +1,20 @@
 edges
-| InsecureHostKeyCallbackExample.go:16:4:18:4 | function literal | InsecureHostKeyCallbackExample.go:15:20:18:5 | type conversion |
-| InsecureHostKeyCallbackExample.go:31:14:34:4 | type conversion | InsecureHostKeyCallbackExample.go:39:20:39:27 | callback |
-| InsecureHostKeyCallbackExample.go:32:3:34:3 | function literal | InsecureHostKeyCallbackExample.go:31:14:34:4 | type conversion |
-| InsecureHostKeyCallbackExample.go:45:3:47:3 | function literal | InsecureHostKeyCallbackExample.go:52:20:52:48 | type conversion |
-| InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback |
-| InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback |
-| InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback |
-| InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback |
-| InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion |
-| InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback |
-| InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback |
-| InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback |
-| InsecureHostKeyCallbackExample.go:110:3:115:3 | function literal | InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion |
-| InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback |
-| InsecureHostKeyCallbackExample.go:118:35:118:61 | call to InsecureIgnoreHostKey | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback |
-| InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback |
+| InsecureHostKeyCallbackExample.go:16:4:18:4 | function literal | InsecureHostKeyCallbackExample.go:15:20:18:5 | type conversion | provenance |  |
+| InsecureHostKeyCallbackExample.go:31:14:34:4 | type conversion | InsecureHostKeyCallbackExample.go:39:20:39:27 | callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:32:3:34:3 | function literal | InsecureHostKeyCallbackExample.go:31:14:34:4 | type conversion | provenance |  |
+| InsecureHostKeyCallbackExample.go:45:3:47:3 | function literal | InsecureHostKeyCallbackExample.go:52:20:52:48 | type conversion | provenance |  |
+| InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | provenance |  |
+| InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | provenance |  |
+| InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback | provenance |  |
+| InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback | provenance |  |
+| InsecureHostKeyCallbackExample.go:110:3:115:3 | function literal | InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | provenance |  |
+| InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:118:35:118:61 | call to InsecureIgnoreHostKey | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | provenance |  |
+| InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback | provenance |  |
 nodes
 | InsecureHostKeyCallbackExample.go:15:20:18:5 | type conversion | semmle.label | type conversion |
 | InsecureHostKeyCallbackExample.go:16:4:18:4 | function literal | semmle.label | function literal |

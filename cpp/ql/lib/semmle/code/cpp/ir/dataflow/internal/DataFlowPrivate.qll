@@ -7,6 +7,9 @@ private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
+private import ModelUtil
+private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
+private import semmle.code.cpp.models.interfaces.DataFlow as DF
 
 cached
 private module Cached {
@@ -1017,6 +1020,10 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+predicate knownSourceModel(Node source, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
@@ -1093,7 +1100,7 @@ private predicate localFlowStepWithSummaries(Node node1, Node node2) {
   or
   readStep(node1, _, node2)
   or
-  DataFlowImplCommon::argumentValueFlowsThrough(node1, _, node2)
+  DataFlowImplCommon::argumentValueFlowsThrough(node1, _, node2, _)
 }
 
 /** Holds if `node` flows to a node that is used in a `SwitchInstruction`. */
@@ -1178,6 +1185,19 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
   )
 }
 
+pragma[nomagic]
+private predicate isInputOutput(
+  DF::DataFlowFunction target, Node node1, Node node2, IO::FunctionInput input,
+  IO::FunctionOutput output
+) {
+  exists(CallInstruction call |
+    node1 = callInput(call, input) and
+    node2 = callOutput(call, output) and
+    call.getStaticCallTarget() = target and
+    target.hasDataFlow(input, output)
+  )
+}
+
 /**
  * Holds if the data-flow step from `node1` to `node2` can be used to
  * determine where side-effects may return from a callable.
@@ -1189,6 +1209,11 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
  * int x = *p;
  * ```
  * does not preserve the identity of `*p`.
+ *
+ * Similarly, a function that copies the contents of a string into a new location
+ * does not also preserve the identity. For example, `strdup(p)` does not
+ * preserve the identity of `*p` (since it allocates new storage and copies
+ * the string into the new storage).
  */
 bindingset[node1, node2]
 pragma[inline_late]
@@ -1225,7 +1250,16 @@ predicate validParameterAliasStep(Node node1, Node node2) {
   not exists(Operand operand |
     node1.asOperand() = operand and
     node2.asInstruction().(StoreInstruction).getSourceValueOperand() = operand
+  ) and
+  (
+    // Either this is not a modeled flow.
+    not isInputOutput(_, node1, node2, _, _)
+    or
+    exists(DF::DataFlowFunction target, IO::FunctionInput input, IO::FunctionOutput output |
+      // Or it is a modeled flow and there's `*input` to `*output` flow
+      isInputOutput(target, node1, node2, input.getIndirectionInput(), output.getIndirectionOutput()) and
+      // and in that case there should also be `input` to `output` flow
+      target.hasDataFlow(input, output)
+    )
   )
-  // TODO: Also block flow through models that don't preserve identity such
-  // as `strdup`.
 }

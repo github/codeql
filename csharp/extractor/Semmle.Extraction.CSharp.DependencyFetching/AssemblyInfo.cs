@@ -121,21 +121,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Get AssemblyInfo from a loaded Assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>Info about the assembly.</returns>
-        public static AssemblyInfo MakeFromAssembly(Assembly assembly)
-        {
-            if (assembly.FullName is null)
-            {
-                throw new InvalidOperationException("Assembly with empty full name is not expected.");
-            }
-
-            return new AssemblyInfo(assembly.FullName, assembly.Location);
-        }
-
-        /// <summary>
         /// Returns the id and name of the assembly that would be created from the received id.
         /// </summary>
         public static (string id, string name) ComputeSanitizedAssemblyInfo(string id)

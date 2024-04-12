@@ -6,7 +6,7 @@ private import CIL
 private import dotnet
 
 /** A type parameter. */
-class TypeParameter extends DotNet::TypeParameter, Type, @cil_typeparameter {
+deprecated class TypeParameter extends DotNet::TypeParameter, Type, @cil_typeparameter {
   override int getIndex() { cil_type_parameter(_, result, this) }
 
   /** Gets the generic type/method declaring this type parameter. */
@@ -33,7 +33,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @cil_typeparameter {
 }
 
 /** A value or reference type. */
-class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
+deprecated class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
   override ValueOrRefType getDeclaringType() { result = this.getParent() }
 
   override string getUndecoratedName() { cil_type(this, result, _, _, _) }
@@ -44,7 +44,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
 }
 
 /** An `enum`. */
-class Enum extends ValueOrRefType {
+deprecated class Enum extends ValueOrRefType {
   Enum() { this.isEnum() }
 
   override IntegralType getUnderlyingType() {
@@ -56,17 +56,17 @@ class Enum extends ValueOrRefType {
 }
 
 /** A `class`. */
-class Class extends ValueOrRefType {
+deprecated class Class extends ValueOrRefType {
   Class() { this.isClass() }
 }
 
 /** An `interface`. */
-class Interface extends ValueOrRefType {
+deprecated class Interface extends ValueOrRefType {
   Interface() { this.isInterface() }
 }
 
 /** An array. */
-class ArrayType extends DotNet::ArrayType, Type, @cil_array_type {
+deprecated class ArrayType extends DotNet::ArrayType, Type, @cil_array_type {
   override Type getElementType() { cil_array_type(this, result, _) }
 
   /** Gets the rank of this array. */
@@ -80,7 +80,7 @@ class ArrayType extends DotNet::ArrayType, Type, @cil_array_type {
 }
 
 /** A pointer type. */
-class PointerType extends DotNet::PointerType, PrimitiveType, @cil_pointer_type {
+deprecated class PointerType extends DotNet::PointerType, PrimitiveType, @cil_pointer_type {
   override Type getReferentType() { cil_pointer_type(this, result) }
 
   override IntType getUnderlyingType() { any() }
@@ -95,31 +95,31 @@ class PointerType extends DotNet::PointerType, PrimitiveType, @cil_pointer_type 
 }
 
 /** A primitive type, built into the runtime. */
-abstract class PrimitiveType extends Type { }
+abstract deprecated class PrimitiveType extends Type { }
 
 /**
  * A primitive numeric type.
  * Either an integral type (`IntegralType`) or a floating point type (`FloatingPointType`).
  */
-abstract class NumericType extends PrimitiveType, ValueOrRefType { }
+abstract deprecated class NumericType extends PrimitiveType, ValueOrRefType { }
 
 /** A floating point type. Either single precision (`FloatType`) or double precision (`DoubleType`). */
-abstract class FloatingPointType extends NumericType { }
+abstract deprecated class FloatingPointType extends NumericType { }
 
 /**
  * An integral numeric type. Either a signed integral type (`SignedIntegralType`)
  * or an unsigned integral type (`UnsignedIntegralType`).
  */
-abstract class IntegralType extends NumericType { }
+abstract deprecated class IntegralType extends NumericType { }
 
 /** A signed integral type. */
-abstract class SignedIntegralType extends IntegralType { }
+abstract deprecated class SignedIntegralType extends IntegralType { }
 
 /** An unsigned integral type. */
-abstract class UnsignedIntegralType extends IntegralType { }
+abstract deprecated class UnsignedIntegralType extends IntegralType { }
 
 /** The `void` type, `System.Void`. */
-class VoidType extends PrimitiveType {
+deprecated class VoidType extends PrimitiveType {
   VoidType() { this.isSystemType("Void") }
 
   override string toString() { result = "void" }
@@ -128,7 +128,7 @@ class VoidType extends PrimitiveType {
 }
 
 /** The type `System.Int32`. */
-class IntType extends SignedIntegralType {
+deprecated class IntType extends SignedIntegralType {
   IntType() { this.isSystemType("Int32") }
 
   override string toStringWithTypes() { result = "int" }
@@ -139,21 +139,21 @@ class IntType extends SignedIntegralType {
 }
 
 /** The type `System.IntPtr`. */
-class IntPtrType extends PrimitiveType {
+deprecated class IntPtrType extends PrimitiveType {
   IntPtrType() { this.isSystemType("IntPtr") }
 
   override IntType getUnderlyingType() { any() }
 }
 
 /** The type `System.UIntPtr`. */
-class UIntPtrType extends PrimitiveType {
+deprecated class UIntPtrType extends PrimitiveType {
   UIntPtrType() { this.isSystemType("UIntPtr") }
 
   override IntType getUnderlyingType() { any() }
 }
 
 /** The type `System.UInt32`. */
-class UIntType extends UnsignedIntegralType {
+deprecated class UIntType extends UnsignedIntegralType {
   UIntType() { this.isSystemType("UInt32") }
 
   override string toStringWithTypes() { result = "uint" }
@@ -164,7 +164,7 @@ class UIntType extends UnsignedIntegralType {
 }
 
 /** The type `System.SByte`. */
-class SByteType extends SignedIntegralType {
+deprecated class SByteType extends SignedIntegralType {
   SByteType() { this.isSystemType("SByte") }
 
   override string toStringWithTypes() { result = "sbyte" }
@@ -173,7 +173,7 @@ class SByteType extends SignedIntegralType {
 }
 
 /** The type `System.Byte`. */
-class ByteType extends UnsignedIntegralType {
+deprecated class ByteType extends UnsignedIntegralType {
   ByteType() { this.isSystemType("Byte") }
 
   override string toStringWithTypes() { result = "byte" }
@@ -184,7 +184,7 @@ class ByteType extends UnsignedIntegralType {
 }
 
 /** The type `System.Int16`. */
-class ShortType extends SignedIntegralType {
+deprecated class ShortType extends SignedIntegralType {
   ShortType() { this.isSystemType("Int16") }
 
   override string toStringWithTypes() { result = "short" }
@@ -193,7 +193,7 @@ class ShortType extends SignedIntegralType {
 }
 
 /** The type `System.UInt16`. */
-class UShortType extends UnsignedIntegralType {
+deprecated class UShortType extends UnsignedIntegralType {
   UShortType() { this.isSystemType("UInt16") }
 
   override string toStringWithTypes() { result = "ushort" }
@@ -204,7 +204,7 @@ class UShortType extends UnsignedIntegralType {
 }
 
 /** The type `System.Int64`. */
-class LongType extends SignedIntegralType {
+deprecated class LongType extends SignedIntegralType {
   LongType() { this.isSystemType("Int64") }
 
   override string toStringWithTypes() { result = "long" }
@@ -213,7 +213,7 @@ class LongType extends SignedIntegralType {
 }
 
 /** The type `System.UInt64`. */
-class ULongType extends UnsignedIntegralType {
+deprecated class ULongType extends UnsignedIntegralType {
   ULongType() { this.isSystemType("UInt64") }
 
   override string toStringWithTypes() { result = "ulong" }
@@ -224,7 +224,7 @@ class ULongType extends UnsignedIntegralType {
 }
 
 /** The type `System.Decimal`. */
-class DecimalType extends SignedIntegralType {
+deprecated class DecimalType extends SignedIntegralType {
   DecimalType() { this.isSystemType("Decimal") }
 
   override string toStringWithTypes() { result = "decimal" }
@@ -233,21 +233,21 @@ class DecimalType extends SignedIntegralType {
 }
 
 /** The type `System.String`. */
-class StringType extends PrimitiveType, ValueOrRefType {
+deprecated class StringType extends PrimitiveType, ValueOrRefType {
   StringType() { this.isSystemType("String") }
 
   override string toStringWithTypes() { result = "string" }
 }
 
 /** The type `System.Object`. */
-class ObjectType extends ValueOrRefType {
+deprecated class ObjectType extends ValueOrRefType {
   ObjectType() { this.isSystemType("Object") }
 
   override string toStringWithTypes() { result = "object" }
 }
 
 /** The type `System.Boolean`. */
-class BoolType extends PrimitiveType, ValueOrRefType {
+deprecated class BoolType extends PrimitiveType, ValueOrRefType {
   BoolType() { this.isSystemType("Boolean") }
 
   override string toStringWithTypes() { result = "bool" }
@@ -256,7 +256,7 @@ class BoolType extends PrimitiveType, ValueOrRefType {
 }
 
 /** The type `System.Double`. */
-class DoubleType extends FloatingPointType {
+deprecated class DoubleType extends FloatingPointType {
   DoubleType() { this.isSystemType("Double") }
 
   override string toStringWithTypes() { result = "double" }
@@ -265,7 +265,7 @@ class DoubleType extends FloatingPointType {
 }
 
 /** The type `System.Single`. */
-class FloatType extends FloatingPointType {
+deprecated class FloatType extends FloatingPointType {
   FloatType() { this.isSystemType("Single") }
 
   override string toStringWithTypes() { result = "float" }
@@ -274,7 +274,7 @@ class FloatType extends FloatingPointType {
 }
 
 /** The type `System.Char`. */
-class CharType extends IntegralType {
+deprecated class CharType extends IntegralType {
   CharType() { this.isSystemType("Char") }
 
   override string toStringWithTypes() { result = "char" }
@@ -285,7 +285,7 @@ class CharType extends IntegralType {
 }
 
 /** The type `System.Type`. */
-class SystemType extends ValueOrRefType {
+deprecated class SystemType extends ValueOrRefType {
   SystemType() { this.isSystemType("Type") }
 }
 
@@ -296,7 +296,7 @@ class SystemType extends ValueOrRefType {
  * delegate*<int, void>
  * ```
  */
-class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
+deprecated class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
   @cil_function_pointer_type
 {
   /** Gets the return type of this function pointer. */

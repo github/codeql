@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ */
+
 private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
@@ -281,6 +285,10 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

@@ -1,3 +1,41 @@
+## 0.8.13
+
+No user-facing changes.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `Object#method`, `Object#public_method` and `Object#singleton_method` with untrusted data are now recognised as sinks for code injection.
+* Added additional request sources for Ruby on Rails.
+
+## 0.8.9
+
+No user-facing changes.
+
+## 0.8.8
+
+### New Queries
+
+* Added a new experimental query, `rb/insecure-randomness`, to detect when application uses random values that are not cryptographically secure.
+
+### Minor Analysis Improvements
+
+* Added new unsafe deserialization sinks for the ox gem.
+* Added an additional unsafe deserialization sink for the oj gem.
+
+## 0.8.7
+
+No user-facing changes.
+
 ## 0.8.6
 
 No user-facing changes.

@@ -136,7 +136,7 @@ module Stages {
       or
       exists(DataFlow::ssaDefinitionNode(_))
       or
-      any(DataFlow::Node node).hasLocationInfo(_, _, _, _, _)
+      exists(any(DataFlow::Node node).getLocation())
       or
       exists(any(DataFlow::Node node).toString())
       or

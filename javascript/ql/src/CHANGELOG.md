@@ -1,3 +1,41 @@
+## 0.8.13
+
+### Query Metadata Changes
+
+* The `@precision` of the `js/unsafe-external-link` has been reduced to `low` to reflect the fact that modern browsers do not expose the opening window for such links. This mitigates the potential security risk of having a link with `target="_blank"`.
+
+### Minor Analysis Improvements
+
+* The call graph has been improved, leading to more alerts for data flow based queries.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
+## 0.8.9
+
+### Bug Fixes
+
+* The left operand of the `&&` operator no longer propagates data flow by default.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Added support for [doT](https://github.com/olado/doT) templates. 
+
 ## 0.8.6
 
 No user-facing changes.

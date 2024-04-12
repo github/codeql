@@ -1,3 +1,35 @@
+## 0.0.20
+
+No user-facing changes.
+
+## 0.0.19
+
+No user-facing changes.
+
+## 0.0.18
+
+No user-facing changes.
+
+## 0.0.17
+
+No user-facing changes.
+
+## 0.0.16
+
+No user-facing changes.
+
+## 0.0.15
+
+No user-facing changes.
+
+## 0.0.14
+
+No user-facing changes.
+
+## 0.0.13
+
+No user-facing changes.
+
 ## 0.0.12
 
 No user-facing changes.

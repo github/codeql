@@ -241,15 +241,23 @@ module API {
     }
 
     /**
-     * Gets a node representing an instance of this API component, that is, an object whose
-     * constructor is the function represented by this node.
+     * Gets a node representing an instance of the class represented by this node.
+     * This includes instances of subclasses.
      *
-     * For example, if this node represents a use of some class `A`, then there might be a node
-     * representing instances of `A`, typically corresponding to expressions `new A()` at the
-     * source level.
+     * For example:
+     * ```js
+     * import { C } from "foo";
      *
-     * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
-     * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
+     * new C(); // API::moduleImport("foo").getMember("C").getInstance()
+     *
+     * class D extends C {
+     *   m() {
+     *     this; // API::moduleImport("foo").getMember("C").getInstance()
+     *  }
+     * }
+     *
+     * new D(); // API::moduleImport("foo").getMember("C").getInstance()
+     * ```
      */
     cached
     Node getInstance() {
@@ -594,6 +602,9 @@ module API {
       exportedName = "" and
       result = getAModuleImportRaw(moduleName)
     }
+
+    /** Gets a sink node that represents instances of `cls`. */
+    Node getClassInstance(DataFlow::ClassNode cls) { result = Impl::MkClassInstance(cls) }
   }
 
   /**
@@ -888,6 +899,17 @@ module API {
       (propDesc = Promises::errorProp() or propDesc = "")
     }
 
+    pragma[nomagic]
+    private DataFlow::ClassNode getALocalSubclass(DataFlow::SourceNode node) {
+      result.getASuperClassNode().getALocalSource() = node
+    }
+
+    bindingset[node]
+    pragma[inline_late]
+    private DataFlow::ClassNode getALocalSubclassFwd(DataFlow::SourceNode node) {
+      result = getALocalSubclass(node)
+    }
+
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
@@ -924,6 +946,15 @@ module API {
           or
           lbl = Label::forwardingFunction() and
           DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
+          or
+          exists(DataFlow::ClassNode cls |
+            lbl = Label::instance() and
+            cls = getALocalSubclassFwd(pred).getADirectSubClass*()
+          |
+            ref = cls.getAReceiverNode()
+            or
+            ref = cls.getAClassReference().getAnInstantiation()
+          )
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -1621,6 +1652,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
   exists(Module mod | mod = importableModule(m) |
     rhs = mod.(AmdModule).getDefine().getModuleExpr().flow()
     or
+    not mod.(ES2015Module).hasBothNamedAndDefaultExports() and
     exports(m, "default", rhs)
     or
     exists(ExportAssignDeclaration assgn | assgn.getTopLevel() = mod |
@@ -1634,6 +1666,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
 /** Holds if module `m` exports `rhs` under the name `prop`. */
 private predicate exports(string m, string prop, DataFlow::Node rhs) {
   exists(ExportDeclaration exp | exp.getEnclosingModule() = importableModule(m) |
+    not exp.isTypeOnly() and
     rhs = exp.getSourceNode(prop)
     or
     exists(Variable v |

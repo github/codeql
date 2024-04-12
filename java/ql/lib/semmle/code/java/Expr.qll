@@ -378,7 +378,17 @@ class ArrayInit extends Expr, @arrayinit {
   override string getAPrimaryQlClass() { result = "ArrayInit" }
 }
 
-/** A common super-class that represents all varieties of assignments. */
+/**
+ * A common super-class that represents many varieties of assignments.
+ *
+ * This does not cover unary assignments such as `i++`, and initialization of
+ * local variables at their declaration such as `int i = 0;`.
+ *
+ * To cover more cases of variable updates, see the classes `VariableAssign`,
+ * `VariableUpdate` and `VarWrite`. But consider that they don't cover array
+ * element assignments since there the assignment destination is not directly
+ * the array variable but instead an `ArrayAccess`.
+ */
 class Assignment extends Expr, @assignment {
   /** Gets the destination (left-hand side) of the assignment. */
   Expr getDest() { result.isNthChildOf(this, 0) }
@@ -1580,7 +1590,9 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
    * Note that this won't get anything when record pattern matching is used-- for more general patterns,
    * use `getPattern`.
    */
-  LocalVariableDeclExpr getLocalVariableDeclExpr() { result = this.getPattern().asBindingPattern() }
+  LocalVariableDeclExpr getLocalVariableDeclExpr() {
+    result = this.getPattern().asBindingOrUnnamedPattern()
+  }
 
   /**
    * Gets the access to the type on the right-hand side of the `instanceof` operator.
@@ -1671,7 +1683,10 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     or
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
     or
-    exists(PatternCase pc | this.getParent() = pc | result.isNthChildOf(pc, -2))
+    exists(PatternCase pc, int index, int typeAccessIdx | this.isNthChildOf(pc, index) |
+      (if index = 0 then typeAccessIdx = -2 else typeAccessIdx = (-3 - index)) and
+      result.isNthChildOf(pc, typeAccessIdx)
+    )
     or
     exists(RecordPatternExpr rpe, int index |
       this.isNthChildOf(rpe, index) and result.isNthChildOf(rpe, -(index + 1))
@@ -1680,6 +1695,9 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
 
   /** Gets the name of the variable declared by this local variable declaration expression. */
   string getName() { result = this.getVariable().getName() }
+
+  /** Holds if this is an anonymous local variable, `_` */
+  predicate isAnonymous() { this.getName() = "" }
 
   /**
    * Gets the switch statement or expression whose pattern declares this identifier, if any.
@@ -1690,7 +1708,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
       or
       pc = result.(SwitchExpr).getAPatternCase()
     |
-      this = pc.getPattern().getAChildExpr*()
+      this = pc.getAPattern().getAChildExpr*()
     )
   }
 
@@ -1729,17 +1747,17 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     or
     exists(SwitchStmt switch |
       result = switch.getExpr() and
-      this = switch.getAPatternCase().getPattern().asBindingPattern()
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
     )
     or
     exists(SwitchExpr switch |
       result = switch.getExpr() and
-      this = switch.getAPatternCase().getPattern().asBindingPattern()
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
     )
     or
     exists(InstanceOfExpr ioe |
       result = ioe.getExpr() and
-      this = ioe.getPattern().asBindingPattern()
+      this = ioe.getPattern().asBindingOrUnnamedPattern()
     )
   }
 
@@ -1753,7 +1771,9 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.getName() }
+  override string toString() {
+    if this.getName() = "" then result = "<anonymous local variable>" else result = this.getName()
+  }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" }
 }
@@ -1781,6 +1801,9 @@ class VariableUpdate extends Expr {
 
 /**
  * An assignment to a variable or an initialization of the variable.
+ *
+ * This does not cover compound assignments such as `i += 1`, or unary
+ * assignments such as `i++`; use the class `VariableUpdate` for that.
  */
 class VariableAssign extends VariableUpdate {
   VariableAssign() {
@@ -1979,6 +2002,9 @@ class ExtensionReceiverAccess extends VarAccess {
 
 /**
  * A write access to a variable, which occurs as the destination of an assignment.
+ *
+ * This does not cover the initialization of local variables at their declaration,
+ * use the class `VariableUpdate` if you want to cover that as well.
  */
 class VarWrite extends VarAccess {
   VarWrite() { this.isVarWrite() }
@@ -2049,7 +2075,11 @@ class MethodCall extends Expr, Call, @methodaccess {
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.printAccess() }
+  override string toString() {
+    if exists(this.getMethod())
+    then result = this.printAccess()
+    else result = "<Call to unknown method>"
+  }
 
   /** Gets a printable representation of this expression. */
   string printAccess() { result = this.getMethod().getName() + "(...)" }
@@ -2112,11 +2142,17 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   /** Gets the compilation unit in which this type access occurs. */
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
-  /** Gets a printable representation of this expression. */
-  override string toString() {
+  private string toNormalString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or
     not this.hasQualifier() and result = this.getType().toString()
+  }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() {
+    if this.getType() instanceof ErrorType
+    then result = "<TypeAccess of ErrorType>"
+    else result = this.toNormalString()
   }
 
   override string getAPrimaryQlClass() { result = "TypeAccess" }
@@ -2645,9 +2681,9 @@ class NotNullExpr extends UnaryExpr, @notnullexpr {
 }
 
 /**
- * A binding or record pattern.
+ * A binding, unnamed or record pattern.
  *
- * Note binding patterns are represented as `LocalVariableDeclExpr`s.
+ * Note binding and unnamed patterns are represented as `LocalVariableDeclExpr`s.
  */
 class PatternExpr extends Expr {
   PatternExpr() {
@@ -2660,9 +2696,14 @@ class PatternExpr extends Expr {
   }
 
   /**
-   * Gets this pattern cast to a binding pattern.
+   * Gets this pattern cast to a binding or unnamed pattern.
    */
-  LocalVariableDeclExpr asBindingPattern() { result = this }
+  LocalVariableDeclExpr asBindingOrUnnamedPattern() { result = this }
+
+  /**
+   * DEPRECATED: alias for `asBindingOrUnnamedPattern`.
+   */
+  deprecated LocalVariableDeclExpr asBindingPattern() { result = this.asBindingOrUnnamedPattern() }
 
   /**
    * Gets this pattern cast to a record pattern.
@@ -2696,6 +2737,16 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
         or
         subPattern.(RecordPatternExpr).isUnrestricted()
       )
+    )
+  }
+
+  /**
+   * Holds if this record pattern declares any identifiers (i.e., at least one leaf declaration is named).
+   */
+  predicate declaresAnyIdentifiers() {
+    exists(PatternExpr subPattern | subPattern = this.getSubPattern(_) |
+      subPattern.asRecordPattern().declaresAnyIdentifiers() or
+      not subPattern.asBindingOrUnnamedPattern().isAnonymous()
     )
   }
 }
