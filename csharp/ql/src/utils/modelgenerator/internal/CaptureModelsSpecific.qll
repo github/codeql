@@ -28,7 +28,7 @@ private predicate isHigherOrder(CS::Callable api) {
 }
 
 private predicate irrelevantAccessor(CS::Accessor a) {
-  exists(CS::Property p | p = a.getDeclaration() | exists(p.getSetter()) and exists(p.getGetter()))
+  a.getDeclaration().(CS::Property).isReadWrite()
 }
 
 /**

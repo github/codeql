@@ -17,9 +17,7 @@ private predicate isUninteresting(Callable c) {
   or
   // The data flow library uses read/store steps for properties, so we don't need to model them,
   // if both a getter and a setter exist.
-  exists(Property p | p = c.(Accessor).getDeclaration() |
-    exists(p.getSetter()) and exists(p.getGetter())
-  )
+  c.(Accessor).getDeclaration().(Property).isReadWrite()
 }
 
 /**
