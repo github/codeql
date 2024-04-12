@@ -14,17 +14,17 @@ edges
 | test.cpp:91:9:91:16 | fread output argument | test.cpp:93:17:93:24 | *filename | provenance |  |
 | test.cpp:93:11:93:14 | strncat output argument | test.cpp:94:45:94:48 | *path | provenance |  |
 | test.cpp:93:17:93:24 | *filename | test.cpp:93:11:93:14 | strncat output argument | provenance |  |
-| test.cpp:106:20:106:38 | *call to getenv | test.cpp:107:33:107:36 | *path | provenance |  |
-| test.cpp:107:31:107:31 | call to operator+ | test.cpp:108:18:108:22 | *call to c_str | provenance |  |
+| test.cpp:106:20:106:38 | *call to getenv | test.cpp:107:33:107:36 | *path | provenance | TaintFunction |
+| test.cpp:107:31:107:31 | call to operator+ | test.cpp:108:18:108:22 | *call to c_str | provenance | TaintFunction |
 | test.cpp:107:33:107:36 | *path | test.cpp:107:31:107:31 | call to operator+ | provenance |  |
-| test.cpp:113:20:113:38 | *call to getenv | test.cpp:114:19:114:22 | *path | provenance |  |
-| test.cpp:114:10:114:23 | call to operator+ | test.cpp:114:25:114:29 | *call to c_str | provenance |  |
-| test.cpp:114:10:114:23 | call to operator+ | test.cpp:114:25:114:29 | *call to c_str | provenance |  |
+| test.cpp:113:20:113:38 | *call to getenv | test.cpp:114:19:114:22 | *path | provenance | TaintFunction |
+| test.cpp:114:10:114:23 | call to operator+ | test.cpp:114:25:114:29 | *call to c_str | provenance | TaintFunction |
+| test.cpp:114:10:114:23 | call to operator+ | test.cpp:114:25:114:29 | *call to c_str | provenance | TaintFunction |
 | test.cpp:114:17:114:17 | call to operator+ | test.cpp:114:10:114:23 | call to operator+ | provenance |  |
 | test.cpp:114:19:114:22 | *path | test.cpp:114:10:114:23 | call to operator+ | provenance |  |
 | test.cpp:114:19:114:22 | *path | test.cpp:114:17:114:17 | call to operator+ | provenance |  |
-| test.cpp:119:20:119:38 | *call to getenv | test.cpp:120:19:120:22 | *path | provenance |  |
-| test.cpp:120:17:120:17 | call to operator+ | test.cpp:120:10:120:30 | *call to data | provenance |  |
+| test.cpp:119:20:119:38 | *call to getenv | test.cpp:120:19:120:22 | *path | provenance | TaintFunction |
+| test.cpp:120:17:120:17 | call to operator+ | test.cpp:120:10:120:30 | *call to data | provenance | TaintFunction |
 | test.cpp:120:19:120:22 | *path | test.cpp:120:17:120:17 | call to operator+ | provenance |  |
 | test.cpp:140:9:140:11 | fread output argument | test.cpp:142:31:142:33 | *str | provenance |  |
 | test.cpp:142:11:142:17 | sprintf output argument | test.cpp:143:10:143:16 | *command | provenance |  |
@@ -34,31 +34,31 @@ edges
 | test.cpp:177:13:177:17 | strncat output argument | test.cpp:178:22:178:26 | *flags | provenance |  |
 | test.cpp:177:13:177:17 | strncat output argument | test.cpp:178:22:178:26 | *flags | provenance |  |
 | test.cpp:177:20:177:27 | *filename | test.cpp:177:13:177:17 | strncat output argument | provenance |  |
-| test.cpp:177:20:177:27 | *filename | test.cpp:177:13:177:17 | strncat output argument | provenance |  |
+| test.cpp:177:20:177:27 | *filename | test.cpp:177:13:177:17 | strncat output argument | provenance | TaintFunction |
 | test.cpp:178:13:178:19 | strncat output argument | test.cpp:183:32:183:38 | *command | provenance |  |
 | test.cpp:178:13:178:19 | strncat output argument | test.cpp:183:32:183:38 | *command | provenance |  |
 | test.cpp:178:22:178:26 | *flags | test.cpp:178:13:178:19 | strncat output argument | provenance |  |
-| test.cpp:178:22:178:26 | *flags | test.cpp:178:13:178:19 | strncat output argument | provenance |  |
+| test.cpp:178:22:178:26 | *flags | test.cpp:178:13:178:19 | strncat output argument | provenance | TaintFunction |
 | test.cpp:180:13:180:19 | strncat output argument | test.cpp:183:32:183:38 | *command | provenance |  |
 | test.cpp:180:22:180:29 | *filename | test.cpp:180:13:180:19 | strncat output argument | provenance |  |
 | test.cpp:186:47:186:54 | *filename | test.cpp:187:18:187:25 | *filename | provenance |  |
 | test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | *flags | provenance |  |
 | test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | *flags | provenance |  |
 | test.cpp:187:18:187:25 | *filename | test.cpp:187:11:187:15 | strncat output argument | provenance |  |
-| test.cpp:187:18:187:25 | *filename | test.cpp:187:11:187:15 | strncat output argument | provenance |  |
+| test.cpp:187:18:187:25 | *filename | test.cpp:187:11:187:15 | strncat output argument | provenance | TaintFunction |
 | test.cpp:188:11:188:17 | strncat output argument | test.cpp:186:19:186:25 | *command | provenance |  |
 | test.cpp:188:11:188:17 | strncat output argument | test.cpp:186:19:186:25 | *command | provenance |  |
 | test.cpp:188:20:188:24 | *flags | test.cpp:188:11:188:17 | strncat output argument | provenance |  |
-| test.cpp:188:20:188:24 | *flags | test.cpp:188:11:188:17 | strncat output argument | provenance |  |
+| test.cpp:188:20:188:24 | *flags | test.cpp:188:11:188:17 | strncat output argument | provenance | TaintFunction |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | *filename | provenance |  |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | *command | provenance |  |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | *command | provenance |  |
 | test.cpp:196:26:196:33 | *filename | test.cpp:186:47:186:54 | *filename | provenance |  |
-| test.cpp:196:26:196:33 | *filename | test.cpp:196:10:196:16 | concat output argument | provenance |  |
-| test.cpp:196:26:196:33 | *filename | test.cpp:196:10:196:16 | concat output argument | provenance |  |
+| test.cpp:196:26:196:33 | *filename | test.cpp:196:10:196:16 | concat output argument | provenance | TaintFunction |
+| test.cpp:196:26:196:33 | *filename | test.cpp:196:10:196:16 | concat output argument | provenance | TaintFunction |
 | test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | *filename | provenance |  |
-| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance |  |
-| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance |  |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance | TaintFunction |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance | TaintFunction |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | *command | provenance |  |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | *command | provenance |  |
 | test.cpp:220:19:220:26 | *filename | test.cpp:220:10:220:16 | strncat output argument | provenance |  |

@@ -29,7 +29,7 @@ class ExternalEndpoint extends Endpoint {
   override predicate hasSummary() {
     Endpoint.super.hasSummary()
     or
-    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
+    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   override predicate isSource() {

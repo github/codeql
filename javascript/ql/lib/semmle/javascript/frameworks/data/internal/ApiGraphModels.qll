@@ -229,41 +229,55 @@ private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row
 private predicate typeVariableModel(string row) { any(TypeVariableModelCsv s).row(inversePad(row)) }
 
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(string type, string path, string kind) {
+predicate sourceModel(string type, string path, string kind, string model) {
   exists(string row |
     sourceModel(row) and
     row.splitAt(";", 0) = type and
     row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind
+    row.splitAt(";", 2) = kind and
+    model = "SourceModelCsv"
   )
   or
-  Extensions::sourceModel(type, path, kind)
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::sourceModel(type, path, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a sink model exists for the given parameters. */
-private predicate sinkModel(string type, string path, string kind) {
+private predicate sinkModel(string type, string path, string kind, string model) {
   exists(string row |
     sinkModel(row) and
     row.splitAt(";", 0) = type and
     row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind
+    row.splitAt(";", 2) = kind and
+    model = "SinkModelCsv"
   )
   or
-  Extensions::sinkModel(type, path, kind)
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::sinkModel(type, path, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
-private predicate summaryModel(string type, string path, string input, string output, string kind) {
+private predicate summaryModel(
+  string type, string path, string input, string output, string kind, string model
+) {
   exists(string row |
     summaryModel(row) and
     row.splitAt(";", 0) = type and
     row.splitAt(";", 1) = path and
     row.splitAt(";", 2) = input and
     row.splitAt(";", 3) = output and
-    row.splitAt(";", 4) = kind
+    row.splitAt(";", 4) = kind and
+    model = "SummaryModelCsv"
   )
   or
-  Extensions::summaryModel(type, path, input, output, kind)
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::summaryModel(type, path, input, output, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a type model exists for the given parameters. */
@@ -294,9 +308,9 @@ private predicate typeVariableModel(string name, string path) {
  */
 predicate isRelevantType(string type) {
   (
-    sourceModel(type, _, _) or
-    sinkModel(type, _, _) or
-    summaryModel(type, _, _, _, _) or
+    sourceModel(type, _, _, _) or
+    sinkModel(type, _, _, _) or
+    summaryModel(type, _, _, _, _, _) or
     typeModel(_, type, _)
   ) and
   (
@@ -319,9 +333,9 @@ pragma[nomagic]
 predicate isRelevantFullPath(string type, string path) {
   isRelevantType(type) and
   (
-    sourceModel(type, path, _) or
-    sinkModel(type, path, _) or
-    summaryModel(type, path, _, _, _) or
+    sourceModel(type, path, _, _) or
+    sinkModel(type, path, _, _) or
+    summaryModel(type, path, _, _, _, _) or
     typeModel(_, type, path)
   )
 }
@@ -331,8 +345,8 @@ private predicate accessPathRange(string s) {
   isRelevantFullPath(_, s)
   or
   exists(string type | isRelevantType(type) |
-    summaryModel(type, _, s, _, _) or
-    summaryModel(type, _, _, s, _)
+    summaryModel(type, _, s, _, _, _) or
+    summaryModel(type, _, _, s, _, _)
   )
   or
   typeVariableModel(_, s)
@@ -543,7 +557,7 @@ private API::Node getNodeFromPath(string type, AccessPath path) {
 
 pragma[nomagic]
 private predicate typeStepModel(string type, AccessPath basePath, AccessPath output) {
-  summaryModel(type, basePath, "", output, "type")
+  summaryModel(type, basePath, "", output, "type", _)
 }
 
 pragma[nomagic]
@@ -621,9 +635,9 @@ module ModelOutput {
      * Holds if a CSV source model contributed `source` with the given `kind`.
      */
     cached
-    API::Node getASourceNode(string kind) {
+    API::Node getASourceNode(string kind, string model) {
       exists(string type, string path |
-        sourceModel(type, path, kind) and
+        sourceModel(type, path, kind, model) and
         result = getNodeFromPath(type, path)
       )
     }
@@ -632,9 +646,9 @@ module ModelOutput {
      * Holds if a CSV sink model contributed `sink` with the given `kind`.
      */
     cached
-    API::Node getASinkNode(string kind) {
+    API::Node getASinkNode(string kind, string model) {
       exists(string type, string path |
-        sinkModel(type, path, kind) and
+        sinkModel(type, path, kind, model) and
         result = getNodeFromPath(type, path)
       )
     }
@@ -644,10 +658,10 @@ module ModelOutput {
      */
     cached
     predicate relevantSummaryModel(
-      string type, string path, string input, string output, string kind
+      string type, string path, string input, string output, string kind, string model
     ) {
       isRelevantType(type) and
-      summaryModel(type, path, input, output, kind)
+      summaryModel(type, path, input, output, kind, model)
     }
 
     /**
@@ -655,7 +669,7 @@ module ModelOutput {
      */
     cached
     predicate resolvedSummaryBase(string type, string path, Specific::InvokeNode baseNode) {
-      summaryModel(type, path, _, _, _) and
+      summaryModel(type, path, _, _, _, _) and
       baseNode = getInvocationFromPath(type, path)
     }
 
@@ -664,7 +678,7 @@ module ModelOutput {
      */
     cached
     predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
-      summaryModel(type, path, _, _, _) and
+      summaryModel(type, path, _, _, _, _) and
       baseNode = getNodeFromPath(type, path)
     }
 
@@ -680,12 +694,22 @@ module ModelOutput {
   import Specific::ModelOutputSpecific
   private import codeql.mad.ModelValidation as SharedModelVal
 
+  /**
+   * Holds if a CSV source model contributed `source` with the given `kind`.
+   */
+  API::Node getASourceNode(string kind) { result = getASourceNode(kind, _) }
+
+  /**
+   * Holds if a CSV sink model contributed `sink` with the given `kind`.
+   */
+  API::Node getASinkNode(string kind) { result = getASinkNode(kind, _) }
+
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
-    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind) }
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, kind) }
+    predicate sinkKind(string kind) { sinkModel(_, _, kind, _) }
 
-    predicate sourceKind(string kind) { sourceModel(_, _, kind) }
+    predicate sourceKind(string kind) { sourceModel(_, _, kind, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;

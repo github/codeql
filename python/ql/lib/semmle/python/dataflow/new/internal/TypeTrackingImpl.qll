@@ -24,7 +24,15 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   ContentFilter getFilterFromWithContentStep(Content content) { none() }
 
   // Callables
-  class SummarizedCallable = FlowSummaryImpl::Private::SummarizedCallableImpl;
+  class SummarizedCallable instanceof FlowSummaryImpl::Private::SummarizedCallableImpl {
+    string toString() { result = super.toString() }
+
+    predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      super.propagatesFlow(input, output, preservesValue, _)
+    }
+  }
 
   // Summaries and their stacks
   class SummaryComponent = FlowSummaryImpl::Private::SummaryComponent;

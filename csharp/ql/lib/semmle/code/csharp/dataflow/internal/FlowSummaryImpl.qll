@@ -169,20 +169,28 @@ module SourceSinkInterpretationInput implements
 
   class Element = Cs::Element;
 
-  predicate sourceElement(Element e, string output, string kind, Public::Provenance provenance) {
+  predicate sourceElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind, Public::Provenance provenance) {
+  predicate sinkElement(
+    Element e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
@@ -380,10 +388,13 @@ private class SummarizedCallableWithCallback extends Public::SummarizedCallable 
 
   SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[delegate-self]" and
-    preservesValue = true
+    preservesValue = true and
+    model = "heuristic-callback"
   }
 
   override predicate hasProvenance(Public::Provenance provenance) { provenance = "hq-generated" }
