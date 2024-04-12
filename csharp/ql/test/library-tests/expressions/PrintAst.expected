@@ -1,5 +1,3 @@
-expressions.cs:
-#  530| [MethodCall] call to method Api
 FoldedLiterals.cs:
 #    1| [Class] FoldedLiterals
 #    3|   5: [Method] Test
@@ -2429,3 +2427,5 @@ expressions.cs:
 #  530|           0: [LocalVariableDeclAndInitExpr] Object y = ...
 #  530|             -1: [TypeMention] object
 #  530|             0: [LocalVariableAccess] access to local variable y
+#  530|             1: [SuppressNullableWarningExpr] ...!
+#  530|               0: [MethodCall] call to method Api
