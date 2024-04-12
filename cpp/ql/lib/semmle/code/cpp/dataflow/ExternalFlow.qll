@@ -471,7 +471,7 @@ private module Cached {
   cached
   predicate sourceNode(DataFlow::Node node, string kind) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSourceNode(n, kind) and n.asNode() = node
+      isSourceNode(n, kind, _) and n.asNode() = node // TODO
     )
   }
 
@@ -482,7 +482,7 @@ private module Cached {
   cached
   predicate sinkNode(DataFlow::Node node, string kind) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSinkNode(n, kind) and n.asNode() = node
+      isSinkNode(n, kind, _) and n.asNode() = node // TODO
     )
   }
 }
@@ -518,7 +518,7 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     )
   }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue, string model) {
     exists(string kind |
       this.relevantSummaryElementManual(input, output, kind)
       or
@@ -526,7 +526,8 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
       this.relevantSummaryElementGenerated(input, output, kind)
     |
       if kind = "value" then preservesValue = true else preservesValue = false
-    )
+    ) and
+    model = "" // TODO
   }
 
   override predicate hasProvenance(Provenance provenance) {
