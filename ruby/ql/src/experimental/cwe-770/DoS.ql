@@ -62,7 +62,7 @@ predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
   )
 }
 
-private module UnicodeDoSConfig implements DataFlow::ConfigSig {
+private module DoSConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
@@ -106,11 +106,11 @@ private module UnicodeDoSConfig implements DataFlow::ConfigSig {
   }
 }
 
-module UnicodeDoSFlow = TaintTracking::Global<UnicodeDoSConfig>;
+module DoSFlow = TaintTracking::Global<DoSConfig>;
 
-import UnicodeDoSFlow::PathGraph
+import DoSFlow::PathGraph
 
-from UnicodeDoSFlow::PathNode source, UnicodeDoSFlow::PathNode sink
-where UnicodeDoSFlow::flowPath(source, sink)
+from DoSFlow::PathNode source, DoSFlow::PathNode sink
+where DoSFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This $@ can control $@ a repeatable operation is executed.", source.getNode(),
   "user-provided value", sink.getNode(), "how many times"
