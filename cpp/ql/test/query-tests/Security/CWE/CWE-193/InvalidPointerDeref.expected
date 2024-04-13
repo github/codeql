@@ -32,8 +32,9 @@ edges
 | test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance |  |
 | test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance |  |
 | test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance |  |
-| test.cpp:264:13:264:14 | * ... | test.cpp:264:13:264:14 | * ... | provenance |  |
-| test.cpp:264:13:264:14 | * ... | test.cpp:264:13:264:14 | * ... | provenance |  |
+| test.cpp:262:31:262:33 | *... ++ | test.cpp:264:13:264:14 | * ... | provenance |  |
+| test.cpp:262:31:262:33 | *... ++ | test.cpp:264:13:264:14 | * ... | provenance |  |
+| test.cpp:264:13:264:14 | * ... | test.cpp:262:31:262:33 | *... ++ | provenance |  |
 | test.cpp:270:13:270:24 | new[] | test.cpp:271:14:271:21 | ... + ... | provenance |  |
 | test.cpp:271:14:271:21 | ... + ... | test.cpp:271:14:271:21 | ... + ... | provenance |  |
 | test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance |  |
@@ -42,8 +43,11 @@ edges
 | test.cpp:356:15:356:23 | ... + ... | test.cpp:356:15:356:23 | ... + ... | provenance |  |
 | test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | * ... | provenance |  |
 | test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | * ... | provenance |  |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | * ... | provenance |  |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | * ... | provenance |  |
 | test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | * ... | provenance |  |
 | test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | * ... | provenance |  |
+| test.cpp:358:14:358:26 | * ... | test.cpp:359:14:359:32 | * ... | provenance |  |
 | test.cpp:377:14:377:27 | new[] | test.cpp:378:15:378:23 | ... + ... | provenance |  |
 | test.cpp:378:15:378:23 | ... + ... | test.cpp:378:15:378:23 | ... + ... | provenance |  |
 | test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | * ... | provenance |  |
@@ -132,6 +136,7 @@ nodes
 | test.cpp:260:13:260:24 | new[] | semmle.label | new[] |
 | test.cpp:261:14:261:21 | ... + ... | semmle.label | ... + ... |
 | test.cpp:261:14:261:21 | ... + ... | semmle.label | ... + ... |
+| test.cpp:262:31:262:33 | *... ++ | semmle.label | *... ++ |
 | test.cpp:264:13:264:14 | * ... | semmle.label | * ... |
 | test.cpp:264:13:264:14 | * ... | semmle.label | * ... |
 | test.cpp:270:13:270:24 | new[] | semmle.label | new[] |
@@ -141,6 +146,7 @@ nodes
 | test.cpp:355:14:355:27 | new[] | semmle.label | new[] |
 | test.cpp:356:15:356:23 | ... + ... | semmle.label | ... + ... |
 | test.cpp:356:15:356:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:358:14:358:26 | * ... | semmle.label | * ... |
 | test.cpp:358:14:358:26 | * ... | semmle.label | * ... |
 | test.cpp:359:14:359:32 | * ... | semmle.label | * ... |
 | test.cpp:377:14:377:27 | new[] | semmle.label | new[] |

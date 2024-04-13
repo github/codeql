@@ -10,7 +10,10 @@ edges
 | test.cpp:40:11:40:17 | *access to array | test.cpp:11:26:11:28 | *url | provenance |  |
 | test.cpp:46:18:46:26 | *http:// | test.cpp:49:11:49:16 | *buffer | provenance | DataFlowFunction |
 | test.cpp:49:11:49:16 | *buffer | test.cpp:11:26:11:28 | *url | provenance |  |
-| test.cpp:110:21:110:40 | *http://example.com | test.cpp:121:11:121:13 | *ptr | provenance | TaintFunction |
+| test.cpp:110:21:110:40 | *http://example.com | test.cpp:113:8:113:13 | *call to strstr | provenance | TaintFunction |
+| test.cpp:110:21:110:40 | *http://example.com | test.cpp:116:9:116:14 | *call to strstr | provenance | TaintFunction |
+| test.cpp:113:8:113:13 | *call to strstr | test.cpp:121:11:121:13 | *ptr | provenance |  |
+| test.cpp:116:9:116:14 | *call to strstr | test.cpp:121:11:121:13 | *ptr | provenance |  |
 | test.cpp:121:11:121:13 | *ptr | test.cpp:11:26:11:28 | *url | provenance |  |
 nodes
 | test.cpp:11:26:11:28 | *url | semmle.label | *url |
@@ -26,6 +29,8 @@ nodes
 | test.cpp:46:18:46:26 | *http:// | semmle.label | *http:// |
 | test.cpp:49:11:49:16 | *buffer | semmle.label | *buffer |
 | test.cpp:110:21:110:40 | *http://example.com | semmle.label | *http://example.com |
+| test.cpp:113:8:113:13 | *call to strstr | semmle.label | *call to strstr |
+| test.cpp:116:9:116:14 | *call to strstr | semmle.label | *call to strstr |
 | test.cpp:121:11:121:13 | *ptr | semmle.label | *ptr |
 subpaths
 #select

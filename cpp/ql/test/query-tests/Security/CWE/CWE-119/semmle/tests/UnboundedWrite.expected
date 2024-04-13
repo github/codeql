@@ -40,9 +40,10 @@ edges
 | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | provenance |  |
 | test_buffer_overrun.cpp:32:46:32:49 | *argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | provenance |  |
 | tests.cpp:613:19:613:24 | *source | tests.cpp:615:17:615:22 | *source | provenance |  |
-| tests.cpp:622:19:622:24 | *source | tests.cpp:625:2:625:16 | *... = ... | provenance |  |
+| tests.cpp:622:19:622:24 | *source | tests.cpp:625:11:625:16 | *source | provenance |  |
 | tests.cpp:625:2:625:2 | *s [post update] [*home] | tests.cpp:628:14:628:14 | *s [*home] | provenance |  |
 | tests.cpp:625:2:625:16 | *... = ... | tests.cpp:625:2:625:2 | *s [post update] [*home] | provenance |  |
+| tests.cpp:625:11:625:16 | *source | tests.cpp:625:2:625:16 | *... = ... | provenance |  |
 | tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:14:628:19 | *home | provenance |  |
 | tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:16:628:19 | *home | provenance |  |
 | tests.cpp:628:16:628:19 | *home | tests.cpp:628:14:628:19 | *home | provenance |  |
@@ -82,6 +83,7 @@ nodes
 | tests.cpp:622:19:622:24 | *source | semmle.label | *source |
 | tests.cpp:625:2:625:2 | *s [post update] [*home] | semmle.label | *s [post update] [*home] |
 | tests.cpp:625:2:625:16 | *... = ... | semmle.label | *... = ... |
+| tests.cpp:625:11:625:16 | *source | semmle.label | *source |
 | tests.cpp:628:14:628:14 | *s [*home] | semmle.label | *s [*home] |
 | tests.cpp:628:14:628:19 | *home | semmle.label | *home |
 | tests.cpp:628:16:628:19 | *home | semmle.label | *home |

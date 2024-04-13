@@ -1,6 +1,8 @@
 edges
-| tests2.cpp:20:17:20:31 | call to SAXParser | tests2.cpp:22:2:22:2 | *p | provenance |  |
-| tests2.cpp:33:17:33:31 | call to SAXParser | tests2.cpp:37:2:37:2 | *p | provenance |  |
+| tests2.cpp:20:17:20:31 | *new | tests2.cpp:22:2:22:2 | *p | provenance |  |
+| tests2.cpp:20:17:20:31 | call to SAXParser | tests2.cpp:20:17:20:31 | *new | provenance |  |
+| tests2.cpp:33:17:33:31 | *new | tests2.cpp:37:2:37:2 | *p | provenance |  |
+| tests2.cpp:33:17:33:31 | call to SAXParser | tests2.cpp:33:17:33:31 | *new | provenance |  |
 | tests2.cpp:49:12:49:12 | call to SAXParser | tests2.cpp:51:2:51:2 | *p | provenance |  |
 | tests3.cpp:23:21:23:53 | *call to createXMLReader | tests3.cpp:25:2:25:2 | *p | provenance |  |
 | tests3.cpp:35:16:35:20 | **p_3_3 | tests3.cpp:38:2:38:6 | *p_3_3 | provenance |  |
@@ -20,14 +22,18 @@ edges
 | tests5.cpp:85:2:85:2 | *p | tests5.cpp:86:2:86:2 | *p | provenance |  |
 | tests5.cpp:86:2:86:2 | *p | tests5.cpp:88:2:88:2 | *p | provenance |  |
 | tests5.cpp:88:2:88:2 | *p | tests5.cpp:89:2:89:2 | *p | provenance |  |
-| tests.cpp:15:23:15:43 | call to XercesDOMParser | tests.cpp:17:2:17:2 | *p | provenance |  |
-| tests.cpp:28:23:28:43 | call to XercesDOMParser | tests.cpp:31:2:31:2 | *p | provenance |  |
-| tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:37:2:37:2 | *p | provenance |  |
+| tests.cpp:15:23:15:43 | *new | tests.cpp:17:2:17:2 | *p | provenance |  |
+| tests.cpp:15:23:15:43 | call to XercesDOMParser | tests.cpp:15:23:15:43 | *new | provenance |  |
+| tests.cpp:28:23:28:43 | *new | tests.cpp:31:2:31:2 | *p | provenance |  |
+| tests.cpp:28:23:28:43 | call to XercesDOMParser | tests.cpp:28:23:28:43 | *new | provenance |  |
+| tests.cpp:35:23:35:43 | *new | tests.cpp:37:2:37:2 | *p | provenance |  |
+| tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:35:23:35:43 | *new | provenance |  |
 | tests.cpp:37:2:37:2 | *p | tests.cpp:37:2:37:2 | *p | provenance |  |
 | tests.cpp:37:2:37:2 | *p | tests.cpp:38:2:38:2 | *p | provenance |  |
 | tests.cpp:38:2:38:2 | *p | tests.cpp:38:2:38:2 | *p | provenance |  |
 | tests.cpp:38:2:38:2 | *p | tests.cpp:39:2:39:2 | *p | provenance |  |
-| tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:53:2:53:2 | *p | provenance |  |
+| tests.cpp:51:23:51:43 | *new | tests.cpp:53:2:53:2 | *p | provenance |  |
+| tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:51:23:51:43 | *new | provenance |  |
 | tests.cpp:53:2:53:2 | *p | tests.cpp:53:2:53:2 | *p | provenance |  |
 | tests.cpp:53:2:53:2 | *p | tests.cpp:55:2:55:2 | *p | provenance |  |
 | tests.cpp:55:2:55:2 | *p | tests.cpp:55:2:55:2 | *p | provenance |  |
@@ -37,22 +43,31 @@ edges
 | tests.cpp:57:2:57:2 | *p | tests.cpp:59:2:59:2 | *p | provenance |  |
 | tests.cpp:59:2:59:2 | *p | tests.cpp:59:2:59:2 | *p | provenance |  |
 | tests.cpp:59:2:59:2 | *p | tests.cpp:60:2:60:2 | *p | provenance |  |
-| tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:69:2:69:2 | *p | provenance |  |
-| tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:80:2:80:2 | *p | provenance |  |
-| tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:88:3:88:3 | *q | provenance |  |
-| tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | *q | provenance |  |
+| tests.cpp:66:23:66:43 | *new | tests.cpp:69:2:69:2 | *p | provenance |  |
+| tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:66:23:66:43 | *new | provenance |  |
+| tests.cpp:73:23:73:43 | *new | tests.cpp:80:2:80:2 | *p | provenance |  |
+| tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:73:23:73:43 | *new | provenance |  |
+| tests.cpp:85:24:85:44 | *new | tests.cpp:86:24:86:25 | ** ... | provenance |  |
+| tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:85:24:85:44 | *new | provenance |  |
+| tests.cpp:86:24:86:25 | ** ... | tests.cpp:88:3:88:3 | *q | provenance |  |
+| tests.cpp:100:24:100:44 | *new | tests.cpp:101:24:101:25 | ** ... | provenance |  |
+| tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:100:24:100:44 | *new | provenance |  |
+| tests.cpp:101:24:101:25 | ** ... | tests.cpp:104:3:104:3 | *q | provenance |  |
 | tests.cpp:112:39:112:39 | *p | tests.cpp:112:39:112:39 | *p | provenance |  |
 | tests.cpp:112:39:112:39 | *p | tests.cpp:113:2:113:2 | *p | provenance |  |
 | tests.cpp:116:39:116:39 | *p | tests.cpp:117:2:117:2 | *p | provenance |  |
-| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:126:18:126:18 | *q | provenance |  |
-| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:128:18:128:18 | *q | provenance |  |
+| tests.cpp:122:23:122:43 | *new | tests.cpp:126:18:126:18 | *q | provenance |  |
+| tests.cpp:122:23:122:43 | *new | tests.cpp:128:18:128:18 | *q | provenance |  |
+| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:122:23:122:43 | *new | provenance |  |
 | tests.cpp:126:18:126:18 | *q | tests.cpp:112:39:112:39 | *p | provenance |  |
 | tests.cpp:126:18:126:18 | *q | tests.cpp:126:18:126:18 | test10_doParseB output argument | provenance |  |
 | tests.cpp:126:18:126:18 | test10_doParseB output argument | tests.cpp:128:18:128:18 | *q | provenance |  |
 | tests.cpp:128:18:128:18 | *q | tests.cpp:116:39:116:39 | *p | provenance |  |
 nodes
+| tests2.cpp:20:17:20:31 | *new | semmle.label | *new |
 | tests2.cpp:20:17:20:31 | call to SAXParser | semmle.label | call to SAXParser |
 | tests2.cpp:22:2:22:2 | *p | semmle.label | *p |
+| tests2.cpp:33:17:33:31 | *new | semmle.label | *new |
 | tests2.cpp:33:17:33:31 | call to SAXParser | semmle.label | call to SAXParser |
 | tests2.cpp:37:2:37:2 | *p | semmle.label | *p |
 | tests2.cpp:49:12:49:12 | call to SAXParser | semmle.label | call to SAXParser |
@@ -90,16 +105,20 @@ nodes
 | tests5.cpp:86:2:86:2 | *p | semmle.label | *p |
 | tests5.cpp:88:2:88:2 | *p | semmle.label | *p |
 | tests5.cpp:89:2:89:2 | *p | semmle.label | *p |
+| tests.cpp:15:23:15:43 | *new | semmle.label | *new |
 | tests.cpp:15:23:15:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:17:2:17:2 | *p | semmle.label | *p |
+| tests.cpp:28:23:28:43 | *new | semmle.label | *new |
 | tests.cpp:28:23:28:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:31:2:31:2 | *p | semmle.label | *p |
+| tests.cpp:35:23:35:43 | *new | semmle.label | *new |
 | tests.cpp:35:23:35:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:37:2:37:2 | *p | semmle.label | *p |
 | tests.cpp:37:2:37:2 | *p | semmle.label | *p |
 | tests.cpp:38:2:38:2 | *p | semmle.label | *p |
 | tests.cpp:38:2:38:2 | *p | semmle.label | *p |
 | tests.cpp:39:2:39:2 | *p | semmle.label | *p |
+| tests.cpp:51:23:51:43 | *new | semmle.label | *new |
 | tests.cpp:51:23:51:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:53:2:53:2 | *p | semmle.label | *p |
 | tests.cpp:53:2:53:2 | *p | semmle.label | *p |
@@ -111,19 +130,26 @@ nodes
 | tests.cpp:59:2:59:2 | *p | semmle.label | *p |
 | tests.cpp:59:2:59:2 | *p | semmle.label | *p |
 | tests.cpp:60:2:60:2 | *p | semmle.label | *p |
+| tests.cpp:66:23:66:43 | *new | semmle.label | *new |
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:69:2:69:2 | *p | semmle.label | *p |
+| tests.cpp:73:23:73:43 | *new | semmle.label | *new |
 | tests.cpp:73:23:73:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:80:2:80:2 | *p | semmle.label | *p |
+| tests.cpp:85:24:85:44 | *new | semmle.label | *new |
 | tests.cpp:85:24:85:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
+| tests.cpp:86:24:86:25 | ** ... | semmle.label | ** ... |
 | tests.cpp:88:3:88:3 | *q | semmle.label | *q |
+| tests.cpp:100:24:100:44 | *new | semmle.label | *new |
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
+| tests.cpp:101:24:101:25 | ** ... | semmle.label | ** ... |
 | tests.cpp:104:3:104:3 | *q | semmle.label | *q |
 | tests.cpp:112:39:112:39 | *p | semmle.label | *p |
 | tests.cpp:112:39:112:39 | *p | semmle.label | *p |
 | tests.cpp:113:2:113:2 | *p | semmle.label | *p |
 | tests.cpp:116:39:116:39 | *p | semmle.label | *p |
 | tests.cpp:117:2:117:2 | *p | semmle.label | *p |
+| tests.cpp:122:23:122:43 | *new | semmle.label | *new |
 | tests.cpp:122:23:122:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:126:18:126:18 | *q | semmle.label | *q |
 | tests.cpp:126:18:126:18 | test10_doParseB output argument | semmle.label | test10_doParseB output argument |

@@ -2,7 +2,8 @@ edges
 | test3.cpp:74:21:74:29 | password1 | test3.cpp:76:15:76:17 | ptr | provenance |  |
 | test3.cpp:81:15:81:22 | password | test3.cpp:83:15:83:17 | ptr | provenance |  |
 | test3.cpp:112:20:112:25 | buffer | test3.cpp:114:14:114:19 | buffer | provenance |  |
-| test3.cpp:117:28:117:33 | buffer | test3.cpp:117:13:117:14 | *id | provenance |  |
+| test3.cpp:117:28:117:33 | buffer | test3.cpp:119:9:119:14 | buffer | provenance |  |
+| test3.cpp:119:9:119:14 | buffer | test3.cpp:117:13:117:14 | *id | provenance |  |
 | test3.cpp:124:7:124:20 | *get_global_str | test3.cpp:144:16:144:29 | call to get_global_str | provenance |  |
 | test3.cpp:126:9:126:23 | global_password | test3.cpp:124:7:124:20 | *get_global_str | provenance |  |
 | test3.cpp:134:11:134:18 | password | test3.cpp:112:20:112:25 | buffer | provenance |  |
@@ -45,6 +46,7 @@ nodes
 | test3.cpp:114:14:114:19 | buffer | semmle.label | buffer |
 | test3.cpp:117:13:117:14 | *id | semmle.label | *id |
 | test3.cpp:117:28:117:33 | buffer | semmle.label | buffer |
+| test3.cpp:119:9:119:14 | buffer | semmle.label | buffer |
 | test3.cpp:124:7:124:20 | *get_global_str | semmle.label | *get_global_str |
 | test3.cpp:126:9:126:23 | global_password | semmle.label | global_password |
 | test3.cpp:134:11:134:18 | password | semmle.label | password |
