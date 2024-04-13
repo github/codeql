@@ -14,13 +14,20 @@ edges
 | test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | provenance | TaintFunction |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | provenance |  |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | provenance |  |
-| test.cpp:209:25:209:36 | *call to get_string | test.cpp:211:12:211:16 | *hello | provenance |  |
-| test.cpp:215:25:215:36 | *call to get_string | test.cpp:217:12:217:16 | *hello | provenance |  |
-| test.cpp:221:25:221:36 | *call to get_string | test.cpp:223:12:223:16 | *hello | provenance |  |
+| test.cpp:209:25:209:36 | *call to get_string | test.cpp:210:5:210:14 | *... += ... | provenance |  |
+| test.cpp:210:5:210:14 | *... += ... | test.cpp:211:12:211:16 | *hello | provenance |  |
+| test.cpp:215:25:215:36 | *call to get_string | test.cpp:216:13:216:21 | *... + ... | provenance |  |
+| test.cpp:216:13:216:21 | *... + ... | test.cpp:217:12:217:16 | *hello | provenance |  |
+| test.cpp:221:25:221:36 | *call to get_string | test.cpp:222:5:222:11 | *... ++ | provenance |  |
+| test.cpp:222:5:222:11 | *... ++ | test.cpp:223:12:223:16 | *hello | provenance |  |
 | test.cpp:227:25:227:36 | *call to get_string | test.cpp:228:12:228:18 | *++ ... | provenance |  |
-| test.cpp:232:25:232:36 | *call to get_string | test.cpp:235:12:235:16 | *hello | provenance |  |
-| test.cpp:239:25:239:36 | *call to get_string | test.cpp:242:12:242:16 | *hello | provenance |  |
-| test.cpp:245:25:245:36 | *call to get_string | test.cpp:247:12:247:16 | *hello | provenance |  |
+| test.cpp:228:12:228:18 | *++ ... | test.cpp:228:12:228:18 | *++ ... | provenance |  |
+| test.cpp:232:25:232:36 | *call to get_string | test.cpp:233:22:233:27 | **& ... | provenance |  |
+| test.cpp:233:22:233:27 | **& ... | test.cpp:235:12:235:16 | *hello | provenance |  |
+| test.cpp:239:25:239:36 | *call to get_string | test.cpp:240:22:240:26 | **(reference to) | provenance |  |
+| test.cpp:240:22:240:26 | **(reference to) | test.cpp:242:12:242:16 | *hello | provenance |  |
+| test.cpp:245:25:245:36 | *call to get_string | test.cpp:246:28:246:33 | **(const char *const *)... | provenance |  |
+| test.cpp:246:28:246:33 | **(const char *const *)... | test.cpp:247:12:247:16 | *hello | provenance |  |
 nodes
 | NonConstantFormat.c:28:27:28:30 | **argv | semmle.label | **argv |
 | NonConstantFormat.c:30:10:30:16 | *access to array | semmle.label | *access to array |
@@ -48,18 +55,25 @@ nodes
 | test.cpp:205:12:205:20 | *... + ... | semmle.label | *... + ... |
 | test.cpp:206:12:206:16 | *hello | semmle.label | *hello |
 | test.cpp:209:25:209:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:210:5:210:14 | *... += ... | semmle.label | *... += ... |
 | test.cpp:211:12:211:16 | *hello | semmle.label | *hello |
 | test.cpp:215:25:215:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:216:13:216:21 | *... + ... | semmle.label | *... + ... |
 | test.cpp:217:12:217:16 | *hello | semmle.label | *hello |
 | test.cpp:221:25:221:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:222:5:222:11 | *... ++ | semmle.label | *... ++ |
 | test.cpp:223:12:223:16 | *hello | semmle.label | *hello |
 | test.cpp:227:25:227:36 | *call to get_string | semmle.label | *call to get_string |
 | test.cpp:228:12:228:18 | *++ ... | semmle.label | *++ ... |
+| test.cpp:228:12:228:18 | *++ ... | semmle.label | *++ ... |
 | test.cpp:232:25:232:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:233:22:233:27 | **& ... | semmle.label | **& ... |
 | test.cpp:235:12:235:16 | *hello | semmle.label | *hello |
 | test.cpp:239:25:239:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:240:22:240:26 | **(reference to) | semmle.label | **(reference to) |
 | test.cpp:242:12:242:16 | *hello | semmle.label | *hello |
 | test.cpp:245:25:245:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:246:28:246:33 | **(const char *const *)... | semmle.label | **(const char *const *)... |
 | test.cpp:247:12:247:16 | *hello | semmle.label | *hello |
 subpaths
 #select
