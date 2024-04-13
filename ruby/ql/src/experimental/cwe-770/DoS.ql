@@ -112,5 +112,5 @@ import UnicodeDoSFlow::PathGraph
 
 from UnicodeDoSFlow::PathNode source, UnicodeDoSFlow::PathNode sink
 where UnicodeDoSFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This $@ can reach a $@.", source.getNode(),
-  "user-provided value", sink.getNode(), "costly Unicode normalization operation"
+select sink.getNode(), source, sink, "This $@ can control how many times $@ function.", source.getNode(),
+  "user-provided value", sink.getNode(), "a repeatable operation"
