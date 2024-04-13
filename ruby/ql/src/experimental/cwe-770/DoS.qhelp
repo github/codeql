@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a remote user-controlled data value can be used as part of the limit of times an operation can be executed, such behavior could lead to a denial of service.</p> 
+
+</overview>
+<recommendation>
+
+<p>Ensure the limitation and the validation of any incoming value to a reasonable value.</p>
+
+</recommendation>
+
+<example>
+<p>
+In this example a user-controlled data value such as `1_000` reaches a repeatable operation as `1_000` times. A simple exploit would be for an attacker to send a huge value as `999_999_999` or provoke an endless loop with a negative value.
+</p>
+
+<sample src="examples/bad.rb" />
+
+<p>To fix this vulnerability, it is required to constrain the size of the user input and validate the incoming value. </p> 
+
+<p>For illustration pureposes, we can limit the possible values for the user input to between `1` and `1_000`.</p> 
+
+<sample src="examples/good.rb" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://nvd.nist.gov/vuln/detail/CVE-2022-23837">CVE-2022-23837: High severity denial of service vulnerability in Sidekiq, there is no limit on the number of days when requesting stats for the graph. This overloads the system, affecting the Web UI, and makes it unavailable to users.</a>
+  </li>
+
+<li><a href="https://github.com/sidekiq/sidekiq/commit/7785ac1399f1b28992adb56055f6acd88fd1d956">The suggested fix for the Sidekiq denial of service vulnerability.</a></li>
+
+</references>
+</qhelp>
