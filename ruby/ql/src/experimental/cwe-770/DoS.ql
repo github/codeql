@@ -23,7 +23,9 @@ import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.InclusionTests
 
 predicate inclusionCheck(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
-  exists(InclusionTest t | t.asExpr() = g | node = t.getContainedNode().asExpr() and branch = t.getPolarity()) 
+  exists(InclusionTest t | t.asExpr() = g |
+    node = t.getContainedNode().asExpr() and branch = t.getPolarity()
+  )
 }
 
 predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
@@ -78,14 +80,14 @@ private module DoSConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node previousNode, DataFlow::Node nextNode) {
     exists(ParenthesizedExpr loe, DataFlow::CallNode c, ExprNode en |
       en = c.getReceiver() and
-      c.getMethodName() = ["to_i","to_f"] and
+      c.getMethodName() = ["to_i", "to_f"] and
       c = nextNode and
       loe = en.asExpr().getExpr() and
       loe.getStmt(_).(LogicalOrExpr).getAnOperand() = previousNode.asExpr().getExpr() and
       not previousNode.asExpr().getExpr() instanceof IntegerLiteral
     ) //and
-    //previousNode.getLocation().getFile().getAbsolutePath().matches("%application.rb")
     or
+    //previousNode.getLocation().getFile().getAbsolutePath().matches("%application.rb")
     exists(MethodCall mc |
       mc.getReceiver() = previousNode.asExpr().getExpr() and
       mc.getMethodName() = ["to_i", "to_f"] and
@@ -118,5 +120,5 @@ import DoSFlow::PathGraph
 
 from DoSFlow::PathNode source, DoSFlow::PathNode sink
 where DoSFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This $@ can control $@ a repeatable operation is executed.", source.getNode(),
-  "user-provided value", sink.getNode(), "how many times"
+select sink.getNode(), source, sink, "This $@ can control $@ a repeatable operation is executed.",
+  source.getNode(), "user-provided value", sink.getNode(), "how many times"
