@@ -78,13 +78,19 @@ private module DoSConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node previousNode, DataFlow::Node nextNode) {
     exists(ParenthesizedExpr loe, DataFlow::CallNode c, ExprNode en |
       en = c.getReceiver() and
-      c.getMethodName() = "to_i" and
+      c.getMethodName() = ["to_i","to_f"] and
       c = nextNode and
       loe = en.asExpr().getExpr() and
       loe.getStmt(_).(LogicalOrExpr).getAnOperand() = previousNode.asExpr().getExpr() and
       not previousNode.asExpr().getExpr() instanceof IntegerLiteral
     ) //and
     //previousNode.getLocation().getFile().getAbsolutePath().matches("%application.rb")
+    or
+    exists(MethodCall mc |
+      mc.getReceiver() = previousNode.asExpr().getExpr() and
+      mc.getMethodName() = ["to_i", "to_f"] and
+      mc = nextNode.asExpr().getExpr()
+    )
   }
 
   predicate isSink(DataFlow::Node sink) {
