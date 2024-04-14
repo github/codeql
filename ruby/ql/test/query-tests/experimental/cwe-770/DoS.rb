@@ -116,6 +116,13 @@ class UserController < ActionController::Base
         end
 
         # GOOD:
+        if limit_i < 1000 
+            1.upto(limit_i) do |i|
+                put "a repeatable operation"
+            end
+        end
+
+        # GOOD:
         if 0 > limit_i 
             limit_i = 0
         end
@@ -127,6 +134,13 @@ class UserController < ActionController::Base
         # GOOD:
         if limit_i > 0 && limit_i < 1000
             limit_i.times do
+                put "a repeatable operation"
+            end
+        end
+
+        # GOOD:
+        if limit_i > 0 && limit_i < 1000
+            for i in 1..limit_i
                 put "a repeatable operation"
             end
         end
