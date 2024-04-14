@@ -1,7 +1,7 @@
 /**
  * @name Denial of Service using huge value
  * @description A remote user-controlled data value can reach a limit of a repeatable operation which a malicious user may misuse to cause a denial of service.
- * @kind problem
+ * @kind path-problem
  * @id rb/dos
  * @precision high
  * @problem.severity error
