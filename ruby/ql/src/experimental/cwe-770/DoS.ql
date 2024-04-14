@@ -22,11 +22,6 @@ import codeql.ruby.CFG
 import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.InclusionTests
 
-predicate inclusionCheck(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
-  exists(InclusionTest t | t.asExpr() = g |
-    node = t.getContainedNode().asExpr() and branch = t.getPolarity()
-  )
-}
 
 predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode cn | cn = g |
@@ -86,8 +81,6 @@ private module DoSConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node sanitizer) {
     // underAValue is a check to ensure that the length of the user-provided value is limited to a certain amount
     sanitizer = DataFlow::BarrierGuard<underAValue/3>::getABarrierNode()
-    or
-    sanitizer = DataFlow::BarrierGuard<inclusionCheck/3>::getABarrierNode()
   }
 
   /**
