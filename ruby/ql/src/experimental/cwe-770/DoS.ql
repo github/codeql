@@ -1,7 +1,7 @@
 /**
  * @name Denial of Service using huge value
  * @description A remote user-controlled data value can reach a limit of a repeatable operation which a malicious user may misuse to cause a denial of service.
- * @kind path-problem
+ * @kind problem
  * @id rb/dos
  * @precision high
  * @problem.severity error
@@ -81,7 +81,7 @@ predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
 }
 
 private module DoSConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ParamsRFS or  source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ParamsRFS or source instanceof RemoteFlowSource }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     // underAValue is a check to ensure that the length of the user-provided value is limited to a certain amount
