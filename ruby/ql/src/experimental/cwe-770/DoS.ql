@@ -1,6 +1,6 @@
 /**
- * @name Denial of Service using huge value
- * @description A remote user-controlled data value can reach a limit of a repeatable operation which a malicious user may misuse to cause a denial of service.
+ * @name Denial of Service using unconstrained integer/float value
+ * @description A remote user-controlled integer/float value can reach a condition that controls how many times a repeatable operation can be executed. A malicious user may misuse that value to cause an application-level denial of service.
  * @kind path-problem
  * @id rb/dos
  * @precision high
@@ -23,6 +23,16 @@ import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.InclusionTests
 
 
+/**
+ * Ensure that the user-provided value is limited to a certain amount
+ * 
+ * @param node The node to check if limited by:
+ * 1. A comparison operation node with a less than or less than or equal operator
+ * 2. A comparison operation node with a greater than or greater than or equal operator
+ * 3. A comparison operation node with a greater than or greater than or equal operator and the branch is false
+ * 4. A comparison operation node with a less than or less than or equal operator and the branch is false
+ * 
+ */
 predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode cn | cn = g |
     exists(string op |
@@ -51,17 +61,14 @@ predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
         op = cn.getOperator() and
         node = cn.getRightOperand()
       )
-      //|
-      //lenCall = API::builtin("len").getACall() and
-      //node = lenCall.getArg(0).asCfgNode()
-    ) //and
-    //not cn.getLocation().getFile().inStdlib()
+    )
   )
 }
 
  /**
-  * The data argument in an RPC endpoint method on a subclass of
-  * `ActionCable::Channel::Base`, considered as a remote flow source.
+  * Sidekiq ensure using the `params` function that all keys in the resulting hash are strings and ingest `request.params`. So a call to `params` function is considered as a remote flow source. 
+  * 
+  * https://github.com/sidekiq/sidekiq/blob/79d254d9045bb5805beed6aaffec1886ef89f71b/lib/sidekiq/web/action.rb#L30-L37
   */
  class ParamsRFS extends RemoteFlowSource::Range {
   ParamsRFS() {
@@ -72,21 +79,24 @@ predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
     )
   }
 
-  override string getSourceType() { result = "ActionCable channel RPC data" }
+  override string getSourceType() { result = "Request params data" }
 }
 
 private module DoSConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ParamsRFS or source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { //source instanceof ParamsRFS or
+     source instanceof RemoteFlowSource }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    // underAValue is a check to ensure that the length of the user-provided value is limited to a certain amount
+    // Sanitize the user-provided value if limited (underAValue check)
     sanitizer = DataFlow::BarrierGuard<underAValue/3>::getABarrierNode()
   }
 
-  /**
-   * next_node = (previous_node || 30).to_i
-   */
+/**
+     * Support additional flow step for a case like using a default value `(params["days"] | 100).to_i`
+     */
   predicate isAdditionalFlowStep(DataFlow::Node previousNode, DataFlow::Node nextNode) {
+
+    // Additional flow step like `(RFS | INTEGER).to_i` or `(FLOAT | RFS).to_f`
     exists(ParenthesizedExpr loe, DataFlow::CallNode c, ExprNode en |
       en = c.getReceiver() and
       c.getMethodName() = ["to_i", "to_f"] and
@@ -94,9 +104,9 @@ private module DoSConfig implements DataFlow::ConfigSig {
       loe = en.asExpr().getExpr() and
       loe.getStmt(_).(LogicalOrExpr).getAnOperand() = previousNode.asExpr().getExpr() and
       not previousNode.asExpr().getExpr() instanceof IntegerLiteral
-    ) //and
+    ) 
     or
-    //previousNode.getLocation().getFile().getAbsolutePath().matches("%application.rb")
+    // Additional flow step like `RFS.to_i` or `RFS.to_f`
     exists(MethodCall mc |
       mc.getReceiver() = previousNode.asExpr().getExpr() and
       mc.getMethodName() = ["to_i", "to_f"] and
@@ -104,19 +114,27 @@ private module DoSConfig implements DataFlow::ConfigSig {
     )
   }
 
+    /**
+     * - Check if the user-provided value is used in a repeatable operation using `downto`, `upto` or `times`
+     * - Check if the user-provided value is used in a repeatable operation using `for` loop or conditional loop like `until` or `while`. 
+     */
   predicate isSink(DataFlow::Node sink) {
+    // sink = n in `100.downto(n)` or `1.upto(n)`
     exists(MethodCall mc |
       sink.asExpr().getExpr() = mc.getArgument(0) and
       mc.getMethodName() = ["downto", "upto"]
     )
     or
+    // sink = n in `n.times()` or `n.downto(1)` or `n.upto(100)`
     exists(MethodCall mc |
       sink.asExpr().getExpr() = mc.getReceiver() and
       mc.getMethodName() = ["times", "downto", "upto"]
     )
     or
+    // sink = 1..n in `for i in 0..n`
     exists(ForExpr forLoop | sink.asExpr().getExpr() = forLoop.getValue())
     or
+    // sink = n in `until n`
     exists(ConditionalLoop conditionalLoop |
       sink.asExpr().getExpr() = conditionalLoop.getCondition()
     )
