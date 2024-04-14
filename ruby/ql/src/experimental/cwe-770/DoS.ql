@@ -64,8 +64,24 @@ predicate underAValue(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
   )
 }
 
+ /**
+  * The data argument in an RPC endpoint method on a subclass of
+  * `ActionCable::Channel::Base`, considered as a remote flow source.
+  */
+ class ParamsRFS extends RemoteFlowSource::Range {
+  ParamsRFS() {
+    exists(ElementReference er, MethodCall mc |
+      er.getReceiver() = mc and
+      mc.getMethodName() = "params" and
+      this.asExpr() = er.getAControlFlowNode()
+    )
+  }
+
+  override string getSourceType() { result = "ActionCable channel RPC data" }
+}
+
 private module DoSConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ParamsRFS or  source instanceof RemoteFlowSource }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     // underAValue is a check to ensure that the length of the user-provided value is limited to a certain amount
