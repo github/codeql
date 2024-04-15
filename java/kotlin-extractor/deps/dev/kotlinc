@@ -25,6 +25,7 @@ import subprocess
 import zipfile
 import shutil
 import io
+import os
 
 DEFAULT_VERSION = "1.9.0"
 
@@ -85,15 +86,15 @@ def install(version: str):
         shutil.rmtree(install_dir)
     install_dir.mkdir()
     ripunzip = shutil.which("ripunzip")
-    if platform.system() == "Windows" and windows_ripunzip.exists():
+    if ripunzip is None and platform.system() == "Windows" and windows_ripunzip.exists():
         ripunzip = windows_ripunzip
     if ripunzip:
         print(f"downloading and extracting {url} using ripunzip", file=sys.stderr)
         subprocess.run([ripunzip, "unzip-uri", url], cwd=install_dir, check=True)
         return
     with io.BytesIO() as buffer:
+        print(f"downloading {url}", file=sys.stderr)
         with urllib.request.urlopen(url) as response:
-            print(f"downloading {url}", file=sys.stderr)
             while True:
                 bytes = response.read()
                 if not bytes:
@@ -141,15 +142,12 @@ def main(opts, forwarded_opts):
         if not selected_version:
             selected_version = DEFAULT_VERSION
             version_file.write_text(selected_version)
-    if opts.version:
-        print(f"info: kotlinc-jvm {selected_version} (codeql dev wrapper)", file=sys.stderr)
-        return
-    if opts.select and not forwarded_opts:
-        print(f"selected {selected_version}", file=sys.stderr)
-        return
     if get_version(installed_version_file) != selected_version:
         install(selected_version)
         installed_version_file.write_text(selected_version)
+    if opts.version or (opts.select and not forwarded_opts):
+        print(f"info: kotlinc-jvm {selected_version} (codeql dev wrapper)", file=sys.stderr)
+        return
     forward(forwarded_opts)
 
 
@@ -158,4 +156,6 @@ if __name__ == "__main__":
         main(*options())
     except Exception as e:
         print(f"{e.__class__.__name__}: {e}", file=sys.stderr)
+        sys.exit(1)
+    except KeyboardInterrupt:
         sys.exit(1)
