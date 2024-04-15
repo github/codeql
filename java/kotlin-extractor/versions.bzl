@@ -14,8 +14,6 @@ VERSIONS = [
     "2.0.0-RC1",
 ]
 
-DEFAULT_VERSION = "1.9.0"
-
 def _version_to_tuple(v):
     # we ignore the tag when comparing versions, for example 1.9.0-Beta <= 1.9.0
     v, _, ignored_tag = v.partition("-")

@@ -1,4 +1,4 @@
-load("//java/kotlin-extractor:versions.bzl", "DEFAULT_VERSION", "VERSIONS", "version_less")
+load("//java/kotlin-extractor:versions.bzl", "VERSIONS", "version_less")
 load("//misc/bazel:lfs.bzl", "lfs_smudge")
 
 _kotlin_dep_build = """
@@ -73,11 +73,22 @@ def _get_default_version(repository_ctx):
     default_version = repository_ctx.getenv("CODEQL_KOTLIN_SINGLE_VERSION")
     if default_version:
         return default_version
-    if not repository_ctx.which("kotlinc"):
-        return DEFAULT_VERSION
     kotlin_plugin_versions = repository_ctx.path(Label("//java/kotlin-extractor:current_kotlin_version.py"))
     python = repository_ctx.which("python3") or repository_ctx.which("python")
-    res = repository_ctx.execute([python, kotlin_plugin_versions])
+    env = {}
+    repository_ctx.watch(Label("//java/kotlin-extractor/deps:dev/.kotlinc_selected_version"))
+    if not repository_ctx.which("kotlinc"):
+        # take default from the kotlinc wrapper
+        path = repository_ctx.getenv("PATH")
+        path_to_add = repository_ctx.path(Label("//java/kotlin-extractor/deps:dev"))
+        if not path:
+            path = str(path_to_add)
+        elif repository_ctx.os.name == "windows":
+            path = "%s;%s" % (path, path_to_add)
+        else:
+            path = "%s:%s" % (path, path_to_add)
+        env["PATH"] = path
+    res = repository_ctx.execute([python, kotlin_plugin_versions], environment = env)
     if res.return_code != 0:
         fail(res.stderr)
     return res.stdout.strip()
