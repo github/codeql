@@ -43,9 +43,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
 
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "packages"));
-            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "legacypackages"));
-            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "missingpackages"));
+            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "packages"), "package", logger);
+            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "legacypackages"), "legacy package", logger);
+            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "missingpackages"), "missing package", logger);
         }
 
         public string? TryRestoreLatestNetFrameworkReferenceAssemblies()
@@ -275,7 +275,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
-            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "nugetconfig"));
+            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "nugetconfig"), "generated nuget config", logger);
             var nugetConfig = fallbackNugetFeeds is null
                 ? GetNugetConfig()
                 : CreateFallbackNugetConfig(fallbackNugetFeeds, tempDir.DirInfo.FullName);
@@ -411,7 +411,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool TryRestorePackageManually(string package, string? nugetConfig = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryWithoutNugetConfig = true)
         {
             logger.LogInfo($"Restoring package {package}...");
-            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath(package, "missingpackages_workingdir"));
+            using var tempDir = new TemporaryDirectory(
+                ComputeTempDirectoryPath(package, "missingpackages_workingdir"), "missing package working", logger);
             var success = dotnet.New(tempDir.DirInfo.FullName);
             if (!success)
             {
@@ -675,9 +676,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public void Dispose()
         {
-            DependencyManager.DisposeTempDirectory(PackageDirectory, "package", logger);
-            DependencyManager.DisposeTempDirectory(legacyPackageDirectory, "legacy package", logger);
-            DependencyManager.DisposeTempDirectory(missingPackageDirectory, "missing package", logger);
+            PackageDirectory?.Dispose();
+            legacyPackageDirectory?.Dispose();
+            missingPackageDirectory?.Dispose();
         }
 
         /// <summary>

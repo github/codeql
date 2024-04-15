@@ -82,7 +82,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 $"dependency-manager-{DateTime.UtcNow:yyyyMMddHHmm}-{Environment.ProcessId}.jsonc"));
             this.sourceDir = new DirectoryInfo(srcDir);
 
-            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
+            tempWorkingDirectory = new TemporaryDirectory(
+                FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory),
+                "temporary working",
+                logger);
 
             this.fileProvider = new FileProvider(sourceDir, logger);
             this.fileContent = new FileContent(logger, this.fileProvider.SmallNonBinary);
@@ -665,25 +668,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public static void DisposeTempDirectory(TemporaryDirectory? dir, string name, ILogger logger)
-        {
-            try
-            {
-                dir?.Dispose();
-            }
-            catch (Exception exc)
-            {
-                logger.LogInfo($"Couldn't delete {name} directory {exc.Message}");
-            }
-        }
-
         public void Dispose()
         {
-            if (cleanupTempWorkingDirectory)
-            {
-                DisposeTempDirectory(tempWorkingDirectory, "temporary working", logger);
-            }
-
+            tempWorkingDirectory?.Dispose();
             diagnosticsWriter?.Dispose();
             nugetPackageRestorer?.Dispose();
         }
