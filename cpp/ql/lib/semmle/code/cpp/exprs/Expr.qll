@@ -63,6 +63,12 @@ class Expr extends StmtParent, @expr {
    * order of destruction.
    */
   DestructorCall getImplicitDestructorCall(int n) {
+    exists(Expr e |
+      e = this.(TemporaryObjectExpr).getExpr() and
+      synthetic_destructor_call(e, max(int i | synthetic_destructor_call(e, i, _)) - n, result)
+    )
+    or
+    not this = any(TemporaryObjectExpr temp).getExpr() and
     synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
   }
 
