@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
             if (!res)
             {
                 throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
@@ -91,13 +91,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes");
+        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes", null, false);
 
-        public IList<string> GetListedSdks() => GetResultList("--list-sdks");
+        public IList<string> GetListedSdks() => GetResultList("--list-sdks", null, false);
 
-        private IList<string> GetResultList(string args, string? workingDirectory = null)
+        private IList<string> GetResultList(string args, string? workingDirectory = null, bool silent = true)
         {
-            if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results))
+            if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results, silent))
             {
                 return results;
             }
