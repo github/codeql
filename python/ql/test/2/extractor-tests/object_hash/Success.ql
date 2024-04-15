@@ -1,4 +1,3 @@
-
 import python
 
 where exists(theSysModuleObject())

@@ -1,4 +1,4 @@
 import python
 
-from SyntaxError s 
+from SyntaxError s
 select s.toString()
