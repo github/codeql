@@ -31,7 +31,7 @@ load(
     "version_less",
 )
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
-load("@rules_kotlin//kotlin:core.bzl", "kt_kotlinc_options")
+load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
 
 package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
 
@@ -56,6 +56,11 @@ _resources = [
     )
     for r in glob(["src/main/resources/**"])
 ]
+
+kt_javac_options(
+    name = "javac-options",
+    release = "8",
+)
 
 [
     (
@@ -102,6 +107,7 @@ _resources = [
                     ],
                     exclude = ["src/main/kotlin/utils/versions/**"],
                 ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
+            javac_opts = ":javac-options",
             kotlinc_opts = ":kotlinc-options-%s" % v,
             module_name = "codeql-kotlin-extractor",
             # resource_strip_prefix is very nit-picky: the following makes it work from
