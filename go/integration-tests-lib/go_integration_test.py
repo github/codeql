@@ -9,10 +9,11 @@ def go_integration_test(source = "src"):
   goPath = os.path.join(os.path.abspath(os.getcwd()), ".go")
   os.environ['GOPATH'] = goPath
 
-  run_codeql_database_create([], lang="go", source=source)
+  try:
+    run_codeql_database_create([], lang="go", source=source)
 
-  check_diagnostics()
-
-  # Clean up the temporary GOPATH to prevent Bazel failures next
-  # time the tests are run; see https://github.com/golang/go/issues/27161
-  subprocess.call(["go", "clean", "-modcache"])
+    check_diagnostics()
+  finally:
+    # Clean up the temporary GOPATH to prevent Bazel failures next
+    # time the tests are run; see https://github.com/golang/go/issues/27161
+    subprocess.call(["go", "clean", "-modcache"])
