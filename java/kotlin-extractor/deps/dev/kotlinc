@@ -15,7 +15,6 @@ is available in `resources/lib/windows/ripunzip` then).
 """
 
 import pathlib
-import os
 import urllib
 import urllib.request
 import urllib.error
@@ -28,6 +27,7 @@ import shutil
 import io
 
 DEFAULT_VERSION = "1.9.0"
+
 
 def options():
     parser = argparse.ArgumentParser(add_help=False)
@@ -71,6 +71,7 @@ def check_version(version: str):
             raise Error(f"Version {version} not found in github.com/JetBrains/kotlin/releases") from e
         raise
 
+
 def get_version(file: pathlib.Path) -> str:
     try:
         return file.read_text()
@@ -108,9 +109,12 @@ def forward(forwarded_opts):
     kotlinc = install_dir / "kotlinc" / "bin" / "kotlinc"
     if platform.system() == "Windows":
         kotlinc = kotlinc.with_suffix(".bat")
-    args = [sys.argv[0]]
+    assert kotlinc.exists(), f"{kotlinc} not found"
+    args = [kotlinc]
     args.extend(forwarded_opts)
-    os.execv(kotlinc, args)
+    ret = subprocess.run(args).returncode
+    sys.exit(ret)
+
 
 def clear():
     if install_dir.exists():
@@ -122,6 +126,7 @@ def clear():
     if version_file.exists():
         print(f"removing {version_file}", file=sys.stderr)
         version_file.unlink()
+
 
 def main(opts, forwarded_opts):
     if opts.clear:
