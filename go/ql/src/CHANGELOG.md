@@ -1,3 +1,7 @@
+## 0.7.14
+
+No user-facing changes.
+
 ## 0.7.13
 
 ### New Queries
