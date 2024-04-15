@@ -2,7 +2,7 @@ import os
 from create_database_utils import *
 from diagnostics_test_utils import *
 
-def go_integration_test(source = "src"):
+def go_integration_test(source = "src", db = "db", runFunction = runSuccessfully):
   # Set up a GOPATH relative to this test's root directory;
   # we set os.environ instead of using extra_env because we
   # need it to be set for the call to "go clean -modcache" later
@@ -10,7 +10,7 @@ def go_integration_test(source = "src"):
   os.environ['GOPATH'] = goPath
 
   try:
-    run_codeql_database_create([], lang="go", source=source)
+    run_codeql_database_create([], lang="go", source=source, db=db, runFunction=runFunction)
 
     check_diagnostics()
   finally:
