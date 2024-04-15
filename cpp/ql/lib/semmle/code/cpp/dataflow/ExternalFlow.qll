@@ -518,7 +518,9 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     )
   }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue, string model) {
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
     exists(string kind |
       this.relevantSummaryElementManual(input, output, kind)
       or
