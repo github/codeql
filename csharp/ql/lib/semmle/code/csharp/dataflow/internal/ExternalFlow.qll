@@ -98,6 +98,44 @@ private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.mad.ModelValidation as SharedModelVal
 
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    model =
+      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
+        + ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    model =
+      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) and
+    model =
+      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
+        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
+  )
+}
+
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
   sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
