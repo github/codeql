@@ -5,3 +5,8 @@ extensions:
     data:
      - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "inputs.next-version", "code-injection", "generated"]
      - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "inputs.release-branch", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "input.next-version", "output.new-version", "taint", "manual"]

@@ -7,3 +7,9 @@ extensions:
      - ["tencent/hippy/.github/workflows/reuse_classify_commits.yml", "*", "inputs.pull_request_number", "code-injection", "generated"]
      - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "inputs.pull_request_head_sha", "code-injection", "generated"]
      - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "inputs.pull_request_number", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "input.pull_request_head_sha", "output.pull_request_head_sha", "taint", "manual"]
+      - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "input.pull_request_number", "output.pull_request_number", "taint", "manual"]

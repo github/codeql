@@ -14,3 +14,9 @@ extensions:
      - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "inputs.binary-tests", "code-injection", "generated"]
      - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "inputs.total-runners", "code-injection", "generated"]
      - ["hashicorp/vault/.github/workflows/test-enos-scenario-ui.yml", "*", "inputs.storage_backend", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-version-package", "output.testable-packages", "taint", "manual"]
+      - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-revision", "output.testable-containers", "taint", "manual"]

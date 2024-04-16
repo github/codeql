@@ -9,3 +9,8 @@ extensions:
      - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "inputs.base-url", "code-injection", "generated"]
      - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "inputs.version", "code-injection", "generated"]
      - ["element-hq/element-desktop/.github/workflows/build_linux.yaml", "*", "inputs.version", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "input.deploy", "output.deploy", "taint", "manual"]
