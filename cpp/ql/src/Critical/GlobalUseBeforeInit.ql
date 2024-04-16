@@ -31,7 +31,9 @@ predicate useFunc(GlobalVariable v, Function f) {
 }
 
 predicate uninitialisedBefore(GlobalVariable v, Function f) {
-  f.hasGlobalName("main")
+  f.hasGlobalName("main") and
+  not initialisedAtDeclaration(v) and
+  not isStdlibVariable(v)
   or
   exists(Call call, Function g |
     uninitialisedBefore(v, g) and
@@ -107,9 +109,7 @@ predicate isStdlibVariable(GlobalVariable v) { v.hasGlobalName(["stdin", "stdout
 from GlobalVariable v, Function f
 where
   uninitialisedBefore(v, f) and
-  useFunc(v, f) and
-  not initialisedAtDeclaration(v) and
-  not isStdlibVariable(v)
+  useFunc(v, f)
 select f,
   "The variable '" + v.getName() +
     " is used in this function but may not be initialized when it is called."
