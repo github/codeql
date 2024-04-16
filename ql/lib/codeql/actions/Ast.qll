@@ -208,19 +208,21 @@ class Workflow extends AstNode instanceof WorkflowImpl {
 
   predicate hasSingleTrigger(string trigger) {
     this.getATriggerEvent() = trigger and
-    count(string t | this.getATriggerEvent() = t | t) = 1
+    count(this.getATriggerEvent()) = 1
   }
 
   predicate isPrivileged() {
     // The Workflow has a permission to write to some scope
-    this.getPermissions().getAPermission() = "write" and
+    this.getPermissions().getAPermission() = "write"
+    or
     // The Workflow accesses a secret
     exists(SecretsExpression expr |
       expr.getEnclosingWorkflow() = this and not expr.getFieldName() = "GITHUB_TOKEN"
     )
     or
     // The Workflow is triggered by an event other than `pull_request`
-    not this.hasSingleTrigger("pull_request")
+    count(this.getATriggerEvent()) = 1 and
+    not this.getATriggerEvent() = ["pull_request", "workflow_call"]
     or
     // The Workflow is only triggered by `workflow_call` and there is
     // a caller workflow triggered by an event other than `pull_request`
@@ -228,8 +230,11 @@ class Workflow extends AstNode instanceof WorkflowImpl {
     exists(ExternalJob call, Workflow caller |
       call.getCallee() = this.getLocation().getFile().getRelativePath() and
       caller = call.getWorkflow() and
-      not caller.hasSingleTrigger("pull_request")
+      caller.isPrivileged()
     )
+    or
+    // The Workflow has multiple triggers so at least one is ont "pull_request"
+    count(this.getATriggerEvent()) > 1
   }
 }
 

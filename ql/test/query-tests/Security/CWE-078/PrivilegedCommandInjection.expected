@@ -1,6 +1,8 @@
 edges
 nodes
 | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/documentation.yml:87:28:87:66 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
 subpaths
 #select
 | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | Potential privileged command injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | ${{ github.event.comment.body }} |
+| .github/workflows/documentation.yml:87:28:87:66 | github.event.head_commit.message | .github/workflows/documentation.yml:87:28:87:66 | github.event.head_commit.message | .github/workflows/documentation.yml:87:28:87:66 | github.event.head_commit.message | Potential privileged command injection in $@, which may be controlled by an external user. | .github/workflows/documentation.yml:87:28:87:66 | github.event.head_commit.message | ${{ github.event.head_commit.message }} |
