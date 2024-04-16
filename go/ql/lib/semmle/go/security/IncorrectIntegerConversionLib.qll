@@ -260,7 +260,8 @@ private class MaxValueState extends TMaxValueState {
  */
 abstract class FlowStateTransformer extends DataFlow::Node {
   /**
-   * Holds if this should be a barrier for `flowstate`.
+   * Holds if this should be a barrier for a flow state with bit size `bitSize`
+   * and architecture bit size `architectureBitSize`.
    *
    * This includes flow states which are transformed into other flow states.
    */
