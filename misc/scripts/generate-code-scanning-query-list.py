@@ -159,7 +159,7 @@ with CodeQL() as codeql:
         csvwriter = csv.writer(sys.stdout)
         csvwriter.writerow([
             "Query filename", "Suite", "Query name", "Query ID",
-            "Kind", "Severity", "Security score", "Precision", "Tags"
+            "Kind", "Severity", "Precision", "Tags", "Security score"
         ])
 
         # Iterate over all languages and packs, and resolve which queries are part of those packs
@@ -197,7 +197,7 @@ with CodeQL() as codeql:
                         get_query_metadata('id', meta, queryfile_nwo),
                         get_query_metadata('kind', meta, queryfile_nwo),
                         get_query_metadata('problem.severity', meta, queryfile_nwo),
-                        get_query_metadata('security-severity', meta, queryfile_nwo),
                         get_query_metadata('precision', meta, queryfile_nwo),
-                        get_query_metadata('tags', meta, queryfile_nwo)
+                        get_query_metadata('tags', meta, queryfile_nwo),
+                        get_query_metadata('security-severity', meta, queryfile_nwo),
                     ])
