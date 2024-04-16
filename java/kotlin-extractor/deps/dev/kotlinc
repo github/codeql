@@ -130,7 +130,9 @@ def main(opts, forwarded_opts):
         clear()
         return
     current_version = get_version()
-    if opts.select:
+    if opts.select == "default":
+        selected_version = DEFAULT_VERSION
+    elif opts.select is not None:
         check_version(opts.select)
         selected_version = opts.select
     else:
