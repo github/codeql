@@ -163,7 +163,7 @@ module GraphExport<
   }
 
   /**
-   * Gets a synthetic type name to generate for `node`.
+   * Gets a synthetic type name to generate for `node`, if it doesn't have a pretty name.
    */
   private string getSyntheticName(RelevantNode node) {
     exists(int k, string prefixTypeName |
