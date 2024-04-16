@@ -98,16 +98,11 @@ predicate callReaches(Call call, ControlFlowNode successor) {
   )
 }
 
-// To avoid many false alarms like `static int a = 1;`
-predicate initialisedAtDeclaration(GlobalVariable v) {
-  exists(VariableDeclarationEntry vde |
-    vde = v.getDefinition() and
-    vde.isDefinition()
-  )
-}
+/** Holds if `v` has an initializer. */
+predicate initialisedAtDeclaration(GlobalVariable v) { exists(v.getInitializer()) }
 
-// No need to initialize those variables
-predicate isStdlibVariable(GlobalVariable v) { v.getName() = ["stdin", "stdout", "stderr"] }
+/** Holds if `v` is a global variable that does not need to be initialized. */
+predicate isStdlibVariable(GlobalVariable v) { v.hasGlobalName(["stdin", "stdout", "stderr"]) }
 
 from GlobalVariable v, Function f
 where
