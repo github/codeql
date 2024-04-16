@@ -21,10 +21,9 @@ edges
 | test_free.cpp:282:8:282:8 | *s [post update] [buf] | test_free.cpp:283:12:283:12 | *s [buf] | provenance |  |
 | test_free.cpp:282:8:282:12 | pointer to free output argument | test_free.cpp:282:8:282:8 | *s [post update] [buf] | provenance |  |
 | test_free.cpp:283:12:283:12 | *s [buf] | test_free.cpp:283:14:283:16 | buf | provenance |  |
-| test_free.cpp:293:8:293:10 | pointer to free output argument | test_free.cpp:294:11:294:13 | buf | provenance |  |
+| test_free.cpp:293:8:293:10 | pointer to free output argument | test_free.cpp:294:3:294:13 | ... = ... | provenance |  |
 | test_free.cpp:294:3:294:3 | *s [post update] [buf] | test_free.cpp:295:12:295:12 | *s [buf] | provenance |  |
 | test_free.cpp:294:3:294:13 | ... = ... | test_free.cpp:294:3:294:3 | *s [post update] [buf] | provenance |  |
-| test_free.cpp:294:11:294:13 | buf | test_free.cpp:294:3:294:13 | ... = ... | provenance |  |
 | test_free.cpp:295:12:295:12 | *s [buf] | test_free.cpp:295:14:295:16 | buf | provenance |  |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
@@ -65,7 +64,6 @@ nodes
 | test_free.cpp:293:8:293:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:294:3:294:3 | *s [post update] [buf] | semmle.label | *s [post update] [buf] |
 | test_free.cpp:294:3:294:13 | ... = ... | semmle.label | ... = ... |
-| test_free.cpp:294:11:294:13 | buf | semmle.label | buf |
 | test_free.cpp:295:12:295:12 | *s [buf] | semmle.label | *s [buf] |
 | test_free.cpp:295:14:295:16 | buf | semmle.label | buf |
 subpaths
