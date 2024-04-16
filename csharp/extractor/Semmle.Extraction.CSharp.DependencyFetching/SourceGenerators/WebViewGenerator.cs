@@ -63,24 +63,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo("Generating source files from cshtml and razor files...");
 
-            var sdk = new Sdk(dotnet).GetNewestSdk();
-            if (sdk != null)
+            try
             {
-                try
-                {
-                    var razor = new Razor(sdk, dotnet, logger);
-                    var targetDir = GetTemporaryWorkingDirectory("razor");
-                    var generatedFiles = razor.GenerateFiles(views, references, targetDir);
-                    return generatedFiles ?? [];
-                }
-                catch (Exception ex)
-                {
-                    // It's okay, we tried our best to generate source files from cshtml files.
-                    logger.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
-                }
+                var sdk = new Sdk(dotnet, logger);
+                var razor = new Razor(sdk, dotnet, logger);
+                var targetDir = GetTemporaryWorkingDirectory("razor");
+                var generatedFiles = razor.RunSourceGenerator(views, references, targetDir);
+                return generatedFiles ?? [];
             }
-
-            return [];
+            catch (Exception ex)
+            {
+                // It's okay, we tried our best to generate source files from cshtml files.
+                logger.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
+                return [];
+            }
         }
     }
 }
