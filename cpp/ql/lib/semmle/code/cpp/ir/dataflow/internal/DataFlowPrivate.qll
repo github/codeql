@@ -1011,7 +1011,9 @@ predicate nodeIsHidden(Node n) {
 
 predicate neverSkipInPathGraph(Node n) {
   // Always show the right-hand side of assignments in the path graph
-  nodeHasOperand(n, any(StoreInstruction store).getSourceValueOperand(), _)
+  exists(n.asDefinition())
+  or
+  exists(n.asIndirectDefinition())
 }
 
 class LambdaCallKind = Unit;
