@@ -1,7 +1,17 @@
+/**
+ * Provides class representing parallel sink nodes.
+ */
+
 import csharp
 
+/**
+ * A data flow sink node for parallel execution.
+ */
 abstract class ParallelSink extends DataFlow::Node { }
 
+/**
+ * A data flow sink node for lambda parallel sink.
+ */
 class LambdaParallelSink extends ParallelSink {
   LambdaParallelSink() {
     exists(Class c, Method m, MethodCall mc, Expr e | e = this.asExpr() |
@@ -14,6 +24,9 @@ class LambdaParallelSink extends ParallelSink {
   }
 }
 
+/**
+ * A data flow sink node for thread start parallel sink.
+ */
 class ThreadStartParallelSink extends ParallelSink {
   ThreadStartParallelSink() {
     exists(DelegateCreation dc, Expr e | e = this.asExpr() |
