@@ -4,3 +4,8 @@ extensions:
       extensible: sinkModel
     data:
      - ["streetsidesoftware/cspell", "*", "inputs.name", "code-injection", "generated"]
+  - addsTo:
+    pack: githubsecuritylab/actions-all
+    extensible: summaryModel
+    data:
+      - ["streetsidesoftware/cspell", "*", "input.value", "output.value", "taint", "manual"]

@@ -4,3 +4,8 @@ extensions:
       extensible: sinkModel
     data:
      - ["novuhq/novu", "*", "inputs.tag", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["novuhq/novu", "*", "input.docker_name", "output.image", "taint", "manual"]

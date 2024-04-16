@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["googlecloudplatform/magic-modules", "*", "inputs.repo", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+     - ["googlecloudplatform/magic-modules", "*", "output.changed-files", "PR changed files", "manual"]

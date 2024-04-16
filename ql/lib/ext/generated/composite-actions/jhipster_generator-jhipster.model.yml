@@ -20,3 +20,8 @@ extensions:
      - ["jhipster/generator-jhipster", "*", "inputs.generator-jhipster-directory", "code-injection", "generated"]
      - ["jhipster/generator-jhipster", "*", "inputs.application-path", "code-injection", "generated"]
      - ["jhipster/generator-jhipster", "*", "inputs.extra-args", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["jhipster/generator-jhipster", "*", "input.skip-workflow", "output.skip-workflow", "taint", "manual"]

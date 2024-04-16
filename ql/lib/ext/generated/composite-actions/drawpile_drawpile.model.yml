@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["drawpile/drawpile", "*", "input.cache_key", "output.cache_key", "taint", "manual"]
+      - ["drawpile/drawpile", "*", "input.path", "output.path", "taint", "manual"]
