@@ -110,6 +110,5 @@ from GlobalVariable v, Function f
 where
   uninitialisedBefore(v, f) and
   useFunc(v, f)
-select f,
-  "The variable '" + v.getName() + "'" +
-    " is used in this function but may not be initialized when it is called."
+select f, "The variable $@ is used in this function but may not be initialized when it is called.",
+  v, v.getName()
