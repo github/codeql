@@ -3,6 +3,7 @@ private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -471,12 +472,12 @@ import StepRelationTransformations
  *
  * It includes flow steps from flow summaries.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo) and model = ""
   or
-  summaryLocalStep(nodeFrom, nodeTo)
+  summaryLocalStep(nodeFrom, nodeTo, model)
   or
-  variableCaptureLocalFlowStep(nodeFrom, nodeTo)
+  variableCaptureLocalFlowStep(nodeFrom, nodeTo) and model = ""
 }
 
 /**
@@ -490,9 +491,9 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
   LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }
 
-private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
+private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
@@ -1077,6 +1078,14 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
+
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

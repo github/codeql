@@ -9,7 +9,7 @@ edges
 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:116:9:116:13 | *access to array | provenance |  |
 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:121:9:121:10 | *v8 | provenance |  |
 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:130:9:130:10 | *v9 | provenance |  |
-| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:135:9:135:11 | *v10 | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:135:9:135:11 | *v10 | provenance | TaintFunction |
 | consts.cpp:90:7:90:10 | *call to gets | consts.cpp:91:9:91:10 | *v2 | provenance |  |
 | consts.cpp:90:7:90:10 | *call to gets | consts.cpp:116:9:116:13 | *access to array | provenance |  |
 | consts.cpp:90:7:90:10 | *call to gets | consts.cpp:121:9:121:10 | *v8 | provenance |  |
@@ -19,7 +19,7 @@ edges
 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:116:9:116:13 | *access to array | provenance |  |
 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:121:9:121:10 | *v8 | provenance |  |
 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:130:9:130:10 | *v9 | provenance |  |
-| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:135:9:135:11 | *v10 | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:135:9:135:11 | *v10 | provenance | TaintFunction |
 | consts.cpp:106:13:106:19 | *call to varFunc | consts.cpp:107:9:107:10 | *v5 | provenance |  |
 | consts.cpp:111:7:111:13 | *call to varFunc | consts.cpp:112:9:112:10 | *v6 | provenance |  |
 | consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | *v11 | provenance |  |

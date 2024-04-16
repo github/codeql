@@ -64,9 +64,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
+                logger.LogInfo("Produce analyzer config content.");
                 GenerateAnalyzerConfig(cshtmls, analyzerConfig);
 
-                logger.LogInfo($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
+                logger.LogDebug($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
 
                 var args = new StringBuilder();
                 args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
@@ -88,7 +89,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 var argsString = args.ToString();
 
-                logger.LogInfo($"Running CSC to generate Razor source files with arguments: {argsString}.");
+                logger.LogInfo($"Running CSC to generate Razor source files.");
+                logger.LogDebug($"Running CSC to generate Razor source files with arguments: {argsString}.");
 
                 using (var sw = new StreamWriter(cscArgsPath))
                 {

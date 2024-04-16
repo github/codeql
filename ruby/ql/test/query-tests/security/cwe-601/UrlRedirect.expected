@@ -5,7 +5,7 @@ edges
 | UrlRedirect.rb:24:31:24:36 | call to params | UrlRedirect.rb:24:17:24:37 | call to filter_params | provenance |  |
 | UrlRedirect.rb:24:31:24:36 | call to params | UrlRedirect.rb:93:21:93:32 | input_params | provenance |  |
 | UrlRedirect.rb:34:20:34:25 | call to params | UrlRedirect.rb:34:20:34:31 | ...[...] | provenance |  |
-| UrlRedirect.rb:34:20:34:31 | ...[...] | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | provenance |  |
+| UrlRedirect.rb:34:20:34:31 | ...[...] | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | provenance | AdditionalTaintStep |
 | UrlRedirect.rb:58:17:58:22 | call to params | UrlRedirect.rb:58:17:58:28 | ...[...] | provenance |  |
 | UrlRedirect.rb:63:38:63:43 | call to params | UrlRedirect.rb:63:38:63:49 | ...[...] | provenance |  |
 | UrlRedirect.rb:68:38:68:43 | call to params | UrlRedirect.rb:68:38:68:49 | ...[...] | provenance |  |

@@ -8,11 +8,11 @@ using Semmle.Util;
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
-    /// Manage the downloading of NuGet packages.
+    /// Manage the downloading of NuGet packages with nuget.exe.
     /// Locates packages in a source tree and downloads all of the
     /// referenced assemblies to a temp folder.
     /// </summary>
-    internal class NugetPackages : IDisposable
+    internal class NugetExeWrapper : IDisposable
     {
         private readonly string? nugetExe;
         private readonly Util.Logging.ILogger logger;
@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
+        public NugetExeWrapper(string sourceDir, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
         {
             this.packageDirectory = packageDirectory;
             this.logger = logger;
@@ -175,7 +175,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out var _, onOut, onError);
             if (exitCode != 0)
@@ -235,7 +235,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             pi.ReadOutput(out stdout, onOut, onError);
         }
@@ -243,7 +243,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void AddDefaultPackageSource(string nugetConfig)
         {
             logger.LogInfo("Adding default package source...");
-            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source https://api.nuget.org/v3/index.json -ConfigFile \"{nugetConfig}\"", out var _);
+            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {NugetPackageRestorer.PublicNugetOrgFeed} -ConfigFile \"{nugetConfig}\"", out var _);
         }
 
         public void Dispose()

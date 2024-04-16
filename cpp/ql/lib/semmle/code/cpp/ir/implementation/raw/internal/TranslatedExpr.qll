@@ -90,10 +90,26 @@ abstract class TranslatedExpr extends TranslatedElement {
   final override TranslatedElement getChild(int id) {
     result = this.getChildInternal(id)
     or
-    exists(int maxChildId, int destructorIndex |
-      maxChildId = max(int childId | exists(this.getChildInternal(childId))) and
-      result.(TranslatedExpr).getExpr() = expr.getImplicitDestructorCall(destructorIndex) and
-      id = maxChildId + 1 + destructorIndex
+    exists(int destructorIndex |
+      result = this.getImplicitDestructorCall(destructorIndex) and
+      id = this.getFirstDestructorCallIndex() + destructorIndex
+    )
+  }
+
+  final private TranslatedExpr getImplicitDestructorCall(int index) {
+    result.getExpr() = expr.getImplicitDestructorCall(index)
+  }
+
+  final override predicate hasAnImplicitDestructorCall() {
+    exists(this.getImplicitDestructorCall(_))
+  }
+
+  final override int getFirstDestructorCallIndex() {
+    not this.handlesDestructorsExplicitly() and
+    (
+      result = max(int childId | exists(this.getChildInternal(childId))) + 1
+      or
+      not exists(this.getChildInternal(_)) and result = 0
     )
   }
 
@@ -394,6 +410,14 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
       operandTag instanceof AddressOperandTag and
       result = this.getOperand().getResult()
     )
+  }
+
+  override predicate handlesDestructorsExplicitly() {
+    // The class that generates IR for `e` will (implicitly or explicitly)
+    // handle the generation of destructor calls for `e`. Without disabling
+    // destructor call generation here the destructor will get multiple
+    // parents.
+    any()
   }
 }
 
@@ -1999,6 +2023,13 @@ abstract class TranslatedAllocationSize extends TranslatedExpr, TTranslatedAlloc
   final override predicate producesExprResult() { none() }
 
   final override Instruction getResult() { result = this.getInstruction(AllocationSizeTag()) }
+
+  final override predicate handlesDestructorsExplicitly() {
+    // Since the enclosing `TranslatedNewOrNewArrayExpr` (implicitly) handles the destructors
+    // we need to disable the implicit handling here as otherwise the destructors will have
+    // multiple parents
+    any()
+  }
 }
 
 TranslatedAllocationSize getTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
@@ -2155,6 +2186,13 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
   final override string toString() { result = "Allocator call for " + expr.toString() }
 
   final override predicate producesExprResult() { none() }
+
+  final override predicate handlesDestructorsExplicitly() {
+    // Since the enclosing `TranslatedNewOrNewArrayExpr` (implicitly) handles the destructors
+    // we need to disable the implicit handling here as otherwise the destructors will have
+    // multiple parents
+    any()
+  }
 
   override Function getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getAllocator()
@@ -2818,6 +2856,68 @@ class TranslatedReuseExpr extends TranslatedNonConstantExpr {
 }
 
 /**
+ * The IR translation of the destructor calls of the parent `TranslatedThrow`.
+ *
+ * This object does not itself generate the destructor calls. Instead, its
+ * children provide the actual calls, and this object ensures that we correctly
+ * exit with an `ExceptionEdge` after executing all the destructor calls.
+ */
+class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDestructorsAfterThrow {
+  ThrowExpr throw;
+
+  TranslatedDestructorsAfterThrow() { this = TTranslatedDestructorsAfterThrow(throw) }
+
+  override string toString() { result = "Destructor calls after throw: " + throw }
+
+  private TranslatedCall getTranslatedImplicitDestructorCall(int id) {
+    result.getExpr() = throw.getImplicitDestructorCall(id)
+  }
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getChild(0).getFirstInstruction(kind)
+  }
+
+  override ThrowExpr getAst() { result = throw }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) { none() }
+
+  override TranslatedElement getChild(int id) {
+    result = this.getTranslatedImplicitDestructorCall(id)
+  }
+
+  override predicate handlesDestructorsExplicitly() { any() }
+
+  override Declaration getFunction() { result = throw.getEnclosingFunction() }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    exists(int id | child = this.getChild(id) |
+      // Transition to the next child, if any.
+      result = this.getChild(id + 1).getFirstInstruction(kind)
+      or
+      // And otherwise, exit this element with an exceptional edge
+      not exists(this.getChild(id + 1)) and
+      kind instanceof ExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+    )
+  }
+
+  override TranslatedElement getLastChild() {
+    result =
+      this.getTranslatedImplicitDestructorCall(max(int id |
+          exists(throw.getImplicitDestructorCall(id))
+        ))
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getLastChild().getALastInstruction()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+}
+
+/**
  * IR translation of a `throw` expression.
  */
 abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
@@ -2831,13 +2931,22 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = ThrowTag() and
-    kind instanceof ExceptionEdge and
-    result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+    (
+      result = this.getDestructors().getFirstInstruction(kind)
+      or
+      not exists(this.getDestructors()) and
+      kind instanceof ExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+    )
   }
 
   override Instruction getResult() { none() }
 
   abstract Opcode getThrowOpcode();
+
+  override predicate handlesDestructorsExplicitly() { any() }
+
+  TranslatedDestructorsAfterThrow getDestructors() { result.getAst() = expr }
 }
 
 /**
@@ -2849,6 +2958,9 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, TranslatedVariableIn
 
   final override TranslatedElement getChildInternal(int id) {
     result = TranslatedVariableInitialization.super.getChildInternal(id)
+    or
+    id = max(int i | exists(TranslatedVariableInitialization.super.getChildInternal(i))) + 1 and
+    result = this.getDestructors()
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement elem, EdgeKind kind) {
@@ -2914,14 +3026,22 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, TranslatedVariableIn
 class TranslatedReThrowExpr extends TranslatedThrowExpr {
   override ReThrowExpr expr;
 
-  override TranslatedElement getChildInternal(int id) { none() }
+  override TranslatedElement getChildInternal(int id) {
+    id = 0 and
+    result = this.getDestructors()
+  }
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(ThrowTag()) and
     kind instanceof GotoEdge
   }
 
-  override Instruction getALastInstructionInternal() { result = this.getInstruction(ThrowTag()) }
+  override Instruction getALastInstructionInternal() {
+    result = this.getDestructors().getALastInstruction()
+    or
+    not this.hasAnImplicitDestructorCall() and
+    result = this.getInstruction(ThrowTag())
+  }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
 

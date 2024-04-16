@@ -1,6 +1,6 @@
 edges
 | NonConstantFormat.c:28:27:28:30 | **argv | NonConstantFormat.c:30:10:30:16 | *access to array | provenance |  |
-| NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext | provenance |  |
+| NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext | provenance | DataFlowFunction |
 | nested.cpp:19:29:19:32 | *fmt0 | nested.cpp:21:23:21:26 | *fmt0 | provenance |  |
 | nested.cpp:27:32:27:34 | *fmt | nested.cpp:28:16:28:18 | *fmt | provenance |  |
 | nested.cpp:28:16:28:18 | *fmt | nested.cpp:19:29:19:32 | *fmt0 | provenance |  |
@@ -9,9 +9,9 @@ edges
 | nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:34:37:34:39 | *fmt | provenance |  |
 | nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | provenance |  |
 | test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | provenance |  |
-| test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | provenance |  |
+| test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | provenance | DataFlowFunction |
 | test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
-| test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | provenance |  |
+| test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | provenance | TaintFunction |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | provenance |  |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | provenance |  |
 | test.cpp:209:25:209:36 | *call to get_string | test.cpp:211:12:211:16 | *hello | provenance |  |

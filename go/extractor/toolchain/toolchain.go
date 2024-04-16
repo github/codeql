@@ -36,7 +36,14 @@ func GetEnvGoVersion() string {
 		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
 		// to use the local Go toolchain instead.
 		cmd := Version()
-		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+
+		// If 'GOTOOLCHAIN' is already set, then leave it as is. This allows us to force a specific
+		// Go version in tests and also allows users to override the system default more generally.
+		_, hasToolchainVar := os.LookupEnv("GOTOOLCHAIN")
+		if !hasToolchainVar {
+			cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		}
+
 		out, err := cmd.CombinedOutput()
 
 		if err != nil {
