@@ -11,13 +11,17 @@
  *       external/cwe/cwe-664
  */
 
-// IMPORTANT: This query does not currently find anything since it relies on extractor and analysis improvements that hasn't yet been released
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.models.implementations.StdContainer
 import semmle.code.cpp.models.implementations.StdMap
 import semmle.code.cpp.models.implementations.Iterator
+
+private predicate tempToDestructorSink(DataFlow::Node sink, CallInstruction call) {
+  call = sink.asOperand().(ThisArgumentOperand).getCall() and
+  call.getStaticCallTarget() instanceof Destructor
+}
 
 /**
  * A configuration to track flow from a temporary variable to the qualifier of
@@ -28,9 +32,7 @@ module TempToDestructorConfig implements DataFlow::ConfigSig {
     source.asInstruction().(VariableAddressInstruction).getIRVariable() instanceof IRTempVariable
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asOperand().(ThisArgumentOperand).getCall().getStaticCallTarget() instanceof Destructor
-  }
+  predicate isSink(DataFlow::Node sink) { tempToDestructorSink(sink, _) }
 }
 
 module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
