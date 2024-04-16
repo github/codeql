@@ -13,8 +13,8 @@
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `namespace` column selects a package.
- * 2. The `type` column selects a type within that package.
+ * 1. The `namespace` column selects a namespace.
+ * 2. The `type` column selects a type within that namespace.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
@@ -28,29 +28,43 @@
  *    there is only one valid value: "".
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
- *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
+ *    element selected by the first 6 columns. An `input` can be either:
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
- *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
- *      the given range. The range is inclusive at both ends.
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier object,
+ *      that is, `*this`.
+ *      - one or more "*" can be added in front of the argument index to indicate
+ *        indirection, for example, `Argument[*0]` indicates the first indirection
+ *        of the 0th argument.
+ *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
+ *        at both ends. One or more "*"s can be added in front of the whole range
+ *        to indicate that every argument in the range is indirect, for example
+ *        `*0..1` is the first indirection of both arguments 0 and 1.
  *    - "ReturnValue": Selects a value being returned by the selected element.
- *      This requires that the selected element is a method with a body.
+ *      One or more "*" can be added as an argument to indicate indirection, for
+ *      example, "ReturnValue[*]" indicates the first indirection of the return
+ *      value.
  *
- *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
- *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
+ *    An `output` can be either:
  *    - "": Selects a read of a selected field.
- *    - "Argument[n]": Selects the post-update value of an argument in a call to the
- *      selected element. That is, the value of the argument after the call returns.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
- *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
- *      the given range. The range is inclusive at both ends.
- *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
- *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
- *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
- *      in the given range. The range is inclusive at both ends.
- *    - "ReturnValue": Selects the return value of a call to the selected element.
+ *    - "Argument[n]": Selects the post-update value of an argument in a call to
+ *      the selected element. That is, the value of the argument after the call
+ *      returns. The arguments are zero-indexed, and `-1` specifies the qualifier
+ *      object, that is, `*this`.
+ *      - one or more "*" can be added in front of the argument index to indicate
+ *        indirection, for example, `Argument[*0]` indicates the first indirection
+ *        of the 0th argument.
+ *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
+ *        at both ends. One or more "*"s can be added in front of the whole range
+ *        to indicate that every argument in the range is indirect, for example
+ *        `*0..1` is the first indirection of both arguments 0 and 1.
+ *    - "Parameter[n]": Selects the value of a parameter of the selected element.
+ *      The syntax is the same as for "Argument", for example "Parameter[0]",
+ *      "Parameter[*0]", "Parameter[0..2]" etc.
+ *    - "ReturnValue": Selects a value being returned by the selected element.
+ *      One or more "*" can be added as an argument to indicate indirection, for
+ *      example, "ReturnValue[*]" indicates the first indirection of the return
+ *      value.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
@@ -58,16 +72,14 @@
  *    globally applicable value-preserving step.
  */
 
-import swift
-private import internal.DataFlowDispatch
-private import internal.DataFlowPrivate
-private import internal.DataFlowPublic
+import cpp
+private import new.DataFlow
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import FlowSummary as FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.util.Unit
 
 /**
  * A unit class for adding additional source model rows.
@@ -178,7 +190,7 @@ private predicate relevantNamespace(string namespace) {
 private predicate namespaceLink(string shortns, string longns) {
   relevantNamespace(shortns) and
   relevantNamespace(longns) and
-  longns.prefix(longns.indexOf(".")) = shortns
+  longns.prefix(longns.indexOf("::")) = shortns
 }
 
 private predicate canonicalNamespace(string namespace) {
@@ -347,13 +359,13 @@ private predicate elementSpec(
 private string paramsStringPart(Function c, int i) {
   i = -1 and result = "(" and exists(c)
   or
-  exists(int n, string p | c.getParam(n).getType().toString() = p |
+  exists(int n, string p | c.getParameter(n).getType().toString() = p |
     i = 2 * n and result = p
     or
     i = 2 * n - 1 and result = "," and n != 0
   )
   or
-  i = 2 * c.getNumberOfParams() and result = ")"
+  i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
 /**
@@ -363,10 +375,12 @@ private string paramsStringPart(Function c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(Function c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
+private string paramsString(Function c) {
+  result = concat(int i | | paramsStringPart(c, i) order by i)
+}
 
 bindingset[func]
-predicate matchesSignature(Function func, string signature) {
+private predicate matchesSignature(Function func, string signature) {
   signature = "" or
   paramsString(func) = signature
 }
@@ -386,51 +400,55 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(namespace, type, subtypes, name, signature, _) and
-  namespace = "" and // TODO: Fill out when we properly extract modules.
   (
     // Non-member functions
     exists(Function func |
-      func.getName() = name and
+      func.hasQualifiedName(namespace, name) and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
-      not result instanceof Method and
+      not exists(func.getDeclaringType()) and
       result = func
     )
     or
     // Member functions
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, Method method |
-      method.getName() = name and
-      method = declWithMethod.getAMember() and
-      namedTypeDecl.getFullName() = type and
+    exists(Class namedClass, Class classWithMethod, Function method |
+      classWithMethod = method.getClassAndName(name) and
+      namedClass.hasQualifiedName(namespace, type) and
       matchesSignature(method, signature) and
       result = method
     |
-      // member declared in the named type or a subtype of it (or an extension of any)
+      // member declared in the named type or a subtype of it
       subtypes = true and
-      declWithMethod.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
+      classWithMethod = namedClass.getADerivedClass*()
       or
-      // member declared directly in the named type (or an extension of it)
+      // member declared directly in the named type
       subtypes = false and
-      declWithMethod.asNominalTypeDecl() = namedTypeDecl
+      classWithMethod = namedClass
     )
     or
-    // Fields
+    // Member variables
     signature = "" and
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithField, FieldDecl field |
-      field.getName() = name and
-      field = declWithField.getAMember() and
-      namedTypeDecl.getFullName() = type and
-      result = field
+    exists(Class namedClass, Class classWithMember, MemberVariable member |
+      member.getName() = name and
+      member = classWithMember.getAMember() and
+      namedClass.hasQualifiedName(namespace, type) and
+      result = member
     |
       // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
-      declWithField.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
+      classWithMember = namedClass.getADerivedClass*()
       or
       // field declared directly in the named type (or an extension of it)
       subtypes = false and
-      declWithField.asNominalTypeDecl() = namedTypeDecl
+      classWithMember = namedClass
     )
+    or
+    // Global or namespace variables
+    signature = "" and
+    type = "" and
+    subtypes = false and
+    result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
   )
 }
 
@@ -444,44 +462,6 @@ Element interpretElement(
   )
 }
 
-deprecated private predicate parseField(AccessPathToken c, Content::FieldContent f) {
-  exists(string fieldRegex, string name |
-    c.getName() = "Field" and
-    fieldRegex = "^([^.]+)$" and
-    name = c.getAnArgument().regexpCapture(fieldRegex, 1) and
-    f.getField().getName() = name
-  )
-}
-
-deprecated private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
-  c.getName() = "TupleElement" and
-  t.getIndex() = c.getAnArgument().toInt()
-}
-
-deprecated private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
-  c.getName() = "EnumElement" and
-  c.getAnArgument() = e.getSignature()
-  or
-  c.getName() = "OptionalSome" and
-  e.getSignature() = "some:0"
-}
-
-/** Holds if the specification component parses as a `Content`. */
-deprecated predicate parseContent(AccessPathToken component, Content content) {
-  parseField(component, content)
-  or
-  parseTuple(component, content)
-  or
-  parseEnum(component, content)
-  or
-  // map legacy "ArrayElement" specification components to `CollectionContent`
-  component.getName() = "ArrayElement" and
-  content instanceof Content::CollectionContent
-  or
-  component.getName() = "CollectionElement" and
-  content instanceof Content::CollectionContent
-}
-
 cached
 private module Cached {
   /**
@@ -489,9 +469,9 @@ private module Cached {
    * model.
    */
   cached
-  predicate sourceNode(Node node, string kind, string model) {
+  predicate sourceNode(DataFlow::Node node, string kind) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSourceNode(n, kind, model) and n.asNode() = node
+      isSourceNode(n, kind, _) and n.asNode() = node // TODO
     )
   }
 
@@ -500,57 +480,40 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(Node node, string kind, string model) {
+  predicate sinkNode(DataFlow::Node node, string kind) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSinkNode(n, kind, model) and n.asNode() = node
+      isSinkNode(n, kind, _) and n.asNode() = node // TODO
     )
   }
 }
 
 import Cached
 
-/**
- * Holds if `node` is specified as a source with the given kind in a MaD flow
- * model.
- */
-predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
-
-/**
- * Holds if `node` is specified as a sink with the given kind in a MaD flow
- * model.
- */
-predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
-
 private predicate interpretSummary(
-  Function f, string input, string output, string kind, string provenance, string model
+  Function f, string input, string output, string kind, string provenance
 ) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
-    model = "" and // TODO: Insert MaD provenance from summaryModel
     f = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
+  private predicate relevantSummaryElementManual(string input, string output, string kind) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
+      interpretSummary(this, input, output, kind, provenance) and
       provenance.isManual()
     )
   }
 
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
+  private predicate relevantSummaryElementGenerated(string input, string output, string kind) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
+      interpretSummary(this, input, output, kind, provenance) and
       provenance.isGenerated()
     )
   }
@@ -559,17 +522,18 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     string input, string output, boolean preservesValue, string model
   ) {
     exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
+      this.relevantSummaryElementManual(input, output, kind)
       or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
+      not this.relevantSummaryElementManual(_, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind)
     |
       if kind = "value" then preservesValue = true else preservesValue = false
-    )
+    ) and
+    model = "" // TODO
   }
 
   override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
+    interpretSummary(this, _, _, _, provenance)
   }
 }
 
@@ -579,7 +543,7 @@ private class NeutralCallableAdapter extends NeutralCallable {
   string provenance_;
 
   NeutralCallableAdapter() {
-    // Neutral models have not been implemented for Swift.
+    // Neutral models have not been implemented for CPP.
     none() and
     exists(this) and
     exists(kind) and

@@ -6,16 +6,26 @@ private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
 private import SsaInternals as Ssa
+private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.FlowSteps
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
+ * (intra-procedural) step. This relation is only used for local taint flow
+ * (for example `TaintTracking::localTaint(source, sink)`) so it may contain
+ * special cases that should only apply to local taint flow.
  */
 predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  // dataflow step
   DataFlow::localFlowStep(nodeFrom, nodeTo)
   or
+  // taint flow step
   localAdditionalTaintStep(nodeFrom, nodeTo, _)
+  or
+  // models-as-data summarized flow for local data flow (i.e. special case for flow
+  // through calls to modeled functions, without relying on global dataflow to join
+  // the dots).
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
 }
 
 /**
@@ -41,6 +51,10 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo) and
   model = ""
+  or
+  // models-as-data summarized flow
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
   or
   // object->field conflation for content that is a `TaintInheritingContent`.
   exists(DataFlow::ContentSet f |
