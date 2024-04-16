@@ -361,7 +361,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             allPackageDirectories
                 .Where(package => !dependencies.Packages.Contains(package))
                 .Order()
-                .ForEach(package => logger.LogInfo($"Unused package: {package}"));
+                .ForEach(package => logger.LogDebug($"Unused package: {package}"));
         }
 
         private ICollection<string> GetAllPackageDirectories()
@@ -623,13 +623,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
         {
-            IList<string> GetNugetFeeds(string nugetConfig) => dotnet.GetNugetFeeds(nugetConfig);
-
-            IList<string> GetNugetFeedsFromFolder(string folderPath) => dotnet.GetNugetFeedsFromFolder(folderPath);
-
             var nugetConfigs = fileProvider.NugetConfigs;
             var explicitFeeds = nugetConfigs
-                .SelectMany(config => GetFeeds(() => GetNugetFeeds(config)))
+                .SelectMany(config => GetFeeds(() => dotnet.GetNugetFeeds(config)))
                 .ToHashSet();
 
             if (explicitFeeds.Count > 0)
@@ -657,7 +653,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return null;
                 })
                 .Where(folder => folder != null)
-                .SelectMany(folder => GetFeeds(() => GetNugetFeedsFromFolder(folder!)))
+                .SelectMany(folder => GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folder!)))
                 .ToHashSet();
 
             logger.LogInfo($"Found {allFeeds.Count} Nuget feeds (with inherited ones) in nuget.config files: {string.Join(", ", allFeeds.OrderBy(f => f))}");

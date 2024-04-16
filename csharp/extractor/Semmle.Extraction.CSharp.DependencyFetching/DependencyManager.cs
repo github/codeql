@@ -141,12 +141,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Output the findings
             foreach (var r in usedReferences.Keys.OrderBy(r => r))
             {
-                logger.LogInfo($"Resolved reference {r}");
+                logger.LogDebug($"Resolved reference {r}");
             }
 
             foreach (var r in unresolvedReferences.OrderBy(r => r.Key))
             {
-                logger.LogInfo($"Unresolved reference {r.Key} in project {r.Value}");
+                logger.LogDebug($"Unresolved reference {r.Key} in project {r.Value}");
             }
 
             var webViewExtractionOption = Environment.GetEnvironmentVariable(EnvironmentVariableNames.WebViewGeneration);
@@ -253,7 +253,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (isInAnalyzersFolder)
                     {
                         usedReferences.Remove(filename);
-                        logger.LogInfo($"Removed analyzer reference {filename}");
+                        logger.LogDebug($"Removed analyzer reference {filename}");
                     }
                 }
             }
@@ -265,19 +265,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (versionFolders.Length > 1)
             {
                 var versions = string.Join(", ", versionFolders.Select(d => d.Name));
-                logger.LogInfo($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+                logger.LogDebug($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
             }
 
             var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
             if (selectedFrameworkFolder is null)
             {
-                logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
+                logger.LogDebug($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
                 selectedFrameworkFolder = frameworkPath;
             }
 
             dllLocations.Add(selectedFrameworkFolder);
             frameworkLocations.Add(selectedFrameworkFolder);
-            logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
+            logger.LogDebug($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
         }
 
         private static DirectoryInfo[] GetPackageVersionSubDirectories(string packagePath)
@@ -361,7 +361,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var path in toRemove)
             {
                 dllLocations.Remove(path);
-                logger.LogInfo($"Removed reference {path}");
+                logger.LogDebug($"Removed reference {path}");
             }
         }
 
@@ -561,7 +561,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (resolvedInfo.Version != r.Version || resolvedInfo.NetCoreVersion != r.NetCoreVersion)
                 {
                     var asm = resolvedInfo.Id + (resolvedInfo.NetCoreVersion is null ? "" : $" (.NET Core {resolvedInfo.NetCoreVersion})");
-                    logger.LogInfo($"Resolved {r.Id} as {asm}");
+                    logger.LogDebug($"Resolved {r.Id} as {asm}");
 
                     ++conflictedReferences;
                 }

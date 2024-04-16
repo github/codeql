@@ -175,7 +175,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out var _, onOut, onError);
             if (exitCode != 0)
@@ -235,7 +235,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             pi.ReadOutput(out stdout, onOut, onError);
         }
