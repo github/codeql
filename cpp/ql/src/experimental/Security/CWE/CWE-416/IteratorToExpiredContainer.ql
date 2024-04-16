@@ -65,10 +65,11 @@ DataFlow::Node getADestroyedNode() {
       isPostUpdateOfQualifier(destructorCall, result)
     )
     or
+    // Case 2: Anything that was derived from the temporary that is now destroyed
+    // is also destroyed.
     exists(CallInstruction call |
       result.asInstruction() = call and
-      DataFlow::localFlow(destroyedTemp.getNode(),
-        DataFlow::operandNode(call.getThisArgumentOperand()))
+      DataFlow::localFlow(DataFlow::operandNode(call.getThisArgumentOperand()), n)
     |
       call.getStaticCallTarget() instanceof StdSequenceContainerAt or
       call.getStaticCallTarget() instanceof StdMapAt
