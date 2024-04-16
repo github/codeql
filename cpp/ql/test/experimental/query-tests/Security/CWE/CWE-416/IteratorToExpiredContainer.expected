@@ -12,3 +12,5 @@
 | test.cpp:727:23:727:23 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:750:17:750:17 | call to end | call to end |
 | test.cpp:735:23:735:23 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:759:17:759:17 | call to begin | call to begin |
 | test.cpp:735:23:735:23 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:759:17:759:17 | call to end | call to end |
+| test.cpp:771:44:771:56 | temporary object | This object is destroyed before $@ is called. | test.cpp:772:35:772:35 | call to begin | call to begin |
+| test.cpp:771:44:771:56 | temporary object | This object is destroyed before $@ is called. | test.cpp:772:35:772:35 | call to end | call to end |

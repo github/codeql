@@ -766,3 +766,8 @@ void test2() {
   for (auto x : value) {}
   }
 }
+
+void test3() {
+  const std::vector<std::vector<int>>& v = returnValue(); // GOOD [FALSE POSITIVE]
+  for(const std::vector<int>& x : v) {}
+}
