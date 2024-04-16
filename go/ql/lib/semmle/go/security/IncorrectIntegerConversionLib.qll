@@ -431,6 +431,26 @@ class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
 }
 
 /**
+ * The implicit definition of a variable with integer type for a case clause of
+ * a type switch statement which declares a variable in its guard, which has
+ * effectively had a checked type assertion.
+ */
+class TypeSwitchVarFlowStateTransformer extends DataFlow::SsaNode, FlowStateTransformer {
+  IntegerType it;
+
+  TypeSwitchVarFlowStateTransformer() {
+    exists(IR::TypeSwitchImplicitVariableInstruction insn, LocalVariable lv | insn.writes(lv, _) |
+      this.getSourceVariable() = lv and
+      it = lv.getType()
+    )
+  }
+
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    integerTypeBound(it, bitSize, architectureBitSize)
+  }
+}
+
+/**
  * Holds if `source` is the result of a call to `strconv.Atoi`,
  * `strconv.ParseInt`, or `strconv.ParseUint`, `bitSize` is the `bitSize`
  * argument to that call (or 0 for `strconv.Atoi`) and hence must be between 0

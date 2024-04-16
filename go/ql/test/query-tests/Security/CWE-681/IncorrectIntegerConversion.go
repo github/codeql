@@ -510,8 +510,8 @@ func typeSwitch1(s string) {
 		_ = int16(v.(int16))
 		_ = int8(v.(int16)) // $ hasValueFlow="type assertion"
 	case int32:
-		_ = int32(v) // $ SPURIOUS: hasValueFlow="v"
-		_ = int8(v)  // $ hasValueFlow="v"
+		_ = int32(v)
+		_ = int8(v) // $ hasValueFlow="v"
 	case int64:
 		_ = int8(v) // $ hasValueFlow="v"
 	default:
