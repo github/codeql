@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["datadog/dd-trace-js", "*", "inputs.container-id", "code-injection", "generated"]
-     - ["datadog/dd-trace-js", "*", "inputs.init-image-version", "code-injection", "generated"]
+     - ["datadog/dd-trace-js", "*", "input.container-id", "code-injection", "generated"]
+     - ["datadog/dd-trace-js", "*", "input.init-image-version", "code-injection", "generated"]

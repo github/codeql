@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["oppia/oppia", "*", "inputs.webhook-url", "code-injection", "generated"]
+     - ["oppia/oppia", "*", "input.webhook-url", "code-injection", "generated"]

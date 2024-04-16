@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["eventstore/eventstore/.github/workflows/build-reusable.yml", "*", "inputs.arch", "code-injection", "generated"]
-     - ["eventstore/eventstore/.github/workflows/build-container-reusable.yml", "*", "inputs.container-runtime", "code-injection", "generated"]
+     - ["eventstore/eventstore/.github/workflows/build-reusable.yml", "*", "input.arch", "code-injection", "generated"]
+     - ["eventstore/eventstore/.github/workflows/build-container-reusable.yml", "*", "input.container-runtime", "code-injection", "generated"]

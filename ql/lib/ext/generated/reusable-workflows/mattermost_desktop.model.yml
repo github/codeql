@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mattermost/desktop/.github/workflows/e2e-functional-template.yml", "*", "inputs.nightly", "code-injection", "generated"]
+     - ["mattermost/desktop/.github/workflows/e2e-functional-template.yml", "*", "input.nightly", "code-injection", "generated"]

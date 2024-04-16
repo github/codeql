@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["flarum/framework/.github/workflows/REUSABLE_backend.yml", "*", "inputs.monorepo_tests", "code-injection", "generated"]
+     - ["flarum/framework/.github/workflows/REUSABLE_backend.yml", "*", "input.monorepo_tests", "code-injection", "generated"]

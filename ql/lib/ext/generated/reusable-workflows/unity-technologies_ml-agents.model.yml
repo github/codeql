@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["unity-technologies/ml-agents/.github/workflows/pytest.yml", "*", "inputs.pytest_markers", "code-injection", "generated"]
+     - ["unity-technologies/ml-agents/.github/workflows/pytest.yml", "*", "input.pytest_markers", "code-injection", "generated"]

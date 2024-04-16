@@ -3,12 +3,12 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["element-hq/element-desktop/.github/workflows/build_windows.yaml", "*", "inputs.version", "code-injection", "generated"]
-     - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "inputs.config", "code-injection", "generated"]
-     - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "inputs.version", "code-injection", "generated"]
-     - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "inputs.base-url", "code-injection", "generated"]
-     - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "inputs.version", "code-injection", "generated"]
-     - ["element-hq/element-desktop/.github/workflows/build_linux.yaml", "*", "inputs.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_windows.yaml", "*", "input.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "input.config", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_prepare.yaml", "*", "input.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "input.base-url", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_macos.yaml", "*", "input.version", "code-injection", "generated"]
+     - ["element-hq/element-desktop/.github/workflows/build_linux.yaml", "*", "input.version", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel

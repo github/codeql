@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["airbnb/lottie-ios", "*", "inputs.xcode", "code-injection", "generated"]
+     - ["airbnb/lottie-ios", "*", "input.xcode", "code-injection", "generated"]

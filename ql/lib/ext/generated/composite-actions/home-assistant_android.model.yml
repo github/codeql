@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["home-assistant/android", "*", "inputs.lokalise-token", "code-injection", "generated"]
-     - ["home-assistant/android", "*", "inputs.lokalise-project", "code-injection", "generated"]
-     - ["home-assistant/android", "*", "inputs.tag-name", "code-injection", "generated"]
+     - ["home-assistant/android", "*", "input.lokalise-token", "code-injection", "generated"]
+     - ["home-assistant/android", "*", "input.lokalise-project", "code-injection", "generated"]
+     - ["home-assistant/android", "*", "input.tag-name", "code-injection", "generated"]

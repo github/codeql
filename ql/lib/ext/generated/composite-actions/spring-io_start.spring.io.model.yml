@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["spring-io/start.spring.io", "*", "inputs.run-name", "code-injection", "generated"]
-     - ["spring-io/start.spring.io", "*", "inputs.webhook-url", "code-injection", "generated"]
+     - ["spring-io/start.spring.io", "*", "input.run-name", "code-injection", "generated"]
+     - ["spring-io/start.spring.io", "*", "input.webhook-url", "code-injection", "generated"]

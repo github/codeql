@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["hashicorp/terraform-provider-tfe/.github/workflows/jira-issue-sync.yml", "*", "inputs.issue-extra-fields", "code-injection", "generated"]
+     - ["hashicorp/terraform-provider-tfe/.github/workflows/jira-issue-sync.yml", "*", "input.issue-extra-fields", "code-injection", "generated"]

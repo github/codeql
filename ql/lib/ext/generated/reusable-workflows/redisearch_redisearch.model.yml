@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["redisearch/redisearch/.github/workflows/flow-build-artifacts.yml", "*", "inputs.architecture", "code-injection", "generated"]
+     - ["redisearch/redisearch/.github/workflows/flow-build-artifacts.yml", "*", "input.architecture", "code-injection", "generated"]

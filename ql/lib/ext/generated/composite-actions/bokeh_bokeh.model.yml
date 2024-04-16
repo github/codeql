@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["bokeh/bokeh", "*", "inputs.test-env", "code-injection", "generated"]
+     - ["bokeh/bokeh", "*", "input.test-env", "code-injection", "generated"]

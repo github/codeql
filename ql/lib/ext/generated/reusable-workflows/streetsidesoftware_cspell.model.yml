@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["streetsidesoftware/cspell/.github/workflows/reuseable-pr-from-artifact.yml", "*", "inputs.patch_path", "code-injection", "generated"]
+     - ["streetsidesoftware/cspell/.github/workflows/reuseable-pr-from-artifact.yml", "*", "input.patch_path", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel

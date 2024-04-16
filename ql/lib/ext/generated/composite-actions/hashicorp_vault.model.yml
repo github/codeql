@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["hashicorp/vault", "*", "inputs.destination", "code-injection", "generated"]
-     - ["hashicorp/vault", "*", "inputs.version", "code-injection", "generated"]
+     - ["hashicorp/vault", "*", "input.destination", "code-injection", "generated"]
+     - ["hashicorp/vault", "*", "input.version", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel

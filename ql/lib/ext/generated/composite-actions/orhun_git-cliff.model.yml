@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["orhun/git-cliff", "*", "inputs.command", "code-injection", "generated"]
+     - ["orhun/git-cliff", "*", "input.command", "code-injection", "generated"]

@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["amazon-ion/ion-java", "*", "inputs.project_version", "code-injection", "generated"]
-     - ["amazon-ion/ion-java", "*", "inputs.repo", "code-injection", "generated"]
+     - ["amazon-ion/ion-java", "*", "input.project_version", "code-injection", "generated"]
+     - ["amazon-ion/ion-java", "*", "input.repo", "code-injection", "generated"]

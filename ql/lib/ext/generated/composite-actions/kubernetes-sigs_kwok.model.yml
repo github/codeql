@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["kubernetes-sigs/kwok", "*", "inputs.command", "code-injection", "generated"]
+     - ["kubernetes-sigs/kwok", "*", "input.command", "code-injection", "generated"]

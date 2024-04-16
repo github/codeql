@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["speedb-io/speedb/.github/workflows/build_ubuntu_arm.yml", "*", "inputs.verSion", "code-injection", "generated"]
-     - ["speedb-io/speedb/.github/workflows/build_macos_ARM.yml", "*", "inputs.verSion", "code-injection", "generated"]
+     - ["speedb-io/speedb/.github/workflows/build_ubuntu_arm.yml", "*", "input.verSion", "code-injection", "generated"]
+     - ["speedb-io/speedb/.github/workflows/build_macos_ARM.yml", "*", "input.verSion", "code-injection", "generated"]

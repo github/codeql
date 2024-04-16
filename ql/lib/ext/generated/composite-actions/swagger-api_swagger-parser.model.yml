@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["swagger-api/swagger-parser", "*", "inputs.logsPath", "code-injection", "generated"]
-     - ["swagger-api/swagger-parser", "*", "inputs.parserSpecPath", "code-injection", "generated"]
-     - ["swagger-api/swagger-parser", "*", "inputs.serializationType", "code-injection", "generated"]
-     - ["swagger-api/swagger-parser", "*", "inputs.options", "code-injection", "generated"]
-     - ["swagger-api/swagger-parser", "*", "inputs.inputSpec", "code-injection", "generated"]
-     - ["swagger-api/swagger-parser", "*", "inputs.parserVersion", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.logsPath", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.parserSpecPath", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.serializationType", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.options", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.inputSpec", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.parserVersion", "code-injection", "generated"]

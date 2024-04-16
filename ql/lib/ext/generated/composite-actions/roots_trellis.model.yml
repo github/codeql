@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["roots/trellis", "*", "inputs.path", "code-injection", "generated"]
+     - ["roots/trellis", "*", "input.path", "code-injection", "generated"]

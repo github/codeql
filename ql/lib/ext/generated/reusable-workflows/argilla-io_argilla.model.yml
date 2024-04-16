@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["argilla-io/argilla/.github/workflows/run-python-tests.yml", "*", "inputs.pytestArgs", "code-injection", "generated"]
+     - ["argilla-io/argilla/.github/workflows/run-python-tests.yml", "*", "input.pytestArgs", "code-injection", "generated"]

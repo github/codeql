@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["facebook/yoga", "*", "inputs.version", "code-injection", "generated"]
-     - ["facebook/yoga", "*", "inputs.directory", "code-injection", "generated"]
+     - ["facebook/yoga", "*", "input.version", "code-injection", "generated"]
+     - ["facebook/yoga", "*", "input.directory", "code-injection", "generated"]

@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mudler/localai/.github/workflows/image_build.yml", "*", "inputs.latest-image-aio", "code-injection", "generated"]
-     - ["mudler/localai/.github/workflows/image_build.yml", "*", "inputs.latest-image", "code-injection", "generated"]
+     - ["mudler/localai/.github/workflows/image_build.yml", "*", "input.latest-image-aio", "code-injection", "generated"]
+     - ["mudler/localai/.github/workflows/image_build.yml", "*", "input.latest-image", "code-injection", "generated"]

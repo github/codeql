@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["lancedb/lance", "*", "inputs.repo", "code-injection", "generated"]
-     - ["lancedb/lance", "*", "inputs.vcpkg_token", "code-injection", "generated"]
-     - ["lancedb/lance", "*", "inputs.part", "code-injection", "generated"]
-     - ["lancedb/lance", "*", "inputs.arm-build", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.repo", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.vcpkg_token", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.part", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.arm-build", "code-injection", "generated"]

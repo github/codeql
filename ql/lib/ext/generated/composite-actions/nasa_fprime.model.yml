@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["nasa/fprime", "*", "inputs.location", "code-injection", "generated"]
+     - ["nasa/fprime", "*", "input.location", "code-injection", "generated"]

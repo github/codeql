@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["lerna/lerna", "*", "inputs.install-command", "code-injection", "generated"]
+     - ["lerna/lerna", "*", "input.install-command", "code-injection", "generated"]

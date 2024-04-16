@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ben-manes/caffeine", "*", "inputs.attempt-delay", "code-injection", "generated"]
-     - ["ben-manes/caffeine", "*", "inputs.attempt-limit", "code-injection", "generated"]
-     - ["ben-manes/caffeine", "*", "inputs.arguments", "code-injection", "generated"]
-     - ["ben-manes/caffeine", "*", "inputs.graal", "code-injection", "generated"]
-     - ["ben-manes/caffeine", "*", "inputs.java", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.attempt-delay", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.attempt-limit", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.arguments", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.graal", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.java", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["npm/json-parse-even-better-errors/.github/workflows/release-integration.yml", "*", "inputs.releases", "code-injection", "generated"]
+     - ["npm/json-parse-even-better-errors/.github/workflows/release-integration.yml", "*", "input.releases", "code-injection", "generated"]

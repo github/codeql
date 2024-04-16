@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["go-spatial/tegola", "*", "inputs.artifact_name", "code-injection", "generated"]
-     - ["go-spatial/tegola", "*", "inputs.name", "code-injection", "generated"]
+     - ["go-spatial/tegola", "*", "input.artifact_name", "code-injection", "generated"]
+     - ["go-spatial/tegola", "*", "input.name", "code-injection", "generated"]

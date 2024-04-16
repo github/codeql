@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["devexpress/testcafe/.github/workflows/test-server.yml", "*", "inputs.test-script", "code-injection", "generated"]
-     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "inputs.test-script", "code-injection", "generated"]
-     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "inputs.display", "code-injection", "generated"]
-     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "inputs.matrix-jobs-count", "code-injection", "generated"]
-     - ["devexpress/testcafe/.github/workflows/test-client.yml", "*", "inputs.test-script", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-server.yml", "*", "input.test-script", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "input.test-script", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "input.display", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-functional.yml", "*", "input.matrix-jobs-count", "code-injection", "generated"]
+     - ["devexpress/testcafe/.github/workflows/test-client.yml", "*", "input.test-script", "code-injection", "generated"]

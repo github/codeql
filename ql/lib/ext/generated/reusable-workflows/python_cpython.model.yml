@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["python/cpython/.github/workflows/reusable-ubuntu.yml", "*", "inputs.options", "code-injection", "generated"]
-     - ["python/cpython/.github/workflows/reusable-tsan.yml", "*", "inputs.options", "code-injection", "generated"]
+     - ["python/cpython/.github/workflows/reusable-ubuntu.yml", "*", "input.options", "code-injection", "generated"]
+     - ["python/cpython/.github/workflows/reusable-tsan.yml", "*", "input.options", "code-injection", "generated"]

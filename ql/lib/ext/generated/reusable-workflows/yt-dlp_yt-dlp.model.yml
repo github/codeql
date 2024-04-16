@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "inputs.target", "code-injection", "generated"]
-     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "inputs.source", "code-injection", "generated"]
-     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "inputs.prerelease", "code-injection", "generated"]
-     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "inputs.version", "code-injection", "generated"]
-     - ["yt-dlp/yt-dlp/.github/workflows/build.yml", "*", "inputs.version", "code-injection", "generated"]
-     - ["yt-dlp/yt-dlp/.github/workflows/build.yml", "*", "inputs.channel", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.target", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.source", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.prerelease", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.version", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/build.yml", "*", "input.version", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/build.yml", "*", "input.channel", "code-injection", "generated"]

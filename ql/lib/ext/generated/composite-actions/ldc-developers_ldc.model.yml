@@ -3,13 +3,13 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ldc-developers/ldc", "*", "inputs.cmake_flags", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.build_targets", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.host_dc", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.llvm_dir", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.build_dir", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.arch", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.os", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.cross_target_triple", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.ios_deployment_target", "code-injection", "generated"]
-     - ["ldc-developers/ldc", "*", "inputs.cross_compiling", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.cmake_flags", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.build_targets", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.host_dc", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.llvm_dir", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.build_dir", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.arch", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.os", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.cross_target_triple", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.ios_deployment_target", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.cross_compiling", "code-injection", "generated"]

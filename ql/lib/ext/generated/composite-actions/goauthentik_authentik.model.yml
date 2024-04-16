@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["goauthentik/authentik", "*", "inputs.postgresql_version", "code-injection", "generated"]
+     - ["goauthentik/authentik", "*", "input.postgresql_version", "code-injection", "generated"]

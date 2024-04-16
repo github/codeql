@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["gitpod-io/gitpod/.github/workflows/jetbrains-auto-update-template.yml", "*", "inputs.productId", "code-injection", "generated"]
+     - ["gitpod-io/gitpod/.github/workflows/jetbrains-auto-update-template.yml", "*", "input.productId", "code-injection", "generated"]

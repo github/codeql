@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["freckle/stack-action", "*", "inputs.find-options", "code-injection", "generated"]
+     - ["freckle/stack-action", "*", "input.find-options", "code-injection", "generated"]

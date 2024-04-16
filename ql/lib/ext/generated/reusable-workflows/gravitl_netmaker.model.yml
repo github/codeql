@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["gravitl/netmaker/.github/workflows/publish-docker.yml", "*", "inputs.tag", "code-injection", "generated"]
+     - ["gravitl/netmaker/.github/workflows/publish-docker.yml", "*", "input.tag", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["sap/sapmachine", "*", "inputs.debug-suffix", "code-injection", "generated"]
+     - ["sap/sapmachine", "*", "input.debug-suffix", "code-injection", "generated"]

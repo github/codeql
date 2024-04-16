@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "inputs.mdix-mahapps-version", "code-injection", "generated"]
-     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "inputs.mdix-colors-version", "code-injection", "generated"]
-     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "inputs.mdix-version", "code-injection", "generated"]
-     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "inputs.build-configuration", "code-injection", "generated"]
+     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "input.mdix-mahapps-version", "code-injection", "generated"]
+     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "input.mdix-colors-version", "code-injection", "generated"]
+     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "input.mdix-version", "code-injection", "generated"]
+     - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "input.build-configuration", "code-injection", "generated"]

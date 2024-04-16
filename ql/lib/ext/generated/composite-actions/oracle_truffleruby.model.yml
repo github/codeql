@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["oracle/truffleruby", "*", "inputs.archive", "code-injection", "generated"]
+     - ["oracle/truffleruby", "*", "input.archive", "code-injection", "generated"]

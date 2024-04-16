@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["openmined/pysyft/.github/workflows/cd-post-release-tests.yml", "*", "inputs.release_platform", "code-injection", "generated"]
-     - ["openmined/pysyft/.github/workflows/cd-post-release-tests.yml", "*", "inputs.syft_version", "code-injection", "generated"]
+     - ["openmined/pysyft/.github/workflows/cd-post-release-tests.yml", "*", "input.release_platform", "code-injection", "generated"]
+     - ["openmined/pysyft/.github/workflows/cd-post-release-tests.yml", "*", "input.syft_version", "code-injection", "generated"]

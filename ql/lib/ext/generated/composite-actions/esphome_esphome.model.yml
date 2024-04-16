@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["esphome/esphome", "*", "inputs.target", "code-injection", "generated"]
-     - ["esphome/esphome", "*", "inputs.suffix", "code-injection", "generated"]
-     - ["esphome/esphome", "*", "inputs.version", "code-injection", "generated"]
+     - ["esphome/esphome", "*", "input.target", "code-injection", "generated"]
+     - ["esphome/esphome", "*", "input.suffix", "code-injection", "generated"]
+     - ["esphome/esphome", "*", "input.version", "code-injection", "generated"]

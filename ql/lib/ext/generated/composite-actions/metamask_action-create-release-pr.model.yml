@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["metamask/action-create-release-pr", "*", "inputs.artifacts-path", "code-injection", "generated"]
-     - ["metamask/action-create-release-pr", "*", "inputs.created-pr-status", "code-injection", "generated"]
-     - ["metamask/action-create-release-pr", "*", "inputs.release-branch-prefix", "code-injection", "generated"]
+     - ["metamask/action-create-release-pr", "*", "input.artifacts-path", "code-injection", "generated"]
+     - ["metamask/action-create-release-pr", "*", "input.created-pr-status", "code-injection", "generated"]
+     - ["metamask/action-create-release-pr", "*", "input.release-branch-prefix", "code-injection", "generated"]

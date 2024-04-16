@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["wagoodman/dive", "*", "inputs.bootstrap-apt-packages", "code-injection", "generated"]
+     - ["wagoodman/dive", "*", "input.bootstrap-apt-packages", "code-injection", "generated"]

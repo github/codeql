@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["immich-app/immich/.github/workflows/build-mobile.yml", "*", "inputs.ref", "code-injection", "generated"]
+     - ["immich-app/immich/.github/workflows/build-mobile.yml", "*", "input.ref", "code-injection", "generated"]

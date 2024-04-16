@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["docker/build-push-action/.github/workflows/.e2e-run.yml", "*", "inputs.id", "code-injection", "generated"]
-     - ["docker/build-push-action/.github/workflows/.e2e-run.yml", "*", "inputs.type", "code-injection", "generated"]
+     - ["docker/build-push-action/.github/workflows/.e2e-run.yml", "*", "input.id", "code-injection", "generated"]
+     - ["docker/build-push-action/.github/workflows/.e2e-run.yml", "*", "input.type", "code-injection", "generated"]

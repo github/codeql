@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["datafuselabs/databend", "*", "inputs.dataset", "code-injection", "generated"]
-     - ["datafuselabs/databend", "*", "inputs.dirs", "code-injection", "generated"]
+     - ["datafuselabs/databend", "*", "input.dataset", "code-injection", "generated"]
+     - ["datafuselabs/databend", "*", "input.dirs", "code-injection", "generated"]

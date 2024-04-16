@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["hyperledger/fabric-samples", "*", "inputs.ca-version", "code-injection", "generated"]
-     - ["hyperledger/fabric-samples", "*", "inputs.fabric-version", "code-injection", "generated"]
-     - ["hyperledger/fabric-samples", "*", "inputs.k9s-version", "code-injection", "generated"]
+     - ["hyperledger/fabric-samples", "*", "input.ca-version", "code-injection", "generated"]
+     - ["hyperledger/fabric-samples", "*", "input.fabric-version", "code-injection", "generated"]
+     - ["hyperledger/fabric-samples", "*", "input.k9s-version", "code-injection", "generated"]

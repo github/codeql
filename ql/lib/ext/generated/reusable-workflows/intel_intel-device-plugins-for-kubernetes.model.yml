@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["intel/intel-device-plugins-for-kubernetes/.github/workflows/lib-publish.yaml", "*", "inputs.image_tag", "code-injection", "generated"]
+     - ["intel/intel-device-plugins-for-kubernetes/.github/workflows/lib-publish.yaml", "*", "input.image_tag", "code-injection", "generated"]

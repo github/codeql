@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["napari/napari/.github/workflows/reusable_run_tox_test.yml", "*", "inputs.qt_backend", "code-injection", "generated"]
+     - ["napari/napari/.github/workflows/reusable_run_tox_test.yml", "*", "input.qt_backend", "code-injection", "generated"]

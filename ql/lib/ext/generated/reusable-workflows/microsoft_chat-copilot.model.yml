@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["microsoft/chat-copilot/.github/workflows/copilot-run-integration-tests.yml", "*", "inputs.BACKEND_HOST", "code-injection", "generated"]
-     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "inputs.DEPLOYMENT_NAME", "code-injection", "generated"]
-     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "inputs.ARTIFACT_NAME", "code-injection", "generated"]
-     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-memorypipeline.yml", "*", "inputs.DEPLOYMENT_NAME", "code-injection", "generated"]
-     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-backend.yml", "*", "inputs.DEPLOYMENT_NAME", "code-injection", "generated"]
-     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-backend.yml", "*", "inputs.ARTIFACT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-run-integration-tests.yml", "*", "input.BACKEND_HOST", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "input.ARTIFACT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-memorypipeline.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-backend.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-backend.yml", "*", "input.ARTIFACT_NAME", "code-injection", "generated"]

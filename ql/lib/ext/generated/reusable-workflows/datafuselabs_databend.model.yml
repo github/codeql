@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["datafuselabs/databend/.github/workflows/reuse.benchmark.yml", "*", "inputs.run_id", "code-injection", "generated"]
-     - ["datafuselabs/databend/.github/workflows/reuse.benchmark.yml", "*", "inputs.source_id", "code-injection", "generated"]
+     - ["datafuselabs/databend/.github/workflows/reuse.benchmark.yml", "*", "input.run_id", "code-injection", "generated"]
+     - ["datafuselabs/databend/.github/workflows/reuse.benchmark.yml", "*", "input.source_id", "code-injection", "generated"]

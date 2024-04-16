@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["cloudflare/workers-sdk", "*", "inputs.package-manager", "code-injection", "generated"]
+     - ["cloudflare/workers-sdk", "*", "input.package-manager", "code-injection", "generated"]

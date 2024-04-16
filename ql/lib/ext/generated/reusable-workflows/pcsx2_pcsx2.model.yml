@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "inputs.configuration", "code-injection", "generated"]
-     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "inputs.platform", "code-injection", "generated"]
-     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "inputs.cmakeFlags", "code-injection", "generated"]
-     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "inputs.patchesUrl", "code-injection", "generated"]
-     - ["pcsx2/pcsx2/.github/workflows/macos_build.yml", "*", "inputs.patchesUrl", "code-injection", "generated"]
-     - ["pcsx2/pcsx2/.github/workflows/linux_build_qt.yml", "*", "inputs.patchesUrl", "code-injection", "generated"]
-     - ["pcsx2/pcsx2/.github/workflows/linux_build_flatpak.yml", "*", "inputs.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.configuration", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.platform", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.cmakeFlags", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/macos_build.yml", "*", "input.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/linux_build_qt.yml", "*", "input.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/linux_build_flatpak.yml", "*", "input.patchesUrl", "code-injection", "generated"]

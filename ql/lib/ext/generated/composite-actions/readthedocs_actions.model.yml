@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["readthedocs/actions", "*", "inputs.single-version", "code-injection", "generated"]
-     - ["readthedocs/actions", "*", "inputs.platform", "code-injection", "generated"]
-     - ["readthedocs/actions", "*", "inputs.message-template", "code-injection", "generated"]
-     - ["readthedocs/actions", "*", "inputs.project-language", "code-injection", "generated"]
-     - ["readthedocs/actions", "*", "inputs.project-slug", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.single-version", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.platform", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.message-template", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.project-language", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.project-slug", "code-injection", "generated"]

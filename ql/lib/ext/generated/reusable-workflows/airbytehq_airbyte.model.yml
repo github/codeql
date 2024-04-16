@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["airbytehq/airbyte/.github/workflows/connector-performance-command.yml", "*", "inputs.connector", "code-injection", "generated"]
+     - ["airbytehq/airbyte/.github/workflows/connector-performance-command.yml", "*", "input.connector", "code-injection", "generated"]

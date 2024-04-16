@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["expensify/app/.github/workflows/e2ePerformanceTests.yml", "*", "inputs.PR_NUMBER", "code-injection", "generated"]
+     - ["expensify/app/.github/workflows/e2ePerformanceTests.yml", "*", "input.PR_NUMBER", "code-injection", "generated"]

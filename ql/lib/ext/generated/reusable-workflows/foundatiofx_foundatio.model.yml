@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "inputs.org", "code-injection", "generated"]
-     - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "inputs.solution", "code-injection", "generated"]
-     - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "inputs.compose-command", "code-injection", "generated"]
+     - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "input.org", "code-injection", "generated"]
+     - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "input.solution", "code-injection", "generated"]
+     - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "input.compose-command", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["pixijs/pixijs", "*", "inputs.npm-version", "code-injection", "generated"]
+     - ["pixijs/pixijs", "*", "input.npm-version", "code-injection", "generated"]

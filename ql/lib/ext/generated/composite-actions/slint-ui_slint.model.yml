@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["slint-ui/slint", "*", "inputs.extra-packages", "code-injection", "generated"]
-     - ["slint-ui/slint", "*", "inputs.binary", "code-injection", "generated"]
+     - ["slint-ui/slint", "*", "input.extra-packages", "code-injection", "generated"]
+     - ["slint-ui/slint", "*", "input.binary", "code-injection", "generated"]

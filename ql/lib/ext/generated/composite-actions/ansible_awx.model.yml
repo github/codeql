@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ansible/awx", "*", "inputs.log-filename", "code-injection", "generated"]
-     - ["ansible/awx", "*", "inputs.github-token", "code-injection", "generated"]
+     - ["ansible/awx", "*", "input.log-filename", "code-injection", "generated"]
+     - ["ansible/awx", "*", "input.github-token", "code-injection", "generated"]

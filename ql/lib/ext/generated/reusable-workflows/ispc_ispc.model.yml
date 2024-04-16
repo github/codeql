@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ispc/ispc/.github/workflows/reusable.rebuild.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["ispc/ispc/.github/workflows/reusable.rebuild.yml", "*", "input.version", "code-injection", "generated"]

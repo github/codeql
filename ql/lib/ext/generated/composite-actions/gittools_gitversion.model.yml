@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["gittools/gitversion", "*", "inputs.distro", "code-injection", "generated"]
-     - ["gittools/gitversion", "*", "inputs.targetFramework", "code-injection", "generated"]
-     - ["gittools/gitversion", "*", "inputs.arch", "code-injection", "generated"]
+     - ["gittools/gitversion", "*", "input.distro", "code-injection", "generated"]
+     - ["gittools/gitversion", "*", "input.targetFramework", "code-injection", "generated"]
+     - ["gittools/gitversion", "*", "input.arch", "code-injection", "generated"]

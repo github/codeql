@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["facebook/buck2", "*", "inputs.tag", "code-injection", "generated"]
+     - ["facebook/buck2", "*", "input.tag", "code-injection", "generated"]

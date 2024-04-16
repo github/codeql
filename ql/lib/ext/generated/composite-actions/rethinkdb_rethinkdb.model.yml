@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["rethinkdb/rethinkdb", "*", "inputs.command", "code-injection", "generated"]
-     - ["rethinkdb/rethinkdb", "*", "inputs.install_command", "code-injection", "generated"]
-     - ["rethinkdb/rethinkdb", "*", "inputs.env_activate", "code-injection", "generated"]
-     - ["rethinkdb/rethinkdb", "*", "inputs.default_python_driver_commit_hash", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.command", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.install_command", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.env_activate", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.default_python_driver_commit_hash", "code-injection", "generated"]

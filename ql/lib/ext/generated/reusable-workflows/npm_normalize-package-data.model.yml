@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["npm/normalize-package-data/.github/workflows/release-integration.yml", "*", "inputs.releases", "code-injection", "generated"]
+     - ["npm/normalize-package-data/.github/workflows/release-integration.yml", "*", "input.releases", "code-injection", "generated"]

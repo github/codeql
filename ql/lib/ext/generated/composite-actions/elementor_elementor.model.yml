@@ -3,11 +3,11 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["elementor/elementor", "*", "inputs.README_TXT_PATH", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.CHANNEL", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.PACKAGE_VERSION", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.MESSAGE", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.SLACK_TOKEN", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.SLACK_CHANNELS", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.PRERELEASE", "code-injection", "generated"]
-     - ["elementor/elementor", "*", "inputs.TAG_NAME", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.README_TXT_PATH", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.CHANNEL", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.PACKAGE_VERSION", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.MESSAGE", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.SLACK_TOKEN", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.SLACK_CHANNELS", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.PRERELEASE", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.TAG_NAME", "code-injection", "generated"]

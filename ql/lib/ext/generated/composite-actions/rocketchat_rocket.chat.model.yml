@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["rocketchat/rocket.chat", "*", "inputs.build-containers", "code-injection", "generated"]
-     - ["rocketchat/rocket.chat", "*", "inputs.release", "code-injection", "generated"]
-     - ["rocketchat/rocket.chat", "*", "inputs.docker-tag", "code-injection", "generated"]
-     - ["rocketchat/rocket.chat", "*", "inputs.root-dir", "code-injection", "generated"]
+     - ["rocketchat/rocket.chat", "*", "input.build-containers", "code-injection", "generated"]
+     - ["rocketchat/rocket.chat", "*", "input.release", "code-injection", "generated"]
+     - ["rocketchat/rocket.chat", "*", "input.docker-tag", "code-injection", "generated"]
+     - ["rocketchat/rocket.chat", "*", "input.root-dir", "code-injection", "generated"]

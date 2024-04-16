@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["lutris/lutris/.github/workflows/publish-ppa.yml", "*", "inputs.PPA_URI", "code-injection", "generated"]
+     - ["lutris/lutris/.github/workflows/publish-ppa.yml", "*", "input.PPA_URI", "code-injection", "generated"]

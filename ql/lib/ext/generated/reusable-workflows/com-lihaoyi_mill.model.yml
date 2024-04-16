@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["com-lihaoyi/mill/.github/workflows/run-mill-action.yml", "*", "inputs.millargs", "code-injection", "generated"]
-     - ["com-lihaoyi/mill/.github/workflows/run-mill-action.yml", "*", "inputs.buildcmd", "code-injection", "generated"]
+     - ["com-lihaoyi/mill/.github/workflows/run-mill-action.yml", "*", "input.millargs", "code-injection", "generated"]
+     - ["com-lihaoyi/mill/.github/workflows/run-mill-action.yml", "*", "input.buildcmd", "code-injection", "generated"]

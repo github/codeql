@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["walletconnect/web3modal/.github/workflows/ui_tests.yml", "*", "inputs.command", "code-injection", "generated"]
+     - ["walletconnect/web3modal/.github/workflows/ui_tests.yml", "*", "input.command", "code-injection", "generated"]

@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["web-infra-dev/rspack", "*", "inputs.post", "code-injection", "generated"]
-     - ["web-infra-dev/rspack", "*", "inputs.profile", "code-injection", "generated"]
-     - ["web-infra-dev/rspack", "*", "inputs.target", "code-injection", "generated"]
+     - ["web-infra-dev/rspack", "*", "input.post", "code-injection", "generated"]
+     - ["web-infra-dev/rspack", "*", "input.profile", "code-injection", "generated"]
+     - ["web-infra-dev/rspack", "*", "input.target", "code-injection", "generated"]

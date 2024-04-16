@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["parcel-bundler/parcel/.github/workflows/release.yml", "*", "inputs.release-command", "code-injection", "generated"]
+     - ["parcel-bundler/parcel/.github/workflows/release.yml", "*", "input.release-command", "code-injection", "generated"]

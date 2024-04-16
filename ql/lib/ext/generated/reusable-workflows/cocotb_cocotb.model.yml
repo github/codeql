@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "inputs.nox_session_test_sim", "code-injection", "generated"]
-     - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "inputs.nox_session_test_nosim", "code-injection", "generated"]
-     - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "inputs.group", "code-injection", "generated"]
+     - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "input.nox_session_test_sim", "code-injection", "generated"]
+     - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "input.nox_session_test_nosim", "code-injection", "generated"]
+     - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "input.group", "code-injection", "generated"]

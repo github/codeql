@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["unidata/metpy", "*", "inputs.key", "code-injection", "generated"]
+     - ["unidata/metpy", "*", "input.key", "code-injection", "generated"]

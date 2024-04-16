@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["posthog/posthog", "*", "inputs.group", "code-injection", "generated"]
-     - ["posthog/posthog", "*", "inputs.concurrency", "code-injection", "generated"]
+     - ["posthog/posthog", "*", "input.group", "code-injection", "generated"]
+     - ["posthog/posthog", "*", "input.concurrency", "code-injection", "generated"]

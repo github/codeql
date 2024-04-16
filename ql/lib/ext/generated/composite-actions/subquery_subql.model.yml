@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["subquery/subql", "*", "inputs.package-path", "code-injection", "generated"]
+     - ["subquery/subql", "*", "input.package-path", "code-injection", "generated"]

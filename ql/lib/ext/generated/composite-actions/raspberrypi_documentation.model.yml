@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["raspberrypi/documentation", "*", "inputs.secondary_host", "code-injection", "generated"]
-     - ["raspberrypi/documentation", "*", "inputs.destination", "code-injection", "generated"]
-     - ["raspberrypi/documentation", "*", "inputs.source", "code-injection", "generated"]
-     - ["raspberrypi/documentation", "*", "inputs.bastion_host", "code-injection", "generated"]
-     - ["raspberrypi/documentation", "*", "inputs.primary_host", "code-injection", "generated"]
-     - ["raspberrypi/documentation", "*", "inputs.public_bastion_host_keys", "code-injection", "generated"]
-     - ["raspberrypi/documentation", "*", "inputs.private_ssh_key", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.secondary_host", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.destination", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.source", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.bastion_host", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.primary_host", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.public_bastion_host_keys", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.private_ssh_key", "code-injection", "generated"]

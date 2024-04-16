@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mlflow/mlflow", "*", "inputs.python-version", "code-injection", "generated"]
+     - ["mlflow/mlflow", "*", "input.python-version", "code-injection", "generated"]

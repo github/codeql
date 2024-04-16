@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["freecad/freecad/.github/workflows/sub_wrapup.yml", "*", "inputs.previousSteps", "code-injection", "generated"]
+     - ["freecad/freecad/.github/workflows/sub_wrapup.yml", "*", "input.previousSteps", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["texstudio-org/texstudio", "*", "inputs.file", "code-injection", "generated"]
+     - ["texstudio-org/texstudio", "*", "input.file", "code-injection", "generated"]

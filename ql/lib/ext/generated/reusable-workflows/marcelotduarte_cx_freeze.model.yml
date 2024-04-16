@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["marcelotduarte/cx_freeze/.github/workflows/build-wheel.yml", "*", "inputs.branch", "code-injection", "generated"]
+     - ["marcelotduarte/cx_freeze/.github/workflows/build-wheel.yml", "*", "input.branch", "code-injection", "generated"]

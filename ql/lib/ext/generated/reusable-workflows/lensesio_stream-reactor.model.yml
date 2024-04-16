@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["lensesio/stream-reactor/.github/workflows/build.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["lensesio/stream-reactor/.github/workflows/build.yml", "*", "input.version", "code-injection", "generated"]

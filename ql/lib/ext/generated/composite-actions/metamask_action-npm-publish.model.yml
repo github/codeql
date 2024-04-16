@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["metamask/action-npm-publish", "*", "inputs.subteam", "code-injection", "generated"]
+     - ["metamask/action-npm-publish", "*", "input.subteam", "code-injection", "generated"]

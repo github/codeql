@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["grote/transportr", "*", "inputs.api-level", "code-injection", "generated"]
+     - ["grote/transportr", "*", "input.api-level", "code-injection", "generated"]

@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ionic-team/stencil", "*", "inputs.paths", "code-injection", "generated"]
-     - ["ionic-team/stencil", "*", "inputs.output", "code-injection", "generated"]
-     - ["ionic-team/stencil", "*", "inputs.tag", "code-injection", "generated"]
-     - ["ionic-team/stencil", "*", "inputs.version", "code-injection", "generated"]
-     - ["ionic-team/stencil", "*", "inputs.filename", "code-injection", "generated"]
-     - ["ionic-team/stencil", "*", "inputs.path", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.paths", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.output", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.tag", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.version", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.filename", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.path", "code-injection", "generated"]

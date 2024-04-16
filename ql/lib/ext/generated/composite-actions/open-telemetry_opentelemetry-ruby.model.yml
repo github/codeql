@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["open-telemetry/opentelemetry-ruby", "*", "inputs.gem", "code-injection", "generated"]
-     - ["open-telemetry/opentelemetry-ruby", "*", "inputs.ruby", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-ruby", "*", "input.gem", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-ruby", "*", "input.ruby", "code-injection", "generated"]

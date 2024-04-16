@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "inputs.next-version", "code-injection", "generated"]
-     - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "inputs.release-branch", "code-injection", "generated"]
+     - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "input.next-version", "code-injection", "generated"]
+     - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "input.release-branch", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["renovatebot/renovate", "*", "inputs.node-version", "code-injection", "generated"]
+     - ["renovatebot/renovate", "*", "input.node-version", "code-injection", "generated"]

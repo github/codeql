@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["kubernetes/ingress-nginx/.github/workflows/zz-tmpl-k8s-e2e.yaml", "*", "inputs.k8s-version", "code-injection", "generated"]
-     - ["kubernetes/ingress-nginx/.github/workflows/zz-tmpl-images.yaml", "*", "inputs.name", "code-injection", "generated"]
+     - ["kubernetes/ingress-nginx/.github/workflows/zz-tmpl-k8s-e2e.yaml", "*", "input.k8s-version", "code-injection", "generated"]
+     - ["kubernetes/ingress-nginx/.github/workflows/zz-tmpl-images.yaml", "*", "input.name", "code-injection", "generated"]

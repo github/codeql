@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["product-os/flowzone/.github/workflows/flowzone.yml", "*", "inputs.ok_to_test_label", "code-injection", "generated"]
+     - ["product-os/flowzone/.github/workflows/flowzone.yml", "*", "input.ok_to_test_label", "code-injection", "generated"]

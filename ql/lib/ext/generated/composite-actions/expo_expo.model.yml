@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["expo/expo", "*", "inputs.ndk-version", "code-injection", "generated"]
+     - ["expo/expo", "*", "input.ndk-version", "code-injection", "generated"]

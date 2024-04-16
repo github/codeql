@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.layout", "code-injection", "generated"]
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.out_layout", "code-injection", "generated"]
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.ref_layout", "code-injection", "generated"]
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.buildinfo", "code-injection", "generated"]
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.report", "code-injection", "generated"]
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.out_report", "code-injection", "generated"]
-     - ["openzeppelin/openzeppelin-contracts", "*", "inputs.ref_report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.out_layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.ref_layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.buildinfo", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.out_report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts", "*", "input.ref_report", "code-injection", "generated"]

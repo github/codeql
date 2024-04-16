@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["icloud-photos-downloader/icloud_photos_downloader/.github/workflows/build-package.yml", "*", "inputs.icloudpd_version", "code-injection", "generated"]
+     - ["icloud-photos-downloader/icloud_photos_downloader/.github/workflows/build-package.yml", "*", "input.icloudpd_version", "code-injection", "generated"]

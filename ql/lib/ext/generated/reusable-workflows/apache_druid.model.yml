@@ -3,13 +3,13 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "inputs.module", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "inputs.jdk", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "inputs.sql_compatibility", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "inputs.override_config_path", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "inputs.testing_groups", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "inputs.use_indexer", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "inputs.runtime_jdk", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "inputs.it", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "inputs.script", "code-injection", "generated"]
-     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "inputs.build_jdk", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.module", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.jdk", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.sql_compatibility", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.override_config_path", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.testing_groups", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.use_indexer", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.runtime_jdk", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "input.it", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "input.script", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "input.build_jdk", "code-injection", "generated"]

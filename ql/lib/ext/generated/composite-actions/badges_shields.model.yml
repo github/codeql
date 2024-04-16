@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["badges/shields", "*", "inputs.npm-version", "code-injection", "generated"]
+     - ["badges/shields", "*", "input.npm-version", "code-injection", "generated"]

@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["datadog/dd-trace-go", "*", "inputs.files", "code-injection", "generated"]
-     - ["datadog/dd-trace-go", "*", "inputs.tags", "code-injection", "generated"]
-     - ["datadog/dd-trace-go", "*", "inputs.service", "code-injection", "generated"]
-     - ["datadog/dd-trace-go", "*", "inputs.dd-api-key", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.files", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.tags", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.service", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.dd-api-key", "code-injection", "generated"]

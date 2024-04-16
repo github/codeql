@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["d2l-ai/d2l-en", "*", "inputs.command", "code-injection", "generated"]
-     - ["d2l-ai/d2l-en", "*", "inputs.work-dir", "code-injection", "generated"]
-     - ["d2l-ai/d2l-en", "*", "inputs.job-name", "code-injection", "generated"]
-     - ["d2l-ai/d2l-en", "*", "inputs.job-type", "code-injection", "generated"]
+     - ["d2l-ai/d2l-en", "*", "input.command", "code-injection", "generated"]
+     - ["d2l-ai/d2l-en", "*", "input.work-dir", "code-injection", "generated"]
+     - ["d2l-ai/d2l-en", "*", "input.job-name", "code-injection", "generated"]
+     - ["d2l-ai/d2l-en", "*", "input.job-type", "code-injection", "generated"]

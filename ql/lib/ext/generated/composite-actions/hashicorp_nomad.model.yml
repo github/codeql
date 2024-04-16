@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["hashicorp/nomad", "*", "inputs.version", "code-injection", "generated"]
+     - ["hashicorp/nomad", "*", "input.version", "code-injection", "generated"]

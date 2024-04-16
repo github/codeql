@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["chia-network/chia-blockchain", "*", "inputs.command-prefix", "code-injection", "generated"]
+     - ["chia-network/chia-blockchain", "*", "input.command-prefix", "code-injection", "generated"]

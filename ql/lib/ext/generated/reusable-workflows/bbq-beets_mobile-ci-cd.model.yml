@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "inputs.git-user-email", "code-injection", "generated"]
-     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "inputs.git-user-name", "code-injection", "generated"]
-     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "inputs.track", "code-injection", "generated"]
-     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "inputs.package-name", "code-injection", "generated"]
+     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "input.git-user-email", "code-injection", "generated"]
+     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "input.git-user-name", "code-injection", "generated"]
+     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "input.track", "code-injection", "generated"]
+     - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "input.package-name", "code-injection", "generated"]

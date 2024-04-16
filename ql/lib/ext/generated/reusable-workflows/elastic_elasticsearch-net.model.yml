@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["elastic/elasticsearch-net/.github/workflows/release.yml", "*", "inputs.solution", "code-injection", "generated"]
+     - ["elastic/elasticsearch-net/.github/workflows/release.yml", "*", "input.solution", "code-injection", "generated"]

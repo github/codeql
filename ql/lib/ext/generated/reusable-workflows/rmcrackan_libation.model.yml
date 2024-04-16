@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["rmcrackan/libation/.github/workflows/build-windows.yml", "*", "inputs.version_override", "code-injection", "generated"]
-     - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "inputs.architecture", "code-injection", "generated"]
-     - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "inputs.OS", "code-injection", "generated"]
-     - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "inputs.version_override", "code-injection", "generated"]
+     - ["rmcrackan/libation/.github/workflows/build-windows.yml", "*", "input.version_override", "code-injection", "generated"]
+     - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "input.architecture", "code-injection", "generated"]
+     - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "input.OS", "code-injection", "generated"]
+     - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "input.version_override", "code-injection", "generated"]

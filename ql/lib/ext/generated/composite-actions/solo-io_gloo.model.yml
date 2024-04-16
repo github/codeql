@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["solo-io/gloo", "*", "inputs.base-ref", "code-injection", "generated"]
+     - ["solo-io/gloo", "*", "input.base-ref", "code-injection", "generated"]

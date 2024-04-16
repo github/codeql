@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["adap/flower", "*", "inputs.poetry-version", "code-injection", "generated"]
-     - ["adap/flower", "*", "inputs.setuptools-version", "code-injection", "generated"]
-     - ["adap/flower", "*", "inputs.pip-version", "code-injection", "generated"]
-     - ["adap/flower", "*", "inputs.python-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.poetry-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.setuptools-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.pip-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.python-version", "code-injection", "generated"]

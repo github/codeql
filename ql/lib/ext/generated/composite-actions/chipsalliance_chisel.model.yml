@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["chipsalliance/chisel", "*", "inputs.version", "code-injection", "generated"]
-     - ["chipsalliance/chisel", "*", "inputs.file-name", "code-injection", "generated"]
+     - ["chipsalliance/chisel", "*", "input.version", "code-injection", "generated"]
+     - ["chipsalliance/chisel", "*", "input.file-name", "code-injection", "generated"]
