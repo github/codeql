@@ -9,8 +9,11 @@ edges
 | test_free.cpp:95:10:95:10 | pointer to free output argument | test_free.cpp:96:9:96:9 | a | provenance |  |
 | test_free.cpp:101:10:101:10 | pointer to free output argument | test_free.cpp:102:23:102:23 | a | provenance |  |
 | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:153:5:153:5 | a | provenance |  |
-| test_free.cpp:233:14:233:15 | pointer to free output argument | test_free.cpp:236:9:236:10 | * ... | provenance |  |
-| test_free.cpp:239:14:239:15 | pointer to free output argument | test_free.cpp:241:9:241:10 | * ... | provenance |  |
+| test_free.cpp:233:14:233:15 | pointer to free output argument | test_free.cpp:234:9:234:11 | *... ++ | provenance |  |
+| test_free.cpp:234:9:234:11 | *... ++ | test_free.cpp:236:9:236:10 | * ... | provenance |  |
+| test_free.cpp:238:15:238:17 | *... ++ | test_free.cpp:238:15:238:17 | *... ++ | provenance |  |
+| test_free.cpp:238:15:238:17 | *... ++ | test_free.cpp:241:9:241:10 | * ... | provenance |  |
+| test_free.cpp:239:14:239:15 | pointer to free output argument | test_free.cpp:238:15:238:17 | *... ++ | provenance |  |
 | test_free.cpp:245:10:245:11 | pointer to free output argument | test_free.cpp:246:9:246:10 | * ... | provenance |  |
 | test_free.cpp:277:8:277:8 | *s [post update] [buf] | test_free.cpp:278:12:278:12 | *s [buf] | provenance |  |
 | test_free.cpp:277:8:277:13 | pointer to free output argument | test_free.cpp:277:8:277:8 | *s [post update] [buf] | provenance |  |
@@ -43,7 +46,9 @@ nodes
 | test_free.cpp:152:27:152:27 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:153:5:153:5 | a | semmle.label | a |
 | test_free.cpp:233:14:233:15 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test_free.cpp:234:9:234:11 | *... ++ | semmle.label | *... ++ |
 | test_free.cpp:236:9:236:10 | * ... | semmle.label | * ... |
+| test_free.cpp:238:15:238:17 | *... ++ | semmle.label | *... ++ |
 | test_free.cpp:239:14:239:15 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:241:9:241:10 | * ... | semmle.label | * ... |
 | test_free.cpp:245:10:245:11 | pointer to free output argument | semmle.label | pointer to free output argument |
