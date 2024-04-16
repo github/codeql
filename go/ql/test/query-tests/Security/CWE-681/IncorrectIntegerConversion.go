@@ -482,16 +482,6 @@ func parsePositiveInt2(value string) (int, error) {
 	return int(i64), nil
 }
 
-func typeAssertion(s string) {
-	n, err := strconv.ParseInt(s, 10, 0)
-	if err == nil {
-		var itf interface{} = n
-		i32 := itf.(int32)
-		println(i32)
-	}
-
-}
-
 func dealWithArchSizeCorrectly(s string) uint {
 	if i, err := strconv.ParseUint(s, 10, 64); err == nil && i < math.MaxUint {
 		return uint(i)
