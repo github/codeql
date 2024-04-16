@@ -341,18 +341,8 @@ private predicate summaryModel(
 }
 
 /** Holds if a type model exists for the given parameters. */
-<<<<<<< HEAD
 predicate typeModel(string type1, string type2, string path) {
-  exists(string row |
-    typeModel(row) and
-    row.splitAt(";", 0) = type1 and
-    row.splitAt(";", 1) = type2 and
-    row.splitAt(";", 2) = path
-  )
-=======
-private predicate typeModel(string type1, string type2, string path) {
   any(DeprecationAdapter a).typeModel(type1, type2, path)
->>>>>>> main
   or
   Extensions::typeModel(type1, type2, path)
 }
