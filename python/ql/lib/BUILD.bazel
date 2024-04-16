@@ -1,4 +1,4 @@
-load("@rules_pkg//:mappings.bzl", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
 package(default_visibility = ["//python:__pkg__"])
 

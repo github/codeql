@@ -1,4 +1,4 @@
-load("@rules_pkg//:mappings.bzl", "pkg_filegroup")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
 
 package(default_visibility = ["//visibility:public"])
 
