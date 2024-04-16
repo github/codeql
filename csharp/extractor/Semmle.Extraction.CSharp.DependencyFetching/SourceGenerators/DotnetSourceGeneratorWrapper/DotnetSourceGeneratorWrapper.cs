@@ -10,8 +10,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal abstract class DotnetSourceGeneratorWrapper
     {
         protected readonly ILogger logger;
-        private readonly Sdk sdk;
         protected readonly IDotNet dotnet;
+        private readonly string cscPath;
 
         protected abstract string SourceGeneratorFolder { get; init; }
         protected abstract string FileType { get; }
@@ -22,20 +22,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             ILogger logger)
         {
             this.logger = logger;
-            this.sdk = sdk;
             this.dotnet = dotnet;
+
+            if (sdk.CscPath is null)
+            {
+                throw new Exception($"Not running {FileType} source generator because CSC path is not available.");
+            }
+            this.cscPath = sdk.CscPath;
         }
 
         protected abstract void GenerateAnalyzerConfig(IEnumerable<string> additionalFiles, string analyzerConfigPath);
 
         public IEnumerable<string> RunSourceGenerator(IEnumerable<string> additionalFiles, IEnumerable<string> references, string targetDir)
         {
-            if (sdk.CscPath is null)
-            {
-                logger.LogWarning("Not running source generator because csc path is not available.");
-                return [];
-            }
-
             var name = Guid.NewGuid().ToString("N").ToUpper();
             var tempPath = FileUtils.GetTemporaryWorkingDirectory(out var shouldCleanUp);
             var analyzerConfig = Path.Combine(tempPath, $"{name}.txt");
@@ -79,7 +78,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     sw.Write(argsString);
                 }
 
-                dotnet.Exec($"\"{sdk.CscPath}\" /noconfig @\"{cscArgsPath}\"");
+                dotnet.Exec($"\"{cscPath}\" /noconfig @\"{cscArgsPath}\"");
 
                 var files = Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
 

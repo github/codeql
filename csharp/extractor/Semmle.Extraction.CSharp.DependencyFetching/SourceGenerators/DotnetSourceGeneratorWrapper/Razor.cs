@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal class Razor : DotnetSourceGeneratorWrapper
     {
-        protected override string FileType => "cshtml";
+        protected override string FileType => "Razor";
 
         protected override string SourceGeneratorFolder { get; init; }
 

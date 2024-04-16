@@ -152,7 +152,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var sourceGenerators = new ISourceGenerator[]
             {
                 new ImplicitUsingsGenerator(fileContent, logger, tempWorkingDirectory),
-                new WebViewGenerator(fileProvider, fileContent, dotnet, this, logger, tempWorkingDirectory, usedReferences.Keys)
+                new RazorGenerator(fileProvider, fileContent, dotnet, this, logger, tempWorkingDirectory, usedReferences.Keys),
+                new ResxGenerator(fileProvider, fileContent, dotnet, this, logger, tempWorkingDirectory, usedReferences.Keys),
             };
 
             foreach (var sourceGenerator in sourceGenerators)

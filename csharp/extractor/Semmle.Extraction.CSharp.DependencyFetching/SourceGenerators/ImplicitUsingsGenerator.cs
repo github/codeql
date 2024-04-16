@@ -16,7 +16,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileContent = fileContent;
         }
 
-        public override IEnumerable<string> Generate()
+        protected override bool IsEnabled() => true;
+
+        protected override IEnumerable<string> Run()
         {
             var usings = new HashSet<string>();
             if (!fileContent.UseImplicitUsings)
