@@ -397,6 +397,39 @@ class UpperBoundCheck extends FlowStateTransformer {
   }
 }
 
+private predicate integerTypeBound(IntegerType it, int bitSize, int architectureBitSize) {
+  bitSize = validBitSize() and
+  architectureBitSize = [32, 64] and
+  exists(int offset | if it instanceof SignedIntegerType then offset = 1 else offset = 0 |
+    if it instanceof IntType or it instanceof UintType
+    then bitSize >= architectureBitSize - offset
+    else bitSize >= it.getSize() - offset
+  )
+}
+
+/**
+ * An expression which a type assertion guarantees will have a particular
+ * integer type.
+ *
+ * If this is a checked type expression then this value will only be used if
+ * the type assertion succeeded. If it is not checked then there will be a
+ * run-time panic if the type assertion fails, so we can assume it succeeded.
+ */
+class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
+  IntegerType it;
+
+  TypeAssertionCheck() {
+    exists(TypeAssertExpr tae |
+      this = DataFlow::exprNode(tae.getExpr()) and
+      it = tae.getTypeExpr().getType()
+    )
+  }
+
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    integerTypeBound(it, bitSize, architectureBitSize)
+  }
+}
+
 /**
  * Holds if `source` is the result of a call to `strconv.Atoi`,
  * `strconv.ParseInt`, or `strconv.ParseUint`, `bitSize` is the `bitSize`

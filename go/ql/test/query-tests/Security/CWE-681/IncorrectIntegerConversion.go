@@ -507,8 +507,8 @@ func typeSwitch1(s string) {
 		if _, ok := input.(string); ok {
 			return
 		}
-		_ = int16(v.(int16)) // $ SPURIOUS: hasValueFlow="type assertion"
-		_ = int8(v.(int16))  // $ hasValueFlow="type assertion"
+		_ = int16(v.(int16))
+		_ = int8(v.(int16)) // $ hasValueFlow="type assertion"
 	case int32:
 		_ = int32(v) // $ SPURIOUS: hasValueFlow="v"
 		_ = int8(v)  // $ hasValueFlow="v"
@@ -527,11 +527,11 @@ func typeSwitch2(s string) {
 		if _, ok := input.(string); ok {
 			return
 		}
-		_ = int16(input.(int16)) // $ SPURIOUS: hasValueFlow="type assertion"
-		_ = int8(input.(int16))  // $ hasValueFlow="type assertion"
+		_ = int16(input.(int16))
+		_ = int8(input.(int16)) // $ hasValueFlow="type assertion"
 	case int32:
-		_ = int32(input.(int32)) // $ SPURIOUS: hasValueFlow="type assertion"
-		_ = int8(input.(int32))  // $ hasValueFlow="type assertion"
+		_ = int32(input.(int32))
+		_ = int8(input.(int32)) // $ hasValueFlow="type assertion"
 	case int64:
 		_ = int8(input.(int64)) // $ hasValueFlow="type assertion"
 	default:
@@ -544,8 +544,8 @@ func checkedTypeAssertion(s string) {
 	var input any = i64
 	if v, ok := input.(int16); ok {
 		// Need to account for the fact that within this case clause, v is an int16
-		_ = int16(v) // $ SPURIOUS: hasValueFlow="v"
-		_ = int8(v)  // $ hasValueFlow="v"
+		_ = int16(v)
+		_ = int8(v) // $ hasValueFlow="v"
 	} else if v, ok := input.(int32); ok {
 		_ = int16(v) // $ hasValueFlow="v"
 	}
