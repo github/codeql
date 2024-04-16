@@ -77,7 +77,7 @@ DataFlow::Node getADestroyedNode() {
   )
 }
 
-predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
+predicate destroyedToBeginSink(DataFlow::Node sink, FunctionCall fc) {
   exists(CallInstruction call |
     call = sink.asOperand().(ThisArgumentOperand).getCall() and
     fc = call.getUnconvertedResultExpression() and
@@ -91,7 +91,7 @@ predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
 module DestroyedToBeginConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = getADestroyedNode() }
 
-  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+  predicate isSink(DataFlow::Node sink) { destroyedToBeginSink(sink, _) }
 
   DataFlow::FlowFeature getAFeature() {
     // By blocking argument-to-parameter flow we ensure that we don't enter a
@@ -111,5 +111,5 @@ module DestroyedToBeginConfig implements DataFlow::ConfigSig {
 module DestroyedToBeginFlow = DataFlow::Global<DestroyedToBeginConfig>;
 
 from DataFlow::Node source, DataFlow::Node sink, FunctionCall beginOrEnd
-where DestroyedToBeginFlow::flow(source, sink) and isSinkImpl(sink, beginOrEnd)
+where DestroyedToBeginFlow::flow(source, sink) and destroyedToBeginSink(sink, beginOrEnd)
 select source, "This object is destroyed before $@ is called.", beginOrEnd, beginOrEnd.toString()
