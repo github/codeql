@@ -120,12 +120,13 @@ module SourceSinkInterpretationInput implements
    * `output`, kind `kind`, and provenance `provenance`.
    */
   predicate sourceElement(
-    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance
+    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance, string model
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
       sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
+      model = "" and // TODO: Insert MaD provenance from sourceModel
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
@@ -135,12 +136,13 @@ module SourceSinkInterpretationInput implements
    * `input`, kind `kind` and provenance `provenance`.
    */
   predicate sinkElement(
-    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance
+    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance, string model
   ) {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext
     |
       sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance) and
+      model = "" and // TODO: Insert MaD provenance from sinkModel
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -207,10 +209,6 @@ module SourceSinkInterpretationInput implements
       ast = mid.asElement() and
       e.getMember() = ast
     |
-      // Allow fields to be picked as input nodes.
-      c = "" and
-      e.getBase() = n.asExpr()
-      or
       // Allow post update nodes to be picked as input nodes when the `input` column
       // of the row is `PostUpdate`.
       c = "PostUpdate" and

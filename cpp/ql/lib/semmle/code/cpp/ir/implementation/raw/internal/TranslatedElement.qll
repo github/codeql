@@ -128,8 +128,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
   or
-  // suppress destructors of temporary variables until proper support is added for them.
-  exists(Expr parent | parent.getAnImplicitDestructorCall() = expr)
+  // Do not translate implicit destructor calls for unnamed temporary variables that are
+  // conditionally constructed (until we have a mechanism for calling these only when the
+  // temporary's constructor was run)
+  isConditionalTemporaryDestructorCall(expr)
 }
 
 /**
@@ -252,6 +254,42 @@ private predicate usedAsCondition(Expr expr) {
   exists(ParenthesisExpr paren |
     paren.getExpr() = expr and
     usedAsCondition(paren)
+  )
+}
+
+private predicate hasThrowingChild(Expr e) {
+  e = any(ThrowExpr throw).getFullyConverted()
+  or
+  exists(Expr child |
+    e = getRealParent(child) and
+    hasThrowingChild(child)
+  )
+}
+
+private predicate isInConditionalEvaluation(Expr e) {
+  exists(ConditionalExpr cond |
+    e = cond.getThen().getFullyConverted() and not cond.isTwoOperand()
+    or
+    e = cond.getElse().getFullyConverted()
+    or
+    // If one of the operands throws then the temporaries constructed in either
+    // branch will also be attached to the ternary expression. We suppress
+    // those destructor calls as well.
+    hasThrowingChild([cond.getThen(), cond.getElse()]) and
+    e = cond.getFullyConverted()
+  )
+  or
+  e = any(LogicalAndExpr lae).getRightOperand().getFullyConverted()
+  or
+  e = any(LogicalOrExpr loe).getRightOperand().getFullyConverted()
+  or
+  isInConditionalEvaluation(getRealParent(e))
+}
+
+private predicate isConditionalTemporaryDestructorCall(DestructorCall dc) {
+  exists(TemporaryObjectExpr temp |
+    temp = dc.getQualifier().(ReuseExpr).getReusedExpr() and
+    isInConditionalEvaluation(temp)
   )
 }
 
@@ -506,8 +544,7 @@ private module IRDeclarationEntries {
    * An entity that represents a declaration entry in the database.
    *
    * This class exists to work around the fact that `DeclStmt`s in some cases
-   * do not have `DeclarationEntry`s. Currently, this is the case for:
-   * - `DeclStmt`s in template instantiations.
+   * do not have `DeclarationEntry`s in older databases.
    *
    * So instead, the IR works with `IRDeclarationEntry`s that synthesize missing
    * `DeclarationEntry`s when there is no result for `DeclStmt::getDeclarationEntry`.
@@ -782,6 +819,16 @@ newtype TTranslatedElement =
     not ignoreExpr(expr) and
     not ignoreSideEffects(expr) and
     opcode = getCallSideEffectOpcode(expr)
+  } or
+  // The set of destructors to invoke after a `throw`. These need to be special
+  // cased because the edge kind following a throw is an `ExceptionEdge`, and
+  // we need to make sure that the edge kind is still an `ExceptionEdge` after
+  // all the destructors have run.
+  TTranslatedDestructorsAfterThrow(ThrowExpr throw) {
+    exists(DestructorCall dc |
+      dc = throw.getAnImplicitDestructorCall() and
+      not ignoreExpr(dc)
+    )
   } or
   // A precise side effect of an argument to a `Call`
   TTranslatedArgumentExprSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {

@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 # This will run the build script from the root of the workspace, and
 # collect the outputs.
 cargo_build_script(
-    name = "tsg-build",
+    name = "tsp-build",
     srcs = ["bindings/rust/build.rs"],
     data = glob([
         "src/**",
@@ -32,7 +32,7 @@ rust_library(
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
-    deps = [":tsg-build"] + all_crate_deps(
+    deps = [":tsp-build"] + all_crate_deps(
         normal = True,
     ),
 )

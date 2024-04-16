@@ -14,13 +14,13 @@ edges
 | CodeInjection.rb:5:12:5:17 | call to params | CodeInjection.rb:5:12:5:24 | ...[...] | provenance |  |
 | CodeInjection.rb:5:12:5:24 | ...[...] | CodeInjection.rb:5:5:5:8 | code | provenance |  |
 | CodeInjection.rb:5:12:5:24 | ...[...] | CodeInjection.rb:5:5:5:8 | code | provenance |  |
-| CodeInjection.rb:38:24:38:27 | code | CodeInjection.rb:38:10:38:28 | call to escape | provenance |  |
-| CodeInjection.rb:38:24:38:27 | code | CodeInjection.rb:38:10:38:28 | call to escape | provenance |  |
+| CodeInjection.rb:38:24:38:27 | code | CodeInjection.rb:38:10:38:28 | call to escape | provenance | MaD:21 |
+| CodeInjection.rb:38:24:38:27 | code | CodeInjection.rb:38:10:38:28 | call to escape | provenance | MaD:21 |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:80:16:80:19 | code | provenance |  |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:86:10:86:25 | ... + ... | provenance |  |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:86:10:86:37 | ... + ... | provenance |  |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:86:22:86:25 | code | provenance |  |
-| CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | provenance |  |
+| CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | provenance | AdditionalTaintStep |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:90:10:90:13 | code | provenance |  |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:90:10:90:13 | code | provenance |  |
 | CodeInjection.rb:78:12:78:17 | call to params | CodeInjection.rb:78:12:78:24 | ...[...] | provenance |  |

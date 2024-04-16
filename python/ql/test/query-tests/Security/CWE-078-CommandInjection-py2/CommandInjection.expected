@@ -10,8 +10,8 @@ edges
 | command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr | provenance |  |
 | command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr | provenance |  |
 | command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr | provenance |  |
-| command_injection.py:18:13:18:19 | ControlFlowNode for request | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | provenance |  |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:18:13:18:41 | ControlFlowNode for Attribute() | provenance |  |
+| command_injection.py:18:13:18:19 | ControlFlowNode for request | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:18:13:18:41 | ControlFlowNode for Attribute() | provenance | dict.get |
 | command_injection.py:18:13:18:41 | ControlFlowNode for Attribute() | command_injection.py:18:5:18:9 | ControlFlowNode for files | provenance |  |
 nodes
 | command_injection.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |

@@ -9,9 +9,15 @@ private import Telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
-  c.getDeclaringType() instanceof TestLibrary or
-  c.(Constructor).isParameterless() or
+  c.getDeclaringType() instanceof TestLibrary
+  or
+  c.(Constructor).isParameterless()
+  or
   c.getDeclaringType() instanceof AnonymousClass
+  or
+  // The data flow library uses read/store steps for properties, so we don't need to model them,
+  // if both a getter and a setter exist.
+  c.(Accessor).getDeclaration().(Property).isReadWrite()
 }
 
 /**

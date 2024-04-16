@@ -10,6 +10,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowPrivate
 private import ModelUtil
 private import SsaInternals as Ssa
@@ -59,7 +60,8 @@ private newtype TIRDataFlowNode =
     )
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
-  TInitialGlobalValue(Ssa::GlobalDef globalUse)
+  TInitialGlobalValue(Ssa::GlobalDef globalUse) or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /**
  * An operand that is defined by a `FieldAddressInstruction`.
@@ -736,6 +738,36 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 }
 
 /**
+ * A data-flow node used to model flow summaries. That is, a dataflow node
+ * that is synthesized to represent a parameter, return value, or other part
+ * of a models-as-data modeled function.
+ */
+class FlowSummaryNode extends Node, TFlowSummaryNode {
+  /**
+   * Gets the models-as-data `SummaryNode` associated with this dataflow
+   * `FlowSummaryNode`.
+   */
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
+
+  /**
+   * Gets the summarized callable that this node belongs to.
+   */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
+
+  /**
+   * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
+   * summarized function this node is part of.
+   */
+  override Declaration getEnclosingCallable() { result = this.getSummarizedCallable() }
+
+  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+
+  override string toStringImpl() { result = this.getSummaryNode().toString() }
+}
+
+/**
  * INTERNAL: do not use.
  *
  * A node representing an indirection of a parameter.
@@ -826,6 +858,9 @@ class IndirectArgumentOutNode extends PostUpdateNodeImpl {
 
   CallInstruction getCallInstruction() { result.getAnArgumentOperand() = operand }
 
+  /**
+   * Gets the `Function` that the call targets, if this is statically known.
+   */
   Function getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
 
   override string toStringImpl() {
@@ -1635,6 +1670,8 @@ class ParameterNode extends Node {
     this.asInstruction() instanceof InitializeParameterInstruction
     or
     this instanceof IndirectParameterNode
+    or
+    FlowSummaryImpl::Private::summaryParameterNode(this.(FlowSummaryNode).getSummaryNode(), _)
   }
 
   /**
@@ -1642,7 +1679,7 @@ class ParameterNode extends Node {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
+  predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) { none() } // overridden by subclasses
 
   /** Gets the `Parameter` associated with this node, if it exists. */
   Parameter getParameter() { none() } // overridden by subclasses
@@ -1664,8 +1701,9 @@ class DirectParameterNode extends InstructionNode {
 private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(Function f, ParameterPosition pos) {
-    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
+  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+    f.getUnderlyingCallable().(Function).getParameter(pos.(DirectPosition).getIndex()) =
+      instr.getParameter()
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
@@ -1677,11 +1715,30 @@ private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
 class ThisParameterNode extends ParameterNode, DirectParameterNode {
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(Function f, ParameterPosition pos) {
-    pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f
+  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+    pos.(DirectPosition).getIndex() = -1 and
+    instr.getEnclosingFunction() = f.getUnderlyingCallable()
   }
 
   override string toStringImpl() { result = "this" }
+}
+
+/**
+ * A parameter node that is part of a summary.
+ */
+class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
+  SummaryParameterNode() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
+  }
+
+  private ParameterPosition getPosition() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+  }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
+    c.getUnderlyingCallable() = this.getSummarizedCallable() and
+    p = this.getPosition()
+  }
 }
 
 pragma[noinline]
@@ -1702,8 +1759,8 @@ private predicate indirectParameterNodeHasArgumentIndexAndIndex(
 
 /** A synthetic parameter to model the pointed-to object of a pointer parameter. */
 class ParameterIndirectionNode extends ParameterNode instanceof IndirectParameterNode {
-  override predicate isParameterOf(Function f, ParameterPosition pos) {
-    IndirectParameterNode.super.getEnclosingCallable() = f and
+  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+    IndirectParameterNode.super.getEnclosingCallable() = f.getUnderlyingCallable() and
     exists(int argumentIndex, int indirectionIndex |
       indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
       indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
@@ -1751,6 +1808,22 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 
   /** Gets the expression that is partially defined by this node. */
   abstract Expr getDefinedExpr();
+}
+
+/**
+ * A `PostUpdateNode` that is part of a flow summary. These are synthesized,
+ * for example, when a models-as-data summary models a write to a field since
+ * the write needs to target a `PostUpdateNode`.
+ */
+class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), _)
+  }
+
+  override Node getPreUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(),
+      result.(FlowSummaryNode).getSummaryNode())
+  }
 }
 
 /**
@@ -1889,10 +1962,20 @@ cached
 private module Cached {
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
-   * (intra-procedural) step.
+   * (intra-procedural) step. This relation is only used for local dataflow
+   * (for example `DataFlow::localFlow(source, sink)`) so it contains
+   * special cases that should only apply to local dataflow.
    */
   cached
-  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+    // common dataflow steps
+    simpleLocalFlowStep(nodeFrom, nodeTo, _)
+    or
+    // models-as-data summarized flow for local data flow (i.e. special case for flow
+    // through calls to modeled functions, without relying on global dataflow to join
+    // the dots).
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+  }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
     nodeFrom != nodeTo and
@@ -1958,45 +2041,54 @@ private module Cached {
   /**
    * INTERNAL: do not use.
    *
-   * This is the local flow predicate that's used as a building block in global
-   * data flow. It may have less flow than the `localFlowStep` predicate.
+   * This is the local flow predicate that's used as a building block in both
+   * local and global data flow. It may have less flow than the `localFlowStep`
+   * predicate.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    // Post update node -> Node flow
-    Ssa::postUpdateFlow(nodeFrom, nodeTo)
-    or
-    // Def-use/Use-use flow
-    Ssa::ssaFlow(nodeFrom, nodeTo)
-    or
-    // Operand -> Instruction flow
-    simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
-    or
-    // Instruction -> Operand flow
-    exists(Instruction iFrom, Operand opTo |
-      iFrom = nodeFrom.asInstruction() and opTo = nodeTo.asOperand()
-    |
-      simpleOperandLocalFlowStep(iFrom, opTo) and
-      // Omit when the instruction node also represents the operand.
-      not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
-    )
-    or
-    // Phi node -> Node flow
-    Ssa::fromPhiNode(nodeFrom, nodeTo)
-    or
-    // Indirect operand -> (indirect) instruction flow
-    indirectionOperandFlow(nodeFrom, nodeTo)
-    or
-    // Indirect instruction -> indirect operand flow
-    indirectionInstructionFlow(nodeFrom, nodeTo)
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    (
+      // Post update node -> Node flow
+      Ssa::postUpdateFlow(nodeFrom, nodeTo)
+      or
+      // Def-use/Use-use flow
+      Ssa::ssaFlow(nodeFrom, nodeTo)
+      or
+      // Operand -> Instruction flow
+      simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+      or
+      // Instruction -> Operand flow
+      exists(Instruction iFrom, Operand opTo |
+        iFrom = nodeFrom.asInstruction() and opTo = nodeTo.asOperand()
+      |
+        simpleOperandLocalFlowStep(iFrom, opTo) and
+        // Omit when the instruction node also represents the operand.
+        not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
+      )
+      or
+      // Phi node -> Node flow
+      Ssa::fromPhiNode(nodeFrom, nodeTo)
+      or
+      // Indirect operand -> (indirect) instruction flow
+      indirectionOperandFlow(nodeFrom, nodeTo)
+      or
+      // Indirect instruction -> indirect operand flow
+      indirectionInstructionFlow(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
     // Flow through modeled functions
-    modelFlow(nodeFrom, nodeTo)
+    modelFlow(nodeFrom, nodeTo, model)
     or
     // Reverse flow: data that flows from the definition node back into the indirection returned
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
-    reverseFlow(nodeFrom, nodeTo)
+    reverseFlow(nodeFrom, nodeTo) and
+    model = ""
+    or
+    // models-as-data summarized flow
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
@@ -2011,12 +2103,13 @@ private module Cached {
     opTo.getDef() = iFrom
   }
 
-  private predicate modelFlow(Node nodeFrom, Node nodeTo) {
+  private predicate modelFlow(Node nodeFrom, Node nodeTo, string model) {
     exists(
       CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
     |
       call.getStaticCallTarget() = func and
-      func.hasDataFlow(modelIn, modelOut)
+      func.hasDataFlow(modelIn, modelOut) and
+      model = "DataFlowFunction"
     |
       nodeFrom = callInput(call, modelIn) and
       nodeTo = callOutput(call, modelOut)
@@ -2237,6 +2330,8 @@ private Field getAFieldWithSize(Union u, int bytes) {
 cached
 private newtype TContent =
   TFieldContent(Field f, int indirectionIndex) {
+    // the indirection index for field content starts at 1 (because `TFieldContent` is thought of as
+    // the address of the field, `FieldAddress` in the IR).
     indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
     // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
@@ -2246,7 +2341,8 @@ private newtype TContent =
       f = u.getAField() and
       bytes = getFieldSize(f) and
       // We key `UnionContent` by the union instead of its fields since a write to one
-      // field can be read by any read of the union's fields.
+      // field can be read by any read of the union's fields. Again, the indirection index
+      // is 1-based (because 0 is considered the address).
       indirectionIndex =
         [1 .. max(Ssa::getMaxIndirectionsForType(getAFieldWithSize(u, bytes).getUnspecifiedType()))]
     )
@@ -2280,16 +2376,14 @@ class Content extends TContent {
   abstract predicate impliesClearOf(Content c);
 }
 
+/**
+ * Gets a string consisting of `n` star characters ("*"), where n >= 0. This is
+ * used to represent indirection.
+ */
+bindingset[n]
+string repeatStars(int n) { result = concat(int i | i in [1 .. n] | "*") }
+
 private module ContentStars {
-  private int maxNumberOfIndirections() { result = max(any(Content c).getIndirectionIndex()) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
-
   /**
    * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
    * output for `c`.
@@ -2369,6 +2463,12 @@ class UnionContent extends Content, TUnionContent {
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
 class ContentSet instanceof Content {
+  /**
+   * Holds if this content set is the singleton `{c}`. At present, this is
+   * the only kind of content set supported in C/C++.
+   */
+  predicate isSingleton(Content c) { this = c }
+
   /** Gets a content that may be stored into when storing into this set. */
   Content getAStoreContent() { result = this }
 
@@ -2586,5 +2686,5 @@ class AdditionalCallTarget extends Unit {
   /**
    * Gets a viable target for `call`.
    */
-  abstract DataFlowCallable viableTarget(Call call);
+  abstract Declaration viableTarget(Call call);
 }

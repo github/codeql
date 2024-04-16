@@ -13,8 +13,13 @@ private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
-  c.getDeclaringType() instanceof TestLibrary or
+  c.getDeclaringType() instanceof TestLibrary
+  or
   c.(Constructor).isParameterless()
+  or
+  // The data flow library uses read/store steps for properties, so we don't need to model them,
+  // if both a getter and a setter exist.
+  c.(Accessor).getDeclaration().(Property).isReadWrite()
 }
 
 /**
@@ -74,7 +79,7 @@ class ExternalApi extends Callable {
   predicate hasSummary() {
     this instanceof SummarizedCallable
     or
-    defaultAdditionalTaintStep(this.getAnInput(), _)
+    defaultAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   /** Holds if this API is a known source. */
