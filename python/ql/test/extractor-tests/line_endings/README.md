@@ -1,0 +1,1 @@
+The test files in this directory were causing some issues with `git`, due to the use of CRLF line endings. For this reason they have been temporarily removed. You can consult the commit history for when this file was added to see what they looked like.
