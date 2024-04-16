@@ -141,31 +141,27 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Output the findings
             foreach (var r in usedReferences.Keys.OrderBy(r => r))
             {
-                logger.LogInfo($"Resolved reference {r}");
+                logger.LogDebug($"Resolved reference {r}");
             }
 
             foreach (var r in unresolvedReferences.OrderBy(r => r.Key))
             {
-                logger.LogInfo($"Unresolved reference {r.Key} in project {r.Value}");
+                logger.LogDebug($"Unresolved reference {r.Key} in project {r.Value}");
             }
 
-            var webViewExtractionOption = Environment.GetEnvironmentVariable(EnvironmentVariableNames.WebViewGeneration);
-            if (webViewExtractionOption == null ||
-                bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
-                shouldExtractWebViews)
+            var sourceGenerators = new ISourceGenerator[]
             {
-                CompilationInfos.Add(("WebView extraction enabled", "1"));
-                GenerateSourceFilesFromWebViews();
-            }
-            else
+                new ImplicitUsingsGenerator(fileContent, logger, tempWorkingDirectory),
+                new WebViewGenerator(fileProvider, fileContent, dotnet, this, logger, tempWorkingDirectory, usedReferences.Keys)
+            };
+
+            foreach (var sourceGenerator in sourceGenerators)
             {
-                CompilationInfos.Add(("WebView extraction enabled", "0"));
+                this.generatedSources.AddRange(sourceGenerator.Generate());
             }
 
             CompilationInfos.Add(("UseWPF set", fileContent.UseWpf ? "1" : "0"));
             CompilationInfos.Add(("UseWindowsForms set", fileContent.UseWindowsForms ? "1" : "0"));
-
-            GenerateSourceFileFromImplicitUsings();
 
             const int align = 6;
             logger.LogInfo("");
@@ -253,7 +249,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (isInAnalyzersFolder)
                     {
                         usedReferences.Remove(filename);
-                        logger.LogInfo($"Removed analyzer reference {filename}");
+                        logger.LogDebug($"Removed analyzer reference {filename}");
                     }
                 }
             }
@@ -265,19 +261,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (versionFolders.Length > 1)
             {
                 var versions = string.Join(", ", versionFolders.Select(d => d.Name));
-                logger.LogInfo($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+                logger.LogDebug($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
             }
 
             var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
             if (selectedFrameworkFolder is null)
             {
-                logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
+                logger.LogDebug($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
                 selectedFrameworkFolder = frameworkPath;
             }
 
             dllLocations.Add(selectedFrameworkFolder);
             frameworkLocations.Add(selectedFrameworkFolder);
-            logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
+            logger.LogDebug($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
         }
 
         private static DirectoryInfo[] GetPackageVersionSubDirectories(string packagePath)
@@ -361,18 +357,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var path in toRemove)
             {
                 dllLocations.Remove(path);
-                logger.LogInfo($"Removed reference {path}");
+                logger.LogDebug($"Removed reference {path}");
             }
-        }
-
-        private bool IsAspNetCoreDetected()
-        {
-            return fileContent.IsNewProjectStructureUsed && fileContent.UseAspNetCoreDlls;
         }
 
         private void AddAspNetCoreFrameworkDlls(ISet<AssemblyLookupLocation> dllLocations, ISet<string> frameworkLocations)
         {
-            if (!IsAspNetCoreDetected())
+            if (!fileContent.IsAspNetCoreDetected)
             {
                 return;
             }
@@ -411,103 +402,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .EnumerateDirectories(packagePrefix + "*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
                 .FirstOrDefault()?
                 .FullName;
-        }
-
-        private void GenerateSourceFileFromImplicitUsings()
-        {
-            var usings = new HashSet<string>();
-            if (!fileContent.UseImplicitUsings)
-            {
-                return;
-            }
-
-            // Hardcoded values from https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
-            usings.UnionWith([ "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
-                "System.Threading.Tasks" ]);
-
-            if (fileContent.UseAspNetCoreDlls)
-            {
-                usings.UnionWith([ "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
-                    "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
-                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" ]);
-            }
-
-            if (fileContent.UseWindowsForms)
-            {
-                usings.UnionWith(["System.Drawing", "System.Windows.Forms"]);
-            }
-
-            usings.UnionWith(fileContent.CustomImplicitUsings);
-
-            logger.LogInfo($"Generating source file for implicit usings. Namespaces: {string.Join(", ", usings.OrderBy(u => u))}");
-
-            if (usings.Count > 0)
-            {
-                var tempDir = GetTemporaryWorkingDirectory("implicitUsings");
-                var path = Path.Combine(tempDir, "GlobalUsings.g.cs");
-                using (var writer = new StreamWriter(path))
-                {
-                    writer.WriteLine("// <auto-generated/>");
-                    writer.WriteLine("");
-
-                    foreach (var u in usings.OrderBy(u => u))
-                    {
-                        writer.WriteLine($"global using global::{u};");
-                    }
-                }
-
-                this.generatedSources.Add(path);
-            }
-        }
-
-        private void GenerateSourceFilesFromWebViews()
-        {
-            var views = fileProvider.RazorViews;
-            if (views.Count == 0)
-            {
-                return;
-            }
-
-            logger.LogInfo($"Found {views.Count} cshtml and razor files.");
-
-            if (!IsAspNetCoreDetected())
-            {
-                logger.LogInfo("Generating source files from cshtml files is only supported for new (SDK-style) project files");
-                return;
-            }
-
-            logger.LogInfo("Generating source files from cshtml and razor files...");
-
-            var sdk = new Sdk(dotnet).GetNewestSdk();
-            if (sdk != null)
-            {
-                try
-                {
-                    var razor = new Razor(sdk, dotnet, logger);
-                    var targetDir = GetTemporaryWorkingDirectory("razor");
-                    var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, targetDir);
-                    this.generatedSources.AddRange(generatedFiles);
-                }
-                catch (Exception ex)
-                {
-                    // It's okay, we tried our best to generate source files from cshtml files.
-                    logger.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates a temporary directory with the given subfolder name.
-        /// The created directory might be inside the repo folder, and it is deleted when the object is disposed.
-        /// </summary>
-        /// <param name="subfolder"></param>
-        /// <returns></returns>
-        private string GetTemporaryWorkingDirectory(string subfolder)
-        {
-            var temp = Path.Combine(tempWorkingDirectory.ToString(), subfolder);
-            Directory.CreateDirectory(temp);
-
-            return temp;
         }
 
         /// <summary>
@@ -561,7 +455,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (resolvedInfo.Version != r.Version || resolvedInfo.NetCoreVersion != r.NetCoreVersion)
                 {
                     var asm = resolvedInfo.Id + (resolvedInfo.NetCoreVersion is null ? "" : $" (.NET Core {resolvedInfo.NetCoreVersion})");
-                    logger.LogInfo($"Resolved {r.Id} as {asm}");
+                    logger.LogDebug($"Resolved {r.Id} as {asm}");
 
                     ++conflictedReferences;
                 }

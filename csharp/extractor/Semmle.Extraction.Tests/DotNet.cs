@@ -20,23 +20,23 @@ namespace Semmle.Extraction.Tests
 
         public string Exec => "dotnet";
 
-        public bool RunCommand(string args)
+        public bool RunCommand(string args, bool silent)
         {
             lastArgs = args;
             return Success;
         }
 
-        public bool RunCommand(string args, out IList<string> output)
+        public bool RunCommand(string args, out IList<string> output, bool silent)
         {
             lastArgs = args;
             output = this.output;
             return Success;
         }
 
-        public bool RunCommand(string args, string? workingDirectory, out IList<string> output)
+        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent)
         {
             WorkingDirectory = workingDirectory ?? "";
-            return RunCommand(args, out output);
+            return RunCommand(args, out output, silent);
         }
 
         public string GetLastArgs() => lastArgs;

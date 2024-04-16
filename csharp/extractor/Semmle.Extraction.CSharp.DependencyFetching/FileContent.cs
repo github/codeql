@@ -50,6 +50,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        public bool IsAspNetCoreDetected
+        {
+            get
+            {
+                return IsNewProjectStructureUsed && UseAspNetCoreDlls;
+            }
+        }
+
         private bool useImplicitUsings = false;
 
         public bool UseImplicitUsings

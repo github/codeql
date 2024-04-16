@@ -15,4 +15,5 @@ dependencies:
   codeql/yaml: ${workspace}
 dataExtensions:
   - semmle/javascript/frameworks/**/model.yml
+  - semmle/javascript/frameworks/**/*.model.yml
 warnOnImplicitThis: true
