@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Copyright (c) 2024 GitHub, Inc.
+
 """
 Fix metadata in overridden registry, updating `metadata.json` to list correct versions and `source.json`
 to list correct patches with sha256 hashes.
