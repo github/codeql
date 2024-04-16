@@ -258,13 +258,13 @@ private class MaxValueState extends TMaxValueState {
  * A node that blocks some flow states and transforms some others as they flow
  * through it.
  */
-abstract class BarrierFlowStateTransformer extends DataFlow::Node {
+abstract class FlowStateTransformer extends DataFlow::Node {
   /**
    * Holds if this should be a barrier for `flowstate`.
    *
    * This includes flow states which are transformed into other flow states.
    */
-  abstract predicate barrierFor(MaxValueState flowstate);
+  abstract predicate barrierFor(int bitSize, int architectureBitSize);
 
   /**
    * Gets the flow state that `flowstate` is transformed into.
@@ -275,7 +275,20 @@ abstract class BarrierFlowStateTransformer extends DataFlow::Node {
    * transform(transform(x)) = transform(x)
    * ```
    */
-  abstract MaxValueState transform(MaxValueState flowstate);
+  MaxValueState transform(MaxValueState state) {
+    this.barrierFor(state.getBitSize(), state.getSinkBitSize()) and
+    result.getBitSize() =
+      max(int bitsize |
+        bitsize = validBitSize() and
+        bitsize < state.getBitSize() and
+        not this.barrierFor(bitsize, state.getSinkBitSize())
+      ) and
+    (
+      result.getArchitectureBitSize() = state.getArchitectureBitSize()
+      or
+      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
+    )
+  }
 }
 
 private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
@@ -372,30 +385,15 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
  * for all flow states and would not transform any flow states, thus
  * effectively blocking them.
  */
-class UpperBoundCheck extends BarrierFlowStateTransformer {
+class UpperBoundCheck extends FlowStateTransformer {
   UpperBoundCheckGuard g;
 
   UpperBoundCheck() {
     this = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g)
   }
 
-  override predicate barrierFor(MaxValueState flowstate) {
-    g.isBoundFor(flowstate.getBitSize(), flowstate.getSinkBitSize())
-  }
-
-  override MaxValueState transform(MaxValueState state) {
-    this.barrierFor(state) and
-    result.getBitSize() =
-      max(int bitsize |
-        bitsize = validBitSize() and
-        bitsize < state.getBitSize() and
-        not g.isBoundFor(bitsize, state.getSinkBitSize())
-      ) and
-    (
-      result.getArchitectureBitSize() = state.getArchitectureBitSize()
-      or
-      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
-    )
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    g.isBoundFor(bitSize, architectureBitSize)
   }
 }
 
@@ -497,7 +495,10 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Safely guarded by a barrier guard.
-    exists(BarrierFlowStateTransformer bfst | node = bfst and bfst.barrierFor(state))
+    exists(FlowStateTransformer fst |
+      node = fst and
+      fst.barrierFor(state.getBitSize(), state.getSinkBitSize())
+    )
     or
     // When there is a flow from a source to a sink, do not allow the flow to
     // continue to a further sink.
@@ -507,8 +508,8 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    // Create additional flow steps for `BarrierFlowStateTransformer`s
-    state2 = node2.(BarrierFlowStateTransformer).transform(state1) and
+    // Create additional flow steps for `FlowStateTransformer`s
+    state2 = node2.(FlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
 }
