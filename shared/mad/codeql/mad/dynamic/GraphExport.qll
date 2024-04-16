@@ -154,7 +154,7 @@ module GraphExport<
   }
 
   /**
-   * Holds if a named type exists or will be generated for `node`.
+   * Holds if a synthetic name must be generated for `node`.
    */
   private predicate isSyntheticallyNamedNode(RelevantNode node, string prefix) {
     nodeMustBeNamed(node) and
