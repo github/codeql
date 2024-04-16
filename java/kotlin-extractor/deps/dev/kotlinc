@@ -40,8 +40,7 @@ def options():
 
 url_template = 'https://github.com/JetBrains/kotlin/releases/download/v{version}/kotlin-compiler-{version}.zip'
 this_dir = pathlib.Path(__file__).resolve().parent
-version_file = this_dir / ".kotlinc_selected_version"
-installed_version_file = this_dir / ".kotlinc_installed_version"
+version_file = this_dir / ".kotlinc_version"
 install_dir = this_dir / ".kotlinc_installed"
 windows_ripunzip = this_dir.parents[4] / "resources" / "lib" / "windows" / "ripunzip" / "ripunzip.exe"
 
@@ -73,9 +72,9 @@ def check_version(version: str):
         raise
 
 
-def get_version(file: pathlib.Path) -> str:
+def get_version():
     try:
-        return file.read_text()
+        return version_file.read_text()
     except FileNotFoundError:
         return None
 
@@ -121,9 +120,6 @@ def clear():
     if install_dir.exists():
         print(f"removing {install_dir}", file=sys.stderr)
         shutil.rmtree(install_dir)
-    if installed_version_file.exists():
-        print(f"removing {installed_version_file}", file=sys.stderr)
-        installed_version_file.unlink()
     if version_file.exists():
         print(f"removing {version_file}", file=sys.stderr)
         version_file.unlink()
@@ -133,18 +129,15 @@ def main(opts, forwarded_opts):
     if opts.clear:
         clear()
         return
+    current_version = get_version()
     if opts.select:
         check_version(opts.select)
-        version_file.write_text(opts.select)
         selected_version = opts.select
     else:
-        selected_version = get_version(version_file)
-        if not selected_version:
-            selected_version = DEFAULT_VERSION
-            version_file.write_text(selected_version)
-    if get_version(installed_version_file) != selected_version:
+        selected_version = current_version or DEFAULT_VERSION
+    if selected_version != current_version:
         install(selected_version)
-        installed_version_file.write_text(selected_version)
+        version_file.write_text(selected_version)
     if opts.version or (opts.select and not forwarded_opts):
         print(f"info: kotlinc-jvm {selected_version} (codeql dev wrapper)", file=sys.stderr)
         return
