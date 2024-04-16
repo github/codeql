@@ -260,3 +260,18 @@ public class EqualsGetHashCodeNoFlow
         return intTainted;
     }
 }
+
+public class Properties
+{
+    private string tainted;
+
+    public string Prop1
+    {
+        get { return tainted; }
+    }
+
+    public string Prop2
+    {
+        set { tainted = value; }
+    }
+}

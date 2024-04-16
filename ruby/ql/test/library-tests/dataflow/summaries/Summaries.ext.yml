@@ -1,0 +1,51 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sinkModel
+    data:
+      - ['Foo!', 'Method[arraySink].Argument[0].Element[any]', 'test-sink']
+      - ['Foo!', 'Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0]', 'test-sink']
+      - ['Foo!', 'Method[secondArrayElementIsSink].Argument[0].Element[1]', 'test-sink']
+      - ['Foo!', 'Method[sinkAnyArg].Argument[any]', 'test-sink']
+      - ['Foo!', 'Method[sinkAnyNamedArg].Argument[any-named]', 'test-sink']
+      - ['FuzzyLib!', 'Fuzzy.Method[fuzzyCall].Argument[0]', 'test-sink']
+      - ['~FooOrBar', 'Method[method].Argument[0]', 'test-sink']
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ['Foo!', 'Method[anyArg]', 'Argument[any]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[anyNamedArg]', 'Argument[any-named]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[anyPositionFromOne]', 'Argument[1..]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[firstArg]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[intoNamedCallback]', 'Argument[0]', 'Argument[foo:].Parameter[0]', 'taint']
+      - ['Foo!', 'Method[intoNamedParameter]', 'Argument[0]', 'Argument[0].Parameter[foo:]', 'taint']
+      - ['Foo!', 'Method[namedArg]', 'Argument[foo:]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[onlyWithBlock].WithBlock', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[onlyWithoutBlock].WithoutBlock', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[secondArg]', 'Argument[1]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Foo!', 'Method[startInNamedParameter].Argument[0].Parameter[foo:].Method[preserveTaint]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Foo', 'Method[flowToAnyArg]', 'Argument[0]', 'Argument[any]', 'taint']
+      - ['Foo', 'Method[flowToSelf]', 'Argument[0]', 'Argument[self]', 'taint']
+      - ['any', 'Method[get_value]', 'Argument[self].Field[@value]', 'ReturnValue', 'value']
+      - ['any', 'Method[matchedByNameRcv]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['any', 'Method[matchedByName]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['any', 'Method[readElementOne]', 'Argument[self].Element[1]', 'ReturnValue', 'value']
+      - ['any', 'Method[readExactlyElementOne]', 'Argument[self].Element[1!]', 'ReturnValue', 'value']
+      - ['any', 'Method[set_value]', 'Argument[0]', 'Argument[self].Field[@value]', 'value']
+      - ['any', 'Method[withElementOne]', 'Argument[self].WithElement[1]', 'ReturnValue', 'value']
+      - ['any', 'Method[withExactlyElementOne]', 'Argument[self].WithElement[1!]', 'ReturnValue', 'value']
+      - ['any', 'Method[withoutElementOneAndTwo]', 'Argument[self].WithoutElement[1].WithoutElement[2].WithElement[any]', 'Argument[self]', 'value']
+      - ['any', 'Method[withoutElementOne]', 'Argument[self].WithoutElement[1]', 'Argument[self]', 'value']
+      - ['any', 'Method[withoutExactlyElementOne]', 'Argument[self].WithoutElement[1!]', 'Argument[self]', 'value']
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      - ['~FooOrBar', 'Bar', '']
+      - ['~FooOrBar', 'Foo', '']
+      - ['~FooOrBar', '~FooOrBar', 'Method[next].ReturnValue']

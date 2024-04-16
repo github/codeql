@@ -40,13 +40,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return startInfo;
         }
 
-        private bool RunCommandAux(string args, string? workingDirectory, out IList<string> output)
+        private bool RunCommandAux(string args, string? workingDirectory, out IList<string> output, bool silent)
         {
             var dirLog = string.IsNullOrWhiteSpace(workingDirectory) ? "" : $" in {workingDirectory}";
             logger.LogInfo($"Running {Exec} {args}{dirLog}");
             var pi = MakeDotnetStartInfo(args, workingDirectory);
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.Log(silent ? Severity.Debug : Severity.Info, s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
@@ -57,13 +57,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return true;
         }
 
-        public bool RunCommand(string args) =>
-            RunCommandAux(args, null, out _);
+        public bool RunCommand(string args, bool silent) =>
+            RunCommandAux(args, null, out _, silent);
 
-        public bool RunCommand(string args, out IList<string> output) =>
-            RunCommandAux(args, null, out output);
+        public bool RunCommand(string args, out IList<string> output, bool silent) =>
+            RunCommandAux(args, null, out output, silent);
 
-        public bool RunCommand(string args, string? workingDirectory, out IList<string> output) =>
-            RunCommandAux(args, workingDirectory, out output);
+        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent) =>
+            RunCommandAux(args, workingDirectory, out output, silent);
     }
 }

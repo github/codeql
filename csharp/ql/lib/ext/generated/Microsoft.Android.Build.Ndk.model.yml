@@ -16,12 +16,6 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.Android.Build.Ndk", "AndroidArch", "AndroidArch", "(System.String,System.String,System.String)", "summary", "df-generated"]
-      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "get_Abi", "()", "summary", "df-generated"]
-      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "get_ArchName", "()", "summary", "df-generated"]
-      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "get_Triple", "()", "summary", "df-generated"]
-      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "set_Abi", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "set_ArchName", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "set_Triple", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Android.Build.Ndk", "Ndk", "get_NdkPath", "()", "summary", "df-generated"]
       - ["Microsoft.Android.Build.Ndk", "Ndk", "get_NdkVersion", "()", "summary", "df-generated"]
       - ["Microsoft.Android.Build.Ndk", "NdkTools", "get_Triple", "()", "summary", "df-generated"]

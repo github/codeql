@@ -111,12 +111,12 @@ namespace Semmle.Extraction.CSharp.Standalone
                     AnalysisAction.UpToDate => "up to date",
                     _ => "unknown action"
                 };
-                logger.LogInfo($"[{item}/{total}] {source} ({extra})");
+                logger.LogDebug($"[{item}/{total}] {source} ({extra})");
             }
 
             public void Started(int item, int total, string source)
             {
-                logger.LogInfo($"[{item}/{total}] {source} (processing started)");
+                logger.LogDebug($"[{item}/{total}] {source} (processing started)");
             }
 
             public void MissingType(string type)

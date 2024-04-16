@@ -160,5 +160,3 @@
 | Summaries;TypeBasedSimple<T>;false;Set;(System.Int32,T);;Argument[1];Argument[this].SyntheticField[ArgType0];value;tb-generated |
 | Summaries;TypeBasedSimple<T>;false;Set;(T);;Argument[0];Argument[this].SyntheticField[ArgType0];value;tb-generated |
 | Summaries;TypeBasedSimple<T>;false;TypeBasedSimple;(T);;Argument[0];Argument[this].SyntheticField[ArgType0];value;tb-generated |
-| Summaries;TypeBasedSimple<T>;false;get_Prop;();;Argument[this].SyntheticField[ArgType0];ReturnValue;value;tb-generated |
-| Summaries;TypeBasedSimple<T>;false;set_Prop;(T);;Argument[0];Argument[this].SyntheticField[ArgType0];value;tb-generated |
