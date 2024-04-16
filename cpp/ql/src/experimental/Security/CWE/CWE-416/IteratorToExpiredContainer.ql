@@ -37,6 +37,11 @@ module TempToDestructorConfig implements DataFlow::ConfigSig {
 
 module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
 
+/** Holds if `pun` is the post-update node of the qualifier of `Call`. */
+private predicate isPostUpdateOfQualifier(CallInstruction call, DataFlow::PostUpdateNode pun) {
+  call.getThisArgumentOperand() = pun.getPreUpdateNode().asOperand()
+}
+
 /**
  * Gets a `DataFlow::Node` that represents a temporary that will be destroyed
  * by a call to a destructor, or a `DataFlow::Node` that will transitively be
@@ -53,8 +58,12 @@ module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
  * and thus the result of `get_2d_vector()[0]` is also an invalid reference.
  */
 DataFlow::Node getADestroyedNode() {
-  exists(TempToDestructorFlow::PathNode destroyedTemp | destroyedTemp.isSource() |
-    result = destroyedTemp.getNode()
+  exists(DataFlow::Node n | TempToDestructorFlow::flowTo(n) |
+    // Case 1: The pointer that goes into the destructor call is destroyed
+    exists(CallInstruction destructorCall |
+      tempToDestructorSink(n, destructorCall) and
+      isPostUpdateOfQualifier(destructorCall, result)
+    )
     or
     exists(CallInstruction call |
       result.asInstruction() = call and
