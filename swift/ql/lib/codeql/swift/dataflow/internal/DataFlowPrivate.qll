@@ -323,7 +323,9 @@ private module Cached {
   /** This is the local flow predicate that is exposed. */
   cached
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
-    localFlowStepCommon(nodeFrom, nodeTo, _) or
+    localFlowStepCommon(nodeFrom, nodeTo, _)
+    or
+    // models-as-data summarized flow
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
@@ -1027,6 +1029,7 @@ predicate captureValueStep(Node node1, Node node2) {
 }
 
 predicate jumpStep(Node pred, Node succ) {
+  // models-as-data summarized flow
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
     succ.(FlowSummaryNode).getSummaryNode())
 }
@@ -1136,6 +1139,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::CollectionContent cc))
   )
   or
+  // models-as-data summarized flow
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or
@@ -1241,6 +1245,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c instanceof OptionalSomeContentSet
   )
   or
+  // models-as-data summarized flow
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or

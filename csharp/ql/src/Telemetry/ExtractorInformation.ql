@@ -120,7 +120,14 @@ module ReportStats<StatsSig Stats> {
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
 
-  int getNumberOfNotOk() { result = count(Call c | not exists(c.getTarget())) }
+  int getNumberOfNotOk() {
+    result =
+      count(Call c |
+        not exists(c.getTarget()) and
+        not c instanceof DelegateCall and
+        not c instanceof DynamicExpr
+      )
+  }
 
   string getOkText() { result = "calls with call target" }
 
