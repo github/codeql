@@ -27,8 +27,6 @@ extensions:
       - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "MoveNext", "()", "summary", "df-generated"]
       - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "Reset", "()", "summary", "df-generated"]
       - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "get_Current", "()", "summary", "df-generated"]
-      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "get_Offset", "()", "summary", "df-generated"]
-      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "set_Offset", "(System.Int32)", "summary", "df-generated"]
       - ["Internal.Pgo", "PgoProcessor", "EncodePgoData<TType,TMethod>", "(System.Collections.Generic.IEnumerable<Internal.Pgo.PgoSchemaElem>,Internal.Pgo.IPgoEncodedValueEmitter<TType,TMethod>,System.Boolean)", "summary", "df-generated"]
       - ["Internal.Pgo", "PgoProcessor", "ParsePgoData<TType,TMethod>", "(Internal.Pgo.IPgoSchemaDataLoader<TType,TMethod>,System.Collections.Generic.IEnumerable<System.Int64>,System.Boolean)", "summary", "df-generated"]
       - ["Internal.Pgo", "PgoProcessor", "PgoEncodedCompressedLongGenerator", "(System.Collections.Generic.IEnumerable<System.Int64>)", "summary", "df-generated"]
