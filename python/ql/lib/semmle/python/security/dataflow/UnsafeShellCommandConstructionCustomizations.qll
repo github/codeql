@@ -113,7 +113,7 @@ module UnsafeShellCommandConstruction {
 
     ArrayJoin() {
       call.getMethodName() = "join" and
-      unique( | | call.getArg(_)).asExpr().(Str).getText() = " " and
+      unique( | | call.getArg(_)).asExpr().(StringLiteral).getText() = " " and
       isUsedAsShellCommand(call, s) and
       (
         this = call.getArg(0) and
