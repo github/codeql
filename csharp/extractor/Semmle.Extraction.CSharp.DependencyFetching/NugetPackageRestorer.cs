@@ -208,7 +208,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var nugetSourceFailures = 0;
             var assetFiles = new List<string>();
             var sync = new object();
-            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, project =>
+            foreach (var project in projects)
             {
                 logger.LogInfo($"Restoring project {project}...");
                 var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
@@ -224,7 +224,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     }
                     assetFiles.AddRange(res.AssetsFilePaths);
                 }
-            });
+            }
             assets = assetFiles;
             compilationInfoContainer.CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
@@ -285,19 +285,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var sync = new object();
 
-            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, package =>
+            foreach (var package in notYetDownloadedPackages)
             {
                 var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource, tryWithoutNugetConfig: fallbackNugetFeeds is null);
                 if (!success)
                 {
-                    return;
+                    continue;
                 }
 
                 lock (sync)
                 {
                     successCount++;
                 }
-            });
+            }
 
             compilationInfoContainer.CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
