@@ -7,6 +7,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import internal.CachedStages
 
 /**
@@ -767,6 +768,12 @@ module API {
             m = imp.getImportedModule() and
             lbl = Label::member(prop) and
             rhs = m.getAnExportedValue(prop)
+          )
+          or
+          // In general, turn store steps into member steps for def-nodes
+          exists(string prop |
+            PreCallGraphStep::storeStep(rhs, pred, prop) and
+            lbl = Label::member(prop)
           )
           or
           exists(DataFlow::FunctionNode fn |
