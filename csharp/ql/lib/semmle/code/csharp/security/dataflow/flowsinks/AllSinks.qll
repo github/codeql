@@ -3,6 +3,11 @@
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
+ * A data flow sink node.
+ */
+abstract class SinkNode extends DataFlow::Node { }
+
+/**
  * Module that adds all sinks to `SinkNode`, excluding sinks for cryptography based
  * queries, and queries where sinks are not succifiently explicit.
  */
@@ -77,8 +82,3 @@ private module AllSinks {
     SinkNodeExternal() { sinkNode(this, _) }
   }
 }
-
-/**
- * A data flow sink node.
- */
-abstract class SinkNode extends DataFlow::Node { }

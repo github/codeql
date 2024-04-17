@@ -3,6 +3,11 @@
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
+ * A data flow source node.
+ */
+abstract class SourceNode extends DataFlow::Node { }
+
+/**
  * Module that adds all sources to `SourceNode`, excluding source for cryptography based
  * queries, and queries where sources are not succifiently explicit or mainly hardcoded constants.
  */
@@ -70,8 +75,3 @@ private module AllSources {
     SourceNodeExternal() { sourceNode(this, _) }
   }
 }
-
-/**
- * A data flow source node.
- */
-abstract class SourceNode extends DataFlow::Node { }
