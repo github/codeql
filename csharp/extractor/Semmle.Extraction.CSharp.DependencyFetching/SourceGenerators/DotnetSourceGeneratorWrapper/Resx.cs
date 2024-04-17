@@ -7,7 +7,7 @@ using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal class Resx : DotnetSourceGeneratorWrapper
+    internal sealed class Resx : DotnetSourceGeneratorWrapper
     {
         protected override string FileType => "Resx";
 

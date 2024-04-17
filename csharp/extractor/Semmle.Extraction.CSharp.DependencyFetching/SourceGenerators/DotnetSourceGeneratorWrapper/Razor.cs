@@ -7,7 +7,7 @@ using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal class Razor : DotnetSourceGeneratorWrapper
+    internal sealed class Razor : DotnetSourceGeneratorWrapper
     {
         protected override string FileType => "Razor";
 
