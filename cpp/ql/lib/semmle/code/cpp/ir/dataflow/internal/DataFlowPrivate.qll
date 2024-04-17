@@ -1247,7 +1247,7 @@ module IsUnreachableInCall {
 
   predicate isUnreachableInCall(Node n, DataFlowCall call) {
     exists(
-      DirectParameterNode paramNode, ConstantIntegralTypeArgumentNode arg,
+      InstructionDirectParameterNode paramNode, ConstantIntegralTypeArgumentNode arg,
       IntegerConstantInstruction constant, int k, Operand left, Operand right, IRBlock block
     |
       // arg flows into `paramNode`
@@ -1461,7 +1461,7 @@ private predicate getAdditionalFlowIntoCallNodeTermStep(Node node1, Node node2) 
 /** Gets the `IRVariable` associated with the parameter node `p`. */
 pragma[nomagic]
 private IRVariable getIRVariableForParameterNode(ParameterNode p) {
-  result = p.(DirectParameterNode).getIRVariable()
+  result = p.(InstructionDirectParameterNode).getIRVariable()
   or
   result.getAst() = p.(IndirectParameterNode).getParameter()
 }

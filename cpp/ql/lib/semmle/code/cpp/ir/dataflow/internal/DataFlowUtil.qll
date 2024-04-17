@@ -389,7 +389,7 @@ class Node extends TIRDataFlowNode {
     index = 0 and
     result = this.(ExplicitParameterNode).getParameter()
     or
-    this.(IndirectParameterNode).hasInstructionAndIndirectionIndex(_, index) and
+    this.(IndirectParameterNode).getIndirectionIndex() = index and
     result = this.(IndirectParameterNode).getParameter()
   }
 
@@ -765,42 +765,6 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
-}
-
-/**
- * INTERNAL: do not use.
- *
- * A node representing an indirection of a parameter.
- */
-class IndirectParameterNode extends Node instanceof IndirectInstruction {
-  InitializeParameterInstruction init;
-
-  IndirectParameterNode() { IndirectInstruction.super.hasInstructionAndIndirectionIndex(init, _) }
-
-  int getArgumentIndex() { init.hasIndex(result) }
-
-  /** Gets the parameter whose indirection is initialized. */
-  Parameter getParameter() { result = init.getParameter() }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override Declaration getFunction() { result = init.getEnclosingFunction() }
-
-  /** Gets the underlying operand and the underlying indirection index. */
-  predicate hasInstructionAndIndirectionIndex(Instruction instr, int index) {
-    IndirectInstruction.super.hasInstructionAndIndirectionIndex(instr, index)
-  }
-
-  override Location getLocationImpl() { result = this.getParameter().getLocation() }
-
-  override string toStringImpl() {
-    exists(string prefix | prefix = stars(this) |
-      result = prefix + this.getParameter().toString()
-      or
-      not exists(this.getParameter()) and
-      result = prefix + "this"
-    )
-  }
 }
 
 /**
@@ -1655,6 +1619,88 @@ class IndirectExprNode extends Node instanceof IndirectExprNodeBase {
   }
 }
 
+abstract private class AbstractParameterNode extends Node {
+  /**
+   * Holds if this node is the parameter of `f` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
+   */
+  abstract predicate isParameterOf(DataFlowCallable f, ParameterPosition pos);
+
+  /** Gets the `Parameter` associated with this node, if it exists. */
+  Parameter getParameter() { none() } // overridden by subclasses
+}
+
+abstract private class AbstractIndirectParameterNode extends AbstractParameterNode {
+  /** Gets the indirection index of this parameter node. */
+  abstract int getIndirectionIndex();
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing an indirection of a parameter.
+ */
+final class IndirectParameterNode = AbstractIndirectParameterNode;
+
+pragma[noinline]
+private predicate indirectParameterNodeHasArgumentIndexAndIndex(
+  IndirectInstructionParameterNode node, int argumentIndex, int indirectionIndex
+) {
+  node.hasInstructionAndIndirectionIndex(_, indirectionIndex) and
+  node.getArgumentIndex() = argumentIndex
+}
+
+pragma[noinline]
+private predicate indirectPositionHasArgumentIndexAndIndex(
+  IndirectionPosition pos, int argumentIndex, int indirectionIndex
+) {
+  pos.getArgumentIndex() = argumentIndex and
+  pos.getIndirectionIndex() = indirectionIndex
+}
+
+private class IndirectInstructionParameterNode extends AbstractIndirectParameterNode instanceof IndirectInstruction
+{
+  InitializeParameterInstruction init;
+
+  IndirectInstructionParameterNode() {
+    IndirectInstruction.super.hasInstructionAndIndirectionIndex(init, _)
+  }
+
+  int getArgumentIndex() { init.hasIndex(result) }
+
+  override string toStringImpl() {
+    exists(string prefix | prefix = stars(this) |
+      result = prefix + this.getParameter().toString()
+      or
+      not exists(this.getParameter()) and
+      result = prefix + "this"
+    )
+  }
+
+  /** Gets the parameter whose indirection is initialized. */
+  override Parameter getParameter() { result = init.getParameter() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = init.getEnclosingFunction() }
+
+  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+    this.getEnclosingCallable() = f.getUnderlyingCallable() and
+    exists(int argumentIndex, int indirectionIndex |
+      indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
+      indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
+    )
+  }
+
+  /** Gets the underlying operand and the underlying indirection index. */
+  predicate hasInstructionAndIndirectionIndex(Instruction instr, int index) {
+    IndirectInstruction.super.hasInstructionAndIndirectionIndex(instr, index)
+  }
+
+  final override int getIndirectionIndex() { this.hasInstructionAndIndirectionIndex(init, result) }
+}
+
 /**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph. This includes both explicit parameters such as `x` in `f(x)`
@@ -1664,42 +1710,38 @@ class IndirectExprNode extends Node instanceof IndirectExprNodeBase {
  * `ExplicitParameterNode`, `ThisParameterNode`, or
  * `ParameterIndirectionNode`.
  */
-class ParameterNode extends Node {
-  ParameterNode() {
-    // To avoid making this class abstract, we enumerate its values here
-    this.asInstruction() instanceof InitializeParameterInstruction
-    or
-    this instanceof IndirectParameterNode
-    or
-    FlowSummaryImpl::Private::summaryParameterNode(this.(FlowSummaryNode).getSummaryNode(), _)
-  }
+final class ParameterNode = AbstractParameterNode;
 
-  /**
-   * Holds if this node is the parameter of `f` at the specified position. The
-   * implicit `this` parameter is considered to have position `-1`, and
-   * pointer-indirection parameters are at further negative positions.
-   */
-  predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) { none() } // overridden by subclasses
-
-  /** Gets the `Parameter` associated with this node, if it exists. */
-  Parameter getParameter() { none() } // overridden by subclasses
-}
+abstract private class AbstractDirectParameterNode extends AbstractParameterNode { }
 
 /** An explicit positional parameter, including `this`, but not `...`. */
-class DirectParameterNode extends InstructionNode {
-  override InitializeParameterInstruction instr;
+final class DirectParameterNode = AbstractDirectParameterNode;
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A non-indirect parameter node that is represented as an `Instruction`.
+ */
+abstract class InstructionDirectParameterNode extends InstructionNode, AbstractDirectParameterNode {
+  final override InitializeParameterInstruction instr;
 
   /**
    * INTERNAL: Do not use.
    *
    * Gets the `IRVariable` that this parameter references.
    */
-  IRVariable getIRVariable() { result = instr.getIRVariable() }
+  final IRVariable getIRVariable() { result = instr.getIRVariable() }
 }
 
+abstract private class AbstractExplicitParameterNode extends AbstractDirectParameterNode { }
+
+final class ExplicitParameterNode = AbstractExplicitParameterNode;
+
 /** An explicit positional parameter, not including `this` or `...`. */
-private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
-  ExplicitParameterNode() { exists(instr.getParameter()) }
+private class ExplicitParameterInstructionNode extends AbstractExplicitParameterNode,
+  InstructionDirectParameterNode
+{
+  ExplicitParameterInstructionNode() { exists(instr.getParameter()) }
 
   override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
     f.getUnderlyingCallable().(Function).getParameter(pos.(DirectPosition).getIndex()) =
@@ -1712,8 +1754,10 @@ private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
 }
 
 /** An implicit `this` parameter. */
-class ThisParameterNode extends ParameterNode, DirectParameterNode {
-  ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
+class ThisParameterInstructionNode extends AbstractExplicitParameterNode,
+  InstructionDirectParameterNode
+{
+  ThisParameterInstructionNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
     pos.(DirectPosition).getIndex() = -1 and
@@ -1726,7 +1770,7 @@ class ThisParameterNode extends ParameterNode, DirectParameterNode {
 /**
  * A parameter node that is part of a summary.
  */
-class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
+class SummaryParameterNode extends AbstractParameterNode, FlowSummaryNode {
   SummaryParameterNode() {
     FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
   }
