@@ -38,8 +38,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         protected override bool IsEnabled()
         {
             var resourceExtractionOption = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ResourceGeneration);
-            if (resourceExtractionOption == null ||
-                bool.TryParse(resourceExtractionOption, out var shouldExtractResources) &&
+            if (bool.TryParse(resourceExtractionOption, out var shouldExtractResources) &&
                 shouldExtractResources)
             {
                 compilationInfoContainer.CompilationInfos.Add(("Resource extraction enabled", "1"));
