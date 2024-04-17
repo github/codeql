@@ -18,19 +18,14 @@ private import Shared
  */
 bindingset[type, path]
 private predicate partiallyEvaluatedModel(
-  string type, string path, API::Node node, string remainingPath
+  string type, AccessPath path, API::Node node, string remainingPath
 ) {
-  exists(int n, AccessPath accessPath |
-    accessPath = path and
-    getNodeFromPath(type, accessPath, n) = node and
+  exists(int n |
+    getNodeFromPath(type, path, n) = node and
     n > 0 and
-    // Note that `n < accessPath.getNumToken()` is implied by the use of strictconcat()
+    // Note that `n < path.getNumToken()` is implied by the use of strictconcat()
     remainingPath =
-      strictconcat(int k |
-        k = [n .. accessPath.getNumToken() - 1]
-      |
-        accessPath.getToken(k), "." order by k
-      )
+      strictconcat(int k | k = [n .. path.getNumToken() - 1] | path.getToken(k), "." order by k)
   )
 }
 
