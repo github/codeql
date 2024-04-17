@@ -491,14 +491,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (!res.Success && tryPrereleaseVersion && res.HasNugetNoStablePackageVersionError)
             {
                 logger.LogDebug($"Failed to restore nuget package {package} because no stable version was found.");
-                try
-                {
-                    TryChangePackageVersion(tempDir.DirInfo, "*-*");
+                TryChangePackageVersion(tempDir.DirInfo, "*-*");
 
-                    res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig, ForceReevaluation: true));
-                    return res;
-                }
-                finally
+                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig, ForceReevaluation: true));
+                if (!res.Success)
                 {
                     TryChangePackageVersion(tempDir.DirInfo, "*");
                 }
@@ -729,7 +725,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex TargetFramework();
 
-        [GeneratedRegex(@"Version=""[*|*-*]""", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex(@"Version=""(\*|\*-\*)""", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReferenceVersion();
 
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
