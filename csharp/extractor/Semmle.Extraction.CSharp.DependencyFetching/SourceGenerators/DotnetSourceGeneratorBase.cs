@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -31,8 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         protected override IEnumerable<string> Run()
         {
-            var additionalFiles = AdditionalFiles;
-            if (additionalFiles.Count == 0)
+            if (AdditionalFiles.Count == 0)
             {
                 logger.LogDebug($"No {FileType} files found. Skipping source generation.");
                 return [];
@@ -44,22 +45,81 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return [];
             }
 
-            logger.LogInfo($"Generating source files from {additionalFiles.Count} {FileType} files...");
+            if (fileProvider.Projects.Count == 0)
+            {
+                logger.LogInfo($"No projects found. Skipping source generation from {FileType} files.");
+                return [];
+            }
+
+            logger.LogInfo($"Generating source files from {AdditionalFiles.Count} {FileType} files...");
+
+            // group additional files by closes project file:
+            var projects = fileProvider.Projects
+                .Select(p => (File: p, Directory: SafeGetDirectoryName(p)))
+                .Where(p => p.Directory.Length > 0);
+
+            var groupedFiles = new Dictionary<string, List<string>>();
+
+            foreach (var additionalFile in AdditionalFiles)
+            {
+                var project = projects
+                    .Where(p => additionalFile.StartsWith(p.Directory))
+                    .OrderByDescending(p => p.Directory.Length)
+                    .FirstOrDefault();
+
+                if (project == default)
+                {
+                    logger.LogDebug($"Failed to find project file for {additionalFile}");
+                    continue;
+                }
+
+                if (!groupedFiles.TryGetValue(project.File, out var files))
+                {
+                    files = [];
+                    groupedFiles[project.File] = files;
+                }
+
+                files.Add(additionalFile);
+            }
 
             try
             {
                 var sdk = new Sdk(dotnet, logger);
                 var sourceGenerator = GetSourceGenerator(sdk);
                 var targetDir = GetTemporaryWorkingDirectory(FileType.ToLowerInvariant());
-                // todo: run the below in a loop, on groups of files belonging to the same project:
-                var generatedFiles = sourceGenerator.RunSourceGenerator(additionalFiles, references, targetDir);
-                return generatedFiles ?? [];
+
+                return groupedFiles
+                    .SelectMany(group => sourceGenerator.RunSourceGenerator(group.Value, group.Key, references, targetDir));
             }
             catch (Exception ex)
             {
                 // It's okay, we tried our best to generate source files.
                 logger.LogInfo($"Failed to generate source files from {FileType} files: {ex.Message}");
                 return [];
+            }
+        }
+
+        private string SafeGetDirectoryName(string fileName)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(fileName);
+                if (dir is null)
+                {
+                    return "";
+                }
+
+                if (!dir.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    dir += Path.DirectorySeparatorChar;
+                }
+
+                return dir;
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get directory name for {fileName}: {ex.Message}");
+                return "";
             }
         }
 

@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        protected override void GenerateAnalyzerConfig(IEnumerable<string> cshtmls, string analyzerConfigPath)
+        protected override void GenerateAnalyzerConfig(IEnumerable<string> cshtmls, string csprojFile, string analyzerConfigPath)
         {
             using var sw = new StreamWriter(analyzerConfigPath);
             sw.WriteLine("is_global = true");

@@ -22,11 +22,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             SourceGeneratorFolder = sourceGeneratorFolder;
         }
 
-        protected override void GenerateAnalyzerConfig(IEnumerable<string> resources, string analyzerConfigPath)
+        protected override void GenerateAnalyzerConfig(IEnumerable<string> resources, string csprojFile, string analyzerConfigPath)
         {
             using var sw = new StreamWriter(analyzerConfigPath);
             sw.WriteLine("is_global = true");
-            sw.WriteLine("build_property.RootNamespace = abc"); // todo: fix the namespace
+
+            var rootNamespace = Path.GetFileNameWithoutExtension(csprojFile);
+            sw.WriteLine($"build_property.RootNamespace = {rootNamespace}");
 
             foreach (var f in resources.Select(f => f.Replace('\\', '/')))
             {

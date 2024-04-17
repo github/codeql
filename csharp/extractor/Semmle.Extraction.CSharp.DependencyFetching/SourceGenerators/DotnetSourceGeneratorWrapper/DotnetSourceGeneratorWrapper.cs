@@ -31,9 +31,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.cscPath = sdk.CscPath;
         }
 
-        protected abstract void GenerateAnalyzerConfig(IEnumerable<string> additionalFiles, string analyzerConfigPath);
+        protected abstract void GenerateAnalyzerConfig(IEnumerable<string> additionalFiles, string csprojFile, string analyzerConfigPath);
 
-        public IEnumerable<string> RunSourceGenerator(IEnumerable<string> additionalFiles, IEnumerable<string> references, string targetDir)
+        public IEnumerable<string> RunSourceGenerator(IEnumerable<string> additionalFiles, string csprojFile, IEnumerable<string> references, string targetDir)
         {
             var name = Guid.NewGuid().ToString("N").ToUpper();
             var tempPath = FileUtils.GetTemporaryWorkingDirectory(out var shouldCleanUp);
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 logger.LogInfo("Producing analyzer config content.");
-                GenerateAnalyzerConfig(additionalFiles, analyzerConfig);
+                GenerateAnalyzerConfig(additionalFiles, csprojFile, analyzerConfig);
 
                 logger.LogDebug($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
 
@@ -85,6 +85,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Generated {files.Length} source files from {FileType} files.");
 
                 return files;
+            }
+            catch (Exception ex)
+            {
+                logger.LogInfo($"Failed to generate source files from {FileType} files: {ex.Message}");
+                return [];
             }
             finally
             {
