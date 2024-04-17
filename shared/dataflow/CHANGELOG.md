@@ -1,3 +1,19 @@
+## 0.2.5
+
+### New Features
+
+* The `PathGraph` result of a data flow computation has been augmented with model provenance information for each of the flow steps. Any qltests that include the edges relation in their output (for example, `.qlref`s that reference path-problem queries) will need to be have their expected output updated accordingly.
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Path explanations now include flow that goes through callbacks passed into library functions. For example, if `map` is a library function, then in `result = map(xs, x => x + 1)` we will now include the step from `x` to `x + 1` in the path explanation, instead of going directly from `xs` to `result`. Note that this change does not affect actual query results, but only how path explanations are computed.
+
+## 0.2.3
+
+No user-facing changes.
+
 ## 0.2.2
 
 No user-facing changes.

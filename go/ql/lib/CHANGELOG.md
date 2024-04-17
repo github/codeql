@@ -1,3 +1,21 @@
+## 0.7.14
+
+### Minor Analysis Improvements
+
+* Data flow through variables declared in statements of the form `x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
+* Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
+
+## 0.7.13
+
+### Minor Analysis Improvements
+
+* The `CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO` option, which speeds up retrieval of dependency information, is now on by default. This was originally an external contribution by @xhd2015.
+* Added dataflow sources for the package `gopkg.in/macaron.v1`.
+
+## 0.7.12
+
+No user-facing changes.
+
 ## 0.7.11
 
 No user-facing changes.

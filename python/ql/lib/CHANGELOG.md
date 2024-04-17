@@ -1,3 +1,17 @@
+## 0.11.14
+
+### Minor Analysis Improvements
+
+* Improved the type-tracking capabilities (and therefore also API graphs) to allow tracking items in tuples and dictionaries.
+
+## 0.11.13
+
+No user-facing changes.
+
+## 0.11.12
+
+No user-facing changes.
+
 ## 0.11.11
 
 No user-facing changes.

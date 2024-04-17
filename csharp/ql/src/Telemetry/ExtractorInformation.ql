@@ -10,6 +10,7 @@ import csharp
 import semmle.code.csharp.commons.Diagnostics
 
 predicate compilationInfo(string key, float value) {
+  not key.matches("Compiler diagnostic count for%") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
     value = infoValue.toFloat()
@@ -86,7 +87,7 @@ predicate extractionIsStandalone(string key, int value) {
     value = 0 and
     not extractionIsStandalone()
   ) and
-  key = "Is buildless extraction"
+  key = "Is extracted with build-mode set to 'none'"
 }
 
 signature module StatsSig {
@@ -119,7 +120,14 @@ module ReportStats<StatsSig Stats> {
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
 
-  int getNumberOfNotOk() { result = count(Call c | not exists(c.getTarget())) }
+  int getNumberOfNotOk() {
+    result =
+      count(Call c |
+        not exists(c.getTarget()) and
+        not c instanceof DelegateCall and
+        not c instanceof DynamicExpr
+      )
+  }
 
   string getOkText() { result = "calls with call target" }
 

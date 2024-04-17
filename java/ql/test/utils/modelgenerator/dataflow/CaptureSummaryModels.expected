@@ -43,4 +43,5 @@
 | p;Pojo;false;getCharArray;();;Argument[this];ReturnValue;taint;df-generated |
 | p;Pojo;false;getValue;();;Argument[this];ReturnValue;taint;df-generated |
 | p;Pojo;false;setValue;(String);;Argument[0];Argument[this];taint;df-generated |
+| p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated |
 | p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint;df-generated |

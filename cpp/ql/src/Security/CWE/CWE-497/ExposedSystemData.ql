@@ -16,6 +16,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.models.implementations.Memset
+import semmle.code.cpp.security.FlowSources
 import ExposedSystemData::PathGraph
 import SystemData
 
@@ -23,11 +24,11 @@ module ExposedSystemDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = any(SystemData sd).getAnExpr() }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(FunctionCall fc, FunctionInput input, int arg |
-      fc.getTarget().(RemoteFlowSinkFunction).hasRemoteFlowSink(input, _) and
-      input.isParameterDeref(arg) and
-      fc.getArgument(arg).getAChild*() = sink.asIndirectExpr()
-    )
+    sink instanceof RemoteFlowSink
+    or
+    // workaround for cases where the sink contains the tainted thing as a child; this could
+    // probably be handled better with taint inheriting content or similar modeling.
+    exists(RemoteFlowSink sinkNode | sinkNode.asIndirectExpr().getAChild*() = sink.asIndirectExpr())
   }
 
   predicate isBarrier(DataFlow::Node node) {

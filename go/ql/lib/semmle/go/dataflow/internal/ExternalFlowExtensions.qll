@@ -7,7 +7,7 @@
  */
 extensible predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
 
 /**
@@ -15,7 +15,7 @@ extensible predicate sourceModel(
  */
 extensible predicate sinkModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
+  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
 
 /**
@@ -23,5 +23,5 @@ extensible predicate sinkModel(
  */
 extensible predicate summaryModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
+  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
 );

@@ -417,12 +417,10 @@ ReducedExpression.cs:
 #    2| [Class] ReducedClass
 #    5|   5: [Field] ReducedExpression
 #    5|     -1: [TypeMention] int
-#    5|     1: [AssignExpr] ... = ...
-#    5|       0: [MemberConstantAccess] access to constant ReducedExpression
-#    5|       1: [ConditionalExpr] ... ? ... : ...
-#    5|         0: [BoolLiteral] true
-#    5|         1: [IntLiteral] 10
-#    5|         2: [IntLiteral] 12
+#    5|     1: [ConditionalExpr] ... ? ... : ...
+#    5|       0: [BoolLiteral] true
+#    5|       1: [IntLiteral] 10
+#    5|       2: [IntLiteral] 12
 expressions.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Class] Class
@@ -550,14 +548,10 @@ expressions.cs:
 #   41|               0: [LocalVariableAccess] access to local variable c
 #   44|     6: [Field] constant
 #   44|       -1: [TypeMention] string
-#   44|       1: [AssignExpr] ... = ...
-#   44|         0: [MemberConstantAccess] access to constant constant
-#   44|         1: [StringLiteralUtf16] "constant"
+#   44|       1: [StringLiteralUtf16] "constant"
 #   45|     7: [Field] f
 #   45|       -1: [TypeMention] int
-#   45|       1: [AssignExpr] ... = ...
-#   45|         0: [FieldAccess] access to field f
-#   45|         1: [IntLiteral] 0
+#   45|       1: [IntLiteral] 0
 #   46|     8: [Field] name
 #   46|       -1: [TypeMention] string
 #   48|     9: [StaticConstructor] Class
@@ -1492,16 +1486,12 @@ expressions.cs:
 #  361|   15: [Class] Rectangle2
 #  364|     5: [Field] p1
 #  364|       -1: [TypeMention] Point
-#  364|       1: [AssignExpr] ... = ...
-#  364|         0: [FieldAccess] access to field p1
-#  364|         1: [ObjectCreation] object creation of type Point
-#  364|           0: [TypeMention] Point
+#  364|       1: [ObjectCreation] object creation of type Point
+#  364|         0: [TypeMention] Point
 #  365|     6: [Field] p2
 #  365|       -1: [TypeMention] Point
-#  365|       1: [AssignExpr] ... = ...
-#  365|         0: [FieldAccess] access to field p2
-#  365|         1: [ObjectCreation] object creation of type Point
-#  365|           0: [TypeMention] Point
+#  365|       1: [ObjectCreation] object creation of type Point
+#  365|         0: [TypeMention] Point
 #  367|     7: [Property] P1
 #  367|       -1: [TypeMention] Point
 #  367|       3: [Getter] get_P1
@@ -1520,11 +1510,9 @@ expressions.cs:
 #  376|     6: [Field] phoneNumbers
 #  376|       -1: [TypeMention] List<string>
 #  376|         1: [TypeMention] string
-#  376|       1: [AssignExpr] ... = ...
-#  376|         0: [FieldAccess] access to field phoneNumbers
-#  376|         1: [ObjectCreation] object creation of type List<String>
-#  376|           0: [TypeMention] List<string>
-#  376|             1: [TypeMention] string
+#  376|       1: [ObjectCreation] object creation of type List<String>
+#  376|         0: [TypeMention] List<string>
+#  376|           1: [TypeMention] string
 #  378|     7: [Property] Name
 #  378|       -1: [TypeMention] string
 #  378|       3: [Getter] get_Name
@@ -2194,9 +2182,8 @@ expressions.cs:
 #  495|   19: [Class] ExpressionDepth
 #  497|     5: [Field] d
 #  497|       -1: [TypeMention] int
-#  497|       1: [AssignExpr] ... = ...
-#  497|         0: [MemberConstantAccess] access to constant d
-#  497|         1: [AddExpr] ... + ...
+#  497|       1: [AddExpr] ... + ...
+#  497|         0: [AddExpr] ... + ...
 #  497|           0: [AddExpr] ... + ...
 #  497|             0: [AddExpr] ... + ...
 #  497|               0: [AddExpr] ... + ...
@@ -2274,9 +2261,7 @@ expressions.cs:
 #  497|                                                                                                                                                               0: [AddExpr] ... + ...
 #  497|                                                                                                                                                                 0: [AddExpr] ... + ...
 #  497|                                                                                                                                                                   0: [AddExpr] ... + ...
-#  497|                                                                                                                                                                     0: [AddExpr] ... + ...
-#  497|                                                                                                                                                                       0: [IntLiteral] 1
-#  497|                                                                                                                                                                       1: [IntLiteral] 1
+#  497|                                                                                                                                                                     0: [IntLiteral] 1
 #  497|                                                                                                                                                                     1: [IntLiteral] 1
 #  497|                                                                                                                                                                   1: [IntLiteral] 1
 #  497|                                                                                                                                                                 1: [IntLiteral] 1
@@ -2315,7 +2300,7 @@ expressions.cs:
 #  497|                                                                                               1: [IntLiteral] 1
 #  497|                                                                                             1: [IntLiteral] 1
 #  497|                                                                                           1: [IntLiteral] 1
-#  498|                                                                                         1: [IntLiteral] 1
+#  497|                                                                                         1: [IntLiteral] 1
 #  498|                                                                                       1: [IntLiteral] 1
 #  498|                                                                                     1: [IntLiteral] 1
 #  498|                                                                                   1: [IntLiteral] 1
@@ -2355,6 +2340,7 @@ expressions.cs:
 #  498|               1: [IntLiteral] 1
 #  498|             1: [IntLiteral] 1
 #  498|           1: [IntLiteral] 1
+#  498|         1: [IntLiteral] 1
 #  501|   20: [Class] TupleExprs
 #  503|     5: [Method] Test
 #  503|       -1: [TypeMention] Void
@@ -2420,3 +2406,26 @@ expressions.cs:
 #  520|           -1: [TypeMention] object
 #  520|       3: [ConstructorInitializer] call to constructor ClassC1
 #  520|         0: [ParameterAccess] access to parameter oc2
+#  522|   24: [Class] SuppressNullableWarning
+#  525|     5: [Method] Api
+#  525|       -1: [TypeMention] object
+#  525|       4: [ObjectCreation] object creation of type Object
+#  525|         0: [TypeMention] object
+#  527|     6: [Method] Test
+#  527|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#  527|         0: [Parameter] arg0
+#  527|           -1: [TypeMention] object
+#  528|       4: [BlockStmt] {...}
+#  529|         0: [LocalVariableDeclStmt] ... ...;
+#  529|           0: [LocalVariableDeclAndInitExpr] Object x = ...
+#  529|             -1: [TypeMention] object
+#  529|             0: [LocalVariableAccess] access to local variable x
+#  529|             1: [SuppressNullableWarningExpr] ...!
+#  529|               0: [ParameterAccess] access to parameter arg0
+#  530|         1: [LocalVariableDeclStmt] ... ...;
+#  530|           0: [LocalVariableDeclAndInitExpr] Object y = ...
+#  530|             -1: [TypeMention] object
+#  530|             0: [LocalVariableAccess] access to local variable y
+#  530|             1: [SuppressNullableWarningExpr] ...!
+#  530|               0: [MethodCall] call to method Api

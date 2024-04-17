@@ -364,6 +364,8 @@ class ConversionNode extends ExprNode {
     childIndex = 0 and
     result.getAst() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
+    or
+    result.getAst() = expr.getImplicitDestructorCall(childIndex - 1)
   }
 }
 
@@ -862,7 +864,7 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(DeleteOrDeleteArrayExpr).getDestructorCall() = ele and pred = "getDestructorCall()"
     or
-    expr.(DeleteOrDeleteArrayExpr).getExpr() = ele and pred = "getExpr()"
+    expr.(DeleteOrDeleteArrayExpr).getExprWithReuse() = ele and pred = "getExprWithReuse()"
     or
     expr.(DestructorFieldDestruction).getExpr() = ele and pred = "getExpr()"
     or

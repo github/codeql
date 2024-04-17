@@ -163,9 +163,7 @@ attributes.cs:
 #   67|     4: [BlockStmt] {...}
 #   70| [Enum] E
 #   70|   5: [Field] A
-#   70|     1: [AssignExpr] ... = ...
-#   70|       0: [MemberConstantAccess] access to constant A
-#   70|       1: [IntLiteral] 42
+#   70|     1: [IntLiteral] 42
 #   72| [Class] ArgsAttribute
 #-----|   3: (Base types)
 #   72|     0: [TypeMention] Attribute

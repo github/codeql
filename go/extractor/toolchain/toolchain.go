@@ -18,7 +18,15 @@ func IsInstalled() bool {
 	return err == nil
 }
 
+// The default Go version that is available on a system and a set of all versions
+// that we know are installed on the system.
 var goVersion = ""
+var goVersions = map[string]struct{}{}
+
+// Adds an entry to the set of installed Go versions for the normalised `version` number.
+func addGoVersion(version string) {
+	goVersions[semver.Canonical("v"+version)] = struct{}{}
+}
 
 // Returns the current Go version as returned by 'go version', e.g. go1.14.4
 func GetEnvGoVersion() string {
@@ -27,8 +35,15 @@ func GetEnvGoVersion() string {
 		// download the version of Go specified in there. That may either fail or result in us just
 		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
 		// to use the local Go toolchain instead.
-		cmd := exec.Command("go", "version")
-		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		cmd := Version()
+
+		// If 'GOTOOLCHAIN' is already set, then leave it as is. This allows us to force a specific
+		// Go version in tests and also allows users to override the system default more generally.
+		_, hasToolchainVar := os.LookupEnv("GOTOOLCHAIN")
+		if !hasToolchainVar {
+			cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		}
+
 		out, err := cmd.CombinedOutput()
 
 		if err != nil {
@@ -36,8 +51,57 @@ func GetEnvGoVersion() string {
 		}
 
 		goVersion = parseGoVersion(string(out))
+		addGoVersion(goVersion[2:])
 	}
 	return goVersion
+}
+
+// Determines whether, to our knowledge, `version` is available on the current system.
+func HasGoVersion(version string) bool {
+	_, found := goVersions[semver.Canonical("v"+version)]
+	return found
+}
+
+// Attempts to install the Go toolchain `version`.
+func InstallVersion(workingDir string, version string) bool {
+	// No need to install it if we know that it is already installed.
+	if HasGoVersion(version) {
+		return true
+	}
+
+	// Construct a command to invoke `go version` with `GOTOOLCHAIN=go1.N.0` to give
+	// Go a valid toolchain version to download the toolchain we need; subsequent commands
+	// should then work even with an invalid version that's still in `go.mod`
+	toolchainArg := "GOTOOLCHAIN=go" + semver.Canonical("v" + version)[1:]
+	versionCmd := Version()
+	versionCmd.Dir = workingDir
+	versionCmd.Env = append(os.Environ(), toolchainArg)
+	versionCmd.Stdout = os.Stdout
+	versionCmd.Stderr = os.Stderr
+
+	log.Printf(
+		"Trying to install Go %s using its canonical representation in `%s`.",
+		version,
+		workingDir,
+	)
+
+	// Run the command. If something goes wrong, report it to the log and signal failure
+	// to the caller.
+	if versionErr := versionCmd.Run(); versionErr != nil {
+		log.Printf(
+			"Failed to invoke `%s go version` in %s: %s\n",
+			toolchainArg,
+			versionCmd.Dir,
+			versionErr.Error(),
+		)
+
+		return false
+	}
+
+	// Add the version to the set of versions that we know are installed and signal
+	// success to the caller.
+	addGoVersion(version)
+	return true
 }
 
 // Returns the current Go version in semver format, e.g. v1.14.4
@@ -106,4 +170,10 @@ func VendorModule(path string) *exec.Cmd {
 	modVendor := exec.Command("go", "mod", "vendor", "-e")
 	modVendor.Dir = path
 	return modVendor
+}
+
+// Constructs a command to run `go version`.
+func Version() *exec.Cmd {
+	version := exec.Command("go", "version")
+	return version
 }

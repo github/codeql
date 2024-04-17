@@ -2925,6 +2925,27 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A statement implicitly wrapping values to be used in branches of if/switch expressions. For example in:
+   * ```
+   * let rank = switch value {
+   *     case 0..<0x80: 1
+   *     case 0x80..<0x0800: 2
+   *     default: 3
+   * }
+   * ```
+   * the literal expressions `1`, `2` and `3` are wrapped in `ThenStmt`.
+   */
+  class ThenStmt extends @then_stmt, Stmt {
+    override string toString() { result = "ThenStmt" }
+
+    /**
+     * Gets the result of this then statement.
+     */
+    Expr getResult() { then_stmts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class ThrowStmt extends @throw_stmt, Stmt {
     override string toString() { result = "ThrowStmt" }

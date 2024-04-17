@@ -18,7 +18,7 @@
   "source": {
     "extractorName": "go",
     "id": "go/autobuilder/extraction-failed-for-project",
-    "name": "Unable to extract 1 Go projects"
+    "name": "Unable to extract some Go projects"
   },
   "visibility": {
     "cliSummaryTable": true,

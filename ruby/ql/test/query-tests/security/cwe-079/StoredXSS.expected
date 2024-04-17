@@ -25,7 +25,7 @@ edges
 | app/views/foo/stores/show.html.erb:40:64:40:87 | ... + ... [element] | app/views/foo/stores/show.html.erb:40:48:40:89 | call to [] [element :display_text, element] | provenance |  |
 | app/views/foo/stores/show.html.erb:40:76:40:87 | call to display_text | app/views/foo/stores/show.html.erb:40:64:40:87 | ... + ... | provenance |  |
 | app/views/foo/stores/show.html.erb:40:76:40:87 | call to display_text | app/views/foo/stores/show.html.erb:40:64:40:87 | ... + ... [element] | provenance |  |
-| app/views/foo/stores/show.html.erb:86:17:86:28 | call to handle | app/views/foo/stores/show.html.erb:86:3:86:29 | call to sprintf | provenance |  |
+| app/views/foo/stores/show.html.erb:86:17:86:28 | call to handle | app/views/foo/stores/show.html.erb:86:3:86:29 | call to sprintf | provenance | AdditionalTaintStep |
 nodes
 | app/controllers/foo/stores_controller.rb:8:5:8:6 | dt | semmle.label | dt |
 | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | semmle.label | call to read |

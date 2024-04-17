@@ -34,6 +34,4 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "PatternMatchingResult", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "PatternMatchingResult", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>,System.Boolean)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "get_Files", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "get_HasMatches", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "set_Files", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>)", "summary", "df-generated"]

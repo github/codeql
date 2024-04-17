@@ -19,9 +19,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", "CancellationChangeToken", "(System.Threading.CancellationToken)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", "get_ActiveChangeCallbacks", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", "get_HasChanged", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", "set_ActiveChangeCallbacks", "(System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CompositeChangeToken", "CompositeChangeToken", "(System.Collections.Generic.IReadOnlyList<Microsoft.Extensions.Primitives.IChangeToken>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CompositeChangeToken", "get_ActiveChangeCallbacks", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CompositeChangeToken", "get_ChangeTokens", "()", "summary", "df-generated"]
@@ -33,8 +31,6 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.String,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "InplaceStringBuilder", "(System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "get_Capacity", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "set_Capacity", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsMemory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "(System.Int32)", "summary", "df-generated"]
@@ -84,7 +80,6 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "MoveNext", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "Reset", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "get_Current", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "set_Current", "(Microsoft.Extensions.Primitives.StringSegment)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Enumerator", "(Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "MoveNext", "()", "summary", "df-generated"]
