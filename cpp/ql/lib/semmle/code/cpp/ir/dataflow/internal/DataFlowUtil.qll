@@ -61,6 +61,15 @@ private newtype TIRDataFlowNode =
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
   TInitialGlobalValue(Ssa::GlobalDef globalUse) or
+  TBodyLessParameterNodeImpl(Parameter p, int indirectionIndex) {
+    // Rule out parameters of catch blocks.
+    not exists(p.getCatchBlock()) and
+    // We subtract one because `getMaxIndirectionsForType` returns the maximum
+    // indirection for a glvalue of a given type, and this doesn't apply to
+    // parameters.
+    indirectionIndex = [0 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1] and
+    not any(InitializeParameterInstruction init).getParameter() = p
+  } or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /**
@@ -735,6 +744,40 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
   final override Location getLocationImpl() { result = globalDef.getLocation() }
 
   override string toStringImpl() { result = globalDef.toString() }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing a parameter for a function with no body.
+ */
+class BodyLessParameterNodeImpl extends Node, TBodyLessParameterNodeImpl {
+  Parameter p;
+  int indirectionIndex;
+
+  BodyLessParameterNodeImpl() { this = TBodyLessParameterNodeImpl(p, indirectionIndex) }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = p.getFunction() }
+
+  /** Gets the indirection index of this node. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  override DataFlowType getType() {
+    result = getTypeImpl(p.getUnderlyingType(), this.getIndirectionIndex())
+  }
+
+  final override Location getLocationImpl() {
+    result = unique( | | p.getLocation())
+    or
+    count(p.getLocation()) != 1 and
+    result instanceof UnknownDefaultLocation
+  }
+
+  final override string toStringImpl() {
+    exists(string prefix | prefix = stars(this) | result = prefix + p.toString())
+  }
 }
 
 /**

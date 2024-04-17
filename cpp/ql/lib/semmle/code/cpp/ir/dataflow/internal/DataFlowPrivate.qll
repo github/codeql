@@ -78,6 +78,8 @@ module NodeStars {
     result = n.(PostUpdateNodeImpl).getIndirectionIndex()
     or
     result = n.(FinalParameterNode).getIndirectionIndex()
+    or
+    result = n.(BodyLessParameterNodeImpl).getIndirectionIndex()
   }
 
   /**
