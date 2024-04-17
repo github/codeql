@@ -3,10 +3,10 @@ import TestUtilities.InlineExpectationsTest
 import experimental.frameworks.CleverGo
 
 module RemoteFlowSourceTest implements TestSig {
-  string getARelevantTag() { result = "untrustedFlowSource" }
+  string getARelevantTag() { result = "remoteFlowSource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "untrustedFlowSource" and
+    tag = "remoteFlowSource" and
     exists(DataFlow::CallNode sinkCall, DataFlow::ArgumentNode arg |
       sinkCall.getCalleeName() = "sink" and
       arg = sinkCall.getAnArgument() and

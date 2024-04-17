@@ -2,10 +2,10 @@ import go
 import TestUtilities.InlineExpectationsTest
 
 module RemoteFlowSourceTest implements TestSig {
-  string getARelevantTag() { result = "untrustedflowsource" }
+  string getARelevantTag() { result = "remoteflowsource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "untrustedflowsource" and
+    tag = "remoteflowsource" and
     value = element and
     exists(RemoteFlowSource src | value = "\"" + src.toString() + "\"" |
       src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
