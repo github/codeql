@@ -1306,6 +1306,13 @@ predicate nodeIsHidden(Node n) {
   n instanceof InitialGlobalValue
 }
 
+predicate neverSkipInPathGraph(Node n) {
+  // Always show the right-hand side of assignments in the path graph
+  exists(n.asDefinition())
+  or
+  exists(n.asIndirectDefinition())
+}
+
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
