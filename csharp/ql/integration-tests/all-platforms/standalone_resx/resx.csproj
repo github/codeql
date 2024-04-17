@@ -5,6 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Resx.Test1.Test2</RootNamespace>
   </PropertyGroup>
 
  <Target Name="DeleteBinObjFolders" BeforeTargets="Clean">

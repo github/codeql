@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal sealed class Resx : DotnetSourceGeneratorWrapper
+    internal sealed partial class Resx : DotnetSourceGeneratorWrapper
     {
         protected override string FileType => "Resx";
 
@@ -28,6 +28,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             sw.WriteLine("is_global = true");
 
             var rootNamespace = Path.GetFileNameWithoutExtension(csprojFile);
+
+            var matches = File.ReadAllLines(csprojFile)
+                .Select(line => RootNamespace().Match(line))
+                .Where(match => match.Success)
+                .Select(match => match.Groups[1].Value)
+                .ToArray();
+
+            if (matches.Length == 1)
+            {
+                logger.LogDebug($"RootNamespace found in {csprojFile}: {matches[0]}");
+                rootNamespace = matches[0];
+            }
+            else if (matches.Length > 1)
+            {
+                logger.LogDebug($"Multiple RootNamespace elements found in {csprojFile}. Using the first one.");
+                rootNamespace = matches[0];
+            }
+
             sw.WriteLine($"build_property.RootNamespace = {rootNamespace}");
 
             foreach (var f in resources.Select(f => f.Replace('\\', '/')))
@@ -36,5 +54,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 sw.WriteLine($"build_metadata.AdditionalFiles.EmitFormatMethods = true");
             }
         }
+
+        [GeneratedRegex(@"<RootNamespace>(.*)</RootNamespace>", RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex RootNamespace();
     }
 }

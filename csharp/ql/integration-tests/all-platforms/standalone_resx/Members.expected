@@ -1,8 +1,8 @@
 | Program | Program.<Main>$ |
 | Program | Program.Program |
-| resx.test | resx.test.Culture |
-| resx.test | resx.test.GetResourceString |
-| resx.test | resx.test.Key123 |
-| resx.test | resx.test.Key456 |
-| resx.test | resx.test.ResourceManager |
-| resx.test | resx.test.s_resourceManager |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.Culture |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.GetResourceString |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.Key123 |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.Key456 |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.ResourceManager |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.s_resourceManager |
