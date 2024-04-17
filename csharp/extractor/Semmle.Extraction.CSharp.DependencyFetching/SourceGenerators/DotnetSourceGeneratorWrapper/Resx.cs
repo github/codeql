@@ -26,6 +26,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             using var sw = new StreamWriter(analyzerConfigPath);
             sw.WriteLine("is_global = true");
+            sw.WriteLine("build_property.RootNamespace = abc"); // todo: fix the namespace
 
             foreach (var f in resources.Select(f => f.Replace('\\', '/')))
             {

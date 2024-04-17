@@ -1,2 +1,8 @@
 | Program | Program.<Main>$ |
 | Program | Program.Program |
+| abc.test | abc.test.Culture |
+| abc.test | abc.test.GetResourceString |
+| abc.test | abc.test.Key123 |
+| abc.test | abc.test.Key456 |
+| abc.test | abc.test.ResourceManager |
+| abc.test | abc.test.s_resourceManager |
