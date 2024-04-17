@@ -1,0 +1,1 @@
+| lib/esmodule-reexported2.js:1:26:1:137 | /* def= ... wo") */ | def moduleImport("reexport").getMember("exports").getMember("esmodule") has no outgoing edge labelled getMember("lib2"); it does have outgoing edges labelled getMember("one"). |
