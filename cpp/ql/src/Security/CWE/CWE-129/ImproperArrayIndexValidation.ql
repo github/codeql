@@ -68,7 +68,7 @@ predicate predictableInstruction(Instruction instr) {
 module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     isFlowSource(source, _) and
-    not source.asExpr().getFile().getRelativePath().regexpMatch("/tests?/")
+    not source.getLocation().getFile().getRelativePath().regexpMatch("(.*/)?tests?/.*")
   }
 
   predicate isBarrier(DataFlow::Node node) {
