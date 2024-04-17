@@ -3,6 +3,7 @@ import semmle.code.csharp.commons.Diagnostics
 
 query predicate compilationInfo(string key, float value) {
   key != "Resolved references" and
+  key != "Resolved assembly conflicts" and
   not key.matches("Compiler diagnostic count for%") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
