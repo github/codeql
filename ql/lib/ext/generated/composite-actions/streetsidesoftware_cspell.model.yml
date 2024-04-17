@@ -5,7 +5,7 @@ extensions:
     data:
      - ["streetsidesoftware/cspell", "*", "input.name", "code-injection", "generated"]
   - addsTo:
-    pack: githubsecuritylab/actions-all
-    extensible: summaryModel
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
     data:
       - ["streetsidesoftware/cspell", "*", "input.value", "output.value", "taint", "manual"]

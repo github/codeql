@@ -399,6 +399,7 @@ sources
 | dorny/paths-filter | * | output.changes | PR changed files | manual |
 | franzdiebold/github-env-vars-action | * | output.CI_PR_DESCRIPTION | PR body | manual |
 | franzdiebold/github-env-vars-action | * | output.CI_PR_TITLE | PR title | manual |
+| googlecloudplatform/magic-modules | * | output.changed-files | PR changed files | manual |
 | jitterbit/get-changed-files | * | output.added | PR changed files | manual |
 | jitterbit/get-changed-files | * | output.added_modified | PR changed files | manual |
 | jitterbit/get-changed-files | * | output.all | PR changed files | manual |
@@ -408,6 +409,7 @@ sources
 | jitterbit/get-changed-files | * | output.renamed | PR changed files | manual |
 | khan/pull-request-comment-trigger | * | output.comment_body | Comment body | manual |
 | marocchino/on_artifact | * | output.* | Downloaded artifact | manual |
+| puppeteer/puppeteer/.github/workflows/changed-packages.yml | * | output.changes | Changed files | manual |
 | redhat-plumbers-in-action/download-artifact | * | output.* | Downloaded artifact | manual |
 | tj-actions/branch-names | * | output.current_branch | PR current branch | manual |
 | tj-actions/branch-names | * | output.head_ref_branch | PR head branch | manual |
@@ -439,6 +441,7 @@ sources
 summaries
 | akhileshns/heroku-deploy | * | input.branch | output.status | taint | manual |
 | android-actions/setup-android | * | input.cmdline-tools-version | output.ANDROID_COMMANDLINE_TOOLS_VERSION | taint | manual |
+| apache/incubator-kie-tools | * | input.pnpm_filter_string | output.pnpm_filter_string | taint | manual |
 | apple-actions/import-codesign-certs | * | input.keychain-password | output.keychain-password | taint | manual |
 | ashley-taylor/read-json-property-action | * | input.json | output.value | taint | manual |
 | ashley-taylor/regex-property-action | * | input.replacement | output.value | taint | manual |
@@ -452,14 +455,22 @@ summaries
 | aws-actions/configure-aws-credentials | * | input.aws-secret-access-key | secret.AWS_SECRET_ACCESS_KEY | taint | manual |
 | aws-actions/configure-aws-credentials | * | input.aws-session-token | env.AWS_SESSION_TOKEN | taint | manual |
 | aws-actions/configure-aws-credentials | * | input.aws-session-token | secret.AWS_SESSION_TOKEN | taint | manual |
+| aws-powertools/powertools-lambda-python | * | input.artifact_name_prefix | output.artifact_name | taint | manual |
 | bobheadxi/deployments | * | input.env | output.env | taint | manual |
 | bufbuild/buf-breaking-action | * | input.buf_token | env.BUF_TOKEN | taint | manual |
 | bufbuild/buf-lint-action | * | input.buf_token | env.BUF_TOKEN | taint | manual |
 | cachix/cachix-action | * | input.signingKey | env.CACHIX_SIGNING_KEY | taint | manual |
+| cloudposse/github-action-matrix-outputs-write/.github/workflows/setup-test.yml | * | input.matrix-key | output.result | taint | manual |
 | coursier/cache-action | * | input.path | env.COURSIER_CACHE | taint | manual |
 | crazy-max/ghaction-import-gpg | * | input.fingerprint | output.fingerprint | taint | manual |
 | csexton/release-asset-action | * | input.release-url | output.url | taint | manual |
 | delaguardo/setup-clojure | * | input.boot | env.BOOT_VERSION | taint | manual |
+| drawpile/drawpile | * | input.cache_key | output.cache_key | taint | manual |
+| drawpile/drawpile | * | input.path | output.path | taint | manual |
+| element-hq/element-desktop/.github/workflows/build_prepare.yaml | * | input.deploy | output.deploy | taint | manual |
+| envoyproxy/envoy/.github/workflows/_load.yml | * | input.check-name | output.check-name | taint | manual |
+| envoyproxy/envoy/.github/workflows/_load.yml | * | input.run-id | output.run-id | taint | manual |
+| flagsmith/flagsmith | * | input.aws_ecr_repository_arn | output.image | taint | manual |
 | frabert/replace-string-action | * | input.replace-with | output.replaced | taint | manual |
 | frabert/replace-string-action | * | input.string | output.replaced | taint | manual |
 | game-ci/unity-test-runner | * | input.artifactsPath | output.artifactsPath | taint | manual |
@@ -469,14 +480,29 @@ summaries
 | gradle/gradle-build-action | * | input.build-scan-terms-of-service-agree | env.BUILD_SCAN_TERMS_OF_SERVICE_AGREE | taint | manual |
 | gradle/gradle-build-action | * | input.build-scan-terms-of-service-url | env.BUILD_SCAN_TERMS_OF_SERVICE_URL | taint | manual |
 | gradle/gradle-build-action | * | input.cache-encryption-key | env.GRADLE_ENCRYPTION_KEY | taint | manual |
+| hashgraph/hedera-services/.github/workflows/zxc-publish-production-image.yaml | * | input.version | output.docker-image | taint | manual |
+| hashgraph/hedera-services/.github/workflows/zxc-publish-production-image.yaml | * | input.version | output.docker-image-tag | taint | manual |
+| hashicorp/vault | * | input.vault-binary-path | output.vault-binary-path | taint | manual |
+| hashicorp/vault | * | input.vault-version | output.vault-version | taint | manual |
+| hashicorp/vault/.github/workflows/build-artifacts-ce.yml | * | input.vault-revision | output.testable-containers | taint | manual |
+| hashicorp/vault/.github/workflows/build-artifacts-ce.yml | * | input.vault-version-package | output.testable-packages | taint | manual |
 | haya14busa/action-cond | * | input.if_false | output.value | taint | manual |
 | haya14busa/action-cond | * | input.if_true | output.value | taint | manual |
 | hexlet/project-action | * | input.mount-path | env.PWD | taint | manual |
+| hitobito/hitobito/.github/workflows/stage-settings.yml | * | input.repository | output.project | taint | manual |
+| hitobito/hitobito/.github/workflows/stage-settings.yml | * | input.repository | output.repo_name | taint | manual |
+| hitobito/hitobito/.github/workflows/stage-settings.yml | * | input.repository | output.repo_url | taint | manual |
+| hitobito/hitobito/.github/workflows/stage-settings.yml | * | input.stage | output.release_stage | taint | manual |
+| jhipster/generator-jhipster | * | input.skip-workflow | output.skip-workflow | taint | manual |
 | jsdaniell/create-json | * | input.dir | output.successfully | taint | manual |
 | jsdaniell/create-json | * | input.json | output.successfully | taint | manual |
 | jsdaniell/create-json | * | input.name | output.successfully | taint | manual |
 | jwalton/gh-ecr-push | * | input.image | output.imageUrl | taint | manual |
+| kubeshop/botkube/.github/workflows/process-chart.yml | * | input.next-version | output.new-version | taint | manual |
 | larsoner/circleci-artifacts-redirector-action | * | input.artifact-path | output.url | taint | manual |
+| linkerd/linkerd2 | * | input.component | output.image | taint | manual |
+| linkerd/linkerd2 | * | input.docker-registry | output.image | taint | manual |
+| linkerd/linkerd2 | * | input.tag | output.image | taint | manual |
 | mad9000/actions-find-and-replace-string | * | input.replace | output.value | taint | manual |
 | mad9000/actions-find-and-replace-string | * | input.source | output.value | taint | manual |
 | mattdavis0351/actions | * | input.image-name | output.imageUrl | taint | manual |
@@ -484,13 +510,22 @@ summaries
 | metro-digital/setup-tools-for-waas | * | input.gcp_sa_key | env.GCLOUD_PROJECT | taint | manual |
 | mishakav/pytest-coverage-comment | * | input.multiple-files | output.summaryReport | taint | manual |
 | mymindstorm/setup-emsdk | * | input.actions-cache-folder | env.EMSDK | taint | manual |
+| neondatabase/neon/.github/workflows/build-build-tools-image.yml | * | input.image-tag | output.image | taint | manual |
+| neondatabase/neon/.github/workflows/build-build-tools-image.yml | * | input.image-tag | output.image-tag | taint | manual |
+| novuhq/novu | * | input.docker_name | output.image | taint | manual |
+| philosowaffle/peloton-to-garmin | * | input.os | output.artifact_name | taint | manual |
 | ruby/setup-ruby | * | input.ruby-version | output.ruby-prefix | taint | manual |
 | salsify/action-detect-and-tag-new-version | * | input.tag-template | output.tag | taint | manual |
 | shallwefootball/upload-s3-action | * | input.destination_dir | output.object_key | taint | manual |
 | shogo82148/actions-setup-perl | * | input.working-directory | env.PERL5LIB | taint | manual |
+| streetsidesoftware/cspell | * | input.value | output.value | taint | manual |
+| streetsidesoftware/cspell/.github/workflows/reuseable-load-integrations-repo-list.yml | * | input.ref | output.ref | taint | manual |
 | suisei-cn/actions-download-file | * | input.filename | output.filename | taint | manual |
+| tencent/hippy/.github/workflows/reuse_approve_checks_run.yml | * | input.pull_request_head_sha | output.pull_request_head_sha | taint | manual |
+| tencent/hippy/.github/workflows/reuse_approve_checks_run.yml | * | input.pull_request_number | output.pull_request_number | taint | manual |
 | timheuer/base64-to-file | * | input.fileDir | output.filePath | taint | manual |
 | timheuer/base64-to-file | * | input.fileName | output.filePath | taint | manual |
+| zitadel/zitadel/.github/workflows/container.yml | * | input.build_image_name | output.build_image | taint | manual |
 calls
 | .github/workflows/test.yml:11:9:15:6 | Uses Step | actions/checkout |
 | .github/workflows/test.yml:15:9:19:6 | Uses Step: source | tj-actions/changed-files |
