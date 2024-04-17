@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["sergeysova/jq-action", "*", "input.cmd", "code-injection", "manual"]
+

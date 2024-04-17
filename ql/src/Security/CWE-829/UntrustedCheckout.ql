@@ -66,7 +66,8 @@ predicate containsHeadRef(string s) {
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.id\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.number\\b",
-            "\\bhead\\.sha\\b", "\\bhead\\.ref\\b"
+            // heuristics
+            "\\bhead\\.sha\\b", "\\bhead\\.ref\\b", "\\bpr_number\\b", "\\bpr_head_sha\\b"
           ], _, _)
   )
 }
@@ -109,6 +110,24 @@ class GitCheckout extends PRHeadCheckoutStep instanceof Run {
     exists(string line |
       this.getScript().splitAt("\n") = line and
       line.regexpMatch(".*git\\s+fetch.*") and
+      (
+        containsHeadRef(line)
+        or
+        exists(string varname |
+          containsHeadRef(this.getInScopeEnvVarExpr(varname).getExpression()) and
+          exists(line.regexpFind(varname, _, _))
+        )
+      )
+    )
+  }
+}
+
+/** Checkout of a Pull Request HEAD ref using gh within a Run step */
+class GhCheckout extends PRHeadCheckoutStep instanceof Run {
+  GhCheckout() {
+    exists(string line |
+      this.getScript().splitAt("\n") = line and
+      line.regexpMatch(".*gh\\s+pr\\s+checkout.*") and
       (
         containsHeadRef(line)
         or
