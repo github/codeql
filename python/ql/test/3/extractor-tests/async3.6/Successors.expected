@@ -1,7 +1,7 @@
 | 5 | Function ticker | 5 | delay |
 | 5 | delay | 5 | to |
-| 5 | to | 6 | Str |
-| 6 | Str | 7 | range |
+| 5 | to | 6 | StringLiteral |
+| 6 | StringLiteral | 7 | range |
 | 7 | For | 5 | Function ticker |
 | 7 | For | 7 | i |
 | 7 | i | 8 | i |
