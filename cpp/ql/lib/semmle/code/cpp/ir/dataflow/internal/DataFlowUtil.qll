@@ -1828,31 +1828,41 @@ class SummaryParameterNode extends AbstractParameterNode, FlowSummaryNode {
   }
 }
 
-pragma[noinline]
-private predicate indirectPositionHasArgumentIndexAndIndex(
-  IndirectionPosition pos, int argumentIndex, int indirectionIndex
-) {
-  pos.getArgumentIndex() = argumentIndex and
-  pos.getIndirectionIndex() = indirectionIndex
-}
+private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
+  BodyLessParameterNodeImpl
+{
+  DirectBodyLessParameterNode() { indirectionIndex = 0 }
 
-pragma[noinline]
-private predicate indirectParameterNodeHasArgumentIndexAndIndex(
-  IndirectParameterNode node, int argumentIndex, int indirectionIndex
-) {
-  node.hasInstructionAndIndirectionIndex(_, indirectionIndex) and
-  node.getArgumentIndex() = argumentIndex
-}
-
-/** A synthetic parameter to model the pointed-to object of a pointer parameter. */
-class ParameterIndirectionNode extends ParameterNode instanceof IndirectParameterNode {
   override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    IndirectParameterNode.super.getEnclosingCallable() = f.getUnderlyingCallable() and
-    exists(int argumentIndex, int indirectionIndex |
-      indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
-      indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
+    exists(Function func |
+      this.getFunction() = func and
+      f.asSourceCallable() = func and
+      func.getParameter(pos.(DirectPosition).getIndex()) = p
     )
   }
+
+  override Parameter getParameter() { result = p }
+}
+
+private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNode,
+  BodyLessParameterNodeImpl
+{
+  IndirectBodyLessParameterNode() { not this instanceof DirectBodyLessParameterNode }
+
+  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+    exists(Function func, int argumentPosition |
+      this.getFunction() = func and
+      f.asSourceCallable() = func and
+      indirectPositionHasArgumentIndexAndIndex(pos, argumentPosition, indirectionIndex) and
+      func.getParameter(argumentPosition) = p
+    )
+  }
+
+  override int getIndirectionIndex() {
+    result = BodyLessParameterNodeImpl.super.getIndirectionIndex()
+  }
+
+  override Parameter getParameter() { result = p }
 }
 
 /**
