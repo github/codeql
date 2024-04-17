@@ -28,7 +28,7 @@ import experimental.semmle.python.Concepts
  */
 class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   CookieHeader() {
-    exists(StrConst str |
+    exists(StringLiteral str |
       str.getText() = "Set-Cookie" and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
@@ -37,7 +37,7 @@ class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   }
 
   override predicate isSecure() {
-    exists(StrConst str |
+    exists(StringLiteral str |
       str.getText().regexpMatch(".*; *Secure;.*") and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
@@ -46,7 +46,7 @@ class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   }
 
   override predicate isHttpOnly() {
-    exists(StrConst str |
+    exists(StringLiteral str |
       str.getText().regexpMatch(".*; *HttpOnly;.*") and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
@@ -55,7 +55,7 @@ class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   }
 
   override predicate isSameSite() {
-    exists(StrConst str |
+    exists(StringLiteral str |
       str.getText().regexpMatch(".*; *SameSite=(Strict|Lax);.*") and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)

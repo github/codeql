@@ -26,10 +26,10 @@ module Hashes {
     }
 
     override string getName() {
-      result = super.normalizeName(this.asExpr().(StrConst).getText())
+      result = super.normalizeName(this.asExpr().(StringLiteral).getText())
       or
       // if not a known/static string, assume from an outside source and the algorithm is UNKNOWN
-      not this.asExpr() instanceof StrConst and result = unknownAlgorithm()
+      not this.asExpr() instanceof StringLiteral and result = unknownAlgorithm()
     }
   }
 
@@ -49,10 +49,10 @@ module Hashes {
     }
 
     override string getName() {
-      result = super.normalizeName(this.asExpr().(StrConst).getText())
+      result = super.normalizeName(this.asExpr().(StringLiteral).getText())
       or
       // if not a known/static string, assume from an outside source and the algorithm is UNKNOWN
-      not this.asExpr() instanceof StrConst and result = unknownAlgorithm()
+      not this.asExpr() instanceof StringLiteral and result = unknownAlgorithm()
     }
   }
 
@@ -88,9 +88,9 @@ module Hashes {
       // Name is a string constant or consider the name unknown
       // NOTE: we are excluding hmac.new and hmac.HMAC constructor calls so we are expecting
       //      a string or an outside configuration only
-      result = super.normalizeName(this.asExpr().(StrConst).getText())
+      result = super.normalizeName(this.asExpr().(StringLiteral).getText())
       or
-      not this.asExpr() instanceof StrConst and
+      not this.asExpr() instanceof StringLiteral and
       result = unknownAlgorithm()
     }
   }

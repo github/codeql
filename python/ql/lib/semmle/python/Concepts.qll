@@ -855,7 +855,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText()
           )
@@ -983,7 +983,7 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText().splitAt(";", 0)
           )

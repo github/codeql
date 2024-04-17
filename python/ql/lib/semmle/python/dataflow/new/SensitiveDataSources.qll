@@ -91,7 +91,7 @@ private module SensitiveDataModeling {
     // Note: If this is implemented with type-tracking, we will get cross-talk as
     // illustrated in python/ql/test/experimental/dataflow/sensitive-data/test.py
     exists(DataFlow::LocalSourceNode source |
-      source.asExpr().(StrConst).getText() = sensitiveString(classification) and
+      source.asExpr().(StringLiteral).getText() = sensitiveString(classification) and
       source.flowsTo(result)
     )
   }
@@ -173,8 +173,8 @@ private module SensitiveDataModeling {
   }
 
   pragma[nomagic]
-  private string sensitiveStrConstCandidate() {
-    result = any(StrConst s | not s.isDocString()).getText() and
+  private string sensitiveStringLiteralCandidate() {
+    result = any(StringLiteral s | not s.isDocString()).getText() and
     not result.regexpMatch(notSensitiveRegexp())
   }
 
@@ -217,7 +217,7 @@ private module SensitiveDataModeling {
     result in [
         sensitiveNameCandidate(), sensitiveAttributeNameCandidate(),
         sensitiveParameterNameCandidate(), sensitiveFunctionNameCandidate(),
-        sensitiveStrConstCandidate()
+        sensitiveStringLiteralCandidate()
       ]
   }
 

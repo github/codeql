@@ -204,7 +204,7 @@ abstract class ClientSuppliedSecret extends DataFlow::CallCfgNode { }
 private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
   FlaskClientSuppliedSecret() {
     this = Flask::request().getMember("headers").getMember(["get", "get_all", "getlist"]).getACall() and
-    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StrConst).getText().toLowerCase() =
+    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StringLiteral).getText().toLowerCase() =
       sensitiveheaders()
   }
 }
@@ -216,7 +216,7 @@ private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
           .getMember(["headers", "META"])
           .getMember("get")
           .getACall() and
-    [this.getArg(0), this.getArgByName("key")].asExpr().(StrConst).getText().toLowerCase() =
+    [this.getArg(0), this.getArgByName("key")].asExpr().(StringLiteral).getText().toLowerCase() =
       sensitiveheaders()
   }
 }
@@ -229,7 +229,7 @@ API::Node requesthandler() {
 private class TornadoClientSuppliedSecret extends ClientSuppliedSecret {
   TornadoClientSuppliedSecret() {
     this = requesthandler().getMember(["headers", "META"]).getMember("get").getACall() and
-    [this.getArg(0), this.getArgByName("key")].asExpr().(StrConst).getText().toLowerCase() =
+    [this.getArg(0), this.getArgByName("key")].asExpr().(StringLiteral).getText().toLowerCase() =
       sensitiveheaders()
   }
 }
@@ -243,7 +243,7 @@ private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
   WerkzeugClientSuppliedSecret() {
     this =
       headers().getMember(["headers", "META"]).getMember(["get", "get_all", "getlist"]).getACall() and
-    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StrConst).getText().toLowerCase() =
+    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StringLiteral).getText().toLowerCase() =
       sensitiveheaders()
   }
 }
@@ -314,10 +314,10 @@ class CompareSink extends DataFlow::Node {
       ) and
       (
         compare.getLeft() = this.asExpr() and
-        not compare.getComparator(0).(StrConst).getText() = "bearer"
+        not compare.getComparator(0).(StringLiteral).getText() = "bearer"
         or
         compare.getComparator(0) = this.asExpr() and
-        not compare.getLeft().(StrConst).getText() = "bearer"
+        not compare.getLeft().(StringLiteral).getText() = "bearer"
       )
     )
     or

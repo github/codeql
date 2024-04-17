@@ -20,7 +20,7 @@ private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowD
 private import semmle.python.dataflow.new.internal.Builtins::Builtins as Builtins
 
 bindingset[char, fraction]
-predicate fewer_characters_than(StrConst str, string char, float fraction) {
+predicate fewer_characters_than(StringLiteral str, string char, float fraction) {
   exists(string text, int chars |
     text = str.getText() and
     chars = count(int i | text.charAt(i) = char)
@@ -41,15 +41,15 @@ predicate possible_reflective_name(string name) {
   exists(Builtins::likelyBuiltin(name))
 }
 
-int char_count(StrConst str) { result = count(string c | c = str.getText().charAt(_)) }
+int char_count(StringLiteral str) { result = count(string c | c = str.getText().charAt(_)) }
 
-predicate capitalized_word(StrConst str) { str.getText().regexpMatch("[A-Z][a-z]+") }
+predicate capitalized_word(StringLiteral str) { str.getText().regexpMatch("[A-Z][a-z]+") }
 
-predicate format_string(StrConst str) { str.getText().matches("%{%}%") }
+predicate format_string(StringLiteral str) { str.getText().matches("%{%}%") }
 
 predicate maybeCredential(ControlFlowNode f) {
   /* A string that is not too short and unlikely to be text or an identifier. */
-  exists(StrConst str | str = f.getNode() |
+  exists(StringLiteral str | str = f.getNode() |
     /* At least 10 characters */
     str.getText().length() > 9 and
     /* Not too much whitespace */

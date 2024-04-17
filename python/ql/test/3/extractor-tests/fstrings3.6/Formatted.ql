@@ -8,7 +8,7 @@ where
     not exists(val.getConversion()) and typeconv = " "
   ) and
   (
-    format = val.getFormatSpec().getValue(0).(StrConst).getText()
+    format = val.getFormatSpec().getValue(0).(StringLiteral).getText()
     or
     not exists(val.getFormatSpec()) and format = ""
   )

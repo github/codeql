@@ -41,7 +41,7 @@ private module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::Co
     exists(Subscript ss |
       not ss.getIndex().(IntegerLiteral).getText() = "0" and
       ss.getObject().(Call).getFunc().(Attribute).getName() = "split" and
-      ss.getObject().(Call).getAnArg().(StrConst).getText() = "," and
+      ss.getObject().(Call).getAnArg().(StringLiteral).getText() = "," and
       ss = node.asExpr()
     )
   }

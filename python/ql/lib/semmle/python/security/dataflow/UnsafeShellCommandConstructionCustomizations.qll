@@ -33,7 +33,7 @@ module UnsafeShellCommandConstruction {
 
   /** A sink for shell command constructed from library input vulnerabilities. */
   abstract class Sink extends DataFlow::Node {
-    Sink() { not this.asExpr() instanceof StrConst } // filter out string constants, makes testing easier
+    Sink() { not this.asExpr() instanceof StringLiteral } // filter out string constants, makes testing easier
 
     /** Gets a description of how the string in this sink was constructed. */
     abstract string describe();
