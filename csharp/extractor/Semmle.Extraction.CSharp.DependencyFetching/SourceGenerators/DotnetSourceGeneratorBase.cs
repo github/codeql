@@ -34,11 +34,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var additionalFiles = AdditionalFiles;
             if (additionalFiles.Count == 0)
             {
-                logger.LogDebug($"No {FileType} files found.");
+                logger.LogDebug($"No {FileType} files found. Skipping source generation.");
                 return [];
             }
-
-            logger.LogInfo($"Found {additionalFiles.Count} {FileType} files.");
 
             if (!fileContent.IsAspNetCoreDetected)
             {
@@ -46,7 +44,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return [];
             }
 
-            logger.LogInfo($"Generating source files from {FileType} files...");
+            logger.LogInfo($"Generating source files from {additionalFiles.Count} {FileType} files...");
 
             try
             {

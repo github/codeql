@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                logger.LogInfo("Produce analyzer config content.");
+                logger.LogInfo("Producing analyzer config content.");
                 GenerateAnalyzerConfig(additionalFiles, analyzerConfig);
 
                 logger.LogDebug($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
