@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return [];
             }
 
-            if (!fileContent.IsAspNetCoreDetected)
+            if (!fileContent.IsNewProjectStructureUsed)
             {
                 logger.LogInfo($"Generating source files from {FileType} files is only supported for new (SDK-style) project files");
                 return [];
