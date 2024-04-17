@@ -1536,7 +1536,9 @@ module API {
           prop = any(CanonicalName c).getName() or
           prop = any(DataFlow::PropRef p).getPropertyName() or
           exists(Impl::MkTypeUse(_, prop)) or
-          exists(any(Module m).getAnExportedValue(prop))
+          exists(any(Module m).getAnExportedValue(prop)) or
+          PreCallGraphStep::loadStep(_, _, prop) or
+          PreCallGraphStep::storeStep(_, _, prop)
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
