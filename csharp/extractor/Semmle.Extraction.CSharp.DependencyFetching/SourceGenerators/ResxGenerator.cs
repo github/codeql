@@ -15,12 +15,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             IDotNet dotnet,
             ICompilationInfoContainer compilationInfoContainer,
             ILogger logger,
+            NugetPackageRestorer nugetPackageRestorer,
             TemporaryDirectory tempWorkingDirectory,
             IEnumerable<string> references) : base(fileProvider, fileContent, dotnet, compilationInfoContainer, logger, tempWorkingDirectory, references)
         {
             try
             {
-                // todo: download latest `Microsoft.CodeAnalysis.ResxSourceGenerator` and set `sourceGeneratorFolder`
+                // The package is downloaded to `missingpackages`, which is okay, we're already after the DLL collection phase.
+                var nugetFolder = nugetPackageRestorer.TryRestore("Microsoft.CodeAnalysis.ResxSourceGenerator");
+                if (nugetFolder is not null)
+                {
+                    sourceGeneratorFolder = System.IO.Path.Combine(nugetFolder, "analyzers", "dotnet", "cs");
+                }
             }
             catch (Exception e)
             {
