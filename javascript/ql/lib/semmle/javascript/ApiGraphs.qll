@@ -773,7 +773,8 @@ module API {
           // In general, turn store steps into member steps for def-nodes
           exists(string prop |
             PreCallGraphStep::storeStep(rhs, pred, prop) and
-            lbl = Label::member(prop)
+            lbl = Label::member(prop) and
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
           )
           or
           exists(DataFlow::FunctionNode fn |
@@ -941,7 +942,6 @@ module API {
           (base instanceof TNonModuleDef or base instanceof TUse)
         )
         or
-        // invocations
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
           use(base, src) and pred = trackUseNode(src)
         |
@@ -961,6 +961,13 @@ module API {
             ref = cls.getAReceiverNode()
             or
             ref = cls.getAClassReference().getAnInstantiation()
+          )
+          or
+          exists(string prop |
+            PreCallGraphStep::loadStep(pred.getALocalUse(), ref, prop) and
+            lbl = Label::member(prop) and
+            // avoid generating member edges like "$arrayElement$"
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
           )
         )
         or
