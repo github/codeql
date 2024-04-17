@@ -230,7 +230,8 @@ module Impl implements RegexTreeViewSig {
       index > 0 and
       exists(int previousOffset | previousOffset = this.getPartOffset(index - 1) |
         result =
-          previousOffset + re.(StringLiteral).getImplicitlyConcatenatedPart(index - 1).getContentLength()
+          previousOffset +
+            re.(StringLiteral).getImplicitlyConcatenatedPart(index - 1).getContentLength()
       )
     }
 

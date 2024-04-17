@@ -88,7 +88,9 @@ module ServerSideRequestForgery {
       exists(BinaryExprNode add |
         add.getOp() instanceof Add and
         add.getRight() = this.asCfgNode() and
-        not add.getLeft().getNode().(StringLiteral).getText().toLowerCase() in ["http://", "https://"]
+        not add.getLeft().getNode().(StringLiteral).getText().toLowerCase() in [
+            "http://", "https://"
+          ]
       )
       or
       // % formatting

@@ -204,8 +204,11 @@ abstract class ClientSuppliedSecret extends DataFlow::CallCfgNode { }
 private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
   FlaskClientSuppliedSecret() {
     this = Flask::request().getMember("headers").getMember(["get", "get_all", "getlist"]).getACall() and
-    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StringLiteral).getText().toLowerCase() =
-      sensitiveheaders()
+    [this.getArg(0), this.getArgByName(["key", "name"])]
+        .asExpr()
+        .(StringLiteral)
+        .getText()
+        .toLowerCase() = sensitiveheaders()
   }
 }
 
@@ -243,8 +246,11 @@ private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
   WerkzeugClientSuppliedSecret() {
     this =
       headers().getMember(["headers", "META"]).getMember(["get", "get_all", "getlist"]).getACall() and
-    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StringLiteral).getText().toLowerCase() =
-      sensitiveheaders()
+    [this.getArg(0), this.getArgByName(["key", "name"])]
+        .asExpr()
+        .(StringLiteral)
+        .getText()
+        .toLowerCase() = sensitiveheaders()
   }
 }
 

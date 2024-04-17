@@ -122,8 +122,12 @@ private module Sendgrid {
         contentElement =
           this.getKeywordParameter("request_body").getSubscript("content").getASubscript()
       |
-        contentElement.getSubscript("type").getAValueReachingSink().asExpr().(StringLiteral).getText() =
-          ["text/html", "text/x-amp-html"] and
+        contentElement
+            .getSubscript("type")
+            .getAValueReachingSink()
+            .asExpr()
+            .(StringLiteral)
+            .getText() = ["text/html", "text/x-amp-html"] and
         result = contentElement.getSubscript("value").getAValueReachingSink()
       )
       or

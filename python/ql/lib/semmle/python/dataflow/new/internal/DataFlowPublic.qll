@@ -612,7 +612,8 @@ newtype TContent =
     key = any(Keyword kw).getArg()
     or
     // d["key"] = ...
-    key = any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
     or
     // d.setdefault("key", ...)
     exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |

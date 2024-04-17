@@ -260,7 +260,12 @@ module Gzip {
         this = gzipCall.getParameter(0, "filename").asSink() and
         (
           not exists(
-            gzipCall.getParameter(1, "mode").getAValueReachingSink().asExpr().(StringLiteral).getText()
+            gzipCall
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
           ) or
           gzipCall
               .getParameter(1, "mode")
@@ -297,7 +302,12 @@ module Bz2 {
         this = bz2Call.getParameter(0, "filename").asSink() and
         (
           not exists(
-            bz2Call.getParameter(1, "mode").getAValueReachingSink().asExpr().(StringLiteral).getText()
+            bz2Call
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
           ) or
           bz2Call
               .getParameter(1, "mode")
@@ -334,7 +344,12 @@ module Lzma {
         this = lzmaCall.getParameter(0, "filename").asSink() and
         (
           not exists(
-            lzmaCall.getParameter(1, "mode").getAValueReachingSink().asExpr().(StringLiteral).getText()
+            lzmaCall
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
           ) or
           lzmaCall
               .getParameter(1, "mode")

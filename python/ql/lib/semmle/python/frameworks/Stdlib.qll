@@ -2908,7 +2908,8 @@ module StdlibPrivate {
       exists(string algorithmName | result.matchesName(algorithmName) |
         this.getDigestArg().asSink() = hashlibMember(algorithmName).asSource()
         or
-        this.getDigestArg().getAValueReachingSink().asExpr().(StringLiteral).getText() = algorithmName
+        this.getDigestArg().getAValueReachingSink().asExpr().(StringLiteral).getText() =
+          algorithmName
       )
     }
 

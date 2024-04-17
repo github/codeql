@@ -25,7 +25,8 @@ class WebAppConstantSecretKeySource extends DataFlow::Node {
             API::moduleImport("os").getMember("environ").getMember("get").getACall()
           ] and
         cn.getNumArgument() = 2 and
-        DataFlow::localFlow(any(DataFlow::Node n | n.asExpr() instanceof StringLiteral), cn.getArg(1)) and
+        DataFlow::localFlow(any(DataFlow::Node n | n.asExpr() instanceof StringLiteral),
+          cn.getArg(1)) and
         this.asExpr() = cn.asExpr()
       )
     ) and
