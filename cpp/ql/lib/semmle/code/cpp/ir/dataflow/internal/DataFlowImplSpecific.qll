@@ -27,4 +27,6 @@ module CppDataFlow implements InputSig<Location> {
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 }
