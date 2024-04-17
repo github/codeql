@@ -2,7 +2,7 @@ import go
 import TestUtilities.InlineExpectationsTest
 import experimental.frameworks.Fiber
 
-module UntrustedFlowSourceTest implements TestSig {
+module RemoteFlowSourceTest implements TestSig {
   string getARelevantTag() { result = "untrustedFlowSource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -20,4 +20,4 @@ module UntrustedFlowSourceTest implements TestSig {
   }
 }
 
-import MakeTest<UntrustedFlowSourceTest>
+import MakeTest<RemoteFlowSourceTest>

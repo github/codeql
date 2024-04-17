@@ -1,7 +1,7 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-module UntrustedFlowSourceTest implements TestSig {
+module RemoteFlowSourceTest implements TestSig {
   string getARelevantTag() { result = "RemoteFlowSource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -15,4 +15,4 @@ module UntrustedFlowSourceTest implements TestSig {
   }
 }
 
-import MakeTest<UntrustedFlowSourceTest>
+import MakeTest<RemoteFlowSourceTest>

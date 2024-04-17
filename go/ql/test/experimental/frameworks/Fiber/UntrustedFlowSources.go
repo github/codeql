@@ -5,7 +5,7 @@ package main
 import "github.com/gofiber/fiber"
 
 // Package github.com/gofiber/fiber@v1.14.6
-func UntrustedFlowSources_GithubComGofiberFiberV1146() {
+func RemoteFlowSources_GithubComGofiberFiberV1146() {
 	// Untrusted flow sources from method calls.
 	{
 		// Untrusted flow sources from method calls on github.com/gofiber/fiber.Ctx.

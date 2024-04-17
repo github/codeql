@@ -728,7 +728,7 @@
          ]
       },
       {
-         "Name": "UntrustedFlowSources",
+         "Name": "RemoteFlowSources",
          "Kind": "RemoteFlowSource",
          "Methods": [
             {
