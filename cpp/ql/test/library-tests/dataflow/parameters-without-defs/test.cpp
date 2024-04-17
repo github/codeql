@@ -1,5 +1,5 @@
-void sink(int); // $ MISSING: ir
-void indirect_sink(int*); // $ MISSING: ir
+void sink(int); // $ ir
+void indirect_sink(int*); // $ ir
 int source();
 
 void test() {
