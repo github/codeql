@@ -10,7 +10,7 @@ module UntrustedFlowSourceTest implements TestSig {
     exists(DataFlow::CallNode sinkCall, DataFlow::ArgumentNode arg |
       sinkCall.getCalleeName() = "sink" and
       arg = sinkCall.getAnArgument() and
-      arg.getAPredecessor*() instanceof UntrustedFlowSource
+      arg.getAPredecessor*() instanceof RemoteFlowSource
     |
       element = arg.toString() and
       value = "" and

@@ -7,7 +7,7 @@ module UntrustedFlowSourceTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "untrustedflowsource" and
     value = element and
-    exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
+    exists(RemoteFlowSource src | value = "\"" + src.toString() + "\"" |
       src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )

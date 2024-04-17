@@ -3,7 +3,7 @@
    "Models": [
       {
          "Name": "UntrustedSources",
-         "Kind": "UntrustedFlowSource",
+         "Kind": "RemoteFlowSource",
          "Methods": [
             {
                "Name": "{source:[](Param|Result|Fields|Type)} \u003c- $source",

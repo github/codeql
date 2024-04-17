@@ -2,16 +2,16 @@ import go
 import TestUtilities.InlineExpectationsTest
 
 module FasthttpTest implements TestSig {
-  string getARelevantTag() { result = "UntrustedFlowSource" }
+  string getARelevantTag() { result = "RemoteFlowSource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(UntrustedFlowSource source |
+    exists(RemoteFlowSource source |
       source
           .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
             location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = source.toString() and
       value = "\"" + source.toString() + "\"" and
-      tag = "UntrustedFlowSource"
+      tag = "RemoteFlowSource"
     )
   }
 }

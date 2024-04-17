@@ -1,3 +1,3 @@
 import go
 
-select any(UntrustedFlowSource ufs)
+select any(RemoteFlowSource ufs)

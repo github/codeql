@@ -258,8 +258,8 @@ module Fasthttp {
     /**
      * The methods as Remote user controllable source which are part of the incoming URL.
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "URI",
             ["FullURI", "LastPathSegment", "Path", "PathOriginal", "QueryString", "String"]) and
@@ -278,8 +278,8 @@ module Fasthttp {
      *
      * When support for lambdas has been implemented we should model "VisitAll".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Args",
             ["Peek", "PeekBytes", "PeekMulti", "PeekMultiBytes", "QueryString", "String"]) and
@@ -389,8 +389,8 @@ module Fasthttp {
     /**
      * The methods as Remote user controllable source which can be many part of request.
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
             [
@@ -468,8 +468,8 @@ module Fasthttp {
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestCtx",
             [
@@ -491,8 +491,8 @@ module Fasthttp {
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestHeader",
             [

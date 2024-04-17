@@ -6,7 +6,7 @@
 import go
 
 /** A source of input data in an AWS Lambda. */
-private class LambdaInput extends UntrustedFlowSource::Range {
+private class LambdaInput extends RemoteFlowSource::Range {
   LambdaInput() {
     exists(Parameter p | p = this.asParameter() |
       p = any(HandlerFunction hf).getAParameter() and

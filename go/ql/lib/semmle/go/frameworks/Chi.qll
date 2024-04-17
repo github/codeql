@@ -11,7 +11,7 @@ private module Chi {
   /**
    * Functions that extract URL parameters, considered as a source of untrusted flow.
    */
-  private class UserControlledFunction extends UntrustedFlowSource::Range, DataFlow::CallNode {
+  private class UserControlledFunction extends RemoteFlowSource::Range, DataFlow::CallNode {
     UserControlledFunction() {
       this.getTarget().hasQualifiedName(packagePath(), ["URLParam", "URLParamFromCtx"])
     }
@@ -20,7 +20,7 @@ private module Chi {
   /**
    * Methods that extract URL parameters, considered as a source of untrusted flow.
    */
-  private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
+  private class UserControlledRequestMethod extends RemoteFlowSource::Range,
     DataFlow::MethodCallNode
   {
     UserControlledRequestMethod() {

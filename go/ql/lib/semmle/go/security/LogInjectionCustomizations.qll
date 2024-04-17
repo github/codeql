@@ -26,7 +26,7 @@ module LogInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of untrusted data, considered as a taint source for log injection. */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  class UntrustedFlowAsSource extends Source instanceof RemoteFlowSource { }
 
   /** An argument to a logging mechanism. */
   class LoggerSink extends Sink {
