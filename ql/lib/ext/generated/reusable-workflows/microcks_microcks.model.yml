@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["microcks/microcks/.github/workflows/package-native.yml", "*", "inputs.image-tag", "code-injection", "generated"]
+     - ["microcks/microcks/.github/workflows/package-native.yml", "*", "input.image-tag", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["coturn/coturn", "*", "inputs.SUDO", "code-injection", "generated"]
+     - ["coturn/coturn", "*", "input.SUDO", "code-injection", "generated"]

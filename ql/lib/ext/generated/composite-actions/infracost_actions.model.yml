@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["infracost/actions", "*", "inputs.behavior", "code-injection", "generated"]
+     - ["infracost/actions", "*", "input.behavior", "code-injection", "generated"]

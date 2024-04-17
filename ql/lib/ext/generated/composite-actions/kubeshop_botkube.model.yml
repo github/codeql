@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["kubeshop/botkube", "*", "inputs.username", "code-injection", "generated"]
-     - ["kubeshop/botkube", "*", "inputs.access_token", "code-injection", "generated"]
+     - ["kubeshop/botkube", "*", "input.username", "code-injection", "generated"]
+     - ["kubeshop/botkube", "*", "input.access_token", "code-injection", "generated"]

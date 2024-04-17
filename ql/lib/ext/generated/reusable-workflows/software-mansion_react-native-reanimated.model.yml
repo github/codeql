@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["software-mansion/react-native-reanimated/.github/workflows/build-npm-package-action.yml", "*", "inputs.option", "code-injection", "generated"]
+     - ["software-mansion/react-native-reanimated/.github/workflows/build-npm-package-action.yml", "*", "input.option", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["botpress/botpress", "*", "inputs.tilt_cmd", "code-injection", "generated"]
+     - ["botpress/botpress", "*", "input.tilt_cmd", "code-injection", "generated"]

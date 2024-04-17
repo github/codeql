@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["cilium/cilium-cli", "*", "inputs.binary-name", "code-injection", "generated"]
-     - ["cilium/cilium-cli", "*", "inputs.binary-dir", "code-injection", "generated"]
-     - ["cilium/cilium-cli", "*", "inputs.ci-version", "code-injection", "generated"]
-     - ["cilium/cilium-cli", "*", "inputs.release-version", "code-injection", "generated"]
-     - ["cilium/cilium-cli", "*", "inputs.repository", "code-injection", "generated"]
-     - ["cilium/cilium-cli", "*", "inputs.go-mod-directory", "code-injection", "generated"]
-     - ["cilium/cilium-cli", "*", "inputs.local-path", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.binary-name", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.binary-dir", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.ci-version", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.release-version", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.repository", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.go-mod-directory", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.local-path", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["simple-icons/simple-icons", "*", "inputs.issue_number", "code-injection", "generated"]
+     - ["simple-icons/simple-icons", "*", "input.issue_number", "code-injection", "generated"]

@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["primer/react", "*", "inputs.token", "code-injection", "generated"]
-     - ["primer/react", "*", "inputs.schedule-id", "code-injection", "generated"]
+     - ["primer/react", "*", "input.token", "code-injection", "generated"]
+     - ["primer/react", "*", "input.schedule-id", "code-injection", "generated"]

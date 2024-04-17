@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["getsentry/action-release", "*", "inputs.working_directory", "code-injection", "generated"]
+     - ["getsentry/action-release", "*", "input.working_directory", "code-injection", "generated"]

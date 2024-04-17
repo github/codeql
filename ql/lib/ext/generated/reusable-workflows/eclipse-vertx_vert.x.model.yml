@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["eclipse-vertx/vert.x/.github/workflows/ci.yml", "*", "inputs.profile", "code-injection", "generated"]
+     - ["eclipse-vertx/vert.x/.github/workflows/ci.yml", "*", "input.profile", "code-injection", "generated"]

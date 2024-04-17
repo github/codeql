@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["avaiga/taipy", "*", "inputs.python-version", "code-injection", "generated"]
+     - ["avaiga/taipy", "*", "input.python-version", "code-injection", "generated"]

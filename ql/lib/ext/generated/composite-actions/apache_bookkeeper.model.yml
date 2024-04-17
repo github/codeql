@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/bookkeeper", "*", "inputs.mode", "code-injection", "generated"]
+     - ["apache/bookkeeper", "*", "input.mode", "code-injection", "generated"]

@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "inputs.project-name", "code-injection", "generated"]
-     - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "inputs.project-build-commands", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "input.project-name", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "input.project-build-commands", "code-injection", "generated"]

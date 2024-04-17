@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["lightning-ai/torchmetrics", "*", "inputs.pypi-dir", "code-injection", "generated"]
-     - ["lightning-ai/torchmetrics", "*", "inputs.torch-url", "code-injection", "generated"]
-     - ["lightning-ai/torchmetrics", "*", "inputs.pytorch-version", "code-injection", "generated"]
+     - ["lightning-ai/torchmetrics", "*", "input.pypi-dir", "code-injection", "generated"]
+     - ["lightning-ai/torchmetrics", "*", "input.torch-url", "code-injection", "generated"]
+     - ["lightning-ai/torchmetrics", "*", "input.pytorch-version", "code-injection", "generated"]

@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "inputs.base-branch", "code-injection", "generated"]
-     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "inputs.repo", "code-injection", "generated"]
-     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "inputs.current-branch", "code-injection", "generated"]
-     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "inputs.chain", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.base-branch", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.repo", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.current-branch", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.chain", "code-injection", "generated"]

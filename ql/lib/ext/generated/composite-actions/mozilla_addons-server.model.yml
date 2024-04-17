@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mozilla/addons-server", "*", "inputs.run", "code-injection", "generated"]
-     - ["mozilla/addons-server", "*", "inputs.push", "code-injection", "generated"]
+     - ["mozilla/addons-server", "*", "input.run", "code-injection", "generated"]
+     - ["mozilla/addons-server", "*", "input.push", "code-injection", "generated"]

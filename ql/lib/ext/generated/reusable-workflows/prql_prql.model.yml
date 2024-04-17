@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["prql/prql/.github/workflows/test-rust.yaml", "*", "inputs.target", "code-injection", "generated"]
+     - ["prql/prql/.github/workflows/test-rust.yaml", "*", "input.target", "code-injection", "generated"]

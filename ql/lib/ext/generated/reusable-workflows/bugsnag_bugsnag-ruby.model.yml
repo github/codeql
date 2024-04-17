@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["bugsnag/bugsnag-ruby/.github/workflows/run-maze-runner.yml", "*", "inputs.features", "code-injection", "generated"]
+     - ["bugsnag/bugsnag-ruby/.github/workflows/run-maze-runner.yml", "*", "input.features", "code-injection", "generated"]

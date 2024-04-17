@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.clean-command", "code-injection", "generated"]
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.deploy-command", "code-injection", "generated"]
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.wait-between-retries", "code-injection", "generated"]
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.retries-on-failure", "code-injection", "generated"]
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.check-command", "code-injection", "generated"]
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.build-command", "code-injection", "generated"]
-     - ["danysk/build-check-deploy-gradle-action", "*", "inputs.pre-build-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.clean-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.deploy-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.wait-between-retries", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.retries-on-failure", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.check-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.build-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.pre-build-command", "code-injection", "generated"]

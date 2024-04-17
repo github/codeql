@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "inputs.windowsBuildArgs", "code-injection", "generated"]
-     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "inputs.bazelBuildArgs", "code-injection", "generated"]
-     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "inputs.iosBuildArgs", "code-injection", "generated"]
-     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "inputs.macosBuildArgs", "code-injection", "generated"]
-     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "inputs.androidBuildArgs", "code-injection", "generated"]
-     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "inputs.linuxBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.windowsBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.bazelBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.iosBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.macosBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.androidBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.linuxBuildArgs", "code-injection", "generated"]

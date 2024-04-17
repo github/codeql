@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+      - ["puppeteer/puppeteer/.github/workflows/changed-packages.yml", "*", "output.changes", "Changed files", "manual"]

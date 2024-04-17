@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["litestar-org/litestar/.github/workflows/test.yml", "*", "inputs.python-version", "code-injection", "generated"]
-     - ["litestar-org/litestar/.github/workflows/notify-released-issues.yml", "*", "inputs.release_tag", "code-injection", "generated"]
+     - ["litestar-org/litestar/.github/workflows/test.yml", "*", "input.python-version", "code-injection", "generated"]
+     - ["litestar-org/litestar/.github/workflows/notify-released-issues.yml", "*", "input.release_tag", "code-injection", "generated"]

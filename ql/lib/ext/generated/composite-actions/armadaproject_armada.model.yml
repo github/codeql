@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["armadaproject/armada", "*", "inputs.tox-env", "code-injection", "generated"]
+     - ["armadaproject/armada", "*", "input.tox-env", "code-injection", "generated"]

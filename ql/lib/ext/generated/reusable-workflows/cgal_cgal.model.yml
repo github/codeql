@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["cgal/cgal/.github/workflows/send_email.yml", "*", "inputs.message", "code-injection", "generated"]
+     - ["cgal/cgal/.github/workflows/send_email.yml", "*", "input.message", "code-injection", "generated"]

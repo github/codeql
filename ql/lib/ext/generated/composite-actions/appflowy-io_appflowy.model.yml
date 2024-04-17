@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["appflowy-io/appflowy", "*", "inputs.test_path", "code-injection", "generated"]
-     - ["appflowy-io/appflowy", "*", "inputs.flutter_profile", "code-injection", "generated"]
+     - ["appflowy-io/appflowy", "*", "input.test_path", "code-injection", "generated"]
+     - ["appflowy-io/appflowy", "*", "input.flutter_profile", "code-injection", "generated"]

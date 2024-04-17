@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["googlecloudplatform/magic-modules", "*", "inputs.repo", "code-injection", "generated"]
+     - ["googlecloudplatform/magic-modules", "*", "input.repo", "code-injection", "generated"]

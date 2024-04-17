@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["inverse-inc/packetfence/.github/workflows/reusable_upload_packages.yml", "*", "inputs._PACKAGE_NAME", "code-injection", "generated"]
+     - ["inverse-inc/packetfence/.github/workflows/reusable_upload_packages.yml", "*", "input._PACKAGE_NAME", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["jetbrains/intellij-platform-gradle-plugin/.github/workflows/reusable-single-unitTest.yml", "*", "inputs.gradleVersion", "code-injection", "generated"]
+     - ["jetbrains/intellij-platform-gradle-plugin/.github/workflows/reusable-single-unitTest.yml", "*", "input.gradleVersion", "code-injection", "generated"]

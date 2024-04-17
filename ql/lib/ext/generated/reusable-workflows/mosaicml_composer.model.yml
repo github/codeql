@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "inputs.context", "code-injection", "generated"]
-     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "inputs.tags", "code-injection", "generated"]
-     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "inputs.image-name", "code-injection", "generated"]
-     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "inputs.image-uuid", "code-injection", "generated"]
-     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "inputs.staging-repo", "code-injection", "generated"]
-     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "inputs.staging", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.context", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.tags", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.image-name", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.image-uuid", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.staging-repo", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.staging", "code-injection", "generated"]

@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["shader-slang/slang", "*", "inputs.platform", "code-injection", "generated"]
-     - ["shader-slang/slang", "*", "inputs.os", "code-injection", "generated"]
-     - ["shader-slang/slang", "*", "inputs.runs-on", "code-injection", "generated"]
-     - ["shader-slang/slang", "*", "inputs.config", "code-injection", "generated"]
-     - ["shader-slang/slang", "*", "inputs.compiler", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.platform", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.os", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.runs-on", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.config", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.compiler", "code-injection", "generated"]

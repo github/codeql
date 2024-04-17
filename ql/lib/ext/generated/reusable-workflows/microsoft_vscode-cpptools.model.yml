@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["microsoft/vscode-cpptools/.github/workflows/job-compile-and-test.yml", "*", "inputs.yarn-args", "code-injection", "generated"]
+     - ["microsoft/vscode-cpptools/.github/workflows/job-compile-and-test.yml", "*", "input.yarn-args", "code-injection", "generated"]

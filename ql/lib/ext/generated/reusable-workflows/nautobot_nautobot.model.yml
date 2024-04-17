@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["nautobot/nautobot/.github/workflows/plugin_upstream_testing_base.yml", "*", "inputs.invoke_context_name", "code-injection", "generated"]
+     - ["nautobot/nautobot/.github/workflows/plugin_upstream_testing_base.yml", "*", "input.invoke_context_name", "code-injection", "generated"]

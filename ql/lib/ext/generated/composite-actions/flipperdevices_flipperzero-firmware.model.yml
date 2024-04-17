@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["flipperdevices/flipperzero-firmware", "*", "inputs.firmware-version", "code-injection", "generated"]
-     - ["flipperdevices/flipperzero-firmware", "*", "inputs.firmware-target", "code-injection", "generated"]
-     - ["flipperdevices/flipperzero-firmware", "*", "inputs.firmware-api", "code-injection", "generated"]
-     - ["flipperdevices/flipperzero-firmware", "*", "inputs.catalog-api-token", "code-injection", "generated"]
-     - ["flipperdevices/flipperzero-firmware", "*", "inputs.catalog-url", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-version", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-target", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-api", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.catalog-api-token", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.catalog-url", "code-injection", "generated"]

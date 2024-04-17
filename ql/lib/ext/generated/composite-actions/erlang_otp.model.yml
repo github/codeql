@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["erlang/otp", "*", "inputs.TYPE", "code-injection", "generated"]
-     - ["erlang/otp", "*", "inputs.BASE_BRANCH", "code-injection", "generated"]
+     - ["erlang/otp", "*", "input.TYPE", "code-injection", "generated"]
+     - ["erlang/otp", "*", "input.BASE_BRANCH", "code-injection", "generated"]

@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ruby/ruby", "*", "inputs.builddir", "code-injection", "generated"]
-     - ["ruby/ruby", "*", "inputs.srcdir", "code-injection", "generated"]
-     - ["ruby/ruby", "*", "inputs.test-opts", "code-injection", "generated"]
-     - ["ruby/ruby", "*", "inputs.report-path", "code-injection", "generated"]
-     - ["ruby/ruby", "*", "inputs.launchable-token", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.builddir", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.srcdir", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.test-opts", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.report-path", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.launchable-token", "code-injection", "generated"]

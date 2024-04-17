@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["getporter/porter/.github/workflows/build_pipelinesrelease_template.yml", "*", "inputs.registry", "code-injection", "generated"]
+     - ["getporter/porter/.github/workflows/build_pipelinesrelease_template.yml", "*", "input.registry", "code-injection", "generated"]

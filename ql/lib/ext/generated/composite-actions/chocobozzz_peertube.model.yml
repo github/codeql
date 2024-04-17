@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["chocobozzz/peertube", "*", "inputs.deployKey", "code-injection", "generated"]
-     - ["chocobozzz/peertube", "*", "inputs.knownHosts", "code-injection", "generated"]
+     - ["chocobozzz/peertube", "*", "input.deployKey", "code-injection", "generated"]
+     - ["chocobozzz/peertube", "*", "input.knownHosts", "code-injection", "generated"]

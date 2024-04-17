@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["demarches-simplifiees/demarches-simplifiees.fr", "*", "inputs.results_path", "code-injection", "generated"]
+     - ["demarches-simplifiees/demarches-simplifiees.fr", "*", "input.results_path", "code-injection", "generated"]

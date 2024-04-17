@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["telepresenceio/telepresence", "*", "inputs.release_version", "code-injection", "generated"]
+     - ["telepresenceio/telepresence", "*", "input.release_version", "code-injection", "generated"]

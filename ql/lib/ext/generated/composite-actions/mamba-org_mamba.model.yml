@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mamba-org/mamba", "*", "inputs.key_suffix", "code-injection", "generated"]
-     - ["mamba-org/mamba", "*", "inputs.key_base", "code-injection", "generated"]
-     - ["mamba-org/mamba", "*", "inputs.key_prefix", "code-injection", "generated"]
+     - ["mamba-org/mamba", "*", "input.key_suffix", "code-injection", "generated"]
+     - ["mamba-org/mamba", "*", "input.key_base", "code-injection", "generated"]
+     - ["mamba-org/mamba", "*", "input.key_prefix", "code-injection", "generated"]

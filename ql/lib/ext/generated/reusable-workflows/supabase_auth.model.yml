@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["supabase/auth/.github/workflows/publish.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["supabase/auth/.github/workflows/publish.yml", "*", "input.version", "code-injection", "generated"]

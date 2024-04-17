@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["emberjs/data", "*", "inputs.jobs", "code-injection", "generated"]
+     - ["emberjs/data", "*", "input.jobs", "code-injection", "generated"]

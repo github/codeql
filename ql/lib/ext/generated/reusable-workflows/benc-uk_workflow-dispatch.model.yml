@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["benc-uk/workflow-dispatch/.github/workflows/echo-3.yaml", "*", "inputs.message", "code-injection", "generated"]
+     - ["benc-uk/workflow-dispatch/.github/workflows/echo-3.yaml", "*", "input.message", "code-injection", "generated"]

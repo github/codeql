@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["balena-os/balena-engine", "*", "inputs.VERBOSE", "code-injection", "generated"]
+     - ["balena-os/balena-engine", "*", "input.VERBOSE", "code-injection", "generated"]

@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["libgit2/libgit2", "*", "inputs.command", "code-injection", "generated"]
-     - ["libgit2/libgit2", "*", "inputs.container-version", "code-injection", "generated"]
-     - ["libgit2/libgit2", "*", "inputs.container", "code-injection", "generated"]
-     - ["libgit2/libgit2", "*", "inputs.base", "code-injection", "generated"]
-     - ["libgit2/libgit2", "*", "inputs.config-path", "code-injection", "generated"]
-     - ["libgit2/libgit2", "*", "inputs.registry", "code-injection", "generated"]
-     - ["libgit2/libgit2", "*", "inputs.dockerfile", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.command", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.container-version", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.container", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.base", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.config-path", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.registry", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.dockerfile", "code-injection", "generated"]

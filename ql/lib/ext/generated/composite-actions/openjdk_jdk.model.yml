@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["openjdk/jdk", "*", "inputs.debug-suffix", "code-injection", "generated"]
+     - ["openjdk/jdk", "*", "input.debug-suffix", "code-injection", "generated"]

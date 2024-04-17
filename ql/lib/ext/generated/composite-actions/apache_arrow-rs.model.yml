@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/arrow-rs", "*", "inputs.target", "code-injection", "generated"]
-     - ["apache/arrow-rs", "*", "inputs.rust-version", "code-injection", "generated"]
+     - ["apache/arrow-rs", "*", "input.target", "code-injection", "generated"]
+     - ["apache/arrow-rs", "*", "input.rust-version", "code-injection", "generated"]

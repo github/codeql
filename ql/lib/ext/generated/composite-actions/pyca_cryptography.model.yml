@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["pyca/cryptography", "*", "inputs.key", "code-injection", "generated"]
+     - ["pyca/cryptography", "*", "input.key", "code-injection", "generated"]

@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["newrelic/newrelic-java-agent/.github/workflows/X-Reusable-VerifyInstrumentation.yml", "*", "inputs.page", "code-injection", "generated"]
-     - ["newrelic/newrelic-java-agent/.github/workflows/GHA-Unit-Tests.yaml", "*", "inputs.agent-ref", "code-injection", "generated"]
+     - ["newrelic/newrelic-java-agent/.github/workflows/X-Reusable-VerifyInstrumentation.yml", "*", "input.page", "code-injection", "generated"]
+     - ["newrelic/newrelic-java-agent/.github/workflows/GHA-Unit-Tests.yaml", "*", "input.agent-ref", "code-injection", "generated"]

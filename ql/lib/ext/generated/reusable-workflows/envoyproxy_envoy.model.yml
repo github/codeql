@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["envoyproxy/envoy/.github/workflows/_load.yml", "*", "input.run-id", "output.run-id", "taint", "manual"]
+      - ["envoyproxy/envoy/.github/workflows/_load.yml", "*", "input.check-name", "output.check-name", "taint", "manual"]

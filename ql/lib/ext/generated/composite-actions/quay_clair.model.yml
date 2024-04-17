@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["quay/clair", "*", "inputs.tag", "code-injection", "generated"]
-     - ["quay/clair", "*", "inputs.repo", "code-injection", "generated"]
-     - ["quay/clair", "*", "inputs.quay", "code-injection", "generated"]
-     - ["quay/clair", "*", "inputs.duration", "code-injection", "generated"]
-     - ["quay/clair", "*", "inputs.token", "code-injection", "generated"]
-     - ["quay/clair", "*", "inputs.dir", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.tag", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.repo", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.quay", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.duration", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.token", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.dir", "code-injection", "generated"]

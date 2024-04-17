@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["tracel-ai/burn/.github/workflows/publish-template.yml", "*", "inputs.crate", "code-injection", "generated"]
+     - ["tracel-ai/burn/.github/workflows/publish-template.yml", "*", "input.crate", "code-injection", "generated"]

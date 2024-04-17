@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ipfs/aegir", "*", "inputs.browser", "code-injection", "generated"]
-     - ["ipfs/aegir", "*", "inputs.docker-username", "code-injection", "generated"]
-     - ["ipfs/aegir", "*", "inputs.docker-token", "code-injection", "generated"]
-     - ["ipfs/aegir", "*", "inputs.build", "code-injection", "generated"]
+     - ["ipfs/aegir", "*", "input.browser", "code-injection", "generated"]
+     - ["ipfs/aegir", "*", "input.docker-username", "code-injection", "generated"]
+     - ["ipfs/aegir", "*", "input.docker-token", "code-injection", "generated"]
+     - ["ipfs/aegir", "*", "input.build", "code-injection", "generated"]

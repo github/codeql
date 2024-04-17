@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["stellar/go", "*", "inputs.go-version", "code-injection", "generated"]
+     - ["stellar/go", "*", "input.go-version", "code-injection", "generated"]

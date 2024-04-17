@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["shaka-project/shaka-player", "*", "inputs.state", "code-injection", "generated"]
-     - ["shaka-project/shaka-player", "*", "inputs.context", "code-injection", "generated"]
-     - ["shaka-project/shaka-player", "*", "inputs.job_name", "code-injection", "generated"]
-     - ["shaka-project/shaka-player", "*", "inputs.token", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.state", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.context", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.job_name", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.token", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["quarto-dev/quarto-cli/.github/workflows/test-smokes.yml", "*", "inputs.buckets", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli/.github/workflows/test-smokes.yml", "*", "input.buckets", "code-injection", "generated"]

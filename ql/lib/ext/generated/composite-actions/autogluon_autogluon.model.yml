@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["autogluon/autogluon", "*", "inputs.submodule-to-test", "code-injection", "generated"]
-     - ["autogluon/autogluon", "*", "inputs.command", "code-injection", "generated"]
-     - ["autogluon/autogluon", "*", "inputs.work-dir", "code-injection", "generated"]
-     - ["autogluon/autogluon", "*", "inputs.job-name", "code-injection", "generated"]
-     - ["autogluon/autogluon", "*", "inputs.job-type", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.submodule-to-test", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.command", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.work-dir", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.job-name", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.job-type", "code-injection", "generated"]

@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["datadog/dd-trace-dotnet", "*", "inputs.command", "code-injection", "generated"]
-     - ["datadog/dd-trace-dotnet", "*", "inputs.baseImage", "code-injection", "generated"]
-     - ["datadog/dd-trace-dotnet", "*", "inputs.aas_github_token", "code-injection", "generated"]
-     - ["datadog/dd-trace-dotnet", "*", "inputs.artifacts_path", "code-injection", "generated"]
-     - ["datadog/dd-trace-dotnet", "*", "inputs.github_token", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.command", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.baseImage", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.aas_github_token", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.artifacts_path", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.github_token", "code-injection", "generated"]

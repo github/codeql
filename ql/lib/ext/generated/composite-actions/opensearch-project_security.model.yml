@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["opensearch-project/security", "*", "inputs.plugin-branch", "code-injection", "generated"]
+     - ["opensearch-project/security", "*", "input.plugin-branch", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/arrow", "*", "inputs.upload", "code-injection", "generated"]
+     - ["apache/arrow", "*", "input.upload", "code-injection", "generated"]

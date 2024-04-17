@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "inputs.target_version", "code-injection", "generated"]
-     - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "inputs.configuration", "code-injection", "generated"]
-     - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "inputs.platform", "code-injection", "generated"]
+     - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "input.target_version", "code-injection", "generated"]
+     - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "input.configuration", "code-injection", "generated"]
+     - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "input.platform", "code-injection", "generated"]

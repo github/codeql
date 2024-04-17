@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/brpc", "*", "inputs.options", "code-injection", "generated"]
+     - ["apache/brpc", "*", "input.options", "code-injection", "generated"]

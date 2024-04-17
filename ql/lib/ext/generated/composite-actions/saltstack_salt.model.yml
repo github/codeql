@@ -3,12 +3,12 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["saltstack/salt", "*", "inputs.version", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.upload-chunk-size", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.restore-keys", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.save-always", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.lookup-only", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.fail-on-cache-miss", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.enableCrossOsArchive", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.key", "code-injection", "generated"]
-     - ["saltstack/salt", "*", "inputs.path", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.version", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.upload-chunk-size", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.restore-keys", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.save-always", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.lookup-only", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.fail-on-cache-miss", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.enableCrossOsArchive", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.key", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.path", "code-injection", "generated"]

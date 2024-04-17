@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["pytorch/botorch/.github/workflows/reusable_website.yml", "*", "inputs.release_tag", "code-injection", "generated"]
+     - ["pytorch/botorch/.github/workflows/reusable_website.yml", "*", "input.release_tag", "code-injection", "generated"]

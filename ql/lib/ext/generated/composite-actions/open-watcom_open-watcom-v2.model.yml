@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["open-watcom/open-watcom-v2", "*", "inputs.fullname", "code-injection", "generated"]
-     - ["open-watcom/open-watcom-v2", "*", "inputs.buildcmd", "code-injection", "generated"]
-     - ["open-watcom/open-watcom-v2", "*", "inputs.artifact", "code-injection", "generated"]
+     - ["open-watcom/open-watcom-v2", "*", "input.fullname", "code-injection", "generated"]
+     - ["open-watcom/open-watcom-v2", "*", "input.buildcmd", "code-injection", "generated"]
+     - ["open-watcom/open-watcom-v2", "*", "input.artifact", "code-injection", "generated"]

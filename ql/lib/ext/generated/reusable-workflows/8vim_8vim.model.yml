@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["8vim/8vim/.github/workflows/publish.yaml", "*", "inputs.version_code", "code-injection", "generated"]
-     - ["8vim/8vim/.github/workflows/publish.yaml", "*", "inputs.version_name", "code-injection", "generated"]
-     - ["8vim/8vim/.github/workflows/bump-version.yaml", "*", "inputs.message", "code-injection", "generated"]
-     - ["8vim/8vim/.github/workflows/build.yaml", "*", "inputs.target", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/publish.yaml", "*", "input.version_code", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/publish.yaml", "*", "input.version_name", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/bump-version.yaml", "*", "input.message", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/build.yaml", "*", "input.target", "code-injection", "generated"]

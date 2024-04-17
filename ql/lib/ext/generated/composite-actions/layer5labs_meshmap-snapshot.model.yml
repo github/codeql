@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["layer5labs/meshmap-snapshot", "*", "inputs.assetLocation", "code-injection", "generated"]
-     - ["layer5labs/meshmap-snapshot", "*", "inputs.mesheryToken", "code-injection", "generated"]
-     - ["layer5labs/meshmap-snapshot", "*", "inputs.application_url", "code-injection", "generated"]
-     - ["layer5labs/meshmap-snapshot", "*", "inputs.prNumber", "code-injection", "generated"]
-     - ["layer5labs/meshmap-snapshot", "*", "inputs.designID", "code-injection", "generated"]
-     - ["layer5labs/meshmap-snapshot", "*", "inputs.application_type", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.assetLocation", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.mesheryToken", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.application_url", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.prNumber", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.designID", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.application_type", "code-injection", "generated"]

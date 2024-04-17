@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["zcash/zcash", "*", "inputs.destination", "code-injection", "generated"]
-     - ["zcash/zcash", "*", "inputs.remove-first-if-exists", "code-injection", "generated"]
+     - ["zcash/zcash", "*", "input.destination", "code-injection", "generated"]
+     - ["zcash/zcash", "*", "input.remove-first-if-exists", "code-injection", "generated"]

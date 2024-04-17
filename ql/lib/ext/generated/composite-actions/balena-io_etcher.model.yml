@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["balena-io/etcher", "*", "inputs.VERBOSE", "code-injection", "generated"]
+     - ["balena-io/etcher", "*", "input.VERBOSE", "code-injection", "generated"]

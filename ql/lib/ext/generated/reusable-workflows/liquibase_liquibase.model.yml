@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["liquibase/liquibase/.github/workflows/build-azure-uber-jar.yml", "*", "inputs.liquibase-version", "code-injection", "generated"]
+     - ["liquibase/liquibase/.github/workflows/build-azure-uber-jar.yml", "*", "input.liquibase-version", "code-injection", "generated"]

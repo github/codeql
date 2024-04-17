@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["tribler/tribler", "*", "inputs.libsodium-version", "code-injection", "generated"]
-     - ["tribler/tribler", "*", "inputs.command", "code-injection", "generated"]
-     - ["tribler/tribler", "*", "inputs.duration", "code-injection", "generated"]
-     - ["tribler/tribler", "*", "inputs.requirements", "code-injection", "generated"]
-     - ["tribler/tribler", "*", "inputs.path", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.libsodium-version", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.command", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.duration", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.requirements", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.path", "code-injection", "generated"]

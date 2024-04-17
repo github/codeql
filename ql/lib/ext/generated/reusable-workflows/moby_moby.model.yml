@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["moby/moby/.github/workflows/.windows.yml", "*", "inputs.storage", "code-injection", "generated"]
-     - ["moby/moby/.github/workflows/.windows.yml", "*", "inputs.os", "code-injection", "generated"]
+     - ["moby/moby/.github/workflows/.windows.yml", "*", "input.storage", "code-injection", "generated"]
+     - ["moby/moby/.github/workflows/.windows.yml", "*", "input.os", "code-injection", "generated"]

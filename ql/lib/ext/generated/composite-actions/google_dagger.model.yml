@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["google/dagger", "*", "inputs.agp", "code-injection", "generated"]
+     - ["google/dagger", "*", "input.agp", "code-injection", "generated"]

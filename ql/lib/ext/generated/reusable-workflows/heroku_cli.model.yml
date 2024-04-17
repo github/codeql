@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["heroku/cli/.github/workflows/publish-npm.yml", "*", "inputs.isStableRelease", "code-injection", "generated"]
-     - ["heroku/cli/.github/workflows/promote.yml", "*", "inputs.version", "code-injection", "generated"]
+     - ["heroku/cli/.github/workflows/publish-npm.yml", "*", "input.isStableRelease", "code-injection", "generated"]
+     - ["heroku/cli/.github/workflows/promote.yml", "*", "input.version", "code-injection", "generated"]

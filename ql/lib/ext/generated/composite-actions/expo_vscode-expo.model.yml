@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["expo/vscode-expo", "*", "inputs.command", "code-injection", "generated"]
-     - ["expo/vscode-expo", "*", "inputs.semver", "code-injection", "generated"]
-     - ["expo/vscode-expo", "*", "inputs.name", "code-injection", "generated"]
+     - ["expo/vscode-expo", "*", "input.command", "code-injection", "generated"]
+     - ["expo/vscode-expo", "*", "input.semver", "code-injection", "generated"]
+     - ["expo/vscode-expo", "*", "input.name", "code-injection", "generated"]

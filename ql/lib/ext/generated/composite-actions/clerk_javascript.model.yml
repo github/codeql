@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["clerk/javascript", "*", "inputs.auth-email", "code-injection", "generated"]
-     - ["clerk/javascript", "*", "inputs.auth-password", "code-injection", "generated"]
-     - ["clerk/javascript", "*", "inputs.auth-user", "code-injection", "generated"]
-     - ["clerk/javascript", "*", "inputs.registry", "code-injection", "generated"]
-     - ["clerk/javascript", "*", "inputs.publish-cmd", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.auth-email", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.auth-password", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.auth-user", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.registry", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.publish-cmd", "code-injection", "generated"]

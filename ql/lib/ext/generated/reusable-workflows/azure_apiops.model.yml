@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["azure/apiops/tools/github_workflows/run-publisher-with-env.yaml", "*", "inputs.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH", "code-injection", "generated"]
+     - ["azure/apiops/tools/github_workflows/run-publisher-with-env.yaml", "*", "input.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH", "code-injection", "generated"]

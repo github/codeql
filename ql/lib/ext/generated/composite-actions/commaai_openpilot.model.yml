@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["commaai/openpilot", "*", "inputs.sleep_time", "code-injection", "generated"]
-     - ["commaai/openpilot", "*", "inputs.docker_hub_pat", "code-injection", "generated"]
-     - ["commaai/openpilot", "*", "inputs.path", "code-injection", "generated"]
+     - ["commaai/openpilot", "*", "input.sleep_time", "code-injection", "generated"]
+     - ["commaai/openpilot", "*", "input.docker_hub_pat", "code-injection", "generated"]
+     - ["commaai/openpilot", "*", "input.path", "code-injection", "generated"]

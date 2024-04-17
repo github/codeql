@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["tiledb-inc/tiledb/.github/workflows/ci-linux_mac.yml", "*", "inputs.asan", "code-injection", "generated"]
-     - ["tiledb-inc/tiledb/.github/workflows/append-release-cmake.yml", "*", "inputs.ref", "code-injection", "generated"]
+     - ["tiledb-inc/tiledb/.github/workflows/ci-linux_mac.yml", "*", "input.asan", "code-injection", "generated"]
+     - ["tiledb-inc/tiledb/.github/workflows/append-release-cmake.yml", "*", "input.ref", "code-injection", "generated"]

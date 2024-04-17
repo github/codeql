@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/flink/.github/workflows/template.flink-ci.yml", "*", "inputs.environment", "code-injection", "generated"]
-     - ["apache/flink/.github/workflows/template.flink-ci.yml", "*", "inputs.workflow-caller-id", "code-injection", "generated"]
+     - ["apache/flink/.github/workflows/template.flink-ci.yml", "*", "input.environment", "code-injection", "generated"]
+     - ["apache/flink/.github/workflows/template.flink-ci.yml", "*", "input.workflow-caller-id", "code-injection", "generated"]

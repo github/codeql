@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["unstructured-io/unstructured", "*", "inputs.python-version", "code-injection", "generated"]
+     - ["unstructured-io/unstructured", "*", "input.python-version", "code-injection", "generated"]

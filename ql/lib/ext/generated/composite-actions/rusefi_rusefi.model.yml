@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["rusefi/rusefi", "*", "inputs.RUSEFI_OBFUSCATED_PUBLIC_SSH_SERVER", "code-injection", "generated"]
-     - ["rusefi/rusefi", "*", "inputs.RUSEFI_OBFUSCATED_PUBLIC_SSH_PASS", "code-injection", "generated"]
-     - ["rusefi/rusefi", "*", "inputs.RUSEFI_OBFUSCATED_PUBLIC_SSH_USER", "code-injection", "generated"]
-     - ["rusefi/rusefi", "*", "inputs.sim_output", "code-injection", "generated"]
-     - ["rusefi/rusefi", "*", "inputs.RUSEFI_SSH_PASS", "code-injection", "generated"]
+     - ["rusefi/rusefi", "*", "input.RUSEFI_OBFUSCATED_PUBLIC_SSH_SERVER", "code-injection", "generated"]
+     - ["rusefi/rusefi", "*", "input.RUSEFI_OBFUSCATED_PUBLIC_SSH_PASS", "code-injection", "generated"]
+     - ["rusefi/rusefi", "*", "input.RUSEFI_OBFUSCATED_PUBLIC_SSH_USER", "code-injection", "generated"]
+     - ["rusefi/rusefi", "*", "input.sim_output", "code-injection", "generated"]
+     - ["rusefi/rusefi", "*", "input.RUSEFI_SSH_PASS", "code-injection", "generated"]

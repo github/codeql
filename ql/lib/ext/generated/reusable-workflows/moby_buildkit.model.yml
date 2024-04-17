@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["moby/buildkit/.github/workflows/.test.yml", "*", "inputs.env", "code-injection", "generated"]
-     - ["moby/buildkit/.github/workflows/.test.yml", "*", "inputs.includes", "code-injection", "generated"]
-     - ["moby/buildkit/.github/workflows/.test.yml", "*", "inputs.tags", "code-injection", "generated"]
-     - ["moby/buildkit/.github/workflows/.test.yml", "*", "inputs.kinds", "code-injection", "generated"]
-     - ["moby/buildkit/.github/workflows/.test.yml", "*", "inputs.pkgs", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.env", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.includes", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.tags", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.kinds", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.pkgs", "code-injection", "generated"]

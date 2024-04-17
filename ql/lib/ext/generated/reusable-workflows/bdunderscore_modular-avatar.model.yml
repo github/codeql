@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["bdunderscore/modular-avatar/.github/workflows/build-test-docs.yml", "*", "inputs.path", "code-injection", "generated"]
+     - ["bdunderscore/modular-avatar/.github/workflows/build-test-docs.yml", "*", "input.path", "code-injection", "generated"]

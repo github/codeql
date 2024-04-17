@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["kubeflow/training-operator", "*", "inputs.context", "code-injection", "generated"]
+     - ["kubeflow/training-operator", "*", "input.context", "code-injection", "generated"]

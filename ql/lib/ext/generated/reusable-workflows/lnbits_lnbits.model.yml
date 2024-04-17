@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["lnbits/lnbits/.github/workflows/make.yml", "*", "inputs.make", "code-injection", "generated"]
+     - ["lnbits/lnbits/.github/workflows/make.yml", "*", "input.make", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mozilla/bedrock", "*", "inputs.", "code-injection", "generated"]
+     - ["mozilla/bedrock", "*", "input.", "code-injection", "generated"]

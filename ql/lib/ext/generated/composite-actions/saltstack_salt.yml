@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["saltstack/salt", "*", "input.version", "output.version", "taint", "manual"]

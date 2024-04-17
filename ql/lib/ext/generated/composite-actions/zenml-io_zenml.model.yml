@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["zenml-io/zenml", "*", "inputs.install_integrations", "code-injection", "generated"]
+     - ["zenml-io/zenml", "*", "input.install_integrations", "code-injection", "generated"]

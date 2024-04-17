@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["prismlauncher/prismlauncher/.github/workflows/build.yml", "*", "inputs.build_type", "code-injection", "generated"]
+     - ["prismlauncher/prismlauncher/.github/workflows/build.yml", "*", "input.build_type", "code-injection", "generated"]

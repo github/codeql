@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["neovim/neovim/.github/workflows/test_windows.yml", "*", "inputs.build_flags", "code-injection", "generated"]
+     - ["neovim/neovim/.github/workflows/test_windows.yml", "*", "input.build_flags", "code-injection", "generated"]

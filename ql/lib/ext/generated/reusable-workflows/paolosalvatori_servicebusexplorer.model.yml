@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["paolosalvatori/servicebusexplorer/.github/workflows/publish.yml", "*", "inputs.release-version", "code-injection", "generated"]
-     - ["paolosalvatori/servicebusexplorer/.github/workflows/build-test.yml", "*", "inputs.release-version", "code-injection", "generated"]
+     - ["paolosalvatori/servicebusexplorer/.github/workflows/publish.yml", "*", "input.release-version", "code-injection", "generated"]
+     - ["paolosalvatori/servicebusexplorer/.github/workflows/build-test.yml", "*", "input.release-version", "code-injection", "generated"]

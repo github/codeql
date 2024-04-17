@@ -3,5 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["philosowaffle/peloton-to-garmin", "*", "inputs.framework", "code-injection", "generated"]
-     - ["philosowaffle/peloton-to-garmin", "*", "inputs.os", "code-injection", "generated"]
+     - ["philosowaffle/peloton-to-garmin", "*", "input.framework", "code-injection", "generated"]
+     - ["philosowaffle/peloton-to-garmin", "*", "input.os", "code-injection", "generated"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["philosowaffle/peloton-to-garmin", "*", "input.os", "output.artifact_name", "taint", "manual"]

@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ansible/ansible-lint", "*", "inputs.args", "code-injection", "generated"]
-     - ["ansible/ansible-lint", "*", "inputs.working_directory", "code-injection", "generated"]
+     - ["ansible/ansible-lint", "*", "input.args", "code-injection", "generated"]
+     - ["ansible/ansible-lint", "*", "input.working_directory", "code-injection", "generated"]

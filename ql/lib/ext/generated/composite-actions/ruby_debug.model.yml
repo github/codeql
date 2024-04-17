@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ruby/debug", "*", "inputs.report-path", "code-injection", "generated"]
+     - ["ruby/debug", "*", "input.report-path", "code-injection", "generated"]

@@ -3,10 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["opentrons/opentrons", "*", "inputs.destPrefix", "code-injection", "generated"]
-     - ["opentrons/opentrons", "*", "inputs.domain", "code-injection", "generated"]
-     - ["opentrons/opentrons", "*", "inputs.distPath", "code-injection", "generated"]
-     - ["opentrons/opentrons", "*", "inputs.project", "code-injection", "generated"]
-     - ["opentrons/opentrons", "*", "inputs.python-version", "code-injection", "generated"]
-     - ["opentrons/opentrons", "*", "inputs.repository_url", "code-injection", "generated"]
-     - ["opentrons/opentrons", "*", "inputs.password", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.destPrefix", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.domain", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.distPath", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.project", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.python-version", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.repository_url", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.password", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["department-of-veterans-affairs/vets-website", "*", "inputs.delimiter", "code-injection", "generated"]
+     - ["department-of-veterans-affairs/vets-website", "*", "input.delimiter", "code-injection", "generated"]

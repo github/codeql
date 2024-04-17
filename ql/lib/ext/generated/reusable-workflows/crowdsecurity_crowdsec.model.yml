@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["crowdsecurity/crowdsec/.github/workflows/publish-docker.yml", "*", "inputs.latest", "code-injection", "generated"]
-     - ["crowdsecurity/crowdsec/.github/workflows/publish-docker.yml", "*", "inputs.image_version", "code-injection", "generated"]
+     - ["crowdsecurity/crowdsec/.github/workflows/publish-docker.yml", "*", "input.latest", "code-injection", "generated"]
+     - ["crowdsecurity/crowdsec/.github/workflows/publish-docker.yml", "*", "input.image_version", "code-injection", "generated"]

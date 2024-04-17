@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["adap/flower/.github/workflows/_docker-build.yml", "*", "inputs.namespace-repository", "code-injection", "generated"]
-     - ["adap/flower/.github/workflows/_docker-build.yml", "*", "inputs.file-dir", "code-injection", "generated"]
-     - ["adap/flower/.github/workflows/_docker-build.yml", "*", "inputs.build-args", "code-injection", "generated"]
+     - ["adap/flower/.github/workflows/_docker-build.yml", "*", "input.namespace-repository", "code-injection", "generated"]
+     - ["adap/flower/.github/workflows/_docker-build.yml", "*", "input.file-dir", "code-injection", "generated"]
+     - ["adap/flower/.github/workflows/_docker-build.yml", "*", "input.build-args", "code-injection", "generated"]

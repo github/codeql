@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["ray-project/kuberay", "*", "inputs.ray_version", "code-injection", "generated"]
+     - ["ray-project/kuberay", "*", "input.ray_version", "code-injection", "generated"]

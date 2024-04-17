@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["medusajs/medusa", "*", "inputs.pathToSeedData", "code-injection", "generated"]
-     - ["medusajs/medusa", "*", "inputs.password", "code-injection", "generated"]
-     - ["medusajs/medusa", "*", "inputs.email", "code-injection", "generated"]
+     - ["medusajs/medusa", "*", "input.pathToSeedData", "code-injection", "generated"]
+     - ["medusajs/medusa", "*", "input.password", "code-injection", "generated"]
+     - ["medusajs/medusa", "*", "input.email", "code-injection", "generated"]

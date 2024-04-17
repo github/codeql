@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["swagger-api/swagger-codegen", "*", "inputs.options", "code-injection", "generated"]
-     - ["swagger-api/swagger-codegen", "*", "inputs.spec-url", "code-injection", "generated"]
-     - ["swagger-api/swagger-codegen", "*", "inputs.language", "code-injection", "generated"]
-     - ["swagger-api/swagger-codegen", "*", "inputs.job-name", "code-injection", "generated"]
-     - ["swagger-api/swagger-codegen", "*", "inputs.build-commands", "code-injection", "generated"]
-     - ["swagger-api/swagger-codegen", "*", "inputs.path", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.options", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.spec-url", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.language", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.job-name", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.build-commands", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.path", "code-injection", "generated"]

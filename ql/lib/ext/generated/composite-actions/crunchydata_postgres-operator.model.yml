@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["crunchydata/postgres-operator", "*", "inputs.k3s-channel", "code-injection", "generated"]
+     - ["crunchydata/postgres-operator", "*", "input.k3s-channel", "code-injection", "generated"]

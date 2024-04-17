@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["dagger/dagger/.github/workflows/_hack_make.yml", "*", "inputs.mage-targets", "code-injection", "generated"]
-     - ["dagger/dagger/.github/workflows/_hack_make.yml", "*", "inputs.dev-engine", "code-injection", "generated"]
+     - ["dagger/dagger/.github/workflows/_hack_make.yml", "*", "input.mage-targets", "code-injection", "generated"]
+     - ["dagger/dagger/.github/workflows/_hack_make.yml", "*", "input.dev-engine", "code-injection", "generated"]

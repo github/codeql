@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["openvinotoolkit/openvino/.github/workflows/job_tensorflow_models_tests.yml", "*", "inputs.model_scope", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino/.github/workflows/job_tensorflow_models_tests.yml", "*", "input.model_scope", "code-injection", "generated"]

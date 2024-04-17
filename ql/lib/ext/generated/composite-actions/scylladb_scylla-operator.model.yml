@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["scylladb/scylla-operator", "*", "inputs.containerImageName", "code-injection", "generated"]
-     - ["scylladb/scylla-operator", "*", "inputs.githubToken", "code-injection", "generated"]
-     - ["scylladb/scylla-operator", "*", "inputs.githubRef", "code-injection", "generated"]
-     - ["scylladb/scylla-operator", "*", "inputs.githubRepository", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.containerImageName", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.githubToken", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.githubRef", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.githubRepository", "code-injection", "generated"]

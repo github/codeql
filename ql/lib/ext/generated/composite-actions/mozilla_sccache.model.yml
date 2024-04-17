@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["mozilla/sccache", "*", "inputs.name", "code-injection", "generated"]
+     - ["mozilla/sccache", "*", "input.name", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["rasterio/rasterio/.github/workflows/test_gdal_build.yaml", "*", "inputs.gdal_ref", "code-injection", "generated"]
+     - ["rasterio/rasterio/.github/workflows/test_gdal_build.yaml", "*", "input.gdal_ref", "code-injection", "generated"]

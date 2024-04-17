@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["apache/opendal", "*", "inputs.feature", "code-injection", "generated"]
-     - ["apache/opendal", "*", "inputs.setup", "code-injection", "generated"]
-     - ["apache/opendal", "*", "inputs.service", "code-injection", "generated"]
-     - ["apache/opendal", "*", "inputs.target", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.feature", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.setup", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.service", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.target", "code-injection", "generated"]

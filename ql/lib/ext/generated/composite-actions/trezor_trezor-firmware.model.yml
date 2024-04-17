@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["trezor/trezor-firmware", "*", "inputs.lang", "code-injection", "generated"]
-     - ["trezor/trezor-firmware", "*", "inputs.model", "code-injection", "generated"]
-     - ["trezor/trezor-firmware", "*", "inputs.status", "code-injection", "generated"]
-     - ["trezor/trezor-firmware", "*", "inputs.full-deps", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.lang", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.model", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.status", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.full-deps", "code-injection", "generated"]

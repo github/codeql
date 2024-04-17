@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["cosmos/cosmos-sdk", "*", "inputs.github_token", "code-injection", "generated"]
+     - ["cosmos/cosmos-sdk", "*", "input.github_token", "code-injection", "generated"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["n8n-io/n8n/.github/workflows/e2e-reusable.yml", "*", "inputs.pr_number", "code-injection", "generated"]
+     - ["n8n-io/n8n/.github/workflows/e2e-reusable.yml", "*", "input.pr_number", "code-injection", "generated"]

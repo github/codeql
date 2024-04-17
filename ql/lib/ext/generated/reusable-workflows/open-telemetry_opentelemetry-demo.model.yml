@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-     - ["open-telemetry/opentelemetry-demo/.github/workflows/build-images.yml", "*", "inputs.push", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-demo/.github/workflows/build-images.yml", "*", "input.push", "code-injection", "generated"]
