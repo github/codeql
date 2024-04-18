@@ -17,6 +17,4 @@ extensions:
       - ["System.Threading.Tasks.Sources", "IValueTaskSource<TResult>", "GetStatus", "(System.Int16)", "summary", "df-generated"]
       - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "GetStatus", "(System.Int16)", "summary", "df-generated"]
       - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "Reset", "()", "summary", "df-generated"]
-      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "get_RunContinuationsAsynchronously", "()", "summary", "df-generated"]
       - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "get_Version", "()", "summary", "df-generated"]
-      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "set_RunContinuationsAsynchronously", "(System.Boolean)", "summary", "df-generated"]

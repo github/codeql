@@ -248,19 +248,9 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   final override TranslatedElement getChild(int id) {
     result = this.getChildInternal(id)
     or
-    exists(int destructorIndex, int tempDestructorCount |
+    exists(int destructorIndex |
       result.(TranslatedExpr).getExpr() = stmt.getImplicitDestructorCall(destructorIndex) and
-      id = this.getFirstDestructorCallIndex() + destructorIndex - tempDestructorCount and
-      // suppress destructors of temporary variables until proper support is added for them.
-      tempDestructorCount =
-        count(DestructorCall call, int tempIndex |
-          stmt.getImplicitDestructorCall(tempIndex) = call and
-          tempIndex < destructorIndex and
-          call.getQualifier() instanceof ReuseExpr
-        |
-          call
-        ) and
-      not stmt.getImplicitDestructorCall(destructorIndex).getQualifier() instanceof ReuseExpr
+      id = this.getFirstDestructorCallIndex() + destructorIndex
     )
   }
 
@@ -271,11 +261,7 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   }
 
   final override predicate hasAnImplicitDestructorCall() {
-    exists(stmt.getAnImplicitDestructorCall()) and
-    // suppress destructors of temporary variables until proper support is added for them.
-    exists(Expr expr | stmt.getAnImplicitDestructorCall().getQualifier() = expr |
-      not expr instanceof ReuseExpr
-    )
+    exists(stmt.getAnImplicitDestructorCall())
   }
 
   final override string toString() { result = stmt.toString() }

@@ -203,6 +203,8 @@ namespace Semmle.Autobuild.Cpp.Tests
         public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
 
         public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
+
+        public void Dispose() { }
     }
 
     /// <summary>
@@ -250,12 +252,7 @@ namespace Semmle.Autobuild.Cpp.Tests
             EndCallbackIn.Add(s);
         }
 
-        CppAutobuilder CreateAutoBuilder(bool isWindows,
-            string? buildless = null, string? solution = null, string? buildCommand = null, string? ignoreErrors = null,
-            string? msBuildArguments = null, string? msBuildPlatform = null, string? msBuildConfiguration = null, string? msBuildTarget = null,
-            string? dotnetArguments = null, string? dotnetVersion = null, string? vsToolsVersion = null,
-            string? nugetRestore = null, string? allSolutions = null,
-            string cwd = @"C:\Project")
+        CppAutobuilder CreateAutoBuilder(bool isWindows, string? dotnetVersion = null, string cwd = @"C:\Project")
         {
             string codeqlUpperLanguage = Language.Cpp.UpperCaseName;
             Actions.GetEnvironmentVariable[$"CODEQL_AUTOBUILDER_{codeqlUpperLanguage}_NO_INDEXING"] = "false";
@@ -265,22 +262,7 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = "win64";
-            Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
-            Actions.GetEnvironmentVariable["SEMMLE_JAVA_HOME"] = @"C:\odasa\tools\java";
-            Actions.GetEnvironmentVariable["SEMMLE_PLATFORM_TOOLS"] = @"C:\odasa\tools";
-            Actions.GetEnvironmentVariable["LGTM_INDEX_VSTOOLS_VERSION"] = vsToolsVersion;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_MSBUILD_ARGUMENTS"] = msBuildArguments;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_MSBUILD_PLATFORM"] = msBuildPlatform;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_MSBUILD_CONFIGURATION"] = msBuildConfiguration;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_MSBUILD_TARGET"] = msBuildTarget;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_DOTNET_ARGUMENTS"] = dotnetArguments;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_DOTNET_VERSION"] = dotnetVersion;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_BUILD_COMMAND"] = buildCommand;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_SOLUTION"] = solution;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_IGNORE_ERRORS"] = ignoreErrors;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_BUILDLESS"] = buildless;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_ALL_SOLUTIONS"] = allSolutions;
-            Actions.GetEnvironmentVariable["LGTM_INDEX_NUGET_RESTORE"] = nugetRestore;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_OPTION_DOTNET_VERSION"] = dotnetVersion;
             Actions.GetEnvironmentVariable["ProgramFiles(x86)"] = isWindows ? @"C:\Program Files (x86)" : null;
             Actions.GetCurrentDirectory = cwd;
             Actions.IsWindows = isWindows;

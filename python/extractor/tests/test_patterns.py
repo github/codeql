@@ -12,7 +12,7 @@ class ExtractorPatternsTest(test_utils.ExtractorTest):
 
     def test(self):
         repo_dir = subprocess.Popen(["git", "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE).communicate()[0].rstrip().decode("utf-8")
-        test_file_path = os.path.abspath(os.path.join(repo_dir, "unit-tests", "files", "pattern-matching", "patterns.json"))
+        test_file_path = os.path.abspath(os.path.join(repo_dir, "..", "unit-tests", "files", "pattern-matching", "patterns.json"))
         with open(test_file_path) as test_file:
             test_patterns = json.load(test_file)
         for test_pattern in test_patterns:

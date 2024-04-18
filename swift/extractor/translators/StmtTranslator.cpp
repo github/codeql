@@ -218,4 +218,10 @@ codeql::DiscardStmt StmtTranslator::translateDiscardStmt(const swift::DiscardStm
   return entry;
 }
 
+codeql::ThenStmt StmtTranslator::translateThenStmt(const swift::ThenStmt& stmt) {
+  auto entry = dispatcher.createEntry(stmt);
+  entry.result = dispatcher.fetchLabel(stmt.getResult());
+  return entry;
+}
+
 }  // namespace codeql

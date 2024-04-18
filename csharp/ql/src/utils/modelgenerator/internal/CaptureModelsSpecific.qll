@@ -27,6 +27,10 @@ private predicate isHigherOrder(CS::Callable api) {
   )
 }
 
+private predicate irrelevantAccessor(CS::Accessor a) {
+  a.getDeclaration().(CS::Property).isReadWrite()
+}
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
@@ -40,7 +44,10 @@ private predicate isRelevantForModels(CS::Callable api) {
   not api.(CS::Constructor).isParameterless() and
   // Disregard all APIs that have a manual model.
   not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) and
-  not api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+  not api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()) and
+  // Disregard properties that have both a get and a set accessor,
+  // which implicitly means auto implemented properties.
+  not irrelevantAccessor(api)
 }
 
 /**

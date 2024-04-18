@@ -11,13 +11,17 @@
  *       external/cwe/cwe-664
  */
 
-// IMPORTANT: This query does not currently find anything since it relies on extractor and analysis improvements that hasn't yet been released
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.models.implementations.StdContainer
 import semmle.code.cpp.models.implementations.StdMap
 import semmle.code.cpp.models.implementations.Iterator
+
+private predicate tempToDestructorSink(DataFlow::Node sink, CallInstruction call) {
+  call = sink.asOperand().(ThisArgumentOperand).getCall() and
+  call.getStaticCallTarget() instanceof Destructor
+}
 
 /**
  * A configuration to track flow from a temporary variable to the qualifier of
@@ -28,12 +32,15 @@ module TempToDestructorConfig implements DataFlow::ConfigSig {
     source.asInstruction().(VariableAddressInstruction).getIRVariable() instanceof IRTempVariable
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asOperand().(ThisArgumentOperand).getCall().getStaticCallTarget() instanceof Destructor
-  }
+  predicate isSink(DataFlow::Node sink) { tempToDestructorSink(sink, _) }
 }
 
 module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
+
+/** Holds if `pun` is the post-update node of the qualifier of `Call`. */
+private predicate isPostUpdateOfQualifier(CallInstruction call, DataFlow::PostUpdateNode pun) {
+  call.getThisArgumentOperand() = pun.getPreUpdateNode().asOperand()
+}
 
 /**
  * Gets a `DataFlow::Node` that represents a temporary that will be destroyed
@@ -51,13 +58,18 @@ module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
  * and thus the result of `get_2d_vector()[0]` is also an invalid reference.
  */
 DataFlow::Node getADestroyedNode() {
-  exists(TempToDestructorFlow::PathNode destroyedTemp | destroyedTemp.isSource() |
-    result = destroyedTemp.getNode()
+  exists(DataFlow::Node n | TempToDestructorFlow::flowTo(n) |
+    // Case 1: The pointer that goes into the destructor call is destroyed
+    exists(CallInstruction destructorCall |
+      tempToDestructorSink(n, destructorCall) and
+      isPostUpdateOfQualifier(destructorCall, result)
+    )
     or
+    // Case 2: Anything that was derived from the temporary that is now destroyed
+    // is also destroyed.
     exists(CallInstruction call |
       result.asInstruction() = call and
-      DataFlow::localFlow(destroyedTemp.getNode(),
-        DataFlow::operandNode(call.getThisArgumentOperand()))
+      DataFlow::localFlow(DataFlow::operandNode(call.getThisArgumentOperand()), n)
     |
       call.getStaticCallTarget() instanceof StdSequenceContainerAt or
       call.getStaticCallTarget() instanceof StdMapAt
@@ -65,7 +77,7 @@ DataFlow::Node getADestroyedNode() {
   )
 }
 
-predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
+predicate destroyedToBeginSink(DataFlow::Node sink, FunctionCall fc) {
   exists(CallInstruction call |
     call = sink.asOperand().(ThisArgumentOperand).getCall() and
     fc = call.getUnconvertedResultExpression() and
@@ -79,7 +91,7 @@ predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
 module DestroyedToBeginConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = getADestroyedNode() }
 
-  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+  predicate isSink(DataFlow::Node sink) { destroyedToBeginSink(sink, _) }
 
   DataFlow::FlowFeature getAFeature() {
     // By blocking argument-to-parameter flow we ensure that we don't enter a
@@ -99,5 +111,5 @@ module DestroyedToBeginConfig implements DataFlow::ConfigSig {
 module DestroyedToBeginFlow = DataFlow::Global<DestroyedToBeginConfig>;
 
 from DataFlow::Node source, DataFlow::Node sink, FunctionCall beginOrEnd
-where DestroyedToBeginFlow::flow(source, sink) and isSinkImpl(sink, beginOrEnd)
+where DestroyedToBeginFlow::flow(source, sink) and destroyedToBeginSink(sink, beginOrEnd)
 select source, "This object is destroyed before $@ is called.", beginOrEnd, beginOrEnd.toString()

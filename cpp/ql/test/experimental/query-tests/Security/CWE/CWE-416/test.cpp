@@ -677,10 +677,10 @@ std::vector<std::vector<int>> return_self_by_value(const std::vector<std::vector
 
 void test() {
   for (auto x : returnValue()) {} // GOOD
-  for (auto x : returnValue()[0]) {} // BAD [NOT DETECTED] (see *)
+  for (auto x : returnValue()[0]) {} // BAD
   for (auto x : external_by_value(returnValue())) {} // GOOD
   for (auto x : external_by_const_ref(returnValue())) {} // GOOD
-  for (auto x : returnValue().at(0)) {} // BAD [NOT DETECTED] (see *)
+  for (auto x : returnValue().at(0)) {} // BAD
 
   for (auto x : returnRef()) {} // GOOD
   for (auto x : returnRef()[0]) {} // GOOD
@@ -700,7 +700,7 @@ void test() {
 
   {
   auto&& v = returnValue()[0];
-  for(auto it = v.begin(); it != v.end(); ++it) {} // BAD [NOT DETECTED] (see *)
+  for(auto it = v.begin(); it != v.end(); ++it) {} // BAD
   }
   
   {
@@ -713,7 +713,7 @@ void test() {
   for(auto it = v.begin(); it != v.end(); ++it) {} // GOOD
   }
 
-  for (auto x : return_self_by_ref(returnValue())) {} // BAD [NOT DETECTED] (see *)
+  for (auto x : return_self_by_ref(returnValue())) {} // BAD [NOT DETECTED]
 
   for (auto x : return_self_by_value(returnValue())) {} // GOOD
 }
@@ -724,7 +724,7 @@ void iterate(const std::vector<T>& v) {
 }
 
 std::vector<int>& ref_to_first_in_returnValue_1() {
-  return returnValue()[0]; // BAD [NOT DETECTED] (see *)
+  return returnValue()[0]; // BAD
 }
 
 std::vector<int>& ref_to_first_in_returnValue_2() {
@@ -732,7 +732,7 @@ std::vector<int>& ref_to_first_in_returnValue_2() {
 }
 
 std::vector<int>& ref_to_first_in_returnValue_3() {
-  return returnValue()[0]; // BAD [NOT DETECTED] (see *)
+  return returnValue()[0]; // BAD
 }
 
 std::vector<int> first_in_returnValue_1() {
@@ -765,4 +765,9 @@ void test2() {
   auto value = first_in_returnValue_2();
   for (auto x : value) {}
   }
+}
+
+void test3() {
+  const std::vector<std::vector<int>>& v = returnValue(); // GOOD
+  for(const std::vector<int>& x : v) {}
 }

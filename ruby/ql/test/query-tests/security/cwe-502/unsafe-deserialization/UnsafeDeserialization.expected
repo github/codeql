@@ -44,9 +44,9 @@ edges
 | UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:138:32:138:40 | yaml_data | provenance |  |
 | UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:139:37:139:45 | yaml_data | provenance |  |
 | UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:140:32:140:40 | yaml_data | provenance |  |
-| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:142:14:142:33 | call to to_ruby | provenance |  |
-| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:143:14:143:43 | call to to_ruby | provenance |  |
-| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:144:14:144:48 | call to to_ruby | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:142:14:142:33 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:143:14:143:43 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:144:14:144:48 | call to to_ruby | provenance | AdditionalTaintStep |
 | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:137:17:137:28 | ...[...] | provenance |  |
 | UnsafeDeserialization.rb:137:17:137:28 | ...[...] | UnsafeDeserialization.rb:137:5:137:13 | yaml_data | provenance |  |
 | UnsafeDeserialization.rb:149:5:149:14 | plist_data | UnsafeDeserialization.rb:150:30:150:39 | plist_data | provenance |  |

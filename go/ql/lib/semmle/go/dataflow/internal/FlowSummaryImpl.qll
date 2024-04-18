@@ -103,11 +103,15 @@ module SourceSinkInterpretationInput implements
    * Holds if an external source specification exists for `e` with output specification
    * `output`, kind `kind`, and provenance `provenance`.
    */
-  predicate sourceElement(SourceOrSinkElement e, string output, string kind) {
+  predicate sourceElement(
+    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sourceModel(package, type, subtypes, name, signature, ext, output, kind, _) and
+      sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -116,11 +120,15 @@ module SourceSinkInterpretationInput implements
    * Holds if an external sink specification exists for `e` with input specification
    * `input`, kind `kind` and provenance `provenance`.
    */
-  predicate sinkElement(SourceOrSinkElement e, string input, string kind) {
+  predicate sinkElement(
+    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sinkModel(package, type, subtypes, name, signature, ext, input, kind, _) and
+      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }

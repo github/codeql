@@ -765,3 +765,63 @@ private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecord
     result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
   }
 }
+
+/**
+ * An additional call step for calls to ActiveRecord scopes. For example, in the following code:
+ *
+ * ```rb
+ * class User < ActiveRecord::Base
+ *   scope :with_role, ->(role) { where(role: role) }
+ * end
+ *
+ * User.with_role(r)
+ * ```
+ *
+ * the call to `with_role` targets the lambda, and argument `r` flows to the parameter `role`.
+ */
+class ActiveRecordScopeCallTarget extends AdditionalCallTarget {
+  override DataFlowCallable viableTarget(ExprNodes::CallCfgNode scopeCall) {
+    exists(DataFlow::ModuleNode model, string scopeName |
+      model = activeRecordBaseClass().getADescendentModule() and
+      exists(DataFlow::CallNode scope |
+        scope = model.getAModuleLevelCall("scope") and
+        scope.getArgument(0).getConstantValue().isStringlikeValue(scopeName) and
+        scope.getArgument(1).asCallable().asCallableAstNode() = result.asCfgScope()
+      ) and
+      scopeCall = model.getAnImmediateReference().getAMethodCall(scopeName).asExpr()
+    )
+  }
+}
+
+/** Sinks for the mass assignment query. */
+private module MassAssignmentSinks {
+  private import codeql.ruby.security.MassAssignmentCustomizations
+
+  pragma[nomagic]
+  private predicate massAssignmentCall(DataFlow::CallNode call, string name) {
+    call = activeRecordBaseClass().getAMethodCall(name)
+    or
+    call instanceof ActiveRecordInstanceMethodCall and
+    call.getMethodName() = name
+  }
+
+  /** A call to a method that sets attributes of an database record using a hash. */
+  private class MassAssignmentSink extends MassAssignment::Sink {
+    MassAssignmentSink() {
+      exists(DataFlow::CallNode call, string name | massAssignmentCall(call, name) |
+        name =
+          [
+            "build", "create", "create!", "create_with", "create_or_find_by", "create_or_find_by!",
+            "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "insert", "insert!",
+            "insert_all", "insert_all!", "instantiate", "new", "update", "update!", "upsert",
+            "upsert_all"
+          ] and
+        this = call.getArgument(0)
+        or
+        // These methods have an optional first id parameter.
+        name = ["update", "update!"] and
+        this = call.getArgument(1)
+      )
+    }
+  }
+}

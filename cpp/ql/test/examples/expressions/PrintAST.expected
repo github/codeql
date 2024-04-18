@@ -105,9 +105,23 @@ ConditionDecl.cpp:
 #    3|         getVariableAccess(): [VariableAccess] k
 #    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue(load)
+#    3|         getInitializingExpr(): [LTExpr] ... < ...
+#    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|           getLesserOperand(): [VariableAccess] j
+#    3|               Type = [IntType] int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getGreaterOperand(): [Literal] 5
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 5
+#    3|               ValueCategory = prvalue
 #    3|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #    3|             Conversion = [BoolConversion] conversion to bool
 #    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|         getInitializingExpr().getFullyConverted(): [CStyleCast] (int)...
+#    3|             Conversion = [IntegralConversion] integral conversion
+#    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue
 #    3|       getStmt(): [BlockStmt] { ... }
 #    5|     getStmt(2): [ReturnStmt] return ...
@@ -412,11 +426,14 @@ DestructorCall.cpp:
 #   12|           getQualifier(): [VariableAccess] c
 #   12|               Type = [PointerType] C *
 #   12|               ValueCategory = prvalue(load)
+#   12|         getExprWithReuse(): [ReuseExpr] reuse of c
+#   12|             Type = [PointerType] C *
+#   12|             ValueCategory = prvalue
 #   13|     getStmt(1): [ExprStmt] ExprStmt
 #   13|       getExpr(): [DeleteExpr] delete
 #   13|           Type = [VoidType] void
 #   13|           ValueCategory = prvalue
-#   13|         getExpr(): [VariableAccess] d
+#   13|         getExprWithReuse(): [VariableAccess] d
 #   13|             Type = [PointerType] D *
 #   13|             ValueCategory = prvalue(load)
 #   14|     getStmt(2): [ReturnStmt] return ...

@@ -38,6 +38,12 @@ private int getBinaryInstructionValue(BinaryInstruction instr) {
     or
     instr instanceof DivInstruction and result = div(left, right)
     or
+    instr instanceof BitOrInstruction and result = bitOr(left, right)
+    or
+    instr instanceof BitAndInstruction and result = bitAnd(left, right)
+    or
+    instr instanceof BitXorInstruction and result = bitXor(left, right)
+    or
     instr instanceof CompareEQInstruction and result = compareEQ(left, right)
     or
     instr instanceof CompareNEInstruction and result = compareNE(left, right)

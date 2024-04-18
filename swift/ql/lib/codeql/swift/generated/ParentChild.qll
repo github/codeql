@@ -3780,6 +3780,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfThenStmt(ThenStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nResult |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nResult = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateResult() and partialPredicateCall = "Result()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfThrowStmt(ThrowStmt e, int index, string partialPredicateCall) {
     exists(int b, int bStmt, int n, int nSubExpr |
       b = 0 and
@@ -5465,6 +5481,8 @@ private module Impl {
     result = getImmediateChildOfPoundAssertStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfReturnStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfThenStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfThrowStmt(e, index, partialAccessor)
     or

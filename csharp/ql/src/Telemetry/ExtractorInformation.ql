@@ -10,6 +10,7 @@ import csharp
 import semmle.code.csharp.commons.Diagnostics
 
 predicate compilationInfo(string key, float value) {
+  not key.matches("Compiler diagnostic count for%") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
     value = infoValue.toFloat()
@@ -86,7 +87,7 @@ predicate extractionIsStandalone(string key, int value) {
     value = 0 and
     not extractionIsStandalone()
   ) and
-  key = "Is buildless extraction"
+  key = "Is extracted with build-mode set to 'none'"
 }
 
 signature module StatsSig {
@@ -119,17 +120,32 @@ module ReportStats<StatsSig Stats> {
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
 
-  int getNumberOfNotOk() { result = count(Call c | not exists(c.getTarget())) }
+  int getNumberOfNotOk() {
+    result =
+      count(Call c |
+        not exists(c.getTarget()) and
+        not c instanceof DelegateCall and
+        not c instanceof DynamicExpr
+      )
+  }
 
   string getOkText() { result = "calls with call target" }
 
   string getNotOkText() { result = "calls with missing call target" }
 }
 
-module ExprTypeStats implements StatsSig {
-  int getNumberOfOk() { result = count(Expr e | not e.getType() instanceof UnknownType) }
+private class SourceExpr extends Expr {
+  SourceExpr() { this.getFile().fromSource() }
+}
 
-  int getNumberOfNotOk() { result = count(Expr e | e.getType() instanceof UnknownType) }
+private predicate hasGoodType(Expr e) {
+  exists(e.getType()) and not e.getType() instanceof UnknownType
+}
+
+module ExprTypeStats implements StatsSig {
+  int getNumberOfOk() { result = count(SourceExpr e | hasGoodType(e)) }
+
+  int getNumberOfNotOk() { result = count(SourceExpr e | not hasGoodType(e)) }
 
   string getOkText() { result = "expressions with known type" }
 
