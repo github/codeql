@@ -35,7 +35,7 @@ module RequestForgery {
   /**
    * A third-party controllable input, considered as a flow source for request forgery.
    */
-  class UntrustedFlowAsSource extends Source, RemoteFlowSource { }
+  class RemoteFlowAsSource extends Source, RemoteFlowSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.

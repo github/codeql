@@ -30,7 +30,7 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of untrusted data, considered as a taint source for command injection. */
-  class UntrustedFlowAsSource extends Source instanceof RemoteFlowSource { }
+  class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
   /** A command name, considered as a taint sink for command injection. */
   class CommandNameAsSink extends Sink {

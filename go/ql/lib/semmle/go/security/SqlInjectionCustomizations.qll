@@ -26,7 +26,7 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of untrusted data, considered as a taint source for SQL injection. */
-  class UntrustedFlowAsSource extends Source instanceof RemoteFlowSource { }
+  class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
   /** An SQL string, considered as a taint sink for SQL injection. */
   class SqlQueryAsSink extends Sink instanceof SQL::QueryString { }

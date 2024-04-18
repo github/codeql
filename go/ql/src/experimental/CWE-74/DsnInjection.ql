@@ -14,7 +14,7 @@ import DsnInjectionCustomizations
 import DsnInjectionFlow::PathGraph
 
 /** An untrusted flow source taken as a source for the `DsnInjection` taint-flow configuration. */
-private class UntrustedFlowAsSource extends Source instanceof RemoteFlowSource { }
+private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
 from DsnInjectionFlow::PathNode source, DsnInjectionFlow::PathNode sink
 where DsnInjectionFlow::flowPath(source, sink)

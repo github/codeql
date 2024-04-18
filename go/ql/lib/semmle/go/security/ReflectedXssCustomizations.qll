@@ -37,7 +37,7 @@ module ReflectedXss {
   /**
    * A third-party controllable input, considered as a flow source for reflected XSS.
    */
-  class UntrustedFlowAsSource extends Source, RemoteFlowSource { }
+  class RemoteFlowAsSource extends Source, RemoteFlowSource { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink instanceof SharedXss::Sink { }
