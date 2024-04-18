@@ -240,21 +240,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var nugetSourceFailures = 0;
             var assetFiles = new List<string>();
             var sync = new object();
-            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, project =>
+            var projectGroups = projects.GroupBy(Path.GetDirectoryName);
+            Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
             {
-                logger.LogInfo($"Restoring project {project}...");
-                var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
-                lock (sync)
+                foreach (var project in projectGroup)
                 {
-                    if (res.Success)
+                    logger.LogInfo($"Restoring project {project}...");
+                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    lock (sync)
                     {
-                        successCount++;
+                        if (res.Success)
+                        {
+                            successCount++;
+                        }
+                        if (res.HasNugetPackageSourceError)
+                        {
+                            nugetSourceFailures++;
+                        }
+                        assetFiles.AddRange(res.AssetsFilePaths);
                     }
-                    if (res.HasNugetPackageSourceError)
-                    {
-                        nugetSourceFailures++;
-                    }
-                    assetFiles.AddRange(res.AssetsFilePaths);
                 }
             });
             assets = assetFiles;
