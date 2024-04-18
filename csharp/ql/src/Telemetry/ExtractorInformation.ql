@@ -134,10 +134,18 @@ module CallTargetStats implements StatsSig {
   string getNotOkText() { result = "calls with missing call target" }
 }
 
-module ExprTypeStats implements StatsSig {
-  int getNumberOfOk() { result = count(Expr e | not e.getType() instanceof UnknownType) }
+private class SourceExpr extends Expr {
+  SourceExpr() { this.getFile().fromSource() }
+}
 
-  int getNumberOfNotOk() { result = count(Expr e | e.getType() instanceof UnknownType) }
+private predicate hasGoodType(Expr e) {
+  exists(e.getType()) and not e.getType() instanceof UnknownType
+}
+
+module ExprTypeStats implements StatsSig {
+  int getNumberOfOk() { result = count(SourceExpr e | hasGoodType(e)) }
+
+  int getNumberOfNotOk() { result = count(SourceExpr e | not hasGoodType(e)) }
 
   string getOkText() { result = "expressions with known type" }
 
