@@ -43,6 +43,11 @@ module OpenUrlRedirect {
   }
 
   /**
+   * DEPRECATED: Use `RemoteFlowAsSource` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
+  /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
   class RemoteFlowAsSource extends Source, RemoteFlowSource {

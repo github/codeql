@@ -29,6 +29,11 @@ module CommandInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /**
+   * DEPRECATED: Use `RemoteFlowAsSource` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
   /** A source of untrusted data, considered as a taint source for command injection. */
   class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 

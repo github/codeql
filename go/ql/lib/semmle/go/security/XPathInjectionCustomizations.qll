@@ -24,6 +24,11 @@ module XPathInjection {
    */
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
+  /**
+   * DEPRECATED: Use `RemoteFlowAsSource` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
   /** A source of untrusted data, used in an XPath expression. */
   class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 

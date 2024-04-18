@@ -44,6 +44,11 @@ module TaintedPath {
     }
   }
 
+  /**
+   * DEPRECATED: Use `RemoteFlowAsSource` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
   /** A source of untrusted data, considered as a taint source for path traversal. */
   class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 

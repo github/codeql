@@ -35,6 +35,11 @@ module ReflectedXss {
   }
 
   /**
+   * DEPRECATED: Use `RemoteFlowAsSource` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
+  /**
    * A third-party controllable input, considered as a flow source for reflected XSS.
    */
   class RemoteFlowAsSource extends Source, RemoteFlowSource { }

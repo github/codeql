@@ -256,6 +256,11 @@ module Fasthttp {
    */
   module URI {
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which are part of the incoming URL.
      */
     class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
@@ -273,6 +278,11 @@ module Fasthttp {
    * Provide modeling for fasthttp.Args Type.
    */
   module Args {
+    /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
     /**
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
      *
@@ -387,6 +397,11 @@ module Fasthttp {
    */
   module Request {
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which can be many part of request.
      */
     class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
@@ -464,6 +479,11 @@ module Fasthttp {
     }
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which are generally related to HTTP request.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
@@ -486,6 +506,11 @@ module Fasthttp {
    * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources.
    */
   module RequestHeader {
+    /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
     /**
      * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
      *

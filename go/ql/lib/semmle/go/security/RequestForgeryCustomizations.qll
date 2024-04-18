@@ -33,6 +33,11 @@ module RequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `RemoteFlowAsSource` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
+  /**
    * A third-party controllable input, considered as a flow source for request forgery.
    */
   class RemoteFlowAsSource extends Source, RemoteFlowSource { }
