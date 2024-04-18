@@ -100,8 +100,14 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="child">The child index.</param>
         /// <param name="type">A type hint.</param>
         /// <returns>The new expression.</returns>
-        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child) =>
-            CreateFromNode(new ExpressionNodeInfo(cx, node, parent, child));
+        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, Boolean isCompilerGenerated = false)
+        {
+            var info = new ExpressionNodeInfo(cx, node, parent, child)
+            {
+                IsCompilerGenerated = isCompilerGenerated
+            };
+            return CreateFromNode(info);
+        }
 
         public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.ImplicitCast.Create(info);
 
@@ -308,23 +314,45 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Given b in a?.b.c, return a.
+        /// Given `b` in `a?.b.c`, return `(a?.b, a?.b)`.
+        /// 
+        /// Given `c` in `a?.b?.c.d`, return `(b?.c, a?.b?.c)`.
         /// </summary>
         /// <param name="node">A MemberBindingExpression.</param>
-        /// <returns>The qualifier of the conditional access.</returns>
-        protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node)
+        /// <returns>The conditional access.</returns>
+        public static (ConditionalAccessExpressionSyntax Parent, ConditionalAccessExpressionSyntax Root) FindConditionalAccessParent(ExpressionSyntax node)
         {
-            for (SyntaxNode? n = node; n is not null; n = n.Parent)
+            (ConditionalAccessExpressionSyntax, ConditionalAccessExpressionSyntax)? res = null;
+            SyntaxNode? prev = null;
+
+            for (SyntaxNode? n = node; n is not null; prev = n, n = n.Parent)
             {
-                if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess &&
-                    conditionalAccess.WhenNotNull == n)
+                if (n is ConditionalAccessExpressionSyntax conditionalAccess &&
+                    (prev is null || conditionalAccess.WhenNotNull == prev))
                 {
-                    return conditionalAccess.Expression;
+                    res = res is null ? (conditionalAccess, conditionalAccess) : (res.Value.Item1, conditionalAccess);
                 }
+                else if (res.HasValue)
+                {
+                    break;
+                }
+            }
+
+            if (res.HasValue)
+            {
+                return res.Value;
             }
 
             throw new InternalError(node, "Unable to locate a ConditionalAccessExpression");
         }
+
+        /// <summary>
+        /// Given b in a?.b.c, return a.
+        /// </summary>
+        /// <param name="node">A MemberBindingExpression.</param>
+        /// <returns>The qualifier of the conditional access.</returns>
+        protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node) =>
+            FindConditionalAccessParent(node).Parent.Expression;
 
         public void MakeConditional(TextWriter trapFile)
         {

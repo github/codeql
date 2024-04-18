@@ -5,7 +5,7 @@
 import codeql.ruby.AST
 import codeql.ruby.CFG
 import TestUtilities.InlineFlowTest
-import ValueFlowTest<DefaultFlowConfig>
+import DefaultFlowTest
 import ValueFlow::PathGraph
 
 query predicate hashLiteral(CfgNodes::ExprNodes::HashLiteralCfgNode n) { any() }

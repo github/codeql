@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "1 `go.work` file was found:\n\n`workspace/go.work`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-work-found",
+    "name": "`go.work` file found"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`workspace/subdir/go.mod`, `module/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-files-outside-go-modules",
+    "name": "Go files were found outside Go modules"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

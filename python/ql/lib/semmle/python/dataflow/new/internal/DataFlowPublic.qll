@@ -148,6 +148,7 @@ class Node extends TNode {
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -157,8 +158,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  cached
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     Stages::DataFlow::ref() and
@@ -642,7 +642,9 @@ newtype TContent =
     or
     //
     // 2) summaries in data-extension files
-    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
   } or

@@ -219,3 +219,28 @@ predicate splitQualifiedName(string qualifiedName, string qualifier, string name
     name = qualifiedName
   )
 }
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Gets the fully qualified name of this declaration, including types, for example
+ * the fully qualified name with types of `M` on line 3 is `N.C.M(int, string)` in
+ *
+ * ```csharp
+ * namespace N {
+ *   class C {
+ *     void M(int i, string s) { }
+ *   }
+ * }
+ * ```
+ */
+bindingset[d]
+string getFullyQualifiedNameWithTypes(Declaration d) {
+  exists(string fullqual, string qual, string name |
+    d.getDeclaringType().hasFullyQualifiedName(qual, name) and
+    fullqual = getQualifiedName(qual, name) and
+    if d instanceof NestedType
+    then result = fullqual + "+" + d.toStringWithTypes()
+    else result = fullqual + "." + d.toStringWithTypes()
+  )
+}

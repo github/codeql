@@ -488,7 +488,7 @@ fn main() -> Result<()> {
         "bundled `python.tsg`".to_owned()
     };
     let source_path = Path::new(matches.value_of("source").unwrap());
-    let language = tree_sitter_python::language();
+    let language = tsp::language();
     let mut parser = Parser::new();
     parser.set_language(language)?;
     // Statically include `python.tsg`:

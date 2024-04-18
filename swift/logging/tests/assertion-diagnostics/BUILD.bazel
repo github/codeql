@@ -17,5 +17,5 @@ py_test(
         "diagnostics.expected",
         ":assert-false",
     ],
-    deps = ["//swift/integration-tests:integration_tests"],
+    deps = ["//swift/ql/integration-tests:utils"],
 )

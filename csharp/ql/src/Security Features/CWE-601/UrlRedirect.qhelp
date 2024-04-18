@@ -57,7 +57,7 @@ which is harmless but perhaps not intended. You can substitute your own domain (
 
 <li>
 OWASP:
-<a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
 Unvalidated Redirects and Forwards Cheat Sheet</a>.
 </li>
 <li>

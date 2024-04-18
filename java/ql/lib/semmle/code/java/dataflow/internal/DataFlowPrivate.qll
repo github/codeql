@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.ExternalFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
@@ -575,6 +576,10 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

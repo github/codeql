@@ -5,8 +5,9 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
+private import codeql.util.Location
 
-signature module InputSig<DF::InputSig DataFlowLang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
   /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
   default predicate uniqueEnclosingCallableExclude(DataFlowLang::Node n) { none() }
 
@@ -71,8 +72,8 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 }
 
 module MakeConsistency<
-  DF::InputSig DataFlowLang, TT::InputSig<DataFlowLang> TaintTrackingLang,
-  InputSig<DataFlowLang> Input>
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  TT::InputSig<Location, DataFlowLang> TaintTrackingLang, InputSig<Location, DataFlowLang> Input>
 {
   private import DataFlowLang
   private import TaintTrackingLang
@@ -85,16 +86,16 @@ module MakeConsistency<
       this instanceof ParameterNode or
       this instanceof ReturnNode or
       this = getAnOutNode(_, _) or
-      simpleLocalFlowStep(this, _) or
-      simpleLocalFlowStep(_, this) or
+      simpleLocalFlowStep(this, _, _) or
+      simpleLocalFlowStep(_, this, _) or
       jumpStep(this, _) or
       jumpStep(_, this) or
       storeStep(this, _, _) or
       storeStep(_, _, this) or
       readStep(this, _, _) or
       readStep(_, _, this) or
-      defaultAdditionalTaintStep(this, _) or
-      defaultAdditionalTaintStep(_, this)
+      defaultAdditionalTaintStep(this, _, _) or
+      defaultAdditionalTaintStep(_, this, _)
     }
   }
 
@@ -128,10 +129,7 @@ module MakeConsistency<
 
   query predicate uniqueNodeLocation(Node n, string msg) {
     exists(int c |
-      c =
-        count(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-          n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-        ) and
+      c = count(n.getLocation()) and
       c != 1 and
       not Input::uniqueNodeLocationExclude(n) and
       msg = "Node should have one location but has " + c + "."
@@ -142,7 +140,7 @@ module MakeConsistency<
     exists(int c |
       c =
         strictcount(Node n |
-          not n.hasLocationInfo(_, _, _, _, _) and
+          not exists(n.getLocation()) and
           not Input::missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c
@@ -163,7 +161,7 @@ module MakeConsistency<
   }
 
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
-    simpleLocalFlowStep(n1, n2) and
+    simpleLocalFlowStep(n1, n2, _) and
     nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
@@ -249,7 +247,7 @@ module MakeConsistency<
 
   query predicate postWithInFlow(PostUpdateNode n, string msg) {
     not clearsContent(n, _) and
-    simpleLocalFlowStep(_, n) and
+    simpleLocalFlowStep(_, n, _) and
     not Input::postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
@@ -298,7 +296,7 @@ module MakeConsistency<
   }
 
   query predicate identityLocalStep(Node n, string msg) {
-    simpleLocalFlowStep(n, n) and
+    simpleLocalFlowStep(n, n, _) and
     not Input::identityLocalStepExclude(n) and
     msg = "Node steps to itself"
   }

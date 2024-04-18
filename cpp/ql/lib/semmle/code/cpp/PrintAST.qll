@@ -309,9 +309,12 @@ class ExprNode extends AstNode {
   override AstNode getChildInternal(int childIndex) {
     result.getAst() = expr.getChild(childIndex)
     or
+    childIndex = max(int index | exists(expr.getChild(index)) or index = 0) + 1 and
+    result.getAst() = expr.(ConditionDeclExpr).getInitializingExpr()
+    or
     exists(int destructorIndex |
       result.getAst() = expr.getImplicitDestructorCall(destructorIndex) and
-      childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 1
+      childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 2
     )
   }
 
@@ -361,6 +364,8 @@ class ConversionNode extends ExprNode {
     childIndex = 0 and
     result.getAst() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
+    or
+    result.getAst() = expr.getImplicitDestructorCall(childIndex - 1)
   }
 }
 
@@ -686,6 +691,8 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       not namedExprChildPredicates(expr, child, _) and
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
       or
+      expr.(ConditionDeclExpr).getInitializingExpr() = child and result = "getInitializingExpr()"
+      or
       exists(int n |
         expr.getImplicitDestructorCall(n) = child and
         result = "getImplicitDestructorCall(" + n + ")"
@@ -857,7 +864,7 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(DeleteOrDeleteArrayExpr).getDestructorCall() = ele and pred = "getDestructorCall()"
     or
-    expr.(DeleteOrDeleteArrayExpr).getExpr() = ele and pred = "getExpr()"
+    expr.(DeleteOrDeleteArrayExpr).getExprWithReuse() = ele and pred = "getExprWithReuse()"
     or
     expr.(DestructorFieldDestruction).getExpr() = ele and pred = "getExpr()"
     or

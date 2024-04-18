@@ -280,6 +280,20 @@ module CallGraph {
   }
 
   /**
+   * Holds if `function` flows to a property of `host` via non-local data flow.
+   */
+  pragma[nomagic]
+  private predicate complexMethodInstallation(
+    DataFlow::SourceNode host, DataFlow::FunctionNode function
+  ) {
+    not function = getAMethodOnObject(_) and
+    exists(DataFlow::TypeTracker t |
+      getAFunctionReference(function, 0, t) = host.getAPropertySource() and
+      t.start() // require call bit to be false
+    )
+  }
+
+  /**
    * Holds if `pred` is assumed to flow to `succ` because a method is stored on an object that is assumed
    * to be the receiver of calls to that method.
    *
@@ -291,9 +305,18 @@ module CallGraph {
    */
   cached
   predicate impliedReceiverStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    // To avoid double-recursion, we handle either complex flow for the host object, or for the function, but not both.
     exists(DataFlow::SourceNode host |
+      // Complex flow for the host object
       pred = getAnAllocationSiteRef(host) and
       succ = getAMethodOnObject(host).getReceiver()
+      or
+      // Complex flow for the function
+      exists(DataFlow::FunctionNode function |
+        complexMethodInstallation(host, function) and
+        pred = host and
+        succ = function.getReceiver()
+      )
     )
   }
 }

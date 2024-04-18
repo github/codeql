@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             public QueryCall(Context cx, IMethodSymbol? method, SyntaxNode clause, IExpressionParentEntity parent, int child)
                 : base(new ExpressionInfo(cx, method?.GetAnnotatedReturnType(),
                         cx.CreateLocation(clause.GetLocation()),
-                        ExprKind.METHOD_INVOCATION, parent, child, false, null))
+                        ExprKind.METHOD_INVOCATION, parent, child, isCompilerGenerated: false, null))
             {
                 if (method is not null)
                     cx.TrapWriter.Writer.expr_call(this, Method.Create(cx, method));
@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Expression.Create(cx, Expr, decl, 0);
 
                 var nameLoc = cx.CreateLocation(name.GetLocation());
-                var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 1, false, null));
+                var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 1, isCompilerGenerated: false, null));
                 cx.TrapWriter.Writer.expr_access(access, LocalVariable.Create(cx, variableSymbol));
 
                 return decl;
