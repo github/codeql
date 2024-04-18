@@ -16,8 +16,8 @@ private module CleverGo {
   /**
    * Provides models of remote flow sources.
    */
-  private class UntrustedSources extends RemoteFlowSource::Range {
-    UntrustedSources() {
+  private class RemoteSources extends RemoteFlowSource::Range {
+    RemoteSources() {
       // Methods on types of package: clevergo.tech/clevergo@v0.5.2
       exists(string receiverName, string methodName, Method mtd, FunctionOutput out |
         this = out.getExitNode(mtd.getACall()) and

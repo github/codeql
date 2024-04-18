@@ -2,7 +2,7 @@
    "Name": "CleverGo",
    "Models": [
       {
-         "Name": "UntrustedSources",
+         "Name": "RemoteSources",
          "Kind": "RemoteFlowSource",
          "Methods": [
             {
