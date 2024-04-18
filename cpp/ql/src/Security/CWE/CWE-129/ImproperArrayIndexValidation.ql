@@ -66,7 +66,10 @@ predicate predictableInstruction(Instruction instr) {
 }
 
 module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
+  predicate isSource(DataFlow::Node source) {
+    isFlowSource(source, _) and
+    not source.getLocation().getFile().getRelativePath().regexpMatch("(.*/)?tests?/.*")
+  }
 
   predicate isBarrier(DataFlow::Node node) {
     hasUpperBound(node.asExpr())
@@ -117,7 +120,8 @@ module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
 module ImproperArrayIndexValidation = TaintTracking::Global<ImproperArrayIndexValidationConfig>;
 
 from
-  ImproperArrayIndexValidation::PathNode source, ImproperArrayIndexValidation::PathNode sink,
+  ImproperArrayIndexValidation::PathNode source,
+  ImproperArrayIndexValidation::PathNode sink,
   string sourceType
 where
   ImproperArrayIndexValidation::flowPath(source, sink) and
