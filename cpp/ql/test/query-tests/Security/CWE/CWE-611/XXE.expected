@@ -57,12 +57,12 @@ edges
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:66:23:66:43 | *new | provenance |  |
 | tests.cpp:73:23:73:43 | *new | tests.cpp:80:2:80:2 | *p | provenance |  |
 | tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:73:23:73:43 | *new | provenance |  |
-| tests.cpp:85:24:85:44 | *new | tests.cpp:86:24:86:25 | *(reference to) | provenance |  |
+| tests.cpp:85:24:85:44 | *new | tests.cpp:86:24:86:25 | ** ... | provenance |  |
 | tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:85:24:85:44 | *new | provenance |  |
-| tests.cpp:86:24:86:25 | *(reference to) | tests.cpp:88:3:88:3 | *q | provenance |  |
-| tests.cpp:100:24:100:44 | *new | tests.cpp:101:24:101:25 | *(reference to) | provenance |  |
+| tests.cpp:86:24:86:25 | ** ... | tests.cpp:88:3:88:3 | *q | provenance |  |
+| tests.cpp:100:24:100:44 | *new | tests.cpp:101:24:101:25 | ** ... | provenance |  |
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:100:24:100:44 | *new | provenance |  |
-| tests.cpp:101:24:101:25 | *(reference to) | tests.cpp:104:3:104:3 | *q | provenance |  |
+| tests.cpp:101:24:101:25 | ** ... | tests.cpp:104:3:104:3 | *q | provenance |  |
 | tests.cpp:112:39:112:39 | *p | tests.cpp:112:39:112:39 | *p | provenance |  |
 | tests.cpp:112:39:112:39 | *p | tests.cpp:113:2:113:2 | *p | provenance |  |
 | tests.cpp:116:39:116:39 | *p | tests.cpp:117:2:117:2 | *p | provenance |  |
@@ -158,11 +158,11 @@ nodes
 | tests.cpp:80:2:80:2 | *p | semmle.label | *p |
 | tests.cpp:85:24:85:44 | *new | semmle.label | *new |
 | tests.cpp:85:24:85:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:86:24:86:25 | *(reference to) | semmle.label | *(reference to) |
+| tests.cpp:86:24:86:25 | ** ... | semmle.label | ** ... |
 | tests.cpp:88:3:88:3 | *q | semmle.label | *q |
 | tests.cpp:100:24:100:44 | *new | semmle.label | *new |
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:101:24:101:25 | *(reference to) | semmle.label | *(reference to) |
+| tests.cpp:101:24:101:25 | ** ... | semmle.label | ** ... |
 | tests.cpp:104:3:104:3 | *q | semmle.label | *q |
 | tests.cpp:112:39:112:39 | *p | semmle.label | *p |
 | tests.cpp:112:39:112:39 | *p | semmle.label | *p |

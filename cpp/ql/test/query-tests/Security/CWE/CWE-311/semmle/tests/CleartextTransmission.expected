@@ -1,8 +1,8 @@
 edges
 | test3.cpp:74:21:74:29 | password1 | test3.cpp:74:21:74:29 | password1 | provenance |  |
 | test3.cpp:74:21:74:29 | password1 | test3.cpp:76:15:76:17 | ptr | provenance |  |
-| test3.cpp:81:15:81:22 | array to pointer conversion | test3.cpp:83:15:83:17 | ptr | provenance |  |
-| test3.cpp:81:15:81:22 | password | test3.cpp:81:15:81:22 | array to pointer conversion | provenance |  |
+| test3.cpp:81:15:81:22 | password | test3.cpp:81:15:81:22 | password | provenance |  |
+| test3.cpp:81:15:81:22 | password | test3.cpp:83:15:83:17 | ptr | provenance |  |
 | test3.cpp:112:20:112:25 | buffer | test3.cpp:114:14:114:19 | buffer | provenance |  |
 | test3.cpp:117:28:117:33 | buffer | test3.cpp:119:9:119:14 | buffer | provenance |  |
 | test3.cpp:119:9:119:14 | buffer | test3.cpp:117:13:117:14 | *id | provenance |  |
@@ -49,7 +49,7 @@ nodes
 | test3.cpp:74:21:74:29 | password1 | semmle.label | password1 |
 | test3.cpp:74:21:74:29 | password1 | semmle.label | password1 |
 | test3.cpp:76:15:76:17 | ptr | semmle.label | ptr |
-| test3.cpp:81:15:81:22 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test3.cpp:81:15:81:22 | password | semmle.label | password |
 | test3.cpp:81:15:81:22 | password | semmle.label | password |
 | test3.cpp:83:15:83:17 | ptr | semmle.label | ptr |
 | test3.cpp:101:12:101:19 | password | semmle.label | password |
