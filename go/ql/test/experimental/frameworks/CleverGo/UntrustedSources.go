@@ -6,9 +6,9 @@ import "clevergo.tech/clevergo"
 
 // Package clevergo.tech/clevergo@v0.5.2
 func UntrustedSources_ClevergoTechClevergoV052() {
-	// Untrusted flow sources from method calls.
+	// Remote flow sources from method calls.
 	{
-		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Context.
+		// Remote flow sources from method calls on clevergo.tech/clevergo.Context.
 		{
 			// func (*Context).BasicAuth() (username string, password string, ok bool)
 			{
@@ -67,7 +67,7 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 				sink(result908) // $ remoteFlowSource
 			}
 		}
-		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Params.
+		// Remote flow sources from method calls on clevergo.tech/clevergo.Params.
 		{
 			// func (Params).String(name string) string
 			{
@@ -77,9 +77,9 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 			}
 		}
 	}
-	// Untrusted flow sources from interface method calls.
+	// Remote flow sources from interface method calls.
 	{
-		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Decoder interface.
+		// Remote flow sources from method calls on clevergo.tech/clevergo.Decoder interface.
 		{
 			// func (Decoder).Decode(req *net/http.Request, v interface{}) error
 			{
@@ -90,21 +90,21 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 			}
 		}
 	}
-	// Untrusted flow sources from struct fields.
+	// Remote flow sources from struct fields.
 	{
-		// Untrusted flow sources from clevergo.tech/clevergo.Context struct fields.
+		// Remote flow sources from clevergo.tech/clevergo.Context struct fields.
 		{
 			structContext409 := new(clevergo.Context)
 			sink(structContext409.Params) // $ remoteFlowSource
 		}
-		// Untrusted flow sources from clevergo.tech/clevergo.Param struct fields.
+		// Remote flow sources from clevergo.tech/clevergo.Param struct fields.
 		{
 			structParam246 := new(clevergo.Param)
 			sink(structParam246.Key)   // $ remoteFlowSource
 			sink(structParam246.Value) // $ remoteFlowSource
 		}
 	}
-	// Untrusted flow sources from types.
+	// Remote flow sources from types.
 	{
 		{
 			var typeParams898 clevergo.Params

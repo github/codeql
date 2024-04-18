@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, taint propagators, and HTTP sinks
+ * Provides classes for working with remote flow sources, taint propagators, and HTTP sinks
  * from the `github.com/labstack/echo` package.
  */
 
@@ -10,7 +10,7 @@ private module Echo {
   private string packagePath() { result = package("github.com/labstack/echo", "") }
 
   /**
-   * Data from a `Context` interface method, considered as a source of untrusted flow.
+   * Data from a `Context` interface method, considered as a source of remote flow.
    */
   private class EchoContextSource extends RemoteFlowSource::Range {
     EchoContextSource() {

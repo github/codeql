@@ -293,7 +293,7 @@ private module Fiber {
   }
 
   /**
-   * Provides models of untrusted flow sources.
+   * Provides models of remote flow sources.
    */
   private class RemoteFlowSources extends RemoteFlowSource::Range {
     RemoteFlowSources() {

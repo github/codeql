@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/beego/beego` package.
  */
 
@@ -9,7 +9,7 @@ private import semmle.go.security.SafeUrlFlowCustomizations
 
 // Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the [Beego](https://github.com/beego/beego) package.
  */
 module Beego {

@@ -13,7 +13,7 @@ import go
 import DsnInjectionCustomizations
 import DsnInjectionFlow::PathGraph
 
-/** An untrusted flow source taken as a source for the `DsnInjection` taint-flow configuration. */
+/** An remote flow source taken as a source for the `DsnInjection` taint-flow configuration. */
 private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
 from DsnInjectionFlow::PathNode source, DsnInjectionFlow::PathNode sink

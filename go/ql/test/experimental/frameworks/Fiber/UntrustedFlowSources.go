@@ -6,9 +6,9 @@ import "github.com/gofiber/fiber"
 
 // Package github.com/gofiber/fiber@v1.14.6
 func RemoteFlowSources_GithubComGofiberFiberV1146() {
-	// Untrusted flow sources from method calls.
+	// Remote flow sources from method calls.
 	{
-		// Untrusted flow sources from method calls on github.com/gofiber/fiber.Ctx.
+		// Remote flow sources from method calls on github.com/gofiber/fiber.Ctx.
 		{
 			// func (*Ctx).BaseURL() string
 			{
@@ -116,9 +116,9 @@ func RemoteFlowSources_GithubComGofiberFiberV1146() {
 			}
 		}
 	}
-	// Untrusted flow sources from struct fields.
+	// Remote flow sources from struct fields.
 	{
-		// Untrusted flow sources from github.com/gofiber/fiber.Cookie struct fields.
+		// Remote flow sources from github.com/gofiber/fiber.Cookie struct fields.
 		{
 			structCookie322 := new(fiber.Cookie)
 			sink(structCookie322.Domain)   // $ remoteFlowSource
@@ -127,7 +127,7 @@ func RemoteFlowSources_GithubComGofiberFiberV1146() {
 			sink(structCookie322.SameSite) // $ remoteFlowSource
 			sink(structCookie322.Value)    // $ remoteFlowSource
 		}
-		// Untrusted flow sources from github.com/gofiber/fiber.Error struct fields.
+		// Remote flow sources from github.com/gofiber/fiber.Error struct fields.
 		{
 			structError339 := new(fiber.Error)
 			sink(structError339.Message) // $ remoteFlowSource

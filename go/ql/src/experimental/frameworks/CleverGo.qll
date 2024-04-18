@@ -14,7 +14,7 @@ private module CleverGo {
   }
 
   /**
-   * Provides models of untrusted flow sources.
+   * Provides models of remote flow sources.
    */
   private class UntrustedSources extends RemoteFlowSource::Range {
     UntrustedSources() {

@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/revel/revel` package.
+ * Provides classes for working with remote flow sources from the `github.com/revel/revel` package.
  */
 
 import go

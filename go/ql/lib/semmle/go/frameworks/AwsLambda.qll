@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/aws/aws-lambda-go/lambda` package.
  */
 

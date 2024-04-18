@@ -10,7 +10,7 @@ private module Gin {
   string packagePath() { result = package("github.com/gin-gonic/gin", "") }
 
   /**
-   * Data from a `Context` struct, considered as a source of untrusted flow.
+   * Data from a `Context` struct, considered as a source of remote flow.
    */
   private class GithubComGinGonicGinContextSource extends RemoteFlowSource::Range {
     GithubComGinGonicGinContextSource() {
