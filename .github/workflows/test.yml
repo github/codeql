@@ -1,0 +1,14 @@
+name: Tests
+on:
+  push:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          codeql test run ql/test
