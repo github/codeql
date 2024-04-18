@@ -501,16 +501,25 @@ module API {
     }
 
     /**
+     * Gets the location of this API node, if it corresponds to a program element with a source location.
+     */
+    final Location getLocation() { result = this.getInducingNode().getLocation() }
+
+    /**
+     * DEPRECATED: Use `getLocation().hasLocationInfo()` instead.
+     *
      * Holds if this node is located in file `path` between line `startline`, column `startcol`,
      * and line `endline`, column `endcol`.
      *
      * For nodes that do not have a meaningful location, `path` is the empty string and all other
      * parameters are zero.
      */
-    predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      this.getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+    deprecated predicate hasLocationInfo(
+      string path, int startline, int startcol, int endline, int endcol
+    ) {
+      this.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
       or
-      not exists(this.getInducingNode()) and
+      not exists(this.getLocation()) and
       path = "" and
       startline = 0 and
       startcol = 0 and
@@ -696,14 +705,7 @@ module API {
         or
         any(Type t).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) {
-        hasSemantics(cls) and
-        (
-          cls = trackDefNode(_)
-          or
-          cls.getAnInstanceReference() = trackDefNode(_)
-        )
-      } or
+      MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
@@ -715,6 +717,17 @@ module API {
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
       }
+
+    private predicate needsDefNode(DataFlow::ClassNode cls) {
+      hasSemantics(cls) and
+      (
+        cls = trackDefNode(_)
+        or
+        cls.getAnInstanceReference() = trackDefNode(_)
+        or
+        needsDefNode(cls.getADirectSubClass())
+      )
+    }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -1306,7 +1319,7 @@ module API {
         succ = MkDef(rhs)
         or
         exists(DataFlow::ClassNode cls |
-          cls.getAnInstanceReference() = rhs and
+          cls.getAnInstanceReference().flowsTo(rhs) and
           succ = MkClassInstance(cls)
         )
       )
