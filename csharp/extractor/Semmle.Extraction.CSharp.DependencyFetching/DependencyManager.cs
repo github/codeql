@@ -564,9 +564,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public void Dispose()
         {
-            tempWorkingDirectory?.Dispose();
-            diagnosticsWriter?.Dispose();
             nugetPackageRestorer?.Dispose();
+            if (cleanupTempWorkingDirectory)
+            {
+                tempWorkingDirectory?.Dispose();
+            }
+            diagnosticsWriter?.Dispose();
         }
     }
 }

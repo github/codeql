@@ -341,7 +341,7 @@ private predicate summaryModel(
 }
 
 /** Holds if a type model exists for the given parameters. */
-private predicate typeModel(string type1, string type2, string path) {
+predicate typeModel(string type1, string type2, string path) {
   any(DeprecationAdapter a).typeModel(type1, type2, path)
   or
   Extensions::typeModel(type1, type2, path)
@@ -500,7 +500,7 @@ private API::Node getNodeFromType(string type) {
  * Gets the API node identified by the first `n` tokens of `path` in the given `(type, path)` tuple.
  */
 pragma[nomagic]
-private API::Node getNodeFromPath(string type, AccessPath path, int n) {
+API::Node getNodeFromPath(string type, AccessPath path, int n) {
   isRelevantFullPath(type, path) and
   (
     n = 0 and

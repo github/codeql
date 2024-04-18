@@ -1,4 +1,0 @@
----
-category: feature
----
-* The `PathGraph` result of a data flow computation has been augmented with model provenance information for each of the flow steps. Any qltests that include the edges relation in their output (for example, `.qlref`s that reference path-problem queries) will need to be have their expected output updated accordingly.

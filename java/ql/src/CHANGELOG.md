@@ -1,3 +1,10 @@
+## 0.8.14
+
+### Minor Analysis Improvements
+
+* The `java/unknown-javadoc-parameter` now accepts `@param` tags that apply to the parameters of a
+  record.
+
 ## 0.8.13
 
 ### New Queries

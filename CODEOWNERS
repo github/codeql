@@ -12,9 +12,6 @@
 /java/ql/test-kotlin1/ @github/codeql-kotlin
 /java/ql/test-kotlin2/ @github/codeql-kotlin
 
-# ML-powered queries
-/javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
-
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
 /docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
@@ -37,9 +34,7 @@ MODULE.bazel @github/codeql-ci-reviewers
 
 # Workflows
 /.github/workflows/ @github/codeql-ci-reviewers
-/.github/workflows/atm-* @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/go-* @github/codeql-go
-/.github/workflows/js-ml-tests.yml @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
 /.github/workflows/swift.yml @github/codeql-swift
