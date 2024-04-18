@@ -62,7 +62,9 @@ astGuardsCompare
 | 26 | x >= 0+1 when ... > ... is true |
 | 31 | - ... != x+0 when ... == ... is false |
 | 31 | - ... == x+0 when ... == ... is true |
+| 31 | x != -1 when ... == ... is false |
 | 31 | x != - ...+0 when ... == ... is false |
+| 31 | x == -1 when ... == ... is true |
 | 31 | x == - ...+0 when ... == ... is true |
 | 34 | 10 < j+1 when ... < ... is false |
 | 34 | 10 >= j+1 when ... < ... is true |
@@ -86,15 +88,20 @@ astGuardsCompare
 | 58 | 0 < y+1 when ... \|\| ... is false |
 | 58 | 0 == x+0 when ... == ... is true |
 | 58 | 0 >= y+1 when ... < ... is true |
+| 58 | x != 0 when ... == ... is false |
+| 58 | x != 0 when ... \|\| ... is false |
 | 58 | x != 0+0 when ... == ... is false |
 | 58 | x != 0+0 when ... \|\| ... is false |
+| 58 | x == 0 when ... == ... is true |
 | 58 | x == 0+0 when ... == ... is true |
 | 58 | y < 0+0 when ... < ... is true |
 | 58 | y >= 0+0 when ... < ... is false |
 | 58 | y >= 0+0 when ... \|\| ... is false |
 | 75 | 0 != x+0 when ... == ... is false |
 | 75 | 0 == x+0 when ... == ... is true |
+| 75 | x != 0 when ... == ... is false |
 | 75 | x != 0+0 when ... == ... is false |
+| 75 | x == 0 when ... == ... is true |
 | 75 | x == 0+0 when ... == ... is true |
 | 85 | 0 != x+0 when ... == ... is false |
 | 85 | 0 != y+0 when ... != ... is true |
@@ -102,15 +109,23 @@ astGuardsCompare
 | 85 | 0 == x+0 when ... && ... is true |
 | 85 | 0 == x+0 when ... == ... is true |
 | 85 | 0 == y+0 when ... != ... is false |
+| 85 | x != 0 when ... == ... is false |
 | 85 | x != 0+0 when ... == ... is false |
+| 85 | x == 0 when ... && ... is true |
+| 85 | x == 0 when ... == ... is true |
 | 85 | x == 0+0 when ... && ... is true |
 | 85 | x == 0+0 when ... == ... is true |
+| 85 | y != 0 when ... != ... is true |
+| 85 | y != 0 when ... && ... is true |
 | 85 | y != 0+0 when ... != ... is true |
 | 85 | y != 0+0 when ... && ... is true |
+| 85 | y == 0 when ... != ... is false |
 | 85 | y == 0+0 when ... != ... is false |
 | 94 | 0 != x+0 when ... != ... is true |
 | 94 | 0 == x+0 when ... != ... is false |
+| 94 | x != 0 when ... != ... is true |
 | 94 | x != 0+0 when ... != ... is true |
+| 94 | x == 0 when ... != ... is false |
 | 94 | x == 0+0 when ... != ... is false |
 | 102 | 10 < j+1 when ... < ... is false |
 | 102 | 10 >= j+1 when ... < ... is true |
@@ -122,8 +137,11 @@ astGuardsCompare
 | 109 | 0 < y+1 when ... \|\| ... is false |
 | 109 | 0 == x+0 when ... == ... is true |
 | 109 | 0 >= y+1 when ... < ... is true |
+| 109 | x != 0 when ... == ... is false |
+| 109 | x != 0 when ... \|\| ... is false |
 | 109 | x != 0+0 when ... == ... is false |
 | 109 | x != 0+0 when ... \|\| ... is false |
+| 109 | x == 0 when ... == ... is true |
 | 109 | x == 0+0 when ... == ... is true |
 | 109 | y < 0+0 when ... < ... is true |
 | 109 | y >= 0+0 when ... < ... is false |
@@ -162,7 +180,9 @@ astGuardsCompare
 | 165 | y >= x+43 when ... < ... is true |
 | 175 | 0 != call to foo+0 when ... == ... is false |
 | 175 | 0 == call to foo+0 when ... == ... is true |
+| 175 | call to foo != 0 when ... == ... is false |
 | 175 | call to foo != 0+0 when ... == ... is false |
+| 175 | call to foo == 0 when ... == ... is true |
 | 175 | call to foo == 0+0 when ... == ... is true |
 astGuardsControl
 | test.c:7:9:7:13 | ... > ... | false | 10 | 11 |
@@ -443,6 +463,34 @@ astGuardsEnsure
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:12:31:13 | - ... | != | test.cpp:31:7:31:7 | x | 0 | 34 | 34 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:12:31:13 | - ... | == | test.cpp:31:7:31:7 | x | 0 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:12:31:13 | - ... | == | test.cpp:31:7:31:7 | x | 0 | 31 | 32 |
+astGuardsEnsure_const
+| test.c:58:9:58:14 | ... == ... | test.c:58:9:58:9 | x | != | 0 | 58 | 58 |
+| test.c:58:9:58:14 | ... == ... | test.c:58:9:58:9 | x | != | 0 | 62 | 62 |
+| test.c:58:9:58:23 | ... \|\| ... | test.c:58:9:58:9 | x | != | 0 | 62 | 62 |
+| test.c:75:9:75:14 | ... == ... | test.c:75:9:75:9 | x | != | 0 | 78 | 79 |
+| test.c:75:9:75:14 | ... == ... | test.c:75:9:75:9 | x | == | 0 | 75 | 77 |
+| test.c:85:8:85:13 | ... == ... | test.c:85:8:85:8 | x | == | 0 | 85 | 85 |
+| test.c:85:8:85:13 | ... == ... | test.c:85:8:85:8 | x | == | 0 | 86 | 86 |
+| test.c:85:8:85:23 | ... && ... | test.c:85:8:85:8 | x | == | 0 | 86 | 86 |
+| test.c:85:8:85:23 | ... && ... | test.c:85:18:85:18 | y | != | 0 | 86 | 86 |
+| test.c:85:18:85:23 | ... != ... | test.c:85:18:85:18 | y | != | 0 | 86 | 86 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | != | 0 | 94 | 96 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 70 | 70 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 99 | 102 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 102 | 102 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 107 | 109 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 109 | 109 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 109 | 117 |
+| test.c:94:11:94:16 | ... != ... | test.c:94:11:94:11 | x | == | 0 | 113 | 113 |
+| test.c:109:9:109:14 | ... == ... | test.c:109:9:109:9 | x | != | 0 | 109 | 109 |
+| test.c:109:9:109:14 | ... == ... | test.c:109:9:109:9 | x | != | 0 | 113 | 113 |
+| test.c:109:9:109:23 | ... \|\| ... | test.c:109:9:109:9 | x | != | 0 | 113 | 113 |
+| test.c:175:13:175:32 | ... == ... | test.c:175:13:175:15 | call to foo | != | 0 | 175 | 175 |
+| test.c:175:13:175:32 | ... == ... | test.c:175:13:175:15 | call to foo | == | 0 | 175 | 175 |
+| test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | -1 | 30 | 30 |
+| test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | -1 | 34 | 34 |
+| test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | -1 | 30 | 30 |
+| test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | -1 | 31 | 32 |
 irGuards
 | test.c:7:9:7:13 | CompareGT: ... > ... |
 | test.c:17:8:17:12 | CompareLT: ... < ... |
@@ -482,74 +530,110 @@ irGuardsCompare
 | 7 | 0 < x+0 when CompareGT: ... > ... is true |
 | 7 | 0 >= x+0 when CompareGT: ... > ... is false |
 | 7 | x < 0+1 when CompareGT: ... > ... is false |
+| 7 | x < 1 when CompareGT: ... > ... is false |
 | 7 | x >= 0+1 when CompareGT: ... > ... is true |
+| 7 | x >= 1 when CompareGT: ... > ... is true |
 | 17 | 0 < x+1 when CompareLT: ... < ... is false |
 | 17 | 0 >= x+1 when CompareLT: ... < ... is true |
 | 17 | 1 < y+0 when CompareGT: ... > ... is true |
 | 17 | 1 >= y+0 when CompareGT: ... > ... is false |
+| 17 | x < 0 when CompareLT: ... < ... is true |
 | 17 | x < 0+0 when CompareLT: ... < ... is true |
+| 17 | x >= 0 when CompareLT: ... < ... is false |
 | 17 | x >= 0+0 when CompareLT: ... < ... is false |
 | 17 | y < 1+1 when CompareGT: ... > ... is false |
+| 17 | y < 2 when CompareGT: ... > ... is false |
 | 17 | y >= 1+1 when CompareGT: ... > ... is true |
+| 17 | y >= 2 when CompareGT: ... > ... is true |
 | 26 | 0 < x+0 when CompareGT: ... > ... is true |
 | 26 | 0 >= x+0 when CompareGT: ... > ... is false |
 | 26 | x < 0+1 when CompareGT: ... > ... is false |
+| 26 | x < 1 when CompareGT: ... > ... is false |
 | 26 | x >= 0+1 when CompareGT: ... > ... is true |
+| 26 | x >= 1 when CompareGT: ... > ... is true |
 | 31 | - ... != x+0 when CompareEQ: ... == ... is false |
 | 31 | - ... == x+0 when CompareEQ: ... == ... is true |
+| 31 | x != -1 when CompareEQ: ... == ... is false |
 | 31 | x != - ...+0 when CompareEQ: ... == ... is false |
+| 31 | x == -1 when CompareEQ: ... == ... is true |
 | 31 | x == - ...+0 when CompareEQ: ... == ... is true |
 | 34 | 10 < j+1 when CompareLT: ... < ... is false |
 | 34 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 34 | j < 10 when CompareLT: ... < ... is true |
 | 34 | j < 10+0 when CompareLT: ... < ... is true |
+| 34 | j >= 10 when CompareLT: ... < ... is false |
 | 34 | j >= 10+0 when CompareLT: ... < ... is false |
 | 42 | 10 < j+1 when CompareLT: ... < ... is false |
 | 42 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 42 | j < 10 when CompareLT: ... < ... is true |
 | 42 | j < 10+0 when CompareLT: ... < ... is true |
+| 42 | j >= 10 when CompareLT: ... < ... is false |
 | 42 | j >= 10+0 when CompareLT: ... < ... is false |
 | 44 | 0 < z+0 when CompareGT: ... > ... is true |
 | 44 | 0 >= z+0 when CompareGT: ... > ... is false |
 | 44 | z < 0+1 when CompareGT: ... > ... is false |
+| 44 | z < 1 when CompareGT: ... > ... is false |
 | 44 | z >= 0+1 when CompareGT: ... > ... is true |
+| 44 | z >= 1 when CompareGT: ... > ... is true |
 | 45 | 0 < y+0 when CompareGT: ... > ... is true |
 | 45 | 0 >= y+0 when CompareGT: ... > ... is false |
 | 45 | y < 0+1 when CompareGT: ... > ... is false |
+| 45 | y < 1 when CompareGT: ... > ... is false |
 | 45 | y >= 0+1 when CompareGT: ... > ... is true |
+| 45 | y >= 1 when CompareGT: ... > ... is true |
 | 58 | 0 != x+0 when CompareEQ: ... == ... is false |
 | 58 | 0 < y+1 when CompareLT: ... < ... is false |
 | 58 | 0 == x+0 when CompareEQ: ... == ... is true |
 | 58 | 0 >= y+1 when CompareLT: ... < ... is true |
+| 58 | x != 0 when CompareEQ: ... == ... is false |
 | 58 | x != 0+0 when CompareEQ: ... == ... is false |
+| 58 | x == 0 when CompareEQ: ... == ... is true |
 | 58 | x == 0+0 when CompareEQ: ... == ... is true |
+| 58 | y < 0 when CompareLT: ... < ... is true |
 | 58 | y < 0+0 when CompareLT: ... < ... is true |
+| 58 | y >= 0 when CompareLT: ... < ... is false |
 | 58 | y >= 0+0 when CompareLT: ... < ... is false |
 | 75 | 0 != x+0 when CompareEQ: ... == ... is false |
 | 75 | 0 == x+0 when CompareEQ: ... == ... is true |
+| 75 | x != 0 when CompareEQ: ... == ... is false |
 | 75 | x != 0+0 when CompareEQ: ... == ... is false |
+| 75 | x == 0 when CompareEQ: ... == ... is true |
 | 75 | x == 0+0 when CompareEQ: ... == ... is true |
 | 85 | 0 != x+0 when CompareEQ: ... == ... is false |
 | 85 | 0 != y+0 when CompareNE: ... != ... is true |
 | 85 | 0 == x+0 when CompareEQ: ... == ... is true |
 | 85 | 0 == y+0 when CompareNE: ... != ... is false |
+| 85 | x != 0 when CompareEQ: ... == ... is false |
 | 85 | x != 0+0 when CompareEQ: ... == ... is false |
+| 85 | x == 0 when CompareEQ: ... == ... is true |
 | 85 | x == 0+0 when CompareEQ: ... == ... is true |
+| 85 | y != 0 when CompareNE: ... != ... is true |
 | 85 | y != 0+0 when CompareNE: ... != ... is true |
+| 85 | y == 0 when CompareNE: ... != ... is false |
 | 85 | y == 0+0 when CompareNE: ... != ... is false |
 | 94 | 0 != x+0 when CompareNE: ... != ... is true |
 | 94 | 0 == x+0 when CompareNE: ... != ... is false |
+| 94 | x != 0 when CompareNE: ... != ... is true |
 | 94 | x != 0+0 when CompareNE: ... != ... is true |
+| 94 | x == 0 when CompareNE: ... != ... is false |
 | 94 | x == 0+0 when CompareNE: ... != ... is false |
 | 102 | 10 < j+1 when CompareLT: ... < ... is false |
 | 102 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 102 | j < 10 when CompareLT: ... < ... is true |
 | 102 | j < 10+0 when CompareLT: ... < ... is true |
+| 102 | j >= 10 when CompareLT: ... < ... is false |
 | 102 | j >= 10+0 when CompareLT: ... < ... is false |
 | 109 | 0 != x+0 when CompareEQ: ... == ... is false |
 | 109 | 0 < y+1 when CompareLT: ... < ... is false |
 | 109 | 0 == x+0 when CompareEQ: ... == ... is true |
 | 109 | 0 >= y+1 when CompareLT: ... < ... is true |
+| 109 | x != 0 when CompareEQ: ... == ... is false |
 | 109 | x != 0+0 when CompareEQ: ... == ... is false |
+| 109 | x == 0 when CompareEQ: ... == ... is true |
 | 109 | x == 0+0 when CompareEQ: ... == ... is true |
+| 109 | y < 0 when CompareLT: ... < ... is true |
 | 109 | y < 0+0 when CompareLT: ... < ... is true |
+| 109 | y >= 0 when CompareLT: ... < ... is false |
 | 109 | y >= 0+0 when CompareLT: ... < ... is false |
 | 156 | ... + ... != x+0 when CompareEQ: ... == ... is false |
 | 156 | ... + ... == x+0 when CompareEQ: ... == ... is true |
@@ -585,7 +669,9 @@ irGuardsCompare
 | 165 | y >= x+43 when CompareLT: ... < ... is true |
 | 175 | 0 != call to foo+0 when CompareEQ: ... == ... is false |
 | 175 | 0 == call to foo+0 when CompareEQ: ... == ... is true |
+| 175 | call to foo != 0 when CompareEQ: ... == ... is false |
 | 175 | call to foo != 0+0 when CompareEQ: ... == ... is false |
+| 175 | call to foo == 0 when CompareEQ: ... == ... is true |
 | 175 | call to foo == 0+0 when CompareEQ: ... == ... is true |
 irGuardsControl
 | test.c:7:9:7:13 | CompareGT: ... > ... | false | 11 | 11 |
@@ -841,3 +927,75 @@ irGuardsEnsure
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | != | test.cpp:31:7:31:7 | Load: x | 0 | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 30 | 30 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 32 | 32 |
+irGuardsEnsure_const
+| test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:9:7:9 | Load: x | < | 1 | 11 | 11 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:9:7:9 | Load: x | >= | 1 | 8 | 8 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:8:17:8 | Load: x | < | 0 | 17 | 17 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:8:17:8 | Load: x | < | 0 | 18 | 18 |
+| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:17:17:17 | Load: y | >= | 2 | 18 | 18 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 2 | 2 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 31 | 31 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 34 | 34 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 35 | 35 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 39 | 39 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 42 | 42 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 43 | 43 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 45 | 45 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 52 | 52 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 56 | 56 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 58 | 58 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 59 | 59 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 62 | 62 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | >= | 1 | 27 | 27 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | < | 10 | 35 | 35 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 2 | 2 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 39 | 39 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 42 | 42 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 43 | 43 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 45 | 45 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 52 | 52 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 56 | 56 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 58 | 58 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 59 | 59 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 62 | 62 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 43 | 43 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 45 | 45 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 52 | 52 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | < | 1 | 52 | 52 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | 1 | 45 | 45 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | 1 | 46 | 46 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | >= | 1 | 46 | 46 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | 0 | 58 | 58 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | 0 | 62 | 62 |
+| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:19:58:19 | Load: y | >= | 0 | 62 | 62 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:9:75:9 | Load: x | != | 0 | 79 | 79 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:9:75:9 | Load: x | == | 0 | 76 | 76 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:8:85:8 | Load: x | == | 0 | 85 | 85 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:8:85:8 | Load: x | == | 0 | 86 | 86 |
+| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:18:85:18 | Load: y | != | 0 | 86 | 86 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | != | 0 | 95 | 95 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 70 | 70 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 99 | 99 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 102 | 102 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 103 | 103 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 107 | 107 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 109 | 109 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 110 | 110 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | 0 | 113 | 113 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | < | 10 | 103 | 103 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | 10 | 70 | 70 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | 10 | 107 | 107 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | 10 | 109 | 109 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | 10 | 110 | 110 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | 10 | 113 | 113 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:9:109:9 | Load: x | != | 0 | 109 | 109 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:9:109:9 | Load: x | != | 0 | 113 | 113 |
+| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:19:109:19 | Load: y | >= | 0 | 113 | 113 |
+| test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | != | 0 | 175 | 175 |
+| test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | == | 0 | 175 | 175 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | -1 | 34 | 34 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 30 | 30 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 32 | 32 |

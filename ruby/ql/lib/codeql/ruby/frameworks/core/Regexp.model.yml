@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ['Regexp!', 'Method[escape,quote]', 'Argument[0]', 'ReturnValue', 'taint']
+  

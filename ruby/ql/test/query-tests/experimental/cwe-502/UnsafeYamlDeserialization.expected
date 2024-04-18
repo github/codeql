@@ -8,10 +8,10 @@ edges
 | UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:33:32:33:40 | yaml_data | provenance |  |
 | UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:34:37:34:45 | yaml_data | provenance |  |
 | UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:35:32:35:40 | yaml_data | provenance |  |
-| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:37:14:37:33 | call to to_ruby | provenance |  |
-| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:38:14:38:43 | call to to_ruby | provenance |  |
-| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:39:14:39:48 | call to to_ruby | provenance |  |
-| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:49:14:49:32 | call to to_ruby | provenance |  |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:37:14:37:33 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:38:14:38:43 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:39:14:39:48 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:49:14:49:32 | call to to_ruby | provenance | AdditionalTaintStep |
 | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:32:17:32:28 | ...[...] | provenance |  |
 | UnsafeYamlDeserialization.rb:32:17:32:28 | ...[...] | UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | provenance |  |
 nodes

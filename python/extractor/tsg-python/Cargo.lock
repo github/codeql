@@ -268,14 +268,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tree-sitter-python"
-version = "0.19.0"
-dependencies = [
- "cc",
- "tree-sitter",
-]
-
-[[package]]
 name = "tsg-python"
 version = "0.1.0"
 dependencies = [
@@ -287,7 +279,15 @@ dependencies = [
  "thiserror",
  "tree-sitter",
  "tree-sitter-graph",
- "tree-sitter-python",
+ "tsp",
+]
+
+[[package]]
+name = "tsp"
+version = "0.19.0"
+dependencies = [
+ "cc",
+ "tree-sitter",
 ]
 
 [[package]]

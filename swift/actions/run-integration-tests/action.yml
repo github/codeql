@@ -7,7 +7,7 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'
-    - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+    - uses: redsun82/setup-swift@b2b6f77ab14f6a9b136b520dc53ec8eca27d2b99
       with:
         swift-version: "5.8"
     - uses: ./.github/actions/fetch-codeql
@@ -18,7 +18,7 @@ runs:
     - name: Run integration tests
       shell: bash
       run: |
-        python swift/integration-tests/runner.py --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        python swift/ql/integration-tests/runner.py --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
       env:
         SEMMLE_DEBUG_TRACER: 10000
     - name: Upload test logs
@@ -27,5 +27,5 @@ runs:
       with:
         name: swift-integration-tests-logs-${{ runner.os }}
         path: |
-          swift/integration-tests/**/db/log
+          swift/ql/integration-tests/**/db/log
         retention-days: 1

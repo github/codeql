@@ -10,7 +10,7 @@ private import DataFlowImplSpecific
 private import TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<CppOldDataFlow> {
+private module Input implements InputSig<Location, CppOldDataFlow> {
   predicate argHasPostUpdateExclude(Private::ArgumentNode n) {
     // Is the null pointer (or something that's not really a pointer)
     exists(n.asExpr().getValue())
@@ -26,4 +26,4 @@ private module Input implements InputSig<CppOldDataFlow> {
   }
 }
 
-module Consistency = MakeConsistency<CppOldDataFlow, CppOldTaintTracking, Input>;
+module Consistency = MakeConsistency<Location, CppOldDataFlow, CppOldTaintTracking, Input>;

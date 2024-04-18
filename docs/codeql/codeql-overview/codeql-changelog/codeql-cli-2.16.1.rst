@@ -171,7 +171,7 @@ Python
 Ruby
 """"
 
-*   Deleted many deprecated predicates and classes with uppercase :code:`HTTP`, :code:`CSRF`, :code:`,`  etc. in their names. Use the PascalCased versions instead.
+*   Deleted many deprecated predicates and classes with uppercase :code:`HTTP`, :code:`CSRF` etc. in their names. Use the PascalCased versions instead.
 *   Deleted the deprecated :code:`getAUse` and :code:`getARhs` predicates from :code:`API::Node`, use :code:`getASource` and :code:`getASink` instead.
 *   Deleted the deprecated :code:`disablesCertificateValidation` predicate from the :code:`Http` module.
 *   Deleted the deprecated :code:`ParamsCall`, :code:`CookiesCall`, and :code:`ActionControllerControllerClass` classes from :code:`ActionController.qll`, use the simarly named classes from :code:`codeql.ruby.frameworks.Rails::Rails` instead.

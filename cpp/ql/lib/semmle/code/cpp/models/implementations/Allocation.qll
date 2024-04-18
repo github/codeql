@@ -36,7 +36,9 @@ private class MallocAllocationFunction extends AllocationFunction {
         "CRYPTO_malloc", // CRYPTO_malloc(size_t num, const char *file, int line)
         "CRYPTO_zalloc", // CRYPTO_zalloc(size_t num, const char *file, int line)
         "CRYPTO_secure_malloc", // CRYPTO_secure_malloc(size_t num, const char *file, int line)
-        "CRYPTO_secure_zalloc" // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+        "CRYPTO_secure_zalloc", // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+        "g_malloc", // g_malloc (n_bytes);
+        "g_try_malloc" // g_try_malloc(n_bytes);
       ]) and
     sizeArg = 0
     or
@@ -139,7 +141,9 @@ private class ReallocAllocationFunction extends AllocationFunction, TaintFunctio
         // --- Windows COM allocation
         "CoTaskMemRealloc", // CoTaskMemRealloc(ptr, size)
         // --- OpenSSL memory allocation
-        "CRYPTO_realloc" // CRYPTO_realloc(void *addr, size_t num, const char *file, int line)
+        "CRYPTO_realloc", // CRYPTO_realloc(void *addr, size_t num, const char *file, int line)
+        "g_realloc", // g_realloc(mem, n_bytes);
+        "g_try_realloc" // g_try_realloc(mem, n_bytes);
       ]) and
     sizeArg = 1 and
     reallocArg = 0

@@ -13,6 +13,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         IList<string> GetListedRuntimes();
         IList<string> GetListedSdks();
         bool Exec(string execArgs);
+        IList<string> GetNugetFeeds(string nugetConfig);
+        IList<string> GetNugetFeedsFromFolder(string folderPath);
     }
 
     public record class RestoreSettings(string File, string PackageDirectory, bool ForceDotnetRefAssemblyFetching, string? PathToNugetConfig = null, bool ForceReevaluation = false);

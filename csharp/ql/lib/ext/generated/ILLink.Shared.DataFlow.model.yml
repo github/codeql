@@ -32,8 +32,6 @@ extensions:
       extensible: neutralModel
     data:
       - ["ILLink.Shared.DataFlow", "Box<T>", "Box", "(T)", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "Box<T>", "get_Value", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "Box<T>", "set_Value", "(T)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "Equals", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "GetHashCode", "()", "summary", "df-generated"]
@@ -64,12 +62,6 @@ extensions:
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>", "TryGetEnclosingTryOrCatchOrFilter", "(TRegion,TRegion)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>", "get_Blocks", "()", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>", "get_Entry", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "get_Current", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "get_Exception", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "get_Lattice", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "set_Current", "(TValue)", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "set_Exception", "(ILLink.Shared.DataFlow.Box<TValue>)", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "set_Lattice", "(TValueLattice)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "IDeepCopyValue<TSingleValue>", "DeepCopy", "()", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ILattice<TValue>", "Meet", "(TValue,TValue)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ILattice<TValue>", "get_Top", "()", "summary", "df-generated"]

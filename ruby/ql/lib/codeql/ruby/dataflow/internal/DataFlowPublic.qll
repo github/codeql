@@ -35,7 +35,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -856,24 +856,52 @@ private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2)
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private import SsaImpl as SsaImpl
+
   pragma[nomagic]
   private predicate guardChecksSsaDef(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def) {
     guardChecks(g, def.getARead(), branch)
   }
 
   pragma[nomagic]
-  private predicate guardControlsSsaDef(
+  private predicate guardControlsSsaRead(
     CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, Node n
   ) {
     def.getARead() = n.asExpr() and
     guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
   }
 
+  pragma[nomagic]
+  private predicate guardControlsPhiInput(
+    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, BasicBlock input,
+    SsaInputDefinitionExt phi
+  ) {
+    phi.hasInputFromBlock(def, _, _, input) and
+    (
+      guardControlsBlock(g, input, branch)
+      or
+      exists(SuccessorTypes::ConditionalSuccessor s |
+        g = input.getLastNode() and
+        s.getValue() = branch and
+        input.getASuccessor(s) = phi.getBasicBlock()
+      )
+    )
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
     exists(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def |
       guardChecksSsaDef(g, branch, def) and
-      guardControlsSsaDef(g, branch, def, result)
+      guardControlsSsaRead(g, branch, def, result)
+    )
+    or
+    exists(
+      CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, BasicBlock input,
+      SsaInputDefinitionExt phi
+    |
+      guardChecksSsaDef(g, branch, def) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaInputNode(phi, input)
     )
     or
     result.asExpr() = getAMaybeGuardedCapturedDef().getARead()

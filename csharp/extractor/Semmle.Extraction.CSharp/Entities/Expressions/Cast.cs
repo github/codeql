@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.CAST,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(value));
 
             var ret = new Expression(info);

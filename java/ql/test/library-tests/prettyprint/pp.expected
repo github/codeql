@@ -84,5 +84,11 @@
 | Test.java:1:14:1:17 | Test | 83 |     } |
 | Test.java:1:14:1:17 | Test | 84 |     if (o instanceof R(S(var x), var y)) { |
 | Test.java:1:14:1:17 | Test | 85 |     } |
-| Test.java:1:14:1:17 | Test | 86 |   } |
-| Test.java:1:14:1:17 | Test | 87 | } |
+| Test.java:1:14:1:17 | Test | 86 |     switch (o) { |
+| Test.java:1:14:1:17 | Test | 87 |       case String _, Integer _: |
+| Test.java:1:14:1:17 | Test | 88 |       case R(S(var _), var _): |
+| Test.java:1:14:1:17 | Test | 89 |       default: |
+| Test.java:1:14:1:17 | Test | 90 |       break; |
+| Test.java:1:14:1:17 | Test | 91 |     } |
+| Test.java:1:14:1:17 | Test | 92 |   } |
+| Test.java:1:14:1:17 | Test | 93 | } |

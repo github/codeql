@@ -1,3 +1,25 @@
+## 0.9.14
+
+No user-facing changes.
+
+## 0.9.13
+
+No user-facing changes.
+
+## 0.9.12
+
+No user-facing changes.
+
+## 0.9.11
+
+No user-facing changes.
+
+## 0.9.10
+
+### New Queries
+
+* The query `py/nosql-injection` for finding NoSQL injection vulnerabilities is now part of the default security suite.
+
 ## 0.9.9
 
 No user-facing changes.

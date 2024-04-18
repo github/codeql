@@ -577,4 +577,11 @@ func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
 	sink(arg: getMyProtocolImpl().source())
 }
 
+func singleStmtExpr(_ x: Int) {
+  let a = switch x {
+    case 0..<5: 1
+    default: 2
+  }
+  let b = if (x < 42) { 1 } else { 2 }
+}
 // ---

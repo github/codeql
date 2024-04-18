@@ -26,8 +26,7 @@ Bug Fixes
     
 *   Fixed a bug that could have caused the compiler to incorrectly infer that a class matched a type signature. The bug only affected classes with overriding member predicates that had stronger binding sets than their root definitions.
     
-*   Fixed a bug where a query could not be run from VS Code when there were packs nested within sibling directories
-    of the query.
+*   Fixed a bug where a query could not be run from VS Code when there were packs nested within sibling directories of the query.
 
 New Features
 ~~~~~~~~~~~~

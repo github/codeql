@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Composition.Hosting", "CompositionHost", False, "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", False, "WithAssemblies", "(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", False, "WithAssemblies", "(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>,System.Composition.Convention.AttributedModelProvider)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", False, "WithAssembly", "(System.Reflection.Assembly)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -32,5 +33,4 @@ extensions:
       - ["System.Composition.Hosting", "CompositionHost", "CreateCompositionHost", "(System.Collections.Generic.IEnumerable<System.Composition.Hosting.Core.ExportDescriptorProvider>)", "summary", "df-generated"]
       - ["System.Composition.Hosting", "CompositionHost", "CreateCompositionHost", "(System.Composition.Hosting.Core.ExportDescriptorProvider[])", "summary", "df-generated"]
       - ["System.Composition.Hosting", "CompositionHost", "Dispose", "()", "summary", "df-generated"]
-      - ["System.Composition.Hosting", "CompositionHost", "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "summary", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", "CreateContainer", "()", "summary", "df-generated"]

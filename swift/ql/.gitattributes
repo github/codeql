@@ -273,6 +273,8 @@
 /lib/codeql/swift/elements/stmt/Stmt.qll linguist-generated
 /lib/codeql/swift/elements/stmt/StmtConditionConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/SwitchStmtConstructor.qll linguist-generated
+/lib/codeql/swift/elements/stmt/ThenStmt.qll linguist-generated
+/lib/codeql/swift/elements/stmt/ThenStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/ThrowStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/WhileStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/YieldStmtConstructor.qll linguist-generated
@@ -626,6 +628,7 @@
 /lib/codeql/swift/generated/stmt/Stmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/StmtCondition.qll linguist-generated
 /lib/codeql/swift/generated/stmt/SwitchStmt.qll linguist-generated
+/lib/codeql/swift/generated/stmt/ThenStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/ThrowStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/WhileStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/YieldStmt.qll linguist-generated
@@ -900,6 +903,7 @@
 /test/extractor-tests/generated/expr/RegexLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr_getType.ql linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/ThenStmt.ql linguist-generated
 /test/extractor-tests/generated/expr/StringLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SubscriptExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SuperRefExpr/MISSING_SOURCE.txt linguist-generated

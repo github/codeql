@@ -294,3 +294,10 @@ void test_free_struct4(char* buf, MyStruct s) {
   s.buf = buf;
   char c = s.buf[0]; // BAD
 }
+
+void g_free (void*);
+
+void test_g_free(char* buf) {
+    g_free(buf);
+    g_free(buf); // BAD
+}

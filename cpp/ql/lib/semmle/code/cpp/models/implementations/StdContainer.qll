@@ -253,13 +253,15 @@ private class StdSequenceContainerAssign extends TaintFunction {
 /**
  * The standard container functions `at` and `operator[]`.
  */
-private class StdSequenceContainerAt extends TaintFunction {
+class StdSequenceContainerAt extends MemberFunction {
   StdSequenceContainerAt() {
     this.getClassAndName(["at", "operator[]"]) instanceof Array or
     this.getClassAndName(["at", "operator[]"]) instanceof Deque or
     this.getClassAndName(["at", "operator[]"]) instanceof Vector
   }
+}
 
+private class StdSequenceContainerAtModel extends StdSequenceContainerAt, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
     input.isQualifierObject() and

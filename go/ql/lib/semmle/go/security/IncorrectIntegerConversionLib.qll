@@ -509,7 +509,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   ) {
     // Create additional flow steps for `BarrierFlowStateTransformer`s
     state2 = node2.(BarrierFlowStateTransformer).transform(state1) and
-    DataFlow::simpleLocalFlowStep(node1, node2)
+    DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
 }
 

@@ -190,6 +190,7 @@ import codeql.swift.elements.stmt.RepeatWhileStmtConstructor
 import codeql.swift.elements.stmt.ReturnStmtConstructor
 import codeql.swift.elements.stmt.StmtConditionConstructor
 import codeql.swift.elements.stmt.SwitchStmtConstructor
+import codeql.swift.elements.stmt.ThenStmtConstructor
 import codeql.swift.elements.stmt.ThrowStmtConstructor
 import codeql.swift.elements.stmt.WhileStmtConstructor
 import codeql.swift.elements.stmt.YieldStmtConstructor
