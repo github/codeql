@@ -53,7 +53,7 @@ module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig
 }
 
 /**
- * Tracks taint flow for reasoning about when an `RemoteFlowSource` is
+ * Tracks taint flow for reasoning about when a `RemoteFlowSource` is
  * converted into a special "passthrough" type which will not be escaped by the
  * template generator; this allows the injection of arbitrary content (html,
  * css, js) into the generated output of the templates.
@@ -115,7 +115,7 @@ module FromUntrustedToTemplateExecutionCallConfig implements DataFlow::ConfigSig
 }
 
 /**
- * Tracks taint flow from an `RemoteFlowSource` into a template executor
+ * Tracks taint flow from a `RemoteFlowSource` into a template executor
  * call.
  */
 module FromUntrustedToTemplateExecutionCallFlow =

@@ -78,13 +78,13 @@ module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Tracks taint flowfor reasoning about when an `RemoteFlowSource` flows to
+ * Tracks taint flowfor reasoning about when a `RemoteFlowSource` flows to
  * a `HeaderWrite` that writes an `Access-Control-Allow-Origin` header's value.
  */
 module UntrustedToAllowOriginHeaderFlow = TaintTracking::Global<UntrustedToAllowOriginHeaderConfig>;
 
 /**
- * Tracks taint flowfor reasoning about when an `RemoteFlowSource` flows to
+ * Tracks taint flowfor reasoning about when a `RemoteFlowSource` flows to
  * a `AllowOriginsWrite` that writes an `Access-Control-Allow-Origin` header's value.
  */
 module UntrustedToAllowOriginConfigFlow = TaintTracking::Global<UntrustedToAllowOriginConfigConfig>;
@@ -208,7 +208,7 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Tracks taint flow for reasoning about when an `RemoteFlowSource` flows
+ * Tracks taint flow for reasoning about when a `RemoteFlowSource` flows
  * somewhere.
  */
 module FromUntrustedFlow = TaintTracking::Global<FromUntrustedConfig>;

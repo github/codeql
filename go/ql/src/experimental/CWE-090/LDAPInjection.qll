@@ -98,7 +98,7 @@ private class LdapClientDNSink extends LdapSink {
 /**
  * DEPRECATED: Use `LdapInjectionFlow` instead.
  *
- * A taint-tracking configuration for reasoning about when an `RemoteFlowSource`
+ * A taint-tracking configuration for reasoning about when a `RemoteFlowSource`
  * flows into an argument or field that is vulnerable to LDAP injection.
  */
 deprecated class LdapInjectionConfiguration extends TaintTracking::Configuration {
@@ -120,7 +120,7 @@ private module LdapInjectionConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Tracks taint flow for reasoning about when an `RemoteFlowSource` flows
+ * Tracks taint flow for reasoning about when a `RemoteFlowSource` flows
  * into an argument or field that is vulnerable to LDAP injection.
  */
 module LdapInjectionFlow = TaintTracking::Global<LdapInjectionConfig>;
