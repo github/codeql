@@ -5,6 +5,7 @@ typeModel
 | (aliases).Alias1 | aliases | Member[Alias4].Member[x].Member[x] |
 | (aliases).Alias1 | aliases | Member[AliasedClass] |
 | (aliases).Alias1.prototype | (aliases).Alias1 | Instance |
+| (aliases).Alias1.prototype | (aliases).Alias1.prototype.foo | ReturnValue |
 | (aliases).Alias1.prototype.foo | (aliases).Alias1.prototype | Member[foo] |
 | (long-access-path).a.shortcut.d | long-access-path | Member[a].Member[b].Member[c].Member[d] |
 | (long-access-path).a.shortcut.d | long-access-path | Member[a].Member[shortcut].Member[d] |
@@ -14,6 +15,7 @@ typeModel
 | (return-this).FluentInterface.prototype | (return-this).FluentInterface | Instance |
 | (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.bar | ReturnValue |
 | (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.baz | ReturnValue |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.foo | ReturnValue |
 | (return-this).FluentInterface.prototype.bar | (return-this).FluentInterface.prototype | Member[bar] |
 | (return-this).FluentInterface.prototype.baz | (return-this).FluentInterface.prototype | Member[baz] |
 | (return-this).FluentInterface.prototype.foo | (return-this).FluentInterface.prototype | Member[foo] |
