@@ -1259,7 +1259,9 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
     expr instanceof NotExpr or
     expr instanceof ComplementExpr or
     expr instanceof UnaryPlusExpr or
-    expr instanceof UnaryMinusExpr
+    expr instanceof UnaryMinusExpr or
+    expr instanceof CoAwaitExpr or
+    expr instanceof CoYieldExpr
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -1299,6 +1301,12 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
     expr instanceof UnaryPlusExpr and result instanceof Opcode::CopyValue
     or
     expr instanceof UnaryMinusExpr and result instanceof Opcode::Negate
+    or
+    // TODO: Use a new opcode to represent "awaiting the value"
+    expr instanceof CoAwaitExpr and result instanceof Opcode::CopyValue
+    or
+    // TODO: Use a new opcode to represent "awaiting the value"
+    expr instanceof CoYieldExpr and result instanceof Opcode::CopyValue
   }
 
   private TranslatedExpr getOperand() {
