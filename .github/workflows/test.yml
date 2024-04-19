@@ -1,0 +1,19 @@
+name: Tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Find codeql
+        id: find-codeql
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        with:
+          languages: javascript # does not matter
+      - run: |
+          codeql pack download ql/lib
+          codeql test run ql/test
