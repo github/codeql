@@ -6,6 +6,7 @@ edges
 | .github/workflows/artifactpoisoning31.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning31.yml:18:9:19:23 | Run Step |
 | .github/workflows/artifactpoisoning32.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning32.yml:16:9:18:20 | Run Step |
 | .github/workflows/artifactpoisoning33.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning33.yml:16:9:18:20 | Run Step |
+| .github/workflows/artifactpoisoning34.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning34.yml:20:9:22:23 | Run Step |
 | .github/workflows/artifactpoisoning41.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning41.yml:21:9:22:23 | Run Step |
 | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning42.yml:21:9:22:19 | Run Step |
 | .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning51.yml:18:9:20:57 | Run Step |
@@ -26,6 +27,8 @@ nodes
 | .github/workflows/artifactpoisoning32.yml:16:9:18:20 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning33.yml:13:9:16:6 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning33.yml:16:9:18:20 | Run Step | semmle.label | Run Step |
+| .github/workflows/artifactpoisoning34.yml:13:9:16:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/artifactpoisoning34.yml:20:9:22:23 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning41.yml:13:9:21:6 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning41.yml:21:9:22:23 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | semmle.label | Run Step |
@@ -45,6 +48,7 @@ subpaths
 | .github/workflows/artifactpoisoning31.yml:18:9:19:23 | Run Step | .github/workflows/artifactpoisoning31.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning31.yml:18:9:19:23 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning31.yml:18:9:19:23 | Run Step | Run Step |
 | .github/workflows/artifactpoisoning32.yml:16:9:18:20 | Run Step | .github/workflows/artifactpoisoning32.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning32.yml:16:9:18:20 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning32.yml:16:9:18:20 | Run Step | Run Step |
 | .github/workflows/artifactpoisoning33.yml:16:9:18:20 | Run Step | .github/workflows/artifactpoisoning33.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning33.yml:16:9:18:20 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning33.yml:16:9:18:20 | Run Step | Run Step |
+| .github/workflows/artifactpoisoning34.yml:20:9:22:23 | Run Step | .github/workflows/artifactpoisoning34.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning34.yml:20:9:22:23 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning34.yml:20:9:22:23 | Run Step | Run Step |
 | .github/workflows/artifactpoisoning41.yml:21:9:22:23 | Run Step | .github/workflows/artifactpoisoning41.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning41.yml:21:9:22:23 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning41.yml:21:9:22:23 | Run Step | Run Step |
 | .github/workflows/artifactpoisoning42.yml:21:9:22:19 | Run Step | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning42.yml:21:9:22:19 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning42.yml:21:9:22:19 | Run Step | Run Step |
 | .github/workflows/artifactpoisoning51.yml:18:9:20:57 | Run Step | .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning51.yml:18:9:20:57 | Run Step | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning51.yml:18:9:20:57 | Run Step | Run Step |

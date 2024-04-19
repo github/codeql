@@ -230,16 +230,55 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
 
 abstract class PoisonableStep extends Step { }
 
-class CommandExecutionRunStep extends PoisonableStep, Run {
-  CommandExecutionRunStep() {
+// source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
+private string dangerousActions() {
+  result =
+    ["pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action", "ruby/setup-ruby"]
+}
+
+class DangerousActionUsesStep extends PoisonableStep, UsesStep {
+  DangerousActionUsesStep() {
+    exists(UntrustedArtifactDownloadStep step |
+      step.getAFollowingStep() = this and
+      this.getCallee() = dangerousActions()
+    )
+  }
+}
+
+// source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L23
+private string dangerousCommands() {
+  result =
+    [
+      "npm install", "npm run ", "yarn ", "npm ci(\\b|$)", "make ", "terraform plan",
+      "terraform apply", "gomplate ", "pre-commit run", "pre-commit install", "go generate",
+      "msbuild ", "mvn ", "./mvnw ", "gradle ", "./gradlew ", "bundle install", "bundle exec ",
+      "^ant ", "mkdocs build", "pytest"
+    ]
+}
+
+class BuildRunStep extends PoisonableStep, Run {
+  BuildRunStep() {
+    exists(UntrustedArtifactDownloadStep step |
+      step.getAFollowingStep() = this and
+      exists(
+        this.getScript().splitAt("\n").trim().regexpFind("([^a-z]|^)" + dangerousCommands(), _, _)
+      )
+    )
+  }
+}
+
+class LocalCommandExecutionRunStep extends PoisonableStep, Run {
+  LocalCommandExecutionRunStep() {
     exists(UntrustedArtifactDownloadStep step |
       step.getAFollowingStep() = this and
       // Heuristic:
-      // Run step with a command starting with `./xxxx`, `sh xxxx`, `node xxxx`, ...
-      // eg: `./test.sh`, `sh test.sh`, `node test.js`, ...
-      this.getScript()
-          .trim()
-          .regexpMatch(".*(./|(node|python|ruby|sh)\\s+)" + step.getPath() + ".*")
+      // Run step with a command starting with `./xxxx`, `sh xxxx`, ...
+      exists(
+        this.getScript()
+            .splitAt("\n")
+            .trim()
+            .regexpFind("([^a-z]|^)(./|(ba|z|fi)?sh\\s+)" + step.getPath(), _, _)
+      )
     )
   }
 }

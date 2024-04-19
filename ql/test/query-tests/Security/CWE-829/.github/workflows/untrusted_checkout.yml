@@ -13,3 +13,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ env.HEAD }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - run: |
+          npm install
+          npm run lint
