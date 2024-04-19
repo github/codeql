@@ -666,6 +666,9 @@ class IfImpl extends AstNodeImpl, TIfNode {
 
   /** Gets the condition that must be satisfied for this job to run. */
   ExpressionImpl getConditionExpr() { result.getParentNode().getNode() = n }
+
+  /** Get condition scalar style. */
+  string getConditionStyle() { result = n.(YamlScalar).getStyle() }
 }
 
 class EnvImpl extends AstNodeImpl, TEnvNode {

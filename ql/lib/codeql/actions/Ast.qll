@@ -332,6 +332,8 @@ class If extends AstNode instanceof IfImpl {
   string getCondition() { result = super.getCondition() }
 
   Expression getConditionExpr() { result = super.getConditionExpr() }
+
+  string getConditionStyle() { result = super.getConditionStyle() }
 }
 
 abstract class Uses extends AstNode instanceof UsesImpl {
