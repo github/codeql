@@ -6,6 +6,7 @@ import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.AddressConstantExpression
+private import semmle.code.cpp.internal.ExtractorVersion
 
 /**
  * A C/C++ expression.
@@ -1371,17 +1372,7 @@ class ReuseExpr extends Expr, @reuseexpr {
   /**
    * Gets the expression that is being re-used.
    */
-  Expr getReusedExpr() {
-    // In the case of a prvalue, the extractor outputs the expression
-    // before conversion, but the converted expression is intended.
-    if this.isPRValueCategory()
-    then result = this.getBaseReusedExpr().getFullyConverted()
-    else result = this.getBaseReusedExpr()
-  }
-
-  private Expr getBaseReusedExpr() {
-    expr_reuse(underlyingElement(this), unresolveElement(result), _)
-  }
+  Expr getReusedExpr() { expr_reuse(underlyingElement(this), unresolveElement(result), _) }
 
   override Type getType() { result = this.getReusedExpr().getType() }
 
