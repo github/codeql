@@ -9,11 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Find codeql
-        id: find-codeql
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
-        with:
-          languages: javascript # does not matter
+      - name: Initialize CodeQL
+        id: init
+        run: |
+          # Take the most modern version
+          VERSION="$(find "${{ runner.tool_cache }}/CodeQL/" -maxdepth 1 -mindepth 1 -type d -print \
+                     | sort \
+                     | tail -n 1 \
+                     | tr -d '\n')"
+
+          CODEQL="$VERSION/x64/codeql/"
+          "${CODEQL}"/codeql version --format=json
+          echo "${CODEQL}" >> $GITHUB_PATH
       - run: |
-          codeql pack download ql/lib
           codeql test run ql/test
