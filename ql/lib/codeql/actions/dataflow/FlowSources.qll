@@ -120,8 +120,26 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
         "github\\.event\\.workflow_run\\.head_commit\\.author\\.name",
         "github\\.event\\.workflow_run\\.head_commit\\.committer\\.email",
         "github\\.event\\.workflow_run\\.head_commit\\.committer\\.name",
+        "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.ref",
+        "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.repo\\.name",
       ]
   |
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+  )
+}
+
+bindingset[context]
+private predicate isExternalUserControlledRepositoryDispatch(string context) {
+  exists(string reg |
+    reg = ["github\\.event\\.client_payload\\[[0-9]+\\]", "github\\.event\\.client_payload",]
+  |
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+  )
+}
+
+bindingset[context]
+private predicate isExternalUserControlledWorkflowDispatch(string context) {
+  exists(string reg | reg = ["github\\.event\\.inputs\\[[0-9]+\\]", "github\\.event\\.inputs",] |
     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
@@ -137,7 +155,9 @@ private class EventSource extends RemoteFlowSource {
       isExternalUserControlledGollum(context) or
       isExternalUserControlledCommit(context) or
       isExternalUserControlledDiscussion(context) or
-      isExternalUserControlledWorkflowRun(context)
+      isExternalUserControlledWorkflowRun(context) or
+      isExternalUserControlledRepositoryDispatch(context) or
+      isExternalUserControlledWorkflowDispatch(context)
     )
   }
 
