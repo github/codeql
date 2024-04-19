@@ -22,4 +22,5 @@ jobs:
           "${CODEQL}"/codeql version --format=json
           echo "${CODEQL}" >> $GITHUB_PATH
       - run: |
+          codeql pack install ql/test
           codeql test run ql/test
