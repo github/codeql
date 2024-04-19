@@ -1,6 +1,5 @@
 .DS_Store
 **/*.testproj
-**/codeql-pack.lock.yml
 ql/lib/.codeql/
 ql/src/.codeql/
 ql/test/.codeql/
