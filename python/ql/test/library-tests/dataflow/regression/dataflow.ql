@@ -6,7 +6,7 @@
  */
 
 import python
-import experimental.dataflow.testConfig
+import TestUtilities.dataflow.testConfig
 
 from DataFlow::Node source, DataFlow::Node sink
 where TestFlow::flow(source, sink)

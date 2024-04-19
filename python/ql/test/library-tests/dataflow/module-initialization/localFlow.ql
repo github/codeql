@@ -1,6 +1,6 @@
 // This query should be more focused yet.
 import python
-import experimental.dataflow.TestUtil.FlowTest
+import TestUtilities.dataflow.FlowTest
 private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DP
 

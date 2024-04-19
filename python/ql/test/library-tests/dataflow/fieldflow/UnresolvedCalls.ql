@@ -1,5 +1,5 @@
 import python
-import experimental.dataflow.TestUtil.UnresolvedCalls
+import TestUtilities.dataflow.UnresolvedCalls
 private import semmle.python.dataflow.new.DataFlow
 
 module IgnoreDictMethod implements UnresolvedCallExpectationsSig {
