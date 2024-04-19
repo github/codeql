@@ -9,11 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Find codeql
-        id: find-codeql
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
-        with:
-          languages: javascript # does not matter
-      - run: |
-          codeql pack download ql/lib
+      - name: Fetch CodeQL
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-codeql
+          gh codeql set-channel "nightly"
+          gh codeql version
+          printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
+      - name: Install Packs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone github/codeql
+          codeql pack install "ql/lib"
+          codeql pack install "ql/src"
+          codeql pack install "ql/test"
+      - name: Run Tests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
           codeql test run ql/test
