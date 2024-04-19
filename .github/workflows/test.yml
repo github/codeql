@@ -20,8 +20,17 @@ jobs:
           printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
           gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
           gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
-      - run: |
-          codeql pack install ql/lib
-          codeql pack install ql/src
-          codeql pack install ql/test
+      - name: Install Packs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone github/codeql # to make stubs available for tests
+          codeql pack download "codeql/actions-queries"
+          codeql pack install "ql/lib"
+          codeql pack install "ql/src"
+          codeql pack install "ql/test"
+      - name: Run Tests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
           codeql test run ql/test
