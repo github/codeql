@@ -4469,6 +4469,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
+      bindingset[par, ret]
+      pragma[inline_late]
+      private predicate summaryCtxStepStar(PathNodeImpl par, PathNodeImpl ret) {
+        summaryCtxStep*(par) = ret
+      }
+
       /**
        * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
        *
@@ -4483,7 +4489,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           any(PathNodeImpl n | localStepToHidden*(ret, n)), out) and
         not par.isHidden() and
         not ret.isHidden() and
-        ret = summaryCtxStep*(par)
+        summaryCtxStepStar(par, ret)
         or
         // wrapped subpath using hidden nodes, e.g. flow through a callback inside
         // a summarized callable
