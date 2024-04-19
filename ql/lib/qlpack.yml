@@ -4,10 +4,10 @@ warnOnImplicitThis: true
 name: githubsecuritylab/actions-all
 version: 0.0.11
 dependencies:
-  codeql/controlflow: "*"
-  codeql/dataflow: "*"
-  codeql/util: "*"
-  codeql/yaml: "*"
+  codeql/util: ^0.2.0
+  codeql/yaml: ^0.1.2
+  codeql/controlflow: ^0.1.0
+  codeql/dataflow: ^0.1.0
 dbscheme: yaml.dbscheme
 extractor: yaml
 groups:
