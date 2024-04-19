@@ -9,18 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Initialize CodeQL
-        id: init
+      - name: Fetch CodeQL
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          # Take the most modern version
-          VERSION="$(find "${{ runner.tool_cache }}/CodeQL/" -maxdepth 1 -mindepth 1 -type d -print \
-                     | sort \
-                     | tail -n 1 \
-                     | tr -d '\n')"
-
-          CODEQL="$VERSION/x64/codeql/"
-          "${CODEQL}"/codeql version --format=json
-          echo "${CODEQL}" >> $GITHUB_PATH
+          gh extension install github/gh-codeql
+          gh codeql set-channel "nightly"
+          gh codeql version
+          printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
       - run: |
           codeql pack install ql/lib
           codeql pack install ql/src
