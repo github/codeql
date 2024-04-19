@@ -1,5 +1,3 @@
-| file://:0:0:0:0 | pointer to ~vector output argument | This object is destroyed before $@ is called. | test.cpp:780:41:780:45 | call to begin | call to begin |
-| file://:0:0:0:0 | pointer to ~vector output argument | This object is destroyed before $@ is called. | test.cpp:780:56:780:58 | call to end | call to end |
 | test.cpp:680:30:680:30 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:680:17:680:17 | call to begin | call to begin |
 | test.cpp:680:30:680:30 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:680:17:680:17 | call to end | call to end |
 | test.cpp:683:31:683:32 | call to at | This object is destroyed before $@ is called. | test.cpp:683:17:683:17 | call to begin | call to begin |
