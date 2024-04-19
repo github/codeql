@@ -2,7 +2,7 @@
 # Headings refer to https://docs.python.org/3/reference/expressions.html,
 # and are selected whenever they incur dataflow.
 # Intended sources should be the variable `SOURCE` and intended sinks should be
-# arguments to the function `SINK` (see python/ql/test/experimental/dataflow/testConfig.qll).
+# arguments to the function `SINK` (see python/ql/test/library-tests/dataflow/testConfig.qll).
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
 #

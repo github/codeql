@@ -6,7 +6,7 @@
 # A thorough covering of methods in that document is found in classes.py.
 #
 # Intended sources should be the variable `SOURCE` and intended sinks should be
-# arguments to the function `SINK` (see python/ql/test/experimental/dataflow/testConfig.qll).
+# arguments to the function `SINK` (see python/ql/test/library-tests/dataflow/testConfig.qll).
 
 import sys
 import os
