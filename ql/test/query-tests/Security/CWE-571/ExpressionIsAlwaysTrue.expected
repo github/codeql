@@ -1,0 +1,7 @@
+| .github/workflows/test.yml:15:13:19:13 | \| | Expression always evaluates to true |
+| .github/workflows/test.yml:34:13:34:39 | ${{ 1 = ... == 2 }} | Expression always evaluates to true |
+| .github/workflows/test.yml:45:13:48:24 | >  | Expression always evaluates to true |
+| .github/workflows/test.yml:56:15:56:31 | " ${{ 1 == 2  }}" | Expression always evaluates to true |
+| .github/workflows/test.yml:59:15:59:31 | " ${{ 1 == 2  }}" | Expression always evaluates to true |
+| .github/workflows/test.yml:79:13:82:14 | \|+ | Expression always evaluates to true |
+| .github/workflows/test.yml:85:13:88:14 | >+ | Expression always evaluates to true |

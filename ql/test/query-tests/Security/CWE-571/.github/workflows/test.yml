@@ -8,7 +8,7 @@ jobs:
   process-pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Test1 
+      - name: Test 1 
         if: 1 == 2
         run: echo "Test 1 should not be printed"
       - name: Test 2 
@@ -36,8 +36,8 @@ jobs:
       - name: Test 7
         run: echo "Test 7 should not be printed"
         if: ${{ 
-              1 == 2 ||
-              3 == 4
+              github.actor == 'torvalds' || 
+              github.actor == 'dependabot[bot]'
           }}
 
       - name: Test 8
@@ -58,3 +58,32 @@ jobs:
       - name: Test 12
         if:   " ${{ 1 == 2  }}"
         run: echo "Test 12 should not be printed"
+      - name: Test 13
+        if: |
+          1 == 2 ||
+          3 == 4
+        run: echo "Test 13 should not be printed"
+      - name: Test 14
+        if: >-
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 14 should not be printed"
+      - name: Test 15
+        if: |-
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 15 should not be printed"
+      - name: Test 16
+        if: |+
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 16 should not be printed"
+      - name: Test 17
+        if: >+
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 17 should not be printed"

@@ -1,4 +1,6 @@
 /**
+ *:
+ *
  * @name If expression always true
  * @description Expressions used in If conditions with extra spaces are always true.
  * @kind problem
@@ -16,10 +18,10 @@ import actions
 from If i
 where
   i.getCondition().matches("%${{%") and
-  i.getConditionStyle() = ["|", ">"]
-  or
-  i.getCondition().matches("%${{%") and
-  not i.getCondition().matches("${{%")
+  (
+    not i.getCondition().matches("${{%") or
+    not i.getCondition().matches("%}}")
+  )
   or
   count(i.getCondition().splitAt("${{")) > 2
 select i, "Expression always evaluates to true"
