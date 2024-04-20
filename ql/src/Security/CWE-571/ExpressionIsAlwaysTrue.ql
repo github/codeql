@@ -15,6 +15,7 @@ import actions
 
 from If i
 where
+  i.getCondition().matches("%${{%") and
   i.getConditionStyle() = ["|", ">"]
   or
   i.getCondition().matches("%${{%") and
