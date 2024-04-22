@@ -1981,6 +1981,9 @@ coroutines.cpp:
 #   87|                 getQualifier(): [PointerDereferenceExpr] * ...
 #   87|                     Type = [Struct] suspend_always
 #   87|                     ValueCategory = lvalue
+#   87|                   getOperand(): [ReuseExpr] reuse of & ...
+#   87|                       Type = [PointerType] suspend_always *
+#   87|                       ValueCategory = prvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
 #-----|                     Type = [SpecifiedType] const suspend_always
@@ -1991,6 +1994,9 @@ coroutines.cpp:
 #   87|               getQualifier(): [PointerDereferenceExpr] * ...
 #   87|                   Type = [Struct] suspend_always
 #   87|                   ValueCategory = lvalue
+#   87|                 getOperand(): [ReuseExpr] reuse of & ...
+#   87|                     Type = [PointerType] suspend_always *
+#   87|                     ValueCategory = prvalue
 #   87|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #   87|                   Type = [VoidType] void
 #   87|                   ValueCategory = prvalue
@@ -2081,6 +2087,9 @@ coroutines.cpp:
 #   87|           getQualifier(): [PointerDereferenceExpr] * ...
 #   87|               Type = [Struct] suspend_always
 #   87|               ValueCategory = lvalue
+#   87|             getOperand(): [ReuseExpr] reuse of & ...
+#   87|                 Type = [PointerType] suspend_always *
+#   87|                 ValueCategory = prvalue
 #-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|               Conversion = [GlvalueConversion] glvalue conversion
 #-----|               Type = [SpecifiedType] const suspend_always
@@ -2091,6 +2100,9 @@ coroutines.cpp:
 #   87|           getQualifier(): [PointerDereferenceExpr] * ...
 #   87|               Type = [Struct] suspend_always
 #   87|               ValueCategory = lvalue
+#   87|             getOperand(): [ReuseExpr] reuse of & ...
+#   87|                 Type = [PointerType] suspend_always *
+#   87|                 ValueCategory = prvalue
 #   87|           getArgument(0): [ConstructorCall] call to coroutine_handle
 #   87|               Type = [VoidType] void
 #   87|               ValueCategory = prvalue
@@ -2182,6 +2194,9 @@ coroutines.cpp:
 #   91|                 getQualifier(): [PointerDereferenceExpr] * ...
 #   91|                     Type = [Struct] suspend_always
 #   91|                     ValueCategory = lvalue
+#   91|                   getOperand(): [ReuseExpr] reuse of & ...
+#   91|                       Type = [PointerType] suspend_always *
+#   91|                       ValueCategory = prvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
 #-----|                     Type = [SpecifiedType] const suspend_always
@@ -2192,6 +2207,9 @@ coroutines.cpp:
 #   91|               getQualifier(): [PointerDereferenceExpr] * ...
 #   91|                   Type = [Struct] suspend_always
 #   91|                   ValueCategory = lvalue
+#   91|                 getOperand(): [ReuseExpr] reuse of & ...
+#   91|                     Type = [PointerType] suspend_always *
+#   91|                     ValueCategory = prvalue
 #   91|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #   91|                   Type = [VoidType] void
 #   91|                   ValueCategory = prvalue
@@ -2285,6 +2303,9 @@ coroutines.cpp:
 #   91|           getQualifier(): [PointerDereferenceExpr] * ...
 #   91|               Type = [Struct] suspend_always
 #   91|               ValueCategory = lvalue
+#   91|             getOperand(): [ReuseExpr] reuse of & ...
+#   91|                 Type = [PointerType] suspend_always *
+#   91|                 ValueCategory = prvalue
 #-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|               Conversion = [GlvalueConversion] glvalue conversion
 #-----|               Type = [SpecifiedType] const suspend_always
@@ -2295,6 +2316,9 @@ coroutines.cpp:
 #   91|           getQualifier(): [PointerDereferenceExpr] * ...
 #   91|               Type = [Struct] suspend_always
 #   91|               ValueCategory = lvalue
+#   91|             getOperand(): [ReuseExpr] reuse of & ...
+#   91|                 Type = [PointerType] suspend_always *
+#   91|                 ValueCategory = prvalue
 #   91|           getArgument(0): [ConstructorCall] call to coroutine_handle
 #   91|               Type = [VoidType] void
 #   91|               ValueCategory = prvalue
@@ -2386,6 +2410,9 @@ coroutines.cpp:
 #   95|                 getQualifier(): [PointerDereferenceExpr] * ...
 #   95|                     Type = [Struct] suspend_always
 #   95|                     ValueCategory = lvalue
+#   95|                   getOperand(): [ReuseExpr] reuse of & ...
+#   95|                       Type = [PointerType] suspend_always *
+#   95|                       ValueCategory = prvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
 #-----|                     Type = [SpecifiedType] const suspend_always
@@ -2396,6 +2423,9 @@ coroutines.cpp:
 #   95|               getQualifier(): [PointerDereferenceExpr] * ...
 #   95|                   Type = [Struct] suspend_always
 #   95|                   ValueCategory = lvalue
+#   95|                 getOperand(): [ReuseExpr] reuse of & ...
+#   95|                     Type = [PointerType] suspend_always *
+#   95|                     ValueCategory = prvalue
 #   95|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #   95|                   Type = [VoidType] void
 #   95|                   ValueCategory = prvalue
@@ -2463,6 +2493,9 @@ coroutines.cpp:
 #   96|               getQualifier(): [PointerDereferenceExpr] * ...
 #   96|                   Type = [Struct] suspend_always
 #   96|                   ValueCategory = lvalue
+#   96|                 getOperand(): [ReuseExpr] reuse of & ...
+#   96|                     Type = [PointerType] suspend_always *
+#   96|                     ValueCategory = prvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const suspend_always
@@ -2473,6 +2506,9 @@ coroutines.cpp:
 #   96|               getQualifier(): [PointerDereferenceExpr] * ...
 #   96|                   Type = [Struct] suspend_always
 #   96|                   ValueCategory = lvalue
+#   96|                 getOperand(): [ReuseExpr] reuse of & ...
+#   96|                     Type = [PointerType] suspend_always *
+#   96|                     ValueCategory = prvalue
 #   96|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #   96|                   Type = [VoidType] void
 #   96|                   ValueCategory = prvalue
@@ -2563,6 +2599,9 @@ coroutines.cpp:
 #   95|           getQualifier(): [PointerDereferenceExpr] * ...
 #   95|               Type = [Struct] suspend_always
 #   95|               ValueCategory = lvalue
+#   95|             getOperand(): [ReuseExpr] reuse of & ...
+#   95|                 Type = [PointerType] suspend_always *
+#   95|                 ValueCategory = prvalue
 #-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|               Conversion = [GlvalueConversion] glvalue conversion
 #-----|               Type = [SpecifiedType] const suspend_always
@@ -2573,6 +2612,9 @@ coroutines.cpp:
 #   95|           getQualifier(): [PointerDereferenceExpr] * ...
 #   95|               Type = [Struct] suspend_always
 #   95|               ValueCategory = lvalue
+#   95|             getOperand(): [ReuseExpr] reuse of & ...
+#   95|                 Type = [PointerType] suspend_always *
+#   95|                 ValueCategory = prvalue
 #   95|           getArgument(0): [ConstructorCall] call to coroutine_handle
 #   95|               Type = [VoidType] void
 #   95|               ValueCategory = prvalue
@@ -2664,6 +2706,9 @@ coroutines.cpp:
 #   99|                 getQualifier(): [PointerDereferenceExpr] * ...
 #   99|                     Type = [Struct] suspend_always
 #   99|                     ValueCategory = lvalue
+#   99|                   getOperand(): [ReuseExpr] reuse of & ...
+#   99|                       Type = [PointerType] suspend_always *
+#   99|                       ValueCategory = prvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
 #-----|                     Type = [SpecifiedType] const suspend_always
@@ -2674,6 +2719,9 @@ coroutines.cpp:
 #   99|               getQualifier(): [PointerDereferenceExpr] * ...
 #   99|                   Type = [Struct] suspend_always
 #   99|                   ValueCategory = lvalue
+#   99|                 getOperand(): [ReuseExpr] reuse of & ...
+#   99|                     Type = [PointerType] suspend_always *
+#   99|                     ValueCategory = prvalue
 #   99|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #   99|                   Type = [VoidType] void
 #   99|                   ValueCategory = prvalue
@@ -2741,6 +2789,9 @@ coroutines.cpp:
 #  100|               getQualifier(): [PointerDereferenceExpr] * ...
 #  100|                   Type = [Struct] suspend_always
 #  100|                   ValueCategory = lvalue
+#  100|                 getOperand(): [ReuseExpr] reuse of & ...
+#  100|                     Type = [PointerType] suspend_always *
+#  100|                     ValueCategory = prvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const suspend_always
@@ -2751,6 +2802,9 @@ coroutines.cpp:
 #  100|               getQualifier(): [PointerDereferenceExpr] * ...
 #  100|                   Type = [Struct] suspend_always
 #  100|                   ValueCategory = lvalue
+#  100|                 getOperand(): [ReuseExpr] reuse of & ...
+#  100|                     Type = [PointerType] suspend_always *
+#  100|                     ValueCategory = prvalue
 #  100|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #  100|                   Type = [VoidType] void
 #  100|                   ValueCategory = prvalue
@@ -2833,6 +2887,9 @@ coroutines.cpp:
 #   99|           getQualifier(): [PointerDereferenceExpr] * ...
 #   99|               Type = [Struct] suspend_always
 #   99|               ValueCategory = lvalue
+#   99|             getOperand(): [ReuseExpr] reuse of & ...
+#   99|                 Type = [PointerType] suspend_always *
+#   99|                 ValueCategory = prvalue
 #-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|               Conversion = [GlvalueConversion] glvalue conversion
 #-----|               Type = [SpecifiedType] const suspend_always
@@ -2843,6 +2900,9 @@ coroutines.cpp:
 #   99|           getQualifier(): [PointerDereferenceExpr] * ...
 #   99|               Type = [Struct] suspend_always
 #   99|               ValueCategory = lvalue
+#   99|             getOperand(): [ReuseExpr] reuse of & ...
+#   99|                 Type = [PointerType] suspend_always *
+#   99|                 ValueCategory = prvalue
 #   99|           getArgument(0): [ConstructorCall] call to coroutine_handle
 #   99|               Type = [VoidType] void
 #   99|               ValueCategory = prvalue
@@ -2934,6 +2994,9 @@ coroutines.cpp:
 #  103|                 getQualifier(): [PointerDereferenceExpr] * ...
 #  103|                     Type = [Struct] suspend_always
 #  103|                     ValueCategory = lvalue
+#  103|                   getOperand(): [ReuseExpr] reuse of & ...
+#  103|                       Type = [PointerType] suspend_always *
+#  103|                       ValueCategory = prvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
 #-----|                     Type = [SpecifiedType] const suspend_always
@@ -2944,6 +3007,9 @@ coroutines.cpp:
 #  103|               getQualifier(): [PointerDereferenceExpr] * ...
 #  103|                   Type = [Struct] suspend_always
 #  103|                   ValueCategory = lvalue
+#  103|                 getOperand(): [ReuseExpr] reuse of & ...
+#  103|                     Type = [PointerType] suspend_always *
+#  103|                     ValueCategory = prvalue
 #  103|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #  103|                   Type = [VoidType] void
 #  103|                   ValueCategory = prvalue
@@ -3011,6 +3077,9 @@ coroutines.cpp:
 #  104|               getQualifier(): [PointerDereferenceExpr] * ...
 #  104|                   Type = [Struct] suspend_always
 #  104|                   ValueCategory = lvalue
+#  104|                 getOperand(): [ReuseExpr] reuse of & ...
+#  104|                     Type = [PointerType] suspend_always *
+#  104|                     ValueCategory = prvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const suspend_always
@@ -3021,6 +3090,9 @@ coroutines.cpp:
 #  104|               getQualifier(): [PointerDereferenceExpr] * ...
 #  104|                   Type = [Struct] suspend_always
 #  104|                   ValueCategory = lvalue
+#  104|                 getOperand(): [ReuseExpr] reuse of & ...
+#  104|                     Type = [PointerType] suspend_always *
+#  104|                     ValueCategory = prvalue
 #  104|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #  104|                   Type = [VoidType] void
 #  104|                   ValueCategory = prvalue
@@ -3111,6 +3183,9 @@ coroutines.cpp:
 #  103|           getQualifier(): [PointerDereferenceExpr] * ...
 #  103|               Type = [Struct] suspend_always
 #  103|               ValueCategory = lvalue
+#  103|             getOperand(): [ReuseExpr] reuse of & ...
+#  103|                 Type = [PointerType] suspend_always *
+#  103|                 ValueCategory = prvalue
 #-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|               Conversion = [GlvalueConversion] glvalue conversion
 #-----|               Type = [SpecifiedType] const suspend_always
@@ -3121,6 +3196,9 @@ coroutines.cpp:
 #  103|           getQualifier(): [PointerDereferenceExpr] * ...
 #  103|               Type = [Struct] suspend_always
 #  103|               ValueCategory = lvalue
+#  103|             getOperand(): [ReuseExpr] reuse of & ...
+#  103|                 Type = [PointerType] suspend_always *
+#  103|                 ValueCategory = prvalue
 #  103|           getArgument(0): [ConstructorCall] call to coroutine_handle
 #  103|               Type = [VoidType] void
 #  103|               ValueCategory = prvalue
@@ -3212,6 +3290,9 @@ coroutines.cpp:
 #  108|                 getQualifier(): [PointerDereferenceExpr] * ...
 #  108|                     Type = [Struct] suspend_always
 #  108|                     ValueCategory = lvalue
+#  108|                   getOperand(): [ReuseExpr] reuse of & ...
+#  108|                       Type = [PointerType] suspend_always *
+#  108|                       ValueCategory = prvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
 #-----|                     Type = [SpecifiedType] const suspend_always
@@ -3222,6 +3303,9 @@ coroutines.cpp:
 #  108|               getQualifier(): [PointerDereferenceExpr] * ...
 #  108|                   Type = [Struct] suspend_always
 #  108|                   ValueCategory = lvalue
+#  108|                 getOperand(): [ReuseExpr] reuse of & ...
+#  108|                     Type = [PointerType] suspend_always *
+#  108|                     ValueCategory = prvalue
 #  108|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #  108|                   Type = [VoidType] void
 #  108|                   ValueCategory = prvalue
@@ -3289,6 +3373,9 @@ coroutines.cpp:
 #  109|               getQualifier(): [PointerDereferenceExpr] * ...
 #  109|                   Type = [Struct] suspend_always
 #  109|                   ValueCategory = lvalue
+#  109|                 getOperand(): [ReuseExpr] reuse of & ...
+#  109|                     Type = [PointerType] suspend_always *
+#  109|                     ValueCategory = prvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const suspend_always
@@ -3299,6 +3386,9 @@ coroutines.cpp:
 #  109|               getQualifier(): [PointerDereferenceExpr] * ...
 #  109|                   Type = [Struct] suspend_always
 #  109|                   ValueCategory = lvalue
+#  109|                 getOperand(): [ReuseExpr] reuse of & ...
+#  109|                     Type = [PointerType] suspend_always *
+#  109|                     ValueCategory = prvalue
 #  109|               getArgument(0): [ConstructorCall] call to coroutine_handle
 #  109|                   Type = [VoidType] void
 #  109|                   ValueCategory = prvalue
@@ -3402,6 +3492,9 @@ coroutines.cpp:
 #  108|           getQualifier(): [PointerDereferenceExpr] * ...
 #  108|               Type = [Struct] suspend_always
 #  108|               ValueCategory = lvalue
+#  108|             getOperand(): [ReuseExpr] reuse of & ...
+#  108|                 Type = [PointerType] suspend_always *
+#  108|                 ValueCategory = prvalue
 #-----|           getQualifier().getFullyConverted(): [CStyleCast] (const suspend_always)...
 #-----|               Conversion = [GlvalueConversion] glvalue conversion
 #-----|               Type = [SpecifiedType] const suspend_always
@@ -3412,6 +3505,9 @@ coroutines.cpp:
 #  108|           getQualifier(): [PointerDereferenceExpr] * ...
 #  108|               Type = [Struct] suspend_always
 #  108|               ValueCategory = lvalue
+#  108|             getOperand(): [ReuseExpr] reuse of & ...
+#  108|                 Type = [PointerType] suspend_always *
+#  108|                 ValueCategory = prvalue
 #  108|           getArgument(0): [ConstructorCall] call to coroutine_handle
 #  108|               Type = [VoidType] void
 #  108|               ValueCategory = prvalue
