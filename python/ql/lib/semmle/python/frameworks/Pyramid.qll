@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.data.ModelsAsData
 
 /**
@@ -82,6 +83,49 @@ module Pyramid {
       AddViewCall() { this.calls(instance(), "add_view") }
 
       DataFlow::Node getViewArg() { result = [this.getArg(0), this.getArgByName("view")] }
+    }
+  }
+
+  module Request {
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `pyramid.request.Request`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `pyramid.request.Request`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    private class RequestParameter extends InstanceSource, DataFlow::ParameterNode {
+      RequestParameter() { this.getParameter() = any(View::ViewCallable vc).getRequestParameter() }
+    }
+
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "pyramid.request.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "accept", "accept_charset", "accept_encoding", "accept_language", "application_url",
+            "as_bytes", "authorization", "body", "body_file", "body_file_raw", "body_file_seekable",
+            "cache_control", "client_addr", "content_type", "cookies", "domain", "headers", "host",
+            "host_port", "host_url", "GET", "if_match", "if_none_match", "if_range",
+            "if_none_match", "json", "json_body", "params", "path", "path_info", "path_qs",
+            "path_url", "POST", "pragma", "query_string", "range", "referer", "referrer", "text",
+            "url", "urlargs", "urlvars", "user_agent"
+          ]
+      }
+
+      override string getMethodName() {
+        result in ["as_bytes", "copy", "copy_body", "copy_get", "path_info_peek", "path_info_pop"]
+      }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 }
