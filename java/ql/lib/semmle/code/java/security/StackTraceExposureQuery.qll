@@ -19,7 +19,7 @@ private class PrintStackTraceMethod extends Method {
 }
 
 private module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
+  predicate isSource(DataFlow::Node src) { src instanceof XssVulnerableWriterSourceNode }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall ma |
@@ -95,7 +95,10 @@ predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stac
   )
 }
 
-private class GetMessageFlowSource extends DataFlow::Node {
+/**
+ * A class of get message source nodes.
+ */
+class GetMessageFlowSource extends DataFlow::Node {
   GetMessageFlowSource() {
     exists(Method method | this.asExpr().(MethodCall).getMethod() = method |
       method.hasName("getMessage") and

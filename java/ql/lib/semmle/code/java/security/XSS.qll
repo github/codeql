@@ -62,7 +62,7 @@ private class DefaultXssSanitizer extends XssSanitizer {
 
 /** A configuration that tracks data from a servlet writer to an output method. */
 private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
+  predicate isSource(DataFlow::Node src) { src instanceof XssVulnerableWriterSourceNode }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall ma |
@@ -103,6 +103,13 @@ class XssVulnerableWriterSource extends MethodCall {
     or
     this.getMethod() instanceof FacesGetResponseStreamMethod
   }
+}
+
+/**
+ * A class of xss vulnerable writer source nodes.
+ */
+class XssVulnerableWriterSourceNode extends DataFlow::Node {
+  XssVulnerableWriterSourceNode() { this.asExpr() instanceof XssVulnerableWriterSource }
 }
 
 /**

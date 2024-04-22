@@ -37,8 +37,15 @@ private predicate cookieStore(DataFlow::Node cookie, Expr store) {
   )
 }
 
+/**
+ * A class of cookie source nodes.
+ */
+class CookieSource extends DataFlow::Node {
+  CookieSource() { this.asExpr() instanceof Cookie }
+}
+
 private module CookieToStoreFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Cookie }
+  predicate isSource(DataFlow::Node src) { src instanceof CookieSource }
 
   predicate isSink(DataFlow::Node sink) { cookieStore(sink, _) }
 }

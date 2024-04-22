@@ -79,8 +79,15 @@ private class CloseFileMethod extends Method {
   }
 }
 
+/**
+ * A class of local file open call source nodes.
+ */
+class LocalFileOpenCallSource extends DataFlow::Node {
+  LocalFileOpenCallSource() { this.asExpr() instanceof LocalFileOpenCall }
+}
+
 private module FilesystemFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof LocalFileOpenCall }
+  predicate isSource(DataFlow::Node src) { src instanceof LocalFileOpenCallSource }
 
   predicate isSink(DataFlow::Node sink) {
     filesystemInput(sink, _) or

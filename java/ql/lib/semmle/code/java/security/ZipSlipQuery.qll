@@ -22,12 +22,19 @@ private class ArchiveEntryNameMethod extends Method {
 }
 
 /**
+ * A class of entry name method source nodes.
+ */
+class ArchiveEntryNameMethodSource extends DataFlow::Node {
+  ArchiveEntryNameMethodSource() {
+    this.asExpr().(MethodCall).getMethod() instanceof ArchiveEntryNameMethod
+  }
+}
+
+/**
  * A taint-tracking configuration for reasoning about unsafe zip file extraction.
  */
 module ZipSlipConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr().(MethodCall).getMethod() instanceof ArchiveEntryNameMethod
-  }
+  predicate isSource(DataFlow::Node source) { source instanceof ArchiveEntryNameMethodSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
 

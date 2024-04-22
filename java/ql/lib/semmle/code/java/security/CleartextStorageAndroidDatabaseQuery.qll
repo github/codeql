@@ -96,10 +96,15 @@ private predicate localDatabaseStore(DataFlow::Node database, MethodCall store) 
   )
 }
 
+/**
+ * A class of local database open method call source nodes.
+ */
+class LocalDatabaseOpenMethodCallSource extends DataFlow::Node {
+  LocalDatabaseOpenMethodCallSource() { this.asExpr() instanceof LocalDatabaseOpenMethodCall }
+}
+
 private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof LocalDatabaseOpenMethodCall
-  }
+  predicate isSource(DataFlow::Node source) { source instanceof LocalDatabaseOpenMethodCallSource }
 
   predicate isSink(DataFlow::Node sink) {
     localDatabaseInput(sink, _) or

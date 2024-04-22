@@ -67,11 +67,18 @@ private predicate sharedPreferencesStore(DataFlow::Node editor, MethodCall m) {
   editor.asExpr() = m.getQualifier().getUnderlyingExpr()
 }
 
+/**
+ * A shared preferences editor method call source nodes.
+ */
+class SharedPreferencesEditorMethodCallSource extends DataFlow::Node {
+  SharedPreferencesEditorMethodCallSource() {
+    this.asExpr() instanceof SharedPreferencesEditorMethodCall
+  }
+}
+
 /** Flow from `SharedPreferences.Editor` to either a setter or a store method. */
 private module SharedPreferencesFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) {
-    src.asExpr() instanceof SharedPreferencesEditorMethodCall
-  }
+  predicate isSource(DataFlow::Node src) { src instanceof SharedPreferencesEditorMethodCallSource }
 
   predicate isSink(DataFlow::Node sink) {
     sharedPreferencesInput(sink, _) or

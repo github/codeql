@@ -1,6 +1,7 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import java
+private import semmle.code.java.dataflow.ApiSources as ApiSources
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
@@ -69,9 +70,7 @@ class ExternalApi extends Callable {
   }
 
   pragma[nomagic]
-  predicate isSource() {
-    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
-  }
+  predicate isSource() { this.getAnOutput() instanceof ApiSources::SourceNode }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
