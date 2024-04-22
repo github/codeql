@@ -24,28 +24,10 @@ predicate envVarInjectionFromFileSink(DataFlow::Node sink) {
   )
 }
 
-/**
- * Holds if a Run step declares an environment variable, uses it to declare a new env var.
- * e.g.
- *    env:
- *      BODY: ${{ github.event.comment.body }}
- *    run: |
- *      echo "foo=$(echo $BODY)" >> $GITHUB_ENV
- */
-predicate envVarInjectionFromEnvSink(DataFlow::Node sink) {
-  exists(Run run, Expression expr, string varName, string value |
-    sink.asExpr().getInScopeEnvVarExpr(varName) = expr and
-    run = sink.asExpr() and
-    Utils::writeToGitHubEnv(run, _, value) and
-    value.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
-  )
-}
-
 private class EnvVarInjectionSink extends DataFlow::Node {
   EnvVarInjectionSink() {
     envVarInjectionFromExprSink(this) or
     envVarInjectionFromFileSink(this) or
-    envVarInjectionFromEnvSink(this) or
     externallyDefinedSink(this, "envvar-injection")
   }
 }
