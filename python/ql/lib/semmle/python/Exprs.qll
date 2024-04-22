@@ -627,6 +627,10 @@ deprecated class StrConst = StringLiteral;
 /** A string constant. */
 class StringLiteral extends Str_, ImmutableLiteral {
   /* syntax: "hello" */
+  /**
+   * Holds if this string is a unicode string, either by default (e.g. if Python 3), or with an
+   * explicit prefix.
+   */
   predicate isUnicode() {
     this.getPrefix() = unicode_prefix()
     or
