@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.dotNet = dotNet;
             this.logger = logger;
 
-            newestSdkVersion = new Lazy<DotNetVersion?>(GetNewestSdk);
+            newestSdkVersion = new Lazy<DotNetVersion?>(GetNewestSdkVersion);
             cscPath = new Lazy<string?>(GetCscPath);
         }
 
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return sdks;
         }
 
-        private DotNetVersion? GetNewestSdk()
+        private DotNetVersion? GetNewestSdkVersion()
         {
             var listed = dotNet.GetListedSdks();
             var sdks = ParseSdks(listed);
@@ -55,14 +55,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private string? GetCscPath()
         {
-            var sdk = GetNewestSdk();
-            if (sdk is null)
+            var newestSdkVersion = GetNewestSdkVersion();
+            if (newestSdkVersion is null)
             {
                 logger.LogWarning("No dotnet SDK found.");
                 return null;
             }
 
-            var path = Path.Combine(sdk.FullPath, "Roslyn", "bincore", "csc.dll");
+            var path = Path.Combine(newestSdkVersion.FullPath, "Roslyn", "bincore", "csc.dll");
             logger.LogDebug($"Source generator CSC: '{path}'");
             if (!File.Exists(path))
             {

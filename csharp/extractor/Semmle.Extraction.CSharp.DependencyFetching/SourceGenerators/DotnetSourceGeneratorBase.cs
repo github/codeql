@@ -73,13 +73,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                if (!groupedFiles.TryGetValue(project.File, out var files))
-                {
-                    files = [];
-                    groupedFiles[project.File] = files;
-                }
-
-                files.Add(additionalFile);
+                groupedFiles.AddAnother(project.File, additionalFile);
             }
 
             try

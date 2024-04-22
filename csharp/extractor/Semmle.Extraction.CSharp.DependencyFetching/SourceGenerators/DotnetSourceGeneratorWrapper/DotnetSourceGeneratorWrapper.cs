@@ -35,23 +35,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IEnumerable<string> RunSourceGenerator(IEnumerable<string> additionalFiles, string csprojFile, IEnumerable<string> references, string targetDir)
         {
-            var name = Guid.NewGuid().ToString("N").ToUpper();
-            var tempPath = FileUtils.GetTemporaryWorkingDirectory(out var shouldCleanUp);
-            var analyzerConfig = Path.Combine(tempPath, $"{name}.txt");
-            var dllPath = Path.Combine(tempPath, $"{name}.dll");
-            var cscArgsPath = Path.Combine(tempPath, $"{name}.rsp");
-            var outputFolder = Path.Combine(targetDir, name);
-            Directory.CreateDirectory(outputFolder);
-
             try
             {
+                var name = Guid.NewGuid().ToString("N").ToUpper();
+                using var tempDir = new TemporaryDirectory(Path.Join(FileUtils.GetTemporaryWorkingDirectory(out _), "source-generator"), "source generator temporary", logger);
+                var analyzerConfigPath = Path.Combine(tempDir.DirInfo.FullName, $"{name}.txt");
+                var dllPath = Path.Combine(tempDir.DirInfo.FullName, $"{name}.dll");
+                var cscArgsPath = Path.Combine(tempDir.DirInfo.FullName, $"{name}.rsp");
+                var outputFolder = Path.Combine(targetDir, name);
+                Directory.CreateDirectory(outputFolder);
                 logger.LogInfo("Producing analyzer config content.");
-                GenerateAnalyzerConfig(additionalFiles, csprojFile, analyzerConfig);
+                GenerateAnalyzerConfig(additionalFiles, csprojFile, analyzerConfigPath);
 
-                logger.LogDebug($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
+                logger.LogDebug($"Analyzer config content: {File.ReadAllText(analyzerConfigPath)}");
 
                 var args = new StringBuilder();
-                args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
+                args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfigPath}\" ");
 
                 foreach (var f in Directory.GetFiles(SourceGeneratorFolder, "*.dll", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive }))
                 {
@@ -90,27 +89,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Failed to generate source files from {FileType} files: {ex.Message}");
                 return [];
-            }
-            finally
-            {
-                if (shouldCleanUp)
-                {
-                    DeleteFile(analyzerConfig);
-                    DeleteFile(dllPath);
-                    DeleteFile(cscArgsPath);
-                }
-            }
-        }
-
-        private void DeleteFile(string path)
-        {
-            try
-            {
-                File.Delete(path);
-            }
-            catch (Exception exc)
-            {
-                logger.LogWarning($"Failed to delete file {path}: {exc}");
             }
         }
     }
