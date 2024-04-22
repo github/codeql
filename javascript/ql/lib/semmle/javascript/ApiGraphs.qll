@@ -7,6 +7,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import internal.CachedStages
 
 /**
@@ -782,6 +783,13 @@ module API {
             rhs = m.getAnExportedValue(prop)
           )
           or
+          // In general, turn store steps into member steps for def-nodes
+          exists(string prop |
+            PreCallGraphStep::storeStep(rhs, pred, prop) and
+            lbl = Label::member(prop) and
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
+          )
+          or
           exists(DataFlow::FunctionNode fn |
             fn = pred and
             lbl = Label::return()
@@ -947,7 +955,6 @@ module API {
           (base instanceof TNonModuleDef or base instanceof TUse)
         )
         or
-        // invocations
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
           use(base, src) and pred = trackUseNode(src)
         |
@@ -967,6 +974,13 @@ module API {
             ref = cls.getAReceiverNode()
             or
             ref = cls.getAClassReference().getAnInstantiation()
+          )
+          or
+          exists(string prop |
+            PreCallGraphStep::loadStep(pred.getALocalUse(), ref, prop) and
+            lbl = Label::member(prop) and
+            // avoid generating member edges like "$arrayElement$"
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
           )
         )
         or
@@ -1535,7 +1549,9 @@ module API {
           prop = any(CanonicalName c).getName() or
           prop = any(DataFlow::PropRef p).getPropertyName() or
           exists(Impl::MkTypeUse(_, prop)) or
-          exists(any(Module m).getAnExportedValue(prop))
+          exists(any(Module m).getAnExportedValue(prop)) or
+          PreCallGraphStep::loadStep(_, _, prop) or
+          PreCallGraphStep::storeStep(_, _, prop)
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {

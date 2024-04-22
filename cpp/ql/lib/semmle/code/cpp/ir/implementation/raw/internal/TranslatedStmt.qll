@@ -1501,3 +1501,41 @@ class TranslatedVlaDeclarationStmt extends TranslatedStmt {
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
 }
+
+class TranslatedCoReturnStmt extends TranslatedStmt {
+  override CoReturnStmt stmt;
+
+  private TranslatedExpr getTranslatedOperand() {
+    result = getTranslatedExpr(stmt.getOperand().getFullyConverted())
+  }
+
+  override TranslatedExpr getChildInternal(int id) {
+    id = 0 and
+    result = this.getTranslatedOperand()
+  }
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getTranslatedOperand().getFirstInstruction(kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::NoOp and
+    resultType = getVoidType()
+  }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getTranslatedOperand() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+}

@@ -47,26 +47,26 @@ edges
 | test.cpp:203:17:203:19 | *str [string] | test.cpp:203:22:203:27 | string | provenance |  |
 | test.cpp:207:17:207:19 | *str [string] | test.cpp:207:22:207:27 | string | provenance |  |
 | test.cpp:214:24:214:24 | p | test.cpp:216:10:216:10 | p | provenance |  |
-| test.cpp:220:27:220:54 | (unsigned char *)... | test.cpp:222:15:222:20 | buffer | provenance |  |
-| test.cpp:220:27:220:54 | call to malloc | test.cpp:220:27:220:54 | (unsigned char *)... | provenance |  |
+| test.cpp:220:27:220:54 | call to malloc | test.cpp:220:27:220:54 | call to malloc | provenance |  |
+| test.cpp:220:27:220:54 | call to malloc | test.cpp:222:15:222:20 | buffer | provenance |  |
 | test.cpp:222:15:222:20 | buffer | test.cpp:214:24:214:24 | p | provenance |  |
-| test.cpp:228:27:228:54 | (unsigned char *)... | test.cpp:232:10:232:15 | buffer | provenance |  |
-| test.cpp:228:27:228:54 | call to malloc | test.cpp:228:27:228:54 | (unsigned char *)... | provenance |  |
+| test.cpp:228:27:228:54 | call to malloc | test.cpp:228:27:228:54 | call to malloc | provenance |  |
+| test.cpp:228:27:228:54 | call to malloc | test.cpp:232:10:232:15 | buffer | provenance |  |
 | test.cpp:235:40:235:45 | buffer | test.cpp:236:5:236:26 | ... = ... | provenance |  |
 | test.cpp:236:5:236:9 | *p_str [post update] [string] | test.cpp:235:27:235:31 | *p_str [string] | provenance |  |
 | test.cpp:236:5:236:26 | ... = ... | test.cpp:236:5:236:9 | *p_str [post update] [string] | provenance |  |
-| test.cpp:241:20:241:38 | (char *)... | test.cpp:242:22:242:27 | buffer | provenance |  |
-| test.cpp:241:20:241:38 | call to malloc | test.cpp:241:20:241:38 | (char *)... | provenance |  |
+| test.cpp:241:20:241:38 | call to malloc | test.cpp:241:20:241:38 | call to malloc | provenance |  |
+| test.cpp:241:20:241:38 | call to malloc | test.cpp:242:22:242:27 | buffer | provenance |  |
 | test.cpp:242:16:242:19 | set_string output argument [string] | test.cpp:243:12:243:14 | *str [string] | provenance |  |
 | test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | provenance |  |
 | test.cpp:242:22:242:27 | buffer | test.cpp:242:16:242:19 | set_string output argument [string] | provenance |  |
 | test.cpp:243:12:243:14 | *str [string] | test.cpp:243:12:243:21 | string | provenance |  |
-| test.cpp:249:14:249:33 | (int *)... | test.cpp:250:12:250:12 | p | provenance |  |
-| test.cpp:249:14:249:33 | call to my_alloc | test.cpp:249:14:249:33 | (int *)... | provenance |  |
+| test.cpp:249:14:249:33 | call to my_alloc | test.cpp:249:14:249:33 | call to my_alloc | provenance |  |
+| test.cpp:249:14:249:33 | call to my_alloc | test.cpp:250:12:250:12 | p | provenance |  |
 | test.cpp:256:5:256:25 | ... = ... | test.cpp:257:12:257:12 | p | provenance |  |
 | test.cpp:256:9:256:25 | call to malloc | test.cpp:256:5:256:25 | ... = ... | provenance |  |
-| test.cpp:262:15:262:30 | (char *)... | test.cpp:266:12:266:12 | p | provenance |  |
-| test.cpp:262:15:262:30 | call to malloc | test.cpp:262:15:262:30 | (char *)... | provenance |  |
+| test.cpp:262:15:262:30 | call to malloc | test.cpp:262:15:262:30 | call to malloc | provenance |  |
+| test.cpp:262:15:262:30 | call to malloc | test.cpp:266:12:266:12 | p | provenance |  |
 | test.cpp:264:9:264:30 | ... = ... | test.cpp:266:12:266:12 | p | provenance |  |
 | test.cpp:264:13:264:30 | call to malloc | test.cpp:264:9:264:30 | ... = ... | provenance |  |
 nodes
@@ -122,29 +122,29 @@ nodes
 | test.cpp:207:22:207:27 | string | semmle.label | string |
 | test.cpp:214:24:214:24 | p | semmle.label | p |
 | test.cpp:216:10:216:10 | p | semmle.label | p |
-| test.cpp:220:27:220:54 | (unsigned char *)... | semmle.label | (unsigned char *)... |
+| test.cpp:220:27:220:54 | call to malloc | semmle.label | call to malloc |
 | test.cpp:220:27:220:54 | call to malloc | semmle.label | call to malloc |
 | test.cpp:222:15:222:20 | buffer | semmle.label | buffer |
-| test.cpp:228:27:228:54 | (unsigned char *)... | semmle.label | (unsigned char *)... |
+| test.cpp:228:27:228:54 | call to malloc | semmle.label | call to malloc |
 | test.cpp:228:27:228:54 | call to malloc | semmle.label | call to malloc |
 | test.cpp:232:10:232:15 | buffer | semmle.label | buffer |
 | test.cpp:235:27:235:31 | *p_str [string] | semmle.label | *p_str [string] |
 | test.cpp:235:40:235:45 | buffer | semmle.label | buffer |
 | test.cpp:236:5:236:9 | *p_str [post update] [string] | semmle.label | *p_str [post update] [string] |
 | test.cpp:236:5:236:26 | ... = ... | semmle.label | ... = ... |
-| test.cpp:241:20:241:38 | (char *)... | semmle.label | (char *)... |
+| test.cpp:241:20:241:38 | call to malloc | semmle.label | call to malloc |
 | test.cpp:241:20:241:38 | call to malloc | semmle.label | call to malloc |
 | test.cpp:242:16:242:19 | set_string output argument [string] | semmle.label | set_string output argument [string] |
 | test.cpp:242:22:242:27 | buffer | semmle.label | buffer |
 | test.cpp:243:12:243:14 | *str [string] | semmle.label | *str [string] |
 | test.cpp:243:12:243:21 | string | semmle.label | string |
-| test.cpp:249:14:249:33 | (int *)... | semmle.label | (int *)... |
+| test.cpp:249:14:249:33 | call to my_alloc | semmle.label | call to my_alloc |
 | test.cpp:249:14:249:33 | call to my_alloc | semmle.label | call to my_alloc |
 | test.cpp:250:12:250:12 | p | semmle.label | p |
 | test.cpp:256:5:256:25 | ... = ... | semmle.label | ... = ... |
 | test.cpp:256:9:256:25 | call to malloc | semmle.label | call to malloc |
 | test.cpp:257:12:257:12 | p | semmle.label | p |
-| test.cpp:262:15:262:30 | (char *)... | semmle.label | (char *)... |
+| test.cpp:262:15:262:30 | call to malloc | semmle.label | call to malloc |
 | test.cpp:262:15:262:30 | call to malloc | semmle.label | call to malloc |
 | test.cpp:264:9:264:30 | ... = ... | semmle.label | ... = ... |
 | test.cpp:264:13:264:30 | call to malloc | semmle.label | call to malloc |

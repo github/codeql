@@ -17,10 +17,10 @@ edges
 | test.cpp:211:9:211:42 | ... * ... | test.cpp:209:8:209:23 | *get_tainted_size | provenance |  |
 | test.cpp:211:14:211:27 | *call to getenv | test.cpp:211:9:211:42 | ... * ... | provenance | TaintFunction |
 | test.cpp:230:21:230:21 | s | test.cpp:231:21:231:21 | s | provenance |  |
-| test.cpp:237:19:237:52 | (int)... | test.cpp:239:9:239:18 | local_size | provenance |  |
-| test.cpp:237:19:237:52 | (int)... | test.cpp:245:11:245:20 | local_size | provenance |  |
-| test.cpp:237:19:237:52 | (int)... | test.cpp:247:10:247:19 | local_size | provenance |  |
-| test.cpp:237:24:237:37 | *call to getenv | test.cpp:237:19:237:52 | (int)... | provenance | TaintFunction |
+| test.cpp:237:19:237:52 | ... * ... | test.cpp:239:9:239:18 | local_size | provenance |  |
+| test.cpp:237:19:237:52 | ... * ... | test.cpp:245:11:245:20 | local_size | provenance |  |
+| test.cpp:237:19:237:52 | ... * ... | test.cpp:247:10:247:19 | local_size | provenance |  |
+| test.cpp:237:24:237:37 | *call to getenv | test.cpp:237:19:237:52 | ... * ... | provenance | TaintFunction |
 | test.cpp:247:10:247:19 | local_size | test.cpp:230:21:230:21 | s | provenance |  |
 | test.cpp:250:20:250:27 | *out_size | test.cpp:289:17:289:20 | get_size output argument | provenance |  |
 | test.cpp:250:20:250:27 | *out_size | test.cpp:305:18:305:21 | get_size output argument | provenance |  |
@@ -57,7 +57,7 @@ nodes
 | test.cpp:211:14:211:27 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:230:21:230:21 | s | semmle.label | s |
 | test.cpp:231:21:231:21 | s | semmle.label | s |
-| test.cpp:237:19:237:52 | (int)... | semmle.label | (int)... |
+| test.cpp:237:19:237:52 | ... * ... | semmle.label | ... * ... |
 | test.cpp:237:24:237:37 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:239:9:239:18 | local_size | semmle.label | local_size |
 | test.cpp:241:9:241:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
