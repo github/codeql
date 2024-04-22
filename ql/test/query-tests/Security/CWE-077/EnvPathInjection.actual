@@ -1,0 +1,10 @@
+edges
+| .github/workflows/path1.yml:21:9:25:6 | Uses Step | .github/workflows/path1.yml:25:9:26:6 | Run Step |
+| .github/workflows/path1.yml:21:9:25:6 | Uses Step | .github/workflows/path1.yml:26:9:29:41 | Run Step |
+nodes
+| .github/workflows/path1.yml:11:21:11:58 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/path1.yml:21:9:25:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/path1.yml:25:9:26:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/path1.yml:26:9:29:41 | Run Step | semmle.label | Run Step |
+subpaths
+#select

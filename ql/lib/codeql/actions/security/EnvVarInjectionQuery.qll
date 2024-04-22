@@ -10,7 +10,7 @@ predicate envVarInjectionFromExprSink(DataFlow::Node sink) {
     Utils::writeToGitHubEnv(run, key, value) and
     expr = sink.asExpr() and
     run.getAnScriptExpr() = expr and
-    value.indexOf(expr.getRawExpression()) > 0
+    value.indexOf(expr.getExpression()) > 0
   )
 }
 

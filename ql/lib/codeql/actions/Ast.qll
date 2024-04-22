@@ -89,6 +89,24 @@ module Utils {
     )
   }
 
+  bindingset[line]
+  predicate extractPathAssignment(string line, string value) {
+    exists(string path |
+      // single path assignment
+      path =
+        line.regexpCapture("(echo|Write-Output)\\s+(.*)>>\\s*(\"|')?\\$(\\{)?GITHUB_PATH(\\})?(\"|')?",
+          2) and
+      value = trimQuotes(path)
+      or
+      // workflow command assignment
+      path =
+        line.regexpCapture("(echo|Write-Output)\\s+(\"|')?::add-path::(.*)(\"|')?", 3)
+            .regexpReplaceAll("^\"", "")
+            .regexpReplaceAll("\"$", "") and
+      value = trimQuotes(path)
+    )
+  }
+
   predicate writeToGitHubEnv(Run run, string key, string value) {
     extractLineAssignment(run.getScript().splitAt("\n"), "ENV", key, value) or
     extractMultilineAssignment(run.getScript(), "ENV", key, value)
@@ -97,6 +115,10 @@ module Utils {
   predicate writeToGitHubOutput(Run run, string key, string value) {
     extractLineAssignment(run.getScript().splitAt("\n"), "OUTPUT", key, value) or
     extractMultilineAssignment(run.getScript(), "OUTPUT", key, value)
+  }
+
+  predicate writeToGitHubPath(Run run, string value) {
+    extractPathAssignment(run.getScript().splitAt("\n"), value)
   }
 }
 
