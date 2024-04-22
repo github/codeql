@@ -56,6 +56,7 @@ private import semmle.python.frameworks.PyMongo
 private import semmle.python.frameworks.Pymssql
 private import semmle.python.frameworks.PyMySQL
 private import semmle.python.frameworks.Pyodbc
+private import semmle.python.frameworks.Pyramid
 private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.Rsa
