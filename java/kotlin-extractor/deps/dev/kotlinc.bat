@@ -1,4 +1,4 @@
 @echo off
 
-python "%~dp0/kotlinc" %*
+python "%~dp0kotlinc" %*
 exit /b %ERRORLEVEL%
