@@ -1,0 +1,5 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: workflowDataModel
+    data: []

@@ -228,36 +228,7 @@ class Workflow extends AstNode instanceof WorkflowImpl {
 
   Strategy getStrategy() { result = super.getStrategy() }
 
-  predicate hasSingleTrigger(string trigger) {
-    this.getATriggerEvent() = trigger and
-    count(this.getATriggerEvent()) = 1
-  }
-
-  predicate isPrivileged() {
-    // The Workflow has a permission to write to some scope
-    this.getPermissions().getAPermission() = "write"
-    or
-    // The Workflow accesses a secret
-    exists(SecretsExpression expr |
-      expr.getEnclosingWorkflow() = this and not expr.getFieldName() = "GITHUB_TOKEN"
-    )
-    or
-    // The Workflow is triggered by an event other than `pull_request`
-    count(this.getATriggerEvent()) = 1 and
-    not this.getATriggerEvent() = ["pull_request", "workflow_call"]
-    or
-    // The Workflow is only triggered by `workflow_call` and there is
-    // a caller workflow triggered by an event other than `pull_request`
-    this.hasSingleTrigger("workflow_call") and
-    exists(ExternalJob call, Workflow caller |
-      call.getCallee() = this.getLocation().getFile().getRelativePath() and
-      caller = call.getWorkflow() and
-      caller.isPrivileged()
-    )
-    or
-    // The Workflow has multiple triggers so at least one is ont "pull_request"
-    count(this.getATriggerEvent()) > 1
-  }
+  predicate isPrivileged() { super.isPrivileged() }
 }
 
 class ReusableWorkflow extends Workflow instanceof ReusableWorkflowImpl {
@@ -325,6 +296,8 @@ abstract class Job extends AstNode instanceof JobImpl {
   Permissions getPermissions() { result = super.getPermissions() }
 
   Strategy getStrategy() { result = super.getStrategy() }
+
+  predicate isPrivileged() { super.isPrivileged() }
 }
 
 class LocalJob extends Job instanceof LocalJobImpl {

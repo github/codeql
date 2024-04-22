@@ -20,11 +20,11 @@ from CommandInjectionFlow::PathNode source, CommandInjectionFlow::PathNode sink
 where
   CommandInjectionFlow::flowPath(source, sink) and
   (
-    exists(source.getNode().asExpr().getEnclosingCompositeAction())
+    exists(sink.getNode().asExpr().getEnclosingCompositeAction())
     or
-    exists(Workflow w |
-      w = source.getNode().asExpr().getEnclosingWorkflow() and
-      not w.isPrivileged()
+    exists(Job j |
+      j = sink.getNode().asExpr().getEnclosingJob() and
+      not j.isPrivileged()
     )
   )
 select sink.getNode(), source, sink,

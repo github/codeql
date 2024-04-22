@@ -1,6 +1,7 @@
 private import codeql.actions.ast.internal.Yaml
 private import codeql.Locations
 private import codeql.actions.Ast::Utils as Utils
+private import codeql.actions.dataflow.ExternalFlow
 
 /**
  * Gets the length of each line in the StringValue .
@@ -332,8 +333,40 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
   /** Gets the permissions granted to this workflow. */
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
 
+  private predicate hasSingleTrigger(string trigger) {
+    this.getATriggerEvent() = trigger and
+    count(this.getATriggerEvent()) = 1
+  }
+
   /** Gets the strategy for this workflow. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
+
+  /** Holds if the workflow is privileged. */
+  predicate isPrivileged() {
+    // The Workflow has a permission to write to some scope
+    this.getPermissions().getAPermission() = "write"
+    or
+    // The Workflow accesses a secret
+    exists(SecretsExpressionImpl expr |
+      expr.getEnclosingWorkflow() = this and not expr.getFieldName() = "GITHUB_TOKEN"
+    )
+    or
+    // The Workflow is triggered by an event other than `pull_request`
+    count(this.getATriggerEvent()) = 1 and
+    not this.getATriggerEvent() = ["pull_request", "workflow_call"]
+    or
+    // The Workflow is only triggered by `workflow_call` and there is
+    // a caller workflow triggered by an event other than `pull_request`
+    this.hasSingleTrigger("workflow_call") and
+    exists(ExternalJobImpl call, WorkflowImpl caller |
+      call.getCallee() = this.getLocation().getFile().getRelativePath() and
+      caller = call.getWorkflow() and
+      caller.isPrivileged()
+    )
+    or
+    // The Workflow has multiple triggers so at least one is not "pull_request"
+    count(this.getATriggerEvent()) > 1
+  }
 }
 
 class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
@@ -597,6 +630,36 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Gets the strategy for this job. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
+
+  /** Holds if the workflow is privileged. */
+  predicate isPrivileged() {
+    // The job has a permission to write to some scope
+    this.getPermissions().getAPermission() = "write"
+    or
+    // The job accesses a secret
+    exists(SecretsExpressionImpl expr |
+      expr.getEnclosingJob() = this and not expr.getFieldName() = "GITHUB_TOKEN"
+    )
+    or
+    // The effective permissions have write access
+    exists(string path, string name, string secrets_source, string perms |
+      workflowDataModel(path, _, name, secrets_source, perms, _) and
+      path.trim() = this.getLocation().getFile().getRelativePath() and
+      name.trim().matches(this.getId() + "%") and
+      (
+        secrets_source.trim().toLowerCase() = "actions" or
+        perms.toLowerCase().matches("%write%")
+      )
+    )
+    or
+    // The job has no expliclit permission, but the enclosing workflow is privileged
+    not exists(this.getPermissions()) and
+    not exists(SecretsExpressionImpl expr |
+      expr.getEnclosingJob() = this and not expr.getFieldName() = "GITHUB_TOKEN"
+    ) and
+    // The enclosing workflow is privileged
+    this.getEnclosingWorkflow().isPrivileged()
+  }
 }
 
 class LocalJobImpl extends JobImpl {
