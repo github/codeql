@@ -713,7 +713,7 @@ void test() {
   for(auto it = v.begin(); it != v.end(); ++it) {} // GOOD
   }
 
-  for (auto x : return_self_by_ref(returnValue())) {} // BAD
+  for (auto x : return_self_by_ref(returnValue())) {} // BAD [NOT DETECTED]
 
   for (auto x : return_self_by_value(returnValue())) {} // GOOD
 }
@@ -768,6 +768,6 @@ void test2() {
 }
 
 void test3() {
-  const std::vector<std::vector<int>>& v = returnValue(); // GOOD [FALSE POSITIVE]
+  const std::vector<std::vector<int>>& v = returnValue(); // GOOD
   for(const std::vector<int>& x : v) {}
 }

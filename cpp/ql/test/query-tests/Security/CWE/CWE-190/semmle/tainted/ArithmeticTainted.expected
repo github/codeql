@@ -11,8 +11,8 @@ edges
 | test3.c:10:27:10:30 | **argv | test.c:51:5:51:24 | ... = ... | provenance | TaintFunction |
 | test5.cpp:5:5:5:17 | *getTaintedInt | test5.cpp:17:6:17:18 | call to getTaintedInt | provenance |  |
 | test5.cpp:5:5:5:17 | *getTaintedInt | test5.cpp:18:6:18:18 | call to getTaintedInt | provenance |  |
-| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:10:9:10:27 | (int)... | provenance | TaintFunction |
-| test5.cpp:10:9:10:27 | (int)... | test5.cpp:5:5:5:17 | *getTaintedInt | provenance |  |
+| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:10:9:10:27 | call to strtoul | provenance | TaintFunction |
+| test5.cpp:10:9:10:27 | call to strtoul | test5.cpp:5:5:5:17 | *getTaintedInt | provenance |  |
 | test5.cpp:18:2:18:20 | ... = ... | test5.cpp:19:6:19:6 | y | provenance |  |
 | test5.cpp:18:6:18:18 | call to getTaintedInt | test5.cpp:18:2:18:20 | ... = ... | provenance |  |
 | test.c:10:27:10:30 | **argv | test.c:11:24:11:27 | call to atoi | provenance | TaintFunction |
@@ -40,7 +40,7 @@ nodes
 | test3.c:10:27:10:30 | **argv | semmle.label | **argv |
 | test5.cpp:5:5:5:17 | *getTaintedInt | semmle.label | *getTaintedInt |
 | test5.cpp:9:7:9:9 | gets output argument | semmle.label | gets output argument |
-| test5.cpp:10:9:10:27 | (int)... | semmle.label | (int)... |
+| test5.cpp:10:9:10:27 | call to strtoul | semmle.label | call to strtoul |
 | test5.cpp:17:6:17:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |
 | test5.cpp:18:2:18:20 | ... = ... | semmle.label | ... = ... |
 | test5.cpp:18:6:18:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |

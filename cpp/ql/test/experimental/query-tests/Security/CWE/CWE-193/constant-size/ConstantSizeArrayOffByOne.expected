@@ -18,9 +18,9 @@ edges
 | test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... | provenance |  |
 | test.cpp:79:27:79:34 | buf | test.cpp:70:33:70:33 | p | provenance |  |
 | test.cpp:79:32:79:34 | buf | test.cpp:79:27:79:34 | buf | provenance |  |
-| test.cpp:85:21:85:36 | (char *)... | test.cpp:87:5:87:31 | access to array | provenance |  |
-| test.cpp:85:21:85:36 | (char *)... | test.cpp:88:5:88:27 | access to array | provenance |  |
-| test.cpp:85:34:85:36 | buf | test.cpp:85:21:85:36 | (char *)... | provenance |  |
+| test.cpp:85:21:85:36 | buf | test.cpp:87:5:87:31 | access to array | provenance |  |
+| test.cpp:85:21:85:36 | buf | test.cpp:88:5:88:27 | access to array | provenance |  |
+| test.cpp:85:34:85:36 | buf | test.cpp:85:21:85:36 | buf | provenance |  |
 | test.cpp:96:13:96:15 | arr | test.cpp:96:13:96:18 | access to array | provenance |  |
 | test.cpp:111:17:111:19 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
 | test.cpp:111:17:111:19 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
@@ -42,12 +42,12 @@ edges
 | test.cpp:156:12:156:18 | ... + ... | test.cpp:156:12:156:18 | ... + ... | provenance |  |
 | test.cpp:156:12:156:18 | ... + ... | test.cpp:158:17:158:18 | *& ... | provenance |  |
 | test.cpp:158:17:158:18 | *& ... | test.cpp:146:26:146:26 | *p | provenance |  |
-| test.cpp:218:16:218:28 | (int *)... | test.cpp:220:5:220:11 | access to array | provenance |  |
-| test.cpp:218:16:218:28 | (int *)... | test.cpp:221:5:221:11 | access to array | provenance |  |
-| test.cpp:218:23:218:28 | buffer | test.cpp:218:16:218:28 | (int *)... | provenance |  |
-| test.cpp:229:17:229:29 | (vec2 *)... | test.cpp:231:5:231:10 | access to array | provenance |  |
-| test.cpp:229:17:229:29 | (vec2 *)... | test.cpp:232:5:232:10 | access to array | provenance |  |
-| test.cpp:229:25:229:29 | array | test.cpp:229:17:229:29 | (vec2 *)... | provenance |  |
+| test.cpp:218:16:218:28 | buffer | test.cpp:220:5:220:11 | access to array | provenance |  |
+| test.cpp:218:16:218:28 | buffer | test.cpp:221:5:221:11 | access to array | provenance |  |
+| test.cpp:218:23:218:28 | buffer | test.cpp:218:16:218:28 | buffer | provenance |  |
+| test.cpp:229:17:229:29 | array | test.cpp:231:5:231:10 | access to array | provenance |  |
+| test.cpp:229:17:229:29 | array | test.cpp:232:5:232:10 | access to array | provenance |  |
+| test.cpp:229:25:229:29 | array | test.cpp:229:17:229:29 | array | provenance |  |
 | test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance |  |
 | test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance |  |
 | test.cpp:274:14:274:20 | buffer3 | test.cpp:245:30:245:30 | p | provenance |  |
@@ -111,7 +111,7 @@ nodes
 | test.cpp:77:32:77:34 | buf | semmle.label | buf |
 | test.cpp:79:27:79:34 | buf | semmle.label | buf |
 | test.cpp:79:32:79:34 | buf | semmle.label | buf |
-| test.cpp:85:21:85:36 | (char *)... | semmle.label | (char *)... |
+| test.cpp:85:21:85:36 | buf | semmle.label | buf |
 | test.cpp:85:34:85:36 | buf | semmle.label | buf |
 | test.cpp:87:5:87:31 | access to array | semmle.label | access to array |
 | test.cpp:88:5:88:27 | access to array | semmle.label | access to array |
@@ -137,11 +137,11 @@ nodes
 | test.cpp:156:12:156:18 | ... + ... | semmle.label | ... + ... |
 | test.cpp:156:12:156:18 | ... + ... | semmle.label | ... + ... |
 | test.cpp:158:17:158:18 | *& ... | semmle.label | *& ... |
-| test.cpp:218:16:218:28 | (int *)... | semmle.label | (int *)... |
+| test.cpp:218:16:218:28 | buffer | semmle.label | buffer |
 | test.cpp:218:23:218:28 | buffer | semmle.label | buffer |
 | test.cpp:220:5:220:11 | access to array | semmle.label | access to array |
 | test.cpp:221:5:221:11 | access to array | semmle.label | access to array |
-| test.cpp:229:17:229:29 | (vec2 *)... | semmle.label | (vec2 *)... |
+| test.cpp:229:17:229:29 | array | semmle.label | array |
 | test.cpp:229:25:229:29 | array | semmle.label | array |
 | test.cpp:231:5:231:10 | access to array | semmle.label | access to array |
 | test.cpp:232:5:232:10 | access to array | semmle.label | access to array |

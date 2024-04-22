@@ -8,7 +8,8 @@ private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlow
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.AllSources
+private import semmle.code.csharp.security.dataflow.flowsinks.AllSinks
 private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
@@ -84,13 +85,11 @@ class ExternalApi extends Callable {
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
-  predicate isSource() {
-    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
-  }
+  predicate isSource() { this.getAnOutput() instanceof SourceNode }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { sinkNode(this.getAnInput(), _) }
+  predicate isSink() { this.getAnInput() instanceof SinkNode }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
