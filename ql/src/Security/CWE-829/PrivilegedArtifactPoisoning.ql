@@ -18,9 +18,9 @@ import ArtifactPoisoningFlow::PathGraph
 from ArtifactPoisoningFlow::PathNode source, ArtifactPoisoningFlow::PathNode sink
 where
   ArtifactPoisoningFlow::flowPath(source, sink) and
-  exists(Workflow w |
-    w = source.getNode().asExpr().getEnclosingWorkflow() and
-    w.isPrivileged()
+  exists(Job j |
+    j = sink.getNode().asExpr().getEnclosingJob() and
+    j.isPrivileged()
   )
 select sink.getNode(), source, sink,
   "Potential privileged artifact poisoning in $@, which may be controlled by an external user.",

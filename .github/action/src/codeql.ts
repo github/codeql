@@ -147,6 +147,13 @@ export async function codeqlDatabaseAnalyze(
     codeql_output,
   ];
 
+  const extPackPath = process.env["EXTPACK_PATH"];
+  const extPackName = process.env["EXTPACK_NAME"];
+  if (extPackPath !== undefined && extPackName !== undefined) {
+    cmd.push("--additional-packs", extPackPath);
+    cmd.push("--extension-packs", extPackName);
+  }
+
   // remote pack or local pack
   if (codeql.pack.startsWith("githubsecuritylab/")) {
     var suite = codeql.pack + ":" + codeql.suite;

@@ -19,9 +19,9 @@ import EnvVarInjectionFlow::PathGraph
 from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink
 where
   EnvVarInjectionFlow::flowPath(source, sink) and
-  exists(Workflow w |
-    w = source.getNode().asExpr().getEnclosingWorkflow() and
-    w.isPrivileged()
+  exists(Job j |
+    j = sink.getNode().asExpr().getEnclosingJob() and
+    j.isPrivileged()
   )
 select sink.getNode(), source, sink,
   "Potential privileged environment variable injection in $@, which may be controlled by an external user.",

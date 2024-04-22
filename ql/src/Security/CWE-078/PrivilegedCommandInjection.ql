@@ -19,9 +19,9 @@ import CommandInjectionFlow::PathGraph
 from CommandInjectionFlow::PathNode source, CommandInjectionFlow::PathNode sink
 where
   CommandInjectionFlow::flowPath(source, sink) and
-  exists(Workflow w |
-    w = source.getNode().asExpr().getEnclosingWorkflow() and
-    w.isPrivileged()
+  exists(Job j |
+    j = sink.getNode().asExpr().getEnclosingJob() and
+    j.isPrivileged()
   )
 select sink.getNode(), source, sink,
   "Potential privileged command injection in $@, which may be controlled by an external user.",

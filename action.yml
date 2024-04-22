@@ -18,10 +18,41 @@ inputs:
     description: "CodeQL Suite to run"
     default: "actions-code-scanning"
 
+  workflow-models:
+    description: "Workflow models"
+    required: false
+
 runs:
   using: 'composite'
   steps:
-    - name: Do something with context
+    - name: Process workflow models
+      shell: bash
+      if: inputs.workflow-models
+      run: |
+        // Create QLPack directory
+        mkdir workflow-extpack
+        cd workflow-extpack
+
+        // Store the extension pack file
+        cat > models.yml << 'EOF'
+        ${{ inputs.workflow-models }}
+        EOF
+
+        // Create QLPack
+        cat > qlpack.yml << 'EOF'
+        name: local/workflow-models
+        library: true
+        extensionTargets:
+          githubsecuritylab/actions-all: '*'
+        dataExtensions:
+          - models.yml
+        EOF
+
+        // Set env vars
+        echo "EXTPACK_PATH=./workflow-extpack" >> $GITHUB_ENV
+        echo "EXTPACK_NAME=local/workflow-models" >> $GITHUB_ENV
+       
+    - name: Scan workflows 
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
@@ -29,5 +60,7 @@ runs:
         INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
         INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
         INPUT_SUITE: ${{ inputs.suite }}
+        EXTPACK_PATH: ${{ inputs.extpack-path }}
+        EXTPACK_NAME: ${{ inputs.extpack-name }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js

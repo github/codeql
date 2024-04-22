@@ -22,3 +22,8 @@ extensible predicate summaryModel(
 extensible predicate sinkModel(
   string action, string version, string input, string kind, string provenance
 );
+
+extensible predicate workflowDataModel(
+  string path, string visibility, string job, string secrets_source, string permissions,
+  string runner
+);

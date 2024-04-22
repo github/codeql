@@ -2,6 +2,13 @@ private import internal.ExternalFlowExtensions as Extensions
 private import codeql.actions.DataFlow
 private import actions
 
+predicate workflowDataModel(
+  string path, string visibility, string job, string secrets_source, string permissions,
+  string runner
+) {
+  Extensions::workflowDataModel(path, visibility, job, secrets_source, permissions, runner)
+}
+
 /**
  * MaD sources
  * Fields:
