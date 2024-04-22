@@ -55,14 +55,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private string? GetCscPath()
         {
-            var newestSdkVersion = GetNewestSdkVersion();
-            if (newestSdkVersion is null)
+            var version = Version;
+            if (version is null)
             {
                 logger.LogWarning("No dotnet SDK found.");
                 return null;
             }
 
-            var path = Path.Combine(newestSdkVersion.FullPath, "Roslyn", "bincore", "csc.dll");
+            var path = Path.Combine(version.FullPath, "Roslyn", "bincore", "csc.dll");
             logger.LogDebug($"Source generator CSC: '{path}'");
             if (!File.Exists(path))
             {
