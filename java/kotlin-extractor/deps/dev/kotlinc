@@ -28,7 +28,7 @@ import io
 import os
 
 DEFAULT_VERSION = "1.9.0"
-
+DEVNULL = open(os.devnull, "w")
 
 def options():
     parser = argparse.ArgumentParser(add_help=False)
@@ -79,7 +79,8 @@ def get_version():
         return None
 
 
-def install(version: str):
+def install(version: str, quiet: bool):
+    info_out = DEVNULL if quiet else sys.stderr
     url = url_template.format(version=version)
     if install_dir.exists():
         shutil.rmtree(install_dir)
@@ -88,11 +89,12 @@ def install(version: str):
     if ripunzip is None and platform.system() == "Windows" and windows_ripunzip.exists():
         ripunzip = windows_ripunzip
     if ripunzip:
-        print(f"downloading and extracting {url} using ripunzip", file=sys.stderr)
-        subprocess.run([ripunzip, "unzip-uri", url], cwd=install_dir, check=True)
+        print(f"downloading and extracting {url} using ripunzip", file=info_out)
+        subprocess.run([ripunzip, "unzip-uri", url], stdout=info_out, stderr=info_out, cwd=install_dir,
+                       check=True)
         return
     with io.BytesIO() as buffer:
-        print(f"downloading {url}", file=sys.stderr)
+        print(f"downloading {url}", file=info_out)
         with urllib.request.urlopen(url) as response:
             while True:
                 bytes = response.read()
@@ -100,7 +102,7 @@ def install(version: str):
                     break
                 buffer.write(bytes)
         buffer.seek(0)
-        print(f"extracting kotlin-compiler-{version}.zip", file=sys.stderr)
+        print(f"extracting kotlin-compiler-{version}.zip", file=info_out)
         with ZipFilePreservingPermissions(buffer) as archive:
             archive.extractall(install_dir)
 
@@ -138,7 +140,8 @@ def main(opts, forwarded_opts):
     else:
         selected_version = current_version or DEFAULT_VERSION
     if selected_version != current_version:
-        install(selected_version)
+        # don't print information about install procedure unless explicitly using --select
+        install(selected_version, quiet=opts.select is None)
         version_file.write_text(selected_version)
     if opts.version or (opts.select and not forwarded_opts):
         print(f"info: kotlinc-jvm {selected_version} (codeql dev wrapper)", file=sys.stderr)
@@ -149,8 +152,8 @@ def main(opts, forwarded_opts):
 if __name__ == "__main__":
     try:
         main(*options())
-    except Exception as e:
-        print(f"{e.__class__.__name__}: {e}", file=sys.stderr)
+    except Error as e:
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
     except KeyboardInterrupt:
         sys.exit(1)
