@@ -36,28 +36,6 @@ private module Cached {
         not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
       }
   }
-
-  /**
-   * Gets an additional term that is added to the `join` and `branch` computations to reflect
-   * an additional forward or backwards branching factor that is not taken into account
-   * when calculating the (virtual) dispatch cost.
-   *
-   * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
-   */
-  pragma[nomagic]
-  cached
-  int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) {
-    DataFlowImplCommon::forceCachingInSameStage() and
-    exists(
-      ParameterNode switchee, SwitchInstruction switch, ConditionOperand op, DataFlowCall call
-    |
-      DataFlowImplCommon::viableParamArg(call, p, arg) and
-      DataFlowImplCommon::viableParamArg(call, switchee, _) and
-      switch.getExpressionOperand() = op and
-      getAdditionalFlowIntoCallNodeTermStep+(switchee, operandNode(op)) and
-      result = countNumberOfBranchesUsingParameter(switch, p)
-    )
-  }
 }
 
 import Cached
@@ -1430,78 +1408,6 @@ private predicate localStepsToSwitch(Node node) {
   exists(Node succ |
     localStepsToSwitch(succ) and
     localFlowStepWithSummaries(node, succ)
-  )
-}
-
-/**
- * Holds if `node` is part of a path from a `ParameterNode` to an operand
- * of a `SwitchInstruction`.
- */
-private predicate localStepsFromParameterToSwitch(Node node) {
-  localStepsToSwitch(node) and
-  (
-    node instanceof ParameterNode
-    or
-    exists(Node prev |
-      localStepsFromParameterToSwitch(prev) and
-      localFlowStepWithSummaries(prev, node)
-    )
-  )
-}
-
-/**
- * The local flow relation `localFlowStepWithSummaries` pruned to only
- * include steps that are part of a path from a `ParameterNode` to an
- * operand of a `SwitchInstruction`.
- */
-private predicate getAdditionalFlowIntoCallNodeTermStep(Node node1, Node node2) {
-  localStepsFromParameterToSwitch(node1) and
-  localStepsFromParameterToSwitch(node2) and
-  localFlowStepWithSummaries(node1, node2)
-}
-
-/** Gets the `IRVariable` associated with the parameter node `p`. */
-pragma[nomagic]
-private IRVariable getIRVariableForParameterNode(ParameterNode p) {
-  result = p.(InstructionDirectParameterNode).getIRVariable()
-  or
-  result.getAst() = p.(IndirectParameterNode).getParameter()
-}
-
-/** Holds if `v` is the source variable corresponding to the parameter represented by `p`. */
-pragma[nomagic]
-private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceVariable v) {
-  v.getIRVariable() = getIRVariableForParameterNode(p) and
-  exists(Position pos | p.isParameterOf(_, pos) |
-    pos instanceof DirectPosition and
-    v.getIndirection() = 1
-    or
-    pos.(IndirectionPosition).getIndirectionIndex() + 1 = v.getIndirection()
-  )
-}
-
-private EdgeKind caseOrDefaultEdge() {
-  result instanceof CaseEdge or
-  result instanceof DefaultEdge
-}
-
-/**
- * Gets the number of switch branches that that read from (or write to) the parameter `p`.
- */
-private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, ParameterNode p) {
-  exists(Ssa::SourceVariable sv |
-    parameterNodeHasSourceVariable(p, sv) and
-    // Count the number of cases that use the parameter. We do this by finding the phi node
-    // that merges the uses/defs of the parameter. There might be multiple such phi nodes, so
-    // we pick the one with the highest edge count.
-    result =
-      max(SsaPhiNode phi |
-        switch.getSuccessor(caseOrDefaultEdge()).getBlock().dominanceFrontier() =
-          phi.getBasicBlock() and
-        phi.getSourceVariable() = sv
-      |
-        strictcount(phi.getAnInput())
-      )
   )
 }
 
