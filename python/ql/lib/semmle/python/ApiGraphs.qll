@@ -257,7 +257,7 @@ module API {
      */
     Node getSubscript(string key) {
       exists(API::Node index | result = this.getSubscriptAt(index) |
-        key = index.getAValueReachingSink().asExpr().(PY::StrConst).getText()
+        key = index.getAValueReachingSink().asExpr().(PY::StringLiteral).getText()
       )
     }
 

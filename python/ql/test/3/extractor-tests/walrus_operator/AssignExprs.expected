@@ -22,7 +22,7 @@
 | test.py:32:2:32:21 | AssignExpr | total | BinaryExpr |
 | test.py:33:5:33:26 | AssignExpr | lines | Attribute() |
 | test.py:34:5:34:10 | AssignExpr | x | IntegerLiteral |
-| test.py:35:10:35:29 | AssignExpr | category | Str |
+| test.py:35:10:35:29 | AssignExpr | category | StringLiteral |
 | test.py:36:12:36:24 | AssignExpr | longline | l |
 | test.py:38:4:38:53 | AssignExpr | env_base | Attribute() |
 | test.py:40:26:40:65 | AssignExpr | ans | Attribute() |

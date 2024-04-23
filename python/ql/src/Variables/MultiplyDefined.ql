@@ -43,7 +43,7 @@ predicate simple_literal(Expr e) {
   or
   e instanceof Dict and not exists(e.(Dict).getAKey())
   or
-  e.(StrConst).getText() = ""
+  e.(StringLiteral).getText() = ""
 }
 
 /**

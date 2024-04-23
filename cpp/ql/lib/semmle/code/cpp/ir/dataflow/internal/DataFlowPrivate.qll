@@ -1583,3 +1583,85 @@ predicate validParameterAliasStep(Node node1, Node node2) {
     )
   )
 }
+
+private predicate isTopLevel(Cpp::Stmt s) { any(Function f).getBlock().getAStmt() = s }
+
+private Cpp::Stmt getAChainedBranch(Cpp::IfStmt s) {
+  result = s.getThen()
+  or
+  exists(Cpp::Stmt elseBranch | s.getElse() = elseBranch |
+    result = getAChainedBranch(elseBranch)
+    or
+    result = elseBranch and not elseBranch instanceof Cpp::IfStmt
+  )
+}
+
+private Instruction getAnInstruction(Node n) {
+  result = n.asInstruction()
+  or
+  not n instanceof InstructionNode and
+  result = n.asOperand().getUse()
+  or
+  result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
+  or
+  n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
+  or
+  not n instanceof IndirectInstruction and
+  exists(Operand operand |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
+    result = operand.getUse()
+  )
+  or
+  result = getAnInstruction(n.(PostUpdateNode).getPreUpdateNode())
+}
+
+private newtype TDataFlowSecondLevelScope =
+  TTopLevelIfBranch(Cpp::Stmt s) {
+    exists(Cpp::IfStmt ifstmt | s = getAChainedBranch(ifstmt) and isTopLevel(ifstmt))
+  } or
+  TTopLevelSwitchCase(Cpp::SwitchCase s) {
+    exists(Cpp::SwitchStmt switchstmt | s = switchstmt.getASwitchCase() and isTopLevel(switchstmt))
+  }
+
+/**
+ * A second-level control-flow scope in a `switch` or a chained `if` statement.
+ *
+ * This is a `switch` case or a branch of a chained `if` statement, given that
+ * the `switch` or `if` statement is top level, that is, it is not nested inside
+ * other CFG constructs.
+ */
+class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(Cpp::Stmt s | this = TTopLevelIfBranch(s) | result = s.toString())
+    or
+    exists(Cpp::SwitchCase s | this = TTopLevelSwitchCase(s) | result = s.toString())
+  }
+
+  /** Gets the primary location of this element. */
+  Cpp::Location getLocation() {
+    exists(Cpp::Stmt s | this = TTopLevelIfBranch(s) | result = s.getLocation())
+    or
+    exists(Cpp::SwitchCase s | this = TTopLevelSwitchCase(s) | result = s.getLocation())
+  }
+
+  /**
+   * Gets a statement directly contained in this scope. For an `if` branch, this
+   * is the branch itself, and for a `switch case`, this is one the statements
+   * of that case branch.
+   */
+  private Cpp::Stmt getAStmt() {
+    exists(Cpp::Stmt s | this = TTopLevelIfBranch(s) | result = s)
+    or
+    exists(Cpp::SwitchCase s | this = TTopLevelSwitchCase(s) | result = s.getAStmt())
+  }
+
+  /** Gets a data-flow node nested within this scope. */
+  Node getANode() {
+    getAnInstruction(result).getAst().(Cpp::ControlFlowNode).getEnclosingStmt().getParentStmt*() =
+      this.getAStmt()
+  }
+}
+
+/** Gets the second-level scope containing the node `n`, if any. */
+DataFlowSecondLevelScope getSecondLevelScope(Node n) { result.getANode() = n }

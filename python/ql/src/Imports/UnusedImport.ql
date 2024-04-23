@@ -53,7 +53,7 @@ predicate imported_module_used_in_doctest(Import imp) {
 
 pragma[noinline]
 private string doctest_in_scope(Scope scope) {
-  exists(StrConst doc |
+  exists(StringLiteral doc |
     doc.getEnclosingModule() = scope and
     doc.isDocString() and
     result = doc.getText() and
@@ -63,7 +63,7 @@ private string doctest_in_scope(Scope scope) {
 
 pragma[noinline]
 private string typehint_annotation_in_module(Module module_scope) {
-  exists(StrConst annotation |
+  exists(StringLiteral annotation |
     annotation = any(Arguments a).getAnAnnotation().getASubExpression*()
     or
     annotation = any(AnnAssign a).getAnnotation().getASubExpression*()

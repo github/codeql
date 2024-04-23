@@ -1,3 +1,3 @@
 import python
 
-select any(StrConst s) as s, s.getText()
+select any(StringLiteral s) as s, s.getText()
