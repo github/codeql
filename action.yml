@@ -28,15 +28,15 @@ runs:
     - name: Process workflow models
       shell: bash
       if: inputs.workflow-models
+      env:
+        DATA: ${{ inputs.workflow-models }}
       run: |
         # Create QLPack directory
         mkdir workflow-extpack
         cd workflow-extpack
 
         # Store the extension pack file
-        cat > models.yml << 'EOF'
-        ${{ inputs.workflow-models }}
-        EOF
+        echo $DATA > models.yml
 
         # Create QLPack
         cat > qlpack.yml << 'EOF'
@@ -55,8 +55,6 @@ runs:
     - name: Show contents
       shell: bash
       run: |
-        echo "Directory contents"
-        ls -la
         echo "Models"
         if [ -f workflow-extpack/models.yml ]; then cat workflow-extpack/models.yml; fi
         echo "QLPack"
