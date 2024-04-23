@@ -129,13 +129,13 @@ a, b = c.instance_method(SOURCE)
 SINK_F(a)
 SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
-m = c.instance_method
-x, y = (SOURCE, NONSOURCE)
-SINK(x)  # $ flow="SOURCE, l:-1 -> x"
+# call the instance method on the class to expose the self argument
+x, y = MS_Class.instance_method(SOURCE, NONSOURCE)
+SINK(x)  # $ MISSING: flow="SOURCE, l:-1 -> x"
 SINK_F(y)
 
-ms = c.explicit_self
-SINK(ms(SOURCE))  # $ MISSING: flow="SOURCE, l:0 -> ms(SOURCE)"
+# call the instance method on the class to expose the self argument
+SINK(MS_Class.explicit_self(SOURCE))  # $ MISSING: flow="SOURCE, l:0 -> ms(SOURCE)"
 
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
