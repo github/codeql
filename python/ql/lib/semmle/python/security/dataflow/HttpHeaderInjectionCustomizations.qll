@@ -107,7 +107,7 @@ module HttpHeaderInjection {
   class ReplaceLineBreaksSanitizer extends Sanitizer, DataFlow::CallCfgNode {
     ReplaceLineBreaksSanitizer() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
-      this.getArg(0).asExpr().(StrConst).getText() = "\n"
+      this.getArg(0).asExpr().(StringLiteral).getText() = "\n"
     }
   }
 }
