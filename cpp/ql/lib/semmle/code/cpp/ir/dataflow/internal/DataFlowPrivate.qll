@@ -1596,12 +1596,23 @@ private Cpp::Stmt getAChainedBranch(Cpp::IfStmt s) {
   )
 }
 
-private Instruction getInstruction(Node n) {
-  result = n.asInstruction() or
-  result = n.asOperand().getUse() or
-  result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction() or
-  n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _) or
-  result = getInstruction(n.(PostUpdateNode).getPreUpdateNode())
+private Instruction getAnInstruction(Node n) {
+  result = n.asInstruction()
+  or
+  not n instanceof InstructionNode and
+  result = n.asOperand().getUse()
+  or
+  result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
+  or
+  n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
+  or
+  not n instanceof IndirectInstruction and
+  exists(Operand operand |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
+    result = operand.getUse()
+  )
+  or
+  result = getAnInstruction(n.(PostUpdateNode).getPreUpdateNode())
 }
 
 private newtype TDataFlowSecondLevelScope =
@@ -1647,7 +1658,7 @@ class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
 
   /** Gets a data-flow node nested within this scope. */
   Node getANode() {
-    getInstruction(result).getAst().(Cpp::ControlFlowNode).getEnclosingStmt().getParentStmt*() =
+    getAnInstruction(result).getAst().(Cpp::ControlFlowNode).getEnclosingStmt().getParentStmt*() =
       this.getAStmt()
   }
 }
