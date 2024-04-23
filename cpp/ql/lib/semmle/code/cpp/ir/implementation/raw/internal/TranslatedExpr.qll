@@ -1311,8 +1311,8 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
  *
  * The translation of `x = co_await ...` is essentially:
  * ```cpp
- * if !awaiter.await_ready() {
- *   awaiter.await_suspend()
+ * if (!awaiter.await_ready()) {
+ *   awaiter.await_suspend();
  * }
  * x = awaiter.await_resume();
  * ```
