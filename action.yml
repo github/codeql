@@ -55,10 +55,12 @@ runs:
     - name: Show contents
       shell: bash
       run: |
-        echo "Models"
+        echo "##[group] Workflow Models"
         if [ -f workflow-extpack/models.yml ]; then cat workflow-extpack/models.yml; fi
-        echo "QLPack"
+        echo "##[endgroup]"
+        echo "##[group] QLPack"
         if [ -f workflow-extpack/qlpack.yml ]; then cat workflow-extpack/qlpack.yml; fi
+        echo "##[endgroup]"
 
     - name: Scan workflows 
       shell: bash
