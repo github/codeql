@@ -76,7 +76,7 @@ def _get_default_version(repository_ctx):
     kotlin_plugin_versions = repository_ctx.path(Label("//java/kotlin-extractor:current_kotlin_version.py"))
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     env = {}
-    repository_ctx.watch(Label("//java/kotlin-extractor/deps:dev/.kotlinc_selected_version"))
+    repository_ctx.watch(Label("//java/kotlin-extractor/deps:dev/.kotlinc_version"))
     if not repository_ctx.which("kotlinc"):
         # take default from the kotlinc wrapper
         path = repository_ctx.getenv("PATH")
