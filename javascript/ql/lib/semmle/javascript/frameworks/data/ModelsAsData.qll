@@ -111,7 +111,7 @@ module ModelExport<ModelExportSig S> {
       exists(string moduleName |
         node = API::moduleExport(moduleName) and
         path = "" and
-        type = "'" + moduleName + "'"
+        type = "(" + moduleName + ")"
       )
     }
 
