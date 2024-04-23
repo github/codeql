@@ -5,14 +5,19 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.StringFormat
 
 /**
+ * A class of string format sink nodes.
+ */
+class StringFormatSink extends DataFlow::Node {
+  StringFormatSink() { this.asExpr() = any(StringFormat formatCall).getFormatArgument() }
+}
+
+/**
  * A taint-tracking configuration for externally controlled format string vulnerabilities.
  */
 module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(StringFormat formatCall).getFormatArgument()
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof StringFormatSink }
 
   predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof NumericType or node.getType() instanceof BooleanType

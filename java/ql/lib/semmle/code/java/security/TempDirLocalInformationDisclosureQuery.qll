@@ -154,6 +154,17 @@ module TempDirSystemGetPropertyToCreate =
   TaintTracking::Global<TempDirSystemGetPropertyToCreateConfig>;
 
 /**
+ * A class of method file directory creation sink nodes.
+ */
+class MethodFileDirectoryCreationSink extends DataFlow::Node {
+  MethodFileDirectoryCreationSink() {
+    exists(MethodCall ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
+      ma.getQualifier() = this.asExpr()
+    )
+  }
+}
+
+/**
  * Configuration that tracks calls to to `mkdir` or `mkdirs` that are are directly on the temp directory system property.
  * Examples:
  * - `File tempDir = new File(System.getProperty("java.io.tmpdir")); tempDir.mkdir();`
@@ -172,11 +183,7 @@ module TempDirSystemGetPropertyDirectlyToMkdirConfig implements DataFlow::Config
     )
   }
 
-  predicate isSink(DataFlow::Node node) {
-    exists(MethodCall ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
-      ma.getQualifier() = node.asExpr()
-    )
-  }
+  predicate isSink(DataFlow::Node node) { node instanceof MethodFileDirectoryCreationSink }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     isFileConstructorArgument(sanitizer.asExpr(), _, _)

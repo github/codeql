@@ -50,15 +50,22 @@ deprecated private class SensitiveResultReceiverConf extends TaintTracking::Conf
   }
 }
 
+/**
+ * A class of sensitive result receiver sink nodes.
+ */
+class SensitiveResultReceiverSink extends DataFlow::Node {
+  SensitiveResultReceiverSink() {
+    exists(ResultReceiverSendCall call |
+      untrustedResultReceiverSend(_, call) and
+      this.asExpr() = call.getSentData()
+    )
+  }
+}
+
 private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  predicate isSink(DataFlow::Node node) {
-    exists(ResultReceiverSendCall call |
-      untrustedResultReceiverSend(_, call) and
-      node.asExpr() = call.getSentData()
-    )
-  }
+  predicate isSink(DataFlow::Node node) { node instanceof SensitiveResultReceiverSink }
 
   predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet c) { isSink(n) and exists(c) }
 }

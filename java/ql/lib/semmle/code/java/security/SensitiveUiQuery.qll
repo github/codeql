@@ -53,16 +53,23 @@ private class MaskCall extends MethodCall {
   }
 }
 
+/**
+ * A class of test field sink nodes.
+ */
+class TextFieldSink extends DataFlow::Node {
+  TextFieldSink() {
+    exists(SetTextCall call |
+      this.asExpr() = call.getStringArgument() and
+      not setTextCallIsMasked(call)
+    )
+  }
+}
+
 /** A configuration for tracking sensitive information to text fields. */
 private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(SetTextCall call |
-      sink.asExpr() = call.getStringArgument() and
-      not setTextCallIsMasked(call)
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof TextFieldSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 

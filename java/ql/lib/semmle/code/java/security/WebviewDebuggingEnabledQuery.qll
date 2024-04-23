@@ -44,18 +44,25 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   }
 }
 
+/**
+ * A class of webview debug sink nodes.
+ */
+class WebviewDebugSink extends DataFlow::Node {
+  WebviewDebugSink() {
+    exists(MethodCall ma |
+      ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
+      this.asExpr() = ma.getArgument(0)
+    )
+  }
+}
+
 /** A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
 module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node.asExpr().(BooleanLiteral).getBooleanValue() = true
   }
 
-  predicate isSink(DataFlow::Node node) {
-    exists(MethodCall ma |
-      ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
-      node.asExpr() = ma.getArgument(0)
-    )
-  }
+  predicate isSink(DataFlow::Node node) { node instanceof WebviewDebugSink }
 
   predicate isBarrier(DataFlow::Node node) {
     exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))

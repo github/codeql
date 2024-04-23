@@ -152,16 +152,23 @@ deprecated class SensitiveCommunicationConfig extends TaintTracking::Configurati
 }
 
 /**
+ * A class of sensitive communication sink nodes.
+ */
+class SensitiveCommunicationSink extends DataFlow::Node {
+  SensitiveCommunicationSink() {
+    isSensitiveBroadcastSink(this)
+    or
+    isStartActivityOrServiceSink(this)
+  }
+}
+
+/**
  * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
  */
 module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveInfoExpr }
 
-  predicate isSink(DataFlow::Node sink) {
-    isSensitiveBroadcastSink(sink)
-    or
-    isStartActivityOrServiceSink(sink)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SensitiveCommunicationSink }
 
   /**
    * Holds if broadcast doesn't specify receiving package name of the 3rd party app

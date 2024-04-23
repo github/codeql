@@ -103,13 +103,17 @@ class LocalDatabaseOpenMethodCallSource extends DataFlow::Node {
   LocalDatabaseOpenMethodCallSource() { this.asExpr() instanceof LocalDatabaseOpenMethodCall }
 }
 
+/**
+ * A class of local database sink nodes.
+ */
+class LocalDatabaseSink extends DataFlow::Node {
+  LocalDatabaseSink() { localDatabaseInput(this, _) or localDatabaseStore(this, _) }
+}
+
 private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalDatabaseOpenMethodCallSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    localDatabaseInput(sink, _) or
-    localDatabaseStore(sink, _)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof LocalDatabaseSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Adds a step for tracking databases through field flow, that is, a database is opened and

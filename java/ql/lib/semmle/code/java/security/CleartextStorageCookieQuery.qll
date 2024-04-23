@@ -44,10 +44,17 @@ class CookieSource extends DataFlow::Node {
   CookieSource() { this.asExpr() instanceof Cookie }
 }
 
+/**
+ * A class of cookie store sink nodes.
+ */
+class CookieStoreSink extends DataFlow::Node {
+  CookieStoreSink() { cookieStore(this, _) }
+}
+
 private module CookieToStoreFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof CookieSource }
 
-  predicate isSink(DataFlow::Node sink) { cookieStore(sink, _) }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CookieStoreSink }
 }
 
 private module CookieToStoreFlow = DataFlow::Global<CookieToStoreFlowConfig>;

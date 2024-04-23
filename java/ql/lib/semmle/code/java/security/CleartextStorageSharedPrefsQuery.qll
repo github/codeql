@@ -76,14 +76,21 @@ class SharedPreferencesEditorMethodCallSource extends DataFlow::Node {
   }
 }
 
+/**
+ * A class of shared preferences sink nodes.
+ */
+class SharedPreferencesSink extends DataFlow::Node {
+  SharedPreferencesSink() {
+    sharedPreferencesInput(this, _) or
+    sharedPreferencesStore(this, _)
+  }
+}
+
 /** Flow from `SharedPreferences.Editor` to either a setter or a store method. */
 private module SharedPreferencesFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof SharedPreferencesEditorMethodCallSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sharedPreferencesInput(sink, _) or
-    sharedPreferencesStore(sink, _)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SharedPreferencesSink }
 }
 
 private module SharedPreferencesFlow = DataFlow::Global<SharedPreferencesFlowConfig>;

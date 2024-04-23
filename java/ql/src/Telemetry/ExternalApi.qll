@@ -2,6 +2,7 @@
 
 private import java
 private import semmle.code.java.dataflow.ApiSources as ApiSources
+private import semmle.code.java.dataflow.ApiSinks as ApiSinks
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
@@ -74,7 +75,7 @@ class ExternalApi extends Callable {
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { sinkNode(this.getAnInput(), _) }
+  predicate isSink() { this.getAnInput() instanceof ApiSinks::SinkNode }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]

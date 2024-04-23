@@ -86,13 +86,20 @@ class LocalFileOpenCallSource extends DataFlow::Node {
   LocalFileOpenCallSource() { this.asExpr() instanceof LocalFileOpenCall }
 }
 
+/**
+ * A class of local file sink nodes.
+ */
+class LocalFileSink extends DataFlow::Node {
+  LocalFileSink() {
+    filesystemInput(this, _) or
+    closesFile(this, _)
+  }
+}
+
 private module FilesystemFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalFileOpenCallSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    filesystemInput(sink, _) or
-    closesFile(sink, _)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof LocalFileSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Add nested Writer constructors as extra data flow steps
