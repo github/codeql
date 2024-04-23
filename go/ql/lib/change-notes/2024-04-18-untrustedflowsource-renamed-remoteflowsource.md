@@ -1,4 +1,5 @@
 ---
 category: deprecated
 ---
-* The class `UntrustedFlowSource` has been deprecated. Use the new class `RemoteFlowSource` instead, which has the same functionality. This makes the Go library consistent with other language libraries. Classes named `UntrustedFlowSource` in several different modules have been deprecated, and new classes with the same functionality called `RemoteFlowSource` have been created and should be used instead. Classes named `UntrustedFlowAsSource` in several different modules have been deprecated, and the class `Source` in the same module or the class `RemoteFlowSource` should be used instead.
+* To make Go consistent with other language libraries, the `UntrustedFlowSource` name has been deprecated throughout. Use `RemoteFlowSource` instead, which replaces it. 
+* Where modules have classes named `UntrustedFlowAsSource`, these are also deprecated and the `Source` class in the same module or the `RemoteFlowSource` class should be used instead.
