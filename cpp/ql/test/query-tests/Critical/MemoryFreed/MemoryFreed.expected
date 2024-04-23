@@ -104,6 +104,15 @@
 | test_free.cpp:293:8:293:10 | buf |
 | test_free.cpp:301:12:301:14 | buf |
 | test_free.cpp:302:12:302:14 | buf |
+| test_free.cpp:313:16:313:16 | a |
+| test_free.cpp:319:16:319:16 | a |
+| test_free.cpp:322:12:322:12 | a |
+| test_free.cpp:331:12:331:12 | a |
+| test_free.cpp:335:12:335:12 | a |
+| test_free.cpp:343:26:343:28 | ptr |
+| test_free.cpp:344:26:344:28 | ptr |
+| test_free.cpp:345:26:345:28 | ptr |
+| test_free.cpp:346:26:346:28 | ptr |
 | virtual.cpp:18:10:18:10 | a |
 | virtual.cpp:19:10:19:10 | c |
 | virtual.cpp:38:10:38:10 | b |
