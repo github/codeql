@@ -52,6 +52,16 @@ runs:
         echo "EXTPACK_PATH=./workflow-extpack" >> $GITHUB_ENV
         echo "EXTPACK_NAME=local/workflow-models" >> $GITHUB_ENV
        
+    - name: Show contents
+      shell: bash
+      run: |
+        echo "Directory contents"
+        ls -la
+        echo "Models"
+        if [ -f workflow-extpack/models.yml ]; then cat workflow-extpack/models.yml; fi
+        echo "QLPack"
+        if [ -f workflow-extpack/qlpack.yml ]; then cat workflow-extpack/qlpack.yml; fi
+
     - name: Scan workflows 
       shell: bash
       env:
