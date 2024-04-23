@@ -29,16 +29,25 @@ runs:
       shell: bash
       if: inputs.workflow-models
       run: |
-        // Create QLPack directory
+        # Create QLPack directory
         mkdir workflow-extpack
         cd workflow-extpack
 
-        // Store the extension pack file
-        cat > models.yml << 'EOF'
+        # Store the extension pack file
+        cat > models.json << 'EOF'
         ${{ inputs.workflow-models }}
         EOF
 
-        // Create QLPack
+        # Store the extension pack file
+        cat > models.yml << 'EOF'
+        extensions:
+          - addsTo:
+              pack: githubsecuritylab/actions-all
+              extensible: workflowDataModel
+            data: []
+        EOF
+
+        # Create QLPack
         cat > qlpack.yml << 'EOF'
         name: local/workflow-models
         library: true
@@ -48,7 +57,7 @@ runs:
           - models.yml
         EOF
 
-        // Set env vars
+        # Set env vars
         echo "EXTPACK_PATH=./workflow-extpack" >> $GITHUB_ENV
         echo "EXTPACK_NAME=local/workflow-models" >> $GITHUB_ENV
        
