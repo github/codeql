@@ -16,11 +16,15 @@ import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.Helpers
 import semmle.code.csharp.frameworks.system.web.Mvc
 
+private Method getAValidatingMethod() {
+  result = any(AntiForgeryClass a).getValidateMethod()
+  or
+  result.calls(getAValidatingMethod())
+}
+
 /** An `AuthorizationFilter` that calls the `AntiForgery.Validate` method. */
 class AntiForgeryAuthorizationFilter extends AuthorizationFilter {
-  AntiForgeryAuthorizationFilter() {
-    this.getOnAuthorizationMethod().calls*(any(AntiForgeryClass a).getValidateMethod())
-  }
+  AntiForgeryAuthorizationFilter() { this.getOnAuthorizationMethod() = getAValidatingMethod() }
 }
 
 /**
