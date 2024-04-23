@@ -1259,9 +1259,7 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
     expr instanceof NotExpr or
     expr instanceof ComplementExpr or
     expr instanceof UnaryPlusExpr or
-    expr instanceof UnaryMinusExpr or
-    expr instanceof CoAwaitExpr or
-    expr instanceof CoYieldExpr
+    expr instanceof UnaryMinusExpr
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -1301,17 +1299,151 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
     expr instanceof UnaryPlusExpr and result instanceof Opcode::CopyValue
     or
     expr instanceof UnaryMinusExpr and result instanceof Opcode::Negate
-    or
-    // TODO: Use a new opcode to represent "awaiting the value"
-    expr instanceof CoAwaitExpr and result instanceof Opcode::CopyValue
-    or
-    // TODO: Use a new opcode to represent "awaiting the value"
-    expr instanceof CoYieldExpr and result instanceof Opcode::CopyValue
   }
 
   private TranslatedExpr getOperand() {
     result = getTranslatedExpr(expr.(UnaryOperation).getOperand().getFullyConverted())
   }
+}
+
+/**
+ * IR translation of a `co_await` or `co_yield` expression.
+ *
+ * The translation of `x = co_await ...` is essentially:
+ * ```cpp
+ * if (!awaiter.await_ready()) {
+ *   awaiter.await_suspend();
+ * }
+ * x = awaiter.await_resume();
+ * ```
+ * where `awaiter` is an object constructed from programmer-supplied
+ * input, and for IR construction purposes these are resolved by the C/C++
+ * front-end.
+ *
+ * See https://en.cppreference.com/w/cpp/language/coroutines#co_await for the
+ * specification on how `awaiter` is obtained.
+ */
+abstract private class TranslatedCoExpr extends TranslatedNonConstantExpr {
+  /** Gets the operand of this operation. */
+  abstract Expr getOperand();
+
+  /**
+   * Gets the expression that decides if the enclosing coroutine should be
+   * suspended.
+   */
+  abstract Expr getAwaitReady();
+
+  /**
+   * Gets the expression that is evaluated when the enclosing coroutine is
+   * suspended.
+   */
+  abstract Expr getAwaitSuspend();
+
+  /**
+   * Gets the expression that represents the resume point if the enclosing
+   * coroutine was suspended.
+   */
+  abstract Expr getAwaitResume();
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getTranslatedOperand().getFirstInstruction(kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getTranslatedAwaitResume().getALastInstruction()
+  }
+
+  final override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getTranslatedOperand()
+    or
+    id = 1 and result = this.getTranslatedAwaitReady()
+    or
+    id = 2 and result = this.getTranslatedAwaitResume()
+    or
+    id = 3 and result = this.getTranslatedAwaitSuspend()
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = CoAwaitBranchTag() and
+    (
+      kind instanceof TrueEdge and
+      result = this.getTranslatedAwaitResume().getFirstInstruction(any(GotoEdge goto))
+      or
+      kind instanceof FalseEdge and
+      result = this.getTranslatedAwaitSuspend().getFirstInstruction(any(GotoEdge goto))
+    )
+  }
+
+  override Instruction getResult() { result = this.getTranslatedAwaitResume().getResult() }
+
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getTranslatedOperand() and
+    result = this.getTranslatedAwaitReady().getFirstInstruction(kind)
+    or
+    child = this.getTranslatedAwaitReady() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(CoAwaitBranchTag())
+    or
+    child = this.getTranslatedAwaitSuspend() and
+    result = this.getTranslatedAwaitResume().getFirstInstruction(kind)
+    or
+    child = this.getTranslatedAwaitResume() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = CoAwaitBranchTag() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CoAwaitBranchTag() and
+    operandTag instanceof ConditionOperandTag and
+    result = this.getTranslatedAwaitReady().getResult()
+  }
+
+  private TranslatedExpr getTranslatedOperand() {
+    result = getTranslatedExpr(this.getOperand().getFullyConverted())
+  }
+
+  private TranslatedExpr getTranslatedAwaitReady() {
+    result = getTranslatedExpr(this.getAwaitReady().getFullyConverted())
+  }
+
+  private TranslatedExpr getTranslatedAwaitResume() {
+    result = getTranslatedExpr(this.getAwaitResume().getFullyConverted())
+  }
+
+  private TranslatedExpr getTranslatedAwaitSuspend() {
+    result = getTranslatedExpr(this.getAwaitSuspend().getFullyConverted())
+  }
+}
+
+/** IR translation of `co_await`. */
+class TranslatedCoAwaitExpr extends TranslatedCoExpr {
+  override CoAwaitExpr expr;
+
+  final override Expr getOperand() { result = expr.getOperand() }
+
+  final override Expr getAwaitReady() { result = expr.getAwaitReady() }
+
+  final override Expr getAwaitSuspend() { result = expr.getAwaitSuspend() }
+
+  final override Expr getAwaitResume() { result = expr.getAwaitResume() }
+}
+
+/** IR translation of `co_yield`. */
+class TranslatedCoYieldxpr extends TranslatedCoExpr {
+  override CoYieldExpr expr;
+
+  final override Expr getOperand() { result = expr.getOperand() }
+
+  final override Expr getAwaitReady() { result = expr.getAwaitReady() }
+
+  final override Expr getAwaitSuspend() { result = expr.getAwaitSuspend() }
+
+  final override Expr getAwaitResume() { result = expr.getAwaitResume() }
 }
 
 abstract class TranslatedConversion extends TranslatedNonConstantExpr {
