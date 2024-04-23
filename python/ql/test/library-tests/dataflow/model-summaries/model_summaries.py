@@ -140,6 +140,24 @@ SINK(subclass_via_positional.config)  # $ flow="SOURCE, l:-1 -> subclass_via_pos
 subclass_via_kw = C(x = SOURCE)
 SINK(subclass_via_kw.config)  # $ flow="SOURCE, l:-1 -> subclass_via_kw.config"
 
+class D(MS_Class_transitive):
+    def __init__(x, y):
+        # special handling of y
+        super().__init__(x)
+
+SINK(D(SOURCE, NONSOURCE).config)  # $ flow="SOURCE -> D(..).config"
+SINK(D(x = SOURCE, y = NONSOURCE).config)  # $ flow="SOURCE -> D(..).config"
+
+class E(MS_Class_transitive):
+    # Notice the swapped order of the arguments
+    def __init__(y, x):
+        # special handling of y
+        super().__init__(x)
+
+SINK(E(NONSOURCE, SOURCE).config)  # $ MISSING: flow="SOURCE -> E(..).config"
+SINK(E(x = SOURCE, y = NONSOURCE).config)  # $ flow="SOURCE -> E(..).config"
+
+
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
 
