@@ -27,6 +27,12 @@ class AntiForgeryAuthorizationFilter extends AuthorizationFilter {
   AntiForgeryAuthorizationFilter() { this.getOnAuthorizationMethod() = getAValidatingMethod() }
 }
 
+private Method getAStartedMethod() {
+  result = any(WebApplication wa).getApplication_StartMethod()
+  or
+  getAStartedMethod().calls(result)
+}
+
 /**
  * Holds if the project has a global anti forgery filter.
  */
@@ -38,9 +44,7 @@ predicate hasGlobalAntiForgeryFilter() {
     // The filter is an antiforgery filter
     addGlobalFilter.getArgumentForName("filter").getType() instanceof AntiForgeryAuthorizationFilter and
     // The filter is added by the Application_Start() method
-    any(WebApplication wa)
-        .getApplication_StartMethod()
-        .calls*(addGlobalFilter.getEnclosingCallable())
+    getAStartedMethod() = addGlobalFilter.getEnclosingCallable()
   )
 }
 
