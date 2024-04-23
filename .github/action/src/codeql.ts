@@ -149,7 +149,12 @@ export async function codeqlDatabaseAnalyze(
 
   const extPackPath = process.env["EXTPACK_PATH"];
   const extPackName = process.env["EXTPACK_NAME"];
-  if (extPackPath !== undefined && extPackName !== undefined) {
+  if (
+    extPackPath !== undefined &&
+    extPackName !== undefined &&
+    extPackPath !== "" &&
+    extPackName !== ""
+  ) {
     cmd.push("--additional-packs", extPackPath);
     cmd.push("--extension-packs", extPackName);
   }

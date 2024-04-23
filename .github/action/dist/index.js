@@ -28606,7 +28606,7 @@ async function newCodeQL() {
     return {
         language: "yaml",
         path: await findCodeQL(),
-        pack: "githubsecuritylab/actions-queries",
+        pack: "githubsecuritylab/actions-all",
         suite: `codeql-suites/${core.getInput("suite") || "actions-code-scanning"}.qls`,
         source_root: core.getInput("source-root"),
         output: core.getInput("sarif"),
@@ -28706,6 +28706,15 @@ async function codeqlDatabaseAnalyze(codeql, database_path) {
         "--output",
         codeql_output,
     ];
+    const extPackPath = process.env["EXTPACK_PATH"];
+    const extPackName = process.env["EXTPACK_NAME"];
+    if (extPackPath !== undefined &&
+        extPackName !== undefined &&
+        extPackPath !== "" &&
+        extPackName !== "") {
+        cmd.push("--additional-packs", extPackPath);
+        cmd.push("--extension-packs", extPackName);
+    }
     // remote pack or local pack
     if (codeql.pack.startsWith("githubsecuritylab/")) {
         var suite = codeql.pack + ":" + codeql.suite;

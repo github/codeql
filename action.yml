@@ -34,17 +34,8 @@ runs:
         cd workflow-extpack
 
         # Store the extension pack file
-        cat > models.json << 'EOF'
-        ${{ inputs.workflow-models }}
-        EOF
-
-        # Store the extension pack file
         cat > models.yml << 'EOF'
-        extensions:
-          - addsTo:
-              pack: githubsecuritylab/actions-all
-              extensible: workflowDataModel
-            data: []
+        ${{ inputs.workflow-models }}
         EOF
 
         # Create QLPack
@@ -69,7 +60,7 @@ runs:
         INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
         INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
         INPUT_SUITE: ${{ inputs.suite }}
-        EXTPACK_PATH: ${{ inputs.extpack-path }}
-        EXTPACK_NAME: ${{ inputs.extpack-name }}
+        EXTPACK_PATH: ${{ env.EXTPACK_PATH }}
+        EXTPACK_NAME: ${{ env.EXTPACK_NAME }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
