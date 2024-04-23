@@ -606,17 +606,18 @@ newtype TContent =
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
     // {"key": ...}
-    key = any(KeyValuePair kvp).getKey().(StrConst).getText()
+    key = any(KeyValuePair kvp).getKey().(StringLiteral).getText()
     or
     // func(key=...)
     key = any(Keyword kw).getArg()
     or
     // d["key"] = ...
-    key = any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StrConst).getText())
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
     or
     // d.setdefault("key", ...)
     exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
-      key = call.getArg(0).getNode().(StrConst).getText()
+      key = call.getArg(0).getNode().(StringLiteral).getText()
     )
   } or
   /** An element of a dictionary under any key. */
