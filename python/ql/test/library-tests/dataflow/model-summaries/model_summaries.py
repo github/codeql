@@ -126,19 +126,19 @@ from foo import MS_Class, MS_Class_transitive
 
 # Class summaries
 class_via_positional = MS_Class(SOURCE)
-SINK(class_via_positional)  # $ flow="SOURCE, l:-1 -> class_via_positional"
+SINK(class_via_positional.config)  # $ flow="SOURCE, l:-1 -> class_via_positional.config"
 
 class_via_kw = MS_Class(x = SOURCE)
-SINK(class_via_kw)  # $ flow="SOURCE, l:-1 -> class_via_kw"
+SINK(class_via_kw.config)  # $ flow="SOURCE, l:-1 -> class_via_kw.config"
 
 class C(MS_Class_transitive):
     pass
 
 subclass_via_positional = C(SOURCE)
-SINK(subclass_via_positional)  # $ flow="SOURCE, l:-1 -> subclass_via_positional"
+SINK(subclass_via_positional.config)  # $ flow="SOURCE, l:-1 -> subclass_via_positional.config"
 
 subclass_via_kw = C(x = SOURCE)
-SINK(subclass_via_kw)  # $ flow="SOURCE, l:-1 -> subclass_via_kw"
+SINK(subclass_via_kw.config)  # $ flow="SOURCE, l:-1 -> subclass_via_kw.config"
 
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
