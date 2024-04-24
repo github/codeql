@@ -152,7 +152,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var sourceGenerators = new ISourceGenerator[]
             {
                 new ImplicitUsingsGenerator(fileContent, logger, tempWorkingDirectory),
-                new WebViewGenerator(fileProvider, fileContent, dotnet, this, logger, tempWorkingDirectory, usedReferences.Keys)
+                new RazorGenerator(fileProvider, fileContent, dotnet, this, logger, tempWorkingDirectory, usedReferences.Keys),
+                new ResxGenerator(fileProvider, fileContent, dotnet, this, logger, nugetPackageRestorer, tempWorkingDirectory, usedReferences.Keys),
             };
 
             foreach (var sourceGenerator in sourceGenerators)
@@ -255,35 +256,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void SelectNewestFrameworkPath(string frameworkPath, string frameworkType, ISet<AssemblyLookupLocation> dllLocations, ISet<string> frameworkLocations)
-        {
-            var versionFolders = GetPackageVersionSubDirectories(frameworkPath);
-            if (versionFolders.Length > 1)
-            {
-                var versions = string.Join(", ", versionFolders.Select(d => d.Name));
-                logger.LogDebug($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
-            }
-
-            var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
-            if (selectedFrameworkFolder is null)
-            {
-                logger.LogDebug($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
-                selectedFrameworkFolder = frameworkPath;
-            }
-
-            dllLocations.Add(selectedFrameworkFolder);
-            frameworkLocations.Add(selectedFrameworkFolder);
-            logger.LogDebug($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
-        }
-
-        private static DirectoryInfo[] GetPackageVersionSubDirectories(string packagePath)
-        {
-            return new DirectoryInfo(packagePath)
-                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
-                .ToArray();
-        }
-
         private void RemoveFrameworkNugetPackages(ISet<AssemblyLookupLocation> dllLocations, int fromIndex = 0)
         {
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
@@ -310,10 +282,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 foreach (var fp in frameworkPaths)
                 {
-                    dotnetFrameworkVersionVariantCount += GetPackageVersionSubDirectories(fp.Path!).Length;
+                    dotnetFrameworkVersionVariantCount += NugetPackageRestorer.GetOrderedPackageVersionSubDirectories(fp.Path!).Length;
                 }
 
-                SelectNewestFrameworkPath(frameworkPath.Path, ".NET Framework", dllLocations, frameworkLocations);
+                var folder = nugetPackageRestorer.GetNewestNugetPackageVersionFolder(frameworkPath.Path, ".NET Framework");
+                dllLocations.Add(folder);
+                frameworkLocations.Add(folder);
                 RemoveFrameworkNugetPackages(dllLocations, frameworkPath.Index + 1);
                 return;
             }
@@ -331,7 +305,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (runtimeLocation is null)
                 {
                     logger.LogInfo("No .NET Desktop Runtime location found. Attempting to restore the .NET Framework reference assemblies manually.");
-                    runtimeLocation = nugetPackageRestorer.TryRestoreLatestNetFrameworkReferenceAssemblies();
+                    runtimeLocation = nugetPackageRestorer.TryRestore(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies);
                 }
             }
 
@@ -371,7 +345,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // First try to find ASP.NET Core assemblies in the NuGet packages
             if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework) is string aspNetCorePackage)
             {
-                SelectNewestFrameworkPath(aspNetCorePackage, "ASP.NET Core", dllLocations, frameworkLocations);
+                var folder = nugetPackageRestorer.GetNewestNugetPackageVersionFolder(aspNetCorePackage, "ASP.NET Core");
+                dllLocations.Add(folder);
+                frameworkLocations.Add(folder);
                 return;
             }
 
@@ -387,7 +363,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework) is string windowsDesktopApp)
             {
-                SelectNewestFrameworkPath(windowsDesktopApp, "Windows Desktop App", dllLocations, frameworkLocations);
+                var folder = nugetPackageRestorer.GetNewestNugetPackageVersionFolder(windowsDesktopApp, "Windows Desktop App");
+                dllLocations.Add(folder);
+                frameworkLocations.Add(folder);
             }
         }
 

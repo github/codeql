@@ -48,14 +48,46 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "missingpackages"), "missing package", logger);
         }
 
-        public string? TryRestoreLatestNetFrameworkReferenceAssemblies()
+        public string? TryRestore(string package)
         {
-            if (TryRestorePackageManually(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies))
+            if (TryRestorePackageManually(package))
             {
-                return DependencyManager.GetPackageDirectory(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, missingPackageDirectory.DirInfo);
+                var packageDir = DependencyManager.GetPackageDirectory(package, missingPackageDirectory.DirInfo);
+                if (packageDir is not null)
+                {
+                    return GetNewestNugetPackageVersionFolder(packageDir, package);
+                }
             }
 
             return null;
+        }
+
+        public string GetNewestNugetPackageVersionFolder(string packagePath, string packageFriendlyName)
+        {
+            var versionFolders = GetOrderedPackageVersionSubDirectories(packagePath);
+            if (versionFolders.Length > 1)
+            {
+                var versions = string.Join(", ", versionFolders.Select(d => d.Name));
+                logger.LogDebug($"Found multiple {packageFriendlyName} DLLs in NuGet packages at {packagePath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+            }
+
+            var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
+            if (selectedFrameworkFolder is null)
+            {
+                logger.LogDebug($"Found {packageFriendlyName} DLLs in NuGet packages at {packagePath}, but no version folder was found.");
+                selectedFrameworkFolder = packagePath;
+            }
+
+            logger.LogDebug($"Found {packageFriendlyName} DLLs in NuGet packages at {selectedFrameworkFolder}.");
+            return selectedFrameworkFolder;
+        }
+
+        public static DirectoryInfo[] GetOrderedPackageVersionSubDirectories(string packagePath)
+        {
+            return new DirectoryInfo(packagePath)
+                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .ToArray();
         }
 
         public HashSet<AssemblyLookupLocation> Restore()
@@ -408,7 +440,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetConfig = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryWithoutNugetConfig = true)
+        private bool TryRestorePackageManually(string package, string? nugetConfig = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj,
+            bool tryWithoutNugetConfig = true, bool tryPrereleaseVersion = true)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(
@@ -430,59 +463,87 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return false;
             }
 
-            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
-            if (!res.Success)
+            var res = TryRestorePackageManually(package, nugetConfig, tempDir, tryPrereleaseVersion);
+            if (res.Success)
             {
-                if (tryWithoutNugetConfig && res.HasNugetPackageSourceError && nugetConfig is not null)
-                {
-                    // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
-                    res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
-                }
+                return true;
+            }
 
-                // TODO: the restore might fail, we could retry with
-                // - a prerelease (*-* instead of *) version of the package,
-                // - a different target framework moniker.
-
-                if (!res.Success)
+            if (tryWithoutNugetConfig && res.HasNugetPackageSourceError && nugetConfig is not null)
+            {
+                logger.LogDebug($"Trying to restore '{package}' without nuget.config.");
+                // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
+                res = TryRestorePackageManually(package, nugetConfig: null, tempDir, tryPrereleaseVersion);
+                if (res.Success)
                 {
-                    logger.LogInfo($"Failed to restore nuget package {package}");
-                    return false;
+                    return true;
                 }
             }
 
-            return true;
+            logger.LogInfo($"Failed to restore nuget package {package}");
+            return false;
+        }
+
+        private RestoreResult TryRestorePackageManually(string package, string? nugetConfig, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
+        {
+            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig, ForceReevaluation: true));
+
+            if (!res.Success && tryPrereleaseVersion && res.HasNugetNoStablePackageVersionError)
+            {
+                logger.LogDebug($"Failed to restore nuget package {package} because no stable version was found.");
+                TryChangePackageVersion(tempDir.DirInfo, "*-*");
+
+                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig, ForceReevaluation: true));
+                if (!res.Success)
+                {
+                    TryChangePackageVersion(tempDir.DirInfo, "*");
+                }
+            }
+
+            return res;
         }
 
         private void TryChangeTargetFrameworkMoniker(DirectoryInfo tempDir)
         {
+            TryChangeProjectFile(tempDir, TargetFramework(), $"<TargetFramework>{FrameworkPackageNames.LatestNetFrameworkMoniker}</TargetFramework>", "target framework moniker");
+        }
+
+        private void TryChangePackageVersion(DirectoryInfo tempDir, string newVersion)
+        {
+            TryChangeProjectFile(tempDir, PackageReferenceVersion(), $"Version=\"{newVersion}\"", "package reference version");
+        }
+
+        private bool TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
+        {
             try
             {
-                logger.LogInfo($"Changing the target framework moniker in {tempDir.FullName}...");
+                logger.LogDebug($"Changing the {patternName} in {projectDir.FullName}...");
 
-                var csprojs = tempDir.GetFiles("*.csproj", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
+                var csprojs = projectDir.GetFiles("*.csproj", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
                 if (csprojs.Length != 1)
                 {
-                    logger.LogError($"Could not find the .csproj file in {tempDir.FullName}, count = {csprojs.Length}");
-                    return;
+                    logger.LogError($"Could not find the .csproj file in {projectDir.FullName}, count = {csprojs.Length}");
+                    return false;
                 }
 
                 var csproj = csprojs[0];
                 var content = File.ReadAllText(csproj.FullName);
-                var matches = TargetFramework().Matches(content);
+                var matches = pattern.Matches(content);
                 if (matches.Count == 0)
                 {
-                    logger.LogError($"Could not find target framework in {csproj.FullName}");
+                    logger.LogError($"Could not find the {patternName} in {csproj.FullName}");
+                    return false;
                 }
-                else
-                {
-                    content = TargetFramework().Replace(content, $"<TargetFramework>{FrameworkPackageNames.LatestNetFrameworkMoniker}</TargetFramework>", 1);
-                    File.WriteAllText(csproj.FullName, content);
-                }
+
+                content = pattern.Replace(content, replacement, 1);
+                File.WriteAllText(csproj.FullName, content);
+                return true;
             }
             catch (Exception exc)
             {
-                logger.LogError($"Failed to update target framework in {tempDir.FullName}: {exc}");
+                logger.LogError($"Failed to change the {patternName} in {projectDir.FullName}: {exc}");
             }
+            return false;
         }
 
         private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
@@ -663,6 +724,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex TargetFramework();
+
+        [GeneratedRegex(@"Version=""(\*|\*-\*)""", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex PackageReferenceVersion();
 
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex LegacyNugetPackage();
