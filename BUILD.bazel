@@ -2,8 +2,8 @@ load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 
 buildifier(
     name = "buildifier",
+    lint_mode = "fix",
     exclude_patterns = [
         "./.git/*",
     ],
-    lint_mode = "fix",
 )
