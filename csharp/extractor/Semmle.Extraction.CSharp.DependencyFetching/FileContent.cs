@@ -184,7 +184,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 try
                 {
-                    var isPackagesConfig = file.EndsWith("packages.config", StringComparison.OrdinalIgnoreCase);
+                    var isPackagesConfig = file.EndsWith(Path.DirectorySeparatorChar + "packages.config", StringComparison.OrdinalIgnoreCase);
 
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
