@@ -72,47 +72,51 @@ CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
   not exists(getALastEvalNode(result))
 }
 
-/** Provides predicates related to local data flow. */
-module LocalFlow {
-  private import codeql.ruby.dataflow.internal.SsaImpl
-
-  /** An SSA definition into which another SSA definition may flow. */
-  private class SsaInputDefinitionExtNode extends SsaDefinitionExtNode {
-    SsaInputDefinitionExtNode() {
-      def instanceof Ssa::PhiNode
-      or
-      def instanceof SsaImpl::PhiReadNode
-    }
+/** An SSA definition into which another SSA definition may flow. */
+class SsaInputDefinitionExt extends SsaImpl::DefinitionExt {
+  SsaInputDefinitionExt() {
+    this instanceof Ssa::PhiNode
+    or
+    this instanceof SsaImpl::PhiReadNode
   }
 
+  predicate hasInputFromBlock(SsaImpl::DefinitionExt def, BasicBlock bb, int i, BasicBlock input) {
+    SsaImpl::lastRefBeforeRedefExt(def, bb, i, input, this)
+  }
+}
+
+/** Provides predicates related to local data flow. */
+module LocalFlow {
   /**
    * Holds if `nodeFrom` is a node for SSA definition `def`, which can reach `next`.
    */
   pragma[nomagic]
   private predicate localFlowSsaInputFromDef(
-    SsaDefinitionExtNode nodeFrom, SsaImpl::DefinitionExt def, SsaInputDefinitionExtNode next
+    SsaDefinitionExtNode nodeFrom, SsaImpl::DefinitionExt def, SsaInputNode nodeTo
   ) {
-    exists(BasicBlock bb, int i |
-      lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
+    exists(BasicBlock bb, int i, BasicBlock input, SsaInputDefinitionExt next |
+      next.hasInputFromBlock(def, bb, i, input) and
       def = nodeFrom.getDefinitionExt() and
       def.definesAt(_, bb, i, _) and
-      nodeFrom != next
+      nodeTo = TSsaInputNode(next, input)
     )
   }
 
   /**
    * Holds if `nodeFrom` is a last read of SSA definition `def`, which
-   * can reach `next`.
+   * can reach `nodeTo`.
    */
   pragma[nomagic]
-  predicate localFlowSsaInputFromRead(
-    SsaImpl::DefinitionExt def, Node nodeFrom, SsaInputDefinitionExtNode next
-  ) {
-    exists(BasicBlock bb, int i, CfgNodes::ExprCfgNode exprFrom |
-      SsaImpl::lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
+  predicate localFlowSsaInputFromRead(SsaImpl::DefinitionExt def, Node nodeFrom, SsaInputNode nodeTo) {
+    exists(
+      BasicBlock bb, int i, CfgNodes::ExprCfgNode exprFrom, BasicBlock input,
+      SsaInputDefinitionExt next
+    |
+      next.hasInputFromBlock(def, bb, i, input) and
       exprFrom = bb.getNode(i) and
       exprFrom.getExpr() instanceof VariableReadAccess and
-      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode().asExpr()]
+      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode().asExpr()] and
+      nodeTo = TSsaInputNode(next, input)
     )
   }
 
@@ -181,13 +185,16 @@ module LocalFlow {
     or
     // Flow from SSA definition to first read
     def = nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() and
-    firstReadExt(def, nodeTo.asExpr())
+    SsaImpl::firstReadExt(def, nodeTo.asExpr())
     or
     // Flow from post-update read to next read
     localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi (read) SSA definition node from def
     localFlowSsaInputFromDef(nodeFrom, def, nodeTo)
+    or
+    nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
+    def = nodeFrom.(SsaInputNode).getDefinitionExt()
     or
     localFlowSsaParamInput(nodeFrom, nodeTo) and
     def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt()
@@ -237,10 +244,11 @@ module LocalFlow {
   }
 
   predicate flowSummaryLocalStep(
-    FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c
+    FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c,
+    string model
   ) {
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.getSummaryNode(),
-      nodeTo.getSummaryNode(), true) and
+      nodeTo.getSummaryNode(), true, model) and
     c = nodeFrom.getSummarizedCallable()
   }
 
@@ -264,7 +272,7 @@ module LocalFlow {
     node1 =
       unique(FlowSummaryNode n1 |
         FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-          node2.(FlowSummaryNode).getSummaryNode(), true)
+          node2.(FlowSummaryNode).getSummaryNode(), true, _)
       )
   }
 }
@@ -530,6 +538,9 @@ private module Cached {
     TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) { exists(n.getReturnedValueNode()) } or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
+    TSsaInputNode(SsaInputDefinitionExt def, BasicBlock input) {
+      def.hasInputFromBlock(_, _, _, input)
+    } or
     TCapturedVariableNode(VariableCapture::CapturedVariable v) or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
@@ -596,25 +607,28 @@ private module Cached {
    * data flow.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
-    or
-    exists(SsaImpl::DefinitionExt def |
-      // captured variables are handled by the shared `VariableCapture` library
-      not def instanceof VariableCapture::CapturedSsaDefinitionExt
-    |
-      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    (
+      LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      exists(SsaImpl::DefinitionExt def |
+        // captured variables are handled by the shared `VariableCapture` library
+        not def instanceof VariableCapture::CapturedSsaDefinitionExt
+      |
+        LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
+        or
+        LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+        or
+        LocalFlow::localFlowSsaInputFromRead(def, nodeFrom, nodeTo) and
+        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      )
       or
-      LocalFlow::localFlowSsaInputFromRead(def, nodeFrom, nodeTo) and
-      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
-    )
+      VariableCapture::valueStep(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
-    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, _)
-    or
-    VariableCapture::valueStep(nodeFrom, nodeTo)
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, _, model)
   }
 
   /** This is the local flow predicate that is exposed. */
@@ -646,7 +660,8 @@ private module Cached {
     or
     VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
     or
-    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, any(LibraryCallableToIncludeInTypeTracking c))
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, any(LibraryCallableToIncludeInTypeTracking c),
+      _)
   }
 
   /** Holds if `n` wraps an SSA definition without ingoing flow. */
@@ -742,7 +757,7 @@ private module Cached {
       // external model data. This, unfortunately, does not included any field names used
       // in models defined in QL code.
       exists(string input, string output |
-        ModelOutput::relevantSummaryModel(_, _, input, output, _)
+        ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
@@ -801,6 +816,8 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   n.(SsaDefinitionExtNode).isHidden()
+  or
+  n instanceof SsaInputNode
   or
   n = LocalFlow::getParameterDefNode(_)
   or
@@ -861,6 +878,57 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+}
+
+/**
+ * A node that represents an input to an SSA phi (read) definition.
+ *
+ * This allows for barrier guards to filter input to phi nodes. For example, in
+ *
+ * ```rb
+ * x = taint
+ * if x != "safe" then
+ *     x = "safe"
+ * end
+ * sink x
+ * ```
+ *
+ * the `false` edge out of `x != "safe"` guards the input from `x = taint` into the
+ * `phi` node after the condition.
+ *
+ * It is also relevant to filter input into phi read nodes:
+ *
+ * ```rb
+ * x = taint
+ * if b then
+ *     if x != "safe1" then
+ *         return
+ *     end
+ * else
+ *     if x != "safe2" then
+ *         return
+ *     end
+ * end
+ *
+ * sink x
+ * ```
+ *
+ * both inputs into the phi read node after the outer condition are guarded.
+ */
+class SsaInputNode extends NodeImpl, TSsaInputNode {
+  SsaImpl::DefinitionExt def;
+  BasicBlock input;
+
+  SsaInputNode() { this = TSsaInputNode(def, input) }
+
+  /** Gets the underlying SSA definition. */
+  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+  override CfgScope getCfgScope() { result = input.getScope() }
+
+  override Location getLocationImpl() { result = input.getLastNode().getLocation() }
+
+  override string toStringImpl() { result = "[input] " + def }
 }
 
 /** An SSA definition for a `self` variable. */
@@ -2177,6 +2245,14 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
+
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

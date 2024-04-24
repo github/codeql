@@ -1,3 +1,7 @@
+## 0.12.11
+
+No user-facing changes.
+
 ## 0.12.10
 
 ### New Features

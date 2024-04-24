@@ -3,6 +3,7 @@
  */
 
 private import csharp
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
@@ -42,10 +43,18 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
   string encodeContent(ContentSet c, string arg) {
     c = TElementContent() and result = "Element" and arg = ""
     or
-    exists(Field f | c = TFieldContent(f) and result = "Field" and arg = f.getFullyQualifiedName())
+    exists(Field f, string qualifier, string name |
+      c = TFieldContent(f) and
+      f.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Field"
+    )
     or
-    exists(Property p |
-      c = TPropertyContent(p) and result = "Property" and arg = p.getFullyQualifiedName()
+    exists(Property p, string qualifier, string name |
+      c = TPropertyContent(p) and
+      p.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Property"
     )
     or
     exists(SyntheticField f |
@@ -160,20 +169,28 @@ module SourceSinkInterpretationInput implements
 
   class Element = Cs::Element;
 
-  predicate sourceElement(Element e, string output, string kind, Public::Provenance provenance) {
+  predicate sourceElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind, Public::Provenance provenance) {
+  predicate sinkElement(
+    Element e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
@@ -371,10 +388,13 @@ private class SummarizedCallableWithCallback extends Public::SummarizedCallable 
 
   SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[delegate-self]" and
-    preservesValue = true
+    preservesValue = true and
+    model = "heuristic-callback"
   }
 
   override predicate hasProvenance(Public::Provenance provenance) { provenance = "hq-generated" }

@@ -473,7 +473,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     pragma[noinline]
-    private predicate ssaDefReachesThroughBlock(DefinitionExt def, BasicBlock bb) {
+    predicate ssaDefReachesThroughBlock(DefinitionExt def, BasicBlock bb) {
       exists(SourceVariable v |
         ssaDefReachesEndOfBlockExt(bb, def, v) and
         not defOccursInBlock(_, bb, v, _)
@@ -741,6 +741,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     defAdjacentRead(def, bb1, bb2, i2)
   }
 
+  private predicate lastRefRedefExtSameBlock(
+    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, DefinitionExt next
+  ) {
+    exists(int rnk, int j |
+      rnk = ssaDefRank(def, v, bb, i, _) and
+      next.definesAt(v, bb, j, _) and
+      rnk + 1 = ssaRefRank(bb, j, v, ssaDefExt())
+    )
+  }
+
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
@@ -753,17 +763,45 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     DefinitionExt def, SourceVariable v, BasicBlock bb, int i, DefinitionExt next
   ) {
     // Next reference to `v` inside `bb` is a write
-    exists(int rnk, int j |
-      rnk = ssaDefRank(def, v, bb, i, _) and
-      next.definesAt(v, bb, j, _) and
-      rnk + 1 = ssaRefRank(bb, j, v, ssaDefExt())
-    )
+    lastRefRedefExtSameBlock(def, v, bb, i, next)
     or
     // Can reach a write using one or more steps
     lastSsaRefExt(def, v, bb, i) and
     exists(BasicBlock bb2 |
       varBlockReachesExt(def, v, bb, bb2) and
       1 = ssaDefRank(next, v, bb2, _, ssaDefExt())
+    )
+  }
+
+  /**
+   * NB: If this predicate is exposed, it should be cached.
+   *
+   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
+   * `def`. The reference is last because it can reach another write `next`,
+   * without passing through another read or write.
+   *
+   * The path from node `i` in `bb` to `next` goes via basic block `input`, which is
+   * either a predecessor of the basic block of `next`, or `input = bb` in case `next`
+   * occurs in basic block `bb`.
+   */
+  pragma[nomagic]
+  predicate lastRefRedefExt(
+    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, BasicBlock input, DefinitionExt next
+  ) {
+    // Next reference to `v` inside `bb` is a write
+    lastRefRedefExtSameBlock(def, v, bb, i, next) and
+    input = bb
+    or
+    // Can reach a write using one or more steps
+    lastSsaRefExt(def, v, bb, i) and
+    exists(BasicBlock bb2 |
+      input = getABasicBlockPredecessor(bb2) and
+      1 = ssaDefRank(next, v, bb2, _, ssaDefExt())
+    |
+      input = bb
+      or
+      varBlockReachesExt(def, v, bb, input) and
+      ssaDefReachesThroughBlock(def, input)
     )
   }
 

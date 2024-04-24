@@ -1,5 +1,5 @@
 name: codeql/swift-all
-version: 0.3.13
+version: 0.3.14
 groups: swift
 extractor: swift
 dbscheme: swift.dbscheme

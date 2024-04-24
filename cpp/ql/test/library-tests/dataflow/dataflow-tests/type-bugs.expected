@@ -15,4 +15,5 @@ incorrectBaseType
 | test.cpp:848:23:848:25 | (reference dereference) | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:854:10:854:36 | * ... | Expected 'Node.getType()' to be const int, but it was int |
 | test.cpp:867:10:867:30 | * ... | Expected 'Node.getType()' to be const int, but it was int |
+| test.cpp:1062:52:1062:53 | *& ... | Expected 'Node.getType()' to be char, but it was char * |
 failures

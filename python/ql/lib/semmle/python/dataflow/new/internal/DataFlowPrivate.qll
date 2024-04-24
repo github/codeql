@@ -3,6 +3,7 @@ private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -471,12 +472,12 @@ import StepRelationTransformations
  *
  * It includes flow steps from flow summaries.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo) and model = ""
   or
-  summaryLocalStep(nodeFrom, nodeTo)
+  summaryLocalStep(nodeFrom, nodeTo, model)
   or
-  variableCaptureLocalFlowStep(nodeFrom, nodeTo)
+  variableCaptureLocalFlowStep(nodeFrom, nodeTo) and model = ""
 }
 
 /**
@@ -490,9 +491,9 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
   LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }
 
-private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
+private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
@@ -642,23 +643,37 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
 // Field flow
 //--------
 /**
- * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
- * content `c`.
+ * Subset of `storeStep` that should be shared with type-tracking.
+ *
+ * NOTE: This does not include attributeStoreStep right now, since it has its' own
+ * modeling in the type-tracking library (which is slightly different due to
+ * PostUpdateNodes).
+ *
+ * As of 2024-04-02 the type-tracking library only supports precise content, so there is
+ * no reason to include steps for list content right now.
  */
-predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
-  listStoreStep(nodeFrom, c, nodeTo)
-  or
-  setStoreStep(nodeFrom, c, nodeTo)
-  or
+predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   tupleStoreStep(nodeFrom, c, nodeTo)
   or
   dictStoreStep(nodeFrom, c, nodeTo)
   or
   moreDictStoreSteps(nodeFrom, c, nodeTo)
   or
-  comprehensionStoreStep(nodeFrom, c, nodeTo)
-  or
   iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
+ * content `c`.
+ */
+predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  storeStepCommon(nodeFrom, c, nodeTo)
+  or
+  listStoreStep(nodeFrom, c, nodeTo)
+  or
+  setStoreStep(nodeFrom, c, nodeTo)
+  or
+  comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
@@ -892,12 +907,19 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
 }
 
 /**
- * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
+ * Subset of `readStep` that should be shared with type-tracking.
  */
-predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
+ */
+predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  readStepCommon(nodeFrom, c, nodeTo)
   or
   matchReadStep(nodeFrom, c, nodeTo)
   or
@@ -1056,6 +1078,14 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
+
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

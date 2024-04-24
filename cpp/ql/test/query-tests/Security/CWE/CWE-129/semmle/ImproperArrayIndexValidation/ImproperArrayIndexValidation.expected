@@ -1,7 +1,7 @@
 edges
-| test1.c:7:26:7:29 | **argv | test1.c:9:9:9:9 | i | provenance |  |
-| test1.c:7:26:7:29 | **argv | test1.c:11:9:11:9 | i | provenance |  |
-| test1.c:7:26:7:29 | **argv | test1.c:13:9:13:9 | i | provenance |  |
+| test1.c:7:26:7:29 | **argv | test1.c:9:9:9:9 | i | provenance | TaintFunction |
+| test1.c:7:26:7:29 | **argv | test1.c:11:9:11:9 | i | provenance | TaintFunction |
+| test1.c:7:26:7:29 | **argv | test1.c:13:9:13:9 | i | provenance | TaintFunction |
 | test1.c:9:9:9:9 | i | test1.c:16:16:16:16 | i | provenance |  |
 | test1.c:11:9:11:9 | i | test1.c:32:16:32:16 | i | provenance |  |
 | test1.c:13:9:13:9 | i | test1.c:48:16:48:16 | i | provenance |  |

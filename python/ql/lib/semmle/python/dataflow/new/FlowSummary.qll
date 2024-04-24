@@ -31,8 +31,21 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
    * DEPRECATED: Use `propagatesFlow` instead.
    */
   deprecated predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    this.propagatesFlow(input, output, preservesValue)
+    this.propagatesFlow(input, output, preservesValue, _)
   }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    this.propagatesFlow(input, output, preservesValue) and model = this
+  }
+
+  /**
+   * Holds if data may flow from `input` to `output` through this callable.
+   *
+   * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
+   */
+  predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
 }
 
 deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

@@ -426,11 +426,14 @@ DestructorCall.cpp:
 #   12|           getQualifier(): [VariableAccess] c
 #   12|               Type = [PointerType] C *
 #   12|               ValueCategory = prvalue(load)
+#   12|         getExprWithReuse(): [ReuseExpr] reuse of c
+#   12|             Type = [PointerType] C *
+#   12|             ValueCategory = prvalue
 #   13|     getStmt(1): [ExprStmt] ExprStmt
 #   13|       getExpr(): [DeleteExpr] delete
 #   13|           Type = [VoidType] void
 #   13|           ValueCategory = prvalue
-#   13|         getExpr(): [VariableAccess] d
+#   13|         getExprWithReuse(): [VariableAccess] d
 #   13|             Type = [PointerType] D *
 #   13|             ValueCategory = prvalue(load)
 #   14|     getStmt(2): [ReturnStmt] return ...
