@@ -58,7 +58,7 @@ module HttpHeaderInjection {
     KeyValuePair item;
 
     HeaderBulkWriteDictLiteral() {
-      exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.geBulkArg()) |
+      exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
         item = dict.getAnItem()
       )
     }
@@ -83,7 +83,7 @@ module HttpHeaderInjection {
     Tuple item;
 
     HeaderBulkWriteListLiteral() {
-      exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.geBulkArg()) |
+      exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
         item = list.getAnElt()
       )
     }

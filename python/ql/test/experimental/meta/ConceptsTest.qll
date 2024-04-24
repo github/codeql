@@ -319,6 +319,43 @@ module HttpServerHttpResponseTest implements TestSig {
   }
 }
 
+module HttpResponseHeaderWriteTest implements TestSig {
+  string getARelevantTag() { result = ["headerWriteName", "headerWriteValue", "headerWriteBulk"] }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(Http::Server::ResponseHeaderWrite write, DataFlow::Node node |
+        location = node.getLocation() and
+        element = node.toString()
+      |
+        node = write.getNameArg() and
+        tag = "headerWriteName" and
+        (if write.nameAllowsNewline() then value = "unsanitized" else value = "sanitized")
+        or
+        node = write.getValueArg() and
+        tag = "headerWriteValue" and
+        (if write.valueAllowsNewline() then value = "unsanitized" else value = "sanitized")
+      )
+      or
+      exists(Http::Server::ResponseHeaderBulkWrite write |
+        location = write.getBulkArg().getLocation() and
+        element = write.getBulkArg().toString() and
+        (
+          tag = "headerWriteBulk" and
+          value = ""
+          or
+          tag = "headerWriteName" and
+          (if write.nameAllowsNewline() then value = "unsanitized" else value = "sanitized")
+          or
+          tag = "headerWriteValue" and
+          (if write.valueAllowsNewline() then value = "unsanitized" else value = "sanitized")
+        )
+      )
+    )
+  }
+}
+
 module HttpServerHttpRedirectResponseTest implements TestSig {
   string getARelevantTag() { result in ["HttpRedirectResponse", "redirectLocation"] }
 
@@ -559,7 +596,8 @@ import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest
   MergeTests5<SqlConstructionTest, SqlExecutionTest, XPathConstructionTest, XPathExecutionTest,
     EscapingTest>,
   MergeTests5<HttpServerRouteSetupTest, HttpServerRequestHandlerTest, HttpServerHttpResponseTest,
-    HttpServerHttpRedirectResponseTest, HttpServerCookieWriteTest>,
+    HttpServerHttpRedirectResponseTest,
+    MergeTests<HttpServerCookieWriteTest, HttpResponseHeaderWriteTest>>,
   MergeTests5<FileSystemAccessTest, FileSystemWriteAccessTest, PathNormalizationTest,
     SafeAccessCheckTest, PublicKeyGenerationTest>,
   MergeTests5<CryptographicOperationTest, HttpClientRequestTest, CsrfProtectionSettingTest,

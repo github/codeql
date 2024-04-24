@@ -2,6 +2,7 @@
 # see https://docs.python.org/3/library/wsgiref.html#wsgiref.simple_server.WSGIServer
 import sys
 import wsgiref.simple_server
+import wsgiref.headers
 
 def ignore(*arg, **kwargs): pass
 ensure_tainted = ensure_not_tainted = ignore
@@ -17,7 +18,7 @@ def func(environ, start_response): # $ requestHandler
         environ, # $ tainted
         environ["PATH_INFO"], # $ tainted
     )
-    write = start_response("200 OK", [("Content-Type", "text/plain")])
+    write = start_response("200 OK", [("Content-Type", "text/plain")]) # $ headerWriteBulk headerWriteName=unsanitized headerWriteValue=unsanitized
     write(b"hello") # $ HttpResponse responseBody=b"hello"
     write(data=b" ") # $ HttpResponse responseBody=b" "
 
@@ -32,9 +33,17 @@ class MyServer(wsgiref.simple_server.WSGIServer):
         self.set_app(self.my_method)
 
     def my_method(self, _env, start_response): # $ requestHandler
-        start_response("200 OK", [])
+        start_response("200 OK", []) # $ headerWriteBulk headerWriteName=unsanitized headerWriteValue=unsanitized
         return [b"my_method"] # $ HttpResponse responseBody=List
 
+def func2(environ, start_response): # $ requestHandler
+    headers = wsgiref.headers.Headers([("Content-Type", "text/plain")]) # $ headerWriteBulk headerWriteName=unsanitized headerWriteValue=unsanitized
+    headers.add_header("X-MyHeader", "a") # $ headerWriteName=unsanitized headerWriteValue=unsanitized 
+    headers.setdefault("X-MyHeader2", "b") # $ headerWriteName=unsanitized headerWriteValue=unsanitized 
+    headers.__setitem__("X-MyHeader3", "c") # $ headerWriteName=unsanitized headerWriteValue=unsanitized 
+    headers["X-MyHeader4"] = "d" # $ headerWriteName=unsanitized headerWriteValue=unsanitized 
+    start_response(status, headers) # $ headerWriteBulk headerWriteName=unsanitized headerWriteValue=unsanitized
+    return [b"Hello"] # $ HttpResponse responseBody=List
 
 case = sys.argv[1]
 if case == "1":
@@ -45,9 +54,11 @@ elif case == "2":
 elif case == "3":
     server = MyServer()
     def func3(_env, start_response): # $ requestHandler
-        start_response("200 OK", [])
+        start_response("200 OK", []) # $ headerWriteBulk headerWriteName=unsanitized headerWriteValue=unsanitized
         return [b"foo"] # $ HttpResponse responseBody=List
     server.set_app(func3)
+elif case == "4":
+    server = wsgiref.simple_server.make_server(ADDRESS[0], ADDRESS[1], func2)
 else:
     sys.exit("wrong case")
 

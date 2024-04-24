@@ -1094,7 +1094,7 @@ module Http {
       /**
        * Gets the argument containing the headers dictionary.
        */
-      DataFlow::Node geBulkArg() { result = super.getBulkArg() }
+      DataFlow::Node getBulkArg() { result = super.getBulkArg() }
 
       /**
        * Holds if newlines are accepted in the header name argument.
