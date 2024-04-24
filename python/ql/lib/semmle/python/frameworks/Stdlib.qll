@@ -4918,6 +4918,21 @@ module StdlibPrivate {
 
       override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
     }
+
+    /**
+     * An instance og `logging.Logger` from the `asyncio` module.
+     * See https://docs.python.org/3/library/asyncio-dev.html#logging
+     * and https://github.com/python/cpython/blob/3.12/Lib/asyncio/log.py#L7
+     */
+    private class AsyncIOLogger extends Stdlib::Logger::InstanceSource {
+      AsyncIOLogger() {
+        this =
+          API::moduleImport("asyncio")
+              .getMember("log")
+              .getMember("logger")
+              .getAValueReachableFromSource()
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
