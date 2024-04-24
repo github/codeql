@@ -5,61 +5,36 @@ inputs:
   token:
     description: GitHub Token
     default: ${{ github.token }}
-
   source-root:
     description: "Path of the root source code directory, relative to $GITHUB_WORKSPACE."
     default: ${{ github.workspace }}
-
   sarif-output:
     description: "SARIF File Output"
     default: "codeql-actions.sarif"
-
   suite:
     description: "CodeQL Suite to run"
     default: "actions-code-scanning"
-
-  workflow-models:
-    description: "Workflow models"
+  workflow-extpack-path:
+    description: "Path to Workflow extpack"
+    required: false
+  workflow-extpack-name:
+    description: "Name of the Workflow extpack"
     required: false
 
 runs:
   using: 'composite'
   steps:
-    - name: Process workflow models
+    - name: extpack contents
       shell: bash
-      if: inputs.workflow-models
       env:
-        MODELS: ${{ inputs.workflow-models }}
-      run: |
-        # Create QLPack directory
-        mkdir workflow-extpack
-        cd workflow-extpack
-
-        # Store the extension pack file
-        echo "$MODELS" > models.yml
-
-        # Create QLPack
-        cat > qlpack.yml << 'EOF'
-        name: local/workflow-models
-        library: true
-        extensionTargets:
-          githubsecuritylab/actions-all: '*'
-        dataExtensions:
-          - models.yml
-        EOF
-
-        # Set env vars
-        echo "EXTPACK_PATH=./workflow-extpack" >> $GITHUB_ENV
-        echo "EXTPACK_NAME=local/workflow-models" >> $GITHUB_ENV
-       
-    - name: Show contents
-      shell: bash
+        EXTPACK_PATH: ${{ intpus.workflow-extpack-path }}
+        EXTPACK_NAME: ${{ inputs.workflow-extpack-name }}
       run: |
         echo "##[group] Workflow Models"
-        if [ -f workflow-extpack/models.yml ]; then cat workflow-extpack/models.yml; fi
+        if [ -f $EXTPACK_PATH/models.yml ]; then cat $EXTPACK_PATH/models.yml; fi
         echo "##[endgroup]"
         echo "##[group] QLPack"
-        if [ -f workflow-extpack/qlpack.yml ]; then cat workflow-extpack/qlpack.yml; fi
+        if [ -f $EXTPACK_PATH/qlpack.yml ]; then cat $EXTPACK_PATH/qlpack.yml; fi
         echo "##[endgroup]"
 
     - name: Scan workflows 
@@ -70,7 +45,7 @@ runs:
         INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
         INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
         INPUT_SUITE: ${{ inputs.suite }}
-        EXTPACK_PATH: ${{ env.EXTPACK_PATH }}
-        EXTPACK_NAME: ${{ env.EXTPACK_NAME }}
+        EXTPACK_PATH: ${{ intpus.workflow-extpack-path }}
+        EXTPACK_NAME: ${{ inputs.workflow-extpack-name }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
