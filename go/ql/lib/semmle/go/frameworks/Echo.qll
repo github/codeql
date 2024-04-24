@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, taint propagators, and HTTP sinks
+ * Provides classes for working with remote flow sources, taint propagators, and HTTP sinks
  * from the `github.com/labstack/echo` package.
  */
 
@@ -10,9 +10,9 @@ private module Echo {
   private string packagePath() { result = package("github.com/labstack/echo", "") }
 
   /**
-   * Data from a `Context` interface method, considered as a source of untrusted flow.
+   * Data from a `Context` interface method, considered as a source of remote flow.
    */
-  private class EchoContextSource extends UntrustedFlowSource::Range {
+  private class EchoContextSource extends RemoteFlowSource::Range {
     EchoContextSource() {
       exists(DataFlow::MethodCallNode call, string methodName |
         methodName =
@@ -42,7 +42,7 @@ private module Echo {
   /**
    * A call to a method on `Context` struct that unmarshals data into a target.
    */
-  private class EchoContextBinder extends UntrustedFlowSource::Range {
+  private class EchoContextBinder extends RemoteFlowSource::Range {
     EchoContextBinder() {
       exists(DataFlow::MethodCallNode call |
         call.getTarget().hasQualifiedName(packagePath(), "Context", "Bind")

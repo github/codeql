@@ -9,9 +9,7 @@ private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode
-  {
+  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
         fieldName =

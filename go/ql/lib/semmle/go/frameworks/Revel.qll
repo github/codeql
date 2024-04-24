@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/revel/revel` package.
+ * Provides classes for working with remote flow sources from the `github.com/revel/revel` package.
  */
 
 import go
@@ -12,7 +12,7 @@ module Revel {
     result = package(["github.com/revel", "github.com/robfig"] + "/revel", "")
   }
 
-  private class ControllerParams extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
+  private class ControllerParams extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
     ControllerParams() {
       exists(Field f |
         this.readsField(_, f) and
@@ -32,7 +32,7 @@ module Revel {
     }
   }
 
-  private class RouteMatchParams extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
+  private class RouteMatchParams extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
     RouteMatchParams() {
       exists(Field f |
         this.readsField(_, f) and
@@ -42,9 +42,7 @@ module Revel {
   }
 
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode
-  {
+  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
     UserControlledRequestField() {
       exists(string fieldName |
         this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
@@ -56,7 +54,7 @@ module Revel {
     }
   }
 
-  private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
+  private class UserControlledRequestMethod extends RemoteFlowSource::Range,
     DataFlow::MethodCallNode
   {
     UserControlledRequestMethod() {
