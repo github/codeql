@@ -320,7 +320,13 @@ module HttpServerHttpResponseTest implements TestSig {
 }
 
 module HttpResponseHeaderWriteTest implements TestSig {
-  string getARelevantTag() { result = ["headerWriteName", "headerWriteValue", "headerWriteBulk"] }
+  string getARelevantTag() {
+    result =
+      [
+        "headerWriteNameUnsanitized", "headerWriteNameSanitized", "headerWriteValueUnsanitized",
+        "headerWriteValueSanitized", "headerWriteBulk"
+      ]
+  }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
@@ -330,26 +336,43 @@ module HttpResponseHeaderWriteTest implements TestSig {
         element = node.toString()
       |
         node = write.getNameArg() and
-        tag = "headerWriteName" and
-        (if write.nameAllowsNewline() then value = "unsanitized" else value = "sanitized")
+        (
+          if write.nameAllowsNewline()
+          then tag = "headerWriteNameUnsanitized"
+          else tag = "headerWriteNameSanitized"
+        ) and
+        value = prettyNodeForInlineTest(node)
         or
         node = write.getValueArg() and
-        tag = "headerWriteValue" and
-        (if write.valueAllowsNewline() then value = "unsanitized" else value = "sanitized")
+        (
+          if write.valueAllowsNewline()
+          then tag = "headerWriteValueUnsanitized"
+          else tag = "headerWriteValueSanitized"
+        ) and
+        value = prettyNodeForInlineTest(node)
       )
       or
-      exists(Http::Server::ResponseHeaderBulkWrite write |
-        location = write.getBulkArg().getLocation() and
-        element = write.getBulkArg().toString() and
+      exists(Http::Server::ResponseHeaderBulkWrite write, DataFlow::Node node |
+        node = write.getBulkArg() and
+        location = node.getLocation() and
+        element = node.toString() and
         (
           tag = "headerWriteBulk" and
+          value = prettyNodeForInlineTest(node)
+          or
+          (
+            if write.nameAllowsNewline()
+            then tag = "headerWriteNameUnsanitized"
+            else tag = "headerWriteNameSanitized"
+          ) and
           value = ""
           or
-          tag = "headerWriteName" and
-          (if write.nameAllowsNewline() then value = "unsanitized" else value = "sanitized")
-          or
-          tag = "headerWriteValue" and
-          (if write.valueAllowsNewline() then value = "unsanitized" else value = "sanitized")
+          (
+            if write.valueAllowsNewline()
+            then tag = "headerWriteValueUnsanitized"
+            else tag = "headerWriteValueSanitized"
+          ) and
+          value = ""
         )
       )
     )
