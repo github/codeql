@@ -16,7 +16,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.tempWorkingDirectory = tempWorkingDirectory;
         }
 
-        public abstract IEnumerable<string> Generate();
+        public IEnumerable<string> Generate()
+        {
+            if (!IsEnabled())
+            {
+                return [];
+            }
+
+            return Run();
+        }
+
+        protected abstract IEnumerable<string> Run();
+        protected abstract bool IsEnabled();
 
         /// <summary>
         /// Creates a temporary directory with the given subfolder name.

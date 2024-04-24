@@ -2,15 +2,15 @@ import go
 import TestUtilities.InlineExpectationsTest
 import experimental.frameworks.Fiber
 
-module UntrustedFlowSourceTest implements TestSig {
-  string getARelevantTag() { result = "untrustedFlowSource" }
+module RemoteFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "remoteFlowSource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "untrustedFlowSource" and
+    tag = "remoteFlowSource" and
     exists(DataFlow::CallNode sinkCall, DataFlow::ArgumentNode arg |
       sinkCall.getCalleeName() = "sink" and
       arg = sinkCall.getAnArgument() and
-      arg.getAPredecessor*() instanceof UntrustedFlowSource
+      arg.getAPredecessor*() instanceof RemoteFlowSource
     |
       element = arg.toString() and
       value = "" and
@@ -20,4 +20,4 @@ module UntrustedFlowSourceTest implements TestSig {
   }
 }
 
-import MakeTest<UntrustedFlowSourceTest>
+import MakeTest<RemoteFlowSourceTest>

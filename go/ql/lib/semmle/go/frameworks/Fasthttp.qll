@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/valyala/fasthttp` package.
  */
 
@@ -256,10 +256,15 @@ module Fasthttp {
    */
   module URI {
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which are part of the incoming URL.
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "URI",
             ["FullURI", "LastPathSegment", "Path", "PathOriginal", "QueryString", "String"]) and
@@ -274,12 +279,17 @@ module Fasthttp {
    */
   module Args {
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
      *
      * When support for lambdas has been implemented we should model "VisitAll".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Args",
             ["Peek", "PeekBytes", "PeekMulti", "PeekMultiBytes", "QueryString", "String"]) and
@@ -387,10 +397,15 @@ module Fasthttp {
    */
   module Request {
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which can be many part of request.
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
             [
@@ -464,12 +479,17 @@ module Fasthttp {
     }
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which are generally related to HTTP request.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestCtx",
             [
@@ -487,12 +507,17 @@ module Fasthttp {
    */
   module RequestHeader {
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
      * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestHeader",
             [
