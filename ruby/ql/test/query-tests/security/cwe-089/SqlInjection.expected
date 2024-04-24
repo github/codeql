@@ -1,6 +1,7 @@
 edges
 | ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
 | ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
+| ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:16:13:16:26 | "name=#{...}" | provenance | AdditionalTaintStep |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | provenance | AdditionalTaintStep |
 | ActiveRecordInjection.rb:27:22:27:30 | condition | ActiveRecordInjection.rb:30:16:30:24 | condition | provenance |  |
@@ -102,6 +103,7 @@ nodes
 | ActiveRecordInjection.rb:8:31:8:34 | pass | semmle.label | pass |
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | semmle.label | "name='#{...}' and pass='#{...}'" |
 | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | semmle.label | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:16:13:16:26 | "name=#{...}" | semmle.label | "name=#{...}" |
 | ActiveRecordInjection.rb:27:22:27:30 | condition | semmle.label | condition |
 | ActiveRecordInjection.rb:30:16:30:24 | condition | semmle.label | condition |
 | ActiveRecordInjection.rb:42:30:42:35 | call to params | semmle.label | call to params |
@@ -235,6 +237,7 @@ subpaths
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:77:38:77:43 | call to params | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:77:38:77:43 | call to params | user-provided value |
 | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:77:23:77:28 | call to params | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:77:23:77:28 | call to params | user-provided value |
 | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:77:38:77:43 | call to params | ActiveRecordInjection.rb:12:31:12:65 | "name='#{...}' and pass='#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:77:38:77:43 | call to params | user-provided value |
+| ActiveRecordInjection.rb:16:13:16:26 | "name=#{...}" | ActiveRecordInjection.rb:77:23:77:28 | call to params | ActiveRecordInjection.rb:16:13:16:26 | "name=#{...}" | This SQL query depends on a $@. | ActiveRecordInjection.rb:77:23:77:28 | call to params | user-provided value |
 | ActiveRecordInjection.rb:30:16:30:24 | condition | ActiveRecordInjection.rb:174:21:174:26 | call to params | ActiveRecordInjection.rb:30:16:30:24 | condition | This SQL query depends on a $@. | ActiveRecordInjection.rb:174:21:174:26 | call to params | user-provided value |
 | ActiveRecordInjection.rb:42:30:42:44 | ...[...] | ActiveRecordInjection.rb:42:30:42:35 | call to params | ActiveRecordInjection.rb:42:30:42:44 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:42:30:42:35 | call to params | user-provided value |
 | ActiveRecordInjection.rb:46:18:46:32 | ...[...] | ActiveRecordInjection.rb:46:18:46:23 | call to params | ActiveRecordInjection.rb:46:18:46:32 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:46:18:46:23 | call to params | user-provided value |

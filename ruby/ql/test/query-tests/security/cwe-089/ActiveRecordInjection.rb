@@ -13,8 +13,8 @@ class User < ApplicationRecord
     # GOOD: using SQL parameters
     find(:first, conditions: ["name = ? and pass = ?", name, pass])
     # BAD: interpolation with flow
-    # conds = "name=#{name}"
-    # find(:first, conditions: conds)
+    conds = "name=#{name}"
+    find(:first, conditions: conds)
   end
 
   def self.from(user_group_id)
