@@ -1,9 +1,9 @@
 import python
 
 string repr(AstNode a) {
-  not a instanceof StrConst and result = a.toString()
+  not a instanceof StringLiteral and result = a.toString()
   or
-  result = "\"" + a.(StrConst).getText() + "\""
+  result = "\"" + a.(StringLiteral).getText() + "\""
 }
 
 from ControlFlowNode p, ControlFlowNode s, BasicBlock b, int n

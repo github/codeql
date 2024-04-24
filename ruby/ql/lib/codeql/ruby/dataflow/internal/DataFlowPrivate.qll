@@ -2254,6 +2254,8 @@ predicate knownSinkModel(Node sink, string model) {
   sink = ModelOutput::getASinkNode(_, model).asSink()
 }
 
+class DataFlowSecondLevelScope = Unit;
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.

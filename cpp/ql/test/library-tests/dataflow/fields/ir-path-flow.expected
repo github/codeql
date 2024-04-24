@@ -58,13 +58,13 @@ edges
 | A.cpp:100:5:100:6 | *c1 [post update] [a] | A.cpp:101:8:101:9 | *c1 [a] | provenance |  |
 | A.cpp:100:5:100:13 | ... = ... | A.cpp:100:5:100:6 | *c1 [post update] [a] | provenance |  |
 | A.cpp:101:8:101:9 | *c1 [a] | A.cpp:103:14:103:14 | *c [a] | provenance |  |
-| A.cpp:103:14:103:14 | *c [a] | A.cpp:105:18:105:38 | *dynamic_cast<C1 *>... [a] | provenance |  |
-| A.cpp:103:14:103:14 | *c [a] | A.cpp:110:18:110:38 | *dynamic_cast<C2 *>... [a] | provenance |  |
-| A.cpp:105:18:105:38 | *dynamic_cast<C1 *>... [a] | A.cpp:107:12:107:13 | *c1 [a] | provenance |  |
+| A.cpp:103:14:103:14 | *c [a] | A.cpp:105:18:105:38 | *c [a] | provenance |  |
+| A.cpp:103:14:103:14 | *c [a] | A.cpp:110:18:110:38 | *c [a] | provenance |  |
+| A.cpp:105:18:105:38 | *c [a] | A.cpp:107:12:107:13 | *c1 [a] | provenance |  |
 | A.cpp:107:12:107:13 | *c1 [a] | A.cpp:107:12:107:16 | a | provenance |  |
-| A.cpp:110:18:110:38 | *dynamic_cast<C2 *>... [a] | A.cpp:112:7:112:13 | *... = ... [a] | provenance |  |
-| A.cpp:112:7:112:13 | *... = ... [a] | A.cpp:118:18:118:39 | *dynamic_cast<C1 *>... [a] | provenance |  |
-| A.cpp:118:18:118:39 | *dynamic_cast<C1 *>... [a] | A.cpp:120:12:120:13 | *c1 [a] | provenance |  |
+| A.cpp:110:18:110:38 | *c [a] | A.cpp:112:7:112:13 | *... = ... [a] | provenance |  |
+| A.cpp:112:7:112:13 | *... = ... [a] | A.cpp:118:18:118:39 | *cc [a] | provenance |  |
+| A.cpp:118:18:118:39 | *cc [a] | A.cpp:120:12:120:13 | *c1 [a] | provenance |  |
 | A.cpp:120:12:120:13 | *c1 [a] | A.cpp:120:12:120:16 | a | provenance |  |
 | A.cpp:124:14:124:14 | *b [c] | A.cpp:131:8:131:8 | f7 output argument [c] | provenance |  |
 | A.cpp:126:5:126:5 | set output argument [c] | A.cpp:124:14:124:14 | *b [c] | provenance |  |
@@ -906,12 +906,12 @@ nodes
 | A.cpp:100:5:100:13 | ... = ... | semmle.label | ... = ... |
 | A.cpp:101:8:101:9 | *c1 [a] | semmle.label | *c1 [a] |
 | A.cpp:103:14:103:14 | *c [a] | semmle.label | *c [a] |
-| A.cpp:105:18:105:38 | *dynamic_cast<C1 *>... [a] | semmle.label | *dynamic_cast<C1 *>... [a] |
+| A.cpp:105:18:105:38 | *c [a] | semmle.label | *c [a] |
 | A.cpp:107:12:107:13 | *c1 [a] | semmle.label | *c1 [a] |
 | A.cpp:107:12:107:16 | a | semmle.label | a |
-| A.cpp:110:18:110:38 | *dynamic_cast<C2 *>... [a] | semmle.label | *dynamic_cast<C2 *>... [a] |
+| A.cpp:110:18:110:38 | *c [a] | semmle.label | *c [a] |
 | A.cpp:112:7:112:13 | *... = ... [a] | semmle.label | *... = ... [a] |
-| A.cpp:118:18:118:39 | *dynamic_cast<C1 *>... [a] | semmle.label | *dynamic_cast<C1 *>... [a] |
+| A.cpp:118:18:118:39 | *cc [a] | semmle.label | *cc [a] |
 | A.cpp:120:12:120:13 | *c1 [a] | semmle.label | *c1 [a] |
 | A.cpp:120:12:120:16 | a | semmle.label | a |
 | A.cpp:124:14:124:14 | *b [c] | semmle.label | *b [c] |

@@ -447,8 +447,8 @@
 | g_class_init.py:34 | __init___0 = FunctionExpr |
 | g_class_init.py:34 | self_0 = ParameterDefinition |
 | g_class_init.py:35 | D_2 = ArgumentRefinement(D_1) |
-| g_class_init.py:42 | V2_0 = Str |
-| g_class_init.py:43 | V3_0 = Str |
+| g_class_init.py:42 | V2_0 = StringLiteral |
+| g_class_init.py:43 | V3_0 = StringLiteral |
 | g_class_init.py:45 | E_0 = ClassExpr |
 | g_class_init.py:46 | V2_1 = ScopeEntryDefinition |
 | g_class_init.py:46 | V3_1 = ScopeEntryDefinition |
@@ -479,7 +479,7 @@
 | h_classes.py:0 | thing_0 = ScopeEntryDefinition |
 | h_classes.py:1 | sys_0 = ImportExpr |
 | h_classes.py:3 | C_0 = ClassExpr |
-| h_classes.py:5 | x_0 = Str |
+| h_classes.py:5 | x_0 = StringLiteral |
 | h_classes.py:7 | __init___0 = FunctionExpr |
 | h_classes.py:7 | self_0 = ParameterDefinition |
 | h_classes.py:8 | self_1 = AttributeAssignment 'y'(self_0) |

@@ -415,6 +415,8 @@ predicate knownSourceModel(Node source, string model) { sourceNode(source, _, mo
 
 predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
 
+class DataFlowSecondLevelScope = Unit;
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.

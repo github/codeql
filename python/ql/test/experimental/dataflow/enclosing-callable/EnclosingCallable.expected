@@ -6,11 +6,11 @@
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:4:11:4:11 | ControlFlowNode for IntegerLiteral |
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:5:5:5:9 | ControlFlowNode for print |
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:5:5:5:26 | ControlFlowNode for print() |
-| class_example.py:0:0:0:0 | Module class_example | class_example.py:5:11:5:20 | ControlFlowNode for Str |
+| class_example.py:0:0:0:0 | Module class_example | class_example.py:5:11:5:20 | ControlFlowNode for StringLiteral |
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:5:23:5:25 | ControlFlowNode for wat |
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:7:1:7:5 | ControlFlowNode for print |
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:7:1:7:23 | ControlFlowNode for print() |
-| class_example.py:0:0:0:0 | Module class_example | class_example.py:7:7:7:17 | ControlFlowNode for Str |
+| class_example.py:0:0:0:0 | Module class_example | class_example.py:7:7:7:17 | ControlFlowNode for StringLiteral |
 | class_example.py:0:0:0:0 | Module class_example | class_example.py:7:20:7:22 | ControlFlowNode for wat |
 | generator.py:0:0:0:0 | Module generator | generator.py:1:1:1:23 | ControlFlowNode for FunctionExpr |
 | generator.py:0:0:0:0 | Module generator | generator.py:1:5:1:18 | ControlFlowNode for generator_func |

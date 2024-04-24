@@ -28,7 +28,7 @@ module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "SOURCE"
     or
-    node.(DataFlow::CfgNode).getNode().getNode().(StrConst).getS() = "source"
+    node.(DataFlow::CfgNode).getNode().getNode().(StringLiteral).getS() = "source"
     or
     node.(DataFlow::CfgNode).getNode().getNode().(IntegerLiteral).getN() = "42"
     or

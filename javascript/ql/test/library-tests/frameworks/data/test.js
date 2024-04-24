@@ -270,3 +270,5 @@ class MySubclass2 extends MySubclass {
   }
 }
 sink(new MySubclass2().baseclassSource()); // NOT OK
+
+sink(testlib.parenthesizedPackageName()); // NOT OK

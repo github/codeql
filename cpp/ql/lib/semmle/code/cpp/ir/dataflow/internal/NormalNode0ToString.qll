@@ -3,11 +3,25 @@
  * `toString` for `Instruction` and `Operand` dataflow nodes.
  */
 
+private import cpp
 private import semmle.code.cpp.ir.IR
 private import codeql.util.Unit
 private import Node0ToString
 private import DataFlowUtil
 private import DataFlowPrivate
+
+/**
+ * Gets the string representation of the unconverted expression `loc` if
+ * `loc` is an `Expression`.
+ *
+ * Otherwise, this gets the string representation of `loc`.
+ */
+private string unconvertedAstToString(Locatable loc) {
+  result = loc.(Expr).getUnconverted().toString()
+  or
+  not loc instanceof Expr and
+  result = loc.toString()
+}
 
 private class NormalNode0ToString extends Node0ToString {
   NormalNode0ToString() {
@@ -18,14 +32,10 @@ private class NormalNode0ToString extends Node0ToString {
   override string instructionToString(Instruction i) {
     if i.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
     then result = "this"
-    else result = i.getAst().toString()
+    else result = unconvertedAstToString(i.getAst())
   }
 
-  override string operandToString(Operand op) {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
+  override string operandToString(Operand op) { result = this.instructionToString(op.getDef()) }
 
   override string toExprString(Node n) {
     result = n.asExpr(0).toString()
