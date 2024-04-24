@@ -1,12 +1,12 @@
-name: Conditionally process PR
+name: Event
 
 on:
-  pull_request_target:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
-  process-pr:
+  if-tests:
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Test 1 
         if: 1 == 2
@@ -36,10 +36,10 @@ jobs:
       - name: Test 7
         run: echo "Test 7 should not be printed"
         if: ${{ 
-              github.actor == 'torvalds' || 
-              github.actor == 'dependabot[bot]'
+              1 == 2 ||
+              3 == 4
           }}
-
+          
       - name: Test 8
         run: echo "Test 8 should not be printed"
         if: > 
@@ -87,3 +87,25 @@ jobs:
             false || 1 == 2
           )}}
         run: echo "Test 17 should not be printed"
+      - name: Test 18
+        if: ${{ github.event_name }} == 'foo'
+        run: echo "Test 18 should not be printed"
+      - name: Test 19
+        if: ${{ contains(fromJSON('["OWNER", "MEMBER"]'), github.event.pull_request.author_association )}} || github.actor == 'renovate[bot]'
+        run: echo "Test 19 should not be printed"
+      - name: Test 20
+        if: ${{ hashFiles('./docker/Dockerfile.debian') }} != ""
+        run: echo "Test 20 should not be printed"
+      - name: Test 21
+        if: >
+          ${{ github.event.workflow_run.event == 'pull_request' &&
+          github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Test 21 should not be printed"
+      - name: Test 22
+        if: |
+          runner.os == 'Windows' && (
+            startsWith(inputs.node, 'v10.') ||
+            startsWith(inputs.node, 'v12.') ||
+            startsWith(inputs.node, 'v14.')
+          )
+        run: echo "Test 22 should not be printed"
