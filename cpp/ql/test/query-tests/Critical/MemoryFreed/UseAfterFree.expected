@@ -25,6 +25,11 @@ edges
 | test_free.cpp:294:3:294:3 | *s [post update] [buf] | test_free.cpp:295:12:295:12 | *s [buf] | provenance |  |
 | test_free.cpp:294:3:294:13 | ... = ... | test_free.cpp:294:3:294:3 | *s [post update] [buf] | provenance |  |
 | test_free.cpp:295:12:295:12 | *s [buf] | test_free.cpp:295:14:295:16 | buf | provenance |  |
+| test_free.cpp:313:16:313:16 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | provenance |  |
+| test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:321:5:321:6 | * ... | provenance |  |
+| test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | provenance |  |
+| test_free.cpp:322:12:322:12 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | provenance |  |
+| test_free.cpp:331:12:331:12 | pointer to operator delete output argument | test_free.cpp:332:5:332:6 | * ... | provenance |  |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:12:5:12:5 | a | semmle.label | a |
@@ -66,6 +71,15 @@ nodes
 | test_free.cpp:294:3:294:13 | ... = ... | semmle.label | ... = ... |
 | test_free.cpp:295:12:295:12 | *s [buf] | semmle.label | *s [buf] |
 | test_free.cpp:295:14:295:16 | buf | semmle.label | buf |
+| test_free.cpp:313:16:313:16 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
+| test_free.cpp:319:16:319:16 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
+| test_free.cpp:321:5:321:6 | * ... | semmle.label | * ... |
+| test_free.cpp:322:12:322:12 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
+| test_free.cpp:324:5:324:6 | * ... | semmle.label | * ... |
+| test_free.cpp:324:5:324:6 | * ... | semmle.label | * ... |
+| test_free.cpp:324:5:324:6 | * ... | semmle.label | * ... |
+| test_free.cpp:331:12:331:12 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
+| test_free.cpp:332:5:332:6 | * ... | semmle.label | * ... |
 subpaths
 #select
 | test_free.cpp:12:5:12:5 | a | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:12:5:12:5 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -84,3 +98,8 @@ subpaths
 | test_free.cpp:278:15:278:17 | buf | test_free.cpp:277:8:277:13 | pointer to free output argument | test_free.cpp:278:15:278:17 | buf | Memory may have been previously freed by $@. | test_free.cpp:277:3:277:6 | call to free | call to free |
 | test_free.cpp:283:14:283:16 | buf | test_free.cpp:282:8:282:12 | pointer to free output argument | test_free.cpp:283:14:283:16 | buf | Memory may have been previously freed by $@. | test_free.cpp:282:3:282:6 | call to free | call to free |
 | test_free.cpp:295:14:295:16 | buf | test_free.cpp:293:8:293:10 | pointer to free output argument | test_free.cpp:295:14:295:16 | buf | Memory may have been previously freed by $@. | test_free.cpp:293:3:293:6 | call to free | call to free |
+| test_free.cpp:321:5:321:6 | * ... | test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:321:5:321:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:319:9:319:16 | delete | delete |
+| test_free.cpp:324:5:324:6 | * ... | test_free.cpp:313:16:313:16 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:313:9:313:16 | delete | delete |
+| test_free.cpp:324:5:324:6 | * ... | test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:319:9:319:16 | delete | delete |
+| test_free.cpp:324:5:324:6 | * ... | test_free.cpp:322:12:322:12 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:322:5:322:12 | delete | delete |
+| test_free.cpp:332:5:332:6 | * ... | test_free.cpp:331:12:331:12 | pointer to operator delete output argument | test_free.cpp:332:5:332:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:331:5:331:12 | delete | delete |
