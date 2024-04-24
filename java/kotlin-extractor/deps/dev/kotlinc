@@ -28,7 +28,6 @@ import io
 import os
 
 DEFAULT_VERSION = "1.9.0"
-DEVNULL = open(os.devnull, "w")
 
 def options():
     parser = argparse.ArgumentParser(add_help=False)
@@ -80,7 +79,12 @@ def get_version():
 
 
 def install(version: str, quiet: bool):
-    info_out = DEVNULL if quiet else sys.stderr
+    if quiet:
+        info_out = subprocess.DEVNULL
+        info = lambda *args: None
+    else:
+        info_out = sys.stderr
+        info = lambda *args: print(*args, file=sys.stderr)
     url = url_template.format(version=version)
     if install_dir.exists():
         shutil.rmtree(install_dir)
@@ -89,12 +93,12 @@ def install(version: str, quiet: bool):
     if ripunzip is None and platform.system() == "Windows" and windows_ripunzip.exists():
         ripunzip = windows_ripunzip
     if ripunzip:
-        print(f"downloading and extracting {url} using ripunzip", file=info_out)
+        info(f"downloading and extracting {url} using ripunzip")
         subprocess.run([ripunzip, "unzip-uri", url], stdout=info_out, stderr=info_out, cwd=install_dir,
                        check=True)
         return
     with io.BytesIO() as buffer:
-        print(f"downloading {url}", file=info_out)
+        info(f"downloading {url}")
         with urllib.request.urlopen(url) as response:
             while True:
                 bytes = response.read()
@@ -102,7 +106,7 @@ def install(version: str, quiet: bool):
                     break
                 buffer.write(bytes)
         buffer.seek(0)
-        print(f"extracting kotlin-compiler-{version}.zip", file=info_out)
+        info(f"extracting kotlin-compiler-{version}.zip")
         with ZipFilePreservingPermissions(buffer) as archive:
             archive.extractall(install_dir)
 
