@@ -21,11 +21,8 @@ jobs:
       - name: Check bazel formatting
         uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         with:
-          extra_args: buildifier --all-files 2>&1 | tee check_output
-      - name: Report
-        if: failure()
-        run: |
-          sed -ne '/diff --git/,$ p' check_output
-          echo "In order to format all bazel files, please run:"
-          echo "  bazel run //:buildifier"
-          exit 1
+          extra_args: >
+            buildifier --all-files 2>&1 ||
+            (
+              echo -e "In order to format all bazel files, please run:\n  bazel run //:buildifier"; exit 1
+            )
