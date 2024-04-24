@@ -45,7 +45,7 @@ runs:
         INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
         INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
         INPUT_SUITE: ${{ inputs.suite }}
-        EXTPACK_PATH: ${{ intpus.workflow-extpack-path }}
+        EXTPACK_PATH: ${{ inputs.workflow-extpack-path }}
         EXTPACK_NAME: ${{ inputs.workflow-extpack-name }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
