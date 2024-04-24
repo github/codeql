@@ -2432,7 +2432,7 @@ void initialization_with_temp_destructor() {
 }
 
 void param_with_destructor_by_value(ClassWithDestructor c) {
-    // The call to ~ClassWithDestructor::ClassWithDestructor() seems to be missing here.
+    // The call to ~ClassWithDestructor::ClassWithDestructor() happens on the side of the caller
 }
 
 void param_with_destructor_by_pointer(ClassWithDestructor* c) {
