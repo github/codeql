@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go-extractor_lib",
+    srcs = ["go-extractor.go"],
+    importpath = "github.com/github/codeql-go/extractor/cli/go-extractor",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//go/extractor",
+        "//go/extractor/diagnostics",
+    ],
+)
+
+go_binary(
+    name = "go-extractor",
+    embed = [":go-extractor_lib"],
+    visibility = ["//visibility:public"],
+)

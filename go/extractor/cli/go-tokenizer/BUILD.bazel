@@ -1,0 +1,14 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go-tokenizer_lib",
+    srcs = ["go-tokenizer.go"],
+    importpath = "github.com/github/codeql-go/extractor/cli/go-tokenizer",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "go-tokenizer",
+    embed = [":go-tokenizer_lib"],
+    visibility = ["//visibility:public"],
+)

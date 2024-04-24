@@ -1,0 +1,14 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go-bootstrap_lib",
+    srcs = ["go-bootstrap.go"],
+    importpath = "github.com/github/codeql-go/extractor/cli/go-bootstrap",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "go-bootstrap",
+    embed = [":go-bootstrap_lib"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go-autobuilder_lib",
+    srcs = ["go-autobuilder.go"],
+    importpath = "github.com/github/codeql-go/extractor/cli/go-autobuilder",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//go/extractor/autobuilder",
+        "//go/extractor/diagnostics",
+        "//go/extractor/project",
+        "//go/extractor/toolchain",
+        "//go/extractor/util",
+        "//go/extractor/vendor/golang.org/x/mod/semver",
+    ],
+)
+
+go_binary(
+    name = "go-autobuilder",
+    embed = [":go-autobuilder_lib"],
+    visibility = ["//visibility:public"],
+)

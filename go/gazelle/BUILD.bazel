@@ -1,0 +1,8 @@
+load("@gazelle//:def.bzl", "gazelle")
+
+gazelle(
+    name = "gazelle",
+    extra_args = [
+        "go/extractor",
+    ],
+)

@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go-gen-dbscheme_lib",
+    srcs = ["go-gen-dbscheme.go"],
+    importpath = "github.com/github/codeql-go/extractor/cli/go-gen-dbscheme",
+    visibility = ["//visibility:private"],
+    deps = ["//go/extractor/dbscheme"],
+)
+
+go_binary(
+    name = "go-gen-dbscheme",
+    embed = [":go-gen-dbscheme_lib"],
+    visibility = ["//visibility:public"],
+)
