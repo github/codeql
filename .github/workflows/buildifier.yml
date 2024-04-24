@@ -1,0 +1,26 @@
+name: Check bazel formatting
+
+on:
+  pull_request:
+    paths:
+      - "**.bazel"
+      - "**.bzl"
+    branches:
+      - main
+      - "rc/*"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
+        with:
+          extra_args: buildifier --all-files --show-diff-on-failure
+      - if: failure()
+        run: |
+          echo "In order to format all files, please run:"
+          echo "  bazel run //:buildifier"
