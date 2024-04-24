@@ -1142,6 +1142,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
     }
 
+    pragma[nomagic]
+    private predicate returnCallEdgeInCtx1(
+      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCall call, NodeEx out, DataFlowCall ctx
+    ) {
+      returnCallEdge1(c, scope, call, out) and
+      c = viableImplInCallContextExt(call, ctx)
+    }
+
     private int ctxDispatchFanoutOnReturn(NodeEx out, DataFlowCall ctx) {
       exists(DataFlowCall call, DataFlowCallable c |
         simpleDispatchFanoutOnReturn(call, out) > 1 and
@@ -1151,8 +1159,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         mayBenefitFromCallContextExt(call, _) and
         result =
           count(DataFlowCallable tgt, SndLevelScopeOption scope |
-            tgt = viableImplInCallContextExt(call, ctx) and
-            returnCallEdge1(tgt, scope, call, out)
+            returnCallEdgeInCtx1(tgt, scope, call, out, ctx)
           )
       )
     }
