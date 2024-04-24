@@ -81,9 +81,12 @@ predicate regexpGuardsError(RegexpPattern regexp) {
 
 module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
   additional predicate isSourceString(DataFlow::Node source, string hostPart) {
-    exists(Expr e |
-      e = source.asExpr() and
-      isIncompleteHostNameRegexpPattern(e.getStringValue(), hostPart)
+    exists(Expr e | e = source.asExpr() |
+      isIncompleteHostNameRegexpPattern(e.getStringValue(), hostPart) and
+      // Exclude constant names to avoid duplicate results, because the string
+      // literals which they are initialised with are also considered as
+      // sources.
+      not e instanceof ConstantName
     )
   }
 
