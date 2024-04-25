@@ -2481,4 +2481,21 @@ namespace rvalue_conversion_with_destructor {
     }
 }
 
+void destructor_without_block(bool b)
+{
+    if (b)
+      ClassWithDestructor c;
+
+    if (b)
+      ClassWithDestructor d;
+    else
+      ClassWithDestructor e;
+
+    while (b)
+      ClassWithDestructor f;
+
+    for(int i = 0; i < 42; ++i)
+      ClassWithDestructor g;
+}
+
 // semmle-extractor-options: -std=c++20 --clang
