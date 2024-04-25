@@ -179,6 +179,13 @@ func findGoModFiles(root string) []string {
 // A regular expression for the Go toolchain version syntax.
 var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+\.[0-9]+)$`)
 
+// Returns true if the `go.mod` file specifies a Go language version, that version is `1.21` or greater, and
+// there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
+func hasInvalidToolchainVersion(modFile *modfile.File) bool {
+	return modFile.Toolchain == nil && modFile.Go != nil &&
+		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && semver.Compare("v"+modFile.Go.Version, "v1.21.0") >= 0
+}
+
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
 // will be the same length as the input array and the objects will contain at least the `go.mod` path.
 // If parsing the corresponding file is successful, then the parsed contents will also be available.
@@ -196,7 +203,7 @@ func LoadGoModules(emitDiagnostics bool, goModFilePaths []string) []*GoModule {
 			continue
 		}
 
-		modFile, err := modfile.ParseLax(goModFilePath, modFileSrc, nil)
+		modFile, err := modfile.Parse(goModFilePath, modFileSrc, nil)
 
 		if err != nil {
 			log.Printf("Unable to parse %s: %s.\n", goModFilePath, err.Error())
@@ -209,8 +216,7 @@ func LoadGoModules(emitDiagnostics bool, goModFilePaths []string) []*GoModule {
 		// there is no `toolchain` directive, check that it is a valid Go toolchain version. Otherwise,
 		// `go` commands which try to download the right version of the Go toolchain will fail. We detect
 		// this situation and emit a diagnostic.
-		if modFile.Toolchain == nil && modFile.Go != nil &&
-			!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && semver.Compare("v"+modFile.Go.Version, "v1.21.0") >= 0 {
+		if hasInvalidToolchainVersion(modFile) {
 			diagnostics.EmitInvalidToolchainVersion(goModFilePath, modFile.Go.Version)
 		}
 	}
