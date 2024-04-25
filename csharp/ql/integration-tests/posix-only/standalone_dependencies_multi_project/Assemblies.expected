@@ -1,4 +1,5 @@
 | [...]/avalara.avatax/23.11.0/lib/netstandard2.0/Avalara.AvaTax.RestClient.dll |
+| [...]/microsoft.bcl.asyncinterfaces/8.0.0/lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll |
 | [...]/microsoft.netcore.app.ref/8.0.1/ref/net8.0/Microsoft.CSharp.dll |
 | [...]/microsoft.netcore.app.ref/8.0.1/ref/net8.0/Microsoft.VisualBasic.Core.dll |
 | [...]/microsoft.netcore.app.ref/8.0.1/ref/net8.0/Microsoft.VisualBasic.dll |
