@@ -2380,16 +2380,31 @@ predicate expectsContent(Node n, ContentSet c) {
   n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
+class NodeRegion instanceof ControlFlow::BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
+
+  int totalOrder() {
+    this =
+      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
+        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        b order by startline, startcolumn
+      )
+  }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, Guard guard, ControlFlow::SuccessorTypes::BooleanSuccessor bs
   |
     viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs, _)
+    guard.controlsBlock(nr, bs, _)
   )
 }
 

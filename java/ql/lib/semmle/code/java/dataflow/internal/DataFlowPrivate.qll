@@ -502,6 +502,18 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
+private predicate id(BasicBlock x, BasicBlock y) { x = y }
+
+private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+
+class NodeRegion instanceof BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { n.asExpr().getBasicBlock() = this }
+
+  int totalOrder() { idOf(this, result) }
+}
+
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
@@ -522,9 +534,9 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 }
 
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
     Guard guard
@@ -537,7 +549,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
     guard
-        .controls(n.asExpr().getBasicBlock(),
+        .controls(nr,
           pragma[only_bind_into](pragma[only_bind_out](arg.getBooleanValue()).booleanNot()))
   )
 }

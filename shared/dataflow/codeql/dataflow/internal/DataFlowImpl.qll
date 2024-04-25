@@ -350,7 +350,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
-      isUnreachableInCallCached(n.asNode(), cc.getCall())
+      exists(NodeRegion nr |
+        nr.contains(n.asNode()) and
+        isUnreachableInCallCached(nr, cc.getCall())
+      )
     }
 
     /**
@@ -5245,7 +5248,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap,
         boolean isStoreStep
       ) {
-        not isUnreachableInCallCached(node.asNode(), cc.(CallContextSpecificCall).getCall()) and
+        not exists(NodeRegion nr |
+          nr.contains(node.asNode()) and
+          isUnreachableInCallCached(nr, cc.(CallContextSpecificCall).getCall())
+        ) and
         (
           localFlowStepEx(mid.getNodeEx(), node, _) and
           state = mid.getState() and

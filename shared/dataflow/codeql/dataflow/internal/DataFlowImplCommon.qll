@@ -465,10 +465,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     pragma[nomagic]
     predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable) {
-      exists(Node n |
+      exists(NodeRegion nr |
         relevantCallEdgeIn(call, callable) and
-        getNodeEnclosingCallable(n) = callable and
-        isUnreachableInCallCached(n, call)
+        getNodeRegionEnclosingCallable(nr) = callable and
+        isUnreachableInCallCached(nr, call)
       )
     }
 
@@ -659,7 +659,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
 
     cached
-    predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
+    predicate isUnreachableInCallCached(NodeRegion nr, DataFlowCall call) {
+      isUnreachableInCall(nr, call)
+    }
 
     cached
     predicate outNodeExt(Node n) {
@@ -1823,8 +1825,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     override predicate relevantFor(DataFlowCallable callable) { relevantLocalCCtx(call, callable) }
   }
 
+  private DataFlowCallable getNodeRegionEnclosingCallable(NodeRegion nr) {
+    exists(Node n | nr.contains(n) | getNodeEnclosingCallable(n) = result)
+  }
+
   private predicate relevantLocalCCtx(DataFlowCall call, DataFlowCallable callable) {
-    exists(Node n | getNodeEnclosingCallable(n) = callable and isUnreachableInCallCached(n, call))
+    exists(NodeRegion nr |
+      getNodeRegionEnclosingCallable(nr) = callable and isUnreachableInCallCached(nr, call)
+    )
   }
 
   /**

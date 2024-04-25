@@ -264,7 +264,15 @@ class DataFlowCall extends Expr instanceof Call {
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // stub implementation
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

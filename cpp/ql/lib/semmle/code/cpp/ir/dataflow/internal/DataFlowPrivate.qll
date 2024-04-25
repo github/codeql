@@ -1247,16 +1247,30 @@ module IsUnreachableInCall {
     any(G::IRGuardCondition guard).ensuresLt(left, right, k, block, areEqual)
   }
 
-  predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  class NodeRegion instanceof IRBlock {
+    string toString() { result = "NodeRegion" }
+
+    predicate contains(Node n) { this = n.getBasicBlock() }
+
+    int totalOrder() {
+      this =
+        rank[result](IRBlock b, int startline, int startcolumn |
+          b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+        |
+          b order by startline, startcolumn
+        )
+    }
+  }
+
+  predicate isUnreachableInCall(NodeRegion block, DataFlowCall call) {
     exists(
       InstructionDirectParameterNode paramNode, ConstantIntegralTypeArgumentNode arg,
-      IntegerConstantInstruction constant, int k, Operand left, Operand right, IRBlock block
+      IntegerConstantInstruction constant, int k, Operand left, Operand right
     |
       // arg flows into `paramNode`
       DataFlowImplCommon::viableParamArg(call, paramNode, arg) and
       left = constant.getAUse() and
-      right = valueNumber(paramNode.getInstruction()).getAUse() and
-      block = n.getBasicBlock()
+      right = valueNumber(paramNode.getInstruction()).getAUse()
     |
       // and there's a guard condition which ensures that the result of `left == right + k` is `areEqual`
       exists(boolean areEqual |

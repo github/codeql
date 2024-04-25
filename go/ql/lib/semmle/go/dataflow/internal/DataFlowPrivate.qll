@@ -371,11 +371,26 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
   )
 }
 
+class NodeRegion instanceof BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { n.getBasicBlock() = this }
+
+  int totalOrder() {
+    this =
+      rank[result](BasicBlock b, int startline, int startcolumn |
+        b.hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        b order by startline, startcolumn
+      )
+  }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
-  getAFalsifiedGuard(call).dominates(n.getBasicBlock())
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
+  getAFalsifiedGuard(call).dominates(nr)
 }
 
 /**
