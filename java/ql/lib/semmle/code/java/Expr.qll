@@ -511,9 +511,6 @@ class AssignLeftShiftExpr extends AssignOp, @assignlshiftexpr {
   override string getAPrimaryQlClass() { result = "AssignLeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for AssignLeftShiftExpr. */
-deprecated class AssignLShiftExpr = AssignLeftShiftExpr;
-
 /** A compound assignment expression using the `>>=` operator. */
 class AssignRightShiftExpr extends AssignOp, @assignrshiftexpr {
   override string getOp() { result = ">>=" }
@@ -521,18 +518,12 @@ class AssignRightShiftExpr extends AssignOp, @assignrshiftexpr {
   override string getAPrimaryQlClass() { result = "AssignRightShiftExpr" }
 }
 
-/** DEPRECATED: Alias for AssignRightShiftExpr. */
-deprecated class AssignRShiftExpr = AssignRightShiftExpr;
-
 /** A compound assignment expression using the `>>>=` operator. */
 class AssignUnsignedRightShiftExpr extends AssignOp, @assignurshiftexpr {
   override string getOp() { result = ">>>=" }
 
   override string getAPrimaryQlClass() { result = "AssignUnsignedRightShiftExpr" }
 }
-
-/** DEPRECATED: Alias for AssignUnsignedRightShiftExpr. */
-deprecated class AssignURShiftExpr = AssignUnsignedRightShiftExpr;
 
 /** A common super-class to represent constant literals. */
 class Literal extends Expr, @literal {
@@ -793,9 +784,6 @@ class LeftShiftExpr extends BinaryExpr, @lshiftexpr {
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for LeftShiftExpr. */
-deprecated class LShiftExpr = LeftShiftExpr;
-
 /** A binary expression using the `>>` operator. */
 class RightShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getOp() { result = " >> " }
@@ -803,18 +791,12 @@ class RightShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
 
-/** DEPRECATED: Alias for RightShiftExpr. */
-deprecated class RShiftExpr = RightShiftExpr;
-
 /** A binary expression using the `>>>` operator. */
 class UnsignedRightShiftExpr extends BinaryExpr, @urshiftexpr {
   override string getOp() { result = " >>> " }
 
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
-
-/** DEPRECATED: Alias for UnsignedRightShiftExpr. */
-deprecated class URShiftExpr = UnsignedRightShiftExpr;
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
