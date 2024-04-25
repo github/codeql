@@ -3,14 +3,14 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 
-/** A method access that assigns signing keys to a JWT parser. */
+/** The qualifier of a method access that assigns signing keys to a JWT parser. */
 class JwtParserWithInsecureParseSource extends DataFlow::Node {
   JwtParserWithInsecureParseSource() {
     exists(MethodCall ma, Method m |
       m.getDeclaringType().getAnAncestor() instanceof TypeJwtParser or
       m.getDeclaringType().getAnAncestor() instanceof TypeJwtParserBuilder
     |
-      this.asExpr() = ma and
+      this.asExpr() = ma.getQualifier() and
       ma.getMethod() = m and
       m.hasName(["setSigningKey", "setSigningKeyResolver"])
     )
