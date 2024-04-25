@@ -7,7 +7,7 @@
 
 int main(int argc, char** argv) {
   char *userAndFile = argv[2];
-  
+
   {
     char fileBuffer[FILENAME_MAX] = "/home/";
     char *fileName = fileBuffer;
@@ -45,6 +45,18 @@ int main(int argc, char** argv) {
   }
 
   {
+    char *tainted = getenv("A_STRING");
+    fopen(tainted, "wb+"); // BAD
+  }
+
+  {
+    char buffer[1024];
+    strncpy(buffer, getenv("A_STRING"), 1024);
+    fopen(buffer, "wb+"); // BAD
+    fopen(buffer, "wb+"); // (we don't want a duplicate result here)
+  }
+
+  {
     char *aNumber = getenv("A_NUMBER");
     double number = strtod(aNumber, 0);
     char fileName[20];
@@ -53,11 +65,18 @@ int main(int argc, char** argv) {
   }
 
   {
-    void read(const char *fileName);
-    read(argv[1]); // BAD
+    void readFile(const char *fileName);
+    readFile(argv[1]); // BAD
+  }
+
+  {
+    char buffer[1024];
+    read(0, buffer, 1024);
+    read(0, buffer, 1024);
+    fopen(buffer, "wb+"); // BAD [duplicated with both sources]
   }
 }
 
-void read(char *fileName) {
+void readFile(char *fileName) {
   fopen(fileName, "wb+");
 }
