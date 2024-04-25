@@ -30,10 +30,9 @@ def test1(request):
         request.as_bytes,          # $ tainted
 
         request.body,              # $ tainted
-        request.body_file,         # $ tainted
-        request.body_file_raw,     # $ tainted
-        request.body_file_seekable,# $ tainted
-        request.body_file.read(),  # $ MISSING:tainted
+        request.body_file.read(),         # $ tainted
+        request.body_file_raw.read(),     # $ tainted
+        request.body_file_seekable.read(),# $ tainted
 
         request.json,              # $ tainted
         request.json_body,         # $ tainted
@@ -61,9 +60,9 @@ def test1(request):
         request.GET.values(),       # $ tainted
 
         request.copy(),             # $ tainted
-        request.copy_body(),        # $ tainted
         request.copy_get(),         # $ tainted
-        request.copy().GET['a']     # $ MISSING:tainted
+        request.copy().GET['a'],    # $ tainted
+        request.copy_get().body     # $ tainted
         ) 
 
 def test2(request):

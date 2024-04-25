@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.data.ModelsAsData
+private import semmle.python.frameworks.Stdlib
 
 /**
  * Provides models for the `pyramid` PyPI package.
@@ -122,10 +123,22 @@ module Pyramid {
       }
 
       override string getMethodName() {
-        result in ["as_bytes", "copy", "copy_body", "copy_get", "path_info_peek", "path_info_pop"]
+        result in ["as_bytes", "copy", "copy_get", "path_info_peek", "path_info_pop"]
       }
 
       override string getAsyncMethodName() { none() }
+    }
+
+    private class RequestCopyCall extends InstanceSource, DataFlow::MethodCallNode {
+      RequestCopyCall() { this.calls(instance(), ["copy", "copy_get"]) }
+    }
+
+    private class RequestBodyFileLike extends Stdlib::FileLikeObject::InstanceSource instanceof DataFlow::AttrRead
+    {
+      RequestBodyFileLike() {
+        this.getObject() = instance() and
+        this.getAttributeName() = ["body_file", "body_file_raw", "body_file_seekable"]
+      }
     }
   }
 }
