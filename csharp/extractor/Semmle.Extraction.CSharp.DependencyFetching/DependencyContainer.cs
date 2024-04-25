@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Paths to dependencies required for compilation.
         /// </summary>
-        public List<string> Paths { get; } = new();
+        public HashSet<string> Paths { get; } = new();
 
         /// <summary>
         /// Packages that are used as a part of the required dependencies.
@@ -67,5 +67,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Paths.Add(p);
             Packages.Add(GetPackageName(p));
         }
+    }
+
+    internal static class DependencyContainerExtensions
+    {
+        /// <summary>
+        /// Flatten a list of containers into a single container.
+        /// </summary>
+        public static DependencyContainer Flatten(this IEnumerable<DependencyContainer> container) =>
+            container.Aggregate(new DependencyContainer(), (acc, c) =>
+            {
+                acc.Paths.UnionWith(c.Paths);
+                acc.Packages.UnionWith(c.Packages);
+                return acc;
+            });
     }
 }
