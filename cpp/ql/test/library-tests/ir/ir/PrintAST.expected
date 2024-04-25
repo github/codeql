@@ -22334,6 +22334,114 @@ ir.cpp:
 # 2480|                   Type = [Struct] B
 # 2480|                   ValueCategory = xvalue
 # 2481|     getStmt(1): [ReturnStmt] return ...
+# 2484| [TopLevelFunction] void destructor_without_block(bool)
+# 2484|   <params>: 
+# 2484|     getParameter(0): [Parameter] b
+# 2484|         Type = [BoolType] bool
+# 2485|   getEntryPoint(): [BlockStmt] { ... }
+# 2486|     getStmt(0): [IfStmt] if (...) ... 
+# 2486|       getCondition(): [VariableAccess] b
+# 2486|           Type = [BoolType] bool
+# 2486|           ValueCategory = prvalue(load)
+# 2487|       getThen(): [DeclStmt] declaration
+# 2487|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2487|             Type = [Class] ClassWithDestructor
+# 2487|           getVariable().getInitializer(): [Initializer] initializer for c
+# 2487|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2487|                 Type = [VoidType] void
+# 2487|                 ValueCategory = prvalue
+#-----|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+#-----|             Type = [VoidType] void
+#-----|             ValueCategory = prvalue
+#-----|           getQualifier(): [VariableAccess] c
+#-----|               Type = [Class] ClassWithDestructor
+#-----|               ValueCategory = lvalue
+# 2489|     getStmt(1): [IfStmt] if (...) ... 
+# 2489|       getCondition(): [VariableAccess] b
+# 2489|           Type = [BoolType] bool
+# 2489|           ValueCategory = prvalue(load)
+# 2490|       getThen(): [DeclStmt] declaration
+# 2490|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 2490|             Type = [Class] ClassWithDestructor
+# 2490|           getVariable().getInitializer(): [Initializer] initializer for d
+# 2490|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2490|                 Type = [VoidType] void
+# 2490|                 ValueCategory = prvalue
+#-----|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+#-----|             Type = [VoidType] void
+#-----|             ValueCategory = prvalue
+#-----|           getQualifier(): [VariableAccess] d
+#-----|               Type = [Class] ClassWithDestructor
+#-----|               ValueCategory = lvalue
+# 2492|       getElse(): [DeclStmt] declaration
+# 2492|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
+# 2492|             Type = [Class] ClassWithDestructor
+# 2492|           getVariable().getInitializer(): [Initializer] initializer for e
+# 2492|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2492|                 Type = [VoidType] void
+# 2492|                 ValueCategory = prvalue
+#-----|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+#-----|             Type = [VoidType] void
+#-----|             ValueCategory = prvalue
+#-----|           getQualifier(): [VariableAccess] e
+#-----|               Type = [Class] ClassWithDestructor
+#-----|               ValueCategory = lvalue
+# 2494|     getStmt(2): [WhileStmt] while (...) ...
+# 2494|       getCondition(): [VariableAccess] b
+# 2494|           Type = [BoolType] bool
+# 2494|           ValueCategory = prvalue(load)
+# 2495|       getStmt(): [DeclStmt] declaration
+# 2495|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
+# 2495|             Type = [Class] ClassWithDestructor
+# 2495|           getVariable().getInitializer(): [Initializer] initializer for f
+# 2495|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2495|                 Type = [VoidType] void
+# 2495|                 ValueCategory = prvalue
+#-----|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+#-----|             Type = [VoidType] void
+#-----|             ValueCategory = prvalue
+#-----|           getQualifier(): [VariableAccess] f
+#-----|               Type = [Class] ClassWithDestructor
+#-----|               ValueCategory = lvalue
+# 2497|     getStmt(3): [ForStmt] for(...;...;...) ...
+# 2497|       getInitialization(): [DeclStmt] declaration
+# 2497|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 2497|             Type = [IntType] int
+# 2497|           getVariable().getInitializer(): [Initializer] initializer for i
+# 2497|             getExpr(): [Literal] 0
+# 2497|                 Type = [IntType] int
+# 2497|                 Value = [Literal] 0
+# 2497|                 ValueCategory = prvalue
+# 2497|       getCondition(): [LTExpr] ... < ...
+# 2497|           Type = [BoolType] bool
+# 2497|           ValueCategory = prvalue
+# 2497|         getLesserOperand(): [VariableAccess] i
+# 2497|             Type = [IntType] int
+# 2497|             ValueCategory = prvalue(load)
+# 2497|         getGreaterOperand(): [Literal] 42
+# 2497|             Type = [IntType] int
+# 2497|             Value = [Literal] 42
+# 2497|             ValueCategory = prvalue
+# 2497|       getUpdate(): [PrefixIncrExpr] ++ ...
+# 2497|           Type = [IntType] int
+# 2497|           ValueCategory = lvalue
+# 2497|         getOperand(): [VariableAccess] i
+# 2497|             Type = [IntType] int
+# 2497|             ValueCategory = lvalue
+# 2498|       getStmt(): [DeclStmt] declaration
+# 2498|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of g
+# 2498|             Type = [Class] ClassWithDestructor
+# 2498|           getVariable().getInitializer(): [Initializer] initializer for g
+# 2498|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2498|                 Type = [VoidType] void
+# 2498|                 ValueCategory = prvalue
+#-----|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+#-----|             Type = [VoidType] void
+#-----|             ValueCategory = prvalue
+#-----|           getQualifier(): [VariableAccess] g
+#-----|               Type = [Class] ClassWithDestructor
+#-----|               ValueCategory = lvalue
+# 2499|     getStmt(4): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
