@@ -1,6 +1,7 @@
 load("@rules_go//go:def.bzl", "go_library")
 
 # gazelle:prefix github.com/github/codeql-go/extractor
+# gazelle:map_kind go_binary codeql_go_binary //go:rules.bzl
 
 go_library(
     name = "extractor",
