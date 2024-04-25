@@ -143,7 +143,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
             var versions = new List<string>();
 
-            foreach (var path in files.Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
+            foreach (var path in files.Where(p => string.Equals(FileUtils.SafeGetFileName(p, logger), "global.json", StringComparison.OrdinalIgnoreCase)))
             {
                 try
                 {

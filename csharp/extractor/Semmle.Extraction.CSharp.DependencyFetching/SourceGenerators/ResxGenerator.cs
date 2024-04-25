@@ -19,6 +19,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             TemporaryDirectory tempWorkingDirectory,
             IEnumerable<string> references) : base(fileProvider, fileContent, dotnet, compilationInfoContainer, logger, tempWorkingDirectory, references)
         {
+            if (fileProvider.Resources.Count == 0)
+            {
+                logger.LogDebug("No resources found, skipping resource extraction.");
+                sourceGeneratorFolder = null;
+                return;
+            }
+
             try
             {
                 // The package is downloaded to `missingpackages`, which is okay, we're already after the DLL collection phase.
