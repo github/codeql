@@ -277,7 +277,7 @@ No user-facing changes.
 
 ### Bug Fixes
 
-* The [View AST functionality](https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/) no longer prints detailed information about regular expressions, greatly improving performance.
+* The [View AST functionality](https://docs.github.com/en/code-security/codeql-for-vs-code/) no longer prints detailed information about regular expressions, greatly improving performance.
 
 ## 0.0.8
 
