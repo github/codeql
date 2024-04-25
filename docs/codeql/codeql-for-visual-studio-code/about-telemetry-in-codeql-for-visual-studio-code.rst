@@ -5,7 +5,7 @@
 About telemetry in CodeQL for Visual Studio Code
 =================================================
 
-.. include:: ../reusables/deprecation-note.rst
+.. include:: ../reusables/vs-code-deprecation-note.rst
 
 If you specifically opt in to permit GitHub to do so, GitHub will collect usage data and metrics for the purposes of helping the core developers to improve the CodeQL extension for VS Code.
 

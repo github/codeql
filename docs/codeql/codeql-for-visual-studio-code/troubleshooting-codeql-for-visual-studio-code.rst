@@ -5,7 +5,7 @@
 Troubleshooting CodeQL for Visual Studio Code
 =============================================
 
-.. include:: ../reusables/deprecation-note.rst
+.. include:: ../reusables/vs-code-deprecation-note.rst
 
 This article explains how to debug problems with the analysis of CodeQL databases that are stored on your local
 machine. For information on troubleshooting variant analysis, which runs on GitHub.com, see

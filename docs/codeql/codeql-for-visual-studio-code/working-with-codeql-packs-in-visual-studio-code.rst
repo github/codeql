@@ -5,7 +5,7 @@
 Working with CodeQL packs in Visual Studio Code
 ===============================================
 
-.. include:: ../reusables/deprecation-note.rst
+.. include:: ../reusables/vs-code-deprecation-note.rst
 
 .. include:: ../reusables/beta-note-package-management.rst
 

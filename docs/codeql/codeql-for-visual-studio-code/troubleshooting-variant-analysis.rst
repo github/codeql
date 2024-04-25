@@ -5,7 +5,7 @@
 Troubleshooting variant analysis
 ================================
 
-.. include:: ../reusables/deprecation-note.rst
+.. include:: ../reusables/vs-code-deprecation-note.rst
 
 .. include:: ../reusables/beta-note-mrva.rst
 

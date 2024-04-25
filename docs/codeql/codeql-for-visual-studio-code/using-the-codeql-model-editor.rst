@@ -5,7 +5,7 @@
 Using the CodeQL model editor
 =============================
 
-.. include:: ../reusables/deprecation-note.rst
+.. include:: ../reusables/vs-code-deprecation-note.rst
 
 .. include:: ../reusables/beta-note-model-pack-editor-vsc.rst
 

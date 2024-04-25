@@ -5,7 +5,7 @@
 Setting up CodeQL in Visual Studio Code
 =================================================
 
-.. include:: ../reusables/deprecation-note.rst
+.. include:: ../reusables/vs-code-deprecation-note.rst
 
 You can install and configure the CodeQL extension in Visual Studio Code.
 
