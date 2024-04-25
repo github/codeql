@@ -4,7 +4,6 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
@@ -138,6 +137,97 @@ module Pyramid {
       RequestBodyFileLike() {
         this.getObject() = instance() and
         this.getAttributeName() = ["body_file", "body_file_raw", "body_file_seekable"]
+      }
+    }
+  }
+
+  module Response {
+    private class PyramidReturnResponse extends Http::Server::HttpResponse::Range {
+      PyramidReturnResponse() {
+        this.asCfgNode() = any(View::ViewCallable vc).getAReturnValueFlowNode() and
+        not this = instance()
+      }
+
+      override DataFlow::Node getBody() { result = this }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { result = "text/html" }
+    }
+
+    private API::Node classRef() {
+      result = API::moduleImport("pyramid").getMember("response").getMember("Response")
+    }
+
+    abstract class InstanceSource extends DataFlow::LocalSourceNode,
+      Http::Server::HttpResponse::Range
+    { }
+
+    /** Gets a reference to an instance of `pyramid.request.Request`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `pyramid.request.Request`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+
+      override DataFlow::Node getBody() { result = [this.getArg(0), this.getArgByName("body")] }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() {
+        result = [this.getArg(4), this.getArgByName("content_type")]
+      }
+
+      override string getMimetypeDefault() { result = "text/html" }
+    }
+
+    private class ResponseBodySet extends Http::Server::HttpResponse::Range instanceof DataFlow::AttrWrite
+    {
+      string attrName;
+
+      ResponseBodySet() {
+        this.getObject() = instance() and
+        this.getAttributeName() = attrName and
+        attrName in ["body", "body_file", "json", "json_body", "text", "ubody", "unicode_body"]
+      }
+
+      override DataFlow::Node getBody() { result = this.(DataFlow::AttrWrite).getValue() }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() {
+        if attrName in ["json", "json_body"]
+        then result = "application/json"
+        else result = "text/html"
+      }
+    }
+
+    private class RequestResponseAttr extends InstanceSource instanceof DataFlow::AttrRead {
+      RequestResponseAttr() {
+        this.getObject() = Request::instance() and this.getAttributeName() = "response"
+      }
+
+      override DataFlow::Node getBody() { none() }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { result = "text/html" }
+    }
+
+    private class SetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::MethodCallNode {
+      SetCookieCall() { this.calls(instance(), "set_cookie") }
+
+      override DataFlow::Node getHeaderArg() { none() }
+
+      override DataFlow::Node getNameArg() { result = [this.getArg(0), this.getArgByName("name")] }
+
+      override DataFlow::Node getValueArg() {
+        result = [this.getArg(1), this.getArgByName("value")]
       }
     }
   }
