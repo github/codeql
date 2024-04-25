@@ -22,6 +22,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly Lazy<string[]> nugetConfigs;
         private readonly Lazy<string[]> globalJsons;
         private readonly Lazy<string[]> razorViews;
+        private readonly Lazy<string[]> resources;
         private readonly Lazy<string?> rootNugetConfig;
 
         public FileProvider(DirectoryInfo sourceDir, ILogger logger)
@@ -44,6 +45,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             nugetConfigs = new Lazy<string[]>(() => allNonBinary.Value.SelectFileNamesByName("nuget.config").ToArray());
             globalJsons = new Lazy<string[]>(() => allNonBinary.Value.SelectFileNamesByName("global.json").ToArray());
             razorViews = new Lazy<string[]>(() => SelectTextFileNamesByExtension("razor view", ".cshtml", ".razor"));
+            resources = new Lazy<string[]>(() => SelectTextFileNamesByExtension("resource", ".resx"));
 
             rootNugetConfig = new Lazy<string?>(() => all.SelectRootFiles(SourceDir).SelectFileNamesByName("nuget.config").FirstOrDefault());
         }
@@ -116,5 +118,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public string? RootNugetConfig => rootNugetConfig.Value;
         public IEnumerable<string> GlobalJsons => globalJsons.Value;
         public ICollection<string> RazorViews => razorViews.Value;
+        public ICollection<string> Resources => resources.Value;
     }
 }
