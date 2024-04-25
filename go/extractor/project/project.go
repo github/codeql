@@ -203,7 +203,7 @@ func LoadGoModules(emitDiagnostics bool, goModFilePaths []string) []*GoModule {
 			continue
 		}
 
-		modFile, err := modfile.ParseLax(goModFilePath, modFileSrc, nil)
+		modFile, err := modfile.Parse(goModFilePath, modFileSrc, nil)
 
 		if err != nil {
 			log.Printf("Unable to parse %s: %s.\n", goModFilePath, err.Error())
