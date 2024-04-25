@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         : [unresponsiveMissingPackageLocation];
                 }
 
-                using (var nuget = new NugetExeWrapper(fileProvider.SourceDir.FullName, legacyPackageDirectory, logger))
+                using (var nuget = new NugetExeWrapper(fileProvider, legacyPackageDirectory, logger))
                 {
                     var count = nuget.InstallPackages();
 
@@ -178,7 +178,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"No fallback Nuget feeds specified. Using default feed: {PublicNugetOrgFeed}");
             }
 
-            logger.LogInfo($"Checking fallback Nuget feed reachability on feeds:  {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
+            logger.LogInfo($"Checking fallback Nuget feed reachability on feeds: {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
             var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: true);
             var reachableFallbackFeeds = fallbackFeeds.Where(feed => IsFeedReachable(feed, initialTimeout, tryCount, allowExceptions: false)).ToList();
             if (reachableFallbackFeeds.Count == 0)
