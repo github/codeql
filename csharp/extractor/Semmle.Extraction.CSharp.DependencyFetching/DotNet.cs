@@ -91,9 +91,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes", null, true);
+        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes");
 
-        public IList<string> GetListedSdks() => GetResultList("--list-sdks", null, true);
+        public IList<string> GetListedSdks() => GetResultList("--list-sdks");
 
         private IList<string> GetResultList(string args, string? workingDirectory = null, bool silent = true)
         {
