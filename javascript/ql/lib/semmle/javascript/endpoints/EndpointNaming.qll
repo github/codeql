@@ -432,7 +432,7 @@ string renderName(string package, string name) { result = join("(" + package + "
  * These names are not necessarily part of a package's public API, and so we only used them
  * as a fallback when a publicly-accessible access path cannot be found.
  */
-private module InternalModuleNaming {
+module InternalModuleNaming {
   /** Gets the path to `folder` relative to its enclosing non-private `package.json` file. */
   private string getPackageRelativePathFromFolder(Folder folder) {
     exists(PackageJson json |
@@ -446,7 +446,10 @@ private module InternalModuleNaming {
       getPackageRelativePathFromFolder(folder.getParentContainer()) + "/" + folder.getBaseName()
   }
 
-  private string getPackageRelativePath(Module mod) {
+  /**
+   * Gets the path to `mod` relative to its enclosing package, including the package name.
+   */
+  string getPackageRelativePath(Module mod) {
     exists(PackageJson json, string relativePath |
       not json.isPrivate() and
       json.getExportedModule(relativePath) = mod and
