@@ -1,6 +1,7 @@
 /** Provides classes to reason about local information disclosure in a temporary directory. */
 
 import java
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.os.OSCheck
 private import semmle.code.java.security.TempDirUtils
@@ -156,7 +157,7 @@ module TempDirSystemGetPropertyToCreate =
 /**
  * A class of method file directory creation sink nodes.
  */
-class MethodFileDirectoryCreationSink extends DataFlow::Node {
+class MethodFileDirectoryCreationSink extends ApiSinkNode {
   MethodFileDirectoryCreationSink() {
     exists(MethodCall ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
       ma.getQualifier() = this.asExpr()

@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.FlowSinks
 
 private class ResultReceiverSendCall extends MethodCall {
   ResultReceiverSendCall() {
@@ -53,7 +54,7 @@ deprecated private class SensitiveResultReceiverConf extends TaintTracking::Conf
 /**
  * A class of sensitive result receiver sink nodes.
  */
-class SensitiveResultReceiverSink extends DataFlow::Node {
+class SensitiveResultReceiverSink extends ApiSinkNode {
   SensitiveResultReceiverSink() {
     exists(ResultReceiverSendCall call |
       untrustedResultReceiverSend(_, call) and

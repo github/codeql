@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.xml.AndroidManifest
 import semmle.code.java.frameworks.android.Intent
+private import semmle.code.java.dataflow.FlowSources
 
 /** An `onReceive` method of a `BroadcastReceiver` */
 private class OnReceiveMethod extends Method {
@@ -16,7 +17,7 @@ private class OnReceiveMethod extends Method {
 /**
  * A class of verified intent source nodes.
  */
-class VerifiedIntentConfigSource extends DataFlow::Node {
+class VerifiedIntentConfigSource extends ApiSourceNode {
   VerifiedIntentConfigSource() {
     this.asParameter() = any(OnReceiveMethod orm).getIntentParameter()
   }

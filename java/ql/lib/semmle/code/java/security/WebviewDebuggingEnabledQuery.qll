@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.SecurityTests
+private import semmle.code.java.dataflow.FlowSinks
 
 /** Holds if `ex` looks like a check that this is a debug build. */
 private predicate isDebugCheck(Expr ex) {
@@ -47,7 +48,7 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
 /**
  * A class of webview debug sink nodes.
  */
-class WebviewDebugSink extends DataFlow::Node {
+class WebviewDebugSink extends ApiSinkNode {
   WebviewDebugSink() {
     exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and

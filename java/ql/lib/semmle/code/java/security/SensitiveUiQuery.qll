@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SensitiveActions
 private import semmle.code.java.frameworks.android.Layout
@@ -54,9 +55,9 @@ private class MaskCall extends MethodCall {
 }
 
 /**
- * A class of test field sink nodes.
+ * A class of text field sink nodes.
  */
-class TextFieldSink extends DataFlow::Node {
+class TextFieldSink extends ApiSinkNode {
   TextFieldSink() {
     exists(SetTextCall call |
       this.asExpr() = call.getStringArgument() and

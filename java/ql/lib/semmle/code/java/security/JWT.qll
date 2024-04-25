@@ -2,9 +2,11 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 /** A method access that assigns signing keys to a JWT parser. */
-class JwtParserWithInsecureParseSource extends DataFlow::Node {
+class JwtParserWithInsecureParseSource extends ApiSourceNode {
   JwtParserWithInsecureParseSource() {
     exists(MethodCall ma, Method m |
       m.getDeclaringType().getAnAncestor() instanceof TypeJwtParser or
@@ -24,7 +26,7 @@ class JwtParserWithInsecureParseSource extends DataFlow::Node {
  * the qualifier of a call to a `parse(token, handler)` method
  * where the `handler` is considered insecure.
  */
-class JwtParserWithInsecureParseSink extends DataFlow::Node {
+class JwtParserWithInsecureParseSink extends ApiSinkNode {
   MethodCall insecureParseMa;
 
   JwtParserWithInsecureParseSink() {

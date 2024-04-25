@@ -5,9 +5,11 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.CleartextStorageQuery
 import semmle.code.xml.AndroidManifest
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink {
   AndroidFilesystemCleartextStorageSink() {
@@ -82,14 +84,14 @@ private class CloseFileMethod extends Method {
 /**
  * A class of local file open call source nodes.
  */
-class LocalFileOpenCallSource extends DataFlow::Node {
+class LocalFileOpenCallSource extends ApiSourceNode {
   LocalFileOpenCallSource() { this.asExpr() instanceof LocalFileOpenCall }
 }
 
 /**
  * A class of local file sink nodes.
  */
-class LocalFileSink extends DataFlow::Node {
+class LocalFileSink extends ApiSinkNode {
   LocalFileSink() {
     filesystemInput(this, _) or
     closesFile(this, _)

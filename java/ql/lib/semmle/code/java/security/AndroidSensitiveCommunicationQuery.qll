@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.FlowSinks
 
 /**
  * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.
@@ -154,7 +155,7 @@ deprecated class SensitiveCommunicationConfig extends TaintTracking::Configurati
 /**
  * A class of sensitive communication sink nodes.
  */
-class SensitiveCommunicationSink extends DataFlow::Node {
+class SensitiveCommunicationSink extends ApiSinkNode {
   SensitiveCommunicationSink() {
     isSensitiveBroadcastSink(this)
     or

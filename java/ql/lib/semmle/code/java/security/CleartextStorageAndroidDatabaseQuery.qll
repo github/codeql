@@ -6,6 +6,8 @@ import semmle.code.java.frameworks.android.ContentProviders
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class LocalDatabaseCleartextStorageSink extends CleartextStorageSink {
   LocalDatabaseCleartextStorageSink() { localDatabaseInput(_, this.asExpr()) }
@@ -99,14 +101,14 @@ private predicate localDatabaseStore(DataFlow::Node database, MethodCall store) 
 /**
  * A class of local database open method call source nodes.
  */
-class LocalDatabaseOpenMethodCallSource extends DataFlow::Node {
+class LocalDatabaseOpenMethodCallSource extends ApiSourceNode {
   LocalDatabaseOpenMethodCallSource() { this.asExpr() instanceof LocalDatabaseOpenMethodCall }
 }
 
 /**
  * A class of local database sink nodes.
  */
-class LocalDatabaseSink extends DataFlow::Node {
+class LocalDatabaseSink extends ApiSinkNode {
   LocalDatabaseSink() { localDatabaseInput(this, _) or localDatabaseStore(this, _) }
 }
 

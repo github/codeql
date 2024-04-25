@@ -1,13 +1,14 @@
 /** Provides a taint-tracking configuration to reason about externally controlled format string vulnerabilities. */
 
 import java
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.StringFormat
 
 /**
  * A class of string format sink nodes.
  */
-class StringFormatSink extends DataFlow::Node {
+class StringFormatSink extends ApiSinkNode {
   StringFormatSink() { this.asExpr() = any(StringFormat formatCall).getFormatArgument() }
 }
 

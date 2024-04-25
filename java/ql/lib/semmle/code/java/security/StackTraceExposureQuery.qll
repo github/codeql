@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.InformationLeak
 
@@ -98,7 +99,7 @@ predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stac
 /**
  * A class of get message source nodes.
  */
-class GetMessageFlowSource extends DataFlow::Node {
+class GetMessageFlowSource extends ApiSourceNode {
   GetMessageFlowSource() {
     exists(Method method | this.asExpr().(MethodCall).getMethod() = method |
       method.hasName("getMessage") and

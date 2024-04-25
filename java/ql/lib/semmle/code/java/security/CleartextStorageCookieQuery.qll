@@ -4,6 +4,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 deprecated import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class CookieCleartextStorageSink extends CleartextStorageSink {
   CookieCleartextStorageSink() { this.asExpr() = cookieInput(_) }
@@ -40,14 +42,14 @@ private predicate cookieStore(DataFlow::Node cookie, Expr store) {
 /**
  * A class of cookie source nodes.
  */
-class CookieSource extends DataFlow::Node {
+class CookieSource extends ApiSourceNode {
   CookieSource() { this.asExpr() instanceof Cookie }
 }
 
 /**
  * A class of cookie store sink nodes.
  */
-class CookieStoreSink extends DataFlow::Node {
+class CookieStoreSink extends ApiSinkNode {
   CookieStoreSink() { cookieStore(this, _) }
 }
 

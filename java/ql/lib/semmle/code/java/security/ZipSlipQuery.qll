@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.PathCreation
 
 /**
@@ -24,7 +25,7 @@ private class ArchiveEntryNameMethod extends Method {
 /**
  * A class of entry name method source nodes.
  */
-class ArchiveEntryNameMethodSource extends DataFlow::Node {
+class ArchiveEntryNameMethodSource extends ApiSourceNode {
   ArchiveEntryNameMethodSource() {
     this.asExpr().(MethodCall).getMethod() instanceof ArchiveEntryNameMethod
   }

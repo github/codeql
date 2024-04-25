@@ -4,6 +4,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.android.SharedPreferences
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class SharedPrefsCleartextStorageSink extends CleartextStorageSink {
   SharedPrefsCleartextStorageSink() {
@@ -70,7 +72,7 @@ private predicate sharedPreferencesStore(DataFlow::Node editor, MethodCall m) {
 /**
  * A shared preferences editor method call source nodes.
  */
-class SharedPreferencesEditorMethodCallSource extends DataFlow::Node {
+class SharedPreferencesEditorMethodCallSource extends ApiSourceNode {
   SharedPreferencesEditorMethodCallSource() {
     this.asExpr() instanceof SharedPreferencesEditorMethodCall
   }
@@ -79,7 +81,7 @@ class SharedPreferencesEditorMethodCallSource extends DataFlow::Node {
 /**
  * A class of shared preferences sink nodes.
  */
-class SharedPreferencesSink extends DataFlow::Node {
+class SharedPreferencesSink extends ApiSinkNode {
   SharedPreferencesSink() {
     sharedPreferencesInput(this, _) or
     sharedPreferencesStore(this, _)
