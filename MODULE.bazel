@@ -22,6 +22,8 @@ bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
 
+bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "codegen_deps",
