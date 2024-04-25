@@ -2,5 +2,5 @@
 
     Note
 
-    This documentation has been migrated to docs.github.com/en/code-security/codeql-for-vs-code. This version is no longer maintained, and it will be removed on TODOCS.
+    This documentation was migrated to docs.github.com/en/code-security/codeql-for-vs-code on 2024/05/08, and this version is no longer maintained.
     
