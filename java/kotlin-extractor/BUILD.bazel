@@ -30,8 +30,8 @@ load(
     "get_language_version",
     "version_less",
 )
-load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 
 package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
 
