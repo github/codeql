@@ -3,6 +3,8 @@ package com.github.codeql
 import com.github.codeql.utils.versions.usesK2
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
+import io.airlift.compress.zstd.ZstdInputStream
+import io.airlift.compress.zstd.ZstdOutputStream
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedReader
@@ -210,7 +212,7 @@ class KotlinExtractorExtension(
     private fun getCompression(logger: Logger): Compression {
         val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
         val compression_option = System.getenv(compression_env_var)
-        val defaultCompression = Compression.GZIP
+        val defaultCompression = Compression.ZSTD
         if (compression_option == null) {
             return defaultCompression
         } else {
@@ -218,9 +220,9 @@ class KotlinExtractorExtension(
                 val compression_option_upper = compression_option.uppercase()
                 if (compression_option_upper == "BROTLI") {
                     logger.warn(
-                        "Kotlin extractor doesn't support Brotli compression. Using GZip instead."
+                        "Kotlin extractor doesn't support Brotli compression. Using Zstandard instead."
                     )
-                    return Compression.GZIP
+                    return Compression.ZSTD
                 } else {
                     return Compression.valueOf(compression_option_upper)
                 }
@@ -470,6 +472,11 @@ enum class Compression(val extension: String) {
         override fun bufferedWriter(file: File): BufferedWriter {
             return GZIPOutputStream(file.outputStream()).bufferedWriter()
         }
+    },
+    ZSTD(".zst") {
+        override fun bufferedWriter(file: File): BufferedWriter {
+            return ZstdOutputStream(file.outputStream()).bufferedWriter()
+        }
     };
 
     abstract fun bufferedWriter(file: File): BufferedWriter
@@ -483,6 +490,7 @@ private fun getTrapFileWriter(
     return when (compression) {
         Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
         Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
+        Compression.ZSTD -> ZstdCompressedTrapFileWriter(logger, trapFileName)
     }
 }
 
@@ -579,6 +587,21 @@ private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String)
     override protected fun getWriter(file: File): BufferedWriter {
         return BufferedWriter(
             OutputStreamWriter(GZIPOutputStream(BufferedOutputStream(FileOutputStream(file))))
+        )
+    }
+}
+
+private class ZstdCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
+    TrapFileWriter(logger, trapName, ".zst") {
+    override protected fun getReader(file: File): BufferedReader {
+        return BufferedReader(
+            InputStreamReader(ZstdInputStream(BufferedInputStream(FileInputStream(file))))
+        )
+    }
+
+    override protected fun getWriter(file: File): BufferedWriter {
+        return BufferedWriter(
+            OutputStreamWriter(ZstdOutputStream(BufferedOutputStream(FileOutputStream(file))))
         )
     }
 }
