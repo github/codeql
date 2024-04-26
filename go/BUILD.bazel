@@ -21,13 +21,23 @@ py_binary(
     deps = ["@rules_python//python/runfiles"],
 )
 
+# this is an internal copy of the dbscheme to be used by extractor-pack
+# this allows the extractor-pack target to be independent and up-to-date with respect to
+# having run //go:gen to update the checked in files
+genrule(
+    name = "dbscheme",
+    outs = ["go.dbscheme"],
+    cmd = "$(execpath //go/extractor/cli/go-gen-dbscheme) $@",
+    tools = ["//go/extractor/cli/go-gen-dbscheme"],
+)
+
 pkg_files(
     name = "resources",
     srcs = [
         "LICENSE",
         "codeql-extractor.yml",
-        "ql/lib/go.dbscheme",
         "ql/lib/go.dbscheme.stats",
+        ":dbscheme",
     ],
 )
 
