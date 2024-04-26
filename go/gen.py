@@ -7,14 +7,17 @@ this = pathlib.Path(__file__).resolve()
 go_extractor_dir = this.parent / "extractor"
 go_dbscheme = this.parent / "ql" / "lib" / "go.dbscheme"
 r = runfiles.Create()
-gazelle, go_gen_dbscheme = map(r.Rlocation, sys.argv[1:])
+go, gazelle, go_gen_dbscheme = map(r.Rlocation, sys.argv[1:])
+
+print("updating vendor")
+subprocess.check_call([go, "-C", go_extractor_dir, "work", "vendor"])
 
 print("clearing generated BUILD files")
 for build_file in go_extractor_dir.glob("*/**/BUILD.bazel"):
     build_file.unlink()
 
 print("running gazelle")
-subprocess.check_call([gazelle, "go/extractor"])
+subprocess.check_call([gazelle])
 
 print("adding header to generated BUILD files")
 for build_file in go_extractor_dir.glob("*/**/BUILD.bazel"):

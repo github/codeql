@@ -1,15 +1,17 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
-load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("//:defs.bzl", "codeql_platform")
 
 gazelle(
-    name = "_gazelle",
+    name = "gazelle",
+    extra_args = ["go/extractor"],
 )
 
 _gen_binaries = [
-    ":_gazelle",
+    "@rules_go//go",
+    ":gazelle",
     "//go/extractor/cli/go-gen-dbscheme",
 ]
 
@@ -62,6 +64,7 @@ pkg_files(
         "//go/extractor/cli/go-gen-dbscheme",
         "//go/extractor/cli/go-tokenizer",
     ],
+    attributes = pkg_attributes(mode = "0755"),
     prefix = "tools/" + codeql_platform,
     visibility = ["//visibility:public"],
 )
