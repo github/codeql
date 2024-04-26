@@ -9,6 +9,7 @@ version '0.0.1'
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")
+    implementation "io.airlift:aircompressor"
 }
 
 repositories {
