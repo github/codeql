@@ -20,4 +20,5 @@ go_test(
     name = "project_test",
     srcs = ["project_test.go"],
     embed = [":project"],
+    deps = ["//go/extractor/vendor/golang.org/x/mod/modfile"],
 )

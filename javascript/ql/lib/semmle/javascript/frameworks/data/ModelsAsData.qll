@@ -108,7 +108,11 @@ module ModelExport<ModelExportSig S> {
     }
 
     predicate exposedName(API::Node node, string type, string path) {
-      node = API::moduleExport(type) and path = ""
+      exists(string moduleName |
+        node = API::moduleExport(moduleName) and
+        path = "" and
+        type = "(" + moduleName + ")"
+      )
     }
 
     predicate suggestedName(API::Node node, string type) {
