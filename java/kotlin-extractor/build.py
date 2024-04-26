@@ -206,8 +206,8 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
 
 def compile_embeddable(version):
-    compile(['kotlin-stdlib-' + version, 'kotlin-compiler-embeddable-' + version],
-            ['kotlin-stdlib-' + version],
+    compile(['kotlin-stdlib-' + version, 'kotlin-compiler-embeddable-' + version, 'aircompressor-0.26'],
+            ['kotlin-stdlib-' + version, 'aircompressor-0.26'],
             kotlin_dependency_folder,
             transform_to_embeddable,
             'codeql-extractor-kotlin-embeddable-%s.jar' % (version),
@@ -216,8 +216,8 @@ def compile_embeddable(version):
 
 
 def compile_standalone(version):
-    compile(['kotlin-stdlib-' + version, 'kotlin-compiler-' + version],
-            ['kotlin-stdlib-' + version],
+    compile(['kotlin-stdlib-' + version, 'kotlin-compiler-' + version, 'aircompressor-0.26'],
+            ['kotlin-stdlib-' + version, 'aircompressor-0.26'],
             kotlin_dependency_folder,
             lambda srcs: None,
             'codeql-extractor-kotlin-standalone-%s.jar' % (version),
