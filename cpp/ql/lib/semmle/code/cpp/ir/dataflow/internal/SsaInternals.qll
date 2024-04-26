@@ -256,11 +256,17 @@ abstract class DefImpl extends DefOrUseImpl {
 
   override string toString() { result = "Def of " + this.getSourceVariable() }
 
+  /** Gets the indirection of this definition. */
   abstract int getIndirection();
 
+  /** Holds if this definition is guaranteed to overwrite the entire destination allocation. */
   abstract predicate isCertain();
 
+  /** Gets the value stored by this definition (i.e., the "right-hand side", if any. */
   abstract Node0Impl getValue();
+
+  /** Gets the operand representing the destination address of this definition, if any. */
+  Operand getAddressOperand() { none() }
 }
 
 /** An initial definition of an `IRVariable`'s address. */
@@ -303,7 +309,7 @@ abstract private class OperandBasedDef extends DefImpl {
   bindingset[ind]
   OperandBasedDef() { any() }
 
-  Operand getAddressOperand() { result = address }
+  override Operand getAddressOperand() { result = address }
 
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
