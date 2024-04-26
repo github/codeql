@@ -119,6 +119,10 @@
 | 102 | j < 10+0 when ... < ... is true |
 | 102 | j >= 10 when ... < ... is false |
 | 102 | j >= 10+0 when ... < ... is false |
+| 105 | 0.0 != f+0 when ... != ... is true |
+| 105 | 0.0 == f+0 when ... != ... is false |
+| 105 | f != 0.0+0 when ... != ... is true |
+| 105 | f == 0.0+0 when ... != ... is false |
 | 109 | 0 != x+0 when ... == ... is false |
 | 109 | 0 != x+0 when ... \|\| ... is false |
 | 109 | 0 < y+1 when ... < ... is false |
@@ -137,3 +141,7 @@
 | 109 | y >= 0 when ... \|\| ... is false |
 | 109 | y >= 0+0 when ... < ... is false |
 | 109 | y >= 0+0 when ... \|\| ... is false |
+| 111 | 0.0 != i+0 when ... != ... is true |
+| 111 | 0.0 == i+0 when ... != ... is false |
+| 111 | i != 0.0+0 when ... != ... is true |
+| 111 | i == 0.0+0 when ... != ... is false |
