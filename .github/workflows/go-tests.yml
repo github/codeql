@@ -28,13 +28,6 @@ jobs:
     name: Test Linux (Ubuntu)
     runs-on: ubuntu-latest-xl
     steps:
-      - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          cache: false
-        id: go
-
       - name: Check out code
         uses: actions/checkout@v4
 
@@ -47,24 +40,7 @@ jobs:
 
       - name: Build
         run: |
-          cd go
-          make
-
-      - name: Check that all Go code is autoformatted
-        run: |
-          cd go
-          make check-formatting
-
-      - name: Compile qhelp files to markdown
-        run: |
-          cd go
-          env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
-
-      - name: Upload qhelp markdown
-        uses: actions/upload-artifact@v3
-        with:
-          name: qhelp-markdown
-          path: go/qhelp-out/**/*.md
+          bazel run //go:create-extractor-pack
 
       - name: Cache compilation cache
         id: query-cache
@@ -76,3 +52,35 @@ jobs:
         run: |
           cd go
           make test cache="${{ steps.query-cache.outputs.cache-dir }}"
+
+  check-code:
+    name: Check code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Check that all Go code is autoformatted
+        run: |
+          cd go
+          make check-formatting
+
+      - name: Check checked-in generated code
+        run: |
+          bazel run //go:gen
+          git add .
+          git diff --exit-code HEAD || (
+            echo "please run bazel run //go:gen"
+            exit 1
+          )
+
+      - name: Compile qhelp files to markdown
+        run: |
+          cd go
+          env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+
+      - name: Upload qhelp markdown
+        uses: actions/upload-artifact@v3
+        with:
+          name: qhelp-markdown
+          path: go/qhelp-out/**/*.md
