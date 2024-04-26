@@ -23,8 +23,7 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
-
-bazel_dep(name = "gazelle", version = "0.36.0", dev_dependency = True)
+bazel_dep(name = "gazelle", version = "0.36.0")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
@@ -56,7 +55,6 @@ use_repo(node, "nodejs", "nodejs_toolchains")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.2")
-go_sdk.host()
 
 register_toolchains(
     "@nodejs_toolchains//:all",
