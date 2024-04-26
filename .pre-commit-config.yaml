@@ -27,11 +27,11 @@ repos:
 
   - repo: local
     hooks:
-      - id: gazelle
-        name: Check gazelle-generated BUILD files
-        files: go/extractor/.*
+      - id: go-gen
+        name: Check checked in generated files in go
+        files: go/.*
         language: system
-        entry: bazel run //go/gazelle
+        entry: bazel run //go:gen
         pass_filenames: false
 
       - id: codeql-format

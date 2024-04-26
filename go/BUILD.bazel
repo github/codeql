@@ -1,6 +1,25 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+load("@gazelle//:def.bzl", "gazelle")
 load("//:defs.bzl", "codeql_platform")
+
+gazelle(
+    name = "_gazelle",
+)
+
+_gen_binaries = [
+    ":_gazelle",
+    "//go/extractor/cli/go-gen-dbscheme",
+]
+
+py_binary(
+    name = "gen",
+    srcs = ["gen.py"],
+    args = ["$(rlocationpath %s)" % bin for bin in _gen_binaries],
+    data = _gen_binaries,
+    deps = ["@rules_python//python/runfiles"],
+)
 
 pkg_files(
     name = "resources",
@@ -56,4 +75,13 @@ py_binary(
     srcs = ["create_extractor_pack.py"],
     main = "create_extractor_pack.py",
     deps = [":_create_extractor_pack"],
+)
+
+native_binary(
+    name = "gen-dbscheme",
+    src = "//go/extractor/cli/go-gen-dbscheme",
+    out = "go-gen-dbscheme",
+    args = [
+        "$$BUILD_WORKSPACE_DIRECTORY/go/ql/lib/go.dbscheme",
+    ],
 )
