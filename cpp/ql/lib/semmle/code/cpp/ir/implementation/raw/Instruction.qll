@@ -995,9 +995,8 @@ class ConstantInstruction extends ConstantValueInstruction {
  */
 class IntegerConstantInstruction extends ConstantInstruction {
   IntegerConstantInstruction() {
-    exists(IRType resultType |
-      resultType = this.getResultIRType() and
-      (resultType instanceof IRIntegerType or resultType instanceof IRBooleanType)
+    exists(IRType resultType | resultType = this.getResultIRType() |
+      resultType instanceof IRIntegerType or resultType instanceof IRBooleanType
     )
   }
 }
@@ -1007,6 +1006,17 @@ class IntegerConstantInstruction extends ConstantInstruction {
  */
 class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { this.getResultIRType() instanceof IRFloatingPointType }
+}
+
+/**
+ * An instruction whose result is a constant value of a pointer type.
+ */
+class PointerConstantInstruction extends ConstantInstruction {
+  PointerConstantInstruction() {
+    exists(IRType resultType | resultType = this.getResultIRType() |
+      resultType instanceof IRAddressType or resultType instanceof IRFunctionAddressType
+    )
+  }
 }
 
 /**
