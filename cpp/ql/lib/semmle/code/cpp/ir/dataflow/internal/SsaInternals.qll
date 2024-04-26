@@ -121,16 +121,6 @@ private newtype TDefOrUseImpl =
     // a function body.
     isGlobalDefImpl(v, f, _, indirectionIndex)
   } or
-  TIteratorDef(
-    Operand iteratorDerefAddress, BaseSourceVariableInstruction container, int indirectionIndex
-  ) {
-    isIteratorDef(container, iteratorDerefAddress, _, _, indirectionIndex)
-  } or
-  TIteratorUse(
-    Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
-  ) {
-    isIteratorUse(container, iteratorAddress, _, indirectionIndex)
-  } or
   TFinalParameterUse(Parameter p, int indirectionIndex) {
     underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex) and
     // Only create an SSA read for the final use of a parameter if there's
@@ -336,20 +326,6 @@ private class DirectDef extends OperandBasedDef, TDefImpl {
   override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
-private class IteratorDef extends OperandBasedDef, TIteratorDef {
-  BaseSourceVariableInstruction container;
-
-  IteratorDef() { this = TIteratorDef(address, container, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = container }
-
-  override int getIndirection() { isIteratorDef(container, address, _, result, ind) }
-
-  override Node0Impl getValue() { isIteratorDef(container, address, result, _, _) }
-
-  override predicate isCertain() { none() }
-}
-
 abstract class UseImpl extends DefOrUseImpl {
   int ind;
 
@@ -414,16 +390,6 @@ private class DirectUse extends OperandBasedUse, TUseImpl {
   override int getIndirection() { isUse(_, operand, base, result, ind) }
 
   override predicate isCertain() { isUse(true, operand, base, _, ind) }
-
-  override Node getNode() { nodeHasOperand(result, operand, ind) }
-}
-
-private class IteratorUse extends OperandBasedUse, TIteratorUse {
-  IteratorUse() { this = TIteratorUse(operand, base, ind) }
-
-  override int getIndirection() { isIteratorUse(base, operand, result, ind) }
-
-  override predicate isCertain() { none() }
 
   override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
