@@ -1,5 +1,5 @@
 ---
-category: minorAnalysis
+category: breaking
 ---
 * Deleted the deprecated `getInput` predicate from the `CryptographicOperation` class. Use `getAnInput` instead.
 * Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.

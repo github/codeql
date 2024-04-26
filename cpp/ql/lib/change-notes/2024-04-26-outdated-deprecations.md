@@ -1,4 +1,4 @@
 ---
-category: minorAnalysis
+category: breaking
 ---
 * Deleted the deprecated `GlobalValueNumberingImpl.qll` implementation.
