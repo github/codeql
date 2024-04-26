@@ -1,3 +1,5 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
 load("@rules_go//go:def.bzl", "go_library")
 
 go_library(

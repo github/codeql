@@ -1,8 +1,13 @@
 load("@gazelle//:def.bzl", "gazelle")
 
 gazelle(
+    name = "_gazelle",
+)
+
+py_binary(
     name = "gazelle",
-    extra_args = [
-        "go/extractor",
-    ],
+    srcs = ["gazelle.py"],
+    args = ["$(rlocationpath :_gazelle)"],
+    data = [":_gazelle"],
+    deps = ["@rules_python//python/runfiles"],
 )
