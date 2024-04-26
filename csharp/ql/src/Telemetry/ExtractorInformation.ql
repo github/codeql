@@ -201,6 +201,14 @@ predicate analyzerAssemblies(string key, float value) {
   value = 1.0
 }
 
+predicate timingValues(string key, float value) {
+  exists(Compilation c |
+    key = "Total elapsed seconds" and value = c.getElapsedSeconds()
+    or
+    key = "Extractor elapsed seconds" and value = c.getExtractorElapsedSeconds()
+  )
+}
+
 from string key, float value
 where
   (
@@ -230,7 +238,8 @@ where
     ExprStatsReport::numberOfOk(key, value) or
     ExprStatsReport::numberOfNotOk(key, value) or
     ExprStatsReport::percentageOfOk(key, value) or
-    analyzerAssemblies(key, value)
+    analyzerAssemblies(key, value) or
+    timingValues(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and
