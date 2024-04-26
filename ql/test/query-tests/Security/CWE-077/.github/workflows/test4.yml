@@ -1,23 +1,20 @@
-name: Pull Request Open
+name: Test
 
 on:
   pull_request_target:
-    branches:
-      - main
-      - 14.0.x
-
-    types:
-      - opened
-      - reopened
 
 jobs:
-  updateJira:
-    if: github.actor != 'dependabot[bot]'
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PR_TITLE=$TITLE" >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PR_TITLE=${TITLE}" >> $GITHUB_ENV
       - env:
           TITLE: ${{ github.event.pull_request.title }}
         run: |
@@ -42,9 +39,11 @@ jobs:
             echo "$TITLE" >> "$GITHUB_ENV"
             echo EOF
           } >> "$GITHUB_ENV"
-      - run: |
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
           cat <<-"EOF" >> "$GITHUB_ENV"
-            echo "$TITLE"
+            echo "FOO=$TITLE"
           EOF
 
 

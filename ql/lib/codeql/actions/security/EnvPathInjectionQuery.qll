@@ -5,23 +5,18 @@ import codeql.actions.dataflow.FlowSources
 private import codeql.actions.security.ArtifactPoisoningQuery
 import codeql.actions.DataFlow
 
-predicate envPathInjectionFromExprSink(DataFlow::Node sink) {
-  exists(Expression expr, Run run, string value |
-    Utils::writeToGitHubPath(run, value) and
-    expr = sink.asExpr() and
-    run.getAnScriptExpr() = expr and
-    value.indexOf(expr.getExpression()) > 0
-  )
-}
+abstract class EnvPathInjectionSink extends DataFlow::Node { }
 
-predicate envPathInjectionFromFileSink(DataFlow::Node sink) {
-  exists(Run run, UntrustedArtifactDownloadStep step, string value |
-    sink.asExpr() = run and
-    step.getAFollowingStep() = run and
-    Utils::writeToGitHubPath(run, value) and
-    // TODO: add support for other commands like `<`, `jq`, ...
-    value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
-  )
+class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
+  EnvPathInjectionFromFileReadSink() {
+    exists(Run run, UntrustedArtifactDownloadStep step, string value |
+      this.asExpr() = run.getScriptScalar() and
+      step.getAFollowingStep() = run and
+      Utils::writeToGitHubPath(run, value) and
+      // TODO: add support for other commands like `<`, `jq`, ...
+      value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+    )
+  }
 }
 
 /**
@@ -32,26 +27,23 @@ predicate envPathInjectionFromFileSink(DataFlow::Node sink) {
  *    run: |
  *      echo "$BODY" >> $GITHUB_PATH
  */
-predicate envPathInjectionFromEnvSink(DataFlow::Node sink) {
-  exists(Run run, Expression expr, string varname, string value |
-    sink.asExpr().getInScopeEnvVarExpr(varname) = expr and
-    run = sink.asExpr() and
-    Utils::writeToGitHubPath(run, value) and
-    (
-      value = ["$" + varname, "${" + varname + "}", "$ENV{" + varname + "}"]
-      or
-      value.matches("$(echo %") and value.indexOf(varname) > 0
+class EnvPathInjectionFromEnvVarSink extends EnvPathInjectionSink {
+  EnvPathInjectionFromEnvVarSink() {
+    exists(Run run, Expression expr, string varname, string value |
+      this.asExpr().getInScopeEnvVarExpr(varname) = expr and
+      run.getScriptScalar() = this.asExpr() and
+      Utils::writeToGitHubPath(run, value) and
+      (
+        value.matches("%$" + ["", "{", "ENV{"] + varname + "%")
+        or
+        value.matches("$(echo %") and value.indexOf(varname) > 0
+      )
     )
-  )
+  }
 }
 
-private class EnvPathInjectionSink extends DataFlow::Node {
-  EnvPathInjectionSink() {
-    envPathInjectionFromExprSink(this) or
-    envPathInjectionFromFileSink(this) or
-    envPathInjectionFromEnvSink(this) or
-    externallyDefinedSink(this, "envpath-injection")
-  }
+class EnvPathInjectionFromMaDSink extends EnvPathInjectionSink {
+  EnvPathInjectionFromMaDSink() { externallyDefinedSink(this, "envpath-injection") }
 }
 
 /**

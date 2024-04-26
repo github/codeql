@@ -260,7 +260,11 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        (child = super.getInScopeEnvVarExpr(_) or child = super.getAnScriptExpr()) and
+        (
+          child = super.getInScopeEnvVarExpr(_) or
+          child = super.getAnScriptExpr() or
+          child = super.getScriptScalar()
+        ) and
         l = child.getLocation()
       |
         child
@@ -291,3 +295,5 @@ private class InputTree extends LeafTree instanceof Input { }
 private class ScalarValueLeaf extends LeafTree instanceof ScalarValue { }
 
 private class ExpressionLeaf extends LeafTree instanceof Expression { }
+
+predicate test(ScalarValueLeaf f) { any() }

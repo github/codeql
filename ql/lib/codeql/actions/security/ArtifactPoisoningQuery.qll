@@ -299,7 +299,12 @@ class EnvVarInjectionRunStep extends PoisonableStep, Run {
 }
 
 class ArtifactPoisoningSink extends DataFlow::Node {
-  ArtifactPoisoningSink() { this.asExpr() instanceof PoisonableStep }
+  ArtifactPoisoningSink() {
+    exists(PoisonableStep step |
+      step.(Run).getScriptScalar() = this.asExpr() or
+      step.(UsesStep) = this.asExpr()
+    )
+  }
 }
 
 /**

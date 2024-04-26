@@ -61,7 +61,8 @@ class DataFlowExpr extends Cfg::Node {
     this.getAstNode() instanceof Uses or
     this.getAstNode() instanceof Run or
     this.getAstNode() instanceof Outputs or
-    this.getAstNode() instanceof Input
+    this.getAstNode() instanceof Input or
+    this.getAstNode() instanceof ScalarValue
   }
 }
 

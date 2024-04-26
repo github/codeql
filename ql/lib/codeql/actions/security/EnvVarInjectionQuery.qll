@@ -5,31 +5,41 @@ import codeql.actions.dataflow.FlowSources
 private import codeql.actions.security.ArtifactPoisoningQuery
 import codeql.actions.DataFlow
 
-predicate envVarInjectionFromExprSink(DataFlow::Node sink) {
-  exists(Expression expr, Run run, string key, string value |
-    Utils::writeToGitHubEnv(run, key, value) and
-    expr = sink.asExpr() and
-    run.getAnScriptExpr() = expr and
-    value.indexOf(expr.getExpression()) > 0
-  )
-}
+abstract class EnvVarInjectionSink extends DataFlow::Node { }
 
-predicate envVarInjectionFromFileSink(DataFlow::Node sink) {
-  exists(Run run, UntrustedArtifactDownloadStep step, string value |
-    sink.asExpr() = run and
-    step.getAFollowingStep() = run and
-    Utils::writeToGitHubEnv(run, _, value) and
-    // TODO: add support for other commands like `<`, `jq`, ...
-    value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
-  )
-}
-
-private class EnvVarInjectionSink extends DataFlow::Node {
-  EnvVarInjectionSink() {
-    envVarInjectionFromExprSink(this) or
-    envVarInjectionFromFileSink(this) or
-    externallyDefinedSink(this, "envvar-injection")
+// predicate envVarInjectionFromEnvVarSink(DataFlow::Node sink) {
+//   exists(Expression expr, Run run, string varName, string key, string value |
+//     expr = run.getInScopeEnvVarExpr(varName) and
+//     Utils::writeToGitHubEnv(run, key, value) and
+//     expr = sink.asExpr() and
+//     value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
+//   )
+// }
+class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
+  EnvVarInjectionFromEnvVarSink() {
+    exists(Run run, Expression expr, string varname, string key, string value |
+      expr = run.getInScopeEnvVarExpr(varname) and
+      Utils::writeToGitHubEnv(run, key, value) and
+      run.getScriptScalar() = this.asExpr() and
+      value.matches("%$" + ["", "{", "ENV{"] + varname + "%")
+    )
   }
+}
+
+class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
+  EnvVarInjectionFromFileReadSink() {
+    exists(Run run, UntrustedArtifactDownloadStep step, string value |
+      this.asExpr() = run.getScriptScalar() and
+      step.getAFollowingStep() = run and
+      Utils::writeToGitHubEnv(run, _, value) and
+      // TODO: add support for other commands like `<`, `jq`, ...
+      value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+    )
+  }
+}
+
+class EnvVarInjectionFromMaDSink extends EnvVarInjectionSink {
+  EnvVarInjectionFromMaDSink() { externallyDefinedSink(this, "envvar-injection") }
 }
 
 /**

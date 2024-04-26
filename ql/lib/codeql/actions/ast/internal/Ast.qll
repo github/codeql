@@ -579,10 +579,12 @@ class JobImpl extends AstNodeImpl, TJobNode {
   YamlMapping n;
   string jobId;
   WorkflowImpl workflow;
+  YamlMappingLikeNode runson;
 
   JobImpl() {
     this = TJobNode(n) and
-    workflow.getNode().lookup("jobs").(YamlMapping).lookup(jobId) = n
+    workflow.getNode().lookup("jobs").(YamlMapping).lookup(jobId) = n and
+    runson = n.lookup("runs-on").(YamlMappingLikeNode)
   }
 
   override string toString() { result = "Job: " + jobId }
@@ -659,6 +661,19 @@ class JobImpl extends AstNodeImpl, TJobNode {
     ) and
     // The enclosing workflow is privileged
     this.getEnclosingWorkflow().isPrivileged()
+  }
+
+  /** Gets the runs-on field of the job. */
+  string getARunsOnLabel() {
+    exists(string lbl, YamlNode r |
+      (
+        r = runson.getNode(lbl) and
+        not lbl = ["group", "labels"]
+        or
+        r = runson.getNode("labels").(YamlMappingLikeNode).getNode(lbl)
+      ) and
+      result = lbl.trim().regexpReplaceAll("^('|\")", "").regexpReplaceAll("('|\")$", "").trim()
+    )
   }
 }
 
@@ -864,6 +879,8 @@ class RunImpl extends StepImpl {
   RunImpl() { this.getNode().lookup("run") = script }
 
   string getScript() { result = script.getValue() }
+
+  ScalarValueImpl getScriptScalar() { result = TScalarValueNode(script) }
 
   ExpressionImpl getAnScriptExpr() { result.getParentNode().getNode() = script }
 

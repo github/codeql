@@ -298,6 +298,8 @@ abstract class Job extends AstNode instanceof JobImpl {
   Strategy getStrategy() { result = super.getStrategy() }
 
   predicate isPrivileged() { super.isPrivileged() }
+
+  string getARunsOnLabel() { result = super.getARunsOnLabel() }
 }
 
 class LocalJob extends Job instanceof LocalJobImpl {
@@ -351,6 +353,8 @@ class ExternalJob extends Job, Uses instanceof ExternalJobImpl { }
  */
 class Run extends Step instanceof RunImpl {
   string getScript() { result = super.getScript() }
+
+  ScalarValue getScriptScalar() { result = super.getScriptScalar() }
 
   Expression getAnScriptExpr() { result = super.getAnScriptExpr() }
 }

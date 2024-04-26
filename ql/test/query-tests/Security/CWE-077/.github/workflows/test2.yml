@@ -1,6 +1,4 @@
-# https://www.legitsecurity.com/blog/github-privilege-escalation-vulnerability-0
-# https://github.com/firebase/friendlyeats-web/commit/df65aefd24cf6f092a27a5576067ff9f29aa2ef1
-name: Deploy Preview
+name: Test
 on: 
   workflow_run:
     workflows: ["Generate Preview"]
@@ -8,11 +6,8 @@ on:
       - completed
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-    if: >
-      ${{ github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: 'Download artifact'
         uses: actions/github-script@v3.1.0
@@ -43,31 +38,6 @@ jobs:
             });
             var fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(downloadPr.data));
-            fs.writeFileSync('${{github.workspace}}/firestore-web.zip', Buffer.from(downloadPreview.data));
       - run: |
           unzip pr.zip
           echo "pr_number=$(cat NR)" >> $GITHUB_ENV
-          mkdir firestore-web
-          unzip firestore-web.zip -d firestore-web
-      - name: Deploy preview
-        id: deploy_preview
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIR_CODELABS_89252 }}'
-          projectId: fir-codelabs-89252
-          entryPoint: firestore-web
-          channelId: firestore-web-${{ env.pr_number }}
-        env:
-          FIREBASE_CLI_PREVIEWS: hostingchannels
-      - name: Write Comment
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ env.pr_number }},
-              body: 'View preview ${{ steps.deploy_preview.outputs.details_url }}'
-            });

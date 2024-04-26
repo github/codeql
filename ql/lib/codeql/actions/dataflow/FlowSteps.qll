@@ -33,9 +33,13 @@ class AdditionalTaintStep extends Unit {
 predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Run run, string varName, string value |
     run.getInScopeEnvVarExpr(varName) = pred.asExpr() and
-    Utils::writeToGitHubEnv(run, _, value) and
-    value.indexOf("$" + ["", "{", "ENV{"] + varName) > 0 and
-    succ.asExpr() = run
+    (
+      Utils::writeToGitHubEnv(run, _, value) or
+      Utils::writeToGitHubOutput(run, _, value) or
+      Utils::writeToGitHubPath(run, value)
+    ) and
+    value.matches("%$" + ["", "{", "ENV{"] + varName + "%") and
+    succ.asExpr() = run.getScriptScalar()
   )
 }
 
@@ -85,12 +89,9 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
   exists(Run run, string key, string value, UntrustedArtifactDownloadStep download |
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
-    pred.asExpr() = run and
+    pred.asExpr() = run.getScriptScalar() and
     succ.asExpr() = run and
-    (
-      Utils::writeToGitHubOutput(run, key, value) or
-      Utils::writeToGitHubEnv(run, key, value)
-    ) and
+    Utils::writeToGitHubOutput(run, key, value) and
     value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
   )
 }
@@ -99,7 +100,7 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
   exists(Run run, string key, string value, UntrustedArtifactDownloadStep download |
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
-    pred.asExpr() = run and
+    pred.asExpr() = run.getScriptScalar() and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
     succ.asExpr() = run.getEnclosingJob() and
     Utils::writeToGitHubEnv(run, key, value) and
@@ -110,12 +111,16 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
 /**
  * A download artifact step followed by a step that may use downloaded artifacts.
  */
+predicate artifactDownloadToUseStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(UntrustedArtifactDownloadStep download, Run run |
+    pred.asExpr() = download and
+    succ.asExpr() = run.getScriptScalar() and
+    download.getAFollowingStep() = run
+  )
+}
+
 class ArtifactDownloadToUseTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(UntrustedArtifactDownloadStep download, Run run |
-      node1.asExpr() = download and
-      node2.asExpr() = run and
-      download.getAFollowingStep() = run
-    )
+    artifactDownloadToUseStep(node1, node2)
   }
 }
