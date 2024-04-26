@@ -1036,6 +1036,16 @@ module SsaCached {
   ) {
     SsaImpl::lastRefRedefExt(def, sv, bb, i, next)
   }
+
+  cached
+  Definition phiHasInputFromBlock(PhiNode phi, IRBlock bb) {
+    SsaImpl::phiHasInputFromBlock(phi, result, bb)
+  }
+
+  cached
+  predicate ssaDefReachesRead(SourceVariable v, Definition def, IRBlock bb, int i) {
+    SsaImpl::ssaDefReachesRead(v, def, bb, i)
+  }
 }
 
 cached
@@ -1104,6 +1114,12 @@ abstract class Def extends SsaDef, TDef {
    * instead of the other way around.
    */
   abstract int getIndirection();
+
+  /**
+   * Gets a definition that ultimately defines this SSA definition and is not
+   * itself a phi node.
+   */
+  Def getAnUltimateDefinition() { result.asDef() = def.getAnUltimateDefinition() }
 }
 
 private predicate isGlobal(DefinitionExt def, GlobalDefImpl global) {
@@ -1182,6 +1198,10 @@ class Phi extends TPhi, SsaDef {
   override string toString() { result = "Phi" }
 
   SsaPhiNode getNode() { result.getPhiNode() = phi }
+
+  predicate hasInputFromBlock(Definition inp, IRBlock bb) { inp = phiHasInputFromBlock(phi, bb) }
+
+  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
 }
 
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
@@ -1204,9 +1224,29 @@ class PhiNode extends SsaImpl::DefinitionExt {
    * on reads instead of writes.
    */
   predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
+
+  /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
+  predicate hasInputFromBlock(Definition inp, IRBlock bb) {
+    inp = SsaCached::phiHasInputFromBlock(this, bb)
+  }
+
+  /** Gets a definition that is an input to this phi node. */
+  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
 }
 
-class DefinitionExt = SsaImpl::DefinitionExt;
+/** An static single assignment (SSA) definition. */
+class DefinitionExt extends SsaImpl::DefinitionExt {
+  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
+
+  /**
+   * Gets a definition that ultimately defines this SSA definition and is
+   * not itself a phi node.
+   */
+  final DefinitionExt getAnUltimateDefinition() {
+    result = this.getAPhiInputOrPriorDefinition*() and
+    not result instanceof PhiNode
+  }
+}
 
 class Definition = SsaImpl::Definition;
 
