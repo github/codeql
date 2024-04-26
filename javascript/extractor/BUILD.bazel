@@ -7,6 +7,7 @@ java_library(
     exports = [
         "@semmle_code//extractor:html",
         "@semmle_code//extractor:yaml",
+        "@semmle_code//resources/lib/java:aircompressor",
         "@semmle_code//resources/lib/java:commons-compress",
         "@semmle_code//resources/lib/java:gson",
         "@semmle_code//resources/lib/java:jericho-html",
@@ -33,6 +34,7 @@ codeql_fat_jar(
         "@semmle_code//extractor:html",
         "@semmle_code//extractor:xml-trap-writer",
         "@semmle_code//extractor:yaml",
+        "@semmle_code//resources/lib/java:aircompressor",
         "@semmle_code//resources/lib/java:commons-compress",
         "@semmle_code//resources/lib/java:gson",
         "@semmle_code//resources/lib/java:jericho-html",
