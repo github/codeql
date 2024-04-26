@@ -260,6 +260,8 @@ module Stdlib {
     API::Node subclassRef() {
       result = API::moduleImport("logging").getMember("Logger").getASubclass*()
       or
+      result = API::moduleImport("logging").getMember("getLoggerClass").getReturn().getASubclass*()
+      or
       result = ModelOutput::getATypeNode("logging.Logger~Subclass").getASubclass*()
     }
 
