@@ -13,6 +13,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Semmle.Util;
 using Semmle.Util.Logging;
+using Basic.CompilerLog;
+using Basic.CompilerLog.Util;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -93,10 +95,55 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
+            var options = Options.CreateWithEnvironment(args);
+            if (options.BinaryLogPath is string binlogPath)
+            {
+                using var fileStream = new FileStream(binlogPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                // Filter out compiler calls that aren't interesting for examination
+                var predicate = bool (CompilerCall compilerCall) =>
+                {
+                    if (!compilerCall.IsCSharp)
+                    {
+                        return false;
+                    }
+
+                    return compilerCall.Kind switch
+                    {
+                        CompilerCallKind.XamlPreCompile => false,
+                        CompilerCallKind.Satellite => false,
+                        CompilerCallKind.WpfTemporaryCompile => false,
+                        _ => true
+                    };
+                };
+
+                var compilerCalls = BinaryLogUtil.ReadAllCompilerCalls(fileStream, predicate);
+                var exitCode = ExitCode.Ok;
+                foreach (var compilerCall in compilerCalls)
+                {
+                    Console.WriteLine($"Processing {compilerCall.GetDiagnosticName()}");
+                    var compilerCallOptions = Options.CreateWithEnvironment([]);
+                    compilerCallOptions.CompilerName = compilerCall.CompilerFilePath;
+                    compilerCallOptions.CompilerArguments.AddRange(compilerCall.GetArguments());
+                    var ec = Run(compilerCallOptions);
+                    if (ec != ExitCode.Ok)
+                    {
+                        exitCode = ec;
+                    }
+                }
+
+                return exitCode;
+            }
+            else
+            {
+                return Run(options);
+            }
+        }
+
+        public static ExitCode Run(Options options)
+        {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-
-            var options = Options.CreateWithEnvironment(args);
             var workingDirectory = Directory.GetCurrentDirectory();
             var compilerArgs = options.CompilerArguments.ToArray();
 
