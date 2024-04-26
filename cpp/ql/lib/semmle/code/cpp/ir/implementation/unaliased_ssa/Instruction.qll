@@ -247,8 +247,7 @@ class Instruction extends Construction::TStageInstruction {
    * Gets the type of the result produced by this instruction. If the instruction does not produce
    * a result, its result type will be `IRVoidType`.
    */
-  cached
-  final IRType getResultIRType() { result = this.getResultLanguageType().getIRType() }
+  final IRType getResultIRType() { result = Construction::getInstructionResultIRType(this) }
 
   /**
    * Gets the type of the result produced by this instruction. If the
