@@ -350,10 +350,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
-      exists(NodeRegion nr |
-        nr.contains(n.asNode()) and
-        isUnreachableInCallCached(nr, cc.getCall())
-      )
+      cc.unreachable(n.asNode())
     }
 
     /**

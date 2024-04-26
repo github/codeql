@@ -3,6 +3,7 @@ private import codeql.typetracking.TypeTracking as Tt
 private import codeql.util.Location
 private import codeql.util.Unit
 private import codeql.util.Option
+private import codeql.util.internal.MakeSets
 
 module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
@@ -405,6 +406,27 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     or
     result = viableCallableLambda(call, _)
   }
+
+  private newtype TCallEdge =
+    TMkCallEdge(DataFlowCall call, DataFlowCallable tgt) { viableCallableExt(call) = tgt }
+
+  private module UnreachableSetsInput implements MkSetsInp {
+    class Key = TCallEdge;
+
+    class Value = NodeRegion;
+
+    NodeRegion getAValue(TCallEdge edge) {
+      exists(DataFlowCall call, DataFlowCallable tgt |
+        edge = TMkCallEdge(call, tgt) and
+        getNodeRegionEnclosingCallable(result) = tgt and
+        isUnreachableInCallCached(result, call)
+      )
+    }
+
+    int totalorder(NodeRegion nr) { result = nr.totalOrder() }
+  }
+
+  private module UnreachableSets = MakeSets<UnreachableSetsInput>;
 
   signature module CallContextSensitivityInputSig {
     /** Holds if the edge is possibly needed in the direction `call` to `c`. */
@@ -1254,7 +1276,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     newtype TLocalFlowCallContext =
       TAnyLocalCall() or
-      TSpecificLocalCall(DataFlowCall call) { isUnreachableInCallCached(_, call) }
+      TSpecificLocalCall(UnreachableSets::ValueSet ns)
 
     cached
     newtype TReturnKindExt =
@@ -1814,15 +1836,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   }
 
   class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall {
-    LocalCallContextSpecificCall() { this = TSpecificLocalCall(call) }
+    LocalCallContextSpecificCall() { this = TSpecificLocalCall(ns) }
 
-    DataFlowCall call;
+    UnreachableSets::ValueSet ns;
 
-    DataFlowCall getCall() { result = call }
+    override string toString() { result = "LocalCcCall" }
 
-    override string toString() { result = "LocalCcCall(" + call + ")" }
+    override predicate relevantFor(DataFlowCallable callable) {
+      exists(NodeRegion nr | ns.contains(nr) and callable = getNodeRegionEnclosingCallable(nr))
+    }
 
-    override predicate relevantFor(DataFlowCallable callable) { relevantLocalCCtx(call, callable) }
+    /** Holds if this call context makes `n` unreachable. */
+    predicate unreachable(Node n) { exists(NodeRegion nr | ns.contains(nr) and nr.contains(n)) }
   }
 
   private DataFlowCallable getNodeRegionEnclosingCallable(NodeRegion nr) {
@@ -1842,7 +1867,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable) {
     ctx.relevantFor(callable) and
     if relevantLocalCCtx(ctx.(CallContextSpecificCall).getCall(), callable)
-    then result.(LocalCallContextSpecificCall).getCall() = ctx.(CallContextSpecificCall).getCall()
+    then
+      result =
+        TSpecificLocalCall(UnreachableSets::getValueSet(TMkCallEdge(ctx.(CallContextSpecificCall)
+                  .getCall(), callable)))
     else result instanceof LocalCallContextAny
   }
 
