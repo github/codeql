@@ -1,4 +1,5 @@
 load("@rules_go//go:def.bzl", "go_library")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
 # gazelle:prefix github.com/github/codeql-go/extractor
 # gazelle:map_kind go_binary codeql_go_binary //go:rules.bzl
@@ -21,4 +22,34 @@ go_library(
         "//go/extractor/vendor/golang.org/x/mod/modfile",
         "//go/extractor/vendor/golang.org/x/tools/go/packages",
     ],
+)
+
+java_library(
+    name = "tokenizer-deps",
+    srcs = [
+        "net/sourceforge/pmd/cpd/AbstractLanguage.java",
+        "net/sourceforge/pmd/cpd/SourceCode.java",
+        "net/sourceforge/pmd/cpd/TokenEntry.java",
+        "net/sourceforge/pmd/cpd/Tokenizer.java",
+    ],
+)
+
+java_library(
+    name = "tokenizer-jar",
+    srcs = [
+        "net/sourceforge/pmd/cpd/GoLanguage.java",
+        "opencsv/CSVParser.java",
+        "opencsv/CSVReader.java",
+    ],
+    deps = [":tokenizer-deps"],
+)
+
+pkg_files(
+    name = "tokenizer",
+    srcs = [":tokenizer-jar"],
+    prefix = "tools",
+    renames = {
+        ":tokenizer-jar": "tokenizer.jar",
+    },
+    visibility = ["//go:__pkg__"],
 )
