@@ -560,7 +560,7 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
   TaintFunction, SideEffectFunction, AliasFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
+    (input.isParameterDeref(0) or input.isParameter(0)) and
     output.isQualifierObject()
   }
 
