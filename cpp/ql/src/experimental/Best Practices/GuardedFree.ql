@@ -14,7 +14,7 @@
 import cpp
 
 class FreeCall extends FunctionCall {
-  FreeCall() { this.getTarget().hasName("free") }
+  FreeCall() { this.getTarget().hasGlobalName("free") }
 }
 
 from IfStmt stmt, FreeCall fc, Variable v
