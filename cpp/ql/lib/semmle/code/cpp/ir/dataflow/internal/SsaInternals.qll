@@ -1046,6 +1046,10 @@ module SsaCached {
   predicate ssaDefReachesRead(SourceVariable v, Definition def, IRBlock bb, int i) {
     SsaImpl::ssaDefReachesRead(v, def, bb, i)
   }
+
+  predicate variableRead = SsaInput::variableRead/4;
+
+  predicate variableWrite = SsaInput::variableWrite/4;
 }
 
 cached
