@@ -2588,20 +2588,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       CcCall ccSomeCall() { result instanceof CallContextSomeCall }
 
+      DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
+        result = Input::prunedViableImplInCallContext(call, ctx)
+      }
+
+      bindingset[call, ctx]
+      predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
+        Input::noPrunedViableImplInCallContext(call, ctx)
+      }
+
       module NoLocalCallContext {
         class LocalCc = Unit;
 
         bindingset[node, cc]
         LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
-
-        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-          result = Input::prunedViableImplInCallContext(call, ctx)
-        }
-
-        bindingset[call, ctx]
-        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
-          Input::noPrunedViableImplInCallContext(call, ctx)
-        }
 
         bindingset[call, c]
         CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
@@ -2619,15 +2619,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           result =
             getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
               node.getEnclosingCallable())
-        }
-
-        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-          result = Input::prunedViableImplInCallContext(call, ctx)
-        }
-
-        bindingset[call, ctx]
-        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
-          Input::noPrunedViableImplInCallContext(call, ctx)
         }
 
         bindingset[call, c]
