@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["ahmadnassri/action-changed-files", "*", "output.files", "PR changed files", "manual"]
-      - ["ahmadnassri/action-changed-files", "*", "output.json", "PR changed files", "manual"]
+      - ["ahmadnassri/action-changed-files", "*", "output.files", "filename", "manual"]
+      - ["ahmadnassri/action-changed-files", "*", "output.json", "json", "manual"]

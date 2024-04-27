@@ -25,6 +25,12 @@ where
     exists(Job j |
       j = sink.getNode().asExpr().getEnclosingJob() and
       not j.isPrivileged()
+    ) and
+    (
+      not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
+      or
+      source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+      sink.getNode() instanceof EnvPathInjectionFromFileReadSink
     )
   )
 select sink.getNode(), source, sink,

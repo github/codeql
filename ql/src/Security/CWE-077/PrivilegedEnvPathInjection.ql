@@ -22,6 +22,12 @@ where
   exists(Job j |
     j = sink.getNode().asExpr().getEnclosingJob() and
     j.isPrivileged()
+  ) and
+  (
+    not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
+    or
+    source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+    sink.getNode() instanceof EnvPathInjectionFromFileReadSink
   )
 select sink.getNode(), source, sink,
   "Potential privileged PATH environment variable injection in $@, which may be controlled by an external user.",

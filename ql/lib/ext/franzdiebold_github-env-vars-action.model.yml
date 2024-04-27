@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["franzdiebold/github-env-vars-action", "*", "output.CI_PR_DESCRIPTION", "PR body", "manual"]
-      - ["franzdiebold/github-env-vars-action", "*", "output.CI_PR_TITLE", "PR title", "manual"]
+      - ["franzdiebold/github-env-vars-action", "*", "output.CI_PR_DESCRIPTION", "text", "manual"]
+      - ["franzdiebold/github-env-vars-action", "*", "output.CI_PR_TITLE", "title", "manual"]

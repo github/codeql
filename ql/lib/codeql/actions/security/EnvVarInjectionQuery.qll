@@ -7,14 +7,6 @@ import codeql.actions.DataFlow
 
 abstract class EnvVarInjectionSink extends DataFlow::Node { }
 
-// predicate envVarInjectionFromEnvVarSink(DataFlow::Node sink) {
-//   exists(Expression expr, Run run, string varName, string key, string value |
-//     expr = run.getInScopeEnvVarExpr(varName) and
-//     Utils::writeToGitHubEnv(run, key, value) and
-//     expr = sink.asExpr() and
-//     value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
-//   )
-// }
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
     exists(Run run, Expression expr, string varname, string key, string value |

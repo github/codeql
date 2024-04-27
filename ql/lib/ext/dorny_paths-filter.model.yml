@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["dorny/paths-filter", "*", "output.changes", "PR changed files", "manual"]
+      - ["dorny/paths-filter", "*", "output.changes", "filename", "manual"]

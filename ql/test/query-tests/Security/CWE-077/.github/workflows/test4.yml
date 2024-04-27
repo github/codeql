@@ -45,5 +45,9 @@ jobs:
           cat <<-"EOF" >> "$GITHUB_ENV"
             echo "FOO=$TITLE"
           EOF
+      - env:
+          TITLE: ${{ github.event.pull_request.head.ref }}
+        run: |
+          echo "PR_TITLE=$TITLE" >> $GITHUB_ENV
 
 

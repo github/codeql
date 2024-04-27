@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["xt0rted/slash-command-action", "*", "output.command-arguments", "", "manual"]
-      - ["xt0rted/slash-command-action", "*", "output.command-arguments", "", "manual"]
+      - ["xt0rted/slash-command-action", "*", "output.command-arguments", "text", "manual"]
+      - ["xt0rted/slash-command-action", "*", "output.command-arguments", "text", "manual"]
