@@ -20,8 +20,10 @@ from EnvPathInjectionFlow::PathNode source, EnvPathInjectionFlow::PathNode sink
 where
   EnvPathInjectionFlow::flowPath(source, sink) and
   (
+    // sink belongs to a composite action
     exists(sink.getNode().asExpr().getEnclosingCompositeAction())
     or
+    // sink belongs to a non-privileged job
     exists(Job j |
       j = sink.getNode().asExpr().getEnclosingJob() and
       not j.isPrivileged()

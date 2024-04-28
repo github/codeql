@@ -39,7 +39,10 @@ class EnvVarInjectionFromMaDSink extends EnvVarInjectionSink {
  * that is used to construct and evaluate an environment variable.
  */
 private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource and
+    not source.(RemoteFlowSource).getSourceType() = "branch"
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EnvVarInjectionSink }
 }

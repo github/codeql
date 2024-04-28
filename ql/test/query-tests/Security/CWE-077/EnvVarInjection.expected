@@ -7,7 +7,8 @@ edges
 | .github/workflows/test4.yml:23:19:23:56 | github.event.pull_request.title | .github/workflows/test4.yml:24:14:27:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
 | .github/workflows/test4.yml:29:19:29:56 | github.event.pull_request.title | .github/workflows/test4.yml:30:14:33:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\necho "$TITLE" >> "${GITHUB_ENV}"\necho "EOF" >> "${GITHUB_ENV}"\n |
 | .github/workflows/test4.yml:35:19:35:56 | github.event.pull_request.title | .github/workflows/test4.yml:36:14:41:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE" >> "$GITHUB_ENV"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/test4.yml:49:19:49:59 | github.event.pull_request.head.ref | .github/workflows/test4.yml:50:14:51:48 | echo "PR_TITLE=$TITLE" >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:43:19:43:56 | github.event.pull_request.title | .github/workflows/test4.yml:44:14:47:14 | cat <<-EOF >> "$GITHUB_ENV"\n  echo "FOO=$TITLE"\nEOF\n |
+| .github/workflows/test4.yml:57:27:57:64 | github.event.pull_request.title | .github/workflows/test4.yml:55:14:55:70 | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV |
 | .github/workflows/test5.yml:10:9:30:6 | Uses Step | .github/workflows/test5.yml:33:14:36:62 | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n |
 nodes
 | .github/workflows/test2.yml:12:9:41:6 | Uses Step | semmle.label | Uses Step |
@@ -26,8 +27,10 @@ nodes
 | .github/workflows/test4.yml:30:14:33:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\necho "$TITLE" >> "${GITHUB_ENV}"\necho "EOF" >> "${GITHUB_ENV}"\n | semmle.label | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\necho "$TITLE" >> "${GITHUB_ENV}"\necho "EOF" >> "${GITHUB_ENV}"\n |
 | .github/workflows/test4.yml:35:19:35:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test4.yml:36:14:41:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE" >> "$GITHUB_ENV"\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE" >> "$GITHUB_ENV"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/test4.yml:49:19:49:59 | github.event.pull_request.head.ref | semmle.label | github.event.pull_request.head.ref |
-| .github/workflows/test4.yml:50:14:51:48 | echo "PR_TITLE=$TITLE" >> $GITHUB_ENV\n | semmle.label | echo "PR_TITLE=$TITLE" >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:43:19:43:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:44:14:47:14 | cat <<-EOF >> "$GITHUB_ENV"\n  echo "FOO=$TITLE"\nEOF\n | semmle.label | cat <<-EOF >> "$GITHUB_ENV"\n  echo "FOO=$TITLE"\nEOF\n |
+| .github/workflows/test4.yml:55:14:55:70 | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV | semmle.label | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV |
+| .github/workflows/test4.yml:57:27:57:64 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test5.yml:10:9:30:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test5.yml:33:14:36:62 | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n | semmle.label | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n |
 subpaths

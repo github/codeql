@@ -46,16 +46,37 @@ module Utils {
 
   bindingset[var]
   private string multilineAssignmentRegex(string var) {
+    // eg:
+    // echo "PR_TITLE<<EOF" >> $GITHUB_ENV
+    // echo "$TITLE" >> $GITHUB_ENV
+    // echo "EOF" >> $GITHUB_ENV
     result =
-      ".*(echo|Write-Output)\\s+(.*)<<\\s*([A-Z]*)EOF(.+)(echo|Write-Output)\\s+(\"|')?([A-Z]*)EOF(\"|')?\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_"
+      ".*(echo|Write-Output)\\s+(.*)<<[\\-]*\\s*([A-Z]*)EOF(.+)(echo|Write-Output)\\s+(\"|')?([A-Z]*)EOF(\"|')?\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_"
         + var.toUpperCase() + "(\\})?(\"|')?.*"
   }
 
   bindingset[var]
   private string multilineBlockAssignmentRegex(string var) {
+    // eg:
+    // {
+    //   echo 'JSON_RESPONSE<<EOF'
+    //   echo "$TITLE" >> "$GITHUB_ENV"
+    //   echo EOF
+    // } >> "$GITHUB_ENV"
     result =
-      ".*\\{(\\s|::NEW_LINE::)*(echo|Write-Output)\\s+(.*)<<\\s*([A-Z]*)EOF(.+)(echo|Write-Output)\\s+(\"|')?([A-Z]*)EOF(\"|')?(\\s|::NEW_LINE::)*\\}\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_"
+      ".*\\{(\\s|::NEW_LINE::)*(echo|Write-Output)\\s+(.*)<<[\\-]*\\s*([A-Z]*)EOF(.+)(echo|Write-Output)\\s+(\"|')?([A-Z]*)EOF(\"|')?(\\s|::NEW_LINE::)*\\}\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_"
         + var.toUpperCase() + "(\\})?(\"|')?.*"
+  }
+
+  bindingset[var]
+  private string multilineHereDocAssignmentRegex(string var) {
+    // eg:
+    // cat <<-EOF >> "$GITHUB_ENV"
+    //   echo "FOO=$TITLE"
+    // EOF
+    result =
+      ".*cat\\s*<<[\\-]*\\s*[A-Z]*EOF\\s*>>\\s*[\"']*\\$[\\{]*GITHUB_.*" + var.toUpperCase() +
+        "[\\}]*[\"']*.*(echo|Write-Output)\\s+([^=]+)=(.*)::NEW_LINE::.*EOF.*"
   }
 
   bindingset[script, var]
@@ -86,6 +107,19 @@ module Utils {
               .trim()
               .splitAt("\n") + ")" and
       key = trimQuotes(flattenedScript.regexpCapture(multilineBlockAssignmentRegex(var), 3))
+    )
+    or
+    // multiline heredoc assignment
+    exists(string flattenedScript |
+      flattenedScript = script.replaceAll("\n", "::NEW_LINE::") and
+      value =
+        trimQuotes(flattenedScript.regexpCapture(multilineHereDocAssignmentRegex(var), 3))
+            .regexpReplaceAll("\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_" + var.toUpperCase() +
+                "(\\})?(\"|')?", "")
+            .replaceAll("::NEW_LINE::", "\n")
+            .trim()
+            .splitAt("\n") and
+      key = trimQuotes(flattenedScript.regexpCapture(multilineHereDocAssignmentRegex(var), 2))
     )
   }
 
