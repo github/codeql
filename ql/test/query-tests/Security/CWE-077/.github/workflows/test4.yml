@@ -42,8 +42,19 @@ jobs:
       - env:
           TITLE: ${{ github.event.pull_request.title }}
         run: |
-          cat <<-"EOF" >> "$GITHUB_ENV"
+          cat <<-EOF >> "$GITHUB_ENV"
             echo "FOO=$TITLE"
           EOF
+      - env:
+          TITLE: ${{ github.event.pull_request.head.ref }}
+        run: |
+          echo "PR_TITLE=$TITLE" >> $GITHUB_ENV
+      - run: echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+      - run: echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.title }}
+
 
 

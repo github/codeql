@@ -3,7 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["trilom/file-changes-action", "*", "output.files", "PR changed files", "manual"]
-      - ["trilom/file-changes-action", "*", "output.files_added", "PR changed files", "manual"]
-      - ["trilom/file-changes-action", "*", "output.files_modified", "PR changed files", "manual"]
-      - ["trilom/file-changes-action", "*", "output.files_removed", "PR changed files", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files", "filename", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files_added", "filename", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files_modified", "filename", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files_removed", "filename", "manual"]

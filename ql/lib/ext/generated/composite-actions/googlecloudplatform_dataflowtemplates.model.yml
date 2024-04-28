@@ -8,4 +8,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-     - ["googlecloudplatform/magic-modules", "*", "output.changed-files", "PR changed files", "manual"]
+     - ["googlecloudplatform/magic-modules", "*", "output.changed-files", "filename", "manual"]

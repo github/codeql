@@ -9,5 +9,7 @@ jobs:
     steps:
       - name: Code Injection, do not report as ENV VAR INJ
         run: echo ISSUE_KEY=$(echo "${{ github.event.pull_request.title }}") >> $GITHUB_ENV
+      - name: Code Injection, do not report as ENV VAR INJ
+        run: echo ISSUE_KEY=$(echo "${{ github.event.pull_request.head.ref }}") >> $GITHUB_ENV
 
 

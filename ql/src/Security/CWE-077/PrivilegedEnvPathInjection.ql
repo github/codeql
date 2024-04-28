@@ -19,9 +19,13 @@ import EnvPathInjectionFlow::PathGraph
 from EnvPathInjectionFlow::PathNode source, EnvPathInjectionFlow::PathNode sink
 where
   EnvPathInjectionFlow::flowPath(source, sink) and
-  exists(Job j |
-    j = sink.getNode().asExpr().getEnclosingJob() and
-    j.isPrivileged()
+  // sink belongs to a privileged job
+  sink.getNode().asExpr().getEnclosingJob().isPrivileged() and
+  (
+    not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
+    or
+    source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+    sink.getNode() instanceof EnvPathInjectionFromFileReadSink
   )
 select sink.getNode(), source, sink,
   "Potential privileged PATH environment variable injection in $@, which may be controlled by an external user.",
