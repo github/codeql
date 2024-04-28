@@ -211,8 +211,6 @@ class EventSource extends RemoteFlowSource {
       or
       textEvent(context) and flag = "text"
       or
-      repoNameEvent(context) and flag = "repo name"
-      or
       branchEvent(context) and flag = "branch"
       or
       labelEvent(context) and flag = "label"
