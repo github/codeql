@@ -2,7 +2,7 @@
  * @name Iterator to expired container
  * @description Using an iterator owned by a container whose lifetime has expired may lead to unexpected behavior.
  * @kind problem
- * @precision high
+ * @precision medium
  * @id cpp/iterator-to-expired-container
  * @problem.severity warning
  * @tags reliability
