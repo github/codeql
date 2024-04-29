@@ -71,6 +71,31 @@ predicate destroyedToBeginSink(DataFlow::Node sink, FunctionCall fc) {
 }
 
 /**
+ * Holds if `node1` is the node corresponding to a qualifier of a destructor
+ * call and `node2` is a node that is destroyed as a result of `node1` being
+ * destroyed.
+ */
+private predicate qualifierToDestroyed(DataFlow::Node node1, DataFlow::Node node2) {
+  tempToDestructorSink(node1, _) and
+  node2 = getADestroyedNode(node1)
+}
+
+/**
+ * A configuration to track flow from a destroyed node to a qualifier of
+ * a `begin` or `end` function call.
+ *
+ * This configuration exists to prevent a cartesian product between all sinks and
+ * all states in `Config::isSink`.
+ */
+module Config0 implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { qualifierToDestroyed(_, source) }
+
+  predicate isSink(DataFlow::Node sink) { destroyedToBeginSink(sink, _) }
+}
+
+module Flow0 = DataFlow::Global<Config0>;
+
+/**
  * A configuration to track flow from a temporary variable to the qualifier of
  * a destructor call, and subsequently to a qualifier of a call to `begin` or
  * `end`.
@@ -79,11 +104,14 @@ module Config implements DataFlow::StateConfigSig {
   newtype FlowState =
     additional TempToDestructor() or
     additional DestroyedToBegin(DataFlow::Node n) {
-      exists(DataFlow::Node thisOperand |
-        tempToDestructorSink(thisOperand, _) and
-        n = getADestroyedNode(thisOperand)
-      )
+      any(Flow0::PathNode pn | pn.isSource()).getNode() = n
     }
+
+  /**
+   * Holds if `sink` is a qualifier to a call to `begin`, and `mid` is an
+   * object that is destroyed.
+   */
+  private predicate relevant(DataFlow::Node mid, DataFlow::Node sink) { Flow0::flow(mid, sink) }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     source.asInstruction().(VariableAddressInstruction).getIRVariable() instanceof IRTempVariable and
@@ -93,16 +121,16 @@ module Config implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    tempToDestructorSink(node1, _) and
     state1 = TempToDestructor() and
     state2 = DestroyedToBegin(node2) and
-    node2 = getADestroyedNode(node1)
+    qualifierToDestroyed(node1, node2)
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    // Note: This is a non-trivial cartesian product!
-    // Hopefully, both of these sets are quite small in practice
-    destroyedToBeginSink(sink, _) and state instanceof DestroyedToBegin
+    exists(DataFlow::Node mid |
+      relevant(mid, sink) and
+      state = DestroyedToBegin(mid)
+    )
   }
 
   DataFlow::FlowFeature getAFeature() {
