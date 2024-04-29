@@ -12,9 +12,6 @@ kt_jvm_import(
 
 _empty_zip = "PK\005\006\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
 
-def _get_dep(repository_ctx, name):
-    return repository_ctx.path(Label("//java/kotlin-extractor/deps:%s" % name))
-
 _local_path = "{root}/resources/kotlin-dependencies/kotlin-{kind}-{version}.jar"
 _maven_url = "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-{kind}/{version}/kotlin-{kind}-{version}.jar"
 
@@ -98,11 +95,11 @@ def _get_default_version(repository_ctx):
     kotlin_plugin_versions = repository_ctx.path(Label("//java/kotlin-extractor:current_kotlin_version.py"))
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     env = {}
-    repository_ctx.watch(Label("//java/kotlin-extractor/deps:dev/.kotlinc_version"))
+    repository_ctx.watch(Label("//java/kotlin-extractor:dev/.kotlinc_version"))
     if not repository_ctx.which("kotlinc"):
         # take default from the kotlinc wrapper
         path = repository_ctx.getenv("PATH")
-        path_to_add = repository_ctx.path(Label("//java/kotlin-extractor/deps:dev"))
+        path_to_add = repository_ctx.path(Label("//java/kotlin-extractor:dev"))
         if not path:
             path = str(path_to_add)
         elif repository_ctx.os.name == "windows":
