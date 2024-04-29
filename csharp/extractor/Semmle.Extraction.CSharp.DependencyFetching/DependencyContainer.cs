@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var p = package.Replace('/', Path.DirectorySeparatorChar);
             var d = dependency.Replace('/', Path.DirectorySeparatorChar);
 
-            // In most cases paths in asset files point to dll's or the empty _._ file.
+            // In most cases paths in assets files point to dll's or the empty _._ file.
             // That is, for _._ we don't need to add anything.
             if (Path.GetFileName(d) == "_._")
             {
@@ -74,11 +74,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Flatten a list of containers into a single container.
         /// </summary>
-        public static DependencyContainer Flatten(this IEnumerable<DependencyContainer> container) =>
-            container.Aggregate(new DependencyContainer(), (acc, c) =>
+        public static DependencyContainer Flatten(this IEnumerable<DependencyContainer> containers, DependencyContainer init) =>
+            containers.Aggregate(init, (acc, container) =>
             {
-                acc.Paths.UnionWith(c.Paths);
-                acc.Packages.UnionWith(c.Packages);
+                acc.Paths.UnionWith(container.Paths);
+                acc.Packages.UnionWith(container.Packages);
                 return acc;
             });
     }

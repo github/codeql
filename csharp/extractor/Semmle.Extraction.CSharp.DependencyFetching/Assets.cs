@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
 
         /// <summary>
-        /// Contains the dependencies found in the parsed asset files.
+        /// Contains the dependencies found in the parsed assets files.
         /// </summary>
         public DependencyContainer Dependencies { get; } = new();
 
@@ -225,7 +225,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Add the dependencies from the assets file to the dependencies.
         /// </summary>
-        /// <param name="asset">Path to an asset file.</param>
+        /// <param name="asset">Path to an assets file.</param>
         public void AddDependencies(string asset)
         {
             if (TryReadAllText(asset, logger, out var json))
@@ -237,7 +237,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Add the dependencies from the assets files to the dependencies.
         /// </summary>
-        /// <param name="assets">Collection of paths to asset files.</param>
+        /// <param name="assets">Collection of paths to assets files.</param>
         public void AddDependenciesRange(IEnumerable<string> assets) =>
             assets.ForEach(AddDependencies);
     }
