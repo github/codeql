@@ -56,7 +56,11 @@ node.toolchain(
 use_repo(node, "nodejs", "nodejs_toolchains")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.22.2")
+go_sdk.download(version = "1.22.2")  # default
+
+# following is needed for gazelle on macOS
+# see https://github.com/bazelbuild/bazel-gazelle/issues/1793
+go_sdk.download(version = "1.21.9")
 
 register_toolchains(
     "@nodejs_toolchains//:all",
