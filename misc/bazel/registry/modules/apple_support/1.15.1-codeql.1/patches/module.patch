@@ -1,0 +1,20 @@
+diff --git a/MODULE.bazel b/MODULE.bazel
+index 6b06c3b..99bc7c6 100644
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,6 +1,6 @@
+ module(
+     name = "apple_support",
+-    version = "0",
++    version = "1.15.1-codeql.1",
+     bazel_compatibility = [">=6.0.0"],
+     compatibility_level = 1,
+     repo_name = "build_bazel_apple_support",
+@@ -16,7 +16,3 @@ bazel_dep(
+     repo_name = "io_bazel_stardoc",
+ )
+ 
+-apple_cc_configure = use_extension("//crosstool:setup.bzl", "apple_cc_configure_extension")
+-use_repo(apple_cc_configure, "local_config_apple_cc", "local_config_apple_cc_toolchains")
+-
+-register_toolchains("@local_config_apple_cc_toolchains//:all")

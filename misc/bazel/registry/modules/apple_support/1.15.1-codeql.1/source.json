@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-xLsrc2fEhDgjAK7nW+WYuS+EeJb7MbvSLzojRq32aoA=",
+    "strip_prefix": "",
+    "url": "https://github.com/bazelbuild/apple_support/releases/download/1.15.1/apple_support.1.15.1.tar.gz",
+    "patches": {
+        "module.patch": "sha256-K06B2W9t6nKcU8S5u6cWeNIdw/vGWWKAoJdGiI8CSS0="
+    },
+    "patch_strip": 1
+}
