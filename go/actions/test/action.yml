@@ -33,7 +33,7 @@ runs:
     - name: Build
       shell: bash
       run: |
-        bazel run //go:create-extractor-pack
+        bazel run go:create-extractor-pack
 
     - name: Check that all Go code is autoformatted
       if: inputs.run-code-checks == 'true'
@@ -46,7 +46,7 @@ runs:
       if: inputs.run-code-checks == 'true'
       shell: bash
       run: |
-        bazel run //go:gen
+        bazel run go:gen
         git add .
         git diff --exit-code HEAD || (
           echo "please run bazel run //go:gen"
