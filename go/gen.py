@@ -1,11 +1,17 @@
 import sys
 import pathlib
 import subprocess
+import os
 from python.runfiles import runfiles
 
-this = pathlib.Path(__file__).resolve()
-go_extractor_dir = this.parent / "extractor"
-go_dbscheme = this.parent / "ql" / "lib" / "go.dbscheme"
+try:
+    workspace_dir = pathlib.Path(os.environ['BUILD_WORKSPACE_DIRECTORY'])
+except KeyError:
+    print("this should be run with bazel run", file=sys.stderr)
+    sys.exit(1)
+
+go_extractor_dir = workspace_dir / "go" / "extractor"
+go_dbscheme = workspace_dir / "go" / "ql" / "lib" / "go.dbscheme"
 r = runfiles.Create()
 go, gazelle, go_gen_dbscheme = map(r.Rlocation, sys.argv[1:])
 
