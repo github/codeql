@@ -4,6 +4,7 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 
 /**
  * A data flow source for unsafe zip extraction.
@@ -13,7 +14,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for unsafe zip extraction.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for unsafe zip extraction.
