@@ -1,19 +1,5 @@
 all: gen extractor
 
-ifeq ($(OS),Windows_NT)
-EXE = .exe
-CODEQL_PLATFORM = win64
-else
-EXE =
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-CODEQL_PLATFORM = linux64
-endif
-ifeq ($(UNAME_S),Darwin)
-CODEQL_PLATFORM = osx64
-endif
-endif
-
 EXTRACTOR_PACK_OUT = build/codeql-extractor-go
 
 .PHONY: extractor gen clean autoformat check-formatting
