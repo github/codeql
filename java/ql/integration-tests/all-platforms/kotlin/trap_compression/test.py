@@ -39,6 +39,10 @@ def check_extensions_worker(counts, directory):
             counts.count_gzip += 1
             if not startsWith(x, b'\x1f\x8b'): # The GZip magic numbers
                 raise Exception("GZipped TRAP file that doesn't start with GZip magic numbers: " + f)
+        elif f.endswith('.trap.zst'):
+            counts.count_gzip += 1
+            if not startsWith(x, b'\x28\xb5\x2f\xfd'): # The Zstd magic numbers
+                raise Exception("Zstd-compressed TRAP file that doesn't start with Zstd magic numbers: " + f)
 
 def startsWith(f, b):
     with open(f, 'rb') as f_in:
@@ -58,6 +62,9 @@ check_extensions('none-db/trap', Counts(-1, 1))
 os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "gzip"
 run_codeql_database_create(['kotlinc test.kt'], test_db="gzip-db", db=None, lang="java")
 check_extensions('gzip-db/trap', Counts(1, -1))
+os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "zstd"
+run_codeql_database_create(['kotlinc test.kt'], test_db="zstd-db", db=None, lang="java")
+check_extensions('zstd-db/trap', Counts(1, -1))
 os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "brotli"
 run_codeql_database_create(['kotlinc test.kt'], test_db="brotli-db", db=None, lang="java")
 check_extensions('brotli-db/trap', Counts(1, -1))
