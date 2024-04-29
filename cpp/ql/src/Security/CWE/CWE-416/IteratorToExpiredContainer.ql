@@ -5,6 +5,7 @@
  * @precision medium
  * @id cpp/iterator-to-expired-container
  * @problem.severity warning
+ * @security-severity 8.8
  * @tags reliability
  *       security
  *       external/cwe/cwe-416
