@@ -86,3 +86,29 @@ void test_switches_default(int i) {
       use1(i);
   }
 }
+
+void use(...);
+
+void pointer_comparison(char* c) {
+  if(c) {
+    use(c);
+  }
+}
+
+void implicit_float_comparison(float f) {
+  if(f) {
+    use(f);
+  }
+}
+
+void explicit_float_comparison(float f) {
+  if(f != 0.0f) {
+    use(f);
+  }
+}
+
+void int_float_comparison(int i) {
+  if(i != 0.0f) {
+    use(i);
+  }
+}

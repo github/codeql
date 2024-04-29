@@ -1119,9 +1119,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private SndLevelScopeOption getScope(RetNodeEx ret) {
-      result = SndLevelScopeOption::some(getSecondLevelScope(ret.asNode()))
+      result = SndLevelScopeOption::some(getSecondLevelScopeCached(ret.asNode()))
       or
-      result instanceof SndLevelScopeOption::None and not exists(getSecondLevelScope(ret.asNode()))
+      result instanceof SndLevelScopeOption::None and
+      not exists(getSecondLevelScopeCached(ret.asNode()))
     }
 
     pragma[nomagic]
