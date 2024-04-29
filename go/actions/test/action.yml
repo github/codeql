@@ -13,7 +13,7 @@ runs:
       run: |
         (
           echo -n "GO_VERSION="
-          bazel run @rules_go//go -- version | sed 's/go version go\(\S*\) .*/\1/'
+          bazel run @rules_go//go -- version | sed 's/go version go\(.*\) .*/\1/'
         ) | tee -a "$GITHUB_ENV"
 
     - name: Set up Go
