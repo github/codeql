@@ -12,50 +12,21 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Test
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest-xl]
-    if: matrix.os == 'macos-latest' || github.repository_owner == 'github'
-    runs-on: ${{ matrix.os }}
+  test-mac:
+    name: Test MacOS
+    runs-on: macos-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./go/actions/test
 
-      - name: Get go version
-        shell: bash
-        run: |
-          (
-            echo -n "GO_VERSION="
-            bazel run @rules_go//go -- version | sed 's/go version go\(\S*\) .*/\1/'
-          ) | tee -a "$GITHUB_ENV"
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          cache: false
-        id: go
-
-      - name: Set up CodeQL CLI
-        uses: ./.github/actions/fetch-codeql
-
-      - name: Enable problem matchers in repository
-        shell: bash
-        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-      - name: Build
-        run: |
-          bazel run //go:create-extractor-pack
-
-      - name: Cache compilation cache
-        id: query-cache
-        uses: ./.github/actions/cache-query-compilation
-        with:
-          key: go-qltest
-      - name: Test
-        run: |
-          cd go
-          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
+  test-win:
+    if: github.repository_owner == 'github'
+    name: Test Windows
+    runs-on: windows-latest-xl
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./go/actions/test
