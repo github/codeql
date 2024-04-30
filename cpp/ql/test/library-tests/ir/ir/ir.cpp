@@ -2513,7 +2513,7 @@ void destruction_in_switch_2(int c) {
       break;
     }
     default: {
-        break;
+      break;
     }
   }
 }
@@ -2525,7 +2525,7 @@ void destruction_in_switch_3(int c) {
       break;
     }
     default: {
-        break;
+      break;
     }
   }
 }
