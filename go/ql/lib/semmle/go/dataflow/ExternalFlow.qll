@@ -415,7 +415,7 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
-private predicate interpretSummary(
+private predicate summaryElement(
   Callable c, string input, string output, string kind, string provenance, string model
 ) {
   exists(
@@ -431,13 +431,13 @@ private predicate interpretSummary(
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
   ) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
+      summaryElement(this, input, output, kind, provenance, model) and
       provenance.isManual()
     )
   }
@@ -446,7 +446,7 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     string input, string output, string kind, string model
   ) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
+      summaryElement(this, input, output, kind, provenance, model) and
       provenance.isGenerated()
     )
   }
@@ -465,7 +465,7 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   }
 
   override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
+    summaryElement(this, _, _, _, provenance, _)
   }
 }
 
