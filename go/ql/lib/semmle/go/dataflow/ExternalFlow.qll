@@ -267,26 +267,6 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
-private string paramsStringPart(Function f, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n, string p | f.getParameterType(n).toString() = p |
-    i = 2 * n and result = p
-    or
-    i = 2 * n - 1 and result = "," and n != 0
-  )
-  or
-  i = 2 * f.getNumParameter() and result = ")"
-}
-
-/**
- * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
- *
- * Returns the empty string if the callable has no parameters.
- * Parameter types are represented by their type erasure.
- */
-string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
-
 bindingset[p]
 private string interpretPackage(string p) {
   exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
