@@ -101,11 +101,52 @@ def test4(request): # $ requestHandler
     g = HTTPPermanentRedirect(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
     raise a
 
+# Unsupported cases
+class Test5:
+    def __init__(self, request): # $ MISSING: requestHandler
+        ensure_tainted(request) # $ MISSING: tainted
+        self.req = request
+
+    @view_config(route_name="test5", renderer="string") # $ routeSetup
+    def test5(self): # $ requestHandler
+        ensure_not_tainted(self) # $ SPURIOUS: tainted
+        ensure_tainted(self.req) # $ MISSING: tainted
+        return "Ok" # $ HttpResponse mimetype=text/html responseBody="Ok"
+
+@view_config(route_name="test6", attr="test6method", renderer="string") # $ routeSetup
+class Test6:
+    def __init__(self, request): # $ MISSING: requestHandler
+        ensure_tainted(request) # $ MISSING: tainted
+        self.req = request
+
+    def test6method(self): # $ MISSING: requestHandler
+        ensure_not_tainted(self) 
+        ensure_tainted(self.req) # $ MISSING: tainted
+        return "Ok" # $ MISSING: HttpResponse mimetype=text/html responseBody="Ok"
+
+@view_config(route_name="test6", renderer="string") # $ routeSetup
+class Test6:
+    def __init__(self, context, request): # $ MISSING: requestHandler
+        ensure_tainted(request) # $ MISSING: tainted
+        self.req = request
+
+    def __call__(self): # $ MISSING: requestHandler
+        ensure_not_tainted(self) 
+        ensure_tainted(self.req) # $ MISSING: tainted
+        return "Ok" # $ MISSING: HttpResponse mimetype=text/html responseBody="Ok"
+
+class Test7:
+    def __call__(self,context,request): # $ MISSING: requestHandler
+        ensure_tainted(request) # $ MISSING: tainted
+        return "Ok" # $ MISSING: HttpResponse mimetype=text/html responseBody="Ok"
+
+
 if __name__ == "__main__":
     with Configurator() as config:
-        for i in range(1,5):
+        for i in range(1,8):
             config.add_route(f"test{i}", f"/test{i}")
         config.add_view(test2, route_name="test2") # $ routeSetup
+        config.add_view(Test7(), route_name="test7", renderer="string") # $ routeSetup
         config.scan()
         server = make_server('127.0.0.1', 8080, config.make_wsgi_app())
         print("serving")
