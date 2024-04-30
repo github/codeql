@@ -165,10 +165,14 @@ module ModelValidation {
       (
         invalidSpecComponent(input, part) and
         not part = "" and
-        not parseArg(part, _)
+        not (part = "Argument" and pred = "sink") and
+        not parseArg(part, _) and
+        not part.getName() = "Field"
         or
-        part = input.getToken(_) and
+        part = input.getToken(0) and
         parseParam(part, _)
+        or
+        invalidIndexComponent(input, part)
       ) and
       result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
@@ -180,9 +184,14 @@ module ModelValidation {
       or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
-      invalidSpecComponent(output, part) and
-      not part = "" and
-      not (part = "Parameter" and pred = "source") and
+      (
+        invalidSpecComponent(output, part) and
+        not part = "" and
+        not (part = ["Argument", "Parameter"] and pred = "source") and
+        not part.getName() = "Field"
+        or
+        invalidIndexComponent(output, part)
+      ) and
       result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
   }
