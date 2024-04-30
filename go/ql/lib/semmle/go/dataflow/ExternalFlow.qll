@@ -330,11 +330,15 @@ predicate hasExternalSpecification(Function f) {
 }
 
 private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {
-  exists(string fieldRegex, string package, string className, string fieldName |
-    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
-    package = c.regexpCapture(fieldRegex, 1) and
-    className = c.regexpCapture(fieldRegex, 2) and
-    fieldName = c.regexpCapture(fieldRegex, 3) and
+  exists(
+    string fieldRegex, string qualifiedName, string package, string className, string fieldName
+  |
+    c.getName() = "Field" and
+    qualifiedName = c.getAnArgument() and
+    fieldRegex = "^(.*)\\.([^.]+)\\.([^.]+)$" and
+    package = qualifiedName.regexpCapture(fieldRegex, 1) and
+    className = qualifiedName.regexpCapture(fieldRegex, 2) and
+    fieldName = qualifiedName.regexpCapture(fieldRegex, 3) and
     f.getField().hasQualifiedName(package, className, fieldName)
   )
 }
@@ -351,11 +355,12 @@ class SyntheticField extends string {
 }
 
 private predicate parseSynthField(AccessPathToken c, string f) {
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.getName() = "SyntheticField" and
+  f = c.getAnArgument()
 }
 
 /** Holds if the specification component parses as a `Content`. */
-predicate parseContent(string component, DataFlow::Content content) {
+predicate parseContent(AccessPathToken component, DataFlow::Content content) {
   parseField(component, content)
   or
   parseSynthField(component, content.(DataFlow::SyntheticFieldContent).getField())
