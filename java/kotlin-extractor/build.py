@@ -129,6 +129,13 @@ def compile_to_jar(build_dir, tmp_src_dir, srcs, version, classpath, java_classp
 
     compile_to_dir(build_dir, srcs, version, classpath, java_classpath, class_dir)
 
+    cwd = os.getcwd()
+    try:
+        os.chdir(class_dir)
+        run_process(['jar', 'xf', cwd + '/' + kotlin_dependency_folder + '/aircompressor-0.26.jar'])
+    finally:
+        os.chdir(cwd)
+
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
                  '-C', tmp_src_dir + '/main/resources', 'META-INF',
