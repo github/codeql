@@ -299,16 +299,6 @@ SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   )
 }
 
-/** Holds if there is an external specification for `f`. */
-predicate hasExternalSpecification(Function f) {
-  f = any(SummarizedCallable sc).asFunction()
-  or
-  exists(SourceSinkInterpretationInput::SourceOrSinkElement e | f = e.asEntity() |
-    SourceSinkInterpretationInput::sourceElement(e, _, _, _, _) or
-    SourceSinkInterpretationInput::sinkElement(e, _, _, _, _)
-  )
-}
-
 private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {
   exists(
     string fieldRegex, string qualifiedName, string package, string className, string fieldName
