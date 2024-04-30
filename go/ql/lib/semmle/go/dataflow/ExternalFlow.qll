@@ -434,6 +434,10 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     exists(Provenance provenance |
       summaryElement(this, input, output, kind, provenance, model) and
       provenance.isGenerated()
+    ) and
+    not exists(Provenance provenance |
+      neutralElement(this, "summary", provenance) and
+      provenance.isManual()
     )
   }
 
