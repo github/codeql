@@ -183,10 +183,9 @@ module Pyramid {
       override string getMimetypeDefault() { result = "text/html" }
     }
 
-    /** Gets a reference to the class `pyramid.response.Response` or a subclass. */
-    API::Node subclassRef() {
-      result = API::moduleImport("pyramid").getMember("response").getMember("Response") or
-      result = ModelOutput::getATypeNode("pyramid.response.Response~Subclass").getASubclass*()
+    /** Gets a reference to the class `pyramid.response.Response`. */
+    API::Node classRef() {
+      result = API::moduleImport("pyramid").getMember("response").getMember("Response")
     }
 
     /**
@@ -215,7 +214,7 @@ module Pyramid {
 
     /** An instantiation of the class `pyramid.response.Response` or a subclass. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      ClassInstantiation() { this = subclassRef().getACall() }
+      ClassInstantiation() { this = classRef().getACall() }
 
       override DataFlow::Node getBody() { result = [this.getArg(0), this.getArgByName("body")] }
 
@@ -277,20 +276,20 @@ module Pyramid {
 
   /** Provides models for pyramid http redirects. */
   module Redirect {
-    /** Gets a reference to a subclass of `pyramid.httpexceptions._HTTPMove`, which each each exception class representing an HTTP redirect response is a subclass of. */
-    API::Node subclassRef() {
+    /** Gets a reference to a class that represents an HTTP redirect response.. */
+    API::Node classRef() {
       result =
         API::moduleImport("pyramid")
             .getMember("httpexceptions")
-            .getMember("_HTTPMove")
-            .getASubclass*() or
-      result =
-        ModelOutput::getATypeNode("pyramid.httpexceptions._HTTPMove~Subclass").getASubclass*()
+            .getMember([
+                "HTTPMultipleChoices", "HTTPMovedPermanently", "HTTPFound", "HTTPSeeOther",
+                "HTTPUseProxy", "HTTPTemporaryRedirect", "HTTPPermanentRedirect"
+              ])
     }
 
     /** Gets a call to a pyramid HTTP exception class that represents an HTTP redirect response. */
     class PyramidRedirect extends Http::Server::HttpRedirectResponse::Range, DataFlow::CallCfgNode {
-      PyramidRedirect() { this = subclassRef().getACall() }
+      PyramidRedirect() { this = classRef().getACall() }
 
       override DataFlow::Node getRedirectLocation() {
         result = [this.getArg(0), this.getArgByName("location")]

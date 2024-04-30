@@ -1,6 +1,7 @@
 from pyramid.view import view_config
 from pyramid.config import Configurator
 from pyramid.response import Response
+from pyramid.httpexceptions import HTTPMultipleChoices, HTTPMovedPermanently, HTTPFound, HTTPSeeOther, HTTPUseProxy, HTTPTemporaryRedirect, HTTPPermanentRedirect
 from wsgiref.simple_server import make_server
 
 def ignore(*args, **kwargs): pass
@@ -45,6 +46,8 @@ def test1(request): # $ requestHandler
 
         request.text,               # $ tainted
 
+        request.matchdict,          # $ tainted
+
         request.path,               # $ tainted
         request.path_info,          # $ tainted
         request.path_info_peek(),   # $ tainted
@@ -87,12 +90,23 @@ def test3(ctx, req): # $ requestHandler
     resp.set_cookie(value="there", name="hi") # $ CookieWrite CookieName="hi" CookieValue="there"
     return "Ok" # $ HttpResponse responseBody="Ok" mimetype=text/html
 
+@view_config(route_name="test4", renderer="string") # $ routeSetup
+def test4(request): # $ requestHandler
+    a = HTTPMultipleChoices("redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    b = HTTPMovedPermanently(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    c = HTTPFound(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    d = HTTPSeeOther(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    e = HTTPUseProxy(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    f = HTTPTemporaryRedirect(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    g = HTTPPermanentRedirect(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    raise a
+
 if __name__ == "__main__":
     with Configurator() as config:
-        for i in range(1,4):
+        for i in range(1,5):
             config.add_route(f"test{i}", f"/test{i}")
         config.add_view(test2, route_name="test2") # $ routeSetup
         config.scan()
-        server = make_server('127.0.0.1', 8000, config.make_wsgi_app())
+        server = make_server('127.0.0.1', 8080, config.make_wsgi_app())
         print("serving")
         server.serve_forever()
