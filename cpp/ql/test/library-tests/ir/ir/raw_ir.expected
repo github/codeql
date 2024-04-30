@@ -14207,40 +14207,52 @@ ir.cpp:
 #-----|   Default -> Block 8
 
 # 2206|   Block 7
-# 2206|     v2206_1(void)                       = NoOp                            : 
-# 2207|     r2207_1(glval<ClassWithDestructor>) = VariableAddress[x]              : 
-# 2207|     r2207_2(glval<unknown>)             = FunctionAddress[set_x]          : 
-# 2207|     r2207_3(char)                       = Constant[97]                    : 
-# 2207|     v2207_4(void)                       = Call[set_x]                     : func:r2207_2, this:r2207_1, 0:r2207_3
-# 2207|     mu2207_5(unknown)                   = ^CallSideEffect                 : ~m?
-# 2207|     v2207_6(void)                       = ^IndirectReadSideEffect[-1]     : &:r2207_1, ~m?
-# 2207|     mu2207_7(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1] : &:r2207_1
-# 2208|     v2208_1(void)                       = NoOp                            : 
-#-----|   Goto -> Block 10
-
-# 2209|   Block 8
-# 2209|     v2209_1(void)                       = NoOp                            : 
-# 2210|     r2210_1(glval<ClassWithDestructor>) = VariableAddress[x]              : 
-# 2210|     r2210_2(glval<unknown>)             = FunctionAddress[set_x]          : 
-# 2210|     r2210_3(char)                       = Constant[98]                    : 
-# 2210|     v2210_4(void)                       = Call[set_x]                     : func:r2210_2, this:r2210_1, 0:r2210_3
-# 2210|     mu2210_5(unknown)                   = ^CallSideEffect                 : ~m?
-# 2210|     v2210_6(void)                       = ^IndirectReadSideEffect[-1]     : &:r2210_1, ~m?
-# 2210|     mu2210_7(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1] : &:r2210_1
-# 2211|     v2211_1(void)                       = NoOp                            : 
-#-----|   Goto -> Block 10
-
-# 2212|   Block 9
+# 2206|     v2206_1(void)                       = NoOp                                  : 
+# 2207|     r2207_1(glval<ClassWithDestructor>) = VariableAddress[x]                    : 
+# 2207|     r2207_2(glval<unknown>)             = FunctionAddress[set_x]                : 
+# 2207|     r2207_3(char)                       = Constant[97]                          : 
+# 2207|     v2207_4(void)                       = Call[set_x]                           : func:r2207_2, this:r2207_1, 0:r2207_3
+# 2207|     mu2207_5(unknown)                   = ^CallSideEffect                       : ~m?
+# 2207|     v2207_6(void)                       = ^IndirectReadSideEffect[-1]           : &:r2207_1, ~m?
+# 2207|     mu2207_7(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2207_1
 # 2212|     r2212_1(glval<ClassWithDestructor>) = VariableAddress[x]                    : 
 # 2212|     r2212_2(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
 # 2212|     v2212_3(void)                       = Call[~ClassWithDestructor]            : func:r2212_2, this:r2212_1
 # 2212|     mu2212_4(unknown)                   = ^CallSideEffect                       : ~m?
 # 2212|     v2212_5(void)                       = ^IndirectReadSideEffect[-1]           : &:r2212_1, ~m?
 # 2212|     mu2212_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2212_1
+# 2208|     v2208_1(void)                       = NoOp                                  : 
+#-----|   Goto -> Block 10
+
+# 2209|   Block 8
+# 2209|     v2209_1(void)                       = NoOp                                  : 
+# 2210|     r2210_1(glval<ClassWithDestructor>) = VariableAddress[x]                    : 
+# 2210|     r2210_2(glval<unknown>)             = FunctionAddress[set_x]                : 
+# 2210|     r2210_3(char)                       = Constant[98]                          : 
+# 2210|     v2210_4(void)                       = Call[set_x]                           : func:r2210_2, this:r2210_1, 0:r2210_3
+# 2210|     mu2210_5(unknown)                   = ^CallSideEffect                       : ~m?
+# 2210|     v2210_6(void)                       = ^IndirectReadSideEffect[-1]           : &:r2210_1, ~m?
+# 2210|     mu2210_7(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2210_1
+# 2212|     r2212_7(glval<ClassWithDestructor>) = VariableAddress[x]                    : 
+# 2212|     r2212_8(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2212|     v2212_9(void)                       = Call[~ClassWithDestructor]            : func:r2212_8, this:r2212_7
+# 2212|     mu2212_10(unknown)                  = ^CallSideEffect                       : ~m?
+# 2212|     v2212_11(void)                      = ^IndirectReadSideEffect[-1]           : &:r2212_7, ~m?
+# 2212|     mu2212_12(ClassWithDestructor)      = ^IndirectMayWriteSideEffect[-1]       : &:r2212_7
+# 2211|     v2211_1(void)                       = NoOp                                  : 
+#-----|   Goto -> Block 10
+
+# 2212|   Block 9
+# 2212|     r2212_13(glval<ClassWithDestructor>) = VariableAddress[x]                    : 
+# 2212|     r2212_14(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2212|     v2212_15(void)                       = Call[~ClassWithDestructor]            : func:r2212_14, this:r2212_13
+# 2212|     mu2212_16(unknown)                   = ^CallSideEffect                       : ~m?
+# 2212|     v2212_17(void)                       = ^IndirectReadSideEffect[-1]           : &:r2212_13, ~m?
+# 2212|     mu2212_18(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2212_13
 #-----|   Goto -> Block 10
 
 # 2212|   Block 10
-# 2212|     v2212_7(void)                                                                                                                       = NoOp                                  : 
+# 2212|     v2212_19(void)                                                                                                                      = NoOp                                  : 
 # 2214|     r2214_1(glval<ClassWithDestructor>)                                                                                                 = VariableAddress[x]                    : 
 # 2214|     mu2214_2(ClassWithDestructor)                                                                                                       = Uninitialized[x]                      : &:r2214_1
 # 2214|     r2214_3(glval<unknown>)                                                                                                             = FunctionAddress[ClassWithDestructor]  : 
@@ -16438,30 +16450,42 @@ ir.cpp:
 #-----|   Default -> Block 2
 
 # 2512|   Block 1
-# 2512|     v2512_1(void) = NoOp : 
-# 2513|     v2513_1(void) = NoOp : 
-#-----|   Goto -> Block 4
-
-# 2515|   Block 2
-# 2515|     v2515_1(void) = NoOp : 
-# 2516|     v2516_1(void) = NoOp : 
-#-----|   Goto -> Block 4
-
-# 2518|   Block 3
+# 2512|     v2512_1(void)                       = NoOp                                  : 
 # 2518|     r2518_1(glval<ClassWithDestructor>) = VariableAddress[y]                    : 
 # 2518|     r2518_2(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
 # 2518|     v2518_3(void)                       = Call[~ClassWithDestructor]            : func:r2518_2, this:r2518_1
 # 2518|     mu2518_4(unknown)                   = ^CallSideEffect                       : ~m?
 # 2518|     v2518_5(void)                       = ^IndirectReadSideEffect[-1]           : &:r2518_1, ~m?
 # 2518|     mu2518_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2518_1
+# 2513|     v2513_1(void)                       = NoOp                                  : 
+#-----|   Goto -> Block 4
+
+# 2515|   Block 2
+# 2515|     v2515_1(void)                       = NoOp                                  : 
+# 2518|     r2518_7(glval<ClassWithDestructor>) = VariableAddress[y]                    : 
+# 2518|     r2518_8(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2518|     v2518_9(void)                       = Call[~ClassWithDestructor]            : func:r2518_8, this:r2518_7
+# 2518|     mu2518_10(unknown)                  = ^CallSideEffect                       : ~m?
+# 2518|     v2518_11(void)                      = ^IndirectReadSideEffect[-1]           : &:r2518_7, ~m?
+# 2518|     mu2518_12(ClassWithDestructor)      = ^IndirectMayWriteSideEffect[-1]       : &:r2518_7
+# 2516|     v2516_1(void)                       = NoOp                                  : 
+#-----|   Goto -> Block 4
+
+# 2518|   Block 3
+# 2518|     r2518_13(glval<ClassWithDestructor>) = VariableAddress[y]                    : 
+# 2518|     r2518_14(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2518|     v2518_15(void)                       = Call[~ClassWithDestructor]            : func:r2518_14, this:r2518_13
+# 2518|     mu2518_16(unknown)                   = ^CallSideEffect                       : ~m?
+# 2518|     v2518_17(void)                       = ^IndirectReadSideEffect[-1]           : &:r2518_13, ~m?
+# 2518|     mu2518_18(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2518_13
 #-----|   Goto -> Block 4
 
 # 2518|   Block 4
-# 2518|     v2518_7(void) = NoOp         : 
-# 2519|     v2519_1(void) = NoOp         : 
-# 2510|     v2510_6(void) = ReturnVoid   : 
-# 2510|     v2510_7(void) = AliasedUse   : ~m?
-# 2510|     v2510_8(void) = ExitFunction : 
+# 2518|     v2518_19(void) = NoOp         : 
+# 2519|     v2519_1(void)  = NoOp         : 
+# 2510|     v2510_6(void)  = ReturnVoid   : 
+# 2510|     v2510_7(void)  = AliasedUse   : ~m?
+# 2510|     v2510_8(void)  = ExitFunction : 
 
 # 2521| void destruction_in_switch_3(int)
 # 2521|   Block 0
@@ -16515,21 +16539,27 @@ ir.cpp:
 #-----|   Goto -> Block 3
 
 # 2527|   Block 3
-# 2527|     v2527_1(void) = NoOp : 
-# 2528|     v2528_1(void) = NoOp : 
-#-----|   Goto -> Block 5
-
-# 2530|   Block 4
+# 2527|     v2527_1(void)                       = NoOp                                  : 
 # 2530|     r2530_7(glval<ClassWithDestructor>) = VariableAddress[y]                    : 
 # 2530|     r2530_8(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
 # 2530|     v2530_9(void)                       = Call[~ClassWithDestructor]            : func:r2530_8, this:r2530_7
 # 2530|     mu2530_10(unknown)                  = ^CallSideEffect                       : ~m?
 # 2530|     v2530_11(void)                      = ^IndirectReadSideEffect[-1]           : &:r2530_7, ~m?
 # 2530|     mu2530_12(ClassWithDestructor)      = ^IndirectMayWriteSideEffect[-1]       : &:r2530_7
+# 2528|     v2528_1(void)                       = NoOp                                  : 
+#-----|   Goto -> Block 5
+
+# 2530|   Block 4
+# 2530|     r2530_13(glval<ClassWithDestructor>) = VariableAddress[y]                    : 
+# 2530|     r2530_14(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2530|     v2530_15(void)                       = Call[~ClassWithDestructor]            : func:r2530_14, this:r2530_13
+# 2530|     mu2530_16(unknown)                   = ^CallSideEffect                       : ~m?
+# 2530|     v2530_17(void)                       = ^IndirectReadSideEffect[-1]           : &:r2530_13, ~m?
+# 2530|     mu2530_18(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2530_13
 #-----|   Goto -> Block 5
 
 # 2530|   Block 5
-# 2530|     v2530_13(void) = NoOp         : 
+# 2530|     v2530_19(void) = NoOp         : 
 # 2531|     v2531_1(void)  = NoOp         : 
 # 2521|     v2521_6(void)  = ReturnVoid   : 
 # 2521|     v2521_7(void)  = AliasedUse   : ~m?

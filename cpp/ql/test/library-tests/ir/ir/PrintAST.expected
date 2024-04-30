@@ -19411,6 +19411,12 @@ ir.cpp:
 # 2207|                 Value = [CharLiteral] 97
 # 2207|                 ValueCategory = prvalue
 # 2208|         getStmt(2): [BreakStmt] break;
+# 2212|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2212|               Type = [VoidType] void
+# 2212|               ValueCategory = prvalue
+# 2212|             getQualifier(): [VariableAccess] x
+# 2212|                 Type = [Class] ClassWithDestructor
+# 2212|                 ValueCategory = lvalue
 # 2209|         getStmt(3): [SwitchCase] default: 
 # 2210|         getStmt(4): [ExprStmt] ExprStmt
 # 2210|           getExpr(): [FunctionCall] call to set_x
@@ -19424,6 +19430,12 @@ ir.cpp:
 # 2210|                 Value = [CharLiteral] 98
 # 2210|                 ValueCategory = prvalue
 # 2211|         getStmt(5): [BreakStmt] break;
+# 2212|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2212|               Type = [VoidType] void
+# 2212|               ValueCategory = prvalue
+# 2212|             getQualifier(): [VariableAccess] x
+# 2212|                 Type = [Class] ClassWithDestructor
+# 2212|                 ValueCategory = lvalue
 # 2212|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
 # 2212|           Type = [VoidType] void
 # 2212|           ValueCategory = prvalue
@@ -22504,9 +22516,21 @@ ir.cpp:
 # 2512|               ValueCategory = prvalue
 # 2512|         getStmt(1): [BlockStmt] { ... }
 # 2513|           getStmt(0): [BreakStmt] break;
+# 2518|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2518|                 Type = [VoidType] void
+# 2518|                 ValueCategory = prvalue
+# 2518|               getQualifier(): [VariableAccess] y
+# 2518|                   Type = [Class] ClassWithDestructor
+# 2518|                   ValueCategory = lvalue
 # 2515|         getStmt(2): [SwitchCase] default: 
 # 2515|         getStmt(3): [BlockStmt] { ... }
 # 2516|           getStmt(0): [BreakStmt] break;
+# 2518|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2518|                 Type = [VoidType] void
+# 2518|                 ValueCategory = prvalue
+# 2518|               getQualifier(): [VariableAccess] y
+# 2518|                   Type = [Class] ClassWithDestructor
+# 2518|                   ValueCategory = lvalue
 # 2518|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
 # 2518|           Type = [VoidType] void
 # 2518|           ValueCategory = prvalue
@@ -22567,6 +22591,12 @@ ir.cpp:
 # 2527|         getStmt(2): [SwitchCase] default: 
 # 2527|         getStmt(3): [BlockStmt] { ... }
 # 2528|           getStmt(0): [BreakStmt] break;
+# 2530|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2530|                 Type = [VoidType] void
+# 2530|                 ValueCategory = prvalue
+# 2530|               getQualifier(): [VariableAccess] y
+# 2530|                   Type = [Class] ClassWithDestructor
+# 2530|                   ValueCategory = lvalue
 # 2530|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
 # 2530|           Type = [VoidType] void
 # 2530|           ValueCategory = prvalue
