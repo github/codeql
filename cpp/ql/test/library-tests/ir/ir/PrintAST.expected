@@ -19565,12 +19565,6 @@ ir.cpp:
 # 2216|               Type = [PlainCharType] char
 # 2216|               Value = [CharLiteral] 97
 # 2216|               ValueCategory = prvalue
-# 2215|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
-# 2215|             Type = [VoidType] void
-# 2215|             ValueCategory = prvalue
-# 2215|           getQualifier(): [VariableAccess] y
-# 2215|               Type = [Class] ClassWithDestructor
-# 2215|               ValueCategory = lvalue
 # 2215|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
 # 2215|           Type = [VoidType] void
 # 2215|           ValueCategory = prvalue
@@ -19580,6 +19574,12 @@ ir.cpp:
 # 2215|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2215|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &>
 # 2215|           ValueCategory = lvalue
+# 2215|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2215|             Type = [VoidType] void
+# 2215|             ValueCategory = prvalue
+# 2215|           getQualifier(): [VariableAccess] y
+# 2215|               Type = [Class] ClassWithDestructor
+# 2215|               ValueCategory = lvalue
 # 2218|     getStmt(6): [RangeBasedForStmt] for(...:...) ...
 # 2218|       getInitialization(): [DeclStmt] declaration
 # 2218|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
@@ -19746,12 +19746,6 @@ ir.cpp:
 # 2233|               getQualifier(): [VariableAccess] x
 # 2233|                   Type = [Class] ClassWithDestructor
 # 2233|                   ValueCategory = lvalue
-# 2218|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
-# 2218|             Type = [VoidType] void
-# 2218|             ValueCategory = prvalue
-# 2218|           getQualifier(): [VariableAccess] y
-# 2218|               Type = [Class] ClassWithDestructor
-# 2218|               ValueCategory = lvalue
 # 2218|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
 # 2218|           Type = [VoidType] void
 # 2218|           ValueCategory = prvalue
@@ -19761,6 +19755,12 @@ ir.cpp:
 # 2218|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2218|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &>
 # 2218|           ValueCategory = lvalue
+# 2218|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2218|             Type = [VoidType] void
+# 2218|             ValueCategory = prvalue
+# 2218|           getQualifier(): [VariableAccess] y
+# 2218|               Type = [Class] ClassWithDestructor
+# 2218|               ValueCategory = lvalue
 # 2224|     getStmt(7): [RangeBasedForStmt] for(...:...) ...
 # 2224|       getInitialization(): [DeclStmt] declaration
 # 2224|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
@@ -20038,12 +20038,6 @@ ir.cpp:
 # 2232|           getQualifier(): [VariableAccess] z1
 # 2232|               Type = [Class] ClassWithDestructor
 # 2232|               ValueCategory = lvalue
-# 2229|         getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor
-# 2229|             Type = [VoidType] void
-# 2229|             ValueCategory = prvalue
-# 2229|           getQualifier(): [VariableAccess] y
-# 2229|               Type = [Class] ClassWithDestructor
-# 2229|               ValueCategory = lvalue
 # 2229|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
 # 2229|           Type = [VoidType] void
 # 2229|           ValueCategory = prvalue
@@ -20053,6 +20047,12 @@ ir.cpp:
 # 2229|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2229|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &>
 # 2229|           ValueCategory = lvalue
+# 2229|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2229|             Type = [VoidType] void
+# 2229|             ValueCategory = prvalue
+# 2229|           getQualifier(): [VariableAccess] y
+# 2229|               Type = [Class] ClassWithDestructor
+# 2229|               ValueCategory = lvalue
 # 2233|     getStmt(9): [ReturnStmt] return ...
 # 2233|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
 # 2233|           Type = [VoidType] void
@@ -20662,15 +20662,15 @@ ir.cpp:
 # 2309|           getQualifier(): [VariableAccess] s2
 # 2309|               Type = [Struct] String
 # 2309|               ValueCategory = lvalue
-# 2307|         getImplicitDestructorCall(1): [DestructorCall] call to ~String
+# 2307|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2307|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &>
+# 2307|           ValueCategory = lvalue
+# 2307|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
 # 2307|             Type = [VoidType] void
 # 2307|             ValueCategory = prvalue
 # 2307|           getQualifier(): [VariableAccess] s
 # 2307|               Type = [Struct] String
 # 2307|               ValueCategory = lvalue
-# 2307|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 2307|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &>
-# 2307|           ValueCategory = lvalue
 # 2311|     getStmt(3): [ForStmt] for(...;...;...) ...
 # 2311|       getInitialization(): [DeclStmt] declaration
 # 2311|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s

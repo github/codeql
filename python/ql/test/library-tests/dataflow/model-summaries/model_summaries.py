@@ -122,6 +122,24 @@ a, b = MS_spread_all(SOURCE)
 SINK(a)  # $ flow="SOURCE, l:-1 -> a"
 SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
+from foo import MS_Class
+
+c = MS_Class()
+a, b = c.instance_method(SOURCE)
+SINK_F(a)
+SINK(b)  # $ flow="SOURCE, l:-2 -> b"
+
+# Call the instance method on the class to expose the self argument
+x, y = MS_Class.instance_method(SOURCE, NONSOURCE)
+SINK(x)  # $ MISSING: flow="SOURCE, l:-1 -> x"
+SINK_F(y)
+
+# Call the instance method on the class to expose the self argument
+# That self argument is not referenced by `Argument[self:]`
+SINK_F(MS_Class.explicit_self(SOURCE))
+# Instead, `Argument[self:]` refers to a keyword argument named `self` (which you are allowed to do in Python)
+SINK(c.explicit_self(self = SOURCE))  # $ flow="SOURCE -> c.explicit_self(..)"
+
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
 

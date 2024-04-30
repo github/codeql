@@ -245,6 +245,8 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
+        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
+
 #nullable restore warnings
 
         /// <summary>

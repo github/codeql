@@ -71,17 +71,6 @@ class ExternalApiDataNode extends DataFlow::Node {
   predicate hasQualifiedName(string qualifier, string name) {
     this.getCallable().hasFullyQualifiedName(qualifier, name)
   }
-
-  /**
-   * DEPRECATED: Use hasQualifiedName/2 instead.
-   *
-   * Gets the description of the callable being called.
-   */
-  deprecated string getCallableDescription() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) and result = getQualifiedName(qualifier, name)
-    )
-  }
 }
 
 /**
