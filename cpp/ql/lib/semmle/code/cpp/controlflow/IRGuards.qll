@@ -793,7 +793,7 @@ private predicate simple_comparison_eq(Instruction test, Operand op, int k, Abst
   or
   // There's no implicit CompareInstruction in files compiled as C since C
   // doesn't have implicit boolean conversions. So instead we check whether
-  // there's a branch on a value ofpointer or integer type.
+  // there's a branch on a value of pointer or integer type.
   exists(ConditionalBranchInstruction branch, IRType type |
     not test instanceof CompareInstruction and
     type = test.getResultIRType() and
