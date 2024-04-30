@@ -796,13 +796,18 @@ private predicate simple_comparison_eq(Instruction test, Operand op, int k, Abst
   // there's a branch on a value ofpointer or integer type.
   exists(ConditionalBranchInstruction branch, IRType type |
     not test instanceof CompareInstruction and
+    type = test.getResultIRType() and
     (type instanceof IRAddressType or type instanceof IRIntegerType) and
     test = branch.getCondition() and
     op.getDef() = test
   |
-    k = 1 and
-    value.(BooleanValue).getValue() = true
-    or
+    // We'd like to also include a case such as:
+    // ```
+    // k = 1 and
+    // value.(BooleanValue).getValue() = true
+    // ```
+    // but all we know is that the value is non-zero in the true branch.
+    // So we can only conclude something in the false branch.
     k = 0 and
     value.(BooleanValue).getValue() = false
   )
