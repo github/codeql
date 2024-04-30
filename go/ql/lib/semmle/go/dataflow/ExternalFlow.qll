@@ -279,6 +279,7 @@ private string interpretPackage(string p) {
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
+cached
 SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   string pkg, string type, boolean subtypes, string name, string signature, string ext
 ) {
