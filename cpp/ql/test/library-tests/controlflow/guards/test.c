@@ -147,3 +147,15 @@ void test5(int x) {
     test3();
   }
 }
+
+void test6(char* p) {
+    if(p) {
+
+    }
+}
+
+void test7(char* p) {
+    if(!p) {
+        
+    }
+}
