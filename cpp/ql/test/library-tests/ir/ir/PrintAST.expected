@@ -22442,6 +22442,139 @@ ir.cpp:
 #-----|               Type = [Class] ClassWithDestructor
 #-----|               ValueCategory = lvalue
 # 2499|     getStmt(4): [ReturnStmt] return ...
+# 2501| [TopLevelFunction] void destruction_in_switch_1(int)
+# 2501|   <params>: 
+# 2501|     getParameter(0): [Parameter] c
+# 2501|         Type = [IntType] int
+# 2501|   getEntryPoint(): [BlockStmt] { ... }
+# 2502|     getStmt(0): [SwitchStmt] switch (...) ... 
+# 2502|       getExpr(): [VariableAccess] c
+# 2502|           Type = [IntType] int
+# 2502|           ValueCategory = prvalue(load)
+# 2502|       getStmt(): [BlockStmt] { ... }
+# 2503|         getStmt(0): [SwitchCase] case ...:
+# 2503|           getExpr(): [Literal] 0
+# 2503|               Type = [IntType] int
+# 2503|               Value = [Literal] 0
+# 2503|               ValueCategory = prvalue
+# 2503|         getStmt(1): [BlockStmt] { ... }
+# 2504|           getStmt(0): [DeclStmt] declaration
+# 2504|             getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2504|                 Type = [Class] ClassWithDestructor
+# 2504|               getVariable().getInitializer(): [Initializer] initializer for x
+# 2504|                 getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2504|                     Type = [VoidType] void
+# 2504|                     ValueCategory = prvalue
+# 2505|           getStmt(1): [BreakStmt] break;
+# 2506|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2506|                 Type = [VoidType] void
+# 2506|                 ValueCategory = prvalue
+# 2506|               getQualifier(): [VariableAccess] x
+# 2506|                   Type = [Class] ClassWithDestructor
+# 2506|                   ValueCategory = lvalue
+# 2506|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2506|               Type = [VoidType] void
+# 2506|               ValueCategory = prvalue
+# 2506|             getQualifier(): [VariableAccess] x
+# 2506|                 Type = [Class] ClassWithDestructor
+# 2506|                 ValueCategory = lvalue
+# 2507|     getStmt(1): [LabelStmt] label ...:
+# 2508|     getStmt(2): [ReturnStmt] return ...
+# 2510| [TopLevelFunction] void destruction_in_switch_2(int)
+# 2510|   <params>: 
+# 2510|     getParameter(0): [Parameter] c
+# 2510|         Type = [IntType] int
+# 2510|   getEntryPoint(): [BlockStmt] { ... }
+# 2511|     getStmt(0): [SwitchStmt] switch (...) ... 
+# 2511|       getInitialization(): [DeclStmt] declaration
+# 2511|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2511|             Type = [Class] ClassWithDestructor
+# 2511|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2511|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2511|                 Type = [VoidType] void
+# 2511|                 ValueCategory = prvalue
+# 2511|       getExpr(): [VariableAccess] c
+# 2511|           Type = [IntType] int
+# 2511|           ValueCategory = prvalue(load)
+# 2511|       getStmt(): [BlockStmt] { ... }
+# 2512|         getStmt(0): [SwitchCase] case ...:
+# 2512|           getExpr(): [Literal] 0
+# 2512|               Type = [IntType] int
+# 2512|               Value = [Literal] 0
+# 2512|               ValueCategory = prvalue
+# 2512|         getStmt(1): [BlockStmt] { ... }
+# 2513|           getStmt(0): [BreakStmt] break;
+# 2515|         getStmt(2): [SwitchCase] default: 
+# 2515|         getStmt(3): [BlockStmt] { ... }
+# 2516|           getStmt(0): [BreakStmt] break;
+# 2518|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2518|           Type = [VoidType] void
+# 2518|           ValueCategory = prvalue
+# 2518|         getQualifier(): [VariableAccess] y
+# 2518|             Type = [Class] ClassWithDestructor
+# 2518|             ValueCategory = lvalue
+# 2518|     getStmt(1): [LabelStmt] label ...:
+# 2519|     getStmt(2): [ReturnStmt] return ...
+# 2521| [TopLevelFunction] void destruction_in_switch_3(int)
+# 2521|   <params>: 
+# 2521|     getParameter(0): [Parameter] c
+# 2521|         Type = [IntType] int
+# 2521|   getEntryPoint(): [BlockStmt] { ... }
+# 2522|     getStmt(0): [SwitchStmt] switch (...) ... 
+# 2522|       getInitialization(): [DeclStmt] declaration
+# 2522|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2522|             Type = [Class] ClassWithDestructor
+# 2522|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2522|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2522|                 Type = [VoidType] void
+# 2522|                 ValueCategory = prvalue
+# 2522|       getExpr(): [VariableAccess] c
+# 2522|           Type = [IntType] int
+# 2522|           ValueCategory = prvalue(load)
+# 2522|       getStmt(): [BlockStmt] { ... }
+# 2523|         getStmt(0): [SwitchCase] case ...:
+# 2523|           getExpr(): [Literal] 0
+# 2523|               Type = [IntType] int
+# 2523|               Value = [Literal] 0
+# 2523|               ValueCategory = prvalue
+# 2523|         getStmt(1): [BlockStmt] { ... }
+# 2524|           getStmt(0): [DeclStmt] declaration
+# 2524|             getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2524|                 Type = [Class] ClassWithDestructor
+# 2524|               getVariable().getInitializer(): [Initializer] initializer for x
+# 2524|                 getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2524|                     Type = [VoidType] void
+# 2524|                     ValueCategory = prvalue
+# 2525|           getStmt(1): [BreakStmt] break;
+# 2526|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2526|                 Type = [VoidType] void
+# 2526|                 ValueCategory = prvalue
+# 2526|               getQualifier(): [VariableAccess] x
+# 2526|                   Type = [Class] ClassWithDestructor
+# 2526|                   ValueCategory = lvalue
+# 2530|             getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor
+# 2530|                 Type = [VoidType] void
+# 2530|                 ValueCategory = prvalue
+# 2530|               getQualifier(): [VariableAccess] y
+# 2530|                   Type = [Class] ClassWithDestructor
+# 2530|                   ValueCategory = lvalue
+# 2526|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2526|               Type = [VoidType] void
+# 2526|               ValueCategory = prvalue
+# 2526|             getQualifier(): [VariableAccess] x
+# 2526|                 Type = [Class] ClassWithDestructor
+# 2526|                 ValueCategory = lvalue
+# 2527|         getStmt(2): [SwitchCase] default: 
+# 2527|         getStmt(3): [BlockStmt] { ... }
+# 2528|           getStmt(0): [BreakStmt] break;
+# 2530|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2530|           Type = [VoidType] void
+# 2530|           ValueCategory = prvalue
+# 2530|         getQualifier(): [VariableAccess] y
+# 2530|             Type = [Class] ClassWithDestructor
+# 2530|             ValueCategory = lvalue
+# 2530|     getStmt(1): [LabelStmt] label ...:
+# 2531|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
