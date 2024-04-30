@@ -284,7 +284,8 @@ module Private {
      * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
      */
     predicate summaryElement(
-      Callable c, string input, string output, string kind, string provenance, string model
+      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance,
+      string model
     ) {
       exists(
         string namespace, string type, boolean subtypes, string name, string signature, string ext,
