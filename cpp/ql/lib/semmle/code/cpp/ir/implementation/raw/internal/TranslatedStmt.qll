@@ -1276,6 +1276,11 @@ class TranslatedJumpStmt extends TranslatedStmt {
   override JumpStmt stmt;
 
   override Instruction getFirstInstruction(EdgeKind kind) {
+    // The first instruction is a destructor call, if any.
+    result = this.getChildInternal(0).getFirstInstruction(kind)
+    or
+    // Otherwise, the first (and only) instruction is a `NoOp`
+    not exists(this.getChildInternal(0)) and
     result = this.getInstruction(OnlyInstructionTag()) and
     kind instanceof GotoEdge
   }
@@ -1284,7 +1289,20 @@ class TranslatedJumpStmt extends TranslatedStmt {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
-  override TranslatedElement getChildInternal(int id) { none() }
+  private TranslatedCall getTranslatedImplicitDestructorCall(int id) {
+    result.getExpr() = stmt.getImplicitDestructorCall(id)
+  }
+
+  override TranslatedElement getLastChild() {
+    result =
+      this.getTranslatedImplicitDestructorCall(max(int id |
+          exists(stmt.getImplicitDestructorCall(id))
+        ))
+  }
+
+  override TranslatedElement getChildInternal(int id) {
+    result = this.getTranslatedImplicitDestructorCall(id)
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
@@ -1297,7 +1315,19 @@ class TranslatedJumpStmt extends TranslatedStmt {
     result = getTranslatedStmt(stmt.getTarget()).getFirstInstruction(kind)
   }
 
-  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
+  final override predicate handlesDestructorsExplicitly() { any() }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    exists(int id | child = this.getChildInternal(id) |
+      // Transition to the next destructor call, if any.
+      result = this.getChildInternal(id + 1).getFirstInstruction(kind)
+      or
+      // And otherwise, exit this element by flowing to the target of the jump.
+      not exists(this.getChildInternal(id + 1)) and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(OnlyInstructionTag())
+    )
+  }
 }
 
 private EdgeKind getCaseEdge(SwitchCase switchCase) {
