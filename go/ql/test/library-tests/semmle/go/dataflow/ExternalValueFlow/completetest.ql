@@ -14,4 +14,4 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node src) { sinkNode(src, "qltest") }
 }
 
-import TaintFlowTest<Config>
+import ValueFlowTest<Config>
