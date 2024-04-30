@@ -298,6 +298,17 @@ module Private {
           interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
       )
     }
+
+    /**
+     * Holds if a neutral model exists for `c` of kind `kind`
+     * and with provenance `provenance`.
+     */
+    predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
+      exists(string namespace, string type, string name, string signature |
+        neutralModel(namespace, type, name, signature, kind, provenance) and
+        c.asFunction() = interpretElement(namespace, type, false, name, signature, "").asEntity()
+      )
+    }
   }
 
   /**
