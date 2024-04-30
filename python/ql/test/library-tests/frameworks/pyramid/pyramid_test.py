@@ -6,8 +6,8 @@ from wsgiref.simple_server import make_server
 def ignore(*args, **kwargs): pass
 ensure_tainted = ensure_not_tainted = ignore
 
-@view_config(route_name="test1")
-def test1(request): # $ requestHandler routedParameter=request
+@view_config(route_name="test1") # $ routeSetup
+def test1(request): # $ requestHandler 
     ensure_tainted(
         request,                   # $ tainted
 
@@ -72,17 +72,17 @@ def test1(request): # $ requestHandler routedParameter=request
 
     return Response("Ok") # $ HttpResponse responseBody="Ok" mimetype=text/html
 
-def test2(request): # $ requestHandler routedParameter=request
+def test2(request): # $ requestHandler 
     ensure_tainted(request) # $ tainted
 
     resp = Response("Ok", content_type="text/plain") # $ HttpResponse responseBody="Ok" mimetype=text/plain
     resp.body = "Ok2" # $ HttpResponse responseBody="Ok2" SPURIOUS: mimetype=text/html
     return resp
 
-@view_config(route_name="test3", renderer="string")
-def test3(context, request): # $ requestHandler routedParameter=request
-    ensure_tainted(request) # $ tainted
-    resp = request.response # $ HttpResponse mimetype=text/html
+@view_config(route_name="test3", renderer="string") # $ routeSetup
+def test3(ctx, req): # $ requestHandler 
+    ensure_tainted(req) # $ tainted
+    resp = req.response # $ HttpResponse mimetype=text/html
     resp.set_cookie("hi", "there") # $ CookieWrite CookieName="hi" CookieValue="there"
     resp.set_cookie(value="there", name="hi") # $ CookieWrite CookieName="hi" CookieValue="there"
     return "Ok" # $ HttpResponse responseBody="Ok" mimetype=text/html
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     with Configurator() as config:
         for i in range(1,4):
             config.add_route(f"test{i}", f"/test{i}")
-        config.add_view(test2, route_name="test2")
+        config.add_view(test2, route_name="test2") # $ routeSetup
         config.scan()
         server = make_server('127.0.0.1', 8000, config.make_wsgi_app())
         print("serving")

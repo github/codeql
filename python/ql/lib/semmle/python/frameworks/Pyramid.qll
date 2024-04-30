@@ -19,49 +19,62 @@ private import semmle.python.frameworks.Stdlib
  * See https://docs.pylonsproject.org/projects/pyramid/.
  */
 module Pyramid {
-  // TODO: qldoc
+  /** Provides models for pyramid View callables. */
   module View {
     /**
      * A callable that could be used as a pyramid view callable.
      */
     private class PotentialViewCallable extends Function {
-      PotentialViewCallable() {
-        this.getPositionalParameterCount() = 1 and
-        this.getArgName(0) = "request"
-        or
-        this.getPositionalParameterCount() = 2 and
-        this.getArgName(0) = "context" and
-        this.getArgName(1) = "request"
-      }
+      PotentialViewCallable() { this.getPositionalParameterCount() in [1, 2] }
 
       /** Gets the `request` parameter of this view callable. */
-      Parameter getRequestParameter() { result = this.getArgByName("request") }
+      Parameter getRequestParameter() {
+        this.getPositionalParameterCount() = 1 and
+        result = this.getArg(0)
+        or
+        this.getPositionalParameterCount() = 2 and
+        result = this.getArg(1)
+      }
     }
 
-    abstract class ViewCallable extends PotentialViewCallable, Http::Server::RequestHandler::Range {
-      override Parameter getARoutedParameter() { result = this.getRequestParameter() }
-
+    /** A dataflow node that sets up a route on a server using the Pyramid framework. */
+    abstract private class PyramidRouteSetup extends Http::Server::RouteSetup::Range {
       override string getFramework() { result = "Pyramid" }
     }
 
-    private class ViewCallableFromDecorator extends ViewCallable {
-      ViewCallableFromDecorator() {
-        this.getADecorator() =
-          API::moduleImport("pyramid")
-              .getMember("view")
-              .getMember("view_config")
-              .getACall()
-              .asExpr()
-      }
+    /**
+     * A Pyramid view callable, that handles incoming requests.
+     */
+    class ViewCallable extends PotentialViewCallable {
+      ViewCallable() { this = any(PyramidRouteSetup rs).getARequestHandler() }
     }
 
-    private class ViewCallableFromConfigurator extends ViewCallable {
-      ViewCallableFromConfigurator() {
-        any(Configurator::AddViewCall c).getViewArg() = poorMansFunctionTracker(this)
+    /** A pyramid route setup using the `pyramid.view.view_config` decorator. */
+    private class DecoratorSetup extends PyramidRouteSetup {
+      DecoratorSetup() {
+        this = API::moduleImport("pyramid").getMember("view").getMember("view_config").getACall()
       }
+
+      override Function getARequestHandler() { result.getADecorator() = this.asExpr() }
+
+      override DataFlow::Node getUrlPatternArg() { none() } // there is a `route_name` arg, but that does not contain the url pattern
+
+      override Parameter getARoutedParameter() { none() }
+    }
+
+    /** A pyramid route setup using a call to `pyramid.config.Configurator.add_view`. */
+    private class ConfiguratorSetup extends PyramidRouteSetup instanceof Configurator::AddViewCall {
+      override Function getARequestHandler() {
+        this.(Configurator::AddViewCall).getViewArg() = poorMansFunctionTracker(result)
+      }
+
+      override DataFlow::Node getUrlPatternArg() { none() } // there is a `route_name` arg, but that does not contain the url pattern
+
+      override Parameter getARoutedParameter() { none() }
     }
   }
 
+  /** Provides models for `pyramid.config.Configurator` */
   module Configurator {
     /** Gets a reference to the class `pyramid.config.Configurator`. */
     API::Node classRef() {
@@ -79,6 +92,7 @@ module Pyramid {
     /** Gets a reference to an instance of `pyramid.config.Configurator`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
+    /** Gets a call to the `add_view` method of an instance of `pyramid.config.Configurator`. */
     class AddViewCall extends DataFlow::MethodCallNode {
       AddViewCall() { this.calls(instance(), "add_view") }
 
@@ -86,7 +100,13 @@ module Pyramid {
     }
   }
 
+  /** Provides modelling for pyramid requests. */
   module Request {
+    /**
+     * A source of instances of `pyramid.request.Request`, extend this class to model new instances.
+     *
+     * Use the predicate `Request::instance()` to get references to instances of `pyramid.request.Request`.
+     */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `pyramid.request.Request`. */
@@ -100,10 +120,14 @@ module Pyramid {
     /** Gets a reference to an instance of `pyramid.request.Request`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-    private class RequestParameter extends InstanceSource, DataFlow::ParameterNode {
+    private class RequestParameter extends InstanceSource, RemoteFlowSource::Range instanceof DataFlow::ParameterNode
+    {
       RequestParameter() { this.getParameter() = any(View::ViewCallable vc).getRequestParameter() }
+
+      override string getSourceType() { result = "Pyramid request parameter" }
     }
 
+    /** Taint steps for request instances. */
     private class InstanceTaintSteps extends InstanceTaintStepsHelper {
       InstanceTaintSteps() { this = "pyramid.request.Request" }
 
@@ -115,9 +139,9 @@ module Pyramid {
             "as_bytes", "authorization", "body", "body_file", "body_file_raw", "body_file_seekable",
             "cache_control", "client_addr", "content_type", "cookies", "domain", "headers", "host",
             "host_port", "host_url", "GET", "if_match", "if_none_match", "if_range",
-            "if_none_match", "json", "json_body", "params", "path", "path_info", "path_qs",
-            "path_url", "POST", "pragma", "query_string", "range", "referer", "referrer", "text",
-            "url", "urlargs", "urlvars", "user_agent"
+            "if_none_match", "json", "json_body", "matchdict", "params", "path", "path_info",
+            "path_qs", "path_url", "POST", "pragma", "query_string", "range", "referer", "referrer",
+            "text", "url", "urlargs", "urlvars", "user_agent"
           ]
       }
 
@@ -128,10 +152,12 @@ module Pyramid {
       override string getAsyncMethodName() { none() }
     }
 
+    /** A call to a method of a `request` that copies the request. */
     private class RequestCopyCall extends InstanceSource, DataFlow::MethodCallNode {
       RequestCopyCall() { this.calls(instance(), ["copy", "copy_get"]) }
     }
 
+    /** A member of a request that is a file-like object. */
     private class RequestBodyFileLike extends Stdlib::FileLikeObject::InstanceSource instanceof DataFlow::AttrRead
     {
       RequestBodyFileLike() {
@@ -141,7 +167,9 @@ module Pyramid {
     }
   }
 
+  /** Provides modelling for pyramid responses. */
   module Response {
+    /** A response returned by a view callable. */
     private class PyramidReturnResponse extends Http::Server::HttpResponse::Range {
       PyramidReturnResponse() {
         this.asCfgNode() = any(View::ViewCallable vc).getAReturnValueFlowNode() and
@@ -155,15 +183,26 @@ module Pyramid {
       override string getMimetypeDefault() { result = "text/html" }
     }
 
-    private API::Node classRef() {
-      result = API::moduleImport("pyramid").getMember("response").getMember("Response")
+    /** Gets a reference to the class `pyramid.response.Response` or a subclass. */
+    API::Node subclassRef() {
+      result = API::moduleImport("pyramid").getMember("response").getMember("Response") or
+      result = ModelOutput::getATypeNode("pyramid.response.Response~Subclass").getASubclass*()
     }
 
+    /**
+     * A source of instances of `pyramid.response.Response`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Response::instance()` to get references to instances of `pyramid.response.Response`.
+     */
     abstract class InstanceSource extends DataFlow::LocalSourceNode,
       Http::Server::HttpResponse::Range
     { }
 
-    /** Gets a reference to an instance of `pyramid.request.Request`. */
+    /** Gets a reference to an instance of `pyramid.response.Response`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -171,11 +210,12 @@ module Pyramid {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of `pyramid.request.Request`. */
+    /** Gets a reference to an instance of `pyramid.response.Response`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
+    /** An instantiation of the class `pyramid.response.Response` or a subclass. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      ClassInstantiation() { this = classRef().getACall() }
+      ClassInstantiation() { this = subclassRef().getACall() }
 
       override DataFlow::Node getBody() { result = [this.getArg(0), this.getArgByName("body")] }
 
@@ -186,6 +226,7 @@ module Pyramid {
       override string getMimetypeDefault() { result = "text/html" }
     }
 
+    /** A write to a field that sets the body of a response. */
     private class ResponseBodySet extends Http::Server::HttpResponse::Range instanceof DataFlow::AttrWrite
     {
       string attrName;
@@ -207,6 +248,7 @@ module Pyramid {
       }
     }
 
+    /** A use of the `response` attribute of a `Request`. */
     private class RequestResponseAttr extends InstanceSource instanceof DataFlow::AttrRead {
       RequestResponseAttr() {
         this.getObject() = Request::instance() and this.getAttributeName() = "response"
@@ -219,6 +261,7 @@ module Pyramid {
       override string getMimetypeDefault() { result = "text/html" }
     }
 
+    /** A call to `response.set_cookie`. */
     private class SetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::MethodCallNode {
       SetCookieCall() { this.calls(instance(), "set_cookie") }
 
@@ -229,6 +272,35 @@ module Pyramid {
       override DataFlow::Node getValueArg() {
         result = [this.getArg(1), this.getArgByName("value")]
       }
+    }
+  }
+
+  /** Provides models for pyramid http redirects. */
+  module Redirect {
+    /** Gets a reference to a subclass of `pyramid.httpexceptions._HTTPMove`, which each each exception class representing an HTTP redirect response is a subclass of. */
+    API::Node subclassRef() {
+      result =
+        API::moduleImport("pyramid")
+            .getMember("httpexceptions")
+            .getMember("_HTTPMove")
+            .getASubclass*() or
+      result =
+        ModelOutput::getATypeNode("pyramid.httpexceptions._HTTPMove~Subclass").getASubclass*()
+    }
+
+    /** Gets a call to a pyramid HTTP exception class that represents an HTTP redirect response. */
+    class PyramidRedirect extends Http::Server::HttpRedirectResponse::Range, DataFlow::CallCfgNode {
+      PyramidRedirect() { this = subclassRef().getACall() }
+
+      override DataFlow::Node getRedirectLocation() {
+        result = [this.getArg(0), this.getArgByName("location")]
+      }
+
+      override DataFlow::Node getBody() { none() }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { result = "text/html" }
     }
   }
 }
