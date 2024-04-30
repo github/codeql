@@ -460,13 +460,7 @@ private class NeutralCallableAdapter extends NeutralCallable {
   string kind;
   string provenance_;
 
-  NeutralCallableAdapter() {
-    // Neutral models have not been implemented for Go.
-    none() and
-    exists(this) and
-    exists(kind) and
-    exists(provenance_)
-  }
+  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
 
   override string getKind() { result = kind }
 
