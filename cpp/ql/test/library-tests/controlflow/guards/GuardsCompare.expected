@@ -149,3 +149,23 @@
 | 111 | 0.0 == i+0 when ... != ... is false |
 | 111 | i != 0.0+0 when ... != ... is true |
 | 111 | i == 0.0+0 when ... != ... is false |
+| 126 | 1 != 0 when 1 is true |
+| 126 | 1 != 0 when ... && ... is true |
+| 126 | 1 == 0 when 1 is false |
+| 126 | call to test3_condition != 0 when ... && ... is true |
+| 126 | call to test3_condition != 0 when call to test3_condition is true |
+| 126 | call to test3_condition == 0 when call to test3_condition is false |
+| 131 | b != 0 when b is true |
+| 131 | b == 0 when b is false |
+| 137 | 0 != 0 when 0 is true |
+| 137 | 0 == 0 when 0 is false |
+| 146 | ! ... != 0 when ! ... is true |
+| 146 | ! ... == 0 when ! ... is false |
+| 152 | p != 0 when p is true |
+| 152 | p == 0 when p is false |
+| 158 | ! ... != 0 when ! ... is true |
+| 158 | ! ... == 0 when ! ... is false |
+| 164 | s != 0 when s is true |
+| 164 | s == 0 when s is false |
+| 170 | ! ... != 0 when ! ... is true |
+| 170 | ! ... == 0 when ! ... is false |
