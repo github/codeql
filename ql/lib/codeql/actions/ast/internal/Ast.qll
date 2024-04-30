@@ -635,19 +635,22 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Holds if the workflow is privileged. */
   predicate isPrivileged() {
-    // The job has a permission to write to some scope
+    // the job has an explicit write permission
     this.getPermissions().getAPermission() = "write"
     or
-    // The job accesses a secret
+    // the job accesses a secret other than GITHUB_TOKEN
     exists(SecretsExpressionImpl expr |
       expr.getEnclosingJob() = this and not expr.getFieldName() = "GITHUB_TOKEN"
     )
     or
-    // The effective permissions have write access
-    exists(string path, string name, string secrets_source, string perms |
-      workflowDataModel(path, _, name, secrets_source, perms, _) and
+    // the effective permissions have write access
+    exists(string path, string trigger, string name, string secrets_source, string perms |
+      workflowDataModel(path, trigger, name, secrets_source, perms, _) and
       path.trim() = this.getLocation().getFile().getRelativePath() and
       name.trim().matches(this.getId() + "%") and
+      // We cannot trust the permissions for pull_request events since they depend on the
+      // location of the head branch
+      not trigger.trim() = "pull_request" and
       (
         secrets_source.trim().toLowerCase() = "actions" or
         perms.toLowerCase().matches("%write%")
