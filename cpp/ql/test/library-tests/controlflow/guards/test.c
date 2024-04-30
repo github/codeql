@@ -159,3 +159,15 @@ void test7(char* p) {
         
     }
 }
+
+void test8(short s) {
+    if(s) {
+
+    }
+}
+
+void test9(short s) {
+    if(!s) {
+        
+    }
+}

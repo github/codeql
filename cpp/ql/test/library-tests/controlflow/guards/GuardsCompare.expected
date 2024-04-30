@@ -165,3 +165,7 @@
 | 152 | p == 0 when p is false |
 | 158 | ! ... != 0 when ! ... is true |
 | 158 | ! ... == 0 when ! ... is false |
+| 164 | s != 0 when s is true |
+| 164 | s == 0 when s is false |
+| 170 | ! ... != 0 when ! ... is true |
+| 170 | ! ... == 0 when ! ... is false |
