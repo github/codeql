@@ -415,20 +415,6 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
-private predicate summaryElement(
-  Callable c, string input, string output, string kind, string provenance, string model
-) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    QlBuiltins::ExtensionId madId
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
-    model = "MaD:" + madId.toString() and
-    c.asFunction() = interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
-  )
-}
-
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
   SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }

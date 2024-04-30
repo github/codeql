@@ -278,6 +278,25 @@ module Private {
   module External {
     import Impl::Private::External
     import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
+
+    /**
+     * Holds if an external flow summary exists for `c` with input specification
+     * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
+     */
+    predicate summaryElement(
+      Callable c, string input, string output, string kind, string provenance, string model
+    ) {
+      exists(
+        string namespace, string type, boolean subtypes, string name, string signature, string ext,
+        QlBuiltins::ExtensionId madId
+      |
+        summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+          provenance, madId) and
+        model = "MaD:" + madId.toString() and
+        c.asFunction() =
+          interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
+      )
+    }
   }
 
   /**
