@@ -21,22 +21,6 @@ private import semmle.python.frameworks.Stdlib
 module Pyramid {
   /** Provides models for pyramid View callables. */
   module View {
-    /**
-     * A callable that could be used as a pyramid view callable.
-     */
-    private class PotentialViewCallable extends Function {
-      PotentialViewCallable() { this.getPositionalParameterCount() in [1, 2] }
-
-      /** Gets the `request` parameter of this view callable. */
-      Parameter getRequestParameter() {
-        this.getPositionalParameterCount() = 1 and
-        result = this.getArg(0)
-        or
-        this.getPositionalParameterCount() = 2 and
-        result = this.getArg(1)
-      }
-    }
-
     /** A dataflow node that sets up a route on a server using the Pyramid framework. */
     abstract private class PyramidRouteSetup extends Http::Server::RouteSetup::Range {
       override string getFramework() { result = "Pyramid" }
@@ -45,8 +29,17 @@ module Pyramid {
     /**
      * A Pyramid view callable, that handles incoming requests.
      */
-    class ViewCallable extends PotentialViewCallable {
+    class ViewCallable extends Function {
       ViewCallable() { this = any(PyramidRouteSetup rs).getARequestHandler() }
+
+      /** Gets the `request` parameter of this callable. */
+      Parameter getRequestParameter() {
+        this.getPositionalParameterCount() = 1 and
+        result = this.getArg(0)
+        or
+        this.getPositionalParameterCount() = 2 and
+        result = this.getArg(1)
+      }
     }
 
     /** A pyramid route setup using the `pyramid.view.view_config` decorator. */
@@ -92,15 +85,16 @@ module Pyramid {
     /** Gets a reference to an instance of `pyramid.config.Configurator`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-    /** Gets a call to the `add_view` method of an instance of `pyramid.config.Configurator`. */
+    /** A call to the `add_view` method of an instance of `pyramid.config.Configurator`. */
     class AddViewCall extends DataFlow::MethodCallNode {
       AddViewCall() { this.calls(instance(), "add_view") }
 
+      /** Gets the `view` argument of this call. */
       DataFlow::Node getViewArg() { result = [this.getArg(0), this.getArgByName("view")] }
     }
   }
 
-  /** Provides modelling for pyramid requests. */
+  /** Provides modeling for pyramid requests. */
   module Request {
     /**
      * A source of instances of `pyramid.request.Request`, extend this class to model new instances.
@@ -167,7 +161,7 @@ module Pyramid {
     }
   }
 
-  /** Provides modelling for pyramid responses. */
+  /** Provides modeling for pyramid responses. */
   module Response {
     /** A response returned by a view callable. */
     private class PyramidReturnResponse extends Http::Server::HttpResponse::Range {
@@ -287,7 +281,7 @@ module Pyramid {
               ])
     }
 
-    /** Gets a call to a pyramid HTTP exception class that represents an HTTP redirect response. */
+    /** A call to a pyramid HTTP exception class that represents an HTTP redirect response. */
     class PyramidRedirect extends Http::Server::HttpRedirectResponse::Range, DataFlow::CallCfgNode {
       PyramidRedirect() { this = classRef().getACall() }
 
