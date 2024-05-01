@@ -552,7 +552,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       /** Holds if `call` does not have a reduced set of dispatch targets in call context `ctx`. */
       bindingset[call, ctx]
-      predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx) {
+      predicate viableImplNotCallContextReduced(DataFlowCall call, CallContext ctx) {
         exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
           not Input2::reducedViableImplInCallContext(call, _, outer)
         )
@@ -572,7 +572,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
         result = viableImplCallContextReduced(call, cc)
         or
-        noPrunedViableImplInCallContext(call, cc) and
+        viableImplNotCallContextReduced(call, cc) and
         relevantCallEdgeIn(call, result)
       }
 
