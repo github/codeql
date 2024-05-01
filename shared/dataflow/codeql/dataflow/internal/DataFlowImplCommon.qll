@@ -659,6 +659,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
 
     cached
+    pragma[no_dynamic_join_order]
     predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
 
     cached

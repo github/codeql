@@ -317,6 +317,7 @@ private module Cached {
   }
 
   cached
+  pragma[no_dynamic_join_order]
   Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(
       Alias::VirtualVariable vvar, OldInstruction oldInstr, OldBlock defBlock, int defRank,
