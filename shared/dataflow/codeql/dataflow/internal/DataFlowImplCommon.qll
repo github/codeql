@@ -582,8 +582,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
        * the possible call sites are restricted.
        */
       pragma[nomagic]
-      DataFlowCall prunedViableImplInCallContextReverse(
-        DataFlowCallable callable, CallContextReturn ctx
+      DataFlowCall viableImplCallContextReducedReverse(
+        DataFlowCallable callable, CallContextNoCall ctx
       ) {
         exists(DataFlowCallable c0, DataFlowCall call0 |
           callEnclosingCallable(call0, callable) and
@@ -600,7 +600,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       predicate resolveReturn(CallContextNoCall cc, DataFlowCallable callable, DataFlowCall call) {
         cc instanceof CallContextAny and relevantCallEdgeOut(call, callable)
         or
-        call = prunedViableImplInCallContextReverse(callable, cc)
+        call = viableImplCallContextReducedReverse(callable, cc)
       }
 
       /** Gets the call context when returning from `c` to `call`. */
@@ -888,10 +888,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       }
 
       cached
-      DataFlowCall prunedViableImplInCallContextReverse(
-        DataFlowCallable callable, CallContextReturn ctx
+      DataFlowCall viableImplCallContextReducedReverse(
+        DataFlowCallable callable, CallContextNoCall ctx
       ) {
-        result = Impl2::prunedViableImplInCallContextReverse(callable, ctx)
+        result = Impl2::viableImplCallContextReducedReverse(callable, ctx)
       }
     }
 
