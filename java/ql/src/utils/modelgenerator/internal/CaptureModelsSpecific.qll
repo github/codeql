@@ -24,38 +24,52 @@ class Unit = J::Unit;
 
 class Callable = J::Callable;
 
-private J::Method superImpl(J::Method m) {
-  result = m.getAnOverride() and
-  not exists(result.getAnOverride()) and
-  not m instanceof J::ToStringMethod
-}
-
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("javax.swing%") or
   cu.getPackage().getName().matches("java.awt%")
 }
 
-/**
- * Holds if it is relevant to generate models for `api`.
- */
-private predicate isRelevantForModels(Callable api) {
+private predicate relevant(Callable api) {
+  api.isPublic() and
+  api.getDeclaringType().isPublic() and
+  api.fromSource() and
   not isUninterestingForModels(api) and
-  not isInfrequentlyUsed(api.getCompilationUnit()) and
-  // Disregard all APIs that have a manual model.
-  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() and
-  not api =
-    any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
+  not isInfrequentlyUsed(api.getCompilationUnit())
+}
+
+private J::Method getARelevantOverride(J::Method m) {
+  result = m.getAnOverride() and
+  relevant(result) and
+  // Other exclusions for overrides.
+  not m instanceof J::ToStringMethod
+}
+
+/**
+ * Gets the super implementation of `m` if it is relevant.
+ * If such a super implementations does not exist, returns `m` if it is relevant.
+ */
+private J::Callable liftedImpl(J::Callable m) {
+  (
+    result = getARelevantOverride(m)
+    or
+    result = m and relevant(m)
+  ) and
+  not exists(getARelevantOverride(result))
+}
+
+private predicate hasManualModel(Callable api) {
+  api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
+  api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
 }
 
 /**
  * Holds if it is relevant to generate models for `api` based on data flow analysis.
  */
 predicate isRelevantForDataFlowModels(Callable api) {
-  isRelevantForModels(api) and
   (not api.getDeclaringType() instanceof J::Interface or exists(api.getBody()))
 }
 
-predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
+predicate isRelevantForTypeBasedFlowModels(Callable api) { any() }
 
 /**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
@@ -64,24 +78,17 @@ predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
  * from outside the library itself.
  */
 class TargetApiSpecific extends Callable {
+  private Callable lift;
+
   TargetApiSpecific() {
-    this.isPublic() and
-    this.fromSource() and
-    (
-      this.getDeclaringType().isPublic() or
-      superImpl(this).getDeclaringType().isPublic()
-    ) and
-    isRelevantForModels(this)
+    lift = liftedImpl(this) and
+    not hasManualModel(lift)
   }
 
   /**
-   * Gets the callable that a model will be lifted to, if any.
+   * Gets the callable that a model will be lifted to.
    */
-  Callable lift() {
-    exists(Method m | m = superImpl(this) and m.fromSource() | result = m)
-    or
-    not exists(superImpl(this)) and result = this
-  }
+  Callable lift() { result = lift }
 }
 
 private string isExtensible(J::RefType ref) {
@@ -228,6 +235,15 @@ predicate sinkModelSanitizer(DataFlow::Node node) {
   )
 }
 
+private class ManualNeutralSinkCallable extends Callable {
+  ManualNeutralSinkCallable() {
+    this =
+      any(FlowSummaryImpl::Public::NeutralCallable nc |
+        nc.hasManualModel() and nc.getKind() = "sink"
+      ).asCallable()
+  }
+}
+
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
@@ -236,14 +252,15 @@ predicate apiSource(DataFlow::Node source) {
     source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
     source instanceof DataFlow::ParameterNode
   ) and
-  source.getEnclosingCallable().isPublic() and
-  exists(J::RefType t |
-    t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
-    not t instanceof J::TypeObject and
-    t.isPublic()
-  ) and
-  isRelevantForModels(source.getEnclosingCallable()) and
-  exists(asPartialModel(source.getEnclosingCallable()))
+  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
+    exists(liftedImpl(enclosing)) and
+    not enclosing instanceof ManualNeutralSinkCallable and
+    exists(J::RefType t |
+      t = enclosing.getDeclaringType().getAnAncestor() and
+      not t instanceof J::TypeObject and
+      t.isPublic()
+    )
+  )
 }
 
 /**
