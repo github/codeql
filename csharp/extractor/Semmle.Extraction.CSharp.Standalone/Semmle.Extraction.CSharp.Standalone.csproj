@@ -18,11 +18,5 @@
 	<ItemGroup>
 		<Folder Include="Properties\" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Build" Version="17.8.3" />
-		<PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
-		<PackageReference Include="System.Net.Primitives" Version="4.3.1" />
-		<PackageReference Include="System.Security.Principal" Version="4.3.0" />
-		<PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
-	</ItemGroup>
+	<Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

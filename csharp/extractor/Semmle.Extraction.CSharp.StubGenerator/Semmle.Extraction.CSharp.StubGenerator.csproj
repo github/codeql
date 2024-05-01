@@ -12,7 +12,5 @@
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.Util\Semmle.Extraction.CSharp.Util.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
-	</ItemGroup>
+	<Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
