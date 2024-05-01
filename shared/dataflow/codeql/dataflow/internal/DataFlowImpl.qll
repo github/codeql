@@ -2631,13 +2631,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
         ctx instanceof CallContextAny
       }
-
-      bindingset[call, c]
-      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
-        if Input::reducedViableImplInReturn(c, call)
-        then result = TReturn(c, call)
-        else result = ccNone()
-      }
     }
 
     private module Stage2Param implements MkStage<Stage1>::StageParam {
@@ -2681,6 +2674,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         import CachedCallContextSensitivity
       }
 
+      import Level1CallContextInput
       import Level1CallContext<Level1CallContextInput>
       import NoLocalCallContext
 
@@ -2971,6 +2965,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         import CallContextSensitivity<CallContextSensitivityInput>
       }
 
+      import Level1CallContextInput
       import Level1CallContext<Level1CallContextInput>
       import NoLocalCallContext
 
@@ -3363,6 +3358,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         import CallContextSensitivity<CallContextSensitivityInput>
       }
 
+      import Level1CallContextInput
       import Level1CallContext<Level1CallContextInput>
       import LocalCallContext
 
@@ -4338,11 +4334,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pathOutOfCallable0(mid, pos, state, innercc, apa) and
         c = pos.getCallable() and
         kind = pos.getKind() and
-        PrunedCallContextSensitivityStage5::resolveReturn(innercc, c, call)
-      |
-        if PrunedCallContextSensitivityStage5::reducedViableImplInReturn(c, call)
-        then cc = TReturn(c, call)
-        else cc = TAnyCallContext()
+        PrunedCallContextSensitivityStage5::resolveReturn(innercc, c, call) and
+        cc = PrunedCallContextSensitivityStage5::getCallContextReturn(c, call)
       )
     }
 
@@ -5409,11 +5402,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           partialPathOutOfCallable0(mid, pos, state, innercc, t, ap) and
           c = pos.getCallable() and
           kind = pos.getKind() and
-          CachedCallContextSensitivity::resolveReturn(innercc, c, call)
-        |
-          if CachedCallContextSensitivity::reducedViableImplInReturn(c, call)
-          then cc = TReturn(c, call)
-          else cc = TAnyCallContext()
+          CachedCallContextSensitivity::resolveReturn(innercc, c, call) and
+          cc = CachedCallContextSensitivity::getCallContextReturn(c, call)
         )
       }
 

@@ -603,6 +603,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         call = prunedViableImplInCallContextReverse(callable, cc)
       }
 
+      /** Gets the call context when returning from `c` to `call`. */
+      bindingset[call, c]
+      CallContextNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
+        if Input2::reducedViableImplInReturn(c, call)
+        then result = TReturn(c, call)
+        else result = TAnyCallContext()
+      }
+
       /**
        * Holds if the call context `call` improves virtual dispatch in `callable`.
        */
