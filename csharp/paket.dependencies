@@ -1,0 +1,21 @@
+framework: net8.0
+storage: none
+source https://api.nuget.org/v3/index.json
+# behave like nuget in choosing transitive dependency versions
+strategy: min
+
+nuget Mono.Posix.NETStandard 1.0.0
+nuget Newtonsoft.Json 13.0.3
+nuget xunit 2.6.2
+nuget xunit.runner.visualstudio 2.5.4
+nuget Microsoft.NET.Test.Sdk 17.8.0
+nuget Microsoft.CodeAnalysis.CSharp 4.8.0
+nuget Microsoft.CodeAnalysis 4.8.0
+nuget Microsoft.Build 17.8.3
+nuget Microsoft.Win32.Primitives 4.3.0
+nuget System.Net.Primitives 4.3.1
+nuget System.Security.Principal 4.3.0
+nuget System.Threading.ThreadPool 4.3.0
+nuget System.IO.FileSystem 4.3.0
+nuget System.IO.FileSystem.Primitives 4.3.0
+nuget GitInfo 3.3.3
