@@ -62,10 +62,9 @@ DataFlow::Node getADestroyedNode(DataFlow::Node n) {
   )
 }
 
-predicate destroyedToBeginSink(DataFlow::Node sink, FunctionCall fc) {
+predicate destroyedToBeginSink(DataFlow::Node sink) {
   exists(CallInstruction call |
     call = sink.asOperand().(ThisArgumentOperand).getCall() and
-    fc = call.getUnconvertedResultExpression() and
     call.getStaticCallTarget() instanceof BeginOrEndFunction
   )
 }
@@ -90,7 +89,7 @@ private predicate qualifierToDestroyed(DataFlow::Node node1, DataFlow::Node node
 module Config0 implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { qualifierToDestroyed(_, source) }
 
-  predicate isSink(DataFlow::Node sink) { destroyedToBeginSink(sink, _) }
+  predicate isSink(DataFlow::Node sink) { destroyedToBeginSink(sink) }
 }
 
 module Flow0 = DataFlow::Global<Config0>;
@@ -150,9 +149,9 @@ module Config implements DataFlow::StateConfigSig {
 
 module Flow = DataFlow::GlobalWithState<Config>;
 
-from Flow::PathNode source, Flow::PathNode sink, FunctionCall beginOrEnd, DataFlow::Node mid
+from Flow::PathNode source, Flow::PathNode sink, DataFlow::Node mid
 where
   Flow::flowPath(source, sink) and
-  destroyedToBeginSink(sink.getNode(), beginOrEnd) and
+  destroyedToBeginSink(sink.getNode()) and
   sink.getState() = Config::DestroyedToBegin(mid)
-select mid, "This object is destroyed before $@ is called.", beginOrEnd, beginOrEnd.toString()
+select mid, "This object is destroyed at the end of the full-expression."

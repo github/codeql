@@ -30,6 +30,12 @@ This is because the temporary container is not bound to a rvalue reference.
 </p>
 <sample src="IteratorToExpiredContainerExtendedLifetime.cpp" />
 
+<p>
+To fix <code>lifetime_of_temp_not_extended</code>, consider rewriting the code so that the lifetime of the temporary object is extended.
+In <code>fixed_lifetime_of_temp_not_extended</code>, the lifetime of the temporary object has been extended by storing it in an rvalue reference.
+</p>
+<sample src="IteratorToExpiredContainerExtendedLifetime-fixed.cpp" />
+
 </example>
 <references>
 
