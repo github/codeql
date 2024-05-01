@@ -2569,10 +2569,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Cc ccNone() { result instanceof CallContextAny }
 
       CcCall ccSomeCall() { result instanceof CallContextSomeCall }
-
-      predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
-        ctx instanceof CallContextAny
-      }
     }
 
     private module Stage2Param implements MkStage<Stage1>::StageParam {

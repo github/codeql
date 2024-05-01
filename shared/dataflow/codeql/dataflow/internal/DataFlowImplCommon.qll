@@ -594,6 +594,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       }
 
       /**
+       * Holds if a return does not have a reduced set of viable call sites to
+       * return to in call context `ctx`.
+       */
+      predicate viableImplNotCallContextReducedReverse(CallContextNoCall ctx) {
+        ctx instanceof CallContextAny
+      }
+
+      /**
        * Resolves a return from `callable` in `cc` to `call`.
        */
       bindingset[cc, callable]
