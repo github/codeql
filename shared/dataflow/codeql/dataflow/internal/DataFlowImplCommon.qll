@@ -543,7 +543,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
        * makes a difference.
        */
       pragma[nomagic]
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
+      DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CallContextCall ctx) {
         exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
           result = viableImplInCallContextExtIn(call, outer) and
           Input2::reducedViableImplInCallContext(call, _, outer)
@@ -570,7 +570,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
        */
       bindingset[call, cc]
       DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-        result = prunedViableImplInCallContext(call, cc)
+        result = viableImplCallContextReduced(call, cc)
         or
         noPrunedViableImplInCallContext(call, cc) and
         relevantCallEdgeIn(call, result)
@@ -883,8 +883,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       import Impl2
 
       cached
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
-        result = Impl2::prunedViableImplInCallContext(call, ctx)
+      DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CallContextCall ctx) {
+        result = Impl2::viableImplCallContextReduced(call, ctx)
       }
 
       cached

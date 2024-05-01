@@ -2553,8 +2553,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private signature module Level1CallContextInputSig {
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx);
-
       bindingset[call, ctx]
       predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx);
 
@@ -2578,10 +2576,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Cc ccNone() { result instanceof CallContextAny }
 
       CcCall ccSomeCall() { result instanceof CallContextSomeCall }
-
-      DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-        result = Input::prunedViableImplInCallContext(call, ctx)
-      }
 
       bindingset[call, ctx]
       predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
