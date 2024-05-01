@@ -1,5 +1,4 @@
 System.IO.FileSystem
-System.IO.FileSystem.Primitives
 xunit
 xunit.runner.visualstudio
 Microsoft.NET.Test.Sdk

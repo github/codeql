@@ -17,5 +17,4 @@ nuget System.Net.Primitives 4.3.1
 nuget System.Security.Principal 4.3.0
 nuget System.Threading.ThreadPool 4.3.0
 nuget System.IO.FileSystem 4.3.0
-nuget System.IO.FileSystem.Primitives 4.3.0
 nuget GitInfo 3.3.3
