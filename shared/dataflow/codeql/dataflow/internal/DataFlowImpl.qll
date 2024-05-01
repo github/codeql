@@ -1390,8 +1390,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[call, c]
         CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
-        bindingset[node, cc]
-        LocalCc getLocalCc(NodeEx node, Cc cc);
+        bindingset[c, cc]
+        LocalCc getLocalCc(DataFlowCallable c, Cc cc);
 
         bindingset[node1, state1]
         bindingset[node2, state2]
@@ -1480,7 +1480,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
             fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
-            localCc = getLocalCc(mid, cc)
+            localCc = getLocalCc(mid.getEnclosingCallable(), cc)
           |
             localStep(mid, state0, node, state, true, _, localCc) and
             t = t0
@@ -2533,8 +2533,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class LocalCc = Unit;
 
-      bindingset[node, cc]
-      LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
+      bindingset[c, cc]
+      LocalCc getLocalCc(DataFlowCallable c, Cc cc) { any() }
 
       DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) { none() }
 
@@ -2595,8 +2595,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       module NoLocalCallContext {
         class LocalCc = Unit;
 
-        bindingset[node, cc]
-        LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
+        bindingset[c, cc]
+        LocalCc getLocalCc(DataFlowCallable c, Cc cc) { any() }
 
         bindingset[call, c]
         CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
@@ -2609,11 +2609,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       module LocalCallContext {
         class LocalCc = LocalCallContext;
 
-        bindingset[node, cc]
-        LocalCc getLocalCc(NodeEx node, Cc cc) {
-          result =
-            getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-              node.getEnclosingCallable())
+        bindingset[c, cc]
+        LocalCc getLocalCc(DataFlowCallable c, Cc cc) {
+          result = getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)), c)
         }
 
         bindingset[call, c]
