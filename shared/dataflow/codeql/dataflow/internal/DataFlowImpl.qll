@@ -1383,7 +1383,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[call, c]
         CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c);
 
-        DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx);
+        DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx);
 
         predicate viableImplNotCallContextReducedReverse(CcNoCall ctx);
 
@@ -1801,19 +1801,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private DataFlowCallable viableImplCallContextReducedReverseRestricted(
-          DataFlowCall call, CcNoCall ctx
+        private DataFlowCall viableImplCallContextReducedReverseRestricted(
+          DataFlowCallable c, CcNoCall ctx
         ) {
-          result = viableImplCallContextReducedReverse(call, ctx) and
-          PrevStage::callEdgeReturn(call, result, _, _, _, _, _)
+          result = viableImplCallContextReducedReverse(c, ctx) and
+          PrevStage::callEdgeReturn(result, c, _, _, _, _, _)
         }
 
-        bindingset[ctx, result]
+        bindingset[c, ctx]
         pragma[inline_late]
-        private DataFlowCallable viableImplCallContextReducedReverseInlineLate(
-          DataFlowCall call, CcNoCall ctx
+        private DataFlowCall viableImplCallContextReducedReverseInlineLate(
+          DataFlowCallable c, CcNoCall ctx
         ) {
-          result = viableImplCallContextReducedReverseRestricted(call, ctx)
+          result = viableImplCallContextReducedReverseRestricted(c, ctx)
         }
 
         bindingset[call]
@@ -1852,7 +1852,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           fwdFlowIntoRet(ret, _, innercc, _, _, _, _, _, apa) and
           inner = ret.getEnclosingCallable() and
           (
-            inner = viableImplCallContextReducedReverseInlineLate(call, innercc) and
+            call = viableImplCallContextReducedReverseInlineLate(inner, innercc) and
             flowOutOfCallApaInlineLate(call, inner, ret, out, allowsFieldFlow, apa)
             or
             flowOutOfCallApaNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, apa,
@@ -2544,9 +2544,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[call, c]
       CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) { any() }
 
-      DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
-        none()
-      }
+      DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx) { none() }
 
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) { any() }
 
@@ -2628,8 +2626,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
       }
 
-      DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
-        call = Input::prunedViableImplInCallContextReverse(result, ctx)
+      DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx) {
+        result = Input::prunedViableImplInCallContextReverse(c, ctx)
       }
 
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
