@@ -17,32 +17,9 @@ class FreeCall extends FunctionCall {
   FreeCall() { this.getTarget().hasGlobalName("free") }
 }
 
-from IfStmt stmt, FreeCall fc, Variable v
+from GuardCondition gc, FreeCall fc, Variable v, BasicBlock bb
 where
-  stmt.getThen() = fc.getEnclosingStmt() and
-  (
-    stmt.getCondition() = v.getAnAccess() and
-    fc.getArgument(0) = v.getAnAccess()
-    or
-    exists(PointerDereferenceExpr cond, PointerDereferenceExpr arg |
-      fc.getArgument(0) = arg and
-      stmt.getCondition() = cond and
-      cond.getOperand+() = v.getAnAccess() and
-      arg.getOperand+() = v.getAnAccess()
-    )
-    or
-    exists(ArrayExpr cond, ArrayExpr arg |
-      fc.getArgument(0) = arg and
-      stmt.getCondition() = cond and
-      cond.getArrayBase+() = v.getAnAccess() and
-      arg.getArrayBase+() = v.getAnAccess()
-    )
-    or
-    exists(NEExpr eq |
-      fc.getArgument(0) = v.getAnAccess() and
-      stmt.getCondition() = eq and
-      eq.getAnOperand() = v.getAnAccess() and
-      eq.getAnOperand().getValue() = "0"
-    )
-  )
-select stmt, "unnecessary NULL check before call to $@", fc, "free"
+  gc.ensuresEq(v.getAnAccess(), 0, bb, false) and
+  fc.getArgument(0) = v.getAnAccess() and
+  bb = fc.getEnclosingStmt()
+select gc, "unnecessary NULL check before call to $@", fc, "free"
