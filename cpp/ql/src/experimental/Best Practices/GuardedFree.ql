@@ -12,6 +12,7 @@
  */
 
 import cpp
+import semmle.code.cpp.controlflow.Guards
 
 class FreeCall extends FunctionCall {
   FreeCall() { this.getTarget().hasGlobalName("free") }
