@@ -615,7 +615,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
        * Holds if the call context `call` improves virtual dispatch in `callable`.
        */
       pragma[nomagic]
-      predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable) {
+      private predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable) {
         Input2::reducedViableImplInCallContext(_, callable, call)
       }
 
@@ -626,6 +626,36 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable c) {
         Input2::recordDataFlowCallSiteUnreachable(call, c) or
         recordDataFlowCallSiteDispatch(call, c)
+      }
+
+      module NoLocalCallContext {
+        class LocalCc = Unit;
+
+        bindingset[c, cc]
+        LocalCc getLocalCc(DataFlowCallable c, CallContext cc) { any() }
+
+        bindingset[call, c]
+        CallContextCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
+          if recordDataFlowCallSiteDispatch(call, c)
+          then result = TSpecificCall(call)
+          else result = TSomeCall()
+        }
+      }
+
+      module LocalCallContext {
+        class LocalCc = LocalCallContext;
+
+        bindingset[c, cc]
+        LocalCc getLocalCc(DataFlowCallable c, CallContext cc) {
+          result = getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)), c)
+        }
+
+        bindingset[call, c]
+        CallContextCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
+          if recordDataFlowCallSite(call, c)
+          then result = TSpecificCall(call)
+          else result = TSomeCall()
+        }
       }
     }
 

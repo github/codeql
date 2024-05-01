@@ -2558,10 +2558,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[call, ctx]
       predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx);
 
-      predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable);
-
-      predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable);
-
       predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call);
 
       DataFlowCall prunedViableImplInCallContextReverse(
@@ -2590,38 +2586,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[call, ctx]
       predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
         Input::noPrunedViableImplInCallContext(call, ctx)
-      }
-
-      module NoLocalCallContext {
-        class LocalCc = Unit;
-
-        bindingset[c, cc]
-        LocalCc getLocalCc(DataFlowCallable c, Cc cc) { any() }
-
-        bindingset[call, c]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if Input::recordDataFlowCallSiteDispatch(call, c)
-          then result = TSpecificCall(call)
-          else result = TSomeCall()
-        }
-      }
-
-      module LocalCallContext {
-        class LocalCc = LocalCallContext;
-
-        bindingset[c, cc]
-        LocalCc getLocalCc(DataFlowCallable c, Cc cc) {
-          result = getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)), c)
-        }
-
-        bindingset[call, c]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if
-            Input::recordDataFlowCallSiteDispatch(call, c) or
-            Input::recordDataFlowCallSiteUnreachable(call, c)
-          then result = TSpecificCall(call)
-          else result = TSomeCall()
-        }
       }
 
       DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx) {
@@ -4323,6 +4287,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import CallContextSensitivity<CallContextSensitivityInput>
+      import LocalCallContext
     }
 
     pragma[nomagic]
@@ -4421,11 +4386,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           // never any reason to enter a callable except to find a summary. See also
           // the comment in `PathNodeMid::isAtSink`.
           not Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
-        )
-      |
-        if PrunedCallContextSensitivityStage5::recordDataFlowCallSite(call, callable)
-        then innercc = TSpecificCall(call)
-        else innercc = TSomeCall()
+        ) and
+        innercc = PrunedCallContextSensitivityStage5::getCallContextCall(call, callable)
       )
     }
 
@@ -5454,11 +5416,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           sc1 = TSummaryCtx1Param(p) and
           sc2 = TSummaryCtx2Some(state) and
           sc3 = TSummaryCtx3Some(t) and
-          sc4 = TSummaryCtx4Some(ap)
-        |
-          if CachedCallContextSensitivity::recordDataFlowCallSite(call, callable)
-          then innercc = TSpecificCall(call)
-          else innercc = TSomeCall()
+          sc4 = TSummaryCtx4Some(ap) and
+          innercc =
+            CachedCallContextSensitivity::LocalCallContext::getCallContextCall(call, callable)
         )
       }
 
