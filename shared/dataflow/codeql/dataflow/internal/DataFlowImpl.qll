@@ -527,10 +527,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private predicate sourceCallCtx(CallContext cc) {
-      if hasSourceCallCtx() then cc instanceof CallContextSomeCall else cc instanceof CallContextAny
-    }
-
     private predicate hasSinkCallCtx() {
       exists(FlowFeature feature | feature = Config::getAFeature() |
         feature instanceof FeatureHasSinkCallContext or
@@ -3474,6 +3470,26 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
+    private module PrunedCallContextSensitivityStage5 {
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = Stage5::relevantCallEdgeIn/2;
+
+        predicate relevantCallEdgeOut = Stage5::relevantCallEdgeOut/2;
+
+        predicate reducedViableImplInCallContextCand =
+          Stage5Param::reducedViableImplInCallContext/3;
+
+        predicate reducedViableImplInReturnCand = Stage5Param::reducedViableImplInReturn/2;
+      }
+
+      import CallContextSensitivity<CallContextSensitivityInput>
+      import LocalCallContext
+    }
+
+    private predicate sourceCallCtx(CallContext cc) {
+      if hasSourceCallCtx() then cc instanceof CallContextSomeCall else cc instanceof CallContextAny
+    }
+
     private newtype TPathNode =
       TPathNodeMid(
         NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t, AccessPath ap,
@@ -4210,22 +4226,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         apa = mid.getAp().getApprox() and
         not outBarrier(retNode, state)
       )
-    }
-
-    private module PrunedCallContextSensitivityStage5 {
-      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
-        predicate relevantCallEdgeIn = Stage5::relevantCallEdgeIn/2;
-
-        predicate relevantCallEdgeOut = Stage5::relevantCallEdgeOut/2;
-
-        predicate reducedViableImplInCallContextCand =
-          Stage5Param::reducedViableImplInCallContext/3;
-
-        predicate reducedViableImplInReturnCand = Stage5Param::reducedViableImplInReturn/2;
-      }
-
-      import CallContextSensitivity<CallContextSensitivityInput>
-      import LocalCallContext
     }
 
     pragma[nomagic]
