@@ -38,14 +38,13 @@ DEBUG_LOG_FILE = None
 
 
 def _get_codeql_repo_dir() -> Path:
-    return Path(__file__).parent.parent.parent
+    return Path(__file__).parent.parent.parent.resolve()
 
 
 CODEQL_REPO_DIR = _get_codeql_repo_dir()
 
-
 def _get_semmle_code_dir() -> Optional[Path]:
-    guess = CODEQL_REPO_DIR.parent
+    guess = CODEQL_REPO_DIR.parent.resolve()
     try:
         out = subprocess.check_output(
             ["git", "remote", "-v"],
@@ -413,7 +412,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
 
                 subprocess.check_call(["git", "apply", temp.name], cwd=patch.dir)
 
-                if "CONSISTENCY" in patch.filename.parts:
+                if "CONSISTENCY" in patch.filename.parts and patch.filename.exists():
                     # delete if empty
                     if os.path.getsize(patch.filename) == 1 and patch.filename.read_text() == "\n":
                         os.remove(patch.filename)
