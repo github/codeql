@@ -1114,9 +1114,6 @@ abstract class Def extends SsaDef, TDef {
    * Gets the indirection level that this definition is writing to.
    * For instance, `x = y` is a definition of `x` at indirection level 1 and
    * `*x = y` is a definition of `x` at indirection level 2.
-   *
-   * This predicate ensures that joins go from `defOrUse` to the result
-   * instead of the other way around.
    */
   abstract int getIndirection();
 
