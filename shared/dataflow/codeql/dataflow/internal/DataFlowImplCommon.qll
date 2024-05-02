@@ -462,7 +462,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     private import Input
 
     pragma[nomagic]
-    DataFlowCallable viableImplInCallContextExtIn(DataFlowCall call, DataFlowCall ctx) {
+    private DataFlowCallable viableImplInCallContextExtIn(DataFlowCall call, DataFlowCall ctx) {
       reducedViableImplInCallContextCand(call, _, ctx) and
       result = viableImplInCallContextExt(call, ctx) and
       relevantCallEdgeIn(call, result)
@@ -495,7 +495,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    DataFlowCallable viableImplInCallContextExtOut(DataFlowCall call, DataFlowCall ctx) {
+    private DataFlowCallable viableImplInCallContextExtOut(DataFlowCall call, DataFlowCall ctx) {
       exists(DataFlowCallable c |
         reducedViableImplInReturnCand(result, call) and
         result = viableImplInCallContextExt(call, ctx) and
