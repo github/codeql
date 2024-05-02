@@ -30,8 +30,7 @@ the function.
 
 <li>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-170">Format specification syntax: printf and wprintf functions</a>.</li>
 <li>cplusplus.com:<a href="https://cplusplus.com/reference/cstdio/printf/"></a>printf</li>
-<li>CERT C Coding"
-Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO47-C.+Use+valid+format+strings">FIO47-C. Use valid format strings</a>.</li>
+<li>CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO47-C.+Use+valid+format+strings">FIO47-C. Use valid format strings</a>.</li>
 
 </references>
 </qhelp>
