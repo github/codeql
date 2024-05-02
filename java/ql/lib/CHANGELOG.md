@@ -1,3 +1,47 @@
+## 0.10.0
+
+### Breaking Changes
+
+* Deleted the deprecated `AssignLShiftExpr`, `AssignRShiftExpr`, `AssignURShiftExpr`, `LShiftExpr`, `RShiftExpr`, and `URShiftExpr` aliases.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* About 6,700 summary models and 6,800 neutral summary models for the JDK that were generated using data flow have been added. This may lead to new alerts being reported.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `ODASA_SNAPSHOT` legacy environment variable.
+
+### Minor Analysis Improvements
+
+* Increased the precision of some dataflow models of the class `java.net.URL` by distinguishing the parts of a URL.
+* The Java extractor and QL libraries now support Java 22, including support for anonymous variables, lambda parameters and patterns.
+* Pattern cases with multiple patterns and that fall through to or from other pattern cases are now supported. The `PatternCase` class gains the new `getPatternAtIndex` and `getAPattern` predicates, and deprecates `getPattern`.
+* Added a `path-injection` sink for the `open` methods of the `android.os.ParcelFileDescriptor` class.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Java expressions with erroneous types (e.g. the result of a call whose callee couldn't be resolved during extraction) are now given a CodeQL `ErrorType` more often.
+
+### Bug Fixes
+
+* Fixed the Java autobuilder overriding the version of Maven used by a project when the Maven wrapper `mvnw` is in use and the `maven-wrapper.jar` file is not present in the repository.
+* Some flow steps related to `android.text.Editable.toString` that were accidentally disabled have been re-enabled.
+
 ## 0.8.9
 
 ### Deprecated APIs

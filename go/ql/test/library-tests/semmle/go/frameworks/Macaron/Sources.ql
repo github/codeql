@@ -1,18 +1,18 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-module UntrustedFlowSourceTest implements TestSig {
-  string getARelevantTag() { result = "UntrustedFlowSource" }
+module RemoteFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "RemoteFlowSource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(UntrustedFlowSource src |
+    exists(RemoteFlowSource src |
       src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = src.toString() and
       value = "" and
-      tag = "UntrustedFlowSource"
+      tag = "RemoteFlowSource"
     )
   }
 }
 
-import MakeTest<UntrustedFlowSourceTest>
+import MakeTest<RemoteFlowSourceTest>

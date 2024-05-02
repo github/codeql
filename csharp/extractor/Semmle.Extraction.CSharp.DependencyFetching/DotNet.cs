@@ -16,12 +16,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     public partial class DotNet : IDotNet
     {
         private readonly IDotNetCliInvoker dotnetCliInvoker;
+        private readonly ILogger logger;
         private readonly TemporaryDirectory? tempWorkingDirectory;
 
         private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
         {
             this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
+            this.logger = logger;
             Info();
         }
 
@@ -33,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
             if (!res)
             {
                 throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
@@ -89,23 +91,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
+        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes");
 
-        public IList<string> GetListedSdks() => GetListed("--list-sdks", "SDK");
+        public IList<string> GetListedSdks() => GetResultList("--list-sdks");
 
-        private IList<string> GetListed(string args, string artifact)
+        private IList<string> GetResultList(string args, string? workingDirectory = null, bool silent = true)
         {
-            if (dotnetCliInvoker.RunCommand(args, out var artifacts))
+            if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results, silent))
             {
-                return artifacts;
+                return results;
             }
-            return new List<string>();
+            logger.LogWarning($"Running 'dotnet {args}' failed.");
+            return [];
         }
 
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
             return dotnetCliInvoker.RunCommand(args);
+        }
+
+        private const string nugetListSourceCommand = "nuget list source --format Short";
+
+        public IList<string> GetNugetFeeds(string nugetConfig)
+        {
+            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
+        }
+
+        public IList<string> GetNugetFeedsFromFolder(string folderPath)
+        {
+            logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
+            return GetResultList(nugetListSourceCommand, folderPath);
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
@@ -126,7 +143,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
             var versions = new List<string>();
 
-            foreach (var path in files.Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
+            foreach (var path in files.Where(p => string.Equals(FileUtils.SafeGetFileName(p, logger), "global.json", StringComparison.OrdinalIgnoreCase)))
             {
                 try
                 {

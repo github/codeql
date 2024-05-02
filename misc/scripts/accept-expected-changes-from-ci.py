@@ -431,6 +431,19 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
         print("Expected output in semmle-code changed!")
 
 
+def printHelp():
+    print("""Usage:
+python3 accept-expected-changes-from-ci.py [PR-number|SHA]
+
+Example invocations:
+$ python3 accept-expected-changes-from-ci.py 1234
+$ python3 accept-expected-changes-from-ci.py d88a8130386b720de6cac747d1bd2dd527769467
+
+Requirements:
+- The 'gh' command line tool must be installed and authenticated.
+- The CI check must have finished.
+""")
+
 if __name__ == "__main__":
 
     level = logging.INFO
@@ -462,10 +475,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.posarg is None:
-        pr_number_response = subprocess.check_output([
-            "gh", "pr", "view", "--json", "number"
-        ]).decode("utf-8")
-        pr_number = json.loads(pr_number_response)["number"]
+        try:
+            pr_number_response = subprocess.check_output([
+                "gh", "pr", "view", "--json", "number"
+            ]).decode("utf-8")
+            pr_number = json.loads(pr_number_response)["number"]
+        except:
+            print("Could not auto detect PR number.")
+            print("")
+            printHelp()
+            sys.exit(1)
     else:
         if len(args.posarg) > 10:
             override_sha = args.posarg

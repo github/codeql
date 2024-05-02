@@ -10,7 +10,7 @@ private import PrintIRUtilities
  */
 private string getFromFlow(Node node2, int order1, int order2) {
   exists(Node node1 |
-    simpleLocalFlowStep(node1, node2) and
+    simpleLocalFlowStep(node1, node2, _) and
     result = nodeId(node1, order1, order2)
   )
 }
@@ -20,7 +20,7 @@ private string getFromFlow(Node node2, int order1, int order2) {
  */
 private string getToFlow(Node node1, int order1, int order2) {
   exists(Node node2 |
-    simpleLocalFlowStep(node1, node2) and
+    simpleLocalFlowStep(node1, node2, _) and
     result = nodeId(node2, order1, order2)
   )
 }

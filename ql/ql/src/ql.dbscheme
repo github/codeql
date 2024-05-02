@@ -972,14 +972,16 @@ case @ql_token.kind of
 
 @ql_ast_node = @ql_add_expr | @ql_aggregate | @ql_annot_arg | @ql_annotation | @ql_arityless_predicate_expr | @ql_as_expr | @ql_as_exprs | @ql_body | @ql_bool | @ql_call_body | @ql_call_or_unqual_agg_expr | @ql_charpred | @ql_class_member | @ql_classless_predicate | @ql_comp_term | @ql_conjunction | @ql_dataclass | @ql_datatype | @ql_datatype_branch | @ql_datatype_branches | @ql_disjunction | @ql_expr_aggregate_body | @ql_expr_annotation | @ql_field | @ql_full_aggregate_body | @ql_higher_order_term | @ql_if_term | @ql_implication | @ql_import_directive | @ql_import_module_expr | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_member_predicate | @ql_module | @ql_module_alias_body | @ql_module_expr | @ql_module_instantiation | @ql_module_member | @ql_module_name | @ql_module_param | @ql_mul_expr | @ql_negation | @ql_order_by | @ql_order_bys | @ql_par_expr | @ql_predicate_alias_body | @ql_predicate_expr | @ql_prefix_cast | @ql_ql | @ql_qualified_expr | @ql_qualified_rhs | @ql_quantified | @ql_range | @ql_select | @ql_set_literal | @ql_signature_expr | @ql_special_call | @ql_super_ref | @ql_token | @ql_type_alias_body | @ql_type_expr | @ql_type_union_body | @ql_unary_expr | @ql_unqual_agg_body | @ql_var_decl | @ql_var_name | @ql_variable
 
-@ql_ast_node_parent = @file | @ql_ast_node
+ql_ast_node_location(
+  unique int node: @ql_ast_node ref,
+  int loc: @location_default ref
+);
 
 #keyset[parent, parent_index]
-ql_ast_node_info(
+ql_ast_node_parent(
   unique int node: @ql_ast_node ref,
-  int parent: @ql_ast_node_parent ref,
-  int parent_index: int ref,
-  int loc: @location_default ref
+  int parent: @ql_ast_node ref,
+  int parent_index: int ref
 );
 
 /*- Dbscheme dbscheme -*/
@@ -1159,14 +1161,16 @@ case @dbscheme_token.kind of
 
 @dbscheme_ast_node = @dbscheme_annotation | @dbscheme_args_annotation | @dbscheme_branch | @dbscheme_case_decl | @dbscheme_col_type | @dbscheme_column | @dbscheme_dbscheme | @dbscheme_entry | @dbscheme_repr_type | @dbscheme_table | @dbscheme_table_name | @dbscheme_token | @dbscheme_union_decl
 
-@dbscheme_ast_node_parent = @dbscheme_ast_node | @file
+dbscheme_ast_node_location(
+  unique int node: @dbscheme_ast_node ref,
+  int loc: @location_default ref
+);
 
 #keyset[parent, parent_index]
-dbscheme_ast_node_info(
+dbscheme_ast_node_parent(
   unique int node: @dbscheme_ast_node ref,
-  int parent: @dbscheme_ast_node_parent ref,
-  int parent_index: int ref,
-  int loc: @location_default ref
+  int parent: @dbscheme_ast_node ref,
+  int parent_index: int ref
 );
 
 /*- Blame dbscheme -*/
@@ -1222,14 +1226,16 @@ case @blame_token.kind of
 
 @blame_ast_node = @blame_blame_entry | @blame_blame_info | @blame_file_entry | @blame_token
 
-@blame_ast_node_parent = @blame_ast_node | @file
+blame_ast_node_location(
+  unique int node: @blame_ast_node ref,
+  int loc: @location_default ref
+);
 
 #keyset[parent, parent_index]
-blame_ast_node_info(
+blame_ast_node_parent(
   unique int node: @blame_ast_node ref,
-  int parent: @blame_ast_node_parent ref,
-  int parent_index: int ref,
-  int loc: @location_default ref
+  int parent: @blame_ast_node ref,
+  int parent_index: int ref
 );
 
 /*- JSON dbscheme -*/
@@ -1304,13 +1310,15 @@ case @json_token.kind of
 
 @json_ast_node = @json_array | @json_document | @json_object | @json_pair | @json_string__ | @json_token
 
-@json_ast_node_parent = @file | @json_ast_node
+json_ast_node_location(
+  unique int node: @json_ast_node ref,
+  int loc: @location_default ref
+);
 
 #keyset[parent, parent_index]
-json_ast_node_info(
+json_ast_node_parent(
   unique int node: @json_ast_node ref,
-  int parent: @json_ast_node_parent ref,
-  int parent_index: int ref,
-  int loc: @location_default ref
+  int parent: @json_ast_node ref,
+  int parent_index: int ref
 );
 

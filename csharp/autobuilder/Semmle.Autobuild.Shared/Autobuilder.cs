@@ -92,7 +92,7 @@ namespace Semmle.Autobuild.Shared
     /// The overall design is intended to be extensible so that in theory,
     /// it should be possible to add new build rules without touching this code.
     /// </summary>
-    public abstract class Autobuilder<TAutobuildOptions> : IAutobuilder<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
+    public abstract class Autobuilder<TAutobuildOptions> : IDisposable, IAutobuilder<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
     {
         /// <summary>
         /// Full file paths of files found in the project directory, as well as
@@ -161,9 +161,6 @@ namespace Semmle.Autobuild.Shared
             if (matchingFiles.Length == 0)
                 return null;
 
-            if (Options.AllSolutions)
-                return matchingFiles.Select(p => p.ProjectOrSolution);
-
             return matchingFiles
                 .Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot)
                 .Select(f => f.ProjectOrSolution);
@@ -185,19 +182,6 @@ namespace Semmle.Autobuild.Shared
             projectsOrSolutionsToBuildLazy = new Lazy<IList<IProjectOrSolution>>(() =>
             {
                 List<IProjectOrSolution>? ret;
-                if (options.Solution.Any())
-                {
-                    ret = new List<IProjectOrSolution>();
-                    foreach (var solution in options.Solution)
-                    {
-                        if (actions.FileExists(solution))
-                            ret.Add(new Solution<TAutobuildOptions>(this, solution, true));
-                        else
-                            logger.LogError($"The specified project or solution file {solution} was not found");
-                    }
-                    return ret;
-                }
-
                 // First look for `.proj` files
                 ret = FindFiles(".proj", f => new Project<TAutobuildOptions>(this, f))?.ToList();
                 if (ret is not null)
@@ -285,9 +269,6 @@ namespace Semmle.Autobuild.Shared
 
             var script = GetBuildScript();
 
-            if (Options.IgnoreErrors)
-                script |= BuildScript.Success;
-
             void startCallback(string s, bool silent)
             {
                 logger.Log(silent ? Severity.Debug : Severity.Info, $"\nRunning {s}");
@@ -369,6 +350,20 @@ namespace Semmle.Autobuild.Shared
                 DiagnosticClassifier.ClassifyLine(data);
             }
         });
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                diagnostics.Dispose();
+            }
+        }
 
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.

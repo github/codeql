@@ -175,9 +175,6 @@ namespace Semmle.Extraction.CSharp
                     Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));
             }
         }
-
-        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
-
 #nullable restore warnings
     }
 }

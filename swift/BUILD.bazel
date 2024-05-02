@@ -1,5 +1,5 @@
-load("@rules_pkg//:mappings.bzl", "pkg_filegroup", "pkg_files", "strip_prefix")
-load("@rules_pkg//:install.bzl", "pkg_install")
+load("@rules_pkg//pkg:install.bzl", "pkg_install")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
 load("//:defs.bzl", "codeql_platform")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")

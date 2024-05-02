@@ -48,7 +48,7 @@ class Scope extends Scope_ {
   string getName() { py_strs(result, this, 0) }
 
   /** Gets the docstring for this scope */
-  StrConst getDocString() { result = this.getStmt(0).(ExprStmt).getValue() }
+  StringLiteral getDocString() { result = this.getStmt(0).(ExprStmt).getValue() }
 
   /** Gets the entry point into this Scope's control flow graph */
   ControlFlowNode getEntryNode() { py_scope_flow(result, this, -1) }

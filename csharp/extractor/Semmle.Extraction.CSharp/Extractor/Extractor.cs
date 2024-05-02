@@ -284,9 +284,14 @@ namespace Semmle.Extraction.CSharp
                 try
                 {
                     using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    var st = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.Log(Severity.Trace, $"Parsing source file: '{path}'");
+                    var tree = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.Log(Severity.Trace, $"Source file parsed: '{path}'");
+
                     lock (ret)
-                        ret.Add(st);
+                    {
+                        ret.Add(tree);
+                    }
                 }
                 catch (IOException ex)
                 {
@@ -304,7 +309,6 @@ namespace Semmle.Extraction.CSharp
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
             Action<CSharpCompilation, CommonOptions> initializeAnalyser,
-            Action<Entities.PerformanceMetrics> logPerformance,
             Action postProcess)
         {
             using var references = new BlockingCollection<MetadataReference>();
@@ -363,7 +367,7 @@ namespace Semmle.Extraction.CSharp
                 PeakWorkingSet = currentProcess.PeakWorkingSet64
             };
 
-            logPerformance(performance);
+            analyser.LogPerformance(performance);
             analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
 
             postProcess();
@@ -417,7 +421,6 @@ namespace Semmle.Extraction.CSharp
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
-                performance => analyser.LogPerformance(performance),
                 () => { });
         }
 

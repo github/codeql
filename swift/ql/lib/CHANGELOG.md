@@ -1,3 +1,32 @@
+## 0.3.15
+
+No user-facing changes.
+
+## 0.3.14
+
+No user-facing changes.
+
+## 0.3.13
+
+### Major Analysis Improvements
+
+* Upgraded to Swift 5.10
+* New AST node is extracted: `ThenStmt`
+
+## 0.3.12
+
+No user-facing changes.
+
+## 0.3.11
+
+No user-facing changes.
+
+## 0.3.10
+
+### Bug Fixes
+
+* Fixed an issue where `TypeDecl.getFullName` would get stuck in an loop and fail when minor database inconsistencies are present.
+
 ## 0.3.9
 
 ### Minor Analysis Improvements

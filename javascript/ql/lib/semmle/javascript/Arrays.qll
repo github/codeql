@@ -36,7 +36,8 @@ module ArrayTaintTracking {
       succ = call
     )
     or
-    // `array.filter(x => x)` and `array.filter(x => !!x)` keeps the taint
+    // `array.filter(x => x)` and `array.filter(x => !<something>)` keeps the taint
+    // the latter is assumed to filter away only specific values, thus keeping the taint
     call.(DataFlow::MethodCallNode).getMethodName() = "filter" and
     pred = call.getReceiver() and
     succ = call and
@@ -47,7 +48,7 @@ module ArrayTaintTracking {
     |
       param = ret
       or
-      param = DataFlow::exprNode(ret.asExpr().(LogNotExpr).getOperand().(LogNotExpr).getOperand())
+      ret.asExpr() instanceof LogNotExpr
     )
     or
     // `array.reduce` with tainted value in callback

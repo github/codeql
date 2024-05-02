@@ -58,7 +58,13 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
   /** Gets the callable in which this declaration occurs. */
   Callable getEnclosingCallable() { result = this.getCallable() }
 
-  override string toString() { result = this.getType().getName() + " " + this.getName() }
+  override string toString() {
+    exists(string sourceName |
+      if this.getName() = "" then sourceName = "_" else sourceName = this.getName()
+    |
+      result = this.getType().getName() + " " + sourceName
+    )
+  }
 
   /** Gets the initializer expression of this local variable declaration. */
   override Expr getInitializer() { result = this.getDeclExpr().getInit() }
@@ -117,4 +123,11 @@ class Parameter extends Element, @param, LocalScopeVariable {
   }
 
   override string getAPrimaryQlClass() { result = "Parameter" }
+
+  override string toString() {
+    if this.getName() = "" then result = "<anonymous parameter>" else result = super.toString()
+  }
+
+  /** Holds if this is an anonymous parameter, `_` */
+  predicate isAnonymous() { this.getName() = "" }
 }

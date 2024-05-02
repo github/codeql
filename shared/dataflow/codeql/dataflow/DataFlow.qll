@@ -4,8 +4,10 @@
  * modules.
  */
 
+private import codeql.util.Location
+
 /** Provides language-specific data flow parameters. */
-signature module InputSig {
+signature module InputSig<LocationSig Location> {
   /**
    * A node in the data flow graph.
    */
@@ -13,16 +15,8 @@ signature module InputSig {
     /** Gets a textual representation of this element. */
     string toString();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   class ParameterNode extends Node;
@@ -214,7 +208,7 @@ signature module InputSig {
    * Holds if there is a simple local flow step from `node1` to `node2`. These
    * are the value-preserving intra-callable flow steps.
    */
-  predicate simpleLocalFlowStep(Node node1, Node node2);
+  predicate simpleLocalFlowStep(Node node1, Node node2, string model);
 
   /**
    * Holds if the data-flow step from `node1` to `node2` can be used to
@@ -295,6 +289,10 @@ signature module InputSig {
   /** Extra data-flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue);
 
+  predicate knownSourceModel(Node sink, string model);
+
+  predicate knownSinkModel(Node sink, string model);
+
   /**
    * Holds if `n` should never be skipped over in the `PathGraph` and in path
    * explanations.
@@ -310,6 +308,24 @@ signature module InputSig {
    */
   default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
 
+  /**
+   * A second-level control-flow scope in a callable.
+   *
+   * This is used to provide a more fine-grained separation of a callable
+   * context for the purpose of identifying uncertain control flow. For most
+   * languages, this is not needed, as this separation is handled through
+   * virtual dispatch, but for some cases (for example, C++) this can be used to
+   * identify, for example, large top-level switch statements acting like
+   * virtual dispatch.
+   */
+  class DataFlowSecondLevelScope {
+    /** Gets a textual representation of this element. */
+    string toString();
+  }
+
+  /** Gets the second-level scope containing the node `n`, if any. */
+  default DataFlowSecondLevelScope getSecondLevelScope(Node n) { none() }
+
   bindingset[call, p, arg]
   default predicate golangSpecificParamArgFilter(
     DataFlowCall call, ParameterNode p, ArgumentNode arg
@@ -321,9 +337,9 @@ signature module InputSig {
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
 
-module Configs<InputSig Lang> {
+module Configs<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImplCommon::MakeImplCommon<Lang>
+  private import internal.DataFlowImplCommon::MakeImplCommon<Location, Lang>
   import DataFlowImplCommonPublic
 
   /** An input configuration for data flow. */
@@ -537,10 +553,10 @@ module Configs<InputSig Lang> {
   }
 }
 
-module DataFlowMake<InputSig Lang> {
+module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImpl::MakeImpl<Lang>
-  import Configs<Lang>
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  import Configs<Location, Lang>
 
   /**
    * Gets the exploration limit for `partialFlow` and `partialFlowRev`
@@ -591,6 +607,10 @@ module DataFlowMake<InputSig Lang> {
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = ""
+      }
     }
 
     import Impl<C>
@@ -609,6 +629,10 @@ module DataFlowMake<InputSig Lang> {
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = ""
+      }
     }
 
     import Impl<C>
@@ -623,19 +647,11 @@ module DataFlowMake<InputSig Lang> {
     /** Gets a textual representation of this element. */
     string toString();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
-
     /** Gets the underlying `Node`. */
     Node getNode();
+
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   signature module PathGraphSig<PathNodeSig PathNode> {
@@ -678,6 +694,15 @@ module DataFlowMake<InputSig Lang> {
         result = this.asPathNode2().toString()
       }
 
+      /** Gets the underlying `Node`. */
+      Node getNode() {
+        result = this.asPathNode1().getNode() or
+        result = this.asPathNode2().getNode()
+      }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getNode().getLocation() }
+
       /**
        * Holds if this element is at the specified location.
        * The location spans column `startcolumn` of line `startline` to
@@ -685,17 +710,10 @@ module DataFlowMake<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      predicate hasLocationInfo(
+      deprecated predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
-        this.asPathNode1().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-        this.asPathNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
-
-      /** Gets the underlying `Node`. */
-      Node getNode() {
-        result = this.asPathNode1().getNode() or
-        result = this.asPathNode2().getNode()
+        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       }
     }
 
@@ -760,7 +778,7 @@ module DataFlowMake<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      predicate hasLocationInfo(
+      deprecated predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
         super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -768,6 +786,9 @@ module DataFlowMake<InputSig Lang> {
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = super.getLocation() }
     }
 
     /**

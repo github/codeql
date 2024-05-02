@@ -60,6 +60,6 @@ where
   message = "Hard-coded private key."
   or
   HardcodedCredentials::Flow::flow(source, sink) and
-  type = SensitiveExpr::password() and
-  message = "Hard-coded credential."
+  type = SensitiveExpr::secret() and
+  message = "Hard-coded $@."
 select sink, message, source, type.toString()

@@ -1,3 +1,41 @@
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `security/cwe-020/HostnameRegexpShared.qll` file.
+
+## 0.8.14
+
+No user-facing changes.
+
+## 0.8.13
+
+### Minor Analysis Improvements
+
+* Data flow is now tracked through `ActiveRecord` scopes.
+* Modeled instances of `ActionDispatch::Http::UploadedFile` that can be obtained from element reads of `ActionController::Parameters`, with calls to `original_filename`, `content_type`, and `read` now propagating taint from their receiver. 
+* The second argument, `subquery_name`, of the `ActiveRecord::QueryMethods::from` method, is now recognized as an sql injection sink.
+* Calls to `Typhoeus::Request.new` are now considered as instances of the `Http::Client::Request` concept, with the response body being treated as a remote flow source.
+* New command injection sinks have been added, including `Process.spawn`, `Process.exec`, `Terrapin::CommandLine` and the `open4` gem.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `I18n.translate` as well as Rails helper translate methods now propagate taint from their keyword arguments. The Rails translate methods are also recognized as XSS sanitizers when using keys marked as html safe.
+* Calls to `Arel::Nodes::SqlLiteral.new` are now modeled as instances of the `SqlConstruction` concept, as well as propagating taint from their argument.
+* Additional arguments beyond the first of calls to the  `ActiveRecord` methods `select`, `reselect`, `order`, `reorder`, `joins`, `group`, and `pluck` are now recognized as sql injection sinks. 
+* Calls to several methods of `ActiveRecord::Connection`, such as `ActiveRecord::Connection#exec_query`, are now recognized as SQL executions, including those via subclasses.
+
 ## 0.8.9
 
 ### Minor Analysis Improvements

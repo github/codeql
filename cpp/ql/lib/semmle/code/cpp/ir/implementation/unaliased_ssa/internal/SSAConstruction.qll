@@ -429,6 +429,11 @@ private module Cached {
     instr = unreachedInstruction(_) and result = Language::getVoidType()
   }
 
+  cached
+  IRType getInstructionResultIRType(Instruction instr) {
+    result = instr.getResultLanguageType().getIRType()
+  }
+
   /**
    * Holds if `opcode` is the opcode that specifies the operation performed by `instr`.
    *

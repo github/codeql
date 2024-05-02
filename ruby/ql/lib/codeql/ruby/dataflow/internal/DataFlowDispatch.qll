@@ -429,7 +429,20 @@ private Callable viableSourceCallableInit(RelevantCall call) { result = getIniti
 /** Holds if `call` may resolve to the returned source-code method. */
 private DataFlowCallable viableSourceCallable(DataFlowCall call) {
   result = viableSourceCallableNonInit(call) or
-  result.asCfgScope() = viableSourceCallableInit(call.asCall())
+  result.asCfgScope() = viableSourceCallableInit(call.asCall()) or
+  result = any(AdditionalCallTarget t).viableTarget(call.asCall())
+}
+
+/**
+ * A unit class for adding additional call steps.
+ *
+ * Extend this class to add additional call steps to the data flow graph.
+ */
+class AdditionalCallTarget extends Unit {
+  /**
+   * Gets a viable target for `call`.
+   */
+  abstract DataFlowCallable viableTarget(CfgNodes::ExprNodes::CallCfgNode call);
 }
 
 /** Holds if `call` may resolve to the returned summarized library method. */

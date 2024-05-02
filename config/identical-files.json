@@ -251,13 +251,6 @@
     "cpp/ql/src/Security/CWE/CWE-020/SafeExternalAPIFunction.qll",
     "cpp/ql/src/Security/CWE/CWE-020/ir/SafeExternalAPIFunction.qll"
   ],
-  "XML": [
-    "cpp/ql/lib/semmle/code/cpp/XML.qll",
-    "csharp/ql/lib/semmle/code/csharp/XML.qll",
-    "java/ql/lib/semmle/code/xml/XML.qll",
-    "javascript/ql/lib/semmle/javascript/XML.qll",
-    "python/ql/lib/semmle/python/xml/XML.qll"
-  ],
   "DuplicationProblems.inc.qhelp": [
     "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
     "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
@@ -369,7 +362,7 @@
     "java/ql/lib/semmle/code/java/security/internal/EncryptionKeySizes.qll"
   ],
   "Python model summaries test extension": [
-    "python/ql/test/experimental/dataflow/model-summaries/InlineTaintTest.ext.yml",
-    "python/ql/test/experimental/dataflow/model-summaries/NormalDataflowTest.ext.yml"
+    "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
+    "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
   ]
 }
