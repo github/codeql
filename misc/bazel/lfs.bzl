@@ -1,4 +1,4 @@
-def lfs_smudge(repository_ctx, srcs):
+def lfs_smudge(repository_ctx, srcs, extract = False, stripPrefix = None):
     for src in srcs:
         repository_ctx.watch(src)
     script = Label("//misc/bazel/internal:git_lfs_probe.py")
@@ -10,19 +10,28 @@ def lfs_smudge(repository_ctx, srcs):
         fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
     for src, loc in zip(srcs, res.stdout.splitlines()):
         if loc == "local":
-            repository_ctx.symlink(src, src.basename)
+            if extract:
+                repository_ctx.extract(src, stripPrefix = stripPrefix)
+            else:
+                repository_ctx.symlink(src, src.basename)
         else:
             sha256, _, url = loc.partition(" ")
-            repository_ctx.download(url, src.basename, sha256 = sha256)
+            if extract:
+                # we can't use skylib's `paths.split_extension`, as that only gets the last extension, so `.tar.gz`
+                # or similar wouldn't work
+                # it doesn't matter if file is something like some.name.zip and possible_extension == "name.zip",
+                # download_and_extract will just append ".name.zip" its internal temporary name, so extraction works
+                possible_extension = ".".join(src.basename.rsplit(".", 2)[-2:])
+                repository_ctx.download_and_extract(url, sha256 = sha256, stripPrefix = stripPrefix, type = possible_extension)
+            else:
+                repository_ctx.download(url, src.basename, sha256 = sha256)
 
 def _download_and_extract_lfs(repository_ctx):
     attr = repository_ctx.attr
     src = repository_ctx.path(attr.src)
     if attr.build_file_content and attr.build_file:
         fail("You should specify only one among build_file_content and build_file for rule @%s" % repository_ctx.name)
-    lfs_smudge(repository_ctx, [src])
-    repository_ctx.extract(src.basename, stripPrefix = attr.strip_prefix)
-    repository_ctx.delete(src.basename)
+    lfs_smudge(repository_ctx, [src], extract = True, stripPrefix = attr.strip_prefix)
     if attr.build_file_content:
         repository_ctx.file("BUILD.bazel", attr.build_file_content)
     elif attr.build_file:
