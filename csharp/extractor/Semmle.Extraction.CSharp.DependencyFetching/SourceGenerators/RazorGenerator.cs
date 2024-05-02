@@ -20,17 +20,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         protected override bool IsEnabled()
         {
-            var webViewExtractionOption = Environment.GetEnvironmentVariable(EnvironmentVariableNames.WebViewGeneration);
-            if (webViewExtractionOption == null ||
-                bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
-                shouldExtractWebViews)
-            {
-                compilationInfoContainer.CompilationInfos.Add(("WebView extraction enabled", "1"));
-                return true;
-            }
-
-            compilationInfoContainer.CompilationInfos.Add(("WebView extraction enabled", "0"));
-            return false;
+            var webViewExtractionOption = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.WebViewGeneration);
+            compilationInfoContainer.CompilationInfos.Add(("WebView extraction enabled", webViewExtractionOption ? "1" : "0"));
+            return webViewExtractionOption;
         }
 
         protected override ICollection<string> AdditionalFiles => fileProvider.RazorViews;

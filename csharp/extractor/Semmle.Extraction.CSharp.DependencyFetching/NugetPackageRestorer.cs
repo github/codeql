@@ -94,7 +94,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public HashSet<AssemblyLookupLocation> Restore()
         {
             var assemblyLookupLocations = new HashSet<AssemblyLookupLocation>();
-            var checkNugetFeedResponsiveness = EnvironmentVariables.GetBoolean(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
+            var checkNugetFeedResponsiveness = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
+            logger.LogInfo($"Checking NuGet feed responsiveness: {checkNugetFeedResponsiveness}");
+            compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", checkNugetFeedResponsiveness ? "1" : "0"));
+
             try
             {
                 if (checkNugetFeedResponsiveness && !CheckFeeds())
