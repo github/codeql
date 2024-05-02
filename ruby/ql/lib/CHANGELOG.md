@@ -1,3 +1,10 @@
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `security/cwe-020/HostnameRegexpShared.qll` file.
+
 ## 0.8.14
 
 No user-facing changes.
