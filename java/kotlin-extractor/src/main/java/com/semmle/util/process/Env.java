@@ -37,14 +37,6 @@ public class Env {
 		 * Core toolchain variables
 		 */
 		/**
-		 * The location of the toolchain.
-		 *
-		 * Deprecated in favour of {@link Var#SEMMLE_DIST}, {@link Var#SEMMLE_HOME}, and
-		 * {@link Var#SEMMLE_DATA}.
-		 */
-		@Deprecated
-		ODASA_HOME,
-		/**
 		 * The location of the user's configuration files, including project configurations,
 		 * dashboard configurations, team insight configurations, licenses etc.
 		 */
