@@ -3,8 +3,8 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["github.com/valyala/fasthttp", "URI", False, "SetHost", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["github.com/valyala/fasthttp", "URI", False, "SetHostBytes", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["github.com/valyala/fasthttp", "URI", False, "Update", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["github.com/valyala/fasthttp", "URI", False, "UpdateBytes", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["github.com/valyala/fasthttp", "URI", False, "Parse", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", False, "SetHost", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", False, "SetHostBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", False, "Update", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", False, "UpdateBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", False, "Parse", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
