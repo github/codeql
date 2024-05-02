@@ -229,7 +229,7 @@ deprecated class EnvInput extends DataFlow::Node {
  * environment variables.
  */
 private class EnvironmentInput extends LocalUserInput {
-  EnvironmentInput() { sourceNode(this, "environment") }
+  EnvironmentInput() { none() }
 
   override string getThreatModel() { result = "environment" }
 }
@@ -239,18 +239,7 @@ private class EnvironmentInput extends LocalUserInput {
  * and main method parameters.
  */
 private class CliInput extends LocalUserInput {
-  CliInput() {
-    // Parameters to a main method.
-    exists(MainMethod main | this.asParameter() = main.getParameter(0))
-    or
-    // Args4j arguments.
-    exists(Field f | this.asExpr() = f.getAnAccess() |
-      f.getAnAnnotation().getType().getQualifiedName() = "org.kohsuke.args4j.Argument"
-    )
-    or
-    // Access to `System.in`.
-    exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
-  }
+  CliInput() { none() }
 
   override string getThreatModel() { result = "commandargs" }
 }
@@ -259,10 +248,7 @@ private class CliInput extends LocalUserInput {
  * A node with input from the local environment, such as files.
  */
 private class FileInput extends LocalUserInput {
-  FileInput() {
-    // Access to files.
-    sourceNode(this, "file")
-  }
+  FileInput() { none() }
 
   override string getThreatModel() { result = "file" }
 }
@@ -282,7 +268,7 @@ deprecated class DatabaseInput = DbInput;
  * A node with input from a database.
  */
 private class DbInput extends LocalUserInput {
-  DbInput() { sourceNode(this, "database") }
+  DbInput() { none() }
 
   override string getThreatModel() { result = "database" }
 }
