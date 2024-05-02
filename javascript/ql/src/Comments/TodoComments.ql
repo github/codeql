@@ -13,5 +13,5 @@
 import javascript
 
 from Comment c
-where c.getText().regexpMatch("(?s).*FIXME.*|.*TODO.*|.*(?<!=)\\s*XXX.*")
+where c.getText().toLowerCase().regexpMatch(".*(?:bug|hack|fixme|later|later2|todo|xxx).*")
 select c, "TODO comments should be addressed."
