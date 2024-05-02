@@ -10,9 +10,9 @@ longer valid. If the pointer is used after the <code>std::string</code> object i
 </p>
 
 <p>Typically this problem occurs when a <code>std::string</code> is returned by a function call (or overloaded operator)
-by value, and the result is not immediately stored in a variable by value (or <code>const</code> reference). The resulting
-temporary <code>std::string</code> object is destroyed at the end of the expression statement it is contained in, along
-with any memory returned by a call to <code>c_str</code>.
+by value, and the result is not immediately stored in a variable by value or reference in a way that extends the lifetime of
+the temporary object. The resulting temporary <code>std::string</code> object is destroyed at the end of the expression
+statement it is contained in, along with any memory returned by a call to <code>c_str</code>.
 </p>
 </overview>
 
@@ -46,6 +46,7 @@ points to valid memory.
 
 <li><a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM50-CPP.+Do+not+access+freed+memory">MEM50-CPP. Do not access freed memory</a>.</li>
 <li>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/cpp/cpp/temporary-objects?view=msvc-170">Temporary objects</a>.</li>
+<li>cppreference.com: <a href="https://en.cppreference.com/w/cpp/language/reference_initialization#Lifetime_of_a_temporary">Lifetime of a temporary</a>.</li>
 
 </references>
 </qhelp>
