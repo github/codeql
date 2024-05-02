@@ -1825,28 +1825,28 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    *    this dispatch target of `call` implies a reduced set of dispatch origins
    *    to which data may flow if it should reach a `return` statement.
    */
-  abstract class CallContext extends TCallContext {
+  abstract private class CallContext extends TCallContext {
     abstract string toString();
 
     /** Holds if this call context is relevant for `callable`. */
     abstract predicate relevantFor(DataFlowCallable callable);
   }
 
-  abstract class CallContextNoCall extends CallContext { }
+  abstract private class CallContextNoCall extends CallContext { }
 
-  class CallContextAny extends CallContextNoCall, TAnyCallContext {
+  private class CallContextAny extends CallContextNoCall, TAnyCallContext {
     override string toString() { result = "CcAny" }
 
     override predicate relevantFor(DataFlowCallable callable) { any() }
   }
 
-  abstract class CallContextCall extends CallContext {
+  abstract private class CallContextCall extends CallContext {
     /** Holds if this call context may be `call`. */
     bindingset[call]
     abstract predicate matchesCall(DataFlowCall call);
   }
 
-  class CallContextSpecificCall extends CallContextCall, TSpecificCall {
+  private class CallContextSpecificCall extends CallContextCall, TSpecificCall {
     override string toString() {
       exists(DataFlowCall call | this = TSpecificCall(call) | result = "CcCall(" + call + ")")
     }
@@ -1860,7 +1860,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     DataFlowCall getCall() { this = TSpecificCall(result) }
   }
 
-  class CallContextSomeCall extends CallContextCall, TSomeCall {
+  private class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
 
     override predicate relevantFor(DataFlowCallable callable) { any() }
@@ -1868,7 +1868,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     override predicate matchesCall(DataFlowCall call) { any() }
   }
 
-  class CallContextReturn extends CallContextNoCall, TReturn {
+  private class CallContextReturn extends CallContextNoCall, TReturn {
     override string toString() {
       exists(DataFlowCall call | this = TReturn(_, call) | result = "CcReturn(" + call + ")")
     }
@@ -1923,7 +1923,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    * Gets the local call context given the call context and the callable that
    * the contexts apply to.
    */
-  LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable) {
+  private LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable) {
     ctx.relevantFor(callable) and
     if relevantLocalCCtx(ctx.(CallContextSpecificCall).getCall(), callable)
     then

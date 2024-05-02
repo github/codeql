@@ -3292,7 +3292,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(AccessPathApprox apa0 |
         Stage5::parameterMayFlowThrough(p, _) and
         Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0) and
-        Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParamNodeSome(p.asNode()), _,
+        Stage5::fwdFlow(n, state, any(Stage5Param::CcCall ccc), TParamNodeSome(p.asNode()), _,
           TAccessPathApproxSome(apa), _, apa0, _)
       )
     }
@@ -3486,8 +3486,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import LocalCallContext
     }
 
+    private class CallContext = PrunedCallContextSensitivityStage5::Cc;
+
+    private class CallContextCall = PrunedCallContextSensitivityStage5::CcCall;
+
+    private class CallContextNoCall = PrunedCallContextSensitivityStage5::CcNoCall;
+
+    private predicate callContextNone = PrunedCallContextSensitivityStage5::ccNone/0;
+
+    private predicate callContextSomeCall = PrunedCallContextSensitivityStage5::ccSomeCall/0;
+
     private predicate sourceCallCtx(CallContext cc) {
-      if hasSourceCallCtx() then cc instanceof CallContextSomeCall else cc instanceof CallContextAny
+      if hasSourceCallCtx() then cc = callContextSomeCall() else cc = callContextNone()
     }
 
     private newtype TPathNode =
@@ -4071,9 +4081,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       state = mid.getState() and
       cc = mid.getCallContext() and
       sc = mid.getSummaryCtx() and
-      localCC =
-        getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-          midnode.getEnclosingCallable()) and
+      localCC = PrunedCallContextSensitivityStage5::getLocalCc(midnode.getEnclosingCallable(), cc) and
       t = mid.getType() and
       ap = mid.getAp() and
       summaryLabel = mid.getSummaryLabel()
@@ -4119,7 +4127,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       or
       jumpStepEx(mid.getNodeExOutgoing(), node) and
       state = mid.getState() and
-      cc instanceof CallContextAny and
+      cc = callContextNone() and
       sc instanceof SummaryCtxNone and
       t = mid.getType() and
       ap = mid.getAp() and
@@ -4129,7 +4137,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       or
       additionalJumpStep(mid.getNodeExOutgoing(), node, label) and
       state = mid.getState() and
-      cc instanceof CallContextAny and
+      cc = callContextNone() and
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
       t = node.getDataFlowType() and
@@ -4138,7 +4146,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       summaryLabel = "-"
       or
       additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
-      cc instanceof CallContextAny and
+      cc = callContextNone() and
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
       t = node.getDataFlowType() and
@@ -4673,22 +4681,32 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate flagDisable() { none() }
 
     module FlowExplorationFwd<explorationLimitSig/0 explorationLimit> {
-      private import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0>
-      import Public
+      private import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0> as F
+      import F::Public
 
-      predicate partialFlow = partialFlowFwd/3;
+      predicate partialFlow = F::partialFlowFwd/3;
     }
 
     module FlowExplorationRev<explorationLimitSig/0 explorationLimit> {
-      private import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0>
-      import Public
+      private import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0> as F
+      import F::Public
 
-      predicate partialFlow = partialFlowRev/3;
+      predicate partialFlow = F::partialFlowRev/3;
     }
 
     private module FlowExploration<
       explorationLimitSig/0 explorationLimit, flag/0 flagFwd, flag/0 flagRev>
     {
+      class CallContext = CachedCallContextSensitivity::Cc;
+
+      class CallContextCall = CachedCallContextSensitivity::CcCall;
+
+      class CallContextNoCall = CachedCallContextSensitivity::CcNoCall;
+
+      predicate callContextNone = CachedCallContextSensitivity::ccNone/0;
+
+      predicate callContextSomeCall = CachedCallContextSensitivity::ccSomeCall/0;
+
       private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2) {
         exists(NodeEx node1, NodeEx node2 |
           jumpStepEx(node1, node2)
@@ -4859,7 +4877,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           flagFwd() and
           sourceNode(node, state) and
-          cc instanceof CallContextAny and
+          cc = callContextNone() and
           sc1 = TSummaryCtx1None() and
           sc2 = TSummaryCtx2None() and
           sc3 = TSummaryCtx3None() and
@@ -5073,7 +5091,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         predicate isSource() {
           sourceNode(node, state) and
-          cc instanceof CallContextAny and
+          cc = callContextNone() and
           sc1 = TSummaryCtx1None() and
           sc2 = TSummaryCtx2None() and
           sc3 = TSummaryCtx3None() and
@@ -5125,10 +5143,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap,
         boolean isStoreStep
       ) {
-        not exists(NodeRegion nr |
-          nr.contains(node.asNode()) and
-          isUnreachableInCallCached(nr, cc.(CallContextSpecificCall).getCall())
-        ) and
+        not isUnreachableInCall1(node,
+          CachedCallContextSensitivity::LocalCallContext::getLocalCc(node.getEnclosingCallable(), cc)) and
         (
           localFlowStepEx(mid.getNodeEx(), node, _) and
           state = mid.getState() and
@@ -5165,7 +5181,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         jumpStepEx(mid.getNodeEx(), node) and
         state = mid.getState() and
-        cc instanceof CallContextAny and
+        cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
@@ -5176,7 +5192,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         additionalJumpStep(mid.getNodeEx(), node, _) and
         state = mid.getState() and
-        cc instanceof CallContextAny and
+        cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
@@ -5187,7 +5203,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         isStoreStep = false
         or
         additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
-        cc instanceof CallContextAny and
+        cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
