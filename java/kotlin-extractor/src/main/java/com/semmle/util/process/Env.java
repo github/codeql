@@ -186,10 +186,6 @@ public class Env {
 		 */
 		SEMMLE_PLATFORM,
 		/**
-		 * Location of platform specific tools, currently only used in universal LGTM distributions
-		 */
-		SEMMLE_PLATFORM_TOOLS,
-		/**
 		 * PATH to use to look up tooling required by macOS Relocator scripts.
 		 */
 		CODEQL_TOOL_PATH,
