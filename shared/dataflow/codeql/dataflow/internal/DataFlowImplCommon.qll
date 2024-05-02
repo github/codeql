@@ -2,6 +2,7 @@ private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
 private import codeql.util.Location
 private import codeql.util.Unit
+private import codeql.util.Option
 
 module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
@@ -137,7 +138,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate callStep(Node n1, LocalSourceNode n2) { viableParamArg(_, n2, n1) }
 
     predicate returnStep(Node n1, LocalSourceNode n2) {
-      viableReturnPosOut(_, getReturnPosition(n1), n2)
+      viableReturnPosOut(_, [getValueReturnPosition(n1), getParamReturnPosition(n1, _)], n2)
     }
 
     predicate hasFeatureBacktrackStoreTarget() { none() }
@@ -222,9 +223,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
-    pragma[noinline]
-    private TReturnPositionSimple getReturnPositionSimple(ReturnNode ret, ReturnKind kind) {
-      result = TReturnPositionSimple0(getNodeEnclosingCallable(ret), kind)
+    pragma[nomagic]
+    private predicate hasSimpleReturnKindIn(ReturnNode ret, ReturnKind kind, DataFlowCallable c) {
+      c = getNodeEnclosingCallable(ret) and
+      kind = ret.getKind()
+    }
+
+    pragma[nomagic]
+    private TReturnPositionSimple getReturnPositionSimple(ReturnNode ret) {
+      exists(ReturnKind kind, DataFlowCallable c |
+        hasSimpleReturnKindIn(ret, kind, c) and
+        result = TReturnPositionSimple0(c, kind)
+      )
     }
 
     pragma[nomagic]
@@ -349,7 +359,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       // flow out of a callable
       exists(TReturnPositionSimple pos |
         revLambdaFlowOut(lambdaCall, kind, pos, t, toJump, lastCall) and
-        getReturnPositionSimple(node, node.(ReturnNode).getKind()) = pos and
+        pos = getReturnPositionSimple(node) and
         toReturn = true
       )
     }
@@ -606,6 +616,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     import PrunedViableImpl<DefaultPrunedViableImplInput>
   }
 
+  module SndLevelScopeOption = Option<DataFlowSecondLevelScope>;
+
+  class SndLevelScopeOption = SndLevelScopeOption::Option;
+
   cached
   private module Cached {
     /**
@@ -617,7 +631,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate forceCachingInSameStage() { any() }
 
     cached
-    DataFlowSecondLevelScope getSecondLevelScopeCached(Node n) { result = getSecondLevelScope(n) }
+    SndLevelScopeOption getSecondLevelScopeCached(Node n) {
+      result = SndLevelScopeOption::some(getSecondLevelScope(n))
+      or
+      result instanceof SndLevelScopeOption::None and
+      not exists(getSecondLevelScope(n))
+    }
 
     cached
     predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = nodeGetEnclosingCallable(n) }
@@ -663,13 +682,17 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate returnNodeExt(Node n, ReturnKindExt k) {
-      k = TValueReturn(n.(ReturnNode).getKind())
-      or
-      exists(ParamNode p, ParameterPosition pos |
+    predicate valueReturnNode(ReturnNode n, ReturnKindExt k) { k = TValueReturn(n.getKind()) }
+
+    cached
+    predicate paramReturnNode(
+      PostUpdateNode n, ParamNode p, SndLevelScopeOption scope, ReturnKindExt k
+    ) {
+      exists(ParameterPosition pos |
         parameterValueFlowsToPreUpdate(p, n) and
         p.isParameterOf(_, pos) and
-        k = TParamUpdate(pos)
+        k = TParamUpdate(pos) and
+        scope = getSecondLevelScopeCached(n)
       )
     }
 
@@ -1221,10 +1244,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     newtype TReturnPosition =
       TReturnPosition0(DataFlowCallable c, ReturnKindExt kind) {
-        exists(ReturnNodeExt ret |
-          c = returnNodeGetEnclosingCallable(ret) and
-          kind = ret.getKind()
-        )
+        hasValueReturnKindIn(_, kind, c)
+        or
+        hasParamReturnKindIn(_, _, kind, c)
       }
 
     cached
@@ -1843,17 +1865,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   }
 
   /**
-   * A node from which flow can return to the caller. This is either a regular
-   * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
-   */
-  class ReturnNodeExt extends NodeFinal {
-    ReturnNodeExt() { returnNodeExt(this, _) }
-
-    /** Gets the kind of this returned value. */
-    ReturnKindExt getKind() { returnNodeExt(this, result) }
-  }
-
-  /**
    * A node to which data can flow from a call. Either an ordinary out node
    * or a post-update node associated with a call argument.
    */
@@ -1930,20 +1941,34 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     nodeDataFlowType(pragma[only_bind_out](n), pragma[only_bind_into](result))
   }
 
-  pragma[noinline]
-  private DataFlowCallable returnNodeGetEnclosingCallable(ReturnNodeExt ret) {
-    result = getNodeEnclosingCallable(ret)
+  pragma[nomagic]
+  private predicate hasValueReturnKindIn(ReturnNode ret, ReturnKindExt kind, DataFlowCallable c) {
+    c = getNodeEnclosingCallable(ret) and
+    valueReturnNode(ret, kind)
   }
 
-  pragma[noinline]
-  private ReturnPosition getReturnPosition0(ReturnNodeExt ret, ReturnKindExt kind) {
-    result.getCallable() = returnNodeGetEnclosingCallable(ret) and
-    kind = result.getKind()
+  pragma[nomagic]
+  private predicate hasParamReturnKindIn(
+    PostUpdateNode n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
+  ) {
+    c = getNodeEnclosingCallable(n) and
+    paramReturnNode(n, p, _, kind)
   }
 
-  pragma[noinline]
-  ReturnPosition getReturnPosition(ReturnNodeExt ret) {
-    result = getReturnPosition0(ret, ret.getKind())
+  pragma[nomagic]
+  ReturnPosition getValueReturnPosition(ReturnNode ret) {
+    exists(ReturnKindExt kind, DataFlowCallable c |
+      hasValueReturnKindIn(ret, kind, c) and
+      result = TReturnPosition0(c, kind)
+    )
+  }
+
+  pragma[nomagic]
+  ReturnPosition getParamReturnPosition(PostUpdateNode n, ParamNode p) {
+    exists(ReturnKindExt kind, DataFlowCallable c |
+      hasParamReturnKindIn(n, p, kind, c) and
+      result = TReturnPosition0(c, kind)
+    )
   }
 
   /** An optional Boolean value. */
