@@ -1,6 +1,6 @@
 extensions:
   # Make sure that the extensible model predicates have at least one definition
-  # to avoid errors about an undefined extensionals.
+  # to avoid errors about undefined extensionals.
   - addsTo:
       pack: codeql/java-all
       extensible: experimentalSourceModel
