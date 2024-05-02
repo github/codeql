@@ -15,6 +15,11 @@ private module FlowSummaries {
   private import semmle.go.dataflow.FlowSummary as F
 }
 
+bindingset[pos]
+private string positionToString(int pos) {
+  if pos = -1 then result = "receiver" else result = pos.toString()
+}
+
 module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   class SummarizedCallableBase = Callable;
 
@@ -22,9 +27,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
 
   ReturnKind getStandardReturnValueKind() { result = getReturnKind(0) }
 
-  string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
+  string encodeParameterPosition(ParameterPosition pos) { result = positionToString(pos) }
 
-  string encodeArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
+  string encodeArgumentPosition(ArgumentPosition pos) { result = positionToString(pos) }
 
   string encodeReturn(ReturnKind rk, string arg) {
     exists(int pos |
