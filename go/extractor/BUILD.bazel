@@ -4,6 +4,7 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 # gazelle:prefix github.com/github/codeql-go/extractor
 # gazelle:map_kind go_binary codeql_go_binary //go:rules.bzl
 
+# following target is kept up to date by `bazel run //go:gen`, do not edit directly
 go_library(
     name = "extractor",
     srcs = [
