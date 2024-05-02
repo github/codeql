@@ -284,7 +284,6 @@ public class Env {
 		/*
 		 * Layout variables
 		 */
-		ODASA_JAVA_LAYOUT,
 		ODASA_CPP_LAYOUT,
 		ODASA_CSHARP_LAYOUT,
 		ODASA_PYTHON_LAYOUT,
