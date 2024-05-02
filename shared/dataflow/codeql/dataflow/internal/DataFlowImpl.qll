@@ -2604,11 +2604,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
-      private module Level1CallContextInput {
-        import CachedCallContextSensitivity
-      }
-
-      import Level1CallContextInput
+      import CachedCallContextSensitivity
       import Level1CallContext
       import NoLocalCallContext
 
@@ -2883,23 +2879,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
-      additional module Level1CallContextInput {
-        private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
-          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
-          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+        predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
 
-          predicate reducedViableImplInCallContextCand =
-            CachedCallContextSensitivity::reducedViableImplInCallContext/3;
+        predicate reducedViableImplInCallContextCand =
+          CachedCallContextSensitivity::reducedViableImplInCallContext/3;
 
-          predicate reducedViableImplInReturnCand =
-            CachedCallContextSensitivity::reducedViableImplInReturn/2;
-        }
-
-        import CallContextSensitivity<CallContextSensitivityInput>
+        predicate reducedViableImplInReturnCand =
+          CachedCallContextSensitivity::reducedViableImplInReturn/2;
       }
 
-      import Level1CallContextInput
+      import CallContextSensitivity<CallContextSensitivityInput>
       import Level1CallContext
       import NoLocalCallContext
 
@@ -3276,23 +3268,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
-      additional module Level1CallContextInput {
-        private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
-          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
-          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+        predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
 
-          predicate reducedViableImplInCallContextCand =
-            Stage3Param::Level1CallContextInput::reducedViableImplInCallContext/3;
+        predicate reducedViableImplInCallContextCand =
+          Stage3Param::reducedViableImplInCallContext/3;
 
-          predicate reducedViableImplInReturnCand =
-            Stage3Param::Level1CallContextInput::reducedViableImplInReturn/2;
-        }
-
-        import CallContextSensitivity<CallContextSensitivityInput>
+        predicate reducedViableImplInReturnCand = Stage3Param::reducedViableImplInReturn/2;
       }
 
-      import Level1CallContextInput
+      import CallContextSensitivity<CallContextSensitivityInput>
       import Level1CallContext
       import LocalCallContext
 
@@ -4250,10 +4237,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         predicate relevantCallEdgeOut = Stage5::relevantCallEdgeOut/2;
 
         predicate reducedViableImplInCallContextCand =
-          Stage5Param::Level1CallContextInput::reducedViableImplInCallContext/3;
+          Stage5Param::reducedViableImplInCallContext/3;
 
-        predicate reducedViableImplInReturnCand =
-          Stage5Param::Level1CallContextInput::reducedViableImplInReturn/2;
+        predicate reducedViableImplInReturnCand = Stage5Param::reducedViableImplInReturn/2;
       }
 
       import CallContextSensitivity<CallContextSensitivityInput>
