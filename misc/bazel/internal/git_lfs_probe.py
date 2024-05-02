@@ -27,6 +27,7 @@ def get_endpoint():
     endpoint = ssh_server = ssh_path = None
     endpoint_re = re.compile(r'Endpoint(?: \(\S+\))?=(\S+)')
     ssh_re = re.compile(r'\s*SSH=(\S*):(.*)')
+    credentials_re = re.compile(r'^password=(.*)$', re.M)
     for line in lfs_env.splitlines():
         m = endpoint_re.match(line)
         if m:
@@ -63,6 +64,15 @@ def get_endpoint():
         headers[k.capitalize()] = v
     if "GITHUB_TOKEN" in os.environ:
         headers["Authorization"] = f"token {os.environ['GITHUB_TOKEN']}"
+    if "Authorization" not in headers:
+        credentials = subprocess.run(["git", "credential", "fill"], cwd=source_dir, stdout=subprocess.PIPE, text=True,
+                                     input=f"protocol={url.scheme}\nhost={url.netloc}\npath={url.path[1:]}\n",
+                                     check=True).stdout
+        m = credentials_re.search(credentials)
+        if m:
+            headers["Authorization"] = f"token {m[1]}"
+        else:
+            print(f"WARNING: no auth credentials found for {endpoint}")
     return endpoint, headers
 
 
