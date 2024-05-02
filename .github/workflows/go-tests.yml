@@ -16,9 +16,6 @@ on:
       - .github/actions/**
       - codeql-workspace.yml
 
-env:
-  GO_VERSION: '~1.22.0'
-
 permissions:
   contents: read
 
@@ -28,10 +25,10 @@ jobs:
     name: Test Linux (Ubuntu)
     runs-on: ubuntu-latest-xl
     steps:
-      - name: Set up Go ${{ env.GO_VERSION }}
+      - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go/test-runtime-version/go.work
           cache: false
         id: go
 
