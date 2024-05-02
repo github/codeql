@@ -1,13 +1,13 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 
 pkg_files(
-    name = "executables",
+    name = "sh-files",
     srcs = glob(["*.sh"]),
     attributes = pkg_attributes(mode = "0755"),
 )
 
 pkg_files(
-    name = "non-executables",
+    name = "non-sh-files",
     srcs = glob(
         ["*"],
         exclude = [
@@ -20,8 +20,8 @@ pkg_files(
 pkg_filegroup(
     name = "codeql-tools",
     srcs = [
-        ":executables",
-        ":non-executables",
+        ":non-sh-files",
+        ":sh-files",
     ],
     prefix = "tools",
     visibility = ["//go:__pkg__"],
