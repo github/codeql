@@ -770,7 +770,7 @@ private predicate adjustForPointerArith(PostUpdateNode pun, SourceVariable sv, I
  * block `bb1`.
  *
  * `uncertain` is `true` if `(bb1, i1)` is a definition, and that definition
- * is guaranteed to overwrite the entire allocation.
+ * is _not_ guaranteed to overwrite the entire allocation.
  */
 private predicate ssaFlowImpl(
   IRBlock bb1, int i1, SourceVariable sv, Node nodeFrom, Node nodeTo, boolean uncertain
