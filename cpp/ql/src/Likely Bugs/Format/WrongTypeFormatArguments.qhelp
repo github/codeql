@@ -21,7 +21,7 @@ the function.
 
 <sample src="WrongTypeFormatArgumentsBad.cpp" />
 
-<p>The corrected version uses <code>&percnt;i</code> as the format specifier for the integer format argument:</p>
+<p>The corrected version uses <code>%i</code> as the format specifier for the integer format argument:</p>
 
 <sample src="WrongTypeFormatArgumentsGood.cpp" />
 
