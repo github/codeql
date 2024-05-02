@@ -2552,21 +2552,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
     }
 
-    private module Level1CallContext {
-      class Cc = CallContext;
-
-      class CcCall = CallContextCall;
-
-      pragma[inline]
-      predicate matchesCall(CcCall cc, DataFlowCall call) { cc.matchesCall(call) }
-
-      class CcNoCall = CallContextNoCall;
-
-      Cc ccNone() { result instanceof CallContextAny }
-
-      CcCall ccSomeCall() { result instanceof CallContextSomeCall }
-    }
-
     private module Stage2Param implements MkStage<Stage1>::StageParam {
       private module PrevStage = Stage1;
 
@@ -2605,7 +2590,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
       import CachedCallContextSensitivity
-      import Level1CallContext
       import NoLocalCallContext
 
       bindingset[node1, state1]
@@ -2892,7 +2876,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import CallContextSensitivity<CallContextSensitivityInput>
-      import Level1CallContext
       import NoLocalCallContext
 
       predicate localStep(
@@ -3280,7 +3263,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import CallContextSensitivity<CallContextSensitivityInput>
-      import Level1CallContext
       import LocalCallContext
 
       predicate localStep(

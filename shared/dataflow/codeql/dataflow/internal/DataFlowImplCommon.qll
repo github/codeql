@@ -537,6 +537,19 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * of the input predicates in `CachedCallContextSensitivity`.
      */
     module PrunedViableImpl<PrunedViableImplInputSig Input2> {
+      class Cc = CallContext;
+
+      class CcCall = CallContextCall;
+
+      pragma[inline]
+      predicate matchesCall(CcCall cc, DataFlowCall call) { cc.matchesCall(call) }
+
+      class CcNoCall = CallContextNoCall;
+
+      Cc ccNone() { result instanceof CallContextAny }
+
+      CcCall ccSomeCall() { result instanceof CallContextSomeCall }
+
       /**
        * Gets a viable run-time dispatch target for the call `call` in the
        * context `ctx`. This is restricted to those calls for which a context
