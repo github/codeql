@@ -2552,11 +2552,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
     }
 
-    private signature module Level1CallContextInputSig {
-      predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call);
-    }
-
-    private module Level1CallContext<Level1CallContextInputSig Input> {
+    private module Level1CallContext {
       class Cc = CallContext;
 
       class CcCall = CallContextCall;
@@ -2608,12 +2604,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
-      private module Level1CallContextInput implements Level1CallContextInputSig {
+      private module Level1CallContextInput {
         import CachedCallContextSensitivity
       }
 
       import Level1CallContextInput
-      import Level1CallContext<Level1CallContextInput>
+      import Level1CallContext
       import NoLocalCallContext
 
       bindingset[node1, state1]
@@ -2887,7 +2883,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
-      additional module Level1CallContextInput implements Level1CallContextInputSig {
+      additional module Level1CallContextInput {
         private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
           predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
@@ -2904,7 +2900,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import Level1CallContextInput
-      import Level1CallContext<Level1CallContextInput>
+      import Level1CallContext
       import NoLocalCallContext
 
       predicate localStep(
@@ -3280,7 +3276,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
-      additional module Level1CallContextInput implements Level1CallContextInputSig {
+      additional module Level1CallContextInput {
         private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
           predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
@@ -3297,7 +3293,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import Level1CallContextInput
-      import Level1CallContext<Level1CallContextInput>
+      import Level1CallContext
       import LocalCallContext
 
       predicate localStep(
