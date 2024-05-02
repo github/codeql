@@ -1,26 +1,13 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 load("@gazelle//:def.bzl", "gazelle")
-load("@rules_go//go:def.bzl", "go_cross_binary")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 load("//:defs.bzl", "codeql_platform")
 
-# following is needed for running gazelle on macOS
-# see https://github.com/bazelbuild/bazel-gazelle/issues/1793
-go_cross_binary(
-    name = "gazelle-1.21.9",
-    sdk_version = "1.21.9",
-    target = "@gazelle//cmd/gazelle",
-)
-
 gazelle(
     name = "gazelle",
     extra_args = ["go/extractor"],
-    gazelle = select({
-        "@platforms//os:macos": ":gazelle-1.21.9",
-        "//conditions:default": "@gazelle//cmd/gazelle",
-    }),
 )
 
 _gen_binaries = [
