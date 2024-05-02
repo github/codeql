@@ -83,10 +83,6 @@ public class Env {
 		 */
 		ODASA_QUERIES,
 		/**
-		 * The location of the 'tools' directory
-		 */
-		ODASA_TOOLS,
-		/**
 		 * Whether we are running in 'prototyping mode'.
 		 */
 		ODASA_PROTOTYPE_MODE,
