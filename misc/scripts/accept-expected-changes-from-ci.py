@@ -280,10 +280,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
     for lang_test_failure in lang_test_failures:
         job_failure_urls.add(lang_test_failure.target_url)
 
-    if job_failure_urls:
-        assert len(job_failure_urls) == 1, f"Multiple job failure URLs: {job_failure_urls}"
-        job_failure_url = job_failure_urls.pop()
-
+    for job_failure_url in job_failure_urls:
         # fixup URL. On the status, the target URL is the run, and it's really hard to
         # change this to link to the full `/runs/<run_id>/jobs/<numeric_job_id>` URL, since
         # the `<numeric_job_id>` is not available in a context: https://github.com/community/community/discussions/40291
@@ -301,6 +298,11 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
 
             for job in jobs["jobs"]:
                 api_name: str = job["name"]
+
+                if api_name.lower().startswith(expected_workflow_name.lower()):
+                    lang_test_failure.job_id = job["id"]
+                    break
+
                 if " / " not in api_name:
                     continue
 
@@ -310,9 +312,11 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                 if workflow_name == expected_workflow_name and job_name.lower().startswith(lang_test_failure.context.lower()):
                     lang_test_failure.job_id = job["id"]
                     break
-            else:
-                LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
-                sys.exit(1)
+
+    for lang_test_failure in lang_test_failures:
+        if lang_test_failure.job_id is None:
+            LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
+            sys.exit(1)
 
     # Ruby/Swift/C#/Go use github actions, and not internal CI. These are not reported
     # from the /statuses API, but from the /check-suites API
