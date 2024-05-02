@@ -8,6 +8,12 @@
 When the <code>std::string</code> object is destroyed, the pointer returned by <code>c_str</code> is no
 longer valid. If the pointer is used after the <code>std::string</code> object is destroyed, then the behavior is undefined.
 </p>
+
+<p>Typically this problem occurs when a <code>std::string</code> is returned by a function call (or overloaded operator)
+by value, and the result is not immediately stored in a variable by value (or <code>const</code> reference). The resulting
+temporary <code>std::string</code> object is destroyed at the end of the expression statement it is contained in, along
+with any memory returned by a call to <code>c_str</code>.
+</p>
 </overview>
 
 <recommendation>
@@ -39,6 +45,7 @@ points to valid memory.
 <references>
 
 <li><a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM50-CPP.+Do+not+access+freed+memory">MEM50-CPP. Do not access freed memory</a>.</li>
+<li>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/cpp/cpp/temporary-objects?view=msvc-170">Temporary objects</a>.</li>
 
 </references>
 </qhelp>
