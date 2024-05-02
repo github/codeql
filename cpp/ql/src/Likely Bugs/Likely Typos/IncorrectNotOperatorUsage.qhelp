@@ -21,7 +21,7 @@
 
 <sample src="IncorrectNotOperatorUsage.cpp" />
 
-<p>In other cases, particularly when the expressions have <code>bool</code> type, the fix may instead be of the form <code>a &amp;&amp; !b</code></p>.
+<p>In other cases, particularly when the expressions have <code>bool</code> type, the fix may instead be of the form <code>a &amp;&amp; !b</code>.</p>
 </example>
 
 <references>
