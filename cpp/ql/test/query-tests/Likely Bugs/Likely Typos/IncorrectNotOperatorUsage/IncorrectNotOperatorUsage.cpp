@@ -3,7 +3,7 @@
 
 void C6317_positive(int i)
 {
-    if (i & !FLAGS) // BUG 
+    if (i & !FLAGS) // BUG
     {
     }
 }
@@ -69,5 +69,24 @@ void macroUsage(unsigned int arg1, unsigned int arg2)
 {
     if (((!cap_valid(arg1)) | arg2)) {   // BUG
 
+    }
+}
+
+void bool_examples(bool a, bool b)
+{
+    if (a & !b) // dubious (confusing intent, but shouldn't produce a wrong result)
+    {
+    }
+
+    if (a & ~b)
+    {
+    }
+
+    if (a && ~b)
+    {
+    }
+
+    if (a && !b)
+    {
     }
 }
