@@ -220,7 +220,7 @@ def get_log_content(status: GithubStatus) -> str:
     return content
 
 
-def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=False):
+def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=False, wait_for_ci=True):
     if not pr_number and not sha_override:
         raise Exception("Must specify either a PR number or a SHA")
 
@@ -273,8 +273,9 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
             if status.state == "failure":
                 lang_test_failures.append(status)
             elif status.state == "pending":
-                LOGGER.error(f"Language tests ({status.context}) are still running, please wait for them to finish before running this script again")
-                sys.exit(1)
+                if wait_for_ci:
+                    LOGGER.error(f"Language tests ({status.context}) are still running, please wait for them to finish before running this script again (or run with --dont-wait)")
+                    sys.exit(1)
 
     job_failure_urls = set()
     for lang_test_failure in lang_test_failures:
@@ -327,9 +328,10 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
     check_failure_urls = []
     for check in check_suites["check_suites"]:
         if check["status"] != "completed":
-            print(check)
-            LOGGER.error("At least one check not completed yet!")
-            sys.exit(1)
+            if wait_for_ci:
+                print(check)
+                LOGGER.error("At least one check not completed yet!")
+                sys.exit(1)
 
         if check["conclusion"] == "failure":
             check_failure_urls.append(check["check_runs_url"])
@@ -460,6 +462,7 @@ if __name__ == "__main__":
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--force", action="store_true", help="Apply patches even if the local SHA is different from the GitHub PR SHA")
+    parser.add_argument("--dont-wait", dest="wait_for_ci", action="store_false", help="Do not wait for all CI jobs to finish")
     parser.add_argument("posarg", nargs="?", default=None)
 
     if DEBUG_LOG_FILE:
@@ -494,4 +497,4 @@ if __name__ == "__main__":
         else:
             pr_number = int(args.posarg)
 
-    main(pr_number, override_sha, force=args.force)
+    main(pr_number, override_sha, force=args.force, wait_for_ci=args.wait_for_ci)
