@@ -5,3 +5,4 @@ extensions:
     data:
       - ["", "", False, "append", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
       - ["", "", False, "append", "", "", "Argument[1].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["", "", False, "copy", "", "", "Argument[1].ArrayElement", "Argument[0].ArrayElement", "value", "manual"]
