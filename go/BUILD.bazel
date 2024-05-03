@@ -1,13 +1,14 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
-load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 load("//:defs.bzl", "codeql_platform")
 
-gazelle(
+native_binary(
     name = "gazelle",
-    extra_args = ["go/extractor"],
+    src = "@gazelle//cmd/gazelle",
+    out = "gazelle.exe",
+    args = ["go/extractor"],
 )
 
 _gen_binaries = [
@@ -24,9 +25,9 @@ py_binary(
     deps = ["@rules_python//python/runfiles"],
 )
 
-# this is an internal copy of the dbscheme to be used by extractor-pack
-# this allows the extractor-pack target to be independent and up-to-date with respect to
-# having run //go:gen to update the checked in files
+# this is an instance of the dbscheme kept in the bazel build tree
+# this allows everything that bazel builds to be up-to-date,
+# independently from whether //go:gen was already run to update the checked in files
 genrule(
     name = "dbscheme",
     outs = ["go.dbscheme"],
@@ -107,13 +108,4 @@ py_binary(
     data = [":_create-extractor-pack-arg"],
     main = "create_extractor_pack.py",
     deps = ["@rules_python//python/runfiles"],
-)
-
-native_binary(
-    name = "gen-dbscheme",
-    src = "//go/extractor/cli/go-gen-dbscheme",
-    out = "go-gen-dbscheme",
-    args = [
-        "$$BUILD_WORKSPACE_DIRECTORY/go/ql/lib/go.dbscheme",
-    ],
 )

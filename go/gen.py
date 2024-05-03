@@ -24,12 +24,18 @@ def options():
 opts = options()
 
 try:
-    workspace_dir = pathlib.Path(os.environ['BUILD_WORKSPACE_DIRECTORY'])
+    workspace_dir = pathlib.Path(os.environ.pop('BUILD_WORKSPACE_DIRECTORY'))
 except KeyError:
     print("this should be run with bazel run", file=sys.stderr)
     sys.exit(1)
 
 go_extractor_dir = workspace_dir / "go" / "extractor"
+
+if not go_extractor_dir.exists():
+    # internal repo?
+    workspace_dir /= "ql"
+    go_extractor_dir = workspace_dir / "go" / "extractor"
+
 go_dbscheme = workspace_dir / "go" / "ql" / "lib" / "go.dbscheme"
 r = runfiles.Create()
 go, gazelle, go_gen_dbscheme = map(r.Rlocation, opts.executables)
@@ -49,8 +55,8 @@ if opts.force:
     for build_file in existing_build_files:
         build_file.unlink()
 
-print("running gazelle")
-subprocess.check_call([gazelle])
+print("running gazelle", gazelle, go_extractor_dir)
+subprocess.check_call([gazelle, "go/extractor"], cwd=workspace_dir)
 
 # we want to stamp all newly generated `BUILD.bazel` files with a header
 build_files_to_update = set(go_extractor_dir.glob("*/**/BUILD.bazel"))
