@@ -1,3 +1,12 @@
+"""
+Update generated files related to Go in the repo. Using --force will regenerate all files from scratch.
+
+In particular the script will:
+1. update the `vendor` dir with `go work vendor` (using a go toolchain provided by bazel)
+2. update `BUILD.bazel` files using gazelle
+3. update `ql/lib/go.dbscheme` using a compiled `go-dbschemegen`
+"""
+
 import sys
 import pathlib
 import subprocess
@@ -7,9 +16,9 @@ import shutil
 from python.runfiles import runfiles
 
 def options():
-    p = argparse.ArgumentParser(description="Update generated checked in files in the Go pack")
+    p = argparse.ArgumentParser(description="Update generated files related to Go in the repo")
     p.add_argument("--force", "-f", action="store_true", help="Regenerate all files from scratch rather than updating them")
-    p.add_argument("generators", nargs=3)
+    p.add_argument("executables", nargs=3, help="Internally provided executables")
     return p.parse_args()
 
 opts = options()
@@ -23,7 +32,7 @@ except KeyError:
 go_extractor_dir = workspace_dir / "go" / "extractor"
 go_dbscheme = workspace_dir / "go" / "ql" / "lib" / "go.dbscheme"
 r = runfiles.Create()
-go, gazelle, go_gen_dbscheme = map(r.Rlocation, opts.generators)
+go, gazelle, go_gen_dbscheme = map(r.Rlocation, opts.executables)
 
 
 if opts.force:
@@ -43,13 +52,16 @@ if opts.force:
 print("running gazelle")
 subprocess.check_call([gazelle])
 
+# we want to stamp all newly generated `BUILD.bazel` files with a header
 build_files_to_update = set(go_extractor_dir.glob("*/**/BUILD.bazel"))
+# if --force, all files are new
 if not opts.force:
+    # otherwise, subtract the files that existed at the start
     build_files_to_update -= existing_build_files
-    # these are always refreshed
+    # but bring back the `vendor` ones, as the vendor update step always clears them
     build_files_to_update.update(go_extractor_dir.glob("vendor/**/BUILD.bazel"))
 
-print("adding header to generated BUILD files")
+print("adding header to newly generated BUILD files")
 for build_file in build_files_to_update:
     contents = build_file.read_text()
     build_file.write_text(f"# generated running `bazel run //go/gazelle`, do not edit\n\n{contents}")
