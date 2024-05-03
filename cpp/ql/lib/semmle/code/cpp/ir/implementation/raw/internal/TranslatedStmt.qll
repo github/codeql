@@ -1163,6 +1163,8 @@ class TranslatedForStmt extends TranslatedLoop {
 class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
   override RangeBasedForStmt stmt;
 
+  override predicate handlesDestructorsExplicitly() { any() }
+
   override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
@@ -1216,6 +1218,19 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
     or
     child = this.getUpdate() and
     result = this.getCondition().getFirstInstruction(kind)
+    or
+    exists(int destructorId |
+      destructorId >= this.getFirstDestructorCallIndex() and
+      child = this.getChild(destructorId) and
+      result = this.getChild(destructorId + 1).getFirstInstruction(kind)
+    )
+    or
+    exists(int lastDestructorIndex |
+      lastDestructorIndex =
+        max(int n | exists(this.getChild(n)) and n >= this.getFirstDestructorCallIndex()) and
+      child = this.getChild(lastDestructorIndex) and
+      result = this.getParent().getChildSuccessor(this, kind)
+    )
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -1231,7 +1246,9 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
 
   override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    if this.hasAnImplicitDestructorCall()
+    then result = this.getChild(this.getFirstDestructorCallIndex()).getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
   private TranslatedDeclStmt getRangeVariableDeclStmt() {
