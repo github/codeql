@@ -5,14 +5,18 @@ def lfs_smudge(repository_ctx, srcs, extract = False, stripPrefix = None):
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     if not python:
         fail("Neither python3 nor python executables found")
+    repository_ctx.report_progress("querying LFS url(s) for: %s" % ", ".join([src.basename for src in srcs]))
     res = repository_ctx.execute([python, script] + srcs, quiet = True)
     if res.return_code != 0:
         fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
+    promises = []
     for src, loc in zip(srcs, res.stdout.splitlines()):
         if loc == "local":
             if extract:
+                repository_ctx.report_progress("extracting local %s" % src.basename)
                 repository_ctx.extract(src, stripPrefix = stripPrefix)
             else:
+                repository_ctx.report_progress("symlinking local %s" % src.basename)
                 repository_ctx.symlink(src, src.basename)
         else:
             sha256, _, url = loc.partition(" ")
@@ -22,8 +26,10 @@ def lfs_smudge(repository_ctx, srcs, extract = False, stripPrefix = None):
                 # it doesn't matter if file is something like some.name.zip and possible_extension == "name.zip",
                 # download_and_extract will just append ".name.zip" its internal temporary name, so extraction works
                 possible_extension = ".".join(src.basename.rsplit(".", 2)[-2:])
+                repository_ctx.report_progress("downloading and extracting remote %s" % src.basename)
                 repository_ctx.download_and_extract(url, sha256 = sha256, stripPrefix = stripPrefix, type = possible_extension)
             else:
+                repository_ctx.report_progress("downloading remote %s" % src.basename)
                 repository_ctx.download(url, src.basename, sha256 = sha256)
 
 def _download_and_extract_lfs(repository_ctx):
