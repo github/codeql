@@ -25,7 +25,7 @@ go_library(
     ],
 )
 
-# notice that these other targets are not generated
+# the other targets are not generated
 java_library(
     name = "tokenizer-deps",
     srcs = [
