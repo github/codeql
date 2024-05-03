@@ -16,74 +16,78 @@ import json
 import urllib.request
 from urllib.parse import urlparse
 import re
+import base64
+from dataclasses import dataclass
+
+
+@dataclass
+class Endpoint:
+    href: str
+    headers: dict[str, str]
+
+    def update_headers(self, d: dict[str, str]):
+        self.headers.update((k.capitalize(), v) for k, v in d.items())
+
 
 sources = [pathlib.Path(arg).resolve() for arg in sys.argv[1:]]
 source_dir = pathlib.Path(os.path.commonpath(src.parent for src in sources))
 source_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"], cwd=source_dir, text=True).strip()
 
 
+def get_env(s, sep="="):
+    ret = {}
+    for m in re.finditer(fr'(.*?){sep}(.*)', s, re.M):
+        ret.setdefault(*m.groups())
+    return ret
+
+
+def git(*args, **kwargs):
+    return subprocess.run(("git",) + args, stdout=subprocess.PIPE, text=True, cwd=source_dir, **kwargs).stdout.strip()
+
+
 def get_endpoint():
-    lfs_env = subprocess.check_output(["git", "lfs", "env"], text=True, cwd=source_dir)
-    endpoint = ssh_server = ssh_path = None
-    endpoint_re = re.compile(r'Endpoint(?: \(\S+\))?=(\S+)')
-    ssh_re = re.compile(r'\s*SSH=(\S*):(.*)')
-    credentials_re = re.compile(r'^password=(.*)$', re.M)
-    for line in lfs_env.splitlines():
-        m = endpoint_re.match(line)
-        if m:
-            if endpoint is None:
-                endpoint = m[1]
-            else:
-                break
-        m = ssh_re.match(line)
-        if m:
-            ssh_server, ssh_path = m.groups()
-            break
-    assert endpoint, f"no Endpoint= line found in git lfs env:\n{lfs_env}"
-    headers = {
+    lfs_env = get_env(subprocess.check_output(["git", "lfs", "env"], text=True, cwd=source_dir))
+    endpoint = next(v for k, v in lfs_env.items() if k.startswith('Endpoint'))
+    endpoint, _, _ = endpoint.partition(' ')
+    ssh_endpoint = lfs_env.get("  SSH")
+    endpoint = Endpoint(endpoint, {
         "Content-Type": "application/vnd.git-lfs+json",
         "Accept": "application/vnd.git-lfs+json",
-    }
-    if ssh_server:
+    })
+    if ssh_endpoint:
+        # see https://github.com/git-lfs/git-lfs/blob/main/docs/api/authentication.md
+        server, _, path = ssh_endpoint.partition(":")
         ssh_command = shutil.which(os.environ.get("GIT_SSH", os.environ.get("GIT_SSH_COMMAND", "ssh")))
         assert ssh_command, "no ssh command found"
-        with subprocess.Popen([ssh_command, ssh_server, "git-lfs-authenticate", ssh_path, "download"],
-                              stdout=subprocess.PIPE) as ssh:
-            resp = json.load(ssh.stdout)
-            assert ssh.wait() == 0, "ssh command failed"
-        endpoint = resp.get("href", endpoint)
-        for k, v in resp.get("header", {}).items():
-            headers[k.capitalize()] = v
-    url = urlparse(endpoint)
+        resp = json.loads(subprocess.check_output([ssh_command, server, "git-lfs-authenticate", path, "download"]))
+        endpoint.href = resp.get("href", endpoint)
+        endpoint.update_headers(resp.get("header", {}))
+    url = urlparse(endpoint.href)
     # this is how actions/checkout persist credentials
     # see https://github.com/actions/checkout/blob/44c2b7a8a4ea60a981eaca3cf939b5f4305c123b/src/git-auth-helper.ts#L56-L63
-    auth = subprocess.run(["git", "config", f"http.{url.scheme}://{url.netloc}/.extraheader"], text=True,
-                          stdout=subprocess.PIPE, cwd=source_dir).stdout.strip()
-    for l in auth.splitlines():
-        k, _, v = l.partition(": ")
-        headers[k.capitalize()] = v
+    auth = git("config", f"http.{url.scheme}://{url.netloc}/.extraheader")
+    endpoint.update_headers(get_env(auth, sep=": "))
     if "GITHUB_TOKEN" in os.environ:
-        headers["Authorization"] = f"token {os.environ['GITHUB_TOKEN']}"
-    if "Authorization" not in headers:
-        credentials = subprocess.run(["git", "credential", "fill"], cwd=source_dir, stdout=subprocess.PIPE, text=True,
-                                     input=f"protocol={url.scheme}\nhost={url.netloc}\npath={url.path[1:]}\n",
-                                     check=True).stdout
-        m = credentials_re.search(credentials)
-        if m:
-            headers["Authorization"] = f"token {m[1]}"
-        else:
-            print(f"WARNING: no auth credentials found for {endpoint}")
-    return endpoint, headers
+        endpoint.headers["Authorization"] = f"token {os.environ['GITHUB_TOKEN']}"
+    if "Authorization" not in endpoint.headers:
+        # last chance: use git credentials (possibly backed by a credential helper like the one installed by gh)
+        # see https://git-scm.com/docs/git-credential
+        credentials = get_env(git("credential", "fill", check=True,
+                                  # drop leading / from url.path
+                                  input=f"protocol={url.scheme}\nhost={url.netloc}\npath={url.path[1:]}\n"))
+        auth = base64.b64encode(f'{credentials["username"]}:{credentials["password"]}'.encode()).decode('ascii')
+        endpoint.headers["Authorization"] = f"Basic {auth}"
+    return endpoint
 
 
 # see https://github.com/git-lfs/git-lfs/blob/310d1b4a7d01e8d9d884447df4635c7a9c7642c2/docs/api/basic-transfers.md
 def get_locations(objects):
-    href, headers = get_endpoint()
+    endpoint = get_endpoint()
     indexes = [i for i, o in enumerate(objects) if o]
     ret = ["local" for _ in objects]
     req = urllib.request.Request(
-        f"{href}/objects/batch",
-        headers=headers,
+        f"{endpoint.href}/objects/batch",
+        headers=endpoint.headers,
         data=json.dumps({
             "operation": "download",
             "transfers": ["basic"],
@@ -93,7 +97,7 @@ def get_locations(objects):
     )
     with urllib.request.urlopen(req) as resp:
         data = json.load(resp)
-    assert len(data["objects"]) == len(indexes), data
+    assert len(data["objects"]) == len(indexes), f"received {len(data)} objects, expected {len(indexes)}"
     for i, resp in zip(indexes, data["objects"]):
         ret[i] = f'{resp["oid"]} {resp["actions"]["download"]["href"]}'
     return ret
@@ -106,14 +110,10 @@ def get_lfs_object(path):
         sha256 = size = None
         if lfs_header != actual_header:
             return None
-        for line in fileobj:
-            line = line.decode('ascii').strip()
-            if line.startswith("oid sha256:"):
-                sha256 = line[len("oid sha256:"):]
-            elif line.startswith("size "):
-                size = int(line[len("size "):])
-        if not (sha256 and line):
-            raise Exception("malformed pointer file")
+        data = get_env(fileobj.read().decode('ascii'), sep=' ')
+        assert data['oid'].startswith('sha256:'), f"unknown oid type: {data['oid']}"
+        _, _, sha256 = data['oid'].partition(':')
+        size = int(data['size'])
         return {"oid": sha256, "size": size}
 
 
