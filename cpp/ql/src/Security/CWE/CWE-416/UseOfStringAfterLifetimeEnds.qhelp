@@ -9,10 +9,10 @@ When the <code>std::string</code> object is destroyed, the pointer returned by <
 longer valid. If the pointer is used after the <code>std::string</code> object is destroyed, then the behavior is undefined.
 </p>
 
-<p>Typically this problem occurs when a <code>std::string</code> is returned by a function call (or overloaded operator)
+<p>Typically, this problem occurs when a <code>std::string</code> is returned by a function call (or overloaded operator)
 by value, and the result is not immediately stored in a variable by value or reference in a way that extends the lifetime of
-the temporary object. The resulting temporary <code>std::string</code> object is destroyed at the end of the expression
-statement it is contained in, along with any memory returned by a call to <code>c_str</code>.
+the temporary object. The resulting temporary <code>std::string</code> object is destroyed at the end of the containing expression
+statement, along with any memory returned by a call to <code>c_str</code>.
 </p>
 </overview>
 
