@@ -153,9 +153,9 @@ deprecated class SensitiveCommunicationConfig extends TaintTracking::Configurati
 }
 
 /**
- * A class of sensitive communication sink nodes.
+ * A sensitive communication sink node.
  */
-class SensitiveCommunicationSink extends ApiSinkNode {
+private class SensitiveCommunicationSink extends ApiSinkNode {
   SensitiveCommunicationSink() {
     isSensitiveBroadcastSink(this)
     or

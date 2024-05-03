@@ -1,9 +1,7 @@
 /** Provides predicates to reason about exposure of stack-traces. */
 
 import java
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.InformationLeak
 
 /**
@@ -97,9 +95,9 @@ predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stac
 }
 
 /**
- * A class of get message source nodes.
+ * A get message source node.
  */
-class GetMessageFlowSource extends ApiSourceNode {
+private class GetMessageFlowSource extends ApiSourceNode {
   GetMessageFlowSource() {
     exists(Method method | this.asExpr().(MethodCall).getMethod() = method |
       method.hasName("getMessage") and

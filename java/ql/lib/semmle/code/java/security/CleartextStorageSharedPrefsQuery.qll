@@ -70,18 +70,18 @@ private predicate sharedPreferencesStore(DataFlow::Node editor, MethodCall m) {
 }
 
 /**
- * A shared preferences editor method call source nodes.
+ * A shared preferences editor method call source node.
  */
-class SharedPreferencesEditorMethodCallSource extends ApiSourceNode {
+private class SharedPreferencesEditorMethodCallSource extends ApiSourceNode {
   SharedPreferencesEditorMethodCallSource() {
     this.asExpr() instanceof SharedPreferencesEditorMethodCall
   }
 }
 
 /**
- * A class of shared preferences sink nodes.
+ * A shared preferences sink node.
  */
-class SharedPreferencesSink extends ApiSinkNode {
+private class SharedPreferencesSink extends ApiSinkNode {
   SharedPreferencesSink() {
     sharedPreferencesInput(this, _) or
     sharedPreferencesStore(this, _)

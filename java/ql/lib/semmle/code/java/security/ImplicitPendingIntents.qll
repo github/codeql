@@ -3,8 +3,6 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.frameworks.android.Intent
 private import semmle.code.java.frameworks.android.PendingIntent
 
 private newtype TPendingIntentState =

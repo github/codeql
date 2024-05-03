@@ -1,7 +1,6 @@
 /** Provides classes for working with JSON Web Token (JWT) libraries. */
 
 import java
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 

@@ -40,16 +40,16 @@ private predicate cookieStore(DataFlow::Node cookie, Expr store) {
 }
 
 /**
- * A class of cookie source nodes.
+ * A cookie source node.
  */
-class CookieSource extends ApiSourceNode {
+private class CookieSource extends ApiSourceNode {
   CookieSource() { this.asExpr() instanceof Cookie }
 }
 
 /**
- * A class of cookie store sink nodes.
+ * A cookie store sink node.
  */
-class CookieStoreSink extends ApiSinkNode {
+private class CookieStoreSink extends ApiSinkNode {
   CookieStoreSink() { cookieStore(this, _) }
 }
 

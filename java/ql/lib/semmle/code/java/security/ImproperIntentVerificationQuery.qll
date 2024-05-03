@@ -4,7 +4,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.xml.AndroidManifest
 import semmle.code.java.frameworks.android.Intent
-private import semmle.code.java.dataflow.FlowSources
 
 /** An `onReceive` method of a `BroadcastReceiver` */
 private class OnReceiveMethod extends Method {
@@ -14,18 +13,11 @@ private class OnReceiveMethod extends Method {
   Parameter getIntentParameter() { result = this.getParameter(1) }
 }
 
-/**
- * A class of verified intent source nodes.
- */
-class VerifiedIntentConfigSource extends ApiSourceNode {
-  VerifiedIntentConfigSource() {
-    this.asParameter() = any(OnReceiveMethod orm).getIntentParameter()
-  }
-}
-
 /** A configuration to detect whether the `action` of an `Intent` is checked. */
 private module VerifiedIntentConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof VerifiedIntentConfigSource }
+  predicate isSource(DataFlow::Node src) {
+    src.asParameter() = any(OnReceiveMethod orm).getIntentParameter()
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall ma |

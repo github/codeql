@@ -6,9 +6,9 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.StringFormat
 
 /**
- * A class of string format sink nodes.
+ * A string format sink node.
  */
-class StringFormatSink extends ApiSinkNode {
+private class StringFormatSink extends ApiSinkNode {
   StringFormatSink() { this.asExpr() = any(StringFormat formatCall).getFormatArgument() }
 }
 

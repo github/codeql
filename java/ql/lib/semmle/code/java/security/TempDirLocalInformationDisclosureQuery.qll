@@ -30,7 +30,7 @@ private class MethodFileFileCreation extends MethodFileSystemFileCreation {
 /**
  * A dataflow node that creates a file or directory in the file system.
  */
-abstract private class FileCreationSink extends DataFlow::Node { }
+abstract private class FileCreationSink extends ApiSinkNode { }
 
 /**
  * The qualifier of a call to one of `File`'s file-creating or directory-creating methods,
@@ -155,17 +155,6 @@ module TempDirSystemGetPropertyToCreate =
   TaintTracking::Global<TempDirSystemGetPropertyToCreateConfig>;
 
 /**
- * A class of method file directory creation sink nodes.
- */
-class MethodFileDirectoryCreationSink extends ApiSinkNode {
-  MethodFileDirectoryCreationSink() {
-    exists(MethodCall ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
-      ma.getQualifier() = this.asExpr()
-    )
-  }
-}
-
-/**
  * Configuration that tracks calls to to `mkdir` or `mkdirs` that are are directly on the temp directory system property.
  * Examples:
  * - `File tempDir = new File(System.getProperty("java.io.tmpdir")); tempDir.mkdir();`
@@ -184,7 +173,11 @@ module TempDirSystemGetPropertyDirectlyToMkdirConfig implements DataFlow::Config
     )
   }
 
-  predicate isSink(DataFlow::Node node) { node instanceof MethodFileDirectoryCreationSink }
+  predicate isSink(DataFlow::Node node) {
+    exists(MethodCall ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
+      ma.getQualifier() = node.asExpr()
+    )
+  }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     isFileConstructorArgument(sanitizer.asExpr(), _, _)

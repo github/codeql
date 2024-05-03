@@ -108,7 +108,7 @@ class XssVulnerableWriterSource extends MethodCall {
 }
 
 /**
- * A class of xss vulnerable writer source nodes.
+ * A xss vulnerable writer source node.
  */
 class XssVulnerableWriterSourceNode extends ApiSourceNode {
   XssVulnerableWriterSourceNode() { this.asExpr() instanceof XssVulnerableWriterSource }

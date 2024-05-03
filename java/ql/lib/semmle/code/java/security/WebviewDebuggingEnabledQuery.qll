@@ -46,9 +46,9 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
 }
 
 /**
- * A class of webview debug sink nodes.
+ * A webview debug sink node.
  */
-class WebviewDebugSink extends ApiSinkNode {
+private class WebviewDebugSink extends ApiSinkNode {
   WebviewDebugSink() {
     exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and

@@ -52,9 +52,9 @@ deprecated private class SensitiveResultReceiverConf extends TaintTracking::Conf
 }
 
 /**
- * A class of sensitive result receiver sink nodes.
+ * A sensitive result receiver sink node.
  */
-class SensitiveResultReceiverSink extends ApiSinkNode {
+private class SensitiveResultReceiverSink extends ApiSinkNode {
   SensitiveResultReceiverSink() {
     exists(ResultReceiverSendCall call |
       untrustedResultReceiverSend(_, call) and

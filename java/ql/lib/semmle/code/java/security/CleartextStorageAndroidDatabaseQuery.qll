@@ -99,16 +99,16 @@ private predicate localDatabaseStore(DataFlow::Node database, MethodCall store) 
 }
 
 /**
- * A class of local database open method call source nodes.
+ * A local database open method call source node.
  */
-class LocalDatabaseOpenMethodCallSource extends ApiSourceNode {
+private class LocalDatabaseOpenMethodCallSource extends ApiSourceNode {
   LocalDatabaseOpenMethodCallSource() { this.asExpr() instanceof LocalDatabaseOpenMethodCall }
 }
 
 /**
- * A class of local database sink nodes.
+ * A local database sink node.
  */
-class LocalDatabaseSink extends ApiSinkNode {
+private class LocalDatabaseSink extends ApiSinkNode {
   LocalDatabaseSink() { localDatabaseInput(this, _) or localDatabaseStore(this, _) }
 }
 

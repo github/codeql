@@ -82,16 +82,16 @@ private class CloseFileMethod extends Method {
 }
 
 /**
- * A class of local file open call source nodes.
+ * A local file open call source node.
  */
-class LocalFileOpenCallSource extends ApiSourceNode {
+private class LocalFileOpenCallSource extends ApiSourceNode {
   LocalFileOpenCallSource() { this.asExpr() instanceof LocalFileOpenCall }
 }
 
 /**
- * A class of local file sink nodes.
+ * A local file sink node.
  */
-class LocalFileSink extends ApiSinkNode {
+private class LocalFileSink extends ApiSinkNode {
   LocalFileSink() {
     filesystemInput(this, _) or
     closesFile(this, _)

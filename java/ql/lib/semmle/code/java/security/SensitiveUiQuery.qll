@@ -55,9 +55,9 @@ private class MaskCall extends MethodCall {
 }
 
 /**
- * A class of text field sink nodes.
+ * A text field sink node.
  */
-class TextFieldSink extends ApiSinkNode {
+private class TextFieldSink extends ApiSinkNode {
   TextFieldSink() {
     exists(SetTextCall call |
       this.asExpr() = call.getStringArgument() and

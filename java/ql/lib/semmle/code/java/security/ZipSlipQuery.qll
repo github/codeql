@@ -23,9 +23,9 @@ private class ArchiveEntryNameMethod extends Method {
 }
 
 /**
- * A class of entry name method source nodes.
+ * An entry name method source node.
  */
-class ArchiveEntryNameMethodSource extends ApiSourceNode {
+private class ArchiveEntryNameMethodSource extends ApiSourceNode {
   ArchiveEntryNameMethodSource() {
     this.asExpr().(MethodCall).getMethod() instanceof ArchiveEntryNameMethod
   }

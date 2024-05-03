@@ -11,7 +11,7 @@ private import semmle.code.java.dataflow.DataFlow
 abstract class ApiSinkNode extends DataFlow::Node { }
 
 /**
- * Add all models as data sinks.
+ * Add all sink models as data sinks.
  */
 private class ApiSinkNodeExternal extends ApiSinkNode {
   ApiSinkNodeExternal() { sinkNode(this, _) }
