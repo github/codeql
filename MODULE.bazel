@@ -55,7 +55,7 @@ node.toolchain(
 use_repo(node, "nodejs", "nodejs_toolchains")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.22.2")  # default
+go_sdk.download(version = "1.22.2")
 
 register_toolchains(
     "@nodejs_toolchains//:all",
