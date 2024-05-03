@@ -297,4 +297,7 @@
 
 (function () {
     require('crypto').createHmac('sha256', 'mytoken'); // OK
+    require('crypto').createHmac('sha256', 'SampleToken'); // OK
+    require('crypto').createHmac('sha256', 'MyPassword'); // OK
+    require('crypto').createHmac('sha256', 'iubfewiaaweiybgaeuybgera'); // NOT OK
 })();
