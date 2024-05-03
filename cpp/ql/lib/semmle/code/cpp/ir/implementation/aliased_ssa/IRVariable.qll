@@ -73,8 +73,6 @@ abstract private class AbstractIRVariable extends TIRVariable {
    * Gets the function that references this variable.
    */
   final Language::Declaration getEnclosingFunction() { result = func }
-
-  IRBlock getDeclarationBlock() { none() }
 }
 
 /**
