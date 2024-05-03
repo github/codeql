@@ -58,7 +58,8 @@ pub fn generate(
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
         let reserved_word_name = format!("{}_reserved_word", &prefix);
         let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
-        let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
+        let (dbscheme_entries, mut ast_node_members, token_kinds) =
+            convert_nodes(&nodes, &ast_node_name);
         ast_node_members.insert(&token_name);
         writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
@@ -112,6 +113,7 @@ fn make_field_type<'a>(
     parent_name: &'a str,
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
+    ast_node_name: &'a str,
 ) -> (ql::Type<'a>, Option<dbscheme::Entry<'a>>) {
     match &field.type_info {
         node_types::FieldTypeInfo::Multiple {
@@ -123,7 +125,10 @@ fn make_field_type<'a>(
             // type to represent them.
             let members: Set<&str> = types
                 .iter()
-                .map(|t| nodes.get(t).unwrap().dbscheme_name.as_str())
+                .map(|t| match nodes.get(t) {
+                    Some(node) => node.dbscheme_name.as_str(),
+                    None => ast_node_name,
+                })
                 .collect();
             (
                 ql::Type::At(dbscheme_union),
@@ -163,11 +168,13 @@ fn add_field_for_table_storage<'a>(
     column_name: &'a str,
     has_index: bool,
     nodes: &'a node_types::NodeTypeMap,
+    ast_node_name: &'a str,
 ) -> (dbscheme::Table<'a>, Option<dbscheme::Entry<'a>>) {
     let parent_name = &nodes.get(&field.parent).unwrap().dbscheme_name;
     // This field can appear zero or multiple times, so put
     // it in an auxiliary table.
-    let (field_ql_type, field_type_entry) = make_field_type(parent_name, field, nodes);
+    let (field_ql_type, field_type_entry) =
+        make_field_type(parent_name, field, nodes, ast_node_name);
     let parent_column = dbscheme::Column {
         unique: !has_index,
         db_type: dbscheme::DbColumnType::Int,
@@ -212,10 +219,12 @@ fn add_field_for_column_storage<'a>(
     field: &'a node_types::Field,
     column_name: &'a str,
     nodes: &'a node_types::NodeTypeMap,
+    ast_node_name: &'a str,
 ) -> (dbscheme::Column<'a>, Option<dbscheme::Entry<'a>>) {
     // This field must appear exactly once, so we add it as
     // a column to the main table for the node type.
-    let (field_ql_type, field_type_entry) = make_field_type(parent_name, field, nodes);
+    let (field_ql_type, field_type_entry) =
+        make_field_type(parent_name, field, nodes, ast_node_name);
     (
         dbscheme::Column {
             unique: false,
@@ -235,9 +244,10 @@ fn add_field_for_column_storage<'a>(
 /// 2. A set of names of the members of the `<lang>_ast_node` union.
 /// 3. A map where the keys are the dbscheme names for token kinds, and the
 /// values are their integer representations.
-fn convert_nodes(
-    nodes: &node_types::NodeTypeMap,
-) -> (Vec<dbscheme::Entry>, Set<&str>, Map<&str, usize>) {
+fn convert_nodes<'a>(
+    nodes: &'a node_types::NodeTypeMap,
+    ast_node_name: &'a str,
+) -> (Vec<dbscheme::Entry<'a>>, Set<&'a str>, Map<&'a str, usize>) {
     let mut entries: Vec<dbscheme::Entry> = Vec::new();
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
@@ -288,6 +298,7 @@ fn convert_nodes(
                                 field,
                                 column_name,
                                 nodes,
+                                ast_node_name,
                             );
                             if let Some(field_type_entry) = field_type_entry {
                                 entries.push(field_type_entry);
@@ -305,6 +316,7 @@ fn convert_nodes(
                                 column_name,
                                 *has_index,
                                 nodes,
+                                ast_node_name,
                             );
                             if let Some(field_type_entry) = field_type_entry {
                                 entries.push(field_type_entry);

@@ -150,7 +150,7 @@ fn location_label(
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
-    language: Language,
+    language: &Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,
@@ -171,7 +171,7 @@ pub fn extract(
     tracing::info!("extracting: {}", path_str);
 
     let mut parser = Parser::new();
-    parser.set_language(language).unwrap();
+    parser.set_language(&language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(source, None).expect("Failed to parse file");
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
@@ -334,13 +334,19 @@ impl<'a> Visitor<'a> {
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
         let loc = location_for(self, node);
         let loc_label = location_label(self.trap_writer, self.file_label, loc);
-        let table = self
-            .schema
-            .get(&TypeName {
-                kind: node.kind().to_owned(),
-                named: node.is_named(),
-            })
-            .unwrap();
+        let table = match self.schema.get(&TypeName {
+            kind: node.kind().to_owned(),
+            named: node.is_named(),
+        }) {
+            Some(t) => t,
+            None => self
+                .schema
+                .get(&TypeName {
+                    kind: node.grammar_name().to_owned(),
+                    named: node.is_named(),
+                })
+                .unwrap(),
+        };
         let mut valid = true;
         let parent_info = match self.stack.last_mut() {
             Some(p) if !node.is_extra() => {
@@ -576,10 +582,15 @@ impl<'a> Visitor<'a> {
             return true;
         }
         for other in types.iter() {
-            if let EntryKind::Union { members } = &self.schema.get(other).unwrap().kind {
-                if self.type_matches_set(tp, members) {
-                    return true;
+            let blah = self.schema.get(other);
+            if let Some(blah2) = blah {
+                if let EntryKind::Union { members } = &blah2.kind {
+                    if self.type_matches_set(tp, members) {
+                        return true;
+                    }
                 }
+            } else {
+                return true;
             }
         }
         false
