@@ -4,4 +4,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["", "", False, "append", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
-      - ["", "", False, "append", "", "", "Argument[1]", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["", "", False, "append", "", "", "Argument[1].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
