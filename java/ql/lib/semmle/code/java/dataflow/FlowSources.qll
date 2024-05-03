@@ -194,15 +194,17 @@ private class AndroidExternalStorageSource extends RemoteFlowSource {
 }
 
 /** Class for `tainted` user input. */
-abstract class UserInput extends DataFlow::Node { }
+abstract class UserInput extends SourceNode { }
 
 /**
  * Input that may be controlled by a remote user.
  */
-private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
+private class RemoteUserInput extends UserInput instanceof RemoteFlowSource {
+  override string getThreatModel() { result = RemoteFlowSource.super.getThreatModel() }
+}
 
 /** A node with input that may be controlled by a local user. */
-abstract class LocalUserInput extends UserInput, SourceNode {
+abstract class LocalUserInput extends UserInput {
   override string getThreatModel() { result = "local" }
 }
 
@@ -384,4 +386,19 @@ class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
   override string getSourceType() {
     result = "Parameter of method with JavascriptInterface annotation"
   }
+}
+
+/**
+ * A data flow source node for an API, which should be considered
+ * supported for a modeling perspective.
+ */
+abstract class ApiSourceNode extends DataFlow::Node { }
+
+private class AddSourceNodes extends ApiSourceNode instanceof SourceNode { }
+
+/**
+ * Add all source models as data sources.
+ */
+private class ApiSourceNodeExternal extends ApiSourceNode {
+  ApiSourceNodeExternal() { sourceNode(this, _) }
 }
