@@ -66,7 +66,7 @@ private ControlFlowElement getBody(Callable c) {
 }
 
 pragma[nomagic]
-private Location getASourceLocation(Element e) {
+private SourceLocation getASourceLocation(Element e) {
   result = e.getALocation().(SourceLocation) and
   not exists(e.getALocation().(SourceLocation).getMappedLocation())
   or
