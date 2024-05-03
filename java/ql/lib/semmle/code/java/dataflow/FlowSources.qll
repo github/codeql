@@ -397,7 +397,7 @@ abstract class ApiSourceNode extends DataFlow::Node { }
 private class AddSourceNodes extends ApiSourceNode instanceof SourceNode { }
 
 /**
- * Add all models as data sources.
+ * Add all source models as data sources.
  */
 private class ApiSourceNodeExternal extends ApiSourceNode {
   ApiSourceNodeExternal() { sourceNode(this, _) }
