@@ -23,4 +23,5 @@ where
   (c.getTarget() instanceof StdStringCStr or c.getTarget() instanceof StdStringData) and
   isTemporary(c.getQualifier().getFullyConverted())
 select c,
-  "The underlying string object is destroyed after the call to '" + c.getTarget() + "' returns."
+  "The underlying temporary string object is destroyed after the call to '" + c.getTarget() +
+    "' returns."
