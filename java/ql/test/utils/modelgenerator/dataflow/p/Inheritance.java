@@ -10,7 +10,7 @@ public class Inheritance {
   }
 
   public class AImplBasePrivateImpl extends BasePrivate {
-    // SPURIOUS-summary=p;Inheritance$BasePrivate;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
+    // summary=p;Inheritance$AImplBasePrivateImpl;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
     @Override
     public String id(String s) {
       return s;
@@ -66,7 +66,7 @@ public class Inheritance {
   }
 
   public class CImpl extends C {
-    // SPURIOUS-summary=p;Inheritance$IPrivate1;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
+    // summary=p;Inheritance$C;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
     @Override
     public String id(String s) {
       return s;
@@ -82,7 +82,7 @@ public class Inheritance {
   }
 
   public class EImpl extends E {
-    // SPURIOUS-summary=p;Inheritance$IPrivate2;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
+    // summary=p;Inheritance$EImpl;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
     @Override
     public String id(String s) {
       return s;
