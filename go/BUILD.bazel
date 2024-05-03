@@ -1,7 +1,6 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
-load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 load("//:defs.bzl", "codeql_platform")
 
 native_binary(
@@ -81,31 +80,14 @@ pkg_filegroup(
 )
 
 pkg_install(
-    name = "_extractor-pack-installer",
+    name = "_extractor_pack",
     srcs = [":extractor-pack"],
-)
-
-# rules_pkg installer is currently broken on Windows
-# see https://github.com/bazelbuild/rules_pkg/issues/387
-# for now, work around it using an archive
-pkg_zip(
-    name = "_extractor-pack-zip",
-    srcs = [":extractor-pack"],
-)
-
-alias(
-    name = "_create-extractor-pack-arg",
-    actual = select({
-        "@platforms//os:windows": ":_extractor-pack-zip",
-        "//conditions:default": ":_extractor-pack-installer",
-    }),
 )
 
 py_binary(
     name = "create-extractor-pack",
     srcs = ["create_extractor_pack.py"],
-    args = ["$(rlocationpath :_create-extractor-pack-arg)"],
-    data = [":_create-extractor-pack-arg"],
+    env = {"REPO_NAME": repo_name()},
     main = "create_extractor_pack.py",
-    deps = ["@rules_python//python/runfiles"],
+    deps = ["_extractor_pack"],
 )
