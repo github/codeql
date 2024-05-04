@@ -1,6 +1,4 @@
 | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
-| .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
-| .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_3rd_party_action.yml:16:9:22:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_3rd_party_action.yml:30:9:36:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_3rd_party_action.yml:45:9:49:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
@@ -18,10 +16,6 @@
 | .github/workflows/issue_comment_octokit.yml:79:9:83:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_octokit.yml:95:9:100:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_octokit.yml:109:9:114:66 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
-| .github/workflows/level0.yml:99:9:103:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
-| .github/workflows/level0.yml:125:9:129:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/untrusted_checkout2.yml:14:9:19:72 | Run Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
-| .github/workflows/untrusted_checkout.yml:10:9:13:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
-| .github/workflows/untrusted_checkout.yml:13:9:16:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |

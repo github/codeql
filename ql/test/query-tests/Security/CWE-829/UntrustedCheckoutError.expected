@@ -1,0 +1,6 @@
+| .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/level0.yml:99:9:103:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/level0.yml:125:9:129:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/untrusted_checkout.yml:10:9:13:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/untrusted_checkout.yml:13:9:16:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |

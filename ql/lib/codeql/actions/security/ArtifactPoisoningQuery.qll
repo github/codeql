@@ -3,6 +3,7 @@ private import codeql.actions.TaintTracking
 import codeql.actions.DataFlow
 private import codeql.actions.dataflow.ExternalFlow
 import codeql.actions.dataflow.FlowSources
+import codeql.actions.security.PoisonableSteps
 
 string unzipRegexp() { result = ".*(unzip|tar)\\s+.*" }
 
@@ -228,81 +229,19 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
   }
 }
 
-abstract class PoisonableStep extends Step { }
-
-// source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
-private string dangerousActions() {
-  result =
-    ["pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action", "ruby/setup-ruby"]
-}
-
-class DangerousActionUsesStep extends PoisonableStep, UsesStep {
-  DangerousActionUsesStep() {
-    exists(UntrustedArtifactDownloadStep step |
-      step.getAFollowingStep() = this and
-      this.getCallee() = dangerousActions()
-    )
-  }
-}
-
-// source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L23
-private string dangerousCommands() {
-  result =
-    [
-      "npm install", "npm run ", "yarn ", "npm ci(\\b|$)", "make ", "terraform plan",
-      "terraform apply", "gomplate ", "pre-commit run", "pre-commit install", "go generate",
-      "msbuild ", "mvn ", "./mvnw ", "gradle ", "./gradlew ", "bundle install", "bundle exec ",
-      "^ant ", "mkdocs build", "pytest"
-    ]
-}
-
-class BuildRunStep extends PoisonableStep, Run {
-  BuildRunStep() {
-    exists(UntrustedArtifactDownloadStep step |
-      step.getAFollowingStep() = this and
-      exists(
-        this.getScript().splitAt("\n").trim().regexpFind("([^a-z]|^)" + dangerousCommands(), _, _)
-      )
-    )
-  }
-}
-
-class LocalCommandExecutionRunStep extends PoisonableStep, Run {
-  LocalCommandExecutionRunStep() {
-    exists(UntrustedArtifactDownloadStep step |
-      step.getAFollowingStep() = this and
-      // Heuristic:
-      // Run step with a command starting with `./xxxx`, `sh xxxx`, ...
-      exists(
-        this.getScript()
-            .splitAt("\n")
-            .trim()
-            .regexpFind("([^a-z]|^)(./|(ba|z|fi)?sh\\s+)" + step.getPath(), _, _)
-      )
-    )
-  }
-}
-
-class EnvVarInjectionRunStep extends PoisonableStep, Run {
-  EnvVarInjectionRunStep() {
-    exists(UntrustedArtifactDownloadStep step, string value |
-      step.getAFollowingStep() = this and
-      // Heuristic:
-      // Run step with env var definition based on file content.
-      // eg: `echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV`
-      // eg: `echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV`
-      Utils::writeToGitHubEnv(this, _, value) and
-      // TODO: add support for other commands like `<`, `jq`, ...
-      value.regexpMatch(["\\$\\(", "`"] + ["ls\\s+", "cat\\s+", "<"] + ".*" + ["`", "\\)"])
-    )
-  }
-}
-
 class ArtifactPoisoningSink extends DataFlow::Node {
   ArtifactPoisoningSink() {
-    exists(PoisonableStep step |
-      step.(Run).getScriptScalar() = this.asExpr() or
-      step.(UsesStep) = this.asExpr()
+    exists(UntrustedArtifactDownloadStep download, PoisonableStep poisonable |
+      download.getAFollowingStep() = poisonable and
+      (
+        poisonable.(Run).getScriptScalar() = this.asExpr()
+        or
+        poisonable.(UsesStep) = this.asExpr()
+      ) and
+      (
+        not poisonable instanceof LocalCommandExecutionRunStep or
+        poisonable.(LocalCommandExecutionRunStep).getCommand().matches(download.getPath() + "%")
+      )
     )
   }
 }

@@ -1,8 +1,8 @@
 edges
 | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build |
 | .github/workflows/artifactpoisoning12.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning12.yml:38:11:38:61 | ./x.py build -j$(nproc) --compiler gcc --skip-build |
-| .github/workflows/artifactpoisoning21.yml:13:9:18:6 | Uses Step | .github/workflows/artifactpoisoning21.yml:19:14:20:20 | ./foo/cmd\n |
-| .github/workflows/artifactpoisoning22.yml:13:9:17:6 | Uses Step | .github/workflows/artifactpoisoning22.yml:18:14:18:18 | ./cmd |
+| .github/workflows/artifactpoisoning21.yml:13:9:18:6 | Uses Step | .github/workflows/artifactpoisoning21.yml:19:14:20:21 | sh foo/cmd\n |
+| .github/workflows/artifactpoisoning22.yml:13:9:17:6 | Uses Step | .github/workflows/artifactpoisoning22.yml:18:14:18:19 | sh cmd |
 | .github/workflows/artifactpoisoning31.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning31.yml:19:14:19:22 | ./foo/cmd |
 | .github/workflows/artifactpoisoning32.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning32.yml:17:14:18:20 | ./bar/cmd\n |
 | .github/workflows/artifactpoisoning33.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning33.yml:17:14:18:20 | ./bar/cmd\n |
@@ -18,9 +18,9 @@ nodes
 | .github/workflows/artifactpoisoning12.yml:13:9:32:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning12.yml:38:11:38:61 | ./x.py build -j$(nproc) --compiler gcc --skip-build | semmle.label | ./x.py build -j$(nproc) --compiler gcc --skip-build |
 | .github/workflows/artifactpoisoning21.yml:13:9:18:6 | Uses Step | semmle.label | Uses Step |
-| .github/workflows/artifactpoisoning21.yml:19:14:20:20 | ./foo/cmd\n | semmle.label | ./foo/cmd\n |
+| .github/workflows/artifactpoisoning21.yml:19:14:20:21 | sh foo/cmd\n | semmle.label | sh foo/cmd\n |
 | .github/workflows/artifactpoisoning22.yml:13:9:17:6 | Uses Step | semmle.label | Uses Step |
-| .github/workflows/artifactpoisoning22.yml:18:14:18:18 | ./cmd | semmle.label | ./cmd |
+| .github/workflows/artifactpoisoning22.yml:18:14:18:19 | sh cmd | semmle.label | sh cmd |
 | .github/workflows/artifactpoisoning31.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning31.yml:19:14:19:22 | ./foo/cmd | semmle.label | ./foo/cmd |
 | .github/workflows/artifactpoisoning32.yml:13:9:16:6 | Run Step | semmle.label | Run Step |
@@ -43,8 +43,8 @@ subpaths
 #select
 | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build |
 | .github/workflows/artifactpoisoning12.yml:38:11:38:61 | ./x.py build -j$(nproc) --compiler gcc --skip-build | .github/workflows/artifactpoisoning12.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning12.yml:38:11:38:61 | ./x.py build -j$(nproc) --compiler gcc --skip-build | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning12.yml:38:11:38:61 | ./x.py build -j$(nproc) --compiler gcc --skip-build | ./x.py build -j$(nproc) --compiler gcc --skip-build |
-| .github/workflows/artifactpoisoning21.yml:19:14:20:20 | ./foo/cmd\n | .github/workflows/artifactpoisoning21.yml:13:9:18:6 | Uses Step | .github/workflows/artifactpoisoning21.yml:19:14:20:20 | ./foo/cmd\n | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning21.yml:19:14:20:20 | ./foo/cmd\n | ./foo/cmd\n |
-| .github/workflows/artifactpoisoning22.yml:18:14:18:18 | ./cmd | .github/workflows/artifactpoisoning22.yml:13:9:17:6 | Uses Step | .github/workflows/artifactpoisoning22.yml:18:14:18:18 | ./cmd | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning22.yml:18:14:18:18 | ./cmd | ./cmd |
+| .github/workflows/artifactpoisoning21.yml:19:14:20:21 | sh foo/cmd\n | .github/workflows/artifactpoisoning21.yml:13:9:18:6 | Uses Step | .github/workflows/artifactpoisoning21.yml:19:14:20:21 | sh foo/cmd\n | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning21.yml:19:14:20:21 | sh foo/cmd\n | sh foo/cmd\n |
+| .github/workflows/artifactpoisoning22.yml:18:14:18:19 | sh cmd | .github/workflows/artifactpoisoning22.yml:13:9:17:6 | Uses Step | .github/workflows/artifactpoisoning22.yml:18:14:18:19 | sh cmd | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning22.yml:18:14:18:19 | sh cmd | sh cmd |
 | .github/workflows/artifactpoisoning31.yml:19:14:19:22 | ./foo/cmd | .github/workflows/artifactpoisoning31.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning31.yml:19:14:19:22 | ./foo/cmd | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning31.yml:19:14:19:22 | ./foo/cmd | ./foo/cmd |
 | .github/workflows/artifactpoisoning32.yml:17:14:18:20 | ./bar/cmd\n | .github/workflows/artifactpoisoning32.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning32.yml:17:14:18:20 | ./bar/cmd\n | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning32.yml:17:14:18:20 | ./bar/cmd\n | ./bar/cmd\n |
 | .github/workflows/artifactpoisoning33.yml:17:14:18:20 | ./bar/cmd\n | .github/workflows/artifactpoisoning33.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning33.yml:17:14:18:20 | ./bar/cmd\n | Potential privileged artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning33.yml:17:14:18:20 | ./bar/cmd\n | ./bar/cmd\n |
