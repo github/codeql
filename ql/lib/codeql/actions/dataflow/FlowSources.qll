@@ -76,23 +76,22 @@ private predicate textEvent(string context) {
   )
 }
 
-bindingset[context]
-private predicate repoNameEvent(string context) {
-  exists(string reg |
-    reg =
-      [
-        // repo name
-        // Owner: All characters must be either a hyphen (-) or alphanumeric
-        // Repo: All code points must be either a hyphen (-), an underscore (_), a period (.), or an ASCII alphanumeric code point
-        "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.repo\\.name", // repo name
-        "github\\.event\\.workflow_run\\.head_repository\\.name", // repo name
-        "github\\.event\\.workflow_run\\.head_repository\\.full_name", // nwo
-      ]
-  |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
-  )
-}
-
+// bindingset[context]
+// private predicate repoNameEvent(string context) {
+//   exists(string reg |
+//     reg =
+//       [
+//         // repo name
+//         // Owner: All characters must be either a hyphen (-) or alphanumeric
+//         // Repo: All code points must be either a hyphen (-), an underscore (_), a period (.), or an ASCII alphanumeric code point
+//         "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.repo\\.name", // repo name
+//         "github\\.event\\.workflow_run\\.head_repository\\.name", // repo name
+//         "github\\.event\\.workflow_run\\.head_repository\\.full_name", // nwo
+//       ]
+//   |
+//     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+//   )
+// }
 bindingset[context]
 private predicate branchEvent(string context) {
   exists(string reg |
