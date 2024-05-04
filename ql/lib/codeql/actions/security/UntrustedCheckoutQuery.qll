@@ -1,0 +1,229 @@
+import actions
+import codeql.actions.DataFlow
+
+bindingset[s]
+predicate containsPullRequestNumber(string s) {
+  exists(
+    Utils::normalizeExpr(s)
+        .regexpFind([
+            "\\bgithub\\.event\\.number\\b", "\\bgithub\\.event\\.issue\\.number\\b",
+            "\\bgithub\\.event\\.pull_request\\.id\\b",
+            "\\bgithub\\.event\\.pull_request\\.number\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.number\\b",
+            // heuristics
+            "\\bpr_number\\b", "\\bpr_id\\b"
+          ], _, _)
+  )
+}
+
+bindingset[s]
+predicate containsHeadSHA(string s) {
+  exists(
+    Utils::normalizeExpr(s)
+        .regexpFind([
+            "\\bgithub\\.event\\.pull_request\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.pull_request\\.merge_commit_sha\\b",
+            "\\bgithub\\.event\\.workflow_run\\.head_commit\\.id\\b",
+            "\\bgithub\\.event\\.workflow_run\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_suite\\.after\\b",
+            "\\bgithub\\.event\\.check_suite\\.head_commit\\.id\\b",
+            "\\bgithub\\.event\\.check_suite\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.after\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.head_commit\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_run\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            // heuristics
+            "\\bhead\\.sha\\b", "\\bhead_sha\\b", "\\bpr_head_sha\\b"
+          ], _, _)
+  )
+}
+
+bindingset[s]
+predicate containsHeadRef(string s) {
+  exists(
+    Utils::normalizeExpr(s)
+        .regexpFind([
+            "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", "\\bgithub\\.head_ref\\b",
+            "\\bgithub\\.event\\.workflow_run\\.head_branch\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            // heuristics
+            "\\bhead\\.ref\\b", "\\bhead_ref\\b", "\\bpr_head_ref\\b",
+            // env vars
+            "\\benv\\.GITHUB_HEAD_REF\\b",
+          ], _, _)
+  )
+}
+
+/** Checkout of a Pull Request HEAD ref */
+abstract class PRHeadCheckoutStep extends Step { }
+
+/** Checkout of a Pull Request HEAD ref using actions/checkout action */
+class ActionsMutableRefCheckout extends PRHeadCheckoutStep instanceof UsesStep {
+  ActionsMutableRefCheckout() {
+    this.getCallee() = "actions/checkout" and
+    (
+      // ref argument contains the PR id/number or head ref/sha
+      exists(Expression e |
+        (
+          containsHeadRef(e.getExpression()) or
+          containsPullRequestNumber(e.getExpression())
+        ) and
+        DataFlow::hasLocalFlowExpr(e, this.getArgumentExpr("ref"))
+      )
+      or
+      // 3rd party actions returning the PR head sha/ref
+      exists(UsesStep step |
+        step.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+        // TODO: This should be read step of the head_sha or head_ref output vars
+        this.getArgument("ref").regexpMatch(".*head_ref.*") and
+        DataFlow::hasLocalFlowExpr(step, this.getArgumentExpr("ref"))
+      )
+      or
+      // heuristic base on the step id and field name
+      exists(StepsExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getStepId().matches(["%ref%", "%branch%"]) or
+          e.getFieldName().matches(["%ref%", "%branch%"])
+        )
+      )
+    )
+  }
+}
+
+/** Checkout of a Pull Request HEAD ref using actions/checkout action */
+class ActionsSHACheckout extends PRHeadCheckoutStep instanceof UsesStep {
+  ActionsSHACheckout() {
+    this.getCallee() = "actions/checkout" and
+    (
+      // ref argument contains the PR id/number or head ref/sha
+      exists(Expression e |
+        containsHeadSHA(e.getExpression()) and
+        DataFlow::hasLocalFlowExpr(e, this.getArgumentExpr("ref"))
+      )
+      or
+      // 3rd party actions returning the PR head sha/ref
+      exists(UsesStep step |
+        step.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+        this.getArgument("ref").regexpMatch(".*head_sha.*") and
+        DataFlow::hasLocalFlowExpr(step, this.getArgumentExpr("ref"))
+      )
+      or
+      // heuristic base on the step id and field name
+      exists(StepsExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getStepId().matches(["%sha%", "%commit%"]) or
+          e.getFieldName().matches(["%sha%", "%commit%"])
+        )
+      )
+    )
+  }
+}
+
+/** Checkout of a Pull Request HEAD ref using git within a Run step */
+class GitMutableRefCheckout extends PRHeadCheckoutStep instanceof Run {
+  GitMutableRefCheckout() {
+    exists(string line |
+      this.getScript().splitAt("\n") = line and
+      line.regexpMatch(".*git\\s+(fetch|pull).*") and
+      (
+        (containsHeadRef(line) or containsPullRequestNumber(line))
+        or
+        exists(string varname, string expr |
+          expr = this.getInScopeEnvVarExpr(varname).getExpression() and
+          (
+            containsHeadRef(expr) or
+            containsPullRequestNumber(expr)
+          ) and
+          exists(line.regexpFind(varname, _, _))
+        )
+      )
+    )
+  }
+}
+
+/** Checkout of a Pull Request HEAD ref using git within a Run step */
+class GitSHACheckout extends PRHeadCheckoutStep instanceof Run {
+  GitSHACheckout() {
+    exists(string line |
+      this.getScript().splitAt("\n") = line and
+      line.regexpMatch(".*git\\s+(fetch|pull).*") and
+      (
+        containsHeadSHA(line)
+        or
+        exists(string varname, string expr |
+          expr = this.getInScopeEnvVarExpr(varname).getExpression() and
+          containsHeadSHA(expr) and
+          exists(line.regexpFind(varname, _, _))
+        )
+      )
+    )
+  }
+}
+
+/** Checkout of a Pull Request HEAD ref using gh within a Run step */
+class GhMutableRefCheckout extends PRHeadCheckoutStep instanceof Run {
+  GhMutableRefCheckout() {
+    exists(string line |
+      this.getScript().splitAt("\n") = line and
+      line.regexpMatch(".*gh\\s+pr\\s+checkout.*") and
+      (
+        (containsHeadRef(line) or containsPullRequestNumber(line))
+        or
+        exists(string varname |
+          (
+            containsHeadRef(this.getInScopeEnvVarExpr(varname).getExpression()) or
+            containsPullRequestNumber(this.getInScopeEnvVarExpr(varname).getExpression())
+          ) and
+          exists(line.regexpFind(varname, _, _))
+        )
+      )
+    )
+  }
+}
+
+/** Checkout of a Pull Request HEAD ref using gh within a Run step */
+class GhSHACheckout extends PRHeadCheckoutStep instanceof Run {
+  GhSHACheckout() {
+    exists(string line |
+      this.getScript().splitAt("\n") = line and
+      line.regexpMatch(".*gh\\s+pr\\s+checkout.*") and
+      (
+        containsHeadSHA(line)
+        or
+        exists(string varname |
+          containsHeadSHA(this.getInScopeEnvVarExpr(varname).getExpression()) and
+          exists(line.regexpFind(varname, _, _))
+        )
+      )
+    )
+  }
+}
+
+/** An If node that contains an actor, user or label check */
+class ControlCheck extends If {
+  ControlCheck() {
+    exists(
+      Utils::normalizeExpr(this.getCondition())
+          .regexpFind([
+              "\\bgithub\\.actor\\b", // actor
+              "\\bgithub\\.triggering_actor\\b", // actor
+              "\\bgithub\\.event\\.comment\\.user\\.login\\b", //user
+              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", //user
+              "\\bgithub\\.event\\.pull_request\\.labels\\b", // label
+              "\\bgithub\\.event\\.label\\.name\\b" // label
+            ], _, _)
+    )
+  }
+}
