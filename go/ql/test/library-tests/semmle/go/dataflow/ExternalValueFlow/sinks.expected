@@ -21,15 +21,16 @@ invalidModelRow
 | test.go:113:10:113:20 | index expression | qltest |
 | test.go:117:10:117:16 | taint15 | qltest |
 | test.go:121:10:121:17 | index expression | qltest |
-| test.go:126:10:126:16 | taint16 | qltest |
-| test.go:130:10:130:13 | selection of F | qltest |
-| test.go:133:10:133:17 | call to Get | qltest |
-| test.go:137:10:137:17 | call to Get | qltest |
-| test.go:142:10:142:17 | call to Get | qltest |
-| test.go:146:10:146:14 | selection of F | qltest |
-| test.go:149:10:149:32 | call to GetThroughPointer | qltest |
-| test.go:153:10:153:32 | call to GetThroughPointer | qltest |
-| test.go:158:10:158:32 | call to GetThroughPointer | qltest |
-| test.go:164:17:164:20 | arg1 | qltest |
-| test.go:164:23:164:26 | arg2 | qltest |
-| test.go:164:29:164:32 | arg3 | qltest |
+| test.go:127:10:127:18 | index expression | qltest |
+| test.go:132:10:132:16 | taint16 | qltest |
+| test.go:136:10:136:13 | selection of F | qltest |
+| test.go:139:10:139:17 | call to Get | qltest |
+| test.go:143:10:143:17 | call to Get | qltest |
+| test.go:148:10:148:17 | call to Get | qltest |
+| test.go:152:10:152:14 | selection of F | qltest |
+| test.go:155:10:155:32 | call to GetThroughPointer | qltest |
+| test.go:159:10:159:32 | call to GetThroughPointer | qltest |
+| test.go:164:10:164:32 | call to GetThroughPointer | qltest |
+| test.go:170:17:170:20 | arg1 | qltest |
+| test.go:170:23:170:26 | arg2 | qltest |
+| test.go:170:29:170:32 | arg3 | qltest |
