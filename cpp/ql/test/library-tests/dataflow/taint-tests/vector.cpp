@@ -389,7 +389,7 @@ void test_vector_output_iterator(int b) {
 	*i9 = source();
 	taint_vector_output_iterator(i9);
 
-	sink(v9); // $ ast=330:10 MISSING: ir SPURIOUS: ast=389:8
+	sink(v9); // $ ast=330:10 ir SPURIOUS: ast=389:8
 
 	std::vector<int>::iterator i10 = v10.begin();
 	vector_iterator_assign_wrapper(i10, 10);
@@ -440,14 +440,14 @@ void test_vector_inserter(char *source_string) {
 		std::vector<std::string> out;
 		auto it = std::back_inserter(out);
 		*++it = std::string(source_string);
-		sink(out); // $ ast MISSING: ir
+		sink(out); // $ ast,ir
 	}
 
 	{
 		std::vector<int> out;
 		auto it = std::back_inserter(out);
 		*++it = source();
-		sink(out); // $ ast MISSING: ir
+		sink(out); // $ ast,ir
 	}
 }
 

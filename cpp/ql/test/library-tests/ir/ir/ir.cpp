@@ -2498,4 +2498,36 @@ void destructor_without_block(bool b)
       ClassWithDestructor g;
 }
 
+void destruction_in_switch_1(int c) {
+  switch (c) {
+    case 0: {
+      ClassWithDestructor x;
+      break;
+    }
+  }
+}
+
+void destruction_in_switch_2(int c) {
+  switch (ClassWithDestructor y; c) {
+    case 0: {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+void destruction_in_switch_3(int c) {
+  switch (ClassWithDestructor y; c) {
+    case 0: {
+      ClassWithDestructor x;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 // semmle-extractor-options: -std=c++20 --clang

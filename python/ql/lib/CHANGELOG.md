@@ -1,3 +1,14 @@
+## 0.12.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `Security/CWE-020/HostnameRegexpShared.qll` file.
+
+### Deprecated APIs
+
+- Renamed the `StrConst` class to `StringLiteral`, for greater consistency with other languages. The `StrConst` and `Str` classes are now deprecated and will be removed in a future release.
+
 ## 0.11.14
 
 ### Minor Analysis Improvements

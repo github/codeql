@@ -749,191 +749,72 @@
 | LoopUnrolling.cs:97:22:97:22 | String x | LoopUnrolling.cs:97:9:100:9 | foreach (... ... in ...) ... | 6 |
 | MultiImplementationA.cs:4:7:4:8 | call to constructor Object | MultiImplementationA.cs:4:7:4:8 | {...} | 2 |
 | MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationA.cs:4:7:4:8 | enter C1 | 1 |
-| MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationB.cs:1:7:1:8 | enter C1 | 1 |
 | MultiImplementationA.cs:4:7:4:8 | exit C1 (normal) | MultiImplementationA.cs:4:7:4:8 | exit C1 | 2 |
-| MultiImplementationA.cs:4:7:4:8 | exit C1 (normal) | MultiImplementationB.cs:1:7:1:8 | exit C1 | 2 |
 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | 1 |
-| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | enter get_P1 | 1 |
 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 | 1 |
-| MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationB.cs:3:22:3:22 | exit get_P1 | 1 |
 | MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationA.cs:6:22:6:31 | exit get_P1 (abnormal) | 3 |
-| MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationB.cs:3:22:3:22 | exit get_P1 (abnormal) | 3 |
 | MultiImplementationA.cs:7:21:7:23 | enter get_P2 | MultiImplementationA.cs:7:21:7:23 | enter get_P2 | 1 |
-| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | MultiImplementationB.cs:4:21:4:23 | enter get_P2 | 1 |
 | MultiImplementationA.cs:7:21:7:23 | exit get_P2 | MultiImplementationA.cs:7:21:7:23 | exit get_P2 | 1 |
-| MultiImplementationA.cs:7:21:7:23 | exit get_P2 | MultiImplementationB.cs:4:21:4:23 | exit get_P2 | 1 |
 | MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationA.cs:7:21:7:23 | exit get_P2 (abnormal) | 4 |
-| MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationB.cs:4:21:4:23 | exit get_P2 (abnormal) | 4 |
 | MultiImplementationA.cs:7:41:7:43 | enter set_P2 | MultiImplementationA.cs:7:41:7:43 | enter set_P2 | 1 |
-| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | MultiImplementationB.cs:4:39:4:41 | enter set_P2 | 1 |
 | MultiImplementationA.cs:7:41:7:43 | exit set_P2 | MultiImplementationA.cs:7:41:7:43 | exit set_P2 | 1 |
-| MultiImplementationA.cs:7:41:7:43 | exit set_P2 | MultiImplementationB.cs:4:39:4:41 | exit set_P2 | 1 |
 | MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationA.cs:7:41:7:43 | exit set_P2 (abnormal) | 4 |
-| MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationB.cs:4:39:4:41 | exit set_P2 (abnormal) | 4 |
 | MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationA.cs:8:16:8:16 | enter M | 1 |
-| MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationB.cs:5:16:5:16 | enter M | 1 |
 | MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationA.cs:8:16:8:16 | exit M | 1 |
-| MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationB.cs:5:16:5:16 | exit M | 1 |
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:16:8:16 | exit M (abnormal) | 3 |
-| MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationB.cs:5:16:5:16 | exit M (abnormal) | 3 |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | exit get_Item (normal) | 2 |
-| MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationB.cs:12:31:12:40 | exit get_Item (normal) | 2 |
 | MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | enter get_Item | 1 |
-| MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | enter get_Item | 1 |
 | MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | exit get_Item | 1 |
-| MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationB.cs:12:31:12:40 | exit get_Item | 1 |
 | MultiImplementationA.cs:15:36:15:38 | enter get_Item | MultiImplementationA.cs:15:36:15:38 | enter get_Item | 1 |
-| MultiImplementationA.cs:15:36:15:38 | enter get_Item | MultiImplementationB.cs:13:36:13:38 | enter get_Item | 1 |
 | MultiImplementationA.cs:15:36:15:38 | exit get_Item | MultiImplementationA.cs:15:36:15:38 | exit get_Item | 1 |
-| MultiImplementationA.cs:15:36:15:38 | exit get_Item | MultiImplementationB.cs:13:36:13:38 | exit get_Item | 1 |
 | MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationA.cs:15:36:15:38 | exit get_Item (normal) | 4 |
-| MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationB.cs:13:36:13:38 | exit get_Item (normal) | 4 |
 | MultiImplementationA.cs:15:54:15:56 | enter set_Item | MultiImplementationA.cs:15:54:15:56 | enter set_Item | 1 |
-| MultiImplementationA.cs:15:54:15:56 | enter set_Item | MultiImplementationB.cs:13:56:13:58 | enter set_Item | 1 |
 | MultiImplementationA.cs:15:54:15:56 | exit set_Item (normal) | MultiImplementationA.cs:15:54:15:56 | exit set_Item | 2 |
-| MultiImplementationA.cs:15:54:15:56 | exit set_Item (normal) | MultiImplementationB.cs:13:56:13:58 | exit set_Item | 2 |
 | MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationA.cs:15:58:15:60 | {...} | 1 |
 | MultiImplementationA.cs:16:17:16:18 | enter M1 | MultiImplementationA.cs:16:17:16:18 | enter M1 | 1 |
-| MultiImplementationA.cs:16:17:16:18 | enter M1 | MultiImplementationB.cs:14:17:14:18 | enter M1 | 1 |
 | MultiImplementationA.cs:16:17:16:18 | exit M1 (normal) | MultiImplementationA.cs:16:17:16:18 | exit M1 | 2 |
-| MultiImplementationA.cs:16:17:16:18 | exit M1 (normal) | MultiImplementationB.cs:14:17:14:18 | exit M1 | 2 |
 | MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:18:9:18:22 | M2(...) | 2 |
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | exit M2 | 4 |
 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 14 |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | exit C2 (normal) | 14 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
-| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
-| MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | exit C2 | 1 |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | enter C2 | 1 |
-| MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | enter C2 | 1 |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | 2 |
-| MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationB.cs:19:12:19:13 | exit C2 | 2 |
 | MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:27:21:29 | {...} | 3 |
 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | 1 |
-| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | enter ~C2 | 1 |
 | MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | exit ~C2 | 1 |
-| MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationB.cs:20:6:20:7 | exit ~C2 | 1 |
 | MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationA.cs:22:6:22:7 | exit ~C2 (normal) | 2 |
-| MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationB.cs:20:6:20:7 | exit ~C2 (normal) | 2 |
 | MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | 1 |
-| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | 1 |
 | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | 1 |
-| MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | 1 |
 | MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (normal) | 2 |
-| MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion (normal) | 2 |
 | MultiImplementationA.cs:28:7:28:8 | call to constructor Object | MultiImplementationA.cs:28:7:28:8 | {...} | 2 |
 | MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationA.cs:28:7:28:8 | enter C3 | 1 |
-| MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationB.cs:25:7:25:8 | enter C3 | 1 |
 | MultiImplementationA.cs:28:7:28:8 | exit C3 (normal) | MultiImplementationA.cs:28:7:28:8 | exit C3 | 2 |
-| MultiImplementationA.cs:28:7:28:8 | exit C3 (normal) | MultiImplementationB.cs:25:7:25:8 | exit C3 | 2 |
 | MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | 5 |
-| MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | exit get_P3 | 5 |
 | MultiImplementationA.cs:34:15:34:16 | call to constructor Object | MultiImplementationA.cs:34:15:34:16 | {...} | 2 |
 | MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationA.cs:34:15:34:16 | enter C4 | 1 |
-| MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationB.cs:30:15:30:16 | enter C4 | 1 |
 | MultiImplementationA.cs:34:15:34:16 | exit C4 (normal) | MultiImplementationA.cs:34:15:34:16 | exit C4 | 2 |
-| MultiImplementationA.cs:34:15:34:16 | exit C4 (normal) | MultiImplementationB.cs:30:15:30:16 | exit C4 | 2 |
 | MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | enter M1 | 1 |
-| MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationB.cs:32:9:32:10 | enter M1 | 1 |
 | MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | exit M1 | 1 |
-| MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationB.cs:32:9:32:10 | exit M1 | 1 |
 | MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationA.cs:36:9:36:10 | exit M1 (abnormal) | 4 |
-| MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationB.cs:32:9:32:10 | exit M1 (abnormal) | 4 |
 | MultiImplementationA.cs:37:9:37:10 | enter M2 | MultiImplementationA.cs:37:9:37:10 | exit M2 | 6 |
 | MultiImplementationB.cs:1:7:1:8 | call to constructor Object | MultiImplementationB.cs:1:7:1:8 | {...} | 2 |
-| MultiImplementationB.cs:1:7:1:8 | enter C1 | MultiImplementationA.cs:4:7:4:8 | enter C1 | 1 |
-| MultiImplementationB.cs:1:7:1:8 | enter C1 | MultiImplementationB.cs:1:7:1:8 | enter C1 | 1 |
-| MultiImplementationB.cs:1:7:1:8 | exit C1 (normal) | MultiImplementationA.cs:4:7:4:8 | exit C1 | 2 |
-| MultiImplementationB.cs:1:7:1:8 | exit C1 (normal) | MultiImplementationB.cs:1:7:1:8 | exit C1 | 2 |
 | MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 (normal) | 2 |
-| MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationB.cs:3:22:3:22 | exit get_P1 (normal) | 2 |
-| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | 1 |
-| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | enter get_P1 | 1 |
-| MultiImplementationB.cs:3:22:3:22 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 | 1 |
-| MultiImplementationB.cs:3:22:3:22 | exit get_P1 | MultiImplementationB.cs:3:22:3:22 | exit get_P1 | 1 |
-| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | MultiImplementationA.cs:7:21:7:23 | enter get_P2 | 1 |
-| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | MultiImplementationB.cs:4:21:4:23 | enter get_P2 | 1 |
-| MultiImplementationB.cs:4:21:4:23 | exit get_P2 | MultiImplementationA.cs:7:21:7:23 | exit get_P2 | 1 |
-| MultiImplementationB.cs:4:21:4:23 | exit get_P2 | MultiImplementationB.cs:4:21:4:23 | exit get_P2 | 1 |
 | MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationA.cs:7:21:7:23 | exit get_P2 (normal) | 4 |
-| MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationB.cs:4:21:4:23 | exit get_P2 (normal) | 4 |
-| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | MultiImplementationA.cs:7:41:7:43 | enter set_P2 | 1 |
-| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | MultiImplementationB.cs:4:39:4:41 | enter set_P2 | 1 |
-| MultiImplementationB.cs:4:39:4:41 | exit set_P2 | MultiImplementationA.cs:7:41:7:43 | exit set_P2 | 1 |
-| MultiImplementationB.cs:4:39:4:41 | exit set_P2 | MultiImplementationB.cs:4:39:4:41 | exit set_P2 | 1 |
 | MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationA.cs:7:41:7:43 | exit set_P2 (normal) | 2 |
-| MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationB.cs:4:39:4:41 | exit set_P2 (normal) | 2 |
-| MultiImplementationB.cs:5:16:5:16 | enter M | MultiImplementationA.cs:8:16:8:16 | enter M | 1 |
-| MultiImplementationB.cs:5:16:5:16 | enter M | MultiImplementationB.cs:5:16:5:16 | enter M | 1 |
-| MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationA.cs:8:16:8:16 | exit M | 1 |
-| MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationB.cs:5:16:5:16 | exit M | 1 |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) | 2 |
-| MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationB.cs:5:16:5:16 | exit M (normal) | 2 |
-| MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | enter get_Item | 1 |
-| MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | enter get_Item | 1 |
-| MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | exit get_Item | 1 |
-| MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationB.cs:12:31:12:40 | exit get_Item | 1 |
 | MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationA.cs:14:31:14:31 | exit get_Item (abnormal) | 3 |
-| MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationB.cs:12:31:12:40 | exit get_Item (abnormal) | 3 |
-| MultiImplementationB.cs:13:36:13:38 | enter get_Item | MultiImplementationA.cs:15:36:15:38 | enter get_Item | 1 |
-| MultiImplementationB.cs:13:36:13:38 | enter get_Item | MultiImplementationB.cs:13:36:13:38 | enter get_Item | 1 |
-| MultiImplementationB.cs:13:36:13:38 | exit get_Item | MultiImplementationA.cs:15:36:15:38 | exit get_Item | 1 |
-| MultiImplementationB.cs:13:36:13:38 | exit get_Item | MultiImplementationB.cs:13:36:13:38 | exit get_Item | 1 |
 | MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationA.cs:15:36:15:38 | exit get_Item (abnormal) | 4 |
-| MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationB.cs:13:36:13:38 | exit get_Item (abnormal) | 4 |
-| MultiImplementationB.cs:13:56:13:58 | enter set_Item | MultiImplementationA.cs:15:54:15:56 | enter set_Item | 1 |
-| MultiImplementationB.cs:13:56:13:58 | enter set_Item | MultiImplementationB.cs:13:56:13:58 | enter set_Item | 1 |
-| MultiImplementationB.cs:13:56:13:58 | exit set_Item (normal) | MultiImplementationA.cs:15:54:15:56 | exit set_Item | 2 |
-| MultiImplementationB.cs:13:56:13:58 | exit set_Item (normal) | MultiImplementationB.cs:13:56:13:58 | exit set_Item | 2 |
 | MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationB.cs:13:60:13:62 | {...} | 1 |
-| MultiImplementationB.cs:14:17:14:18 | enter M1 | MultiImplementationA.cs:16:17:16:18 | enter M1 | 1 |
-| MultiImplementationB.cs:14:17:14:18 | enter M1 | MultiImplementationB.cs:14:17:14:18 | enter M1 | 1 |
-| MultiImplementationB.cs:14:17:14:18 | exit M1 (normal) | MultiImplementationA.cs:16:17:16:18 | exit M1 | 2 |
-| MultiImplementationB.cs:14:17:14:18 | exit M1 (normal) | MultiImplementationB.cs:14:17:14:18 | exit M1 | 2 |
 | MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:16:9:16:31 | M2(...) | 2 |
 | MultiImplementationB.cs:16:9:16:31 | enter M2 | MultiImplementationB.cs:16:9:16:31 | exit M2 | 5 |
 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | 12 |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | exit C2 (abnormal) | 12 |
-| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
-| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | enter C2 | 1 |
-| MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
-| MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | exit C2 | 1 |
-| MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | enter C2 | 1 |
-| MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | enter C2 | 1 |
-| MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | 2 |
-| MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | MultiImplementationB.cs:19:12:19:13 | exit C2 | 2 |
 | MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:27:19:29 | {...} | 3 |
-| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | 1 |
-| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | enter ~C2 | 1 |
-| MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | exit ~C2 | 1 |
-| MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationB.cs:20:6:20:7 | exit ~C2 | 1 |
 | MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationA.cs:22:6:22:7 | exit ~C2 (abnormal) | 4 |
-| MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationB.cs:20:6:20:7 | exit ~C2 (abnormal) | 4 |
-| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | 1 |
-| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | 1 |
-| MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | 1 |
-| MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | 1 |
 | MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (abnormal) | 3 |
-| MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion (abnormal) | 3 |
 | MultiImplementationB.cs:25:7:25:8 | call to constructor Object | MultiImplementationB.cs:25:7:25:8 | {...} | 2 |
-| MultiImplementationB.cs:25:7:25:8 | enter C3 | MultiImplementationA.cs:28:7:28:8 | enter C3 | 1 |
-| MultiImplementationB.cs:25:7:25:8 | enter C3 | MultiImplementationB.cs:25:7:25:8 | enter C3 | 1 |
-| MultiImplementationB.cs:25:7:25:8 | exit C3 (normal) | MultiImplementationA.cs:28:7:28:8 | exit C3 | 2 |
-| MultiImplementationB.cs:25:7:25:8 | exit C3 (normal) | MultiImplementationB.cs:25:7:25:8 | exit C3 | 2 |
-| MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | 5 |
-| MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | exit get_P3 | 5 |
 | MultiImplementationB.cs:30:15:30:16 | call to constructor Object | MultiImplementationB.cs:30:15:30:16 | {...} | 2 |
-| MultiImplementationB.cs:30:15:30:16 | enter C4 | MultiImplementationA.cs:34:15:34:16 | enter C4 | 1 |
-| MultiImplementationB.cs:30:15:30:16 | enter C4 | MultiImplementationB.cs:30:15:30:16 | enter C4 | 1 |
-| MultiImplementationB.cs:30:15:30:16 | exit C4 (normal) | MultiImplementationA.cs:34:15:34:16 | exit C4 | 2 |
-| MultiImplementationB.cs:30:15:30:16 | exit C4 (normal) | MultiImplementationB.cs:30:15:30:16 | exit C4 | 2 |
-| MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | enter M1 | 1 |
-| MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationB.cs:32:9:32:10 | enter M1 | 1 |
-| MultiImplementationB.cs:32:9:32:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | exit M1 | 1 |
-| MultiImplementationB.cs:32:9:32:10 | exit M1 | MultiImplementationB.cs:32:9:32:10 | exit M1 | 1 |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | exit M1 (normal) | 2 |
-| MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:9:32:10 | exit M1 (normal) | 2 |
 | NullCoalescing.cs:1:7:1:20 | enter NullCoalescing | NullCoalescing.cs:1:7:1:20 | exit NullCoalescing | 5 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | 2 |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:9:3:10 | exit M1 | 3 |

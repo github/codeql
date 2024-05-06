@@ -39,6 +39,4 @@ module RemoteFlowSource {
   class MaDRemoteSource extends Range {
     MaDRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
   }
-
-  deprecated class CsvRemoteSource = MaDRemoteSource;
 }

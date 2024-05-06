@@ -6,6 +6,7 @@
 import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.frameworks.android.Intent
@@ -14,7 +15,7 @@ private import semmle.code.java.frameworks.android.Intent
  * A sink for Intent URI permission manipulation vulnerabilities in Android,
  * that is, method calls that return an Intent as the result of an Activity.
  */
-abstract class IntentUriPermissionManipulationSink extends DataFlow::Node { }
+abstract class IntentUriPermissionManipulationSink extends ApiSinkNode { }
 
 /**
  * A sanitizer that makes sure that an Intent is safe to be returned to another Activity.
