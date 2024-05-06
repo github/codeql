@@ -1,34 +1,50 @@
-signature module InlineMadTestConfigSig {
+import java
+
+private signature module InlineMadTestLangSig {
   /**
    * Gets a relevant code comment, if any.
    */
   string getComment();
+}
+
+signature module InlineMadTestConfigSig {
+  /**
+   * Gets the kind of the captured model.
+   */
+  string getKind();
 
   /**
-   * Gets an identified summary, if any.
+   * Gets a captured model, if any.
    */
-  string getCapturedSummary();
+  string getCapturedModel();
+}
+
+private module InlineMadTestImpl<InlineMadTestLangSig Lang, InlineMadTestConfigSig Input> {
+  private string expects() {
+    Lang::getComment().regexpCapture(" *(SPURIOUS-)?" + Input::getKind() + "=(.*)", 2) = result
+  }
+
+  query predicate unexpectedModel(string msg) {
+    exists(string flow |
+      flow = Input::getCapturedModel() and
+      not flow = expects() and
+      msg = "Unexpected " + Input::getKind() + " found: " + flow
+    )
+  }
+
+  query predicate expectedModel(string msg) {
+    exists(string e |
+      e = expects() and
+      not e = Input::getCapturedModel() and
+      msg = "Expected " + Input::getKind() + " missing: " + e
+    )
+  }
+}
+
+private module InlineMadTestLang implements InlineMadTestLangSig {
+  string getComment() { result = any(Javadoc doc).getChild(0).toString() }
 }
 
 module InlineMadTest<InlineMadTestConfigSig Input> {
-  bindingset[kind]
-  private string expects(string kind) {
-    Input::getComment().regexpCapture(" *(SPURIOUS-)?" + kind + "=(.*)", 2) = result
-  }
-
-  query predicate unexpectedSummary(string msg) {
-    exists(string flow |
-      flow = Input::getCapturedSummary() and
-      not flow = expects("summary") and
-      msg = "Unexpected summary found: " + flow
-    )
-  }
-
-  query predicate expectedSummary(string msg) {
-    exists(string e |
-      e = expects("summary") and
-      not e = Input::getCapturedSummary() and
-      msg = "Expected summary missing: " + e
-    )
-  }
+  import InlineMadTestImpl<InlineMadTestLang, Input>
 }

@@ -3,9 +3,9 @@ import TestUtilities.InlineMadTest
 import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
-  string getComment() { result = any(Javadoc doc).getChild(0).toString() }
+  string getCapturedModel() { result = captureFlow(_) }
 
-  string getCapturedSummary() { result = captureFlow(_) }
+  string getKind() { result = "summary" }
 }
 
 import InlineMadTest<InlineMadTestConfig>
