@@ -1,4 +1,4 @@
-| .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+j .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_3rd_party_action.yml:16:9:22:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_3rd_party_action.yml:30:9:36:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/issue_comment_3rd_party_action.yml:45:9:49:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
