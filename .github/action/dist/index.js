@@ -28610,6 +28610,7 @@ async function newCodeQL() {
         suite: `codeql-suites/${core.getInput("suite") || "actions-code-scanning"}.qls`,
         source_root: core.getInput("source-root"),
         output: core.getInput("sarif"),
+        packs: core.getInput("packs").length > 0 ? core.getInput("packs") : undefined,
     };
 }
 exports.newCodeQL = newCodeQL;
@@ -28706,9 +28707,8 @@ async function codeqlDatabaseAnalyze(codeql, database_path) {
         "--output",
         codeql_output,
     ];
-    const useWorkflowModels = process.env["USE_WORKFLOW_MODELS"];
-    if (useWorkflowModels !== undefined && useWorkflowModels == "true") {
-        cmd.push("--extension-packs", "local/workflow-models");
+    if (codeql.packs !== undefined) {
+        cmd.push("--extension-packs", codeql.packs);
     }
     // remote pack or local pack
     if (codeql.pack.startsWith("githubsecuritylab/")) {

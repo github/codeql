@@ -18,6 +18,8 @@ export interface CodeQLConfig {
   source_root?: string;
   // The output file for the SARIF file.
   output?: string;
+  // Extension CodeQL packs to use for analysis.
+  packs: string | undefined;
 }
 
 export async function newCodeQL(): Promise<CodeQLConfig> {
@@ -28,6 +30,8 @@ export async function newCodeQL(): Promise<CodeQLConfig> {
     suite: `codeql-suites/${core.getInput("suite") || "actions-code-scanning"}.qls`,
     source_root: core.getInput("source-root"),
     output: core.getInput("sarif"),
+    packs:
+      core.getInput("packs").length > 0 ? core.getInput("packs") : undefined,
   };
 }
 
@@ -147,9 +151,8 @@ export async function codeqlDatabaseAnalyze(
     codeql_output,
   ];
 
-  const useWorkflowModels = process.env["USE_WORKFLOW_MODELS"];
-  if (useWorkflowModels !== undefined && useWorkflowModels == "true") {
-    cmd.push("--extension-packs", "local/workflow-models");
+  if (codeql.packs !== undefined) {
+    cmd.push("--extension-packs", codeql.packs);
   }
 
   // remote pack or local pack
