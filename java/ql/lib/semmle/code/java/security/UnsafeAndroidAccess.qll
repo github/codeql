@@ -4,6 +4,7 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.frameworks.android.WebView
 private import semmle.code.java.frameworks.kotlin.Kotlin
 
@@ -12,7 +13,7 @@ private import semmle.code.java.frameworks.kotlin.Kotlin
  *
  * Extend this class to add your own Unsafe Resource Fetching sinks.
  */
-abstract class UrlResourceSink extends DataFlow::Node {
+abstract class UrlResourceSink extends ApiSinkNode {
   /**
    * Gets a description of this vulnerability.
    */
