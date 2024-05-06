@@ -60,7 +60,7 @@ class CaptureNode extends DataFlow::Node, TSynthCaptureNode {
   override string toString() { result = this.toStringInternal() } // cached in parent class
 
   cached
-  private Location getLocation() { result = this.getNode().getLocation() }
+  override Location getLocation() { result = this.getNode().getLocation() }
 }
 
 class GenericSynthesizedNode extends DataFlow::Node, TGenericSynthesizedNode {
