@@ -1,4 +1,5 @@
 load("//java/kotlin-extractor:versions.bzl", "VERSIONS", "version_less")
+load("//misc/bazel:lfs.bzl", "lfs_smudge")
 
 _kotlin_dep_build = """
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_import")
@@ -12,28 +13,12 @@ kt_jvm_import(
 
 _empty_zip = "PK\005\006\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
 
-_local_path = "{root}/resources/kotlin-dependencies/kotlin-{kind}-{version}.jar"
-_maven_url = "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-{kind}/{version}/kotlin-{kind}-{version}.jar"
+def _get_dep(repository_ctx, name):
+    return repository_ctx.path(Label("//java/kotlin-extractor/deps:%s" % name))
 
 def _kotlin_dep_impl(repository_ctx):
     _, _, name = repository_ctx.name.rpartition("~")
-    kind = repository_ctx.attr.kind
-    version = repository_ctx.attr.version
-    filename = "kotlin-%s-%s.jar" % (kind, version)
-    local_path = _local_path.format(root = repository_ctx.workspace_root, kind = kind, version = version)
-    if repository_ctx.path(local_path).exists:
-        url = "file://%s" % local_path
-    else:
-        url = _maven_url.format(kind = kind, version = version)
-
-    sha256 = VERSIONS[version].get(kind, "")
-    res = repository_ctx.download(url, output = filename, sha256 = sha256)
-    if not sha256:
-        fail('\nPlease add\n  "%s": "%s",\nto VERSIONS["%s"] in java/kotlin-extractor/versions.bzl' % (
-            kind,
-            res.sha256,
-            version,
-        ))
+    lfs_smudge(repository_ctx, [_get_dep(repository_ctx, name + ".jar")])
 
     # for some reason rules_kotlin warns about these jars missing, this is to silence those warnings
     repository_ctx.file("empty.zip", _empty_zip)
@@ -49,10 +34,6 @@ def _kotlin_dep_impl(repository_ctx):
 
 _kotlin_dep = repository_rule(
     implementation = _kotlin_dep_impl,
-    attrs = {
-        "kind": attr.string(),
-        "version": attr.string(),
-    },
 )
 
 def _walk(dir):
@@ -140,7 +121,7 @@ _defaults = repository_rule(implementation = _defaults_impl)
 def _kotlin_deps_impl(module_ctx):
     for v in VERSIONS:
         for lib in ("compiler", "compiler-embeddable", "stdlib"):
-            _kotlin_dep(name = "kotlin-%s-%s" % (lib, v), kind = lib, version = v)
+            _kotlin_dep(name = "kotlin-%s-%s" % (lib, v))
     _embeddable_source(name = "codeql_kotlin_embeddable")
     _defaults(name = "codeql_kotlin_defaults")
     return module_ctx.extension_metadata(

@@ -52,6 +52,7 @@
 
 /java/ql/test/stubs/**/*.java linguist-generated=true
 /java/ql/test/experimental/stubs/**/*.java linguist-generated=true
+/java/kotlin-extractor/deps/*.jar filter=lfs diff=lfs merge=lfs -text
 
 # Force git not to modify line endings for go or html files under the go/ql directory
 /go/ql/**/*.go -text
