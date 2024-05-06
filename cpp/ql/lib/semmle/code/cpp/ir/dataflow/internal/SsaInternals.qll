@@ -9,6 +9,7 @@ private import semmle.code.cpp.models.interfaces.PartialFlow as PartialFlow
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as FIO
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
+private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
 import SsaInternalsCommon
 
@@ -329,6 +330,17 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
+/**
+ * Gets the instruction that computes the address that's used to
+ * initialize `v`.
+ */
+private Instruction getInitializationTargetAddress(IRVariable v) {
+  exists(TranslatedVariableInitialization init |
+    init.getIRVariable() = v and
+    result = init.getTargetAddress()
+  )
+}
+
 /** An initial definition of an `IRVariable`'s address. */
 private class DefAddressImpl extends DefImpl, TDefAddressImpl {
   BaseIRVariable v;
@@ -347,8 +359,15 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
   final override Node0Impl getValue() { none() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    block = v.getIRVariable().getEnclosingIRFunction().getEntryBlock() and
-    index = 0
+    exists(IRVariable var | var = v.getIRVariable() |
+      block.getInstruction(index) = getInitializationTargetAddress(var)
+      or
+      // If there is no translatated element that does initialization of the
+      // variable we place the SSA definition at the entry block of the function.
+      not exists(getInitializationTargetAddress(var)) and
+      block = var.getEnclosingIRFunction().getEntryBlock() and
+      index = 0
+    )
   }
 
   override Cpp::Location getLocation() { result = v.getIRVariable().getLocation() }
