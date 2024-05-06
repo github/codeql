@@ -40,6 +40,8 @@ predicate containsHeadSHA(string s) {
             "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
             "\\bgithub\\.event\\.check_run\\.head_sha\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.merge_group\\.head_sha\\b",
+            "\\bgithub\\.event\\.merge_group\\.head_commit\\.id\\b",
             // heuristics
             "\\bhead\\.sha\\b", "\\bhead_sha\\b", "\\bpr_head_sha\\b"
           ], _, _)
@@ -56,6 +58,7 @@ predicate containsHeadRef(string s) {
             "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
             "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.merge_group\\.head_ref\\b",
             // heuristics
             "\\bhead\\.ref\\b", "\\bhead_ref\\b", "\\bpr_head_ref\\b",
             // env vars
@@ -64,11 +67,17 @@ predicate containsHeadRef(string s) {
   )
 }
 
-/** Checkout of a Pull Request HEAD ref */
+/** Checkout of a Pull Request HEAD */
 abstract class PRHeadCheckoutStep extends Step { }
 
+/** Checkout of a Pull Request HEAD ref */
+abstract class MutableRefCheckoutStep extends PRHeadCheckoutStep { }
+
+/** Checkout of a Pull Request HEAD ref */
+abstract class SHACheckoutStep extends PRHeadCheckoutStep { }
+
 /** Checkout of a Pull Request HEAD ref using actions/checkout action */
-class ActionsMutableRefCheckout extends PRHeadCheckoutStep instanceof UsesStep {
+class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesStep {
   ActionsMutableRefCheckout() {
     this.getCallee() = "actions/checkout" and
     (
@@ -102,7 +111,7 @@ class ActionsMutableRefCheckout extends PRHeadCheckoutStep instanceof UsesStep {
 }
 
 /** Checkout of a Pull Request HEAD ref using actions/checkout action */
-class ActionsSHACheckout extends PRHeadCheckoutStep instanceof UsesStep {
+class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
   ActionsSHACheckout() {
     this.getCallee() = "actions/checkout" and
     (
@@ -132,7 +141,7 @@ class ActionsSHACheckout extends PRHeadCheckoutStep instanceof UsesStep {
 }
 
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
-class GitMutableRefCheckout extends PRHeadCheckoutStep instanceof Run {
+class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
     exists(string line |
       this.getScript().splitAt("\n") = line and
@@ -154,7 +163,7 @@ class GitMutableRefCheckout extends PRHeadCheckoutStep instanceof Run {
 }
 
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
-class GitSHACheckout extends PRHeadCheckoutStep instanceof Run {
+class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
     exists(string line |
       this.getScript().splitAt("\n") = line and
@@ -173,7 +182,7 @@ class GitSHACheckout extends PRHeadCheckoutStep instanceof Run {
 }
 
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
-class GhMutableRefCheckout extends PRHeadCheckoutStep instanceof Run {
+class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string line |
       this.getScript().splitAt("\n") = line and
@@ -194,7 +203,7 @@ class GhMutableRefCheckout extends PRHeadCheckoutStep instanceof Run {
 }
 
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
-class GhSHACheckout extends PRHeadCheckoutStep instanceof Run {
+class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
     exists(string line |
       this.getScript().splitAt("\n") = line and

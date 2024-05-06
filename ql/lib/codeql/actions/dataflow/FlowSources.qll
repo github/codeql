@@ -113,8 +113,8 @@ private predicate branchEvent(string context) {
         "github\\.event\\.pull_request\\.head\\.repo\\.default_branch",
         "github\\.event\\.pull_request\\.head\\.ref", "github\\.head_ref",
         "github\\.event\\.workflow_run\\.head_branch",
-        "github\\.event\\.workflow_run\\.head_branch",
         "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.ref",
+        "github\\.event\\.merge_group\\.head_ref",
       ]
   |
     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
@@ -146,6 +146,7 @@ private predicate emailEvent(string context) {
         "github\\.event\\.head_commit\\.committer\\.email",
         "github\\.event\\.commits\\[[0-9]+\\]\\.author\\.email",
         "github\\.event\\.commits\\[[0-9]+\\]\\.committer\\.email",
+        "github\\.event\\.merge_group\\.committer\\.email",
         "github\\.event\\.workflow_run\\.head_commit\\.author\\.email",
         "github\\.event\\.workflow_run\\.head_commit\\.committer\\.email",
       ]
@@ -165,6 +166,7 @@ private predicate usernameEvent(string context) {
         "github\\.event\\.head_commit\\.committer\\.name",
         "github\\.event\\.commits\\[[0-9]+\\]\\.author\\.name",
         "github\\.event\\.commits\\[[0-9]+\\]\\.committer\\.name",
+        "github\\.event\\.merge_group\\.committer\\.name",
         "github\\.event\\.workflow_run\\.head_commit\\.author\\.name",
         "github\\.event\\.workflow_run\\.head_commit\\.committer\\.name",
       ]
