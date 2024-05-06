@@ -40,19 +40,23 @@ public final class Pojo {
     this.value = value;
   }
 
+  // neutral=p;Pojo;doNotSetValue;(String);summary;df-generated
   public int doNotSetValue(String value) {
     Holder h = new Holder(value);
     return h.length();
   }
 
+  // neutral=p;Pojo;getIntValue;();summary;df-generated
   public int getIntValue() {
     return intValue;
   }
 
+  // neutral=p;Pojo;getBoxedValue;();summary;df-generated
   public Integer getBoxedValue() {
     return Integer.valueOf(intValue);
   }
 
+  // neutral=p;Pojo;getPrimitiveArray;();summary;df-generated
   public int[] getPrimitiveArray() {
     return new int[] {intValue};
   }
@@ -67,14 +71,17 @@ public final class Pojo {
     return byteArray;
   }
 
+  // neutral=p;Pojo;getFloatArray;();summary;df-generated
   public float[] getFloatArray() {
     return floatArray;
   }
 
+  // neutral=p;Pojo;getBoxedArray;();summary;df-generated
   public Integer[] getBoxedArray() {
     return new Integer[] {Integer.valueOf(intValue)};
   }
 
+  // neutral=p;Pojo;getBoxedCollection;();summary;df-generated
   public Collection<Integer> getBoxedCollection() {
     return List.of(Integer.valueOf(intValue));
   }
@@ -89,10 +96,12 @@ public final class Pojo {
     return byteObjectArray;
   }
 
+  // neutral=p;Pojo;getBigInt;();summary;df-generated
   public BigInteger getBigInt() {
     return BigInteger.valueOf(intValue);
   }
 
+  // neutral=p;Pojo;getBigDecimal;();summary;df-generated
   public BigDecimal getBigDecimal() {
     return new BigDecimal(value);
   }

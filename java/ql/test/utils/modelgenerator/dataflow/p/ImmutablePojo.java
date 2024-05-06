@@ -17,6 +17,7 @@ public final class ImmutablePojo {
     return value;
   }
 
+  // neutral=p;ImmutablePojo;getX;();summary;df-generated
   public long getX() {
     return x;
   }

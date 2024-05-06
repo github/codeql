@@ -9,6 +9,7 @@ public final class FinalClass {
     return input;
   }
 
+  // neutral=p;FinalClass;returnsConstant;();summary;df-generated
   public String returnsConstant() {
     return C;
   }

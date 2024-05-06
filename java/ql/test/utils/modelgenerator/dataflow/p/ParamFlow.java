@@ -12,6 +12,7 @@ public class ParamFlow {
     return input;
   }
 
+  // neutral=p;ParamFlow;ignorePrimitiveReturnValue;(String);summary;df-generated
   public int ignorePrimitiveReturnValue(String input) {
     return input.length();
   }
@@ -50,6 +51,7 @@ public class ParamFlow {
     return input.iterator().next();
   }
 
+  // neutral=p;ParamFlow;mapType;(Class);summary;df-generated
   public Class<?> mapType(Class<?> input) {
     return input;
   }

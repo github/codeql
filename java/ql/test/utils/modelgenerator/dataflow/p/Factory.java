@@ -26,6 +26,7 @@ public final class Factory {
     return value;
   }
 
+  // neutral=p;Factory;getIntValue;();summary;df-generated
   public int getIntValue() {
     return intValue;
   }

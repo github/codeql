@@ -117,6 +117,7 @@ public final class Joiner {
     }
   }
 
+  // neutral=p;Joiner;length;();summary;df-generated
   public int length() {
     return (size == 0 && emptyValue != null)
         ? emptyValue.length()

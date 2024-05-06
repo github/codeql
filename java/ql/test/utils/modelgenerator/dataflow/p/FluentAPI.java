@@ -8,6 +8,7 @@ public final class FluentAPI {
   }
 
   public class Inner {
+    // neutral=p;FluentAPI$Inner;notThis;(String);summary;df-generated
     public FluentAPI notThis(String input) {
       return FluentAPI.this;
     }
