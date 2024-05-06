@@ -645,6 +645,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
     Location getLocation() {
       exists(CapturedVariable v | this = TVariable(v) and result = v.getLocation())
+      or
+      exists(Callable c | this = TThis(c) and result = c.getLocation())
     }
   }
 
