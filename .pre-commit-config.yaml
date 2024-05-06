@@ -29,6 +29,13 @@ repos:
         entry: bazel run //misc/bazel:buildifier
         pass_filenames: false
 
+      - id: go-gen
+        name: Check checked in generated files in go
+        files: ^go/.*
+        language: system
+        entry: bazel run //go:gen
+        pass_filenames: false
+
       - id: codeql-format
         name: Fix QL file formatting
         files: \.qll?$

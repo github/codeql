@@ -487,7 +487,9 @@ func extract(workspace project.GoWorkspace) bool {
 
 // Build the project and run the extractor.
 func installDependenciesAndBuild() {
-	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), toolchain.GetEnvGoVersion())
+	// do not print experiments the autobuilder was built with if any, only the version
+	version := strings.SplitN(runtime.Version(), " ", 2)[0]
+	log.Printf("Autobuilder was built with %s, environment has %s\n", version, toolchain.GetEnvGoVersion())
 
 	srcdir := getSourceDir()
 
