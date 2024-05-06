@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Sensitive information that is stored unencrypted is accessible to an attacker who gains access to the
+<p>Sensitive or private information that is stored unencrypted is accessible to an attacker who gains access to the
 storage. This is particularly important for cookies, which are stored on the machine of the end-user.</p>
 
 </overview>

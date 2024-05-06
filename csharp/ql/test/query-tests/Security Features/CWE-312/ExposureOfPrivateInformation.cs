@@ -1,5 +1,5 @@
 using System.Web;
-using System.Security.Cryptography; 
+using System.Security.Cryptography;
 using System.IO;
 
 public class Person
@@ -23,7 +23,7 @@ public class ExposureOfPrivateInformationHandler : IHttpHandler
         ILogger logger = new ILogger();
         logger.Warn(p.getTelephone());
 
-        // BAD: Storing sensitive data in unencrypted local file 
+        // BAD: Storing sensitive data in unencrypted local file
         using (var writeStream = File.Open("telephones.txt", FileMode.Create))
         {
             var writer = new StreamWriter(writeStream);
@@ -42,7 +42,8 @@ public class ExposureOfPrivateInformationHandler : IHttpHandler
         // GOOD: Don't write these values to sensitive locations in the first place
     }
 
-    public ICryptoTransform GetEncryptor(){
+    public ICryptoTransform GetEncryptor()
+    {
         return null;
     }
 
@@ -63,7 +64,3 @@ public class ExposureOfPrivateInformationHandler : IHttpHandler
     }
 }
 
-class ILogger
-{
-    public void Warn(string message) { }
-}
