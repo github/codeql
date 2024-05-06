@@ -30,8 +30,6 @@ codeql_csharp_library(
     visibility = ["//csharp:__subpackages__"],
     deps = [
         "//csharp/extractor/Semmle.Util",
-        # "@paket.main//gitinfo",
-        # "@paket.main//thisassembly.git",
         "@paket.main//microsoft.build",
         "@paket.main//microsoft.codeanalysis",
     ],

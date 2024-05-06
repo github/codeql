@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Reflection;
+using System.IO;
 using Semmle.Util.Logging;
-
 using CompilationInfo = (string key, string value);
 
 namespace Semmle.Extraction
@@ -102,7 +103,23 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public static string Version => $"";
+        public static string Version
+        {
+            get
+            {
+                // the resources for git information are always attached to the entry` assembly by our build system
+                var assembly = Assembly.GetEntryAssembly();
+                var describeAllStream = assembly.GetManifestResourceStream("git-ql-describe-all.log");
+                var headSHAStream = assembly.GetManifestResourceStream("git-ql-rev-parse.log");
+                if (describeAllStream == null || headSHAStream == null)
+                {
+                    return "unknown (not built from internal bazel workspace)";
+                }
+                var describeAll = new StreamReader(describeAllStream).ReadToEnd().Trim('\n');
+                var headSHA = new StreamReader(headSHAStream).ReadToEnd().Trim('\n');
+                return $"{describeAll} ({headSHA})";
+            }
+        }
 
         public PathTransformer PathTransformer { get; }
     }
