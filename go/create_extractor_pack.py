@@ -13,10 +13,14 @@ except KeyError:
 
 from go._extractor_pack_install_script import main
 
-if os.environ['REPO_NAME'] == 'codeql~':
-    workspace_dir /= 'ql'
+build_dir = workspace_dir / 'go' / 'build'
 
-dest_dir = workspace_dir / 'go' / 'build' / 'codeql-extractor-pack'
+if not build_dir.exists():
+    # we probably are in the internal repo
+    workspace_dir /= 'ql'
+    build_dir = workspace_dir / 'go' / 'build'
+
+dest_dir = build_dir / 'codeql-extractor-pack'
 shutil.rmtree(dest_dir, ignore_errors=True)
 os.environ['DESTDIR'] = str(dest_dir)
 main(sys.argv)
