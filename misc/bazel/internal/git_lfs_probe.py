@@ -82,18 +82,22 @@ def get_endpoint():
 
 # see https://github.com/git-lfs/git-lfs/blob/310d1b4a7d01e8d9d884447df4635c7a9c7642c2/docs/api/basic-transfers.md
 def get_locations(objects):
+    ret = ["local" for _ in objects]
     endpoint = get_endpoint()
     indexes = [i for i, o in enumerate(objects) if o]
-    ret = ["local" for _ in objects]
+    if not indexes:
+        # all objects are local, do not send an empty request as that would be an error
+        return ret
+    data = {
+        "operation": "download",
+        "transfers": ["basic"],
+        "objects": [objects[i] for i in indexes],
+        "hash_algo": "sha256",
+    }
     req = urllib.request.Request(
         f"{endpoint.href}/objects/batch",
         headers=endpoint.headers,
-        data=json.dumps({
-            "operation": "download",
-            "transfers": ["basic"],
-            "objects": [o for o in objects if o],
-            "hash_algo": "sha256",
-        }).encode("ascii"),
+        data=json.dumps(data).encode("ascii"),
     )
     with urllib.request.urlopen(req) as resp:
         data = json.load(resp)
