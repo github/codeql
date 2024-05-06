@@ -21,7 +21,14 @@ class SetupJavaUsesStep extends CacheWritingStep, UsesStep {
 }
 
 class SetupGoUsesStep extends CacheWritingStep, UsesStep {
-  SetupGoUsesStep() { this.getCallee() = "actions/setup-go" }
+  SetupGoUsesStep() {
+    this.getCallee() = "actions/setup-go" and
+    (
+      not exists(this.getArgument("cache"))
+      or
+      this.getArgument("cache") = "true"
+    )
+  }
 }
 
 class SetupNodeUsesStep extends CacheWritingStep, UsesStep {
@@ -48,7 +55,7 @@ class SetupDotnetUsesStep extends CacheWritingStep, UsesStep {
   SetupDotnetUsesStep() {
     this.getCallee() = "actions/setup-dotnet" and
     (
-      exists(this.getArgument("cache")) or
+      this.getArgument("cache") = "true" or
       exists(this.getArgument("cache-dependency-path"))
     )
   }
