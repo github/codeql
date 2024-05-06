@@ -1,26 +1,44 @@
 import java
 import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
 
-private string expects() {
-  exists(Javadoc doc |
-    doc.getChild(0).toString().regexpCapture(" *(SPURIOUS-)?MaD=(.*)", 2) = result
-  )
+signature module InlineMadTestConfigSig {
+  /**
+   * Gets a relevant code comment, if any.
+   */
+  string getComment();
+
+  /**
+   * Gets an identified summary, if any.
+   */
+  string getCapturedSummary();
 }
 
-private string flows() { result = captureFlow(_) }
+module InlineMadTest<InlineMadTestConfigSig Input> {
+  private string expects() {
+    Input::getComment().regexpCapture(" *(SPURIOUS-)?MaD=(.*)", 2) = result
+  }
 
-query predicate unexpectedSummary(string msg) {
-  exists(string flow |
-    flow = flows() and
-    not flow = expects() and
-    msg = "Unexpected summary found: " + flow
-  )
+  query predicate unexpectedSummary(string msg) {
+    exists(string flow |
+      flow = Input::getCapturedSummary() and
+      not flow = expects() and
+      msg = "Unexpected summary found: " + flow
+    )
+  }
+
+  query predicate expectedSummary(string msg) {
+    exists(string e |
+      e = expects() and
+      not e = Input::getCapturedSummary() and
+      msg = "Expected summary missing: " + e
+    )
+  }
 }
 
-query predicate expectedSummary(string msg) {
-  exists(string e |
-    e = expects() and
-    not e = flows() and
-    msg = "Expected summary missing: " + e
-  )
+module InlineMadTestConfig implements InlineMadTestConfigSig {
+  string getComment() { result = any(Javadoc doc).getChild(0).toString() }
+
+  string getCapturedSummary() { result = captureFlow(_) }
 }
+
+import InlineMadTest<InlineMadTestConfig>
