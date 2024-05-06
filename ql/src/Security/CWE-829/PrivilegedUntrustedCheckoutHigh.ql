@@ -7,7 +7,7 @@
  * @problem.severity warning
  * @precision medium
  * @security-severity 5.3
- * @id actions/untrusted-checkout
+ * @id actions/privileged-untrusted-checkout/high
  * @tags actions
  *       security
  *       external/cwe/cwe-829

@@ -7,7 +7,7 @@
  * @problem.severity error
  * @precision high
  * @security-severity 9.3
- * @id actions/untrusted-checkout
+ * @id actions/privileged-untrusted-checkout/critical
  * @tags actions
  *       security
  *       external/cwe/cwe-829
