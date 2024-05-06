@@ -10,6 +10,8 @@ private import semmle.javascript.internal.flow_summaries.AllFlowSummaries
 private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.BarrierGuards
 
+class DataFlowSecondLevelScope = Unit;
+
 private class Node = DataFlow::Node;
 
 class PostUpdateNode = DataFlow::PostUpdateNode;
@@ -701,7 +703,7 @@ DataFlowCallable viableCallable(DataFlowCall node) {
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
@@ -778,6 +780,14 @@ private predicate valuePreservingStep(Node node1, Node node2) {
     node1 != node2 and // exclude trivial edges
     sameContainer(node1, node2)
   )
+}
+
+predicate knownSourceModel(Node sink, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
+
+predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
+  simpleLocalFlowStep(node1, node2) and model = ""
 }
 
 predicate simpleLocalFlowStep(Node node1, Node node2) {

@@ -15,6 +15,8 @@ module JSDataFlow implements SharedDataFlow::InputSig<Location> {
   predicate accessPathLimit = Private::accessPathLimit/0;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 }
 
 module JSTaintFlow implements SharedTaintTracking::InputSig<Location, JSDataFlow> {

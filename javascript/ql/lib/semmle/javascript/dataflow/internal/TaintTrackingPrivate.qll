@@ -19,6 +19,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
 }
 
+predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
+  defaultAdditionalTaintStep(node1, node2) and model = "" // TODO: set model
+}
+
 private class SanitizerGuardAdapter extends DataFlow::Node instanceof TaintTracking::AdditionalSanitizerGuardNode
 {
   // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
