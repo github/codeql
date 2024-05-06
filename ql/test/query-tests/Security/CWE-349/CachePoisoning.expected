@@ -1,0 +1,3 @@
+| .github/workflows/test1.yml:12:9:17:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test2.yml:9:9:12:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test3.yml:9:9:12:6 | Uses Step | Potential cache poisoning on privileged workflow. |
