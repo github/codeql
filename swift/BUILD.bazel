@@ -1,8 +1,11 @@
-load("@rules_pkg//pkg:install.bzl", "pkg_install")
-load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
-load("//:defs.bzl", "codeql_platform")
-load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
-load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
+load(
+    "//misc/bazel:pkg.bzl",
+    "codeql_pack",
+    "codeql_pkg_filegroup",
+    "codeql_pkg_files",
+    "codeql_pkg_runfiles",
+    "codeql_pkg_wrap",
+)
 
 filegroup(
     name = "schema",
@@ -22,7 +25,7 @@ filegroup(
     visibility = ["//swift:__subpackages__"],
 )
 
-pkg_files(
+codeql_pkg_files(
     name = "dbscheme_files",
     srcs = [
         "ql/lib/swift.dbscheme.stats",
@@ -30,100 +33,78 @@ pkg_files(
     ],
 )
 
-pkg_files(
+codeql_pkg_files(
     name = "manifest",
     srcs = ["codeql-extractor.yml"],
 )
 
-pkg_filegroup(
-    name = "extractor-pack-generic",
-    srcs = [
-        ":manifest",
-        "//swift/tools",
-    ] + select({
-        "@platforms//os:windows": [],
-        "//conditions:default": [
-            ":dbscheme_files",
-            "//swift/downgrades",
-        ],
-    }),
-    visibility = ["//visibility:public"],
-)
-
-pkg_filegroup(
+codeql_pkg_filegroup(
     name = "extractor",
     srcs = ["//swift/extractor:pkg"],
-    prefix = "tools/" + codeql_platform,
+    prefix = "tools",
 )
 
-pkg_runfiles(
-    name = "swift-autobuilder",
-    srcs = ["//swift/swift-autobuilder"],
-    prefix = "tools/" + codeql_platform,
+codeql_pkg_files(
+    name = "autobuilder-incompatible-os",
+    arch_specific = True,
+    exes = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
+    prefix = "tools",
 )
 
-pkg_runfiles(
-    name = "diagnostics",
-    srcs = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
-    prefix = "tools/" + codeql_platform,
+codeql_pkg_runfiles(
+    name = "autobuilder",
+    arch_specific = True,
+    exes = ["//swift/swift-autobuilder"],
+    prefix = "tools",
 )
 
-pkg_filegroup(
-    name = "resource-dir-arch",
+codeql_pkg_wrap(
+    name = "resource-dir",
     srcs = ["//swift/third_party/swift-llvm-support:swift-resource-dir"],
-    prefix = "resource-dir/" + codeql_platform,
-    visibility = ["//visibility:public"],
+    arch_specific = True,
+    prefix = "resource-dir",
 )
 
-pkg_filegroup(
-    name = "extractor-pack-arch",
-    srcs = select({
-        "@platforms//os:windows": [],
-        "//conditions:default": [
-            ":extractor",
-            ":resource-dir-arch",
-        ],
-    }) + select({
-        "@platforms//os:macos": [
-            ":swift-autobuilder",
-        ],
-        "//conditions:default": [
-            ":diagnostics",
-        ],
-    }),
-    visibility = ["//visibility:public"],
-)
-
-pkg_filegroup(
-    name = "extractor-pack",
+codeql_pack(
+    name = "swift",
     srcs = [
-        ":extractor-pack-arch",
-        ":extractor-pack-generic",
+        ":dbscheme_files",
+        ":manifest",
+        "//swift/downgrades",
+        "//swift/tools",
     ],
+    srcs_select = {
+        "@platforms//os:macos": [
+            ":extractor",
+            ":resource-dir",
+            ":autobuilder",
+        ],
+        "@platforms//os:linux": [
+            ":extractor",
+            ":resource-dir",
+            ":autobuilder-incompatible-os",
+        ],
+        "@platforms//os:windows": [
+            ":autobuilder-incompatible-os",
+        ],
+    },
     visibility = ["//visibility:public"],
 )
 
-pkg_install(
-    name = "_create_extractor_pack",
-    srcs = ["//swift:extractor-pack"],
-)
-
-py_binary(
+alias(
     name = "create-extractor-pack",
-    srcs = ["create_extractor_pack.py"],
-    main = "create_extractor_pack.py",
-    deps = [":_create_extractor_pack"],
+    actual = ":swift-installer",
 )
 
-# TODO this is unneeded here but still used in the internal repo. Remove once it's not
-generate_cmake(
-    name = "cmake",
-    targets = [
-        "//swift/extractor:extractor.real",
-        "//swift/logging/tests/assertion-diagnostics:assert-false",
-    ] + select({
-        "@platforms//os:linux": ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
-        "@platforms//os:macos": ["//swift/swift-autobuilder"],
-    }),
+# TODO: aliases for internal repo backward compatibility
+alias(
+    name = "extractor-pack-generic",
+    actual = "swift-generic",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "extractor-pack-arch",
+    actual = "swift-arch",
     visibility = ["//visibility:public"],
 )
