@@ -6,12 +6,12 @@ public final class Factory {
 
   private int intValue;
 
-  // MaD=p;Factory;false;create;(String,int);;Argument[0];ReturnValue;taint;df-generated
+  // summary=p;Factory;false;create;(String,int);;Argument[0];ReturnValue;taint;df-generated
   public static Factory create(String value, int foo) {
     return new Factory(value, foo);
   }
 
-  // MaD=p;Factory;false;create;(String);;Argument[0];ReturnValue;taint;df-generated
+  // summary=p;Factory;false;create;(String);;Argument[0];ReturnValue;taint;df-generated
   public static Factory create(String value) {
     return new Factory(value, 0);
   }
@@ -21,7 +21,7 @@ public final class Factory {
     this.intValue = intValue;
   }
 
-  // MaD=p;Factory;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;Factory;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
   public String getValue() {
     return value;
   }

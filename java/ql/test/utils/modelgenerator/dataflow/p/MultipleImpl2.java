@@ -6,7 +6,7 @@ class MultipleImpl2 {
   // This is used to test that we only generate a summary model and
   // not neutral summary model for `IInterface.m`.
   public interface IInterface {
-    // MaD=p;MultipleImpl2$IInterface;true;m;(Object);;Argument[0];ReturnValue;taint;df-generated
+    // summary=p;MultipleImpl2$IInterface;true;m;(Object);;Argument[0];ReturnValue;taint;df-generated
     Object m(Object value);
   }
 

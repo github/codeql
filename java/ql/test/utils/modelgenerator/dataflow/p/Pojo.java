@@ -30,12 +30,12 @@ public final class Pojo {
   private List<Character> charList = Arrays.asList('a', 'b', 'c');
   private Byte[] byteObjectArray = new Byte[] {1, 2, 3};
 
-  // MaD=p;Pojo;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;Pojo;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
   public String getValue() {
     return value;
   }
 
-  // MaD=p;Pojo;false;setValue;(String);;Argument[0];Argument[this];taint;df-generated
+  // summary=p;Pojo;false;setValue;(String);;Argument[0];Argument[this];taint;df-generated
   public void setValue(String value) {
     this.value = value;
   }
@@ -57,12 +57,12 @@ public final class Pojo {
     return new int[] {intValue};
   }
 
-  // MaD=p;Pojo;false;getCharArray;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;Pojo;false;getCharArray;();;Argument[this];ReturnValue;taint;df-generated
   public char[] getCharArray() {
     return charArray;
   }
 
-  // MaD=p;Pojo;false;getByteArray;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;Pojo;false;getByteArray;();;Argument[this];ReturnValue;taint;df-generated
   public byte[] getByteArray() {
     return byteArray;
   }
@@ -79,12 +79,12 @@ public final class Pojo {
     return List.of(Integer.valueOf(intValue));
   }
 
-  // MaD=p;Pojo;false;getBoxedChars;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;Pojo;false;getBoxedChars;();;Argument[this];ReturnValue;taint;df-generated
   public List<Character> getBoxedChars() {
     return charList;
   }
 
-  // MaD=p;Pojo;false;getBoxedBytes;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;Pojo;false;getBoxedBytes;();;Argument[this];ReturnValue;taint;df-generated
   public Byte[] getBoxedBytes() {
     return byteObjectArray;
   }
@@ -97,7 +97,7 @@ public final class Pojo {
     return new BigDecimal(value);
   }
 
-  // MaD=p;Pojo;false;fillIn;(List);;Argument[this];Argument[0].Element;taint;df-generated
+  // summary=p;Pojo;false;fillIn;(List);;Argument[this];Argument[0].Element;taint;df-generated
   public void fillIn(List<String> target) {
     target.add(value);
   }

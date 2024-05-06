@@ -18,22 +18,22 @@ public final class InnerHolder {
 
   private StringBuilder sb = new StringBuilder();
 
-  // MaD=p;InnerHolder;false;setContext;(String);;Argument[0];Argument[this];taint;df-generated
+  // summary=p;InnerHolder;false;setContext;(String);;Argument[0];Argument[this];taint;df-generated
   public void setContext(String value) {
     context = new Context(value);
   }
 
-  // MaD=p;InnerHolder;false;explicitSetContext;(String);;Argument[0];Argument[this];taint;df-generated
+  // summary=p;InnerHolder;false;explicitSetContext;(String);;Argument[0];Argument[this];taint;df-generated
   public void explicitSetContext(String value) {
     this.context = new Context(value);
   }
 
-  // MaD=p;InnerHolder;false;append;(String);;Argument[0];Argument[this];taint;df-generated
+  // summary=p;InnerHolder;false;append;(String);;Argument[0];Argument[this];taint;df-generated
   public void append(String value) {
     sb.append(value);
   }
 
-  // MaD=p;InnerHolder;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;InnerHolder;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
   public String getValue() {
     return context.getValue();
   }

@@ -9,13 +9,13 @@ public class InnerClasses {
   }
 
   public class CaptureMe {
-    // MaD=p;InnerClasses$CaptureMe;true;yesCm;(String);;Argument[0];ReturnValue;taint;df-generated
+    // summary=p;InnerClasses$CaptureMe;true;yesCm;(String);;Argument[0];ReturnValue;taint;df-generated
     public String yesCm(String input) {
       return input;
     }
   }
 
-  // MaD=p;InnerClasses;true;yes;(String);;Argument[0];ReturnValue;taint;df-generated
+  // summary=p;InnerClasses;true;yes;(String);;Argument[0];ReturnValue;taint;df-generated
   public String yes(String input) {
     return input;
   }

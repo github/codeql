@@ -6,13 +6,13 @@ public final class ImmutablePojo {
 
   private final long x;
 
-  // MaD=p;ImmutablePojo;false;ImmutablePojo;(String,int);;Argument[0];Argument[this];taint;df-generated
+  // summary=p;ImmutablePojo;false;ImmutablePojo;(String,int);;Argument[0];Argument[this];taint;df-generated
   public ImmutablePojo(String value, int x) {
     this.value = value;
     this.x = x;
   }
 
-  // MaD=p;ImmutablePojo;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;ImmutablePojo;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
   public String getValue() {
     return value;
   }
@@ -21,8 +21,8 @@ public final class ImmutablePojo {
     return x;
   }
 
-  // MaD=p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;taint;df-generated
-  // MaD=p;ImmutablePojo;false;or;(String);;Argument[this];ReturnValue;taint;df-generated
+  // summary=p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;taint;df-generated
+  // summary=p;ImmutablePojo;false;or;(String);;Argument[this];ReturnValue;taint;df-generated
   public String or(String defaultValue) {
     return value != null ? value : defaultValue;
   }

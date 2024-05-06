@@ -11,21 +11,22 @@ signature module InlineMadTestConfigSig {
 }
 
 module InlineMadTest<InlineMadTestConfigSig Input> {
-  private string expects() {
-    Input::getComment().regexpCapture(" *(SPURIOUS-)?MaD=(.*)", 2) = result
+  bindingset[kind]
+  private string expects(string kind) {
+    Input::getComment().regexpCapture(" *(SPURIOUS-)?" + kind + "=(.*)", 2) = result
   }
 
   query predicate unexpectedSummary(string msg) {
     exists(string flow |
       flow = Input::getCapturedSummary() and
-      not flow = expects() and
+      not flow = expects("summary") and
       msg = "Unexpected summary found: " + flow
     )
   }
 
   query predicate expectedSummary(string msg) {
     exists(string e |
-      e = expects() and
+      e = expects("summary") and
       not e = Input::getCapturedSummary() and
       msg = "Expected summary missing: " + e
     )

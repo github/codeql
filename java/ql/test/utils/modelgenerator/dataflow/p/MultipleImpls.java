@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 public class MultipleImpls {
 
   public static interface Strategy {
-    // MaD=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
-    // MaD=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated
+    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
+    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated
     String doSomething(String value);
   }
 
@@ -33,7 +33,7 @@ public class MultipleImpls {
       return "none";
     }
 
-    // MaD=p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;df-generated
+    // summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;df-generated
     public String getValue() {
       return this.foo;
     }

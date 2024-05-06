@@ -12,7 +12,7 @@ public class PrivateFlowViaPublicInterface {
   }
 
   public static interface SPI {
-    // MaD=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
+    // summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
     OutputStream openStream() throws IOException;
 
     default OutputStream openStreamNone() throws IOException {
@@ -50,7 +50,7 @@ public class PrivateFlowViaPublicInterface {
     }
   }
 
-  // MaD=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint;df-generated
+  // summary=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint;df-generated
   public static SPI createAnSPI(File file) {
     return new PrivateImplWithSink(file);
   }
