@@ -2530,4 +2530,13 @@ void destruction_in_switch_3(int c) {
   }
 }
 
+void destructor_possibly_not_handled() {
+  ClassWithDestructor x;
+  try {
+    throw 42;
+  }
+  catch(char) {
+  }
+}
+
 // semmle-extractor-options: -std=c++20 --clang
