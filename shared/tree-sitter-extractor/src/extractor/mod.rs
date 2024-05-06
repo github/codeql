@@ -548,6 +548,79 @@ impl<'a> Visitor<'a> {
         }
     }
 
+    fn write_extra_token(
+        &mut self,
+        text: &str,
+        start_line: usize,
+        start_column: usize,
+        end_line: usize,
+        end_column: usize,
+    ) {
+        let id = self.trap_writer.fresh_id();
+        let loc = trap::Location {
+            start_line: start_line + 1,
+            start_column: start_column + 1,
+            end_line: end_line + 1,
+            end_column,
+        };
+        let loc_label = location_label(self.trap_writer, self.file_label, loc);
+
+        let parent_info = match self.stack.last_mut() {
+            Some(p) => {
+                p.1 += 1;
+                Some((p.0, p.1 - 1))
+            }
+            _ => None,
+        };
+        self.trap_writer.add_tuple(
+            &self.ast_node_location_table_name,
+            vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
+        );
+        if let Some((parent_id, parent_index)) = parent_info {
+            self.trap_writer.add_tuple(
+                &self.ast_node_parent_table_name,
+                vec![
+                    trap::Arg::Label(id),
+                    trap::Arg::Label(parent_id),
+                    trap::Arg::Int(parent_index),
+                ],
+            );
+        };
+        self.trap_writer.add_tuple(
+            &self.tokeninfo_table_name,
+            vec![
+                trap::Arg::Label(id),
+                trap::Arg::Int(0), // (a)buse the `reserved_word` kind for extra tokens
+                trap::Arg::String(text.to_owned()),
+            ],
+        );
+    }
+
+    // Writes an extra token between `node1` and `node1`, if relevant.
+    //
+    // An extra token is written when the source code between `node1` and `node2`
+    // does not consist of whitespace-only.
+    fn maybe_write_extra_token(&mut self, node1: &Node, node2: &Node) {
+        let node1_end = node1.end_byte();
+        let node2_start = node2.start_byte();
+        if node2_start > node1_end {
+            let text = String::from_utf8_lossy(&self.source[node1_end..node2_start]).into_owned();
+            if !text.trim().is_empty() {
+                let node1_end_line = node1.end_position().row;
+                let node1_end_column = node1.end_position().column;
+                let node2_start_line = node2.start_position().row;
+                let node2_start_column = node2.start_position().column;
+                self.write_extra_token(
+                    &text,
+                    node1_end_line,
+                    node1_end_column,
+                    node2_start_line,
+                    node2_start_column,
+                )
+            }
+        }
+    }
+
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
         match type_info {
             node_types::FieldTypeInfo::Single(single_type) => {
@@ -668,12 +741,16 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
         if recurse && cursor.goto_first_child() {
             recurse = visitor.enter_node(cursor.node());
         } else {
-            visitor.leave_node(cursor.field_name(), cursor.node());
+            let left_node = cursor.node();
+            visitor.leave_node(cursor.field_name(), left_node);
 
             if cursor.goto_next_sibling() {
-                recurse = visitor.enter_node(cursor.node());
+                let current_node = cursor.node();
+                visitor.maybe_write_extra_token(&left_node, &current_node);
+                recurse = visitor.enter_node(current_node);
             } else if cursor.goto_parent() {
                 recurse = false;
+                visitor.maybe_write_extra_token(&left_node, &cursor.node());
             } else {
                 break;
             }
