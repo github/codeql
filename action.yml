@@ -14,12 +14,19 @@ inputs:
   suite:
     description: "CodeQL Suite to run"
     default: "actions-code-scanning"
+  packs:
+    description: >-
+      Comma-separated list of packs to run. Reference a pack in the format `scope/name[@version]`. If `version` is not
+      specified, then the latest version of the pack is used. By default, this overrides the same setting in a
+      configuration file; prefix with "+" to use both sets of packs.
+    required: false
 
 runs:
   using: 'composite'
   steps:
     - name: extpack contents
       shell: bash
+      if: inputs.packs
       env:
         EXTPACK_PATH: /home/runner/.codeql/packages/local/workflow-models/0.0.1
         EXTPACK_NAME: local/workflow-models
@@ -28,7 +35,7 @@ runs:
         if [ -f $EXTPACK_PATH/models.yml ]; then cat $EXTPACK_PATH/models.yml; fi
         echo "##[endgroup]"
         echo "##[group] QLPack"
-        if [ -f $EXTPACK_PATH/codeql-pack.yml ]; then cat $EXTPACK_PATH/codeql-pack.yml; echo "USE_WORKFLOW_MODELS=true" >> $GITHUB_ENV; fi
+        if [ -f $EXTPACK_PATH/codeql-pack.yml ]; then cat $EXTPACK_PATH/codeql-pack.yml; fi
         echo "##[endgroup]"
 
     - name: Scan workflows 
@@ -39,5 +46,6 @@ runs:
         INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
         INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
         INPUT_SUITE: ${{ inputs.suite }}
+        INPUT_PACKS: ${{ inputs.packs }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
