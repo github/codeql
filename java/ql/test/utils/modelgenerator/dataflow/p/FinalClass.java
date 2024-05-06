@@ -2,14 +2,14 @@ package p;
 
 public final class FinalClass {
 
-    private static final String C = "constant";
+  private static final String C = "constant";
 
-    public String returnsInput(String input) {
-        return input;
-    }
+  // MaD=p;FinalClass;false;returnsInput;(String);;Argument[0];ReturnValue;taint;df-generated
+  public String returnsInput(String input) {
+    return input;
+  }
 
-    public String returnsConstant() {
-        return C;
-    }
-
+  public String returnsConstant() {
+    return C;
+  }
 }
