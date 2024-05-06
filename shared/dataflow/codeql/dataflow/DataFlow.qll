@@ -1004,19 +1004,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
         result = this.asPreservedNode().toString() or this = TCollapsedPathNode(_, result)
       }
 
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.getAnOriginalPathNode()
-            .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getAnOriginalPathNode().getLocation() }
 
       /** Gets the corresponding data-flow node. */
       Node getNode() {
