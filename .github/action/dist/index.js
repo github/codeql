@@ -28706,14 +28706,9 @@ async function codeqlDatabaseAnalyze(codeql, database_path) {
         "--output",
         codeql_output,
     ];
-    const extPackPath = process.env["EXTPACK_PATH"];
-    const extPackName = process.env["EXTPACK_NAME"];
-    if (extPackPath !== undefined &&
-        extPackName !== undefined &&
-        extPackPath !== "" &&
-        extPackName !== "") {
-        cmd.push("--additional-packs", extPackPath);
-        cmd.push("--extension-packs", extPackName);
+    const useWorkflowModels = process.env["USE_WORKFLOW_MODELS"];
+    if (useWorkflowModels !== undefined && useWorkflowModels == "true") {
+        cmd.push("--extension-packs", "local/workflow-models");
     }
     // remote pack or local pack
     if (codeql.pack.startsWith("githubsecuritylab/")) {

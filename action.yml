@@ -14,12 +14,6 @@ inputs:
   suite:
     description: "CodeQL Suite to run"
     default: "actions-code-scanning"
-  workflow-extpack-path:
-    description: "Path to Workflow extpack"
-    required: false
-  workflow-extpack-name:
-    description: "Name of the Workflow extpack"
-    required: false
 
 runs:
   using: 'composite'
@@ -27,14 +21,14 @@ runs:
     - name: extpack contents
       shell: bash
       env:
-        EXTPACK_PATH: ${{ inputs.workflow-extpack-path }}
-        EXTPACK_NAME: ${{ inputs.workflow-extpack-name }}
+        EXTPACK_PATH: /home/runner/.codeql/packages/local/workflow-models/0.0.1
+        EXTPACK_NAME: local/workflow-models
       run: |
         echo "##[group] Workflow Models"
         if [ -f $EXTPACK_PATH/models.yml ]; then cat $EXTPACK_PATH/models.yml; fi
         echo "##[endgroup]"
         echo "##[group] QLPack"
-        if [ -f $EXTPACK_PATH/qlpack.yml ]; then cat $EXTPACK_PATH/qlpack.yml; fi
+        if [ -f $EXTPACK_PATH/codeql-pack.yml ]; then cat $EXTPACK_PATH/codeql-pack.yml; echo "USE_WORKFLOW_MODELS=true" >> $GITHUB_ENV; fi
         echo "##[endgroup]"
 
     - name: Scan workflows 
@@ -45,7 +39,5 @@ runs:
         INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
         INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
         INPUT_SUITE: ${{ inputs.suite }}
-        EXTPACK_PATH: ${{ inputs.workflow-extpack-path }}
-        EXTPACK_NAME: ${{ inputs.workflow-extpack-name }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
