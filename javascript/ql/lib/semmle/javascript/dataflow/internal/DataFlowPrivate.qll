@@ -59,12 +59,6 @@ class CaptureNode extends DataFlow::Node, TSynthCaptureNode {
 
   cached
   private Location getLocation() { result = this.getNode().getLocation() }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 class GenericSynthesizedNode extends DataFlow::Node, TGenericSynthesizedNode {
@@ -78,11 +72,7 @@ class GenericSynthesizedNode extends DataFlow::Node, TGenericSynthesizedNode {
 
   override string toString() { result = "[synthetic node] " + tag }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    node.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = node.getLocation() }
 
   string getTag() { result = tag }
 }

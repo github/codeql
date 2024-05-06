@@ -1,8 +1,9 @@
+private import semmle.javascript.Locations
 private import DataFlowImplSpecific
 private import codeql.dataflow.DataFlow as SharedDataFlow
 private import codeql.dataflow.TaintTracking as SharedTaintTracking
 
-module JSDataFlow implements SharedDataFlow::InputSig {
+module JSDataFlow implements SharedDataFlow::InputSig<Location> {
   import Private
   import Public
 
@@ -16,6 +17,6 @@ module JSDataFlow implements SharedDataFlow::InputSig {
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
 }
 
-module JSTaintFlow implements SharedTaintTracking::InputSig<JSDataFlow> {
+module JSTaintFlow implements SharedTaintTracking::InputSig<Location, JSDataFlow> {
   import semmle.javascript.dataflow.internal.TaintTrackingPrivate
 }

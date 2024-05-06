@@ -1056,11 +1056,7 @@ module DataFlow {
 
     override StmtContainer getContainer() { result = expr.getContainer() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      expr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = expr.getLocation() }
   }
 
   /**
@@ -1075,13 +1071,7 @@ module DataFlow {
 
     override StmtContainer getContainer() { result = constructor }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      constructor
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = constructor.getLocation() }
   }
 
   /**
@@ -1403,11 +1393,7 @@ module DataFlow {
 
     override string toString() { result = "[function self-reference] " + function.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = function.getLocation() }
   }
 
   /**
@@ -1423,11 +1409,7 @@ module DataFlow {
 
     override StmtContainer getContainer() { result = expr.getContainer() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      expr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = expr.getLocation() }
 
     override string toString() { result = "[post update] " + expr.toString() }
   }

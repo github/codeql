@@ -1,3 +1,4 @@
+private import semmle.javascript.Locations
 private import codeql.dataflow.TaintTracking
 private import DataFlowArg
-import TaintFlowMake<JSDataFlow, JSTaintFlow>
+import TaintFlowMake<Location, JSDataFlow, JSTaintFlow>
