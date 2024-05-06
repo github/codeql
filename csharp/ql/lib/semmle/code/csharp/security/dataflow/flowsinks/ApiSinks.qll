@@ -10,7 +10,7 @@ final class SinkNode = ApiSinkNode;
 
 /**
  * Module that adds all API like sinks to `SinkNode`, excluding sinks for cryptography based
- * queries, and queries where sinks are not succifiently defined (eg. using broad method name matching).
+ * queries, and queries where sinks are not sufficiently defined (eg. using broad method name matching).
  */
 private module AllApiSinks {
   private import ParallelSink

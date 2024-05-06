@@ -6,7 +6,7 @@ final class SourceNode = FlowSources::SourceNode;
 
 /**
  * Module that adds all API like sources to `SourceNode`, excluding some sources for cryptography based
- * queries, and queries where sources are not succifiently defined (eg. using broad method name matching).
+ * queries, and queries where sources are not sufficiently defined (eg. using broad method name matching).
  */
 private module AllApiSources {
   private import semmle.code.csharp.security.dataflow.ConditionalBypassQuery as ConditionalBypassQuery
