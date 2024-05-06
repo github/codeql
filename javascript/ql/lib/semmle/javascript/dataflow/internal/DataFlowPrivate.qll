@@ -55,7 +55,7 @@ class CaptureNode extends DataFlow::Node, TSynthCaptureNode {
   override StmtContainer getContainer() { result = this.getNode().getEnclosingCallable() }
 
   cached
-  private string toStringInternal() { result = this.getNode().toString() }
+  private string toStringInternal() { result = this.getNode().toString() + " [capture node]" }
 
   override string toString() { result = this.toStringInternal() } // cached in parent class
 
