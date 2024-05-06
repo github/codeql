@@ -1,0 +1,80 @@
+name: Test go extractor
+description: Run build, QL tests and optionally basic code sanity checks (formatting and generation)
+inputs:
+  run-code-checks:
+    description: Whether to run formatting, code and qhelp generation checks
+    required: false
+    default: false
+runs:
+  using: composite
+  steps:
+    - name: Get go version
+      shell: bash
+      run: |
+        (
+          echo -n "GO_VERSION="
+          bazel run @rules_go//go -- version | sed 's/go version go\(.*\) .*/\1/'
+        ) | tee -a "$GITHUB_ENV"
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: ${{ env.GO_VERSION }}
+        cache: false
+      id: go
+
+    - name: Set up CodeQL CLI
+      uses: ./.github/actions/fetch-codeql
+
+    - name: Enable problem matchers in repository
+      shell: bash
+      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+    - name: Build
+      shell: bash
+      run: |
+        bazel run go:create-extractor-pack
+
+    - name: Check that all Go code is autoformatted
+      if: inputs.run-code-checks == 'true'
+      shell: bash
+      run: |
+          cd go
+          make check-formatting
+
+    - name: Check checked-in generated code
+      if: inputs.run-code-checks == 'true'
+      shell: bash
+      run: |
+        bazel run go:gen
+        git add .
+        git diff --exit-code HEAD || (
+          echo "please run bazel run //go:gen"
+          exit 1
+        )
+
+    - name: Compile qhelp files to markdown
+      if: inputs.run-code-checks == 'true'
+      shell: bash
+      run: |
+        cd go
+        env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+
+    - name: Upload qhelp markdown
+      if: inputs.run-code-checks == 'true'
+      uses: actions/upload-artifact@v3
+      with:
+        name: qhelp-markdown
+        path: go/qhelp-out/**/*.md
+
+    - name: Cache compilation cache
+      id: query-cache
+      uses: ./.github/actions/cache-query-compilation
+      with:
+        key: go-qltest
+
+    - name: Test
+      shell: bash
+      run: |
+        cd go
+        make test cache="${{ steps.query-cache.outputs.cache-dir }}"
