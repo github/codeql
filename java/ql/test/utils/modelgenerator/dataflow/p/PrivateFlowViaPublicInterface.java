@@ -12,15 +12,12 @@ public class PrivateFlowViaPublicInterface {
   }
 
   public static interface SPI {
-    // summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
-    // sink=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];path-injection;df-generated
     OutputStream openStream() throws IOException;
 
     // neutral=p;PrivateFlowViaPublicInterface$SPI;openStreamNone;();summary;df-generated
     default OutputStream openStreamNone() throws IOException {
       return null;
     }
-    ;
   }
 
   private static final class PrivateImplWithSink implements SPI {
@@ -31,6 +28,8 @@ public class PrivateFlowViaPublicInterface {
       this.file = file;
     }
 
+    // summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
+    // sink=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];path-injection;df-generated
     @Override
     public OutputStream openStream() throws IOException {
       return new FileOutputStream(file);
@@ -46,6 +45,7 @@ public class PrivateFlowViaPublicInterface {
       return null;
     }
 
+    // neutral=p;PrivateFlowViaPublicInterface$SPI;openStreamNone;();summary;df-generated
     @Override
     public OutputStream openStreamNone() throws IOException {
       return new FileOutputStream(new RandomPojo().someFile);

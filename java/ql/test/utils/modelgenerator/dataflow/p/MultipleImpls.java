@@ -5,12 +5,11 @@ import java.util.concurrent.Callable;
 public class MultipleImpls {
 
   public static interface Strategy {
-    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
-    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated
     String doSomething(String value);
   }
 
   public static class Strat1 implements Strategy {
+    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated
     public String doSomething(String value) {
       return value;
     }
@@ -28,6 +27,7 @@ public class MultipleImpls {
   public static class Strat2 implements Strategy {
     private String foo;
 
+    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
     public String doSomething(String value) {
       this.foo = value;
       return "none";

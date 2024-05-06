@@ -2,47 +2,53 @@ import java
 
 private signature module InlineMadTestLangSig {
   /**
-   * Gets a relevant code comment, if any.
+   * Gets a relevant code comment for `c`, if any.
    */
-  string getComment();
+  string getComment(Callable c);
 }
 
 signature module InlineMadTestConfigSig {
   /**
-   * Gets the kind of the captured model.
+   * Gets the kind of a captured model.
    */
   string getKind();
 
   /**
-   * Gets a captured model, if any.
+   * Gets a captured model for `c`, if any.
    */
-  string getCapturedModel();
+  string getCapturedModel(Callable c);
 }
 
 private module InlineMadTestImpl<InlineMadTestLangSig Lang, InlineMadTestConfigSig Input> {
-  private string expects() {
-    Lang::getComment().regexpCapture(" *(SPURIOUS-)?" + Input::getKind() + "=(.*)", 2) = result
+  private string expects(Callable c) {
+    Lang::getComment(c).regexpCapture(" *(SPURIOUS-)?" + Input::getKind() + "=(.*)", 2) = result
   }
 
   query predicate unexpectedModel(string msg) {
-    exists(string flow |
-      flow = Input::getCapturedModel() and
-      not flow = expects() and
+    exists(Callable c, string flow |
+      flow = Input::getCapturedModel(c) and
+      not flow = expects(c) and
       msg = "Unexpected " + Input::getKind() + " found: " + flow
     )
   }
 
   query predicate expectedModel(string msg) {
-    exists(string e |
-      e = expects() and
-      not e = Input::getCapturedModel() and
+    exists(Callable c, string e |
+      e = expects(c) and
+      not e = Input::getCapturedModel(c) and
       msg = "Expected " + Input::getKind() + " missing: " + e
     )
   }
 }
 
 private module InlineMadTestLang implements InlineMadTestLangSig {
-  string getComment() { result = any(Javadoc doc).getChild(0).toString() }
+  string getComment(Callable c) {
+    exists(Javadoc doc |
+      hasJavadoc(c, doc) and
+      isNormalComment(doc) and
+      result = doc.getChild(0).toString()
+    )
+  }
 }
 
 module InlineMadTest<InlineMadTestConfigSig Input> {

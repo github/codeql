@@ -3,7 +3,7 @@ import utils.modelgenerator.internal.CaptureModels
 import TestUtilities.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
-  string getCapturedModel() { result = captureSource(_) }
+  string getCapturedModel(Callable c) { result = captureSource(c) }
 
   string getKind() { result = "source" }
 }

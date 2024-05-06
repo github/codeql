@@ -3,7 +3,7 @@ import utils.modelgenerator.internal.CaptureSummaryFlowQuery
 import TestUtilities.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
-  string getCapturedModel() { result = captureFlow(_) }
+  string getCapturedModel(Callable c) { result = captureFlow(c) }
 
   string getKind() { result = "summary" }
 }
