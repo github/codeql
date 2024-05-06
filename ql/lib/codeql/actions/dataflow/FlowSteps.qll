@@ -124,3 +124,23 @@ class ArtifactDownloadToUseTaintStep extends AdditionalTaintStep {
     artifactDownloadToUseStep(node1, node2)
   }
 }
+
+/**
+ * A read of the _files field of the dorny/paths-filter action.
+ */
+predicate dornyPathsFilterTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(UsesStep u, StepsExpression o |
+    u.getCallee() = "dorny/paths-filter" and
+    u.getArgument("list-files") = ["csv", "json"] and
+    u = pred.asExpr() and
+    o.getStepId() = u.getId() and
+    o.getFieldName().matches("%_files") and
+    succ.asExpr() = o
+  )
+}
+
+class DornyPathsFilterTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    dornyPathsFilterTaintStep(node1, node2)
+  }
+}

@@ -438,7 +438,6 @@ sources
 | amannn/action-semantic-pull-request | * | output.error_message | text | manual |
 | cypress-io/github-action | * | env.GH_BRANCH | branch | manual |
 | dawidd6/action-download-artifact | * | output.artifacts | artifact | manual |
-| dorny/paths-filter | * | output.changes | filename | manual |
 | franzdiebold/github-env-vars-action | * | output.CI_PR_DESCRIPTION | text | manual |
 | franzdiebold/github-env-vars-action | * | output.CI_PR_TITLE | title | manual |
 | googlecloudplatform/magic-modules | * | output.changed-files | filename | manual |
