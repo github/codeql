@@ -686,7 +686,7 @@ void test() {
   for (auto x : returnRef()[0]) {} // GOOD
   for (auto x : returnRef().at(0)) {} // GOOD
 
-  for(auto it = returnValue().begin(); it != returnValue().end(); ++it) {} // BAD
+  for(auto it = returnValue().begin(); it != returnValue().end(); ++it) {} // BAD [NOT DETECTED]
 
   {
   auto v = returnValue();
@@ -800,5 +800,5 @@ void test5(int i)
     const auto& vvs = returnValue();
     for(const auto& vs : vvs) { }
     ++i;
-  } // GOOD [FALSE POSITIVE]
+  } // GOOD
 }
