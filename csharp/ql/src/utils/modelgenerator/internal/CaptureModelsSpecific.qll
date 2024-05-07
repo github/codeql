@@ -8,6 +8,7 @@ private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.frameworks.system.linq.Expressions
+private import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -35,12 +36,23 @@ private predicate irrelevantAccessor(CS::Accessor a) {
 }
 
 private predicate isUninterestingForModels(Callable api) {
-  api.getDeclaringType().getNamespace().getFullName() = "" or
-  api instanceof CS::ConversionOperator or
-  api instanceof Util::MainMethod or
-  api instanceof CS::Destructor or
-  api instanceof CS::AnonymousFunctionExpr or
-  api.(CS::Constructor).isParameterless() or
+  api.getDeclaringType().getNamespace().getFullName() = ""
+  or
+  api instanceof CS::ConversionOperator
+  or
+  api instanceof Util::MainMethod
+  or
+  api instanceof CS::Destructor
+  or
+  api instanceof CS::AnonymousFunctionExpr
+  or
+  api.(CS::Constructor).isParameterless()
+  or
+  exists(Type decl | decl = api.getDeclaringType() |
+    decl instanceof SystemObjectClass or
+    decl instanceof SystemValueTypeClass
+  )
+  or
   // Disregard properties that have both a get and a set accessor,
   // which implicitly means auto implemented properties.
   irrelevantAccessor(api)
@@ -53,18 +65,26 @@ private predicate relevant(Callable api) {
   not isUninterestingForModels(api)
 }
 
-private predicate hasManualModel(Callable api) {
-  api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
-  api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+private Callable getARelevantOverrideeOrImplementee(Overridable m) {
+  m.overridesOrImplements(result) and relevant(result)
 }
 
 /**
- * Holds if it is relevant to generate models for `api`.
+ * Gets the super implementation of `m` if it is relevant.
+ * If such a super implementation does not exist, returns `m` if it is relevant.
  */
-private predicate isRelevantForModels(Callable api) {
-  relevant(api) and
-  // Disregard all APIs that have a manual model.
-  not hasManualModel(api)
+private Callable liftedImpl(Callable api) {
+  (
+    result = getARelevantOverrideeOrImplementee(api)
+    or
+    result = api and relevant(api)
+  ) and
+  not exists(getARelevantOverrideeOrImplementee(result))
+}
+
+private predicate hasManualModel(Callable api) {
+  api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
 }
 
 /**
@@ -82,19 +102,37 @@ predicate isUninterestingForDataFlowModels(CS::Callable api) { isHigherOrder(api
 predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
 
 /**
- * A class of callables that are relevant generating summary, source and sinks models for.
+ * A class of callables that are potentially relevant for generating summary, source, sink
+ * and neutral models.
  *
- * In the Standard library and 3rd party libraries it the callables that can be called
- * from outside the library itself.
+ * In the Standard library and 3rd party libraries it is the callables (or callables that have a
+ * super implementation) that can be called from outside the library itself.
  */
-class TargetApiSpecific extends CS::Callable {
-  TargetApiSpecific() { isRelevantForModels(this) }
+class TargetApiSpecific extends Callable {
+  private Callable lift;
+
+  TargetApiSpecific() {
+    lift = liftedImpl(this) and
+    not hasManualModel(lift)
+  }
+
+  /**
+   * Gets the callable that a model will be lifted to.
+   *
+   * The lifted callable is relevant in terms of model
+   * generation (this is ensured by `liftedImpl`).
+   */
+  Callable lift() { result = lift }
+
+  /**
+   * Holds if `this` is relevant in terms of model generation.
+   */
+  predicate isRelevant() { relevant(this) }
 }
 
-predicate asPartialModel = ExternalFlow::asPartialModel/1;
+string asPartialModel(TargetApiSpecific api) { result = ExternalFlow::asPartialModel(api.lift()) }
 
-/** Computes the first 4 columns for neutral CSV rows of `c`. */
-predicate asPartialNeutralModel = ExternalFlow::getSignature/1;
+string asPartialNeutralModel(TargetApiSpecific api) { result = ExternalFlow::getSignature(api) }
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.
@@ -193,7 +231,8 @@ predicate sinkModelSanitizer(DataFlow::Node node) { none() }
  */
 predicate apiSource(DataFlow::Node source) {
   (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-  isRelevantForModels(source.getEnclosingCallable())
+  relevant(source.getEnclosingCallable()) and
+  not hasManualModel(source.getEnclosingCallable())
 }
 
 /**
