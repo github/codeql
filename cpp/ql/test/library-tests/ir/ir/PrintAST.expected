@@ -20678,12 +20678,12 @@ ir.cpp:
 # 2309|           getQualifier(): [VariableAccess] s2
 # 2309|               Type = [Struct] String
 # 2309|               ValueCategory = lvalue
-#-----|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
-#-----|           Type = [VoidType] void
-#-----|           ValueCategory = prvalue
-#-----|         getQualifier(): [ReuseExpr] reuse of temporary object
-#-----|             Type = [ClassTemplateInstantiation,Struct] vector<String>
-#-----|             ValueCategory = xvalue
+# 2307|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2307|           Type = [VoidType] void
+# 2307|           ValueCategory = prvalue
+# 2307|         getQualifier(): [ReuseExpr] reuse of temporary object
+# 2307|             Type = [ClassTemplateInstantiation,Struct] vector<String>
+# 2307|             ValueCategory = xvalue
 # 2307|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2307|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &>
 # 2307|           ValueCategory = lvalue
@@ -22208,12 +22208,12 @@ ir.cpp:
 # 2431|               Conversion = [IntegralConversion] integral conversion
 # 2431|               Type = [IntType] int
 # 2431|               ValueCategory = prvalue
-#-----|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
-#-----|           Type = [VoidType] void
-#-----|           ValueCategory = prvalue
-#-----|         getQualifier(): [ReuseExpr] reuse of temporary object
-#-----|             Type = [ClassTemplateInstantiation,Struct] vector<char>
-#-----|             ValueCategory = xvalue
+# 2430|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2430|           Type = [VoidType] void
+# 2430|           ValueCategory = prvalue
+# 2430|         getQualifier(): [ReuseExpr] reuse of temporary object
+# 2430|             Type = [ClassTemplateInstantiation,Struct] vector<char>
+# 2430|             ValueCategory = xvalue
 # 2430|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2430|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
 # 2430|           ValueCategory = lvalue
