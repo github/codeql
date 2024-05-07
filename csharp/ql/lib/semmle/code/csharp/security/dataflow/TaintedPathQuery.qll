@@ -5,6 +5,7 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.IO
 private import semmle.code.csharp.frameworks.system.Web
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for uncontrolled data in path expression vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for uncontrolled data in path expression vulnerabilities.
