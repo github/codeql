@@ -19,10 +19,12 @@ module TaintTracking = CS::TaintTracking;
 
 class Type = CS::Type;
 
+class Callable = CS::Callable;
+
 /**
  * Holds if any of the parameters of `api` are `System.Func<>`.
  */
-private predicate isHigherOrder(CS::Callable api) {
+private predicate isHigherOrder(Callable api) {
   exists(Type t | t = api.getAParameter().getType().getUnboundDeclaration() |
     t instanceof SystemLinqExpressions::DelegateExtType
   )
@@ -32,23 +34,37 @@ private predicate irrelevantAccessor(CS::Accessor a) {
   a.getDeclaration().(CS::Property).isReadWrite()
 }
 
+private predicate isUninterestingForModels(Callable api) {
+  api.getDeclaringType().getNamespace().getFullName() = "" or
+  api instanceof CS::ConversionOperator or
+  api instanceof Util::MainMethod or
+  api instanceof CS::Destructor or
+  api instanceof CS::AnonymousFunctionExpr or
+  api.(CS::Constructor).isParameterless() or
+  // Disregard properties that have both a get and a set accessor,
+  // which implicitly means auto implemented properties.
+  irrelevantAccessor(api)
+}
+
+private predicate relevant(Callable api) {
+  [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
+  api.fromSource() and
+  api.isUnboundDeclaration() and
+  not isUninterestingForModels(api)
+}
+
+private predicate hasManualModel(Callable api) {
+  api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+}
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
-private predicate isRelevantForModels(CS::Callable api) {
-  [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
-  api.getDeclaringType().getNamespace().getFullName() != "" and
-  not api instanceof CS::ConversionOperator and
-  not api instanceof Util::MainMethod and
-  not api instanceof CS::Destructor and
-  not api instanceof CS::AnonymousFunctionExpr and
-  not api.(CS::Constructor).isParameterless() and
+private predicate isRelevantForModels(Callable api) {
+  relevant(api) and
   // Disregard all APIs that have a manual model.
-  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) and
-  not api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()) and
-  // Disregard properties that have both a get and a set accessor,
-  // which implicitly means auto implemented properties.
-  not irrelevantAccessor(api)
+  not hasManualModel(api)
 }
 
 /**
@@ -72,11 +88,7 @@ predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
  * from outside the library itself.
  */
 class TargetApiSpecific extends CS::Callable {
-  TargetApiSpecific() {
-    this.fromSource() and
-    this.isUnboundDeclaration() and
-    isRelevantForModels(this)
-  }
+  TargetApiSpecific() { isRelevantForModels(this) }
 }
 
 predicate asPartialModel = ExternalFlow::asPartialModel/1;
@@ -151,7 +163,7 @@ string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
 /**
  * Gets the enclosing callable of `ret`.
  */
-CS::Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
+Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
