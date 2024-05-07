@@ -16553,6 +16553,56 @@ ir.cpp:
 # 2521|     v2521_7(void)  = AliasedUse   : ~m?
 # 2521|     v2521_8(void)  = ExitFunction : 
 
+# 2533| void destructor_possibly_not_handled()
+# 2533|   Block 0
+# 2533|     v2533_1(void)                       = EnterFunction                        : 
+# 2533|     mu2533_2(unknown)                   = AliasedDefinition                    : 
+# 2533|     mu2533_3(unknown)                   = InitializeNonLocal                   : 
+# 2534|     r2534_1(glval<ClassWithDestructor>) = VariableAddress[x]                   : 
+# 2534|     mu2534_2(ClassWithDestructor)       = Uninitialized[x]                     : &:r2534_1
+# 2534|     r2534_3(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2534|     v2534_4(void)                       = Call[ClassWithDestructor]            : func:r2534_3, this:r2534_1
+# 2534|     mu2534_5(unknown)                   = ^CallSideEffect                      : ~m?
+# 2534|     mu2534_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2534_1
+# 2536|     r2536_1(glval<int>)                 = VariableAddress[#throw2536:5]        : 
+# 2536|     r2536_2(int)                        = Constant[42]                         : 
+# 2536|     mu2536_3(int)                       = Store[#throw2536:5]                  : &:r2536_1, r2536_2
+# 2536|     v2536_4(void)                       = ThrowValue                           : &:r2536_1, ~m?
+#-----|   Exception -> Block 3
+
+# 2533|   Block 1
+# 2533|     v2533_4(void) = AliasedUse   : ~m?
+# 2533|     v2533_5(void) = ExitFunction : 
+
+# 2533|   Block 2
+# 2533|     v2533_6(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+# 2538|   Block 3
+# 2538|     v2538_1(void) = CatchByType[char] : 
+#-----|   Exception -> Block 2
+#-----|   Goto -> Block 4
+
+# 2538|   Block 4
+# 2538|     r2538_2(glval<char>)                = VariableAddress[(unnamed parameter 0)]     : 
+# 2538|     mu2538_3(char)                      = InitializeParameter[(unnamed parameter 0)] : &:r2538_2
+# 2538|     v2538_4(void)                       = NoOp                                       : 
+# 2540|     r2540_1(glval<ClassWithDestructor>) = VariableAddress[x]                         : 
+# 2540|     r2540_2(glval<unknown>)             = FunctionAddress[~ClassWithDestructor]      : 
+# 2540|     v2540_3(void)                       = Call[~ClassWithDestructor]                 : func:r2540_2, this:r2540_1
+# 2540|     mu2540_4(unknown)                   = ^CallSideEffect                            : ~m?
+# 2540|     v2540_5(void)                       = ^IndirectReadSideEffect[-1]                : &:r2540_1, ~m?
+# 2540|     mu2540_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]            : &:r2540_1
+# 2540|     v2540_7(void)                       = NoOp                                       : 
+# 2540|     r2540_8(glval<ClassWithDestructor>) = VariableAddress[x]                         : 
+# 2540|     r2540_9(glval<unknown>)             = FunctionAddress[~ClassWithDestructor]      : 
+# 2540|     v2540_10(void)                      = Call[~ClassWithDestructor]                 : func:r2540_9, this:r2540_8
+# 2540|     mu2540_11(unknown)                  = ^CallSideEffect                            : ~m?
+# 2540|     v2540_12(void)                      = ^IndirectReadSideEffect[-1]                : &:r2540_8, ~m?
+# 2540|     mu2540_13(ClassWithDestructor)      = ^IndirectMayWriteSideEffect[-1]            : &:r2540_8
+# 2533|     v2533_7(void)                       = ReturnVoid                                 : 
+#-----|   Goto -> Block 1
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
