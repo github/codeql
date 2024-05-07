@@ -263,11 +263,47 @@ private class ArtifactSource extends RemoteFlowSource {
 /**
  * A list of file names returned by dorny/paths-filter.
  */
-private class DornyPathsFilterSource extends RemoteFlowSource {
+class DornyPathsFilterSource extends RemoteFlowSource {
   DornyPathsFilterSource() {
     exists(UsesStep u |
       u.getCallee() = "dorny/paths-filter" and
       u.getArgument("list-files") = ["csv", "json"] and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "filename" }
+}
+
+/**
+ * A list of file names returned by tj-actions/changed-files.
+ */
+class TJActionsChangedFilesSource extends RemoteFlowSource {
+  TJActionsChangedFilesSource() {
+    exists(UsesStep u |
+      u.getCallee() = "tj-actions/changed-files" and
+      (
+        u.getArgument("safe_output") = "false" or
+        u.getVersion().regexpReplaceAll("^v", "").regexpReplaceAll("\\..*", "").toInt() < 41
+      ) and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "filename" }
+}
+
+/**
+ * A list of file names returned by tj-actions/verify-changed-files.
+ */
+class TJActionsVerifyChangedFilesSource extends RemoteFlowSource {
+  TJActionsVerifyChangedFilesSource() {
+    exists(UsesStep u |
+      u.getCallee() = "tj-actions/verify-changed-files" and
+      (
+        u.getArgument("safe_output") = "false" or
+        u.getVersion().regexpReplaceAll("^v", "").regexpReplaceAll("\\..*", "").toInt() < 17
+      ) and
       this.asExpr() = u
     )
   }

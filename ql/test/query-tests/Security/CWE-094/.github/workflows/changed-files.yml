@@ -2,8 +2,6 @@ name: CI
 
 on:
   pull_request:
-    branches:
-      - main
 
 jobs:
   changed_files:
@@ -13,13 +11,32 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v40
 
-      - name: List all changed files
+      - name: Get changed files 1
+        id: changed-files1
+        uses: tj-actions/changed-files@v40
+      - name: List all changed files 1
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files1.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
 
+      - name: Get changed files 2
+        id: changed-files2
+        uses: tj-actions/changed-files@v41
+      - name: List all changed files 2
+        run: |
+          for file in ${{ steps.changed-files2.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Get changed files 3
+        id: changed-files3
+        uses: tj-actions/changed-files@v41
+        with:
+          safe_output: false
+      - name: List all changed files 3
+        run: |
+          for file in ${{ steps.changed-files3.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
