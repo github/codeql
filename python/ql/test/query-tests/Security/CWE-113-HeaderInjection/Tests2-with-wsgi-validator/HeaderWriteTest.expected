@@ -1,8 +1,8 @@
 source
-| wsgiref_tests.py:5:14:5:20 | ControlFlowNode for environ |
+| wsgiref_tests.py:7:14:7:20 | ControlFlowNode for environ |
 sink
 headerWrite
-| wsgiref_tests.py:10:5:10:35 | ControlFlowNode for start_response() | wsgiref_tests.py:9:17:9:22 | ControlFlowNode for h_name | wsgiref_tests.py:9:25:9:29 | ControlFlowNode for StringLiteral | false | false |
-| wsgiref_tests.py:10:5:10:35 | ControlFlowNode for start_response() | wsgiref_tests.py:9:17:9:22 | ControlFlowNode for h_name | wsgiref_tests.py:9:42:9:46 | ControlFlowNode for h_val | false | false |
-| wsgiref_tests.py:10:5:10:35 | ControlFlowNode for start_response() | wsgiref_tests.py:9:34:9:39 | ControlFlowNode for StringLiteral | wsgiref_tests.py:9:25:9:29 | ControlFlowNode for StringLiteral | false | false |
-| wsgiref_tests.py:10:5:10:35 | ControlFlowNode for start_response() | wsgiref_tests.py:9:34:9:39 | ControlFlowNode for StringLiteral | wsgiref_tests.py:9:42:9:46 | ControlFlowNode for h_val | false | false |
+| wsgiref_tests.py:12:5:12:35 | ControlFlowNode for start_response() | wsgiref_tests.py:11:17:11:22 | ControlFlowNode for h_name | wsgiref_tests.py:11:25:11:29 | ControlFlowNode for StringLiteral | false | false |
+| wsgiref_tests.py:12:5:12:35 | ControlFlowNode for start_response() | wsgiref_tests.py:11:17:11:22 | ControlFlowNode for h_name | wsgiref_tests.py:11:42:11:46 | ControlFlowNode for h_val | false | false |
+| wsgiref_tests.py:12:5:12:35 | ControlFlowNode for start_response() | wsgiref_tests.py:11:34:11:39 | ControlFlowNode for StringLiteral | wsgiref_tests.py:11:25:11:29 | ControlFlowNode for StringLiteral | false | false |
+| wsgiref_tests.py:12:5:12:35 | ControlFlowNode for start_response() | wsgiref_tests.py:11:34:11:39 | ControlFlowNode for StringLiteral | wsgiref_tests.py:11:42:11:46 | ControlFlowNode for h_val | false | false |
