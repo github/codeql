@@ -20,7 +20,7 @@ most deallocation functions will perform a null-pointer check before attempting 
 </p>
 
 </recommendation>
-<example><sample src="DoubleFree.cpp" />
+<example><sample src="DoubleFreeBad.cpp" />
 </example>
 <references>
 
