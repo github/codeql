@@ -10,15 +10,6 @@ checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 
 [[package]]
 name = "aho-corasick"
-version = "0.7.20"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc936419f96fa211c1b9166887b38e5e40b19958e5b895be7c1f93adec7071ac"
-dependencies = [
- "memchr",
-]
-
-[[package]]
-name = "aho-corasick"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b2969dcb958b36655471fc61f7e416fa76033bdd4bfed0678d8fee1e2d07a1f0"
@@ -105,9 +96,9 @@ checksum = "0d261e256854913907f67ed06efbc3338dfe6179796deefc1ff763fc1aee5535"
 
 [[package]]
 name = "cc"
-version = "1.0.79"
+version = "1.0.96"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50d30906286121d95be3d479533b458f87493b30a4b5f79a607db8f5d11aa91f"
+checksum = "065a29261d53ba54260972629f9ca6bffa69bac13cd1fed61420f7fa68b9f8bd"
 
 [[package]]
 name = "cfg-if"
@@ -176,7 +167,7 @@ checksum = "8a2dd5a6fe8c6e3502f568a6353e5273bbb15193ad9a89e457b9970798efbea1"
 [[package]]
 name = "codeql-extractor"
 version = "0.2.0"
-source = "git+https://github.com/github/codeql.git?rev=cee6f003fd58c64916c629f7d8b27b870d6f78c5#cee6f003fd58c64916c629f7d8b27b870d6f78c5"
+source = "git+https://github.com/github/codeql.git?rev=e4aba2a37ee4430594b43594cea1f0bbe75929c2#e4aba2a37ee4430594b43594cea1f0bbe75929c2"
 dependencies = [
  "chrono",
  "encoding",
@@ -443,10 +434,10 @@ version = "0.4.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57da3b9b5b85bd66f31093f8c408b90a74431672542466497dcbdfdc02034be1"
 dependencies = [
- "aho-corasick 1.1.2",
+ "aho-corasick",
  "bstr",
  "log",
- "regex-automata 0.4.3",
+ "regex-automata 0.4.6",
  "regex-syntax 0.8.2",
 ]
 
@@ -698,13 +689,14 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.7.3"
+version = "1.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8b1f693b24f6ac912f4893ef08244d70b6067480d2f1a46e950c9691e6749d1d"
+checksum = "c117dbdfde9c8308975b6a18d71f3f385c89461f7b3fb054288ecf2a2058ba4c"
 dependencies = [
- "aho-corasick 0.7.20",
+ "aho-corasick",
  "memchr",
- "regex-syntax 0.6.29",
+ "regex-automata 0.4.6",
+ "regex-syntax 0.8.2",
 ]
 
 [[package]]
@@ -718,11 +710,11 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.3"
+version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f804c7828047e88b2d32e2d7fe5a105da8ee3264f01902f796c8e067dc2483f"
+checksum = "86b83b8b9847f9bf95ef68afb0b8e6cdb80f498442f5179a29fad448fcc1eaea"
 dependencies = [
- "aho-corasick 1.1.2",
+ "aho-corasick",
  "memchr",
  "regex-syntax 0.8.2",
 ]
@@ -939,9 +931,9 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter"
-version = "0.20.10"
+version = "0.22.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e747b1f9b7b931ed39a548c1fae149101497de3c1fc8d9e18c62c1a66c683d3d"
+checksum = "df7cc499ceadd4dcdf7ec6d4cbc34ece92c3fa07821e287aedecd4416c516dca"
 dependencies = [
  "cc",
  "regex",
@@ -949,8 +941,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-embedded-template"
-version = "0.20.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=203f7bd3c1bbfbd98fc19add4b8fcb213c059205#203f7bd3c1bbfbd98fc19add4b8fcb213c059205"
+version = "0.21.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=38d5004a797298dc42c85e7706c5ceac46a3f29f#38d5004a797298dc42c85e7706c5ceac46a3f29f"
 dependencies = [
  "cc",
  "tree-sitter",
@@ -958,8 +950,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-ruby"
-version = "0.20.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=4d9ad3f010fdc47a8433adcf9ae30c8eb8475ae7#4d9ad3f010fdc47a8433adcf9ae30c8eb8475ae7"
+version = "0.21.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=788a63ca1b7619288980aaafd37d890ee2469421#788a63ca1b7619288980aaafd37d890ee2469421"
 dependencies = [
  "cc",
  "tree-sitter",
