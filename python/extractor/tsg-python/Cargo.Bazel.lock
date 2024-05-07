@@ -1,5 +1,5 @@
 {
-  "checksum": "35a1ce4b6c4f997c496c11d3a8fcfaadc5833dfd41bebb022941687d73dde159",
+  "checksum": "5cc291d6260540e9e0364edc5927f547083e68247e5a694266279544ea1cf31c",
   "crates": {
     "ahash 0.4.7": {
       "name": "ahash",
@@ -37,14 +37,14 @@
       ],
       "license_file": null
     },
-    "aho-corasick 0.7.18": {
+    "aho-corasick 1.1.3": {
       "name": "aho-corasick",
-      "version": "0.7.18",
+      "version": "1.1.3",
       "package_url": "https://github.com/BurntSushi/aho-corasick",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/aho-corasick/0.7.18/download",
-          "sha256": "1e37cfd5e7657ada45f742d6e99ca5788580b5c529dc78faf11ece6dc702656f"
+          "url": "https://static.crates.io/crates/aho-corasick/1.1.3/download",
+          "sha256": "8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916"
         }
       },
       "targets": [
@@ -65,7 +65,7 @@
         ],
         "crate_features": {
           "common": [
-            "default",
+            "perf-literal",
             "std"
           ],
           "selects": {}
@@ -73,16 +73,16 @@
         "deps": {
           "common": [
             {
-              "id": "memchr 2.4.1",
+              "id": "memchr 2.7.2",
               "target": "memchr"
             }
           ],
           "selects": {}
         },
-        "edition": "2018",
-        "version": "0.7.18"
+        "edition": "2021",
+        "version": "1.1.3"
       },
-      "license": "Unlicense/MIT",
+      "license": "Unlicense OR MIT",
       "license_ids": [
         "MIT",
         "Unlicense"
@@ -301,14 +301,14 @@
       ],
       "license_file": null
     },
-    "cc 1.0.70": {
+    "cc 1.0.97": {
       "name": "cc",
-      "version": "1.0.70",
-      "package_url": "https://github.com/alexcrichton/cc-rs",
+      "version": "1.0.97",
+      "package_url": "https://github.com/rust-lang/cc-rs",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/cc/1.0.70/download",
-          "sha256": "d26a6ce4b6a484fa3edb70f7efa6fc430fd2b87285fe8b84304fd0936faa0dc0"
+          "url": "https://static.crates.io/crates/cc/1.0.97/download",
+          "sha256": "099a5357d84c4c61eb35fc8eafa9a79a902c2f76911e5747ced4e032edd8d9b4"
         }
       },
       "targets": [
@@ -328,9 +328,9 @@
           "**"
         ],
         "edition": "2018",
-        "version": "1.0.70"
+        "version": "1.0.97"
       },
-      "license": "MIT/Apache-2.0",
+      "license": "MIT OR Apache-2.0",
       "license_ids": [
         "Apache-2.0",
         "MIT"
@@ -711,14 +711,14 @@
       ],
       "license_file": null
     },
-    "memchr 2.4.1": {
+    "memchr 2.7.2": {
       "name": "memchr",
-      "version": "2.4.1",
+      "version": "2.7.2",
       "package_url": "https://github.com/BurntSushi/memchr",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/memchr/2.4.1/download",
-          "sha256": "308cc39be01b73d0d18f82a0e7b2a3df85245f84af96fdddc5d202d27e47b86a"
+          "url": "https://static.crates.io/crates/memchr/2.7.2/download",
+          "sha256": "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
         }
       },
       "targets": [
@@ -726,15 +726,6 @@
           "Library": {
             "crate_name": "memchr",
             "crate_root": "src/lib.rs",
-            "srcs": [
-              "**/*.rs"
-            ]
-          }
-        },
-        {
-          "BuildScript": {
-            "crate_name": "build_script_build",
-            "crate_root": "build.rs",
             "srcs": [
               "**/*.rs"
             ]
@@ -748,29 +739,15 @@
         ],
         "crate_features": {
           "common": [
-            "default",
+            "alloc",
             "std"
           ],
           "selects": {}
         },
-        "deps": {
-          "common": [
-            {
-              "id": "memchr 2.4.1",
-              "target": "build_script_build"
-            }
-          ],
-          "selects": {}
-        },
-        "edition": "2018",
-        "version": "2.4.1"
+        "edition": "2021",
+        "version": "2.7.2"
       },
-      "build_script_attrs": {
-        "data_glob": [
-          "**"
-        ]
-      },
-      "license": "Unlicense/MIT",
+      "license": "Unlicense OR MIT",
       "license_ids": [
         "MIT",
         "Unlicense"
@@ -899,14 +876,14 @@
       ],
       "license_file": null
     },
-    "regex 1.5.5": {
+    "regex 1.10.4": {
       "name": "regex",
-      "version": "1.5.5",
+      "version": "1.10.4",
       "package_url": "https://github.com/rust-lang/regex",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/regex/1.5.5/download",
-          "sha256": "1a11647b6b25ff05a515cb92c365cec08801e83423a235b51e231e1808747286"
+          "url": "https://static.crates.io/crates/regex/1.10.4/download",
+          "sha256": "c117dbdfde9c8308975b6a18d71f3f385c89461f7b3fb054288ecf2a2058ba4c"
         }
       },
       "targets": [
@@ -927,14 +904,14 @@
         ],
         "crate_features": {
           "common": [
-            "aho-corasick",
             "default",
-            "memchr",
             "perf",
+            "perf-backtrack",
             "perf-cache",
             "perf-dfa",
             "perf-inline",
             "perf-literal",
+            "perf-onepass",
             "std",
             "unicode",
             "unicode-age",
@@ -950,22 +927,26 @@
         "deps": {
           "common": [
             {
-              "id": "aho-corasick 0.7.18",
+              "id": "aho-corasick 1.1.3",
               "target": "aho_corasick"
             },
             {
-              "id": "memchr 2.4.1",
+              "id": "memchr 2.7.2",
               "target": "memchr"
             },
             {
-              "id": "regex-syntax 0.6.25",
+              "id": "regex-automata 0.4.6",
+              "target": "regex_automata"
+            },
+            {
+              "id": "regex-syntax 0.8.3",
               "target": "regex_syntax"
             }
           ],
           "selects": {}
         },
-        "edition": "2018",
-        "version": "1.5.5"
+        "edition": "2021",
+        "version": "1.10.4"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -974,14 +955,94 @@
       ],
       "license_file": null
     },
-    "regex-syntax 0.6.25": {
-      "name": "regex-syntax",
-      "version": "0.6.25",
-      "package_url": "https://github.com/rust-lang/regex",
+    "regex-automata 0.4.6": {
+      "name": "regex-automata",
+      "version": "0.4.6",
+      "package_url": "https://github.com/rust-lang/regex/tree/master/regex-automata",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/regex-syntax/0.6.25/download",
-          "sha256": "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
+          "url": "https://static.crates.io/crates/regex-automata/0.4.6/download",
+          "sha256": "86b83b8b9847f9bf95ef68afb0b8e6cdb80f498442f5179a29fad448fcc1eaea"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "regex_automata",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "regex_automata",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "alloc",
+            "dfa-onepass",
+            "hybrid",
+            "meta",
+            "nfa-backtrack",
+            "nfa-pikevm",
+            "nfa-thompson",
+            "perf-inline",
+            "perf-literal",
+            "perf-literal-multisubstring",
+            "perf-literal-substring",
+            "std",
+            "syntax",
+            "unicode",
+            "unicode-age",
+            "unicode-bool",
+            "unicode-case",
+            "unicode-gencat",
+            "unicode-perl",
+            "unicode-script",
+            "unicode-segment",
+            "unicode-word-boundary"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "aho-corasick 1.1.3",
+              "target": "aho_corasick"
+            },
+            {
+              "id": "memchr 2.7.2",
+              "target": "memchr"
+            },
+            {
+              "id": "regex-syntax 0.8.3",
+              "target": "regex_syntax"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.4.6"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "regex-syntax 0.8.3": {
+      "name": "regex-syntax",
+      "version": "0.8.3",
+      "package_url": "https://github.com/rust-lang/regex/tree/master/regex-syntax",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/regex-syntax/0.8.3/download",
+          "sha256": "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
         }
       },
       "targets": [
@@ -1003,6 +1064,7 @@
         "crate_features": {
           "common": [
             "default",
+            "std",
             "unicode",
             "unicode-age",
             "unicode-bool",
@@ -1014,10 +1076,10 @@
           ],
           "selects": {}
         },
-        "edition": "2018",
-        "version": "0.6.25"
+        "edition": "2021",
+        "version": "0.8.3"
       },
-      "license": "MIT/Apache-2.0",
+      "license": "MIT OR Apache-2.0",
       "license_ids": [
         "Apache-2.0",
         "MIT"
@@ -1601,7 +1663,7 @@
         "deps": {
           "common": [
             {
-              "id": "regex 1.5.5",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
@@ -1621,12 +1683,84 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.70",
+              "id": "cc 1.0.97",
               "target": "cc"
             }
           ],
           "selects": {}
         }
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "tree-sitter 0.22.6": {
+      "name": "tree-sitter",
+      "version": "0.22.6",
+      "package_url": "https://github.com/tree-sitter/tree-sitter",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/tree-sitter/0.22.6/download",
+          "sha256": "df7cc499ceadd4dcdf7ec6d4cbc34ece92c3fa07821e287aedecd4416c516dca"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "tree_sitter",
+            "crate_root": "binding_rust/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        },
+        {
+          "BuildScript": {
+            "crate_name": "build_script_build",
+            "crate_root": "binding_rust/build.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "tree_sitter",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "regex 1.10.4",
+              "target": "regex"
+            },
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "build_script_build"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.22.6"
+      },
+      "build_script_attrs": {
+        "data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "cc 1.0.97",
+              "target": "cc"
+            }
+          ],
+          "selects": {}
+        },
+        "links": "tree-sitter"
       },
       "license": "MIT",
       "license_ids": [
@@ -1667,7 +1801,7 @@
               "target": "log"
             },
             {
-              "id": "regex 1.5.5",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
@@ -1729,7 +1863,7 @@
               "target": "clap"
             },
             {
-              "id": "regex 1.5.5",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
@@ -1745,7 +1879,7 @@
               "target": "thiserror"
             },
             {
-              "id": "tree-sitter 0.20.4",
+              "id": "tree-sitter 0.22.6",
               "target": "tree_sitter"
             },
             {
@@ -1755,7 +1889,7 @@
           ],
           "selects": {}
         },
-        "edition": "2018",
+        "edition": "2021",
         "version": "0.1.0"
       },
       "license": null,
@@ -1795,7 +1929,7 @@
         "deps": {
           "common": [
             {
-              "id": "tree-sitter 0.20.4",
+              "id": "tree-sitter 0.22.6",
               "target": "tree_sitter"
             },
             {
@@ -1815,8 +1949,17 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.70",
+              "id": "cc 1.0.97",
               "target": "cc"
+            }
+          ],
+          "selects": {}
+        },
+        "link_deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
             }
           ],
           "selects": {}
@@ -1986,7 +2129,6 @@
         "crate_features": {
           "common": [
             "consoleapi",
-            "errhandlingapi",
             "minwinbase",
             "minwindef",
             "processenv",
@@ -2333,13 +2475,13 @@
   },
   "direct_deps": [
     "anyhow 1.0.44",
-    "cc 1.0.70",
+    "cc 1.0.97",
     "clap 2.33.3",
-    "regex 1.5.5",
+    "regex 1.10.4",
     "smallvec 1.6.1",
     "string-interner 0.12.2",
     "thiserror 1.0.29",
-    "tree-sitter 0.20.4",
+    "tree-sitter 0.22.6",
     "tree-sitter-graph 0.7.0"
   ],
   "direct_dev_deps": []

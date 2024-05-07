@@ -167,7 +167,7 @@ checksum = "8a2dd5a6fe8c6e3502f568a6353e5273bbb15193ad9a89e457b9970798efbea1"
 [[package]]
 name = "codeql-extractor"
 version = "0.2.0"
-source = "git+https://github.com/github/codeql.git?rev=d0688b0645e59e291531612d41b1af71afcae46d#d0688b0645e59e291531612d41b1af71afcae46d"
+source = "git+https://github.com/github/codeql.git?rev=68d1cbb2d54928fc68817c08c9bc4ede63110170#68d1cbb2d54928fc68817c08c9bc4ede63110170"
 dependencies = [
  "chrono",
  "encoding",
