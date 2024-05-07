@@ -62,7 +62,7 @@ is still contained within that directory.
 OWASP:
 <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
 </li>
-<li>Rails: <a href="https://api.rubyonrails.org/classes/ActiveStorage/Filename.html#method-i-sanitized">ActiveStorage::Filename#sanitized</a>.</li>
+<li>Linux man pages: <a href="https://man7.org/linux/man-pages/man3/realpath.3.html">realpath(3)</a>.</li>
 
 </references>
 </qhelp>

@@ -10,9 +10,5 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    char fileBuffer[FILENAME_MAX] = "/home/user/files/";
-    // Ensure buffer overflow is prevented
-    strncat(fileBuffer, userAndFile, FILENAME_MAX - strlen(fileBuffer) - 1);
-    // GOOD: We know that the filename is safe and stays within the public folder
-    FILE *file = fopen(fileBuffer, "wb+");
+    // use `userAndFile` as a safe filename
 }
