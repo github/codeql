@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: githubsecuritylab/actions-all
-      extensible: sourceModel
-    data:
-      - ["dorny/paths-filter", "*", "output.changes", "filename", "manual"]

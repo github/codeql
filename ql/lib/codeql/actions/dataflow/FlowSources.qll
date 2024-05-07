@@ -252,10 +252,25 @@ class CompositeActionInputSource extends RemoteFlowSource {
 }
 
 /**
- * A downloadeded artifact.
+ * A downloaded artifact.
  */
 private class ArtifactSource extends RemoteFlowSource {
   ArtifactSource() { this.asExpr() instanceof UntrustedArtifactDownloadStep }
 
   override string getSourceType() { result = "artifact" }
+}
+
+/**
+ * A list of file names returned by dorny/paths-filter.
+ */
+private class DornyPathsFilterSource extends RemoteFlowSource {
+  DornyPathsFilterSource() {
+    exists(UsesStep u |
+      u.getCallee() = "dorny/paths-filter" and
+      u.getArgument("list-files") = ["csv", "json"] and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "filename" }
 }
