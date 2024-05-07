@@ -1,3 +1,5 @@
+# These tests use a wsgi validator; so are split into a separate directory from the other tests since the models only check for the presence of a validator in the database. 
+
 from wsgiref.simple_server import make_server 
 from wsgiref.headers import Headers
 from wsgiref.validate import validator
