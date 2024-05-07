@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.ExternalFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
@@ -575,6 +576,85 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
+
+private predicate isTopLevel(Stmt s) {
+  any(Callable c).getBody() = s
+  or
+  exists(BlockStmt b | s = b.getAStmt() and isTopLevel(b))
+}
+
+private Stmt getAChainedBranch(IfStmt s) {
+  result = s.getThen()
+  or
+  exists(Stmt elseBranch | s.getElse() = elseBranch |
+    result = getAChainedBranch(elseBranch)
+    or
+    result = elseBranch and not elseBranch instanceof IfStmt
+  )
+}
+
+private newtype TDataFlowSecondLevelScope =
+  TTopLevelIfBranch(Stmt s) {
+    exists(IfStmt ifstmt | s = getAChainedBranch(ifstmt) and isTopLevel(ifstmt))
+  } or
+  TTopLevelSwitchCase(SwitchCase s) {
+    exists(SwitchStmt switchstmt | s = switchstmt.getACase() and isTopLevel(switchstmt))
+  }
+
+private SwitchCase getPrecedingCase(Stmt s) {
+  result = s
+  or
+  exists(SwitchStmt switch, int i |
+    s = switch.getStmt(i) and
+    not s instanceof SwitchCase and
+    result = getPrecedingCase(switch.getStmt(i - 1))
+  )
+}
+
+/**
+ * A second-level control-flow scope in a `switch` or a chained `if` statement.
+ *
+ * This is a `switch` case or a branch of a chained `if` statement, given that
+ * the `switch` or `if` statement is top level, that is, it is not nested inside
+ * other CFG constructs.
+ */
+class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(Stmt s | this = TTopLevelIfBranch(s) | result = s.toString())
+    or
+    exists(SwitchCase s | this = TTopLevelSwitchCase(s) | result = s.toString())
+  }
+
+  /**
+   * Gets a statement directly contained in this scope. For an `if` branch, this
+   * is the branch itself, and for a `switch case`, this is one the statements
+   * of that case branch.
+   */
+  private Stmt getAStmt() {
+    exists(Stmt s | this = TTopLevelIfBranch(s) | result = s)
+    or
+    exists(SwitchCase s | this = TTopLevelSwitchCase(s) |
+      result = s.getRuleStatement() or
+      s = getPrecedingCase(result)
+    )
+  }
+
+  /** Gets a data-flow node nested within this scope. */
+  Node getANode() { getRelatedExpr(result).getAnEnclosingStmt() = this.getAStmt() }
+}
+
+private Expr getRelatedExpr(Node n) {
+  n.asExpr() = result or
+  n.(PostUpdateNode).getPreUpdateNode().asExpr() = result
+}
+
+/** Gets the second-level scope containing the node `n`, if any. */
+DataFlowSecondLevelScope getSecondLevelScope(Node n) { result.getANode() = n }
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

@@ -410,7 +410,7 @@ private predicate sets_attribute(ArgumentRefinement def, string name) {
     call = def.getDefiningNode() and
     call.getFunction().refersTo(Object::builtin("setattr")) and
     def.getInput().getAUse() = call.getArg(0) and
-    call.getArg(1).getNode().(StrConst).getText() = name
+    call.getArg(1).getNode().(StringLiteral).getText() = name
   )
 }
 

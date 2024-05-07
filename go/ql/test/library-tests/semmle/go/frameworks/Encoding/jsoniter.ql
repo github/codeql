@@ -6,8 +6,8 @@ class UntrustedFunction extends Function {
   UntrustedFunction() { this.getName() = ["getUntrustedString", "getUntrustedBytes"] }
 }
 
-class UntrustedSource extends DataFlow::Node, UntrustedFlowSource::Range {
-  UntrustedSource() { this = any(UntrustedFunction f).getACall() }
+class RemoteSource extends DataFlow::Node, RemoteFlowSource::Range {
+  RemoteSource() { this = any(UntrustedFunction f).getACall() }
 }
 
 from CommandInjection::Flow::PathNode source, CommandInjection::Flow::PathNode sink

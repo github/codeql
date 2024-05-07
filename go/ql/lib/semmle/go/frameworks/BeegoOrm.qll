@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/astaxie/beego/orm` subpackage.
  */
 
@@ -7,7 +7,7 @@ import go
 private import semmle.go.security.StoredXssCustomizations
 
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the [Beego ORM](https://github.com/astaxie/beego/orm) subpackage.
  */
 module BeegoOrm {

@@ -2785,7 +2785,7 @@ module StdlibPrivate {
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private API::CallNode hashlibNewCall(string algorithmName) {
     algorithmName =
-      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StrConst).getText() and
+      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StringLiteral).getText() and
     result = API::moduleImport("hashlib").getMember("new").getACall()
   }
 
@@ -2908,7 +2908,8 @@ module StdlibPrivate {
       exists(string algorithmName | result.matchesName(algorithmName) |
         this.getDigestArg().asSink() = hashlibMember(algorithmName).asSource()
         or
-        this.getDigestArg().getAValueReachingSink().asExpr().(StrConst).getText() = algorithmName
+        this.getDigestArg().getAValueReachingSink().asExpr().(StringLiteral).getText() =
+          algorithmName
       )
     }
 
@@ -4418,7 +4419,7 @@ module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "pop" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
@@ -4441,7 +4442,7 @@ module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "get" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
@@ -4541,7 +4542,7 @@ module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "setdefault" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }

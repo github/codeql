@@ -35,7 +35,7 @@ module GoKit {
       DataFlow::exprNode(result.(FuncLit)) = getAnEndpointFactoryResult()
     }
 
-    private class EndpointRequest extends UntrustedFlowSource::Range {
+    private class EndpointRequest extends RemoteFlowSource::Range {
       EndpointRequest() { this = DataFlow::parameterNode(getAnEndpointFunction().getParameter(1)) }
     }
   }

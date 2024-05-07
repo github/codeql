@@ -1,8 +1,8 @@
 edges
-| UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | provenance |  |
-| UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | provenance |  |
-| UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) | provenance |  |
-| UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) | provenance |  |
+| UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | provenance | Src:MaD:44662 MaD:43305 Sink:MaD:42717 |
+| UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | provenance | Src:MaD:44662 MaD:43305 Sink:MaD:42718 |
+| UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) | provenance | Src:MaD:44662 MaD:43305 Sink:MaD:44690 |
+| UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) | provenance | Src:MaD:44662 MaD:43305 Sink:MaD:44691 |
 nodes
 | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | semmle.label | new URI(...) |
 | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |

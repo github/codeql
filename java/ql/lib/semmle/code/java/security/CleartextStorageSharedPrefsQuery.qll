@@ -4,6 +4,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.android.SharedPreferences
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class SharedPrefsCleartextStorageSink extends CleartextStorageSink {
   SharedPrefsCleartextStorageSink() {
@@ -67,16 +69,30 @@ private predicate sharedPreferencesStore(DataFlow::Node editor, MethodCall m) {
   editor.asExpr() = m.getQualifier().getUnderlyingExpr()
 }
 
+/**
+ * A shared preferences editor method call source node.
+ */
+private class SharedPreferencesEditorMethodCallSource extends ApiSourceNode {
+  SharedPreferencesEditorMethodCallSource() {
+    this.asExpr() instanceof SharedPreferencesEditorMethodCall
+  }
+}
+
+/**
+ * A shared preferences sink node.
+ */
+private class SharedPreferencesSink extends ApiSinkNode {
+  SharedPreferencesSink() {
+    sharedPreferencesInput(this, _) or
+    sharedPreferencesStore(this, _)
+  }
+}
+
 /** Flow from `SharedPreferences.Editor` to either a setter or a store method. */
 private module SharedPreferencesFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) {
-    src.asExpr() instanceof SharedPreferencesEditorMethodCall
-  }
+  predicate isSource(DataFlow::Node src) { src instanceof SharedPreferencesEditorMethodCallSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sharedPreferencesInput(sink, _) or
-    sharedPreferencesStore(sink, _)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SharedPreferencesSink }
 }
 
 private module SharedPreferencesFlow = DataFlow::Global<SharedPreferencesFlowConfig>;

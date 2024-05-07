@@ -145,7 +145,7 @@ module TarFile {
             .getParameter(1, "mode")
             .getAValueReachingSink()
             .asExpr()
-            .(StrConst)
+            .(StringLiteral)
             .getText()
       ) or
       not result
@@ -153,7 +153,7 @@ module TarFile {
           .getParameter(1, "mode")
           .getAValueReachingSink()
           .asExpr()
-          .(StrConst)
+          .(StringLiteral)
           .getText()
           .matches("r:%")
     )
@@ -211,7 +211,7 @@ module Pandas {
               .getKeywordParameter("compression")
               .getAValueReachingSink()
               .asExpr()
-              .(StrConst)
+              .(StringLiteral)
               .getText() = "tar"
         )
       )
@@ -260,13 +260,18 @@ module Gzip {
         this = gzipCall.getParameter(0, "filename").asSink() and
         (
           not exists(
-            gzipCall.getParameter(1, "mode").getAValueReachingSink().asExpr().(StrConst).getText()
+            gzipCall
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
           ) or
           gzipCall
               .getParameter(1, "mode")
               .getAValueReachingSink()
               .asExpr()
-              .(StrConst)
+              .(StringLiteral)
               .getText()
               .matches("%r%")
         )
@@ -297,13 +302,18 @@ module Bz2 {
         this = bz2Call.getParameter(0, "filename").asSink() and
         (
           not exists(
-            bz2Call.getParameter(1, "mode").getAValueReachingSink().asExpr().(StrConst).getText()
+            bz2Call
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
           ) or
           bz2Call
               .getParameter(1, "mode")
               .getAValueReachingSink()
               .asExpr()
-              .(StrConst)
+              .(StringLiteral)
               .getText()
               .matches("%r%")
         )
@@ -334,13 +344,18 @@ module Lzma {
         this = lzmaCall.getParameter(0, "filename").asSink() and
         (
           not exists(
-            lzmaCall.getParameter(1, "mode").getAValueReachingSink().asExpr().(StrConst).getText()
+            lzmaCall
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
           ) or
           lzmaCall
               .getParameter(1, "mode")
               .getAValueReachingSink()
               .asExpr()
-              .(StrConst)
+              .(StringLiteral)
               .getText()
               .matches("%r%")
         )

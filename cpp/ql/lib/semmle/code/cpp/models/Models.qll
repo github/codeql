@@ -1,5 +1,6 @@
 private import implementations.Allocation
 private import implementations.Deallocation
+private import implementations.Fopen
 private import implementations.Fread
 private import implementations.Getenv
 private import implementations.Gets
@@ -41,3 +42,4 @@ private import implementations.SqLite3
 private import implementations.PostgreSql
 private import implementations.System
 private import implementations.StructuredExceptionHandling
+private import implementations.ZMQ

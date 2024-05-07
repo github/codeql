@@ -32,8 +32,6 @@ extensions:
       - ["System.Xml.XPath", "XPathNavigator", True, "LookupNamespace", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.XPath", "XPathNavigator", True, "ReadSubtree", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.XPath", "XPathNavigator", True, "Select", "(System.Xml.XPath.XPathExpression)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Xml.XPath", "XPathNavigator", True, "get_InnerXml", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Xml.XPath", "XPathNavigator", True, "get_OuterXml", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -168,8 +166,6 @@ extensions:
       - ["System.Xml.XPath", "XPathNavigator", "get_ValueAsLong", "()", "summary", "df-generated"]
       - ["System.Xml.XPath", "XPathNavigator", "get_ValueType", "()", "summary", "df-generated"]
       - ["System.Xml.XPath", "XPathNavigator", "get_XmlLang", "()", "summary", "df-generated"]
-      - ["System.Xml.XPath", "XPathNavigator", "set_InnerXml", "(System.String)", "summary", "df-generated"]
-      - ["System.Xml.XPath", "XPathNavigator", "set_OuterXml", "(System.String)", "summary", "df-generated"]
       - ["System.Xml.XPath", "XPathNodeIterator", "Clone", "()", "summary", "df-generated"]
       - ["System.Xml.XPath", "XPathNodeIterator", "MoveNext", "()", "summary", "df-generated"]
       - ["System.Xml.XPath", "XPathNodeIterator", "get_Count", "()", "summary", "df-generated"]

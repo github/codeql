@@ -242,7 +242,7 @@ private module Cached {
    */
   pragma[nomagic]
   private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
-    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo, _) and
     not nodeTo = any(ModuleVariableNode v).getARead()
   }
 

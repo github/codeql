@@ -12,6 +12,9 @@ java_test(
         "TS_WRAPPER_ZIP": "$(rlocationpath //javascript/extractor/lib/typescript)",
     },
     test_class = "com.semmle.js.extractor.test.AllTests",
+    # To use `replaceExpectedOutput` you need to uncomment the following line
+    # (to be allowed to override the .trap files on disk)
+    # tags = ["no-sandbox"],
     deps = [
         "//javascript/extractor",
         "//javascript/extractor:deps",

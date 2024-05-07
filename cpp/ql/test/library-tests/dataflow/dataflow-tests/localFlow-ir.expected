@@ -125,8 +125,8 @@
 | test.cpp:384:16:384:23 | *& ... | test.cpp:384:3:384:8 | *call to memcpy |
 | test.cpp:384:16:384:23 | *& ... | test.cpp:384:10:384:13 | memcpy output argument |
 | test.cpp:384:16:384:23 | *& ... | test.cpp:384:16:384:23 | *& ... |
-| test.cpp:384:16:384:23 | **(const void *)... | test.cpp:384:3:384:8 | **call to memcpy |
-| test.cpp:384:16:384:23 | **(const void *)... | test.cpp:384:10:384:13 | memcpy output argument |
+| test.cpp:384:16:384:23 | **& ... | test.cpp:384:3:384:8 | **call to memcpy |
+| test.cpp:384:16:384:23 | **& ... | test.cpp:384:10:384:13 | memcpy output argument |
 | test.cpp:384:17:384:23 | *source1 | test.cpp:384:16:384:23 | *& ... |
 | test.cpp:384:17:384:23 | source1 | test.cpp:384:16:384:23 | & ... |
 | test.cpp:388:53:388:59 | source1 | test.cpp:391:16:391:23 | *& ... |
@@ -152,8 +152,8 @@
 | test.cpp:391:16:391:23 | *& ... | test.cpp:391:3:391:8 | *call to memcpy |
 | test.cpp:391:16:391:23 | *& ... | test.cpp:391:10:391:13 | memcpy output argument |
 | test.cpp:391:16:391:23 | *& ... | test.cpp:391:16:391:23 | *& ... |
-| test.cpp:391:16:391:23 | **(const void *)... | test.cpp:391:3:391:8 | **call to memcpy |
-| test.cpp:391:16:391:23 | **(const void *)... | test.cpp:391:10:391:13 | memcpy output argument |
+| test.cpp:391:16:391:23 | **& ... | test.cpp:391:3:391:8 | **call to memcpy |
+| test.cpp:391:16:391:23 | **& ... | test.cpp:391:10:391:13 | memcpy output argument |
 | test.cpp:391:17:391:23 | *source1 | test.cpp:391:16:391:23 | *& ... |
 | test.cpp:391:17:391:23 | source1 | test.cpp:391:16:391:23 | & ... |
 | test.cpp:392:8:392:10 | tmp | test.cpp:394:10:394:12 | tmp |

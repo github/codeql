@@ -1,3 +1,21 @@
+## 0.8.0
+
+### Breaking Changes
+
+* Deleted the deprecated `CsvRemoteSource` alias. Use `MaDRemoteSource` instead.
+
+### Deprecated APIs
+
+* To make Go consistent with other language libraries, the `UntrustedFlowSource` name has been deprecated throughout. Use `RemoteFlowSource` instead, which replaces it. 
+* Where modules have classes named `UntrustedFlowAsSource`, these are also deprecated and the `Source` class in the same module or the `RemoteFlowSource` class should be used instead.
+
+## 0.7.14
+
+### Minor Analysis Improvements
+
+* Data flow through variables declared in statements of the form `x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
+* Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
+
 ## 0.7.13
 
 ### Minor Analysis Improvements

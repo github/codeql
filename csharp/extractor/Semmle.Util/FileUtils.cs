@@ -102,8 +102,7 @@ namespace Semmle.Util
         private static async Task DownloadFileAsync(string address, string filename)
         {
             using var httpClient = new HttpClient();
-            using var request = new HttpRequestMessage(HttpMethod.Get, address);
-            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
+            using var contentStream = await httpClient.GetStreamAsync(address);
             using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
             await contentStream.CopyToAsync(stream);
         }
@@ -112,7 +111,7 @@ namespace Semmle.Util
         /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
         /// </summary>
         public static void DownloadFile(string address, string fileName) =>
-           DownloadFileAsync(address, fileName).Wait();
+           DownloadFileAsync(address, fileName).GetAwaiter().GetResult();
 
         public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
         {
@@ -185,6 +184,43 @@ namespace Semmle.Util
             File.Create(outputPath);
 
             return new FileInfo(outputPath);
+        }
+
+        public static string SafeGetDirectoryName(string path, ILogger logger)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(path);
+                if (dir is null)
+                {
+                    return "";
+                }
+
+                if (!dir.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    dir += Path.DirectorySeparatorChar;
+                }
+
+                return dir;
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get directory name for {path}: {ex.Message}");
+                return "";
+            }
+        }
+
+        public static string? SafeGetFileName(string path, ILogger logger)
+        {
+            try
+            {
+                return Path.GetFileName(path);
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get file name for {path}: {ex.Message}");
+                return null;
+            }
         }
     }
 }
