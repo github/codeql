@@ -18,14 +18,15 @@ from urllib.parse import urlparse
 import re
 import base64
 from dataclasses import dataclass
+from typing import Dict
 
 
 @dataclass
 class Endpoint:
     href: str
-    headers: dict[str, str]
+    headers: Dict[str, str]
 
-    def update_headers(self, d: dict[str, str]):
+    def update_headers(self, d: Dict[str, str]):
         self.headers.update((k.capitalize(), v) for k, v in d.items())
 
 
