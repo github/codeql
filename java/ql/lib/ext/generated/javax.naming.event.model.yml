@@ -20,6 +20,14 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["javax.naming.event", "EventContext", "addNamingListener", "(Name,int,NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "EventContext", "addNamingListener", "(String,int,NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "EventContext", "removeNamingListener", "(NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "EventContext", "targetMustExist", "()", "summary", "df-generated"]
+      - ["javax.naming.event", "EventDirContext", "addNamingListener", "(Name,String,Object[],SearchControls,NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "EventDirContext", "addNamingListener", "(Name,String,SearchControls,NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "EventDirContext", "addNamingListener", "(String,String,Object[],SearchControls,NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "EventDirContext", "addNamingListener", "(String,String,SearchControls,NamingListener)", "summary", "df-generated"]
       - ["javax.naming.event", "NamingEvent", "dispatch", "(NamingListener)", "summary", "df-generated"]
       - ["javax.naming.event", "NamingEvent", "getType", "()", "summary", "df-generated"]
       - ["javax.naming.event", "NamingExceptionEvent", "dispatch", "(NamingListener)", "summary", "df-generated"]

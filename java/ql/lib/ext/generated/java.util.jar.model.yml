@@ -44,6 +44,11 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.util.jar", "Attributes", "Attributes", "(int)", "summary", "df-generated"]
+      - ["java.util.jar", "Attributes", "clear", "()", "summary", "df-generated"]
+      - ["java.util.jar", "Attributes", "containsKey", "(Object)", "summary", "df-generated"]
+      - ["java.util.jar", "Attributes", "containsValue", "(Object)", "summary", "df-generated"]
+      - ["java.util.jar", "Attributes", "isEmpty", "()", "summary", "df-generated"]
+      - ["java.util.jar", "Attributes", "size", "()", "summary", "df-generated"]
       - ["java.util.jar", "JarFile", "baseVersion", "()", "summary", "df-generated"]
       - ["java.util.jar", "JarFile", "isMultiRelease", "()", "summary", "df-generated"]
       - ["java.util.jar", "JarFile", "runtimeVersion", "()", "summary", "df-generated"]

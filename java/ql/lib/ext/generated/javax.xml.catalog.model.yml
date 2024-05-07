@@ -15,6 +15,10 @@ extensions:
       - ["javax.xml.catalog", "CatalogManager", False, "catalogResolver", "(Catalog)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalogResolver", "(CatalogFeatures,URI[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalogResolver", "(CatalogFeatures,URI[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.catalog", "CatalogResolver", True, "resolveEntity", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.catalog", "CatalogResolver", True, "resolveEntity", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.catalog", "CatalogResolver", True, "resolveResource", "(String,String,String,String,String)", "", "Argument[3]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.catalog", "CatalogResolver", True, "resolveResource", "(String,String,String,String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

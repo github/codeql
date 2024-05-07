@@ -2,9 +2,36 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.security.interfaces", "DSAKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "DSAKeyPairGenerator", True, "initialize", "(DSAParams,SecureRandom)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["java.security.interfaces", "DSAKeyPairGenerator", True, "initialize", "(int,boolean,SecureRandom)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["java.security.interfaces", "ECKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "ECPublicKey", True, "getW", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "EdECKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "EdECPrivateKey", True, "getBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "EdECPublicKey", True, "getPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "RSAKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "XECKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "XECPrivateKey", True, "getScalar", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: neutralModel
     data:
       - ["java.security.interfaces", "DSAParams", "getG", "()", "summary", "df-generated"]
       - ["java.security.interfaces", "DSAParams", "getP", "()", "summary", "df-generated"]
       - ["java.security.interfaces", "DSAParams", "getQ", "()", "summary", "df-generated"]
-      - ["java.security.interfaces", "RSAKey", "getParams", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "DSAPrivateKey", "getX", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "DSAPublicKey", "getY", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "ECPrivateKey", "getS", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAKey", "getModulus", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateCrtKey", "getCrtCoefficient", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateCrtKey", "getPrimeExponentP", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateCrtKey", "getPrimeExponentQ", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateCrtKey", "getPrimeP", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateCrtKey", "getPrimeQ", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateCrtKey", "getPublicExponent", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPrivateKey", "getPrivateExponent", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "RSAPublicKey", "getPublicExponent", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "XECPublicKey", "getU", "()", "summary", "df-generated"]

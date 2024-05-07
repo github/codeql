@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["javax.xml.crypto", "AlgorithmMethod", True, "getAlgorithm", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "AlgorithmMethod", True, "getParameterSpec", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.crypto", "KeySelector", True, "singletonKeySelector", "(Key)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.crypto", "KeySelectorException", True, "KeySelectorException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.crypto", "KeySelectorException", True, "KeySelectorException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -25,6 +26,10 @@ extensions:
       - ["javax.xml.crypto", "OctetStreamData", True, "getMimeType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.crypto", "OctetStreamData", True, "getOctetStream", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.crypto", "OctetStreamData", True, "getURI", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIDereferencer", True, "dereference", "(URIReference,XMLCryptoContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIDereferencer", True, "dereference", "(URIReference,XMLCryptoContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReference", True, "getType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReference", True, "getURI", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]

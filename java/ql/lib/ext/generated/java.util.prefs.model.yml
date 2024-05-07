@@ -29,6 +29,7 @@ extensions:
       - ["java.util.prefs", "Preferences", True, "node", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.util.prefs", "Preferences", True, "node", "(String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["java.util.prefs", "Preferences", True, "parent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.prefs", "Preferences", True, "putLong", "(String,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
@@ -37,8 +38,10 @@ extensions:
       - ["java.util.prefs", "Preferences", "exportNode", "(OutputStream)", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "exportSubtree", "(OutputStream)", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "flush", "()", "summary", "df-generated"]
+      - ["java.util.prefs", "Preferences", "getLong", "(String,long)", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "importPreferences", "(InputStream)", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "isUserNode", "()", "summary", "df-generated"]
+      - ["java.util.prefs", "Preferences", "nodeExists", "(String)", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "remove", "(String)", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "removeNode", "()", "summary", "df-generated"]
       - ["java.util.prefs", "Preferences", "removeNodeChangeListener", "(NodeChangeListener)", "summary", "df-generated"]

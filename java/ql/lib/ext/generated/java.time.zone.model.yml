@@ -31,7 +31,9 @@ extensions:
       - ["java.time.zone", "ZoneRules", False, "nextTransition", "(Instant)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.zone", "ZoneRules", False, "of", "(ZoneOffset)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.zone", "ZoneRules", False, "of", "(ZoneOffset,ZoneOffset,List,List,List)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.time.zone", "ZoneRules", False, "of", "(ZoneOffset,ZoneOffset,List,List,List)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.zone", "ZoneRules", False, "of", "(ZoneOffset,ZoneOffset,List,List,List)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.time.zone", "ZoneRules", False, "of", "(ZoneOffset,ZoneOffset,List,List,List)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
       - ["java.time.zone", "ZoneRules", False, "of", "(ZoneOffset,ZoneOffset,List,List,List)", "", "Argument[4].Element", "ReturnValue", "taint", "df-generated"]
       - ["java.time.zone", "ZoneRules", False, "previousTransition", "(Instant)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.zone", "ZoneRulesException", True, "ZoneRulesException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -41,6 +43,7 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.time.zone", "ZoneOffsetTransition", "compareTo", "(ZoneOffsetTransition)", "summary", "df-generated"]
       - ["java.time.zone", "ZoneOffsetTransition", "getDuration", "()", "summary", "df-generated"]
       - ["java.time.zone", "ZoneOffsetTransition", "getInstant", "()", "summary", "df-generated"]
       - ["java.time.zone", "ZoneOffsetTransition", "isGap", "()", "summary", "df-generated"]

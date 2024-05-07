@@ -14,6 +14,7 @@ extensions:
       - ["javax.security.auth.login", "AppConfigurationEntry", True, "getControlFlag", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth.login", "AppConfigurationEntry", True, "getLoginModuleName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth.login", "AppConfigurationEntry", True, "getOptions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getAppConfigurationEntry", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters,Provider)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -41,7 +42,6 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["javax.security.auth.login", "Configuration", "getAppConfigurationEntry", "(String)", "summary", "df-generated"]
       - ["javax.security.auth.login", "Configuration", "getConfiguration", "()", "summary", "df-generated"]
       - ["javax.security.auth.login", "Configuration", "refresh", "()", "summary", "df-generated"]
       - ["javax.security.auth.login", "Configuration", "setConfiguration", "(Configuration)", "summary", "df-generated"]

@@ -4,6 +4,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["javax.management.loading", "ClassLoaderRepository", True, "loadClassBefore", "(ClassLoader,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "ClassLoaderRepository", True, "loadClassWithout", "(ClassLoader,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader,URLStreamHandlerFactory,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
@@ -35,6 +37,7 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["javax.management.loading", "ClassLoaderRepository", "loadClass", "(String)", "summary", "df-generated"]
       - ["javax.management.loading", "DefaultLoaderRepository", "loadClass", "(String)", "summary", "df-generated"]
       - ["javax.management.loading", "DefaultLoaderRepository", "loadClassWithout", "(ClassLoader,String)", "summary", "df-generated"]
       - ["javax.management.loading", "MLet", "MLet", "(URL[])", "summary", "df-generated"]

@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.imageio.event", "IIOReadProgressListener", "imageComplete", "(ImageReader)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "imageProgress", "(ImageReader,float)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "imageStarted", "(ImageReader,int)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "readAborted", "(ImageReader)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "sequenceComplete", "(ImageReader)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "sequenceStarted", "(ImageReader,int)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "thumbnailComplete", "(ImageReader)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "thumbnailProgress", "(ImageReader,float)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadProgressListener", "thumbnailStarted", "(ImageReader,int,int)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadUpdateListener", "imageUpdate", "(ImageReader,BufferedImage,int,int,int,int,int,int,int[])", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadUpdateListener", "passComplete", "(ImageReader,BufferedImage)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadUpdateListener", "passStarted", "(ImageReader,BufferedImage,int,int,int,int,int,int,int,int[])", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadUpdateListener", "thumbnailPassComplete", "(ImageReader,BufferedImage)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadUpdateListener", "thumbnailPassStarted", "(ImageReader,BufferedImage,int,int,int,int,int,int,int,int[])", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadUpdateListener", "thumbnailUpdate", "(ImageReader,BufferedImage,int,int,int,int,int,int,int[])", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOReadWarningListener", "warningOccurred", "(ImageReader,String)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "imageComplete", "(ImageWriter)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "imageProgress", "(ImageWriter,float)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "imageStarted", "(ImageWriter,int)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "thumbnailComplete", "(ImageWriter)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "thumbnailProgress", "(ImageWriter,float)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "thumbnailStarted", "(ImageWriter,int,int)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteProgressListener", "writeAborted", "(ImageWriter)", "summary", "df-generated"]
+      - ["javax.imageio.event", "IIOWriteWarningListener", "warningOccurred", "(ImageWriter,int,String)", "summary", "df-generated"]

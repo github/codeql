@@ -41,6 +41,7 @@ extensions:
       - ["java.nio.charset", "Charset", "aliases", "()", "summary", "df-generated"]
       - ["java.nio.charset", "Charset", "availableCharsets", "()", "summary", "df-generated"]
       - ["java.nio.charset", "Charset", "canEncode", "()", "summary", "df-generated"]
+      - ["java.nio.charset", "Charset", "compareTo", "(Charset)", "summary", "df-generated"]
       - ["java.nio.charset", "Charset", "contains", "(Charset)", "summary", "df-generated"]
       - ["java.nio.charset", "Charset", "decode", "(ByteBuffer)", "summary", "df-generated"]
       - ["java.nio.charset", "Charset", "defaultCharset", "()", "summary", "df-generated"]

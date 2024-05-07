@@ -4,6 +4,12 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.util.random", "RandomGenerator$ArbitrarilyJumpableGenerator", True, "jumps", "(double)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.random", "RandomGenerator$ArbitrarilyJumpableGenerator", True, "jumps", "(long,double)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.random", "RandomGenerator$JumpableGenerator", True, "jumps", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.random", "RandomGenerator$JumpableGenerator", True, "jumps", "(long)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.random", "RandomGenerator$LeapableGenerator", True, "leaps", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.random", "RandomGenerator$LeapableGenerator", True, "leaps", "(long)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.util.random", "RandomGenerator$SplittableGenerator", True, "splits", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.util.random", "RandomGenerator$SplittableGenerator", True, "splits", "(RandomGenerator$SplittableGenerator)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.util.random", "RandomGenerator$SplittableGenerator", True, "splits", "(RandomGenerator$SplittableGenerator)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -27,18 +33,15 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.util.random", "RandomGenerator$ArbitrarilyJumpableGenerator", "copyAndJump", "(double)", "summary", "df-generated"]
-      - ["java.util.random", "RandomGenerator$ArbitrarilyJumpableGenerator", "jumps", "(double)", "summary", "df-generated"]
-      - ["java.util.random", "RandomGenerator$ArbitrarilyJumpableGenerator", "jumps", "(long,double)", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$ArbitrarilyJumpableGenerator", "of", "(String)", "summary", "df-generated"]
+      - ["java.util.random", "RandomGenerator$JumpableGenerator", "copy", "()", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$JumpableGenerator", "copyAndJump", "()", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$JumpableGenerator", "jump", "()", "summary", "df-generated"]
-      - ["java.util.random", "RandomGenerator$JumpableGenerator", "jumps", "()", "summary", "df-generated"]
-      - ["java.util.random", "RandomGenerator$JumpableGenerator", "jumps", "(long)", "summary", "df-generated"]
+      - ["java.util.random", "RandomGenerator$JumpableGenerator", "jumpDistance", "()", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$JumpableGenerator", "of", "(String)", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$LeapableGenerator", "copyAndLeap", "()", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$LeapableGenerator", "leap", "()", "summary", "df-generated"]
-      - ["java.util.random", "RandomGenerator$LeapableGenerator", "leaps", "()", "summary", "df-generated"]
-      - ["java.util.random", "RandomGenerator$LeapableGenerator", "leaps", "(long)", "summary", "df-generated"]
+      - ["java.util.random", "RandomGenerator$LeapableGenerator", "leapDistance", "()", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$LeapableGenerator", "of", "(String)", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$SplittableGenerator", "of", "(String)", "summary", "df-generated"]
       - ["java.util.random", "RandomGenerator$SplittableGenerator", "split", "()", "summary", "df-generated"]

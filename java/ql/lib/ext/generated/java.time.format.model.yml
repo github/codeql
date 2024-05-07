@@ -4,8 +4,6 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.time.format", "DateTimeFormatter", False, "formatTo", "(TemporalAccessor,Appendable)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
-      - ["java.time.format", "DateTimeFormatter", False, "formatTo", "(TemporalAccessor,Appendable)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "getChronology", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "getDecimalStyle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "getLocale", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -15,8 +13,6 @@ extensions:
       - ["java.time.format", "DateTimeFormatter", False, "ofPattern", "(String,Locale)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "parse", "(CharSequence)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "parse", "(CharSequence,ParsePosition)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.format", "DateTimeFormatter", False, "parse", "(CharSequence,TemporalQuery)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.format", "DateTimeFormatter", False, "parseBest", "(CharSequence,TemporalQuery[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "toFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "toFormat", "(TemporalQuery)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", False, "toFormat", "(TemporalQuery)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -83,11 +79,14 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.time.format", "DateTimeFormatter", "formatTo", "(TemporalAccessor,Appendable)", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "getResolverStyle", "()", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "ofLocalizedDate", "(FormatStyle)", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "ofLocalizedDateTime", "(FormatStyle)", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "ofLocalizedDateTime", "(FormatStyle,FormatStyle)", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "ofLocalizedTime", "(FormatStyle)", "summary", "df-generated"]
+      - ["java.time.format", "DateTimeFormatter", "parse", "(CharSequence,TemporalQuery)", "summary", "df-generated"]
+      - ["java.time.format", "DateTimeFormatter", "parseBest", "(CharSequence,TemporalQuery[])", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "parseUnresolved", "(CharSequence,ParsePosition)", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "parsedExcessDays", "()", "summary", "df-generated"]
       - ["java.time.format", "DateTimeFormatter", "parsedLeapSecond", "()", "summary", "df-generated"]

@@ -10,3 +10,12 @@ extensions:
       - ["javax.xml.stream.util", "StreamReaderDelegate", True, "StreamReaderDelegate", "(XMLStreamReader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.stream.util", "StreamReaderDelegate", True, "getParent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.stream.util", "StreamReaderDelegate", True, "setParent", "(XMLStreamReader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "XMLEventAllocator", True, "allocate", "(XMLStreamReader)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "XMLEventAllocator", True, "allocate", "(XMLStreamReader,XMLEventConsumer)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "XMLEventConsumer", True, "add", "(XMLEvent)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.stream.util", "EventReaderDelegate", "remove", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "XMLEventAllocator", "newInstance", "()", "summary", "df-generated"]

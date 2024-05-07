@@ -19,7 +19,6 @@ extensions:
       - ["java.time.temporal", "TemporalAmount", True, "subtractFrom", "(Temporal)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "TemporalField", True, "adjustInto", "(Temporal,long)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "TemporalField", True, "getBaseUnit", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "getDisplayName", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "TemporalField", True, "getDisplayName", "(Locale)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "TemporalField", True, "getRangeUnit", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "TemporalField", True, "range", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
