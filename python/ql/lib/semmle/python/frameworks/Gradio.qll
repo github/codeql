@@ -33,7 +33,7 @@ module Gradio {
             .getMember([
                 "change", "input", "click", "submit", "edit", "clear", "play", "pause", "stop",
                 "end", "start_recording", "pause_recording", "stop_recording", "focus", "blur",
-                "upload", "release", "select", "stream", "like", "load", "like", "key_up",
+                "upload", "release", "select", "stream", "like", "load", "key_up",
               ])
             .getACall()
     }
@@ -90,11 +90,7 @@ module Gradio {
           or
           call instanceof GradioInterface
         ) and
-        (
-          this = call.getKeywordParameter("fn").getParameter(_).asSource()
-          or
-          this = call.getParameter(0).getParameter(_).asSource()
-        ) and
+        this = call.getParameter(0, "fn").getParameter(_).asSource() and
         // exclude lists of parameters given to `inputs`
         not call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof ListNode and
         not call.getParameter(1).asSink().asCfgNode() instanceof ListNode
@@ -136,19 +132,12 @@ module Gradio {
             or
             node.getParameter(1).asSink().asCfgNode() instanceof ListNode
           ) and
-          exists(int i |
-            (
-              nodeTo = node.getParameter(0).getParameter(i).asSource()
-              or
-              nodeTo = node.getKeywordParameter("fn").getParameter(i).asSource()
-            ) and
-            (
-              nodeFrom.asCfgNode() =
-                node.getKeywordParameter("inputs").asSink().asCfgNode().(ListNode).getElement(i)
-              or
-              nodeFrom.asCfgNode() =
-                node.getParameter(1).asSink().asCfgNode().(ListNode).getElement(i)
-            )
+          exists(int i | nodeTo = node.getParameter(0, "fn").getParameter(i).asSource() |
+            nodeFrom.asCfgNode() =
+              node.getKeywordParameter("inputs").asSink().asCfgNode().(ListNode).getElement(i)
+            or
+            nodeFrom.asCfgNode() =
+              node.getParameter(1).asSink().asCfgNode().(ListNode).getElement(i)
           )
         )
       )
