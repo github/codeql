@@ -26,18 +26,6 @@ runs:
       shell: bash
       run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
-    - name: Build
-      shell: bash
-      run: |
-        bazel run go:create-extractor-pack
-
-    - name: Check that all Go code is autoformatted
-      if: inputs.run-code-checks == 'true'
-      shell: bash
-      run: |
-          cd go
-          make check-formatting
-
     - name: Check checked-in generated code
       if: inputs.run-code-checks == 'true'
       shell: bash
@@ -49,19 +37,17 @@ runs:
           exit 1
         )
 
-    - name: Compile qhelp files to markdown
-      if: inputs.run-code-checks == 'true'
+    - name: Build
       shell: bash
       run: |
-        cd go
-        env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+        bazel run go:create-extractor-pack
 
-    - name: Upload qhelp markdown
-      if: inputs.run-code-checks == 'true'
-      uses: actions/upload-artifact@v3
-      with:
-        name: qhelp-markdown
-        path: go/qhelp-out/**/*.md
+    - name: Check that all Go code is autoformatted
+      if: inputs.run-code-checks == 'true' && !cancelled()
+      shell: bash
+      run: |
+          cd go
+          make check-formatting
 
     - name: Cache compilation cache
       id: query-cache

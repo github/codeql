@@ -31,3 +31,18 @@ jobs:
         uses: ./go/actions/test
         with:
           run-code-checks: true
+
+  qhelp:
+    name: Test qhelp conversion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compile qhelp files to markdown
+        shell: bash
+        run: |
+          cd go
+          env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+      - name: Upload qhelp markdown
+        uses: actions/upload-artifact@v3
+        with:
+          name: qhelp-markdown
+          path: go/qhelp-out/**/*.md
