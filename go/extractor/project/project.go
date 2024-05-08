@@ -38,6 +38,9 @@ type GoModule struct {
 
 // Tries to find the Go toolchain version required for this module.
 func (module *GoModule) RequiredGoVersion() util.SemVer {
+	if module.Module != nil && module.Module.Toolchain != nil {
+		return util.NewSemVer(module.Module.Toolchain.Name)
+	}
 	if module.Module != nil && module.Module.Go != nil {
 		return util.NewSemVer(module.Module.Go.Version)
 	} else {
