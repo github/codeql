@@ -1,6 +1,9 @@
 name: Copy to Bughalla
 
-on: push
+on:
+  push:
+    branches:
+      - 'master'
 
 permissions:
   contents: read

@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: githubsecuritylab/actions-all
-      extensible: sourceModel
-    data:
-      - ["tj-actions/verify-changed-files", "*", "output.changed-files", "filename", "manual"]
