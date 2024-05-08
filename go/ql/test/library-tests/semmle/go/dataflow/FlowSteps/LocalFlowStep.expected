@@ -127,12 +127,10 @@
 | main.go:64:7:64:18 | call to min | main.go:64:2:64:2 | definition of a |
 | main.go:64:11:64:11 | x | main.go:64:7:64:18 | call to min |
 | main.go:64:14:64:14 | y | main.go:64:7:64:18 | call to min |
-| main.go:64:17:64:17 | z | main.go:64:7:64:18 | call to min |
 | main.go:65:2:65:2 | definition of b | main.go:66:12:66:12 | b |
 | main.go:65:7:65:18 | call to max | main.go:65:2:65:2 | definition of b |
 | main.go:65:11:65:11 | x | main.go:65:7:65:18 | call to max |
 | main.go:65:14:65:14 | y | main.go:65:7:65:18 | call to max |
-| main.go:65:17:65:17 | z | main.go:65:7:65:18 | call to max |
 | strings.go:8:12:8:12 | argument corresponding to s | strings.go:8:12:8:12 | definition of s |
 | strings.go:8:12:8:12 | definition of s | strings.go:9:24:9:24 | s |
 | strings.go:8:12:8:12 | definition of s | strings.go:10:27:10:27 | s |
