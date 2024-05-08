@@ -122,7 +122,7 @@ func RequiredGoVersion(workspaces *[]GoWorkspace) GoVersionInfo {
 	greatestGoVersion := VersionNotFound
 	for _, workspace := range *workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
-		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare("v"+goVersionInfo.Version, "v"+greatestGoVersion.Version) > 0) {
+		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare(util.FormatSemVer(goVersionInfo.Version), util.FormatSemVer(greatestGoVersion.Version)) > 0) {
 			greatestGoVersion = goVersionInfo
 		}
 	}
