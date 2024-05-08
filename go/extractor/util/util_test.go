@@ -40,4 +40,11 @@ func TestFormatSemVer(t *testing.T) {
 			t.Errorf("Expected FormatSemVer(\"%s\") to be \"%s\", but got \"%s\".", pair.Input, pair.Expected, actual)
 		}
 	}
+
+	for _, pair := range tests {
+		actual := UnformatSemVer(pair.Input)
+		if actual != pair.Expected[1:] {
+			t.Errorf("Expected UnformatSemVer(\"%s\") to be \"%s\", but got \"%s\".", pair.Input, pair.Expected, actual)
+		}
+	}
 }

@@ -418,3 +418,12 @@ func FormatSemVer(version string) string {
 
 	return version
 }
+
+// Removes "v" from `semver`, if present.
+func UnformatSemVer(semver string) string {
+	if strings.HasPrefix(semver, "v") {
+		return semver[1:]
+	}
+
+	return semver
+}
