@@ -77,13 +77,8 @@ var VersionNotFound GoVersionInfo = GoVersionInfo{"", false}
 
 // Constructs a `GoVersionInfo` for a version we found.
 func VersionFound(version string) GoVersionInfo {
-	// Add the "v" required by `semver` if there isn't one yet.
-	if !strings.HasPrefix(version, "v") {
-		version = "v" + version
-	}
-
 	return GoVersionInfo{
-		Version: version,
+		Version: util.FormatSemVer(version),
 		Found:   true,
 	}
 }

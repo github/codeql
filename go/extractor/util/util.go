@@ -409,3 +409,12 @@ func getImportPathFromRepoURL(repourl string) string {
 	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
 	return host + "/" + path
 }
+
+// Prepends "v" to `version`, if not already there.
+func FormatSemVer(version string) string {
+	if !strings.HasPrefix(version, "v") {
+		version = "v" + version
+	}
+
+	return version
+}

@@ -20,3 +20,24 @@ func TestGetImportPathFromRepoURL(t *testing.T) {
 		}
 	}
 }
+
+func TestFormatSemVer(t *testing.T) {
+	type TestPair struct {
+		Input    string
+		Expected string
+	}
+
+	tests := []TestPair{
+		{"1", "v1"},
+		{"v1", "v1"},
+		{"1.2.3", "v1.2.3"},
+		{"v1.2.3", "v1.2.3"},
+	}
+
+	for _, pair := range tests {
+		actual := FormatSemVer(pair.Input)
+		if actual != pair.Expected {
+			t.Errorf("Expected FormatSemVer(\"%s\") to be \"%s\", but got \"%s\".", pair.Input, pair.Expected, actual)
+		}
+	}
+}
