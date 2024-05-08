@@ -1,6 +1,10 @@
 package toolchain
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/github/codeql-go/extractor/util"
+)
 
 func TestParseGoVersion(t *testing.T) {
 	tests := map[string]string{
@@ -16,9 +20,41 @@ func TestParseGoVersion(t *testing.T) {
 }
 
 func TestHasGoVersion(t *testing.T) {
-	if HasGoVersion("1.21") {
-		t.Error("Expected HasGoVersion(\"1.21\") to be false, but got true")
+	versions := []string{"1.21", "v1.22", "1.22.3", "v1.21rc4"}
+
+	// All versions should be unknown.
+	for _, version := range versions {
+		if HasGoVersion(version) {
+			t.Errorf("Expected HasGoVersion(\"%s\") to be false, but got true", version)
+		}
+
+		if HasGoVersion(util.FormatSemVer(version)) {
+			t.Errorf("Expected HasGoVersion(\"%s\") to be false, but got true", util.FormatSemVer(version))
+		}
+
+		if HasGoVersion(util.UnformatSemVer(version)) {
+			t.Errorf("Expected HasGoVersion(\"%s\") to be false, but got true", util.UnformatSemVer(version))
+		}
+
+		// Add the version in preparation for the next part of the test.
+		addGoVersion(version)
 	}
+
+	// Now we should have all of the versions.
+	for _, version := range versions {
+		if !HasGoVersion(version) {
+			t.Errorf("Expected HasGoVersion(\"%s\") to be true, but got false", version)
+		}
+
+		if !HasGoVersion(util.FormatSemVer(version)) {
+			t.Errorf("Expected HasGoVersion(\"%s\") to be true, but got false", util.FormatSemVer(version))
+		}
+
+		if !HasGoVersion(util.UnformatSemVer(version)) {
+			t.Errorf("Expected HasGoVersion(\"%s\") to be true, but got false", util.UnformatSemVer(version))
+		}
+	}
+
 }
 
 func testGoVersionToSemVer(t *testing.T, goVersion string, expectedSemVer string) {

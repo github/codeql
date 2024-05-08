@@ -25,7 +25,7 @@ var goVersions = map[string]struct{}{}
 
 // Adds an entry to the set of installed Go versions for the normalised `version` number.
 func addGoVersion(version string) {
-	goVersions[semver.Canonical("v"+version)] = struct{}{}
+	goVersions[semver.Canonical(util.FormatSemVer(version))] = struct{}{}
 }
 
 // Returns the current Go version as returned by 'go version', e.g. go1.14.4
@@ -58,7 +58,7 @@ func GetEnvGoVersion() string {
 
 // Determines whether, to our knowledge, `version` is available on the current system.
 func HasGoVersion(version string) bool {
-	_, found := goVersions[semver.Canonical("v"+version)]
+	_, found := goVersions[semver.Canonical(util.FormatSemVer(version))]
 	return found
 }
 
@@ -72,7 +72,7 @@ func InstallVersion(workingDir string, version string) bool {
 	// Construct a command to invoke `go version` with `GOTOOLCHAIN=go1.N.0` to give
 	// Go a valid toolchain version to download the toolchain we need; subsequent commands
 	// should then work even with an invalid version that's still in `go.mod`
-	toolchainArg := "GOTOOLCHAIN=go" + semver.Canonical("v" + version)[1:]
+	toolchainArg := "GOTOOLCHAIN=go" + semver.Canonical(util.FormatSemVer(version))[1:]
 	versionCmd := Version()
 	versionCmd.Dir = workingDir
 	versionCmd.Env = append(os.Environ(), toolchainArg)
@@ -112,9 +112,9 @@ func GoVersionToSemVer(goVersion string) string {
 	// which is compatible with the SemVer specification
 	rcIndex := strings.Index(goVersion, "rc")
 	if rcIndex != -1 {
-		return semver.Canonical("v"+goVersion[:rcIndex]) + "-" + goVersion[rcIndex:]
+		return semver.Canonical(util.FormatSemVer(goVersion[:rcIndex])) + "-" + goVersion[rcIndex:]
 	} else {
-		return semver.Canonical("v" + goVersion)
+		return semver.Canonical(util.FormatSemVer(goVersion))
 	}
 }
 
