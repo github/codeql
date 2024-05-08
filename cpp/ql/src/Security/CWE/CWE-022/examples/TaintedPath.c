@@ -2,11 +2,9 @@ int main(int argc, char** argv) {
   char *userAndFile = argv[2];
   
   {
-    char fileBuffer[FILENAME_MAX] = "/home/";
-    char *fileName = fileBuffer;
-    size_t len = strlen(fileName);
-    strncat(fileName+len, userAndFile, FILENAME_MAX-len-1);
+    char fileBuffer[PATH_MAX];
+    snprintf(fileBuffer, sizeof(fileBuffer), "/home/%s", userAndFile);
     // BAD: a string from the user is used in a filename
-    fopen(fileName, "wb+");
+    fopen(fileBuffer, "wb+");
   }
 }

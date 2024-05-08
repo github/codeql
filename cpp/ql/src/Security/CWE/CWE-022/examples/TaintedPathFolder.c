@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv) {
     char *userAndFile = argv[2];
-    char baseDir[PATH_MAX] = "/home/user/public/";
+    const char *baseDir = "/home/user/public/";
     char fullPath[PATH_MAX];
 
     // Attempt to concatenate the base directory and the user-supplied path
