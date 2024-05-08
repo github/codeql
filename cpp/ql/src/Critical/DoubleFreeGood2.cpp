@@ -1,5 +1,5 @@
 void g() {
-	MyTask *task = NULL;
+	MyTask *task = nullptr;
 
 	try
 	{
@@ -8,7 +8,7 @@ void g() {
 		...
 
 		delete task;
-		task = NULL;
+		task = nullptr;
 
 		...
 	} catch (...) {

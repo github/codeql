@@ -1,5 +1,5 @@
 void g() {
-	MyTask *task = NULL;
+	MyTask *task = nullptr;
 
 	try
 	{
