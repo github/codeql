@@ -2,9 +2,13 @@ name: Cache Poisoning
 
 on: pull_request_target
 
+permissions:
+  contents: read
+
 jobs:
   poison:
     runs-on: ubuntu-latest
+    permissions: read-all
     steps:
       - uses: actions/checkout@v3
         with:

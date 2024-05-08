@@ -5,6 +5,8 @@ on: pull_request_target
 jobs:
   poison:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read  
     steps:
       - uses: actions/checkout@v3
         with:

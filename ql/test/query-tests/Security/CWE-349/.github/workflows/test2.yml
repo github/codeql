@@ -2,6 +2,8 @@ name: Cache Poisoning
 
 on: pull_request_target
 
+permissions: read-all
+
 jobs:
   poison:
     runs-on: ubuntu-latest

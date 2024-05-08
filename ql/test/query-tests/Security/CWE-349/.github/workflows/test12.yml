@@ -2,9 +2,10 @@ on:
   issue_comment:
     types: [created]
 
+permissions:
+  issues: write
 jobs:
   pr-comment:
-    permissions: read-all
     runs-on: ubuntu-latest
     steps:
       - uses: xt0rted/pull-request-comment-branch@v2
@@ -15,9 +16,6 @@ jobs:
         with:
           ref: ${{ steps.comment-branch.outputs.head_sha }}
 
-      - uses: actions/cache@v2
-        with:
-          path: ./poison
-          key: poison_key
       - run: |
-          cat poison
+          ./checkedout/poison
+

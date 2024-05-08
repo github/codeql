@@ -1,6 +1,7 @@
 edges
 nodes
 | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/test10.yml:11:17:11:48 | github.event.comment.body | semmle.label | github.event.comment.body |
 subpaths
 #select
-| .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | ${{ github.event.comment.body }} |
+| .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | ${{ github.event.comment.body }} |
