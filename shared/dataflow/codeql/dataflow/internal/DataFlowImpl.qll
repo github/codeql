@@ -1369,6 +1369,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         CcCall ccSomeCall();
 
+        predicate instanceofCc(Cc cc);
+
+        predicate instanceofCcCall(CcCall cc);
+
+        predicate instanceofCcNoCall(CcNoCall cc);
+
         class LocalCc;
 
         DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx);
@@ -1386,8 +1392,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[call, c]
         CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
-        bindingset[c, cc]
-        LocalCc getLocalCc(DataFlowCallable c, Cc cc);
+        bindingset[cc]
+        LocalCc getLocalCc(Cc cc);
 
         bindingset[node1, state1]
         bindingset[node2, state2]
@@ -1476,7 +1482,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
             fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
-            localCc = getLocalCc(mid.getEnclosingCallable(), cc)
+            localCc = getLocalCc(cc)
           |
             localStep(mid, state0, node, state, true, _, localCc) and
             t = t0
@@ -1613,7 +1619,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ApOption argAp, Typ t, Ap ap, boolean emptyAp, ApApprox apa, boolean cc
         ) {
           fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
-          (if outercc instanceof CcCall then cc = true else cc = false) and
+          (if instanceofCcCall(outercc) then cc = true else cc = false) and
           if ap instanceof ApNil then emptyAp = true else emptyAp = false
         }
 
@@ -1669,6 +1675,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, ArgNodeEx arg, CcCall ctx
           ) {
             callEdgeArgParamRestricted(call, _, arg, _, _, _) and
+            instanceofCcCall(ctx) and
             result = viableImplCallContextReducedInlineLate(call, ctx)
           }
 
@@ -1684,6 +1691,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           bindingset[call, ctx]
           pragma[inline_late]
           private predicate viableImplNotCallContextReducedInlineLate(DataFlowCall call, Cc ctx) {
+            instanceofCc(ctx) and
             viableImplNotCallContextReduced(call, ctx)
           }
 
@@ -1693,6 +1701,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, ArgNodeEx arg, Cc outercc
           ) {
             callEdgeArgParamRestricted(call, _, arg, _, _, _) and
+            instanceofCc(outercc) and
             viableImplNotCallContextReducedInlineLate(call, outercc)
           }
 
@@ -1837,6 +1846,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           RetNodeEx ret, FlowState state, CcNoCall cc, ParamNodeOption summaryCtx, TypOption argT,
           ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
+          instanceofCcNoCall(cc) and
           fwdFlow(ret, state, cc, summaryCtx, argT, argAp, t, ap, apa)
         }
 
@@ -1896,6 +1906,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlow1Param(ParamNodeEx p, FlowState state, CcCall cc, Typ t0, Ap ap) {
+            instanceofCcCall(cc) and
             fwdFlow1(p, state, cc, _, _, _, t0, _, ap, _)
           }
 
@@ -1962,6 +1973,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ApApprox argApa, Typ t, Ap ap, ApApprox apa
         ) {
           exists(ReturnKindExt kind |
+            instanceofCcCall(ccc) and
             fwdFlow(pragma[only_bind_into](ret), state, ccc,
               TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), TypOption::some(argT),
               pragma[only_bind_into](apSome(argAp)), t, ap, pragma[only_bind_into](apa)) and
@@ -2527,10 +2539,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       CcCall ccSomeCall() { result = true }
 
+      predicate instanceofCc(Cc cc) { any() }
+
+      predicate instanceofCcCall(CcCall cc) { any() }
+
+      predicate instanceofCcNoCall(CcNoCall cc) { any() }
+
       class LocalCc = Unit;
 
-      bindingset[c, cc]
-      LocalCc getLocalCc(DataFlowCallable c, Cc cc) { any() }
+      bindingset[cc]
+      LocalCc getLocalCc(Cc cc) { any() }
 
       DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) { none() }
 
@@ -4081,7 +4099,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       state = mid.getState() and
       cc = mid.getCallContext() and
       sc = mid.getSummaryCtx() and
-      localCC = PrunedCallContextSensitivityStage5::getLocalCc(midnode.getEnclosingCallable(), cc) and
+      localCC = PrunedCallContextSensitivityStage5::getLocalCc(cc) and
       t = mid.getType() and
       ap = mid.getAp() and
       summaryLabel = mid.getSummaryLabel()
@@ -5144,7 +5162,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         boolean isStoreStep
       ) {
         not isUnreachableInCall1(node,
-          CachedCallContextSensitivity::LocalCallContext::getLocalCc(node.getEnclosingCallable(), cc)) and
+          CachedCallContextSensitivity::LocalCallContext::getLocalCc(cc)) and
         (
           localFlowStepEx(mid.getNodeEx(), node, _) and
           state = mid.getState() and

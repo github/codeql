@@ -73,11 +73,17 @@ signature module InputSig<LocationSig Location> {
     string toString();
 
     DataFlowCallable getEnclosingCallable();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class DataFlowCallable {
     /** Gets a textual representation of this element. */
     string toString();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class ReturnKind {
