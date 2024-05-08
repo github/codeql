@@ -36,6 +36,15 @@ type GoModule struct {
 	Module *modfile.File // The parsed contents of the `go.mod` file
 }
 
+// Tries to find the Go toolchain version required for this module.
+func (module *GoModule) RequiredGoVersion() util.SemVer {
+	if module.Module != nil && module.Module.Go != nil {
+		return util.NewSemVer(module.Module.Go.Version)
+	} else {
+		return tryReadGoDirective(module.Path)
+	}
+}
+
 // Represents information about a Go project workspace: this may either be a folder containing
 // a `go.work` file or a collection of `go.mod` files.
 type GoWorkspace struct {
@@ -67,17 +76,10 @@ func (workspace *GoWorkspace) RequiredGoVersion() util.SemVer {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
 		var greatestVersion util.SemVer = nil
 		for _, module := range workspace.Modules {
-			if module.Module != nil && module.Module.Go != nil {
-				// If we have parsed the file, retrieve the version number we have already obtained.
-				modVersion := util.NewSemVer(module.Module.Go.Version)
-				if greatestVersion == nil || modVersion.IsNewerThan(greatestVersion) {
-					greatestVersion = modVersion
-				}
-			} else {
-				modVersion := tryReadGoDirective(module.Path)
-				if modVersion != nil && (greatestVersion == nil || modVersion.IsNewerThan(greatestVersion)) {
-					greatestVersion = modVersion
-				}
+			modVersion := module.RequiredGoVersion()
+
+			if modVersion != nil && (greatestVersion == nil || modVersion.IsNewerThan(greatestVersion)) {
+				greatestVersion = modVersion
 			}
 		}
 
