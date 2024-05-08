@@ -31,6 +31,15 @@ Reviewing the code above, the issue can be fixed by simply deleting the additona
 not to free <code>new_buffer</code> as this pointer is returned by the function.
 </p>
 <sample src="DoubleFreeGood.cpp" />
+In the next example, <code>task</code> may be deleted twice, if an exception occurs inside the <code>try</code>
+block after the first <code>delete</code>:
+</p>
+<sample src="DoubleFreeBad2.cpp" />
+<p>
+The problem can be solved by assigning a null value to the pointer after the first <code>delete</code>, as
+calling <code>delete</code> a second time on the null pointer is harmless.
+</p>
+<sample src="DoubleFreeGood2.cpp" />
 </example>
 <references>
 
