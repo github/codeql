@@ -3,6 +3,7 @@ package project
 import (
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -46,6 +47,16 @@ func (module *GoModule) RequiredGoVersion() util.SemVer {
 	} else {
 		return tryReadGoDirective(module.Path)
 	}
+}
+
+// Runs `go mod tidy` for this module.
+func (module *GoModule) Tidy() *exec.Cmd {
+	return toolchain.TidyModule(filepath.Dir(module.Path))
+}
+
+// Runs `go mod vendor -e` for this module.
+func (module *GoModule) Vendor() *exec.Cmd {
+	return toolchain.VendorModule(filepath.Dir(module.Path))
 }
 
 // Represents information about a Go project workspace: this may either be a folder containing

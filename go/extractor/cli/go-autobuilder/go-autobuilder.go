@@ -168,7 +168,7 @@ func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 			beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
 
 			// run `go mod tidy -e`
-			cmd := toolchain.TidyModule(goModDir)
+			cmd := goMod.Tidy()
 			res := util.RunCmd(cmd)
 
 			if !res {
@@ -428,7 +428,7 @@ func installDependencies(workspace project.GoWorkspace) {
 			path := filepath.Dir(module.Path)
 
 			if util.DirExists(filepath.Join(path, "vendor")) {
-				vendor := toolchain.VendorModule(path)
+				vendor := module.Vendor()
 				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
 				util.RunCmd(vendor)
 			}
