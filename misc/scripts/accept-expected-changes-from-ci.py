@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 This script can be used to go over `codeql test run` expected/actual log output from
 github actions, and apply patches locally to make the tests pass.
 
