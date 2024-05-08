@@ -923,6 +923,12 @@ class TranslatedConstExprIfStmt extends TranslatedStmt, ConditionContext {
     else result = this.getFirstConditionInstruction(kind)
   }
 
+  override Instruction getALastInstructionInternal() {
+    result = this.getElse().getALastInstruction() or result = this.getThen().getALastInstruction()
+  }
+
+  override TranslatedElement getLastChild() { result = this.getElse() or result = this.getThen() }
+
   override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
@@ -977,12 +983,6 @@ class TranslatedConstExprIfStmt extends TranslatedStmt, ConditionContext {
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
-  }
-
-  override Instruction getALastInstructionInternal() {
-    result = this.getThen().getALastInstruction()
-    or
-    result = this.getElse().getALastInstruction()
   }
 }
 
