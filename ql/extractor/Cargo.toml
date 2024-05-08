@@ -18,3 +18,6 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 rayon = "1.9.0"
 regex = "1.10.4"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
+
+[patch.crates-io]
+tree-sitter = {git = "https://github.com/redsun82/tree-sitter.git", rev = "1f5c1112ceaa8fc6aff61d1852690407670d2a96"}
