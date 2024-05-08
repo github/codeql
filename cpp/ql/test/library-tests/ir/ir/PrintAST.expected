@@ -12159,7 +12159,11 @@ ir.cpp:
 # 1109|         Type = [IntType] int
 # 1110| [Destructor] void std::vector<ClassWithDestructor>::~vector()
 # 1110|   <params>: 
+# 1110| [Destructor] void std::vector<String>::~vector()
+# 1110|   <params>: 
 # 1110| [Destructor] void std::vector<T>::~vector()
+# 1110|   <params>: 
+# 1110| [Destructor] void std::vector<char>::~vector()
 # 1110|   <params>: 
 # 1110| [Destructor] void std::vector<int>::~vector()
 # 1110|   <params>: 
@@ -20674,6 +20678,12 @@ ir.cpp:
 # 2309|           getQualifier(): [VariableAccess] s2
 # 2309|               Type = [Struct] String
 # 2309|               ValueCategory = lvalue
+#-----|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#-----|         getQualifier(): [ReuseExpr] reuse of temporary object
+#-----|             Type = [ClassTemplateInstantiation,Struct] vector<String>
+#-----|             ValueCategory = xvalue
 # 2307|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2307|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &>
 # 2307|           ValueCategory = lvalue
@@ -22198,6 +22208,12 @@ ir.cpp:
 # 2431|               Conversion = [IntegralConversion] integral conversion
 # 2431|               Type = [IntType] int
 # 2431|               ValueCategory = prvalue
+#-----|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#-----|         getQualifier(): [ReuseExpr] reuse of temporary object
+#-----|             Type = [ClassTemplateInstantiation,Struct] vector<char>
+#-----|             ValueCategory = xvalue
 # 2430|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2430|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
 # 2430|           ValueCategory = lvalue
@@ -22605,6 +22621,41 @@ ir.cpp:
 # 2530|             ValueCategory = lvalue
 # 2530|     getStmt(1): [LabelStmt] label ...:
 # 2531|     getStmt(2): [ReturnStmt] return ...
+# 2533| [TopLevelFunction] void destructor_possibly_not_handled()
+# 2533|   <params>: 
+# 2533|   getEntryPoint(): [BlockStmt] { ... }
+# 2534|     getStmt(0): [DeclStmt] declaration
+# 2534|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2534|           Type = [Class] ClassWithDestructor
+# 2534|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2534|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2534|               Type = [VoidType] void
+# 2534|               ValueCategory = prvalue
+# 2535|     getStmt(1): [TryStmt] try { ... }
+# 2535|       getStmt(): [BlockStmt] { ... }
+# 2536|         getStmt(0): [ExprStmt] ExprStmt
+# 2536|           getExpr(): [ThrowExpr] throw ...
+# 2536|               Type = [IntType] int
+# 2536|               ValueCategory = prvalue
+# 2536|             getExpr(): [Literal] 42
+# 2536|                 Type = [IntType] int
+# 2536|                 Value = [Literal] 42
+# 2536|                 ValueCategory = prvalue
+# 2538|       getChild(1): [Handler] <handler>
+# 2538|         getBlock(): [CatchBlock] { ... }
+# 2540|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2540|             Type = [VoidType] void
+# 2540|             ValueCategory = prvalue
+# 2540|           getQualifier(): [VariableAccess] x
+# 2540|               Type = [Class] ClassWithDestructor
+# 2540|               ValueCategory = lvalue
+# 2540|     getStmt(2): [ReturnStmt] return ...
+# 2540|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2540|           Type = [VoidType] void
+# 2540|           ValueCategory = prvalue
+# 2540|         getQualifier(): [VariableAccess] x
+# 2540|             Type = [Class] ClassWithDestructor
+# 2540|             ValueCategory = lvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
