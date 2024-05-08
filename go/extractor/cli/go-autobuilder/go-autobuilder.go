@@ -333,7 +333,7 @@ func buildWithoutCustomCommands(modMode project.ModMode) bool {
 		log.Println("Build failed, continuing to install dependencies.")
 
 		shouldInstallDependencies = true
-	} else if util.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
 		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
 
 		shouldInstallDependencies = true
