@@ -14,7 +14,7 @@ import semmle.python.ApiGraphs
  */
 module Gradio {
   /**
-   * The event handlers in Gradio, which take untrusted data.
+   * The event handlers, Interface and gradio.ChatInterface classes, which take untrusted data.
    */
   class GradioInput extends API::CallNode {
     GradioInput() {
@@ -36,15 +36,8 @@ module Gradio {
                 "upload", "release", "select", "stream", "like", "load", "key_up",
               ])
             .getACall()
-    }
-  }
 
-  /**
-   * The high-level gradio.Interface and gradio.ChatInterface classes, which take untrusted data.
-   */
-  class GradioInterface extends API::CallNode {
-    GradioInterface() {
-      this = API::moduleImport("gradio").getMember(["Interface", "ChatInterface"]).getACall()
+      or this = API::moduleImport("gradio").getMember(["Interface", "ChatInterface"]).getACall()
     }
   }
 
@@ -55,11 +48,8 @@ module Gradio {
   class GradioInputList extends RemoteFlowSource::Range {
     GradioInputList() {
       exists(API::CallNode call |
-        (
-          call instanceof GradioInput
-          or
-          call instanceof GradioInterface
-        ) and
+        call instanceof GradioInput
+        and
         // limit only to lists of parameters given to `inputs`.
         (
           (
@@ -85,11 +75,8 @@ module Gradio {
   class GradioInputParameter extends RemoteFlowSource::Range {
     GradioInputParameter() {
       exists(API::CallNode call |
-        (
-          call instanceof GradioInput
-          or
-          call instanceof GradioInterface
-        ) and
+        call instanceof GradioInput
+        and
         this = call.getParameter(0, "fn").getParameter(_).asSource() and
         // exclude lists of parameters given to `inputs`
         not call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof ListNode and
@@ -106,7 +93,7 @@ module Gradio {
   class GradioInputDecorator extends RemoteFlowSource::Range {
     GradioInputDecorator() {
       exists(API::CallNode call |
-        (call instanceof GradioInput or call instanceof GradioInterface) and
+        call instanceof GradioInput and
         this = call.getReturn().getACall().getParameter(0).getParameter(_).asSource()
       )
     }
@@ -120,11 +107,8 @@ module Gradio {
   private class ListTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(API::CallNode node |
-        (
-          node instanceof GradioInput
-          or
-          node instanceof GradioInterface
-        ) and
+        node instanceof GradioInput
+        and
         // handle cases where there are multiple arguments passed as a list to `inputs`
         (
           (
