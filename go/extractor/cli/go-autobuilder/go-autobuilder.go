@@ -156,7 +156,8 @@ func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
 func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && semver.Compare(toolchain.GetEnvGoSemVer(), "v1.16") >= 0 {
+	v1_16 := util.NewSemVer("v1.16")
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(v1_16) {
 		for _, goMod := range workspace.Modules {
 			// stat go.mod and go.sum
 			goModPath := goMod.Path
@@ -338,7 +339,7 @@ func buildWithoutCustomCommands(modMode project.ModMode) bool {
 		}
 
 		shouldInstallDependencies = true
-	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer().String())...) {
 		log.Printf("Dependencies are still not resolving after executing %d build script(s), continuing to install dependencies in the normal way.\n", scriptCount)
 
 		shouldInstallDependencies = true
@@ -452,7 +453,7 @@ func extract(workspace project.GoWorkspace) bool {
 
 	extractorArgs := []string{}
 	if workspace.DepMode == project.GoGetWithModules {
-		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
+		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer().String())...)
 	}
 
 	if len(workspace.Modules) == 0 {
@@ -542,8 +543,9 @@ func installDependenciesAndBuild() {
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+greatestGoVersion.Version)
+	v1_21 := util.NewSemVer("v1.21.0")
+	if toolchain.GetEnvGoSemVer().IsOlderThan(v1_21) && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer().String()) > 0 {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), "v"+greatestGoVersion.Version)
 		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
