@@ -1,5 +1,15 @@
 import actions
 
+string defaultBranchTriggerEvent() {
+  result =
+    [
+      "check_run", "check_suite", "delete", "discussion", "discussion_comment", "fork", "gollum",
+      "issue_comment", "issues", "label", "milestone", "project", "project_card", "project_column",
+      "public", "pull_request_comment", "pull_request_target", "repository_dispatch", "schedule",
+      "watch", "workflow_run"
+    ]
+}
+
 abstract class CacheWritingStep extends Step { }
 
 class CacheActionUsesStep extends CacheWritingStep, UsesStep {
@@ -58,5 +68,12 @@ class SetupDotnetUsesStep extends CacheWritingStep, UsesStep {
       this.getArgument("cache") = "true" or
       exists(this.getArgument("cache-dependency-path"))
     )
+  }
+}
+
+class SetupRubyUsesStep extends CacheWritingStep, UsesStep {
+  SetupRubyUsesStep() {
+    this.getCallee() = ["actions/setup-ruby", "ruby/setup-ruby"] and
+    this.getArgument("bundler-cache") = "true"
   }
 }

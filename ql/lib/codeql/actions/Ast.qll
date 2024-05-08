@@ -261,8 +261,6 @@ class Workflow extends AstNode instanceof WorkflowImpl {
   Permissions getPermissions() { result = super.getPermissions() }
 
   Strategy getStrategy() { result = super.getStrategy() }
-
-  predicate isPrivileged() { super.isPrivileged() }
 }
 
 class ReusableWorkflow extends Workflow instanceof ReusableWorkflowImpl {
@@ -288,6 +286,7 @@ class Outputs extends AstNode instanceof OutputsImpl {
 }
 
 class Permissions extends AstNode instanceof PermissionsImpl {
+  bindingset[perm]
   string getPermission(string perm) { result = super.getPermission(perm) }
 
   string getAPermission() { result = super.getAPermission() }
@@ -328,6 +327,10 @@ abstract class Job extends AstNode instanceof JobImpl {
   If getIf() { result = super.getIf() }
 
   Permissions getPermissions() { result = super.getPermissions() }
+
+  predicate hasTriggerEvent(string trigger) { super.hasTriggerEvent(trigger) }
+
+  string getATriggerEvent() { result = super.getATriggerEvent() }
 
   Strategy getStrategy() { result = super.getStrategy() }
 

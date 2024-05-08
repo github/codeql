@@ -1,24 +1,26 @@
 /**
- * @name Cache Poisoning
+ * @name Cache Poisoning via low-privilege code injection
  * @description The cache can be poisoned by untrusted code, leading to a cache poisoning attack.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @security-severity 9.3
- * @id actions/cache-poisoning
+ * @id actions/cache-poisoning/code-injection
  * @tags actions
  *       security
  *       external/cwe/cwe-349
+ *       external/cwe/cwe-094
  */
 
 import actions
-import codeql.actions.security.UntrustedCheckoutQuery
+import codeql.actions.security.CodeInjectionQuery
 import codeql.actions.security.CachePoisoningQuery
-import codeql.actions.security.PoisonableSteps
+import CodeInjectionFlow::PathGraph
 
-from LocalJob j, PRHeadCheckoutStep checkout, Step s
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, LocalJob j
 where
-  // Excluding privileged workflows since they can be easily exploited in similar circumstances
+  CodeInjectionFlow::flowPath(source, sink) and
+  j = sink.getNode().asExpr().getEnclosingJob() and
   not j.isPrivileged() and
   // The workflow runs in the context of the default branch
   // TODO: (require to collect trigger types)
@@ -33,19 +35,7 @@ where
       caller = call.getWorkflow() and
       caller.hasTriggerEvent(defaultBranchTriggerEvent())
     )
-  ) and
-  // The job checkouts untrusted code from a pull request
-  j.getAStep() = checkout and
-  (
-    // The job writes to the cache
-    // (No need to follow the checkout step as the cache writing is normally done after the job completes)
-    j.getAStep() = s and
-    s instanceof CacheWritingStep
-    or
-    // The job executes checked-out code
-    // (The cache specific token can be leaked even for non-privileged workflows)
-    checkout.getAFollowingStep() = s and
-    s instanceof PoisonableStep
   )
-select checkout, "Potential cache poisoning in the context of the default branch on step $@.", s,
-  s.toString()
+select sink.getNode(), source, sink,
+  "Unprivileged code injection in $@, which may lead to cache poisoning.", sink,
+  sink.getNode().asExpr().(Expression).getRawExpression()

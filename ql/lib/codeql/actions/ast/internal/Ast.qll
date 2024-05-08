@@ -64,7 +64,7 @@ private newtype TAstNode =
   TInputsNode(YamlMapping n) { exists(YamlMapping m | m.lookup("inputs") = n) } or
   TInputNode(YamlValue n) { exists(YamlMapping m | m.lookup("inputs").(YamlMapping).maps(n, _)) } or
   TOutputsNode(YamlMapping n) { exists(YamlMapping m | m.lookup("outputs") = n) } or
-  TPermissionsNode(YamlMapping n) { exists(YamlMapping m | m.lookup("permissions") = n) } or
+  TPermissionsNode(YamlMappingLikeNode n) { exists(YamlMapping m | m.lookup("permissions") = n) } or
   TStrategyNode(YamlMapping n) { exists(YamlMapping m | m.lookup("strategy") = n) } or
   TNeedsNode(YamlMappingLikeNode n) { exists(YamlMapping m | m.lookup("needs") = n) } or
   TJobNode(YamlMapping n) { exists(YamlMapping w | w.lookup("jobs").(YamlMapping).lookup(_) = n) } or
@@ -320,6 +320,9 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
   /** Gets a job within this workflow */
   JobImpl getAJob() { result = this.getJob(_) }
 
+  /** Gets the permissions granted to this workflow. */
+  PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
+
   /** Workflow is triggered by given trigger event */
   predicate hasTriggerEvent(string trigger) {
     exists(YamlNode y | y = n.lookup("on").(YamlMappingLikeNode).getNode(trigger))
@@ -330,43 +333,8 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
     exists(YamlNode y | y = n.lookup("on").(YamlMappingLikeNode).getNode(result))
   }
 
-  /** Gets the permissions granted to this workflow. */
-  PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
-
-  private predicate hasSingleTrigger(string trigger) {
-    this.getATriggerEvent() = trigger and
-    count(this.getATriggerEvent()) = 1
-  }
-
   /** Gets the strategy for this workflow. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
-
-  /** Holds if the workflow is privileged. */
-  predicate isPrivileged() {
-    // The Workflow has a permission to write to some scope
-    this.getPermissions().getAPermission() = "write"
-    or
-    // The Workflow accesses a secret
-    exists(SecretsExpressionImpl expr |
-      expr.getEnclosingWorkflow() = this and not expr.getFieldName() = "GITHUB_TOKEN"
-    )
-    or
-    // The Workflow is triggered by an event other than `pull_request`
-    count(this.getATriggerEvent()) = 1 and
-    not this.getATriggerEvent() = ["pull_request", "workflow_call"]
-    or
-    // The Workflow is only triggered by `workflow_call` and there is
-    // a caller workflow triggered by an event other than `pull_request`
-    this.hasSingleTrigger("workflow_call") and
-    exists(ExternalJobImpl call, WorkflowImpl caller |
-      call.getCallee() = this.getLocation().getFile().getRelativePath() and
-      caller = call.getWorkflow() and
-      caller.isPrivileged()
-    )
-    or
-    // The Workflow has multiple triggers so at least one is not "pull_request"
-    count(this.getATriggerEvent()) > 1
-  }
 }
 
 class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
@@ -502,7 +470,7 @@ class OutputsImpl extends AstNodeImpl, TOutputsNode {
 }
 
 class PermissionsImpl extends AstNodeImpl, TPermissionsNode {
-  YamlMapping n;
+  YamlMappingLikeNode n;
 
   PermissionsImpl() { this = TPermissionsNode(n) }
 
@@ -516,11 +484,41 @@ class PermissionsImpl extends AstNodeImpl, TPermissionsNode {
 
   override Location getLocation() { result = n.getLocation() }
 
-  override YamlMapping getNode() { result = n }
+  override YamlMappingLikeNode getNode() { result = n }
 
-  string getPermission(string perm) { result = n.lookup(perm).(YamlScalar).getValue() }
+  string getAScope() {
+    result =
+      [
+        "actions", "attestations", "checks", "contents", "deployments", "discussions", "id-token",
+        "issues", "packages", "pages", "pull-requests", "repository-projects", "security-events",
+        "statuses"
+      ]
+  }
 
-  string getAPermission() { result = this.getPermission(_) }
+  string getAPermission() {
+    exists(YamlMapping mapping, string scope |
+      mapping = n and
+      result = scope + ": " + mapping.lookup(scope).(YamlScalar).getValue()
+    )
+    or
+    exists(YamlScalar scalar |
+      scalar = n and
+      (
+        scalar.getValue() = "write-all" and
+        result = this.getAScope() + ":write"
+        or
+        scalar.getValue() = "read-all" and
+        result = this.getAScope() + ":read"
+      )
+    )
+  }
+
+  bindingset[perm]
+  string getPermission(string perm) {
+    exists(string p |
+      p = this.getAPermission() and p.matches(perm + ":%") and result = p.splitAt(":", 1).trim()
+    )
+  }
 }
 
 class StrategyImpl extends AstNodeImpl, TStrategyNode {
@@ -633,37 +631,87 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Gets the strategy for this job. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
 
-  /** Holds if the workflow is privileged. */
+  /** Holds if the job is privileged. */
   predicate isPrivileged() {
-    // the job has an explicit write permission
-    this.getPermissions().getAPermission() = "write"
+    // the job has privileged runtime permissions
+    this.hasRuntimeWritePermissions()
     or
+    // the job has an explicit secret accesses
+    this.hasExplicitSecretAccess()
+    or
+    // the job has an explicit write permission
+    this.hasExplicitWritePermission()
+    or
+    // the job has no explicit permissions but the workflow has write permissions
+    not exists(this.getPermissions()) and
+    this.hasImplicitWritePermission()
+    or
+    // neither the job nor the workflow have permissions but the job has a privileged trigger
+    not exists(this.getPermissions()) and
+    not exists(this.getEnclosingWorkflow().getPermissions()) and
+    this.hasPrivilegedTrigger()
+  }
+
+  private predicate hasExplicitSecretAccess() {
     // the job accesses a secret other than GITHUB_TOKEN
     exists(SecretsExpressionImpl expr |
       expr.getEnclosingJob() = this and not expr.getFieldName() = "GITHUB_TOKEN"
     )
-    or
-    // the effective permissions have write access
+  }
+
+  private predicate hasExplicitWritePermission() {
+    // the job has an explicit write permission
+    this.getPermissions().getAPermission().matches("%write")
+  }
+
+  private predicate hasImplicitWritePermission() {
+    // the job has an explicit write permission
+    this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+  }
+
+  private predicate hasRuntimeWritePermissions() {
+    // the effective runtime permissions have write access
     exists(string path, string trigger, string name, string secrets_source, string perms |
       workflowDataModel(path, trigger, name, secrets_source, perms, _) and
       path.trim() = this.getLocation().getFile().getRelativePath() and
       name.trim().matches(this.getId() + "%") and
       // We cannot trust the permissions for pull_request events since they depend on the
-      // location of the head branch
+      // provenance of the head branch (local vs fork)
       not trigger.trim() = "pull_request" and
-      (
-        secrets_source.trim().toLowerCase() = "actions" or
-        perms.toLowerCase().matches("%write%")
-      )
+      perms.toLowerCase().matches("%write%")
+    )
+  }
+
+  private predicate hasPrivilegedTrigger() {
+    // For workflows that are triggered by the pull_request_target event, the GITHUB_TOKEN is granted read/write repository permission unless the permissions key is specified and the workflow can access secrets, even when it is triggered from a fork.
+    // The Job is triggered by an event other than `pull_request`
+    count(this.getATriggerEvent()) = 1 and
+    not this.getATriggerEvent() = ["pull_request", "workflow_call"]
+    or
+    // The Workflow is only triggered by `workflow_call` and there is
+    // a caller workflow triggered by an event other than `pull_request`
+    this.hasSingleTrigger("workflow_call") and
+    exists(ExternalJobImpl call, JobImpl caller |
+      call.getCallee() = this.getLocation().getFile().getRelativePath() and
+      caller = call.getEnclosingJob() and
+      caller.isPrivileged()
     )
     or
-    // The job has no expliclit permission, but the enclosing workflow is privileged
-    not exists(this.getPermissions()) and
-    not exists(SecretsExpressionImpl expr |
-      expr.getEnclosingJob() = this and not expr.getFieldName() = "GITHUB_TOKEN"
-    ) and
-    // The enclosing workflow is privileged
-    this.getEnclosingWorkflow().isPrivileged()
+    // The Workflow has multiple triggers so at least one is not "pull_request"
+    count(this.getATriggerEvent()) > 1
+  }
+
+  /** Workflow is triggered by given trigger event */
+  predicate hasTriggerEvent(string trigger) {
+    exists(YamlNode y | y = n.lookup("on").(YamlMappingLikeNode).getNode(trigger))
+  }
+
+  /** Gets the trigger event that starts this workflow. */
+  string getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
+
+  private predicate hasSingleTrigger(string trigger) {
+    this.getATriggerEvent() = trigger and
+    count(this.getATriggerEvent()) = 1
   }
 
   /** Gets the runs-on field of the job. */
@@ -827,11 +875,14 @@ class UsesStepImpl extends StepImpl, UsesImpl {
 
   /** Gets the owner and name of the repository where the Action comes from, e.g. `actions/checkout` in `actions/checkout@v2`. */
   override string getCallee() {
-    result =
-      (
-        u.getValue().regexpCapture(usesParser(), 1) + "/" +
-          u.getValue().regexpCapture(usesParser(), 2)
-      ).toLowerCase()
+    if u.getValue().matches("./%")
+    then result = u.getValue()
+    else
+      result =
+        (
+          u.getValue().regexpCapture(usesParser(), 1) + "/" +
+            u.getValue().regexpCapture(usesParser(), 2)
+        ).toLowerCase()
   }
 
   /** Gets the version reference used when checking out the Action, e.g. `2` in `actions/checkout@v2`. */

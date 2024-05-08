@@ -17,10 +17,11 @@ import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 
-from Workflow w, PRHeadCheckoutStep checkout
+from LocalJob j, PRHeadCheckoutStep checkout
 where
-  w.isPrivileged() and
-  w.getAJob().(LocalJob).getAStep() = checkout and
+  j = checkout.getEnclosingJob() and
+  j.isPrivileged() and
+  j.getAStep() = checkout and
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   not exists(ControlCheck check |
     checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
