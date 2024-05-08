@@ -43,7 +43,7 @@ func (module *GoModule) RequiredGoVersion() GoVersionInfo {
 		return VersionFound(toolchain.ToolchainVersionToSemVer(module.Module.Toolchain.Name))
 	}
 	if module.Module != nil && module.Module.Go != nil {
-		return VersionFound(module.Module.Go.Version)
+		return VersionFound(toolchain.GoVersionToSemVer(module.Module.Go.Version))
 	} else {
 		return tryReadGoDirective(module.Path)
 	}
@@ -96,7 +96,7 @@ func (workspace *GoWorkspace) RequiredGoVersion() GoVersionInfo {
 	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Toolchain != nil {
 		return VersionFound(toolchain.ToolchainVersionToSemVer(workspace.WorkspaceFile.Toolchain.Name))
 	} else if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
-		return VersionFound(workspace.WorkspaceFile.Go.Version)
+		return VersionFound(toolchain.GoVersionToSemVer(workspace.WorkspaceFile.Go.Version))
 	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
 		var greatestVersion string = ""
@@ -611,7 +611,7 @@ func tryReadGoDirective(path string) GoVersionInfo {
 		matches := versionRe.FindSubmatch(goMod)
 		if matches != nil {
 			if len(matches) > 1 {
-				return VersionFound(string(matches[1]))
+				return VersionFound(toolchain.GoVersionToSemVer(string(matches[1])))
 			}
 		}
 	}
