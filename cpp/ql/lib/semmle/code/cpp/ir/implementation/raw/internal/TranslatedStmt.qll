@@ -855,6 +855,8 @@ abstract class TranslatedIfLikeStmt extends TranslatedStmt, ConditionContext {
 
   override TranslatedElement getLastChild() { result = this.getElse() or result = this.getThen() }
 
+  override predicate handlesDestructorsExplicitly() { any() }
+
   override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
@@ -892,7 +894,11 @@ abstract class TranslatedIfLikeStmt extends TranslatedStmt, ConditionContext {
     child = this.getCondition() and
     if this.hasElse()
     then result = this.getElse().getFirstInstruction(kind)
-    else result = this.getParent().getChildSuccessor(this, kind)
+    else (
+      if this.hasAnImplicitDestructorCall()
+      then result = this.getChild(this.getFirstDestructorCallIndex()).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -900,7 +906,24 @@ abstract class TranslatedIfLikeStmt extends TranslatedStmt, ConditionContext {
     result = this.getFirstConditionInstruction(kind)
     or
     (child = this.getThen() or child = this.getElse()) and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      if this.hasAnImplicitDestructorCall()
+      then result = this.getChild(this.getFirstDestructorCallIndex()).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
+    )
+    or
+    exists(int destructorId |
+      destructorId >= this.getFirstDestructorCallIndex() and
+      child = this.getChild(destructorId) and
+      result = this.getChild(destructorId + 1).getFirstInstruction(kind)
+    )
+    or
+    exists(int lastDestructorIndex |
+      lastDestructorIndex =
+        max(int n | exists(this.getChild(n)) and n >= this.getFirstDestructorCallIndex()) and
+      child = this.getChild(lastDestructorIndex) and
+      result = this.getParent().getChildSuccessor(this, kind)
+    )
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
