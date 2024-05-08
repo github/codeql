@@ -817,7 +817,7 @@ class TranslatedDestructorsAfterHandler extends TranslatedElement,
       // Transition to the next child, if any.
       result = this.getChild(id + 1).getFirstInstruction(kind)
       or
-      // And otherwise, exit this element with an exceptional edge
+      // And otherwise go to the next handler, if any.
       not exists(this.getChild(id + 1)) and
       result =
         getTranslatedStmt(handler)
