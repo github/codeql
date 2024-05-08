@@ -63,13 +63,20 @@ private predicate hasManualModel(Callable api) {
 }
 
 /**
- * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ * Holds if it is irrelevant to generate models for `api` based on data flow analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
  */
-predicate isRelevantForDataFlowModels(Callable api) {
-  (not api.getDeclaringType() instanceof J::Interface or exists(api.getBody()))
+predicate isUninterestingForDataFlowModels(Callable api) {
+  api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
 }
 
-predicate isRelevantForTypeBasedFlowModels(Callable api) { any() }
+/**
+ * Holds if it is irrelevant to generate models for `api` based on type-based analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
+ */
+predicate isUninterestingForTypeBasedFlowModels(Callable api) { none() }
 
 /**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
