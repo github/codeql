@@ -830,6 +830,12 @@ newtype TTranslatedElement =
       not ignoreExpr(dc)
     )
   } or
+  // The set of destructors to invoke after a handler for a `try` statement. These
+  // need to be special cased because the destructors need to run following an
+  // `ExceptionEdge`, but not following a `GotoEdge` edge.
+  TTranslatedDestructorsAfterHandler(Handler handler) {
+    exists(handler.getAnImplicitDestructorCall())
+  } or
   // A precise side effect of an argument to a `Call`
   TTranslatedArgumentExprSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
     not ignoreExpr(expr) and
