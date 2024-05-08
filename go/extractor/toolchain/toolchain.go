@@ -104,21 +104,26 @@ func InstallVersion(workingDir string, version string) bool {
 	return true
 }
 
+// Converts a Go version to a semantic version.
+func GoVersionToSemVer(goVersion string) string {
+	// Go versions don't follow the SemVer format, but the only exception we normally care about
+	// is release candidates; so this is a horrible hack to convert e.g. `1.22rc1` into `1.22-rc1`
+	// which is compatible with the SemVer specification
+	rcIndex := strings.Index(goVersion, "rc")
+	if rcIndex != -1 {
+		return semver.Canonical("v"+goVersion[:rcIndex]) + "-" + goVersion[rcIndex:]
+	} else {
+		return semver.Canonical("v" + goVersion)
+	}
+}
+
 // Converts a Go toolchain version of the form "go1.2.3" to a semantic version.
 func ToolchainVersionToSemVer(toolchainVersion string) string {
 	if !strings.HasPrefix(toolchainVersion, "go") {
 		log.Fatalf("Expected Go toolchain version of the form 'go1.2.3'; got '%s'", toolchainVersion)
 	}
 
-	// Go versions don't follow the SemVer format, but the only exception we normally care about
-	// is release candidates; so this is a horrible hack to convert e.g. `go1.22rc1` into `go1.22-rc1`
-	// which is compatible with the SemVer specification
-	rcIndex := strings.Index(toolchainVersion, "rc")
-	if rcIndex != -1 {
-		return semver.Canonical("v"+toolchainVersion[2:rcIndex]) + "-" + toolchainVersion[rcIndex:]
-	} else {
-		return semver.Canonical("v" + toolchainVersion[2:])
-	}
+	return GoVersionToSemVer(toolchainVersion[2:])
 }
 
 // Returns the current Go version in semver format, e.g. v1.14.4
