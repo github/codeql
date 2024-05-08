@@ -842,9 +842,7 @@ class TranslatedCatchAnyHandler extends TranslatedHandler {
   }
 }
 
-class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
-  override IfStmt stmt;
-
+abstract class TranslatedIfLikeStmt extends TranslatedStmt, ConditionContext {
   override Instruction getFirstInstruction(EdgeKind kind) {
     if this.hasInitialization()
     then result = this.getInitialization().getFirstInstruction(kind)
@@ -867,25 +865,21 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
     id = 3 and result = this.getElse()
   }
 
-  private predicate hasInitialization() { exists(stmt.getInitialization()) }
+  abstract predicate hasInitialization();
 
-  private TranslatedStmt getInitialization() {
-    result = getTranslatedStmt(stmt.getInitialization())
-  }
+  abstract TranslatedStmt getInitialization();
 
-  private TranslatedCondition getCondition() {
-    result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
-  }
+  abstract TranslatedCondition getCondition();
 
   private Instruction getFirstConditionInstruction(EdgeKind kind) {
     result = this.getCondition().getFirstInstruction(kind)
   }
 
-  private TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
+  abstract TranslatedStmt getThen();
 
-  private TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
+  abstract TranslatedStmt getElse();
 
-  private predicate hasElse() { exists(stmt.getElse()) }
+  abstract predicate hasElse();
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) { none() }
 
@@ -914,76 +908,44 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 }
 
-class TranslatedConstExprIfStmt extends TranslatedStmt, ConditionContext {
-  override ConstexprIfStmt stmt;
+class TranslatedIfStmt extends TranslatedIfLikeStmt {
+  override IfStmt stmt;
 
-  override Instruction getFirstInstruction(EdgeKind kind) {
-    if this.hasInitialization()
-    then result = this.getInitialization().getFirstInstruction(kind)
-    else result = this.getFirstConditionInstruction(kind)
-  }
+  override predicate hasInitialization() { exists(stmt.getInitialization()) }
 
-  override Instruction getALastInstructionInternal() {
-    result = this.getElse().getALastInstruction() or result = this.getThen().getALastInstruction()
-  }
-
-  override TranslatedElement getLastChild() { result = this.getElse() or result = this.getThen() }
-
-  override TranslatedElement getChildInternal(int id) {
-    id = 0 and result = this.getInitialization()
-    or
-    id = 1 and result = this.getCondition()
-    or
-    id = 2 and result = this.getThen()
-    or
-    id = 3 and result = this.getElse()
-  }
-
-  private predicate hasInitialization() { exists(stmt.getInitialization()) }
-
-  private TranslatedStmt getInitialization() {
+  override TranslatedStmt getInitialization() {
     result = getTranslatedStmt(stmt.getInitialization())
   }
 
-  private TranslatedCondition getCondition() {
+  override TranslatedCondition getCondition() {
     result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
   }
 
-  private Instruction getFirstConditionInstruction(EdgeKind kind) {
-    result = this.getCondition().getFirstInstruction(kind)
+  override TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
+
+  override TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
+
+  override predicate hasElse() { exists(stmt.getElse()) }
+}
+
+class TranslatedConstExprIfStmt extends TranslatedIfLikeStmt {
+  override ConstexprIfStmt stmt;
+
+  override predicate hasInitialization() { exists(stmt.getInitialization()) }
+
+  override TranslatedStmt getInitialization() {
+    result = getTranslatedStmt(stmt.getInitialization())
   }
 
-  private TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
-
-  private TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
-
-  private predicate hasElse() { exists(stmt.getElse()) }
-
-  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) { none() }
-
-  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
-    child = this.getCondition() and
-    result = this.getThen().getFirstInstruction(kind)
+  override TranslatedCondition getCondition() {
+    result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
-    child = this.getCondition() and
-    if this.hasElse()
-    then result = this.getElse().getFirstInstruction(kind)
-    else result = this.getParent().getChildSuccessor(this, kind)
-  }
+  override TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
 
-  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
-    child = this.getInitialization() and
-    result = this.getFirstConditionInstruction(kind)
-    or
-    (child = this.getThen() or child = this.getElse()) and
-    result = this.getParent().getChildSuccessor(this, kind)
-  }
+  override TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    none()
-  }
+  override predicate hasElse() { exists(stmt.getElse()) }
 }
 
 abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
