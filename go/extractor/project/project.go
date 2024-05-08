@@ -54,8 +54,14 @@ type GoVersionInfo = util.SemVer
 // 1. The Go version specified in the `go.work` file, if any.
 // 2. The greatest Go version specified in any `go.mod` file, if any.
 func (workspace *GoWorkspace) RequiredGoVersion() util.SemVer {
-	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
-		// If we have parsed a `go.work` file, return the version number from it.
+	// If we have parsed a `go.work` file, we prioritise versions from it over those in individual `go.mod`
+	// files. We are interested in toolchain versions, so if there is an explicit toolchain declaration in
+	// a `go.work` file, we use that. Otherwise, we fall back to the language version in the `go.work` file
+	// and use that as toolchain version. If we didn't parse a `go.work` file, then we try to find the
+	// greatest version contained in `go.mod` files.
+	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Toolchain != nil {
+		return util.NewSemVer(workspace.WorkspaceFile.Toolchain.Name)
+	} else if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
 		return util.NewSemVer(workspace.WorkspaceFile.Go.Version)
 	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
