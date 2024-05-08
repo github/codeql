@@ -295,5 +295,3 @@ private class InputTree extends LeafTree instanceof Input { }
 private class ScalarValueLeaf extends LeafTree instanceof ScalarValue { }
 
 private class ExpressionLeaf extends LeafTree instanceof Expression { }
-
-predicate test(ScalarValueLeaf f) { any() }
