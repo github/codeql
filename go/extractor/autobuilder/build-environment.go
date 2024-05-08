@@ -8,6 +8,7 @@ import (
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
 	"github.com/github/codeql-go/extractor/toolchain"
+	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/mod/semver"
 )
 
@@ -30,13 +31,13 @@ func (v versionInfo) String() string {
 // Check if `version` is lower than `minGoVersion`. Note that for this comparison we ignore the
 // patch part of the version, so 1.20.1 and 1.20 are considered equal.
 func belowSupportedRange(version string) bool {
-	return semver.Compare(semver.MajorMinor("v"+version), "v"+minGoVersion) < 0
+	return semver.Compare(semver.MajorMinor(util.FormatSemVer(version)), util.FormatSemVer(minGoVersion)) < 0
 }
 
 // Check if `version` is higher than `maxGoVersion`. Note that for this comparison we ignore the
 // patch part of the version, so 1.20.1 and 1.20 are considered equal.
 func aboveSupportedRange(version string) bool {
-	return semver.Compare(semver.MajorMinor("v"+version), "v"+maxGoVersion) > 0
+	return semver.Compare(semver.MajorMinor(util.FormatSemVer(version)), util.FormatSemVer(maxGoVersion)) > 0
 }
 
 // Check if `version` is lower than `minGoVersion` or higher than `maxGoVersion`. Note that for
@@ -113,7 +114,7 @@ func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg, version string) {
 			"). Requesting the maximum supported version of Go (" + maxGoVersion + ")."
 		version = maxGoVersion
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooLow(msg)
-	} else if semver.Compare("v"+maxGoVersion, "v"+v.goEnvVersion) > 0 {
+	} else if semver.Compare(util.FormatSemVer(maxGoVersion), util.FormatSemVer(v.goEnvVersion)) > 0 {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
 		// is installed is supported and below the maximum supported version. We install the
 		// maximum supported version as a best effort.
@@ -195,7 +196,7 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 			v.goModVersion + ")."
 		version = v.goModVersion
 		diagnostics.EmitGoModVersionSupportedAndGoEnvUnsupported(msg)
-	} else if semver.Compare("v"+v.goModVersion, "v"+v.goEnvVersion) > 0 {
+	} else if semver.Compare(util.FormatSemVer(v.goModVersion), util.FormatSemVer(v.goEnvVersion)) > 0 {
 		// The version of Go that is installed is supported. The version in the `go.mod` file is
 		// supported and is higher than the version that is installed. We install the version from
 		// the `go.mod` file.
@@ -233,18 +234,18 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 // +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
 func getVersionToInstall(v versionInfo) (msg, version string) {
 	if !v.goModVersionFound {
-		return getVersionWhenGoModVersionNotFound(v)
+		msg, version = getVersionWhenGoModVersionNotFound(v)
+	} else if aboveSupportedRange(v.goModVersion) {
+		msg, version = getVersionWhenGoModVersionTooHigh(v)
+	} else if belowSupportedRange(v.goModVersion) {
+		msg, version = getVersionWhenGoModVersionTooLow(v)
+	} else {
+		msg, version = getVersionWhenGoModVersionSupported(v)
 	}
 
-	if aboveSupportedRange(v.goModVersion) {
-		return getVersionWhenGoModVersionTooHigh(v)
-	}
-
-	if belowSupportedRange(v.goModVersion) {
-		return getVersionWhenGoModVersionTooLow(v)
-	}
-
-	return getVersionWhenGoModVersionSupported(v)
+	// Make sure that we return a normal version string, not one starting with "v"
+	version = util.UnformatSemVer(version)
+	return
 }
 
 // Output some JSON to stdout specifying the version of Go to install, unless `version` is the

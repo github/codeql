@@ -23,4 +23,5 @@ go_test(
     name = "autobuilder_test",
     srcs = ["build-environment_test.go"],
     embed = [":autobuilder"],
+    deps = ["//go/extractor/util"],
 )

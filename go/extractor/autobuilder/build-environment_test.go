@@ -1,6 +1,10 @@
 package autobuilder
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/github/codeql-go/extractor/util"
+)
 
 func TestGetVersionToInstall(t *testing.T) {
 	tests := map[versionInfo]string{
@@ -41,6 +45,18 @@ func TestGetVersionToInstall(t *testing.T) {
 	}
 	for input, expected := range tests {
 		_, actual := getVersionToInstall(input)
+		if actual != expected {
+			t.Errorf("Expected getVersionToInstall(\"%s\") to be \"%s\", but got \"%s\".", input, expected, actual)
+		}
+
+		if input.goEnvVersionFound {
+			input.goEnvVersion = util.FormatSemVer(input.goEnvVersion)
+		}
+		if input.goEnvVersionFound {
+			input.goModVersion = util.FormatSemVer(input.goModVersion)
+		}
+
+		_, actual = getVersionToInstall(input)
 		if actual != expected {
 			t.Errorf("Expected getVersionToInstall(\"%s\") to be \"%s\", but got \"%s\".", input, expected, actual)
 		}
