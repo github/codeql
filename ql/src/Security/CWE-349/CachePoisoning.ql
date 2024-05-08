@@ -43,4 +43,4 @@ where
     // (The cache specific token can be leaked even for non-privileged workflows)
     checkout.getAFollowingStep() instanceof PoisonableStep
   )
-select checkout, "Potential cache poisoning on privileged workflow."
+select checkout, "Potential cache poisoning of a default branch."
