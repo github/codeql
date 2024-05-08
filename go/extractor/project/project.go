@@ -60,11 +60,15 @@ type GoWorkspace struct {
 	Extracted     bool                    // A value indicating whether this workspace was extracted successfully
 }
 
-// Represents a nullable version string.
+// Represents a nullable version string. Use `VersionNotFound` and `VersionFound`
+// instead of constructing values of this type directly.
 type GoVersionInfo struct {
-	// The version string, if any
+	// The semantic version string, such as "v1.20.0-rc1", if any.
+	// This is a valid semantic version if `Found` is `true` or the empty string if not.
 	Version string
-	// A value indicating whether a version string was found
+	// A value indicating whether a version string was found.
+	// If this value is `true`, then `Version` is a valid semantic version.
+	// IF this value is `false`, then `Version` is the empty string.
 	Found bool
 }
 
