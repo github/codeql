@@ -14,7 +14,7 @@ pub mod simple;
 /// Sets the tracing level based on the environment variables
 /// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
 /// falling back to `warn` if neither is set.
-pub fn set_tracing_level(language: &str) -> () {
+pub fn set_tracing_level(language: &str) {
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
