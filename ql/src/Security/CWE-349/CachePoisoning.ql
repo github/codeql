@@ -16,8 +16,10 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
 
-from LocalJob j, PRHeadCheckoutStep checkout
+from LocalJob j, PRHeadCheckoutStep checkout, Step s
 where
+  // Excluding privileged workflows since they can be easily exploited in similar circumstances
+  not j.isPrivileged() and
   // The workflow runs in the context of the default branch
   // TODO: (require to collect trigger types)
   // - add push to default branch?
@@ -37,10 +39,13 @@ where
   (
     // The job writes to the cache
     // (No need to follow the checkout step as the cache writing is normally done after the job completes)
-    j.getAStep() instanceof CacheWritingStep
+    j.getAStep() = s and
+    s instanceof CacheWritingStep
     or
     // The job executes checked-out code
     // (The cache specific token can be leaked even for non-privileged workflows)
-    checkout.getAFollowingStep() instanceof PoisonableStep
+    checkout.getAFollowingStep() = s and
+    s instanceof PoisonableStep
   )
-select checkout, "Potential cache poisoning on privileged workflow."
+select checkout, "Untrusted checked-out code may lead to cache poisoning on step $@.", s,
+  s.toString()
