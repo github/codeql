@@ -47,5 +47,5 @@ where
     checkout.getAFollowingStep() = s and
     s instanceof PoisonableStep
   )
-select checkout, "Untrusted checked-out code may lead to cache poisoning on step $@.", s,
+select checkout, "Potential cache poisoning in the context of the default branch on step $@.", s,
   s.toString()
