@@ -31,6 +31,7 @@ Reviewing the code above, the issue can be fixed by simply deleting the additona
 not to free <code>new_buffer</code> as this pointer is returned by the function.
 </p>
 <sample src="DoubleFreeGood.cpp" />
+<p>
 In the next example, <code>task</code> may be deleted twice, if an exception occurs inside the <code>try</code>
 block after the first <code>delete</code>:
 </p>
