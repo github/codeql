@@ -49,6 +49,21 @@ runs:
           cd go
           make check-formatting
 
+    - name: Compile qhelp files to markdown
+      if: inputs.run-code-checks == 'true' && !cancelled()
+      id: markdown
+      shell: bash
+      run: |
+        cd go
+        env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+
+    - name: Upload qhelp markdown
+      if: inputs.run-code-checks == 'true' && !cancelled()
+      uses: actions/upload-artifact@v3
+      with:
+        name: qhelp-markdown
+        path: go/qhelp-out/**/*.md
+
     - name: Cache compilation cache
       id: query-cache
       uses: ./.github/actions/cache-query-compilation
