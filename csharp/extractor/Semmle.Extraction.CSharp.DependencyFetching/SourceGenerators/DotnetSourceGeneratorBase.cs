@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // group additional files by closes project file:
             var projects = fileProvider.Projects
-                .Select(p => (File: p, Directory: SafeGetDirectoryName(p)))
+                .Select(p => (File: p, Directory: FileUtils.SafeGetDirectoryName(p, logger)))
                 .Where(p => p.Directory.Length > 0);
 
             var groupedFiles = new Dictionary<string, List<string>>();
@@ -90,30 +90,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // It's okay, we tried our best to generate source files.
                 logger.LogInfo($"Failed to generate source files from {FileType} files: {ex.Message}");
                 return [];
-            }
-        }
-
-        private string SafeGetDirectoryName(string fileName)
-        {
-            try
-            {
-                var dir = Path.GetDirectoryName(fileName);
-                if (dir is null)
-                {
-                    return "";
-                }
-
-                if (!dir.EndsWith(Path.DirectorySeparatorChar))
-                {
-                    dir += Path.DirectorySeparatorChar;
-                }
-
-                return dir;
-            }
-            catch (Exception ex)
-            {
-                logger.LogDebug($"Failed to get directory name for {fileName}: {ex.Message}");
-                return "";
             }
         }
 

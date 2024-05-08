@@ -19,6 +19,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             this.logger = logger;
             this.Exec = exec;
+            logger.LogInfo($"Using .NET CLI executable: '{Exec}'");
         }
 
         private ProcessStartInfo MakeDotnetStartInfo(string args, string? workingDirectory)
@@ -43,7 +44,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool RunCommandAux(string args, string? workingDirectory, out IList<string> output, bool silent)
         {
             var dirLog = string.IsNullOrWhiteSpace(workingDirectory) ? "" : $" in {workingDirectory}";
-            logger.LogInfo($"Running {Exec} {args}{dirLog}");
+            logger.LogInfo($"Running '{Exec} {args}'{dirLog}");
             var pi = MakeDotnetStartInfo(args, workingDirectory);
             var threadId = Environment.CurrentManagedThreadId;
             void onOut(string s) => logger.Log(silent ? Severity.Debug : Severity.Info, s, threadId);
@@ -51,7 +52,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {
-                logger.LogError($"Command {Exec} {args}{dirLog} failed with exit code {exitCode}");
+                logger.LogError($"Command '{Exec} {args}'{dirLog} failed with exit code {exitCode}");
                 return false;
             }
             return true;

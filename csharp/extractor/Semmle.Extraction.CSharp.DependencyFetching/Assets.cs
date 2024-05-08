@@ -16,6 +16,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Contains the dependencies found in the parsed assets files.
+        /// </summary>
+        public DependencyContainer Dependencies { get; } = new();
+
         internal Assets(ILogger logger)
         {
             this.logger = logger;
@@ -72,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     "json.net"
         ///   }
         /// </summary>
-        private void AddPackageDependencies(JObject json, DependencyContainer dependencies)
+        private void AddPackageDependencies(JObject json, string jsonPath)
         {
             // If there is more than one framework we need to pick just one.
             // To ensure stability we pick one based on the lexicographic order of
@@ -86,7 +91,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                logger.LogDebug("No references found in the targets section in the assets file.");
+                logger.LogDebug($"No references found in the targets section in '{jsonPath}'");
                 return;
             }
 
@@ -107,13 +112,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         // If this is a framework reference then include everything.
                         if (FrameworkPackageNames.AllFrameworks.Any(framework => name.StartsWith(framework)))
                         {
-                            dependencies.AddFramework(name);
+                            Dependencies.AddFramework(name);
                         }
                         return;
                     }
 
                     info.Compile
-                        .ForEach(r => dependencies.Add(name, r.Key));
+                        .ForEach(r => Dependencies.Add(name, r.Key));
                 });
 
             return;
@@ -149,7 +154,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     "microsoft.netcore.app.ref"
         ///   }
         /// </summary>
-        private void AddFrameworkDependencies(JObject json, DependencyContainer dependencies)
+        private void AddFrameworkDependencies(JObject json, string jsonPath)
         {
 
             var frameworks = json
@@ -158,7 +163,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (frameworks is null)
             {
-                logger.LogDebug("No framework section in assets.json.");
+                logger.LogDebug($"No framework section in '{jsonPath}'.");
                 return;
             }
 
@@ -172,13 +177,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                logger.LogDebug("No framework references in assets.json.");
+                logger.LogDebug($"No framework references in '{jsonPath}'.");
                 return;
             }
 
             references
                 .Properties()
-                .ForEach(f => dependencies.AddFramework($"{f.Name}.Ref".ToLowerInvariant()));
+                .ForEach(f => Dependencies.AddFramework($"{f.Name}.Ref".ToLowerInvariant()));
         }
 
         /// <summary>
@@ -186,13 +191,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (together with used package information) required for compilation.
         /// </summary>
         /// <returns>True if parsing succeeds, otherwise false.</returns>
-        public bool TryParse(string json, DependencyContainer dependencies)
+        public bool TryParse(string json)
         {
             try
             {
                 var obj = JObject.Parse(json);
-                AddPackageDependencies(obj, dependencies);
-                AddFrameworkDependencies(obj, dependencies);
+                AddPackageDependencies(obj, json);
+                AddFrameworkDependencies(obj, json);
                 return true;
             }
             catch (Exception e)
@@ -217,19 +222,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public static DependencyContainer GetCompilationDependencies(ILogger logger, IEnumerable<string> assets)
+        /// <summary>
+        /// Add the dependencies from the assets file to the dependencies.
+        /// </summary>
+        /// <param name="asset">Path to an assets file.</param>
+        public void AddDependencies(string asset)
         {
-            var parser = new Assets(logger);
-            var dependencies = new DependencyContainer();
-            assets.ForEach(asset =>
+            if (TryReadAllText(asset, logger, out var json))
             {
-                if (TryReadAllText(asset, logger, out var json))
-                {
-                    parser.TryParse(json, dependencies);
-                }
-            });
-            return dependencies;
+                TryParse(json);
+            }
         }
+
+        /// <summary>
+        /// Add the dependencies from the assets files to the dependencies.
+        /// </summary>
+        /// <param name="assets">Collection of paths to assets files.</param>
+        public void AddDependenciesRange(IEnumerable<string> assets) =>
+            assets.ForEach(AddDependencies);
     }
 
     internal static class JsonExtensions

@@ -1,5 +1,5 @@
-load("@semmle_code//:dist.bzl", "dist")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@semmle_code//:dist.bzl", "dist")
 load("@semmle_code//buildutils-internal:zipmerge.bzl", "zipmerge")
 
 package(default_visibility = ["//visibility:public"])

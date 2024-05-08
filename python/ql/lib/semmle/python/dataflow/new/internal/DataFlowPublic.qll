@@ -638,7 +638,7 @@ newtype TContent =
     //   name = any(AccessPathToken a).getAnArgument("Attribute")
     // instead we use a qltest to alert if we write a new summary in QL that uses an
     // attribute -- see
-    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    // python/ql/test/library-tests/dataflow/summaries-checks/missing-attribute-content.ql
     attr in ["re", "string", "pattern"]
     or
     //

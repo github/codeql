@@ -3,8 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 using Semmle.Util;
@@ -191,6 +189,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private HashSet<string> AddFrameworkDlls(HashSet<AssemblyLookupLocation> dllLocations)
         {
+            logger.LogInfo("Adding .NET Framework DLLs");
             var frameworkLocations = new HashSet<string>();
 
             var frameworkReferences = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferences);

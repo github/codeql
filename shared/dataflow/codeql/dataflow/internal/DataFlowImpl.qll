@@ -1119,9 +1119,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private SndLevelScopeOption getScope(RetNodeEx ret) {
-      result = SndLevelScopeOption::some(getSecondLevelScope(ret.asNode()))
+      result = SndLevelScopeOption::some(getSecondLevelScopeCached(ret.asNode()))
       or
-      result instanceof SndLevelScopeOption::None and not exists(getSecondLevelScope(ret.asNode()))
+      result instanceof SndLevelScopeOption::None and
+      not exists(getSecondLevelScopeCached(ret.asNode()))
     }
 
     pragma[nomagic]
@@ -1142,6 +1143,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
     }
 
+    pragma[nomagic]
+    private predicate returnCallEdgeInCtx1(
+      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCall call, NodeEx out, DataFlowCall ctx
+    ) {
+      returnCallEdge1(c, scope, call, out) and
+      c = viableImplInCallContextExt(call, ctx)
+    }
+
     private int ctxDispatchFanoutOnReturn(NodeEx out, DataFlowCall ctx) {
       exists(DataFlowCall call, DataFlowCallable c |
         simpleDispatchFanoutOnReturn(call, out) > 1 and
@@ -1151,8 +1160,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         mayBenefitFromCallContextExt(call, _) and
         result =
           count(DataFlowCallable tgt, SndLevelScopeOption scope |
-            tgt = viableImplInCallContextExt(call, ctx) and
-            returnCallEdge1(tgt, scope, call, out)
+            returnCallEdgeInCtx1(tgt, scope, call, out, ctx)
           )
       )
     }
@@ -3874,7 +3882,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       n1.getANonHiddenSuccessor(_) = n2 and directReach(n2)
     }
 
-    private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) = fastTC(pathSucc/2)(n1, n2)
+    private predicate tcSrc(PathNodeImpl n) { n.isFlowSource() or n.isSource(_) }
+
+    private predicate tcSink(PathNodeImpl n) { n.isFlowSink() or n instanceof PathNodeSink }
+
+    private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) =
+      doublyBoundedFastTC(pathSucc/2, tcSrc/1, tcSink/1)(n1, n2)
 
     /**
      * A `Node` augmented with a call context (except for sinks) and an access path.

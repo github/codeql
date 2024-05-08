@@ -228,7 +228,6 @@ irFlow
 | test.cpp:333:17:333:22 | call to source | test.cpp:337:10:337:18 | globalVar |
 | test.cpp:333:17:333:22 | call to source | test.cpp:339:10:339:18 | globalVar |
 | test.cpp:333:17:333:22 | call to source | test.cpp:343:10:343:18 | globalVar |
-| test.cpp:333:17:333:22 | call to source | test.cpp:349:10:349:18 | globalVar |
 | test.cpp:347:17:347:22 | call to source | test.cpp:337:10:337:18 | globalVar |
 | test.cpp:347:17:347:22 | call to source | test.cpp:339:10:339:18 | globalVar |
 | test.cpp:347:17:347:22 | call to source | test.cpp:343:10:343:18 | globalVar |
@@ -260,7 +259,6 @@ irFlow
 | test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:566:10:566:19 | * ... |
 | test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
 | test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |
-| test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:578:10:578:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:566:10:566:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |

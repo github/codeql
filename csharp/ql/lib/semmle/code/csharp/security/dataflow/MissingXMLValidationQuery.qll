@@ -4,6 +4,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.Xml
 private import semmle.code.csharp.security.Sanitizers
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
  * A data flow sink for untrusted user input processed as XML without validation against a known
  * schema.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /** Gets a string describing the reason why this is a sink. */
   abstract string getReason();
 }

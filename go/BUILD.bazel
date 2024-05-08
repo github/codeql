@@ -1,0 +1,93 @@
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+load("@rules_pkg//pkg:install.bzl", "pkg_install")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("//:defs.bzl", "codeql_platform")
+
+native_binary(
+    name = "gazelle",
+    src = "@gazelle//cmd/gazelle",
+    out = "gazelle.exe",
+    args = ["go/extractor"],
+)
+
+_gen_binaries = [
+    "@rules_go//go",
+    ":gazelle",
+    "//go/extractor/cli/go-gen-dbscheme",
+]
+
+py_binary(
+    name = "gen",
+    srcs = ["gen.py"],
+    args = ["$(rlocationpath %s)" % bin for bin in _gen_binaries],
+    data = _gen_binaries,
+    deps = ["@rules_python//python/runfiles"],
+)
+
+# this is an instance of the dbscheme kept in the bazel build tree
+# this allows everything that bazel builds to be up-to-date,
+# independently from whether //go:gen was already run to update the checked in files
+genrule(
+    name = "dbscheme",
+    outs = ["go.dbscheme"],
+    cmd = "$(execpath //go/extractor/cli/go-gen-dbscheme) $@",
+    tools = ["//go/extractor/cli/go-gen-dbscheme"],
+)
+
+pkg_files(
+    name = "resources",
+    srcs = [
+        "LICENSE",
+        "codeql-extractor.yml",
+        "ql/lib/go.dbscheme.stats",
+        ":dbscheme",
+    ],
+)
+
+pkg_filegroup(
+    name = "extractor-pack-generic",
+    srcs = [
+        ":resources",
+        "//go/codeql-tools",
+        "//go/downgrades",
+        "//go/extractor:tokenizer",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "extractor-pack-arch",
+    srcs = [
+        "//go/extractor/cli/go-autobuilder",
+        "//go/extractor/cli/go-bootstrap",
+        "//go/extractor/cli/go-build-runner",
+        "//go/extractor/cli/go-extractor",
+        "//go/extractor/cli/go-gen-dbscheme",
+        "//go/extractor/cli/go-tokenizer",
+    ],
+    attributes = pkg_attributes(mode = "0755"),
+    prefix = "tools/" + codeql_platform,
+    visibility = ["//visibility:public"],
+)
+
+pkg_filegroup(
+    name = "extractor-pack",
+    srcs = [
+        ":extractor-pack-arch",
+        ":extractor-pack-generic",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_install(
+    name = "_extractor_pack",
+    srcs = [":extractor-pack"],
+)
+
+py_binary(
+    name = "create-extractor-pack",
+    srcs = ["create_extractor_pack.py"],
+    env = {"REPO_NAME": repo_name()},
+    main = "create_extractor_pack.py",
+    deps = ["_extractor_pack"],
+)

@@ -89,7 +89,7 @@ private module SensitiveDataModeling {
    */
   DataFlow::Node sensitiveLookupStringConst(SensitiveDataClassification classification) {
     // Note: If this is implemented with type-tracking, we will get cross-talk as
-    // illustrated in python/ql/test/experimental/dataflow/sensitive-data/test.py
+    // illustrated in python/ql/test/library-tests/dataflow/sensitive-data/test.py
     exists(DataFlow::LocalSourceNode source |
       source.asExpr().(StringLiteral).getText() = sensitiveString(classification) and
       source.flowsTo(result)
