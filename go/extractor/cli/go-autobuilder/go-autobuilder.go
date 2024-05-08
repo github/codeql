@@ -553,14 +553,17 @@ func installDependenciesAndBuild() {
 	// Track all projects which could not be extracted successfully
 	var unsuccessfulProjects = []string{}
 
-	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
-	for i, workspace := range workspaces {
+	// Attempt to automatically fix issues with each workspace
+	for _, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
 		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
 		tryUpdateGoModAndGoSum(workspace)
+	}
 
+	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
+	for i, workspace := range workspaces {
 		// check whether an explicit dependency installation command was provided
 		inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
 		shouldInstallDependencies := false
