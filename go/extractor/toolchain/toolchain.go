@@ -104,7 +104,8 @@ func InstallVersion(workingDir string, version string) bool {
 	return true
 }
 
-// Converts a Go version to a semantic version.
+// Converts a Go version to a semantic version. For example, "1.20" becomes "v1.20" and
+// "1.22rc1" becomes "v1.22.0-rc1".
 func GoVersionToSemVer(goVersion string) string {
 	// Go versions don't follow the SemVer format, but the only exception we normally care about
 	// is release candidates; so this is a horrible hack to convert e.g. `1.22rc1` into `1.22-rc1`
@@ -117,7 +118,8 @@ func GoVersionToSemVer(goVersion string) string {
 	}
 }
 
-// Converts a Go toolchain version of the form "go1.2.3" to a semantic version.
+// Converts a Go toolchain version to a semantic version. For example, "go1.2.3" becomes "v1.2.3"
+// and "go1.20rc1" becomes "v1.20.0-rc1".
 func ToolchainVersionToSemVer(toolchainVersion string) string {
 	if !strings.HasPrefix(toolchainVersion, "go") {
 		log.Fatalf("Expected Go toolchain version of the form 'go1.2.3'; got '%s'", toolchainVersion)
