@@ -1,0 +1,12 @@
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  pr-comment:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - run: |
+          echo ${{ github.event.comment.body }}
+

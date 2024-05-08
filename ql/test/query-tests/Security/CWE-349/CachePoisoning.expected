@@ -1,5 +1,6 @@
-| .github/workflows/test1.yml:17:9:21:6 | Uses Step | Potential cache poisoning on privileged workflow. |
-| .github/workflows/test2.yml:12:9:16:6 | Uses Step | Potential cache poisoning on privileged workflow. |
-| .github/workflows/test3.yml:12:9:20:6 | Uses Step | Potential cache poisoning on privileged workflow. |
-| .github/workflows/test6.yml:12:9:16:6 | Uses Step | Potential cache poisoning on privileged workflow. |
-| .github/workflows/test7.yml:12:9:15:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test1.yml:12:9:17:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test2.yml:9:9:12:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test3.yml:9:9:12:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test6.yml:9:9:12:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test7.yml:9:9:12:6 | Uses Step | Potential cache poisoning on privileged workflow. |
+| .github/workflows/test8.yml:12:9:17:6 | Uses Step | Potential cache poisoning on privileged workflow. |
