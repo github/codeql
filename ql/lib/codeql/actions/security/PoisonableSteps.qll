@@ -43,10 +43,17 @@ class LocalCommandExecutionRunStep extends PoisonableStep, Run {
       or
       // sh xxxx
       cmd = line.regexpCapture("(^|\\s+)(ba|z|fi)?sh\\s+(.*)", 3)
+      or
+      // node xxxx
+      cmd = line.regexpCapture("(^|\\s+)(node|python|ruby|go)\\s+(.*)", 3)
     )
   }
 
   string getCommand() { result = cmd }
+}
+
+class LocalActionUsesStep extends PoisonableStep, UsesStep {
+  LocalActionUsesStep() { this.getCallee().matches("./%") }
 }
 
 class EnvVarInjectionRunStep extends PoisonableStep, Run {
