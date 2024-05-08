@@ -375,6 +375,8 @@ abstract class Uses extends AstNode instanceof UsesImpl {
 
   string getVersion() { result = super.getVersion() }
 
+  int getMajorVersion() { result = super.getMajorVersion() }
+
   string getArgument(string argName) { result = super.getArgument(argName) }
 
   Expression getArgumentExpr(string argName) { result = super.getArgumentExpr(argName) }

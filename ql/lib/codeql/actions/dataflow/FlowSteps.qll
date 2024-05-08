@@ -5,6 +5,7 @@
 private import actions
 private import codeql.util.Unit
 private import codeql.actions.DataFlow
+private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
 
@@ -41,10 +42,6 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
     value.matches("%$" + ["", "{", "ENV{"] + varName + "%") and
     succ.asExpr() = run.getScriptScalar()
   )
-}
-
-class EnvToRunTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) { envToRunStep(node1, node2) }
 }
 
 /**
@@ -119,8 +116,57 @@ predicate artifactDownloadToUseStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
 }
 
-class ArtifactDownloadToUseTaintStep extends AdditionalTaintStep {
+/**
+ * A read of the _files field of the dorny/paths-filter action.
+ */
+predicate dornyPathsFilterTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(StepsExpression o |
+    pred instanceof DornyPathsFilterSource and
+    o.getStepId() = pred.asExpr().(UsesStep).getId() and
+    o.getFieldName().matches("%_files") and
+    succ.asExpr() = o
+  )
+}
+
+/**
+ * A read of user-controlled field of the tj-actions/changed-files action.
+ */
+predicate tjActionsChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(StepsExpression o |
+    pred instanceof TJActionsChangedFilesSource and
+    o.getTarget() = pred.asExpr() and
+    o.getStepId() = pred.asExpr().(UsesStep).getId() and
+    o.getFieldName() =
+      [
+        "added_files", "copied_files", "deleted_files", "modified_files", "renamed_files",
+        "all_old_new_renamed_files", "type_changed_files", "unmerged_files", "unknown_files",
+        "all_changed_and_modified_files", "all_changed_files", "other_changed_files",
+        "all_modified_files", "other_modified_files", "other_deleted_files", "modified_keys",
+        "changed_keys"
+      ] and
+    succ.asExpr() = o
+  )
+}
+
+/**
+ * A read of user-controlled field of the tj-actions/verify-changed-files action.
+ */
+predicate tjActionsVerifyChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(StepsExpression o |
+    pred instanceof TJActionsChangedFilesSource and
+    o.getTarget() = pred.asExpr() and
+    o.getStepId() = pred.asExpr().(UsesStep).getId() and
+    o.getFieldName() = "changed_files" and
+    succ.asExpr() = o
+  )
+}
+
+class TaintSteps extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    artifactDownloadToUseStep(node1, node2)
+    envToRunStep(node1, node2) or
+    artifactDownloadToUseStep(node1, node2) or
+    dornyPathsFilterTaintStep(node1, node2) or
+    tjActionsChangedFilesTaintStep(node1, node2) or
+    tjActionsVerifyChangedFilesTaintStep(node1, node2)
   }
 }

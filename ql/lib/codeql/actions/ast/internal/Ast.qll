@@ -839,6 +839,8 @@ abstract class UsesImpl extends AstNodeImpl {
 
   abstract string getVersion();
 
+  int getMajorVersion() { result = this.getVersion().regexpReplaceAll("\\..*", "").toInt() }
+
   /** Gets the argument expression for the given key. */
   string getArgument(string key) {
     exists(ScalarValueImpl scalar |
@@ -883,8 +885,10 @@ class UsesStepImpl extends StepImpl, UsesImpl {
         ).toLowerCase()
   }
 
-  /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
-  override string getVersion() { result = u.getValue().regexpCapture(usesParser(), 3) }
+  /** Gets the version reference used when checking out the Action, e.g. `2` in `actions/checkout@v2`. */
+  override string getVersion() {
+    result = u.getValue().regexpCapture(usesParser(), 3).regexpReplaceAll("^v", "")
+  }
 
   override string toString() {
     if exists(this.getId()) then result = "Uses Step: " + this.getId() else result = "Uses Step"
@@ -916,12 +920,12 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
           u.getValue().regexpCapture(repoUsesParser(), 3)
   }
 
-  /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
+  /** Gets the version reference used when checking out the Action, e.g. `2` in `actions/checkout@v2`. */
   override string getVersion() {
     exists(YamlString name |
       n.lookup("uses") = name and
       if not name.getValue().matches("\\.%")
-      then result = name.getValue().regexpCapture(repoUsesParser(), 4)
+      then result = name.getValue().regexpCapture(repoUsesParser(), 4).regexpReplaceAll("^v", "")
       else none()
     )
   }
