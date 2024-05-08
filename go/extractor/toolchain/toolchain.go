@@ -194,8 +194,8 @@ func RunListWithEnv(format string, patterns []string, additionalEnv []string, fl
 	out, err := cmd.Output()
 
 	if err != nil {
-		if err, ok := err.(*exec.ExitError); ok {
-			log.Printf("Warning: go list command failed, output below:\nstdout:\n%s\nstderr:\n%s\n", out, err.Stderr)
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			log.Printf("Warning: go list command failed, output below:\nstdout:\n%s\nstderr:\n%s\n", out, exitErr.Stderr)
 		} else {
 			log.Printf("Warning: Failed to run go list: %s", err.Error())
 		}
