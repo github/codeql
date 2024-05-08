@@ -2540,18 +2540,16 @@ void destructor_possibly_not_handled() {
   }
 }
 
-// ClassWithDestructor getClassWithDestructor();
+ClassWithDestructor getClassWithDestructor();
 
-// void this_inconsistency(bool b) {
-//   if (const ClassWithDestructor& a = getClassWithDestructor())
-//     ;
-// }
+void this_inconsistency(bool b) {
+  if (const ClassWithDestructor& a = getClassWithDestructor())
+    ;
+}
 
-// constexpr bool initialization_with_destructor_bool = true;
-
-// void constexpr_inconsistency(bool b) {
-//   if constexpr (const ClassWithDestructor& a = getClassWithDestructor(); initialization_with_destructor_bool)
-//     ;
-// }
+void constexpr_inconsistency(bool b) {
+  if constexpr (const ClassWithDestructor& a = getClassWithDestructor(); initialization_with_destructor_bool)
+    ;
+}
 
 // semmle-extractor-options: -std=c++20 --clang

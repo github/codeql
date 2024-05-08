@@ -18251,6 +18251,90 @@ ir.cpp:
 # 2534|     v2534_9(void)                        = ReturnVoid                                 : 
 #-----|   Goto -> Block 1
 
+# 2545| void this_inconsistency(bool)
+# 2545|   Block 0
+# 2545|     v2545_1(void)                          = EnterFunction                           : 
+# 2545|     m2545_2(unknown)                       = AliasedDefinition                       : 
+# 2545|     m2545_3(unknown)                       = InitializeNonLocal                      : 
+# 2545|     m2545_4(unknown)                       = Chi                                     : total:m2545_2, partial:m2545_3
+# 2545|     r2545_5(glval<bool>)                   = VariableAddress[b]                      : 
+# 2545|     m2545_6(bool)                          = InitializeParameter[b]                  : &:r2545_5
+# 2546|     r2546_1(glval<ClassWithDestructor &>)  = VariableAddress[a]                      : 
+# 2546|     r2546_2(glval<ClassWithDestructor>)    = VariableAddress[#temp2546:38]           : 
+# 2546|     r2546_3(glval<unknown>)                = FunctionAddress[getClassWithDestructor] : 
+# 2546|     r2546_4(ClassWithDestructor)           = Call[getClassWithDestructor]            : func:r2546_3
+# 2546|     m2546_5(unknown)                       = ^CallSideEffect                         : ~m2545_4
+# 2546|     m2546_6(unknown)                       = Chi                                     : total:m2545_4, partial:m2546_5
+# 2546|     m2546_7(ClassWithDestructor)           = Store[#temp2546:38]                     : &:r2546_2, r2546_4
+# 2546|     m2546_8(unknown)                       = Chi                                     : total:m2546_6, partial:m2546_7
+# 2546|     r2546_9(glval<ClassWithDestructor>)    = Convert                                 : r2546_2
+# 2546|     r2546_10(ClassWithDestructor &)        = CopyValue                               : r2546_9
+# 2546|     m2546_11(ClassWithDestructor &)        = Store[a]                                : &:r2546_1, r2546_10
+# 2546|     r2546_12(glval<ClassWithDestructor &>) = VariableAddress[a]                      : 
+# 2546|     r2546_13(ClassWithDestructor &)        = Load[a]                                 : &:r2546_12, m2546_11
+# 2546|     r2546_14(ClassWithDestructor)          = CopyValue                               : r2546_13
+# 2546|     r2546_15(glval<unknown>)               = FunctionAddress[operator bool]          : 
+# 2546|     r2546_16(bool)                         = Call[operator bool]                     : func:r2546_15, this:r2546_14
+# 2546|     m2546_17(unknown)                      = ^CallSideEffect                         : ~m2546_8
+# 2546|     m2546_18(unknown)                      = Chi                                     : total:m2546_8, partial:m2546_17
+# 2546|     v2546_19(void)                         = ^IndirectReadSideEffect[-1]             : &:r2546_14, ~m2546_18
+# 2546|     r2546_20(bool)                         = CopyValue                               : r2546_16
+# 2546|     v2546_21(void)                         = ConditionalBranch                       : r2546_20
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2547|   Block 1
+# 2547|     v2547_1(void)                       = NoOp                                  : 
+# 2547|     r2547_2(glval<ClassWithDestructor>) = CopyValue                             : r2546_2
+# 2547|     r2547_3(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2547|     v2547_4(void)                       = Call[~ClassWithDestructor]            : func:r2547_3, this:r2547_2
+# 2547|     m2547_5(unknown)                    = ^CallSideEffect                       : ~m2546_18
+# 2547|     m2547_6(unknown)                    = Chi                                   : total:m2546_18, partial:m2547_5
+# 2547|     v2547_7(void)                       = ^IndirectReadSideEffect[-1]           : &:r2547_2, ~m2547_6
+# 2547|     m2547_8(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]       : &:r2547_2
+# 2547|     m2547_9(unknown)                    = Chi                                   : total:m2547_6, partial:m2547_8
+#-----|   Goto -> Block 2
+
+# 2548|   Block 2
+# 2548|     m2548_1(unknown) = Phi          : from 0:~m2546_18, from 1:~m2547_9
+# 2548|     v2548_2(void)    = NoOp         : 
+# 2545|     v2545_7(void)    = ReturnVoid   : 
+# 2545|     v2545_8(void)    = AliasedUse   : ~m2548_1
+# 2545|     v2545_9(void)    = ExitFunction : 
+
+# 2550| void constexpr_inconsistency(bool)
+# 2550|   Block 0
+# 2550|     v2550_1(void)                         = EnterFunction                           : 
+# 2550|     m2550_2(unknown)                      = AliasedDefinition                       : 
+# 2550|     m2550_3(unknown)                      = InitializeNonLocal                      : 
+# 2550|     m2550_4(unknown)                      = Chi                                     : total:m2550_2, partial:m2550_3
+# 2550|     r2550_5(glval<bool>)                  = VariableAddress[b]                      : 
+# 2550|     m2550_6(bool)                         = InitializeParameter[b]                  : &:r2550_5
+# 2551|     r2551_1(glval<ClassWithDestructor &>) = VariableAddress[a]                      : 
+# 2551|     r2551_2(glval<ClassWithDestructor>)   = VariableAddress[#temp2551:48]           : 
+# 2551|     r2551_3(glval<unknown>)               = FunctionAddress[getClassWithDestructor] : 
+# 2551|     r2551_4(ClassWithDestructor)          = Call[getClassWithDestructor]            : func:r2551_3
+# 2551|     m2551_5(unknown)                      = ^CallSideEffect                         : ~m2550_4
+# 2551|     m2551_6(unknown)                      = Chi                                     : total:m2550_4, partial:m2551_5
+# 2551|     m2551_7(ClassWithDestructor)          = Store[#temp2551:48]                     : &:r2551_2, r2551_4
+# 2551|     r2551_8(glval<ClassWithDestructor>)   = Convert                                 : r2551_2
+# 2551|     r2551_9(ClassWithDestructor &)        = CopyValue                               : r2551_8
+# 2551|     m2551_10(ClassWithDestructor &)       = Store[a]                                : &:r2551_1, r2551_9
+# 2551|     r2551_11(bool)                        = Constant[1]                             : 
+# 2551|     v2551_12(void)                        = ConditionalBranch                       : r2551_11
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2552|   Block 1
+# 2552|     v2552_1(void) = NoOp         : 
+# 2553|     v2553_1(void) = NoOp         : 
+# 2550|     v2550_7(void) = ReturnVoid   : 
+# 2550|     v2550_8(void) = AliasedUse   : ~m2551_6
+# 2550|     v2550_9(void) = ExitFunction : 
+
+# 2550|   Block 2
+# 2550|     v2550_10(void) = Unreached : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

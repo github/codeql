@@ -22658,6 +22658,82 @@ ir.cpp:
 # 2541|         getQualifier(): [VariableAccess] x
 # 2541|             Type = [Class] ClassWithDestructor
 # 2541|             ValueCategory = lvalue
+# 2543| [TopLevelFunction] ClassWithDestructor getClassWithDestructor()
+# 2543|   <params>: 
+# 2545| [TopLevelFunction] void this_inconsistency(bool)
+# 2545|   <params>: 
+# 2545|     getParameter(0): [Parameter] b
+# 2545|         Type = [BoolType] bool
+# 2545|   getEntryPoint(): [BlockStmt] { ... }
+# 2546|     getStmt(0): [IfStmt] if (...) ... 
+# 2546|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 2546|           Type = [BoolType] bool
+# 2546|           ValueCategory = prvalue
+# 2546|         getChild(0): [FunctionCall] call to operator bool
+# 2546|             Type = [BoolType] bool
+# 2546|             ValueCategory = prvalue
+# 2546|           getQualifier(): [VariableAccess] a
+# 2546|               Type = [LValueReferenceType] const ClassWithDestructor &
+# 2546|               ValueCategory = prvalue(load)
+# 2546|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2546|               Type = [SpecifiedType] const ClassWithDestructor
+# 2546|               ValueCategory = prvalue(load)
+# 2546|         getInitializingExpr(): [FunctionCall] call to getClassWithDestructor
+# 2546|             Type = [Class] ClassWithDestructor
+# 2546|             ValueCategory = prvalue
+# 2546|         getInitializingExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2546|             Type = [LValueReferenceType] const ClassWithDestructor &
+# 2546|             ValueCategory = prvalue
+# 2546|           getExpr(): [CStyleCast] (const ClassWithDestructor)...
+# 2546|               Conversion = [GlvalueConversion] glvalue conversion
+# 2546|               Type = [SpecifiedType] const ClassWithDestructor
+# 2546|               ValueCategory = lvalue
+# 2546|             getExpr(): [TemporaryObjectExpr] temporary object
+# 2546|                 Type = [Class] ClassWithDestructor
+# 2546|                 ValueCategory = lvalue
+# 2547|       getThen(): [EmptyStmt] ;
+# 2547|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2547|           Type = [VoidType] void
+# 2547|           ValueCategory = prvalue
+# 2547|         getQualifier(): [ReuseExpr] reuse of temporary object
+# 2547|             Type = [Class] ClassWithDestructor
+# 2547|             ValueCategory = xvalue
+# 2548|     getStmt(1): [ReturnStmt] return ...
+# 2550| [TopLevelFunction] void constexpr_inconsistency(bool)
+# 2550|   <params>: 
+# 2550|     getParameter(0): [Parameter] b
+# 2550|         Type = [BoolType] bool
+# 2550|   getEntryPoint(): [BlockStmt] { ... }
+# 2551|     getStmt(0): [ConstexprIfStmt] if constexpr (...) ... 
+# 2551|       getInitialization(): [DeclStmt] declaration
+# 2551|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2551|             Type = [LValueReferenceType] const ClassWithDestructor &
+# 2551|           getVariable().getInitializer(): [Initializer] initializer for a
+# 2551|             getExpr(): [FunctionCall] call to getClassWithDestructor
+# 2551|                 Type = [Class] ClassWithDestructor
+# 2551|                 ValueCategory = prvalue
+# 2551|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2551|                 Type = [LValueReferenceType] const ClassWithDestructor &
+# 2551|                 ValueCategory = prvalue
+# 2551|               getExpr(): [CStyleCast] (const ClassWithDestructor)...
+# 2551|                   Conversion = [GlvalueConversion] glvalue conversion
+# 2551|                   Type = [SpecifiedType] const ClassWithDestructor
+# 2551|                   ValueCategory = lvalue
+# 2551|                 getExpr(): [TemporaryObjectExpr] temporary object
+# 2551|                     Type = [Class] ClassWithDestructor
+# 2551|                     ValueCategory = lvalue
+# 2551|       getCondition(): [VariableAccess] initialization_with_destructor_bool
+# 2551|           Type = [BoolType] bool
+# 2551|           Value = [VariableAccess] 1
+# 2551|           ValueCategory = prvalue(load)
+# 2552|       getThen(): [EmptyStmt] ;
+# 2552|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2552|           Type = [VoidType] void
+# 2552|           ValueCategory = prvalue
+# 2552|         getQualifier(): [ReuseExpr] reuse of temporary object
+# 2552|             Type = [Class] ClassWithDestructor
+# 2552|             ValueCategory = xvalue
+# 2553|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
