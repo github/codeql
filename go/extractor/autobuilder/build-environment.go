@@ -274,7 +274,7 @@ func IdentifyEnvironment() {
 
 	// Find the greatest Go version required by any of the workspaces.
 	greatestGoVersion := project.RequiredGoVersion(&workspaces)
-	v.goModVersion, v.goModVersionFound = greatestGoVersion.Version, greatestGoVersion.Found
+	v.goModVersion, v.goModVersionFound = greatestGoVersion.String(), greatestGoVersion != nil
 
 	// Find which, if any, version of Go is installed on the system already.
 	v.goEnvVersionFound = toolchain.IsInstalled()
