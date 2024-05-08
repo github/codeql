@@ -37,5 +37,5 @@ where
     )
   )
 select sink.getNode(), source, sink,
-  "Potential code injection in $@, which may be controlled by an external user.", sink,
+  "Unprivileged code injection in $@, which may lead to cache poisoning.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()
