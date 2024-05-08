@@ -349,7 +349,20 @@ class TJActionsVerifyChangedFilesSource extends RemoteFlowSource {
       u.getCallee() = "tj-actions/verify-changed-files" and
       (
         u.getArgument("safe_output") = "false" or
-        u.getMajorVersion() < 17
+        u.getMajorVersion() < 17 or
+        u.getVersion()
+            .matches([
+                  "54e20d3", "a9b6fd3", "30aa174", "7f1b21c", "54e20d3", "0409e18", "7da22d0",
+                  "7016858", "0409e18", "7517b83", "bad2f5d", "3b573ac", "7517b83", "f557547",
+                  "9ed3155", "f557547", "a3391b5", "a3391b5", "1d7ee97", "c432297", "6e986df",
+                  "fa6ea30", "6f40ee1", "1b13d25", "c09bcad", "fda469d", "bd1e271", "367ba21",
+                  "9dea97e", "c154cc6", "527ff75", "e8756d5", "bcb4e76", "25267f5", "ea24bfd",
+                  "f2a40ba", "197e121", "a8f1b11", "95c26dd", "97ba4cc", "68310bb", "720ba6a",
+                  "cedd709", "d68d3d2", "2e1153b", "c3dd635", "81bd1de", "31a9c74", "e981d37",
+                  "e7f801c", "e86d0b9", "ad255a4", "3a8aed1", "de910b5", "d31b2a1", "e61c6fc",
+                  "380890d", "873cfd6", "b0c60c8", "7183183", "6555389", "9828a95", "8150cee",
+                  "48ddf88"
+                ] + "%")
       ) and
       this.asExpr() = u
     )
