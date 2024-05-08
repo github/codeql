@@ -24,21 +24,36 @@ signature module MkSetsInp {
  * class, `ValueSet`, that canonically represents a set of `Value`s. In
  * particular, if two keys `k1` and `k2` relate to the same set of values, then
  * `getValueSet(k1) = getValueSet(k2)`.
+ *
+ * If the given `totalorder` is not a total order, then the keys for which we
+ * cannot order the values cannot be given a canonical representation, and
+ * instead the key is simply reused as the set representation. This provides a
+ * reasonable fallback where `getValueSet(k).contains(v)` remains equivalent to
+ * `v = getAValue(k)`.
  */
 module MakeSets<MkSetsInp Inp> {
   private import Inp
 
-  private predicate rankedValue(Key k, Value v, int r) {
-    v = rank[r](Value v0 | v0 = getAValue(k) | v0 order by totalorder(v0))
+  private int totalorderExt(Value v) {
+    result = 0 and v = getAValue(_) and not exists(totalorder(v))
+    or
+    result = totalorder(v)
   }
 
-  private int maxRank(Key k) { result = max(int r | rankedValue(k, _, r)) }
+  private predicate rankedValue(Key k, Value v, int r) {
+    v = rank[r](Value v0 | v0 = getAValue(k) | v0 order by totalorderExt(v0))
+  }
 
-  predicate consistency(int r, int bs) { bs = strictcount(Value v | totalorder(v) = r) and bs != 1 }
+  private predicate unordered(Key k) {
+    strictcount(int r | rankedValue(k, _, r)) != strictcount(getAValue(k))
+  }
+
+  private int maxRank(Key k) { result = max(int r | rankedValue(k, _, r)) and not unordered(k) }
 
   private newtype TValList =
     TValListNil() or
-    TValListCons(Value head, int r, TValList tail) { hasValListCons(_, head, r, tail) }
+    TValListCons(Value head, int r, TValList tail) { hasValListCons(_, head, r, tail) } or
+    TValListUnordered(Key k) { exists(getAValue(k)) and unordered(k) }
 
   private predicate hasValListCons(Key k, Value head, int r, TValList tail) {
     rankedValue(k, head, r) and
@@ -54,13 +69,19 @@ module MakeSets<MkSetsInp Inp> {
     )
   }
 
-  private predicate hasValueSet(Key k, TValListCons vs) { hasValList(k, maxRank(k), vs) }
+  private predicate hasValueSet(Key k, TValList vs) {
+    hasValList(k, maxRank(k), vs) or vs = TValListUnordered(k)
+  }
 
   /** A set of `Value`s. */
-  class ValueSet extends TValListCons {
+  class ValueSet extends TValList {
     ValueSet() { hasValueSet(_, this) }
 
-    string toString() { result = "ValueSet" }
+    string toString() {
+      this instanceof TValListCons and result = "ValueSet"
+      or
+      this instanceof TValListUnordered and result = "ValueSetUnordered"
+    }
 
     private predicate sublist(TValListCons l) {
       this = l or
@@ -68,7 +89,11 @@ module MakeSets<MkSetsInp Inp> {
     }
 
     /** Holds if this set contains `v`. */
-    predicate contains(Value v) { this.sublist(TValListCons(v, _, _)) }
+    predicate contains(Value v) {
+      this.sublist(TValListCons(v, _, _))
+      or
+      exists(Key k | this = TValListUnordered(k) and v = getAValue(k))
+    }
   }
 
   /**
