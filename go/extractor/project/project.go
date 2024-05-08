@@ -40,10 +40,7 @@ type GoModule struct {
 // Tries to find the Go toolchain version required for this module.
 func (module *GoModule) RequiredGoVersion() GoVersionInfo {
 	if module.Module != nil && module.Module.Go != nil {
-		return GoVersionInfo{
-			Version: module.Module.Go.Version,
-			Found:   true,
-		}
+		return VersionFound(module.Module.Go.Version)
 	} else {
 		return tryReadGoDirective(module.Path)
 	}
@@ -68,6 +65,22 @@ type GoVersionInfo struct {
 	Found bool
 }
 
+// Represents a `GoVersionInfo` indicating that no version was found.
+var VersionNotFound GoVersionInfo = GoVersionInfo{"", false}
+
+// Constructs a `GoVersionInfo` for a version we found.
+func VersionFound(version string) GoVersionInfo {
+	// Add the "v" required by `semver` if there isn't one yet.
+	if !strings.HasPrefix(version, "v") {
+		version = "v" + version
+	}
+
+	return GoVersionInfo{
+		Version: version,
+		Found:   true,
+	}
+}
+
 // Determines the version of Go that is required by this workspace. This is, in order of preference:
 // 1. The Go version specified in the `go.work` file, if any.
 // 2. The greatest Go version specified in any `go.mod` file, if any.
@@ -78,36 +91,33 @@ func (workspace *GoWorkspace) RequiredGoVersion() GoVersionInfo {
 	// and use that as toolchain version. If we didn't parse a `go.work` file, then we try to find the
 	// greatest version contained in `go.mod` files.
 	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Toolchain != nil {
-		return GoVersionInfo{
-			Version: toolchain.ToolchainVersionToSemVer(workspace.WorkspaceFile.Toolchain.Name),
-			Found:   true,
-		}
+		return VersionFound(toolchain.ToolchainVersionToSemVer(workspace.WorkspaceFile.Toolchain.Name))
 	} else if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
-		return GoVersionInfo{Version: workspace.WorkspaceFile.Go.Version, Found: true}
+		return VersionFound(workspace.WorkspaceFile.Go.Version)
 	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
 		var greatestVersion string = ""
 		for _, module := range workspace.Modules {
 			moduleVersionInfo := module.RequiredGoVersion()
 
-			if greatestVersion == "" || semver.Compare("v"+moduleVersionInfo.Version, "v"+greatestVersion) > 0 {
+			if greatestVersion == "" || semver.Compare(moduleVersionInfo.Version, greatestVersion) > 0 {
 				greatestVersion = moduleVersionInfo.Version
 			}
 		}
 
 		// If we have found some version, return it.
 		if greatestVersion != "" {
-			return GoVersionInfo{Version: greatestVersion, Found: true}
+			return VersionFound(greatestVersion)
 		}
 	}
 
-	return GoVersionInfo{Version: "", Found: false}
+	return VersionNotFound
 }
 
 // Finds the greatest Go version required by any of the given `workspaces`.
 // Returns a `GoVersionInfo` value with `Found: false` if no version information is available.
 func RequiredGoVersion(workspaces *[]GoWorkspace) GoVersionInfo {
-	greatestGoVersion := GoVersionInfo{Version: "", Found: false}
+	greatestGoVersion := VersionNotFound
 	for _, workspace := range *workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare("v"+goVersionInfo.Version, "v"+greatestGoVersion.Version) > 0) {
@@ -598,9 +608,9 @@ func tryReadGoDirective(path string) GoVersionInfo {
 		matches := versionRe.FindSubmatch(goMod)
 		if matches != nil {
 			if len(matches) > 1 {
-				return GoVersionInfo{string(matches[1]), true}
+				return VersionFound(string(matches[1]))
 			}
 		}
 	}
-	return GoVersionInfo{"", false}
+	return VersionNotFound
 }
