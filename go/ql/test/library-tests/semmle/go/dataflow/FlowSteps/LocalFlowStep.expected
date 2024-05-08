@@ -1,3 +1,5 @@
+| file://:0:0:0:0 | [summary param] 1 in append | file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append |
 | file://:0:0:0:0 | function Encode | url.go:51:14:51:21 | selection of Encode |
 | file://:0:0:0:0 | function EscapedPath | url.go:28:14:28:26 | selection of EscapedPath |
 | file://:0:0:0:0 | function Get | url.go:52:14:52:18 | selection of Get |
