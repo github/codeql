@@ -98,43 +98,41 @@ class TargetApiSpecific extends Callable {
   Callable lift() { result = lift }
 }
 
-private string isExtensible(J::RefType ref) {
-  if ref.isFinal() then result = "false" else result = "true"
-}
-
-private string typeAsModel(J::RefType type) {
-  result =
-    type.getCompilationUnit().getPackage().getName() + ";" +
-      type.getErasure().(J::RefType).nestedName()
-}
-
-private J::RefType bestTypeForModel(TargetApiSpecific api) {
-  result = api.lift().getDeclaringType()
+private string isExtensible(Callable c) {
+  if c.getDeclaringType().isFinal() then result = "false" else result = "true"
 }
 
 /**
- * Returns the appropriate type name for the model. Either the type
- * declaring the method or the supertype introducing the method.
+ * Returns the appropriate type name for the model.
  */
-private string typeAsSummaryModel(TargetApiSpecific api) {
-  result = typeAsModel(bestTypeForModel(api))
+private string typeAsModel(Callable c) {
+  exists(RefType type | type = c.getDeclaringType() |
+    result =
+      type.getCompilationUnit().getPackage().getName() + ";" +
+        type.getErasure().(J::RefType).nestedName()
+  )
 }
 
-private predicate partialModel(TargetApiSpecific api, string type, string name, string parameters) {
-  type = typeAsSummaryModel(api) and
-  name = api.getName() and
-  parameters = ExternalFlow::paramsString(api)
+private predicate partialLiftedModel(
+  TargetApiSpecific api, string type, string extensible, string name, string parameters
+) {
+  exists(Callable c | c = api.lift() |
+    type = typeAsModel(c) and
+    extensible = isExtensible(c) and
+    name = c.getName() and
+    parameters = ExternalFlow::paramsString(c)
+  )
 }
 
 /**
  * Computes the first 6 columns for MaD rows.
  */
 string asPartialModel(TargetApiSpecific api) {
-  exists(string type, string name, string parameters |
-    partialModel(api, type, name, parameters) and
+  exists(string type, string extensible, string name, string parameters |
+    partialLiftedModel(api, type, extensible, name, parameters) and
     result =
       type + ";" //
-        + isExtensible(bestTypeForModel(api)) + ";" //
+        + extensible + ";" //
         + name + ";" //
         + parameters + ";" //
         + /* ext + */ ";" //
@@ -146,7 +144,7 @@ string asPartialModel(TargetApiSpecific api) {
  */
 string asPartialNeutralModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
-    partialModel(api, type, name, parameters) and
+    partialLiftedModel(api, type, _, name, parameters) and
     result =
       type + ";" //
         + name + ";" //
