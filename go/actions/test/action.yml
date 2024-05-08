@@ -1,7 +1,7 @@
-name: Test go extractor
-description: Run build, QL tests and optionally basic code sanity checks (formatting and generation)
+name: Test Go extractor
+description: Run build, QL tests, and optionally basic code sanity checks (formatting and generated code) for the Go extractor
 inputs:
-  go-version:
+  go-test-version:
     description: Which Go version to use for running the tests
     required: false
     default: ~1.22.0
@@ -12,10 +12,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up Go
+    - name: Set up Go ${{ inputs.go-test-version }}
       uses: actions/setup-go@v5
       with:
-        go-version: ${{ inputs.go-version }}
+        go-version: ${{ inputs.go-test-version }}
         cache: false
       id: go
 
