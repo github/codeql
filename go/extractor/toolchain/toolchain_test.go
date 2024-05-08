@@ -20,3 +20,16 @@ func TestHasGoVersion(t *testing.T) {
 		t.Error("Expected HasGoVersion(\"1.21\") to be false, but got true")
 	}
 }
+
+func testToolchainVersionToSemVer(t *testing.T, toolchainVersion string, expectedSemVer string) {
+	result := ToolchainVersionToSemVer(toolchainVersion)
+	if result != expectedSemVer {
+		t.Errorf("Expected ToolchainVersionToSemVer(\"%s\") to be %s, but got %s.", toolchainVersion, expectedSemVer, result)
+	}
+}
+
+func TestToolchainVersionToSemVer(t *testing.T) {
+	testToolchainVersionToSemVer(t, "go1.20", "v1.20.0")
+	testToolchainVersionToSemVer(t, "go1.20.1", "v1.20.1")
+	testToolchainVersionToSemVer(t, "go1.20rc1", "v1.20.0-rc1")
+}
