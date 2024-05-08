@@ -58,9 +58,9 @@ module Gradio {
             call.getParameter(1).asSink().asCfgNode() instanceof ListNode
           ) and
           (
-            this = call.getKeywordParameter("inputs").getASuccessor().getAValueReachingSink()
+            this = call.getKeywordParameter("inputs").getASubscript().getAValueReachingSink()
             or
-            this = call.getParameter(1).getASuccessor().getAValueReachingSink()
+            this = call.getParameter(1).getASubscript().getAValueReachingSink()
           )
         )
       )
