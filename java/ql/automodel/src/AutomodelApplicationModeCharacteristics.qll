@@ -413,14 +413,7 @@ predicate isCandidate(
   ) and
   any(ApplicationModeMetadataExtractor meta)
       .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargs,
-        alreadyAiModeled, extensibleType) and
-  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
-  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
-  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
-  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
-  // types, and we don't need to reexamine it.
-  alreadyAiModeled.matches(["", "%ai-%"]) and
-  AutomodelJavaUtil::includeAutomodelCandidate(package, type, name, signature)
+        alreadyAiModeled, extensibleType)
 }
 
 /**
