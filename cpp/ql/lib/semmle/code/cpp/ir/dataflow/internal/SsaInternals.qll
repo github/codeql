@@ -12,12 +12,27 @@ private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
 import SsaInternalsCommon
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA as AliasedSSA
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
 
 private module SourceVariables {
+  private predicate isSourceVirtualVariableVariable(AliasedSSA::VariableVirtualVariable vv, int ind) {
+    ind = [1 .. countIndirectionsForCppType(vv.getType()) + 1]
+  }
+
   cached
   private newtype TSourceVariable =
-    TMkSourceVariable(BaseSourceVariable base, int ind) {
+    TSourceSsaVariable(BaseSourceVariable base, int ind) {
+      // Only create a SSA variable if it's not already created by the `TSourceVirtualVariable` branch.
+      not exists(AliasedSSA::VariableVirtualVariable vv, VariableAllocation var |
+        isSourceVirtualVariableVariable(vv, ind) and
+        var = vv.getAllocation() and
+        var.getIRVariable() = base.(BaseIRVariable).getIRVariable()
+      ) and
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
+    } or
+    TSourceVirtualVariable(AliasedSSA::VariableVirtualVariable vv, int ind) {
+      isSourceVirtualVariableVariable(vv, ind)
     }
 
   abstract private class AbstractSourceVariable extends TSourceVariable {
@@ -78,6 +93,26 @@ private module SourceVariables {
     }
 
     override Location getLocation() { result = this.getBaseVariable().getLocation() }
+  }
+
+  private class SourceVirtualVariable extends AbstractSourceVariable, TSourceVirtualVariable {
+    AliasedSSA::VirtualVariable vv;
+
+    SourceVirtualVariable() { this = TSourceVirtualVariable(vv, ind) }
+
+    override Location getLocation() { result = vv.getLocation() }
+
+    override BaseIRVariable getBaseVariable() { result.getIRVariable() = this.getIRVariable() }
+
+    override IRVariable getIRVariable() {
+      result = vv.getAllocation().(VariableAllocation).getIRVariable()
+    }
+
+    override DataFlowType getType() {
+      result = getTypeImpl(any(Type t | vv.getType().hasType(t, false)), ind - 1)
+    }
+
+    override string toString() { result = repeatStars(this.getIndirection()) + vv.toString() }
   }
 }
 
@@ -343,9 +378,18 @@ private class DirectDef extends DefImpl, TDirectDefImpl {
     )
   }
 
+  private predicate isVirtualDefOf(BaseIRVariable bv, int ind) {
+    exists(VariableAllocation v |
+      isVirtualDef(_, _, address, v, ind, indirectionIndex) and
+      bv.getIRVariable() = v.getIRVariable()
+    )
+  }
+
   override SourceVariable getSourceVariable() {
     exists(BaseSourceVariable bv, int ind | sourceVariableHasBaseAndIndex(result, bv, ind) |
       this.isNonVirtualDefOf(bv, ind)
+      or
+      this.isVirtualDefOf(bv, ind)
     )
   }
 
@@ -387,6 +431,8 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
       sourceVariableHasBaseAndIndex(result, bv, indirection)
     |
       this.isNonVirtualUseOf(_, bv, indirection)
+      or
+      this.isVirtualUseOf(bv, indirection)
     )
   }
 
@@ -397,6 +443,13 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
   ) {
     isSsaUse(_, operand, base, ind, indirectionIndex) and
     base.getBaseSourceVariable() = bv
+  }
+
+  private predicate isVirtualUseOf(BaseIRVariable bv, int ind) {
+    exists(VariableAllocation v |
+      isVirtualUse(_, operand, v, ind, indirectionIndex) and
+      bv.getIRVariable() = v.getIRVariable()
+    )
   }
 
   final Operand getOperand() { result = operand }
