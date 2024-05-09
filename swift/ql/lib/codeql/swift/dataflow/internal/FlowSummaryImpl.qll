@@ -209,10 +209,6 @@ module SourceSinkInterpretationInput implements
       ast = mid.asElement() and
       e.getMember() = ast
     |
-      // Allow fields to be picked as input nodes.
-      c = "" and
-      e.getBase() = n.asExpr()
-      or
       // Allow post update nodes to be picked as input nodes when the `input` column
       // of the row is `PostUpdate`.
       c = "PostUpdate" and

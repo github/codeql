@@ -1,6 +1,7 @@
 name: codeql/mad
-version: 0.2.14
+version: 0.2.15
 groups: shared
 library: true
-dependencies: null
+dependencies:
+  codeql/util: ${workspace}
 warnOnImplicitThis: true

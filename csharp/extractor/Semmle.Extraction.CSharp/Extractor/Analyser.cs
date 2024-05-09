@@ -146,14 +146,9 @@ namespace Semmle.Extraction.CSharp
                      * still be correct.
                      */
 
-                    // compilation.Clone() reduces memory footprint by allowing the symbols
-                    // in c to be garbage collected.
-                    Compilation c = compilation.Clone();
-
-
-                    if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
+                    if (compilation.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -196,7 +191,7 @@ namespace Semmle.Extraction.CSharp
 
                 if (!upToDate)
                 {
-                    var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                    var cx = new Context(extractor, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
                     // Ensure that the file itself is populated in case the source file is totally empty
                     var root = tree.GetRoot();
                     Entities.File.Create(cx, root.SyntaxTree.FilePath);
@@ -236,7 +231,7 @@ namespace Semmle.Extraction.CSharp
                 var assembly = compilation.Assembly;
                 var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
 
@@ -249,6 +244,8 @@ namespace Semmle.Extraction.CSharp
                 Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
             }
         }
+
+        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
 
 #nullable restore warnings
 

@@ -2432,7 +2432,7 @@ void initialization_with_temp_destructor() {
 }
 
 void param_with_destructor_by_value(ClassWithDestructor c) {
-    // The call to ~ClassWithDestructor::ClassWithDestructor() seems to be missing here.
+    // The call to ~ClassWithDestructor::ClassWithDestructor() happens on the side of the caller
 }
 
 void param_with_destructor_by_pointer(ClassWithDestructor* c) {
@@ -2479,6 +2479,23 @@ namespace rvalue_conversion_with_destructor {
     {
         auto a = get()->a;
     }
+}
+
+void destructor_without_block(bool b)
+{
+    if (b)
+      ClassWithDestructor c;
+
+    if (b)
+      ClassWithDestructor d;
+    else
+      ClassWithDestructor e;
+
+    while (b)
+      ClassWithDestructor f;
+
+    for(int i = 0; i < 42; ++i)
+      ClassWithDestructor g;
 }
 
 // semmle-extractor-options: -std=c++20 --clang

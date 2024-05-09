@@ -1156,5 +1156,14 @@ private predicate add_eq(
   )
 }
 
+private class IntegerOrPointerConstantInstruction extends ConstantInstruction {
+  IntegerOrPointerConstantInstruction() {
+    this instanceof IntegerConstantInstruction or
+    this instanceof PointerConstantInstruction
+  }
+}
+
 /** The int value of integer constant expression. */
-private int int_value(Instruction i) { result = i.(IntegerConstantInstruction).getValue().toInt() }
+private int int_value(Instruction i) {
+  result = i.(IntegerOrPointerConstantInstruction).getValue().toInt()
+}

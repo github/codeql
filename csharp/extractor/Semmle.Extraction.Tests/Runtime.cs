@@ -164,10 +164,10 @@ namespace Semmle.Extraction.Tests
                 "6.0.301 [/usr/local/share/dotnet/sdk7]",
             };
             var dotnet = new DotNetStub(null!, listedSdks);
-            var sdk = new Sdk(dotnet);
+            var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
-            var version = sdk.GetNewestSdk();
+            var version = sdk.Version;
 
             // Verify
             Assert.NotNull(version);
@@ -186,10 +186,10 @@ namespace Semmle.Extraction.Tests
                 "7.0.400 [/usr/local/share/dotnet/sdk4]",
             };
             var dotnet = new DotNetStub(null!, listedSdks);
-            var sdk = new Sdk(dotnet);
+            var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
-            var version = sdk.GetNewestSdk();
+            var version = sdk.Version;
 
             // Verify
             Assert.NotNull(version);

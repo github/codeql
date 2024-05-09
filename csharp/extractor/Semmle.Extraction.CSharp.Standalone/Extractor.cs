@@ -40,7 +40,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                         output.Name, syntaxTrees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true)
                         ),
                     (compilation, options) => analyser.Initialize(output.FullName, extractionInput.CompilationInfos, compilation, options),
-                    _ => { },
                     () =>
                     {
                         foreach (var type in analyser.MissingNamespaces)
@@ -111,27 +110,30 @@ namespace Semmle.Extraction.CSharp.Standalone
                     AnalysisAction.UpToDate => "up to date",
                     _ => "unknown action"
                 };
-                logger.LogInfo($"[{item}/{total}] {source} ({extra})");
+                logger.LogDebug($"[{item}/{total}] {source} ({extra})");
             }
 
             public void Started(int item, int total, string source)
             {
-                logger.LogInfo($"[{item}/{total}] {source} (processing started)");
+                logger.LogDebug($"[{item}/{total}] {source} (processing started)");
             }
 
             public void MissingType(string type)
             {
-                logger.Log(Severity.Debug, "Missing type {0}", type);
+                logger.LogDebug($"Missing type {type}");
             }
 
             public void MissingNamespace(string @namespace)
             {
-                logger.Log(Severity.Info, "Missing namespace {0}", @namespace);
+                logger.LogInfo($"Missing namespace {@namespace}");
             }
 
             public void MissingSummary(int missingTypes, int missingNamespaces)
             {
-                logger.Log(Severity.Info, "Failed to resolve {0} types in {1} namespaces", missingTypes, missingNamespaces);
+                if (missingTypes > 0 || missingNamespaces > 0)
+                {
+                    logger.LogInfo($"Failed to resolve {missingTypes} types in {missingNamespaces} namespaces");
+                }
             }
         }
 

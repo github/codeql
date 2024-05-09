@@ -159,7 +159,7 @@ private module ExperimentalPrivateDjango {
             }
 
             override predicate isSameSite() {
-              exists(StrConst str |
+              exists(StringLiteral str |
                 str.getText() in ["Strict", "Lax"] and
                 DataFlow::exprNode(str)
                     .(DataFlow::LocalSourceNode)

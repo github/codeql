@@ -20,13 +20,15 @@ repos:
       - id: autopep8
         files: ^misc/codegen/.*\.py
 
-  - repo: https://github.com/warchant/pre-commit-buildifier
-    rev: 0.0.2
-    hooks:
-      - id: buildifier
-
   - repo: local
     hooks:
+      - id: buildifier
+        name: Format bazel files
+        files: \.(bazel|bzl)
+        language: system
+        entry: bazel run //:buildifier
+        pass_filenames: false
+
       - id: codeql-format
         name: Fix QL file formatting
         files: \.qll?$

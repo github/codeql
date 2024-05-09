@@ -527,13 +527,6 @@ class Destructor extends Callable, Member, Attributable, @destructor {
  * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
  */
 class Operator extends Callable, Member, Attributable, Overridable, @operator {
-  /**
-   * DEPRECATED: use `getFunctionName()` instead.
-   *
-   * Gets the assembly name of this operator.
-   */
-  deprecated string getAssemblyName() { result = this.getFunctionName() }
-
   override string getName() { operators(this, _, result, _, _, _) }
 
   override string getUndecoratedName() { operators(this, _, result, _, _, _) }
@@ -989,9 +982,6 @@ class LeftShiftOperator extends BinaryOperator {
   override string getAPrimaryQlClass() { result = "LeftShiftOperator" }
 }
 
-/** DEPRECATED: Alias for LeftShiftOperator. */
-deprecated class LShiftOperator = LeftShiftOperator;
-
 /**
  * A user-defined right shift operator (`>>`), for example
  *
@@ -1006,9 +996,6 @@ class RightShiftOperator extends BinaryOperator {
 
   override string getAPrimaryQlClass() { result = "RightShiftOperator" }
 }
-
-/** DEPRECATED: Alias for RightShiftOperator. */
-deprecated class RShiftOperator = RightShiftOperator;
 
 /**
  * A user-defined unsigned right shift operator (`>>>`), for example

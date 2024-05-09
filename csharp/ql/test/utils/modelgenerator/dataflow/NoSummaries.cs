@@ -162,3 +162,13 @@ public class ManuallyModelled
         return null;
     }
 }
+
+public class Properties
+{
+    public object backingField;
+    public object Prop
+    {
+        get { return backingField; }
+        set { backingField = value; }
+    }
+}

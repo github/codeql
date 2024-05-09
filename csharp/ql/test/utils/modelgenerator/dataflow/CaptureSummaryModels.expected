@@ -36,3 +36,5 @@
 | Summaries;IEnumerableFlow;false;ReturnIEnumerableElement;(System.Collections.Generic.IEnumerable<System.Object>);;Argument[0].Element;ReturnValue;taint;df-generated |
 | Summaries;OperatorFlow;false;OperatorFlow;(System.Object);;Argument[0];Argument[this];taint;df-generated |
 | Summaries;OperatorFlow;false;op_Addition;(Summaries.OperatorFlow,Summaries.OperatorFlow);;Argument[0];ReturnValue;taint;df-generated |
+| Summaries;Properties;false;get_Prop1;();;Argument[this];ReturnValue;taint;df-generated |
+| Summaries;Properties;false;set_Prop2;(System.String);;Argument[0];Argument[this];taint;df-generated |

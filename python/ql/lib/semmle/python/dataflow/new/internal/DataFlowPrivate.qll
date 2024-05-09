@@ -813,7 +813,7 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
   exists(KeyValuePair item |
     item = nodeTo.asCfgNode().(DictNode).getNode().(Dict).getAnItem() and
     nodeFrom.getNode().getNode() = item.getValue() and
-    c.getKey() = item.getKey().(StrConst).getS()
+    c.getKey() = item.getKey().(StringLiteral).getS()
   )
 }
 
@@ -829,13 +829,13 @@ private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent 
   exists(SubscriptNode subscript |
     nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
     nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
-    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+    c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
   or
   // see https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
   exists(MethodCallNode call |
     call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), "setdefault") and
-    call.getArg(0).asExpr().(StrConst).getText() = c.getKey() and
+    call.getArg(0).asExpr().(StringLiteral).getText() = c.getKey() and
     nodeFrom = call.getArg(1)
   )
 }
@@ -844,7 +844,7 @@ predicate dictClearStep(Node node, DictionaryElementContent c) {
   exists(SubscriptNode subscript |
     subscript instanceof DefinitionNode and
     node.asCfgNode() = subscript.getObject() and
-    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+    c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
 }
 
@@ -954,7 +954,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
     or
     c.(DictionaryElementContent).getKey() =
-      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StringLiteral).getS()
   )
 }
 
@@ -1086,6 +1086,8 @@ predicate knownSourceModel(Node source, string model) {
 predicate knownSinkModel(Node sink, string model) {
   sink = ModelOutput::getASinkNode(_, model).asSink()
 }
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

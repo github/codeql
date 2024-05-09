@@ -3,6 +3,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal class EnvironmentVariableNames
     {
         /// <summary>
+        /// Controls whether to generate source files from resources (`.resx`).
+        /// </summary>
+        public const string ResourceGeneration = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_EXTRACT_RESOURCES";
+
+        /// <summary>
         /// Controls whether to generate source files from Asp.Net Core views (`.cshtml`, `.razor`).
         /// </summary>
         public const string WebViewGeneration = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_EXTRACT_WEB_VIEWS";
