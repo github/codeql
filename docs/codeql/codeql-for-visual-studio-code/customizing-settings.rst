@@ -5,6 +5,8 @@
 Customizing settings
 ====================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 You can edit the settings for the CodeQL extension to suit your needs.
 
 About CodeQL extension settings
