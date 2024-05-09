@@ -98,10 +98,10 @@ module HeuristicNames {
         "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax|phone).?(num|no)|telephone|" +
         "emergency.?contact|" +
         // Geographic location - where the user is (or was)
-        "l(atitude|ongitude)|nationality|" +
+        "latitude|longitude|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
-        "salary|billing|credit.?(rating|score)|([_-]|\\b)ccn([_-]|\\b)" +
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou)?nt)|acc(ou)?nt.?(no|num|credit)|" +
+        "salary|billing|credit.?(rating|score)|([_-]|\\b)ccn([_-]|\\b)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
         // "e(mail|_mail)|" + // this seems too noisy
         // Health - medical conditions, insurance status, prescription records
