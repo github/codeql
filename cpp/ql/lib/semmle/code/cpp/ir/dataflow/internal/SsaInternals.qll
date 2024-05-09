@@ -709,13 +709,7 @@ predicate outNodeHasAddressAndIndex(
  */
 predicate defToNode(Node node, Def def, SourceVariable sv, IRBlock bb, int i, boolean uncertain) {
   def.hasIndexInBlock(bb, i, sv) and
-  (
-    nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
-    or
-    nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
-    or
-    node.(InitialGlobalValue).getGlobalDef() = def
-  ) and
+  node = def.getNode() and
   if def.isCertain() then uncertain = false else uncertain = true
 }
 
@@ -1136,6 +1130,9 @@ abstract class Def extends SsaDef, TDef {
    */
   abstract int getIndirection();
 
+  /** Gets the node associated with this use. */
+  abstract Node getNode();
+
   /**
    * Gets a definition that ultimately defines this SSA definition and is not
    * itself a phi node.
@@ -1171,6 +1168,12 @@ private class NonGlobalDef extends Def {
   override int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
 
   override int getIndirection() { result = this.getImpl().getIndirection() }
+
+  final override Node getNode() {
+    nodeHasOperand(result, this.getValue().asOperand(), this.getIndirectionIndex())
+    or
+    nodeHasInstruction(result, this.getValue().asInstruction(), this.getIndirectionIndex())
+  }
 }
 
 class GlobalDef extends Def {
@@ -1205,6 +1208,8 @@ class GlobalDef extends Def {
   final override int getIndirectionIndex() { result = global.getIndirectionIndex() }
 
   final override int getIndirection() { result = global.getIndirection() }
+
+  final override Node getNode() { result.(InitialGlobalValue).getGlobalDef() = this }
 }
 
 class Phi extends TPhi, SsaDef {

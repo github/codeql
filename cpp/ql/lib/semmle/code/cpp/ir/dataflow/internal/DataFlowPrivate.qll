@@ -792,7 +792,7 @@ predicate jumpStep(Node n1, Node n2) {
   exists(GlobalLikeVariable v |
     exists(Ssa::GlobalUse globalUse |
       v = globalUse.getVariable() and
-      n1.(FinalGlobalValue).getGlobalUse() = globalUse
+      n1 = globalUse.getNode()
     |
       globalUse.getIndirection() = getMinIndirectionForGlobalUse(globalUse) and
       v = n2.asVariable()
@@ -802,7 +802,7 @@ predicate jumpStep(Node n1, Node n2) {
     or
     exists(Ssa::GlobalDef globalDef |
       v = globalDef.getVariable() and
-      n2.(InitialGlobalValue).getGlobalDef() = globalDef
+      n2 = globalDef.getNode()
     |
       globalDef.getIndirection() = getMinIndirectionForGlobalDef(globalDef) and
       v = n1.asVariable()
