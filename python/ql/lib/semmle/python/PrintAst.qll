@@ -423,13 +423,13 @@ class ParameterNode extends AstElementNode {
 }
 
 /**
- * A print node for a `StrConst`.
+ * A print node for a `StringLiteral`.
  *
  * The string has a child, if the child is used as a regular expression,
  * which is the root of the regular expression.
  */
-class StrConstNode extends AstElementNode {
-  override StrConst element;
+class StringLiteralNode extends AstElementNode {
+  override StringLiteral element;
 }
 
 /**
@@ -599,7 +599,7 @@ private module PrettyPrinting {
       or
       result = "class " + a.(Class).getName()
       or
-      result = a.(StrConst).getText()
+      result = a.(StringLiteral).getText()
       or
       result = "yield " + a.(Yield).getValue()
       or

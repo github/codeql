@@ -617,6 +617,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate forceCachingInSameStage() { any() }
 
     cached
+    DataFlowSecondLevelScope getSecondLevelScopeCached(Node n) { result = getSecondLevelScope(n) }
+
+    cached
     predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = nodeGetEnclosingCallable(n) }
 
     cached

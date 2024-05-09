@@ -20,9 +20,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// The list of package files.
         /// </summary>
-        private readonly FileInfo[] packageFiles;
+        private readonly ICollection<string> packageFiles;
 
-        public int PackageCount => packageFiles.Length;
+        public int PackageCount => packageFiles.Count;
 
         private readonly string? backupNugetConfig;
         private readonly string? nugetConfigPath;
@@ -37,23 +37,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        public NugetExeWrapper(string sourceDir, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
+        public NugetExeWrapper(FileProvider fileProvider, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
         {
             this.packageDirectory = packageDirectory;
             this.logger = logger;
 
-            packageFiles = new DirectoryInfo(sourceDir)
-                .EnumerateFiles("packages.config", SearchOption.AllDirectories)
-                .ToArray();
+            packageFiles = fileProvider.PackagesConfigs;
 
-            if (packageFiles.Length > 0)
+            if (packageFiles.Count > 0)
             {
-                logger.LogInfo($"Found {packageFiles.Length} packages.config files, trying to use nuget.exe for package restore");
-                nugetExe = ResolveNugetExe(sourceDir);
+                logger.LogInfo($"Found packages.config files, trying to use nuget.exe for package restore");
+                nugetExe = ResolveNugetExe(fileProvider.SourceDir.FullName);
                 if (HasNoPackageSource())
                 {
                     // We only modify or add a top level nuget.config file
-                    nugetConfigPath = Path.Combine(sourceDir, "nuget.config");
+                    nugetConfigPath = Path.Combine(fileProvider.SourceDir.FullName, "nuget.config");
                     try
                     {
                         if (File.Exists(nugetConfigPath))
@@ -85,10 +83,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         logger.LogError($"Failed to add default package source to {nugetConfigPath}: {e}");
                     }
                 }
-            }
-            else
-            {
-                logger.LogInfo("Found no packages.config file");
             }
         }
 
@@ -175,7 +169,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out var _, onOut, onError);
             if (exitCode != 0)
@@ -195,7 +189,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public int InstallPackages()
         {
-            return packageFiles.Count(package => TryRestoreNugetPackage(package.FullName));
+            return packageFiles.Count(package => TryRestoreNugetPackage(package));
         }
 
         private bool HasNoPackageSource()
@@ -235,7 +229,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             pi.ReadOutput(out stdout, onOut, onError);
         }

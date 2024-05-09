@@ -125,16 +125,7 @@ module Cryptography {
    * extend `CryptographicOperation::Range` instead.
    */
   class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  {
-    /**
-     * DEPRECATED. This predicate has been renamed to `getAnInput`.
-     *
-     * To implement `CryptographicOperation`, please extend
-     * `CryptographicOperation::Range` and implement `getAnInput` instead of
-     * extending this class directly.
-     */
-    deprecated final DataFlow::Node getInput() { result = this.getAnInput() }
-  }
+  { }
 
   class EncryptionAlgorithm = SC::EncryptionAlgorithm;
 

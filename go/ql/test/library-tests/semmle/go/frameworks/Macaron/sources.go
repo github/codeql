@@ -7,16 +7,16 @@ import (
 )
 
 func sources(ctx *macaron.Context, body *macaron.RequestBody) {
-	_ = ctx.AllParams()                     // $UntrustedFlowSource
-	_ = ctx.GetCookie("")                   // $UntrustedFlowSource
-	_, _ = ctx.GetSecureCookie("")          // $UntrustedFlowSource
-	_, _ = ctx.GetSuperSecureCookie("", "") // $UntrustedFlowSource
-	_, _, _ = ctx.GetFile("")               // $UntrustedFlowSource
-	_ = ctx.Params("")                      // $UntrustedFlowSource
-	_ = ctx.ParamsEscape("")                // $UntrustedFlowSource
-	_ = ctx.Query("")                       // $UntrustedFlowSource
-	_ = ctx.QueryEscape("")                 // $UntrustedFlowSource
-	_ = ctx.QueryStrings("")                // $UntrustedFlowSource
-	_, _ = body.Bytes()                     // $UntrustedFlowSource
-	_, _ = body.String()                    // $UntrustedFlowSource
+	_ = ctx.AllParams()                     // $RemoteFlowSource
+	_ = ctx.GetCookie("")                   // $RemoteFlowSource
+	_, _ = ctx.GetSecureCookie("")          // $RemoteFlowSource
+	_, _ = ctx.GetSuperSecureCookie("", "") // $RemoteFlowSource
+	_, _, _ = ctx.GetFile("")               // $RemoteFlowSource
+	_ = ctx.Params("")                      // $RemoteFlowSource
+	_ = ctx.ParamsEscape("")                // $RemoteFlowSource
+	_ = ctx.Query("")                       // $RemoteFlowSource
+	_ = ctx.QueryEscape("")                 // $RemoteFlowSource
+	_ = ctx.QueryStrings("")                // $RemoteFlowSource
+	_, _ = body.Bytes()                     // $RemoteFlowSource
+	_, _ = body.String()                    // $RemoteFlowSource
 }

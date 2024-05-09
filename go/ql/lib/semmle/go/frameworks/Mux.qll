@@ -9,7 +9,7 @@ import go
  */
 module Mux {
   /** An access to a Mux middleware variable. */
-  class RequestVars extends DataFlow::UntrustedFlowSource::Range, DataFlow::CallNode {
+  class RequestVars extends DataFlow::RemoteFlowSource::Range, DataFlow::CallNode {
     RequestVars() {
       this.getTarget().hasQualifiedName(package("github.com/gorilla/mux", ""), "Vars")
     }

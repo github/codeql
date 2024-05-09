@@ -1,4 +1,4 @@
-load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
 def _runfiles_group_impl(ctx):
     files = []

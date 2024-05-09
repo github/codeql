@@ -11,7 +11,6 @@
  *       external/cwe/cwe-664
  */
 
-// IMPORTANT: This query does not currently find anything since it relies on extractor and analysis improvements that hasn't yet been released
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.dataflow.new.DataFlow
@@ -19,26 +18,20 @@ import semmle.code.cpp.models.implementations.StdContainer
 import semmle.code.cpp.models.implementations.StdMap
 import semmle.code.cpp.models.implementations.Iterator
 
-/**
- * A configuration to track flow from a temporary variable to the qualifier of
- * a destructor call
- */
-module TempToDestructorConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asInstruction().(VariableAddressInstruction).getIRVariable() instanceof IRTempVariable
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asOperand().(ThisArgumentOperand).getCall().getStaticCallTarget() instanceof Destructor
-  }
+private predicate tempToDestructorSink(DataFlow::Node sink, CallInstruction call) {
+  call = sink.asOperand().(ThisArgumentOperand).getCall() and
+  call.getStaticCallTarget() instanceof Destructor
 }
 
-module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
+/** Holds if `pun` is the post-update node of the qualifier of `Call`. */
+private predicate isPostUpdateOfQualifier(CallInstruction call, DataFlow::PostUpdateNode pun) {
+  call.getThisArgumentOperand() = pun.getPreUpdateNode().asOperand()
+}
 
 /**
  * Gets a `DataFlow::Node` that represents a temporary that will be destroyed
- * by a call to a destructor, or a `DataFlow::Node` that will transitively be
- * destroyed by a call to a destructor.
+ * by a call to a destructor when `n` is destroyed, or a `DataFlow::Node` that
+ * will transitively be destroyed by a call to a destructor.
  *
  * For the latter case, consider something like:
  * ```
@@ -50,22 +43,25 @@ module TempToDestructorFlow = DataFlow::Global<TempToDestructorConfig>;
  * destroyed by a call to `std::vector<std::vector<int>>::~vector`,
  * and thus the result of `get_2d_vector()[0]` is also an invalid reference.
  */
-DataFlow::Node getADestroyedNode() {
-  exists(TempToDestructorFlow::PathNode destroyedTemp | destroyedTemp.isSource() |
-    result = destroyedTemp.getNode()
-    or
-    exists(CallInstruction call |
-      result.asInstruction() = call and
-      DataFlow::localFlow(destroyedTemp.getNode(),
-        DataFlow::operandNode(call.getThisArgumentOperand()))
-    |
-      call.getStaticCallTarget() instanceof StdSequenceContainerAt or
-      call.getStaticCallTarget() instanceof StdMapAt
-    )
+DataFlow::Node getADestroyedNode(DataFlow::Node n) {
+  // Case 1: The pointer that goes into the destructor call is destroyed
+  exists(CallInstruction destructorCall |
+    tempToDestructorSink(n, destructorCall) and
+    isPostUpdateOfQualifier(destructorCall, result)
+  )
+  or
+  // Case 2: Anything that was derived from the temporary that is now destroyed
+  // is also destroyed.
+  exists(CallInstruction call |
+    result.asInstruction() = call and
+    DataFlow::localFlow(DataFlow::operandNode(call.getThisArgumentOperand()), n)
+  |
+    call.getStaticCallTarget() instanceof StdSequenceContainerAt or
+    call.getStaticCallTarget() instanceof StdMapAt
   )
 }
 
-predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
+predicate destroyedToBeginSink(DataFlow::Node sink, FunctionCall fc) {
   exists(CallInstruction call |
     call = sink.asOperand().(ThisArgumentOperand).getCall() and
     fc = call.getUnconvertedResultExpression() and
@@ -74,12 +70,39 @@ predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
 }
 
 /**
- * Flow from any destroyed object to the qualifier of a `begin` or `end` call
+ * A configuration to track flow from a temporary variable to the qualifier of
+ * a destructor call, and subsequently to a qualifier of a call to `begin` or
+ * `end`.
  */
-module DestroyedToBeginConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source = getADestroyedNode() }
+module Config implements DataFlow::StateConfigSig {
+  newtype FlowState =
+    additional TempToDestructor() or
+    additional DestroyedToBegin(DataFlow::Node n) {
+      exists(DataFlow::Node thisOperand |
+        tempToDestructorSink(thisOperand, _) and
+        n = getADestroyedNode(thisOperand)
+      )
+    }
 
-  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.asInstruction().(VariableAddressInstruction).getIRVariable() instanceof IRTempVariable and
+    state = TempToDestructor()
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    tempToDestructorSink(node1, _) and
+    state1 = TempToDestructor() and
+    state2 = DestroyedToBegin(node2) and
+    node2 = getADestroyedNode(node1)
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    // Note: This is a non-trivial cartesian product!
+    // Hopefully, both of these sets are quite small in practice
+    destroyedToBeginSink(sink, _) and state instanceof DestroyedToBegin
+  }
 
   DataFlow::FlowFeature getAFeature() {
     // By blocking argument-to-parameter flow we ensure that we don't enter a
@@ -96,8 +119,11 @@ module DestroyedToBeginConfig implements DataFlow::ConfigSig {
   }
 }
 
-module DestroyedToBeginFlow = DataFlow::Global<DestroyedToBeginConfig>;
+module Flow = DataFlow::GlobalWithState<Config>;
 
-from DataFlow::Node source, DataFlow::Node sink, FunctionCall beginOrEnd
-where DestroyedToBeginFlow::flow(source, sink) and isSinkImpl(sink, beginOrEnd)
-select source, "This object is destroyed before $@ is called.", beginOrEnd, beginOrEnd.toString()
+from Flow::PathNode source, Flow::PathNode sink, FunctionCall beginOrEnd, DataFlow::Node mid
+where
+  Flow::flowPath(source, sink) and
+  destroyedToBeginSink(sink.getNode(), beginOrEnd) and
+  sink.getState() = Config::DestroyedToBegin(mid)
+select mid, "This object is destroyed before $@ is called.", beginOrEnd, beginOrEnd.toString()

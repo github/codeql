@@ -1,10 +1,10 @@
 import python
 
-class ImplicitConcat extends StrConst {
+class ImplicitConcat extends StringLiteral {
   ImplicitConcat() { exists(this.getAnImplicitlyConcatenatedPart()) }
 }
 
-from StrConst s, boolean isConcat
+from StringLiteral s, boolean isConcat
 where
   s instanceof ImplicitConcat and isConcat = true
   or

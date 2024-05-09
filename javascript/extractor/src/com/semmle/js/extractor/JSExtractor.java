@@ -58,6 +58,26 @@ public class JSExtractor {
 
     JSParser.Result parserRes =
         JSParser.parse(config, sourceType, source, textualExtractor.getMetrics());
+
+    // Check if we guessed wrong with the regex in `establishSourceType`, (which could
+    // happen due to a block-comment line starting with '  import').
+    if (config.getSourceType() == SourceType.AUTO && sourceType != SourceType.SCRIPT) {
+      boolean wrongGuess = false;
+
+      if (sourceType == SourceType.MODULE) {
+        // check that we did see an import/export declaration
+        wrongGuess = ES2015Detector.looksLikeES2015(parserRes.getAST()) == false;
+      } else if (sourceType == SourceType.CLOSURE_MODULE ) {
+        // TODO
+      }
+
+      if (wrongGuess) {
+        sourceType = SourceType.SCRIPT;
+        parserRes =
+          JSParser.parse(config, sourceType, source, textualExtractor.getMetrics());
+      }
+    }
+
     return extract(textualExtractor, source, toplevelKind, scopeManager, sourceType, parserRes);
   }
 

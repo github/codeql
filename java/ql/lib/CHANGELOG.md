@@ -1,3 +1,9 @@
+## 0.10.0
+
+### Breaking Changes
+
+* Deleted the deprecated `AssignLShiftExpr`, `AssignRShiftExpr`, `AssignURShiftExpr`, `LShiftExpr`, `RShiftExpr`, and `URShiftExpr` aliases.
+
 ## 0.9.1
 
 ### Minor Analysis Improvements
