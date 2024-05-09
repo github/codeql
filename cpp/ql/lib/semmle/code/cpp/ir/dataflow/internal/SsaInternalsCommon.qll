@@ -588,7 +588,7 @@ private module Cached {
    * `indirectionIndex` specifies the number of loads required to read the variable.
    */
   cached
-  predicate isUse(
+  predicate isSsaUse(
     boolean certain, Operand op, BaseSourceVariableInstruction base, int ind, int indirectionIndex
   ) {
     not ignoreOperand(op) and
@@ -603,6 +603,11 @@ private module Cached {
       ind = ind0 + [0 .. upper] and
       indirectionIndex = ind - ind0
     )
+  }
+
+  cached
+  predicate isUse(boolean certain, Operand op, int ind, int indirectionIndex) {
+    isSsaUse(certain, op, _, ind, indirectionIndex)
   }
 
   /**
@@ -692,7 +697,7 @@ private module Cached {
    * after the write operation.
    */
   cached
-  predicate isDef(
+  predicate isSsaDef(
     boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
     int indirectionIndex
   ) {
@@ -708,6 +713,11 @@ private module Cached {
       indirectionIndex = ind - (ind0 + lower) and
       lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
     )
+  }
+
+  cached
+  predicate isDef(boolean certain, Node0Impl value, Operand address, int ind, int indirectionIndex) {
+    isSsaDef(certain, value, address, _, ind, indirectionIndex)
   }
 
   /**
