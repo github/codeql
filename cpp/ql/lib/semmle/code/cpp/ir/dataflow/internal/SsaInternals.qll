@@ -219,16 +219,6 @@ abstract class DefImpl extends TDefImpl {
   /** Gets the indirection index of this definition. */
   final int getIndirectionIndex() { result = indirectionIndex }
 
-  /**
-   * Gets the index (i.e., the number of loads required) of this
-   * definition or use.
-   *
-   * Note that this is _not_ the definition's (or use's) index in
-   * the enclosing basic block. To obtain this index, use
-   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
-   */
-  abstract int getIndirection();
-
   /** Gets the variable that is defined or used. */
   abstract SourceVariable getSourceVariable();
 
@@ -269,16 +259,6 @@ abstract class UseImpl extends TUseImpl {
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
 
-  /**
-   * Gets the index (i.e., the number of loads required) of this
-   * definition or use.
-   *
-   * Note that this is _not_ the definition's (or use's) index in
-   * the enclosing basic block. To obtain this index, use
-   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
-   */
-  abstract int getIndirection();
-
   /** Gets the indirection index of this use. */
   final int getIndirectionIndex() { result = indirectionIndex }
 
@@ -290,18 +270,6 @@ abstract class UseImpl extends TUseImpl {
    * associated variable.
    */
   abstract predicate isCertain();
-}
-
-pragma[noinline]
-private predicate defHasSourceVariable(DefImpl def, BaseSourceVariable bv, int ind) {
-  bv = def.getBaseSourceVariable() and
-  ind = def.getIndirection()
-}
-
-pragma[noinline]
-private predicate useHasSourceVariable(UseImpl use, BaseSourceVariable bv, int ind) {
-  bv = use.getBaseSourceVariable() and
-  ind = use.getIndirection()
 }
 
 pragma[noinline]
@@ -331,8 +299,6 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
   }
 
   override string toString() { result = "Def of &" + v.toString() }
-
-  final override int getIndirection() { result = 0 }
 
   final override predicate isCertain() { any() }
 
@@ -400,8 +366,9 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
     // predicate's implementation.
     if this.getBase().getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
     then
-      exists(Operand op, int indirection, Instruction base |
-        indirection = this.getIndirection() and
+      exists(Operand op, int indirection, Instruction base, SourceVariable sv |
+        sv = this.getSourceVariable() and
+        indirection = sv.getIndirection() and
         base = this.getBase() and
         op =
           min(Operand cand, int i |
@@ -436,8 +403,6 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 
-  override int getIndirection() { isUse(_, operand, _, result, indirectionIndex) }
-
   override predicate isCertain() { isUse(true, operand, _, indirectionIndex) }
 
   override Node getNode() { nodeHasOperand(result, operand, indirectionIndex) }
@@ -464,7 +429,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 
   override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex) }
 
-  override int getIndirection() { result = indirectionIndex + 1 }
+  int getIndirection() { result = indirectionIndex + 1 }
 
   override predicate isCertain() { any() }
 
@@ -567,7 +532,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
-  override int getIndirection() { isGlobalUse(global, f, result, indirectionIndex) }
+  int getIndirection() { isGlobalUse(global, f, result, indirectionIndex) }
 
   /** Gets the global variable associated with this use. */
   GlobalLikeVariable getVariable() { result = global }
@@ -648,7 +613,7 @@ class GlobalDefImpl extends DefImpl, TGlobalDefImpl {
     )
   }
 
-  override int getIndirection() { result = indirectionIndex }
+  int getIndirection() { result = indirectionIndex }
 
   override Node0Impl getValue() { none() }
 
@@ -1124,13 +1089,6 @@ abstract class Def extends SsaDef, TDef {
   /** Gets the indirection index of this definition. */
   abstract int getIndirectionIndex();
 
-  /**
-   * Gets the indirection level that this definition is writing to.
-   * For instance, `x = y` is a definition of `x` at indirection level 1 and
-   * `*x = y` is a definition of `x` at indirection level 2.
-   */
-  abstract int getIndirection();
-
   /** Gets the node associated with this use. */
   abstract Node getNode();
 
@@ -1167,8 +1125,6 @@ private class NonGlobalDef extends Def {
   override Operand getAddressOperand() { result = this.getImpl().getAddressOperand() }
 
   override int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
-
-  override int getIndirection() { result = this.getImpl().getIndirection() }
 
   final override Node getNode() {
     nodeHasOperand(result, this.getValue().asOperand(), this.getIndirectionIndex())
@@ -1208,7 +1164,7 @@ class GlobalDef extends Def {
 
   final override int getIndirectionIndex() { result = global.getIndirectionIndex() }
 
-  final override int getIndirection() { result = global.getIndirection() }
+  int getIndirection() { result = global.getIndirection() }
 
   final override Node getNode() { result.(InitialGlobalValue).getGlobalDef() = this }
 }
