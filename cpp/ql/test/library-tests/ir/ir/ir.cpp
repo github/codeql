@@ -2191,6 +2191,7 @@ public:
 
     void set_x(char y) { *x = y; }
     char get_x() { return *x; }
+    operator bool() const;
 };
 
 constexpr bool initialization_with_destructor_bool = true;
@@ -2528,6 +2529,27 @@ void destruction_in_switch_3(int c) {
       break;
     }
   }
+}
+
+void destructor_possibly_not_handled() {
+  ClassWithDestructor x;
+  try {
+    throw 42;
+  }
+  catch(char) {
+  }
+}
+
+ClassWithDestructor getClassWithDestructor();
+
+void this_inconsistency(bool b) {
+  if (const ClassWithDestructor& a = getClassWithDestructor())
+    ;
+}
+
+void constexpr_inconsistency(bool b) {
+  if constexpr (const ClassWithDestructor& a = getClassWithDestructor(); initialization_with_destructor_bool)
+    ;
 }
 
 // semmle-extractor-options: -std=c++20 --clang

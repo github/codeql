@@ -103,7 +103,11 @@ class Entity extends @object {
    */
   pragma[nomagic]
   predicate hasQualifiedName(string pkg, string name) {
-    pkg = this.getPackage().getPath() and
+    (
+      pkg = this.getPackage().getPath()
+      or
+      not exists(this.getPackage()) and pkg = ""
+    ) and
     name = this.getName()
   }
 

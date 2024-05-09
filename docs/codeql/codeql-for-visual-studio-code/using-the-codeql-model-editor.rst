@@ -5,6 +5,8 @@
 Using the CodeQL model editor
 =============================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 .. include:: ../reusables/beta-note-model-pack-editor-vsc.rst
 
 You can view, write, and edit CodeQL packs in Visual Studio Code using the CodeQL extension. The model editor is designed to help you model external dependencies of your codebase that are not supported by the standard CodeQL Libraries.
