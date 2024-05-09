@@ -38,12 +38,11 @@ New Features
 Known Issues
 ~~~~~~~~~~~~
 
-*   We recommend that customers using the CodeQL CLI in a third party CI system do not upgrade to this release, due to an issue with :code:`codeql  github upload-results`. Instead, please use CodeQL 2.12.5, or, when available, CodeQL 2.12.7 or 2.13.1.
+*   We recommend that customers using the CodeQL CLI in a third party CI system do not upgrade to this release, due to an issue with :code:`codeql github upload-results`. Instead, please use CodeQL 2.12.5, or, when available, CodeQL 2.12.7 or 2.13.1.
     
     This issue occurs when uploading certain kinds of diagnostic information and causes the subcommand to fail with "A fatal error occurred: Invalid SARIF.", reporting an :code:`InvalidDefinitionException`.
     
-    Customers who wish to use CodeQL 2.12.6 or 2.13.0 can
-    work around the problem by passing :code:`--no-sarif-include-diagnostics` to any invocations of :code:`codeql database analyze` or :code:`codeql database interpret-results`.
+    Customers who wish to use CodeQL 2.12.6 or 2.13.0 can work around the problem by passing :code:`--no-sarif-include-diagnostics` to any invocations of :code:`codeql database analyze` or :code:`codeql database interpret-results`.
 
 Query Packs
 -----------

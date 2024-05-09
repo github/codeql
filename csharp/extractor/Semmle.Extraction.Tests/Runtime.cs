@@ -26,6 +26,10 @@ namespace Semmle.Extraction.Tests
         public IList<string> GetListedSdks() => sdks;
 
         public bool Exec(string execArgs) => true;
+
+        public IList<string> GetNugetFeeds(string nugetConfig) => [];
+
+        public IList<string> GetNugetFeedsFromFolder(string folderPath) => [];
     }
 
     public class RuntimeTests
@@ -47,7 +51,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 7.0.2 [/path/dotnet/shared/Microsoft.NETCore.App]"
                 };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet, new LoggerStub());
+            var runtime = new Runtime(dotnet);
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -73,7 +77,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet, new LoggerStub());
+            var runtime = new Runtime(dotnet);
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -96,7 +100,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet, new LoggerStub());
+            var runtime = new Runtime(dotnet);
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -125,7 +129,7 @@ namespace Semmle.Extraction.Tests
                 @"Microsoft.WindowsDesktop.App 7.0.4 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet, new LoggerStub());
+            var runtime = new Runtime(dotnet);
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -160,10 +164,10 @@ namespace Semmle.Extraction.Tests
                 "6.0.301 [/usr/local/share/dotnet/sdk7]",
             };
             var dotnet = new DotNetStub(null!, listedSdks);
-            var sdk = new Sdk(dotnet);
+            var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
-            var version = sdk.GetNewestSdk();
+            var version = sdk.Version;
 
             // Verify
             Assert.NotNull(version);
@@ -182,10 +186,10 @@ namespace Semmle.Extraction.Tests
                 "7.0.400 [/usr/local/share/dotnet/sdk4]",
             };
             var dotnet = new DotNetStub(null!, listedSdks);
-            var sdk = new Sdk(dotnet);
+            var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
-            var version = sdk.GetNewestSdk();
+            var version = sdk.Version;
 
             // Verify
             Assert.NotNull(version);

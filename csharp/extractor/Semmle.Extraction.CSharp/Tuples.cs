@@ -122,10 +122,10 @@ namespace Semmle.Extraction.CSharp
         internal static void destructors(this TextWriter trapFile, Destructor destructor, string name, Type containingType, Destructor original) =>
             trapFile.WriteTuple("destructors", destructor, name, containingType, original);
 
-        internal static void diagnostic_for(this TextWriter trapFile, Diagnostic diag, Compilation comp, int fileNo, int index) =>
+        internal static void diagnostic_for(this TextWriter trapFile, CompilerDiagnostic diag, Compilation comp, int fileNo, int index) =>
             trapFile.WriteTuple("diagnostic_for", diag, comp, fileNo, index);
 
-        internal static void diagnostics(this TextWriter trapFile, Diagnostic diag, int severity, string errorTag, string errorMessage, string fullErrorMessage, Location location) =>
+        internal static void diagnostics(this TextWriter trapFile, CompilerDiagnostic diag, int severity, string errorTag, string errorMessage, string fullErrorMessage, Location location) =>
             trapFile.WriteTuple("diagnostics", diag, severity, errorTag, errorMessage, fullErrorMessage, location);
 
         internal static void dynamic_member_name(this TextWriter trapFile, Expression e, string name) =>
@@ -163,9 +163,6 @@ namespace Semmle.Extraction.CSharp
 
         internal static void expr_call(this TextWriter trapFile, Expression expr, Method target) =>
             trapFile.WriteTuple("expr_call", expr, target);
-
-        internal static void expr_compiler_generated(this TextWriter trapFile, Expression expr) =>
-            trapFile.WriteTuple("expr_compiler_generated", expr);
 
         internal static void expr_flowstate(this TextWriter trapFile, Expression expr, int flowState) =>
             trapFile.WriteTuple("expr_flowstate", expr, flowState);

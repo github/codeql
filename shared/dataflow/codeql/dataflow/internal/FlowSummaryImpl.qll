@@ -10,7 +10,7 @@ private import AccessPathSyntax as AccessPathSyntax
 /**
  * Provides language-specific parameters.
  */
-signature module InputSig<DF::InputSig Lang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   /**
    * A base class of callables that are candidates for flow summary modeling.
    */
@@ -139,10 +139,12 @@ signature module InputSig<DF::InputSig Lang> {
   }
 }
 
-module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
+module Make<
+  LocationSig Location, DF::InputSig<Location> DataFlowLang, InputSig<Location, DataFlowLang> Input>
+{
   private import DataFlowLang
   private import Input
-  private import codeql.dataflow.internal.DataFlowImplCommon::MakeImplCommon<DataFlowLang>
+  private import codeql.dataflow.internal.DataFlowImplCommon::MakeImplCommon<Location, DataFlowLang>
   private import codeql.util.Unit
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
@@ -208,9 +210,14 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        * Holds if data may flow from `input` to `output` through this callable.
        *
        * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
+       *
+       * If `model` is non-empty then it indicates the provenance of the model
+       * defining this flow.
        */
       pragma[nomagic]
-      abstract predicate propagatesFlow(string input, string output, boolean preservesValue);
+      abstract predicate propagatesFlow(
+        string input, string output, boolean preservesValue, string model
+      );
 
       /**
        * Holds if there exists a generated summary that applies to this callable.
@@ -396,9 +403,9 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
 
     private predicate summarySpec(string spec) {
       exists(SummarizedCallable c |
-        c.propagatesFlow(spec, _, _)
+        c.propagatesFlow(spec, _, _, _)
         or
-        c.propagatesFlow(_, spec, _)
+        c.propagatesFlow(_, spec, _, _)
       )
     }
 
@@ -553,7 +560,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
      *
      * ```ql
      * private class CAdapter extends SummarizedCallable instanceof C {
-     *   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+     *   override predicate propagatesFlow(string input, string output, boolean preservesValue, string model) {
      *     none()
      *   }
      *
@@ -573,6 +580,9 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        * `preservesValue` indicates whether this is a value-preserving step
        * or a taint-step.
        *
+       * If `model` is non-empty then it indicates the provenance of the model
+       * defining this flow.
+       *
        * Input specifications are restricted to stacks that end with
        * `SummaryComponent::argument(_)`, preceded by zero or more
        * `SummaryComponent::return(_)` or `SummaryComponent::content(_)` components.
@@ -589,7 +599,8 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        */
       pragma[nomagic]
       abstract predicate propagatesFlow(
-        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+        string model
       );
 
       /**
@@ -602,19 +613,19 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
     pragma[nomagic]
     private predicate summary(
       SummarizedCallableImpl c, SummaryComponentStack input, SummaryComponentStack output,
-      boolean preservesValue
+      boolean preservesValue, string model
     ) {
-      c.propagatesFlow(input, output, preservesValue)
+      c.propagatesFlow(input, output, preservesValue, model)
       or
       // observe side effects of callbacks on input arguments
-      c.propagatesFlow(output, input, preservesValue) and
+      c.propagatesFlow(output, input, preservesValue, model) and
       preservesValue = true and
       isCallbackParameter(input) and
       isContentOfArgument(output, _)
       or
       // flow from the receiver of a callback into the instance-parameter
       exists(SummaryComponentStack s, SummaryComponentStack callbackRef |
-        c.propagatesFlow(s, _, _) or c.propagatesFlow(_, s, _)
+        c.propagatesFlow(s, _, _, model) or c.propagatesFlow(_, s, _, model)
       |
         callbackRef = s.drop(_) and
         (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
@@ -624,7 +635,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       )
       or
       exists(SummaryComponentStack arg, SummaryComponentStack return |
-        derivedFluentFlow(c, input, arg, return, preservesValue)
+        derivedFluentFlow(c, input, arg, return, preservesValue, model)
       |
         arg.length() = 1 and
         output = return
@@ -636,13 +647,17 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       )
       or
       // Chain together summaries where values get passed into callbacks along the way
-      exists(SummaryComponentStack mid, boolean preservesValue1, boolean preservesValue2 |
-        c.propagatesFlow(input, mid, preservesValue1) and
-        c.propagatesFlow(mid, output, preservesValue2) and
+      exists(
+        SummaryComponentStack mid, boolean preservesValue1, boolean preservesValue2, string model1,
+        string model2
+      |
+        c.propagatesFlow(input, mid, preservesValue1, model1) and
+        c.propagatesFlow(mid, output, preservesValue2, model2) and
         mid.drop(mid.length() - 2) =
           SummaryComponentStack::push(TParameterSummaryComponent(_),
             SummaryComponentStack::singleton(TArgumentSummaryComponent(_))) and
-        preservesValue = preservesValue1.booleanAnd(preservesValue2)
+        preservesValue = preservesValue1.booleanAnd(preservesValue2) and
+        model = mergeModels(model1, model2)
       )
     }
 
@@ -663,14 +678,25 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
     pragma[nomagic]
     private predicate derivedFluentFlow(
       SummarizedCallable c, SummaryComponentStack input, SummaryComponentStack arg,
-      SummaryComponentStack return, boolean preservesValue
+      SummaryComponentStack return, boolean preservesValue, string model
     ) {
-      exists(ParameterPosition pos |
-        summary(c, input, arg, preservesValue) and
+      exists(ParameterPosition pos, string model1, string model2 |
+        summary(c, input, arg, preservesValue, model1) and
         isContentOfArgument(arg, pos) and
-        summary(c, SummaryComponentStack::argument(pos), return, true) and
-        return.bottom() = TReturnSummaryComponent(_)
+        summary(c, SummaryComponentStack::argument(pos), return, true, model2) and
+        return.bottom() = TReturnSummaryComponent(_) and
+        model = mergeModels(model1, model2)
       )
+    }
+
+    bindingset[model1, model2]
+    pragma[inline_late]
+    private string mergeModels(string model1, string model2) {
+      model1 = "" and result = model2
+      or
+      model2 = "" and result = model1
+      or
+      model1 != "" and model2 != "" and result = model1 + "+" + model2
     }
 
     pragma[nomagic]
@@ -678,7 +704,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       SummarizedCallable c, SummaryComponentStack input, SummaryComponentStack arg,
       SummaryComponent head, SummaryComponentStack tail, int i
     ) {
-      derivedFluentFlow(c, input, arg, tail, _) and
+      derivedFluentFlow(c, input, arg, tail, _, _) and
       head = arg.drop(i).head() and
       i = arg.length() - 2
       or
@@ -700,7 +726,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
     }
 
     private predicate outputState(SummarizedCallable c, SummaryComponentStack s) {
-      summary(c, _, s, _)
+      summary(c, _, s, _, _)
       or
       exists(SummaryComponentStack out |
         outputState(c, out) and
@@ -713,7 +739,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
     }
 
     private predicate inputState(SummarizedCallable c, SummaryComponentStack s) {
-      summary(c, s, _, _)
+      summary(c, s, _, _, _)
       or
       exists(SummaryComponentStack inp | inputState(c, inp) and s = inp.tail())
       or
@@ -740,7 +766,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
      *
      * ```ql
      * propagatesFlow(
-     *   SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+     *   SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue, string model
      * )
      * ```
      *
@@ -950,7 +976,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
      */
     predicate summaryAllowParameterReturnInSelf(SummarizedCallable c, ParameterPosition ppos) {
       exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
-        summary(c, inputContents, outputContents, _) and
+        summary(c, inputContents, outputContents, _, _) and
         inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
         outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
       )
@@ -1075,25 +1101,28 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        * Holds if there is a local step from `pred` to `succ`, which is synthesized
        * from a flow summary.
        */
-      predicate summaryLocalStep(SummaryNode pred, SummaryNode succ, boolean preservesValue) {
+      predicate summaryLocalStep(
+        SummaryNode pred, SummaryNode succ, boolean preservesValue, string model
+      ) {
         exists(
           SummarizedCallable c, SummaryComponentStack inputContents,
           SummaryComponentStack outputContents
         |
-          summary(c, inputContents, outputContents, preservesValue) and
-          pred = summaryNodeInputState(c, inputContents) and
-          succ = summaryNodeOutputState(c, outputContents)
+          summary(c, inputContents, outputContents, preservesValue, model) and
+          pred = summaryNodeInputState(pragma[only_bind_into](c), inputContents) and
+          succ = summaryNodeOutputState(pragma[only_bind_into](c), outputContents)
         |
           preservesValue = true
           or
-          preservesValue = false and not summary(c, inputContents, outputContents, true)
+          preservesValue = false and not summary(c, inputContents, outputContents, true, _)
         )
         or
         exists(SummarizedCallable c, SummaryComponentStack s |
           pred = summaryNodeInputState(c, s.tail()) and
           succ = summaryNodeInputState(c, s) and
           s.head() = [SummaryComponent::withContent(_), SummaryComponent::withoutContent(_)] and
-          preservesValue = true
+          preservesValue = true and
+          model = ""
         )
       }
 
@@ -1200,7 +1229,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         or
         exists(SummaryNode mid, boolean clearsOrExpectsMid |
           paramReachesLocal(p, mid, clearsOrExpectsMid) and
-          summaryLocalStep(mid, n, true) and
+          summaryLocalStep(mid, n, true, _) and
           if
             summaryClearsContent(n, _) or
             summaryExpectsContent(n, _)
@@ -1258,7 +1287,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        */
       predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
         exists(ReturnKind rk, SummaryNode ret, DataFlowCall call |
-          summaryLocalStep(summaryArgParam(call, arg, sc), ret, true) and
+          summaryLocalStep(summaryArgParam(call, arg, sc), ret, true, _) and
           summaryReturnNode(ret, pragma[only_bind_into](rk)) and
           out = getAnOutNode(call, pragma[only_bind_into](rk))
         )
@@ -1273,7 +1302,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        */
       predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
         exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, false)
+          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
         )
       }
 
@@ -1287,7 +1316,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
         exists(SummaryNode mid, SummaryNode ret |
           summaryReadStep(summaryArgParamRetOut(arg, ret, out, sc), c, mid) and
-          summaryLocalStep(mid, ret, _)
+          summaryLocalStep(mid, ret, _, _)
         )
       }
 
@@ -1300,7 +1329,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        */
       predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
         exists(SummaryNode mid, SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), mid, _) and
+          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
           summaryStoreStep(mid, c, ret)
         )
       }
@@ -1423,10 +1452,11 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       private class SummarizedCallableImplAdapter extends SummarizedCallableImpl instanceof SummarizedCallable
       {
         override predicate propagatesFlow(
-          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+          string model
         ) {
           exists(AccessPath inSpec, AccessPath outSpec |
-            SummarizedCallable.super.propagatesFlow(inSpec, outSpec, preservesValue) and
+            SummarizedCallable.super.propagatesFlow(inSpec, outSpec, preservesValue, model) and
             interpretSpec(inSpec, input) and
             interpretSpec(outSpec, output)
           )
@@ -1457,7 +1487,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         AccessPathSyntax::parseInt(part.getArgumentList()) < 0
       }
 
-      signature module SourceSinkInterpretationInputSig<LocationSig Location> {
+      signature module SourceSinkInterpretationInputSig {
         class Element {
           string toString();
 
@@ -1468,13 +1498,17 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
          * Holds if an external source specification exists for `n` with output specification
          * `output` and kind `kind`.
          */
-        predicate sourceElement(Element n, string output, string kind);
+        predicate sourceElement(
+          Element n, string output, string kind, Provenance provenance, string model
+        );
 
         /**
          * Holds if an external sink specification exists for `n` with input specification
          * `input` and kind `kind`.
          */
-        predicate sinkElement(Element n, string input, string kind);
+        predicate sinkElement(
+          Element n, string input, string kind, Provenance provenance, string model
+        );
 
         class SourceOrSinkElement extends Element;
 
@@ -1523,14 +1557,13 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        * Should eventually be replaced with API graphs like in dynamic languages.
        */
       module SourceSinkInterpretation<
-        LocationSig Location,
-        SourceSinkInterpretationInputSig<Location> SourceSinkInterpretationInput>
+        SourceSinkInterpretationInputSig SourceSinkInterpretationInput>
       {
         private import SourceSinkInterpretationInput
 
         private predicate sourceSinkSpec(string spec) {
-          sourceElement(_, spec, _) or
-          sinkElement(_, spec, _)
+          sourceElement(_, spec, _, _, _) or
+          sinkElement(_, spec, _, _, _)
         }
 
         private module AccessPath = AccessPathSyntax::AccessPath<sourceSinkSpec/1>;
@@ -1559,10 +1592,10 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         }
 
         private predicate sourceElementRef(
-          InterpretNode ref, SourceSinkAccessPath output, string kind
+          InterpretNode ref, SourceSinkAccessPath output, string kind, string model
         ) {
           exists(SourceOrSinkElement e |
-            sourceElement(e, output, kind) and
+            sourceElement(e, output, kind, _, model) and
             if outputNeedsReferenceExt(output.getToken(0))
             then e = ref.getCallTarget()
             else e = ref.asElement()
@@ -1574,9 +1607,11 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           inputNeedsReference(c)
         }
 
-        private predicate sinkElementRef(InterpretNode ref, SourceSinkAccessPath input, string kind) {
+        private predicate sinkElementRef(
+          InterpretNode ref, SourceSinkAccessPath input, string kind, string model
+        ) {
           exists(SourceOrSinkElement e |
-            sinkElement(e, input, kind) and
+            sinkElement(e, input, kind, _, model) and
             if inputNeedsReferenceExt(input.getToken(0))
             then e = ref.getCallTarget()
             else e = ref.asElement()
@@ -1587,7 +1622,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         private predicate interpretOutput(
           SourceSinkAccessPath output, int n, InterpretNode ref, InterpretNode node
         ) {
-          sourceElementRef(ref, output, _) and
+          sourceElementRef(ref, output, _, _) and
           n = 0 and
           (
             if output = ""
@@ -1637,7 +1672,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         private predicate interpretInput(
           SourceSinkAccessPath input, int n, InterpretNode ref, InterpretNode node
         ) {
-          sinkElementRef(ref, input, _) and
+          sinkElementRef(ref, input, _, _) and
           n = 0 and
           (
             if input = ""
@@ -1674,9 +1709,9 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
          * Holds if `node` is specified as a source with the given kind in a MaD flow
          * model.
          */
-        predicate isSourceNode(InterpretNode node, string kind) {
+        predicate isSourceNode(InterpretNode node, string kind, string model) {
           exists(InterpretNode ref, SourceSinkAccessPath output |
-            sourceElementRef(ref, output, kind) and
+            sourceElementRef(ref, output, kind, model) and
             interpretOutput(output, output.getNumToken(), ref, node)
           )
         }
@@ -1685,45 +1720,72 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
          * Holds if `node` is specified as a sink with the given kind in a MaD flow
          * model.
          */
-        predicate isSinkNode(InterpretNode node, string kind) {
+        predicate isSinkNode(InterpretNode node, string kind, string model) {
           exists(InterpretNode ref, SourceSinkAccessPath input |
-            sinkElementRef(ref, input, kind) and
+            sinkElementRef(ref, input, kind, model) and
             interpretInput(input, input.getNumToken(), ref, node)
           )
+        }
+
+        /** A source or sink relevant for testing. */
+        signature class RelevantSourceOrSinkElementSig extends SourceOrSinkElement {
+          /** Gets the string representation of this callable used by `source/1` or `sink/1`. */
+          string getCallableCsv();
+        }
+
+        /** Provides query predicates for outputting a set of relevant sources and sinks. */
+        module TestSourceSinkOutput<
+          RelevantSourceOrSinkElementSig RelevantSource, RelevantSourceOrSinkElementSig RelevantSink>
+        {
+          /**
+           * Holds if there exists a relevant source callable with information roughly corresponding to `csv`.
+           * Used for testing.
+           * The syntax is: "namespace;type;overrides;name;signature;ext;outputspec;kind;provenance",
+           * ext is hardcoded to empty.
+           */
+          query predicate source(string csv) {
+            exists(RelevantSource s, string output, string kind, Provenance provenance |
+              sourceElement(s, output, kind, provenance, _) and
+              csv =
+                s.getCallableCsv() // Callable information
+                  + output + ";" // output
+                  + kind + ";" // kind
+                  + provenance // provenance
+            )
+          }
+
+          /**
+           * Holds if there exists a relevant sink callable with information roughly corresponding to `csv`.
+           * Used for testing.
+           * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;kind;provenance",
+           * ext is hardcoded to empty.
+           */
+          query predicate sink(string csv) {
+            exists(RelevantSink s, string input, string kind, Provenance provenance |
+              sinkElement(s, input, kind, provenance, _) and
+              csv =
+                s.getCallableCsv() // Callable information
+                  + input + ";" // input
+                  + kind + ";" // kind
+                  + provenance // provenance
+            )
+          }
         }
       }
     }
 
+    /** A summarized callable relevant for testing. */
+    signature class RelevantSummarizedCallableSig extends SummarizedCallableImpl {
+      /** Gets the string representation of this callable used by `summary/1`. */
+      string getCallableCsv();
+
+      predicate relevantSummary(
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      );
+    }
+
     /** Provides a query predicate for outputting a set of relevant flow summaries. */
-    module TestOutput {
-      final private class SummarizedCallableImplFinal = SummarizedCallableImpl;
-
-      /** A flow summary to include in the `summary/1` query predicate. */
-      abstract class RelevantSummarizedCallable extends SummarizedCallableImplFinal {
-        /** Gets the string representation of this callable used by `summary/1`. */
-        abstract string getCallableCsv();
-
-        /** Holds if flow is propagated between `input` and `output`. */
-        predicate relevantSummary(
-          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-        ) {
-          super.propagatesFlow(input, output, preservesValue)
-        }
-      }
-
-      /** A model to include in the `neutral/1` query predicate. */
-      abstract class RelevantNeutralCallable instanceof NeutralCallable {
-        /** Gets the string representation of this callable used by `neutral/1`. */
-        abstract string getCallableCsv();
-
-        /**
-         * Gets the kind of the neutral.
-         */
-        string getKind() { result = super.getKind() }
-
-        string toString() { result = super.toString() }
-      }
-
+    module TestSummaryOutput<RelevantSummarizedCallableSig RelevantSummarizedCallable> {
       /** Render the kind in the format used in flow summaries. */
       private string renderKind(boolean preservesValue) {
         preservesValue = true and result = "value"
@@ -1738,15 +1800,9 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         c.hasProvenance(result)
       }
 
-      private string renderProvenanceNeutral(NeutralCallable c) {
-        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
-        or
-        not c.hasManualModel() and
-        c.hasProvenance(result)
-      }
-
       /**
-       * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
+       * Holds if there exists a relevant summary callable with information roughly corresponding to `csv`.
+       * Used for testing.
        * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind;provenance",
        * ext is hardcoded to empty.
        */
@@ -1764,9 +1820,25 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
               + renderProvenance(c) // provenance
         )
       }
+    }
+
+    /** A summarized callable relevant for testing. */
+    signature class RelevantNeutralCallableSig extends NeutralCallable {
+      /** Gets the string representation of this callable used by `neutral/1`. */
+      string getCallableCsv();
+    }
+
+    module TestNeutralOutput<RelevantNeutralCallableSig RelevantNeutralCallable> {
+      private string renderProvenance(NeutralCallable c) {
+        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
+        or
+        not c.hasManualModel() and
+        c.hasProvenance(result)
+      }
 
       /**
-       * Holds if a neutral model `csv` exists (semi-colon separated format). Used for testing purposes.
+       * Holds if there exists a relevant neutral callable with information roughly corresponding to `csv`.
+       * Used for testing.
        * The syntax is: "namespace;type;name;signature;kind;provenance"",
        */
       query predicate neutral(string csv) {
@@ -1774,7 +1846,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           csv =
             c.getCallableCsv() // Callable information
               + c.getKind() + ";" // kind
-              + renderProvenanceNeutral(c) // provenance
+              + renderProvenance(c) // provenance
         )
       }
     }
@@ -1845,7 +1917,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
 
       private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
         exists(boolean preservesValue |
-          PrivateSteps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue) and
+          PrivateSteps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue, _) and
           if preservesValue = true then value = "value" else value = "taint"
         )
         or

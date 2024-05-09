@@ -591,6 +591,33 @@ class TemplateVariable extends Variable {
 }
 
 /**
+ * A variable that is an instantiation of a template. For example
+ * the instantiation `myTemplateVariable<int>` in the following code:
+ * ```
+ * template<class T>
+ * T myTemplateVariable;
+ *
+ * void caller(int i) {
+ *   myTemplateVariable<int> = i;
+ * }
+ * ```
+ */
+class VariableTemplateInstantiation extends Variable {
+  TemplateVariable tv;
+
+  VariableTemplateInstantiation() { tv.getAnInstantiation() = this }
+
+  override string getAPrimaryQlClass() { result = "VariableTemplateInstantiation" }
+
+  /**
+   * Gets the variable template from which this instantiation was instantiated.
+   *
+   * Example: For `int x<int>`, returns `T x`.
+   */
+  TemplateVariable getTemplate() { result = tv }
+}
+
+/**
  * A non-static local variable or parameter that is not part of an
  * uninstantiated template. Uninstantiated templates are purely syntax, and
  * only on instantiation will they be complete with information about types,

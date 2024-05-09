@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.TYPE_ACCESS,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             return new Expression(typeAccessInfo);

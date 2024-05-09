@@ -1,7 +1,8 @@
 edges
 | search.c:14:24:14:28 | *query | search.c:17:8:17:12 | *query | provenance |  |
 | search.c:22:24:22:28 | *query | search.c:23:39:23:43 | *query | provenance |  |
-| search.c:55:24:55:28 | *query | search.c:62:8:62:17 | *query_text | provenance |  |
+| search.c:55:24:55:28 | *query | search.c:62:8:62:17 | *query_text | provenance | TaintFunction |
+| search.c:67:21:67:26 | *call to getenv | search.c:67:21:67:26 | *call to getenv | provenance |  |
 | search.c:67:21:67:26 | *call to getenv | search.c:71:17:71:25 | *raw_query | provenance |  |
 | search.c:67:21:67:26 | *call to getenv | search.c:73:17:73:25 | *raw_query | provenance |  |
 | search.c:67:21:67:26 | *call to getenv | search.c:77:17:77:25 | *raw_query | provenance |  |
@@ -15,6 +16,7 @@ nodes
 | search.c:23:39:23:43 | *query | semmle.label | *query |
 | search.c:55:24:55:28 | *query | semmle.label | *query |
 | search.c:62:8:62:17 | *query_text | semmle.label | *query_text |
+| search.c:67:21:67:26 | *call to getenv | semmle.label | *call to getenv |
 | search.c:67:21:67:26 | *call to getenv | semmle.label | *call to getenv |
 | search.c:71:17:71:25 | *raw_query | semmle.label | *raw_query |
 | search.c:73:17:73:25 | *raw_query | semmle.label | *raw_query |

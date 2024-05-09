@@ -26,7 +26,7 @@ private string positionToString(int pos) {
   if pos = -1 then result = "this" else result = pos.toString()
 }
 
-module Input implements InputSig<DataFlowImplSpecific::JavaDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
   class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
@@ -85,7 +85,7 @@ module Input implements InputSig<DataFlowImplSpecific::JavaDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::JavaDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::JavaDataFlow, Input> as Impl
 
 private module TypesInput implements Impl::Private::TypesInputSig {
   DataFlowType getSyntheticGlobalType(Impl::Private::SyntheticGlobal sg) {
@@ -126,10 +126,10 @@ private predicate relatedArgSpec(Callable c, string spec) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
-    summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _) or
-    sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _) or
-    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _)
+    summaryModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _, _) or
+    summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _, _) or
+    sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
+    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
   |
     c = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
@@ -186,18 +186,22 @@ private predicate correspondingKotlinParameterDefaultsArgSpec(
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   private import java as J
 
   class Element = J::Element;
 
-  predicate sourceElement(Element e, string output, string kind) {
+  predicate sourceElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSource, string originalOutput
+      SourceOrSinkElement baseSource, string originalOutput, QlBuiltins::ExtensionId madId
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, _) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
+        madId) and
+      model = "MaD:" + madId.toString() and
       baseSource = interpretElement(namespace, type, subtypes, name, signature, ext) and
       (
         e = baseSource and output = originalOutput
@@ -207,12 +211,16 @@ module SourceSinkInterpretationInput implements
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind) {
+  predicate sinkElement(
+    Element e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSink, string originalInput
+      SourceOrSinkElement baseSink, string originalInput, QlBuiltins::ExtensionId madId
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, _) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance,
+        madId) and
+      model = "MaD:" + madId.toString() and
       baseSink = interpretElement(namespace, type, subtypes, name, signature, ext) and
       (
         e = baseSink and originalInput = input
@@ -294,21 +302,24 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
 
     /**
      * Holds if an external flow summary exists for `c` with input specification
      * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
      */
     predicate summaryElement(
-      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance
+      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance,
+      string model
     ) {
       exists(
         string namespace, string type, boolean subtypes, string name, string signature, string ext,
-        string originalInput, string originalOutput, Callable baseCallable
+        string originalInput, string originalOutput, Callable baseCallable,
+        QlBuiltins::ExtensionId madId
       |
         summaryModel(namespace, type, subtypes, name, signature, ext, originalInput, originalOutput,
-          kind, provenance) and
+          kind, provenance, madId) and
+        model = "MaD:" + madId.toString() and
         baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext) and
         (
           c.asCallable() = baseCallable and input = originalInput and output = originalOutput

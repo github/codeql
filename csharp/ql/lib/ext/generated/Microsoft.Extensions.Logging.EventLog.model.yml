@@ -14,10 +14,3 @@ extensions:
     data:
       - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", "EventLogLoggerProvider", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Logging.EventLog.EventLogSettings>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_Filter", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_LogName", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_MachineName", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_SourceName", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "set_LogName", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "set_MachineName", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "set_SourceName", "(System.String)", "summary", "df-generated"]

@@ -758,3 +758,14 @@ void test_call_sprintf() {
 	call_sprintf_twice(path, indirect_source());
 	sink(*path); // $ ast,ir
 }
+
+struct TaintInheritingContentObject {
+	int flowFromObject;
+};
+
+TaintInheritingContentObject source(bool);
+
+void test_TaintInheritingContent() {
+	TaintInheritingContentObject obj = source(true);
+	sink(obj.flowFromObject); // $ ir MISSING: ast
+}

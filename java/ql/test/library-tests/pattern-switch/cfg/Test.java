@@ -98,6 +98,39 @@ public class Test {
          break;
      }
 
+     switch(thing) {
+       case B(_, _):
+       case Integer _, String _, A(_, _) when thing.toString().equals("abc"):
+       case Float _:
+         break;
+       default:
+         break;
+     }
+
+     var result = switch(thing) {
+       case B(_, _):
+       case Integer _, String _, A(_, _) when thing.toString().equals("abc"):
+       case Float _:
+         yield 1;
+       default:
+         yield 2;
+     };
+
+     switch ((String)thing) {
+       case "a":
+       case String _ when ((String)thing).length() == 5:
+       case "b":
+         break;
+       default:
+         break;
+     }
+
+     // Test the case where a case falls out of a switch block without a break:
+     switch(thing) {
+       case String _:
+       default:
+     }
+
   }
 
 }

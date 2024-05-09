@@ -7,6 +7,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import internal.CachedStages
 
 /**
@@ -241,15 +242,23 @@ module API {
     }
 
     /**
-     * Gets a node representing an instance of this API component, that is, an object whose
-     * constructor is the function represented by this node.
+     * Gets a node representing an instance of the class represented by this node.
+     * This includes instances of subclasses.
      *
-     * For example, if this node represents a use of some class `A`, then there might be a node
-     * representing instances of `A`, typically corresponding to expressions `new A()` at the
-     * source level.
+     * For example:
+     * ```js
+     * import { C } from "foo";
      *
-     * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
-     * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
+     * new C(); // API::moduleImport("foo").getMember("C").getInstance()
+     *
+     * class D extends C {
+     *   m() {
+     *     this; // API::moduleImport("foo").getMember("C").getInstance()
+     *  }
+     * }
+     *
+     * new D(); // API::moduleImport("foo").getMember("C").getInstance()
+     * ```
      */
     cached
     Node getInstance() {
@@ -493,16 +502,25 @@ module API {
     }
 
     /**
+     * Gets the location of this API node, if it corresponds to a program element with a source location.
+     */
+    final Location getLocation() { result = this.getInducingNode().getLocation() }
+
+    /**
+     * DEPRECATED: Use `getLocation().hasLocationInfo()` instead.
+     *
      * Holds if this node is located in file `path` between line `startline`, column `startcol`,
      * and line `endline`, column `endcol`.
      *
      * For nodes that do not have a meaningful location, `path` is the empty string and all other
      * parameters are zero.
      */
-    predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      this.getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+    deprecated predicate hasLocationInfo(
+      string path, int startline, int startcol, int endline, int endcol
+    ) {
+      this.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
       or
-      not exists(this.getInducingNode()) and
+      not exists(this.getLocation()) and
       path = "" and
       startline = 0 and
       startcol = 0 and
@@ -688,14 +706,7 @@ module API {
         or
         any(Type t).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) {
-        hasSemantics(cls) and
-        (
-          cls = trackDefNode(_)
-          or
-          cls.getAnInstanceReference() = trackDefNode(_)
-        )
-      } or
+      MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
@@ -707,6 +718,17 @@ module API {
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
       }
+
+    private predicate needsDefNode(DataFlow::ClassNode cls) {
+      hasSemantics(cls) and
+      (
+        cls = trackDefNode(_)
+        or
+        cls.getAnInstanceReference() = trackDefNode(_)
+        or
+        needsDefNode(cls.getADirectSubClass())
+      )
+    }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -759,6 +781,13 @@ module API {
             m = imp.getImportedModule() and
             lbl = Label::member(prop) and
             rhs = m.getAnExportedValue(prop)
+          )
+          or
+          // In general, turn store steps into member steps for def-nodes
+          exists(string prop |
+            PreCallGraphStep::storeStep(rhs, pred, prop) and
+            lbl = Label::member(prop) and
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
           )
           or
           exists(DataFlow::FunctionNode fn |
@@ -891,6 +920,17 @@ module API {
       (propDesc = Promises::errorProp() or propDesc = "")
     }
 
+    pragma[nomagic]
+    private DataFlow::ClassNode getALocalSubclass(DataFlow::SourceNode node) {
+      result.getASuperClassNode().getALocalSource() = node
+    }
+
+    bindingset[node]
+    pragma[inline_late]
+    private DataFlow::ClassNode getALocalSubclassFwd(DataFlow::SourceNode node) {
+      result = getALocalSubclass(node)
+    }
+
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
@@ -915,7 +955,6 @@ module API {
           (base instanceof TNonModuleDef or base instanceof TUse)
         )
         or
-        // invocations
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
           use(base, src) and pred = trackUseNode(src)
         |
@@ -927,6 +966,22 @@ module API {
           or
           lbl = Label::forwardingFunction() and
           DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
+          or
+          exists(DataFlow::ClassNode cls |
+            lbl = Label::instance() and
+            cls = getALocalSubclassFwd(pred).getADirectSubClass*()
+          |
+            ref = cls.getAReceiverNode()
+            or
+            ref = cls.getAClassReference().getAnInstantiation()
+          )
+          or
+          exists(string prop |
+            PreCallGraphStep::loadStep(pred.getALocalUse(), ref, prop) and
+            lbl = Label::member(prop) and
+            // avoid generating member edges like "$arrayElement$"
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
+          )
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -1278,7 +1333,7 @@ module API {
         succ = MkDef(rhs)
         or
         exists(DataFlow::ClassNode cls |
-          cls.getAnInstanceReference() = rhs and
+          cls.getAnInstanceReference().flowsTo(rhs) and
           succ = MkClassInstance(cls)
         )
       )
@@ -1494,7 +1549,9 @@ module API {
           prop = any(CanonicalName c).getName() or
           prop = any(DataFlow::PropRef p).getPropertyName() or
           exists(Impl::MkTypeUse(_, prop)) or
-          exists(any(Module m).getAnExportedValue(prop))
+          exists(any(Module m).getAnExportedValue(prop)) or
+          PreCallGraphStep::loadStep(_, _, prop) or
+          PreCallGraphStep::storeStep(_, _, prop)
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {

@@ -63,7 +63,7 @@ dependency/A.java:
 #   31|         1: [SwitchStmt] switch (...)
 #   31|           -1: [VarAccess] o
 #   32|           0: [PatternCase] case <Pattern>
-#-----|             0: (Single Local Variable Declaration)
+#-----|             0: (Pattern case declaration)
 #   32|               0: [TypeAccess] Used2
 #   32|               1: [LocalVariableDeclExpr] u2
 #   32|           1: [BreakStmt] break
@@ -74,7 +74,7 @@ dependency/A.java:
 #   35|             0: [SwitchExpr] switch (...)
 #   35|               -1: [VarAccess] o
 #   36|               0: [PatternCase] case <Pattern>
-#-----|                 0: (Single Local Variable Declaration)
+#-----|                 0: (Pattern case declaration)
 #   36|                   0: [TypeAccess] Used3
 #   36|                   1: [LocalVariableDeclExpr] u3
 #   36|               1: [YieldStmt] yield ...

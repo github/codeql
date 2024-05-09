@@ -45,6 +45,8 @@ private module Cached {
       CopyStep(PropertyName prop) or
       LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
         SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
+        or
+        summarizedLoadStoreStep(_, _, fromProp, toProp)
       } or
       WithoutPropStep(PropertySet props) { SharedTypeTrackingStep::withoutPropStep(_, _, props) }
   }
@@ -67,6 +69,26 @@ private module Cached {
   private DataFlow::Node getAGlobalStepSuccessor(string global) {
     result = AccessPath::getAReferenceTo(global) and
     AccessPath::isAssignedInUniqueFile(global)
+  }
+
+  bindingset[fun]
+  pragma[inline_late]
+  private DataFlow::PropRead getStoredPropRead(DataFlow::FunctionNode fun, string storeProp) {
+    result = fun.getAReturn().getALocalSource().getAPropertySource(storeProp)
+  }
+
+  /**
+   * Holds if `loadProp` of `param` is stored in the `storeProp` property of the return value of `fun`.
+   */
+  pragma[nomagic]
+  private predicate summarizedLoadStoreStep(
+    DataFlow::ParameterNode param, DataFlow::FunctionNode fun, string loadProp, string storeProp
+  ) {
+    exists(DataFlow::PropRead read |
+      read = getStoredPropRead(fun, storeProp) and
+      read.getBase().getALocalSource() = param and
+      read.getPropertyName() = loadProp
+    )
   }
 
   /**
@@ -156,6 +178,14 @@ private module Cached {
         exists(string prop |
           param.getAPropertyRead(prop).flowsTo(fun.getAReturn()) and
           summary = LoadStep(prop)
+          or
+          fun.getAReturn().getALocalSource().getAPropertySource(prop) = param and
+          summary = StoreStep(prop)
+        )
+        or
+        exists(string loadProp, string storeProp |
+          summarizedLoadStoreStep(param, fun, loadProp, storeProp) and
+          summary = LoadStoreStep(loadProp, storeProp)
         )
       ) and
       if param = fun.getAParameter()

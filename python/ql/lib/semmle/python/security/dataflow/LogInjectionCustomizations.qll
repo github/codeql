@@ -90,7 +90,7 @@ module LogInjection {
     // TODO: Consider rewriting using flow states.
     ReplaceLineBreaksSanitizer() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
-      this.getArg(0).asExpr().(StrConst).getText() in ["\r\n", "\n"]
+      this.getArg(0).asExpr().(StringLiteral).getText() in ["\r\n", "\n"]
     }
   }
 }

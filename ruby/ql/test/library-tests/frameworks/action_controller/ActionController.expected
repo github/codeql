@@ -14,6 +14,7 @@ actionControllerControllerClasses
 | input_access.rb:1:1:58:3 | UsersController |
 | params_flow.rb:1:1:162:3 | MyController |
 | params_flow.rb:170:1:178:3 | Subclass |
+| params_flow.rb:180:1:207:3 | UploadedFileTests |
 actionControllerActionMethods
 | app/controllers/comments_controller.rb:17:3:51:5 | index |
 | app/controllers/comments_controller.rb:53:3:54:5 | create |
@@ -86,6 +87,12 @@ actionControllerActionMethods
 | params_flow.rb:152:3:159:5 | m33 |
 | params_flow.rb:165:3:167:5 | m34 |
 | params_flow.rb:171:3:173:5 | m35 |
+| params_flow.rb:181:3:183:5 | m36 |
+| params_flow.rb:185:3:187:5 | m37 |
+| params_flow.rb:189:3:191:5 | m38 |
+| params_flow.rb:193:3:195:5 | m39 |
+| params_flow.rb:197:3:200:5 | m40 |
+| params_flow.rb:202:3:206:5 | m41 |
 paramsCalls
 | app/controllers/comments_controller.rb:80:36:80:41 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
@@ -146,6 +153,12 @@ paramsCalls
 | params_flow.rb:166:10:166:15 | call to params |
 | params_flow.rb:172:10:172:15 | call to params |
 | params_flow.rb:176:10:176:15 | call to params |
+| params_flow.rb:182:10:182:15 | call to params |
+| params_flow.rb:186:10:186:15 | call to params |
+| params_flow.rb:190:10:190:15 | call to params |
+| params_flow.rb:194:10:194:15 | call to params |
+| params_flow.rb:198:5:198:10 | call to params |
+| params_flow.rb:204:5:204:10 | call to params |
 paramsSources
 | app/controllers/comments_controller.rb:80:36:80:41 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
@@ -206,6 +219,12 @@ paramsSources
 | params_flow.rb:166:10:166:15 | call to params |
 | params_flow.rb:172:10:172:15 | call to params |
 | params_flow.rb:176:10:176:15 | call to params |
+| params_flow.rb:182:10:182:15 | call to params |
+| params_flow.rb:186:10:186:15 | call to params |
+| params_flow.rb:190:10:190:15 | call to params |
+| params_flow.rb:194:10:194:15 | call to params |
+| params_flow.rb:198:5:198:10 | call to params |
+| params_flow.rb:204:5:204:10 | call to params |
 httpInputAccesses
 | app/controllers/application_controller.rb:11:53:11:64 | call to path | ActionDispatch::Request#path |
 | app/controllers/comments_controller.rb:18:5:18:18 | call to params | ActionDispatch::Request#params |
@@ -324,6 +343,12 @@ httpInputAccesses
 | params_flow.rb:166:10:166:15 | call to params | ActionController::Metal#params |
 | params_flow.rb:172:10:172:15 | call to params | ActionController::Metal#params |
 | params_flow.rb:176:10:176:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:182:10:182:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:186:10:186:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:190:10:190:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:194:10:194:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:198:5:198:10 | call to params | ActionController::Metal#params |
+| params_flow.rb:204:5:204:10 | call to params | ActionController::Metal#params |
 cookiesCalls
 | app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
 cookiesSources

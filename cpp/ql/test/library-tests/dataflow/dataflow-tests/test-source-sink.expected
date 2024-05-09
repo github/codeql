@@ -123,6 +123,7 @@ astFlow
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source | test.cpp:848:23:848:25 | rpx |
 | test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
+| test.cpp:1050:12:1050:12 | a | test.cpp:1052:8:1052:9 | & ... |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
@@ -227,7 +228,6 @@ irFlow
 | test.cpp:333:17:333:22 | call to source | test.cpp:337:10:337:18 | globalVar |
 | test.cpp:333:17:333:22 | call to source | test.cpp:339:10:339:18 | globalVar |
 | test.cpp:333:17:333:22 | call to source | test.cpp:343:10:343:18 | globalVar |
-| test.cpp:333:17:333:22 | call to source | test.cpp:349:10:349:18 | globalVar |
 | test.cpp:347:17:347:22 | call to source | test.cpp:337:10:337:18 | globalVar |
 | test.cpp:347:17:347:22 | call to source | test.cpp:339:10:339:18 | globalVar |
 | test.cpp:347:17:347:22 | call to source | test.cpp:343:10:343:18 | globalVar |
@@ -259,7 +259,6 @@ irFlow
 | test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:566:10:566:19 | * ... |
 | test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
 | test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |
-| test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:578:10:578:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:566:10:566:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |

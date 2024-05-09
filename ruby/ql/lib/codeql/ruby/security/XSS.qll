@@ -248,6 +248,19 @@ private module Shared {
     or
     isFlowFromHelperMethod(node1, node2)
   }
+
+  private predicate htmlSafeGuard(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
+    exists(DataFlow::CallNode html_safe_call | html_safe_call.getMethodName() = "html_safe?" |
+      guard = html_safe_call.asExpr() and
+      testedNode = html_safe_call.getReceiver().asExpr() and
+      branch = true
+    )
+  }
+
+  /** A guard that calls `.html_safe?` to check whether the string is already HTML-safe. */
+  private class HtmlSafeGuard extends Sanitizer {
+    HtmlSafeGuard() { this = DataFlow::BarrierGuard<htmlSafeGuard/3>::getABarrierNode() }
+  }
 }
 
 /**
@@ -299,6 +312,8 @@ private module OrmTracking {
     }
 
     predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
+
+    int accessPathLimit() { result = 1 }
   }
 
   import DataFlow::Global<Config>
@@ -324,7 +339,9 @@ module StoredXss {
     OrmFieldAsSource() {
       exists(DataFlow::CallNode subSrc |
         OrmTracking::flow(subSrc, this.getReceiver()) and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName()) and
+        this.getNumberOfArguments() = 0 and
+        not exists(this.getBlock())
       )
     }
   }

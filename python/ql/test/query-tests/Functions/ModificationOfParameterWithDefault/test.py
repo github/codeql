@@ -216,3 +216,9 @@ def flow_from_within_deepcopy_fp():
 def flow_through_deepcopy_fp(x=[]):
     y = deepcopy(x)
     y.append(1)
+
+# Use of copy method:
+
+def flow_through_copy_fp(x=[]):
+    y = x.copy()
+    y.append(1)

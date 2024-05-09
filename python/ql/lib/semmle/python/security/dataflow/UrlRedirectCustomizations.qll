@@ -118,8 +118,8 @@ module UrlRedirect {
 
     ReplaceBackslashesSanitizer() {
       this.calls(receiver, "replace") and
-      this.getArg(0).asExpr().(StrConst).getText() = "\\" and
-      this.getArg(1).asExpr().(StrConst).getText() in ["/", ""]
+      this.getArg(0).asExpr().(StringLiteral).getText() = "\\" and
+      this.getArg(1).asExpr().(StringLiteral).getText() in ["/", ""]
     }
 
     override predicate sanitizes(FlowState state) { state instanceof MayContainBackslashes }

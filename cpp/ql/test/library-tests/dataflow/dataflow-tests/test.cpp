@@ -346,7 +346,7 @@ namespace FlowThroughGlobals {
   void taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast ir=333:17 ir=347:17
+    sink(globalVar); // $ ast ir
   }
 }
 
@@ -575,7 +575,7 @@ namespace IndirectFlowThroughGlobals {
   void taintAndCall() {
     globalInt = indirect_source();
     calledAfterTaint();
-    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
+    sink(*globalInt); // $ ir MISSING: ast=562:17 ast=576:17
   }
 }
 
@@ -1044,4 +1044,32 @@ void* memset(void*, int, size_t);
 void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
 	memset(buf, source(), 10);
 	sink(*buf); // $ ir MISSING: ast
+}
+
+void flow_out_of_address_with_local_flow() {
+  MyStruct a;
+  a.content = nullptr;
+  sink(&a); // $ SPURIOUS: ast
+}
+
+static void static_func_that_reassigns_pointer_before_sink(char** pp) { // $ ast-def=pp ir-def=*pp ir-def=**pp
+    *pp = "";
+    indirect_sink(*pp); // clean
+}
+
+void test_static_func_that_reassigns_pointer_before_sink() {
+    char* p = (char*)indirect_source();
+    static_func_that_reassigns_pointer_before_sink(&p);
+}
+
+void single_object_in_both_cases(bool b, int x, int y) {
+  int* p;
+  if(b) {
+    p = &x;
+  } else {
+    p = &y;
+  }
+  *p = source();
+  *p = 0;
+  sink(*p); // clean
 }

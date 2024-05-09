@@ -39,7 +39,7 @@ module TarSlip {
       this = API::moduleImport("tarfile").getMember("open").getACall() and
       // If argument refers to a string object, then it's a hardcoded path and
       // this tarfile is safe.
-      not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StrConst and
+      not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StringLiteral and
       // Ignore opens within the tarfile module itself
       not this.getLocation().getFile().getBaseName() = "tarfile.py"
     }
@@ -70,7 +70,7 @@ module TarSlip {
       exists(Expr filterValue |
         filterValue = call.getParameter(4, "filter").getAValueReachingSink().asExpr() and
         (
-          filterValue.(StrConst).getText() = "fully_trusted"
+          filterValue.(StringLiteral).getText() = "fully_trusted"
           or
           filterValue instanceof None
         )

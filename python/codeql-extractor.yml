@@ -1,0 +1,46 @@
+name: "python"
+display_name: "Python"
+version: 1.22.1
+column_kind: utf32
+build_modes:
+  - none
+github_api_languages:
+  - Python
+scc_languages:
+  - Python
+file_types:
+  - name: python
+    display_name: Python sources
+    extensions:
+      - .py
+legacy_qltest_extraction: true
+options:
+  logging:
+    title: Options pertaining to logging.
+    type: object
+    properties:
+      verbosity:
+        title: Python extractor logging verbosity level.
+        description: >
+          Controls the level of verbosity of the CodeQL Python extractor.
+
+          The supported levels are (in order of increasing verbosity):
+
+            - off
+            - errors
+            - warnings
+            - info or progress
+            - debug or progress+
+            - trace or progress++
+            - progress+++
+        type: string
+        pattern: "^(off|errors|warnings|(info|progress)|(debug|progress\\+)|(trace|progress\\+\\+)|progress\\+\\+\\+)$"
+  python_executable_name:
+    title: Controls the name of the Python executable used by the Python extractor.
+    description: >
+      The Python extractor uses platform-dependent heuristics to determine the name of the Python executable to use.
+      Specifying a value for this option overrides the name of the Python executable used by the extractor.
+      Accepted values are py, python and python3.
+      Use this setting with caution, the Python extractor requires Python 3 to run.
+    type: string
+    pattern: "^(py|python|python3)$"

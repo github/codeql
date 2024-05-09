@@ -2933,15 +2933,15 @@ exprs.kt:
 #  292|             1: [StmtExpr] <Stmt>
 #  292|               0: [BlockStmt] { ... }
 #  292|                 0: [LocalVariableDeclStmt] var ...;
-#  292|                   1: [LocalVariableDeclExpr] tmp0
+#  292|                   1: [LocalVariableDeclExpr] <unary>
 #  292|                     0: [VarAccess] i0
 #  292|                 1: [ExprStmt] <Expr>;
 #  292|                   0: [AssignExpr] ...=...
 #  292|                     0: [VarAccess] i0
 #  292|                     1: [MethodCall] inc(...)
-#  292|                       -1: [VarAccess] tmp0
+#  292|                       -1: [VarAccess] <unary>
 #  292|                 2: [ExprStmt] <Expr>;
-#  292|                   0: [VarAccess] tmp0
+#  292|                   0: [VarAccess] <unary>
 #  293|         7: [ExprStmt] <Expr>;
 #  293|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  293|             0: [TypeAccess] Unit
@@ -2960,15 +2960,15 @@ exprs.kt:
 #  294|             1: [StmtExpr] <Stmt>
 #  294|               0: [BlockStmt] { ... }
 #  294|                 0: [LocalVariableDeclStmt] var ...;
-#  294|                   1: [LocalVariableDeclExpr] tmp1
+#  294|                   1: [LocalVariableDeclExpr] <unary>
 #  294|                     0: [VarAccess] i0
 #  294|                 1: [ExprStmt] <Expr>;
 #  294|                   0: [AssignExpr] ...=...
 #  294|                     0: [VarAccess] i0
 #  294|                     1: [MethodCall] dec(...)
-#  294|                       -1: [VarAccess] tmp1
+#  294|                       -1: [VarAccess] <unary>
 #  294|                 2: [ExprStmt] <Expr>;
-#  294|                   0: [VarAccess] tmp1
+#  294|                   0: [VarAccess] <unary>
 #  295|         9: [ExprStmt] <Expr>;
 #  295|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  295|             0: [TypeAccess] Unit
@@ -3028,15 +3028,15 @@ exprs.kt:
 #  306|             1: [StmtExpr] <Stmt>
 #  306|               0: [BlockStmt] { ... }
 #  306|                 0: [LocalVariableDeclStmt] var ...;
-#  306|                   1: [LocalVariableDeclExpr] tmp2
+#  306|                   1: [LocalVariableDeclExpr] <unary>
 #  306|                     0: [VarAccess] b0
 #  306|                 1: [ExprStmt] <Expr>;
 #  306|                   0: [AssignExpr] ...=...
 #  306|                     0: [VarAccess] b0
 #  306|                     1: [MethodCall] inc(...)
-#  306|                       -1: [VarAccess] tmp2
+#  306|                       -1: [VarAccess] <unary>
 #  306|                 2: [ExprStmt] <Expr>;
-#  306|                   0: [VarAccess] tmp2
+#  306|                   0: [VarAccess] <unary>
 #  307|         20: [ExprStmt] <Expr>;
 #  307|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  307|             0: [TypeAccess] Unit
@@ -3055,15 +3055,15 @@ exprs.kt:
 #  308|             1: [StmtExpr] <Stmt>
 #  308|               0: [BlockStmt] { ... }
 #  308|                 0: [LocalVariableDeclStmt] var ...;
-#  308|                   1: [LocalVariableDeclExpr] tmp3
+#  308|                   1: [LocalVariableDeclExpr] <unary>
 #  308|                     0: [VarAccess] b0
 #  308|                 1: [ExprStmt] <Expr>;
 #  308|                   0: [AssignExpr] ...=...
 #  308|                     0: [VarAccess] b0
 #  308|                     1: [MethodCall] dec(...)
-#  308|                       -1: [VarAccess] tmp3
+#  308|                       -1: [VarAccess] <unary>
 #  308|                 2: [ExprStmt] <Expr>;
-#  308|                   0: [VarAccess] tmp3
+#  308|                   0: [VarAccess] <unary>
 #  309|         22: [ExprStmt] <Expr>;
 #  309|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  309|             0: [TypeAccess] Unit
@@ -3123,15 +3123,15 @@ exprs.kt:
 #  320|             1: [StmtExpr] <Stmt>
 #  320|               0: [BlockStmt] { ... }
 #  320|                 0: [LocalVariableDeclStmt] var ...;
-#  320|                   1: [LocalVariableDeclExpr] tmp4
+#  320|                   1: [LocalVariableDeclExpr] <unary>
 #  320|                     0: [VarAccess] s0
 #  320|                 1: [ExprStmt] <Expr>;
 #  320|                   0: [AssignExpr] ...=...
 #  320|                     0: [VarAccess] s0
 #  320|                     1: [MethodCall] inc(...)
-#  320|                       -1: [VarAccess] tmp4
+#  320|                       -1: [VarAccess] <unary>
 #  320|                 2: [ExprStmt] <Expr>;
-#  320|                   0: [VarAccess] tmp4
+#  320|                   0: [VarAccess] <unary>
 #  321|         33: [ExprStmt] <Expr>;
 #  321|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  321|             0: [TypeAccess] Unit
@@ -3150,15 +3150,15 @@ exprs.kt:
 #  322|             1: [StmtExpr] <Stmt>
 #  322|               0: [BlockStmt] { ... }
 #  322|                 0: [LocalVariableDeclStmt] var ...;
-#  322|                   1: [LocalVariableDeclExpr] tmp5
+#  322|                   1: [LocalVariableDeclExpr] <unary>
 #  322|                     0: [VarAccess] s0
 #  322|                 1: [ExprStmt] <Expr>;
 #  322|                   0: [AssignExpr] ...=...
 #  322|                     0: [VarAccess] s0
 #  322|                     1: [MethodCall] dec(...)
-#  322|                       -1: [VarAccess] tmp5
+#  322|                       -1: [VarAccess] <unary>
 #  322|                 2: [ExprStmt] <Expr>;
-#  322|                   0: [VarAccess] tmp5
+#  322|                   0: [VarAccess] <unary>
 #  323|         35: [ExprStmt] <Expr>;
 #  323|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  323|             0: [TypeAccess] Unit
@@ -3218,15 +3218,15 @@ exprs.kt:
 #  334|             1: [StmtExpr] <Stmt>
 #  334|               0: [BlockStmt] { ... }
 #  334|                 0: [LocalVariableDeclStmt] var ...;
-#  334|                   1: [LocalVariableDeclExpr] tmp6
+#  334|                   1: [LocalVariableDeclExpr] <unary>
 #  334|                     0: [VarAccess] l0
 #  334|                 1: [ExprStmt] <Expr>;
 #  334|                   0: [AssignExpr] ...=...
 #  334|                     0: [VarAccess] l0
 #  334|                     1: [MethodCall] inc(...)
-#  334|                       -1: [VarAccess] tmp6
+#  334|                       -1: [VarAccess] <unary>
 #  334|                 2: [ExprStmt] <Expr>;
-#  334|                   0: [VarAccess] tmp6
+#  334|                   0: [VarAccess] <unary>
 #  335|         46: [ExprStmt] <Expr>;
 #  335|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  335|             0: [TypeAccess] Unit
@@ -3245,15 +3245,15 @@ exprs.kt:
 #  336|             1: [StmtExpr] <Stmt>
 #  336|               0: [BlockStmt] { ... }
 #  336|                 0: [LocalVariableDeclStmt] var ...;
-#  336|                   1: [LocalVariableDeclExpr] tmp7
+#  336|                   1: [LocalVariableDeclExpr] <unary>
 #  336|                     0: [VarAccess] l0
 #  336|                 1: [ExprStmt] <Expr>;
 #  336|                   0: [AssignExpr] ...=...
 #  336|                     0: [VarAccess] l0
 #  336|                     1: [MethodCall] dec(...)
-#  336|                       -1: [VarAccess] tmp7
+#  336|                       -1: [VarAccess] <unary>
 #  336|                 2: [ExprStmt] <Expr>;
-#  336|                   0: [VarAccess] tmp7
+#  336|                   0: [VarAccess] <unary>
 #  337|         48: [ExprStmt] <Expr>;
 #  337|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  337|             0: [TypeAccess] Unit
@@ -3358,7 +3358,7 @@ exprs.kt:
 #  174|     5: [Constructor] Direction
 #  174|       5: [BlockStmt] { ... }
 #  174|         0: [ExprStmt] <Expr>;
-#  174|           0: [ClassInstanceExpr] new Enum(...)
+#  174|           0: [ClassInstanceExpr] new Enum<Direction>(...)
 #  174|             -3: [TypeAccess] Enum<Direction>
 #  174|               0: [TypeAccess] Direction
 #  174|             0: [NullLiteral] null
@@ -3381,24 +3381,24 @@ exprs.kt:
 #  175|       0: [ClassInstanceExpr] new Direction(...)
 #  175|         -3: [TypeAccess] Direction
 #  178|   7: [Class] Color
-#    0|     2: [Method] getEntries
-#    0|       3: [TypeAccess] EnumEntries<Color>
-#    0|         0: [TypeAccess] Color
-#    0|     3: [Method] valueOf
-#    0|       3: [TypeAccess] Color
+#  178|     2: [Method] getEntries
+#  178|       3: [TypeAccess] EnumEntries<Color>
+#  178|         0: [TypeAccess] Color
+#  178|     3: [Method] valueOf
+#  178|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
-#    0|     4: [Method] values
-#    0|       3: [TypeAccess] Color[]
-#    0|         0: [TypeAccess] Color
+#  178|         0: [Parameter] value
+#  178|           0: [TypeAccess] String
+#  178|     4: [Method] values
+#  178|       3: [TypeAccess] Color[]
+#  178|         0: [TypeAccess] Color
 #  178|     5: [Constructor] Color
 #-----|       4: (Parameters)
 #  178|         0: [Parameter] rgb
 #  178|           0: [TypeAccess] int
 #  178|       5: [BlockStmt] { ... }
 #  178|         0: [ExprStmt] <Expr>;
-#  178|           0: [ClassInstanceExpr] new Enum(...)
+#  178|           0: [ClassInstanceExpr] new Enum<Color>(...)
 #  178|             -3: [TypeAccess] Enum<Color>
 #  178|               0: [TypeAccess] Color
 #  178|             0: [NullLiteral] null
@@ -6080,8 +6080,8 @@ samConversion.kt:
 #    9|                         -3: [TypeAccess] Function1<Integer,Boolean>
 #    9|                           0: [TypeAccess] Integer
 #    9|                           1: [TypeAccess] Boolean
-#    9|                   1: [WhenBranch] ... -> ...
-#    9|                     0: [BooleanLiteral] true
+#   11|                   1: [WhenBranch] ... -> ...
+#   11|                     0: [BooleanLiteral] true
 #   11|                     1: [ExprStmt] <Expr>;
 #   11|                       0: [LambdaExpr] ...->...
 #   11|                         -4: [AnonymousClass] new Function1<Integer,Boolean>(...) { ... }

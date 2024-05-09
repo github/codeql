@@ -1,4 +1,4 @@
-package bad
+package main
 
 import (
 	"fmt"
@@ -74,7 +74,7 @@ func ShowAdminPageCache(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func main() {
+func badRoutingNet() {
 	fmt.Println("Vulnapp server listening : 1337")
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets/"))))

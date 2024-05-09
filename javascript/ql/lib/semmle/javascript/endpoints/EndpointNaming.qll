@@ -147,7 +147,11 @@ private predicate isPrivateAssignment(DataFlow::Node node) {
   )
 }
 
-private predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSink()) }
+/**
+ * Holds if `node` is the sink node corresponding to the right-hand side of a private declaration,
+ * like a private field (`#field`) or class member with the `private` modifier.
+ */
+predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSink()) }
 
 bindingset[name]
 private int getNameBadness(string name) {
@@ -277,9 +281,16 @@ private predicate nameFromGlobal(DataFlow::Node node, string package, string nam
   (if node.getTopLevel().isExterns() then badness = -10 else badness = 10)
 }
 
+/** Gets an API node whose value is exposed to client code. */
+private API::Node exposedNode() {
+  result = API::moduleExport(_)
+  or
+  result = exposedNode().getASuccessor()
+}
+
 /** Holds if an instance of `cls` can be exposed to client code. */
 private predicate hasEscapingInstance(DataFlow::ClassNode cls) {
-  cls.getAnInstanceReference().flowsTo(any(API::Node n).asSink())
+  cls.getAnInstanceReference().flowsTo(exposedNode().asSink())
 }
 
 private predicate sourceNodeHasNameCandidate(
@@ -421,7 +432,7 @@ string renderName(string package, string name) { result = join("(" + package + "
  * These names are not necessarily part of a package's public API, and so we only used them
  * as a fallback when a publicly-accessible access path cannot be found.
  */
-private module InternalModuleNaming {
+module InternalModuleNaming {
   /** Gets the path to `folder` relative to its enclosing non-private `package.json` file. */
   private string getPackageRelativePathFromFolder(Folder folder) {
     exists(PackageJson json |
@@ -435,7 +446,10 @@ private module InternalModuleNaming {
       getPackageRelativePathFromFolder(folder.getParentContainer()) + "/" + folder.getBaseName()
   }
 
-  private string getPackageRelativePath(Module mod) {
+  /**
+   * Gets the path to `mod` relative to its enclosing package, including the package name.
+   */
+  string getPackageRelativePath(Module mod) {
     exists(PackageJson json, string relativePath |
       not json.isPrivate() and
       json.getExportedModule(relativePath) = mod and

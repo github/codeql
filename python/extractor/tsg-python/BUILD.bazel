@@ -1,0 +1,16 @@
+load("@py_deps//:defs.bzl", "aliases", "all_crate_deps")
+load("@semmle_code//:common.bzl", "codeql_rust_binary")
+
+codeql_rust_binary(
+    name = "tsg-python",
+    srcs = ["src/main.rs"],
+    aliases = aliases(),
+    data = ["python.tsg"],
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(
+        normal = True,
+    ) + ["//python/extractor/tsg-python/tsp"],
+)

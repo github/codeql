@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 private import semmle.code.csharp.security.PrivateData
 

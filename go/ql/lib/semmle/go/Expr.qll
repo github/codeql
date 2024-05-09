@@ -754,13 +754,19 @@ class SliceExpr extends @sliceexpr, Expr {
  *
  * ```go
  * x.(T)
+ * x.(type)
  * ```
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
   Expr getExpr() { result = this.getChildExpr(0) }
 
-  /** Gets the expression representing the asserted type. */
+  /**
+   * Gets the expression representing the asserted type.
+   *
+   * Note that this is not defined when the type assertion is of the form
+   * `x.(type)`, as found in type switches.
+   */
   Expr getTypeExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveOwnSideEffects() { any() }
