@@ -778,6 +778,72 @@ abstract class TranslatedHandler extends TranslatedStmt {
 }
 
 /**
+ * The IR translation of the destructor calls of the parent `TranslatedCatchByTypeHandler`.
+ *
+ * This object does not itself generate the destructor calls. Instead, its
+ * children provide the actual calls.
+ */
+class TranslatedDestructorsAfterHandler extends TranslatedElement,
+  TTranslatedDestructorsAfterHandler
+{
+  Handler handler;
+
+  TranslatedDestructorsAfterHandler() { this = TTranslatedDestructorsAfterHandler(handler) }
+
+  override string toString() { result = "Destructor calls after handler: " + handler }
+
+  private TranslatedCall getTranslatedImplicitDestructorCall(int id) {
+    result.getExpr() = handler.getImplicitDestructorCall(id)
+  }
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getChild(0).getFirstInstruction(kind)
+  }
+
+  override Handler getAst() { result = handler }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) { none() }
+
+  override TranslatedElement getChild(int id) {
+    result = this.getTranslatedImplicitDestructorCall(id)
+  }
+
+  override predicate handlesDestructorsExplicitly() { any() }
+
+  override Declaration getFunction() { result = handler.getEnclosingFunction() }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    exists(int id | child = this.getChild(id) |
+      // Transition to the next child, if any.
+      result = this.getChild(id + 1).getFirstInstruction(kind)
+      or
+      // And otherwise go to the next handler, if any.
+      not exists(this.getChild(id + 1)) and
+      result =
+        getTranslatedStmt(handler)
+            .getParent()
+            .(TranslatedTryStmt)
+            .getNextHandler(getTranslatedStmt(handler), kind)
+    )
+  }
+
+  override TranslatedElement getLastChild() {
+    result =
+      this.getTranslatedImplicitDestructorCall(max(int id |
+          exists(handler.getImplicitDestructorCall(id))
+        ))
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getLastChild().getALastInstruction()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+}
+
+/**
  * The IR translation of a C++ `catch` block that catches an exception with a
  * specific type (e.g. `catch (const std::exception&)`).
  */
@@ -790,10 +856,14 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
     resultType = getVoidType()
   }
 
+  override predicate handlesDestructorsExplicitly() { any() }
+
   override TranslatedElement getChildInternal(int id) {
     result = super.getChildInternal(id)
     or
     id = 0 and result = this.getParameter()
+    or
+    id = 1 and result = this.getDestructors()
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -810,7 +880,9 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
       result = this.getParameter().getFirstInstruction(kind)
       or
       kind instanceof ExceptionEdge and
-      result = this.getParent().(TranslatedTryStmt).getNextHandler(this, any(GotoEdge edge))
+      if exists(this.getDestructors())
+      then result = this.getDestructors().getFirstInstruction(any(GotoEdge edge))
+      else result = this.getParent().(TranslatedTryStmt).getNextHandler(this, any(GotoEdge edge))
     )
   }
 
@@ -822,6 +894,8 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
   private TranslatedParameter getParameter() {
     result = getTranslatedParameter(stmt.getParameter())
   }
+
+  private TranslatedDestructorsAfterHandler getDestructors() { result.getAst() = stmt }
 }
 
 /**

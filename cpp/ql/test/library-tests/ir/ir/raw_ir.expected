@@ -16577,39 +16577,39 @@ ir.cpp:
 # 2537|     r2537_2(int)                        = Constant[42]                         : 
 # 2537|     mu2537_3(int)                       = Store[#throw2537:5]                  : &:r2537_1, r2537_2
 # 2537|     v2537_4(void)                       = ThrowValue                           : &:r2537_1, ~m?
-#-----|   Exception -> Block 3
+#-----|   Exception -> Block 2
 
 # 2534|   Block 1
 # 2534|     v2534_4(void) = AliasedUse   : ~m?
 # 2534|     v2534_5(void) = ExitFunction : 
 
-# 2534|   Block 2
-# 2534|     v2534_6(void) = Unwind : 
-#-----|   Goto -> Block 1
+# 2539|   Block 2
+# 2539|     v2539_1(void) = CatchByType[char] : 
+#-----|   Exception -> Block 4
+#-----|   Goto -> Block 3
 
 # 2539|   Block 3
-# 2539|     v2539_1(void) = CatchByType[char] : 
-#-----|   Exception -> Block 2
-#-----|   Goto -> Block 4
-
-# 2539|   Block 4
 # 2539|     r2539_2(glval<char>)                = VariableAddress[(unnamed parameter 0)]     : 
 # 2539|     mu2539_3(char)                      = InitializeParameter[(unnamed parameter 0)] : &:r2539_2
 # 2539|     v2539_4(void)                       = NoOp                                       : 
-# 2541|     r2541_1(glval<ClassWithDestructor>) = VariableAddress[x]                         : 
-# 2541|     r2541_2(glval<unknown>)             = FunctionAddress[~ClassWithDestructor]      : 
-# 2541|     v2541_3(void)                       = Call[~ClassWithDestructor]                 : func:r2541_2, this:r2541_1
-# 2541|     mu2541_4(unknown)                   = ^CallSideEffect                            : ~m?
-# 2541|     v2541_5(void)                       = ^IndirectReadSideEffect[-1]                : &:r2541_1, ~m?
-# 2541|     mu2541_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]            : &:r2541_1
-# 2541|     v2541_7(void)                       = NoOp                                       : 
-# 2541|     r2541_8(glval<ClassWithDestructor>) = VariableAddress[x]                         : 
-# 2541|     r2541_9(glval<unknown>)             = FunctionAddress[~ClassWithDestructor]      : 
-# 2541|     v2541_10(void)                      = Call[~ClassWithDestructor]                 : func:r2541_9, this:r2541_8
-# 2541|     mu2541_11(unknown)                  = ^CallSideEffect                            : ~m?
-# 2541|     v2541_12(void)                      = ^IndirectReadSideEffect[-1]                : &:r2541_8, ~m?
-# 2541|     mu2541_13(ClassWithDestructor)      = ^IndirectMayWriteSideEffect[-1]            : &:r2541_8
-# 2534|     v2534_7(void)                       = ReturnVoid                                 : 
+# 2541|     v2541_1(void)                       = NoOp                                       : 
+# 2541|     r2541_2(glval<ClassWithDestructor>) = VariableAddress[x]                         : 
+# 2541|     r2541_3(glval<unknown>)             = FunctionAddress[~ClassWithDestructor]      : 
+# 2541|     v2541_4(void)                       = Call[~ClassWithDestructor]                 : func:r2541_3, this:r2541_2
+# 2541|     mu2541_5(unknown)                   = ^CallSideEffect                            : ~m?
+# 2541|     v2541_6(void)                       = ^IndirectReadSideEffect[-1]                : &:r2541_2, ~m?
+# 2541|     mu2541_7(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]            : &:r2541_2
+# 2534|     v2534_6(void)                       = ReturnVoid                                 : 
+#-----|   Goto -> Block 1
+
+# 2541|   Block 4
+# 2541|     r2541_8(glval<ClassWithDestructor>) = VariableAddress[x]                    : 
+# 2541|     r2541_9(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2541|     v2541_10(void)                      = Call[~ClassWithDestructor]            : func:r2541_9, this:r2541_8
+# 2541|     mu2541_11(unknown)                  = ^CallSideEffect                       : ~m?
+# 2541|     v2541_12(void)                      = ^IndirectReadSideEffect[-1]           : &:r2541_8, ~m?
+# 2541|     mu2541_13(ClassWithDestructor)      = ^IndirectMayWriteSideEffect[-1]       : &:r2541_8
+# 2534|     v2534_7(void)                       = Unwind                                : 
 #-----|   Goto -> Block 1
 
 # 2545| void this_inconsistency(bool)
