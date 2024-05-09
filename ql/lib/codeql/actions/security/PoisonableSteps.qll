@@ -18,8 +18,8 @@ private string dangerousCommands() {
     [
       "npm install", "npm run ", "yarn ", "npm ci(\\b|$)", "make ", "terraform plan",
       "terraform apply", "gomplate ", "pre-commit run", "pre-commit install", "go generate",
-      "msbuild ", "mvn ", "./mvnw ", "gradle ", "./gradlew ", "bundle install", "bundle exec ",
-      "^ant ", "mkdocs build", "pytest"
+      "msbuild ", "mvn ", "gradle ", "bundle install", "bundle exec ", "^ant ", "mkdocs build",
+      "pytest", "pip install -r ", "pip install --requirement", "java -jar "
     ]
 }
 
@@ -31,21 +31,33 @@ class BuildRunStep extends PoisonableStep, Run {
   }
 }
 
+bindingset[cmdRegexp]
+string wrapLocalCmd(string cmdRegexp) { result = "(^|;\\s*|\\s+)" + cmdRegexp + "(\\s+|;|$)" }
+
 class LocalCommandExecutionRunStep extends PoisonableStep, Run {
   string cmd;
 
   LocalCommandExecutionRunStep() {
     // Heuristic:
-    // Run step with a command starting with `./xxxx`, `sh xxxx`, ...
     exists(string line | line = this.getScript().splitAt("\n").trim() |
       // ./xxxx
-      cmd = line.regexpCapture("(^|\\s+)\\.\\/(.*)", 2)
+      // TODO: It could also be in the form of `dir/cmd`
+      cmd = line.regexpCapture(wrapLocalCmd("\\.\\/(.*)"), 2)
       or
       // sh xxxx
-      cmd = line.regexpCapture("(^|\\s+)(ba|z|fi)?sh\\s+(.*)", 3)
+      cmd = line.regexpCapture(wrapLocalCmd("(ba|z|fi)?sh\\s+(.*)"), 3)
       or
-      // node xxxx
-      cmd = line.regexpCapture("(^|\\s+)(node|python|ruby|go)\\s+(.*)", 3)
+      // node xxxx.js
+      cmd = line.regexpCapture(wrapLocalCmd("node\\s+(.*)(\\.js|\\.ts)"), 2)
+      or
+      // python xxxx.py
+      cmd = line.regexpCapture(wrapLocalCmd("python\\s+(.*)\\.py"), 2)
+      or
+      // ruby xxxx.rb
+      cmd = line.regexpCapture(wrapLocalCmd("ruby\\s+(.*)\\.rb"), 2)
+      or
+      // go xxxx.go
+      cmd = line.regexpCapture(wrapLocalCmd("go\\s+(.*)\\.go"), 2)
     )
   }
 
