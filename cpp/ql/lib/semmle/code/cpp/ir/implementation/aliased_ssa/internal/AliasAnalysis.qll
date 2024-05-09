@@ -106,8 +106,8 @@ private predicate operandEscapesDomain(Operand operand) {
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUse() instanceof ReturnValueInstruction and
-  not operand.getUse() instanceof ReturnIndirectionInstruction and
-  not operand instanceof PhiInputOperand
+  not operand.getUse() instanceof ReturnIndirectionInstruction// and
+//  not operand instanceof PhiInputOperand
 }
 
 /**
@@ -211,9 +211,9 @@ private predicate operandEscapesNonReturn(Operand operand) {
   )
   or
   isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUse())
-  or
-  operand instanceof PhiInputOperand and
-  resultEscapesNonReturn(operand.getUse())
+//  or
+//  operand instanceof PhiInputOperand and
+//  resultEscapesNonReturn(operand.getUse())
   or
   operandEscapesDomain(operand)
 }
@@ -454,6 +454,9 @@ module Print {
       |
         value, ", "
       )
+    or
+    key = "escapes" and
+    result = strictconcat(string value | operandEscapesNonReturn(operand) and value = "nonreturn" | value, ", ")
   }
 
   string getInstructionProperty(Instruction instr, string key) {

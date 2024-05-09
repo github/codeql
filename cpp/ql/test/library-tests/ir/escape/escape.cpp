@@ -193,10 +193,11 @@ void Escape()
     int passByRef3;
     CallByReferenceParamEscape(ReturnReference(passByRef3));
 
-    int no_ssa_passByPtr4;
-    int no_ssa_passByPtr5;
+    int ssa_passByPtr4;
+    int ssa_passByPtr5;
     bool no_b2 = false;
-    MaybeReturn(&no_ssa_passByPtr4, &no_ssa_passByPtr5, no_b2);
+    // Treated as escaped because we don't know _which_ address will be returned.
+    MaybeReturn(&ssa_passByPtr4, &ssa_passByPtr5, no_b2);
 
     int passByRef6;
     EscapeAndReturn(passByRef6);
@@ -251,3 +252,19 @@ void Escape()
     CallByPointer(no_condTemp);
 }
 
+bool getBool();
+
+void use(int);
+
+void test_while() {
+  int r;
+  int *no_rP = &r;
+
+  while(getBool()) {
+    int s = 0;
+    *no_rP = s;
+    no_rP = &s;
+  }
+
+  use(r);
+}
