@@ -585,6 +585,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
+  /** Gets the indirection of this use. */
   int getIndirection() { isGlobalUse(global, f, result, indirectionIndex) }
 
   /** Gets the global variable associated with this use. */
@@ -1217,6 +1218,7 @@ class GlobalDef extends Def {
 
   final override int getIndirectionIndex() { result = global.getIndirectionIndex() }
 
+  /** Gets the indirection of this def. */
   int getIndirection() { result = global.getIndirection() }
 
   final override Node getNode() { result.(InitialGlobalValue).getGlobalDef() = this }
