@@ -383,9 +383,9 @@ private class DirectDef extends DefImpl, TDirectDefImpl {
     )
   }
 
-  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  override Node0Impl getValue() { isDef(_, result, address, _, _) }
 
-  override predicate isCertain() { isDef(true, _, address, _, _, indirectionIndex) }
+  override predicate isCertain() { isDef(true, _, address, _, indirectionIndex) }
 }
 
 private class DirectUseImpl extends UseImpl, TDirectUseImpl {
