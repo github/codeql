@@ -29,9 +29,15 @@ edges
 | test.cpp:227:25:227:36 | *call to get_string | test.cpp:228:12:228:18 | *++ ... | provenance |  |
 | test.cpp:228:12:228:18 | *++ ... | test.cpp:228:12:228:18 | *++ ... | provenance |  |
 | test.cpp:232:25:232:36 | *call to get_string | test.cpp:232:25:232:36 | *call to get_string | provenance |  |
-| test.cpp:232:25:232:36 | *call to get_string | test.cpp:235:12:235:16 | *hello | provenance |  |
+| test.cpp:232:25:232:36 | *call to get_string | test.cpp:233:22:233:27 | **& ... | provenance |  |
+| test.cpp:232:25:232:36 | *call to get_string | test.cpp:234:5:234:10 | *... ++ | provenance |  |
+| test.cpp:233:22:233:27 | **& ... | test.cpp:234:5:234:10 | *... ++ | provenance |  |
+| test.cpp:234:5:234:10 | *... ++ | test.cpp:235:12:235:16 | *hello | provenance |  |
 | test.cpp:239:25:239:36 | *call to get_string | test.cpp:239:25:239:36 | *call to get_string | provenance |  |
-| test.cpp:239:25:239:36 | *call to get_string | test.cpp:242:12:242:16 | *hello | provenance |  |
+| test.cpp:239:25:239:36 | *call to get_string | test.cpp:240:22:240:26 | **hello | provenance |  |
+| test.cpp:239:25:239:36 | *call to get_string | test.cpp:241:5:241:7 | *... ++ | provenance |  |
+| test.cpp:240:22:240:26 | **hello | test.cpp:241:5:241:7 | *... ++ | provenance |  |
+| test.cpp:241:5:241:7 | *... ++ | test.cpp:242:12:242:16 | *hello | provenance |  |
 | test.cpp:245:25:245:36 | *call to get_string | test.cpp:245:25:245:36 | *call to get_string | provenance |  |
 | test.cpp:245:25:245:36 | *call to get_string | test.cpp:247:12:247:16 | *hello | provenance |  |
 nodes
@@ -80,9 +86,13 @@ nodes
 | test.cpp:228:12:228:18 | *++ ... | semmle.label | *++ ... |
 | test.cpp:232:25:232:36 | *call to get_string | semmle.label | *call to get_string |
 | test.cpp:232:25:232:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:233:22:233:27 | **& ... | semmle.label | **& ... |
+| test.cpp:234:5:234:10 | *... ++ | semmle.label | *... ++ |
 | test.cpp:235:12:235:16 | *hello | semmle.label | *hello |
 | test.cpp:239:25:239:36 | *call to get_string | semmle.label | *call to get_string |
 | test.cpp:239:25:239:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:240:22:240:26 | **hello | semmle.label | **hello |
+| test.cpp:241:5:241:7 | *... ++ | semmle.label | *... ++ |
 | test.cpp:242:12:242:16 | *hello | semmle.label | *hello |
 | test.cpp:245:25:245:36 | *call to get_string | semmle.label | *call to get_string |
 | test.cpp:245:25:245:36 | *call to get_string | semmle.label | *call to get_string |

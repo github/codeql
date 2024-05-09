@@ -6,8 +6,11 @@ edges
 | test.cpp:56:12:56:17 | fgets output argument | test.cpp:58:16:58:21 | *buffer | provenance |  |
 | test.cpp:56:12:56:17 | fgets output argument | test.cpp:62:10:62:15 | *buffer | provenance |  |
 | test.cpp:58:16:58:21 | *buffer | test.cpp:59:20:59:23 | **data | provenance |  |
+| test.cpp:58:16:58:21 | *buffer | test.cpp:60:17:60:23 | *dataref | provenance |  |
 | test.cpp:58:16:58:21 | *buffer | test.cpp:63:10:63:13 | *data | provenance |  |
+| test.cpp:58:16:58:21 | *buffer | test.cpp:64:10:64:16 | *dataref | provenance |  |
 | test.cpp:59:20:59:23 | **data | test.cpp:60:17:60:23 | *dataref | provenance |  |
+| test.cpp:59:20:59:23 | **data | test.cpp:63:10:63:13 | *data | provenance |  |
 | test.cpp:59:20:59:23 | **data | test.cpp:64:10:64:16 | *dataref | provenance |  |
 | test.cpp:60:17:60:23 | *dataref | test.cpp:65:10:65:14 | *data2 | provenance |  |
 | test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | *buffer | provenance |  |

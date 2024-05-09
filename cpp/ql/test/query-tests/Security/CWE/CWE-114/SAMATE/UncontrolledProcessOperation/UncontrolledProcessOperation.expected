@@ -3,12 +3,18 @@ edges
 | test.cpp:64:30:64:35 | *call to getenv | test.cpp:64:30:64:35 | *call to getenv | provenance |  |
 | test.cpp:64:30:64:35 | *call to getenv | test.cpp:73:24:73:27 | *data | provenance | TaintFunction |
 | test.cpp:73:24:73:27 | *data | test.cpp:37:73:37:76 | *data | provenance |  |
+| test.cpp:96:23:96:34 | fgets output argument | test.cpp:115:23:115:29 | *dataRef | provenance |  |
+| test.cpp:115:23:115:29 | *dataRef | test.cpp:120:36:120:39 | *data | provenance |  |
 nodes
 | test.cpp:37:73:37:76 | *data | semmle.label | *data |
 | test.cpp:43:32:43:35 | *data | semmle.label | *data |
 | test.cpp:64:30:64:35 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:64:30:64:35 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:73:24:73:27 | *data | semmle.label | *data |
+| test.cpp:96:23:96:34 | fgets output argument | semmle.label | fgets output argument |
+| test.cpp:115:23:115:29 | *dataRef | semmle.label | *dataRef |
+| test.cpp:120:36:120:39 | *data | semmle.label | *data |
 subpaths
 #select
 | test.cpp:43:32:43:35 | *data | test.cpp:64:30:64:35 | *call to getenv | test.cpp:43:32:43:35 | *data | The value of this argument may come from $@ and is being passed to LoadLibraryA. | test.cpp:64:30:64:35 | *call to getenv | an environment variable |
+| test.cpp:120:36:120:39 | *data | test.cpp:96:23:96:34 | fgets output argument | test.cpp:120:36:120:39 | *data | The value of this argument may come from $@ and is being passed to LoadLibraryA. | test.cpp:96:23:96:34 | fgets output argument | string read by fgets |
