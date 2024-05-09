@@ -107,7 +107,7 @@ void local_references(int &source1, int clean1) { // $ ast-def=source1 ir-def=*s
     int t = clean1;
     int &ref = t;
     t = source();
-    sink(ref); // $ MISSING: ast,ir
+    sink(ref); // $ ir MISSING: ast
   }
 }
 
