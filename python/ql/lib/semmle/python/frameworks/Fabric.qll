@@ -100,7 +100,9 @@ module FabricV2 {
          * calls, or a special parameter that will be set when functions are called by an external
          * library.
          */
-        abstract class Instance extends DataFlow::LocalSourceNode { }
+        abstract class Instance extends API::Node {
+          override string toString() { result = "a fabric connection instance" }
+        }
 
         /**
          *  A reference to the `fabric.connection.Connection` class.
@@ -111,7 +113,7 @@ module FabricV2 {
               [
                 fabric().getMember("Connection"), connection().getMember("Connection"),
                 ModelOutput::getATypeNode("fabric.connection.Connection~Subclass").getASubclass*()
-              ].getACall()
+              ].getReturn()
           }
         }
 
@@ -125,7 +127,7 @@ module FabricV2 {
          * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
          */
         API::CallNode instanceRunMethods() {
-          result = any(Instance is).getAMethodCall(["run", "sudo", "local"])
+          result = any(Instance is).getMember(["run", "sudo", "local"]).getACall()
         }
       }
     }
@@ -155,7 +157,11 @@ module FabricV2 {
      */
     private class FabricConnectionProxyCommand extends SystemCommandExecution::Range, API::CallNode {
       FabricConnectionProxyCommand() {
-        this instanceof Fabric::Connection::ConnectionClass::Instance and
+        this =
+          [
+            fabric().getMember("Connection"), connection().getMember("Connection"),
+            ModelOutput::getATypeNode("fabric.connection.Connection~Subclass").getASubclass*()
+          ].getACall() and
         // we want to make sure that the connection is established otherwise the command of proxy_command won't run.
         exists(
           this.getAMethodCall([
@@ -185,14 +191,10 @@ module FabricV2 {
       API::Node test() { result in [tasks().getMember("task"), fabric().getMember("task")] }
     }
 
-    class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::Instance,
-      DataFlow::ParameterNode
+    class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::Instance
     {
       FabricTaskFirstParamConnectionInstance() {
-        exists(Function func |
-          func.getADecorator() = Fabric::Tasks::task().getAValueReachableFromSource().asExpr() and
-          this.getParameter() = func.getArg(0)
-        )
+        this = Fabric::Tasks::task().getParameter(0).getParameter(0)
       }
     }
 
