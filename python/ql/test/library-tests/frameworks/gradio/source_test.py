@@ -12,18 +12,18 @@ with gr.Blocks() as demo:
 
 	# decorator
     @greet_btn.click(inputs=name, outputs=output)
-    def greet(name):
+    def greet(name): # $ source=name
         return "Hello " + name + "!"
 
     # `click` event handler with keyword arguments
-    def greet1(name):
+    def greet1(name): # $ source=name
         return "Hello " + name + "!"
 
     greet1_btn = gr.Button("Hello")
     greet1_btn.click(fn=greet1, inputs=name, outputs=output, api_name="greet")
 
     # `click` event handler with positional arguments
-    def greet2(name):
+    def greet2(name): # $ source=name
         return "Hello " + name + "!"
 
     greet2_btn = gr.Button("Hello")

@@ -1,5 +1,2 @@
-| source_test.py:15:15:15:18 | ControlFlowNode for name |
-| source_test.py:19:16:19:19 | ControlFlowNode for name |
-| source_test.py:26:16:26:19 | ControlFlowNode for name |
-| taint_step_test.py:5:12:5:35 | ControlFlowNode for Attribute() |
-| taint_step_test.py:6:12:6:35 | ControlFlowNode for Attribute() |
+testFailures
+failures

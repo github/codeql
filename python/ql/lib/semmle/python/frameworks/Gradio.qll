@@ -36,8 +36,8 @@ module Gradio {
                 "upload", "release", "select", "stream", "like", "load", "key_up",
               ])
             .getACall()
-
-      or this = API::moduleImport("gradio").getMember(["Interface", "ChatInterface"]).getACall()
+      or
+      this = API::moduleImport("gradio").getMember(["Interface", "ChatInterface"]).getACall()
     }
   }
 

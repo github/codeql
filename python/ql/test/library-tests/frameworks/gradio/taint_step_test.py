@@ -2,8 +2,8 @@ import gradio as gr
 import os
 
 with gr.Blocks() as demo:
-    path = gr.Textbox(label="Path")
-    file = gr.Textbox(label="File")
+    path = gr.Textbox(label="Path") # $ source=gr.Textbox(..)
+    file = gr.Textbox(label="File") # $ source=gr.Textbox(..)
     output = gr.Textbox(label="Output Box")
 
 
