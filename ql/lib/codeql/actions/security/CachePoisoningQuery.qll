@@ -10,6 +10,56 @@ string defaultBranchTriggerEvent() {
     ]
 }
 
+predicate test(Event e) {
+  e.getName() = "pull_request_target" and
+  // branches and branches-ignore filters
+  e.hasProperty("branches") and
+  e.hasProperty("branches-ignore") and
+  e.getAPropertyValue("branches") = ["main", "master", "default"] and
+  not e.getAPropertyValue("branches-ignore") = ["main", "master", "default"]
+}
+
+predicate runsOnDefaultBranch(Job j) {
+  exists(Event e |
+    j.getATriggerEvent() = e and
+    (
+      e.getName() = defaultBranchTriggerEvent() and
+      not e.getName() = "pull_request_target"
+      or
+      e.getName() = "push" and
+      e.getAPropertyValue("branches") = ["main", "master", "default"]
+      or
+      e.getName() = "pull_request_target" and
+      (
+        // no filtering
+        not e.hasProperty("branches") and not e.hasProperty("branches-ignore")
+        or
+        // only branches-ignore filter
+        e.hasProperty("branches-ignore") and
+        not e.hasProperty("branches") and
+        not e.getAPropertyValue("branches-ignore") = ["main", "master", "default"]
+        or
+        // only branches filter
+        e.hasProperty("branches") and
+        not e.hasProperty("branches-ignore") and
+        e.getAPropertyValue("branches") = ["main", "master", "default"]
+        or
+        // branches and branches-ignore filters
+        e.hasProperty("branches") and
+        e.hasProperty("branches-ignore") and
+        e.getAPropertyValue("branches") = ["main", "master", "default"] and
+        not e.getAPropertyValue("branches-ignore") = ["main", "master", "default"]
+      )
+    )
+  )
+  or
+  j.getATriggerEvent().getName() = "workflow_call" and
+  exists(ExternalJob call |
+    call.getCallee() = j.getLocation().getFile().getRelativePath() and
+    runsOnDefaultBranch(call)
+  )
+}
+
 abstract class CacheWritingStep extends Step { }
 
 class CacheActionUsesStep extends CacheWritingStep, UsesStep {
