@@ -98,6 +98,10 @@ runStepChildren
 | .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:40:14:40:52 | echo ${{needs.job1.outputs.job_output}} |
 parentNodes
 | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
+| .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment |
+| .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment |
+| .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment | .github/workflows/expression_nodes.yml:1:5:1:17 | issue_comment |
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/expression_nodes.yml:5:14:5:26 | ubuntu-latest | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/expression_nodes.yml:5:14:5:26 | ubuntu-latest | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
@@ -136,8 +140,14 @@ parentNodes
 | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' | .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
+| .github/workflows/multiline.yml:2:3:2:14 | workflow_run | .github/workflows/multiline.yml:2:3:5:18 | workflow_run: |
+| .github/workflows/multiline.yml:2:3:5:18 | workflow_run: | .github/workflows/multiline.yml:1:1:33:14 | on:  |
 | .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:2:3:2:14 | workflow_run |
+| .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:2:3:5:18 | workflow_run: |
 | .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:2:3:2:14 | workflow_run |
+| .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:2:3:5:18 | workflow_run: |
 | .github/workflows/multiline.yml:9:5:33:14 | Job: Test | .github/workflows/multiline.yml:1:1:33:14 | on:  |
 | .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:1:1:33:14 | on:  |
 | .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
@@ -163,6 +173,10 @@ parentNodes
 | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:30:9:33:14 | Run Step |
 | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
+| .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:5:1:8 | push |
+| .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:5:1:8 | push |
+| .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:5:1:8 | push |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:5:14:5:26 | ubuntu-latest | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:5:14:5:26 | ubuntu-latest | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
