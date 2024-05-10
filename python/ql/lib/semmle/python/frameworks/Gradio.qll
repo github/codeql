@@ -47,9 +47,7 @@ module Gradio {
    */
   class GradioInputList extends RemoteFlowSource::Range {
     GradioInputList() {
-      exists(API::CallNode call |
-        call instanceof GradioInput
-        and
+      exists(GradioInput call |
         // limit only to lists of parameters given to `inputs`.
         (
           (
@@ -74,9 +72,7 @@ module Gradio {
    */
   class GradioInputParameter extends RemoteFlowSource::Range {
     GradioInputParameter() {
-      exists(API::CallNode call |
-        call instanceof GradioInput
-        and
+      exists(GradioInput call |
         this = call.getParameter(0, "fn").getParameter(_).asSource() and
         // exclude lists of parameters given to `inputs`
         not call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof ListNode and
@@ -92,8 +88,7 @@ module Gradio {
    */
   class GradioInputDecorator extends RemoteFlowSource::Range {
     GradioInputDecorator() {
-      exists(API::CallNode call |
-        call instanceof GradioInput and
+      exists(GradioInput call |
         this = call.getReturn().getACall().getParameter(0).getParameter(_).asSource()
       )
     }
@@ -106,9 +101,7 @@ module Gradio {
    */
   private class ListTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(API::CallNode node |
-        node instanceof GradioInput
-        and
+      exists(GradioInput node |
         // handle cases where there are multiple arguments passed as a list to `inputs`
         (
           (
