@@ -31,9 +31,6 @@ private module Torch {
     override string getFormat() { result = "pickle" }
   }
 
-  API::Node test() {
-    result = API::moduleImport("torch").getMember("package").getMember("PackageImporter")
-  }
 
   /**
    * A call to `torch.package.PackageImporter`
