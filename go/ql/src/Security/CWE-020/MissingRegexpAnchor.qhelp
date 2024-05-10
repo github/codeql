@@ -47,7 +47,7 @@ one of the alternatives. As an example, the regular expression
 </p>
 
 <p>
-When checking for a domain name with subdomains, it is important to anchor the regular expression
+When checking for a domain name that may have subdomains, it is important to anchor the regular expression
 or ensure that the domain name is prefixed with a dot.
 </p>
 <sample src="MissingRegexpAnchorGoodDomain.go"/>
