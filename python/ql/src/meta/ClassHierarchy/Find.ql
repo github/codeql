@@ -328,7 +328,7 @@ class FabricConnection extends FindSubclassesSpec {
   FabricConnection() { this = "fabric.connection.Connection~Subclass" }
 
   override API::Node getAlreadyModeledClass() {
-    result  = any(FabricV2::Fabric::Connection::ConnectionClass::Instance i)
+    result instanceof FabricV2::Fabric::Connection::ConnectionClass::Instance
   }
 }
 
