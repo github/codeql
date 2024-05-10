@@ -68,6 +68,16 @@ private newtype TAstNode =
   TStrategyNode(YamlMapping n) { exists(YamlMapping m | m.lookup("strategy") = n) } or
   TNeedsNode(YamlMappingLikeNode n) { exists(YamlMapping m | m.lookup("needs") = n) } or
   TJobNode(YamlMapping n) { exists(YamlMapping w | w.lookup("jobs").(YamlMapping).lookup(_) = n) } or
+  TOnNode(YamlMappingLikeNode n) { exists(YamlMapping w | w.lookup("on") = n) } or
+  TEventNode(YamlScalar event, YamlMappingLikeNode n) {
+    exists(OnImpl o |
+      o.getNode().(YamlMapping).maps(event, n)
+      or
+      o.getNode().(YamlSequence).getAChildNode() = event and event = n
+      or
+      o.getNode().(YamlScalar) = n and event = n
+    )
+  } or
   TStepNode(YamlMapping n) {
     exists(YamlMapping m | m.lookup("steps").(YamlSequence).getElementNode(_) = n)
   } or
@@ -308,6 +318,9 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
 
   override YamlMapping getNode() { result = n }
 
+  /** Gets the `on` trigger events for this workflow. */
+  OnImpl getOn() { result.getNode() = n.lookup("on") }
+
   /** Gets the 'global' `env` mapping in this workflow. */
   EnvImpl getEnv() { result.getNode() = n.lookup("env") }
 
@@ -323,15 +336,8 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
   /** Gets the permissions granted to this workflow. */
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
 
-  /** Workflow is triggered by given trigger event */
-  predicate hasTriggerEvent(string trigger) {
-    exists(YamlNode y | y = n.lookup("on").(YamlMappingLikeNode).getNode(trigger))
-  }
-
   /** Gets the trigger event that starts this workflow. */
-  string getATriggerEvent() {
-    exists(YamlNode y | y = n.lookup("on").(YamlMappingLikeNode).getNode(result))
-  }
+  EventImpl getATriggerEvent() { this.getOn().getAnEvent() = result }
 
   /** Gets the strategy for this workflow. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
@@ -573,6 +579,66 @@ class NeedsImpl extends AstNodeImpl, TNeedsNode {
   }
 }
 
+class OnImpl extends AstNodeImpl, TOnNode {
+  YamlMappingLikeNode n;
+
+  OnImpl() { this = TOnNode(n) }
+
+  override string toString() { result = n.toString() }
+
+  override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
+
+  override WorkflowImpl getParentNode() { result.getAChildNode() = this }
+
+  override string getAPrimaryQlClass() { result = "OnImpl" }
+
+  override Location getLocation() { result = n.getLocation() }
+
+  override YamlMappingLikeNode getNode() { result = n }
+
+  /** Gets an event that triggers the workflow. */
+  EventImpl getAnEvent() { result.getParentNode() = this }
+}
+
+class EventImpl extends AstNodeImpl, TEventNode {
+  YamlScalar e;
+  YamlMappingLikeNode n;
+
+  EventImpl() { this = TEventNode(e, n) }
+
+  override string toString() { result = e.getValue() }
+
+  override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
+
+  override OnImpl getParentNode() { result.getAChildNode() = this }
+
+  override string getAPrimaryQlClass() { result = "EventImpl" }
+
+  override Location getLocation() { result = e.getLocation() }
+
+  override YamlScalar getNode() { result = e }
+
+  /** Gets the name of the event that triggers the workflow. */
+  string getName() { result = e.getValue() }
+
+  /** Gets the Yaml Node associated with the event if any */
+  YamlMappingLikeNode getValueNode() { result = n }
+
+  /** Gets an activity type */
+  string getAnActivityType() {
+    result =
+      n.(YamlMapping).lookup("types").(YamlMappingLikeNode).getNode(_).(YamlScalar).getValue()
+  }
+
+  /** Gets a string value for any property (eg: branches, branches-ignore, etc.) */
+  string getAPropertyValue(string prop) {
+    result = n.(YamlMapping).lookup(prop).(YamlMappingLikeNode).getNode(_).(YamlScalar).getValue()
+  }
+
+  /** Holds if the event has a property with the given name */
+  predicate hasProperty(string prop) { exists(this.getAPropertyValue(prop)) }
+}
+
 class JobImpl extends AstNodeImpl, TJobNode {
   YamlMapping n;
   string jobId;
@@ -686,7 +752,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
     // For workflows that are triggered by the pull_request_target event, the GITHUB_TOKEN is granted read/write repository permission unless the permissions key is specified and the workflow can access secrets, even when it is triggered from a fork.
     // The Job is triggered by an event other than `pull_request`
     count(this.getATriggerEvent()) = 1 and
-    not this.getATriggerEvent() = ["pull_request", "workflow_call"]
+    not this.getATriggerEvent().getName() = ["pull_request", "workflow_call"]
     or
     // The Workflow is only triggered by `workflow_call` and there is
     // a caller workflow triggered by an event other than `pull_request`
@@ -701,16 +767,11 @@ class JobImpl extends AstNodeImpl, TJobNode {
     count(this.getATriggerEvent()) > 1
   }
 
-  /** Workflow is triggered by given trigger event */
-  predicate hasTriggerEvent(string trigger) {
-    exists(YamlNode y | y = n.lookup("on").(YamlMappingLikeNode).getNode(trigger))
-  }
-
   /** Gets the trigger event that starts this workflow. */
-  string getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
+  EventImpl getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
 
   private predicate hasSingleTrigger(string trigger) {
-    this.getATriggerEvent() = trigger and
+    this.getATriggerEvent().getName() = trigger and
     count(this.getATriggerEvent()) = 1
   }
 
