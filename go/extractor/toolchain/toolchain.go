@@ -13,6 +13,11 @@ import (
 	"github.com/github/codeql-go/extractor/util"
 )
 
+var V1_14 = util.NewSemVer("v1.14.0")
+var V1_16 = util.NewSemVer("v1.16.0")
+var V1_18 = util.NewSemVer("v1.18.0")
+var V1_21 = util.NewSemVer("v1.21.0")
+
 // Check if Go is installed in the environment.
 func IsInstalled() bool {
 	_, err := exec.LookPath("go")
@@ -128,7 +133,7 @@ func parseGoVersion(data string) string {
 
 // Returns a value indicating whether the system Go toolchain supports workspaces.
 func SupportsWorkspaces() bool {
-	return GetEnvGoSemVer().IsAtLeast(util.NewSemVer("v1.18.0"))
+	return GetEnvGoSemVer().IsAtLeast(V1_18)
 }
 
 // Run `go mod tidy -e` in the directory given by `path`.

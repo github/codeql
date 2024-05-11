@@ -154,8 +154,7 @@ func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
 func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	v1_16 := util.NewSemVer("v1.16")
-	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(v1_16) {
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(toolchain.V1_16) {
 		for _, goMod := range workspace.Modules {
 			// stat go.mod and go.sum
 			goModPath := goMod.Path
@@ -541,8 +540,7 @@ func installDependenciesAndBuild() {
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	v1_21 := util.NewSemVer("v1.21.0")
-	if toolchain.GetEnvGoSemVer().IsOlderThan(v1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
+	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
 		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
 		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
 			log.Printf(

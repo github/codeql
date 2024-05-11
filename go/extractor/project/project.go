@@ -175,9 +175,8 @@ var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+
 // Returns true if the `go.mod` file specifies a Go language version, that version is `1.21` or greater, and
 // there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
 func hasInvalidToolchainVersion(modFile *modfile.File) bool {
-	v1_21 := util.NewSemVer("v1.21.0")
 	return modFile.Toolchain == nil && modFile.Go != nil &&
-		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && util.NewSemVer(modFile.Go.Version).IsAtLeast(v1_21)
+		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_21)
 }
 
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
@@ -538,8 +537,7 @@ func (m ModMode) ArgsForGoVersion(version util.SemVer) []string {
 	case ModReadonly:
 		return []string{"-mod=readonly"}
 	case ModMod:
-		v1_14 := util.NewSemVer("v1.14")
-		if version.IsOlderThan(v1_14) {
+		if version.IsOlderThan(toolchain.V1_14) {
 			return []string{} // -mod=mod is the default behaviour for go <= 1.13, and is not accepted as an argument
 		} else {
 			return []string{"-mod=mod"}
