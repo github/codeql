@@ -274,7 +274,9 @@ func IdentifyEnvironment() {
 	v.goModVersion = project.RequiredGoVersion(&workspaces)
 
 	// Find which, if any, version of Go is installed on the system already.
-	v.goEnvVersion = toolchain.GetEnvGoSemVer()
+	if toolchain.IsInstalled() {
+		v.goEnvVersion = toolchain.GetEnvGoSemVer()
+	}
 
 	// Determine which version of Go we should recommend to install.
 	msg, versionToInstall := getVersionToInstall(v)
