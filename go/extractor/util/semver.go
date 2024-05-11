@@ -52,7 +52,7 @@ func Zero() SemVer {
 // the empty string, this function return `nil`. Otherwise, for invalid version strings, the function
 // prints a message to the log and exits the process.
 func NewSemVer(version string) SemVer {
-	// If the input is the empty string, return nil f
+	// If the input is the empty string, return `nil` since we use `nil` to represent "no version".
 	if version == "" {
 		return nil
 	}
