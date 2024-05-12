@@ -2,9 +2,7 @@ csharp6.cs:
 #   10| [Class] TestCSharp6
 #   12|   6: [Property] Value
 #   12|     -1: [TypeMention] int
-#   15|     2: [AssignExpr] ... = ...
-#   12|       0: [PropertyCall] access to property Value
-#   15|       1: [IntLiteral] 20
+#   15|     2: [IntLiteral] 20
 #   14|     3: [Getter] get_Value
 #   17|   7: [Method] Fn
 #   17|     -1: [TypeMention] Void

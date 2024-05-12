@@ -25,9 +25,9 @@ func ServeJsonDirect(w http.ResponseWriter, r http.Request) {
 
 func ErrTest(w http.ResponseWriter, r http.Request) {
 	cookie, err := r.Cookie("somecookie")
-	w.Write([]byte(fmt.Sprintf("Cookie result: %v", cookie)))   // BAD: Cookie's value is user-controlled
-	w.Write([]byte(fmt.Sprintf("Cookie check error: %v", err))) // GOOD: Cookie's err return is harmless
-
+	w.Write([]byte(fmt.Sprintf("Cookie result: %v", cookie)))    // GOOD: Cookie's value is not user-controlled in reflected xss.
+	w.Write([]byte(fmt.Sprintf("Cookie check error: %v", err)))  // GOOD: Cookie's err return is harmless
+	http.Error(w, fmt.Sprintf("Cookie result: %v", cookie), 500) // Good: only plain text is written.
 	file, header, err := r.FormFile("someFile")
 	content, err2 := ioutil.ReadAll(file)
 	w.Write([]byte(fmt.Sprintf("File content: %v", content)))      // BAD: file content is user-controlled

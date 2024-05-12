@@ -1,6 +1,8 @@
 name: codeql/ql
-version: 0.0.0
-groups: [ql, queries]
+version: 0.1.0-dev
+groups:
+  - ql
+  - queries
 dbscheme: ql.dbscheme
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/ql-code-scanning.qls

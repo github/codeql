@@ -16,7 +16,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
 
 private module Cached {
   /**
@@ -24,10 +24,11 @@ private module Cached {
    * global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    localAdditionalTaintStep(nodeFrom, nodeTo)
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    localAdditionalTaintStep(nodeFrom, nodeTo, model)
     or
-    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo) and
+    model = "AdditionalTaintStep"
   }
 
   /**
@@ -36,28 +37,34 @@ private module Cached {
    * different objects.
    */
   cached
-  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    concatStep(nodeFrom, nodeTo)
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      concatStep(nodeFrom, nodeTo)
+      or
+      subscriptStep(nodeFrom, nodeTo)
+      or
+      stringManipulation(nodeFrom, nodeTo)
+      or
+      containerStep(nodeFrom, nodeTo)
+      or
+      copyStep(nodeFrom, nodeTo)
+      or
+      DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
+      or
+      DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
+      or
+      DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
+      or
+      awaitStep(nodeFrom, nodeTo)
+      or
+      asyncWithStep(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
-    subscriptStep(nodeFrom, nodeTo)
-    or
-    stringManipulation(nodeFrom, nodeTo)
-    or
-    containerStep(nodeFrom, nodeTo)
-    or
-    copyStep(nodeFrom, nodeTo)
-    or
-    DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
-    or
-    DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
-    or
-    DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
-    or
-    awaitStep(nodeFrom, nodeTo)
-    or
-    asyncWithStep(nodeFrom, nodeTo)
-    or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
+          .(DataFlowPrivate::FlowSummaryNode)
+          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false,
+      model)
   }
 }
 
@@ -183,30 +190,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // longer -- but there needs to be a matching read-step for the store-step, and we
   // don't provide that right now.
   DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
-  or
-  // functions operating on collections
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and
-    call.getArg(0) = nodeFrom
-  )
-  or
-  // methods
-  exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
-    methodName in [
-        // general
-        "copy", "pop",
-        // dict
-        "values", "items", "get", "popitem"
-      ] and
-    call.calls(nodeFrom, methodName)
-  )
-  or
-  // list.append, set.add
-  exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
-    call.calls(obj, ["append", "add"]) and
-    obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
-    call.getArg(0) = nodeFrom
-  )
 }
 
 /**
@@ -217,6 +200,8 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
     call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
     call.getArg(0) = nodeFrom
   )
+  or
+  nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "copy")
 }
 
 /**
@@ -238,8 +223,10 @@ predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  */
 predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+    var = any(WithDefinition wd).getDefiningNode()
+  |
     nodeFrom.(DataFlow::CfgNode).getNode() = contextManager and
-    nodeTo.(DataFlow::EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+    nodeTo.(DataFlow::CfgNode).getNode() = var and
     // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
     with.getContextExpr() = contextManager.getNode() and
     with.getOptionalVars() = var.getNode() and

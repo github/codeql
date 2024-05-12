@@ -309,7 +309,6 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 /**
  * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
-pragma[assume_small_delta]
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
   sub = t and getAWildcardLowerBound(sub)
@@ -710,6 +709,12 @@ class Class extends ClassOrInterface {
     )
   }
 
+  /**
+   * Holds if this class is a Kotlin "file class", e.g. the class FooKt
+   * for top-level entities in Foo.kt.
+   */
+  predicate isFileClass() { file_class(this) }
+
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
@@ -741,6 +746,13 @@ class DataClass extends Class {
  */
 class Record extends Class {
   Record() { isRecord(this) }
+
+  /**
+   * Gets the canonical constructor of this record.
+   */
+  Constructor getCanonicalConstructor() {
+    result = this.getAConstructor() and isCanonicalConstr(result)
+  }
 }
 
 /** An intersection type. */
@@ -1085,6 +1097,24 @@ class PrimitiveType extends Type, @primitive {
   override string getAPrimaryQlClass() { result = "PrimitiveType" }
 }
 
+private int getByteSize(PrimitiveType t) {
+  t.hasName("boolean") and result = 1
+  or
+  t.hasName("byte") and result = 1
+  or
+  t.hasName("char") and result = 2
+  or
+  t.hasName("short") and result = 2
+  or
+  t.hasName("int") and result = 4
+  or
+  t.hasName("float") and result = 4
+  or
+  t.hasName("long") and result = 8
+  or
+  t.hasName("double") and result = 8
+}
+
 /** The type of the `null` literal. */
 class NullType extends Type, @primitive {
   NullType() { this.hasName("<nulltype>") }
@@ -1256,6 +1286,7 @@ predicate notHaveIntersection(RefType t1, RefType t2) {
  * Holds if there is a common (reflexive, transitive) subtype of the erased
  * types `t1` and `t2`.
  */
+pragma[nomagic]
 predicate erasedHaveIntersection(RefType t1, RefType t2) {
   exists(SrcRefType commonSub |
     commonSub.getASourceSupertype*() = t1 and commonSub.getASourceSupertype*() = t2
@@ -1275,6 +1306,12 @@ class IntegralType extends Type {
     |
       name = ["byte", "char", "short", "int", "long"]
     )
+  }
+
+  /** Gets the size in bytes of this numeric type. */
+  final int getByteSize() {
+    result = getByteSize(this) or
+    result = getByteSize(this.(BoxedType).getPrimitiveType())
   }
 }
 

@@ -1,9 +1,8 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -31,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return;
             }
 
-            var objectInitializer = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null));
+            var objectInitializer = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.OBJECT_INIT, this, -1, isCompilerGenerated: false, null));
 
             foreach (var init in Syntax.Initializers)
             {
@@ -41,11 +40,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var type = property.GetAnnotatedType();
                 var loc = Context.CreateLocation(init.GetLocation());
 
-                var assignment = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
+                var assignment = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, isCompilerGenerated: false, null));
                 Create(Context, init.Expression, assignment, 0);
                 Property.Create(Context, property);
 
-                var access = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
+                var access = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, isCompilerGenerated: false, null));
                 trapFile.expr_access(access, propEntity);
             }
         }

@@ -38,8 +38,8 @@ module Request {
     ParametersCall() {
       this.getMethodName() =
         [
-          "parameters", "params", "GET", "POST", "query_parameters", "request_parameters",
-          "filtered_parameters"
+          "parameters", "params", "[]", "GET", "POST", "query_parameters", "request_parameters",
+          "filtered_parameters", "query_string"
         ]
     }
 
@@ -64,7 +64,7 @@ module Request {
       this.getMethodName() =
         [
           "authorization", "script_name", "path_info", "user_agent", "referer", "referrer",
-          "host_authority", "content_type", "host", "hostname", "accept_encoding",
+          "headers", "cookies", "cookie_jar", "content_type", "accept", "accept_encoding",
           "accept_language", "if_none_match", "if_none_match_etags", "content_mime_type"
         ]
       or
@@ -86,8 +86,9 @@ module Request {
     HostCall() {
       this.getMethodName() =
         [
-          "authority", "host", "host_authority", "host_with_port", "hostname", "forwarded_for",
-          "forwarded_host", "port", "forwarded_port"
+          "authority", "host", "host_authority", "host_with_port", "raw_host_with_port", "hostname",
+          "forwarded_for", "forwarded_host", "port", "forwarded_port", "port_string", "domain",
+          "subdomain", "subdomains"
         ]
     }
 
@@ -128,7 +129,7 @@ module Request {
     private import codeql.ruby.frameworks.Rack
 
     private class RackEnv extends Env {
-      RackEnv() { this = any(Rack::AppCandidate app).getEnv().getALocalUse() }
+      RackEnv() { this = any(Rack::App::RequestHandler handler).getEnv().getALocalUse() }
     }
 
     /**

@@ -1,6 +1,7 @@
-using Microsoft.CodeAnalysis;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Util;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -58,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.OBJECT_CREATION,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null));
 
             var longTypeSymbol = constructorSymbol.Parameters[0].Type;

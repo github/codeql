@@ -22,10 +22,10 @@ private class PhiInputEdgeBlock extends BasicBlock {
 }
 
 private int getId(PhiInputEdgeBlock bb) {
-  exists(CfgImpl::ControlFlowTree::Range_ t | CfgImpl::ControlFlowTree::idOf(t, result) |
-    t = bb.getFirstNode().getElement()
+  exists(CfgImpl::AstNode n | result = n.getId() |
+    n = bb.getFirstNode().getAstNode()
     or
-    t = bb.(ControlFlow::BasicBlocks::EntryBlock).getCallable()
+    n = bb.(ControlFlow::BasicBlocks::EntryBlock).getCallable()
   )
 }
 

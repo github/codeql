@@ -1,3 +1,5 @@
+| AccessorCalls.cs:1:7:1:19 | call to constructor Object | AccessorCalls.cs:1:7:1:19 | call to constructor Object | normal |
+| AccessorCalls.cs:1:7:1:19 | {...} | AccessorCalls.cs:1:7:1:19 | {...} | normal |
 | AccessorCalls.cs:5:30:5:30 | access to parameter i | AccessorCalls.cs:5:30:5:30 | access to parameter i | normal |
 | AccessorCalls.cs:5:37:5:39 | {...} | AccessorCalls.cs:5:37:5:39 | {...} | normal |
 | AccessorCalls.cs:7:36:7:38 | {...} | AccessorCalls.cs:7:36:7:38 | {...} | normal |
@@ -287,6 +289,8 @@
 | AccessorCalls.cs:73:78:73:78 | access to local variable d | AccessorCalls.cs:73:78:73:78 | access to local variable d | normal |
 | AccessorCalls.cs:73:78:73:81 | dynamic access to element | AccessorCalls.cs:73:78:73:81 | dynamic access to element | normal |
 | AccessorCalls.cs:73:80:73:80 | 1 | AccessorCalls.cs:73:80:73:80 | 1 | normal |
+| ArrayCreation.cs:1:7:1:19 | call to constructor Object | ArrayCreation.cs:1:7:1:19 | call to constructor Object | normal |
+| ArrayCreation.cs:1:7:1:19 | {...} | ArrayCreation.cs:1:7:1:19 | {...} | normal |
 | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | normal |
 | ArrayCreation.cs:3:27:3:27 | 0 | ArrayCreation.cs:3:27:3:27 | 0 | normal |
 | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | normal |
@@ -307,6 +311,8 @@
 | ArrayCreation.cs:9:43:9:50 | { ..., ... } | ArrayCreation.cs:9:43:9:50 | { ..., ... } | normal |
 | ArrayCreation.cs:9:45:9:45 | 2 | ArrayCreation.cs:9:45:9:45 | 2 | normal |
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:48:9:48 | 3 | normal |
+| Assert.cs:5:7:5:17 | call to constructor Object | Assert.cs:5:7:5:17 | call to constructor Object | normal |
+| Assert.cs:5:7:5:17 | {...} | Assert.cs:5:7:5:17 | {...} | normal |
 | Assert.cs:8:5:12:5 | {...} | Assert.cs:10:9:10:31 | call to method Assert | exit |
 | Assert.cs:8:5:12:5 | {...} | Assert.cs:11:9:11:35 | call to method WriteLine | normal |
 | Assert.cs:9:9:9:33 | ... ...; | Assert.cs:9:16:9:32 | String s = ... | normal |
@@ -801,6 +807,8 @@
 | Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 | true |
 | Assert.cs:140:33:140:34 | access to parameter b3 | Assert.cs:140:33:140:34 | access to parameter b3 | normal |
 | Assert.cs:141:9:141:15 | return ...; | Assert.cs:141:9:141:15 | return ...; | return |
+| Assignments.cs:1:7:1:17 | call to constructor Object | Assignments.cs:1:7:1:17 | call to constructor Object | normal |
+| Assignments.cs:1:7:1:17 | {...} | Assignments.cs:1:7:1:17 | {...} | normal |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:14:9:14:35 | ... += ... | normal |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
@@ -839,6 +847,8 @@
 | Assignments.cs:18:5:20:5 | {...} | Assignments.cs:19:9:19:17 | return ...; | return |
 | Assignments.cs:19:9:19:17 | return ...; | Assignments.cs:19:9:19:17 | return ...; | return |
 | Assignments.cs:19:16:19:16 | access to parameter x | Assignments.cs:19:16:19:16 | access to parameter x | normal |
+| BreakInTry.cs:1:7:1:16 | call to constructor Object | BreakInTry.cs:1:7:1:16 | call to constructor Object | normal |
+| BreakInTry.cs:1:7:1:16 | {...} | BreakInTry.cs:1:7:1:16 | {...} | normal |
 | BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:15:17:15:28 | ... == ... | false |
 | BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:16:17:16:17 | ; | normal |
 | BreakInTry.cs:5:9:17:9 | try {...} ... | BreakInTry.cs:15:17:15:28 | ... == ... | false |
@@ -964,6 +974,8 @@
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:67:21:67:31 | ... == ... | true |
 | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:28:67:31 | null | normal |
 | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; | break |
+| CompileTimeOperators.cs:3:7:3:26 | call to constructor Object | CompileTimeOperators.cs:3:7:3:26 | call to constructor Object | normal |
+| CompileTimeOperators.cs:3:7:3:26 | {...} | CompileTimeOperators.cs:3:7:3:26 | {...} | normal |
 | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:7:9:7:28 | return ...; | return |
 | CompileTimeOperators.cs:7:9:7:28 | return ...; | CompileTimeOperators.cs:7:9:7:28 | return ...; | return |
 | CompileTimeOperators.cs:7:16:7:27 | default(...) | CompileTimeOperators.cs:7:16:7:27 | default(...) | normal |
@@ -977,6 +989,8 @@
 | CompileTimeOperators.cs:22:9:22:25 | return ...; | CompileTimeOperators.cs:22:9:22:25 | return ...; | return |
 | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | normal |
 | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | normal |
+| CompileTimeOperators.cs:26:7:26:22 | call to constructor Object | CompileTimeOperators.cs:26:7:26:22 | call to constructor Object | normal |
+| CompileTimeOperators.cs:26:7:26:22 | {...} | CompileTimeOperators.cs:26:7:26:22 | {...} | normal |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] (0) |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] (0) |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | normal |
@@ -1003,32 +1017,34 @@
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:32:40:36 | "End" | normal |
+| ConditionalAccess.cs:1:7:1:23 | call to constructor Object | ConditionalAccess.cs:1:7:1:23 | call to constructor Object | normal |
+| ConditionalAccess.cs:1:7:1:23 | {...} | ConditionalAccess.cs:1:7:1:23 | {...} | normal |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:26:3:26 | access to parameter i | non-null |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:26:3:26 | access to parameter i | null |
-| ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:26 | access to parameter i | null |
-| ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:28:3:38 | call to method ToString | non-null |
-| ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:28:3:38 | call to method ToString | null |
-| ConditionalAccess.cs:3:40:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:26 | access to parameter i | null |
-| ConditionalAccess.cs:3:40:3:49 | call to method ToLower | ConditionalAccess.cs:3:28:3:38 | call to method ToString | null |
-| ConditionalAccess.cs:3:40:3:49 | call to method ToLower | ConditionalAccess.cs:3:40:3:49 | call to method ToLower | normal |
+| ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:26 | access to parameter i | null |
+| ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:38 | call to method ToString | non-null |
+| ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:38 | call to method ToString | null |
+| ConditionalAccess.cs:3:26:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:26 | access to parameter i | null |
+| ConditionalAccess.cs:3:26:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:38 | call to method ToString | null |
+| ConditionalAccess.cs:3:26:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:49 | call to method ToLower | normal |
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:26:5:26 | access to parameter s | non-null |
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:26:5:26 | access to parameter s | null |
-| ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:26 | access to parameter s | null |
-| ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:28:5:34 | access to property Length | normal |
+| ConditionalAccess.cs:5:26:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:26 | access to parameter s | null |
+| ConditionalAccess.cs:5:26:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:34 | access to property Length | normal |
+| ConditionalAccess.cs:7:38:7:55 | access to property Length | ConditionalAccess.cs:7:38:7:55 | access to property Length | normal |
+| ConditionalAccess.cs:7:38:7:55 | access to property Length | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | null |
 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | non-null |
 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | null |
 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | non-null |
 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | null |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | non-null |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | null |
-| ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | null |
-| ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:49:7:55 | access to property Length | normal |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:25:9:25 | access to parameter s | non-null |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:25:9:25 | access to parameter s | null |
+| ConditionalAccess.cs:9:25:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:25 | access to parameter s | null |
+| ConditionalAccess.cs:9:25:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:33 | access to property Length | non-null |
+| ConditionalAccess.cs:9:25:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:33 | access to property Length | null |
 | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | normal |
-| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:25 | access to parameter s | null |
-| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:27:9:33 | access to property Length | non-null |
-| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:27:9:33 | access to property Length | null |
 | ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:38:9:38 | 0 | normal |
 | ConditionalAccess.cs:12:5:17:5 | {...} | ConditionalAccess.cs:14:13:14:21 | return ...; | return |
 | ConditionalAccess.cs:12:5:17:5 | {...} | ConditionalAccess.cs:16:13:16:21 | return ...; | return |
@@ -1036,10 +1052,10 @@
 | ConditionalAccess.cs:13:9:16:21 | if (...) ... | ConditionalAccess.cs:16:13:16:21 | return ...; | return |
 | ConditionalAccess.cs:13:13:13:13 | access to parameter s | ConditionalAccess.cs:13:13:13:13 | access to parameter s | non-null |
 | ConditionalAccess.cs:13:13:13:13 | access to parameter s | ConditionalAccess.cs:13:13:13:13 | access to parameter s | null |
+| ConditionalAccess.cs:13:13:13:21 | access to property Length | ConditionalAccess.cs:13:13:13:13 | access to parameter s | null |
+| ConditionalAccess.cs:13:13:13:21 | access to property Length | ConditionalAccess.cs:13:13:13:21 | access to property Length | normal |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:13:13:13:25 | ... > ... | false |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:13:13:13:25 | ... > ... | true |
-| ConditionalAccess.cs:13:15:13:21 | access to property Length | ConditionalAccess.cs:13:13:13:13 | access to parameter s | null |
-| ConditionalAccess.cs:13:15:13:21 | access to property Length | ConditionalAccess.cs:13:15:13:21 | access to property Length | normal |
 | ConditionalAccess.cs:13:25:13:25 | 0 | ConditionalAccess.cs:13:25:13:25 | 0 | normal |
 | ConditionalAccess.cs:13:25:13:25 | (...) ... | ConditionalAccess.cs:13:25:13:25 | (...) ... | normal |
 | ConditionalAccess.cs:14:13:14:21 | return ...; | ConditionalAccess.cs:14:13:14:21 | return ...; | return |
@@ -1048,45 +1064,47 @@
 | ConditionalAccess.cs:16:20:16:20 | 1 | ConditionalAccess.cs:16:20:16:20 | 1 | normal |
 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | non-null |
 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | null |
-| ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | null |
-| ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | normal |
+| ConditionalAccess.cs:19:40:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | null |
+| ConditionalAccess.cs:19:40:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:40:19:60 | call to method CommaJoinWith | normal |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | normal |
 | ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:25:9:25:32 | ... = ... | normal |
 | ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | normal |
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | normal |
+| ConditionalAccess.cs:23:17:23:38 | access to property Length | ConditionalAccess.cs:23:17:23:38 | access to property Length | normal |
+| ConditionalAccess.cs:23:17:23:38 | access to property Length | ConditionalAccess.cs:23:18:23:29 | (...) ... | null |
 | ConditionalAccess.cs:23:18:23:29 | (...) ... | ConditionalAccess.cs:23:18:23:29 | (...) ... | null |
 | ConditionalAccess.cs:23:26:23:29 | null | ConditionalAccess.cs:23:26:23:29 | null | normal |
-| ConditionalAccess.cs:23:32:23:38 | access to property Length | ConditionalAccess.cs:23:18:23:29 | (...) ... | null |
-| ConditionalAccess.cs:23:32:23:38 | access to property Length | ConditionalAccess.cs:23:32:23:38 | access to property Length | normal |
 | ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:13:24:37 | String s = ... | normal |
 | ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:24:13:24:37 | String s = ... | normal |
+| ConditionalAccess.cs:24:17:24:37 | call to method ToString | ConditionalAccess.cs:24:17:24:37 | call to method ToString | normal |
 | ConditionalAccess.cs:24:18:24:24 | (...) ... | ConditionalAccess.cs:24:18:24:24 | (...) ... | non-null |
 | ConditionalAccess.cs:24:24:24:24 | access to parameter i | ConditionalAccess.cs:24:24:24:24 | access to parameter i | normal |
-| ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:24:27:24:37 | call to method ToString | normal |
 | ConditionalAccess.cs:25:9:25:32 | ... = ... | ConditionalAccess.cs:25:9:25:32 | ... = ... | normal |
 | ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:9:25:32 | ... = ... | normal |
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:13:25:14 | "" | non-null |
-| ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | normal |
+| ConditionalAccess.cs:25:13:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:13:25:32 | call to method CommaJoinWith | normal |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:31:25:31 | access to local variable s | normal |
 | ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:28:30:32 | ... = ... | normal |
 | ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:32:30:32 | 0 | normal |
 | ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
-| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:35:14:35:24 | call to method Out | normal |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:35:9:35:24 | call to method Out | normal |
 | ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:34:9:34:13 | ... = ... | normal |
 | ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:9:34:13 | ... = ... | normal |
 | ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:13:34:13 | 0 | normal |
 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | access to property Prop | non-null |
 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | this access | normal |
+| ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
+| ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:24 | call to method Out | normal |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
-| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:14:35:24 | call to method Out | normal |
-| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
-| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:14:35:24 | call to method Out | normal |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:24 | call to method Out | normal |
 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | normal |
 | ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:70:41:78 | ... + ... | normal |
 | ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:70:41:83 | ... + ... | normal |
 | ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:75:41:78 | ", " | normal |
 | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | normal |
+| Conditions.cs:1:7:1:16 | call to constructor Object | Conditions.cs:1:7:1:16 | call to constructor Object | normal |
+| Conditions.cs:1:7:1:16 | {...} | Conditions.cs:1:7:1:16 | {...} | normal |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:7:13:7:16 | !... | false |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:8:13:8:15 | ...-- | normal |
 | Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:13:5:15 | access to parameter inc | false |
@@ -1440,6 +1458,8 @@
 | Conditions.cs:149:38:149:47 | $"..." | Conditions.cs:149:38:149:47 | $"..." | normal |
 | Conditions.cs:149:40:149:43 | "b = " | Conditions.cs:149:40:149:43 | "b = " | normal |
 | Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:149:45:149:45 | access to local variable s | normal |
+| ExitMethods.cs:6:7:6:17 | call to constructor Object | ExitMethods.cs:6:7:6:17 | call to constructor Object | normal |
+| ExitMethods.cs:6:7:6:17 | {...} | ExitMethods.cs:6:7:6:17 | {...} | normal |
 | ExitMethods.cs:9:5:12:5 | {...} | ExitMethods.cs:11:9:11:15 | return ...; | return |
 | ExitMethods.cs:10:9:10:24 | call to method ErrorMaybe | ExitMethods.cs:10:9:10:24 | call to method ErrorMaybe | normal |
 | ExitMethods.cs:10:9:10:25 | ...; | ExitMethods.cs:10:9:10:24 | call to method ErrorMaybe | normal |
@@ -1641,6 +1661,8 @@
 | Extensions.cs:25:9:25:34 | ...; | Extensions.cs:25:9:25:33 | call to method ToBool | normal |
 | Extensions.cs:25:23:25:32 | access to method Parse | Extensions.cs:25:23:25:32 | access to method Parse | normal |
 | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | normal |
+| Finally.cs:3:14:3:20 | call to constructor Object | Finally.cs:3:14:3:20 | call to constructor Object | normal |
+| Finally.cs:3:14:3:20 | {...} | Finally.cs:3:14:3:20 | {...} | normal |
 | Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
 | Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
@@ -2028,6 +2050,12 @@
 | Finally.cs:167:17:167:37 | call to method WriteLine | Finally.cs:167:17:167:37 | call to method WriteLine | normal |
 | Finally.cs:167:17:167:38 | ...; | Finally.cs:167:17:167:37 | call to method WriteLine | normal |
 | Finally.cs:167:35:167:36 | "" | Finally.cs:167:35:167:36 | "" | normal |
+| Finally.cs:172:11:172:20 | call to constructor Exception | Finally.cs:172:11:172:20 | call to constructor Exception | normal |
+| Finally.cs:172:11:172:20 | {...} | Finally.cs:172:11:172:20 | {...} | normal |
+| Finally.cs:173:11:173:20 | call to constructor Exception | Finally.cs:173:11:173:20 | call to constructor Exception | normal |
+| Finally.cs:173:11:173:20 | {...} | Finally.cs:173:11:173:20 | {...} | normal |
+| Finally.cs:174:11:174:20 | call to constructor Exception | Finally.cs:174:11:174:20 | call to constructor Exception | normal |
+| Finally.cs:174:11:174:20 | {...} | Finally.cs:174:11:174:20 | {...} | normal |
 | Finally.cs:177:5:193:5 | {...} | Finally.cs:186:21:186:22 | access to parameter b2 | false |
 | Finally.cs:177:5:193:5 | {...} | Finally.cs:186:21:186:22 | access to parameter b2 | throw(Exception) [false] (0) |
 | Finally.cs:177:5:193:5 | {...} | Finally.cs:186:21:186:22 | access to parameter b2 | throw(ExceptionA) [false] (0) |
@@ -2271,6 +2299,8 @@
 | Finally.cs:272:13:272:18 | ... = ... | Finally.cs:272:13:272:18 | ... = ... | normal |
 | Finally.cs:272:13:272:19 | ...; | Finally.cs:272:13:272:18 | ... = ... | normal |
 | Finally.cs:272:18:272:18 | 3 | Finally.cs:272:18:272:18 | 3 | normal |
+| Foreach.cs:4:7:4:13 | call to constructor Object | Foreach.cs:4:7:4:13 | call to constructor Object | normal |
+| Foreach.cs:4:7:4:13 | {...} | Foreach.cs:4:7:4:13 | {...} | normal |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:8:22:8:24 | String arg | Foreach.cs:8:22:8:24 | String arg | normal |
@@ -2286,10 +2316,10 @@
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:20:22:20:22 | String x | normal |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e | non-null |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e | null |
+| Foreach.cs:20:27:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:27 | access to parameter e | null |
+| Foreach.cs:20:27:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:38 | call to method ToArray<String> | non-null |
+| Foreach.cs:20:27:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:38 | call to method ToArray<String> | null |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... | normal |
-| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:27 | access to parameter e | null |
-| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | non-null |
-| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | null |
 | Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> | normal |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:21:11:21:11 | ; | normal |
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
@@ -2313,6 +2343,7 @@
 | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:33:38:33 | Int32 y | normal |
 | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:39:38:42 | access to parameter args | normal |
 | Foreach.cs:39:11:39:11 | ; | Foreach.cs:39:11:39:11 | ; | normal |
+| Initializers.cs:3:7:3:18 | {...} | Initializers.cs:3:7:3:18 | {...} | normal |
 | Initializers.cs:5:9:5:9 | access to field F | Initializers.cs:5:9:5:9 | this access | normal |
 | Initializers.cs:5:9:5:9 | this access | Initializers.cs:5:9:5:9 | this access | normal |
 | Initializers.cs:5:9:5:17 | ... = ... | Initializers.cs:5:9:5:17 | ... = ... | normal |
@@ -2349,6 +2380,8 @@
 | Initializers.cs:15:59:15:60 | "" | Initializers.cs:15:59:15:60 | "" | normal |
 | Initializers.cs:18:16:18:20 | ... = ... | Initializers.cs:18:16:18:20 | ... = ... | normal |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:20:18:20 | 1 | normal |
+| Initializers.cs:20:11:20:23 | call to constructor Object | Initializers.cs:20:11:20:23 | call to constructor Object | normal |
+| Initializers.cs:20:11:20:23 | {...} | Initializers.cs:20:11:20:23 | {...} | normal |
 | Initializers.cs:22:23:22:23 | access to field F | Initializers.cs:22:23:22:23 | this access | normal |
 | Initializers.cs:22:23:22:23 | this access | Initializers.cs:22:23:22:23 | this access | normal |
 | Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:22:23:22:27 | ... = ... | normal |
@@ -2384,6 +2417,10 @@
 | Initializers.cs:35:33:35:33 | access to parameter i | Initializers.cs:35:33:35:33 | access to parameter i | normal |
 | Initializers.cs:35:33:35:37 | ... + ... | Initializers.cs:35:33:35:37 | ... + ... | normal |
 | Initializers.cs:35:37:35:37 | access to parameter j | Initializers.cs:35:37:35:37 | access to parameter j | normal |
+| Initializers.cs:39:7:39:23 | call to constructor Object | Initializers.cs:39:7:39:23 | call to constructor Object | normal |
+| Initializers.cs:39:7:39:23 | {...} | Initializers.cs:39:7:39:23 | {...} | normal |
+| Initializers.cs:41:11:41:18 | call to constructor Object | Initializers.cs:41:11:41:18 | call to constructor Object | normal |
+| Initializers.cs:41:11:41:18 | {...} | Initializers.cs:41:11:41:18 | {...} | normal |
 | Initializers.cs:52:5:66:5 | {...} | Initializers.cs:57:13:65:9 | Compound compound = ... | normal |
 | Initializers.cs:54:9:54:96 | ... ...; | Initializers.cs:54:13:54:95 | Dictionary<Int32,String> dict = ... | normal |
 | Initializers.cs:54:13:54:95 | Dictionary<Int32,String> dict = ... | Initializers.cs:54:13:54:95 | Dictionary<Int32,String> dict = ... | normal |
@@ -2491,6 +2528,8 @@
 | Initializers.cs:64:50:64:54 | ... + ... | Initializers.cs:64:50:64:54 | ... + ... | normal |
 | Initializers.cs:64:54:64:54 | 0 | Initializers.cs:64:54:64:54 | 0 | normal |
 | Initializers.cs:64:59:64:61 | "1" | Initializers.cs:64:59:64:61 | "1" | normal |
+| LoopUnrolling.cs:5:7:5:19 | call to constructor Object | LoopUnrolling.cs:5:7:5:19 | call to constructor Object | normal |
+| LoopUnrolling.cs:5:7:5:19 | {...} | LoopUnrolling.cs:5:7:5:19 | {...} | normal |
 | LoopUnrolling.cs:8:5:13:5 | {...} | LoopUnrolling.cs:10:13:10:19 | return ...; | return |
 | LoopUnrolling.cs:8:5:13:5 | {...} | LoopUnrolling.cs:11:9:12:35 | foreach (... ... in ...) ... | empty |
 | LoopUnrolling.cs:9:9:10:19 | if (...) ... | LoopUnrolling.cs:9:13:9:28 | ... == ... | false |
@@ -2677,6 +2716,8 @@
 | LoopUnrolling.cs:99:13:99:32 | call to method WriteLine | LoopUnrolling.cs:99:13:99:32 | call to method WriteLine | normal |
 | LoopUnrolling.cs:99:13:99:33 | ...; | LoopUnrolling.cs:99:13:99:32 | call to method WriteLine | normal |
 | LoopUnrolling.cs:99:31:99:31 | access to local variable x | LoopUnrolling.cs:99:31:99:31 | access to local variable x | normal |
+| MultiImplementationA.cs:4:7:4:8 | call to constructor Object | MultiImplementationA.cs:4:7:4:8 | call to constructor Object | normal |
+| MultiImplementationA.cs:4:7:4:8 | {...} | MultiImplementationA.cs:4:7:4:8 | {...} | normal |
 | MultiImplementationA.cs:6:22:6:31 | throw ... | MultiImplementationA.cs:6:22:6:31 | throw ... | throw(NullReferenceException) |
 | MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationA.cs:6:28:6:31 | null | normal |
 | MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationA.cs:7:27:7:37 | throw ...; | throw(NullReferenceException) |
@@ -2716,14 +2757,20 @@
 | MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:24:16:24:16 | this access | normal |
 | MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:24:32:24:34 | ... = ... | normal |
 | MultiImplementationA.cs:24:34:24:34 | 0 | MultiImplementationA.cs:24:34:24:34 | 0 | normal |
+| MultiImplementationA.cs:28:7:28:8 | call to constructor Object | MultiImplementationA.cs:28:7:28:8 | call to constructor Object | normal |
+| MultiImplementationA.cs:28:7:28:8 | {...} | MultiImplementationA.cs:28:7:28:8 | {...} | normal |
 | MultiImplementationA.cs:30:28:30:37 | throw ... | MultiImplementationA.cs:30:28:30:37 | throw ... | throw(NullReferenceException) |
 | MultiImplementationA.cs:30:34:30:37 | null | MultiImplementationA.cs:30:34:30:37 | null | normal |
+| MultiImplementationA.cs:34:15:34:16 | call to constructor Object | MultiImplementationA.cs:34:15:34:16 | call to constructor Object | normal |
+| MultiImplementationA.cs:34:15:34:16 | {...} | MultiImplementationA.cs:34:15:34:16 | {...} | normal |
 | MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationA.cs:36:16:36:26 | throw ...; | throw(NullReferenceException) |
 | MultiImplementationA.cs:36:16:36:26 | throw ...; | MultiImplementationA.cs:36:16:36:26 | throw ...; | throw(NullReferenceException) |
 | MultiImplementationA.cs:36:22:36:25 | null | MultiImplementationA.cs:36:22:36:25 | null | normal |
 | MultiImplementationA.cs:37:14:37:28 | {...} | MultiImplementationA.cs:37:16:37:26 | throw ...; | throw(NullReferenceException) |
 | MultiImplementationA.cs:37:16:37:26 | throw ...; | MultiImplementationA.cs:37:16:37:26 | throw ...; | throw(NullReferenceException) |
 | MultiImplementationA.cs:37:22:37:25 | null | MultiImplementationA.cs:37:22:37:25 | null | normal |
+| MultiImplementationB.cs:1:7:1:8 | call to constructor Object | MultiImplementationB.cs:1:7:1:8 | call to constructor Object | normal |
+| MultiImplementationB.cs:1:7:1:8 | {...} | MultiImplementationB.cs:1:7:1:8 | {...} | normal |
 | MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationB.cs:3:22:3:22 | 0 | normal |
 | MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationB.cs:4:27:4:35 | return ...; | return |
 | MultiImplementationB.cs:4:27:4:35 | return ...; | MultiImplementationB.cs:4:27:4:35 | return ...; | return |
@@ -2761,7 +2808,13 @@
 | MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:22:16:22:16 | this access | normal |
 | MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationB.cs:22:32:22:34 | ... = ... | normal |
 | MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationB.cs:22:34:22:34 | 1 | normal |
+| MultiImplementationB.cs:25:7:25:8 | call to constructor Object | MultiImplementationB.cs:25:7:25:8 | call to constructor Object | normal |
+| MultiImplementationB.cs:25:7:25:8 | {...} | MultiImplementationB.cs:25:7:25:8 | {...} | normal |
+| MultiImplementationB.cs:30:15:30:16 | call to constructor Object | MultiImplementationB.cs:30:15:30:16 | call to constructor Object | normal |
+| MultiImplementationB.cs:30:15:30:16 | {...} | MultiImplementationB.cs:30:15:30:16 | {...} | normal |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:17:32:17 | 0 | normal |
+| NullCoalescing.cs:1:7:1:20 | call to constructor Object | NullCoalescing.cs:1:7:1:20 | call to constructor Object | normal |
+| NullCoalescing.cs:1:7:1:20 | {...} | NullCoalescing.cs:1:7:1:20 | {...} | normal |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:23 | access to parameter i | non-null |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:23 | access to parameter i | null |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:28 | ... ?? ... | normal |
@@ -2838,6 +2891,8 @@
 | PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:16:5:16 | this access | normal |
 | PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationB.cs:5:32:5:34 | ... = ... | normal |
 | PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:34:5:34 | 0 | normal |
+| Patterns.cs:3:7:3:14 | call to constructor Object | Patterns.cs:3:7:3:14 | call to constructor Object | normal |
+| Patterns.cs:3:7:3:14 | {...} | Patterns.cs:3:7:3:14 | {...} | normal |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:40:17:40:17 | access to local variable o | normal |
 | Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:16:7:23 | Object o = ... | normal |
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:23 | Object o = ... | normal |
@@ -3063,6 +3118,8 @@
 | Patterns.cs:97:13:97:38 | call to method WriteLine | Patterns.cs:97:13:97:38 | call to method WriteLine | normal |
 | Patterns.cs:97:13:97:39 | ...; | Patterns.cs:97:13:97:38 | call to method WriteLine | normal |
 | Patterns.cs:97:31:97:37 | "not C" | Patterns.cs:97:31:97:37 | "not C" | normal |
+| PostDominance.cs:3:7:3:19 | call to constructor Object | PostDominance.cs:3:7:3:19 | call to constructor Object | normal |
+| PostDominance.cs:3:7:3:19 | {...} | PostDominance.cs:3:7:3:19 | {...} | normal |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
@@ -3096,6 +3153,8 @@
 | PostDominance.cs:21:9:21:28 | call to method WriteLine | PostDominance.cs:21:9:21:28 | call to method WriteLine | normal |
 | PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:21:9:21:28 | call to method WriteLine | normal |
 | PostDominance.cs:21:27:21:27 | access to parameter s | PostDominance.cs:21:27:21:27 | access to parameter s | normal |
+| Qualifiers.cs:1:7:1:16 | call to constructor Object | Qualifiers.cs:1:7:1:16 | call to constructor Object | normal |
+| Qualifiers.cs:1:7:1:16 | {...} | Qualifiers.cs:1:7:1:16 | {...} | normal |
 | Qualifiers.cs:7:28:7:31 | null | Qualifiers.cs:7:28:7:31 | null | normal |
 | Qualifiers.cs:8:41:8:44 | null | Qualifiers.cs:8:41:8:44 | null | normal |
 | Qualifiers.cs:11:5:31:5 | {...} | Qualifiers.cs:30:9:30:46 | ... = ... | normal |
@@ -3153,6 +3212,8 @@
 | Qualifiers.cs:30:9:30:47 | ...; | Qualifiers.cs:30:9:30:46 | ... = ... | normal |
 | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | normal |
 | Qualifiers.cs:30:13:30:46 | call to method Method | Qualifiers.cs:30:13:30:46 | call to method Method | normal |
+| Switch.cs:3:7:3:12 | call to constructor Object | Switch.cs:3:7:3:12 | call to constructor Object | normal |
+| Switch.cs:3:7:3:12 | {...} | Switch.cs:3:7:3:12 | {...} | normal |
 | Switch.cs:6:5:8:5 | {...} | Switch.cs:7:17:7:17 | access to parameter o | normal |
 | Switch.cs:7:9:7:22 | switch (...) {...} | Switch.cs:7:17:7:17 | access to parameter o | normal |
 | Switch.cs:7:17:7:17 | access to parameter o | Switch.cs:7:17:7:17 | access to parameter o | normal |
@@ -3344,8 +3405,8 @@
 | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:106:21:106:29 | return ...; | return |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:17:103:17 | access to parameter s | non-null |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:17:103:17 | access to parameter s | null |
-| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:17:103:17 | access to parameter s | null |
-| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:19:103:25 | access to property Length | normal |
+| Switch.cs:103:17:103:25 | access to property Length | Switch.cs:103:17:103:17 | access to parameter s | null |
+| Switch.cs:103:17:103:25 | access to property Length | Switch.cs:103:17:103:25 | access to property Length | normal |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:18:105:18 | 0 | no-match |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:21:105:29 | return ...; | return |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:18:105:18 | 0 | match |
@@ -3417,6 +3478,8 @@
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; | return |
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:131:9:131:67 | return ...; | return |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:131:9:131:67 | return ...; | return |
+| Switch.cs:131:16:131:66 | call to method ToString | Switch.cs:131:16:131:66 | call to method ToString | normal |
+| Switch.cs:131:16:131:66 | call to method ToString | Switch.cs:131:17:131:53 | ... switch { ... } | null |
 | Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:17:131:17 | access to parameter o | normal |
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:53 | ... switch { ... } | non-null |
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:53 | ... switch { ... } | null |
@@ -3430,8 +3493,6 @@
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... | non-null |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... | null |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null | null |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:17:131:53 | ... switch { ... } | null |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | normal |
 | Switch.cs:135:5:142:5 | {...} | Switch.cs:138:22:138:31 | return ...; | return |
 | Switch.cs:135:5:142:5 | {...} | Switch.cs:139:21:139:29 | return ...; | return |
 | Switch.cs:135:5:142:5 | {...} | Switch.cs:140:21:140:29 | return ...; | return |
@@ -3511,6 +3572,8 @@
 | Switch.cs:160:38:160:47 | $"..." | Switch.cs:160:38:160:47 | $"..." | normal |
 | Switch.cs:160:40:160:43 | "b = " | Switch.cs:160:40:160:43 | "b = " | normal |
 | Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:160:45:160:45 | access to local variable s | normal |
+| TypeAccesses.cs:1:7:1:18 | call to constructor Object | TypeAccesses.cs:1:7:1:18 | call to constructor Object | normal |
+| TypeAccesses.cs:1:7:1:18 | {...} | TypeAccesses.cs:1:7:1:18 | {...} | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
 | TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
@@ -3531,6 +3594,8 @@
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:8:13:8:27 | Type t = ... | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:8:17:8:27 | typeof(...) | TypeAccesses.cs:8:17:8:27 | typeof(...) | normal |
+| VarDecls.cs:3:7:3:14 | call to constructor Object | VarDecls.cs:3:7:3:14 | call to constructor Object | normal |
+| VarDecls.cs:3:7:3:14 | {...} | VarDecls.cs:3:7:3:14 | {...} | normal |
 | VarDecls.cs:6:5:11:5 | {...} | VarDecls.cs:9:13:9:29 | return ...; | return |
 | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:9:13:9:29 | return ...; | return |
 | VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:22:7:36 | Char* c1 = ... | normal |
@@ -3572,6 +3637,8 @@
 | VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:25:20:25:28 | ... ? ... : ... | normal |
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:24:25:24 | access to local variable x | normal |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:28:25:28 | access to local variable y | normal |
+| VarDecls.cs:28:11:28:11 | call to constructor Object | VarDecls.cs:28:11:28:11 | call to constructor Object | normal |
+| VarDecls.cs:28:11:28:11 | {...} | VarDecls.cs:28:11:28:11 | {...} | normal |
 | VarDecls.cs:28:51:28:53 | {...} | VarDecls.cs:28:51:28:53 | {...} | normal |
 | cflow.cs:6:5:35:5 | {...} | cflow.cs:24:25:24:31 | ... <= ... | false |
 | cflow.cs:7:9:7:28 | ... ...; | cflow.cs:7:13:7:27 | Int32 a = ... | normal |
@@ -4287,6 +4354,8 @@
 | cflow.cs:286:34:286:34 | access to parameter i | cflow.cs:286:34:286:34 | access to parameter i | normal |
 | cflow.cs:286:34:286:45 | call to method ToString | cflow.cs:286:34:286:45 | call to method ToString | normal |
 | cflow.cs:286:48:286:50 | {...} | cflow.cs:286:48:286:50 | {...} | normal |
+| cflow.cs:289:7:289:18 | call to constructor Object | cflow.cs:289:7:289:18 | call to constructor Object | normal |
+| cflow.cs:289:7:289:18 | {...} | cflow.cs:289:7:289:18 | {...} | normal |
 | cflow.cs:291:38:291:38 | access to parameter f | cflow.cs:291:38:291:38 | access to parameter f | normal |
 | cflow.cs:291:38:291:41 | delegate call | cflow.cs:291:38:291:41 | delegate call | normal |
 | cflow.cs:291:40:291:40 | 0 | cflow.cs:291:40:291:40 | 0 | normal |
@@ -4307,6 +4376,8 @@
 | cflow.cs:300:56:300:64 | ... != ... | cflow.cs:300:56:300:64 | ... != ... | normal |
 | cflow.cs:300:61:300:64 | null | cflow.cs:300:61:300:64 | null | normal |
 | cflow.cs:300:70:300:71 | "" | cflow.cs:300:70:300:71 | "" | normal |
+| cflow.cs:304:7:304:18 | call to constructor Object | cflow.cs:304:7:304:18 | call to constructor Object | normal |
+| cflow.cs:304:7:304:18 | {...} | cflow.cs:304:7:304:18 | {...} | normal |
 | cflow.cs:306:60:310:5 | (...) => ... | cflow.cs:306:60:310:5 | (...) => ... | normal |
 | cflow.cs:307:5:310:5 | {...} | cflow.cs:309:9:309:17 | return ...; | return |
 | cflow.cs:308:9:308:21 | ... ...; | cflow.cs:308:16:308:20 | Object x = ... | normal |

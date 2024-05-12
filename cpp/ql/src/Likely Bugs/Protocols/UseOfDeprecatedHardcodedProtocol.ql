@@ -1,8 +1,9 @@
 /**
- * @name boost::asio Use of deprecated hardcoded Protocol
+ * @name boost::asio use of deprecated hardcoded protocol
  * @description Using a deprecated hard-coded protocol using the boost::asio library.
  * @kind problem
  * @problem.severity error
+ * @precision medium
  * @security-severity 7.5
  * @id cpp/boost/use-of-deprecated-hardcoded-security-protocol
  * @tags security

@@ -1,4 +1,5 @@
 /cpp/ @github/codeql-c-analysis
+/cpp/autobuilder/ @github/codeql-c-extractor
 /csharp/ @github/codeql-csharp
 /go/ @github/codeql-go
 /java/ @github/codeql-java
@@ -8,9 +9,8 @@
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
-
-# ML-powered queries
-/javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
+/java/ql/test-kotlin1/ @github/codeql-kotlin
+/java/ql/test-kotlin2/ @github/codeql-kotlin
 
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
@@ -23,6 +23,7 @@
 
 # Bazel (excluding BUILD.bazel files)
 WORKSPACE.bazel @github/codeql-ci-reviewers
+MODULE.bazel @github/codeql-ci-reviewers
 .bazelversion @github/codeql-ci-reviewers
 .bazelrc @github/codeql-ci-reviewers
 **/*.bzl @github/codeql-ci-reviewers
@@ -33,12 +34,11 @@ WORKSPACE.bazel @github/codeql-ci-reviewers
 
 # Workflows
 /.github/workflows/ @github/codeql-ci-reviewers
-/.github/workflows/atm-* @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/go-* @github/codeql-go
-/.github/workflows/js-ml-tests.yml @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
 /.github/workflows/swift.yml @github/codeql-swift
 
 # Misc
 /misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
+/misc/scripts/generate-code-scanning-query-list.py @RasmusWL

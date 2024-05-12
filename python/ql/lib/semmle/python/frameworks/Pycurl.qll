@@ -9,15 +9,18 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `pycurl` PyPI package.
  *
  * See
  * - https://pypi.org/project/pycurl/
  * - https://pycurl.io/docs/latest/
  */
-private module Pycurl {
+module Pycurl {
   /**
    * Provides models for the `pycurl.Curl` class
    *
@@ -25,7 +28,11 @@ private module Pycurl {
    */
   module Curl {
     /** Gets a reference to the `pycurl.Curl` class. */
-    private API::Node classRef() { result = API::moduleImport("pycurl").getMember("Curl") }
+    API::Node classRef() {
+      result = API::moduleImport("pycurl").getMember("Curl")
+      or
+      result = ModelOutput::getATypeNode("pycurl.Curl~Subclass").getASubclass*()
+    }
 
     /** Gets a reference to an instance of `pycurl.Curl`. */
     private API::Node instance() { result = classRef().getReturn() }

@@ -6,7 +6,6 @@
 
 import javascript
 import semmle.javascript.security.TaintedObject
-import semmle.javascript.dependencies.Dependencies
 import semmle.javascript.dependencies.SemVer
 
 module PrototypePollution {
@@ -171,5 +170,9 @@ module PrototypePollution {
     call.isDeep() and
     call = AngularJS::angular().getAMemberCall("merge") and
     id = "angular"
+    or
+    call.isDeep() and
+    call = Webix::webix().getMember(["extend", "copy"]).getACall() and
+    id = "webix"
   }
 }

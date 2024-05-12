@@ -567,7 +567,7 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   override predicate isPrivate() { Predicate.super.isPrivate() }
 
   /** Holds if this classless predicate is a signature predicate with no body. */
-  predicate isSignature() { not exists(this.getBody()) }
+  override predicate isSignature() { not exists(this.getBody()) }
 
   override QLDoc getQLDoc() {
     result = any(TopLevel m).getQLDocFor(this)
@@ -610,6 +610,8 @@ class ClassPredicate extends TClassPredicate, Predicate {
   override ClassType getDeclaringType() { result.getDeclaration() = this.getParent() }
 
   predicate overrides(ClassPredicate other) { predOverrides(this, other) }
+
+  predicate shadows(ClassPredicate other) { predShadows(this, other) }
 
   override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
 
@@ -834,6 +836,12 @@ class Module extends TModule, ModuleDeclaration {
     toMock(result) = mod.asRight().getMember(i)
   }
 
+  pragma[nomagic]
+  Declaration getDeclaration(string name) {
+    result = this.getAMember() and
+    name = result.getName()
+  }
+
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
@@ -878,6 +886,39 @@ class Module extends TModule, ModuleDeclaration {
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */
   predicate isPrivate() { this.hasAnnotation("private") }
+
+  /** Holds if this member is declared as `final`. */
+  predicate isFinal() { this.hasAnnotation("final") }
+
+  /** Holds if this member is declared as `deprecated`. */
+  predicate isDeprecated() { this.hasAnnotation("deprecated") }
+}
+
+private newtype TDeclarationKind =
+  TClassKind() or
+  TModuleKind() or
+  TPredicateKind(int arity) { arity = any(Predicate p).getArity() }
+
+private TDeclarationKind getDeclarationKind(Declaration d) {
+  d instanceof Class and result = TClassKind()
+  or
+  d instanceof Module and result = TModuleKind()
+  or
+  d = any(Predicate p | result = TPredicateKind(p.getArity()))
+}
+
+/** Holds if module `m` must implement signature declaration `d` with name `name` and kind `kind`. */
+pragma[nomagic]
+private predicate mustImplement(Module m, string name, TDeclarationKind kind, Declaration d) {
+  d = m.getImplements(_).getResolvedType().getDeclaration().(Module).getAMember() and
+  name = d.getName() and
+  kind = getDeclarationKind(d)
+}
+
+pragma[nomagic]
+private Declaration getDeclaration(Module m, string name, TDeclarationKind kind) {
+  result = m.getDeclaration(name) and
+  kind = getDeclarationKind(result)
 }
 
 /** A declaration. E.g. a class, type, predicate, newtype... */
@@ -893,6 +934,16 @@ class Declaration extends TDeclaration, AstNode {
     result = any(Module m).getQLDocFor(this)
     or
     result = any(Class c).getQLDocFor(this)
+  }
+
+  predicate isSignature() { this.hasAnnotation("signature") }
+
+  /** Holds if this declaration implements `other`. */
+  predicate implements(Declaration other) {
+    exists(Module m, string name, TDeclarationKind kind |
+      this = getDeclaration(m, name, kind) and
+      mustImplement(m, name, kind, other)
+    )
   }
 }
 
@@ -2687,6 +2738,18 @@ module YAML {
           name.matches("codeql/%") and
           name = dep + "/all"
         )
+      )
+    }
+
+    /**
+     * Gets the language library file for this QLPack, if any. For example, the
+     * language library file for `codeql/cpp-all` is `cpp.qll`.
+     */
+    File getLanguageLib() {
+      exists(string name |
+        name = this.getExtractor() and
+        result.getParentContainer() = this.getFile().getParentContainer() and
+        result.getBaseName() = name + ".qll"
       )
     }
 

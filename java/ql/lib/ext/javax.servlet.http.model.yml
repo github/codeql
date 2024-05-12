@@ -18,6 +18,8 @@ extensions:
       - ["javax.servlet.http", "HttpServletRequest", False, "getRemoteUser", "()", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet.http", "HttpServletRequest", False, "getRequestURI", "()", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet.http", "HttpServletRequest", False, "getRequestURL", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getServletPath", "()", "", "ReturnValue", "remote", "manual"]
+
   - addsTo:
       pack: codeql/java-all
       extensible: sinkModel
@@ -26,6 +28,9 @@ extensions:
       - ["javax.servlet.http", "HttpServletResponse", False, "addHeader", "", "", "Argument[0..1]", "response-splitting", "manual"]
       - ["javax.servlet.http", "HttpServletResponse", False, "sendError", "(int,String)", "", "Argument[1]", "information-leak", "manual"]
       - ["javax.servlet.http", "HttpServletResponse", False, "setHeader", "", "", "Argument[0..1]", "response-splitting", "manual"]
+      # - ["javax.servlet.http", "HttpServletResponse", True, "sendRedirect", "(String)", "", "Argument[0]", "url-redirection", "ai-manual"] # QL model exists in java/ql/lib/semmle/code/java/security/UrlRedirect.qll
+      - ["javax.servlet.http", "HttpSession", True, "putValue", "", "", "Argument[0..1]", "trust-boundary-violation", "manual"]
+      - ["javax.servlet.http", "HttpSession", True, "setAttribute", "", "", "Argument[0..1]", "trust-boundary-violation", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

@@ -92,7 +92,7 @@ private DataFlowCallable getRestrictedInterfaceTarget(DataFlow::CallNode call) {
 /**
  * Gets a function that might be called by `call`.
  */
-DataFlowCallable viableCallable(CallExpr ma) {
+DataFlowCallable viableCallable(DataFlowCall ma) {
   exists(DataFlow::CallNode call | call.asExpr() = ma |
     if isConcreteInterfaceCall(call, _, _)
     then result = getConcreteTarget(call)
@@ -103,18 +103,6 @@ DataFlowCallable viableCallable(CallExpr ma) {
         [result.asCallable(), result.asSummarizedCallable()] = call.getACalleeIncludingExternals()
   )
 }
-
-/**
- * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context.
- */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) { none() }
-
-/**
- * Gets a viable dispatch target of `call` in the context `ctx`. This is
- * restricted to those `call`s for which a context might make a difference.
- */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
 private int parameterPosition() {
   result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
@@ -149,9 +137,10 @@ predicate golangSpecificParamArgFilter(
   // Interface methods calls may be passed strictly to that exact method's model receiver:
   arg.getPosition() != -1
   or
-  exists(Function callTarget | callTarget = call.getNode().(DataFlow::CallNode).getTarget() |
-    not isInterfaceMethod(callTarget)
-    or
-    callTarget = p.getCallable().asSummarizedCallable().asFunction()
-  )
+  p instanceof DataFlow::SummarizedParameterNode
+  or
+  not isInterfaceMethod(call.getNode()
+        .(DataFlow::CallNode)
+        .getACalleeWithoutVirtualDispatch()
+        .asFunction())
 }

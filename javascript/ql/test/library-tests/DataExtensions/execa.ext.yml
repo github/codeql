@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["@example/execa", "Member[shell].Argument[0]", "command-injection"]

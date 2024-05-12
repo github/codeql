@@ -23,9 +23,8 @@ private module Internal {
   newtype TOperand =
     // RAW
     TRegisterOperand(TRawInstruction useInstr, RegisterOperandTag tag, TRawInstruction defInstr) {
-      defInstr = RawConstruction::getRegisterOperandDefinition(useInstr, tag) and
-      not RawConstruction::isInCycle(useInstr) and
-      strictcount(RawConstruction::getRegisterOperandDefinition(useInstr, tag)) = 1
+      defInstr = unique( | | RawConstruction::getRegisterOperandDefinition(useInstr, tag)) and
+      not RawConstruction::isInCycle(useInstr)
     } or
     // Placeholder for Phi and Chi operands in stages that don't have the corresponding instructions
     TNoOperand() { none() } or

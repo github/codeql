@@ -16,6 +16,10 @@ To guard against untrusted URL redirection, it is advisable to avoid putting use
 a redirect URL. Instead, maintain a list of authorized redirects on the server; then choose from
 that list based on the user input provided.
 </p>
+<p>
+If this is not possible, then the user input should be validated in some other way,
+for example, by verifying that the target URL is local and does not redirect to a different host.
+</p>
 </recommendation>
 
 <example>
@@ -27,11 +31,17 @@ validating the input, which facilitates phishing attacks:
 <sample src="OpenUrlRedirect.go"/>
 
 <p>
-One way to remedy the problem is to validate the user input against a known fixed string
-before doing the redirection:
+One way to remedy the problem is to parse the target URL and check that its hostname is empty,
+which means that it is a relative URL:
 </p>
 
 <sample src="OpenUrlRedirectGood.go"/>
+
+<p>
+Note that some browsers treat backslashes in URLs as forward slashes. To account for this,
+we replace all backslashes with forward slashes before parsing the URL and checking its hostname.
+</p>
+
 </example>
 
 <references>

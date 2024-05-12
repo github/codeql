@@ -6,7 +6,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `HTTPClient`.
@@ -65,8 +64,7 @@ class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    any(HttpClientDisablesCertificateValidationConfiguration config)
-        .hasFlow(argumentOrigin, disablingNode) and
+    HttpClientDisablesCertificateValidationFlow::flow(argumentOrigin, disablingNode) and
     disablingNode = this.getCertificateValidationControllingValue()
   }
 
@@ -74,17 +72,15 @@ class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode
 }
 
 /** A configuration to track values that can disable certificate validation for HttpClient. */
-private class HttpClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
-{
-  HttpClientDisablesCertificateValidationConfiguration() {
-    this = "HttpClientDisablesCertificateValidationConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module HttpClientDisablesCertificateValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = any(HttpClientRequest req).getCertificateValidationControllingValue()
   }
 }
+
+private module HttpClientDisablesCertificateValidationFlow =
+  DataFlow::Global<HttpClientDisablesCertificateValidationConfig>;

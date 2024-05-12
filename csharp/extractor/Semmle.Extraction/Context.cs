@@ -1,11 +1,11 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.Entities;
-using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Util.Logging;
+using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction
 {
@@ -153,9 +153,9 @@ namespace Semmle.Extraction
         /// Enqueue the given action to be performed later.
         /// </summary>
         /// <param name="toRun">The action to run.</param>
-        public void PopulateLater(Action a)
+        public void PopulateLater(Action a, bool preserveDuplicationKey = true)
         {
-            var key = GetCurrentTagStackKey();
+            var key = preserveDuplicationKey ? GetCurrentTagStackKey() : null;
             if (key is not null)
             {
                 // If we are currently executing with a duplication guard, then the same
@@ -274,28 +274,36 @@ namespace Semmle.Extraction
 
             bool duplicationGuard, deferred;
 
-            switch (entity.TrapStackBehaviour)
+            if (Extractor.Mode is ExtractorMode.Standalone)
             {
-                case TrapStackBehaviour.NeedsLabel:
-                    if (!tagStack.Any())
-                        ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.NoLabel:
-                    duplicationGuard = false;
-                    deferred = tagStack.Any();
-                    break;
-                case TrapStackBehaviour.OptionalLabel:
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.PushesLabel:
-                    duplicationGuard = true;
-                    deferred = duplicationGuard && tagStack.Any();
-                    break;
-                default:
-                    throw new InternalError("Unexpected TrapStackBehaviour");
+                duplicationGuard = false;
+                deferred = false;
+            }
+            else
+            {
+                switch (entity.TrapStackBehaviour)
+                {
+                    case TrapStackBehaviour.NeedsLabel:
+                        if (!tagStack.Any())
+                            ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
+                        duplicationGuard = false;
+                        deferred = false;
+                        break;
+                    case TrapStackBehaviour.NoLabel:
+                        duplicationGuard = false;
+                        deferred = tagStack.Any();
+                        break;
+                    case TrapStackBehaviour.OptionalLabel:
+                        duplicationGuard = false;
+                        deferred = false;
+                        break;
+                    case TrapStackBehaviour.PushesLabel:
+                        duplicationGuard = true;
+                        deferred = duplicationGuard && tagStack.Any();
+                        break;
+                    default:
+                        throw new InternalError("Unexpected TrapStackBehaviour");
+                }
             }
 
             var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)

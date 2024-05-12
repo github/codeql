@@ -117,7 +117,7 @@ class SpringBeanFactory extends ClassOrInterface {
    * Get a bean constructed by a call to this bean factory.
    */
   SpringBean getAConstructedBean() {
-    exists(Method getBean, MethodAccess call |
+    exists(Method getBean, MethodCall call |
       getBean.hasName("getBean") and
       call.getMethod() = getBean and
       getBean.getDeclaringType() = this

@@ -16,21 +16,19 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 import ClientSuppliedIpUsedInSecurityCheckLib
-import DataFlow::PathGraph
+import ClientSuppliedIpUsedInSecurityCheckFlow::PathGraph
 
 /**
  * A taint-tracking configuration tracing flow from obtaining a client ip from an HTTP header to a sensitive use.
  */
-class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configuration {
-  ClientSuppliedIpUsedInSecurityCheckConfig() { this = "ClientSuppliedIpUsedInSecurityCheckConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof ClientSuppliedIpUsedInSecurityCheck
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PossibleSecurityCheck }
+  predicate isSink(DataFlow::Node sink) { sink instanceof PossibleSecurityCheck }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallCfgNode ccn |
       ccn = API::moduleImport("netaddr").getMember("IPAddress").getACall() and
       ccn.getArg(0) = pred and
@@ -38,20 +36,24 @@ class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configura
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     // `client_supplied_ip.split(",")[n]` for `n` > 0
     exists(Subscript ss |
       not ss.getIndex().(IntegerLiteral).getText() = "0" and
       ss.getObject().(Call).getFunc().(Attribute).getName() = "split" and
-      ss.getObject().(Call).getAnArg().(StrConst).getText() = "," and
+      ss.getObject().(Call).getAnArg().(StringLiteral).getText() = "," and
       ss = node.asExpr()
     )
   }
 }
 
+/** Global taint-tracking for detecting "client ip used in security check" vulnerabilities. */
+module ClientSuppliedIpUsedInSecurityCheckFlow =
+  TaintTracking::Global<ClientSuppliedIpUsedInSecurityCheckConfig>;
+
 from
-  ClientSuppliedIpUsedInSecurityCheckConfig config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+  ClientSuppliedIpUsedInSecurityCheckFlow::PathNode source,
+  ClientSuppliedIpUsedInSecurityCheckFlow::PathNode sink
+where ClientSuppliedIpUsedInSecurityCheckFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "IP address spoofing might include code from $@.",
   source.getNode(), "this user input"

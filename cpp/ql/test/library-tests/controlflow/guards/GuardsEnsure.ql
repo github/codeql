@@ -7,8 +7,9 @@
 import cpp
 import semmle.code.cpp.controlflow.Guards
 
-from GuardCondition guard, Expr left, Expr right, int k, int start, int end, string op
-where
+query predicate binary(
+  GuardCondition guard, Expr left, string op, Expr right, int k, int start, int end
+) {
   exists(BasicBlock block |
     guard.ensuresLt(left, right, k, block, true) and op = "<"
     or
@@ -20,4 +21,18 @@ where
   |
     block.hasLocationInfo(_, start, _, end, _)
   )
-select guard, left, op, right, k, start, end
+}
+
+query predicate unary(GuardCondition guard, Expr left, string op, int k, int start, int end) {
+  exists(BasicBlock block |
+    guard.ensuresLt(left, k, block, true) and op = "<"
+    or
+    guard.ensuresLt(left, k, block, false) and op = ">="
+    or
+    guard.ensuresEq(left, k, block, true) and op = "=="
+    or
+    guard.ensuresEq(left, k, block, false) and op = "!="
+  |
+    block.hasLocationInfo(_, start, _, end, _)
+  )
+}

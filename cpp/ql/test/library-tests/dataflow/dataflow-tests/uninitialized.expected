@@ -1,3 +1,8 @@
+| flowOut.cpp:44:7:44:7 | x | flowOut.cpp:45:26:45:26 | x |
+| flowOut.cpp:44:7:44:7 | x | flowOut.cpp:46:8:46:8 | x |
+| flowOut.cpp:59:7:59:7 | x | flowOut.cpp:60:18:60:18 | x |
+| flowOut.cpp:59:7:59:7 | x | flowOut.cpp:61:8:61:8 | x |
+| flowOut.cpp:110:9:110:12 | dest | flowOut.cpp:111:28:111:31 | dest |
 | ref.cpp:53:9:53:10 | x1 | ref.cpp:55:19:55:20 | x1 |
 | ref.cpp:53:9:53:10 | x1 | ref.cpp:56:10:56:11 | x1 |
 | ref.cpp:53:13:53:14 | x2 | ref.cpp:58:15:58:16 | x2 |
@@ -14,6 +19,8 @@
 | ref.cpp:120:17:120:18 | x3 | ref.cpp:129:10:129:11 | x3 |
 | ref.cpp:120:21:120:22 | x4 | ref.cpp:131:15:131:16 | x4 |
 | ref.cpp:120:21:120:22 | x4 | ref.cpp:132:10:132:11 | x4 |
+| self_argument_flow.cpp:9:10:9:13 | info | self_argument_flow.cpp:10:13:10:16 | info |
+| self_argument_flow.cpp:9:10:9:13 | info | self_argument_flow.cpp:12:12:12:15 | info |
 | test.cpp:75:7:75:8 | u1 | test.cpp:76:8:76:9 | u1 |
 | test.cpp:83:7:83:8 | u2 | test.cpp:84:13:84:14 | u2 |
 | test.cpp:83:7:83:8 | u2 | test.cpp:85:8:85:9 | u2 |
@@ -42,3 +49,10 @@
 | test.cpp:551:9:551:9 | y | test.cpp:552:28:552:28 | y |
 | test.cpp:595:8:595:9 | xs | test.cpp:596:3:596:4 | xs |
 | test.cpp:595:8:595:9 | xs | test.cpp:597:9:597:10 | xs |
+| test.cpp:733:7:733:7 | x | test.cpp:734:41:734:41 | x |
+| test.cpp:733:7:733:7 | x | test.cpp:735:8:735:8 | x |
+| test.cpp:796:12:796:12 | a | test.cpp:797:20:797:20 | a |
+| test.cpp:796:12:796:12 | a | test.cpp:797:31:797:31 | a |
+| test.cpp:796:12:796:12 | a | test.cpp:798:17:798:17 | a |
+| test.cpp:1050:12:1050:12 | a | test.cpp:1051:3:1051:3 | a |
+| test.cpp:1050:12:1050:12 | a | test.cpp:1052:9:1052:9 | a |

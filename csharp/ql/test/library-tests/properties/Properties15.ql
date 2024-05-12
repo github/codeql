@@ -7,7 +7,7 @@ import csharp
 from Property p
 where
   p.hasName("Init") and
-  p.getDeclaringType().hasQualifiedName("Properties", "Test") and
+  p.getDeclaringType().hasFullyQualifiedName("Properties", "Test") and
   p.isWriteOnly() and
   not p.isAutoImplemented() and
   p.isStatic() and

@@ -22,7 +22,9 @@ extensions:
       - ["github.com/nonexistent/test", "", False, "GetMapKey", "", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "", False, "SetElement", "", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
       - ["github.com/nonexistent/test", "C", False, "Get", "", "", "Argument[-1].Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "C", False, "GetThroughPointer", "", "", "Argument[-1].Dereference.Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "C", False, "Set", "", "", "Argument[0]", "Argument[-1].Field[github.com/nonexistent/test.C.F]", "value", "manual"]
+      - ["github.com/nonexistent/test", "C", False, "SetThroughPointer", "", "", "Argument[0]", "Argument[-1].Dereference.Field[github.com/nonexistent/test.C.F]", "value", "manual"]
 
   - addsTo:
       pack: codeql/go-all

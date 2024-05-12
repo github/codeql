@@ -12,79 +12,44 @@
 
 import cpp
 import semmle.code.cpp.commons.NullTermination
-import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
+import semmle.code.cpp.security.FlowSources as FS
+import semmle.code.cpp.dataflow.new.TaintTracking
+import semmle.code.cpp.ir.IR
 
-/** A user-controlled expression that may not be null terminated. */
-class TaintSource extends VariableAccess {
-  TaintSource() {
-    exists(SecurityOptions x, string cause |
-      this.getTarget() instanceof SemanticStackVariable and
-      x.isUserInput(this, cause)
-    |
-      cause = ["read", "fread", "recv", "recvfrom", "recvmsg"]
-    )
-  }
-
-  /**
-   * Holds if `sink` is a tainted variable access that must be null
-   * terminated.
-   */
-  private predicate isSink(VariableAccess sink) {
-    tainted(this, sink) and
-    variableMustBeNullTerminated(sink)
-  }
-
-  /**
-   * Holds if this source can reach `va`, possibly using intermediate
-   * reassignments.
-   */
-  private predicate sourceReaches(VariableAccess va) {
-    definitionUsePair(_, this, va)
-    or
-    exists(VariableAccess mid, Expr def |
-      this.sourceReaches(mid) and
-      exprDefinition(_, def, mid) and
-      definitionUsePair(_, def, va)
-    )
-  }
-
-  /**
-   * Holds if the sink `sink` is reachable both from this source and
-   * from `va`, possibly using intermediate reassignments.
-   */
-  private predicate reachesSink(VariableAccess va, VariableAccess sink) {
-    this.isSink(sink) and
-    va = sink
-    or
-    exists(VariableAccess mid, Expr def |
-      this.reachesSink(mid, sink) and
-      exprDefinition(_, def, va) and
-      definitionUsePair(_, def, mid)
-    )
-  }
-
-  /**
-   * Holds if `sink` is a tainted variable access that must be null
-   * terminated, and no access which null terminates its contents can
-   * either reach the sink or be reached from the source. (Ideally,
-   * we should instead look for such accesses only on the path from
-   * this source to `sink` found via `tainted(source, sink)`.)
-   */
-  predicate reaches(VariableAccess sink) {
-    this.isSink(sink) and
-    not exists(VariableAccess va |
-      va != this and
-      va != sink and
-      mayAddNullTerminator(_, va)
-    |
-      this.sourceReaches(va)
-      or
-      this.reachesSink(va, sink)
-    )
-  }
+predicate isSource(FS::FlowSource source, string sourceType) {
+  sourceType = source.getSourceType() and
+  exists(VariableAccess va, Call call |
+    va = source.asDefiningArgument() and
+    call.getAnArgument() = va and
+    va.getTarget() instanceof SemanticStackVariable and
+    call.getTarget().hasGlobalName(["read", "fread", "recv", "recvfrom", "recvmsg"])
+  )
 }
 
-from TaintSource source, VariableAccess sink
-where source.reaches(sink)
-select sink, "String operation depends on a $@ that may not be null terminated.", source,
-  "user-provided value"
+predicate isSink(DataFlow::Node sink, VariableAccess va) {
+  va = [sink.asExpr(), sink.asIndirectExpr()] and
+  variableMustBeNullTerminated(va)
+}
+
+private module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSource(source, _) }
+
+  predicate isBarrier(DataFlow::Node node) {
+    isSink(node) and node.asExpr().getUnspecifiedType() instanceof ArithmeticType
+    or
+    node.asInstruction().(StoreInstruction).getResultType() instanceof ArithmeticType
+    or
+    mayAddNullTerminator(_, node.asIndirectExpr())
+  }
+
+  predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from DataFlow::Node source, DataFlow::Node sink, VariableAccess va, string sourceType
+where
+  Flow::flow(source, sink) and
+  isSource(source, sourceType) and
+  isSink(sink, va)
+select va, "String operation depends on $@ that may not be null terminated.", source, sourceType

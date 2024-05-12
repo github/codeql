@@ -1,10 +1,10 @@
-underlyingTypeNode
-| foo |  | file://:0:0:0:0 | use moduleImport("foo").getMember("exports") |
-| foo |  | foo.ts:1:8:1:10 | use moduleImport("foo").getMember("exports").getMember("default") |
-| foo | Bar | foo.ts:3:1:5:1 | use moduleImport("foo").getMember("exports").getMember("Bar").getInstance() |
-| foo | Bar | foo.ts:3:12:3:12 | use moduleImport("foo").getMember("exports").getMember("Bar").getInstance() |
 #select
 | foo.ts:3:12:3:12 | x | foo.Bar in unknown scope |
 | foo.ts:4:10:4:10 | x | foo.Bar in unknown scope |
 | tst.ts:8:14:8:16 | arg | Base in global scope |
 | tst.ts:8:14:8:16 | arg | Sub in global scope |
+underlyingTypeNode
+| foo |  | file://:0:0:0:0 | use moduleImport("foo").getMember("exports") |
+| foo |  | foo.ts:1:8:1:10 | use moduleImport("foo").getMember("exports").getMember("default") |
+| foo | Bar | foo.ts:3:1:5:1 | use moduleImport("foo").getMember("exports").getMember("Bar").getInstance() |
+| foo | Bar | foo.ts:3:12:3:12 | use moduleImport("foo").getMember("exports").getMember("Bar").getInstance() |

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.alibaba.druid.sql.repository", "SchemaRepository", True, "console", "(String)", "", "Argument[0]", "sql-injection", "ai-manual"]

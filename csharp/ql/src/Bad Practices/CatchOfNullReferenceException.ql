@@ -13,5 +13,5 @@
 import csharp
 
 from SpecificCatchClause scc
-where scc.getCaughtExceptionType().hasQualifiedName("System", "NullReferenceException")
+where scc.getCaughtExceptionType().hasFullyQualifiedName("System", "NullReferenceException")
 select scc, "Poor error handling: try to fix the cause of the 'NullReferenceException'."

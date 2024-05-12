@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The standard library function <code>strncpy</code> copies a source string to a destination buffer. The third argument defines the maximum number of characters to copy and should be less than 
+<p>The standard library function <code>strncpy</code> copies a source string to a destination buffer. The third argument defines the maximum number of characters to copy and should be less than
 or equal to the size of the destination buffer. Calls of the form <code>strncpy(dest, src, strlen(src))</code> or <code>strncpy(dest, src, sizeof(src))</code> incorrectly set the third argument to the size of the source buffer. Executing a call of this type may cause a buffer overflow. Buffer overflows can lead to anything from a segmentation fault to a security vulnerability.</p>
 
 </overview>
@@ -12,14 +12,20 @@ or equal to the size of the destination buffer. Calls of the form <code>strncpy(
 not the source buffer.</p>
 
 </recommendation>
-<example><sample src="StrncpyFlippedArgs.cpp" />
 
+<example>
+<p>In the following examples, the size of the source buffer is incorrectly used as a parameter to <code>strncpy</code>:</p>
 
+<sample src="StrncpyFlippedArgsBad.cpp" />
 
+<p>The corrected version uses the size of the destination buffer, or a variable containing the size of the destination buffer as the size parameter to <code>strncpy</code>:</p>
+
+<sample src="StrncpyFlippedArgsGood.cpp" />
 </example>
+
 <references>
 
-<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/clibrary/cstring/strncpy/">strncpy</a>.</li>
+<li>cplusplus.com: <a href="https://cplusplus.com/reference/cstring/strncpy/">strncpy</a>.</li>
 <li>
   I. Gerg. <em>An Overview and Example of the Buffer-Overflow Exploit</em>. IANewsletter vol 7 no 4. 2005.
 </li>

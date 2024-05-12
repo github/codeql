@@ -72,11 +72,11 @@ string captureQualifierFlow(TargetApiSpecific api) {
   result = ModelPrinting::asValueModel(api, qualifierString(), "ReturnValue")
 }
 
-private int accessPathLimit() { result = 2 }
+private int accessPathLimit0() { result = 2 }
 
 private newtype TTaintState =
-  TTaintRead(int n) { n in [0 .. accessPathLimit()] } or
-  TTaintStore(int n) { n in [1 .. accessPathLimit()] }
+  TTaintRead(int n) { n in [0 .. accessPathLimit0()] } or
+  TTaintStore(int n) { n in [1 .. accessPathLimit0()] }
 
 abstract private class TaintState extends TTaintState {
   abstract string toString();
@@ -159,8 +159,6 @@ module ThroughFlowConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node n) {
     exists(Type t | t = n.getType() and not isRelevantType(t))
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
   DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureEqualSourceSinkCallContext

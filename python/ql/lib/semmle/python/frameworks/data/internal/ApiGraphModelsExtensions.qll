@@ -8,22 +8,33 @@
  *
  * The kind `remote` represents a general remote flow source.
  */
-extensible predicate sourceModel(string type, string path, string kind);
+extensible predicate sourceModel(
+  string type, string path, string kind, QlBuiltins::ExtensionId madId
+);
 
 /**
  * Holds if the value at `(type, path)` should be seen as a sink
  * of the given `kind`.
  */
-extensible predicate sinkModel(string type, string path, string kind);
+extensible predicate sinkModel(string type, string path, string kind, QlBuiltins::ExtensionId madId);
 
 /**
- * Holds if calls to `(type, path)`, the value referred to by `input`
+ * Holds if in calls to `(type, path)`, the value referred to by `input`
  * can flow to the value referred to by `output`.
  *
  * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
  * respectively.
  */
-extensible predicate summaryModel(string type, string path, string input, string output, string kind);
+extensible predicate summaryModel(
+  string type, string path, string input, string output, string kind, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if calls to `(type, path)` should be considered neutral. The meaning of this depends on the `kind`.
+ * If `kind` is `summary`, the call does not propagate data flow. If `kind` is `source`, the call is not a source.
+ * If `kind` is `sink`, the call is not a sink.
+ */
+extensible predicate neutralModel(string type, string path, string kind);
 
 /**
  * Holds if `(type2, path)` should be seen as an instance of `type1`.

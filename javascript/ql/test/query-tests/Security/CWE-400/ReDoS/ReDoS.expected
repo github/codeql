@@ -123,9 +123,9 @@
 | tst.js:137:15:137:21 | (\\w\|G)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'G'. |
 | tst.js:143:15:143:22 | (\\d\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
 | tst.js:146:15:146:21 | (\\d\|5)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '5'. |
-| tst.js:149:15:149:24 | (\\s\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\u000c'. |
-| tst.js:152:15:152:28 | (\\s\|[\\v]\|\\\\v)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\u000b'. |
-| tst.js:155:15:155:24 | (\\f\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\u000c'. |
+| tst.js:149:15:149:24 | (\\s\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\u000c'. |
+| tst.js:152:15:152:28 | (\\s\|[\\v]\|\\\\v)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\u000b'. |
+| tst.js:155:15:155:24 | (\\f\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\u000c'. |
 | tst.js:158:15:158:22 | (\\W\|\\D)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '/'. |
 | tst.js:161:15:161:22 | (\\S\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
 | tst.js:164:15:164:24 | (\\S\|[\\w])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
@@ -199,3 +199,5 @@
 | tst.js:404:6:405:7 | (g\|gg)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'gg'. |
 | tst.js:407:125:407:127 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with '0/*' and containing many repetitions of ' ;0'. |
 | tst.js:411:15:411:19 | a{1,} | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.js:413:25:413:35 | (\\u0000\|.)+ | This part of the regular expression may cause exponential backtracking on strings starting with '\\n\\u0000' and containing many repetitions of '\\u0000'. |
+| tst.js:415:44:415:57 | (\ud83d\ude80\|.)+ | This part of the regular expression may cause exponential backtracking on strings starting with '\\n\\u{1f680}' and containing many repetitions of '\\u{1f680}'. |

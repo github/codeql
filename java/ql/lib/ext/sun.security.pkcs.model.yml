@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.pkcs", "PKCS8Key", False, "PKCS8Key", "(AlgorithmId,byte[])", "", "Argument[1]", "credentials-key", "hq-generated"]
+      - ["sun.security.pkcs", "PKCS8Key", False, "buildPKCS8Key", "(AlgorithmId,byte[])", "", "Argument[1]", "credentials-key", "hq-generated"]
+      - ["sun.security.pkcs", "PKCS8Key", False, "decode", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["sun.security.pkcs", "PKCS8Key", False, "encode", "(DerOutputStream,AlgorithmId,byte[])", "", "Argument[2]", "credentials-key", "hq-generated"]

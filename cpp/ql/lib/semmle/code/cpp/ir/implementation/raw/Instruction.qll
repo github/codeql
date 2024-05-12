@@ -116,14 +116,14 @@ class Instruction extends Construction::TStageInstruction {
 
   private int getLineRank() {
     this.shouldGenerateDumpStrings() and
-    this =
-      rank[result](Instruction instr |
-        instr =
-          getAnInstructionAtLine(this.getEnclosingIRFunction(), this.getLocation().getFile(),
-            this.getLocation().getStartLine())
-      |
-        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
-      )
+    exists(IRFunction enclosing, Language::File file, int line |
+      this =
+        rank[result](Instruction instr |
+          instr = getAnInstructionAtLine(enclosing, file, line)
+        |
+          instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+        )
+    )
   }
 
   /**
@@ -247,8 +247,7 @@ class Instruction extends Construction::TStageInstruction {
    * Gets the type of the result produced by this instruction. If the instruction does not produce
    * a result, its result type will be `IRVoidType`.
    */
-  cached
-  final IRType getResultIRType() { result = this.getResultLanguageType().getIRType() }
+  final IRType getResultIRType() { result = Construction::getInstructionResultIRType(this) }
 
   /**
    * Gets the type of the result produced by this instruction. If the
@@ -574,6 +573,22 @@ class VariableAddressInstruction extends VariableInstruction {
  */
 class FunctionAddressInstruction extends FunctionInstruction {
   FunctionAddressInstruction() { this.getOpcode() instanceof Opcode::FunctionAddress }
+}
+
+/**
+ * An instruction that returns the address of a "virtual" delete function.
+ *
+ * This function, which does not actually exist in the source code, is used to
+ * delete objects of a class with a virtual destructor. In that case the deacllocation
+ * function is selected at runtime based on the dynamic type of the object. So this
+ * function dynamically dispatches to the correct deallocation function.
+ * It also should pass in the required extra arguments to the deallocation function
+ * which may differ dynamically depending on the type of the object.
+ */
+class VirtualDeleteFunctionAddressInstruction extends Instruction {
+  VirtualDeleteFunctionAddressInstruction() {
+    this.getOpcode() instanceof Opcode::VirtualDeleteFunctionAddress
+  }
 }
 
 /**
@@ -979,9 +994,8 @@ class ConstantInstruction extends ConstantValueInstruction {
  */
 class IntegerConstantInstruction extends ConstantInstruction {
   IntegerConstantInstruction() {
-    exists(IRType resultType |
-      resultType = this.getResultIRType() and
-      (resultType instanceof IRIntegerType or resultType instanceof IRBooleanType)
+    exists(IRType resultType | resultType = this.getResultIRType() |
+      resultType instanceof IRIntegerType or resultType instanceof IRBooleanType
     )
   }
 }
@@ -991,6 +1005,17 @@ class IntegerConstantInstruction extends ConstantInstruction {
  */
 class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { this.getResultIRType() instanceof IRFloatingPointType }
+}
+
+/**
+ * An instruction whose result is a constant value of a pointer type.
+ */
+class PointerConstantInstruction extends ConstantInstruction {
+  PointerConstantInstruction() {
+    exists(IRType resultType | resultType = this.getResultIRType() |
+      resultType instanceof IRAddressType or resultType instanceof IRFunctionAddressType
+    )
+  }
 }
 
 /**
@@ -2108,13 +2133,6 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() { result = this.getPartialOperand().getDef() }
-
-  /**
-   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`, relative to the start address of the total operand.
-   */
-  final predicate getUpdatedInterval(int startBit, int endBit) {
-    Construction::getIntervalUpdatedByChi(this, startBit, endBit)
-  }
 
   /**
    * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.

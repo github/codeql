@@ -2,9 +2,9 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.DataFlow2
+deprecated import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking3
+deprecated import semmle.code.java.dataflow.TaintTracking3
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**
@@ -30,7 +30,7 @@ deprecated class IntentRedirectionConfiguration extends TaintTracking::Configura
 
 /** A taint tracking configuration for tainted Intents being used to start Android components. */
 module IntentRedirectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
@@ -57,7 +57,7 @@ private class OriginalIntentSanitizer extends IntentRedirectionSanitizer {
  * flowing directly to sinks that start Android components.
  */
 private module SameIntentBeingRelaunchedConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
@@ -93,7 +93,7 @@ private class IntentWithTaintedComponent extends DataFlow::Node {
  * A taint tracking configuration for tainted data flowing to an `Intent`'s component.
  */
 private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     any(IntentSetComponent setComponent).getSink() = sink.asExpr()
@@ -103,7 +103,7 @@ private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
 private module TaintedIntentComponentFlow = TaintTracking::Global<TaintedIntentComponentConfig>;
 
 /** A call to a method that changes the component of an `Intent`. */
-private class IntentSetComponent extends MethodAccess {
+private class IntentSetComponent extends MethodCall {
   int sinkArg;
 
   IntentSetComponent() {

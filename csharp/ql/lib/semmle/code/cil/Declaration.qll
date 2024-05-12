@@ -5,11 +5,12 @@
 import CIL
 private import dotnet
 private import semmle.code.csharp.Member as CS
+private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * A declaration. Either a member (`Member`) or a variable (`Variable`).
  */
-class Declaration extends DotNet::Declaration, Element, @cil_declaration {
+deprecated class Declaration extends DotNet::Declaration, Element, @cil_declaration {
   /** Gets an attribute (for example `[Obsolete]`) of this declaration, if any. */
   Attribute getAnAttribute() { result.getDeclaration() = this }
 
@@ -23,16 +24,36 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
   }
 
   override Declaration getUnboundDeclaration() { result = this }
+
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
+    ) and
+    name = this.getName()
+  }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasFullyQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
+    ) and
+    name = this.getName()
+  }
 }
 
-private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }
+deprecated private CS::Declaration toCSharpNonTypeParameter(Declaration d) {
+  result.(DotNet::Declaration).matchesHandle(d)
+}
 
-private CS::TypeParameter toCSharpTypeParameter(TypeParameter tp) {
+deprecated private CS::TypeParameter toCSharpTypeParameter(TypeParameter tp) {
   toCSharpTypeParameterJoin(tp, result.getIndex(), result.getGeneric())
 }
 
 pragma[nomagic]
-private predicate toCSharpTypeParameterJoin(TypeParameter tp, int i, CS::UnboundGeneric ug) {
+deprecated private predicate toCSharpTypeParameterJoin(
+  TypeParameter tp, int i, CS::UnboundGeneric ug
+) {
   exists(TypeContainer tc |
     tp.getIndex() = i and
     tc = tp.getGeneric() and
@@ -43,7 +64,7 @@ private predicate toCSharpTypeParameterJoin(TypeParameter tp, int i, CS::Unbound
 /**
  * A member of a type. Either a type (`Type`), a method (`Method`), a property (`Property`), or an event (`Event`).
  */
-class Member extends DotNet::Member, Declaration, @cil_member {
+deprecated class Member extends DotNet::Member, Declaration, @cil_member {
   override predicate isPublic() { cil_public(this) }
 
   override predicate isProtected() { cil_protected(this) }
@@ -65,7 +86,7 @@ class Member extends DotNet::Member, Declaration, @cil_member {
 }
 
 /** A property. */
-class Property extends DotNet::Property, Member, CustomModifierReceiver, @cil_property {
+deprecated class Property extends DotNet::Property, Member, CustomModifierReceiver, @cil_property {
   override string getName() { cil_property(this, _, result, _) }
 
   /** Gets the type of this property. */
@@ -92,7 +113,7 @@ class Property extends DotNet::Property, Member, CustomModifierReceiver, @cil_pr
 }
 
 /** A property that is trivial (wraps a field). */
-class TrivialProperty extends Property {
+deprecated class TrivialProperty extends Property {
   TrivialProperty() {
     this.getGetter().(TrivialGetter).getField() = this.getSetter().(TrivialSetter).getField()
   }
@@ -102,7 +123,7 @@ class TrivialProperty extends Property {
 }
 
 /** An event. */
-class Event extends DotNet::Event, Member, @cil_event {
+deprecated class Event extends DotNet::Event, Member, @cil_event {
   override string getName() { cil_event(this, _, result, _) }
 
   /** Gets the type of this event. */

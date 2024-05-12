@@ -7,34 +7,14 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
-private string stars(int k) {
-  k =
-    [0 .. max([
-            any(RawIndirectInstruction n).getIndirectionIndex(),
-            any(RawIndirectOperand n).getIndirectionIndex()
-          ]
-      )] and
-  (if k = 0 then result = "" else result = "*" + stars(k - 1))
-}
-
-string starsForNode(Node node) {
-  result = stars(node.(IndirectInstruction).getIndirectionIndex())
-  or
-  result = stars(node.(IndirectOperand).getIndirectionIndex())
-  or
-  not node instanceof IndirectInstruction and
-  not node instanceof IndirectOperand and
-  result = ""
-}
-
 private Instruction getInstruction(Node n, string stars) {
   result = [n.asInstruction(), n.(RawIndirectInstruction).getInstruction()] and
-  stars = starsForNode(n)
+  stars = stars(n)
 }
 
 private Operand getOperand(Node n, string stars) {
   result = [n.asOperand(), n.(RawIndirectOperand).getOperand()] and
-  stars = starsForNode(n)
+  stars = stars(n)
 }
 
 /**

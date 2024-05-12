@@ -8,19 +8,20 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import android.content.res.Resources;
 
-class Test{
+class Test {
     void test1(Resources resources) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("BKS");
         keyStore.load(resources.openRawResource(R.raw.cert), null);
 
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        TrustManagerFactory tmf =
+                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(keyStore);
 
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, tmf.getTrustManagers(), null);
 
         URL url = new URL("http://www.example.com/");
-        HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); 
+        HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
 
         urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
     }

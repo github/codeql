@@ -4,6 +4,7 @@
 
 private import Semantic
 private import SemanticExprSpecific::SemanticExprConfig as Specific
+private import SemanticType
 
 /**
  * An language-neutral expression.
@@ -241,8 +242,21 @@ class SemConvertExpr extends SemUnaryExpr {
   SemConvertExpr() { opcode instanceof Opcode::Convert }
 }
 
+private import semmle.code.cpp.ir.IR as IR
+
+/** A conversion instruction which is guaranteed to not overflow. */
+private class SafeConversion extends IR::ConvertInstruction {
+  SafeConversion() {
+    exists(SemType tFrom, SemType tTo |
+      tFrom = getSemanticType(super.getUnary().getResultIRType()) and
+      tTo = getSemanticType(super.getResultIRType()) and
+      conversionCannotOverflow(tFrom, tTo)
+    )
+  }
+}
+
 class SemCopyValueExpr extends SemUnaryExpr {
-  SemCopyValueExpr() { opcode instanceof Opcode::CopyValue }
+  SemCopyValueExpr() { opcode instanceof Opcode::CopyValue or this instanceof SafeConversion }
 }
 
 class SemNegateExpr extends SemUnaryExpr {

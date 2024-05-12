@@ -13,11 +13,9 @@ import semmle.python.dataflow.new.TaintTracking
 import experimental.meta.InlineTaintTest::Conf
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    any(TestTaintTrackingConfiguration c).isSource(source)
-  }
+  predicate isSource(DataFlow::Node source) { TestTaintTrackingConfig::isSource(source) }
 
-  predicate isSink(DataFlow::Node source) { any(TestTaintTrackingConfiguration c).isSink(source) }
+  predicate isSink(DataFlow::Node source) { TestTaintTrackingConfig::isSink(source) }
 }
 
 module Flows = TaintTracking::Global<Config>;
@@ -25,7 +23,7 @@ module Flows = TaintTracking::Global<Config>;
 import Flows::PathGraph
 
 // int explorationLimit() { result = 5 }
-// module FlowsPartial = Flows::FlowExploration<explorationLimit/0>;
+// module FlowsPartial = Flows::FlowExplorationFwd<explorationLimit/0>;
 // import FlowsPartial::PartialPathGraph
 from Flows::PathNode source, Flows::PathNode sink
 where Flows::flowPath(source, sink)

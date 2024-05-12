@@ -1,5 +1,6 @@
 package com.semmle.js.extractor;
 
+import com.semmle.util.data.UnitParser;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.process.Env;
 import com.semmle.util.process.Env.Var;
@@ -7,7 +8,7 @@ import com.semmle.util.process.Env.Var;
 public class EnvironmentVariables {
   public static final String CODEQL_EXTRACTOR_JAVASCRIPT_ROOT_ENV_VAR =
       "CODEQL_EXTRACTOR_JAVASCRIPT_ROOT";
- 
+
   public static final String CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR =
       "CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR";
 
@@ -18,6 +19,36 @@ public class EnvironmentVariables {
       "CODEQL_EXTRACTOR_JAVASCRIPT_WIP_DATABASE";
 
   public static final String CODEQL_DIST_ENV_VAR = "CODEQL_DIST";
+
+  /**
+   * Returns a number of megabytes by reading an environment variable with the given suffix,
+   * or the default value if not set.
+   * <p>
+   * The following prefixes are tried:
+   * <code>CODEQL_EXTRACTOR_JAVASCRIPT_</code>,
+   * <code>LGTM_</code>,
+   * <code>SEMMLE_</code>.
+   */
+  public static int getMegabyteCountFromPrefixedEnv(String suffix, int defaultValue) {
+    String envVar = "CODEQL_EXTRACTOR_JAVASCRIPT_" + suffix;
+    String value = Env.systemEnv().get(envVar);
+    if (value == null || value.length() == 0) {
+      envVar = "LGTM_" + suffix;
+      value = Env.systemEnv().get(envVar);
+    }
+    if (value == null || value.length() == 0) {
+      envVar = "SEMMLE_" + suffix;
+      value = Env.systemEnv().get(envVar);
+    }
+    if (value == null || value.length() == 0) {
+      return defaultValue;
+    }
+    Integer amount = UnitParser.parseOpt(value, UnitParser.MEGABYTES);
+    if (amount == null) {
+      throw new UserError("Invalid value for " + envVar + ": '" + value + "'");
+    }
+    return amount;
+  }
 
   /**
    * Gets the extractor root based on the <code>CODEQL_EXTRACTOR_JAVASCRIPT_ROOT</code> or <code>

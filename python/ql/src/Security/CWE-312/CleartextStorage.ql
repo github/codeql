@@ -15,12 +15,13 @@
 
 import python
 private import semmle.python.dataflow.new.DataFlow
-import DataFlow::PathGraph
+import CleartextStorageFlow::PathGraph
 import semmle.python.security.dataflow.CleartextStorageQuery
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, string classification
+from
+  CleartextStorageFlow::PathNode source, CleartextStorageFlow::PathNode sink, string classification
 where
-  config.hasFlowPath(source, sink) and
+  CleartextStorageFlow::flowPath(source, sink) and
   classification = source.getNode().(Source).getClassification()
 select sink.getNode(), source, sink, "This expression stores $@ as clear text.", source.getNode(),
   "sensitive data (" + classification + ")"

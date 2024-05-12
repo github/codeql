@@ -13,9 +13,9 @@
 
 import python
 import semmle.python.security.dataflow.SqlInjectionQuery
-import DataFlow::PathGraph
+import SqlInjectionFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from SqlInjectionFlow::PathNode source, SqlInjectionFlow::PathNode sink
+where SqlInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This SQL query depends on a $@.", source.getNode(),
   "user-provided value"

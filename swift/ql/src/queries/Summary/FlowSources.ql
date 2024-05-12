@@ -9,13 +9,21 @@
  * @tags summary
  */
 
+/*
+ * Most queries compute data flow from one of the following sources:
+ *  - flow sources (listed by this query, `swift/summary/flow-sources`).
+ *  - sensitive expressions (see `swift/summary/sensitive-expressions`).
+ *  - constant values.
+ *  - custom per-query sources.
+ */
+
 import swift
 import codeql.swift.dataflow.FlowSources
 
 string sourceClass(FlowSource s) {
-  s instanceof LocalFlowSource and result = "LocalFlowSource"
+  s instanceof LocalFlowSource and result = "Local flow source"
   or
-  s instanceof RemoteFlowSource and result = "RemoteFlowSource"
+  s instanceof RemoteFlowSource and result = "Remote flow source"
 }
 
 from FlowSource s

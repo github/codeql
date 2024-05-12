@@ -143,3 +143,32 @@ public class ParameterlessConstructor
         IsInitialized = true;
     }
 }
+
+// No models should be created, if there exist either a manual summary or neutral summary.
+public class ManuallyModelled
+{
+    public object HasSummary(object o)
+    {
+        return o;
+    }
+
+    public object HasNeutralSummary(object o)
+    {
+        return o;
+    }
+
+    public object HasNeutralSummaryNoFlow(object o)
+    {
+        return null;
+    }
+}
+
+public class Properties
+{
+    public object backingField;
+    public object Prop
+    {
+        get { return backingField; }
+        set { backingField = value; }
+    }
+}

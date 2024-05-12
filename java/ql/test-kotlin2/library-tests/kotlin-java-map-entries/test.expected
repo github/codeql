@@ -1,0 +1,2 @@
+| comparingByKey | K | Comparable<? super K> |
+| comparingByValue | V | Comparable<? super V> |

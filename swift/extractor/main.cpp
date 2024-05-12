@@ -25,6 +25,7 @@ using namespace std::string_literals;
 using namespace codeql::main_logger;
 
 const std::string_view codeql::programName = "extractor";
+const std::string_view codeql::extractorName = "swift";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -85,15 +86,18 @@ class Observer : public swift::FrontendObserver {
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     auto& options = invocation.getFrontendOptions();
+    options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    // remove default consumers to avoid double messaging
+    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
-  void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
+  void performedCompilation(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);

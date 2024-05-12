@@ -9,7 +9,7 @@ enum CInterop {
   typealias PlatformChar = CInterop.Char
 }
 
-struct FilePath {
+struct FilePath : CustomStringConvertible, CustomDebugStringConvertible {
 	struct Component {
 		init?(_ string: String) { }
 
@@ -94,7 +94,6 @@ func sourceString() -> String { return "" }
 func sourceCCharArray() -> [CChar] { return [] }
 func sourceCString() -> UnsafePointer<CChar> { return (nil as UnsafePointer<CChar>?)! }
 func sourceDecoder() -> Decoder { return (nil as Decoder?)! }
-
 func sink(filePath: FilePath) { }
 func sink(string: String) { }
 func sink(component: FilePath.Component) { }
@@ -102,6 +101,7 @@ func sink(root: FilePath.Root) { }
 func sink(componentView: FilePath.ComponentView) { }
 func sink(encoder: Encoder) { }
 func sink<T>(ptr: UnsafePointer<T>) { }
+func sink<T>(arg: T) { }
 
 func test_files(e1: Encoder) {
 	// --- FilePath.Root, FilePath.Component ---
@@ -148,39 +148,51 @@ func test_files(e1: Encoder) {
 	sink(filePath: tainted.lexicallyResolving(clean)!) // $ tainted=133
 	sink(filePath: clean.lexicallyResolving(tainted)!) // $ tainted=133
 
-	let _ = clean.withCString({
+	let result1 = clean.withCString({
 		ptr in
 		sink(ptr: ptr)
+		sink(arg: ptr[0])
+		return sourceString()
 	})
-	let _ = tainted.withCString({
+	sink(string: result1) // $ tainted=155
+	let result2 = tainted.withCString({
 		ptr in
 		sink(ptr: ptr) // $ tainted=133
+		sink(arg: ptr[0]) // $ tainted=133
+		return ""
 	})
+	sink(string: result2)
 
-	let _ = clean.withPlatformString({
+	let result3 = clean.withPlatformString({
 		ptr in
 		sink(ptr: ptr)
+		sink(arg: ptr[0])
 		sink(string: String(platformString: ptr))
 		sink(string: String(validatingPlatformString: ptr)!)
+		return sourceString()
 	})
-	let _ = tainted.withPlatformString({
+	sink(string: result3) // $ tainted=172
+	let result4 = tainted.withPlatformString({
 		ptr in
 		sink(ptr: ptr) // $ tainted=133
+		sink(arg: ptr[0]) // $ tainted=133
 		sink(string: String(platformString: ptr)) // $ tainted=133
 		sink(string: String(validatingPlatformString: ptr)!) // $ tainted=133
+		return ""
 	})
+	sink(string: result4)
 
  	var fp1 = FilePath("")
 	sink(filePath: fp1)
 	fp1.append(sourceString())
-	sink(filePath: fp1) // $ tainted=175
+	sink(filePath: fp1) // $ tainted=187
 	fp1.append("")
-	sink(filePath: fp1) // $ tainted=175
+	sink(filePath: fp1) // $ tainted=187
 
 	sink(filePath: clean.appending(""))
-	sink(filePath: clean.appending(sourceString())) // $ tainted=181
+	sink(filePath: clean.appending(sourceString())) // $ tainted=193
 	sink(filePath: tainted.appending("")) // $ tainted=133
-	sink(filePath: tainted.appending(sourceString())) // $ tainted=133 tainted=183
+	sink(filePath: tainted.appending(sourceString())) // $ tainted=133 tainted=195
 
 	// --- FilePath member variables ---
 

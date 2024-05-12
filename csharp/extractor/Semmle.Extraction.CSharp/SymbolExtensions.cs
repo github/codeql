@@ -1,10 +1,10 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -53,19 +53,6 @@ namespace Semmle.Extraction.CSharp
             return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
                 ? errorType.CandidateSymbols.First() as ITypeSymbol
                 : type;
-        }
-
-        /// <summary>
-        /// Gets the name of this symbol.
-        ///
-        /// If the symbol implements an explicit interface, only the
-        /// name of the member being implemented is included, not the
-        /// explicit prefix.
-        /// </summary>
-        public static string GetName(this ISymbol symbol, bool useMetadataName = false)
-        {
-            var name = useMetadataName ? symbol.MetadataName : symbol.Name;
-            return symbol.CanBeReferencedByName ? name : name.Substring(symbol.Name.LastIndexOf('.') + 1);
         }
 
         private static IEnumerable<SyntaxToken> GetModifiers<T>(this ISymbol symbol, Func<T, IEnumerable<SyntaxToken>> getModifierTokens) =>
@@ -537,6 +524,17 @@ namespace Semmle.Extraction.CSharp
         public static bool IsUnboundReadOnlySpan(this ITypeSymbol type) =>
             type.ToString() == "System.ReadOnlySpan<T>";
 
+        public static bool IsInlineArray(this ITypeSymbol type)
+        {
+            var attributes = type.GetAttributes();
+            var isInline = attributes.Any(attribute =>
+                    attribute.AttributeClass is INamedTypeSymbol nt &&
+                    nt.Name == "InlineArrayAttribute" &&
+                    nt.ContainingNamespace.ToString() == "System.Runtime.CompilerServices"
+            );
+            return isInline;
+        }
+
         /// <summary>
         /// Holds if this type is of the form <code>System.ReadOnlySpan<byte></code>.
         /// </summary>
@@ -593,7 +591,7 @@ namespace Semmle.Extraction.CSharp
         public static INamedTypeSymbol? GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
             symbol is ITypeParameterSymbol || SymbolEqualityComparer.Default.Equals(symbol.BaseType, cx.Compilation.ObjectType) ? null : symbol.BaseType;
 
-        [return: NotNullIfNotNull("symbol")]
+        [return: NotNullIfNotNull(nameof(symbol))]
         public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
             if (symbol is null)

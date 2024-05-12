@@ -7,7 +7,7 @@ import csharp
 from Property p
 where
   p.hasName("Count") and
-  p.getDeclaringType().hasQualifiedName("System.Collections.Generic", "List<>") and
+  p.getDeclaringType().hasFullyQualifiedName("System.Collections.Generic", "List`1") and
   not p.isAutoImplemented() and
   not p.isStatic() and
   p.isPublic() and

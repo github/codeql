@@ -19,7 +19,7 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>` or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codespaces-codeql>`__ on GitHub Codespaces.
+You can try out the following examples and exercises using `CodeQL for VS Code <https://docs.github.com/en/code-security/codeql-for-vs-code/>`__ or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codespaces-codeql>`__ on GitHub Codespaces.
 
 Here is an example of a basic query:
 
@@ -114,7 +114,7 @@ The following example queries *do* use these databases and give you an idea of h
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
 
-Before you can run the following examples, you will need to install the CodeQL extension for Visual Studio Code. For more information, see :ref:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`. You will also need to import and select a database in the corresponding programming language. For more information about obtaining CodeQL databases, see `Analyzing your projects <https://codeql.github.com/docs/codeql-for-visual-studio-code/analyzing-your-projects/#choosing-a-database>`__ in the CodeQL for VS Code documentation.
+Before you can run the following examples, you will need to install the CodeQL extension for Visual Studio Code. For more information, see :ref:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`. You will also need to import and select a database in the corresponding programming language. For more information about obtaining CodeQL databases, see `Managing CodeQL databases <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/managing-codeql-databases/>`__ in the CodeQL for VS Code documentation.
 
 To import the CodeQL library for a specific programming language, type ``import <language>`` at the start of the query.
 

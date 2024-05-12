@@ -1,24 +1,110 @@
-| NonConstantFormat.c:30:10:30:16 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| NonConstantFormat.c:41:9:41:27 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| nested.cpp:21:23:21:26 | fmt0 | The format string argument to snprintf should be constant to prevent security issues and other potential errors. |
-| nested.cpp:79:32:79:38 | call to get_fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
-| nested.cpp:87:18:87:20 | fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
-| test.cpp:51:10:51:21 | call to make_message | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:57:12:57:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:60:12:60:21 | call to const_wash | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:61:12:61:26 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:62:12:62:17 | + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:63:12:63:18 | * ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:64:12:64:18 | & ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:65:12:65:39 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:67:10:67:35 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:70:12:70:20 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:76:12:76:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:82:12:82:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:88:12:88:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:93:12:93:18 | ++ ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:100:12:100:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:110:12:110:24 | new[] | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:115:12:115:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:130:20:130:26 | access to array | The format string argument to sprintf should be constant to prevent security issues and other potential errors. |
-| test.cpp:157:12:157:15 | data | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+edges
+| NonConstantFormat.c:28:27:28:30 | **argv | NonConstantFormat.c:30:10:30:16 | *access to array | provenance |  |
+| NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext | provenance | DataFlowFunction |
+| nested.cpp:19:29:19:32 | *fmt0 | nested.cpp:21:23:21:26 | *fmt0 | provenance |  |
+| nested.cpp:27:32:27:34 | *fmt | nested.cpp:28:16:28:18 | *fmt | provenance |  |
+| nested.cpp:28:16:28:18 | *fmt | nested.cpp:19:29:19:32 | *fmt0 | provenance |  |
+| nested.cpp:34:37:34:39 | *fmt | nested.cpp:35:19:35:21 | *fmt | provenance |  |
+| nested.cpp:35:19:35:21 | *fmt | nested.cpp:27:32:27:34 | *fmt | provenance |  |
+| nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:34:37:34:39 | *fmt | provenance |  |
+| nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:86:19:86:46 | *call to __builtin_alloca | provenance |  |
+| nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | provenance |  |
+| test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | provenance |  |
+| test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | provenance | DataFlowFunction |
+| test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
+| test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | provenance | TaintFunction |
+| test.cpp:204:25:204:36 | *call to get_string | test.cpp:204:25:204:36 | *call to get_string | provenance |  |
+| test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | provenance |  |
+| test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | provenance |  |
+| test.cpp:209:25:209:36 | *call to get_string | test.cpp:209:25:209:36 | *call to get_string | provenance |  |
+| test.cpp:209:25:209:36 | *call to get_string | test.cpp:210:5:210:14 | *... += ... | provenance |  |
+| test.cpp:210:5:210:14 | *... += ... | test.cpp:211:12:211:16 | *hello | provenance |  |
+| test.cpp:215:25:215:36 | *call to get_string | test.cpp:215:25:215:36 | *call to get_string | provenance |  |
+| test.cpp:215:25:215:36 | *call to get_string | test.cpp:216:5:216:21 | *... = ... | provenance |  |
+| test.cpp:216:5:216:21 | *... = ... | test.cpp:217:12:217:16 | *hello | provenance |  |
+| test.cpp:221:25:221:36 | *call to get_string | test.cpp:221:25:221:36 | *call to get_string | provenance |  |
+| test.cpp:221:25:221:36 | *call to get_string | test.cpp:222:5:222:11 | *... ++ | provenance |  |
+| test.cpp:222:5:222:11 | *... ++ | test.cpp:223:12:223:16 | *hello | provenance |  |
+| test.cpp:227:25:227:36 | *call to get_string | test.cpp:227:25:227:36 | *call to get_string | provenance |  |
+| test.cpp:227:25:227:36 | *call to get_string | test.cpp:228:12:228:18 | *++ ... | provenance |  |
+| test.cpp:228:12:228:18 | *++ ... | test.cpp:228:12:228:18 | *++ ... | provenance |  |
+| test.cpp:232:25:232:36 | *call to get_string | test.cpp:232:25:232:36 | *call to get_string | provenance |  |
+| test.cpp:232:25:232:36 | *call to get_string | test.cpp:235:12:235:16 | *hello | provenance |  |
+| test.cpp:239:25:239:36 | *call to get_string | test.cpp:239:25:239:36 | *call to get_string | provenance |  |
+| test.cpp:239:25:239:36 | *call to get_string | test.cpp:242:12:242:16 | *hello | provenance |  |
+| test.cpp:245:25:245:36 | *call to get_string | test.cpp:245:25:245:36 | *call to get_string | provenance |  |
+| test.cpp:245:25:245:36 | *call to get_string | test.cpp:247:12:247:16 | *hello | provenance |  |
+nodes
+| NonConstantFormat.c:28:27:28:30 | **argv | semmle.label | **argv |
+| NonConstantFormat.c:30:10:30:16 | *access to array | semmle.label | *access to array |
+| NonConstantFormat.c:41:9:41:45 | *call to any_random_function | semmle.label | *call to any_random_function |
+| NonConstantFormat.c:45:9:45:48 | *call to gettext | semmle.label | *call to gettext |
+| NonConstantFormat.c:45:11:45:47 | *call to any_random_function | semmle.label | *call to any_random_function |
+| nested.cpp:19:29:19:32 | *fmt0 | semmle.label | *fmt0 |
+| nested.cpp:21:23:21:26 | *fmt0 | semmle.label | *fmt0 |
+| nested.cpp:27:32:27:34 | *fmt | semmle.label | *fmt |
+| nested.cpp:28:16:28:18 | *fmt | semmle.label | *fmt |
+| nested.cpp:34:37:34:39 | *fmt | semmle.label | *fmt |
+| nested.cpp:35:19:35:21 | *fmt | semmle.label | *fmt |
+| nested.cpp:42:24:42:34 | *call to ext_fmt_str | semmle.label | *call to ext_fmt_str |
+| nested.cpp:79:32:79:38 | *call to get_fmt | semmle.label | *call to get_fmt |
+| nested.cpp:86:19:86:46 | *call to __builtin_alloca | semmle.label | *call to __builtin_alloca |
+| nested.cpp:86:19:86:46 | *call to __builtin_alloca | semmle.label | *call to __builtin_alloca |
+| nested.cpp:87:18:87:20 | *fmt | semmle.label | *fmt |
+| test.cpp:46:27:46:30 | **argv | semmle.label | **argv |
+| test.cpp:130:20:130:26 | *access to array | semmle.label | *access to array |
+| test.cpp:167:31:167:34 | *data | semmle.label | *data |
+| test.cpp:170:12:170:14 | *res | semmle.label | *res |
+| test.cpp:193:32:193:34 | *str | semmle.label | *str |
+| test.cpp:195:31:195:33 | *str | semmle.label | *str |
+| test.cpp:197:11:197:14 | *wstr | semmle.label | *wstr |
+| test.cpp:204:25:204:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:204:25:204:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:205:12:205:20 | *... + ... | semmle.label | *... + ... |
+| test.cpp:206:12:206:16 | *hello | semmle.label | *hello |
+| test.cpp:209:25:209:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:209:25:209:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:210:5:210:14 | *... += ... | semmle.label | *... += ... |
+| test.cpp:211:12:211:16 | *hello | semmle.label | *hello |
+| test.cpp:215:25:215:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:215:25:215:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:216:5:216:21 | *... = ... | semmle.label | *... = ... |
+| test.cpp:217:12:217:16 | *hello | semmle.label | *hello |
+| test.cpp:221:25:221:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:221:25:221:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:222:5:222:11 | *... ++ | semmle.label | *... ++ |
+| test.cpp:223:12:223:16 | *hello | semmle.label | *hello |
+| test.cpp:227:25:227:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:227:25:227:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:228:12:228:18 | *++ ... | semmle.label | *++ ... |
+| test.cpp:228:12:228:18 | *++ ... | semmle.label | *++ ... |
+| test.cpp:232:25:232:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:232:25:232:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:235:12:235:16 | *hello | semmle.label | *hello |
+| test.cpp:239:25:239:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:239:25:239:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:242:12:242:16 | *hello | semmle.label | *hello |
+| test.cpp:245:25:245:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:245:25:245:36 | *call to get_string | semmle.label | *call to get_string |
+| test.cpp:247:12:247:16 | *hello | semmle.label | *hello |
+subpaths
+#select
+| NonConstantFormat.c:30:10:30:16 | *access to array | NonConstantFormat.c:28:27:28:30 | **argv | NonConstantFormat.c:30:10:30:16 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | NonConstantFormat.c:30:3:30:8 | call to printf | printf |
+| NonConstantFormat.c:41:9:41:45 | *call to any_random_function | NonConstantFormat.c:41:9:41:45 | *call to any_random_function | NonConstantFormat.c:41:9:41:45 | *call to any_random_function | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | NonConstantFormat.c:41:2:41:7 | call to printf | printf |
+| NonConstantFormat.c:45:9:45:48 | *call to gettext | NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | NonConstantFormat.c:45:2:45:7 | call to printf | printf |
+| nested.cpp:21:23:21:26 | *fmt0 | nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:21:23:21:26 | *fmt0 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | nested.cpp:21:5:21:12 | call to snprintf | snprintf |
+| nested.cpp:79:32:79:38 | *call to get_fmt | nested.cpp:79:32:79:38 | *call to get_fmt | nested.cpp:79:32:79:38 | *call to get_fmt | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | nested.cpp:79:5:79:14 | call to diagnostic | diagnostic |
+| nested.cpp:87:18:87:20 | *fmt | nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | nested.cpp:87:7:87:16 | call to diagnostic | diagnostic |
+| test.cpp:130:20:130:26 | *access to array | test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:130:2:130:10 | call to sprintf | sprintf |
+| test.cpp:170:12:170:14 | *res | test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:170:5:170:10 | call to printf | printf |
+| test.cpp:195:31:195:33 | *str | test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:195:3:195:18 | call to StringCchPrintfW | StringCchPrintfW |
+| test.cpp:197:11:197:14 | *wstr | test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:197:3:197:9 | call to wprintf | wprintf |
+| test.cpp:205:12:205:20 | *... + ... | test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:205:5:205:10 | call to printf | printf |
+| test.cpp:206:12:206:16 | *hello | test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:206:5:206:10 | call to printf | printf |
+| test.cpp:211:12:211:16 | *hello | test.cpp:209:25:209:36 | *call to get_string | test.cpp:211:12:211:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:211:5:211:10 | call to printf | printf |
+| test.cpp:217:12:217:16 | *hello | test.cpp:215:25:215:36 | *call to get_string | test.cpp:217:12:217:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:217:5:217:10 | call to printf | printf |
+| test.cpp:223:12:223:16 | *hello | test.cpp:221:25:221:36 | *call to get_string | test.cpp:223:12:223:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:223:5:223:10 | call to printf | printf |
+| test.cpp:228:12:228:18 | *++ ... | test.cpp:227:25:227:36 | *call to get_string | test.cpp:228:12:228:18 | *++ ... | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:228:5:228:10 | call to printf | printf |
+| test.cpp:235:12:235:16 | *hello | test.cpp:232:25:232:36 | *call to get_string | test.cpp:235:12:235:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:235:5:235:10 | call to printf | printf |
+| test.cpp:242:12:242:16 | *hello | test.cpp:239:25:239:36 | *call to get_string | test.cpp:242:12:242:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:242:5:242:10 | call to printf | printf |
+| test.cpp:247:12:247:16 | *hello | test.cpp:245:25:245:36 | *call to get_string | test.cpp:247:12:247:16 | *hello | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:247:5:247:10 | call to printf | printf |

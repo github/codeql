@@ -17,7 +17,7 @@ nodes
 | assignment.py:5:8:5:8 | [Name] b | semmle.label | [Name] b |
 | assignment.py:5:12:5:17 | [Name] SOURCE | semmle.label | [Name] SOURCE |
 | assignment.py:5:12:5:25 | [Tuple]  | semmle.label | [Tuple]  |
-| assignment.py:5:20:5:25 | [Str] safe | semmle.label | [Str] safe |
+| assignment.py:5:20:5:25 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | assignment.py:6:5:6:8 | [Name] test | semmle.label | [Name] test |
 | assignment.py:6:5:6:14 | [Call] test(a, b) | semmle.label | [Call] test(a, b) |
 | assignment.py:6:5:6:14 | [ExprStmt] test(a, b) | semmle.label | [ExprStmt] test(a, b) |
@@ -50,9 +50,9 @@ nodes
 | assignment.py:13:27:13:58 | [Tuple]  | semmle.label | [Tuple]  |
 | assignment.py:13:28:13:33 | [Name] SOURCE | semmle.label | [Name] SOURCE |
 | assignment.py:13:28:13:41 | [Tuple]  | semmle.label | [Tuple]  |
-| assignment.py:13:36:13:41 | [Str] safe | semmle.label | [Str] safe |
+| assignment.py:13:36:13:41 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | assignment.py:13:45:13:50 | [Name] SOURCE | semmle.label | [Name] SOURCE |
-| assignment.py:13:53:13:58 | [Str] safe | semmle.label | [Str] safe |
+| assignment.py:13:53:13:58 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | assignment.py:14:5:14:8 | [Name] test | semmle.label | [Name] test |
 | assignment.py:14:5:14:24 | [Call] test(s1, s2, t1, t2) | semmle.label | [Call] test(s1, s2, t1, t2) |
 | assignment.py:14:5:14:24 | [ExprStmt] test(s1, s2, t1, t2) | semmle.label | [ExprStmt] test(s1, s2, t1, t2) |
@@ -570,7 +570,7 @@ nodes
 | module.py:4:1:4:4 | [Name] safe | semmle.label | [Name] safe |
 | module.py:4:1:4:13 | [AssignStmt] safe = safe | semmle.label | [AssignStmt] safe = safe |
 | module.py:4:1:4:13 | [AssignStmt] safe = safe | semmle.order | 20 |
-| module.py:4:8:4:13 | [Str] safe | semmle.label | [Str] safe |
+| module.py:4:8:4:13 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | module.py:6:1:6:21 | [FunctionDef] dangerous_func = function dangerous_func(...) | semmle.label | [FunctionDef] dangerous_func = function dangerous_func(...) |
 | module.py:6:1:6:21 | [FunctionDef] dangerous_func = function dangerous_func(...) | semmle.order | 21 |
 | module.py:6:1:6:21 | [FunctionExpr] function dangerous_func(...) | semmle.label | [FunctionExpr] function dangerous_func(...) |
@@ -585,7 +585,7 @@ nodes
 | module.py:11:1:11:5 | [Name] safe2 | semmle.label | [Name] safe2 |
 | module.py:11:1:11:14 | [AssignStmt] safe2 = safe | semmle.label | [AssignStmt] safe2 = safe |
 | module.py:11:1:11:14 | [AssignStmt] safe2 = safe | semmle.order | 23 |
-| module.py:11:9:11:14 | [Str] safe | semmle.label | [Str] safe |
+| module.py:11:9:11:14 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | rockpaperscissors.py:3:1:3:14 | [FunctionDef] rock = function rock(...) | semmle.label | [FunctionDef] rock = function rock(...) |
 | rockpaperscissors.py:3:1:3:14 | [FunctionDef] rock = function rock(...) | semmle.order | 24 |
 | rockpaperscissors.py:3:1:3:14 | [FunctionExpr] function rock(...) | semmle.label | [FunctionExpr] function rock(...) |
@@ -593,7 +593,7 @@ nodes
 | rockpaperscissors.py:3:5:3:8 | [Name] rock | semmle.label | [Name] rock |
 | rockpaperscissors.py:3:10:3:12 | [Parameter] arg | semmle.label | [Parameter] arg |
 | rockpaperscissors.py:4:5:4:29 | [ExprStmt] SCISSORS are vulnerable | semmle.label | [ExprStmt] SCISSORS are vulnerable |
-| rockpaperscissors.py:4:5:4:29 | [Str] SCISSORS are vulnerable | semmle.label | [Str] SCISSORS are vulnerable |
+| rockpaperscissors.py:4:5:4:29 | [StringLiteral] SCISSORS are vulnerable | semmle.label | [StringLiteral] SCISSORS are vulnerable |
 | rockpaperscissors.py:6:1:6:15 | [FunctionDef] paper = function paper(...) | semmle.label | [FunctionDef] paper = function paper(...) |
 | rockpaperscissors.py:6:1:6:15 | [FunctionDef] paper = function paper(...) | semmle.order | 25 |
 | rockpaperscissors.py:6:1:6:15 | [FunctionExpr] function paper(...) | semmle.label | [FunctionExpr] function paper(...) |
@@ -601,7 +601,7 @@ nodes
 | rockpaperscissors.py:6:5:6:9 | [Name] paper | semmle.label | [Name] paper |
 | rockpaperscissors.py:6:11:6:13 | [Parameter] arg | semmle.label | [Parameter] arg |
 | rockpaperscissors.py:7:5:7:24 | [ExprStmt] ROCK is vulnerable | semmle.label | [ExprStmt] ROCK is vulnerable |
-| rockpaperscissors.py:7:5:7:24 | [Str] ROCK is vulnerable | semmle.label | [Str] ROCK is vulnerable |
+| rockpaperscissors.py:7:5:7:24 | [StringLiteral] ROCK is vulnerable | semmle.label | [StringLiteral] ROCK is vulnerable |
 | rockpaperscissors.py:9:1:9:18 | [FunctionDef] scissors = function scissors(...) | semmle.label | [FunctionDef] scissors = function scissors(...) |
 | rockpaperscissors.py:9:1:9:18 | [FunctionDef] scissors = function scissors(...) | semmle.order | 26 |
 | rockpaperscissors.py:9:1:9:18 | [FunctionExpr] function scissors(...) | semmle.label | [FunctionExpr] function scissors(...) |
@@ -609,7 +609,7 @@ nodes
 | rockpaperscissors.py:9:5:9:12 | [Name] scissors | semmle.label | [Name] scissors |
 | rockpaperscissors.py:9:14:9:16 | [Parameter] arg | semmle.label | [Parameter] arg |
 | rockpaperscissors.py:10:5:10:25 | [ExprStmt] PAPER is vulnerable | semmle.label | [ExprStmt] PAPER is vulnerable |
-| rockpaperscissors.py:10:5:10:25 | [Str] PAPER is vulnerable | semmle.label | [Str] PAPER is vulnerable |
+| rockpaperscissors.py:10:5:10:25 | [StringLiteral] PAPER is vulnerable | semmle.label | [StringLiteral] PAPER is vulnerable |
 | rockpaperscissors.py:12:1:12:12 | [FunctionDef] test1 = function test1(...) | semmle.label | [FunctionDef] test1 = function test1(...) |
 | rockpaperscissors.py:12:1:12:12 | [FunctionDef] test1 = function test1(...) | semmle.order | 27 |
 | rockpaperscissors.py:12:1:12:12 | [FunctionExpr] function test1(...) | semmle.label | [FunctionExpr] function test1(...) |
@@ -869,7 +869,7 @@ nodes
 | test.py:28:8:28:11 | [Name] cond | semmle.label | [Name] cond |
 | test.py:29:9:29:9 | [Name] t | semmle.label | [Name] t |
 | test.py:29:9:29:18 | [AssignStmt] t = Safe | semmle.label | [AssignStmt] t = Safe |
-| test.py:29:13:29:18 | [Str] Safe | semmle.label | [Str] Safe |
+| test.py:29:13:29:18 | [StringLiteral] Safe | semmle.label | [StringLiteral] Safe |
 | test.py:31:9:31:9 | [Name] t | semmle.label | [Name] t |
 | test.py:31:9:31:18 | [AssignStmt] t = SOURCE | semmle.label | [AssignStmt] t = SOURCE |
 | test.py:31:13:31:18 | [Name] SOURCE | semmle.label | [Name] SOURCE |
@@ -892,7 +892,7 @@ nodes
 | test.py:37:13:37:18 | [Name] SOURCE | semmle.label | [Name] SOURCE |
 | test.py:39:9:39:9 | [Name] t | semmle.label | [Name] t |
 | test.py:39:9:39:18 | [AssignStmt] t = Safe | semmle.label | [AssignStmt] t = Safe |
-| test.py:39:13:39:18 | [Str] Safe | semmle.label | [Str] Safe |
+| test.py:39:13:39:18 | [StringLiteral] Safe | semmle.label | [StringLiteral] Safe |
 | test.py:40:5:40:12 | [If] if cond: | semmle.label | [If] if cond: |
 | test.py:40:8:40:11 | [Name] cond | semmle.label | [Name] cond |
 | test.py:41:9:41:12 | [Name] SINK | semmle.label | [Name] SINK |
@@ -956,7 +956,7 @@ nodes
 | test.py:59:8:59:11 | [Name] cond | semmle.label | [Name] cond |
 | test.py:60:9:60:9 | [Name] t | semmle.label | [Name] t |
 | test.py:60:9:60:19 | [AssignStmt] t = Safe | semmle.label | [AssignStmt] t = Safe |
-| test.py:60:14:60:19 | [Str] Safe | semmle.label | [Str] Safe |
+| test.py:60:14:60:19 | [StringLiteral] Safe | semmle.label | [StringLiteral] Safe |
 | test.py:62:9:62:9 | [Name] t | semmle.label | [Name] t |
 | test.py:62:9:62:18 | [AssignStmt] t = SOURCE | semmle.label | [AssignStmt] t = SOURCE |
 | test.py:62:13:62:18 | [Name] SOURCE | semmle.label | [Name] SOURCE |
@@ -978,7 +978,7 @@ nodes
 | test.py:67:13:67:18 | [Name] SOURCE | semmle.label | [Name] SOURCE |
 | test.py:69:9:69:9 | [Name] t | semmle.label | [Name] t |
 | test.py:69:9:69:18 | [AssignStmt] t = Safe | semmle.label | [AssignStmt] t = Safe |
-| test.py:69:13:69:18 | [Str] Safe | semmle.label | [Str] Safe |
+| test.py:69:13:69:18 | [StringLiteral] Safe | semmle.label | [StringLiteral] Safe |
 | test.py:70:5:70:9 | [Name] sink3 | semmle.label | [Name] sink3 |
 | test.py:70:5:70:18 | [Call] sink3(cond, t) | semmle.label | [Call] sink3(cond, t) |
 | test.py:70:5:70:18 | [ExprStmt] sink3(cond, t) | semmle.label | [ExprStmt] sink3(cond, t) |
@@ -1016,7 +1016,7 @@ nodes
 | test.py:80:5:80:10 | [Name] test12 | semmle.label | [Name] test12 |
 | test.py:81:5:81:5 | [Name] t | semmle.label | [Name] t |
 | test.py:81:5:81:14 | [AssignStmt] t = safe | semmle.label | [AssignStmt] t = safe |
-| test.py:81:9:81:14 | [Str] safe | semmle.label | [Str] safe |
+| test.py:81:9:81:14 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | test.py:82:5:82:5 | [Name] t | semmle.label | [Name] t |
 | test.py:82:5:82:14 | [AssignStmt] t = hub(t) | semmle.label | [AssignStmt] t = hub(t) |
 | test.py:82:9:82:11 | [Name] hub | semmle.label | [Name] hub |
@@ -1292,7 +1292,7 @@ nodes
 | test.py:169:5:169:5 | [Name] d | semmle.label | [Name] d |
 | test.py:169:5:169:24 | [AssignStmt]  | semmle.label | [AssignStmt]  |
 | test.py:169:9:169:24 | [Dict]  | semmle.label | [Dict]  |
-| test.py:169:10:169:14 | [Str] key | semmle.label | [Str] key |
+| test.py:169:10:169:14 | [StringLiteral] key | semmle.label | [StringLiteral] key |
 | test.py:169:10:169:23 | [KeyValuePair]  | semmle.label | [KeyValuePair]  |
 | test.py:169:18:169:23 | [Name] SOURCE | semmle.label | [Name] SOURCE |
 | test.py:170:5:170:5 | [Name] x | semmle.label | [Name] x |
@@ -1316,7 +1316,7 @@ nodes
 | test.py:173:5:173:18 | [ExprStmt] SINK(...) | semmle.label | [ExprStmt] SINK(...) |
 | test.py:173:10:173:10 | [Name] y | semmle.label | [Name] y |
 | test.py:173:10:173:17 | [Subscript] y[key] | semmle.label | [Subscript] y[key] |
-| test.py:173:12:173:16 | [Str] key | semmle.label | [Str] key |
+| test.py:173:12:173:16 | [StringLiteral] key | semmle.label | [StringLiteral] key |
 | test.py:174:5:174:6 | [Name] l2 | semmle.label | [Name] l2 |
 | test.py:174:5:174:16 | [AssignStmt] l2 = list(l) | semmle.label | [AssignStmt] l2 = list(l) |
 | test.py:174:10:174:13 | [Name] list | semmle.label | [Name] list |
@@ -1445,7 +1445,7 @@ nodes
 | test.py:218:5:218:25 | [If] if tainted == ...: | semmle.label | [If] if tainted == ...: |
 | test.py:218:8:218:14 | [Name] tainted | semmle.label | [Name] tainted |
 | test.py:218:8:218:24 | [Compare] tainted == ... | semmle.label | [Compare] tainted == ... |
-| test.py:218:19:218:24 | [Str] safe | semmle.label | [Str] safe |
+| test.py:218:19:218:24 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | test.py:219:9:219:12 | [Name] SINK | semmle.label | [Name] SINK |
 | test.py:219:9:219:21 | [Call] SINK(tainted) | semmle.label | [Call] SINK(tainted) |
 | test.py:219:9:219:21 | [ExprStmt] SINK(tainted) | semmle.label | [ExprStmt] SINK(tainted) |
@@ -1465,7 +1465,7 @@ nodes
 | test.py:224:5:224:25 | [If] if tainted != ...: | semmle.label | [If] if tainted != ...: |
 | test.py:224:8:224:14 | [Name] tainted | semmle.label | [Name] tainted |
 | test.py:224:8:224:24 | [Compare] tainted != ... | semmle.label | [Compare] tainted != ... |
-| test.py:224:19:224:24 | [Str] safe | semmle.label | [Str] safe |
+| test.py:224:19:224:24 | [StringLiteral] safe | semmle.label | [StringLiteral] safe |
 | test.py:225:9:225:14 | [Return]  | semmle.label | [Return]  |
 | test.py:226:5:226:8 | [Name] SINK | semmle.label | [Name] SINK |
 | test.py:226:5:226:17 | [Call] SINK(tainted) | semmle.label | [Call] SINK(tainted) |
@@ -1527,8 +1527,8 @@ edges
 | assignment.py:5:5:5:25 | [AssignStmt]  | assignment.py:5:12:5:25 | [Tuple]  | semmle.order | 2 |
 | assignment.py:5:12:5:25 | [Tuple]  | assignment.py:5:12:5:17 | [Name] SOURCE | semmle.label | 1 |
 | assignment.py:5:12:5:25 | [Tuple]  | assignment.py:5:12:5:17 | [Name] SOURCE | semmle.order | 1 |
-| assignment.py:5:12:5:25 | [Tuple]  | assignment.py:5:20:5:25 | [Str] safe | semmle.label | 2 |
-| assignment.py:5:12:5:25 | [Tuple]  | assignment.py:5:20:5:25 | [Str] safe | semmle.order | 2 |
+| assignment.py:5:12:5:25 | [Tuple]  | assignment.py:5:20:5:25 | [StringLiteral] safe | semmle.label | 2 |
+| assignment.py:5:12:5:25 | [Tuple]  | assignment.py:5:20:5:25 | [StringLiteral] safe | semmle.order | 2 |
 | assignment.py:6:5:6:14 | [Call] test(a, b) | assignment.py:6:5:6:8 | [Name] test | semmle.label | 0 |
 | assignment.py:6:5:6:14 | [Call] test(a, b) | assignment.py:6:5:6:8 | [Name] test | semmle.order | 0 |
 | assignment.py:6:5:6:14 | [Call] test(a, b) | file://:0:0:0:0 | (arguments) | semmle.label | 1 |
@@ -1581,12 +1581,12 @@ edges
 | assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:28:13:41 | [Tuple]  | semmle.order | 1 |
 | assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:45:13:50 | [Name] SOURCE | semmle.label | 2 |
 | assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:45:13:50 | [Name] SOURCE | semmle.order | 2 |
-| assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:53:13:58 | [Str] safe | semmle.label | 3 |
-| assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:53:13:58 | [Str] safe | semmle.order | 3 |
+| assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:53:13:58 | [StringLiteral] safe | semmle.label | 3 |
+| assignment.py:13:27:13:58 | [Tuple]  | assignment.py:13:53:13:58 | [StringLiteral] safe | semmle.order | 3 |
 | assignment.py:13:28:13:41 | [Tuple]  | assignment.py:13:28:13:33 | [Name] SOURCE | semmle.label | 1 |
 | assignment.py:13:28:13:41 | [Tuple]  | assignment.py:13:28:13:33 | [Name] SOURCE | semmle.order | 1 |
-| assignment.py:13:28:13:41 | [Tuple]  | assignment.py:13:36:13:41 | [Str] safe | semmle.label | 2 |
-| assignment.py:13:28:13:41 | [Tuple]  | assignment.py:13:36:13:41 | [Str] safe | semmle.order | 2 |
+| assignment.py:13:28:13:41 | [Tuple]  | assignment.py:13:36:13:41 | [StringLiteral] safe | semmle.label | 2 |
+| assignment.py:13:28:13:41 | [Tuple]  | assignment.py:13:36:13:41 | [StringLiteral] safe | semmle.order | 2 |
 | assignment.py:14:5:14:24 | [Call] test(s1, s2, t1, t2) | assignment.py:14:5:14:8 | [Name] test | semmle.label | 0 |
 | assignment.py:14:5:14:24 | [Call] test(s1, s2, t1, t2) | assignment.py:14:5:14:8 | [Name] test | semmle.order | 0 |
 | assignment.py:14:5:14:24 | [Call] test(s1, s2, t1, t2) | file://:0:0:0:0 | (arguments) | semmle.label | 1 |
@@ -2593,8 +2593,8 @@ edges
 | module.py:3:1:3:18 | [AssignStmt] dangerous = SOURCE | module.py:3:13:3:18 | [Name] SOURCE | semmle.order | 2 |
 | module.py:4:1:4:13 | [AssignStmt] safe = safe | module.py:4:1:4:4 | [Name] safe | semmle.label | 1 |
 | module.py:4:1:4:13 | [AssignStmt] safe = safe | module.py:4:1:4:4 | [Name] safe | semmle.order | 1 |
-| module.py:4:1:4:13 | [AssignStmt] safe = safe | module.py:4:8:4:13 | [Str] safe | semmle.label | 2 |
-| module.py:4:1:4:13 | [AssignStmt] safe = safe | module.py:4:8:4:13 | [Str] safe | semmle.order | 2 |
+| module.py:4:1:4:13 | [AssignStmt] safe = safe | module.py:4:8:4:13 | [StringLiteral] safe | semmle.label | 2 |
+| module.py:4:1:4:13 | [AssignStmt] safe = safe | module.py:4:8:4:13 | [StringLiteral] safe | semmle.order | 2 |
 | module.py:6:1:6:21 | [FunctionDef] dangerous_func = function dangerous_func(...) | module.py:6:1:6:21 | [FunctionExpr] function dangerous_func(...) | semmle.label | 1 |
 | module.py:6:1:6:21 | [FunctionDef] dangerous_func = function dangerous_func(...) | module.py:6:1:6:21 | [FunctionExpr] function dangerous_func(...) | semmle.order | 1 |
 | module.py:6:1:6:21 | [FunctionDef] dangerous_func = function dangerous_func(...) | module.py:6:5:6:18 | [Name] dangerous_func | semmle.label | 0 |
@@ -2613,8 +2613,8 @@ edges
 | module.py:10:1:10:14 | [AssignStmt] safe2 = SOURCE | module.py:10:9:10:14 | [Name] SOURCE | semmle.order | 2 |
 | module.py:11:1:11:14 | [AssignStmt] safe2 = safe | module.py:11:1:11:5 | [Name] safe2 | semmle.label | 1 |
 | module.py:11:1:11:14 | [AssignStmt] safe2 = safe | module.py:11:1:11:5 | [Name] safe2 | semmle.order | 1 |
-| module.py:11:1:11:14 | [AssignStmt] safe2 = safe | module.py:11:9:11:14 | [Str] safe | semmle.label | 2 |
-| module.py:11:1:11:14 | [AssignStmt] safe2 = safe | module.py:11:9:11:14 | [Str] safe | semmle.order | 2 |
+| module.py:11:1:11:14 | [AssignStmt] safe2 = safe | module.py:11:9:11:14 | [StringLiteral] safe | semmle.label | 2 |
+| module.py:11:1:11:14 | [AssignStmt] safe2 = safe | module.py:11:9:11:14 | [StringLiteral] safe | semmle.order | 2 |
 | rockpaperscissors.py:3:1:3:14 | [FunctionDef] rock = function rock(...) | rockpaperscissors.py:3:1:3:14 | [FunctionExpr] function rock(...) | semmle.label | 1 |
 | rockpaperscissors.py:3:1:3:14 | [FunctionDef] rock = function rock(...) | rockpaperscissors.py:3:1:3:14 | [FunctionExpr] function rock(...) | semmle.order | 1 |
 | rockpaperscissors.py:3:1:3:14 | [FunctionDef] rock = function rock(...) | rockpaperscissors.py:3:5:3:8 | [Name] rock | semmle.label | 0 |
@@ -2625,8 +2625,8 @@ edges
 | rockpaperscissors.py:3:1:3:14 | [Function] function rock(...) | file://:0:0:0:0 | (StmtList) body | semmle.order | 4 |
 | rockpaperscissors.py:3:1:3:14 | [Function] function rock(...) | file://:0:0:0:0 | (parameters) | semmle.label | 0 |
 | rockpaperscissors.py:3:1:3:14 | [Function] function rock(...) | file://:0:0:0:0 | (parameters) | semmle.order | 0 |
-| rockpaperscissors.py:4:5:4:29 | [ExprStmt] SCISSORS are vulnerable | rockpaperscissors.py:4:5:4:29 | [Str] SCISSORS are vulnerable | semmle.label | 1 |
-| rockpaperscissors.py:4:5:4:29 | [ExprStmt] SCISSORS are vulnerable | rockpaperscissors.py:4:5:4:29 | [Str] SCISSORS are vulnerable | semmle.order | 1 |
+| rockpaperscissors.py:4:5:4:29 | [ExprStmt] SCISSORS are vulnerable | rockpaperscissors.py:4:5:4:29 | [StringLiteral] SCISSORS are vulnerable | semmle.label | 1 |
+| rockpaperscissors.py:4:5:4:29 | [ExprStmt] SCISSORS are vulnerable | rockpaperscissors.py:4:5:4:29 | [StringLiteral] SCISSORS are vulnerable | semmle.order | 1 |
 | rockpaperscissors.py:6:1:6:15 | [FunctionDef] paper = function paper(...) | rockpaperscissors.py:6:1:6:15 | [FunctionExpr] function paper(...) | semmle.label | 1 |
 | rockpaperscissors.py:6:1:6:15 | [FunctionDef] paper = function paper(...) | rockpaperscissors.py:6:1:6:15 | [FunctionExpr] function paper(...) | semmle.order | 1 |
 | rockpaperscissors.py:6:1:6:15 | [FunctionDef] paper = function paper(...) | rockpaperscissors.py:6:5:6:9 | [Name] paper | semmle.label | 0 |
@@ -2637,8 +2637,8 @@ edges
 | rockpaperscissors.py:6:1:6:15 | [Function] function paper(...) | file://:0:0:0:0 | (StmtList) body | semmle.order | 4 |
 | rockpaperscissors.py:6:1:6:15 | [Function] function paper(...) | file://:0:0:0:0 | (parameters) | semmle.label | 0 |
 | rockpaperscissors.py:6:1:6:15 | [Function] function paper(...) | file://:0:0:0:0 | (parameters) | semmle.order | 0 |
-| rockpaperscissors.py:7:5:7:24 | [ExprStmt] ROCK is vulnerable | rockpaperscissors.py:7:5:7:24 | [Str] ROCK is vulnerable | semmle.label | 1 |
-| rockpaperscissors.py:7:5:7:24 | [ExprStmt] ROCK is vulnerable | rockpaperscissors.py:7:5:7:24 | [Str] ROCK is vulnerable | semmle.order | 1 |
+| rockpaperscissors.py:7:5:7:24 | [ExprStmt] ROCK is vulnerable | rockpaperscissors.py:7:5:7:24 | [StringLiteral] ROCK is vulnerable | semmle.label | 1 |
+| rockpaperscissors.py:7:5:7:24 | [ExprStmt] ROCK is vulnerable | rockpaperscissors.py:7:5:7:24 | [StringLiteral] ROCK is vulnerable | semmle.order | 1 |
 | rockpaperscissors.py:9:1:9:18 | [FunctionDef] scissors = function scissors(...) | rockpaperscissors.py:9:1:9:18 | [FunctionExpr] function scissors(...) | semmle.label | 1 |
 | rockpaperscissors.py:9:1:9:18 | [FunctionDef] scissors = function scissors(...) | rockpaperscissors.py:9:1:9:18 | [FunctionExpr] function scissors(...) | semmle.order | 1 |
 | rockpaperscissors.py:9:1:9:18 | [FunctionDef] scissors = function scissors(...) | rockpaperscissors.py:9:5:9:12 | [Name] scissors | semmle.label | 0 |
@@ -2649,8 +2649,8 @@ edges
 | rockpaperscissors.py:9:1:9:18 | [Function] function scissors(...) | file://:0:0:0:0 | (StmtList) body | semmle.order | 4 |
 | rockpaperscissors.py:9:1:9:18 | [Function] function scissors(...) | file://:0:0:0:0 | (parameters) | semmle.label | 0 |
 | rockpaperscissors.py:9:1:9:18 | [Function] function scissors(...) | file://:0:0:0:0 | (parameters) | semmle.order | 0 |
-| rockpaperscissors.py:10:5:10:25 | [ExprStmt] PAPER is vulnerable | rockpaperscissors.py:10:5:10:25 | [Str] PAPER is vulnerable | semmle.label | 1 |
-| rockpaperscissors.py:10:5:10:25 | [ExprStmt] PAPER is vulnerable | rockpaperscissors.py:10:5:10:25 | [Str] PAPER is vulnerable | semmle.order | 1 |
+| rockpaperscissors.py:10:5:10:25 | [ExprStmt] PAPER is vulnerable | rockpaperscissors.py:10:5:10:25 | [StringLiteral] PAPER is vulnerable | semmle.label | 1 |
+| rockpaperscissors.py:10:5:10:25 | [ExprStmt] PAPER is vulnerable | rockpaperscissors.py:10:5:10:25 | [StringLiteral] PAPER is vulnerable | semmle.order | 1 |
 | rockpaperscissors.py:12:1:12:12 | [FunctionDef] test1 = function test1(...) | rockpaperscissors.py:12:1:12:12 | [FunctionExpr] function test1(...) | semmle.label | 1 |
 | rockpaperscissors.py:12:1:12:12 | [FunctionDef] test1 = function test1(...) | rockpaperscissors.py:12:1:12:12 | [FunctionExpr] function test1(...) | semmle.order | 1 |
 | rockpaperscissors.py:12:1:12:12 | [FunctionDef] test1 = function test1(...) | rockpaperscissors.py:12:5:12:9 | [Name] test1 | semmle.label | 0 |
@@ -3115,8 +3115,8 @@ edges
 | test.py:28:5:28:12 | [If] if cond: | test.py:28:8:28:11 | [Name] cond | semmle.order | 0 |
 | test.py:29:9:29:18 | [AssignStmt] t = Safe | test.py:29:9:29:9 | [Name] t | semmle.label | 1 |
 | test.py:29:9:29:18 | [AssignStmt] t = Safe | test.py:29:9:29:9 | [Name] t | semmle.order | 1 |
-| test.py:29:9:29:18 | [AssignStmt] t = Safe | test.py:29:13:29:18 | [Str] Safe | semmle.label | 2 |
-| test.py:29:9:29:18 | [AssignStmt] t = Safe | test.py:29:13:29:18 | [Str] Safe | semmle.order | 2 |
+| test.py:29:9:29:18 | [AssignStmt] t = Safe | test.py:29:13:29:18 | [StringLiteral] Safe | semmle.label | 2 |
+| test.py:29:9:29:18 | [AssignStmt] t = Safe | test.py:29:13:29:18 | [StringLiteral] Safe | semmle.order | 2 |
 | test.py:31:9:31:18 | [AssignStmt] t = SOURCE | test.py:31:9:31:9 | [Name] t | semmle.label | 1 |
 | test.py:31:9:31:18 | [AssignStmt] t = SOURCE | test.py:31:9:31:9 | [Name] t | semmle.order | 1 |
 | test.py:31:9:31:18 | [AssignStmt] t = SOURCE | test.py:31:13:31:18 | [Name] SOURCE | semmle.label | 2 |
@@ -3153,8 +3153,8 @@ edges
 | test.py:37:9:37:18 | [AssignStmt] t = SOURCE | test.py:37:13:37:18 | [Name] SOURCE | semmle.order | 2 |
 | test.py:39:9:39:18 | [AssignStmt] t = Safe | test.py:39:9:39:9 | [Name] t | semmle.label | 1 |
 | test.py:39:9:39:18 | [AssignStmt] t = Safe | test.py:39:9:39:9 | [Name] t | semmle.order | 1 |
-| test.py:39:9:39:18 | [AssignStmt] t = Safe | test.py:39:13:39:18 | [Str] Safe | semmle.label | 2 |
-| test.py:39:9:39:18 | [AssignStmt] t = Safe | test.py:39:13:39:18 | [Str] Safe | semmle.order | 2 |
+| test.py:39:9:39:18 | [AssignStmt] t = Safe | test.py:39:13:39:18 | [StringLiteral] Safe | semmle.label | 2 |
+| test.py:39:9:39:18 | [AssignStmt] t = Safe | test.py:39:13:39:18 | [StringLiteral] Safe | semmle.order | 2 |
 | test.py:40:5:40:12 | [If] if cond: | file://:0:0:0:0 | (StmtList) body | semmle.label | 2 |
 | test.py:40:5:40:12 | [If] if cond: | file://:0:0:0:0 | (StmtList) body | semmle.order | 2 |
 | test.py:40:5:40:12 | [If] if cond: | test.py:40:8:40:11 | [Name] cond | semmle.label | 0 |
@@ -3259,8 +3259,8 @@ edges
 | test.py:59:5:59:12 | [If] if cond: | test.py:59:8:59:11 | [Name] cond | semmle.order | 0 |
 | test.py:60:9:60:19 | [AssignStmt] t = Safe | test.py:60:9:60:9 | [Name] t | semmle.label | 1 |
 | test.py:60:9:60:19 | [AssignStmt] t = Safe | test.py:60:9:60:9 | [Name] t | semmle.order | 1 |
-| test.py:60:9:60:19 | [AssignStmt] t = Safe | test.py:60:14:60:19 | [Str] Safe | semmle.label | 2 |
-| test.py:60:9:60:19 | [AssignStmt] t = Safe | test.py:60:14:60:19 | [Str] Safe | semmle.order | 2 |
+| test.py:60:9:60:19 | [AssignStmt] t = Safe | test.py:60:14:60:19 | [StringLiteral] Safe | semmle.label | 2 |
+| test.py:60:9:60:19 | [AssignStmt] t = Safe | test.py:60:14:60:19 | [StringLiteral] Safe | semmle.order | 2 |
 | test.py:62:9:62:18 | [AssignStmt] t = SOURCE | test.py:62:9:62:9 | [Name] t | semmle.label | 1 |
 | test.py:62:9:62:18 | [AssignStmt] t = SOURCE | test.py:62:9:62:9 | [Name] t | semmle.order | 1 |
 | test.py:62:9:62:18 | [AssignStmt] t = SOURCE | test.py:62:13:62:18 | [Name] SOURCE | semmle.label | 2 |
@@ -3293,8 +3293,8 @@ edges
 | test.py:67:9:67:18 | [AssignStmt] t = SOURCE | test.py:67:13:67:18 | [Name] SOURCE | semmle.order | 2 |
 | test.py:69:9:69:18 | [AssignStmt] t = Safe | test.py:69:9:69:9 | [Name] t | semmle.label | 1 |
 | test.py:69:9:69:18 | [AssignStmt] t = Safe | test.py:69:9:69:9 | [Name] t | semmle.order | 1 |
-| test.py:69:9:69:18 | [AssignStmt] t = Safe | test.py:69:13:69:18 | [Str] Safe | semmle.label | 2 |
-| test.py:69:9:69:18 | [AssignStmt] t = Safe | test.py:69:13:69:18 | [Str] Safe | semmle.order | 2 |
+| test.py:69:9:69:18 | [AssignStmt] t = Safe | test.py:69:13:69:18 | [StringLiteral] Safe | semmle.label | 2 |
+| test.py:69:9:69:18 | [AssignStmt] t = Safe | test.py:69:13:69:18 | [StringLiteral] Safe | semmle.order | 2 |
 | test.py:70:5:70:18 | [Call] sink3(cond, t) | file://:0:0:0:0 | (arguments) | semmle.label | 1 |
 | test.py:70:5:70:18 | [Call] sink3(cond, t) | file://:0:0:0:0 | (arguments) | semmle.order | 1 |
 | test.py:70:5:70:18 | [Call] sink3(cond, t) | test.py:70:5:70:9 | [Name] sink3 | semmle.label | 0 |
@@ -3353,8 +3353,8 @@ edges
 | test.py:80:1:80:13 | [Function] function test12(...) | file://:0:0:0:0 | (parameters) | semmle.order | 0 |
 | test.py:81:5:81:14 | [AssignStmt] t = safe | test.py:81:5:81:5 | [Name] t | semmle.label | 1 |
 | test.py:81:5:81:14 | [AssignStmt] t = safe | test.py:81:5:81:5 | [Name] t | semmle.order | 1 |
-| test.py:81:5:81:14 | [AssignStmt] t = safe | test.py:81:9:81:14 | [Str] safe | semmle.label | 2 |
-| test.py:81:5:81:14 | [AssignStmt] t = safe | test.py:81:9:81:14 | [Str] safe | semmle.order | 2 |
+| test.py:81:5:81:14 | [AssignStmt] t = safe | test.py:81:9:81:14 | [StringLiteral] safe | semmle.label | 2 |
+| test.py:81:5:81:14 | [AssignStmt] t = safe | test.py:81:9:81:14 | [StringLiteral] safe | semmle.order | 2 |
 | test.py:82:5:82:14 | [AssignStmt] t = hub(t) | test.py:82:5:82:5 | [Name] t | semmle.label | 1 |
 | test.py:82:5:82:14 | [AssignStmt] t = hub(t) | test.py:82:5:82:5 | [Name] t | semmle.order | 1 |
 | test.py:82:5:82:14 | [AssignStmt] t = hub(t) | test.py:82:9:82:14 | [Call] hub(t) | semmle.label | 2 |
@@ -3819,8 +3819,8 @@ edges
 | test.py:169:5:169:24 | [AssignStmt]  | test.py:169:9:169:24 | [Dict]  | semmle.order | 2 |
 | test.py:169:9:169:24 | [Dict]  | test.py:169:10:169:23 | [KeyValuePair]  | semmle.label | 1 |
 | test.py:169:9:169:24 | [Dict]  | test.py:169:10:169:23 | [KeyValuePair]  | semmle.order | 1 |
-| test.py:169:10:169:23 | [KeyValuePair]  | test.py:169:10:169:14 | [Str] key | semmle.label | 1 |
-| test.py:169:10:169:23 | [KeyValuePair]  | test.py:169:10:169:14 | [Str] key | semmle.order | 1 |
+| test.py:169:10:169:23 | [KeyValuePair]  | test.py:169:10:169:14 | [StringLiteral] key | semmle.label | 1 |
+| test.py:169:10:169:23 | [KeyValuePair]  | test.py:169:10:169:14 | [StringLiteral] key | semmle.order | 1 |
 | test.py:169:10:169:23 | [KeyValuePair]  | test.py:169:18:169:23 | [Name] SOURCE | semmle.label | 2 |
 | test.py:169:10:169:23 | [KeyValuePair]  | test.py:169:18:169:23 | [Name] SOURCE | semmle.order | 2 |
 | test.py:170:5:170:12 | [Attribute] x.extend | test.py:170:5:170:5 | [Name] x | semmle.label | 1 |
@@ -3857,8 +3857,8 @@ edges
 | test.py:173:5:173:18 | [ExprStmt] SINK(...) | test.py:173:5:173:18 | [Call] SINK(...) | semmle.order | 1 |
 | test.py:173:10:173:17 | [Subscript] y[key] | test.py:173:10:173:10 | [Name] y | semmle.label | 1 |
 | test.py:173:10:173:17 | [Subscript] y[key] | test.py:173:10:173:10 | [Name] y | semmle.order | 1 |
-| test.py:173:10:173:17 | [Subscript] y[key] | test.py:173:12:173:16 | [Str] key | semmle.label | 2 |
-| test.py:173:10:173:17 | [Subscript] y[key] | test.py:173:12:173:16 | [Str] key | semmle.order | 2 |
+| test.py:173:10:173:17 | [Subscript] y[key] | test.py:173:12:173:16 | [StringLiteral] key | semmle.label | 2 |
+| test.py:173:10:173:17 | [Subscript] y[key] | test.py:173:12:173:16 | [StringLiteral] key | semmle.order | 2 |
 | test.py:174:5:174:16 | [AssignStmt] l2 = list(l) | test.py:174:5:174:6 | [Name] l2 | semmle.label | 1 |
 | test.py:174:5:174:16 | [AssignStmt] l2 = list(l) | test.py:174:5:174:6 | [Name] l2 | semmle.order | 1 |
 | test.py:174:5:174:16 | [AssignStmt] l2 = list(l) | test.py:174:10:174:16 | [Call] list(l) | semmle.label | 2 |
@@ -4081,8 +4081,8 @@ edges
 | test.py:218:5:218:25 | [If] if tainted == ...: | test.py:218:8:218:24 | [Compare] tainted == ... | semmle.order | 0 |
 | test.py:218:8:218:24 | [Compare] tainted == ... | test.py:218:8:218:14 | [Name] tainted | semmle.label | 1 |
 | test.py:218:8:218:24 | [Compare] tainted == ... | test.py:218:8:218:14 | [Name] tainted | semmle.order | 1 |
-| test.py:218:8:218:24 | [Compare] tainted == ... | test.py:218:19:218:24 | [Str] safe | semmle.label | 2 |
-| test.py:218:8:218:24 | [Compare] tainted == ... | test.py:218:19:218:24 | [Str] safe | semmle.order | 2 |
+| test.py:218:8:218:24 | [Compare] tainted == ... | test.py:218:19:218:24 | [StringLiteral] safe | semmle.label | 2 |
+| test.py:218:8:218:24 | [Compare] tainted == ... | test.py:218:19:218:24 | [StringLiteral] safe | semmle.order | 2 |
 | test.py:219:9:219:21 | [Call] SINK(tainted) | file://:0:0:0:0 | (arguments) | semmle.label | 1 |
 | test.py:219:9:219:21 | [Call] SINK(tainted) | file://:0:0:0:0 | (arguments) | semmle.order | 1 |
 | test.py:219:9:219:21 | [Call] SINK(tainted) | test.py:219:9:219:12 | [Name] SINK | semmle.label | 0 |
@@ -4115,8 +4115,8 @@ edges
 | test.py:224:5:224:25 | [If] if tainted != ...: | test.py:224:8:224:24 | [Compare] tainted != ... | semmle.order | 0 |
 | test.py:224:8:224:24 | [Compare] tainted != ... | test.py:224:8:224:14 | [Name] tainted | semmle.label | 1 |
 | test.py:224:8:224:24 | [Compare] tainted != ... | test.py:224:8:224:14 | [Name] tainted | semmle.order | 1 |
-| test.py:224:8:224:24 | [Compare] tainted != ... | test.py:224:19:224:24 | [Str] safe | semmle.label | 2 |
-| test.py:224:8:224:24 | [Compare] tainted != ... | test.py:224:19:224:24 | [Str] safe | semmle.order | 2 |
+| test.py:224:8:224:24 | [Compare] tainted != ... | test.py:224:19:224:24 | [StringLiteral] safe | semmle.label | 2 |
+| test.py:224:8:224:24 | [Compare] tainted != ... | test.py:224:19:224:24 | [StringLiteral] safe | semmle.order | 2 |
 | test.py:226:5:226:17 | [Call] SINK(tainted) | file://:0:0:0:0 | (arguments) | semmle.label | 1 |
 | test.py:226:5:226:17 | [Call] SINK(tainted) | file://:0:0:0:0 | (arguments) | semmle.order | 1 |
 | test.py:226:5:226:17 | [Call] SINK(tainted) | test.py:226:5:226:8 | [Name] SINK | semmle.label | 0 |

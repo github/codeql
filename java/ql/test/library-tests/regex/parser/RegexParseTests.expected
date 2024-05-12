@@ -1,4 +1,8 @@
 parseFailures
+modes
+| Test.java:17:9:17:37 | "(?i)(?=a)(?!b)(?<=c)(?<!d)+" | IGNORECASE |
+| Test.java:22:9:22:85 | "(?idmsuxU-idmsuxU)a+(?-idmsuxU)b+(?idmsuxU:c)d+(?-idmsuxU:e)f+(?idmsuxU:)g+" | DOTALL,IGNORECASE,MULTILINE,UNICODE,UNICODECLASS,UNIXLINES,VERBOSE |
+| Test.java:23:9:23:24 | "(?idms-iuxU)a+" | DOTALL,IGNORECASE,MULTILINE,UNIXLINES |
 #select
 | Test.java:5:10:5:17 | [A-Z\\d] | [RegExpCharacterClass] |
 | Test.java:5:10:5:19 | [A-Z\\d]++ | [RegExpPlus] |
@@ -205,3 +209,25 @@ parseFailures
 | Test.java:21:62:21:62 | b | [RegExpConstant,RegExpNormalChar] |
 | Test.java:21:64:21:64 | b | [RegExpConstant,RegExpNormalChar] |
 | Test.java:21:66:21:66 | b | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:10:22:27 | (?idmsuxU-idmsuxU) | [RegExpZeroWidthMatch] |
+| Test.java:22:10:22:84 | (?idmsuxU-idmsuxU)a+(?-idmsuxU)b+(?idmsuxU:c)d+(?-idmsuxU:e)f+(?idmsuxU:)g+ | [RegExpSequence] |
+| Test.java:22:28:22:28 | a | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:28:22:29 | a+ | [RegExpPlus] |
+| Test.java:22:30:22:40 | (?-idmsuxU) | [RegExpZeroWidthMatch] |
+| Test.java:22:41:22:41 | b | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:41:22:42 | b+ | [RegExpPlus] |
+| Test.java:22:43:22:54 | (?idmsuxU:c) | [RegExpGroup] |
+| Test.java:22:53:22:53 | c | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:55:22:55 | d | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:55:22:56 | d+ | [RegExpPlus] |
+| Test.java:22:57:22:69 | (?-idmsuxU:e) | [RegExpGroup] |
+| Test.java:22:68:22:68 | e | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:70:22:70 | f | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:70:22:71 | f+ | [RegExpPlus] |
+| Test.java:22:72:22:82 | (?idmsuxU:) | [RegExpZeroWidthMatch] |
+| Test.java:22:83:22:83 | g | [RegExpConstant,RegExpNormalChar] |
+| Test.java:22:83:22:84 | g+ | [RegExpPlus] |
+| Test.java:23:10:23:21 | (?idms-iuxU) | [RegExpZeroWidthMatch] |
+| Test.java:23:10:23:23 | (?idms-iuxU)a+ | [RegExpSequence] |
+| Test.java:23:22:23:22 | a | [RegExpConstant,RegExpNormalChar] |
+| Test.java:23:22:23:23 | a+ | [RegExpPlus] |

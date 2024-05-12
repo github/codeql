@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 This script can be used to go over `codeql test run` expected/actual log output from
 github actions, and apply patches locally to make the tests pass.
 
@@ -38,14 +38,13 @@ DEBUG_LOG_FILE = None
 
 
 def _get_codeql_repo_dir() -> Path:
-    return Path(__file__).parent.parent.parent
+    return Path(__file__).parent.parent.parent.resolve()
 
 
 CODEQL_REPO_DIR = _get_codeql_repo_dir()
 
-
 def _get_semmle_code_dir() -> Optional[Path]:
-    guess = CODEQL_REPO_DIR.parent
+    guess = CODEQL_REPO_DIR.parent.resolve()
     try:
         out = subprocess.check_output(
             ["git", "remote", "-v"],
@@ -114,7 +113,7 @@ def make_patches_from_log_file(log_file_lines) -> List[Patch]:
             while True:
                 next_line = parse_log_line(next(lines))
                 # it can be the case that
-                if next_line[0] in (" ", "-", "+", "@"):
+                if next_line and next_line[0] in (" ", "-", "+", "@"):
                     lines_changed.append(next_line)
                 if "FAILED" in next_line:
                     break
@@ -221,7 +220,7 @@ def get_log_content(status: GithubStatus) -> str:
     return content
 
 
-def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=False):
+def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=False, wait_for_ci=True):
     if not pr_number and not sha_override:
         raise Exception("Must specify either a PR number or a SHA")
 
@@ -274,17 +273,15 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
             if status.state == "failure":
                 lang_test_failures.append(status)
             elif status.state == "pending":
-                LOGGER.error(f"Language tests ({status.context}) are still running, please wait for them to finish before running this script again")
-                sys.exit(1)
+                if wait_for_ci:
+                    LOGGER.error(f"Language tests ({status.context}) are still running, please wait for them to finish before running this script again (or run with --dont-wait)")
+                    sys.exit(1)
 
     job_failure_urls = set()
     for lang_test_failure in lang_test_failures:
         job_failure_urls.add(lang_test_failure.target_url)
 
-    if job_failure_urls:
-        assert len(job_failure_urls) == 1, f"Multiple job failure URLs: {job_failure_urls}"
-        job_failure_url = job_failure_urls.pop()
-
+    for job_failure_url in job_failure_urls:
         # fixup URL. On the status, the target URL is the run, and it's really hard to
         # change this to link to the full `/runs/<run_id>/jobs/<numeric_job_id>` URL, since
         # the `<numeric_job_id>` is not available in a context: https://github.com/community/community/discussions/40291
@@ -302,6 +299,11 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
 
             for job in jobs["jobs"]:
                 api_name: str = job["name"]
+
+                if api_name.lower().startswith(expected_workflow_name.lower()):
+                    lang_test_failure.job_id = job["id"]
+                    break
+
                 if " / " not in api_name:
                     continue
 
@@ -311,9 +313,11 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                 if workflow_name == expected_workflow_name and job_name.lower().startswith(lang_test_failure.context.lower()):
                     lang_test_failure.job_id = job["id"]
                     break
-            else:
-                LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
-                sys.exit(1)
+
+    for lang_test_failure in lang_test_failures:
+        if lang_test_failure.job_id is None:
+            LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
+            sys.exit(1)
 
     # Ruby/Swift/C#/Go use github actions, and not internal CI. These are not reported
     # from the /statuses API, but from the /check-suites API
@@ -324,9 +328,10 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
     check_failure_urls = []
     for check in check_suites["check_suites"]:
         if check["status"] != "completed":
-            print(check)
-            LOGGER.error("At least one check not completed yet!")
-            sys.exit(1)
+            if wait_for_ci:
+                print(check)
+                LOGGER.error("At least one check not completed yet!")
+                sys.exit(1)
 
         if check["conclusion"] == "failure":
             check_failure_urls.append(check["check_runs_url"])
@@ -336,7 +341,10 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
         check_runs = json.loads(subprocess.check_output(["gh", "api", "--paginate", check_failure_url]).decode("utf-8"))
         for check_run in check_runs["check_runs"]:
             if check_run["conclusion"] == "failure":
-                m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)(?:/jobs/(\d+))?$", check_run["details_url"])
+                m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)(?:/job/(\d+))?$", check_run["details_url"])
+                if not m:
+                    LOGGER.error(f"Could not parse details URL for {check_run['name']}: '{check_run['details_url']}'")
+                    continue
                 nwo = m.group(1)
                 run_id = m.group(2)
                 jobs_url = f"https://api.github.com/repos/{nwo}/actions/runs/{run_id}/jobs"
@@ -410,7 +418,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
 
                 subprocess.check_call(["git", "apply", temp.name], cwd=patch.dir)
 
-                if "CONSISTENCY" in patch.filename.parts:
+                if "CONSISTENCY" in patch.filename.parts and patch.filename.exists():
                     # delete if empty
                     if os.path.getsize(patch.filename) == 1 and patch.filename.read_text() == "\n":
                         os.remove(patch.filename)
@@ -428,6 +436,19 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
         print("Expected output in semmle-code changed!")
 
 
+def printHelp():
+    print("""Usage:
+python3 accept-expected-changes-from-ci.py [PR-number|SHA]
+
+Example invocations:
+$ python3 accept-expected-changes-from-ci.py 1234
+$ python3 accept-expected-changes-from-ci.py d88a8130386b720de6cac747d1bd2dd527769467
+
+Requirements:
+- The 'gh' command line tool must be installed and authenticated.
+- The CI check must have finished.
+""")
+
 if __name__ == "__main__":
 
     level = logging.INFO
@@ -441,6 +462,7 @@ if __name__ == "__main__":
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--force", action="store_true", help="Apply patches even if the local SHA is different from the GitHub PR SHA")
+    parser.add_argument("--dont-wait", dest="wait_for_ci", action="store_false", help="Do not wait for all CI jobs to finish")
     parser.add_argument("posarg", nargs="?", default=None)
 
     if DEBUG_LOG_FILE:
@@ -459,14 +481,20 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.posarg is None:
-        pr_number_response = subprocess.check_output([
-            "gh", "pr", "view", "--json", "number"
-        ]).decode("utf-8")
-        pr_number = json.loads(pr_number_response)["number"]
+        try:
+            pr_number_response = subprocess.check_output([
+                "gh", "pr", "view", "--json", "number"
+            ]).decode("utf-8")
+            pr_number = json.loads(pr_number_response)["number"]
+        except:
+            print("Could not auto detect PR number.")
+            print("")
+            printHelp()
+            sys.exit(1)
     else:
         if len(args.posarg) > 10:
             override_sha = args.posarg
         else:
             pr_number = int(args.posarg)
 
-    main(pr_number, override_sha, force=args.force)
+    main(pr_number, override_sha, force=args.force, wait_for_ci=args.wait_for_ci)

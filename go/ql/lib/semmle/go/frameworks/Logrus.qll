@@ -15,9 +15,7 @@ module Logrus {
   }
 
   bindingset[result]
-  private string getAnEntryUpdatingMethodName() {
-    result.regexpMatch("With(Context|Error|Fields?|Time)")
-  }
+  private string getAnEntryUpdatingMethodName() { result.regexpMatch("With(Error|Fields?|Time)") }
 
   private class LogFunction extends Function {
     LogFunction() {

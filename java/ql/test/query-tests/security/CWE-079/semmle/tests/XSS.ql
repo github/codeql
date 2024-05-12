@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.XssQuery
 import TestUtilities.InlineExpectationsTest
 
-class XssTest extends InlineExpectationsTest {
-  XssTest() { this = "XssTest" }
+module XssTest implements TestSig {
+  string getARelevantTag() { result = "xss" }
 
-  override string getARelevantTag() { result = "xss" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "xss" and
     exists(DataFlow::Node sink | XssFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class XssTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<XssTest>

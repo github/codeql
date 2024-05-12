@@ -147,19 +147,32 @@ private class SnprintfImpl extends Snprintf {
 
 /**
  * The Microsoft `StringCchPrintf` function and variants.
+ * See: https://learn.microsoft.com/en-us/windows/win32/api/strsafe/
+ *      and
+ *      https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms860435(v=msdn.10)
  */
 private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
-    this.hasGlobalName([
-        "StringCchPrintf", "StringCchPrintfEx", "StringCchPrintf_l", "StringCchPrintf_lEx",
-        "StringCbPrintf", "StringCbPrintfEx", "StringCbPrintf_l", "StringCbPrintf_lEx"
-      ]) and
+    exists(string baseName |
+      baseName in [
+          "StringCchPrintf", //StringCchPrintf(pszDest, cchDest, pszFormat, ...)
+          "StringCchPrintfEx", //StringCchPrintfEx(pszDest,cchDest, ppszDestEnd, pcchRemaining, dwFlags, pszFormat, ...)
+          "StringCchPrintf_l", //StringCchPrintf_l(pszDest, cbDest, pszFormat, locale, ...)
+          "StringCchPrintf_lEx", //StringCchPrintf_lEx(pszDest, cchDest, ppszDestEnd, pcchRemaining, dwFlags, pszFormat, locale, ...)
+          "StringCbPrintf", //StringCbPrintf(pszDest, cbDest, pszFormat, ...)
+          "StringCbPrintfEx", //StringCbPrintfEx(pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags, pszFormat, ...)
+          "StringCbPrintf_l", //StringCbPrintf_l(pszDest, cbDest, pszFormat, locale, ...)
+          "StringCbPrintf_lEx" //StringCbPrintf_lEx(pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags, pszFormat, locale, ...)
+        ]
+    |
+      this.hasGlobalName(baseName + ["", "A", "W"])
+    ) and
     not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
-    if this.getName().matches("%Ex") then result = 5 else result = 2
+    if this.getName().matches("%Ex" + ["", "A", "W"]) then result = 5 else result = 2
   }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }

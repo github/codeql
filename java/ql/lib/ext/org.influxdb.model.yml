@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.influxdb", "InfluxDBFactory", False, "connect", "(String,String,String,Builder)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.influxdb", "InfluxDBFactory", False, "connect", "(String,String,String,OkHttpClient$Builder)", "", "Argument[0]", "request-forgery", "ai-manual"]

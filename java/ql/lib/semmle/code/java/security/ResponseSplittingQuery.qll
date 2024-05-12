@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.ResponseSplitting
 
 /**
@@ -9,18 +10,16 @@ import semmle.code.java.security.ResponseSplitting
  */
 module ResponseSplittingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
+    source instanceof ThreatModelFlowSource and
     not source instanceof SafeHeaderSplittingSource
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType
+    node instanceof SimpleTypeSanitizer
     or
-    node.getType() instanceof BoxedType
-    or
-    exists(MethodAccess ma, string methodName, CompileTimeConstantExpr target |
+    exists(MethodCall ma, string methodName, CompileTimeConstantExpr target |
       node.asExpr() = ma and
       ma.getMethod().hasQualifiedName("java.lang", "String", methodName) and
       target = ma.getArgument(0) and

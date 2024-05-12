@@ -67,6 +67,14 @@ def html8():  # $requestHandler
 @app.route("/jsonify")  # $routeSetup="/jsonify"
 def jsonify_route():  # $requestHandler
     x = "x"; y = "y"; z = "z"
+    if True:
+        import flask.json
+        resp = flask.json.jsonify(x, y, z=z)  # $HttpResponse mimetype=application/json responseBody=x responseBody=y responseBody=z
+        assert resp.mimetype == "application/json"
+
+        resp = app.json.response(x, y, z=z)  # $HttpResponse mimetype=application/json responseBody=x responseBody=y responseBody=z
+        assert resp.mimetype == "application/json"
+
     resp = jsonify(x, y, z=z)  # $ HttpResponse mimetype=application/json responseBody=x responseBody=y responseBody=z
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 

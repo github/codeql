@@ -16,5 +16,5 @@ where
   c.getTarget() = gcCollect and
   gcCollect.hasName("Collect") and
   gcCollect.hasNoParameters() and
-  gcCollect.getDeclaringType().hasQualifiedName("System", "GC")
+  gcCollect.getDeclaringType().hasFullyQualifiedName("System", "GC")
 select c, "Call to 'GC.Collect()'."

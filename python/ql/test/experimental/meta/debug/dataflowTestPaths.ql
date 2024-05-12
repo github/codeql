@@ -9,12 +9,12 @@
 // 3. if necessary, look at partial paths by (un)commenting appropriate lines
 import python
 import semmle.python.dataflow.new.DataFlow
-import experimental.dataflow.testConfig
+import TestUtilities.dataflow.testConfig
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { any(TestConfiguration c).isSource(source) }
+  predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
 
-  predicate isSink(DataFlow::Node source) { any(TestConfiguration c).isSink(source) }
+  predicate isSink(DataFlow::Node source) { TestConfig::isSink(source) }
 }
 
 module Flows = DataFlow::Global<Config>;
@@ -22,7 +22,7 @@ module Flows = DataFlow::Global<Config>;
 import Flows::PathGraph
 
 // int explorationLimit() { result = 5 }
-// module FlowsPartial = Flows::FlowExploration<explorationLimit/0>;
+// module FlowsPartial = Flows::FlowExplorationFwd<explorationLimit/0>;
 // import FlowsPartial::PartialPathGraph
 from Flows::PathNode source, Flows::PathNode sink
 where Flows::flowPath(source, sink)

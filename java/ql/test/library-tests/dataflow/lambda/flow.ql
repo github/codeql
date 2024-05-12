@@ -5,14 +5,14 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     src.asExpr().(VarAccess).getVariable().hasName("args")
     or
-    src.asExpr().(MethodAccess).getMethod().hasName("source")
+    src.asExpr().(MethodCall).getMethod().hasName("source")
   }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr().(Argument).getCall() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         ma.getMethod().hasName("exec") and
-        ma.getQualifier().(MethodAccess).getMethod().hasName("getRuntime")
+        ma.getQualifier().(MethodCall).getMethod().hasName("getRuntime")
       )
   }
 }

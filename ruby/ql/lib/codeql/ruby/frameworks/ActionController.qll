@@ -8,6 +8,7 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.typetracking.TypeTracking
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
@@ -21,17 +22,36 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
 module ActionController {
   // TODO: move the rest of this file inside this module.
   import codeql.ruby.frameworks.actioncontroller.Filters
+
+  /**
+   * An ActionController class which sits at the top of the class hierarchy.
+   * In other words, it does not subclass any other class in source code.
+   */
+  class RootController extends ActionControllerClass {
+    RootController() {
+      not exists(ActionControllerClass parent | this != parent and this = parent.getADescendent())
+    }
+  }
+
+  /**
+   * A call to `protect_from_forgery`.
+   */
+  class ProtectFromForgeryCall extends CsrfProtectionSetting::Range, DataFlow::CallNode {
+    ProtectFromForgeryCall() {
+      this = actionControllerInstance().getAMethodCall("protect_from_forgery")
+    }
+
+    private string getWithValueText() {
+      result = this.getKeywordArgument("with").getConstantValue().getSymbol()
+    }
+
+    // Calls without `with: :exception` can allow for bypassing CSRF protection
+    // in some scenarios.
+    override boolean getVerificationSetting() {
+      if this.getWithValueText() = "exception" then result = true else result = false
+    }
+  }
 }
-
-/**
- * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
- */
-deprecated class ParamsCall = Rails::ParamsCall;
-
-/**
- * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::CookiesCall` instead.
- */
-deprecated class CookiesCall = Rails::CookiesCall;
 
 /**
  * A class that extends `ActionController::Base`.
@@ -48,18 +68,12 @@ deprecated class CookiesCall = Rails::CookiesCall;
  */
 class ActionControllerClass extends DataFlow::ClassNode {
   ActionControllerClass() {
-    this =
-      [
-        DataFlow::getConstant("ActionController").getConstant("Base"),
-        // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
-        // treat it separately in case the `ApplicationController` definition is not in the database.
-        DataFlow::getConstant("ApplicationController"),
-        // ActionController::Metal technically doesn't contain all of the
-        // methods available in Base, such as those for rendering views.
-        // However we prefer to be over-sensitive in this case in order to find
-        // more results.
-        DataFlow::getConstant("ActionController").getConstant("Metal")
-      ].getADescendentModule()
+    // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
+    // treat it separately in case the `ApplicationController` definition is not in the database.
+    this = DataFlow::getConstant("ApplicationController").getADescendentModule()
+    or
+    this = actionControllerBaseClass().getADescendentModule() and
+    not exists(DataFlow::ModuleNode m | m = actionControllerBaseClass().asModule() | this = m)
   }
 
   /**
@@ -83,24 +97,20 @@ class ActionControllerClass extends DataFlow::ClassNode {
   }
 }
 
-private DataFlow::LocalSourceNode actionControllerInstance() {
-  result = any(ActionControllerClass cls).getSelf()
+private DataFlow::ConstRef actionControllerBaseClass() {
+  result =
+    [
+      DataFlow::getConstant("ActionController").getConstant("Base"),
+      // ActionController::Metal and ActionController::API technically don't contain all of the
+      // methods available in Base, such as those for rendering views.
+      // However we prefer to be over-sensitive in this case in order to find more results.
+      DataFlow::getConstant("ActionController").getConstant("Metal"),
+      DataFlow::getConstant("ActionController").getConstant("API")
+    ]
 }
 
-/**
- * DEPRECATED. Use `ActionControllerClass` instead.
- *
- * A `ClassDeclaration` corresponding to an `ActionControllerClass`.
- */
-deprecated class ActionControllerControllerClass extends ClassDeclaration {
-  ActionControllerControllerClass() { this = any(ActionControllerClass cls).getADeclaration() }
-
-  /**
-   * Gets a `ActionControllerActionMethod` defined in this class.
-   */
-  ActionControllerActionMethod getAnAction() {
-    result = this.getAMethod().(Method) and result.isPrivate()
-  }
+private API::Node actionControllerInstance() {
+  result = any(ActionControllerClass cls).getSelf().track()
 }
 
 /**
@@ -222,19 +232,19 @@ private class ActionControllerRenderToCall extends RenderToCallImpl {
   }
 }
 
+pragma[nomagic]
+private DataFlow::CallNode renderCall() {
+  // ActionController#render is an alias for ActionController::Renderer#render
+  result =
+    [
+      any(ActionControllerClass c).trackModule().getAMethodCall("render"),
+      any(ActionControllerClass c).trackModule().getReturn("renderer").getAMethodCall("render")
+    ]
+}
+
 /** A call to `ActionController::Renderer#render`. */
 private class RendererRenderCall extends RenderCallImpl {
-  RendererRenderCall() {
-    this =
-      [
-        // ActionController#render is an alias for ActionController::Renderer#render
-        any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("render"),
-        any(ActionControllerClass c)
-            .getAnImmediateReference()
-            .getAMethodCall("renderer")
-            .getAMethodCall("render")
-      ].asExpr().getExpr()
-  }
+  RendererRenderCall() { this = renderCall().asExpr().getExpr() }
 }
 
 /** A call to `html_escape` from within a controller. */
@@ -260,6 +270,7 @@ class RedirectToCall extends MethodCall {
     this =
       controller
           .getSelf()
+          .track()
           .getAMethodCall(["redirect_to", "redirect_back", "redirect_back_or_to"])
           .asExpr()
           .getExpr()
@@ -399,7 +410,8 @@ predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile
     controllerPath = getActionControllerClassRelativePath(cls) and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
-    sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
+    sourcePrefix =
+      [controllerPath.regexpCapture("^(.*/)app/controllers/(?:[^/]+/)?(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb"
   |
     sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
@@ -428,27 +440,6 @@ class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::R
   }
 
   override boolean getVerificationSetting() { result = false }
-}
-
-/**
- * A call to `protect_from_forgery`.
- */
-private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range,
-  DataFlow::CallNode
-{
-  ActionControllerProtectFromForgeryCall() {
-    this = actionControllerInstance().getAMethodCall("protect_from_forgery")
-  }
-
-  private string getWithValueText() {
-    result = this.getKeywordArgument("with").getConstantValue().getSymbol()
-  }
-
-  // Calls without `with: :exception` can allow for bypassing CSRF protection
-  // in some scenarios.
-  override boolean getVerificationSetting() {
-    if this.getWithValueText() = "exception" then result = true else result = false
-  }
 }
 
 /**
@@ -511,7 +502,7 @@ private module ParamsSummaries {
         "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
         "merge!", "permit", "reject", "reject!", "require", "reverse_merge", "reverse_merge!",
         "select", "select!", "slice", "slice!", "transform_keys", "transform_keys!",
-        "transform_values", "transform_values!", "with_defaults", "with_defaults!"
+        "transform_values", "transform_values!", "with_defaults", "with_defaults!", "[]"
       ]
   }
 
@@ -529,6 +520,27 @@ private module ParamsSummaries {
       ]
   }
 
+  /** Gets a node that may be tainted from an `ActionController::Parameters` instance, through field accesses and hash/array element reads. */
+  private DataFlow::LocalSourceNode taintFromParamsBase() {
+    result =
+      [
+        paramsInstance(),
+        paramsInstance().getAMethodCall(methodReturnsTaintFromSelf()).getAnElementRead*()
+      ]
+  }
+
+  private DataFlow::LocalSourceNode taintFromParamsType(TypeTracker t) {
+    t.start() and
+    result = taintFromParamsBase()
+    or
+    exists(TypeTracker t2 | result = taintFromParamsType(t2).track(t2, t))
+  }
+
+  /** Gets a node with a type that may be tainted from an `ActionController::Parameters` instance. */
+  private DataFlow::LocalSourceNode taintFromParamsType() {
+    taintFromParamsType(TypeTracker::end()).flowsTo(result)
+  }
+
   /**
    * A flow summary for methods on `ActionController::Parameters` which
    * propagate taint from receiver to return value.
@@ -540,7 +552,7 @@ private module ParamsSummaries {
       result = paramsInstance().getAMethodCall(methodReturnsTaintFromSelf()).asExpr().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -563,7 +575,7 @@ private module ParamsSummaries {
         [result.getReceiver(), result.getArgument(0)]
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]"] and
       output = "ReturnValue" and
       preservesValue = false
@@ -587,10 +599,52 @@ private module ParamsSummaries {
         [result.getReceiver(), result.getArgument(0)]
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]"] and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
+    }
+  }
+
+  /** Flow summaries for `ActiveDispatch::Http::UploadedFile`, which can be an field of `ActionController::Parameters`. */
+  module UploadedFileSummaries {
+    /** Flow summary for various string attributes of `UploadedFile`, including `original_filename`, `content_type`, and `headers`. */
+    private class UploadedFileStringAttributeSummary extends SummarizedCallable {
+      UploadedFileStringAttributeSummary() {
+        this = "ActionDispatch::Http::UploadedFile#[original_filename,content_type,headers]"
+      }
+
+      override MethodCall getACall() {
+        result =
+          taintFromParamsType()
+              .getAMethodCall(["original_filename", "content_type", "headers"])
+              .asExpr()
+              .getExpr() and
+        result.getNumberOfArguments() = 0
+      }
+
+      override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+        input = "Argument[self]" and output = "ReturnValue" and preservesValue = false
+      }
+    }
+
+    /**
+     * Flow summary for `ActiveDispatch::Http::UploadedFile#read`,
+     * which propagates taint from the receiver to the return value or to the second (out string) argument
+     */
+    private class UploadedFileReadSummary extends SummarizedCallable {
+      UploadedFileReadSummary() { this = "ActionDispatch::Http::UploadedFile#read" }
+
+      override MethodCall getACall() {
+        result = taintFromParamsType().getAMethodCall("read").asExpr().getExpr() and
+        result.getNumberOfArguments() in [0 .. 2]
+      }
+
+      override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+        input = "Argument[self]" and
+        output = ["ReturnValue", "Argument[1]"] and
+        preservesValue = false
+      }
     }
   }
 }
@@ -600,9 +654,7 @@ private module ParamsSummaries {
  * response.
  */
 private module Response {
-  DataFlow::LocalSourceNode response() {
-    result = actionControllerInstance().getAMethodCall("response")
-  }
+  API::Node response() { result = actionControllerInstance().getReturn("response") }
 
   class BodyWrite extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
     BodyWrite() { this = response().getAMethodCall("body=") }
@@ -628,7 +680,7 @@ private module Response {
     HeaderWrite() {
       // response.header[key] = val
       // response.headers[key] = val
-      this = response().getAMethodCall(["header", "headers"]).getAMethodCall("[]=")
+      this = response().getReturn(["header", "headers"]).getAMethodCall("[]=")
       or
       // response.set_header(key) = val
       // response[header] = val
@@ -673,18 +725,12 @@ private module Response {
   }
 }
 
-private class ActionControllerLoggerInstance extends DataFlow::Node {
-  ActionControllerLoggerInstance() {
-    this = actionControllerInstance().getAMethodCall("logger")
-    or
-    any(ActionControllerLoggerInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
-  }
-}
-
 private class ActionControllerLoggingCall extends DataFlow::CallNode, Logging::Range {
   ActionControllerLoggingCall() {
-    this.getReceiver() instanceof ActionControllerLoggerInstance and
-    this.getMethodName() = ["debug", "error", "fatal", "info", "unknown", "warn"]
+    this =
+      actionControllerInstance()
+          .getReturn("logger")
+          .getAMethodCall(["debug", "error", "fatal", "info", "unknown", "warn"])
   }
 
   // Note: this is identical to the definition `stdlib.Logger.LoggerInfoStyleCall`.

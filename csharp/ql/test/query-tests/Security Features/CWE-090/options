@@ -1,2 +1,4 @@
-semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs ${testdir}/../../../resources/stubs/System.DirectoryServices.cs /r:System.ComponentModel.Primitives.dll /r:System.Collections.Specialized.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Private.Xml.dll
-semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Data.cs /r:System.Data.Common.dll
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Data.SqlClient/4.8.5/System.Data.SqlClient.csproj
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.DirectoryServices.cs

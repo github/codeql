@@ -5,3 +5,4 @@ dependencies:
     codeql/ql-examples: ${workspace}
 extractor: ql
 tests: .
+warnOnImplicitThis: true

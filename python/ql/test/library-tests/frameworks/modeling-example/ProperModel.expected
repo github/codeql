@@ -1,48 +1,61 @@
 edges
-| test.py:21:11:21:18 | ControlFlowNode for source() | test.py:22:10:22:22 | ControlFlowNode for Attribute |
-| test.py:22:10:22:22 | ControlFlowNode for Attribute | test.py:22:10:22:24 | ControlFlowNode for Attribute() |
-| test.py:29:11:29:18 | ControlFlowNode for source() | test.py:31:20:31:32 | ControlFlowNode for Attribute |
-| test.py:31:20:31:32 | ControlFlowNode for Attribute | test.py:33:10:33:12 | ControlFlowNode for val |
-| test.py:39:15:39:17 | ControlFlowNode for arg | test.py:40:11:40:23 | ControlFlowNode for Attribute |
-| test.py:40:11:40:23 | ControlFlowNode for Attribute | test.py:41:10:41:12 | ControlFlowNode for val |
-| test.py:45:11:45:18 | ControlFlowNode for source() | test.py:46:15:46:17 | ControlFlowNode for src |
-| test.py:46:15:46:17 | ControlFlowNode for src | test.py:39:15:39:17 | ControlFlowNode for arg |
-| test.py:52:24:52:26 | ControlFlowNode for arg | test.py:53:11:53:23 | ControlFlowNode for Attribute |
-| test.py:53:11:53:23 | ControlFlowNode for Attribute | test.py:54:10:54:12 | ControlFlowNode for val |
-| test.py:57:33:57:35 | ControlFlowNode for arg | test.py:58:24:58:26 | ControlFlowNode for arg |
-| test.py:58:24:58:26 | ControlFlowNode for arg | test.py:52:24:52:26 | ControlFlowNode for arg |
-| test.py:61:33:61:35 | ControlFlowNode for arg | test.py:62:33:62:35 | ControlFlowNode for arg |
-| test.py:62:33:62:35 | ControlFlowNode for arg | test.py:57:33:57:35 | ControlFlowNode for arg |
-| test.py:65:33:65:35 | ControlFlowNode for arg | test.py:66:33:66:35 | ControlFlowNode for arg |
-| test.py:66:33:66:35 | ControlFlowNode for arg | test.py:61:33:61:35 | ControlFlowNode for arg |
-| test.py:70:11:70:18 | ControlFlowNode for source() | test.py:71:33:71:35 | ControlFlowNode for src |
-| test.py:71:33:71:35 | ControlFlowNode for src | test.py:65:33:65:35 | ControlFlowNode for arg |
-| test.py:77:23:77:24 | ControlFlowNode for bm | test.py:79:10:79:12 | ControlFlowNode for val |
-| test.py:83:11:83:18 | ControlFlowNode for source() | test.py:84:23:84:35 | ControlFlowNode for Attribute |
-| test.py:84:23:84:35 | ControlFlowNode for Attribute | test.py:77:23:77:24 | ControlFlowNode for bm |
-| test.py:89:37:89:38 | ControlFlowNode for bm | test.py:91:10:91:12 | ControlFlowNode for val |
-| test.py:94:46:94:47 | ControlFlowNode for bm | test.py:95:37:95:38 | ControlFlowNode for bm |
-| test.py:95:37:95:38 | ControlFlowNode for bm | test.py:89:37:89:38 | ControlFlowNode for bm |
-| test.py:98:46:98:47 | ControlFlowNode for bm | test.py:99:46:99:47 | ControlFlowNode for bm |
-| test.py:99:46:99:47 | ControlFlowNode for bm | test.py:94:46:94:47 | ControlFlowNode for bm |
-| test.py:102:46:102:47 | ControlFlowNode for bm | test.py:103:46:103:47 | ControlFlowNode for bm |
-| test.py:103:46:103:47 | ControlFlowNode for bm | test.py:98:46:98:47 | ControlFlowNode for bm |
-| test.py:107:11:107:18 | ControlFlowNode for source() | test.py:108:46:108:58 | ControlFlowNode for Attribute |
-| test.py:108:46:108:58 | ControlFlowNode for Attribute | test.py:102:46:102:47 | ControlFlowNode for bm |
+| test.py:21:5:21:7 | ControlFlowNode for src | test.py:22:10:22:24 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| test.py:21:11:21:18 | ControlFlowNode for source() | test.py:21:5:21:7 | ControlFlowNode for src | provenance |  |
+| test.py:29:5:29:7 | ControlFlowNode for src | test.py:30:5:30:7 | ControlFlowNode for foo | provenance |  |
+| test.py:29:11:29:18 | ControlFlowNode for source() | test.py:29:5:29:7 | ControlFlowNode for src | provenance |  |
+| test.py:30:5:30:7 | ControlFlowNode for foo | test.py:31:5:31:16 | ControlFlowNode for bound_method | provenance | AdditionalTaintStep |
+| test.py:31:5:31:16 | ControlFlowNode for bound_method | test.py:32:5:32:7 | ControlFlowNode for val | provenance | AdditionalTaintStep |
+| test.py:32:5:32:7 | ControlFlowNode for val | test.py:33:10:33:12 | ControlFlowNode for val | provenance |  |
+| test.py:39:15:39:17 | ControlFlowNode for arg | test.py:40:5:40:7 | ControlFlowNode for val | provenance | AdditionalTaintStep |
+| test.py:40:5:40:7 | ControlFlowNode for val | test.py:41:10:41:12 | ControlFlowNode for val | provenance |  |
+| test.py:45:5:45:7 | ControlFlowNode for src | test.py:46:15:46:17 | ControlFlowNode for src | provenance |  |
+| test.py:45:11:45:18 | ControlFlowNode for source() | test.py:45:5:45:7 | ControlFlowNode for src | provenance |  |
+| test.py:46:15:46:17 | ControlFlowNode for src | test.py:39:15:39:17 | ControlFlowNode for arg | provenance |  |
+| test.py:52:24:52:26 | ControlFlowNode for arg | test.py:53:5:53:7 | ControlFlowNode for val | provenance | AdditionalTaintStep |
+| test.py:53:5:53:7 | ControlFlowNode for val | test.py:54:10:54:12 | ControlFlowNode for val | provenance |  |
+| test.py:57:33:57:35 | ControlFlowNode for arg | test.py:58:24:58:26 | ControlFlowNode for arg | provenance |  |
+| test.py:58:24:58:26 | ControlFlowNode for arg | test.py:52:24:52:26 | ControlFlowNode for arg | provenance |  |
+| test.py:61:33:61:35 | ControlFlowNode for arg | test.py:62:33:62:35 | ControlFlowNode for arg | provenance |  |
+| test.py:62:33:62:35 | ControlFlowNode for arg | test.py:57:33:57:35 | ControlFlowNode for arg | provenance |  |
+| test.py:65:33:65:35 | ControlFlowNode for arg | test.py:66:33:66:35 | ControlFlowNode for arg | provenance |  |
+| test.py:66:33:66:35 | ControlFlowNode for arg | test.py:61:33:61:35 | ControlFlowNode for arg | provenance |  |
+| test.py:70:5:70:7 | ControlFlowNode for src | test.py:71:33:71:35 | ControlFlowNode for src | provenance |  |
+| test.py:70:11:70:18 | ControlFlowNode for source() | test.py:70:5:70:7 | ControlFlowNode for src | provenance |  |
+| test.py:71:33:71:35 | ControlFlowNode for src | test.py:65:33:65:35 | ControlFlowNode for arg | provenance |  |
+| test.py:77:23:77:24 | ControlFlowNode for bm | test.py:78:5:78:7 | ControlFlowNode for val | provenance | AdditionalTaintStep |
+| test.py:78:5:78:7 | ControlFlowNode for val | test.py:79:10:79:12 | ControlFlowNode for val | provenance |  |
+| test.py:83:5:83:7 | ControlFlowNode for src | test.py:84:23:84:35 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:83:11:83:18 | ControlFlowNode for source() | test.py:83:5:83:7 | ControlFlowNode for src | provenance |  |
+| test.py:84:23:84:35 | ControlFlowNode for Attribute | test.py:77:23:77:24 | ControlFlowNode for bm | provenance |  |
+| test.py:89:37:89:38 | ControlFlowNode for bm | test.py:90:5:90:7 | ControlFlowNode for val | provenance | AdditionalTaintStep |
+| test.py:90:5:90:7 | ControlFlowNode for val | test.py:91:10:91:12 | ControlFlowNode for val | provenance |  |
+| test.py:94:46:94:47 | ControlFlowNode for bm | test.py:95:37:95:38 | ControlFlowNode for bm | provenance |  |
+| test.py:95:37:95:38 | ControlFlowNode for bm | test.py:89:37:89:38 | ControlFlowNode for bm | provenance |  |
+| test.py:98:46:98:47 | ControlFlowNode for bm | test.py:99:46:99:47 | ControlFlowNode for bm | provenance |  |
+| test.py:99:46:99:47 | ControlFlowNode for bm | test.py:94:46:94:47 | ControlFlowNode for bm | provenance |  |
+| test.py:102:46:102:47 | ControlFlowNode for bm | test.py:103:46:103:47 | ControlFlowNode for bm | provenance |  |
+| test.py:103:46:103:47 | ControlFlowNode for bm | test.py:98:46:98:47 | ControlFlowNode for bm | provenance |  |
+| test.py:107:5:107:7 | ControlFlowNode for src | test.py:108:46:108:58 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:107:11:107:18 | ControlFlowNode for source() | test.py:107:5:107:7 | ControlFlowNode for src | provenance |  |
+| test.py:108:46:108:58 | ControlFlowNode for Attribute | test.py:102:46:102:47 | ControlFlowNode for bm | provenance |  |
 nodes
+| test.py:21:5:21:7 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:21:11:21:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
-| test.py:22:10:22:22 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:22:10:22:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:29:5:29:7 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:29:11:29:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
-| test.py:31:20:31:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:30:5:30:7 | ControlFlowNode for foo | semmle.label | ControlFlowNode for foo |
+| test.py:31:5:31:16 | ControlFlowNode for bound_method | semmle.label | ControlFlowNode for bound_method |
+| test.py:32:5:32:7 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:33:10:33:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:39:15:39:17 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
-| test.py:40:11:40:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:40:5:40:7 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:41:10:41:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:45:5:45:7 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:45:11:45:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
 | test.py:46:15:46:17 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:52:24:52:26 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
-| test.py:53:11:53:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:53:5:53:7 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:54:10:54:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:57:33:57:35 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
 | test.py:58:24:58:26 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
@@ -50,13 +63,17 @@ nodes
 | test.py:62:33:62:35 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
 | test.py:65:33:65:35 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
 | test.py:66:33:66:35 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
+| test.py:70:5:70:7 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:70:11:70:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
 | test.py:71:33:71:35 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:77:23:77:24 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
+| test.py:78:5:78:7 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:79:10:79:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:83:5:83:7 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:83:11:83:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
 | test.py:84:23:84:35 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:89:37:89:38 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
+| test.py:90:5:90:7 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:91:10:91:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:94:46:94:47 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
 | test.py:95:37:95:38 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
@@ -64,6 +81,7 @@ nodes
 | test.py:99:46:99:47 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
 | test.py:102:46:102:47 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
 | test.py:103:46:103:47 | ControlFlowNode for bm | semmle.label | ControlFlowNode for bm |
+| test.py:107:5:107:7 | ControlFlowNode for src | semmle.label | ControlFlowNode for src |
 | test.py:107:11:107:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
 | test.py:108:46:108:58 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 subpaths

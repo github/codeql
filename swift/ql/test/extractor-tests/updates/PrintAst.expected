@@ -1,0 +1,256 @@
+v5.8.swift:
+#    1| [Comment] // https://github.com/apple/swift/blob/main/CHANGELOG.md#swift-58
+#    1| 
+#    4| [StructDecl] Temperature
+#    5|   getMember(0): [PatternBindingDecl] var ... = ...
+#    5|     getPattern(0): [TypedPattern] ... as ...
+#    5|       getSubPattern(): [NamedPattern] degreesCelsius
+#    5|       getTypeRepr(): [TypeRepr] Double
+#    5|   getMember(1): [ConcreteVarDecl] degreesCelsius
+#    5|       Type = Double
+#    5|     getAccessor(0): [Accessor] get
+#    5|         InterfaceType = (Temperature) -> () -> Double
+#    5|       getSelfParam(): [ParamDecl] self
+#    5|           Type = Temperature
+#    5|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .degreesCelsius
+#-----|             getBase(): [DeclRefExpr] self
+#    5|     getAccessor(1): [Accessor] set
+#    5|         InterfaceType = (inout Temperature) -> (Double) -> ()
+#    5|       getSelfParam(): [ParamDecl] self
+#    5|           Type = Temperature
+#    5|       getParam(0): [ParamDecl] value
+#    5|           Type = Double
+#    5|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .degreesCelsius
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#    5|     getAccessor(2): [Accessor] _modify
+#    5|         InterfaceType = (inout Temperature) -> () -> ()
+#    5|       getSelfParam(): [ParamDecl] self
+#    5|           Type = Temperature
+#    5|       getBody(): [BraceStmt] { ... }
+#    5|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [MemberRefExpr] .degreesCelsius
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#    4|   getMember(2): [Initializer] Temperature.init(degreesCelsius:)
+#    4|       InterfaceType = (Temperature.Type) -> (Double) -> Temperature
+#    4|     getSelfParam(): [ParamDecl] self
+#    4|         Type = Temperature
+#    4|     getParam(0): [ParamDecl] degreesCelsius
+#    4|         Type = Double
+#    7| [Comment] // ...
+#    7| 
+#   10| [ExtensionDecl] extension of Temperature
+#   13|   getMember(0): [PatternBindingDecl] var ... = ...
+#   13|     getPattern(0): [TypedPattern] ... as ...
+#   13|       getSubPattern(): [NamedPattern] degreesFahrenheit
+#   13|       getTypeRepr(): [TypeRepr] Double
+#   13|   getMember(1): [ConcreteVarDecl] degreesFahrenheit
+#   13|       Type = Double
+#   13|     getAccessor(0): [Accessor] get
+#   13|         InterfaceType = (Temperature) -> () -> Double
+#   13|       getSelfParam(): [ParamDecl] self
+#   13|           Type = Temperature
+#   13|       getBody(): [BraceStmt] { ... }
+#   14|         getElement(0): [ReturnStmt] return ...
+#   14|           getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   14|             getFunction(): [MethodLookupExpr] .+(_:_:)
+#   14|               getBase(): [TypeExpr] Double.Type
+#   14|                 getTypeRepr(): [TypeRepr] Double
+#   14|               getMethodRef(): [DeclRefExpr] +(_:_:)
+#   14|             getArgument(0): [Argument] : ... ./(_:_:) ...
+#   14|               getExpr(): [BinaryExpr] ... ./(_:_:) ...
+#   14|                 getFunction(): [MethodLookupExpr] ./(_:_:)
+#   14|                   getBase(): [TypeExpr] Double.Type
+#   14|                     getTypeRepr(): [TypeRepr] Double
+#   14|                   getMethodRef(): [DeclRefExpr] /(_:_:)
+#   14|                 getArgument(0): [Argument] : ... .*(_:_:) ...
+#   14|                   getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#   14|                     getFunction(): [MethodLookupExpr] .*(_:_:)
+#   14|                       getBase(): [TypeExpr] Double.Type
+#   14|                         getTypeRepr(): [TypeRepr] Double
+#   14|                       getMethodRef(): [DeclRefExpr] *(_:_:)
+#   14|                     getArgument(0): [Argument] : .degreesCelsius
+#   14|                       getExpr(): [MemberRefExpr] .degreesCelsius
+#   14|                         getBase(): [DeclRefExpr] self
+#   14|                     getArgument(1): [Argument] : 9
+#   14|                       getExpr(): [IntegerLiteralExpr] 9
+#   14|                 getArgument(1): [Argument] : 5
+#   14|                   getExpr(): [IntegerLiteralExpr] 5
+#   14|               getExpr().getFullyConverted(): [ParenExpr] (...)
+#   14|             getArgument(1): [Argument] : 32
+#   14|               getExpr(): [IntegerLiteralExpr] 32
+#   18| [NamedFunction] collectionDowncast(_:)
+#   18|     InterfaceType = ([Any]) -> ()
+#   18|   getParam(0): [ParamDecl] arr
+#   18|       Type = [Any]
+#   18|   getBody(): [BraceStmt] { ... }
+#   19|     getElement(0): [SwitchStmt] switch arr { ... }
+#   19|       getExpr(): [DeclRefExpr] arr
+#   20|       getCase(0): [CaseStmt] case ...
+#   20|         getLabel(0): [CaseLabelItem] ... is ...
+#   20|           getPattern(): [IsPattern] ... is ...
+#   20|             getCastTypeRepr(): [TypeRepr] [Int]
+#   20|             getSubPattern(): [NamedPattern] ints
+#   20|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   20|         getVariable(0): [ConcreteVarDecl] ints
+#   20|             Type = [Int]
+#   21|         getBody(): [BraceStmt] { ... }
+#   21|           getElement(0): [IntegerLiteralExpr] 0
+#   22|       getCase(1): [CaseStmt] case ...
+#   22|         getLabel(0): [CaseLabelItem] ... is ...
+#   22|           getPattern(): [IsPattern] ... is ...
+#   22|             getCastTypeRepr(): [TypeRepr] [Bool]
+#   23|         getBody(): [BraceStmt] { ... }
+#   23|           getElement(0): [IntegerLiteralExpr] 1
+#   24|       getCase(2): [CaseStmt] case ...
+#   24|         getLabel(0): [CaseLabelItem] _
+#   24|           getPattern(): [AnyPattern] _
+#   25|         getBody(): [BraceStmt] { ... }
+#   25|           getElement(0): [IntegerLiteralExpr] 2
+#   29| [StructDecl] Button
+#   30|   getMember(0): [PatternBindingDecl] var ... = ...
+#-----|     getInit(0): [NilLiteralExpr] nil
+#   30|     getPattern(0): [TypedPattern] ... as ...
+#   30|       getSubPattern(): [NamedPattern] tapHandler
+#   30|       getTypeRepr(): [TypeRepr] (() -> ())?
+#   30|   getMember(1): [ConcreteVarDecl] tapHandler
+#   30|       Type = (() -> ())?
+#   30|     getAccessor(0): [Accessor] get
+#   30|         InterfaceType = (Button) -> () -> (() -> ())?
+#   30|       getSelfParam(): [ParamDecl] self
+#   30|           Type = Button
+#   30|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .tapHandler
+#-----|             getBase(): [DeclRefExpr] self
+#   30|     getAccessor(1): [Accessor] set
+#   30|         InterfaceType = (inout Button) -> ((() -> ())?) -> ()
+#   30|       getSelfParam(): [ParamDecl] self
+#   30|           Type = Button
+#   30|       getParam(0): [ParamDecl] value
+#   30|           Type = (() -> ())?
+#   30|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .tapHandler
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#   30|     getAccessor(2): [Accessor] _modify
+#   30|         InterfaceType = (inout Button) -> () -> ()
+#   30|       getSelfParam(): [ParamDecl] self
+#   30|           Type = Button
+#   30|       getBody(): [BraceStmt] { ... }
+#   30|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [MemberRefExpr] .tapHandler
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#   29|   getMember(2): [Initializer] Button.init(tapHandler:)
+#   29|       InterfaceType = (Button.Type) -> ((() -> ())?) -> Button
+#   29|     getSelfParam(): [ParamDecl] self
+#   29|         Type = Button
+#   29|     getParam(0): [ParamDecl] tapHandler
+#   29|         Type = (() -> ())?
+#   29|   getMember(3): [Initializer] Button.init()
+#   29|       InterfaceType = (Button.Type) -> () -> Button
+#   29|     getSelfParam(): [ParamDecl] self
+#   29|         Type = Button
+#   29|     getBody(): [BraceStmt] { ... }
+#   29|       getElement(0): [ReturnStmt] return
+#   33| [ClassDecl] ViewController
+#   34|   getMember(0): [PatternBindingDecl] var ... = ...
+#   34|     getInit(0): [CallExpr] call to Button.init()
+#   34|       getFunction(): [MethodLookupExpr] Button.init()
+#   34|         getBase(): [TypeExpr] Button.Type
+#   34|           getTypeRepr(): [TypeRepr] Button
+#   34|         getMethodRef(): [DeclRefExpr] Button.init()
+#   34|     getPattern(0): [TypedPattern] ... as ...
+#   34|       getSubPattern(): [NamedPattern] button
+#   34|       getTypeRepr(): [TypeRepr] Button
+#   34|   getMember(1): [ConcreteVarDecl] button
+#   34|       Type = Button
+#   34|     getAccessor(0): [Accessor] get
+#   34|         InterfaceType = (ViewController) -> () -> Button
+#   34|       getSelfParam(): [ParamDecl] self
+#   34|           Type = ViewController
+#   34|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .button
+#-----|             getBase(): [DeclRefExpr] self
+#   34|     getAccessor(1): [Accessor] set
+#   34|         InterfaceType = (ViewController) -> (Button) -> ()
+#   34|       getSelfParam(): [ParamDecl] self
+#   34|           Type = ViewController
+#   34|       getParam(0): [ParamDecl] value
+#   34|           Type = Button
+#   34|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .button
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#   34|     getAccessor(2): [Accessor] _modify
+#   34|         InterfaceType = (ViewController) -> () -> ()
+#   34|       getSelfParam(): [ParamDecl] self
+#   34|           Type = ViewController
+#   34|       getBody(): [BraceStmt] { ... }
+#   34|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [MemberRefExpr] .button
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#   36|   getMember(2): [NamedFunction] setup()
+#   36|       InterfaceType = (ViewController) -> () -> ()
+#   36|     getSelfParam(): [ParamDecl] self
+#   36|         Type = ViewController
+#   36|     getBody(): [BraceStmt] { ... }
+#   37|       getElement(0): [AssignExpr]  ... = ...
+#   37|         getDest(): [MemberRefExpr] .tapHandler
+#   37|           getBase(): [MemberRefExpr] .button
+#   37|             getBase(): [DeclRefExpr] self
+#   37|         getSource(): [CaptureListExpr] { ... }
+#   37|           getBindingDecl(0): [PatternBindingDecl] var ... = ...
+#   37|             getInit(0): [DeclRefExpr] self
+#   37|             getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (ViewController?) ...
+#   37|             getPattern(0): [NamedPattern] self
+#   37|           getVariable(0): [ConcreteVarDecl] self
+#   37|               Type = ViewController?
+#   37|           getClosureBody(): [ExplicitClosureExpr] { ... }
+#   37|             getBody(): [BraceStmt] { ... }
+#   38|               getElement(0): [GuardStmt] guard ... else { ... }
+#   38|                 getCondition(): [StmtCondition] StmtCondition
+#   38|                   getElement(0): [ConditionElement] let ...? = ... 
+#   38|                     getPattern(): [OptionalSomePattern] let ...?
+#   38|                       getSubPattern(): [NamedPattern] self
+#   38|                       getSubPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   38|                     getInitializer(): [DeclRefExpr] self
+#   38|                     getInitializer().getFullyConverted(): [LoadExpr] (ViewController?) ...
+#   38|                 getBody(): [BraceStmt] { ... }
+#   38|                   getElement(0): [ReturnStmt] return
+#   39|               getElement(1): [CallExpr] call to dismiss()
+#   39|                 getFunction(): [MethodLookupExpr] .dismiss()
+#   39|                   getBase(): [DeclRefExpr] self
+#   39|                   getMethodRef(): [DeclRefExpr] dismiss()
+#   38|             getCapture(0): [CapturedDecl] self
+#   37|         getSource().getFullyConverted(): [InjectIntoOptionalExpr] ((() -> ())?) ...
+#   43|   getMember(3): [NamedFunction] dismiss()
+#   43|       InterfaceType = (ViewController) -> () -> ()
+#   43|     getSelfParam(): [ParamDecl] self
+#   43|         Type = ViewController
+#   43|     getBody(): [BraceStmt] { ... }
+#   33|   getMember(4): [Deinitializer] ViewController.deinit()
+#   33|       InterfaceType = (ViewController) -> () -> ()
+#   33|     getSelfParam(): [ParamDecl] self
+#   33|         Type = ViewController
+#   33|     getBody(): [BraceStmt] { ... }
+#   33|   getMember(5): [Initializer] ViewController.init()
+#   33|       InterfaceType = (ViewController.Type) -> () -> ViewController
+#   33|     getSelfParam(): [ParamDecl] self
+#   33|         Type = ViewController
+#   33|     getBody(): [BraceStmt] { ... }
+#   33|       getElement(0): [ReturnStmt] return
+#   38| [ConcreteVarDecl] self
+#   38|     Type = ViewController
+#   39| [Comment] // refers to `self.dismiss()`
+#   39| 

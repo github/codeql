@@ -1,11 +1,11 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Kinds;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
-using Semmle.Util;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Util;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Lambda Create(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node) => new Lambda(info, node);
 
         private Lambda(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node)
-            : this(info.SetKind(ExprKind.LAMBDA), node.Body, Enumerators.Singleton(node.Parameter), null) { }
+            : this(info.SetKind(ExprKind.LAMBDA), node.Body, [node.Parameter], null) { }
 
         public static Lambda Create(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node) => new Lambda(info, node);
 

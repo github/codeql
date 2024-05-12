@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause to denial of service attacks.</p>
+<p>Attackers can compress a huge file which created by repeated similiar byte and convert it to a small compressed file.</p>
+
+</overview>
+<recommendation>
+
+<p>When you want to decompress a user-provided compressed file you must be careful about the decompression ratio or read these files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop.</p>
+
+</recommendation>
+<example>
+<p>python ZipFile library is vulnerable by default</p>
+<sample src="example_bad.py" />
+
+<p>By checking the decompressed size from input zipped file you can check the decompression ratio. attackers can forge this decompressed size header too.
+So can't rely on file_size attribute of ZipInfo class. this is recommended to use "ZipFile.open" method to be able to manage decompressed size.</p>
+<p>Reading decompressed file byte by byte and verifying the total current size in each loop cycle in recommended to use in any decompression library.</p>
+<sample src="example_good.py" />
+</example>
+<references>
+
+<li>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-22898">CVE-2023-22898</a>
+</li>
+<li>
+<a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attack</a>
+</li>
+
+</references>
+</qhelp>

@@ -4,12 +4,10 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
-class SinkTest extends InlineExpectationsTest {
-  SinkTest() { this = "SinkTest" }
+module SinkTest implements TestSig {
+  string getARelevantTag() { result = "isSink" }
 
-  override string getARelevantTag() { result = "isSink" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "isSink" and
     exists(DataFlow::Node sink |
       sinkNode(sink, _) and
@@ -20,12 +18,10 @@ class SinkTest extends InlineExpectationsTest {
   }
 }
 
-class NeutralSinkTest extends InlineExpectationsTest {
-  NeutralSinkTest() { this = "NeutralSinkTest" }
+module NeutralSinkTest implements TestSig {
+  string getARelevantTag() { result = "isNeutralSink" }
 
-  override string getARelevantTag() { result = "isNeutralSink" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "isNeutralSink" and
     exists(Call call, Callable callable |
       call.getCallee() = callable and
@@ -38,3 +34,5 @@ class NeutralSinkTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<SinkTest, NeutralSinkTest>>

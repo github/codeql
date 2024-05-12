@@ -38,8 +38,8 @@ predicate isFileConstructorArgument(Expr expSource, Expr exprDest, int paramCoun
 /**
  * A method call to `java.io.File::setReadable`.
  */
-private class FileSetRedableMethodAccess extends MethodAccess {
-  FileSetRedableMethodAccess() {
+private class FileSetRedableMethodCall extends MethodCall {
+  FileSetRedableMethodCall() {
     exists(Method m | this.getMethod() = m |
       m.getDeclaringType() instanceof TypeFile and
       m.hasName("setReadable")
@@ -67,7 +67,7 @@ private class FileSetRedableMethodAccess extends MethodAccess {
  * `setReadable(false, false)`, then `setRedabale(true, true)`.
  */
 predicate isPermissionsProtectedTempDirUse(DataFlow::Node sink) {
-  exists(FileSetRedableMethodAccess setReadable1, FileSetRedableMethodAccess setReadable2 |
+  exists(FileSetRedableMethodCall setReadable1, FileSetRedableMethodCall setReadable2 |
     setReadable1.isCallWithArguments(false, false) and
     setReadable2.isCallWithArguments(true, true)
   |

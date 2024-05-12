@@ -9,22 +9,7 @@ CodeQL for Java
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
-
-.. note::
-
-   For this example, we will be analyzing `Apache Struts <https://github.com/apache/struts>`__.
-
-   You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `Apache Struts <https://github.com/apache/struts>`__ from GitHub.
 
 .. Include language-agnostic section here
 
@@ -66,7 +51,7 @@ A simple CodeQL query
 
 .. note::
 
-   We are going to write a simple query which finds “if statements” with empty “then” blocks, so we can highlight the results like those on the previous slide. The query can be run in the `query console on LGTM <https://lgtm.com/query>`__, or in your `IDE <https://lgtm.com/help/lgtm/running-queries-ide>`__.
+   We are going to write a simple query which finds “if statements” with empty “then” blocks, so we can highlight the results like those on the previous slide.
 
    A `query <https://codeql.github.com/docs/ql-language-reference/queries/>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language reference <https://codeql.github.com/docs/ql-language-reference/>`__), see `About CodeQL queries <https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/>`__.
 
@@ -201,7 +186,3 @@ Model answer: redundant if-statement
 ====================================
 
 .. literalinclude:: ../query-examples/java/empty-if-java-model.ql
-
-.. note::
-
-  You can explore the results generated when this query is run on apache/struts in LGTM `here <https://lgtm.com/query/1269550358355690774/>`__.

@@ -186,7 +186,6 @@
 | Variable | specifiers2pp.cpp:16:13:16:22 | privateInt | privateInt | private |
 | Variable | specifiers2pp.cpp:17:21:17:30 | mutableInt | mutableInt | private |
 | Variable | specifiers2pp.cpp:20:13:20:24 | protectedInt | protectedInt | protected |
-| Variable | specifiers2pp.cpp:52:25:52:27 | vci | vci | static |
 | VariableDeclarationEntry | specifiers2.c:5:12:5:12 | declaration of i | i | extern |
 | VariableDeclarationEntry | specifiers2.c:6:12:6:12 | declaration of i | i | extern |
 | VariableDeclarationEntry | specifiers2.c:8:12:8:12 | declaration of j | j | extern |

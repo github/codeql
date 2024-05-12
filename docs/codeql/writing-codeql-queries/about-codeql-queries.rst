@@ -74,7 +74,7 @@ When writing your own alert queries, you would typically import the standard lib
 - :ref:`CodeQL library guide for C and C++ <codeql-library-for-cpp>`
 - :ref:`CodeQL library guide for C# <codeql-library-for-csharp>`
 - :ref:`CodeQL library guide for Go <codeql-library-for-go>`
-- :ref:`CodeQL library guide for Java <codeql-library-for-java>`
+- :ref:`CodeQL library guide for Java and Kotlin <codeql-library-for-java>`
 - :ref:`CodeQL library guide for JavaScript <codeql-library-for-javascript>`
 - :ref:`CodeQL library guide for Python <codeql-library-for-python>`
 - :ref:`CodeQL library guide for Ruby <codeql-library-for-ruby>`

@@ -39,7 +39,7 @@ void test5 () {
 
 void test6() {
 	short  s1;
-	for (s1 = 0; s1 < 0x0000ffff; s1++) {}
+	for (s1 = 0; s1 < 0x0000ffff; s1++) {} // BAD
 }
 
 void test7(long long l) {
@@ -144,4 +144,23 @@ void test13() {
 	if (sx > 128) {sx = 128;}
 	sz = (unsigned)sx & (unsigned)sy;
 	for (uc = 0; uc < sz; uc++) {} // GOOD
+}
+
+void test14() {
+	short s = 0;
+	int sx = 0x7FFF + 1;
+
+	// BAD: 's' is compared with a value of a wider type.
+	// 's' overflows before  reaching 'sx',
+	// causing an infinite loop
+	while (s < sx) {
+		s += 1;
+	}
+
+	unsigned int ux = 0;
+
+	// GOOD: 'ux' has a type  at least as wide as 'max_get'
+	while (ux < sx) {
+		ux += 1;
+	}
 }

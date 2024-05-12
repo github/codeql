@@ -27,9 +27,6 @@ private module ExperimentalPrivateDjango {
 
             override string getSourceType() { result = "django.http.request.GET.get" }
           }
-
-          /** DEPRECATED: Alias for DjangoGetParameter */
-          deprecated class DjangoGETParameter = DjangoGetParameter;
         }
       }
 
@@ -162,7 +159,7 @@ private module ExperimentalPrivateDjango {
             }
 
             override predicate isSameSite() {
-              exists(StrConst str |
+              exists(StringLiteral str |
                 str.getText() in ["Strict", "Lax"] and
                 DataFlow::exprNode(str)
                     .(DataFlow::LocalSourceNode)

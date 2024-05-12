@@ -115,18 +115,25 @@ Environments may be combined as follows:
 -  *Union*. This takes the union of the entry sets of the two environments.
 -  *Overriding union*. This takes the union of two environments, but if there are entries for a key in the first map, then no additional entries for that key are included from the second map.
 
-A *definite* environment has at most one entry for each key. Resolution is unique in a definite environment.
+A *definite* environment has only values that are *equal modulo weak aliasing* for each key.
 
 Global environments
 ~~~~~~~~~~~~~~~~~~~
 
 The global module environment has a single entry ``QlBuiltins``.
 
-The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
+The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``.
 
-The global predicate environment includes all the built-in classless predicates, as well as any extensional predicates declared in the database schema.
+The global predicate environment includes all the built-in classless predicates.
 
 The three global signature environments are empty.
+
+Database schema environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The database schema type environment has entries for types declared in the database schema.
+
+The database schema predicate environment has entries for extensional predicates declared in the database schema.
 
 The program is invalid if any of these environments is not definite.
 
@@ -146,7 +153,7 @@ These are defined as follows (with X denoting the type of entity we are currentl
 
     2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
 
-    3.  if X is ``predicates``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
+    3.  if X is ``predicate``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
 
 -  The *visible X environment* of a module is the union of
 
@@ -160,7 +167,9 @@ These are defined as follows (with X denoting the type of entity we are currentl
 
     5. if there is an enclosing module: all entries from the *visible X environment* of the enclosing module that have a key not present in the *publically declared X environment* of the current module, and
 
-    6. all parameters of the current module that are of type X.
+    6. if there is no enclosing module and X is either ``type`` or ``predicate``: all entries from the *database schema X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    7. all parameters of the current module that are of type X.
 
 The program is invalid if any of these environments is not definite.
 
@@ -199,24 +208,37 @@ Kinds of modules
 
 A module may be:
 
+-  A *declared module*, if it is defined by the ``module`` or ``ql`` grammar rules.
+-  A *non-declared module*, if it is not a *declared module*.
+
+A *declared module* may be:
+
 -  A *file module*, if it is defined implicitly by a QL file or a QLL file.
 -  A *query module*, if it is defined implicitly by a QL file.
 -  A *library module*, if it is not a query module.
+
+A *non-declared module* may be:
+
+-  A *built-in module*.
+-  An *instantiated module* (see :ref:`Parameterized modules`).
+-  An *instantiation-nested module*  (see :ref:`Parameterized modules`).
 
 A query module must contain one or more queries.
 
 Import directives
 ~~~~~~~~~~~~~~~~~
 
-An import directive refers to a module identifier:
+An import directive refers to a module expression:
 
 ::
 
    import ::= annotations "import" importModuleExpr ("as" modulename)?
 
-   qualId ::= simpleId | qualId "." simpleId
+   importModuleExpr ::= importModuleId arguments?
 
-   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
+   importModuleId ::= qualId | importModuleExpr "::" modulename
+
+   qualId ::= simpleId | qualId "." simpleId
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -249,6 +271,73 @@ For qualified identifiers (``a.b``):
 
 A qualified module identifier is only valid within an import.
 
+Module expressions contain a module identifier and optional arguments. If arguments are present, the module expression instantiates the module that the identifier resolves to (see :ref:`Parameterized modules`).
+
+Module expressions cannot refer to :ref:`Parameterized modules`. Instead, parameterized modules must always be fully instantiated when they are referenced.
+
+.. _Parameterized modules:
+
+Parameterized modules
+~~~~~~~~~~~~~~~~~~~~~
+
+Modules with parameters are called *parameterized modules*. A *declared module* has parameters if and only if it is a *library module* and its declaration uses the ``parameters`` syntax.
+
+*Parameterized modules* can be instantiated with arguments that match the signatures of the parameters:
+
+- Given a type signature, the corresponding argument must be a type that transitively extends the specified ``extends`` types and is a transitive subtype of the specified ``instanceof`` types.
+- Given a predicate signature, the corresponding argument must be a predicate with exactly matching relational types.
+- Given a module signature, the corresponding argument must be a module that exports all the specified type and predicate members. Furthermore, the module must be declared as matching the module signature via the ``implements`` syntax.
+
+The result of instantiating a *parameterized module* is an *instantiated module*. The parameterized module is called the *underlying module* of the *instantiated module*.
+
+Instantiation-relative and instantiation-nested entities
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given an *instantiated module*, every entity has a corresponding entity called the *instantiation-relative* entity, which is determined as follows:
+
+- If the entity is the *underlying module*, its *instantiation-relative* entity is the *instantiated module*.
+- If the entity is a parameter of the *underlying module*, its *instantiation-relative* entity is the corresponding argument.
+- If the entity is declared inside the *underlying module* or its nested modules, its *instantiation-relative* entity is an *instantiation-nested* entity that is generated by the module instantiation. Parameters of any modules that are nested inside the *underlying module* are considered declared inside the module for this purpose.
+- Otherwise, the entity's *instantiation-relative* entity is the initial entity itself.
+
+When the *instantiation-relative* entity of an entity is an *instantiation-nested* entity, then the initial entity is called the *underlying nested* entity of the *instantiation-nested* entity*, the *instantiated module* is called the *instantiation root* of the *instantiation-nested* entity, and the *underlying module* is called the *underlying root* of the *instantiation-nested* entity.
+
+The components of an *instantiation-nested* entity are the *instantiation-relative* entities of the components of its *underlying nested* entity. Among other things, this applies to:
+
+- values in the exported environments of *instantiation-nested* modules,
+- relational types of *instantiation-nested* predicates and predicate signatures,
+- required signatures of *instantiation-nested* parameters,
+- parameters of an *instantiation-nested* *parameterized module*,
+- fields and member predicates of *instantiation-nested* dataclasses.
+
+Given an *instantiated module*, any alias in the program has a corresponding alias called the *instantiation-relative* alias, which targets the *instantiation-relative* entity.
+
+Applicative instantiation
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Every entity has an *underlying completely uninstantiated* entity that is determined as follows:
+
+- If the entity is an *instantiated module*, its *underlying completely uninstantiated* entity is the *underlying completely uninstantiated* entity of the *underlying module*.
+- If the entity is an *instantiation-nested* entity, its *underlying completely uninstantiated* entity is the *underlying completely uninstantiated* entity of the *underlying nested* entity.
+- Otherwise, its *underlying completely uninstantiated* entity is the entity itself.
+
+An entity is called *completely uninstantiated* entity if it is its own *underlying completely uninstantiated* entity.
+
+Every *completely uninstantiated* entity has a *relevant set of parameters*, which is the set of all parameters of all the modules that the entity is transitively nested inside. For entities that are not nested inside any modules, the *relevant set of parameters* is empty.
+
+Note that the *relevant set of parameters* by construction contains only *completely uninstantiated* parameters.
+
+For a *completely uninstantiated* parameter, the *bottom-up instantiation-resolution* relative to an entity is defined as:
+
+- If the entity is an *instantiated module* or an *instantiation-nested* entity, the *bottom-up instantiation-resolution* is the *instantiation-relative* entity of the *bottom-up instantiation-resolution* relative to the *underlying module*.
+- Otherwise, the *bottom-up instantiation-resolution* is the parameter itself.
+
+An entity is called *fully instantiated* if none of the *bottom-up instantiation-resolutions* of the parameters in the *relevant set of parameters* of the entity's *underlying completely uninstantiated* entity are parameters.
+
+Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has *bottom-up instantiation-resolution*s relative both *instantiated module*s that are *equivalent modulo weak aliases*.
+
+Module instantiation is applicative, meaning that *equivalent* *instantiated modules* and *equivalent* *instantiation-nested* entities are indistinguishable.
+
 Module references and active modules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -268,7 +357,7 @@ QL is a typed language. This section specifies the kinds of types available, the
 Kinds of types
 ~~~~~~~~~~~~~~
 
-Types in QL are either *primitive* types, *database* types, *class* types, *character* types or *class domain* types.
+Types in QL are either *primitive* types, *database* types, *class* types, *character* types, *class domain* types, type *parameters*, or *instantiation-nested* types.
 
 The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string``.
 
@@ -289,7 +378,9 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
+   moduleExpr ::= moduleId arguments?
+
+   moduleId ::= modulename | moduleExpr "::" modulename
 
 A type reference is resolved to a type as follows:
 
@@ -712,7 +803,7 @@ The following table summarizes the syntactic constructs which can be marked with
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``deprecated`` | yes     |            | yes               | yes                   |         | yes    | yes     | yes     | yes        |
+| ``deprecated`` | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``override``   |         |            | yes               |                       |         | yes    |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
@@ -877,13 +968,18 @@ The types specified after the ``extends`` keyword are the *base types* of the cl
 
 The types specified after the ``instanceof`` keyword are the *instanceof types* of the class.
 
-A class type is said to *inherit* from the base types. In addition, inheritance is transitive: If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
+A class type is said to *final inherit* from base types that are final or referenced through final aliases, and a class type is said to *inherit* from its other base types. In addition, inheritance is transitive:
+
+- If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
+- If a type ``A`` final inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` final inherits from ``C``.
+- If a type ``A`` inherits from a type ``B``, and ``B`` final inherits from a type ``C``, then ``A`` final inherits from ``C``.
+- If a type ``A`` final inherits from a type ``B``, and ``B`` final inherits from a type ``C``, then ``A`` final inherits from ``C``.
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
 A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
-A valid class may not inherit from a final class, from itself, or from more than one primitive type.
+A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjoint from the set of types that it final inherits from.
 
 A valid class must have at least one base type or instanceof type.
 
@@ -893,9 +989,10 @@ Class dependencies
 The program is invalid if there is a cycle of class dependencies.
 
 The following are class dependencies:
+
 - ``C`` depends on ``C.C``
 - ``C.C`` depends on ``C.extends``
-- If ``C`` is abstract then it depends on all classes ``D`` such that ``C`` is a base type of ``D``.
+- If ``C`` is abstract then it depends on all classes ``D`` such that ``C`` is a base type of ``D`` and ``D`` inherits from ``C``.
 - ``C.extends`` depends on ``D.D`` for each base type ``D`` of ``C``.
 - ``C.extends`` depends on ``D`` for each instanceof type ``D`` of ``C``.
 
@@ -947,7 +1044,9 @@ A valid member predicate can be annotated with ``abstract``, ``cached``, ``final
 
 If a type is provided before the name of the member predicate, then that type is the *result type* of the predicate. Otherwise, the predicate has no result type. The types of the variables in the ``var_decls`` are called the predicate's *argument types*.
 
-A member predicate ``p`` with enclosing class ``C`` *overrides* a member predicate ``p'`` with enclosing class ``D`` when ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name and the same arity. An overriding predicate must have the same sequence of argument types as any predicates which it overrides, otherwise the program is invalid.
+A member predicate ``p`` with enclosing class ``C`` *overrides* a member predicate ``p'`` with enclosing class ``D`` when ``p`` is annotated ``overrride``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is not final, and both ``p`` and ``p'`` have the same name and the same arity. An overriding predicate must have the same sequence of argument types as any predicates which it overrides, otherwise the program is invalid.
+
+A member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate ``p'`` with enclosing class ``D`` when ``C`` final inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name and the same arity. Additionally, a member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate ``p'`` with enclosing class ``D`` when ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is final, and both ``p`` and ``p'`` have the same name and the same arity.
 
 Member predicates have one or more *root definitions*. If a member predicate overrides no other member predicate, then it is its own root definition. Otherwise, its root definitions are those of any member predicate that it overrides.
 
@@ -961,7 +1060,9 @@ A class may not inherit from a class with an abstract member predicate unless it
 
 A valid class must include a non-private predicate named ``toString`` with no arguments and a result type of ``string``, or it must inherit from a class that does.
 
-A valid class may not inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides the other, or the class defines a predicate that overrides both of them.
+A valid class may not inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides or shadows the other, or the class defines a predicate that overrides or shadows both of them.
+
+A valid class may not final inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides or shadows the other, or the class defines a predicate that shadows both of them.
 
 The typing environment for a member predicate or character is the same as if it were a non-member predicate, except that it additionally maps ``this`` to a type and also maps any fields on a class to a type. If the member is a character, then the typing environment maps ``this`` to the class domain type of the class. Otherwise, it maps ``this`` to the class type of the class itself.
 The typing environment also maps any field to the type of the field.
@@ -971,9 +1072,13 @@ Fields
 
 A field declaration introduces a mapping from the field name to the field declaration in the class's declared field environment.
 
-A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated ``override``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name.
+A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated ``override``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is not final, and both ``p`` and ``p'`` have the same name.
 
-A valid class may not inherit from two different classes that include a field with the same name, unless either one of the fields overrides the other, or the class defines a field that overrides both of them.
+A field ``f`` with enclosing class ``C`` *shadows* a field ``f'`` with enclosing class ``D`` when ``C`` final inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name. Additionally, a field ``f`` with enclosing class ``C`` *shadows* a field ``f'`` with enclosing class ``D`` when ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is final, and both ``p`` and ``p'`` have the same name.
+
+A valid class may not inherit from two different classes that include a field with the same name, unless either one of the fields overrides or shadows the other, or the class defines a field that overrides or shadows both of them.
+
+A valid class may not final inherit from two different classes that include a field with the same name, unless either one of the fields overrides or shadows the other, or the class defines a field that shadows both of them.
 
 A valid field must override another field if it is annotated ``override``.
 
@@ -1236,15 +1341,15 @@ The type environment for the arguments is the same as for the call.
 
 A valid call with results *resolves* to a set of predicates. The ways a call can resolve are as follows:
 
--  If the call has no receiver and the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible member-predicate environment of the enclosing class.
+-  If the call has no receiver and the predicate reference is a simple identifier, then the call is resolved by looking up the predicate reference and arity in the visible predicate environment of the enclosing class.
 
--  If the call has no receiver and the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible predicate environment of the enclosing module.
+-  If the call has no receiver and the predicate reference is a simple identifier, then the call is resolved by looking up the predicate reference and arity in the visible predicate environment of the enclosing module.
 
--  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
+-  If the call has no receiver and the predicate reference is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__") and the call is resolved by looking up the identifier in the exported predicate environment of the qualifier module.
 
--  If the type of the receiver is the same as the enclosing class, the predicate is resolved by looking up its name and arity in the visible predicate environment of the class.
+-  If the the call has a receiver and the type of the receiver is the same as the enclosing class, the call is resolved by looking up the predicate name and arity in the visible predicate environment of the enclosing class.
 
--  If the type of the receiver is not the same as the enclosing class, the predicate is resolved by looking up its name and arity in the exported predicate environment of the class or domain type.
+-  If the the call has a receiver and the type of the receiver is not the same as the enclosing class, the call is resolved by looking up the predicate name and arity in the exported predicate environment of the type of the receiver.
 
 If all the predicates that the call resolves to are declared on a primitive type, we then restrict to the set of predicates where each argument of the call is a subtype of the corresponding predicate argument type.
 Then we find all predicates ``p`` from this new set such that there is not another predicate ``p'`` where each argument of ``p'`` is a subtype of the corresponding argument in ``p``. We then say the call resolves to this set instead.
@@ -1267,9 +1372,10 @@ If the call includes a closure, then all declared predicate arguments, the enclo
 
 A call to a member predicate may  be a *direct* call:
  - If the receiver is not a super expression it is not direct.
- - If the receiver is ``A.super`` and ``A`` is an instanceof type and not a base type then it is not direct.
- - If the receiver is ``A.super`` and ``A`` is a base type type and not an instanceof type then it is direct.
- - If the receiver is ``A.super`` and ``A`` is a base type and an instanceof type then the call is not valid.
+ - If the receiver is ``A.super`` and ``A`` is an instanceof type and not a base type that is inherited from then it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type that is final inherited from then it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type that is inherited from and not an instanceof type then it is direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type that is inherited from and an instanceof type then the call is not valid.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of an instanceof type and not in the exported member predicate environment of a base type then it isn't direct.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and not in the exported member predicate environment of an instanceof type then it is direct.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and in the exported member predicate environment of an instanceof type then the call is not valid.
@@ -1657,7 +1763,7 @@ The grammar given in this section is disambiguated first by precedence, and seco
 Aliases
 -------
 
-Aliases define new names for existing QL entities.
+Aliases define new names for existing QL bindings.
 
 ::
 
@@ -1666,7 +1772,19 @@ Aliases define new names for existing QL entities.
          |   qldoc? annotations "module" modulename "=" moduleExpr ";"
 
 
-An alias introduces a binding from the new name to the entity referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
+An alias introduces a binding from the new name to the binding referred to by the right-hand side in the current module's visible predicate, type, or module environment respectively.
+
+An alias is called a *strong alias* if and only if it has the ``final`` annotation. Otherwise, it is called a *weak alias*.
+
+Two bindings `A`, `B` are called *equal modulo weak aliasing* if and only if one of the following conditions are satisfied:
+
+- `A` and `B` are the same binding or
+
+- `A`` is introduced by a *weak alias* for `C`, where `B` and `C` are *equal modulo weak aliasing* (or vice versa) or
+
+- `A` and `B` are introduced by the same strong alias and they are aliases for bindings that are *equal modulo weak aliasing*.
+
+Note that the third condition is only relevant in :ref:`Parameterized modules`, where the binding introduced by the alias can depend on instantiation parameters.
 
 Built-ins
 ---------
@@ -1946,6 +2064,10 @@ The following built-in predicates are members of type ``string``:
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | ``trim``             | string      |                  | The result is the receiver with all whitespace removed from the beginning and end of the string.                                                                                                                                                                                                                                                                                       |
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``codePointAt``      | int         | int              | The result is the unicode code point at the index given by the argument.                                                                                                                                                                                                                                                                                                               |
++----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``codePointCount``   | int         | int, int         | The result is the number of unicode code points in the receiver between the given indices.                                                                                                                                                                                                                                                                                             |
++----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Regular expressions are as defined by ``java.util.regex.Pattern`` in Java.
 For more information, see the `Java API Documentation <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html>`__.
@@ -1960,9 +2082,11 @@ Stratification
 
 A QL program can be *stratified* to a sequence of *layers*. A layer is a set of predicates and types.
 
-A valid stratification must include each predicate and type in the QL program. It must not include any other predicates or types.
+A valid stratification must include each predicate and type in the QL program that is *fully instantiated*. It must not include any other predicates or types.
 
 A valid stratification must not include the same predicate in multiple layers.
+
+Each non-abstract predicate has an associated body. For predicates inside *declared modules*, this is the predicate declaration. The body of an *instantiation-nested* predicate is the body of the *underlying nested* predicate where all references and calls have been substituted with the *instantiation-relative* entity or alias.
 
 Formulas, variable declarations and expressions within a predicate body have a *negation polarity* that is positive, negative, or zero. Positive and negative are opposites of each other, while zero is the opposite of itself. The negation polarity of a formula or expression is then determined as follows:
 
@@ -2039,7 +2163,7 @@ Predicates, and types can *depend* and *strictly depend* on each other. Such dep
 
 -  For each class ``C`` with a characteristic predicate, ``C.C`` depends on the characteristic predicate.
 
--  For each abstract class ``A`` in the program, for each type ``C`` that has ``A`` as a base type, ``A.class`` depends on ``C.class``.
+-  For each abstract class ``A`` in the program, for each type ``C`` that inherits from ``A`` and has ``A`` as a base type, ``A.class`` depends on ``C.class``.
 
 -  A predicate with a higher-order body may strictly depend or depend on each predicate reference within the body. The exact dependencies are left unspecified.
 
@@ -2091,7 +2215,7 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 
 -  To populate the type ``C.class`` for an abstract class type ``C``, identify each named tuple that has the following properties:
      - It is a member of ``C.C``.
-     - For each class ``D`` that has ``C`` as a base type then there is a named tuple with variables from the public fields of ``C`` and ``this`` that the given tuple and a tuple in ``D.class`` both extend.
+     - For each class ``D`` that inherits from ``C`` and has ``C`` as a base type then there is a named tuple with variables from the public fields of ``C`` and ``this`` that the given tuple and a tuple in ``D.class`` both extend.
 
 
 Query evaluation

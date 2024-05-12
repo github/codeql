@@ -1,6 +1,8 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import java
+private import semmle.code.java.dataflow.ApiSources as ApiSources
+private import semmle.code.java.dataflow.ApiSinks as ApiSinks
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
@@ -27,8 +29,9 @@ class ExternalApi extends Callable {
    */
   string getApiName() {
     result =
-      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
-        "#" + this.getName() + paramsString(this)
+      this.getDeclaringType().getPackage() + "." +
+        this.getDeclaringType().getSourceDeclaration().nestedName() + "#" + this.getName() +
+        paramsString(this)
   }
 
   private string getJarName() {
@@ -64,21 +67,19 @@ class ExternalApi extends Callable {
   pragma[nomagic]
   predicate hasSummary() {
     this = any(SummarizedCallable sc).asCallable() or
-    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
+    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   pragma[nomagic]
-  predicate isSource() {
-    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
-  }
+  predicate isSource() { this.getAnOutput() instanceof ApiSources::SourceNode }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { sinkNode(this.getAnInput(), _) }
+  predicate isSink() { this.getAnInput() instanceof ApiSinks::SinkNode }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable() }
+  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable n).asCallable() }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -89,13 +90,10 @@ class ExternalApi extends Callable {
   }
 }
 
-/** DEPRECATED: Alias for ExternalApi */
-deprecated class ExternalAPI = ExternalApi;
-
 /**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.

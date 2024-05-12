@@ -49,15 +49,6 @@ private module RenderCallUtils {
  * Provides classes for working with Rails.
  */
 module Rails {
-  /**
-   * DEPRECATED: Any call to `html_safe` is considered an XSS sink.
-   * A method call on a string to mark it as HTML safe for Rails. Strings marked
-   * as such will not be automatically escaped when inserted into HTML.
-   */
-  deprecated class HtmlSafeCall extends MethodCall {
-    HtmlSafeCall() { this.getMethodName() = "html_safe" }
-  }
-
   /** A call to a Rails method to escape HTML. */
   class HtmlEscapeCall extends MethodCall instanceof HtmlEscapeCallImpl { }
 
@@ -314,7 +305,7 @@ private predicate isPotentialRenderCall(MethodCall renderCall, Location loc, Erb
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
 /** A synthetic global to represent the value passed to the `locals` argument of a render call for a specific ERB file. */
-private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+private class LocalAssignsHashSyntheticGlobal extends string {
   private ErbFile erbFile;
   private string id;
   // Note that we can't use an actual `Rails::RenderCall` here due to problems with non-monotonic recursion
@@ -346,7 +337,7 @@ private class RenderLocalsSummary extends SummarizedCallable {
 
   override Rails::RenderCall getACall() { result = glob.getARenderCall() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[locals:]" and
     output = "SyntheticGlobal[" + glob + "]" and
     preservesValue = true
@@ -364,7 +355,7 @@ private class AccessLocalsSummary extends SummarizedCallable {
     result.getMethodName() = "local_assigns"
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "SyntheticGlobal[" + glob + "]" and
     output = "ReturnValue" and
     preservesValue = true
@@ -394,7 +385,7 @@ private class AccessLocalsKeySummary extends SummarizedCallable {
     result.getReceiver() instanceof SelfVariableReadAccess
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "SyntheticGlobal[" + glob + "].Element[:" + methodName + "]" and
     output = "ReturnValue" and
     preservesValue = true

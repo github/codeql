@@ -1,0 +1,62 @@
+module(
+    name = "codeql",
+    version = "0.0",
+)
+
+# this points to our internal repository when `codeql` is checked out as a submodule thereof
+# when building things from `codeql` independently this is stubbed out in `.bazelrc`
+bazel_dep(name = "semmle_code", version = "0.0")
+local_path_override(
+    module_name = "semmle_code",
+    path = "..",
+)
+
+# see https://registry.bazel.build/ for a list of available packages
+
+bazel_dep(name = "platforms", version = "0.0.9")
+bazel_dep(name = "rules_go", version = "0.47.0")
+bazel_dep(name = "rules_pkg", version = "0.10.1")
+bazel_dep(name = "rules_nodejs", version = "6.0.3")
+bazel_dep(name = "rules_python", version = "0.31.0")
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
+bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
+bazel_dep(name = "fmt", version = "10.0.0")
+bazel_dep(name = "gazelle", version = "0.36.0")
+
+bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "codegen_deps",
+    python_version = "3.11",
+    requirements_lock = "//misc/codegen:requirements_lock.txt",
+)
+use_repo(pip, "codegen_deps")
+
+swift_deps = use_extension("//swift/third_party:load.bzl", "swift_deps")
+
+# following list can be kept in sync with `bazel mod tidy`
+use_repo(
+    swift_deps,
+    "binlog",
+    "picosha2",
+    "swift_prebuilt_darwin_x86_64",
+    "swift_prebuilt_linux",
+    "swift_toolchain_linux",
+    "swift_toolchain_macos",
+)
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(
+    name = "nodejs",
+    node_version = "18.15.0",
+)
+use_repo(node, "nodejs", "nodejs_toolchains")
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.download(version = "1.22.2")
+
+register_toolchains(
+    "@nodejs_toolchains//:all",
+)

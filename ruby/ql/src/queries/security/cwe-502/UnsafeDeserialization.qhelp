@@ -28,6 +28,13 @@ safely be used.
 </p>
 
 <p>
+If deserializing an untrusted XML document using the <code>ox</code> gem,
+do not use <code>parse_obj</code> and <code>load</code> using the non-default :object mode.
+Instead use the <code>load</code> method in the default mode or better explicitly set a safe
+mode such as :hash. 
+</p>
+
+<p>
 To safely deserialize <a href="https://en.wikipedia.org/wiki/Property_list">Property List</a>
 files using the <code>plist</code> gem, ensure that you pass <code>marshal: false</code>
 when calling <code>Plist.parse_xml</code>.
@@ -37,8 +44,8 @@ when calling <code>Plist.parse_xml</code>.
 <example>
 <p>
 The following example calls the <code>Marshal.load</code>,
-<code>JSON.load</code>, <code>YAML.load</code>, and <code>Oj.load</code> methods
-on data from an HTTP request. Since these methods are capable of deserializing
+<code>JSON.load</code>, <code>YAML.load</code>, <code>Oj.load</code> and <code>Ox.parse_obj</code>
+methods on data from an HTTP request. Since these methods are capable of deserializing
 to arbitrary objects, this is inherently unsafe.
 </p>
 <sample src="examples/UnsafeDeserializationBad.rb"/>

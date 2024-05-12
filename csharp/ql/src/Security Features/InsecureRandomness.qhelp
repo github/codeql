@@ -29,11 +29,6 @@ number generator. <code>Random</code> is not cryptographically secure, and shoul
 security contexts. For contexts which are not security sensitive, <code>Random</code> may be
 preferable as it has a more convenient interface, and is likely to be faster.
 </p>
-<p>
-For the specific use-case of generating passwords, consider
-<code>System.Web.Security.Membership.GeneratePassword</code>, which provides a cryptographically
-secure method of generating random passwords.
-</p>
 
 </recommendation>
 
@@ -54,10 +49,7 @@ purpose. In this case, it is much harder to predict the generated integers.
 </p>
 <p>
 In the final example, the password is generated using the <code>Membership.GeneratePassword</code>
-library method, which uses a cryptographically secure random number generator to generate a random
-series of characters. This method should be preferred when generating passwords, if possible, as it
-avoids potential pitfalls when converting the output of a random number generator (usually an int or
-a byte) to a series of permitted characters.
+library method, which generates a password with a bias, therefore should be avoided.
 </p>
 <sample src="InsecureRandomness.cs" />
 

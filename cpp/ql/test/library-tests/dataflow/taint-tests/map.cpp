@@ -71,11 +71,11 @@ void test_pair()
 	sink(i.second); // $ MISSING: ast,ir
 	sink(i); // $ ast,ir
 	sink(j.first);
-	sink(j.second); // $ SPURIOUS: ast,ir
-	sink(j); // $ SPURIOUS: ast,ir
+	sink(j.second); // $ SPURIOUS: ast
+	sink(j); // $ SPURIOUS: ast
 	sink(k.first);
-	sink(k.second); // $ SPURIOUS: ast,ir
-	sink(k); // $ SPURIOUS: ast,ir
+	sink(k.second); // $ SPURIOUS: ast
+	sink(k); // $ SPURIOUS: ast
 	sink(l.first);
 	sink(l.second); // $ MISSING: ast,ir
 	sink(l); // $ ast,ir
@@ -196,10 +196,10 @@ void test_map()
 	sink(m18); // $ ast,ir
 	m15.swap(m16);
 	m17.swap(m18);
-	sink(m15); // $ SPURIOUS: ast,ir
+	sink(m15); // $ SPURIOUS: ast
 	sink(m16); // $ ast,ir
 	sink(m17); // $ ast,ir
-	sink(m18); // $ SPURIOUS: ast,ir
+	sink(m18); // $ SPURIOUS: ast
 
 	// merge
 	std::map<char *, char *> m19, m20, m21, m22;
@@ -345,10 +345,10 @@ void test_unordered_map()
 	sink(m18); // $ ast,ir
 	m15.swap(m16);
 	m17.swap(m18);
-	sink(m15); // $ SPURIOUS: ast,ir
+	sink(m15); // $ SPURIOUS: ast
 	sink(m16); // $ ast,ir
 	sink(m17); // $ ast,ir
-	sink(m18); // $ SPURIOUS: ast,ir
+	sink(m18); // $ SPURIOUS: ast
 
 	// merge
 	std::unordered_map<char *, char *> m19, m20, m21, m22;
@@ -435,4 +435,17 @@ void test_unordered_map()
 	sink(m35);
 	sink(m35.emplace(std::pair<char *, char *>(source(), "def")).first); // $ MISSING: ast,ir
 	sink(m35); // $ MISSING: ast,ir
+}
+
+namespace {
+	int* indirect_source();
+	void indirect_sink(int*);
+}
+
+void test_indirect_taint() {
+  std::map<int, int*> m;
+  int* p = indirect_source();
+  m[1] = p;
+  int* q = m[1];
+  sink(q); // $ ir MISSING: ast
 }

@@ -1,8 +1,6 @@
 private import python
-private import semmle.python.dataflow.new.TaintTracking2
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.DataFlow2
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.frameworks.Flask
@@ -164,9 +162,7 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
 
   /** Holds if remote user input was used in the comparison. */
   predicate includesUserInput() {
-    exists(UserInputInComparisonConfig config |
-      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
-    )
+    UserInputInComparisonFlow::flowTo(DataFlow::exprNode(anotherParameter))
   }
 }
 
@@ -177,9 +173,7 @@ class SecretSource extends DataFlow::Node {
   SecretSource() { secret = this.asExpr() }
 
   /** Holds if the secret was deliverd by remote user. */
-  predicate includesUserInput() {
-    exists(UserInputSecretConfig config | config.hasFlowTo(DataFlow2::exprNode(secret)))
-  }
+  predicate includesUserInput() { UserInputSecretFlow::flowTo(DataFlow::exprNode(secret)) }
 }
 
 /** A string for `match` that identifies strings that look like they represent secret data. */
@@ -210,8 +204,11 @@ abstract class ClientSuppliedSecret extends DataFlow::CallCfgNode { }
 private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
   FlaskClientSuppliedSecret() {
     this = Flask::request().getMember("headers").getMember(["get", "get_all", "getlist"]).getACall() and
-    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StrConst).getText().toLowerCase() =
-      sensitiveheaders()
+    [this.getArg(0), this.getArgByName(["key", "name"])]
+        .asExpr()
+        .(StringLiteral)
+        .getText()
+        .toLowerCase() = sensitiveheaders()
   }
 }
 
@@ -222,7 +219,7 @@ private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
           .getMember(["headers", "META"])
           .getMember("get")
           .getACall() and
-    [this.getArg(0), this.getArgByName("key")].asExpr().(StrConst).getText().toLowerCase() =
+    [this.getArg(0), this.getArgByName("key")].asExpr().(StringLiteral).getText().toLowerCase() =
       sensitiveheaders()
   }
 }
@@ -235,7 +232,7 @@ API::Node requesthandler() {
 private class TornadoClientSuppliedSecret extends ClientSuppliedSecret {
   TornadoClientSuppliedSecret() {
     this = requesthandler().getMember(["headers", "META"]).getMember("get").getACall() and
-    [this.getArg(0), this.getArgByName("key")].asExpr().(StrConst).getText().toLowerCase() =
+    [this.getArg(0), this.getArgByName("key")].asExpr().(StringLiteral).getText().toLowerCase() =
       sensitiveheaders()
   }
 }
@@ -249,8 +246,11 @@ private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
   WerkzeugClientSuppliedSecret() {
     this =
       headers().getMember(["headers", "META"]).getMember(["get", "get_all", "getlist"]).getACall() and
-    [this.getArg(0), this.getArgByName(["key", "name"])].asExpr().(StrConst).getText().toLowerCase() =
-      sensitiveheaders()
+    [this.getArg(0), this.getArgByName(["key", "name"])]
+        .asExpr()
+        .(StringLiteral)
+        .getText()
+        .toLowerCase() = sensitiveheaders()
   }
 }
 
@@ -267,23 +267,21 @@ private string sensitiveheaders() {
 /**
  * A config that tracks data flow from remote user input to Variable that hold sensitive info
  */
-class UserInputSecretConfig extends TaintTracking::Configuration {
-  UserInputSecretConfig() { this = "UserInputSecretConfig" }
+module UserInputSecretConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
 }
+
+module UserInputSecretFlow = TaintTracking::Global<UserInputSecretConfig>;
 
 /**
  * A config that tracks data flow from remote user input to Equality test
  */
-class UserInputInComparisonConfig extends TaintTracking2::Configuration {
-  UserInputInComparisonConfig() { this = "UserInputInComparisonConfig" }
+module UserInputInComparisonConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |
       cmpop.getSymbol() = ["==", "in", "is not", "!="] and
       cmp.compares(left, cmpop, right) and
@@ -292,21 +290,23 @@ class UserInputInComparisonConfig extends TaintTracking2::Configuration {
   }
 }
 
+module UserInputInComparisonFlow = TaintTracking::Global<UserInputInComparisonConfig>;
+
 /**
  * A configuration tracing flow from  a client Secret obtained by an HTTP header to a len() function.
  */
-private class ExcludeLenFunc extends TaintTracking2::Configuration {
-  ExcludeLenFunc() { this = "ExcludeLenFunc" }
+private module ExcludeLenFuncConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(Call call |
       call.getFunc().(Name).getId() = "len" and
       sink.asExpr() = call.getArg(0)
     )
   }
 }
+
+module ExcludeLenFuncFlow = TaintTracking::Global<ExcludeLenFuncConfig>;
 
 /**
  * Holds if there is a fast-fail check.
@@ -320,10 +320,10 @@ class CompareSink extends DataFlow::Node {
       ) and
       (
         compare.getLeft() = this.asExpr() and
-        not compare.getComparator(0).(StrConst).getText() = "bearer"
+        not compare.getComparator(0).(StringLiteral).getText() = "bearer"
         or
         compare.getComparator(0) = this.asExpr() and
-        not compare.getLeft().(StrConst).getText() = "bearer"
+        not compare.getLeft().(StringLiteral).getText() = "bearer"
       )
     )
     or
@@ -343,8 +343,7 @@ class CompareSink extends DataFlow::Node {
    * Holds if there is a flow to len().
    */
   predicate flowtolen() {
-    exists(ExcludeLenFunc config, DataFlow2::PathNode source, DataFlow2::PathNode sink |
-      config.hasFlowPath(source, sink)
-    )
+    // TODO: Fly by comment: I don't understand this code at all, seems very strange.
+    ExcludeLenFuncFlow::flowPath(_, _)
   }
 }

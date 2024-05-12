@@ -3,7 +3,11 @@
 #include <filesystem>
 #include <stdlib.h>
 #include <optional>
+#ifdef _WIN32
+#include <process.h>
+#else
 #include <unistd.h>
+#endif
 #include "absl/strings/str_cat.h"
 
 #define LEVEL_REGEX_PATTERN "trace|debug|info|warning|error|critical|no_logs"
@@ -169,7 +173,7 @@ void Log::flushImpl() {
   }
 }
 
-void Log::diagnoseImpl(const SwiftDiagnostic& source,
+void Log::diagnoseImpl(const Diagnostic& source,
                        const std::chrono::nanoseconds& elapsed,
                        std::string_view message) {
   using Clock = std::chrono::system_clock;

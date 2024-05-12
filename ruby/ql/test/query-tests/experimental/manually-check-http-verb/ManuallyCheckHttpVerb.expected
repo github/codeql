@@ -1,16 +1,16 @@
 edges
-| ManuallyCheckHttpVerb.rb:11:5:11:10 | method | ManuallyCheckHttpVerb.rb:12:8:12:22 | ... == ... |
-| ManuallyCheckHttpVerb.rb:11:14:11:24 | call to env | ManuallyCheckHttpVerb.rb:11:14:11:42 | ...[...] |
-| ManuallyCheckHttpVerb.rb:11:14:11:42 | ...[...] | ManuallyCheckHttpVerb.rb:11:5:11:10 | method |
-| ManuallyCheckHttpVerb.rb:19:5:19:10 | method | ManuallyCheckHttpVerb.rb:20:8:20:22 | ... == ... |
-| ManuallyCheckHttpVerb.rb:19:14:19:35 | call to request_method | ManuallyCheckHttpVerb.rb:19:5:19:10 | method |
-| ManuallyCheckHttpVerb.rb:27:5:27:10 | method | ManuallyCheckHttpVerb.rb:28:8:28:22 | ... == ... |
-| ManuallyCheckHttpVerb.rb:27:14:27:27 | call to method | ManuallyCheckHttpVerb.rb:27:5:27:10 | method |
-| ManuallyCheckHttpVerb.rb:35:5:35:10 | method | ManuallyCheckHttpVerb.rb:36:8:36:22 | ... == ... |
-| ManuallyCheckHttpVerb.rb:35:14:35:39 | call to raw_request_method | ManuallyCheckHttpVerb.rb:35:5:35:10 | method |
-| ManuallyCheckHttpVerb.rb:51:7:51:12 | method | ManuallyCheckHttpVerb.rb:52:10:52:23 | ... == ... |
-| ManuallyCheckHttpVerb.rb:51:16:51:44 | call to request_method_symbol | ManuallyCheckHttpVerb.rb:51:7:51:12 | method |
-| ManuallyCheckHttpVerb.rb:59:10:59:20 | call to env | ManuallyCheckHttpVerb.rb:59:10:59:38 | ...[...] |
+| ManuallyCheckHttpVerb.rb:11:5:11:10 | method | ManuallyCheckHttpVerb.rb:12:8:12:22 | ... == ... | provenance |  |
+| ManuallyCheckHttpVerb.rb:11:14:11:24 | call to env | ManuallyCheckHttpVerb.rb:11:14:11:42 | ...[...] | provenance |  |
+| ManuallyCheckHttpVerb.rb:11:14:11:42 | ...[...] | ManuallyCheckHttpVerb.rb:11:5:11:10 | method | provenance |  |
+| ManuallyCheckHttpVerb.rb:19:5:19:10 | method | ManuallyCheckHttpVerb.rb:20:8:20:22 | ... == ... | provenance |  |
+| ManuallyCheckHttpVerb.rb:19:14:19:35 | call to request_method | ManuallyCheckHttpVerb.rb:19:5:19:10 | method | provenance |  |
+| ManuallyCheckHttpVerb.rb:27:5:27:10 | method | ManuallyCheckHttpVerb.rb:28:8:28:22 | ... == ... | provenance |  |
+| ManuallyCheckHttpVerb.rb:27:14:27:27 | call to method | ManuallyCheckHttpVerb.rb:27:5:27:10 | method | provenance |  |
+| ManuallyCheckHttpVerb.rb:35:5:35:10 | method | ManuallyCheckHttpVerb.rb:36:8:36:22 | ... == ... | provenance |  |
+| ManuallyCheckHttpVerb.rb:35:14:35:39 | call to raw_request_method | ManuallyCheckHttpVerb.rb:35:5:35:10 | method | provenance |  |
+| ManuallyCheckHttpVerb.rb:51:7:51:12 | method | ManuallyCheckHttpVerb.rb:52:10:52:23 | ... == ... | provenance |  |
+| ManuallyCheckHttpVerb.rb:51:16:51:44 | call to request_method_symbol | ManuallyCheckHttpVerb.rb:51:7:51:12 | method | provenance |  |
+| ManuallyCheckHttpVerb.rb:59:10:59:20 | call to env | ManuallyCheckHttpVerb.rb:59:10:59:38 | ...[...] | provenance |  |
 nodes
 | ManuallyCheckHttpVerb.rb:4:8:4:19 | call to get? | semmle.label | call to get? |
 | ManuallyCheckHttpVerb.rb:11:5:11:10 | method | semmle.label | method |

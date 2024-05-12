@@ -15,7 +15,7 @@ import java
 
 predicate dangerousMethod(string descriptor) { descriptor = "java.lang.Thread.stop" }
 
-from MethodAccess call, Method target, string descriptor
+from MethodCall call, Method target, string descriptor
 where
   call.getCallee() = target and
   descriptor = target.getDeclaringType().getQualifiedName() + "." + target.getName() and

@@ -8,12 +8,10 @@ class TestRemoteSource extends RemoteFlowSource {
   override string getSourceType() { result = "TestSource" }
 }
 
-class Test extends InlineExpectationsTest {
-  Test() { this = "PartialPathTraversalFromRemoteTest" }
+module Test implements TestSig {
+  string getARelevantTag() { result = "hasTaintFlow" }
 
-  override string getARelevantTag() { result = "hasTaintFlow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
     exists(DataFlow::Node sink | PartialPathTraversalFromRemoteFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -22,3 +20,5 @@ class Test extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<Test>

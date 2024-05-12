@@ -1,6 +1,6 @@
 using System;
-using Semmle.Util.Logging;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
@@ -13,12 +13,42 @@ namespace Semmle.Extraction
         /// <summary>
         /// The specified number of threads, or the default if unspecified.
         /// </summary>
-        public int Threads { get; private set; } = System.Environment.ProcessorCount;
+        public int Threads { get; private set; } = EnvironmentVariables.GetDefaultNumberOfThreads();
 
         /// <summary>
-        /// The verbosity used in output and logging.
+        /// The verbosity used specified by the '--silent' or '--verbose' flags or the '--verbosity' option.
         /// </summary>
-        public Verbosity Verbosity { get; protected set; } = Verbosity.Info;
+        public Verbosity LegacyVerbosity { get; protected set; } = Verbosity.Info;
+
+        private Verbosity? verbosity = null;
+        public Verbosity Verbosity
+        {
+            get
+            {
+                if (verbosity != null)
+                {
+                    return verbosity.Value;
+                }
+
+                var envVarValue = EnvironmentVariables.GetExtractorOption("LOGGING_VERBOSITY");
+                verbosity = VerbosityExtensions.ParseVerbosity(envVarValue, logThreadId: true);
+                if (verbosity != null)
+                {
+                    return verbosity.Value;
+                }
+
+                envVarValue = Environment.GetEnvironmentVariable("CODEQL_VERBOSITY");
+                verbosity = VerbosityExtensions.ParseVerbosity(envVarValue, logThreadId: true);
+                if (verbosity != null)
+                {
+                    return verbosity.Value;
+                }
+
+                // This only works, because we already parsed the provided options, so `LegacyVerbosity` is already set (or it still has the default value).
+                verbosity = LegacyVerbosity;
+                return verbosity.Value;
+            }
+        }
 
         /// <summary>
         /// Whether to output to the console.
@@ -26,24 +56,9 @@ namespace Semmle.Extraction
         public bool Console { get; private set; } = false;
 
         /// <summary>
-        /// Holds if CIL should be extracted.
-        /// </summary>
-        public bool CIL { get; private set; } = true;
-
-        /// <summary>
         /// Holds if assemblies shouldn't be extracted twice.
         /// </summary>
         public bool Cache { get; private set; } = true;
-
-        /// <summary>
-        /// Whether to extract PDB information.
-        /// </summary>
-        public bool PDB { get; private set; } = false;
-
-        /// <summary>
-        /// Whether "fast extraction mode" has been enabled.
-        /// </summary>
-        public bool Fast { get; private set; } = false;
 
         /// <summary>
         /// Whether extraction is done using `codeql test run`.
@@ -63,7 +78,7 @@ namespace Semmle.Extraction
                     Threads = int.Parse(value);
                     return true;
                 case "verbosity":
-                    Verbosity = (Verbosity)int.Parse(value);
+                    LegacyVerbosity = (Verbosity)int.Parse(value);
                     return true;
                 case "trap_compression":
                     if (Enum.TryParse<TrapWriter.CompressionMode>(value, true, out var mode))
@@ -72,9 +87,6 @@ namespace Semmle.Extraction
                         return true;
                     }
                     return false;
-                case "cil":
-                    CIL = Boolean.Parse(value);
-                    return true;
                 default:
                     return false;
             }
@@ -87,25 +99,16 @@ namespace Semmle.Extraction
             switch (flag)
             {
                 case "silent":
-                    if (value)
-                        Verbosity = Verbosity.Off;
+                    LegacyVerbosity = value ? Verbosity.Off : Verbosity.Info;
                     return true;
                 case "verbose":
-                    Verbosity = value ? Verbosity.Debug : Verbosity.Error;
+                    LegacyVerbosity = value ? Verbosity.Debug : Verbosity.Error;
                     return true;
                 case "console":
                     Console = value;
                     return true;
                 case "cache":
                     Cache = value;
-                    return true;
-                case "pdb":
-                    PDB = value;
-                    CIL = true;
-                    return true;
-                case "fast":
-                    CIL = !value;
-                    Fast = value;
                     return true;
                 case "qltest":
                     QlTest = value;

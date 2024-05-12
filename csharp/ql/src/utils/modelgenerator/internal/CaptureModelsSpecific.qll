@@ -3,12 +3,12 @@
  */
 
 private import csharp as CS
-private import dotnet
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.frameworks.system.linq.Expressions
-import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
@@ -27,6 +27,10 @@ private predicate isHigherOrder(CS::Callable api) {
   )
 }
 
+private predicate irrelevantAccessor(CS::Accessor a) {
+  a.getDeclaration().(CS::Property).isReadWrite()
+}
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
@@ -37,7 +41,13 @@ private predicate isRelevantForModels(CS::Callable api) {
   not api instanceof Util::MainMethod and
   not api instanceof CS::Destructor and
   not api instanceof CS::AnonymousFunctionExpr and
-  not api.(CS::Constructor).isParameterless()
+  not api.(CS::Constructor).isParameterless() and
+  // Disregard all APIs that have a manual model.
+  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) and
+  not api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()) and
+  // Disregard properties that have both a get and a set accessor,
+  // which implicitly means auto implemented properties.
+  not irrelevantAccessor(api)
 }
 
 /**
@@ -58,16 +68,16 @@ predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
  * In the Standard library and 3rd party libraries it the callables that can be called
  * from outside the library itself.
  */
-class TargetApiSpecific extends DotNet::Callable {
+class TargetApiSpecific extends CS::Callable {
   TargetApiSpecific() {
     this.fromSource() and
     this.isUnboundDeclaration()
   }
 }
 
-predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
+predicate asPartialModel = ExternalFlow::asPartialModel/1;
 
-predicate asPartialNeutralModel = DataFlowPrivate::Csv::asPartialNeutralModel/1;
+predicate asPartialNeutralModel = ExternalFlow::asPartialNeutralModel/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.

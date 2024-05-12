@@ -1,0 +1,6 @@
+unreachableNode
+| test2.py:16:17:16:17 | ControlFlowNode for y | Unreachable node in step of kind load Attribute bar. |
+| test2.py:25:23:25:23 | ControlFlowNode for x | Unreachable node in step of kind load Attribute attribute. |
+| test2.py:25:23:25:23 | ControlFlowNode for x | Unreachable node in step of kind simpleLocalSmallStep. |
+| test2.py:26:17:26:17 | ControlFlowNode for y | Unreachable node in step of kind load Attribute bar. |
+| test2.py:27:23:27:23 | ControlFlowNode for x | Unreachable node in step of kind simpleLocalSmallStep. |

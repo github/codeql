@@ -19,6 +19,39 @@ github.com/go-xmlpath/xmlpath
 # github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
 ## explicit
 github.com/jbowtie/gokogiri
+# github.com/lestrrat-go/libxml2 v0.0.0-20231124114421-99c71026c2f5
+## explicit
+github.com/lestrrat-go/libxml2
 # github.com/santhosh-tekuri/xpathparser v1.0.0
 ## explicit
 github.com/santhosh-tekuri/xpathparser
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+github.com/davecgh/go-spew
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib
+# github.com/stretchr/objx v0.5.0
+## explicit
+github.com/stretchr/objx
+# github.com/stretchr/testify v1.8.4
+## explicit
+github.com/stretchr/testify
+# gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405
+## explicit
+gopkg.in/check.v1
+# gopkg.in/xmlpath.v1 v1.0.0-20140413065638-a146725ea6e7
+## explicit
+gopkg.in/xmlpath.v1
+# gopkg.in/yaml.v3 v3.0.1
+## explicit
+gopkg.in/yaml.v3
+# launchpad.net/gocheck v0.0.0-20140225173054-000000000087
+## explicit
+launchpad.net/gocheck
+# launchpad.net/xmlpath v0.0.0-20130614043138-000000000004
+## explicit
+launchpad.net/xmlpath

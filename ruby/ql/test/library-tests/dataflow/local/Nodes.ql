@@ -6,5 +6,5 @@ query predicate ret(SourceReturnNode node) { any() }
 
 query predicate arg(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
   n.argumentOf(call, pos) and
-  not n instanceof SummaryNode
+  not n instanceof FlowSummaryNode
 }

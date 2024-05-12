@@ -378,6 +378,68 @@ module SqlExecution {
   }
 }
 
+/** Provides a class for modeling NoSQL execution APIs. */
+module NoSqlExecution {
+  /**
+   * A data-flow node that executes NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSqlExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be executed. */
+    abstract DataFlow::Node getQuery();
+
+    /** Holds if this query will unpack/interpret a dictionary */
+    abstract predicate interpretsDict();
+
+    /** Holds if this query can be dangerous when run on a user-controlled string */
+    abstract predicate vulnerableToStrings();
+  }
+}
+
+/**
+ * A data-flow node that executes NoSQL queries.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `NoSqlExecution::Range` instead.
+ */
+class NoSqlExecution extends DataFlow::Node instanceof NoSqlExecution::Range {
+  /** Gets the argument that specifies the NoSQL query to be executed. */
+  DataFlow::Node getQuery() { result = super.getQuery() }
+
+  /** Holds if this query will unpack/interpret a dictionary */
+  predicate interpretsDict() { super.interpretsDict() }
+
+  /** Holds if this query can be dangerous when run on a user-controlled string */
+  predicate vulnerableToStrings() { super.vulnerableToStrings() }
+}
+
+/** Provides classes for modeling NoSql sanitization-related APIs. */
+module NoSqlSanitizer {
+  /**
+   * A data-flow node that collects functions sanitizing NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLSanitizer` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSql query to be sanitized. */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data-flow node that collects functions sanitizing NoSQL queries.
+ *
+ * Extend this class to model new APIs. If you want to refine existing API models,
+ * extend `NoSQLSanitizer::Range` instead.
+ */
+class NoSqlSanitizer extends DataFlow::Node instanceof NoSqlSanitizer::Range {
+  /** Gets the argument that specifies the NoSql query to be sanitized. */
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
+}
+
 /**
  * A data-flow node that executes a regular expression.
  *
@@ -623,9 +685,6 @@ module Ldap {
   }
 }
 
-/** DEPRECATED: Alias for Ldap */
-deprecated module LDAP = Ldap;
-
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -680,6 +739,9 @@ module Escaping {
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
 
+  /** Gets the escape-kind for escaping a string so it can safely be included in XML. */
+  string getXmlKind() { result = "xml" }
+
   /** Gets the escape-kind for escaping a string so it can safely be included in a regular expression. */
   string getRegexKind() { result = "regex" }
 
@@ -708,6 +770,15 @@ module Escaping {
  */
 class HtmlEscaping extends Escaping {
   HtmlEscaping() { super.getKind() = Escaping::getHtmlKind() }
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of an XML element, for example, replacing `&` and `<>` in
+ * `<foo>&xxe;<foo>`.
+ */
+class XmlEscaping extends Escaping {
+  XmlEscaping() { super.getKind() = Escaping::getXmlKind() }
 }
 
 /**
@@ -784,7 +855,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText()
           )
@@ -854,7 +925,10 @@ module Http {
 
       override Parameter getARoutedParameter() {
         result = rs.getARoutedParameter() and
-        result in [this.getArg(_), this.getArgByName(_)]
+        result in [
+            this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+            this.getKwarg().(Parameter)
+          ]
       }
 
       override string getFramework() { result = rs.getFramework() }
@@ -909,7 +983,7 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText().splitAt(";", 0)
           )
@@ -1079,9 +1153,6 @@ module Http {
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
 
 /**
  * Provides models for cryptographic things.

@@ -6,6 +6,6 @@ import csharp
 
 from Namespace n
 where
-  n.hasQualifiedName("", "Empty") and
+  n.hasFullyQualifiedName("", "Empty") and
   not exists(n.getATypeDeclaration())
 select n

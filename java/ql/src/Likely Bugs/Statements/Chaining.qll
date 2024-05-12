@@ -35,8 +35,8 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
   ret.getResult().getType() != m.getDeclaringType()
   or
   // A method call to the wrong method is returned.
-  ret.getResult() instanceof MethodAccess and
-  exists(MethodAccess delegateCall, Method delegate |
+  ret.getResult() instanceof MethodCall and
+  exists(MethodCall delegateCall, Method delegate |
     delegateCall = ret.getResult() and
     delegate = delegateCall.getMethod()
   |
@@ -47,7 +47,7 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
     not hasDescendant(m.getReturnType(), delegate.getReturnType())
     or
     // A method on the wrong object is called.
-    not delegateCall.isOwnMethodAccess()
+    not delegateCall.isOwnMethodCall()
     or
     nonChaining(delegate)
   )
@@ -55,6 +55,6 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
   // Something else is returned.
   not (
     ret.getResult() instanceof ThisAccess or
-    ret.getResult() instanceof MethodAccess
+    ret.getResult() instanceof MethodCall
   )
 }

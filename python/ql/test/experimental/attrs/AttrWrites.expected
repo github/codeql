@@ -1,4 +1,4 @@
 | test.py:5:9:5:16 | ControlFlowNode for __init__ | test.py:4:1:4:20 | ControlFlowNode for ClassExpr | __init__ | test.py:5:5:5:28 | ControlFlowNode for FunctionExpr |
 | test.py:6:9:6:16 | ControlFlowNode for Attribute | test.py:6:9:6:12 | ControlFlowNode for self | foo | test.py:6:20:6:22 | ControlFlowNode for foo |
-| test.py:9:1:9:9 | ControlFlowNode for Attribute | test.py:9:1:9:5 | ControlFlowNode for myobj | foo | test.py:9:13:9:17 | ControlFlowNode for Str |
+| test.py:9:1:9:9 | ControlFlowNode for Attribute | test.py:9:1:9:5 | ControlFlowNode for myobj | foo | test.py:9:13:9:17 | ControlFlowNode for StringLiteral |
 | test.py:12:1:12:25 | ControlFlowNode for setattr() | test.py:12:9:12:13 | ControlFlowNode for myobj | foo | test.py:12:23:12:24 | ControlFlowNode for IntegerLiteral |
