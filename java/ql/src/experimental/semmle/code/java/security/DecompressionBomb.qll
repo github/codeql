@@ -747,12 +747,3 @@ module InputStream {
     }
   }
 }
-
-predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(Call call |
-    // Method calls
-    call.(ConstructorCall).getConstructedType().hasQualifiedName("java.util.zip", "ZipFile") and
-    n1.asExpr() = call.getAnArgument() and
-    n2.asExpr() = call
-  )
-}
