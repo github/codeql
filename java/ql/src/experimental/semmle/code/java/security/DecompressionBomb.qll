@@ -3,12 +3,12 @@ import semmle.code.java.dataflow.TaintTracking
 
 module DecompressionBomb {
   newtype DecompressionState =
-    ZipFile() or
     Zip4j() or
     Inflator() or
     ApacheCommons() or
     XerialSnappy() or
-    UtilZip()
+    UtilZip() or
+    ZipFile()
 
   /**
    * The Decompression bomb Sink
@@ -86,9 +86,6 @@ module XerialSnappy {
      * A method Access as a sink which responsible for reading bytes
      */
     MethodCall getAByteRead() { result = this }
-
-    // look at Zip4j comments for this method
-    predicate isControlledRead() { none() }
   }
 
   class Sink extends DecompressionBomb::Sink {
@@ -211,9 +208,6 @@ module ApacheCommons {
        * A method Access as a sink which responsible for reading bytes
        */
       MethodCall getAByteRead() { result = this }
-
-      // look at Zip4j comments for this method
-      predicate isControlledRead() { none() }
     }
 
     class Sink extends DecompressionBomb::Sink {
@@ -289,9 +283,6 @@ module ApacheCommons {
        * A method Access as a sink which responsible for reading bytes
        */
       MethodCall getAByteRead() { result = this }
-
-      // look at Zip4j comments for this method
-      predicate isControlledRead() { none() }
     }
 
     class Sink extends DecompressionBomb::Sink {
@@ -381,9 +372,6 @@ module ApacheCommons {
        * A method Access as a sink which responsible for reading bytes
        */
       MethodCall getAByteRead() { result = this }
-
-      // look at Zip4j comments for this method
-      predicate isControlledRead() { none() }
     }
 
     class Sink extends DecompressionBomb::Sink {
@@ -421,22 +409,6 @@ module Zip4j {
      * A method Access as a sink which responsible for reading bytes
      */
     MethodCall getAByteRead() { result = this }
-
-    // while ((readLen = zipInputStream.read(readBuffer)) != -1) {
-    //   totallRead += readLen;
-    //   if (totallRead > 1024 * 1024 * 4) {
-    //     System.out.println("potential Bomb");
-    //     break;
-    //   }
-    //   outputStream.write(readBuffer, 0, readLen);
-    // }
-    // TODO: I don't know why we can't reach totallRead with Local Tainting
-    // the same behaviour exists in golang
-    predicate isControlledRead() {
-      exists(ComparisonExpr i |
-        TaintTracking::localExprTaint([this, this.getArgument(2)], i.getAChildExpr*())
-      )
-    }
   }
 
   class Sink extends DecompressionBomb::Sink {
@@ -496,8 +468,6 @@ module CommonsIO {
     override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
       sink.asExpr() = any(IOUtils r).getArgument(0) and
       (
-        state instanceof DecompressionBomb::ZipFile
-        or
         state instanceof DecompressionBomb::Zip4j
         or
         state instanceof DecompressionBomb::Inflator
@@ -505,8 +475,6 @@ module CommonsIO {
         state instanceof DecompressionBomb::ApacheCommons
         or
         state instanceof DecompressionBomb::XerialSnappy
-        or
-        state instanceof DecompressionBomb::UtilZip
       )
     }
   }
@@ -540,9 +508,6 @@ module Zip {
      * A method Access as a sink which responsible for reading bytes
      */
     MethodCall getAByteRead() { result = this }
-
-    // look at Zip4j comments for this method
-    predicate isControlledRead() { none() }
   }
 
   class ReadInputStreamSink extends DecompressionBomb::Sink {
@@ -642,9 +607,6 @@ module Zip {
      * A method Access as a sink which responsible for reading bytes
      */
     MethodCall getAByteRead() { result = this }
-
-    // look at Zip4j comments for this method
-    predicate isControlledRead() { none() }
   }
 
   class InflateSink extends DecompressionBomb::Sink {
@@ -654,16 +616,19 @@ module Zip {
     }
   }
 
-  /**
-   * A type that is responsible for `ZipFile` Class
-   */
-  class TypeZipFile extends RefType {
-    TypeZipFile() { this.hasQualifiedName("java.util.zip", "ZipFile") }
+  class ZipFileSink extends DecompressionBomb::Sink {
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+      exists(MethodCall call |
+        call.getCallee().getDeclaringType() instanceof TypeZipFile and
+        call.getCallee().hasName("getInputStream") and
+        sink.asExpr() = call
+      ) and
+      state instanceof DecompressionBomb::ZipFile
+    }
   }
 
   /**
-   * Gets `n1` and `n2` which `ZipFile n2 = new ZipFile(n1);` or
-   * `InputStream n2 = zipFile.getInputStream(n1);` or `zipFile_As_n1.getInputStream(n2);`
+   * Gets `n1` and `n2` which `InputStream n2 = zipFile.getInputStream(n1)`
    */
   private class ZipFileAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
@@ -671,79 +636,28 @@ module Zip {
       DecompressionBomb::DecompressionState stateTo
     ) {
       (
-        exists(MethodCall ma |
-          ma.getReceiverType() instanceof TypeZipFile and
-          ma = n2.asExpr() and
-          ma.getQualifier() = n1.asExpr() and
-          ma.getCallee().hasName("getInputStream")
+        exists(ConstructorCall call |
+          call.getConstructedType() instanceof TypeZipFile and
+          n1.asExpr() = call.getAnArgument() and
+          n2.asExpr() = call
         )
         or
-        exists(Call c |
-          c.getCallee().getDeclaringType() instanceof TypeZipFile and
-          c.getArgument(0) = n1.asExpr() and
-          c = n2.asExpr()
+        exists(MethodCall call |
+          call.getCallee().getDeclaringType().hasQualifiedName("java.util.zip", "ZipFile") and
+          call.getCallee().hasName("getInputStream") and
+          n1.asExpr() = call.getQualifier() and
+          n2.asExpr() = call
         )
       ) and
       stateFrom instanceof DecompressionBomb::ZipFile and
       stateTo instanceof DecompressionBomb::ZipFile
     }
   }
-}
-
-/**
- * Providing InputStream and it subClasses that mostly related to Sinks of ZipFile Type,
- * we can do
- */
-module InputStream {
-  /**
-   * The Types that are responsible for `InputStream` Class and all classes that are child of InputStream Class
-   */
-  class TypeInputStream extends RefType {
-    TypeInputStream() { this.getASupertype*().hasQualifiedName("java.io", "InputStream") }
-  }
 
   /**
-   * The methods that read bytes and belong to `InputStream` Type and all Types that are child of InputStream Type
+   * A type that is responsible for `ZipFile` Class
    */
-  class Read extends MethodCall {
-    Read() {
-      this.getReceiverType() instanceof TypeInputStream and
-      this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
-    }
-  }
-
-  class ReadSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(Read r) and state instanceof DecompressionBomb::ZipFile
-    }
-  }
-
-  /**
-   * general additional taint steps for all inputStream and all Types that are child of inputStream
-   */
-  private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-    override predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    ) {
-      exists(Call call |
-        // Method calls
-        call.(MethodCall).getReceiverType() = any(TypeInputStream t) and
-        call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        call.getQualifier() = n1.asExpr() and
-        call = n2.asExpr()
-      ) and
-      stateFrom instanceof DecompressionBomb::ZipFile and
-      stateTo instanceof DecompressionBomb::ZipFile
-      or
-      exists(Call call |
-        // Method calls
-        call.(ConstructorCall).getConstructedType().hasQualifiedName("java.util.zip", "ZipFile") and
-        n1.asExpr() = call.getAnArgument() and
-        n2.asExpr() = call
-      ) and
-      stateFrom instanceof DecompressionBomb::ZipFile and
-      stateTo instanceof DecompressionBomb::ZipFile
-    }
+  class TypeZipFile extends RefType {
+    TypeZipFile() { this.hasQualifiedName("java.util.zip", "ZipFile") }
   }
 }
