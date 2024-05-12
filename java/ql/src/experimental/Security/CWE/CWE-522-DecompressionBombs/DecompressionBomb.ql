@@ -47,8 +47,6 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   ) {
     any(AdditionalStep ads).step(nodeFrom, stateFrom, nodeTo, stateTo)
   }
-
-  predicate isBarrier(DataFlow::Node sanitizer, FlowState state) { none() }
 }
 
 module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
