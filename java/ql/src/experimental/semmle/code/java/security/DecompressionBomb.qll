@@ -55,7 +55,7 @@ module XerialSnappy {
         call = n2.asExpr()
         or
         // Method calls
-        call.(MethodAccess).getReceiverType() = any(TypeInputStream t) and
+        call.(MethodCall).getReceiverType() = any(TypeInputStream t) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
@@ -68,7 +68,7 @@ module XerialSnappy {
   /**
    * The methods that read bytes and belong to `SnappyInputStream` Types
    */
-  class ReadInputStreamCall extends MethodAccess {
+  class ReadInputStreamCall extends MethodCall {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -77,7 +77,7 @@ module XerialSnappy {
     /**
      * A method Access as a sink which responsible for reading bytes
      */
-    MethodAccess getAByteRead() { result = this }
+    MethodCall getAByteRead() { result = this }
 
     // look at Zip4j comments for this method
     predicate isControlledRead() { none() }
@@ -179,7 +179,7 @@ module ApacheCommons {
           call = n2.asExpr()
           or
           // Method calls
-          call.(MethodAccess).getReceiverType() = any(TypeCompressors t) and
+          call.(MethodCall).getReceiverType() = any(TypeCompressors t) and
           call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
           call.getQualifier() = n1.asExpr() and
           call = n2.asExpr()
@@ -192,7 +192,7 @@ module ApacheCommons {
     /**
      * The methods that read bytes and belong to `*CompressorInputStream` Types
      */
-    class ReadInputStreamCall extends MethodAccess {
+    class ReadInputStreamCall extends MethodCall {
       ReadInputStreamCall() {
         this.getReceiverType() instanceof TypeCompressors and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -201,7 +201,7 @@ module ApacheCommons {
       /**
        * A method Access as a sink which responsible for reading bytes
        */
-      MethodAccess getAByteRead() { result = this }
+      MethodCall getAByteRead() { result = this }
 
       // look at Zip4j comments for this method
       predicate isControlledRead() { none() }
@@ -256,7 +256,7 @@ module ApacheCommons {
           call = n2.asExpr()
           or
           // Method calls
-          call.(MethodAccess).getReceiverType() = any(TypeArchivers t) and
+          call.(MethodCall).getReceiverType() = any(TypeArchivers t) and
           call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
           call.getQualifier() = n1.asExpr() and
           call = n2.asExpr()
@@ -269,7 +269,7 @@ module ApacheCommons {
     /**
      * The methods that read bytes and belong to `*ArchiveInputStream` Types
      */
-    class ReadInputStreamCall extends MethodAccess {
+    class ReadInputStreamCall extends MethodCall {
       ReadInputStreamCall() {
         this.getReceiverType() instanceof TypeArchivers and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -278,7 +278,7 @@ module ApacheCommons {
       /**
        * A method Access as a sink which responsible for reading bytes
        */
-      MethodAccess getAByteRead() { result = this }
+      MethodCall getAByteRead() { result = this }
 
       // look at Zip4j comments for this method
       predicate isControlledRead() { none() }
@@ -340,9 +340,9 @@ module ApacheCommons {
           or
           // Method calls
           (
-            call.(MethodAccess).getReceiverType() = any(TypeArchiveInputStream t)
+            call.(MethodCall).getReceiverType() = any(TypeArchiveInputStream t)
             or
-            call.(MethodAccess).getReceiverType() = any(TypeCompressorInputStream t)
+            call.(MethodCall).getReceiverType() = any(TypeCompressorInputStream t)
           ) and
           call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
           call.getQualifier() = n1.asExpr() and
@@ -356,7 +356,7 @@ module ApacheCommons {
     /**
      * The methods that read bytes and belong to `CompressorInputStream` or `ArchiveInputStream` Types
      */
-    class ReadInputStreamCall extends MethodAccess {
+    class ReadInputStreamCall extends MethodCall {
       ReadInputStreamCall() {
         (
           this.getReceiverType() instanceof TypeArchiveInputStream
@@ -369,7 +369,7 @@ module ApacheCommons {
       /**
        * A method Access as a sink which responsible for reading bytes
        */
-      MethodAccess getAByteRead() { result = this }
+      MethodCall getAByteRead() { result = this }
 
       // look at Zip4j comments for this method
       predicate isControlledRead() { none() }
@@ -399,7 +399,7 @@ module Zip4j {
   /**
    * The methods that read bytes and belong to `CompressorInputStream` or `ArchiveInputStream` Types
    */
-  class ReadInputStreamCall extends MethodAccess {
+  class ReadInputStreamCall extends MethodCall {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeZipInputStream and
       this.getMethod().hasName(["read", "readNBytes", "readAllBytes"])
@@ -408,7 +408,7 @@ module Zip4j {
     /**
      * A method Access as a sink which responsible for reading bytes
      */
-    MethodAccess getAByteRead() { result = this }
+    MethodCall getAByteRead() { result = this }
 
     // while ((readLen = zipInputStream.read(readBuffer)) != -1) {
     //   totallRead += readLen;
@@ -450,7 +450,7 @@ module Zip4j {
         call = n2.asExpr()
         or
         // Method calls
-        call.(MethodAccess).getReceiverType() = any(TypeZipInputStream t) and
+        call.(MethodCall).getReceiverType() = any(TypeZipInputStream t) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
@@ -468,7 +468,7 @@ module CommonsIO {
   /**
    * The Access to Methods which work with byes and inputStreams and buffers
    */
-  class IOUtils extends MethodAccess {
+  class IOUtils extends MethodCall {
     IOUtils() {
       this.getMethod()
           .hasName([
@@ -505,7 +505,7 @@ module Zip {
   /**
    * The methods that read bytes and belong to `*InputStream` Types
    */
-  class ReadInputStreamCall extends MethodAccess {
+  class ReadInputStreamCall extends MethodCall {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -514,7 +514,7 @@ module Zip {
     /**
      * A method Access as a sink which responsible for reading bytes
      */
-    MethodAccess getAByteRead() { result = this }
+    MethodCall getAByteRead() { result = this }
 
     // look at Zip4j comments for this method
     predicate isControlledRead() { none() }
@@ -544,7 +544,7 @@ module Zip {
         call = n2.asExpr()
         or
         // Method calls
-        call.(MethodAccess).getReceiverType() = any(TypeInputStream t) and
+        call.(MethodCall).getReceiverType() = any(TypeInputStream t) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
@@ -574,7 +574,7 @@ module Zip {
     ) {
       // n1.inflate(n2)
       (
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeInflator and
           ma.getArgument(0) = n2.asExpr() and
           ma.getQualifier() = n1.asExpr() and
@@ -582,7 +582,7 @@ module Zip {
         )
         or
         // n2 = inflater.inflate(n1)
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeInflator and
           ma = n2.asExpr() and
           ma.getArgument(0) = n1.asExpr() and
@@ -591,7 +591,7 @@ module Zip {
         or
         // Inflater inflater = new Inflater();
         // inflater_As_n2 = inflater.setInput(n1)
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeInflator and
           n1.asExpr() = ma.getArgument(0) and
           n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier() and
@@ -606,7 +606,7 @@ module Zip {
   /**
    * The methods that read bytes and belong to `Inflater` Type
    */
-  class InflateCall extends MethodAccess {
+  class InflateCall extends MethodCall {
     InflateCall() {
       this.getReceiverType() instanceof TypeInflator and
       this.getCallee().hasName("inflate")
@@ -615,7 +615,7 @@ module Zip {
     /**
      * A method Access as a sink which responsible for reading bytes
      */
-    MethodAccess getAByteRead() { result = this }
+    MethodCall getAByteRead() { result = this }
 
     // look at Zip4j comments for this method
     predicate isControlledRead() { none() }
@@ -644,7 +644,7 @@ module Zip {
       DataFlow::FlowState stateTo
     ) {
       (
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeZipFile and
           ma = n2.asExpr() and
           ma.getQualifier() = n1.asExpr() and
@@ -678,7 +678,7 @@ module InputStream {
   /**
    * The methods that read bytes and belong to `InputStream` Type and all Types that are child of InputStream Type
    */
-  class Read extends MethodAccess {
+  class Read extends MethodCall {
     Read() {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -701,7 +701,7 @@ module InputStream {
     ) {
       exists(Call call |
         // Method calls
-        call.(MethodAccess).getReceiverType() = any(TypeInputStream t) and
+        call.(MethodCall).getReceiverType() = any(TypeInputStream t) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
