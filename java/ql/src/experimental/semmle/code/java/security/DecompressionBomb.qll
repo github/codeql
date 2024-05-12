@@ -38,7 +38,7 @@ module XerialSnappy {
   }
 
   /**
-   * Gets `n1` and `n2` which `SnappyInputStream n2 = new SnappyInputStream(n2)` or
+   * Gets `n1` and `n2` which `SnappyInputStream n2 = new SnappyInputStream(n1)` or
    * `n1.read(n2)`,
    *  second one is added because of sanitizer, we want to compare return value of each `read` or similar method
    *  that whether there is a flow to a comparison between total read of decompressed stream and a constant value
@@ -482,7 +482,7 @@ module CommonsIO {
   class Sink extends DecompressionBomb::Sink {
     override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
       sink.asExpr() = any(IOUtils r).getArgument(0) and
-      state = ["ZipFile", "Zip4j", "inflator", "Zip", "ApacheCommons", "XerialSnappy"]
+      state = ["ZipFile", "Zip4j", "inflator", "UtilZip", "ApacheCommons", "XerialSnappy"]
     }
   }
 }
@@ -522,7 +522,7 @@ module Zip {
 
   class ReadInputStreamSink extends DecompressionBomb::Sink {
     override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "Zip"
+      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "UtilZip"
     }
   }
 
@@ -549,8 +549,8 @@ module Zip {
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
       ) and
-      stateFrom = "Zip" and
-      stateTo = "Zip"
+      stateFrom = "UtilZip" and
+      stateTo = "UtilZip"
     }
   }
 
@@ -708,6 +708,24 @@ module InputStream {
       ) and
       stateFrom = "ZipFile" and
       stateTo = "ZipFile"
+      or
+      exists(Call call |
+        // Method calls
+        call.(ConstructorCall).getConstructedType().hasQualifiedName("java.util.zip", "ZipFile") and
+        n1.asExpr() = call.getAnArgument() and
+        n2.asExpr() = call
+      ) and
+      stateFrom = "ZipFile" and
+      stateTo = "ZipFile"
     }
   }
+}
+
+predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(Call call |
+    // Method calls
+    call.(ConstructorCall).getConstructedType().hasQualifiedName("java.util.zip", "ZipFile") and
+    n1.asExpr() = call.getAnArgument() and
+    n2.asExpr() = call
+  )
 }

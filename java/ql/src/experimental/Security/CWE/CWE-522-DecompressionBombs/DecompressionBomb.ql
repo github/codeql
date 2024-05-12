@@ -27,11 +27,11 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       or
       source instanceof FileUploadRemoteFlowSource
     ) and
-    state = ["ZipFile", "Zip4j", "inflator", "Zip", "ApacheCommons", "XerialSnappy"]
+    state = ["ZipFile", "Zip4j", "inflator", "UtilZip", "ApacheCommons", "XerialSnappy"]
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    any(DecompressionBomb::Sink ads).sink(sink, state)
+    any(DecompressionBomb::Sink s).sink(sink, state)
   }
 
   predicate isAdditionalFlowStep(
