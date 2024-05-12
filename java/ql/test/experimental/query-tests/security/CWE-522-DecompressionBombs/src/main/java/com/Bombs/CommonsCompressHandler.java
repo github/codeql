@@ -42,7 +42,7 @@ public class CommonsCompressHandler {
         new org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream(in)) {
       File f = new File("tmpfile");
       try (OutputStream o = Files.newOutputStream(f.toPath())) {
-        IOUtils.copy(gzIn2, o);
+        IOUtils.copy(gzIn2, o);  // BAD
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -63,7 +63,7 @@ public class CommonsCompressHandler {
         }
         File f = new File("tmpfile");
         try (OutputStream o = Files.newOutputStream(f.toPath())) {
-          IOUtils.copy(zipInputStream, o);
+          IOUtils.copy(zipInputStream, o);  // BAD
         }
       }
     } catch (IOException e) {
@@ -83,7 +83,7 @@ public class CommonsCompressHandler {
         File f = new File("tmpfile");
         try (OutputStream outputStream = new FileOutputStream(f)) {
           int readLen;
-          while ((readLen = zipInputStream.read(readBuffer)) != -1) {
+          while ((readLen = zipInputStream.read(readBuffer)) != -1) {  // BAD
             outputStream.write(readBuffer, 0, readLen);
           }
         }
@@ -106,7 +106,7 @@ public class CommonsCompressHandler {
       File f = new File("tmpfile");
       try (OutputStream outputStream = new FileOutputStream(f)) {
         int readLen;
-        while ((readLen = zipInputStream.read(readBuffer)) != -1) {
+        while ((readLen = zipInputStream.read(readBuffer)) != -1) {  // BAD
           outputStream.write(readBuffer, 0, readLen);
         }
       }
@@ -121,7 +121,7 @@ public class CommonsCompressHandler {
     int buffersize = 4096;
     final byte[] buffer = new byte[buffersize];
     int n = 0;
-    while (-1 != (n = in.read(buffer))) {
+    while (-1 != (n = in.read(buffer))) {  // BAD
       out.write(buffer, 0, n);
     }
     out.close();

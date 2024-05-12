@@ -162,10 +162,10 @@ public class ZipHandler {
 
           try (InputStream inputStream = zipFile.getInputStream(entry);
               FileOutputStream outputStream = new FileOutputStream(destPath); ) {
-            int data = inputStream.read();
+            int data = inputStream.read();  // BAD
             while (data != -1) {
               outputStream.write(data);
-              data = inputStream.read();
+              data = inputStream.read(); // BAD
             }
           }
           System.out.println("file : " + entry.getName() + " => " + destPath);
