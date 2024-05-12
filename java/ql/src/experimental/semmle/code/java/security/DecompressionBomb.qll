@@ -2,13 +2,21 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 
 module DecompressionBomb {
+  newtype DecompressionState =
+    ZipFile() or
+    Zip4j() or
+    Inflator() or
+    ApacheCommons() or
+    XerialSnappy() or
+    UtilZip()
+
   /**
    * The Decompression bomb Sink
    *
    * Extend this class for creating new decompression bomb sinks
    */
   class Sink extends Unit {
-    abstract predicate sink(DataFlow::Node sink, DataFlow::FlowState state);
+    abstract predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state);
   }
 
   /**
@@ -18,8 +26,8 @@ module DecompressionBomb {
    */
   class AdditionalStep extends Unit {
     abstract predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     );
   }
 }
@@ -45,8 +53,8 @@ module XerialSnappy {
    */
   private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     ) {
       exists(Call call |
         // Constructors
@@ -60,8 +68,8 @@ module XerialSnappy {
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
       ) and
-      stateFrom = "XerialSnappy" and
-      stateTo = "XerialSnappy"
+      stateFrom instanceof DecompressionBomb::XerialSnappy and
+      stateTo instanceof DecompressionBomb::XerialSnappy
     }
   }
 
@@ -84,8 +92,9 @@ module XerialSnappy {
   }
 
   class Sink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "XerialSnappy"
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+      state instanceof DecompressionBomb::XerialSnappy
     }
   }
 }
@@ -169,8 +178,8 @@ module ApacheCommons {
      */
     private class CompressorsAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
       override predicate step(
-        DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-        DataFlow::FlowState stateTo
+        DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+        DecompressionBomb::DecompressionState stateTo
       ) {
         exists(Call call |
           // Constructors
@@ -184,8 +193,8 @@ module ApacheCommons {
           call.getQualifier() = n1.asExpr() and
           call = n2.asExpr()
         ) and
-        stateFrom = "ApacheCommons" and
-        stateTo = "ApacheCommons"
+        stateFrom instanceof DecompressionBomb::ApacheCommons and
+        stateTo instanceof DecompressionBomb::ApacheCommons
       }
     }
 
@@ -208,8 +217,9 @@ module ApacheCommons {
     }
 
     class Sink extends DecompressionBomb::Sink {
-      override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "ApacheCommons"
+      override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+        state instanceof DecompressionBomb::ApacheCommons
       }
     }
   }
@@ -246,8 +256,8 @@ module ApacheCommons {
      */
     private class ArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
       override predicate step(
-        DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-        DataFlow::FlowState stateTo
+        DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+        DecompressionBomb::DecompressionState stateTo
       ) {
         exists(Call call |
           // Constructors
@@ -261,8 +271,8 @@ module ApacheCommons {
           call.getQualifier() = n1.asExpr() and
           call = n2.asExpr()
         ) and
-        stateFrom = "ApacheCommons" and
-        stateTo = "ApacheCommons"
+        stateFrom instanceof DecompressionBomb::ApacheCommons and
+        stateTo instanceof DecompressionBomb::ApacheCommons
       }
     }
 
@@ -285,8 +295,9 @@ module ApacheCommons {
     }
 
     class Sink extends DecompressionBomb::Sink {
-      override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "ApacheCommons"
+      override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+        state instanceof DecompressionBomb::ApacheCommons
       }
     }
   }
@@ -325,8 +336,8 @@ module ApacheCommons {
     private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
     {
       override predicate step(
-        DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-        DataFlow::FlowState stateTo
+        DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+        DecompressionBomb::DecompressionState stateTo
       ) {
         exists(Call call |
           // Constructors
@@ -348,8 +359,8 @@ module ApacheCommons {
           call.getQualifier() = n1.asExpr() and
           call = n2.asExpr()
         ) and
-        stateFrom = "ApacheCommons" and
-        stateTo = "ApacheCommons"
+        stateFrom instanceof DecompressionBomb::ApacheCommons and
+        stateTo instanceof DecompressionBomb::ApacheCommons
       }
     }
 
@@ -376,8 +387,9 @@ module ApacheCommons {
     }
 
     class Sink extends DecompressionBomb::Sink {
-      override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "ApacheCommons"
+      override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+        state instanceof DecompressionBomb::ApacheCommons
       }
     }
   }
@@ -428,8 +440,9 @@ module Zip4j {
   }
 
   class Sink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "Zip4j"
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+      state instanceof DecompressionBomb::Zip4j
     }
   }
 
@@ -440,8 +453,8 @@ module Zip4j {
    */
   private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     ) {
       exists(Call call |
         // Constructors
@@ -455,8 +468,8 @@ module Zip4j {
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
       ) and
-      stateFrom = "Zip4j" and
-      stateTo = "Zip4j"
+      stateFrom instanceof DecompressionBomb::Zip4j and
+      stateTo instanceof DecompressionBomb::Zip4j
     }
   }
 }
@@ -480,9 +493,21 @@ module CommonsIO {
   }
 
   class Sink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
       sink.asExpr() = any(IOUtils r).getArgument(0) and
-      state = ["ZipFile", "Zip4j", "inflator", "UtilZip", "ApacheCommons", "XerialSnappy"]
+      (
+        state instanceof DecompressionBomb::ZipFile
+        or
+        state instanceof DecompressionBomb::Zip4j
+        or
+        state instanceof DecompressionBomb::Inflator
+        or
+        state instanceof DecompressionBomb::ApacheCommons
+        or
+        state instanceof DecompressionBomb::XerialSnappy
+        or
+        state instanceof DecompressionBomb::UtilZip
+      )
     }
   }
 }
@@ -521,8 +546,9 @@ module Zip {
   }
 
   class ReadInputStreamSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and state = "UtilZip"
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+      state instanceof DecompressionBomb::UtilZip
     }
   }
 
@@ -534,8 +560,8 @@ module Zip {
    */
   private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     ) {
       exists(Call call |
         // Constructors
@@ -549,8 +575,8 @@ module Zip {
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
       ) and
-      stateFrom = "UtilZip" and
-      stateTo = "UtilZip"
+      stateFrom instanceof DecompressionBomb::UtilZip and
+      stateTo instanceof DecompressionBomb::UtilZip
     }
   }
 
@@ -569,8 +595,8 @@ module Zip {
    */
   private class InflatorAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     ) {
       // n1.inflate(n2)
       (
@@ -598,8 +624,8 @@ module Zip {
           ma.getCallee().hasName("setInput")
         )
       ) and
-      stateFrom = "inflator" and
-      stateTo = "inflator"
+      stateFrom instanceof DecompressionBomb::Inflator and
+      stateTo instanceof DecompressionBomb::Inflator
     }
   }
 
@@ -622,8 +648,9 @@ module Zip {
   }
 
   class InflateSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink.asExpr() = any(InflateCall r).getAByteRead() and state = "inflator"
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+      sink.asExpr() = any(InflateCall r).getAByteRead() and
+      state instanceof DecompressionBomb::Inflator
     }
   }
 
@@ -640,8 +667,8 @@ module Zip {
    */
   private class ZipFileAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     ) {
       (
         exists(MethodCall ma |
@@ -657,8 +684,8 @@ module Zip {
           c = n2.asExpr()
         )
       ) and
-      stateFrom = "ZipFile" and
-      stateTo = "ZipFile"
+      stateFrom instanceof DecompressionBomb::ZipFile and
+      stateTo instanceof DecompressionBomb::ZipFile
     }
   }
 }
@@ -686,8 +713,8 @@ module InputStream {
   }
 
   class ReadSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink.asExpr() = any(Read r) and state = "ZipFile"
+    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+      sink.asExpr() = any(Read r) and state instanceof DecompressionBomb::ZipFile
     }
   }
 
@@ -696,8 +723,8 @@ module InputStream {
    */
   private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(
-      DataFlow::Node n1, DataFlow::FlowState stateFrom, DataFlow::Node n2,
-      DataFlow::FlowState stateTo
+      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
+      DecompressionBomb::DecompressionState stateTo
     ) {
       exists(Call call |
         // Method calls
@@ -706,8 +733,8 @@ module InputStream {
         call.getQualifier() = n1.asExpr() and
         call = n2.asExpr()
       ) and
-      stateFrom = "ZipFile" and
-      stateTo = "ZipFile"
+      stateFrom instanceof DecompressionBomb::ZipFile and
+      stateTo instanceof DecompressionBomb::ZipFile
       or
       exists(Call call |
         // Method calls
@@ -715,8 +742,8 @@ module InputStream {
         n1.asExpr() = call.getAnArgument() and
         n2.asExpr() = call
       ) and
-      stateFrom = "ZipFile" and
-      stateTo = "ZipFile"
+      stateFrom instanceof DecompressionBomb::ZipFile and
+      stateTo instanceof DecompressionBomb::ZipFile
     }
   }
 }

@@ -14,10 +14,10 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import experimental.semmle.code.java.security.FileAndFormRemoteSource
-import experimental.semmle.code.java.security.DecompressionBomb
+import experimental.semmle.code.java.security.DecompressionBomb::DecompressionBomb
 
 module DecompressionBombsConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+  class FlowState = DecompressionState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     (
@@ -27,17 +27,27 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       or
       source instanceof FileUploadRemoteFlowSource
     ) and
-    state = ["ZipFile", "Zip4j", "inflator", "UtilZip", "ApacheCommons", "XerialSnappy"]
+    (
+      state instanceof ZipFile
+      or
+      state instanceof Zip4j
+      or
+      state instanceof Inflator
+      or
+      state instanceof ApacheCommons
+      or
+      state instanceof XerialSnappy
+      or
+      state instanceof UtilZip
+    )
   }
 
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    any(DecompressionBomb::Sink s).sink(sink, state)
-  }
+  predicate isSink(DataFlow::Node sink, FlowState state) { any(Sink s).sink(sink, state) }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
-    any(DecompressionBomb::AdditionalStep ads).step(nodeFrom, stateFrom, nodeTo, stateTo)
+    any(AdditionalStep ads).step(nodeFrom, stateFrom, nodeTo, stateTo)
   }
 
   predicate isBarrier(DataFlow::Node sanitizer, FlowState state) { none() }
