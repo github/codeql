@@ -81,16 +81,11 @@ module XerialSnappy {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
     }
-
-    /**
-     * A method Access as a sink which responsible for reading bytes
-     */
-    MethodCall getAByteRead() { result = this }
   }
 
   class Sink extends DecompressionBomb::Sink {
     override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+      sink.asExpr() = any(ReadInputStreamCall r) and
       state instanceof DecompressionBomb::XerialSnappy
     }
   }
@@ -203,16 +198,11 @@ module ApacheCommons {
         this.getReceiverType() instanceof TypeCompressors and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
       }
-
-      /**
-       * A method Access as a sink which responsible for reading bytes
-       */
-      MethodCall getAByteRead() { result = this }
     }
 
     class Sink extends DecompressionBomb::Sink {
       override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+        sink.asExpr() = any(ReadInputStreamCall r) and
         state instanceof DecompressionBomb::ApacheCommons
       }
     }
@@ -278,16 +268,11 @@ module ApacheCommons {
         this.getReceiverType() instanceof TypeArchivers and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
       }
-
-      /**
-       * A method Access as a sink which responsible for reading bytes
-       */
-      MethodCall getAByteRead() { result = this }
     }
 
     class Sink extends DecompressionBomb::Sink {
       override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+        sink.asExpr() = any(ReadInputStreamCall r) and
         state instanceof DecompressionBomb::ApacheCommons
       }
     }
@@ -367,16 +352,11 @@ module ApacheCommons {
         ) and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
       }
-
-      /**
-       * A method Access as a sink which responsible for reading bytes
-       */
-      MethodCall getAByteRead() { result = this }
     }
 
     class Sink extends DecompressionBomb::Sink {
       override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-        sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+        sink.asExpr() = any(ReadInputStreamCall r) and
         state instanceof DecompressionBomb::ApacheCommons
       }
     }
@@ -404,16 +384,11 @@ module Zip4j {
       this.getReceiverType() instanceof TypeZipInputStream and
       this.getMethod().hasName(["read", "readNBytes", "readAllBytes"])
     }
-
-    /**
-     * A method Access as a sink which responsible for reading bytes
-     */
-    MethodCall getAByteRead() { result = this }
   }
 
   class Sink extends DecompressionBomb::Sink {
     override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+      sink.asExpr() = any(ReadInputStreamCall r) and
       state instanceof DecompressionBomb::Zip4j
     }
   }
@@ -447,40 +422,6 @@ module Zip4j {
 }
 
 /**
- * Providing sinks that can be related to reading uncontrolled buffer and bytes for `org.apache.commons.io` package
- */
-module CommonsIO {
-  /**
-   * The Access to Methods which work with byes and inputStreams and buffers
-   */
-  class IOUtils extends MethodCall {
-    IOUtils() {
-      this.getMethod()
-          .hasName([
-              "copy", "copyLarge", "read", "readFully", "readLines", "toBufferedInputStream",
-              "toByteArray", "toCharArray", "toString", "buffer"
-            ]) and
-      this.getMethod().getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils")
-    }
-  }
-
-  class Sink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(IOUtils r).getArgument(0) and
-      (
-        state instanceof DecompressionBomb::Zip4j
-        or
-        state instanceof DecompressionBomb::Inflator
-        or
-        state instanceof DecompressionBomb::ApacheCommons
-        or
-        state instanceof DecompressionBomb::XerialSnappy
-      )
-    }
-  }
-}
-
-/**
  * Providing Decompression sinks and additional taint steps for `java.util.zip` package
  */
 module Zip {
@@ -503,16 +444,11 @@ module Zip {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
     }
-
-    /**
-     * A method Access as a sink which responsible for reading bytes
-     */
-    MethodCall getAByteRead() { result = this }
   }
 
   class ReadInputStreamSink extends DecompressionBomb::Sink {
     override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(ReadInputStreamCall r).getAByteRead() and
+      sink.asExpr() = any(ReadInputStreamCall r) and
       state instanceof DecompressionBomb::UtilZip
     }
   }
@@ -602,16 +538,11 @@ module Zip {
       this.getReceiverType() instanceof TypeInflator and
       this.getCallee().hasName("inflate")
     }
-
-    /**
-     * A method Access as a sink which responsible for reading bytes
-     */
-    MethodCall getAByteRead() { result = this }
   }
 
   class InflateSink extends DecompressionBomb::Sink {
     override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(InflateCall r).getAByteRead() and
+      sink.asExpr() = any(InflateCall r) and
       state instanceof DecompressionBomb::Inflator
     }
   }

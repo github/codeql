@@ -8,7 +8,6 @@ import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.apache.commons.compress.compressors.gzip.*;
-import org.apache.commons.io.IOUtils;
 
 public class CommonsCompressHandler {
   public static void commonsCompressorInputStream(InputStream inputStream) throws IOException {
@@ -37,16 +36,6 @@ public class CommonsCompressHandler {
     }
     out.close();
     gzIn.close();
-
-    try (GzipCompressorInputStream gzIn2 =
-        new org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream(in)) {
-      File f = new File("tmpfile");
-      try (OutputStream o = Files.newOutputStream(f.toPath())) {
-        IOUtils.copy(gzIn2, o);  // BAD
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   static void commonsCompressArchiveInputStream(InputStream inputStream) throws ArchiveException {
@@ -54,21 +43,7 @@ public class CommonsCompressHandler {
     new org.apache.commons.compress.archivers.arj.ArjArchiveInputStream(inputStream);
     new org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream(inputStream);
     new org.apache.commons.compress.archivers.jar.JarArchiveInputStream(inputStream);
-    try (org.apache.commons.compress.archivers.zip.ZipArchiveInputStream zipInputStream =
-        new org.apache.commons.compress.archivers.zip.ZipArchiveInputStream(inputStream)) {
-      ArchiveEntry entry = null;
-      while ((entry = zipInputStream.getNextEntry()) != null) {
-        if (!zipInputStream.canReadEntryData(entry)) {
-          continue;
-        }
-        File f = new File("tmpfile");
-        try (OutputStream o = Files.newOutputStream(f.toPath())) {
-          IOUtils.copy(zipInputStream, o);  // BAD
-        }
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    new org.apache.commons.compress.archivers.zip.ZipArchiveInputStream(inputStream);
   }
 
   static void commonsCompressArchiveInputStream2(InputStream inputStream) {
@@ -83,7 +58,7 @@ public class CommonsCompressHandler {
         File f = new File("tmpfile");
         try (OutputStream outputStream = new FileOutputStream(f)) {
           int readLen;
-          while ((readLen = zipInputStream.read(readBuffer)) != -1) {  // BAD
+          while ((readLen = zipInputStream.read(readBuffer)) != -1) { // BAD
             outputStream.write(readBuffer, 0, readLen);
           }
         }
@@ -106,7 +81,7 @@ public class CommonsCompressHandler {
       File f = new File("tmpfile");
       try (OutputStream outputStream = new FileOutputStream(f)) {
         int readLen;
-        while ((readLen = zipInputStream.read(readBuffer)) != -1) {  // BAD
+        while ((readLen = zipInputStream.read(readBuffer)) != -1) { // BAD
           outputStream.write(readBuffer, 0, readLen);
         }
       }
@@ -121,7 +96,7 @@ public class CommonsCompressHandler {
     int buffersize = 4096;
     final byte[] buffer = new byte[buffersize];
     int n = 0;
-    while (-1 != (n = in.read(buffer))) {  // BAD
+    while (-1 != (n = in.read(buffer))) { // BAD
       out.write(buffer, 0, n);
     }
     out.close();

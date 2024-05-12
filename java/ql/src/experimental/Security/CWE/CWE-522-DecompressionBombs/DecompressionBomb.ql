@@ -37,6 +37,8 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       state instanceof ApacheCommons
       or
       state instanceof XerialSnappy
+      or
+      state instanceof UtilZip
     )
   }
 
