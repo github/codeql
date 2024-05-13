@@ -254,13 +254,13 @@ class Workflow extends AstNode instanceof WorkflowImpl {
 
   Job getJob(string jobId) { result = super.getJob(jobId) }
 
-  predicate hasTriggerEvent(string trigger) { super.hasTriggerEvent(trigger) }
-
-  string getATriggerEvent() { result = super.getATriggerEvent() }
+  Event getATriggerEvent() { result = super.getATriggerEvent() }
 
   Permissions getPermissions() { result = super.getPermissions() }
 
   Strategy getStrategy() { result = super.getStrategy() }
+
+  On getOn() { result = super.getOn() }
 }
 
 class ReusableWorkflow extends Workflow instanceof ReusableWorkflowImpl {
@@ -305,6 +305,20 @@ class Needs extends AstNode instanceof NeedsImpl {
   Job getANeededJob() { result = super.getANeededJob() }
 }
 
+class On extends AstNode instanceof OnImpl {
+  Event getAnEvent() { result = super.getAnEvent() }
+}
+
+class Event extends AstNode instanceof EventImpl {
+  string getName() { result = super.getName() }
+
+  string getAnActivityType() { result = super.getAnActivityType() }
+
+  string getAPropertyValue(string prop) { result = super.getAPropertyValue(prop) }
+
+  predicate hasProperty(string prop) { super.hasProperty(prop) }
+}
+
 /**
  * An Actions job within a workflow.
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs.
@@ -328,9 +342,7 @@ abstract class Job extends AstNode instanceof JobImpl {
 
   Permissions getPermissions() { result = super.getPermissions() }
 
-  predicate hasTriggerEvent(string trigger) { super.hasTriggerEvent(trigger) }
-
-  string getATriggerEvent() { result = super.getATriggerEvent() }
+  Event getATriggerEvent() { result = super.getATriggerEvent() }
 
   Strategy getStrategy() { result = super.getStrategy() }
 
