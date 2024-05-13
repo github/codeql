@@ -1,5 +1,5 @@
 {
-  "checksum": "a4ae6b5094e89d305742b80a8627ae5c2e3c7216902cdbff4ff0165acb03133c",
+  "checksum": "66eb923b9bff3a3315aaebb2155797150963834330f8b3ed4f72e0ccefa7ed93",
   "crates": {
     "adler 1.0.2": {
       "name": "adler",
@@ -535,14 +535,14 @@
       ],
       "license_file": null
     },
-    "cc 1.0.96": {
+    "cc 1.0.98": {
       "name": "cc",
-      "version": "1.0.96",
+      "version": "1.0.98",
       "package_url": "https://github.com/rust-lang/cc-rs",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/cc/1.0.96/download",
-          "sha256": "065a29261d53ba54260972629f9ca6bffa69bac13cd1fed61420f7fa68b9f8bd"
+          "url": "https://static.crates.io/crates/cc/1.0.98/download",
+          "sha256": "41c270e7540d725e65ac7f1b212ac8ce349719624d7bcff99f8e2e488e8cf03f"
         }
       },
       "targets": [
@@ -562,7 +562,7 @@
           "**"
         ],
         "edition": "2018",
-        "version": "1.0.96"
+        "version": "1.0.98"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -953,7 +953,7 @@
         "Git": {
           "remote": "https://github.com/github/codeql.git",
           "commitish": {
-            "Rev": "68d1cbb2d54928fc68817c08c9bc4ede63110170"
+            "Rev": "bf2ae9890fc381dd74f87cd2a7c3f89e484e1d68"
           },
           "strip_prefix": "shared/tree-sitter-extractor"
         }
@@ -1685,7 +1685,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             },
             {
@@ -1742,7 +1742,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             },
             {
@@ -2351,7 +2351,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
@@ -3253,7 +3253,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
@@ -5836,7 +5836,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
@@ -5910,7 +5910,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
@@ -5938,9 +5938,9 @@
       "package_url": "https://github.com/tree-sitter/tree-sitter-ruby",
       "repository": {
         "Git": {
-          "remote": "https://github.com/tree-sitter/tree-sitter-ruby.git",
+          "remote": "https://github.com/hvitved/tree-sitter-ruby.git",
           "commitish": {
-            "Rev": "788a63ca1b7619288980aaafd37d890ee2469421"
+            "Rev": "b84d897e675944ac03389a4105ccaece8106f504"
           }
         }
       },
@@ -5992,7 +5992,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.96",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
