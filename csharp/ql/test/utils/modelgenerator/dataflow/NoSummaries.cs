@@ -49,6 +49,8 @@ public sealed class PublicClassNoFlow
 public class EquatableBound : IEquatable<object>
 {
     public readonly bool tainted;
+
+    // neutral=NoSummaries;EquatableBound;Equals;(System.Object);summary;df-generated
     public bool Equals(object other)
     {
         return tainted;
@@ -58,6 +60,8 @@ public class EquatableBound : IEquatable<object>
 public class EquatableUnBound<T> : IEquatable<T>
 {
     public readonly bool tainted;
+
+    // neutral=NoSummaries;EquatableUnBound<T>;Equals;(T);summary;df-generated
     public bool Equals(T? other)
     {
         return tainted;
@@ -68,21 +72,25 @@ public class EquatableUnBound<T> : IEquatable<T>
 // simple types are used.
 public class SimpleTypes
 {
+    // neutral=NoSummaries;SimpleTypes;M1;(System.Boolean);summary;df-generated
     public bool M1(bool b)
     {
         return b;
     }
 
+    // neutral=NoSummaries;SimpleTypes;M2;(System.Boolean);summary;df-generated
     public Boolean M2(Boolean b)
     {
         return b;
     }
 
+    // neutral=NoSummaries;SimpleTypes;M3;(System.Int32);summary;df-generated
     public int M3(int i)
     {
         return i;
     }
 
+    // neutral=NoSummaries;SimpleTypes;M4;(System.Int32);summary;df-generated
     public Int32 M4(Int32 i)
     {
         return i;
@@ -104,13 +112,13 @@ public class HigherOrderParameters
 
 public abstract class BaseClass
 {
-    // Negative summary.
+    // neutral=NoSummaries;BaseClass;M1;(System.String);summary;df-generated
     public virtual string M1(string s)
     {
         return "";
     }
 
-    // Negative summary.
+    // neutral=NoSummaries;BaseClass;M2;(System.String);summary;df-generated
     public abstract string M2(string s);
 }
 
@@ -118,16 +126,19 @@ public abstract class BaseClass
 // the simple types used in the collection are not bulk data types.
 public class CollectionFlow
 {
+    // neutral=NoSummaries;CollectionFlow;ReturnSimpleTypeArray;(System.Int32[]);summary;df-generated
     public int[] ReturnSimpleTypeArray(int[] a)
     {
         return a;
     }
 
+    // neutral=NoSummaries;CollectionFlow;ReturnSimpleTypeList;(System.Collections.Generic.List<System.Int32>);summary;df-generated
     public List<int> ReturnSimpleTypeList(List<int> a)
     {
         return a;
     }
 
+    // neutral=NoSummaries;CollectionFlow;ReturnSimpleTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.Int32>);summary;df-generated
     public Dictionary<int, int> ReturnSimpleTypeDictionary(Dictionary<int, int> a)
     {
         return a;

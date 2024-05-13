@@ -254,6 +254,7 @@ public class OperatorFlow
     }
 
     // No flow summary.
+    // neutral=Summaries;OperatorFlow;op_Increment;(Summaries.OperatorFlow);summary;df-generated
     public static OperatorFlow operator ++(OperatorFlow a)
     {
         return new OperatorFlow(new object());
@@ -279,6 +280,7 @@ public class EqualsGetHashCodeNoFlow
     public readonly int intTainted;
 
     // No flow summary as this is an override of the Equals method.
+    // neutral=Summaries;EqualsGetHashCodeNoFlow;Equals;(System.Object);summary;df-generated
     public override bool Equals(object obj)
     {
         return boolTainted;
@@ -292,6 +294,7 @@ public class EqualsGetHashCodeNoFlow
     }
 
     // No flow summary as this is an override of the GetHashCode method.
+    // neutral=Summaries;EqualsGetHashCodeNoFlow;GetHashCode;();summary;df-generated
     public override int GetHashCode()
     {
         return intTainted;
