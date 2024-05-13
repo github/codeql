@@ -7,6 +7,7 @@ namespace NoSummaries;
 // Just to prove that, if a method like this is correctly exposed, a flow summary will be captured.
 public class PublicClassFlow
 {
+    // summary=NoSummaries;PublicClassFlow;false;PublicReturn;(System.Object);;Argument[0];ReturnValue;taint;df-generated
     public object PublicReturn(object input)
     {
         return input;
