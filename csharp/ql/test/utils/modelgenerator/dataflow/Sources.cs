@@ -5,12 +5,14 @@ namespace Sources;
 public class NewSources
 {
     // New source
+    // source=Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;local;df-generated
     public string? WrapConsoleReadLine()
     {
         return Console.ReadLine();
     }
 
     // New source
+    // source=Sources;NewSources;false;WrapConsoleReadLineAndProcees;(System.String);;ReturnValue;local;df-generated
     public string WrapConsoleReadLineAndProcees(string prompt)
     {
         var s = Console.ReadLine();
@@ -24,6 +26,7 @@ public class NewSources
     }
 
     // New source
+    // source=Sources;NewSources;false;WrapConsoleReadKey;();;ReturnValue;local;df-generated
     public ConsoleKeyInfo WrapConsoleReadKey()
     {
         return Console.ReadKey();
