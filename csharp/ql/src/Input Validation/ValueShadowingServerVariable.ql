@@ -8,7 +8,7 @@
  * @tags security
  *       maintainability
  *       frameworks/asp.net
- *       external/cwe/cwe-1173
+ *       external/cwe/cwe-348
  */
 
 import csharp
