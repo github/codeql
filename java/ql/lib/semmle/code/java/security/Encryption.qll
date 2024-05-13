@@ -250,7 +250,8 @@ string getASecureAlgorithmName() {
   result =
     [
       "RSA", "SHA-?256", "SHA-?512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
-      "Blowfish", "ECIES"
+      "Blowfish", "ECIES", "RSA/ECB/OAEPWithSHA-1AndMGF1Padding", "RSA/ECB/PKCS1Padding",
+      "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
     ]
 }
 

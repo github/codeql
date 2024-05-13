@@ -15,6 +15,7 @@ private class ShortStringLiteral extends StringLiteral {
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
     this.getValue().regexpMatch(getInsecureAlgorithmRegex()) and
+    not this.getValue().regexpMatch(getASecureAlgorithmName()) and
     // Exclude German and French sentences.
     not this.getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }
