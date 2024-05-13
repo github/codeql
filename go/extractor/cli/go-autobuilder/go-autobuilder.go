@@ -322,8 +322,8 @@ func setGopath(root string) {
 
 // Try to build the project with a build script. If that fails, return a boolean indicating
 // that we should install dependencies in the normal way.
-func buildWithoutCustomCommands(modMode project.ModMode) (shouldInstallDependencies bool) {
-	shouldInstallDependencies = false
+func buildWithoutCustomCommands(modMode project.ModMode) bool {
+	shouldInstallDependencies := false
 	// try to run a build script
 	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
 	scriptCount := len(scriptsExecuted)
@@ -343,7 +343,7 @@ func buildWithoutCustomCommands(modMode project.ModMode) (shouldInstallDependenc
 
 		shouldInstallDependencies = true
 	}
-	return
+	return shouldInstallDependencies
 }
 
 // Build the project with custom commands.
