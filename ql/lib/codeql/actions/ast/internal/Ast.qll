@@ -544,9 +544,15 @@ class StrategyImpl extends AstNodeImpl, TStrategyNode {
 
   override YamlMapping getNode() { result = n }
 
-  /** Gets a specific matric expression (YamlMapping) by name. */
-  ExpressionImpl getMatrixVarExpr(string name) {
-    n.lookup("matrix").(YamlMapping).lookup(name) = result.getNode()
+  YamlMapping getMatrix() { result = n.lookup("matrix") }
+
+  /** Gets a specific matrix expression (YamlMapping) by name. */
+  ExpressionImpl getMatrixVarExpr(string accessPath) {
+    exists(MatrixAccessPathImpl p, ScalarValueImpl v |
+      p.toString() = accessPath and
+      resolveMatrixAccessPath(n.lookup("matrix"), p).getNode(_) = v.getNode() and
+      result.getParentNode() = v
+    )
   }
 
   /** Gets a specific matric expression (YamlMapping) by name. */
@@ -777,14 +783,27 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Gets the runs-on field of the job. */
   string getARunsOnLabel() {
-    exists(string lbl, YamlNode r |
+    exists(ScalarValueImpl lbl |
       (
-        r = runson.getNode(lbl) and
-        not lbl = ["group", "labels"]
+        lbl.getNode() = runson.getNode(_) and
+        not lbl.getNode() = runson.getNode("group")
         or
-        r = runson.getNode("labels").(YamlMappingLikeNode).getNode(lbl)
+        lbl.getNode() = runson.getNode("labels").(YamlMappingLikeNode).getNode(_)
       ) and
-      result = lbl.trim().regexpReplaceAll("^('|\")", "").regexpReplaceAll("('|\")$", "").trim()
+      (
+        not exists(MatrixExpressionImpl e | e.getParentNode() = lbl) and
+        result =
+          lbl.getValue()
+              .trim()
+              .regexpReplaceAll("^('|\")", "")
+              .regexpReplaceAll("('|\")$", "")
+              .trim()
+        or
+        exists(MatrixExpressionImpl e |
+          e.getParentNode() = lbl and
+          result = e.getLiteralValues()
+        )
+      )
     )
   }
 }
@@ -1050,7 +1069,7 @@ private string jobsCtxRegex() {
 
 private string envCtxRegex() { result = Utils::wrapRegexp("env\\.([A-Za-z0-9_-]+)") }
 
-private string matrixCtxRegex() { result = Utils::wrapRegexp("matrix\\.([A-Za-z0-9_-]+)") }
+private string matrixCtxRegex() { result = Utils::wrapRegexp("matrix\\.(.+)") }
 
 private string inputsCtxRegex() {
   result =
@@ -1224,24 +1243,65 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
  * e.g. `${{ matrix.foo }}`
  */
 class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
-  string fieldName;
+  string fieldAccess;
 
   MatrixExpressionImpl() {
     Utils::normalizeExpr(expression).regexpMatch(matrixCtxRegex()) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(matrixCtxRegex(), 1)
+    fieldAccess = Utils::normalizeExpr(expression).regexpCapture(matrixCtxRegex(), 1)
   }
 
-  override string getFieldName() { result = fieldName }
+  override string getFieldName() { result = fieldAccess }
 
   override AstNodeImpl getTarget() {
-    exists(WorkflowImpl w |
-      w.getStrategy().getMatrixVarExpr(fieldName) = result and
-      w.getAChildNode*() = this
-    )
-    or
-    exists(JobImpl j |
-      j.getStrategy().getMatrixVarExpr(fieldName) = result and
-      j.getAChildNode*() = this
+    result = this.getEnclosingWorkflow().getStrategy().getMatrixVarExpr(fieldAccess) or
+    result = this.getEnclosingJob().getStrategy().getMatrixVarExpr(fieldAccess)
+  }
+
+  string getLiteralValues() {
+    exists(StrategyImpl s, MatrixAccessPathImpl p, ScalarValueImpl v |
+      (s = this.getEnclosingJob().getStrategy() or s = this.getEnclosingWorkflow().getStrategy()) and
+      p.toString() = fieldAccess and
+      resolveMatrixAccessPath(s.getMatrix(), p).getNode(_) = v.getNode() and
+      // Exclude values containing matrix expressions to avoid recursion
+      not exists(MatrixExpressionImpl e | e.getParentNode() = v) and
+      result = v.getValue()
     )
   }
+}
+
+bindingset[accessPath]
+string explodeAccessPath(string accessPath) {
+  result = accessPath or
+  result = accessPath.suffix(accessPath.indexOf(".") + 1) or
+  result = accessPath.prefix(accessPath.indexOf("."))
+}
+
+private newtype TAccessPath =
+  TMatrixAccessPathNode(string accessPath) {
+    exists(MatrixExpressionImpl e | accessPath = explodeAccessPath(e.getFieldName()))
+  }
+
+class MatrixAccessPathImpl extends TMatrixAccessPathNode {
+  string accessPath;
+
+  MatrixAccessPathImpl() { this = TMatrixAccessPathNode(accessPath) }
+
+  string toString() { result = accessPath }
+}
+
+private YamlMappingLikeNode resolveMatrixAccessPath(
+  YamlMappingLikeNode root, MatrixAccessPathImpl accessPath
+) {
+  // access path contains no dots. eg: "os"
+  result = root.getNode(accessPath.toString())
+  or
+  // access path contains dots. eg: "plaform.os"
+  exists(MatrixAccessPathImpl first, MatrixAccessPathImpl rest, YamlMappingLikeNode newRoot |
+    first.toString() = accessPath.toString().splitAt(".", 0) and
+    rest.toString() = accessPath.toString().suffix(first.toString().length() + 1) and
+    newRoot = root.getNode(first.toString()) and
+    if newRoot instanceof YamlSequence
+    then result = resolveMatrixAccessPath(newRoot.(YamlSequence).getElementNode(_), rest)
+    else result = resolveMatrixAccessPath(newRoot, rest)
+  )
 }
