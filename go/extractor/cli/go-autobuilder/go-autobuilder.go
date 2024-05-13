@@ -325,7 +325,7 @@ func setGopath(root string) {
 func buildWithoutCustomCommands(modMode project.ModMode) (shouldInstallDependencies bool) {
 	shouldInstallDependencies = false
 	// try to run a build script
-	scriptSucceeded := autobuilder.Autobuild()
+	scriptSucceeded, _ := autobuilder.Autobuild()
 
 	// If there is no build script we could invoke successfully or there are still dependency errors;
 	// we'll try to install dependencies ourselves in the normal Go way.
