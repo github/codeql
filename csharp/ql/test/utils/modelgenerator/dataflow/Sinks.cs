@@ -13,6 +13,7 @@ public class NewSinks
     public string PrivateSetTaintedProp { get; private set; }
 
     // New sink
+    // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
     public void WrapResponseWrite(object o)
     {
         var response = new HttpResponse();
@@ -27,6 +28,7 @@ public class NewSinks
     }
 
     // New sink
+    // sink=Sinks;NewSinks;false;WrapResponseWriteFile;(System.String);;Argument[0];html-injection;df-generated
     public void WrapResponseWriteFile(string s)
     {
         var response = new HttpResponse();
@@ -34,6 +36,7 @@ public class NewSinks
     }
 
     // New sink
+    // sink=Sinks;NewSinks;false;WrapFieldResponseWriteFile;();;Argument[this];html-injection;df-generated
     public void WrapFieldResponseWriteFile()
     {
         var response = new HttpResponse();
@@ -48,6 +51,7 @@ public class NewSinks
     }
 
     // New sink
+    // sink=Sinks;NewSinks;false;WrapPropResponseWriteFile;();;Argument[this];html-injection;df-generated
     public void WrapPropResponseWriteFile()
     {
         var response = new HttpResponse();
