@@ -320,25 +320,25 @@ func setGopath(root string) {
 	log.Printf("GOPATH set to %s.\n", newGopath)
 }
 
-// Try to build the project without custom commands. If that fails, return a boolean indicating
-// that we should install dependencies ourselves.
-func buildWithoutCustomCommands(modMode project.ModMode) bool {
-	shouldInstallDependencies := false
-	// try to build the project
-	buildSucceeded := autobuilder.Autobuild()
+// Try to build the project with a build script. If that fails, return a boolean indicating
+// that we should install dependencies in the normal way.
+func buildWithoutCustomCommands(modMode project.ModMode) (shouldInstallDependencies bool) {
+	shouldInstallDependencies = false
+	// try to run a build script
+	scriptSucceeded := autobuilder.Autobuild()
 
-	// Build failed or there are still dependency errors; we'll try to install dependencies
-	// ourselves
-	if !buildSucceeded {
-		log.Println("Build failed, continuing to install dependencies.")
+	// If there is no build script we could invoke successfully or there are still dependency errors;
+	// we'll try to install dependencies ourselves in the normal Go way.
+	if !scriptSucceeded {
+		log.Println("Unable to find or execute a build script, continuing to install dependencies in the normal way.")
 
 		shouldInstallDependencies = true
 	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+		log.Println("Dependencies are still not resolving after execution of a build script, continuing to install dependencies in the normal way.")
 
 		shouldInstallDependencies = true
 	}
-	return shouldInstallDependencies
+	return
 }
 
 // Build the project with custom commands.
