@@ -31,7 +31,6 @@ private module Torch {
     override string getFormat() { result = "pickle" }
   }
 
-
   /**
    * A call to `torch.package.PackageImporter`
    * See https://pytorch.org/docs/stable/package.html#torch.package.PackageImporter
