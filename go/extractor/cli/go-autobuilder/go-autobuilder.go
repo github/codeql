@@ -325,16 +325,21 @@ func setGopath(root string) {
 func buildWithoutCustomCommands(modMode project.ModMode) (shouldInstallDependencies bool) {
 	shouldInstallDependencies = false
 	// try to run a build script
-	scriptSucceeded, _ := autobuilder.Autobuild()
+	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
+	scriptCount := len(scriptsExecuted)
 
 	// If there is no build script we could invoke successfully or there are still dependency errors;
 	// we'll try to install dependencies ourselves in the normal Go way.
 	if !scriptSucceeded {
-		log.Println("Unable to find or execute a build script, continuing to install dependencies in the normal way.")
+		if scriptCount > 0 {
+			log.Printf("Unsuccessfully ran %d build scripts(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		} else {
+			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
+		}
 
 		shouldInstallDependencies = true
 	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Println("Dependencies are still not resolving after execution of a build script, continuing to install dependencies in the normal way.")
+		log.Printf("Dependencies are still not resolving after executing %d build script(s), continuing to install dependencies in the normal way.\n", scriptCount)
 
 		shouldInstallDependencies = true
 	}
