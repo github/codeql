@@ -284,8 +284,7 @@ abstract class JavaxCryptoAlgoSpec extends CryptoAlgoSpec { }
 class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
   JavaxCryptoCipher() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.Cipher" and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("javax.crypto", "Cipher", "getInstance")
     )
   }
 
@@ -295,7 +294,7 @@ class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
 class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
   JavaxCryptoSecretKey() {
     exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType().getQualifiedName() = "javax.crypto.spec.SecretKeySpec"
+      c.getDeclaringType().hasQualifiedName("javax.crypto.spec", "SecretKeySpec")
     )
   }
 
@@ -320,8 +319,7 @@ class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyAgreement() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.KeyAgreement" and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("javax.crypto", "KeyAgreement", "getInstance")
     )
   }
 
@@ -331,8 +329,7 @@ class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyFactory() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.SecretKeyFactory" and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("javax.crypto", "SecretKeyFactory", "getInstance")
     )
   }
 
@@ -348,8 +345,7 @@ class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
     )
     or
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("java.security", "MessageDigest", "getInstance")
     )
   }
 
@@ -359,7 +355,7 @@ class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
 class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   JavaSecuritySignature() {
     exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType().getQualifiedName() = "java.security.Signature"
+      c.getDeclaringType().hasQualifiedName("java.security", "Signature")
     )
   }
 
