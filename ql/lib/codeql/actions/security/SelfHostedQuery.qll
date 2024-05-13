@@ -1,10 +1,17 @@
 import actions
 import codeql.actions.dataflow.ExternalFlow
 
-string selfHostedRunnerRegexp() {
-  // source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/poutine/utils.rego#L49C3-L49C136
-  result =
-    "(?i)^((ubuntu-(([0-9]{2})\\.04|latest)|macos-([0-9]{2}|latest)(-x?large)?|windows-(20[0-9]{2}|latest)|(buildjet|warp)-[a-z0-9-]+))$"
+bindingset[runner]
+predicate isGithubHostedRunner(string runner) {
+  // list of github hosted repos: https://github.com/actions/runner-images/blob/main/README.md#available-images
+  runner
+      .toLowerCase()
+      .regexpMatch("^(ubuntu-([0-9.]+|latest)|macos-([0-9]+|latest)(-x?large)?|windows-([0-9.]+|latest)|(buildjet|warp)-[a-z0-9-]+)$")
+}
+
+bindingset[runner]
+predicate is3rdPartyHostedRunner(string runner) {
+  runner.toLowerCase().regexpMatch("^(buildjet|warp)-[a-z0-9-]+$")
 }
 
 /**
@@ -15,9 +22,13 @@ string selfHostedRunnerRegexp() {
 predicate staticallyIdentifiedSelfHostedRunner(Job job) {
   exists(string label |
     job.getATriggerEvent().getName() =
-      ["pull_request", "pull_request_review", "pull_request_review_comment", "pull_request_target"] and
+      [
+        "issue_comment", "pull_request", "pull_request_review", "pull_request_review_comment",
+        "pull_request_target", "workflow_run"
+      ] and
     label = job.getARunsOnLabel() and
-    not label.regexpMatch(selfHostedRunnerRegexp())
+    not isGithubHostedRunner(label) and
+    not is3rdPartyHostedRunner(label)
   )
 }
 
