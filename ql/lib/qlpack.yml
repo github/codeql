@@ -2,7 +2,7 @@
 library: true
 warnOnImplicitThis: true
 name: githubsecuritylab/actions-all
-version: 0.0.22
+version: 0.0.23
 dependencies:
   codeql/util: ^0.2.0
   codeql/yaml: ^0.1.2
