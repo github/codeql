@@ -94,6 +94,18 @@ module FabricV2 {
        */
       module ConnectionClass {
         /**
+         *  Gets a reference to the `fabric.connection.Connection` class.
+         */
+        API::Node classRef() {
+          result = fabric().getMember("Connection")
+          or
+          result = connection().getMember("Connection")
+          or
+          result =
+            ModelOutput::getATypeNode("fabric.connection.Connection~Subclass").getASubclass*()
+        }
+
+        /**
          * A source of instances of `fabric.connection.Connection`, extend this class to model new instances.
          *
          * This can include instantiations of the class, return values from function
@@ -108,13 +120,7 @@ module FabricV2 {
          *  A reference to the `fabric.connection.Connection` class.
          */
         class ClassInstantiation extends Instance {
-          ClassInstantiation() {
-            this =
-              [
-                fabric().getMember("Connection"), connection().getMember("Connection"),
-                ModelOutput::getATypeNode("fabric.connection.Connection~Subclass").getASubclass*()
-              ].getReturn()
-          }
+          ClassInstantiation() { this = classRef().getReturn() }
         }
 
         /**
