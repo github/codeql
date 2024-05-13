@@ -3,10 +3,10 @@ name = "codeql-extractor-ruby"
 description = "CodeQL Ruby extractor"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2018"
+edition = "2021"
 
 # When changing/updating these, the `cargo-bazel-lock.json` file has to be regenerated.
-# Run `CARGO_BAZEL_REPIN=true CARGO_BAZEL_REPIN_ONLY=ruby_deps ./build --bazel sync --only=ruby_deps`
+# Run `CARGO_BAZEL_REPIN=true CARGO_BAZEL_REPIN_ONLY=ruby_deps ./tools/bazel sync --only=ruby_deps`
 # in the `semmle-code` repository to do so.
 # For more information, check out the documentation at
 # https://bazelbuild.github.io/rules_rust/crate_universe.html#repinning--updating-dependencies
@@ -15,9 +15,9 @@ edition = "2018"
 # (c.f. https://github.com/bazelbuild/rules_rust/issues/2452).
 # Warning: The process takes >5min on my M1 mac, so do wait for a while.
 [dependencies]
-tree-sitter = "0.20"
-tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "203f7bd3c1bbfbd98fc19add4b8fcb213c059205" }
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "4d9ad3f010fdc47a8433adcf9ae30c8eb8475ae7" }
+tree-sitter = ">= 0.22.6"
+tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "38d5004a797298dc42c85e7706c5ceac46a3f29f" }
+tree-sitter-ruby = { git = "https://github.com/hvitved/tree-sitter-ruby.git", rev = "b84d897e675944ac03389a4105ccaece8106f504" }
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }

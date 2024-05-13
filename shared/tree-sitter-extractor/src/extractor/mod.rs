@@ -150,7 +150,7 @@ fn location_label(
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
-    language: Language,
+    language: &Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,

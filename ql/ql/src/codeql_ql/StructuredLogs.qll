@@ -31,15 +31,25 @@ private Predicate getPredicateFromPosition(string s) {
   )
 }
 
+pragma[nomagic]
+private string getJsonStringComponent(JSON::String s, int i) {
+  result = s.getChild(i).(JSON::Token).getValue()
+}
+
+pragma[nomagic]
+private string getJsonString(JSON::String s) {
+  result = concat(string c, int i | c = getJsonStringComponent(s, i) | c order by i)
+}
+
 class Object extends JSON::Object {
-  JSON::Value getValue(string key) {
+  JSON::UnderscoreValue getValue(string key) {
     exists(JSON::Pair p | p = this.getChild(_) |
-      key = p.getKey().(JSON::String).getChild().getValue() and
+      key = getJsonString(p.getKey()) and
       result = p.getValue()
     )
   }
 
-  string getString(string key) { result = this.getValue(key).(JSON::String).getChild().getValue() }
+  string getString(string key) { result = getJsonString(this.getValue(key)) }
 
   int getNumber(string key) { result = this.getValue(key).(JSON::Number).getValue().toInt() }
 
@@ -61,7 +71,7 @@ class Object extends JSON::Object {
 class Array extends JSON::Array {
   Object getObject(int i) { result = this.getChild(i) }
 
-  string getString(int i) { result = this.getChild(i).(JSON::String).getChild().getValue() }
+  string getString(int i) { result = getJsonString(this.getChild(i)) }
 
   int getNumber(int i) { result = this.getChild(i).(JSON::Number).getValue().toInt() }
 
