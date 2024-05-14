@@ -168,4 +168,12 @@ func simpleflow() {
 	arg3 := src
 	arg4 := src
 	b.SinkManyArgs(arg1, arg2, arg3, arg4) // $ hasValueFlow="arg1" hasValueFlow="arg2" hasValueFlow="arg3"
+
+	var srcInt int = src.(int)
+	b.Sink1(max(srcInt, 0, 1)) // $ hasValueFlow="call to max"
+	b.Sink1(max(0, srcInt, 1)) // $ hasValueFlow="call to max"
+	b.Sink1(max(0, 1, srcInt)) // $ hasValueFlow="call to max"
+	b.Sink1(min(srcInt, 0, 1)) // $ hasValueFlow="call to min"
+	b.Sink1(min(0, srcInt, 1)) // $ hasValueFlow="call to min"
+	b.Sink1(min(0, 1, srcInt)) // $ hasValueFlow="call to min"
 }

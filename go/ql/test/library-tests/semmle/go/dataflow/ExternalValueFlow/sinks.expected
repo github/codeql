@@ -34,3 +34,9 @@ invalidModelRow
 | test.go:170:17:170:20 | arg1 | qltest |
 | test.go:170:23:170:26 | arg2 | qltest |
 | test.go:170:29:170:32 | arg3 | qltest |
+| test.go:173:10:173:26 | call to max | qltest |
+| test.go:174:10:174:26 | call to max | qltest |
+| test.go:175:10:175:26 | call to max | qltest |
+| test.go:176:10:176:26 | call to min | qltest |
+| test.go:177:10:177:26 | call to min | qltest |
+| test.go:178:10:178:26 | call to min | qltest |
