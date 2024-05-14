@@ -490,3 +490,61 @@ public class ParameterlessConstructor
         IsInitialized = true;
     }
 }
+
+public class Inheritance
+{
+    public abstract class BasePublic
+    {
+        // neutral=Models;Inheritance+BasePublic;Id;(System.String);summary;df-generated
+        public abstract string Id(string x);
+    }
+
+    public class AImplBasePublic : BasePublic
+    {
+        // summary=Models;Inheritance+AImplBasePublic;false;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        public override string Id(string x)
+        {
+            return x;
+        }
+    }
+
+    public interface IPublic1
+    {
+        // neutral=Models;Inheritance+IPublic1;Id;(System.String);summary;df-generated
+        string Id(string x);
+    }
+
+    public interface IPublic2
+    {
+        // neutral=Models;Inheritance+IPublic2;Id;(System.String);summary;df-generated
+        string Id(string x);
+    }
+
+    public abstract class B : IPublic1
+    {
+        // neutral=Models;Inheritance+B;Id;(System.String);summary;df-generated
+        public abstract string Id(string x);
+    }
+
+    private abstract class C : IPublic2
+    {
+        public abstract string Id(string x);
+    }
+
+    public class BImpl : B
+    {
+        // summary=Models;Inheritance+BImpl;false;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        public override string Id(string x)
+        {
+            return x;
+        }
+    }
+
+    private class CImpl : C
+    {
+        public override string Id(string x)
+        {
+            return x;
+        }
+    }
+}
