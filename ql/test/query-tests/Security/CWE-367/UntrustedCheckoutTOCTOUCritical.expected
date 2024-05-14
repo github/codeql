@@ -1,0 +1,2 @@
+| .github/workflows/comment.yml:37:9:41:6 | Uses Step | The checked-out code can be changed after the authorization check o step $@. | .github/workflows/comment.yml:10:9:10:188 | ${{ git ... s ') }} | ${{ git ... s ') }} |
+| .github/workflows/label.yml:13:9:17:6 | Uses Step | The checked-out code can be changed after the authorization check o step $@. | .github/workflows/label.yml:11:9:11:73 | contain ... -test') | contain ... -test') |
