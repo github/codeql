@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
@@ -9,17 +10,29 @@ namespace Semmle.Util
     /// </summary>
     public sealed class TemporaryDirectory : IDisposable
     {
+        private readonly string userReportedDirectoryPurpose;
+        private readonly ILogger logger;
+
         public DirectoryInfo DirInfo { get; }
 
-        public TemporaryDirectory(string name)
+        public TemporaryDirectory(string path, string userReportedDirectoryPurpose, ILogger logger)
         {
-            DirInfo = new DirectoryInfo(name);
+            DirInfo = new DirectoryInfo(path);
             DirInfo.Create();
+            this.userReportedDirectoryPurpose = userReportedDirectoryPurpose;
+            this.logger = logger;
         }
 
         public void Dispose()
         {
-            DirInfo.Delete(true);
+            try
+            {
+                DirInfo.Delete(true);
+            }
+            catch (Exception exc)
+            {
+                logger.LogInfo($"Couldn't delete {userReportedDirectoryPurpose} directory {exc.Message}");
+            }
         }
 
         public override string ToString() => DirInfo.FullName.ToString();

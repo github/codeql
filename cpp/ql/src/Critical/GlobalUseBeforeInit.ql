@@ -31,7 +31,9 @@ predicate useFunc(GlobalVariable v, Function f) {
 }
 
 predicate uninitialisedBefore(GlobalVariable v, Function f) {
-  f.hasGlobalName("main")
+  f.hasGlobalName("main") and
+  not initialisedAtDeclaration(v) and
+  not isStdlibVariable(v)
   or
   exists(Call call, Function g |
     uninitialisedBefore(v, g) and
@@ -98,10 +100,15 @@ predicate callReaches(Call call, ControlFlowNode successor) {
   )
 }
 
+/** Holds if `v` has an initializer. */
+predicate initialisedAtDeclaration(GlobalVariable v) { exists(v.getInitializer()) }
+
+/** Holds if `v` is a global variable that does not need to be initialized. */
+predicate isStdlibVariable(GlobalVariable v) { v.hasGlobalName(["stdin", "stdout", "stderr"]) }
+
 from GlobalVariable v, Function f
 where
   uninitialisedBefore(v, f) and
   useFunc(v, f)
-select f,
-  "The variable '" + v.getName() +
-    " is used in this function but may not be initialized when it is called."
+select f, "The variable $@ is used in this function but may not be initialized when it is called.",
+  v, v.getName()

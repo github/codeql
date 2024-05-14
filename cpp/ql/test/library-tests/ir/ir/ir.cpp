@@ -1933,6 +1933,20 @@ namespace missing_declaration_entries {
         Bar2<int> b;
         b.two_missing_variable_declaration_entries();
     }
+
+    template<typename T> struct Bar3 {
+
+        int two_more_missing_variable_declaration_entries() {
+            extern int g;
+            int z(float);
+            return g;
+        }
+    };
+
+    void test3() {
+        Bar3<int> b;
+        b.two_more_missing_variable_declaration_entries();
+    }
 }
 
 template<typename T> T global_template = 42;
@@ -2177,6 +2191,7 @@ public:
 
     void set_x(char y) { *x = y; }
     char get_x() { return *x; }
+    operator bool() const;
 };
 
 constexpr bool initialization_with_destructor_bool = true;
@@ -2415,6 +2430,126 @@ void initialization_with_temp_destructor() {
 
     for(char x = ClassWithDestructor().get_x(); char y : std::vector<char>(x))
         y += x;
+}
+
+void param_with_destructor_by_value(ClassWithDestructor c) {
+    // The call to ~ClassWithDestructor::ClassWithDestructor() happens on the side of the caller
+}
+
+void param_with_destructor_by_pointer(ClassWithDestructor* c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_ref(ClassWithDestructor& c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_rref(ClassWithDestructor&& c) {
+    // No destructor call should be here
+}
+
+void rethrow_with_destruction(int x) {
+    ClassWithDestructor c;
+    throw;
+}
+
+struct ByValueConstructor {
+    ByValueConstructor(ClassWithDestructor);
+};
+
+void new_with_destructor(ClassWithDestructor a)
+{
+    ByValueConstructor* b = new ByValueConstructor(a);
+}
+
+namespace rvalue_conversion_with_destructor {
+    struct A {
+        unsigned a;
+    };
+
+    struct B
+    {
+        ~B();
+
+        inline A *operator->() const;
+    };
+
+    B get();
+
+    void test()
+    {
+        auto a = get()->a;
+    }
+}
+
+void destructor_without_block(bool b)
+{
+    if (b)
+      ClassWithDestructor c;
+
+    if (b)
+      ClassWithDestructor d;
+    else
+      ClassWithDestructor e;
+
+    while (b)
+      ClassWithDestructor f;
+
+    for(int i = 0; i < 42; ++i)
+      ClassWithDestructor g;
+}
+
+void destruction_in_switch_1(int c) {
+  switch (c) {
+    case 0: {
+      ClassWithDestructor x;
+      break;
+    }
+  }
+}
+
+void destruction_in_switch_2(int c) {
+  switch (ClassWithDestructor y; c) {
+    case 0: {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+void destruction_in_switch_3(int c) {
+  switch (ClassWithDestructor y; c) {
+    case 0: {
+      ClassWithDestructor x;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+void destructor_possibly_not_handled() {
+  ClassWithDestructor x;
+  try {
+    throw 42;
+  }
+  catch(char) {
+  }
+}
+
+ClassWithDestructor getClassWithDestructor();
+
+void this_inconsistency(bool b) {
+  if (const ClassWithDestructor& a = getClassWithDestructor())
+    ;
+}
+
+void constexpr_inconsistency(bool b) {
+  if constexpr (const ClassWithDestructor& a = getClassWithDestructor(); initialization_with_destructor_bool)
+    ;
 }
 
 // semmle-extractor-options: -std=c++20 --clang

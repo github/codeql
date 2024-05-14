@@ -1,0 +1,43 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.sql", "ConnectionEvent", True, "ConnectionEvent", "(PooledConnection)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "ConnectionEvent", True, "ConnectionEvent", "(PooledConnection,SQLException)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "ConnectionEvent", True, "ConnectionEvent", "(PooledConnection,SQLException)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "ConnectionEvent", True, "getSQLException", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sql", "RowSetEvent", True, "RowSetEvent", "(RowSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "StatementEvent", "(PooledConnection,PreparedStatement)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "StatementEvent", "(PooledConnection,PreparedStatement)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "StatementEvent", "(PooledConnection,PreparedStatement,SQLException)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "StatementEvent", "(PooledConnection,PreparedStatement,SQLException)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "StatementEvent", "(PooledConnection,PreparedStatement,SQLException)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "getSQLException", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sql", "StatementEvent", True, "getStatement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.sql", "CommonDataSource", "createShardingKeyBuilder", "()", "summary", "df-generated"]
+      - ["javax.sql", "ConnectionPoolDataSource", "createPooledConnectionBuilder", "()", "summary", "df-generated"]
+      - ["javax.sql", "DataSource", "createConnectionBuilder", "()", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setAutoIncrement", "(int,boolean)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setCaseSensitive", "(int,boolean)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setCatalogName", "(int,String)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setColumnCount", "(int)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setColumnDisplaySize", "(int,int)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setColumnLabel", "(int,String)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setColumnName", "(int,String)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setColumnType", "(int,int)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setColumnTypeName", "(int,String)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setCurrency", "(int,boolean)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setNullable", "(int,int)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setPrecision", "(int,int)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setScale", "(int,int)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setSchemaName", "(int,String)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setSearchable", "(int,boolean)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setSigned", "(int,boolean)", "summary", "df-generated"]
+      - ["javax.sql", "RowSetMetaData", "setTableName", "(int,String)", "summary", "df-generated"]
+      - ["javax.sql", "XADataSource", "createXAConnectionBuilder", "()", "summary", "df-generated"]

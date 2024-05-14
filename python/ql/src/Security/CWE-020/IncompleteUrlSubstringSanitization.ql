@@ -16,7 +16,7 @@ import semmle.python.regex
 
 private string commonTopLevelDomainRegex() { result = "com|org|edu|gov|uk|net|io" }
 
-predicate looksLikeUrl(StrConst s) {
+predicate looksLikeUrl(StringLiteral s) {
   exists(string text | text = s.getText() |
     text.regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(" + commonTopLevelDomainRegex() +
         ")(:[0-9]+)?/?")
@@ -26,7 +26,7 @@ predicate looksLikeUrl(StrConst s) {
   )
 }
 
-predicate incomplete_sanitization(Expr sanitizer, StrConst url) {
+predicate incomplete_sanitization(Expr sanitizer, StringLiteral url) {
   looksLikeUrl(url) and
   (
     sanitizer.(Compare).compares(url, any(In i), _)
@@ -37,19 +37,19 @@ predicate incomplete_sanitization(Expr sanitizer, StrConst url) {
   )
 }
 
-predicate unsafe_call_to_startswith(Call sanitizer, StrConst url) {
+predicate unsafe_call_to_startswith(Call sanitizer, StringLiteral url) {
   sanitizer.getFunc().(Attribute).getName() = "startswith" and
   sanitizer.getArg(0) = url and
   not url.getText().regexpMatch("(?i)https?://[\\.a-z0-9-]+/.*")
 }
 
-predicate unsafe_call_to_endswith(Call sanitizer, StrConst url) {
+predicate unsafe_call_to_endswith(Call sanitizer, StringLiteral url) {
   sanitizer.getFunc().(Attribute).getName() = "endswith" and
   sanitizer.getArg(0) = url and
   not url.getText().regexpMatch("(?i)\\.([a-z0-9-]+)(\\.[a-z0-9-]+)+")
 }
 
-from Expr sanitizer, StrConst url
+from Expr sanitizer, StringLiteral url
 where incomplete_sanitization(sanitizer, url)
 select sanitizer, "The string $@ may be at an arbitrary position in the sanitized URL.", url,
   url.getText()

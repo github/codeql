@@ -107,6 +107,25 @@ module HeuristicNames {
   }
 
   /**
+   * Holds if `name` may indicate the presence of sensitive data, and `name` does not indicate that
+   * the data is in fact non-sensitive (for example since it is hashed or encrypted).
+   *
+   * That is, one of the regexps from `maybeSensitiveRegexp` matches `name` (with the given
+   * classification), and none of the regexps from `notSensitiveRegexp` matches `name`.
+   */
+  bindingset[name]
+  predicate nameIndicatesSensitiveData(string name) {
+    exists(string combinedRegexp |
+      // Combine all the maybe-sensitive regexps into one using non-capturing groups and |.
+      combinedRegexp =
+        "(?:" + strictconcat(string r | r = maybeSensitiveRegexp(_) | r, ")|(?:") + ")"
+    |
+      name.regexpMatch(combinedRegexp)
+    ) and
+    not name.regexpMatch(notSensitiveRegexp())
+  }
+
+  /**
    * Holds if `name` may indicate the presence of sensitive data, and
    * `name` does not indicate that the data is in fact non-sensitive (for example since
    * it is hashed or encrypted). `classification` describes the kind of sensitive data
@@ -115,6 +134,10 @@ module HeuristicNames {
    * That is, one of the regexps from `maybeSensitiveRegexp` matches `name` (with the
    * given classification), and none of the regexps from `notSensitiveRegexp` matches
    * `name`.
+   *
+   * When the set of names is large, it's worth using `nameIndicatesSensitiveData/1` as a first
+   * pass, since that combines all the regexps into one, and should be faster. Then call this
+   * predicate to get the classification(s).
    */
   bindingset[name]
   predicate nameIndicatesSensitiveData(string name, SensitiveDataClassification classification) {

@@ -333,7 +333,7 @@ func buildWithoutCustomCommands(modMode project.ModMode) bool {
 		log.Println("Build failed, continuing to install dependencies.")
 
 		shouldInstallDependencies = true
-	} else if util.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
 		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
 
 		shouldInstallDependencies = true
@@ -487,7 +487,9 @@ func extract(workspace project.GoWorkspace) bool {
 
 // Build the project and run the extractor.
 func installDependenciesAndBuild() {
-	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), toolchain.GetEnvGoVersion())
+	// do not print experiments the autobuilder was built with if any, only the version
+	version := strings.SplitN(runtime.Version(), " ", 2)[0]
+	log.Printf("Autobuilder was built with %s, environment has %s\n", version, toolchain.GetEnvGoVersion())
 
 	srcdir := getSourceDir()
 

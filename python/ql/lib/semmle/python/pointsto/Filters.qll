@@ -9,7 +9,7 @@ import python
 predicate hasattr(CallNode c, ControlFlowNode obj, string attr) {
   c.getFunction().getNode().(Name).getId() = "hasattr" and
   c.getArg(0) = obj and
-  c.getArg(1).getNode().(StrConst).getText() = attr
+  c.getArg(1).getNode().(StringLiteral).getText() = attr
 }
 
 /** Holds if `c` is a call to `isinstance(use, cls)`. */

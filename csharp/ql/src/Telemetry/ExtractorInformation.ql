@@ -87,7 +87,7 @@ predicate extractionIsStandalone(string key, int value) {
     value = 0 and
     not extractionIsStandalone()
   ) and
-  key = "Is buildless extraction"
+  key = "Is extracted with build-mode set to 'none'"
 }
 
 signature module StatsSig {
@@ -120,17 +120,32 @@ module ReportStats<StatsSig Stats> {
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
 
-  int getNumberOfNotOk() { result = count(Call c | not exists(c.getTarget())) }
+  int getNumberOfNotOk() {
+    result =
+      count(Call c |
+        not exists(c.getTarget()) and
+        not c instanceof DelegateCall and
+        not c instanceof DynamicExpr
+      )
+  }
 
   string getOkText() { result = "calls with call target" }
 
   string getNotOkText() { result = "calls with missing call target" }
 }
 
-module ExprTypeStats implements StatsSig {
-  int getNumberOfOk() { result = count(Expr e | not e.getType() instanceof UnknownType) }
+private class SourceExpr extends Expr {
+  SourceExpr() { this.getFile().fromSource() }
+}
 
-  int getNumberOfNotOk() { result = count(Expr e | e.getType() instanceof UnknownType) }
+private predicate hasGoodType(Expr e) {
+  exists(e.getType()) and not e.getType() instanceof UnknownType
+}
+
+module ExprTypeStats implements StatsSig {
+  int getNumberOfOk() { result = count(SourceExpr e | hasGoodType(e)) }
+
+  int getNumberOfNotOk() { result = count(SourceExpr e | not hasGoodType(e)) }
 
   string getOkText() { result = "expressions with known type" }
 
@@ -186,6 +201,14 @@ predicate analyzerAssemblies(string key, float value) {
   value = 1.0
 }
 
+predicate timingValues(string key, float value) {
+  exists(Compilation c |
+    key = "Total elapsed seconds" and value = c.getElapsedSeconds()
+    or
+    key = "Extractor elapsed seconds" and value = c.getExtractorElapsedSeconds()
+  )
+}
+
 from string key, float value
 where
   (
@@ -215,7 +238,8 @@ where
     ExprStatsReport::numberOfOk(key, value) or
     ExprStatsReport::numberOfNotOk(key, value) or
     ExprStatsReport::percentageOfOk(key, value) or
-    analyzerAssemblies(key, value)
+    analyzerAssemblies(key, value) or
+    timingValues(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and

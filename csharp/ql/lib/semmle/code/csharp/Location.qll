@@ -63,7 +63,7 @@ class EmptyLocation extends Location {
  */
 class SourceLocation extends Location, @location_default {
   /** Gets the location that takes into account `#line` directives, if any. */
-  Location getMappedLocation() {
+  SourceLocation getMappedLocation() {
     locations_mapped(this, result) and
     not exists(LineDirective l | l.getALocation() = this)
   }
