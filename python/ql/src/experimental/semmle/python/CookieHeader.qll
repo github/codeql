@@ -6,6 +6,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import experimental.semmle.python.Concepts
+import semmle.python.Concepts
 
 /**
  * Gets a header setting a cookie.
@@ -26,13 +27,13 @@ import experimental.semmle.python.Concepts
  * * `isSameSite()` predicate would fail.
  * * `getName()` and `getValue()` results would be `"name=value; Secure;"`.
  */
-class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
+class CookieHeader extends Cookie::Range instanceof Http::Server::ResponseHeaderWrite {
   CookieHeader() {
     exists(StringLiteral str |
       str.getText() = "Set-Cookie" and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
-          .flowsTo(this.(HeaderDeclaration).getNameArg())
+          .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
     )
   }
 
@@ -41,7 +42,7 @@ class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
       str.getText().regexpMatch(".*; *Secure;.*") and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
-          .flowsTo(this.(HeaderDeclaration).getValueArg())
+          .flowsTo(this.(Http::Server::ResponseHeaderWrite).getValueArg())
     )
   }
 
@@ -50,7 +51,7 @@ class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
       str.getText().regexpMatch(".*; *HttpOnly;.*") and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
-          .flowsTo(this.(HeaderDeclaration).getValueArg())
+          .flowsTo(this.(Http::Server::ResponseHeaderWrite).getValueArg())
     )
   }
 
@@ -59,13 +60,17 @@ class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
       str.getText().regexpMatch(".*; *SameSite=(Strict|Lax);.*") and
       DataFlow::exprNode(str)
           .(DataFlow::LocalSourceNode)
-          .flowsTo(this.(HeaderDeclaration).getValueArg())
+          .flowsTo(this.(Http::Server::ResponseHeaderWrite).getValueArg())
     )
   }
 
-  override DataFlow::Node getNameArg() { result = this.(HeaderDeclaration).getValueArg() }
+  override DataFlow::Node getNameArg() {
+    result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+  }
 
-  override DataFlow::Node getValueArg() { result = this.(HeaderDeclaration).getValueArg() }
+  override DataFlow::Node getValueArg() {
+    result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+  }
 
   override DataFlow::Node getHeaderArg() { none() }
 }
