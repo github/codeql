@@ -4,8 +4,9 @@ import ssl
 
 httpd = HTTPServer(('localhost', 4443), SimpleHTTPRequestHandler)
 
-httpd.socket = ssl.wrap_socket (httpd.socket, 
-        keyfile="../key.pem", 
-        certfile="../cert.pem", server_side=True)
+sslctx = ssl.SSLContext()
+sslctx.load_cert_chain(certfile="../cert.pem", keyfile="../key.pem")
+
+httpd.socket = sslctx.wrap_socket (httpd.socket, server_side=True)
 
 httpd.serve_forever()
