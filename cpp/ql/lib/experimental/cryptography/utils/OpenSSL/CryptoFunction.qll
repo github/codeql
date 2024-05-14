@@ -115,6 +115,10 @@ private string normalizeFunctionName(Function f, string algType) {
   (result.matches("RSA") implies not f.getName().toUpperCase().matches("%UNIVERSAL%")) and
   //rsaz functions deemed to be too low level, and can be ignored
   not f.getLocation().getFile().getBaseName().matches("rsaz_exp.c") and
+  // SHA false positives
+  (result.matches("SHA") implies not f.getName().toUpperCase().matches("%SHAKE%")) and
+  // CAST false positives
+  (result.matches("CAST") implies not f.getName().toUpperCase().matches(["%UPCAST%", "%DOWNCAST%"])) and
   // General False positives
   // Functions that 'get' do not set an algorithm, and therefore are considered ignorable
   not f.getName().toLowerCase().matches("%get%")
