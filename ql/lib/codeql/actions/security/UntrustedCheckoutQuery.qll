@@ -221,17 +221,46 @@ class GhSHACheckout extends SHACheckoutStep instanceof Run {
 }
 
 /** An If node that contains an actor, user or label check */
-class ControlCheck extends If {
-  ControlCheck() {
+abstract class ControlCheck extends If { }
+
+class LabelControlCheck extends ControlCheck {
+  LabelControlCheck() {
+    // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
+    // eg: github.event.label.name == 'safe to test'
     exists(
       Utils::normalizeExpr(this.getCondition())
           .regexpFind([
-              "\\bgithub\\.actor\\b", // actor
-              "\\bgithub\\.triggering_actor\\b", // actor
-              "\\bgithub\\.event\\.comment\\.user\\.login\\b", //user
-              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", //user
-              "\\bgithub\\.event\\.pull_request\\.labels\\b", // label
-              "\\bgithub\\.event\\.label\\.name\\b" // label
+              "\\bgithub\\.event\\.pull_request\\.labels\\b", "\\bgithub\\.event\\.label\\.name\\b"
+            ], _, _)
+    )
+  }
+}
+
+class ActorControlCheck extends ControlCheck {
+  ActorControlCheck() {
+    // eg: contains(github.actor, 'dependabot')
+    // eg: github.triggering_actor != 'CI Agent'
+    // eg: github.event.pull_request.user.login == 'mybot'
+    exists(
+      Utils::normalizeExpr(this.getCondition())
+          .regexpFind([
+              "\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",
+              "\\bgithub\\.event\\.comment\\.user\\.login\\b",
+              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
+            ], _, _)
+    )
+  }
+}
+
+class AssociationControlCheck extends ControlCheck {
+  AssociationControlCheck() {
+    // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
+    exists(
+      Utils::normalizeExpr(this.getCondition())
+          .regexpFind([
+              "\\bgithub\\.event\\.comment\\.author_association\\b",
+              "\\bgithub\\.event\\.issue\\.author_association\\b",
+              "\\bgithub\\.event\\.pull_request\\.author_association\\b",
             ], _, _)
     )
   }
