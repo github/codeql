@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+      - ["peter-murray/issue-body-parser-action", "*", "output.*", "text", "manual"]

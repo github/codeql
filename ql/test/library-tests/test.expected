@@ -464,6 +464,7 @@ sources
 | jitterbit/get-changed-files | * | output.renamed | filename | manual |
 | khan/pull-request-comment-trigger | * | output.comment_body | text | manual |
 | marocchino/on_artifact | * | output.* | artifact | manual |
+| peter-murray/issue-body-parser-action | * | output.* | text | manual |
 | puppeteer/puppeteer/.github/workflows/changed-packages.yml | * | output.changes | filename | manual |
 | redhat-plumbers-in-action/download-artifact | * | output.* | artifact | manual |
 | tj-actions/branch-names | * | output.current_branch | branch | manual |
