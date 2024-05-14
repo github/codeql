@@ -53,7 +53,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   result = node.getMember(token.getAnArgument())
   or
   token.getName() = "Instance" and
-  result = node.getReturn() // In Python `Instance` is just an alias for `ReturnValue`
+  result = node.getAnInstance()
   or
   token.getName() = "Awaited" and
   result = node.getAwaited()
