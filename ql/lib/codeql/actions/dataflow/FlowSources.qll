@@ -76,22 +76,6 @@ private predicate textEvent(string context) {
   )
 }
 
-// bindingset[context]
-// private predicate repoNameEvent(string context) {
-//   exists(string reg |
-//     reg =
-//       [
-//         // repo name
-//         // Owner: All characters must be either a hyphen (-) or alphanumeric
-//         // Repo: All code points must be either a hyphen (-), an underscore (_), a period (.), or an ASCII alphanumeric code point
-//         "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.repo\\.name", // repo name
-//         "github\\.event\\.workflow_run\\.head_repository\\.name", // repo name
-//         "github\\.event\\.workflow_run\\.head_repository\\.full_name", // nwo
-//       ]
-//   |
-//     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
-//   )
-// }
 bindingset[context]
 private predicate branchEvent(string context) {
   exists(string reg |
@@ -194,7 +178,19 @@ private predicate jsonEvent(string context) {
     reg =
       [
         // json
-        "github\\.event",
+        "github\\.event", "github\\.event\\.client_payload", "github\\.event\\.comment",
+        "github\\.event\\.commits", "github\\.event\\.discussion", "github\\.event\\.head_commit",
+        "github\\.event\\.head_commit\\.author", "github\\.event\\.head_commit\\.committer",
+        "github\\.event\\.inputs", "github\\.event\\.issue", "github\\.event\\.merge_group",
+        "github\\.event\\.merge_group\\.committer", "github\\.event\\.pull_request",
+        "github\\.event\\.pull_request\\.head", "github\\.event\\.pull_request\\.head\\.repo",
+        "github\\.event\\.pages", "github\\.event\\.review", "github\\.event\\.workflow",
+        "github\\.event\\.workflow_run", "github\\.event\\.workflow_run\\.head_branch",
+        "github\\.event\\.workflow_run\\.head_commit",
+        "github\\.event\\.workflow_run\\.head_commit\\.author",
+        "github\\.event\\.workflow_run\\.head_commit\\.committer",
+        "github\\.event\\.workflow_run\\.head_repository",
+        "github\\.event\\.workflow_run\\.pull_requests",
       ]
   |
     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
