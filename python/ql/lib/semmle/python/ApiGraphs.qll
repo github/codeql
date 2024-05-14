@@ -227,6 +227,11 @@ module API {
     Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
+     * Gets a node representing an instance of the class (or a transitive subclass of the class) represented by this node.
+     */
+    Node getAnInstance() { result = this.getASubclass*().getReturn() }
+
+    /**
      * Gets a node representing the result from awaiting this node.
      */
     Node getAwaited() { result = this.getASuccessor(Label::await()) }
