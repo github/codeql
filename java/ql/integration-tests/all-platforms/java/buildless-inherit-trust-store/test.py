@@ -6,6 +6,7 @@ from diagnostics_test_utils import *
 import subprocess
 import os.path
 
+# This serves the "repo" directory on https://locahost:4443
 repo_server_process = subprocess.Popen(["python3", "../server.py"], cwd = "repo")
 
 mypath = os.path.abspath(os.path.dirname(__file__))
