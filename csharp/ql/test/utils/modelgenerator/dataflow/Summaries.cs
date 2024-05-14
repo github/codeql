@@ -245,7 +245,7 @@ public class DerivedClass1Flow : BaseClassFlow
 
 public class DerivedClass2Flow : BaseClassFlow
 {
-    // summary=Models;DerivedClass2Flow;false;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated
+    // summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated
     public override object ReturnParam(object input)
     {
         return input;
@@ -495,13 +495,12 @@ public class Inheritance
 {
     public abstract class BasePublic
     {
-        // neutral=Models;Inheritance+BasePublic;Id;(System.String);summary;df-generated
         public abstract string Id(string x);
     }
 
     public class AImplBasePublic : BasePublic
     {
-        // summary=Models;Inheritance+AImplBasePublic;false;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        // summary=Models;Inheritance+BasePublic;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
         public override string Id(string x)
         {
             return x;
@@ -510,19 +509,16 @@ public class Inheritance
 
     public interface IPublic1
     {
-        // neutral=Models;Inheritance+IPublic1;Id;(System.String);summary;df-generated
         string Id(string x);
     }
 
     public interface IPublic2
     {
-        // neutral=Models;Inheritance+IPublic2;Id;(System.String);summary;df-generated
         string Id(string x);
     }
 
     public abstract class B : IPublic1
     {
-        // neutral=Models;Inheritance+B;Id;(System.String);summary;df-generated
         public abstract string Id(string x);
     }
 
@@ -533,7 +529,7 @@ public class Inheritance
 
     public class BImpl : B
     {
-        // summary=Models;Inheritance+BImpl;false;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        // summary=Models;Inheritance+IPublic1;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
         public override string Id(string x)
         {
             return x;
@@ -542,6 +538,7 @@ public class Inheritance
 
     private class CImpl : C
     {
+        // summary=Models;Inheritance+IPublic2;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
         public override string Id(string x)
         {
             return x;
