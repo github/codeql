@@ -1,0 +1,1 @@
+| .github/workflows/test1.yml:15:7:20:4 | Uses Step | The checked-out code can be changed after the authorization check o step $@. | .github/workflows/test1.yml:17:11:17:75 | contain ...  test') | contain ...  test') |
