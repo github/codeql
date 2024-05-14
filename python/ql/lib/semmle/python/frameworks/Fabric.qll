@@ -163,11 +163,7 @@ module FabricV2 {
      */
     private class FabricConnectionProxyCommand extends SystemCommandExecution::Range, API::CallNode {
       FabricConnectionProxyCommand() {
-        this =
-          [
-            fabric().getMember("Connection"), connection().getMember("Connection"),
-            ModelOutput::getATypeNode("fabric.connection.Connection~Subclass").getASubclass*()
-          ].getACall() and
+        this = Fabric::Connection::ConnectionClass::classRef().getACall() and
         // we want to make sure that the connection is established otherwise the command of proxy_command won't run.
         exists(
           this.getAMethodCall([
