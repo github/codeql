@@ -1119,9 +1119,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private SndLevelScopeOption getScope(RetNodeEx ret) {
-      result = SndLevelScopeOption::some(getSecondLevelScope(ret.asNode()))
+      result = SndLevelScopeOption::some(getSecondLevelScopeCached(ret.asNode()))
       or
-      result instanceof SndLevelScopeOption::None and not exists(getSecondLevelScope(ret.asNode()))
+      result instanceof SndLevelScopeOption::None and
+      not exists(getSecondLevelScopeCached(ret.asNode()))
     }
 
     pragma[nomagic]
@@ -3881,7 +3882,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       n1.getANonHiddenSuccessor(_) = n2 and directReach(n2)
     }
 
-    private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) = fastTC(pathSucc/2)(n1, n2)
+    private predicate tcSrc(PathNodeImpl n) { n.isFlowSource() or n.isSource(_) }
+
+    private predicate tcSink(PathNodeImpl n) { n.isFlowSink() or n instanceof PathNodeSink }
+
+    private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) =
+      doublyBoundedFastTC(pathSucc/2, tcSrc/1, tcSink/1)(n1, n2)
 
     /**
      * A `Node` augmented with a call context (except for sinks) and an access path.

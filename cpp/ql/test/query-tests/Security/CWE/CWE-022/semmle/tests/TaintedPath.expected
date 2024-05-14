@@ -1,11 +1,20 @@
 edges
 | test.c:8:27:8:30 | **argv | test.c:9:23:9:29 | *access to array | provenance |  |
 | test.c:8:27:8:30 | **argv | test.c:31:22:31:28 | *access to array | provenance |  |
-| test.c:8:27:8:30 | **argv | test.c:57:10:57:16 | *access to array | provenance |  |
+| test.c:8:27:8:30 | **argv | test.c:69:14:69:20 | *access to array | provenance |  |
+| test.c:8:27:8:30 | **argv | test.c:80:25:80:31 | *access to array | provenance |  |
+| test.c:8:27:8:30 | **argv | test.c:88:22:88:28 | *access to array | provenance |  |
 | test.c:9:23:9:29 | *access to array | test.c:17:11:17:18 | *fileName | provenance | TaintFunction |
 | test.c:31:22:31:28 | *access to array | test.c:32:11:32:18 | *fileName | provenance |  |
 | test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | *fileName | provenance |  |
 | test.c:43:17:43:24 | scanf output argument | test.c:44:11:44:18 | *fileName | provenance |  |
+| test.c:48:21:48:26 | *call to getenv | test.c:48:21:48:26 | *call to getenv | provenance |  |
+| test.c:48:21:48:26 | *call to getenv | test.c:49:11:49:17 | *tainted | provenance |  |
+| test.c:54:21:54:26 | *call to getenv | test.c:55:11:55:16 | *buffer | provenance | TaintFunction |
+| test.c:74:13:74:18 | read output argument | test.c:76:11:76:16 | *buffer | provenance |  |
+| test.c:75:13:75:18 | read output argument | test.c:76:11:76:16 | *buffer | provenance |  |
+| test.c:80:25:80:31 | *access to array | test.c:84:11:84:20 | *fileBuffer | provenance | TaintFunction |
+| test.c:88:22:88:28 | *access to array | test.c:98:24:98:33 | *fileBuffer | provenance | TaintFunction |
 nodes
 | test.c:8:27:8:30 | **argv | semmle.label | **argv |
 | test.c:9:23:9:29 | *access to array | semmle.label | *access to array |
@@ -16,11 +25,29 @@ nodes
 | test.c:38:11:38:18 | *fileName | semmle.label | *fileName |
 | test.c:43:17:43:24 | scanf output argument | semmle.label | scanf output argument |
 | test.c:44:11:44:18 | *fileName | semmle.label | *fileName |
-| test.c:57:10:57:16 | *access to array | semmle.label | *access to array |
+| test.c:48:21:48:26 | *call to getenv | semmle.label | *call to getenv |
+| test.c:48:21:48:26 | *call to getenv | semmle.label | *call to getenv |
+| test.c:49:11:49:17 | *tainted | semmle.label | *tainted |
+| test.c:54:21:54:26 | *call to getenv | semmle.label | *call to getenv |
+| test.c:55:11:55:16 | *buffer | semmle.label | *buffer |
+| test.c:69:14:69:20 | *access to array | semmle.label | *access to array |
+| test.c:74:13:74:18 | read output argument | semmle.label | read output argument |
+| test.c:75:13:75:18 | read output argument | semmle.label | read output argument |
+| test.c:76:11:76:16 | *buffer | semmle.label | *buffer |
+| test.c:80:25:80:31 | *access to array | semmle.label | *access to array |
+| test.c:84:11:84:20 | *fileBuffer | semmle.label | *fileBuffer |
+| test.c:88:22:88:28 | *access to array | semmle.label | *access to array |
+| test.c:98:24:98:33 | *fileBuffer | semmle.label | *fileBuffer |
 subpaths
 #select
 | test.c:17:11:17:18 | fileName | test.c:8:27:8:30 | **argv | test.c:17:11:17:18 | *fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:8:27:8:30 | **argv | user input (a command-line argument) |
 | test.c:32:11:32:18 | fileName | test.c:8:27:8:30 | **argv | test.c:32:11:32:18 | *fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:8:27:8:30 | **argv | user input (a command-line argument) |
 | test.c:38:11:38:18 | fileName | test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | *fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:37:17:37:24 | scanf output argument | user input (value read by scanf) |
 | test.c:44:11:44:18 | fileName | test.c:43:17:43:24 | scanf output argument | test.c:44:11:44:18 | *fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:43:17:43:24 | scanf output argument | user input (value read by scanf) |
-| test.c:57:10:57:16 | access to array | test.c:8:27:8:30 | **argv | test.c:57:10:57:16 | *access to array | This argument to a file access function is derived from $@ and then passed to read(fileName), which calls fopen(filename). | test.c:8:27:8:30 | **argv | user input (a command-line argument) |
+| test.c:49:11:49:17 | tainted | test.c:48:21:48:26 | *call to getenv | test.c:49:11:49:17 | *tainted | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:48:21:48:26 | *call to getenv | user input (an environment variable) |
+| test.c:55:11:55:16 | buffer | test.c:54:21:54:26 | *call to getenv | test.c:55:11:55:16 | *buffer | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:54:21:54:26 | *call to getenv | user input (an environment variable) |
+| test.c:69:14:69:20 | access to array | test.c:8:27:8:30 | **argv | test.c:69:14:69:20 | *access to array | This argument to a file access function is derived from $@ and then passed to readFile(fileName), which calls fopen(filename). | test.c:8:27:8:30 | **argv | user input (a command-line argument) |
+| test.c:76:11:76:16 | buffer | test.c:74:13:74:18 | read output argument | test.c:76:11:76:16 | *buffer | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:74:13:74:18 | read output argument | user input (buffer read by read) |
+| test.c:76:11:76:16 | buffer | test.c:75:13:75:18 | read output argument | test.c:76:11:76:16 | *buffer | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:75:13:75:18 | read output argument | user input (buffer read by read) |
+| test.c:84:11:84:20 | fileBuffer | test.c:8:27:8:30 | **argv | test.c:84:11:84:20 | *fileBuffer | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:8:27:8:30 | **argv | user input (a command-line argument) |
+| test.c:98:24:98:33 | fileBuffer | test.c:8:27:8:30 | **argv | test.c:98:24:98:33 | *fileBuffer | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:8:27:8:30 | **argv | user input (a command-line argument) |

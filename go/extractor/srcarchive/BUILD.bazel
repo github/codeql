@@ -1,0 +1,19 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "srcarchive",
+    srcs = [
+        "projectlayout.go",
+        "srcarchive.go",
+    ],
+    importpath = "github.com/github/codeql-go/extractor/srcarchive",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "srcarchive_test",
+    srcs = ["projectlayout_test.go"],
+    embed = [":srcarchive"],
+)

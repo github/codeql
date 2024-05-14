@@ -3,11 +3,12 @@
  */
 
 import csharp
+private import FlowSinks
 
 /**
  * A data flow sink node for parallel execution.
  */
-abstract class ParallelSink extends DataFlow::Node { }
+abstract class ParallelSink extends ApiSinkNode { }
 
 /**
  * A data flow sink node for lambda parallel sink.

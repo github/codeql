@@ -7,7 +7,7 @@ private import CaptureModelsSpecific
 private import CaptureModelsPrinting
 
 class DataFlowTargetApi extends TargetApiSpecific {
-  DataFlowTargetApi() { isRelevantForDataFlowModels(this) }
+  DataFlowTargetApi() { not isUninterestingForDataFlowModels(this) }
 }
 
 private module Printing implements PrintingSig {

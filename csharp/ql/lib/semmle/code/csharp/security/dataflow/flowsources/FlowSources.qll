@@ -32,3 +32,18 @@ class ThreatModelFlowSource extends DataFlow::Node {
     )
   }
 }
+
+/**
+ * A data flow source node for an API, which should be considered
+ * supported from a modeling perspective.
+ */
+abstract class ApiSourceNode extends DataFlow::Node { }
+
+private class AddSourceNodes extends ApiSourceNode instanceof SourceNode { }
+
+/**
+ * Add all source models as data sources.
+ */
+private class ApiSourceNodeExternal extends ApiSourceNode {
+  ApiSourceNodeExternal() { sourceNode(this, _) }
+}

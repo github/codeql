@@ -40,7 +40,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                         output.Name, syntaxTrees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true)
                         ),
                     (compilation, options) => analyser.Initialize(output.FullName, extractionInput.CompilationInfos, compilation, options),
-                    _ => { },
                     () =>
                     {
                         foreach (var type in analyser.MissingNamespaces)

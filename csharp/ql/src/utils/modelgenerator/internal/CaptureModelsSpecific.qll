@@ -51,16 +51,18 @@ private predicate isRelevantForModels(CS::Callable api) {
 }
 
 /**
- * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ * Holds if it is irrelevant to generate models for `api` based on data flow analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
  */
-predicate isRelevantForDataFlowModels(CS::Callable api) {
-  isRelevantForModels(api) and not isHigherOrder(api)
-}
+predicate isUninterestingForDataFlowModels(CS::Callable api) { isHigherOrder(api) }
 
 /**
- * Holds if it is relevant to generate models for `api` based on its type.
+ * Holds if it is irrelevant to generate models for `api` based on type-based analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
  */
-predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
+predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
@@ -71,7 +73,8 @@ predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
 class TargetApiSpecific extends CS::Callable {
   TargetApiSpecific() {
     this.fromSource() and
-    this.isUnboundDeclaration()
+    this.isUnboundDeclaration() and
+    isRelevantForModels(this)
   }
 }
 

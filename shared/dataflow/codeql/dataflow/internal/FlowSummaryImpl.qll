@@ -1286,10 +1286,8 @@ module Make<
        * be useful to include in the exposed local data-flow/taint-tracking relations.
        */
       predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
-        exists(ReturnKind rk, SummaryNode ret, DataFlowCall call |
-          summaryLocalStep(summaryArgParam(call, arg, sc), ret, true, _) and
-          summaryReturnNode(ret, pragma[only_bind_into](rk)) and
-          out = getAnOutNode(call, pragma[only_bind_into](rk))
+        exists(SummaryNode ret |
+          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
         )
       }
 

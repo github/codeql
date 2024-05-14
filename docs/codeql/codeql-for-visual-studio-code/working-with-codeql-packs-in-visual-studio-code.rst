@@ -5,6 +5,8 @@
 Working with CodeQL packs in Visual Studio Code
 ===============================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 .. include:: ../reusables/beta-note-package-management.rst
 
 You can view, write, and edit all types of CodeQL packs in Visual Studio Code using the CodeQL extension. 

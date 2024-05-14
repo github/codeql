@@ -1,5 +1,5 @@
 name: codeql/java-queries
-version: 0.8.15-dev
+version: 0.8.16-dev
 groups:
   - java
   - queries
