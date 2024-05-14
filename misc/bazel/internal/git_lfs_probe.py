@@ -68,7 +68,7 @@ def get_endpoint():
     # see https://github.com/actions/checkout/blob/44c2b7a8a4ea60a981eaca3cf939b5f4305c123b/src/git-auth-helper.ts#L56-L63
     auth = git("config", f"http.{url.scheme}://{url.netloc}/.extraheader")
     endpoint.update_headers(get_env(auth, sep=": "))
-    if "GITHUB_TOKEN" in os.environ:
+    if os.environ.get("GITHUB_TOKEN"):
         endpoint.headers["Authorization"] = f"token {os.environ['GITHUB_TOKEN']}"
     if "Authorization" not in endpoint.headers:
         # last chance: use git credentials (possibly backed by a credential helper like the one installed by gh)
