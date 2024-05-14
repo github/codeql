@@ -120,6 +120,12 @@ func simpleflow() {
 	slice = append(slice, src)
 	b.Sink1(slice[0]) // $ hasTaintFlow="index expression"
 
+	slice1 := make([]string, 2)
+	slice1[0] = src.(string)
+	slice2 := make([]string, 2)
+	copy(slice2, slice1)
+	b.Sink1(slice2[0]) // $ hasTaintFlow="index expression"
+
 	ch := make(chan string)
 	ch <- a.Src1().(string)
 	taint16 := test.StepArgCollectionContentRes(ch)

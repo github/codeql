@@ -1,0 +1,23 @@
+invalidModelRow
+#select
+| test.go:10:6:10:8 | definition of arg | qltest-arg |
+| test.go:38:8:38:15 | call to Src1 | qltest |
+| test.go:39:8:39:15 | call to Src2 | qltest |
+| test.go:39:8:39:15 | call to Src2 | qltest-w-subtypes |
+| test.go:40:8:40:16 | call to Src2 | qltest-w-subtypes |
+| test.go:41:2:41:21 | ... = ...[0] | qltest |
+| test.go:41:2:41:21 | ... = ...[1] | qltest-w-subtypes |
+| test.go:42:2:42:22 | ... = ...[1] | qltest-w-subtypes |
+| test.go:58:9:58:16 | call to Src1 | qltest |
+| test.go:91:46:91:53 | call to Src1 | qltest |
+| test.go:95:35:95:42 | call to Src1 | qltest |
+| test.go:99:42:99:49 | call to Src1 | qltest |
+| test.go:130:8:130:15 | call to Src1 | qltest |
+| test.go:135:9:135:16 | call to Src1 | qltest |
+| test.go:138:15:138:22 | call to Src1 | qltest |
+| test.go:142:9:142:16 | call to Src1 | qltest |
+| test.go:146:9:146:16 | call to Src1 | qltest |
+| test.go:151:24:151:31 | call to Src1 | qltest |
+| test.go:154:17:154:24 | call to Src1 | qltest |
+| test.go:158:24:158:31 | call to Src1 | qltest |
+| test.go:162:24:162:31 | call to Src1 | qltest |
