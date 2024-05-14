@@ -226,13 +226,24 @@ private predicate isRelevantMemberAccess(DataFlow::Node node) {
 
 predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
+private class ManualNeutralSinkCallable extends Callable {
+  ManualNeutralSinkCallable() {
+    this =
+      any(FlowSummaryImpl::Public::NeutralCallable nc |
+        nc.hasManualModel() and nc.getKind() = "sink"
+      )
+  }
+}
+
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
 predicate apiSource(DataFlow::Node source) {
   (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-  relevant(source.getEnclosingCallable()) and
-  not hasManualModel(source.getEnclosingCallable())
+  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
+    relevant(enclosing) and
+    not enclosing instanceof ManualNeutralSinkCallable
+  )
 }
 
 /**
