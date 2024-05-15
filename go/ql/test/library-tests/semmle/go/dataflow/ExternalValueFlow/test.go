@@ -87,7 +87,7 @@ func simpleflow() {
 		b.Sink1(x) // $ hasValueFlow="x"
 	}
 	for _, x := range arraytype(taint8) {
-		b.Sink1(x) // $ MISSING: hasValueFlow="x"
+		b.Sink1(x) // $ hasValueFlow="x"
 	}
 
 	srcArray := []interface{}{nil, src}
@@ -117,10 +117,10 @@ func simpleflow() {
 		b.Sink1(k) // $ hasValueFlow="k"
 	}
 	for k, _ := range mapstringstringtype(taint12) {
-		b.Sink1(k) // $ MISSING: hasValueFlow="k"
+		b.Sink1(k) // $ hasValueFlow="k"
 	}
 	for k := range mapstringstringtype(taint12) {
-		b.Sink1(k) // $ MISSING: hasValueFlow="k"
+		b.Sink1(k) // $ hasValueFlow="k"
 	}
 
 	srcMap13 := map[string]string{src.(string): ""}
@@ -133,7 +133,7 @@ func simpleflow() {
 		b.Sink1(v) // $ hasValueFlow="v"
 	}
 	for _, v := range mapstringstringtype(taint14) {
-		b.Sink1(v) // $ MISSING: hasValueFlow="v"
+		b.Sink1(v) // $ hasValueFlow="v"
 	}
 
 	srcMap15 := map[string]string{"": src.(string)}

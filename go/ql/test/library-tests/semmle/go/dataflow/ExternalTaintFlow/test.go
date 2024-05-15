@@ -117,10 +117,10 @@ func simpleflow() {
 		b.Sink1(k) // $ hasTaintFlow="k"
 	}
 	for k, _ := range mapstringstringtype(taint12) {
-		b.Sink1(k) // $ MISSING: hasTaintFlow="k"
+		b.Sink1(k) // $ hasTaintFlow="k"
 	}
 	for k := range mapstringstringtype(taint12) {
-		b.Sink1(k) // $ MISSING: hasTaintFlow="k"
+		b.Sink1(k) // $ hasTaintFlow="k"
 	}
 
 	srcMap13 := map[string]string{src.(string): ""}
@@ -133,7 +133,7 @@ func simpleflow() {
 		b.Sink1(v) // $ hasTaintFlow="v"
 	}
 	for _, v := range mapstringstringtype(taint14) {
-		b.Sink1(v) // $ MISSING: hasTaintFlow="v"
+		b.Sink1(v) // $ hasTaintFlow="v"
 	}
 
 	srcMap15 := map[string]string{"": src.(string)}
