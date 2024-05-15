@@ -38,8 +38,9 @@ predicate staticallyIdentifiedSelfHostedRunner(Job job) {
  */
 predicate dynamicallyIdentifiedSelfHostedRunner(Job job) {
   exists(string runner_info |
-    workflowDataModel(job.getEnclosingWorkflow().getLocation().getFile().getRelativePath(),
-      "public", job.getId(), _, _, runner_info) and
+    repositoryDataModel("public", _) and
+    workflowDataModel(job.getEnclosingWorkflow().getLocation().getFile().getRelativePath(), _,
+      job.getId(), _, _, runner_info) and
     runner_info.indexOf("self-hosted:true") > 0
   )
 }
