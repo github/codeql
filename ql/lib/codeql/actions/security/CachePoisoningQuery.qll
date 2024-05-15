@@ -11,39 +11,48 @@ string defaultBranchTriggerEvent() {
     ]
 }
 
+string defaultBranchNames() {
+  exists(string default_branch_name |
+    repositoryDataModel(_, default_branch_name) and
+    result = default_branch_name
+  )
+  or
+  not exist(string default_branch_name |
+    repositoryDataModel(_, default_branch_name) and
+    result = ["main", "master"]
+  )
+}
+
 predicate runsOnDefaultBranch(Job j) {
   exists(Event e |
     j.getATriggerEvent() = e and
-    exists(string default_branch_name |
-      repositoryDataModel(_, default_branch_name) and
+    (
+      e.getName() = defaultBranchTriggerEvent() and
+      not e.getName() = "pull_request_target"
+      or
+      e.getName() = "push" and
+      e.getAPropertyValue("branches") = defaultBranchNames()
+      or
+      e.getName() = "pull_request_target" and
       (
-        e.getName() = defaultBranchTriggerEvent() and
-        not e.getName() = "pull_request_target"
+        // no filtering
+        not e.hasProperty("branches") and not e.hasProperty("branches-ignore")
         or
-        e.getName() = "push" and
-        e.getAPropertyValue("branches") = default_branch_name
+        // only branches-ignore filter
+        e.hasProperty("branches-ignore") and
+        not e.hasProperty("branches") and
+        not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
         or
-        e.getName() = "pull_request_target" and
-        (
-          // no filtering
-          not e.hasProperty("branches") and not e.hasProperty("branches-ignore")
-          or
-          // only branches-ignore filter
-          e.hasProperty("branches-ignore") and
-          not e.hasProperty("branches") and
-          not e.getAPropertyValue("branches-ignore") = default_branch_name
-          or
-          // only branches filter
-          e.hasProperty("branches") and
-          not e.hasProperty("branches-ignore") and
-          e.getAPropertyValue("branches") = default_branch_name
-          or
-          // branches and branches-ignore filters
-          e.hasProperty("branches") and
-          e.hasProperty("branches-ignore") and
-          e.getAPropertyValue("branches") = default_branch_name and
-          not e.getAPropertyValue("branches-ignore") = default_branch_name
-        )
+        // only branches filter
+        e.hasProperty("branches") and
+        not e.hasProperty("branches-ignore") and
+        e.getAPropertyValue("branches") = defaultBranchNames()
+        or
+        // branches and branches-ignore filters
+        e.hasProperty("branches") and
+        e.hasProperty("branches-ignore") and
+        e.getAPropertyValue("branches") = defaultBranchNames() and
+        not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
       )
     )
   )
