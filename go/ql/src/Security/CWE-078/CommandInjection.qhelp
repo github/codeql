@@ -27,7 +27,7 @@ using it.
 In the following example, assume the function <code>handler</code> is an HTTP request handler in a
 web application, whose parameter <code>req</code> contains the request object:
 </p>
-<sample src="CommandInjection.go"/>
+<sample src="examples/CommandInjection.go"/>
 <p>
 The handler extracts the name of a system command from the request object, and then runs it without
 any further checks, which can cause a command-injection vulnerability.
