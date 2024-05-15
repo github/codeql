@@ -17,7 +17,7 @@ string defaultBranchNames() {
     result = default_branch_name
   )
   or
-  not exist(string default_branch_name |
+  not exists(string default_branch_name |
     repositoryDataModel(_, default_branch_name)
   ) and
   result = ["main", "master"]
