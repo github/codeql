@@ -20,4 +20,5 @@ go_test(
         "util_test.go",
     ],
     embed = [":util"],
+    deps = ["//go/extractor/vendor/golang.org/x/mod/semver"],
 )

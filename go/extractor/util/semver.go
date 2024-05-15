@@ -91,15 +91,12 @@ func NewSemVer(version string) SemVer {
 		version = "v" + version
 	}
 
-	// Convert the remaining version string to a canonical semantic version,
-	// and check that this was successful.
-	canonical := semver.Canonical(version)
-
-	if canonical == "" {
+	// Check that the remaining version string is valid.
+	if !semver.IsValid(version) {
 		log.Fatalf("%s is not a valid version string\n", version)
 	}
 
-	return semVer(canonical)
+	return semVer(version)
 }
 
 func (ver semVer) Compare(other SemVer) int {

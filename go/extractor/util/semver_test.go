@@ -1,6 +1,10 @@
 package util
 
-import "testing"
+import (
+	"testing"
+
+	"golang.org/x/mod/semver"
+)
 
 func TestNewSemVer(t *testing.T) {
 	type TestPair struct {
@@ -15,10 +19,10 @@ func TestNewSemVer(t *testing.T) {
 	}
 
 	testData := []TestPair{
-		{"0", "v0.0.0"},
-		{"1.0", "v1.0.0"},
+		{"0", "v0"},
+		{"1.0", "v1.0"},
 		{"1.0.2", "v1.0.2"},
-		{"1.20", "v1.20.0"},
+		{"1.20", "v1.20"},
 		{"1.22.3", "v1.22.3"},
 	}
 
@@ -31,13 +35,13 @@ func TestNewSemVer(t *testing.T) {
 	for _, pair := range testData {
 		for _, prefix := range prefixes {
 			for _, suffix := range suffixes {
-				// c
+				// combine the input string with the current prefix and suffix
 				input := prefix + pair.Input + suffix
 				result := NewSemVer(input)
 
 				expected := pair.Expected
 				if suffix != "" {
-					expected += "-rc1"
+					expected = semver.Canonical(pair.Expected) + "-rc1"
 				}
 
 				if result.String() != expected {
