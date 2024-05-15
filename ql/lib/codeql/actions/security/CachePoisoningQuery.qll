@@ -18,9 +18,9 @@ string defaultBranchNames() {
   )
   or
   not exist(string default_branch_name |
-    repositoryDataModel(_, default_branch_name) and
-    result = ["main", "master"]
-  )
+    repositoryDataModel(_, default_branch_name)
+  ) and
+  result = ["main", "master"]
 }
 
 predicate runsOnDefaultBranch(Job j) {
