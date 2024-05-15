@@ -392,11 +392,8 @@ edges
 | GlobalDataFlow.cs:384:11:384:11 | access to parameter x : String | GlobalDataFlow.cs:268:26:268:35 | sinkParam3 : String | provenance |  |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | provenance |  |
-| GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | provenance |  |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | provenance |  |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | provenance |  |
 | GlobalDataFlow.cs:396:52:396:52 | x : String | GlobalDataFlow.cs:398:11:398:11 | access to parameter x : String | provenance |  |
@@ -896,11 +893,8 @@ nodes
 | GlobalDataFlow.cs:384:11:384:11 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | semmle.label | x : String |
-| GlobalDataFlow.cs:387:46:387:46 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | semmle.label | delegate call : String |
 | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | semmle.label | delegate call : String |
-| GlobalDataFlow.cs:389:16:389:19 | delegate call : String | semmle.label | delegate call : String |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:396:52:396:52 | x : String | semmle.label | x : String |
@@ -1081,7 +1075,6 @@ subpaths
 | GlobalDataFlow.cs:218:22:218:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:215:71:215:71 | x : String | GlobalDataFlow.cs:215:76:215:90 | call to method ReturnCheck2<String> : String | GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> : IQueryable<T> [element] : String |
 | GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | GlobalDataFlow.cs:330:16:330:26 | access to parameter sinkParam11 : String | GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> : IEnumerable<T> [element] : String |
 | GlobalDataFlow.cs:300:37:300:37 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> : String |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | GlobalDataFlow.cs:300:33:300:34 | access to parameter x0 : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String |
