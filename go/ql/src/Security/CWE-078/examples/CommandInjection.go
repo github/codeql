@@ -6,7 +6,9 @@ import (
 )
 
 func handler(req *http.Request) {
-	cmdName := req.URL.Query()["cmd"][0]
-	cmd := exec.Command(cmdName)
+	imageName := req.URL.Query()["imageName"][0]
+	outputPath = "/tmp/output.svg"
+	cmd := exec.Command("sh", "-c", fmt.Sprintf("imagetool %s > %s", imageName, outputPath))
 	cmd.Run()
+ 	// ...
 }
