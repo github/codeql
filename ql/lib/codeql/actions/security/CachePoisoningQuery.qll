@@ -10,17 +10,18 @@ string defaultBranchTriggerEvent() {
     ]
 }
 
-string defaultBranchNames() { result = ["main", "master", "default"] }
-
 predicate runsOnDefaultBranch(Job j) {
   exists(Event e |
     j.getATriggerEvent() = e and
+    exists(string default_branch_name |
+      repositoryDataModel(_, default_branch_name)
+    ) and
     (
       e.getName() = defaultBranchTriggerEvent() and
       not e.getName() = "pull_request_target"
       or
       e.getName() = "push" and
-      e.getAPropertyValue("branches") = defaultBranchNames()
+      e.getAPropertyValue("branches") = default_branch_name
       or
       e.getName() = "pull_request_target" and
       (
@@ -30,18 +31,18 @@ predicate runsOnDefaultBranch(Job j) {
         // only branches-ignore filter
         e.hasProperty("branches-ignore") and
         not e.hasProperty("branches") and
-        not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
+        not e.getAPropertyValue("branches-ignore") = default_branch_name
         or
         // only branches filter
         e.hasProperty("branches") and
         not e.hasProperty("branches-ignore") and
-        e.getAPropertyValue("branches") = defaultBranchNames()
+        e.getAPropertyValue("branches") = default_branch_name
         or
         // branches and branches-ignore filters
         e.hasProperty("branches") and
         e.hasProperty("branches-ignore") and
-        e.getAPropertyValue("branches") = defaultBranchNames() and
-        not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
+        e.getAPropertyValue("branches") = default_branch_name and
+        not e.getAPropertyValue("branches-ignore") = default_branch_name
       )
     )
   )
