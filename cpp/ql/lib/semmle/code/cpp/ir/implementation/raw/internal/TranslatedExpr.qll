@@ -1844,9 +1844,6 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
     child = this.getRightOperand() and
     result = this.getLeftOperand().getFirstInstruction(kind)
     or
-    child = this.getRightOperand() and
-    result = this.getLeftOperand().getFirstInstruction(kind)
-    or
     kind instanceof GotoEdge and
     child = this.getLeftOperand() and
     result = this.getInstruction(AssignmentStoreTag())
