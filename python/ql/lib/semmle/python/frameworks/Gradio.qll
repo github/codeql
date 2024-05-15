@@ -16,7 +16,7 @@ module Gradio {
   /**
    * The event handlers, Interface and gradio.ChatInterface classes, which take untrusted data.
    */
-  class GradioInput extends API::CallNode {
+  private class GradioInput extends API::CallNode {
     GradioInput() {
       this =
         API::moduleImport("gradio")
@@ -45,7 +45,7 @@ module Gradio {
    * The `inputs` parameters in Gradio event handlers, that are lists and are sources of untrusted data.
    * This model allows tracking each element list back to source, f.ex. `gr.Textbox(...)`.
    */
-  class GradioInputList extends RemoteFlowSource::Range {
+  private class GradioInputList extends RemoteFlowSource::Range {
     GradioInputList() {
       exists(GradioInput call |
         // limit only to lists of parameters given to `inputs`.
@@ -70,7 +70,7 @@ module Gradio {
   /**
    * The `inputs` parameters in Gradio event handlers, that are not lists and are sources of untrusted data.
    */
-  class GradioInputParameter extends RemoteFlowSource::Range {
+  private class GradioInputParameter extends RemoteFlowSource::Range {
     GradioInputParameter() {
       exists(GradioInput call |
         this = call.getParameter(0, "fn").getParameter(_).asSource() and
@@ -86,7 +86,7 @@ module Gradio {
   /**
    * The `inputs` parameters in Gradio decorators to event handlers, that are sources of untrusted data.
    */
-  class GradioInputDecorator extends RemoteFlowSource::Range {
+  private class GradioInputDecorator extends RemoteFlowSource::Range {
     GradioInputDecorator() {
       exists(GradioInput call |
         this = call.getReturn().getACall().getParameter(0).getParameter(_).asSource()
