@@ -24,6 +24,10 @@ extensible predicate sinkModel(
 );
 
 extensible predicate workflowDataModel(
-  string path, string visibility, string job, string secrets_source, string permissions,
+  string path, string trigger, string job, string secrets_source, string permissions,
   string runner
+);
+
+extensible predicate repositoryDataModel(
+  string visibility, string default_branch_name
 );

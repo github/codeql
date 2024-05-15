@@ -3,10 +3,16 @@ private import codeql.actions.DataFlow
 private import actions
 
 predicate workflowDataModel(
-  string path, string visibility, string job, string secrets_source, string permissions,
+  string path, string trigger, string job, string secrets_source, string permissions,
   string runner
 ) {
-  Extensions::workflowDataModel(path, visibility, job, secrets_source, permissions, runner)
+  Extensions::workflowDataModel(path, trigger, job, secrets_source, permissions, runner)
+}
+
+predicate repositoryDataModel(
+  string visibility, string default_branch_name
+) {
+  Extensions::repositoryDataModel(visibility, default_branch_name)
 }
 
 /**

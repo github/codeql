@@ -1,4 +1,5 @@
 import actions
+import codeql.actions.dataflow.ExternalFlow
 
 string defaultBranchTriggerEvent() {
   result =
@@ -10,7 +11,17 @@ string defaultBranchTriggerEvent() {
     ]
 }
 
-string defaultBranchNames() { result = ["main", "master", "default"] }
+string defaultBranchNames() {
+  exists(string default_branch_name |
+    repositoryDataModel(_, default_branch_name) and
+    result = default_branch_name
+  )
+  or
+  not exists(string default_branch_name |
+    repositoryDataModel(_, default_branch_name)
+  ) and
+  result = ["main", "master"]
+}
 
 predicate runsOnDefaultBranch(Job j) {
   exists(Event e |

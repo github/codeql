@@ -1,5 +1,9 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
+      extensible: repositoryDataModel
+    data: []
+  - addsTo:
+      pack: githubsecuritylab/actions-all
       extensible: workflowDataModel
     data: []
