@@ -2,8 +2,7 @@ extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: repositoryDataModel
-    data:
-      - ["public", "main"]
+    data: []
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: workflowDataModel
