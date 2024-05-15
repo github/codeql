@@ -530,8 +530,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       TCallEdge getAValue(TCallEdge ctxEdge) {
         exists(DataFlowCall ctx, DataFlowCallable c, DataFlowCall call, DataFlowCallable tgt |
-          ctxEdge = TMkCallEdge(ctx, c) and
-          result = TMkCallEdge(call, tgt) and
+          ctxEdge = mkCallEdge(ctx, c) and
+          result = mkCallEdge(call, tgt) and
           viableImplInCallContextExtIn(call, ctx) = tgt and
           reducedViableImplInCallContext(call, c, ctx)
         )
@@ -1505,7 +1505,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       NodeRegion getAValue(TCallEdge edge) {
         exists(DataFlowCall call, DataFlowCallable tgt |
-          edge = TMkCallEdge(call, tgt) and
+          edge = mkCallEdge(call, tgt) and
           getNodeRegionEnclosingCallable(result) = tgt and
           isUnreachableInCallCached(result, call)
         )
@@ -1596,6 +1596,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     newtype TApproxAccessPathFrontOption =
       TApproxAccessPathFrontNone() or
       TApproxAccessPathFrontSome(ApproxAccessPathFront apf)
+  }
+
+  bindingset[call, tgt]
+  pragma[inline_late]
+  private TCallEdge mkCallEdge(DataFlowCall call, DataFlowCallable tgt) {
+    result = TMkCallEdge(call, tgt)
   }
 
   bindingset[t1, t2]

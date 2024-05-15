@@ -1285,39 +1285,35 @@ module IsUnreachableInCall {
   predicate isUnreachableInCall(NodeRegion block, DataFlowCall call) {
     exists(
       InstructionDirectParameterNode paramNode, ConstantIntegralTypeArgumentNode arg,
-      IntegerConstantInstruction constant, int k, Operand left, Operand right
+      IntegerConstantInstruction constant, int k, Operand left, Operand right, int argval
     |
       // arg flows into `paramNode`
-      DataFlowImplCommon::viableParamArg(call, paramNode, arg) and
+      DataFlowImplCommon::viableParamArg(call, pragma[only_bind_into](paramNode),
+        pragma[only_bind_into](arg)) and
       left = constant.getAUse() and
-      right = valueNumber(paramNode.getInstruction()).getAUse()
+      right = valueNumber(paramNode.getInstruction()).getAUse() and
+      argval = arg.getValue()
     |
       // and there's a guard condition which ensures that the result of `left == right + k` is `areEqual`
-      exists(boolean areEqual |
-        ensuresEq(pragma[only_bind_into](left), pragma[only_bind_into](right),
-          pragma[only_bind_into](k), pragma[only_bind_into](block), areEqual)
-      |
+      exists(boolean areEqual | ensuresEq(left, right, k, block, areEqual) |
         // this block ensures that left = right + k, but it holds that `left != right + k`
         areEqual = true and
-        constant.getValue().toInt() != arg.getValue() + k
+        constant.getValue().toInt() != argval + k
         or
         // this block ensures that or `left != right + k`, but it holds that `left = right + k`
         areEqual = false and
-        constant.getValue().toInt() = arg.getValue() + k
+        constant.getValue().toInt() = argval + k
       )
       or
       // or there's a guard condition which ensures that the result of `left < right + k` is `isLessThan`
-      exists(boolean isLessThan |
-        ensuresLt(pragma[only_bind_into](left), pragma[only_bind_into](right),
-          pragma[only_bind_into](k), pragma[only_bind_into](block), isLessThan)
-      |
+      exists(boolean isLessThan | ensuresLt(left, right, k, block, isLessThan) |
         isLessThan = true and
         // this block ensures that `left < right + k`, but it holds that `left >= right + k`
-        constant.getValue().toInt() >= arg.getValue() + k
+        constant.getValue().toInt() >= argval + k
         or
         // this block ensures that `left >= right + k`, but it holds that `left < right + k`
         isLessThan = false and
-        constant.getValue().toInt() < arg.getValue() + k
+        constant.getValue().toInt() < argval + k
       )
     )
   }
