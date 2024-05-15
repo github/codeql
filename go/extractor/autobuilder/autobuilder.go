@@ -94,6 +94,8 @@ var BuildScripts = []BuildScript{
 // Autobuild attempts to detect build systems based on the presence of build scripts from the
 // list in `BuildScripts` and run the corresponding command. This may invoke zero or more
 // build scripts in the order given by `BuildScripts`.
+// Returns `scriptSuccess` which indicates whether a build script was successfully executed.
+// Returns `scriptsExecuted` which contains the names of all build scripts that were executed.
 func Autobuild() (scriptSuccess bool, scriptsExecuted []string) {
 	scriptSuccess = false
 	scriptsExecuted = []string{}
