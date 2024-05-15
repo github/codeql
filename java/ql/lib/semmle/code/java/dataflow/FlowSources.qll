@@ -301,7 +301,7 @@ class EnvReadMethod extends Method {
 
 /** The type `java.net.InetAddress`. */
 class TypeInetAddr extends RefType {
-  TypeInetAddr() { this.getQualifiedName() = "java.net.InetAddress" }
+  TypeInetAddr() { this.hasQualifiedName("java.net", "InetAddress") }
 }
 
 /** A reverse DNS method. */

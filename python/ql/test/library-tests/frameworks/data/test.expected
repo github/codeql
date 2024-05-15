@@ -78,6 +78,7 @@ isSource
 | test.py:39:11:39:20 | ControlFlowNode for Await | test-source |
 | test.py:41:8:41:27 | ControlFlowNode for Attribute() | test-source |
 | test.py:46:7:46:16 | ControlFlowNode for SubClass() | test-source |
+| test.py:51:8:51:18 | ControlFlowNode for Sub2Class() | test-source |
 | test.py:53:7:53:16 | ControlFlowNode for Attribute() | test-source |
 | test.py:60:13:60:16 | ControlFlowNode for self | test-source |
 | test.py:60:24:60:28 | ControlFlowNode for named | test-source |
