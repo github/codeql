@@ -18,11 +18,10 @@ import codeql.actions.security.PoisonableSteps
 
 from LocalJob j, PRHeadCheckoutStep checkout, Step s
 where
-  // Excluding privileged workflows since they can be easily exploited in similar circumstances
-  not j.isPrivileged() and
   // The workflow runs in the context of the default branch
   runsOnDefaultBranch(j) and
   // The job checkouts untrusted code from a pull request
+  // TODO: Consider adding artifact downloads as a potential source of cache poisoning
   j.getAStep() = checkout and
   (
     // The job writes to the cache
@@ -33,7 +32,9 @@ where
     // The job executes checked-out code
     // (The cache specific token can be leaked even for non-privileged workflows)
     checkout.getAFollowingStep() = s and
-    s instanceof PoisonableStep
+    s instanceof PoisonableStep and
+    // Excluding privileged workflows since they can be easily exploited in similar circumstances
+    not j.isPrivileged()
   )
 select checkout, "Potential cache poisoning in the context of the default branch on step $@.", s,
   s.toString()
