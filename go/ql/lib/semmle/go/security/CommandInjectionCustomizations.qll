@@ -45,4 +45,11 @@ module CommandInjection {
 
     override predicate doubleDashIsSanitizing() { exec.doubleDashIsSanitizing() }
   }
+
+  import semmle.go.dataflow.barrierguardutil.RegexpCheck
+
+  /**
+   * A call to a regexp match function, considered as a barrier guard for command injection.
+   */
+  class RegexpCheckBarrierAsSanitizer extends Sanitizer instanceof RegexpCheckBarrier { }
 }
