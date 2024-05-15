@@ -12,7 +12,4 @@
     <ProjectReference Include="..\Semmle.Autobuild.Cpp\Semmle.Autobuild.Cpp.csproj" />
     <ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
   </ItemGroup>
-
-  <Import Project="..\..\.paket\Paket.Restore.targets" />
-
 </Project>

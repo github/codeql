@@ -12,5 +12,4 @@
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.Util\Semmle.Extraction.CSharp.Util.csproj" />
 	</ItemGroup>
-	<Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -9,5 +9,4 @@
 		<ProjectReference Include="..\Semmle.Autobuild.CSharp\Semmle.Autobuild.CSharp.csproj" />
 		<ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
 	</ItemGroup>
-	<Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

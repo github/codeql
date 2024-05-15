@@ -12,5 +12,4 @@
 		<ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
 		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
 	</ItemGroup>
-	<Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
