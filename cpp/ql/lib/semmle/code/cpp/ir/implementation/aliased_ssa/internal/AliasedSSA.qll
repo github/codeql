@@ -8,6 +8,7 @@ private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import AliasConfiguration
+private import semmle.code.cpp.Caching
 
 private class IntValue = Ints::IntValue;
 
@@ -581,6 +582,7 @@ bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
+  Stages::IR::ref() and
   not canReuseSsaForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
@@ -614,6 +616,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  Stages::IR::ref() and
   not canReuseSsaForOldResult(operand.getAnyDef()) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and

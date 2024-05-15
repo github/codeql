@@ -573,6 +573,8 @@ private class BaseCallInstruction extends BaseSourceVariableInstruction, CallIns
 
 cached
 private module Cached {
+  private import semmle.code.cpp.Caching
+
   /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
   private predicate isConversion(Operand op) {
     exists(Instruction def, Operand use |
@@ -636,9 +638,12 @@ private module Cached {
 
   cached
   predicate isUse(boolean certain, Operand op, int ind, int indirectionIndex) {
-    isSsaUse(certain, op, _, ind, indirectionIndex)
-    or
-    isVirtualUse(certain, op, _, ind, indirectionIndex)
+    Stages::IR::ref() and
+    (
+      isSsaUse(certain, op, _, ind, indirectionIndex)
+      or
+      isVirtualUse(certain, op, _, ind, indirectionIndex)
+    )
   }
 
   /**
