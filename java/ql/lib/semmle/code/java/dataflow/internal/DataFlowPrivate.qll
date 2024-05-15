@@ -40,8 +40,11 @@ private predicate fieldStep(Node node1, Node node2) {
   exists(Field f |
     // Taint fields through assigned values only if they're static
     f.isStatic() and
-    f.getAnAssignedValue() = node1.asExpr() and
     node2.(FieldValueNode).getField() = f
+  |
+    f.getAnAssignedValue() = node1.asExpr()
+    or
+    f.getAnAccess() = node1.(PostUpdateNode).getPreUpdateNode().asExpr()
   )
   or
   exists(Field f, FieldRead fr |
