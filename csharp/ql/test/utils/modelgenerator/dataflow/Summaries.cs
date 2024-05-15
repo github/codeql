@@ -544,4 +544,22 @@ public class Inheritance
             return x;
         }
     }
+
+    public interface IPublic3
+    {
+        string Prop { get; }
+    }
+
+    public abstract class D : IPublic3
+    {
+        public abstract string Prop { get; }
+    }
+
+    public class DImpl : D
+    {
+        private string tainted;
+
+        // summary=Models;Inheritance+IPublic3;true;get_Prop;();;Argument[this];ReturnValue;taint;df-generated
+        public override string Prop { get { return tainted; } }
+    }
 }
