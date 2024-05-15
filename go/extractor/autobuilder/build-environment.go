@@ -252,7 +252,7 @@ func outputEnvironmentJson(version util.SemVer) {
 	if version == nil {
 		content = `{ "go": {} }`
 	} else {
-		content = `{ "go": { "version": "` + version.String() + `" } }`
+		content = `{ "go": { "version": "` + version.StandardSemVer() + `" } }`
 	}
 	_, err := fmt.Fprint(os.Stdout, content)
 

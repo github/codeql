@@ -28,6 +28,8 @@ type SemVer interface {
 	IsAtMost(other SemVer) bool
 	// Returns the `major.minor` version prefix of the semantic version. For example, "v1.2.3" becomes "v1.2".
 	MajorMinor() SemVer
+	// Renders the semantic version as a standard version string, i.e. without a leading "v".
+	StandardSemVer() string
 }
 
 // The internal representation used for values known to be valid semantic versions.
@@ -121,4 +123,8 @@ func (ver semVer) IsAtMost(other SemVer) bool {
 
 func (ver semVer) MajorMinor() SemVer {
 	return semVer(semver.MajorMinor(string(ver)))
+}
+
+func (ver semVer) StandardSemVer() string {
+	return string(ver)[1:]
 }

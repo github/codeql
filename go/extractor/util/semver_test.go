@@ -52,6 +52,14 @@ func TestNewSemVer(t *testing.T) {
 						result,
 					)
 				}
+				if result.StandardSemVer() != expected[1:] {
+					t.Errorf(
+						"Expected NewSemVer(\"%s\").StandardSemVer() to return \"%s\", but got \"%s\".",
+						input,
+						expected[1:],
+						result.StandardSemVer(),
+					)
+				}
 			}
 		}
 	}
