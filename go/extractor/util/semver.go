@@ -65,11 +65,29 @@ func NewSemVer(version string) SemVer {
 	// which is compatible with the SemVer specification.
 	rcIndex := strings.Index(version, "rc")
 	if rcIndex != -1 {
-		version = semver.Canonical("v"+version[:rcIndex]) + "-" + version[rcIndex:]
-	}
+		var numeric string
+		prerelease := version[rcIndex:]
 
-	// Add the "v" prefix that is required by the `semver` package.
-	if !strings.HasPrefix(version, "v") {
+		// the version string may already contain a "-";
+		// if it does, drop the "-" since we add it back later
+		if version[rcIndex-1] != '-' {
+			numeric = version[:rcIndex]
+		} else {
+			numeric = version[:rcIndex-1]
+		}
+
+		// add a "v" to the numeric part of the version, if it's not already there
+		if !strings.HasPrefix(numeric, "v") {
+			numeric = "v" + numeric
+		}
+
+		// for the semver library to accept a version containing a prerelease,
+		// the numeric part must be canonical; e.g.. "v0-rc1" is not valid and
+		// must be "v0.0.0-rc1" instead.
+		version = semver.Canonical(numeric) + "-" + prerelease
+	} else if !strings.HasPrefix(version, "v") {
+		// Add the "v" prefix that is required by the `semver` package, if
+		// it's not already there.
 		version = "v" + version
 	}
 

@@ -22,39 +22,33 @@ func TestNewSemVer(t *testing.T) {
 		{"1.22.3", "v1.22.3"},
 	}
 
+	// prefixes should not affect the result
+	prefixes := []string{"", "go", "v"}
+	// suffixes
+	suffixes := []string{"", "rc1", "-rc1"}
+
 	// Check that we get what we expect for each of the test cases.
 	for _, pair := range testData {
-		result := NewSemVer(pair.Input)
+		for _, prefix := range prefixes {
+			for _, suffix := range suffixes {
+				// c
+				input := prefix + pair.Input + suffix
+				result := NewSemVer(input)
 
-		if result.String() != pair.Expected {
-			t.Errorf("Expected NewSemVer(\"%s\") to return \"%s\", but got \"%s\".", pair.Input, pair.Expected, result)
-		}
-	}
+				expected := pair.Expected
+				if suffix != "" {
+					expected += "-rc1"
+				}
 
-	// And again, but this time prefixed with "v"
-	for _, pair := range testData {
-		result := NewSemVer("v" + pair.Input)
-
-		if result.String() != pair.Expected {
-			t.Errorf("Expected NewSemVer(\"v%s\") to return \"%s\", but got \"%s\".", pair.Input, pair.Expected, result)
-		}
-	}
-
-	// And again, but this time prefixed with "go"
-	for _, pair := range testData {
-		result := NewSemVer("go" + pair.Input)
-
-		if result.String() != pair.Expected {
-			t.Errorf("Expected NewSemVer(\"go%s\") to return \"%s\", but got \"%s\".", pair.Input, pair.Expected, result)
-		}
-	}
-
-	// And again, but this time with an "rc1" suffix.
-	for _, pair := range testData {
-		result := NewSemVer(pair.Input + "rc1")
-
-		if result.String() != pair.Expected+"-rc1" {
-			t.Errorf("Expected NewSemVer(\"%src1\") to return \"%s\", but got \"%s\".", pair.Input, pair.Expected+"-rc1", result)
+				if result.String() != expected {
+					t.Errorf(
+						"Expected NewSemVer(\"%s\") to return \"%s\", but got \"%s\".",
+						input,
+						expected,
+						result,
+					)
+				}
+			}
 		}
 	}
 }
