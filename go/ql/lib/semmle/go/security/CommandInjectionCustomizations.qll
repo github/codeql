@@ -52,4 +52,21 @@ module CommandInjection {
    * A call to a regexp match function, considered as a barrier guard for command injection.
    */
   class RegexpCheckBarrierAsSanitizer extends Sanitizer instanceof RegexpCheckBarrier { }
+
+  private predicate noDoubleDashPrefixCheck(DataFlow::Node hasPrefixNode, Expr e, boolean branch) {
+    exists(StringOps::HasPrefix hasPrefix | hasPrefix = hasPrefixNode |
+      e = hasPrefix.getBaseString().asExpr() and
+      hasPrefix.getSubstring().asExpr().getStringValue() = "--" and
+      branch = false
+    )
+  }
+
+  /**
+   * A call that confirms that the string does not start with `--`, considered as a barrier guard for command injection.
+   */
+  class NoDoubleDashPrefixSanitizer extends Sanitizer {
+    NoDoubleDashPrefixSanitizer() {
+      this = DataFlow::BarrierGuard<noDoubleDashPrefixCheck/3>::getABarrierNode()
+    }
+  }
 }
