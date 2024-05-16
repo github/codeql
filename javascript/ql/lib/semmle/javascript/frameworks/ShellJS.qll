@@ -7,7 +7,7 @@
 import javascript
 
 module ShellJS {
-  API::Node shellJSMember() {
+  private API::Node shellJSMember() {
     result = API::moduleImport("shelljs")
     or
     result =
@@ -20,7 +20,7 @@ module ShellJS {
   }
 
   /**
-   * Gets an import of the `shelljs` or `async-shelljs` module.
+   * Gets a function that can execute a shell command using the `shelljs` or `async-shelljs` modules.
    */
   DataFlow::SourceNode shelljs() {
     result = shellJSMember().asSource() or
