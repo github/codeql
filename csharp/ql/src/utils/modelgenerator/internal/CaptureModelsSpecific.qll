@@ -80,7 +80,8 @@ class TargetApiSpecific extends CS::Callable {
 
 predicate asPartialModel = ExternalFlow::asPartialModel/1;
 
-predicate asPartialNeutralModel = ExternalFlow::asPartialNeutralModel/1;
+/** Computes the first 4 columns for neutral CSV rows of `c`. */
+predicate asPartialNeutralModel = ExternalFlow::getSignature/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.
