@@ -15,11 +15,17 @@ import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 
-from LabelControlCheck check, MutableRefCheckoutStep checkout
+from ControlCheck check, MutableRefCheckoutStep checkout
 where
   // the mutable checkout step is protected by an access check
   check = [checkout.getIf(), checkout.getEnclosingJob().getIf()] and
   // the checked-out code may lead to arbitrary code execution
-  checkout.getAFollowingStep() instanceof PoisonableStep
+  checkout.getAFollowingStep() instanceof PoisonableStep and
+  (
+    check instanceof LabelControlCheck
+    or
+    (check instanceof AssociationControlCheck or check instanceof ActorControlCheck) and
+    check.getEnclosingJob().getATriggerEvent().getName().matches("%_comment")
+  )
 select checkout, "The checked-out code can be changed after the authorization check o step $@.",
   check, check.toString()
