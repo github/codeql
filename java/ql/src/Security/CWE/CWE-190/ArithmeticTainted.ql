@@ -18,18 +18,18 @@ import semmle.code.java.security.ArithmeticCommon
 import semmle.code.java.security.ArithmeticTaintedQuery
 
 module Flow =
-  DataFlow::MergePathGraph<RemoteUserInputOverflow::PathNode, RemoteUserInputUnderflow::PathNode,
-    RemoteUserInputOverflow::PathGraph, RemoteUserInputUnderflow::PathGraph>;
+  DataFlow::MergePathGraph<ArithmeticOverflow::PathNode, ArithmeticUnderflow::PathNode,
+    ArithmeticOverflow::PathGraph, ArithmeticUnderflow::PathGraph>;
 
 import Flow::PathGraph
 
 from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  RemoteUserInputOverflow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
+  ArithmeticOverflow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  RemoteUserInputUnderflow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+  ArithmeticUnderflow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,

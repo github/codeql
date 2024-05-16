@@ -8,7 +8,7 @@ private import semmle.code.java.security.XSS
 /**
  * A taint-tracking configuration for reasoning about cross-site scripting vulnerabilities from a local source.
  */
-module XssLocalConfig implements DataFlow::ConfigSig {
+deprecated module XssLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
@@ -23,6 +23,8 @@ module XssLocalConfig implements DataFlow::ConfigSig {
 }
 
 /**
+ * DEPRECATED: Use `XssFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for cross-site scripting vulnerabilities from a local source.
  */
-module XssLocalFlow = TaintTracking::Global<XssLocalConfig>;
+deprecated module XssLocalFlow = TaintTracking::Global<XssLocalConfig>;
