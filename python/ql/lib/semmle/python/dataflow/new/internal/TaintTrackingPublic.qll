@@ -48,5 +48,7 @@ class AdditionalTaintStep extends Unit {
    * Holds if the step from `nodeFrom` to `nodeTo` should be considered a taint
    * step for all configurations.
    */
-  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+  predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
+
+  predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) { none() }
 }

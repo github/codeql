@@ -29,6 +29,8 @@ private module Cached {
     or
     any(AdditionalTaintStep a).step(nodeFrom, nodeTo) and
     model = "AdditionalTaintStep"
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo, model)
   }
 
   /**
