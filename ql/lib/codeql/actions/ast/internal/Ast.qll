@@ -1290,6 +1290,8 @@ class MatrixAccessPathImpl extends TMatrixAccessPathNode {
 }
 
 private YamlMappingLikeNode resolveMatrixAccessPath(
+  // TODO: support `include` and `exclude` keys
+  // https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#expanding-or-adding-matrix-configurations
   YamlMappingLikeNode root, MatrixAccessPathImpl accessPath
 ) {
   // access path contains no dots. eg: "os"
