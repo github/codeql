@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id rb/user-controlled-file-decompression
+ * @id rb/user-controlled-data-decompression
  * @tags security
  *       experimental
  *       external/cwe/cwe-409

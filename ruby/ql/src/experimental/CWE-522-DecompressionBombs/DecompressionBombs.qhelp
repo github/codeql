@@ -10,9 +10,8 @@
 <recommendation>
 
 <p>When you want to decompress a user-provided compressed file you must be careful about the decompression ratio or read these files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop.</p>
-
-</recommendation>
 <p>Please read official RubyZip Documentation <a href="https://github.com/rubyzip/rubyzip/#size-validation">here</a></p>
+</recommendation>
 <example>
 <p>Rubyzip: According to <a href="https://github.com/rubyzip/rubyzip/#reading-a-zip-file">official</a> Documentation</p>
 <sample src="example_good.rb" />
