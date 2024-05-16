@@ -9,15 +9,15 @@ import (
 	"regexp"
 )
 
-func handler(req *http.Request) {
+func handlerExample(req *http.Request) {
 	imageName := req.URL.Query()["imageName"][0]
-	outputPath = "/tmp/output.svg"
+	outputPath := "/tmp/output.svg"
 	cmd := exec.Command("sh", "-c", fmt.Sprintf("imagetool %s > %s", imageName, outputPath)) // NOT OK - correctly flagged
 	cmd.Run()
 	// ...
 }
 
-func handler2(req *http.Request) {
+func handlerExample2(req *http.Request) {
 	imageName := req.URL.Query()["imageName"][0]
 	outputPath := "/tmp/output.svg"
 
@@ -37,7 +37,7 @@ func handler2(req *http.Request) {
 	cmd.Run()
 }
 
-func handler3(req *http.Request) {
+func handlerExample3(req *http.Request) {
 	imageName := req.URL.Query()["imageName"][0]
 	outputPath := "/tmp/output.svg"
 
