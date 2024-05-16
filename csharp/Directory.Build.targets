@@ -1,0 +1,3 @@
+<Project>
+  <Import Project=".paket\Paket.Restore.targets" />
+</Project>

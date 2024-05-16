@@ -113,7 +113,7 @@ module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
  * A taint-tracking configuration for reasoning about local user input that is
  * used in a numeric cast.
  */
-module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
+deprecated module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {
@@ -134,6 +134,8 @@ module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
+ * DEPRECATED: Use `NumericCastFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for local user input that is used in a numeric cast.
  */
-module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;
+deprecated module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;

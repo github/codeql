@@ -54,13 +54,15 @@ func checkExtractorRun() bool {
 }
 
 // tryBuildIfExists tries to run the command `cmd args...` if the file `buildFile` exists and is not
-// a directory. Returns true if the command was successful and false if not.
-func tryBuildIfExists(buildFile, cmd string, args ...string) bool {
-	if util.FileExists(buildFile) {
+// a directory. Returns values indicating whether the script succeeded as well as whether the script was found.
+func tryBuildIfExists(buildFile, cmd string, args ...string) (scriptSuccess bool, scriptFound bool) {
+	scriptSuccess = false
+	scriptFound = util.FileExists(buildFile)
+	if scriptFound {
 		log.Printf("%s found.\n", buildFile)
-		return tryBuild(cmd, args...)
+		scriptSuccess = tryBuild(cmd, args...)
 	}
-	return false
+	return
 }
 
 // tryBuild tries to run `cmd args...`, returning true if successful and false if not.
@@ -92,11 +94,25 @@ var BuildScripts = []BuildScript{
 // Autobuild attempts to detect build systems based on the presence of build scripts from the
 // list in `BuildScripts` and run the corresponding command. This may invoke zero or more
 // build scripts in the order given by `BuildScripts`.
-func Autobuild() bool {
+// Returns `scriptSuccess` which indicates whether a build script was successfully executed.
+// Returns `scriptsExecuted` which contains the names of all build scripts that were executed.
+func Autobuild() (scriptSuccess bool, scriptsExecuted []string) {
+	scriptSuccess = false
+	scriptsExecuted = []string{}
+
 	for _, script := range BuildScripts {
-		if tryBuildIfExists(script.Filename, script.Tool) {
-			return true
+		// Try to run the build script
+		success, scriptFound := tryBuildIfExists(script.Filename, script.Tool)
+
+		// If it was found, we attempted to run it: add it to the array.
+		if scriptFound {
+			scriptsExecuted = append(scriptsExecuted, script.Filename)
+		}
+		// If it was successfully executed, we stop here.
+		if success {
+			scriptSuccess = true
+			return
 		}
 	}
-	return false
+	return
 }

@@ -122,7 +122,40 @@ a, b = MS_spread_all(SOURCE)
 SINK(a)  # $ flow="SOURCE, l:-1 -> a"
 SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
-from foo import MS_Class
+from foo import MS_Class, MS_Class_transitive
+
+# Class summaries
+class_via_positional = MS_Class(SOURCE)
+SINK(class_via_positional.config)  # $ flow="SOURCE, l:-1 -> class_via_positional.config"
+
+class_via_kw = MS_Class(x = SOURCE)
+SINK(class_via_kw.config)  # $ flow="SOURCE, l:-1 -> class_via_kw.config"
+
+class C(MS_Class_transitive):
+    pass
+
+subclass_via_positional = C(SOURCE)
+SINK(subclass_via_positional.config)  # $ flow="SOURCE, l:-1 -> subclass_via_positional.config"
+
+subclass_via_kw = C(x = SOURCE)
+SINK(subclass_via_kw.config)  # $ flow="SOURCE, l:-1 -> subclass_via_kw.config"
+
+class D(MS_Class_transitive):
+    def __init__(x, y):
+        # special handling of y
+        super().__init__(x)
+
+SINK(D(SOURCE, NONSOURCE).config)  # $ flow="SOURCE -> D(..).config"
+SINK(D(x = SOURCE, y = NONSOURCE).config)  # $ flow="SOURCE -> D(..).config"
+
+class E(MS_Class_transitive):
+    # Notice the swapped order of the arguments
+    def __init__(y, x):
+        # special handling of y
+        super().__init__(x)
+
+SINK(E(NONSOURCE, SOURCE).config)  # $ MISSING: flow="SOURCE -> E(..).config"
+SINK(E(x = SOURCE, y = NONSOURCE).config)  # $ flow="SOURCE -> E(..).config"
 
 c = MS_Class()
 a, b = c.instance_method(SOURCE)

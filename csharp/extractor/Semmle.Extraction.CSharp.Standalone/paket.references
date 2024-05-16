@@ -1,0 +1,5 @@
+Microsoft.Build
+Microsoft.Win32.Primitives
+System.Net.Primitives
+System.Security.Principal
+System.Threading.ThreadPool

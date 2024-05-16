@@ -1,3 +1,9 @@
+## 0.12.1
+
+### Major Analysis Improvements
+
+* Added modeling of the `pyramid` framework, leading to new remote flow sources and sinks.
+
 ## 0.12.0
 
 ### Breaking Changes

@@ -18,6 +18,7 @@ go_library(
         "//go/extractor/dbscheme",
         "//go/extractor/diagnostics",
         "//go/extractor/srcarchive",
+        "//go/extractor/toolchain",
         "//go/extractor/trap",
         "//go/extractor/util",
         "//go/extractor/vendor/golang.org/x/mod/modfile",

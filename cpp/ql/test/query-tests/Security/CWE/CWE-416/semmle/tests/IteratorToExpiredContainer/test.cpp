@@ -686,7 +686,7 @@ void test() {
   for (auto x : returnRef()[0]) {} // GOOD
   for (auto x : returnRef().at(0)) {} // GOOD
 
-  for(auto it = returnValue().begin(); it != returnValue().end(); ++it) {} // BAD
+  for(auto it = returnValue().begin(); it != returnValue().end(); ++it) {} // BAD [NOT DETECTED]
 
   {
   auto v = returnValue();
@@ -792,4 +792,13 @@ void test4() {
   // function we may end up in the destructor call `chunk.~A()`in `A.foo`. This destructor
   // call can flow to `begin` through the back-edge and cause a strange FP.
   auto zero = A().size();
+}
+
+void test5(int i)
+{
+  while(i < 10) {
+    const auto& vvs = returnValue();
+    for(const auto& vs : vvs) { }
+    ++i;
+  } // GOOD
 }
