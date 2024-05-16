@@ -140,7 +140,7 @@ class NamespaceClass extends RefType {
  * This represents the set of classes and interfaces for which we will determine liveness. Each
  * `SourceClassOrInterfacce` will either be a `LiveClass` or `DeadClass`.
  */
-library class SourceClassOrInterface extends ClassOrInterface {
+class SourceClassOrInterface extends ClassOrInterface {
   SourceClassOrInterface() { this.fromSource() }
 }
 
@@ -173,9 +173,9 @@ class LiveClass extends SourceClassOrInterface {
     exists(NestedType r | r.getEnclosingType() = this | r instanceof LiveClass)
     or
     // An annotation on the class is reflectively accessed.
-    exists(ReflectiveAnnotationAccess reflectiveAnnotationAccess |
-      this = reflectiveAnnotationAccess.getInferredClassType() and
-      isLive(reflectiveAnnotationAccess.getEnclosingCallable())
+    exists(ReflectiveGetAnnotationCall reflectiveAnnotationCall |
+      this = reflectiveAnnotationCall.getInferredClassType() and
+      isLive(reflectiveAnnotationCall.getEnclosingCallable())
     )
     or
     this instanceof AnonymousClass

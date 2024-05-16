@@ -9,7 +9,8 @@ Bundler.require(*Rails.groups)
 module Railsapp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    # This defaults version does NOT enable CSRF protection by default.
+    config.load_defaults 5.1
 
     # BAD: Disabling forgery protection may open the application to CSRF attacks
     config.action_controller.allow_forgery_protection = false

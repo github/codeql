@@ -6,9 +6,9 @@
 | enums.swift:1:1:4:1 | EnumValues | 5 | enums.swift:3:18:3:18 | value4 |
 | enums.swift:1:1:4:1 | EnumValues | 6 | enums.swift:3:26:3:26 | value5 |
 | enums.swift:1:1:4:1 | EnumValues | 7 | file://:0:0:0:0 | __derived_enum_equals(_:_:) |
-| enums.swift:1:1:4:1 | EnumValues | 8 | file://:0:0:0:0 | var ... = ... |
-| enums.swift:1:1:4:1 | EnumValues | 9 | file://:0:0:0:0 | hash(into:) |
-| enums.swift:1:1:4:1 | EnumValues | 10 | file://:0:0:0:0 | hashValue |
+| enums.swift:1:1:4:1 | EnumValues | 8 | file://:0:0:0:0 | hashValue |
+| enums.swift:1:1:4:1 | EnumValues | 9 | file://:0:0:0:0 | var ... = ... |
+| enums.swift:1:1:4:1 | EnumValues | 10 | file://:0:0:0:0 | hash(into:) |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 0 | enums.swift:8:5:8:18 | case ... |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 1 | enums.swift:8:10:8:10 | value1 |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 2 | enums.swift:8:18:8:18 | value2 |
@@ -16,10 +16,10 @@
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 4 | enums.swift:9:10:9:10 | value3 |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 5 | enums.swift:9:18:9:18 | value4 |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 6 | enums.swift:9:26:9:26 | value5 |
-| enums.swift:7:1:10:1 | EnumValuesWithBase | 7 | file://:0:0:0:0 | EnumValuesWithBase.init(rawValue:) |
-| enums.swift:7:1:10:1 | EnumValuesWithBase | 8 | file://:0:0:0:0 | var ... = ... |
-| enums.swift:7:1:10:1 | EnumValuesWithBase | 9 | file://:0:0:0:0 | RawValue |
-| enums.swift:7:1:10:1 | EnumValuesWithBase | 10 | file://:0:0:0:0 | rawValue |
+| enums.swift:7:1:10:1 | EnumValuesWithBase | 7 | file://:0:0:0:0 | RawValue |
+| enums.swift:7:1:10:1 | EnumValuesWithBase | 8 | file://:0:0:0:0 | EnumValuesWithBase.init(rawValue:) |
+| enums.swift:7:1:10:1 | EnumValuesWithBase | 9 | file://:0:0:0:0 | rawValue |
+| enums.swift:7:1:10:1 | EnumValuesWithBase | 10 | file://:0:0:0:0 | var ... = ... |
 | enums.swift:12:1:16:1 | EnumWithParams | 0 | enums.swift:13:5:13:22 | case ... |
 | enums.swift:12:1:16:1 | EnumWithParams | 1 | enums.swift:13:10:13:22 | nodata1 |
 | enums.swift:12:1:16:1 | EnumWithParams | 2 | enums.swift:14:5:14:21 | case ... |
@@ -30,3 +30,9 @@
 | enums.swift:18:1:21:1 | GenericEnum | 1 | enums.swift:19:10:19:10 | none |
 | enums.swift:18:1:21:1 | GenericEnum | 2 | enums.swift:20:5:20:16 | case ... |
 | enums.swift:18:1:21:1 | GenericEnum | 3 | enums.swift:20:10:20:16 | some |
+| enums.swift:23:1:27:1 | EnumWithNamedParams | 0 | enums.swift:24:5:24:25 | case ... |
+| enums.swift:23:1:27:1 | EnumWithNamedParams | 1 | enums.swift:24:10:24:25 | nodata1 |
+| enums.swift:23:1:27:1 | EnumWithNamedParams | 2 | enums.swift:25:5:25:24 | case ... |
+| enums.swift:23:1:27:1 | EnumWithNamedParams | 3 | enums.swift:25:10:25:24 | intdata |
+| enums.swift:23:1:27:1 | EnumWithNamedParams | 4 | enums.swift:26:5:26:44 | case ... |
+| enums.swift:23:1:27:1 | EnumWithNamedParams | 5 | enums.swift:26:10:26:44 | tuple |

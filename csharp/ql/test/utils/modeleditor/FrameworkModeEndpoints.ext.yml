@@ -16,6 +16,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["GitHub.CodeQL","PublicClass",true,"summaryStuff","(System.String)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["GitHub.CodeQL","PublicGenericClass<T,T2>",true,"summaryStuff<TNode>","(TNode)","","Argument[0]","ReturnValue","value","manual"]
 
   - addsTo:
       pack: codeql/csharp-all

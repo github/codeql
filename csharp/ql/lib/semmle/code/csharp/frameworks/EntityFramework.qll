@@ -9,8 +9,10 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
-private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Public
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.csharp.security.dataflow.flowsources.Stored as Stored
 
 /**
  * Definitions relating to the `System.ComponentModel.DataAnnotations`
@@ -21,7 +23,8 @@ module DataAnnotations {
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this.getType()
-          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema", "NotMappedAttribute")
+          .hasFullyQualifiedName("System.ComponentModel.DataAnnotations.Schema",
+            "NotMappedAttribute")
     }
   }
 }
@@ -42,10 +45,12 @@ module EntityFramework {
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
-  class StoredFlowSource extends DataFlow::Node {
+  class StoredFlowSource extends Stored::DatabaseInputSource {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }
+
+    override string getSourceType() { result = "ORM mapped property" }
   }
 
   private class EFClass extends Class {
@@ -67,9 +72,9 @@ module EntityFramework {
     Method getAnUpdateMethod() { result = this.getAMethod("Update") }
   }
 
-  /** The class `Microsoft.EntityFrameworkCore.DbSet<>` or `System.Data.Entity.DbSet<>`. */
+  /** The class ``Microsoft.EntityFrameworkCore.DbSet`1`` or ``System.Data.Entity.DbSet`1``. */
   class DbSet extends EFClass, UnboundGenericClass {
-    DbSet() { this.getName() = "DbSet<>" }
+    DbSet() { this.getName() = "DbSet`1" }
 
     /** Gets a method that adds or updates entities in a DB set. */
     Method getAnAddOrUpdateMethod(boolean range) {
@@ -84,14 +89,30 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable {
+  abstract class EFSummarizedCallable extends SummarizedCallableImpl {
     bindingset[this]
     EFSummarizedCallable() { any() }
+
+    override predicate hasProvenance(Provenance provenance) { provenance = "manual" }
   }
 
-  /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
+  // see `SummarizedCallableImpl` qldoc
+  private class EFSummarizedCallableAdapter extends SummarizedCallable instanceof EFSummarizedCallable
+  {
+    override predicate propagatesFlow(
+      string input, string output, boolean preservesValue, string model
+    ) {
+      none()
+    }
+
+    override predicate hasProvenance(Provenance provenance) {
+      EFSummarizedCallable.super.hasProvenance(provenance)
+    }
+  }
+
+  /** The class ``Microsoft.EntityFrameworkCore.DbQuery`1`` or ``System.Data.Entity.DbQuery`1``. */
   class DbQuery extends EFClass, UnboundGenericClass {
-    DbQuery() { this.hasName("DbQuery<>") }
+    DbQuery() { this.hasName("DbQuery`1") }
   }
 
   /** A generic type or method that takes a mapped type as its type argument. */
@@ -134,7 +155,9 @@ module EntityFramework {
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
-    RawSqlStringStruct() { this.hasQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString") }
+    RawSqlStringStruct() {
+      this.hasFullyQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString")
+    }
 
     /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {
@@ -153,11 +176,13 @@ module EntityFramework {
     }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
-      preservesValue = false
+      preservesValue = false and
+      model = "RawSqlStringConstructorSummarizedCallable"
     }
   }
 
@@ -167,11 +192,13 @@ module EntityFramework {
     }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
-      preservesValue = false
+      preservesValue = false and
+      model = "RawSqlStringConversionSummarizedCallable"
     }
   }
 
@@ -424,7 +451,7 @@ module EntityFramework {
      */
     string getFullName() {
       exists(string qualifier, string type, string name |
-        this.hasQualifiedName(qualifier, type, name)
+        this.hasFullyQualifiedName(qualifier, type, name)
       |
         result = getQualifiedName(qualifier, type, name)
       )
@@ -442,12 +469,14 @@ module EntityFramework {
     DbContextClassSetPropertySynthetic() { this = p.getGetter() }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       exists(string name, DbContextClass c |
         preservesValue = true and
         name = c.getSyntheticName(output, _, p) and
-        input = SummaryComponentStack::syntheticGlobal(name)
+        input = SummaryComponentStack::syntheticGlobal(name) and
+        model = "DbContextClassSetPropertySynthetic"
       )
     }
   }
@@ -458,13 +487,15 @@ module EntityFramework {
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       exists(string name, Property mapped |
         preservesValue = true and
         c.input(input, mapped) and
         name = c.getSyntheticName(_, mapped, _) and
-        output = SummaryComponentStack::syntheticGlobal(name)
+        output = SummaryComponentStack::syntheticGlobal(name) and
+        model = "DbContextSaveChanges"
       )
     }
   }

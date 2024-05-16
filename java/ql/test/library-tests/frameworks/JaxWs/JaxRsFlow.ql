@@ -7,7 +7,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     DefaultFlowConfig::isSource(node)
     or
-    node instanceof RemoteFlowSource
+    node instanceof ThreatModelFlowSource
   }
 
   predicate isSink = DefaultFlowConfig::isSink/1;

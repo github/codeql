@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.commons.Util
 import AssemblyPathInjection::PathGraph
 
@@ -21,10 +21,7 @@ import AssemblyPathInjection::PathGraph
  * A taint-tracking configuration for untrusted user input used to load a DLL.
  */
 module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
-    source.asExpr() = any(MainMethod main).getParameter(0).getAnAccess()
-  }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc, string name, int arg |
@@ -32,7 +29,7 @@ module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Reflection", "Assembly") and
+          .hasFullyQualifiedName("System.Reflection", "Assembly") and
       mc.getArgument(arg) = sink.asExpr()
     |
       name = "LoadFrom" and arg = 0 and mc.getNumberOfArguments() = [1 .. 2]

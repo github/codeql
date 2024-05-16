@@ -6,7 +6,7 @@
 import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.dataflow.DataFlow2
 private import semmle.code.csharp.dataflow.TaintTracking2
 
@@ -42,14 +42,18 @@ predicate xssFlow(XssNode source, XssNode sink, string message) {
  */
 module PathGraph {
   /** Holds if `(pred,succ)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(XssNode pred, XssNode succ) {
-    exists(XssTracking::PathNode a, XssTracking::PathNode b | XssTracking::PathGraph::edges(a, b) |
+  query predicate edges(XssNode pred, XssNode succ, string key, string val) {
+    exists(XssTracking::PathNode a, XssTracking::PathNode b |
+      XssTracking::PathGraph::edges(a, b, key, val)
+    |
       pred.asDataFlowNode() = a and
       succ.asDataFlowNode() = b
     )
     or
     xssFlow(pred, succ, _) and
-    pred instanceof XssAspNode
+    pred instanceof XssAspNode and
+    key = "provenance" and
+    val = ""
   }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
@@ -175,8 +179,8 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
 
 module XssTracking = TaintTracking::Global<XssTrackingConfig>;
 
-/** A source of remote user input. */
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

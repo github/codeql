@@ -53,7 +53,7 @@ private class SafeYaml extends ClassInstanceExpr {
 }
 
 /** A call to a parse method of `Yaml`. */
-private class SnakeYamlParse extends MethodAccess {
+private class SnakeYamlParse extends MethodCall {
   SnakeYamlParse() {
     exists(Method m |
       m.getDeclaringType() instanceof Yaml and

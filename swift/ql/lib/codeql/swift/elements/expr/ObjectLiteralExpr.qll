@@ -1,5 +1,9 @@
 private import codeql.swift.generated.expr.ObjectLiteralExpr
 
+// the following QLdoc is generated: if you need to edit it, do it in the schema file
+/**
+ * An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.
+ */
 class ObjectLiteralExpr extends Generated::ObjectLiteralExpr { }
 
 class FileLiteralExpr extends ObjectLiteralExpr {

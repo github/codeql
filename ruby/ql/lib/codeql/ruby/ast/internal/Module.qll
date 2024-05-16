@@ -43,6 +43,9 @@ private module Cached {
   }
 
   cached
+  predicate isBuiltinModule(Module m) { m = TResolved(builtin()) }
+
+  cached
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or

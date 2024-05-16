@@ -243,3 +243,5 @@
 | operations.rb:104:24:104:32 | * ... | * | operations.rb:104:24:104:32 | [...] | SplatExpr |
 | operations.rb:104:24:104:32 | ... = ... | = | operations.rb:104:24:104:32 | * ... | AssignExpr |
 | operations.rb:104:24:104:32 | ... = ... | = | operations.rb:104:24:104:32 | __synth__3 | AssignExpr |
+| operations.rb:106:1:107:1 | ... / ... | / | operations.rb:106:1:106:3 | foo | DivExpr |
+| operations.rb:106:1:107:1 | ... / ... | / | operations.rb:107:1:107:1 | 5 | DivExpr |

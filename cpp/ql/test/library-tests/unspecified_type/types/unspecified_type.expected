@@ -2,6 +2,11 @@
 | file://:0:0:0:0 | ..(*)(..) | ..(*)(..) |
 | file://:0:0:0:0 | Tmpl<T> | Tmpl<T> |
 | file://:0:0:0:0 | _Complex _Float16 | _Complex _Float16 |
+| file://:0:0:0:0 | _Complex _Float32 | _Complex _Float32 |
+| file://:0:0:0:0 | _Complex _Float32x | _Complex _Float32x |
+| file://:0:0:0:0 | _Complex _Float64 | _Complex _Float64 |
+| file://:0:0:0:0 | _Complex _Float64x | _Complex _Float64x |
+| file://:0:0:0:0 | _Complex _Float128 | _Complex _Float128 |
 | file://:0:0:0:0 | _Complex __float128 | _Complex __float128 |
 | file://:0:0:0:0 | _Complex double | _Complex double |
 | file://:0:0:0:0 | _Complex float | _Complex float |
@@ -18,7 +23,9 @@
 | file://:0:0:0:0 | _Imaginary double | _Imaginary double |
 | file://:0:0:0:0 | _Imaginary float | _Imaginary float |
 | file://:0:0:0:0 | _Imaginary long double | _Imaginary long double |
+| file://:0:0:0:0 | __bf16 | __bf16 |
 | file://:0:0:0:0 | __float128 | __float128 |
+| file://:0:0:0:0 | __fp16 | __fp16 |
 | file://:0:0:0:0 | __int128 | __int128 |
 | file://:0:0:0:0 | __va_list_tag & | __va_list_tag & |
 | file://:0:0:0:0 | __va_list_tag && | __va_list_tag && |
@@ -45,6 +52,7 @@
 | file://:0:0:0:0 | signed long | signed long |
 | file://:0:0:0:0 | signed long long | signed long long |
 | file://:0:0:0:0 | signed short | signed short |
+| file://:0:0:0:0 | std::float16_t | std::float16_t |
 | file://:0:0:0:0 | unknown | unknown |
 | file://:0:0:0:0 | unsigned __int128 | unsigned __int128 |
 | file://:0:0:0:0 | unsigned char | unsigned char |

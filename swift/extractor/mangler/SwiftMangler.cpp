@@ -138,7 +138,12 @@ void SwiftMangler::indexExtensions(llvm::ArrayRef<swift::Decl*> siblings) {
 }
 
 SwiftMangledName SwiftMangler::visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl) {
-  return visitValueDecl(decl, /*force=*/true) << '_' << decl->getDepth() << '_' << decl->getIndex();
+  auto ret = visitValueDecl(decl, /*force=*/true);
+  if (decl->isParameterPack()) {
+    ret << "each_";
+  }
+  ret << '_' << decl->getDepth() << '_' << decl->getIndex();
+  return ret;
 }
 
 SwiftMangledName SwiftMangler::visitAssociatedTypeDecl(const swift::AssociatedTypeDecl* decl) {
@@ -259,6 +264,9 @@ SwiftMangledName SwiftMangler::visitGenericFunctionType(const swift::GenericFunc
 
 SwiftMangledName SwiftMangler::visitGenericTypeParamType(const swift::GenericTypeParamType* type) {
   auto ret = initMangled(type);
+  if (type->isParameterPack()) {
+    ret << "each_";
+  }
   if (auto decl = type->getDecl()) {
     ret << fetch(decl);
   } else {
@@ -373,6 +381,33 @@ SwiftMangledName SwiftMangler::visitParametrizedProtocolType(
     ret << fetch(arg);
   }
   ret << '>';
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitPackArchetypeType(const swift::PackArchetypeType* type) {
+  return visitArchetypeType(type) << "...";
+}
+
+SwiftMangledName SwiftMangler::visitPackType(const swift::PackType* type) {
+  auto ret = initMangled(type);
+  for (auto element : type->getElementTypes()) {
+    ret << fetch(element);
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitPackElementType(const swift::PackElementType* type) {
+  auto ret = initMangled(type);
+  ret << fetch(type->getPackType());
+  ret << '_' << type->getLevel();
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitPackExpansionType(const swift::PackExpansionType* type) {
+  auto ret = initMangled(type);
+  ret << fetch(type->getPatternType());
+  ret << '_';
+  ret << fetch(type->getCountType());
   return ret;
 }
 

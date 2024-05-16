@@ -10,6 +10,8 @@ class SsaVariable = Ssa::SsaVariable;
 
 class Expr = J::Expr;
 
+class Location = J::Location;
+
 class IntegralType = J::IntegralType;
 
 class ConstantIntegerExpr = RU::ConstantIntegerExpr;

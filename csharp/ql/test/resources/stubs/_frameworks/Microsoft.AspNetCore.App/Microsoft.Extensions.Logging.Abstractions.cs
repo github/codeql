@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -84,6 +84,10 @@ namespace Microsoft
             {
                 Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName);
             }
+            public interface ILoggingBuilder
+            {
+                Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
+            }
             public interface ISupportExternalScope
             {
                 void SetScopeProvider(Microsoft.Extensions.Logging.IExternalScopeProvider scopeProvider);
@@ -167,10 +171,14 @@ namespace Microsoft
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, T2, T3, T4, T5, System.IDisposable> DefineScope<T1, T2, T3, T4, T5>(string formatString) => throw null;
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, T2, T3, T4, T5, T6, System.IDisposable> DefineScope<T1, T2, T3, T4, T5, T6>(string formatString) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64)]
             public sealed class LoggerMessageAttribute : System.Attribute
             {
                 public LoggerMessageAttribute() => throw null;
                 public LoggerMessageAttribute(int eventId, Microsoft.Extensions.Logging.LogLevel level, string message) => throw null;
+                public LoggerMessageAttribute(Microsoft.Extensions.Logging.LogLevel level) => throw null;
+                public LoggerMessageAttribute(Microsoft.Extensions.Logging.LogLevel level, string message) => throw null;
+                public LoggerMessageAttribute(string message) => throw null;
                 public int EventId { get => throw null; set { } }
                 public string EventName { get => throw null; set { } }
                 public Microsoft.Extensions.Logging.LogLevel Level { get => throw null; set { } }

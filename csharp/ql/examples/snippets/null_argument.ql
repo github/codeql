@@ -17,6 +17,6 @@ where
   add.hasName("Add") and
   add.getDeclaringType()
       .getUnboundDeclaration()
-      .hasQualifiedName("System.Collections.Generic", "ICollection<>") and
+      .hasFullyQualifiedName("System.Collections.Generic", "ICollection`1") and
   call.getAnArgument() instanceof NullLiteral
 select call

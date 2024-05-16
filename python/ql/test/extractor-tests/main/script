@@ -1,0 +1,4 @@
+#!/usr/bin/python
+import module
+
+print("Hello World")

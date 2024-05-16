@@ -1,6 +1,7 @@
 /** Provides classes for working with errors and warnings recorded during extraction. */
 
 import go
+private import semmle.go.internal.Locations
 
 /** Gets the SARIF severity level that indicates an error. */
 private int getErrorSeverity() { result = 2 }
@@ -29,7 +30,7 @@ private class Diagnostic extends @diagnostic {
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(Location l | diagnostics(this, _, _, _, _, l) | l.hasLocationInfo(path, sl, sc, el, ec))
+    getDiagnosticLocation(this).hasLocationInfo(path, sl, sc, el, ec)
   }
 
   string toString() { result = this.getMessage() }

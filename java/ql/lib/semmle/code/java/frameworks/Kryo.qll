@@ -76,7 +76,7 @@ class KryoReadObjectMethod extends Method {
 /**
  * A call to `Kryo.setRegistrationRequired` that enables white-listing.
  */
-class KryoEnableWhiteListing extends MethodAccess {
+class KryoEnableWhiteListing extends MethodCall {
   KryoEnableWhiteListing() {
     exists(Method m |
       m = this.getMethod() and

@@ -2,19 +2,25 @@
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.ApiSources as ApiSources
+private import semmle.code.csharp.security.dataflow.flowsinks.ApiSinks as ApiSinks
 private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
-  c.getDeclaringType() instanceof TestLibrary or
+  c.getDeclaringType() instanceof TestLibrary
+  or
   c.(Constructor).isParameterless()
+  or
+  // The data flow library uses read/store steps for properties, so we don't need to model them,
+  // if both a getter and a setter exist.
+  c.(Accessor).getDeclaration().(Property).isReadWrite()
 }
 
 /**
@@ -42,7 +48,7 @@ class ExternalApi extends Callable {
    * Gets the namespace of this API.
    */
   bindingset[this]
-  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  string getNamespace() { this.getDeclaringType().hasFullyQualifiedName(result, _) }
 
   /**
    * Gets the namespace and signature of this API.
@@ -74,18 +80,16 @@ class ExternalApi extends Callable {
   predicate hasSummary() {
     this instanceof SummarizedCallable
     or
-    defaultAdditionalTaintStep(this.getAnInput(), _)
+    defaultAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
-  predicate isSource() {
-    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
-  }
+  predicate isSource() { this.getAnOutput() instanceof ApiSources::SourceNode }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { sinkNode(this.getAnInput(), _) }
+  predicate isSink() { this.getAnInput() instanceof ApiSinks::SinkNode }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
@@ -134,7 +138,8 @@ module Results<relevantApi/1 getRelevantUsages> {
       strictcount(Call c, ExternalApi api |
         c.getTarget().getUnboundDeclaration() = api and
         apiName = api.getApiName() and
-        getRelevantUsages(api)
+        getRelevantUsages(api) and
+        c.fromSource()
       )
   }
 

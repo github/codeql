@@ -5,15 +5,10 @@
 
 private import codeql.util.Boolean
 private import codeql.util.Unit
+private import codeql.util.Location
 private import codeql.ssa.Ssa as Ssa
 
-signature module InputSig {
-  class Location {
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
-  }
-
+signature module InputSig<LocationSig Location> {
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
@@ -144,7 +139,7 @@ signature module InputSig {
   }
 }
 
-signature module OutputSig<InputSig I> {
+signature module OutputSig<LocationSig Location, InputSig<Location> I> {
   /**
    * A data flow node that we need to reference in the step relations for
    * captured variables.
@@ -165,7 +160,7 @@ signature module OutputSig<InputSig I> {
     string toString();
 
     /** Gets the location of this node. */
-    I::Location getLocation();
+    Location getLocation();
 
     /** Gets the enclosing callable. */
     I::Callable getEnclosingCallable();
@@ -237,13 +232,16 @@ signature module OutputSig<InputSig I> {
 
   /** Holds if this-to-this summaries are expected for `c`. */
   predicate heuristicAllowInstanceParameterReturnInSelf(I::Callable c);
+
+  /** Holds if captured variable `v` is cleared at `node`. */
+  predicate clearsContent(ClosureNode node, I::CapturedVariable v);
 }
 
 /**
  * Constructs the type `ClosureNode` and associated step relations, which are
  * intended to be included in the data-flow node and step relations.
  */
-module Flow<InputSig Input> implements OutputSig<Input> {
+module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig<Location, Input> {
   private import Input
 
   additional module ConsistencyChecks {
@@ -603,14 +601,20 @@ module Flow<InputSig Input> implements OutputSig<Input> {
    * observed in a similarly synthesized post-update node for this read of `v`.
    */
   private predicate synthRead(
-    CapturedVariable v, BasicBlock bb, int i, boolean topScope, Expr closure
+    CapturedVariable v, BasicBlock bb, int i, boolean topScope, Expr closure, boolean alias
   ) {
     exists(ClosureExpr ce | closureCaptures(ce, v) |
-      ce.hasCfgNode(bb, i) and ce = closure
+      ce.hasCfgNode(bb, i) and ce = closure and alias = false
       or
-      localOrNestedClosureAccess(ce, closure, bb, i)
+      localOrNestedClosureAccess(ce, closure, bb, i) and alias = true
     ) and
     if v.getCallable() != bb.getEnclosingCallable() then topScope = false else topScope = true
+  }
+
+  private predicate synthRead(
+    CapturedVariable v, BasicBlock bb, int i, boolean topScope, Expr closure
+  ) {
+    synthRead(v, bb, i, topScope, closure, _)
   }
 
   /**
@@ -638,6 +642,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       or
       result = "this" and this = TThis(_)
     }
+
+    Location getLocation() {
+      exists(CapturedVariable v | this = TVariable(v) and result = v.getLocation())
+    }
   }
 
   /** Holds if `cc` needs a definition at the entry of its callable scope. */
@@ -659,7 +667,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     )
   }
 
-  private module CaptureSsaInput implements Ssa::InputSig {
+  private module CaptureSsaInput implements Ssa::InputSig<Location> {
     final class BasicBlock = Input::BasicBlock;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
@@ -697,7 +705,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
   }
 
-  private module CaptureSsa = Ssa::Make<CaptureSsaInput>;
+  private module CaptureSsa = Ssa::Make<Location, CaptureSsaInput>;
 
   private newtype TClosureNode =
     TSynthRead(CapturedVariable v, BasicBlock bb, int i, Boolean isPost) {
@@ -917,16 +925,22 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     )
   }
 
-  predicate storeStep(ClosureNode node1, CapturedVariable v, ClosureNode node2) {
-    // store v in the closure or in the malloc in case of a relevant constructor call
+  private predicate storeStepClosure(
+    ClosureNode node1, CapturedVariable v, ClosureNode node2, boolean alias
+  ) {
     exists(BasicBlock bb, int i, Expr closure |
-      synthRead(v, bb, i, _, closure) and
+      synthRead(v, bb, i, _, closure, alias) and
       node1 = TSynthRead(v, bb, i, false)
     |
       node2 = TExprNode(closure, false)
       or
       node2 = TMallocNode(closure) and hasConstructorCapture(closure, v)
     )
+  }
+
+  predicate storeStep(ClosureNode node1, CapturedVariable v, ClosureNode node2) {
+    // store v in the closure or in the malloc in case of a relevant constructor call
+    storeStepClosure(node1, v, node2, _)
     or
     // write to v inside the closure body
     exists(BasicBlock bb, int i, VariableWrite vw |
@@ -958,6 +972,69 @@ module Flow<InputSig Input> implements OutputSig<Input> {
         captureRead(v, bb, i, false, vr) and
         node2 = TExprNode(vr, false)
       )
+    )
+  }
+
+  predicate clearsContent(ClosureNode node, CapturedVariable v) {
+    /*
+     * Stores into closure aliases block flow from previous stores, both to
+     * avoid overlapping data flow paths, but also to avoid false positive
+     * flow.
+     *
+     * Example 1 (overlapping paths):
+     *
+     * ```rb
+     * def m
+     *     x = taint
+     *
+     *     fn = -> { # (1)
+     *        sink x
+     *     }
+     *
+     *     fn.call # (2)
+     * ```
+     *
+     * If we don't clear `x` at `fn` (2), we will have two overlapping paths:
+     *
+     * ```
+     * taint -> fn (2) [captured x]
+     * taint -> fn (1) [captured x] -> fn (2) [captured x]
+     * ```
+     *
+     * where the step `fn (1) [captured x] -> fn [captured x]` arises from normal
+     * use-use flow for `fn`. Clearing `x` at `fn` (2) removes the second path above.
+     *
+     * Example 2 (false positive flow):
+     *
+     * ```rb
+     * def m
+     *     x = taint
+     *
+     *     fn = -> { # (1)
+     *        sink x
+     *     }
+     *
+     *     x = nil # (2)
+     *
+     *     fn.call # (3)
+     * end
+     * ```
+     *
+     * If we don't clear `x` at `fn` (3), we will have the following false positive
+     * flow path:
+     *
+     * ```
+     * taint -> fn (1) [captured x] -> fn (3) [captured x]
+     * ```
+     *
+     * since normal use-use flow for `fn` does not take the overwrite at (2) into account.
+     */
+
+    storeStepClosure(_, v, node, true)
+    or
+    exists(BasicBlock bb, int i |
+      captureWrite(v, bb, i, false, _) and
+      node = TSynthThisQualifier(bb, i, false)
     )
   }
 }

@@ -1,1 +1,1 @@
-| C & P1 & P2 | getName: | C & P1 & P2 | getCanonicalType: | C & P1 & P2 | getInterfaceType: | \u03c4_0_0 | hasSuperclass: | yes | getNumberOfProtocols: | 2 |
+| any C & P1 & P2 | getName: | any C & P1 & P2 | getCanonicalType: | any C & P1 & P2 | getInterfaceType: | \u03c4_0_0 | hasSuperclass: | yes | getNumberOfProtocols: | 2 |

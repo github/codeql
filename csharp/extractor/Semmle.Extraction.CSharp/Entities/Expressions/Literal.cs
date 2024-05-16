@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 kind,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(value));
 
             return new Expression(info);
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.NULL_LITERAL,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(null));
 
             return new Expression(info);

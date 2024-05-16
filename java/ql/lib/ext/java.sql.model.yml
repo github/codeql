@@ -11,11 +11,13 @@ extensions:
       - ["java.sql", "DriverManager", False, "getConnection", "(String)", "", "Argument[0]", "request-forgery", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String,Properties)", "", "Argument[0]", "request-forgery", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String,String,String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.sql", "DriverManager", False, "getConnection", "(String,String,String)", "", "Argument[2]", "credentials-password", "hq-generated"]
       - ["java.sql", "Statement", True, "addBatch", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["java.sql", "Statement", True, "execute", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["java.sql", "Statement", True, "executeLargeUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["java.sql", "Statement", True, "executeQuery", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["java.sql", "Statement", True, "executeUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "DriverManager", False, "getConnection", "(String,String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

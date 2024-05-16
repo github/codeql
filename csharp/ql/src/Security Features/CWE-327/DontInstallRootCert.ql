@@ -19,7 +19,7 @@ module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
     exists(ObjectCreation oc | oc = source.asExpr() |
       oc.getType()
           .(RefType)
-          .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store") and
+          .hasFullyQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store") and
       oc.getArgument(0).(Access).getTarget().hasName("Root")
     )
   }
@@ -28,9 +28,10 @@ module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
     exists(MethodCall mc |
       (
         mc.getTarget()
-            .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store", "Add") or
+            .hasFullyQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
+              "Add") or
         mc.getTarget()
-            .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
+            .hasFullyQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
               "AddRange")
       ) and
       sink.asExpr() = mc.getQualifier()

@@ -70,8 +70,10 @@
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
 | getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
+| importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
+| logical-and.js:2:17:2:24 | source() | logical-and.js:4:10:4:24 | "safe" && taint |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
@@ -109,3 +111,4 @@
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
+| tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |

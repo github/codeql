@@ -1,10 +1,10 @@
 import python
 
-predicate format_string(StrConst e) {
+predicate format_string(StringLiteral e) {
   exists(BinaryExpr b | b.getOp() instanceof Mod and b.getLeft() = e)
 }
 
-predicate mapping_format(StrConst e) {
+predicate mapping_format(StringLiteral e) {
   conversion_specifier(e, _).regexpMatch("%\\([A-Z_a-z0-9]+\\).*")
 }
 
@@ -17,18 +17,18 @@ predicate mapping_format(StrConst e) {
  * TYPE = "[bdiouxXeEfFgGcrs%]"
  */
 
-private string conversion_specifier_string(StrConst e, int number, int position) {
+private string conversion_specifier_string(StringLiteral e, int number, int position) {
   exists(string s, string regex | s = e.getText() |
     regex = "%(\\([^)]*\\))?[#0\\- +]*(\\*|[0-9]*)(\\.(\\*|[0-9]*))?(h|H|l|L)?[badiouxXeEfFgGcrs%]" and
     result = s.regexpFind(regex, number, position)
   )
 }
 
-private string conversion_specifier(StrConst e, int number) {
+private string conversion_specifier(StringLiteral e, int number) {
   result = conversion_specifier_string(e, number, _) and result != "%%"
 }
 
-int illegal_conversion_specifier(StrConst e) {
+int illegal_conversion_specifier(StringLiteral e) {
   format_string(e) and
   "%" = e.getText().charAt(result) and
   // not the start of a conversion specifier or the second % of a %%
@@ -37,7 +37,7 @@ int illegal_conversion_specifier(StrConst e) {
 }
 
 /** Gets the number of format items in a format string */
-int format_items(StrConst e) {
+int format_items(StringLiteral e) {
   result =
     count(int i | | conversion_specifier(e, i)) +
       // a conversion specifier uses an extra item for each *
@@ -47,7 +47,7 @@ int format_items(StrConst e) {
 private string str(Expr e) {
   result = e.(Num).getN()
   or
-  result = "'" + e.(StrConst).getText() + "'"
+  result = "'" + e.(StringLiteral).getText() + "'"
 }
 
 /** Gets a string representation of an expression more suited for embedding in message strings than .toString() */

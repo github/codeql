@@ -274,3 +274,29 @@
 | declarations.swift:182:7:182:7 | self |  |
 | declarations.swift:183:1:183:15 | A | getAliasedType:B |
 | declarations.swift:184:1:184:18 | C | getAliasedType:Int? |
+| declarations.swift:186:1:194:1 | S |  |
+| declarations.swift:186:7:186:7 | S.deinit() |  |
+| declarations.swift:186:7:186:7 | S.init() |  |
+| declarations.swift:186:7:186:7 | self |  |
+| declarations.swift:186:7:186:7 | self |  |
+| declarations.swift:187:3:187:13 | var ... = ... |  |
+| declarations.swift:187:7:187:7 | _modify |  |
+| declarations.swift:187:7:187:7 | bf1 |  |
+| declarations.swift:187:7:187:7 | get |  |
+| declarations.swift:187:7:187:7 | self |  |
+| declarations.swift:187:7:187:7 | self |  |
+| declarations.swift:187:7:187:7 | self |  |
+| declarations.swift:187:7:187:7 | set |  |
+| declarations.swift:187:7:187:7 | value |  |
+| declarations.swift:188:3:193:3 | captureThis() |  |
+| declarations.swift:188:8:188:8 | self |  |
+| declarations.swift:189:5:189:13 | var ... = ... |  |
+| declarations.swift:189:9:189:9 | x |  |
+| declarations.swift:190:5:192:5 | var ... = ... |  |
+| declarations.swift:190:9:190:9 | f |  |
+| declarations.swift:190:16:190:16 | self |  |
+| declarations.swift:190:16:190:16 | var ... = ... |  |
+| declarations.swift:190:22:190:22 | var ... = ... |  |
+| declarations.swift:190:22:190:22 | x |  |
+| declarations.swift:191:7:191:7 | self |  |
+| declarations.swift:191:18:191:18 | x |  |

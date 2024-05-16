@@ -7,7 +7,7 @@ private import semmle.code.java.dataflow.FlowSources
 /**
  * A taint-tracking configuration to reason about improper validation of local user-provided size used for array construction.
  */
-module ImproperValidationOfArrayConstructionLocalConfig implements DataFlow::ConfigSig {
+deprecated module ImproperValidationOfArrayConstructionLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {
@@ -16,7 +16,9 @@ module ImproperValidationOfArrayConstructionLocalConfig implements DataFlow::Con
 }
 
 /**
+ * DEPRECATED: Use `ImproperValidationOfArrayConstructionFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for improper validation of local user-provided size used for array construction.
  */
-module ImproperValidationOfArrayConstructionLocalFlow =
+deprecated module ImproperValidationOfArrayConstructionLocalFlow =
   TaintTracking::Global<ImproperValidationOfArrayConstructionLocalConfig>;

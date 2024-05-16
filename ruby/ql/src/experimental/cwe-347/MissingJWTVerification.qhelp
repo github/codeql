@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Applications decoding a JSON Web Token (JWT) may be vulnerable when the key isn't verified.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Calls to <code>verify()</code> functions should use a cryptographic secret or key to decode JWT payloads.</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, false is used to disable the integrity enforcement of a JWT payload and none algorithm is used. This may allow a malicious actor to make changes to a JWT payload.
+</p>
+
+<sample src="examples/MissingJWTVerificationBad.rb" />
+
+<p>
+The following code fixes the problem by using a cryptographic secret or key to decode JWT payloads.
+</p>
+
+<sample src="examples/MissingJWTVerificationGood.rb" />
+</example>
+
+<references>
+<li>Auth0 Blog: <a href="https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/#Meet-the--None--Algorithm">Meet the "None" Algorithm</a>.</li>
+</references>
+</qhelp>

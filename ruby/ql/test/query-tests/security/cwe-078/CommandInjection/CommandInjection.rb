@@ -106,4 +106,13 @@ class Foo < ActionController::Base
         system("cat #{file.shellescape}") # OK, because file is shell escaped
         
     end
+
+    def index
+      Terrapin::CommandLine.new(params[:foo], "bar") # BAD
+
+      Terrapin::CommandLine.new("echo", "#{params[foo]}") # BAD
+
+      cmd = Terrapin::CommandLine.new("echo", ":msg")
+      cmd.run(msg: params[:foo]) # GOOD
+    end
 end

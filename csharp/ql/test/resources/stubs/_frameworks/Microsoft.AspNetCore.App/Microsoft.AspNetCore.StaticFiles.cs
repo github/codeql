@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.StaticFiles, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.StaticFiles, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -60,6 +60,7 @@ namespace Microsoft
                 public string DefaultContentType { get => throw null; set { } }
                 public Microsoft.AspNetCore.Http.Features.HttpsCompressionMode HttpsCompression { get => throw null; set { } }
                 public System.Action<Microsoft.AspNetCore.StaticFiles.StaticFileResponseContext> OnPrepareResponse { get => throw null; set { } }
+                public System.Func<Microsoft.AspNetCore.StaticFiles.StaticFileResponseContext, System.Threading.Tasks.Task> OnPrepareResponseAsync { get => throw null; set { } }
                 public bool ServeUnknownFileTypes { get => throw null; set { } }
             }
             public static partial class StaticFilesEndpointRouteBuilderExtensions

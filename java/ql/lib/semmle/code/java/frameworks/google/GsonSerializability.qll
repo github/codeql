@@ -22,7 +22,7 @@ abstract class GsonDeserializableType extends Type { }
 /** A type whose values are explicitly deserialized in a call to a Gson method. */
 private class ExplicitlyReadGsonDeserializableType extends GsonDeserializableType {
   ExplicitlyReadGsonDeserializableType() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       // A call to a Gson read method...
       ma.getMethod() instanceof GsonReadValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be deserialized.

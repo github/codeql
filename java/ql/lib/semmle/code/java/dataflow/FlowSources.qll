@@ -29,7 +29,7 @@ import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.dataflow.ExternalFlowConfiguration
+private import codeql.threatmodels.ThreatModels
 
 /**
  * A data flow source.
@@ -47,10 +47,6 @@ abstract class SourceNode extends DataFlow::Node {
  */
 class ThreatModelFlowSource extends DataFlow::Node {
   ThreatModelFlowSource() {
-    // Expansive threat model.
-    currentThreatModel("all") and
-    (this instanceof SourceNode or sourceNode(this, _))
-    or
     exists(string kind |
       // Specific threat model.
       currentThreatModel(kind) and
@@ -126,9 +122,9 @@ private predicate variableStep(Expr tracked, VarAccess sink) {
 private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
-    exists(MethodAccess m | m = this.asExpr() |
+    exists(MethodCall m | m = this.asExpr() |
       m.getMethod() instanceof ReverseDnsMethod and
-      not exists(MethodAccess l |
+      not exists(MethodCall l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
       )
@@ -198,15 +194,17 @@ private class AndroidExternalStorageSource extends RemoteFlowSource {
 }
 
 /** Class for `tainted` user input. */
-abstract class UserInput extends DataFlow::Node { }
+abstract class UserInput extends SourceNode { }
 
 /**
  * Input that may be controlled by a remote user.
  */
-private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
+private class RemoteUserInput extends UserInput instanceof RemoteFlowSource {
+  override string getThreatModel() { result = RemoteFlowSource.super.getThreatModel() }
+}
 
 /** A node with input that may be controlled by a local user. */
-abstract class LocalUserInput extends UserInput, SourceNode {
+abstract class LocalUserInput extends UserInput {
   override string getThreatModel() { result = "local" }
 }
 
@@ -303,7 +301,7 @@ class EnvReadMethod extends Method {
 
 /** The type `java.net.InetAddress`. */
 class TypeInetAddr extends RefType {
-  TypeInetAddr() { this.getQualifiedName() = "java.net.InetAddress" }
+  TypeInetAddr() { this.hasQualifiedName("java.net", "InetAddress") }
 }
 
 /** A reverse DNS method. */
@@ -317,15 +315,12 @@ class ReverseDnsMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for ReverseDnsMethod */
-deprecated class ReverseDNSMethod = ReverseDnsMethod;
-
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
   Type receiverType;
 
   AndroidIntentInput() {
-    exists(MethodAccess ma, AndroidGetIntentMethod m |
+    exists(MethodCall ma, AndroidGetIntentMethod m |
       ma.getMethod().overrides*(m) and
       this.asExpr() = ma and
       receiverType = ma.getReceiverType()
@@ -391,4 +386,19 @@ class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
   override string getSourceType() {
     result = "Parameter of method with JavascriptInterface annotation"
   }
+}
+
+/**
+ * A data flow source node for an API, which should be considered
+ * supported for a modeling perspective.
+ */
+abstract class ApiSourceNode extends DataFlow::Node { }
+
+private class AddSourceNodes extends ApiSourceNode instanceof SourceNode { }
+
+/**
+ * Add all source models as data sources.
+ */
+private class ApiSourceNodeExternal extends ApiSourceNode {
+  ApiSourceNodeExternal() { sourceNode(this, _) }
 }

@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.ARRAY_CREATION,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             var arrayCreation = new Expression(info);

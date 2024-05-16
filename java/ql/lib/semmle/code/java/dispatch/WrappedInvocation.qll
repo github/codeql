@@ -16,7 +16,7 @@ private predicate runner(Method m, int n, Method runmethod) {
   (
     m.isNative()
     or
-    exists(Parameter p, MethodAccess ma, int j |
+    exists(Parameter p, MethodCall ma, int j |
       p = m.getParameter(n) and
       ma.getEnclosingCallable() = m and
       runner(pragma[only_bind_into](ma.getMethod().getSourceDeclaration()),
@@ -31,7 +31,7 @@ private predicate runner(Method m, int n, Method runmethod) {
  * through a functional interface. The argument is traced backwards through
  * casts and variable assignments.
  */
-private Expr getRunnerArgument(MethodAccess ma, Method runmethod) {
+private Expr getRunnerArgument(MethodCall ma, Method runmethod) {
   exists(Method runner, int param |
     runner(runner, param, runmethod) and
     viableImpl_v2(ma) = runner and
@@ -50,7 +50,7 @@ private Expr getRunnerArgument(MethodAccess ma, Method runmethod) {
  * Gets a method that can be invoked through a functional interface as an
  * argument to `ma`.
  */
-Method getRunnerTarget(MethodAccess ma) {
+Method getRunnerTarget(MethodCall ma) {
   exists(Expr action, Method runmethod | action = getRunnerArgument(ma, runmethod) |
     action.(FunctionalExpr).asMethod().getSourceDeclaration() = result
     or
@@ -60,7 +60,6 @@ Method getRunnerTarget(MethodAccess ma) {
 }
 
 import semmle.code.java.dataflow.FlowSummary
-import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific as ImplSpecific
 
 private predicate mayInvokeCallback(SrcMethod m, int n) {
   m.getParameterType(n).(RefType).getSourceDeclaration() instanceof FunctionalInterface and
@@ -73,22 +72,13 @@ private class SummarizedCallableWithCallback extends SummarizedCallable {
   SummarizedCallableWithCallback() { mayInvokeCallback(this.asCallable(), pos) }
 
   override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    string input, string output, boolean preservesValue, string model
   ) {
-    input = SummaryComponentStack::argument(pos) and
-    output = SummaryComponentStack::push(SummaryComponent::parameter(-1), input) and
-    preservesValue = true
+    input = "Argument[" + pos + "]" and
+    output = "Argument[" + pos + "].Parameter[-1]" and
+    preservesValue = true and
+    model = "heuristic-callback"
   }
 
   override predicate hasProvenance(Provenance provenance) { provenance = "hq-generated" }
-}
-
-private class RequiredComponentStackForCallback extends RequiredSummaryComponentStack {
-  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    exists(int pos |
-      mayInvokeCallback(_, pos) and
-      head = SummaryComponent::parameter(-1) and
-      tail = SummaryComponentStack::argument(pos)
-    )
-  }
 }

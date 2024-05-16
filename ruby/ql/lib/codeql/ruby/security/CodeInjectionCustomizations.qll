@@ -4,6 +4,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -15,7 +16,7 @@ module CodeInjection {
   module FlowState {
     /**
      * Flow state used for normal tainted data, where an attacker might only control a substring.
-     * DEPRECATED: Use `Full()`
+     * DEPRECATED: Use `SubString()`
      */
     deprecated DataFlow::FlowState substring() { result = "substring" }
 
@@ -110,13 +111,6 @@ module CodeInjection {
   }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "Code injection" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
@@ -162,5 +156,9 @@ module CodeInjection {
     deprecated override DataFlow::FlowState getAFlowState() { result = FlowState::full() }
 
     override FlowState::State getAState() { result instanceof FlowState::Full }
+  }
+
+  private class ExternalCodeInjectionSink extends Sink {
+    ExternalCodeInjectionSink() { this = ModelOutput::getASinkNode("code-injection").asSink() }
   }
 }

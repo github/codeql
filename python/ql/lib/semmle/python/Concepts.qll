@@ -685,9 +685,6 @@ module Ldap {
   }
 }
 
-/** DEPRECATED: Alias for Ldap */
-deprecated module LDAP = Ldap;
-
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -858,7 +855,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText()
           )
@@ -928,7 +925,10 @@ module Http {
 
       override Parameter getARoutedParameter() {
         result = rs.getARoutedParameter() and
-        result in [this.getArg(_), this.getArgByName(_)]
+        result in [
+            this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+            this.getKwarg().(Parameter)
+          ]
       }
 
       override string getFramework() { result = rs.getFramework() }
@@ -983,7 +983,7 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText().splitAt(";", 0)
           )
@@ -1022,6 +1022,114 @@ module Http {
       abstract class Range extends Http::Server::HttpResponse::Range {
         /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
         abstract DataFlow::Node getRedirectLocation();
+      }
+    }
+
+    /**
+     * A data-flow node that sets a header in an HTTP response.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderWrite::Range` instead.
+     */
+    class ResponseHeaderWrite extends DataFlow::Node instanceof ResponseHeaderWrite::Range {
+      /**
+       * Gets the argument containing the header name.
+       */
+      DataFlow::Node getNameArg() { result = super.getNameArg() }
+
+      /**
+       * Gets the argument containing the header value.
+       */
+      DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling header writes on HTTP responses. */
+    module ResponseHeaderWrite {
+      /**
+       *A data-flow node that sets a header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the header name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument containing the header value.
+         */
+        abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /**
+     * A data-flow node that sets multiple headers in an HTTP response using a dict or a list of tuples.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderBulkWrite::Range` instead.
+     */
+    class ResponseHeaderBulkWrite extends DataFlow::Node instanceof ResponseHeaderBulkWrite::Range {
+      /**
+       * Gets the argument containing the headers dictionary.
+       */
+      DataFlow::Node getBulkArg() { result = super.getBulkArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling bulk header writes on HTTP responses. */
+    module ResponseHeaderBulkWrite {
+      /**
+       * A data-flow node that sets multiple headers in an HTTP response using a dict.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderBulkWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the headers dictionary.
+         */
+        abstract DataFlow::Node getBulkArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
       }
     }
 
@@ -1153,9 +1261,6 @@ module Http {
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
 
 /**
  * Provides models for cryptographic things.

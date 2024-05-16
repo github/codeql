@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.Populators;
 
@@ -21,8 +23,6 @@ namespace Semmle.Extraction.CSharp
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
         private IDisposable? compilationTrapFile;
-
-        private readonly object progressMutex = new object();
 
         // The bulk of the extraction work, potentially executed in parallel.
         protected readonly List<Action> extractionTasks = new List<Action>();
@@ -66,9 +66,6 @@ namespace Semmle.Extraction.CSharp
         {
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
-                // CIL first - it takes longer.
-                if (options.CIL)
-                    extractionTasks.Add(() => DoExtractCIL(assembly));
                 extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
             }
         }
@@ -130,6 +127,9 @@ namespace Semmle.Extraction.CSharp
 
                 var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, assemblyPath);
+
                 if (!skipExtraction)
                 {
                     /* Note on parallel builds:
@@ -146,14 +146,9 @@ namespace Semmle.Extraction.CSharp
                      * still be correct.
                      */
 
-                    // compilation.Clone() reduces memory footprint by allowing the symbols
-                    // in c to be garbage collected.
-                    Compilation c = compilation.Clone();
-
-
-                    if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
+                    if (compilation.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -166,21 +161,12 @@ namespace Semmle.Extraction.CSharp
                     }
                 }
 
-                ReportProgress(assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", r.FilePath, ex);
             }
-        }
-
-        private void DoExtractCIL(PortableExecutableReference r)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            CIL.Analyser.ExtractCIL(r.FilePath!, Logger, options, out var trapFile, out var extracted);
-            stopwatch.Stop();
-            ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
 
         private void DoExtractTree(SyntaxTree tree)
@@ -198,11 +184,14 @@ namespace Semmle.Extraction.CSharp
                 // compilation.Clone() is used to allow symbols to be garbage collected.
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
 
-                upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+                upToDate = FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, sourcePath);
 
                 if (!upToDate)
                 {
-                    var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                    var cx = new Context(extractor, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
                     // Ensure that the file itself is populated in case the source file is totally empty
                     var root = tree.GetRoot();
                     Entities.File.Create(cx, root.SyntaxTree.FilePath);
@@ -220,7 +209,7 @@ namespace Semmle.Extraction.CSharp
                     cx.PopulateAll();
                 }
 
-                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -233,19 +222,30 @@ namespace Semmle.Extraction.CSharp
             try
             {
                 var assemblyPath = extractor.OutputPath;
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, assemblyPath);
+
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
                 var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
+
+                extractor.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
+
+                ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
             }
         }
+
+        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
 
 #nullable restore warnings
 
@@ -263,7 +263,7 @@ namespace Semmle.Extraction.CSharp
                 File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
         }
 
-        private void AnalyseNamespace(Context cx, INamespaceSymbol ns)
+        private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)
         {
             foreach (var memberNamespace in ns.GetNamespaceMembers())
             {
@@ -276,10 +276,19 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private void ReportProgress(string src, string output, TimeSpan time, AnalysisAction action)
+        private int IncrementTaskCount()
         {
-            lock (progressMutex)
-                progressMonitor.Analysed(++taskCount, extractionTasks.Count, src, output, time, action);
+            return Interlocked.Increment(ref taskCount);
+        }
+
+        private void ReportProgressTaskStarted(int currentCount, string src)
+        {
+            progressMonitor.Started(currentCount, extractionTasks.Count, src);
+        }
+
+        private void ReportProgressTaskDone(int currentCount, string src, string output, TimeSpan time, AnalysisAction action)
+        {
+            progressMonitor.Analysed(currentCount, extractionTasks.Count, src, output, time, action);
         }
 
         /// <summary>

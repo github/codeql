@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Connections, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Connections, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -51,6 +51,7 @@ namespace Microsoft
                 }
                 public class HttpConnectionDispatcherOptions
                 {
+                    public bool AllowStatefulReconnects { get => throw null; set { } }
                     public long ApplicationMaxBufferSize { get => throw null; set { } }
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Authorization.IAuthorizeData> AuthorizationData { get => throw null; }
                     public bool CloseOnAuthenticationExpiration { get => throw null; set { } }

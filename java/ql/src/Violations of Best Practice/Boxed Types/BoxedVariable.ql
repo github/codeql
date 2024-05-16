@@ -26,7 +26,7 @@ class LocalBoxedVar extends LocalVariableDecl {
  * some number of boxing operations, these cases are excluded.
  */
 predicate notDeliberatelyBoxed(LocalBoxedVar v) {
-  not forall(RValue a | a = v.getAnAccess() |
+  not forall(VarRead a | a = v.getAnAccess() |
     exists(Call c, int i |
       c.getCallee().getParameterType(i) instanceof RefType and
       c.getArgument(i) = a
@@ -63,7 +63,7 @@ from LocalBoxedVar v
 where
   forall(Expr e | e = v.getAnAssignedValue() | e.getType() = v.getPrimitiveType()) and
   (
-    not v.getDeclExpr().getParent() instanceof EnhancedForStmt or
+    not v.getDeclExpr().hasImplicitInit() or
     v.getDeclExpr().getParent().(EnhancedForStmt).getExpr().getType().(Array).getComponentType() =
       v.getPrimitiveType()
   ) and

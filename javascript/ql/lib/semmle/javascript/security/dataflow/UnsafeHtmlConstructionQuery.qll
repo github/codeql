@@ -9,11 +9,14 @@ private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizati
 import UnsafeHtmlConstructionCustomizations::UnsafeHtmlConstruction
 import semmle.javascript.security.TaintedObject
 
+/** DEPRECATED: Mis-spelled class name, alias for Configuration. */
+deprecated class Configration = Configuration;
+
 /**
  * A taint-tracking configuration for reasoning about unsafe HTML constructed from library input vulnerabilities.
  */
-class Configration extends TaintTracking::Configuration {
-  Configration() { this = "UnsafeHtmlConstruction" }
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "UnsafeHtmlConstruction" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
     source instanceof Source and

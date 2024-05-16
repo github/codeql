@@ -1,5 +1,5 @@
 private import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
@@ -34,7 +34,7 @@ class ExternalEndpoint extends Endpoint {
   override predicate hasSummary() {
     Endpoint.super.hasSummary()
     or
-    defaultAdditionalTaintStep(this.getAnInput(), _)
+    defaultAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   override predicate isSource() {

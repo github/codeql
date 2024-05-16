@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Semmle.Extraction.CSharp.DependencyStubGenerator</AssemblyName>
     <RootNamespace>Semmle.Extraction.CSharp.DependencyStubGenerator</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -14,5 +14,4 @@
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.StubGenerator\Semmle.Extraction.CSharp.StubGenerator.csproj" />
 	</ItemGroup>
-
 </Project>

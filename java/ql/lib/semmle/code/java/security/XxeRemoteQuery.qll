@@ -28,7 +28,7 @@ deprecated class XxeConfig extends TaintTracking::Configuration {
  * A taint-tracking configuration for unvalidated remote user input that is used in XML external entity expansion.
  */
 module XxeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XxeSink }
 

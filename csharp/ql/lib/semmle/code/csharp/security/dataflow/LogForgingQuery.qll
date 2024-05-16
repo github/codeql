@@ -3,12 +3,13 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for untrusted user input used in log entries.
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for untrusted user input used in log entries.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for untrusted user input used in log entries.
@@ -57,7 +58,7 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
 module LogForging = TaintTracking::Global<LogForgingConfig>;
 
 /** A source of remote user input. */
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 private class HtmlSanitizer extends Sanitizer {
   HtmlSanitizer() { this.asExpr() instanceof HtmlSanitizedExpr }

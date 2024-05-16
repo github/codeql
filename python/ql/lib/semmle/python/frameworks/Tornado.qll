@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.regex
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -87,7 +88,11 @@ module Tornado {
        */
       module RequestHandler {
         /** Gets a reference to the `tornado.web.RequestHandler` class or any subclass. */
-        API::Node subclassRef() { result = web().getMember("RequestHandler").getASubclass*() }
+        API::Node subclassRef() {
+          result = web().getMember("RequestHandler").getASubclass*()
+          or
+          result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
+        }
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {
@@ -213,7 +218,11 @@ module Tornado {
        */
       module Application {
         /** Gets a reference to the `tornado.web.Application` class. */
-        API::Node classRef() { result = web().getMember("Application") }
+        API::Node classRef() {
+          result = web().getMember("Application")
+          or
+          result = ModelOutput::getATypeNode("tornado.web.Application~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.web.Application`, extend this class to model new instances.
@@ -270,7 +279,12 @@ module Tornado {
        */
       module HttpServerRequest {
         /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
-        API::Node classRef() { result = httputil().getMember("HttpServerRequest") }
+        API::Node classRef() {
+          result = httputil().getMember("HttpServerRequest")
+          or
+          result =
+            ModelOutput::getATypeNode("tornado.httputil.HttpServerRequest~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.httputil.HttpServerRequest`, extend this class to model new instances.
@@ -416,7 +430,10 @@ module Tornado {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       exists(Function requestHandler | requestHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
-        result in [requestHandler.getArg(_), requestHandler.getArgByName(_)] and
+        result in [
+            requestHandler.getArg(_), requestHandler.getArgByName(_),
+            requestHandler.getVararg().(Parameter), requestHandler.getKwarg().(Parameter)
+          ] and
         not result = requestHandler.getArg(0)
       )
       or
@@ -429,6 +446,12 @@ module Tornado {
         result = requestHandler.getArg(regex.getGroupNumber(_, _))
         or
         result = requestHandler.getArgByName(regex.getGroupName(_, _))
+        or
+        exists(regex.getGroupNumber(_, _)) and
+        result = requestHandler.getVararg()
+        or
+        exists(regex.getGroupName(_, _)) and
+        result = requestHandler.getKwarg()
       )
     }
   }
@@ -446,7 +469,10 @@ module Tornado {
       // Since we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      result in [this.getArg(_), this.getArgByName(_)] and
+      result in [
+          this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+          this.getKwarg().(Parameter)
+        ] and
       not result = this.getArg(0)
     }
 

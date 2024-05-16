@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Console, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     public static class Console
@@ -119,6 +119,7 @@ namespace System
     }
     public enum ConsoleKey
     {
+        None = 0,
         Backspace = 8,
         Tab = 9,
         Clear = 12,
@@ -279,6 +280,7 @@ namespace System
     [System.Flags]
     public enum ConsoleModifiers
     {
+        None = 0,
         Alt = 1,
         Shift = 2,
         Control = 4,

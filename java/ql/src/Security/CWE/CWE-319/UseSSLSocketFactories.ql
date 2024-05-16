@@ -16,23 +16,24 @@ import semmle.code.java.security.Encryption
 
 class NetworkClass extends Class {
   NetworkClass() {
-    this.getAnAncestor().getQualifiedName().matches("java.rmi.%") or
-    this.getAnAncestor().getQualifiedName().matches("java.net.%") or
-    this.getAnAncestor().getQualifiedName().matches("javax.net.%")
+    this.getAnAncestor()
+        .getPackage()
+        .getName()
+        .regexpMatch("(java\\.net|java\\.rmi|javax\\.net)(\\..*)?")
   }
 }
 
 class SocketFactoryType extends RefType {
   SocketFactoryType() {
-    this.getQualifiedName() = "java.rmi.server.RMIServerSocketFactory" or
-    this.getQualifiedName() = "java.rmi.server.RMIClientSocketFactory" or
-    this.getQualifiedName() = "javax.net.SocketFactory" or
-    this.getQualifiedName() = "java.net.SocketImplFactory"
+    this.hasQualifiedName("java.rmi.server", "RMIServerSocketFactory") or
+    this.hasQualifiedName("java.rmi.server", "RMIClientSocketFactory") or
+    this.hasQualifiedName("javax.net", "SocketFactory") or
+    this.hasQualifiedName("java.net", "SocketImplFactory")
   }
 }
 
 /** Holds if the method `m` has a factory parameter at location `p`. */
-cached
+pragma[nomagic]
 predicate usesFactory(Method m, int p) {
   m.getParameter(p).getType().(RefType).getAnAncestor() instanceof SocketFactoryType
 }
@@ -56,7 +57,7 @@ predicate methodInfo(Method m, RefType t, string name) {
   m.getName() = name
 }
 
-predicate query(MethodAccess m, Method def, int paramNo, string message, Element evidence) {
+predicate query(MethodCall m, Method def, int paramNo, string message, Element evidence) {
   m.getMethod() = def and
   // Using a networking method.
   def.getDeclaringType() instanceof NetworkClass and
@@ -76,6 +77,6 @@ predicate query(MethodAccess m, Method def, int paramNo, string message, Element
   )
 }
 
-from MethodAccess m, Method def, int param, string message, Element evidence
+from MethodCall m, Method def, int param, string message, Element evidence
 where query(m, def, param, message, evidence)
 select m, "Method " + message + ": use an SSL factory."

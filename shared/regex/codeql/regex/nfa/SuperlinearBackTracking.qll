@@ -365,9 +365,17 @@ module Make<RegexTreeViewSig TreeImpl> {
       )
     }
 
-    string getChar(CharNode t) {
+    private string getCharInternal(CharNode t) {
       exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 | t = Step(s1, s2, s3, _) |
         result = getAThreewayIntersect(s1, s2, s3)
+      )
+    }
+
+    string getChar(CharNode t) {
+      result = getCharInternal(t) and
+      not (
+        // skip the upper-case char if we have the lower-case version.
+        result.toLowerCase() != result and result.toLowerCase() = getCharInternal(t)
       )
     }
   }

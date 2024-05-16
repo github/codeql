@@ -1,3 +1,86 @@
+## 0.9.16
+
+### New Queries
+
+* The `py/header-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack and renamed to `py/http-response-splitting`. This query finds instances of http header injection / response splitting vulnerabilities.
+
+## 0.9.15
+
+No user-facing changes.
+
+## 0.9.14
+
+No user-facing changes.
+
+## 0.9.13
+
+No user-facing changes.
+
+## 0.9.12
+
+No user-facing changes.
+
+## 0.9.11
+
+No user-facing changes.
+
+## 0.9.10
+
+### New Queries
+
+* The query `py/nosql-injection` for finding NoSQL injection vulnerabilities is now part of the default security suite.
+
+## 0.9.9
+
+No user-facing changes.
+
+## 0.9.8
+
+No user-facing changes.
+
+## 0.9.7
+
+### Minor Analysis Improvements
+
+- Added modeling of YARL's `is_absolute` method and checks of the `netloc` of a parsed URL as sanitizers for the `py/url-redirection` query, leading to fewer false positives.
+
+## 0.9.6
+
+No user-facing changes.
+
+## 0.9.5
+
+No user-facing changes.
+
+## 0.9.4
+
+No user-facing changes.
+
+## 0.9.3
+
+### Minor Analysis Improvements
+
+* Added modeling of more `FileSystemAccess` in packages `cherrypy`, `aiofile`, `aiofiles`, `anyio`, `sanic`, `starlette`, `baize`, and `io`. This will mainly affect the _Uncontrolled data used in path expression_ (`py/path-injection`) query.
+
+## 0.9.2
+
+No user-facing changes.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### New Queries
+
+* The query `py/nosql-injection` for finding NoSQL injection vulnerabilities is now available in the default security suite.
+
+### Minor Analysis Improvements
+
+* Improved _URL redirection from remote source_ (`py/url-redirection`) query to not alert when URL has been checked with `django.utils.http. url_has_allowed_host_and_scheme`.
+* Extended the `py/command-line-injection` query with sinks from Python's `asyncio` module.
+
 ## 0.8.5
 
 No user-facing changes.
@@ -204,7 +287,7 @@ No user-facing changes.
 
 ### Bug Fixes
 
-* The [View AST functionality](https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/) no longer prints detailed information about regular expressions, greatly improving performance.
+* The [View AST functionality](https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code) no longer prints detailed information about regular expressions, greatly improving performance.
 
 ## 0.0.8
 

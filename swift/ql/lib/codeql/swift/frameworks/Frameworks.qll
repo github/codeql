@@ -8,3 +8,4 @@ private import SQL.SQL
 private import StandardLibrary.StandardLibrary
 private import UIKit.UIKit
 private import Xml.Xml
+private import Heuristic

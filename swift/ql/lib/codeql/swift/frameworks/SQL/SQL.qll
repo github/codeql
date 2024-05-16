@@ -18,6 +18,8 @@ private class FilePathSummaries extends SummaryModelCsv {
         ";Expression;true;init(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";ExpressionType;true;init(_:);;;Argument[0];ReturnValue;taint",
         ";ExpressionType;true;replace(_:with:);;;Argument[1];ReturnValue;taint",
+        ";Blob;true;init(bytes:);;;Argument[0];ReturnValue;taint",
+        ";Blob;true;init(bytes:length:);;;Argument[0];ReturnValue;taint",
       ]
   }
 }

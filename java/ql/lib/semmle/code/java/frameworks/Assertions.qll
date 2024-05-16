@@ -60,10 +60,10 @@ class AssertionMethod extends Method {
   AssertionMethod() { assertionMethod(this, _) }
 
   /** Gets a call to the assertion method. */
-  MethodAccess getACheck() { result.getMethod().getSourceDeclaration() = this }
+  MethodCall getACheck() { result.getMethod().getSourceDeclaration() = this }
 
   /** Gets a call to the assertion method with `checkedArg` as argument. */
-  MethodAccess getACheck(Expr checkedArg) {
+  MethodCall getACheck(Expr checkedArg) {
     result = this.getACheck() and checkedArg = result.getAnArgument()
   }
 }

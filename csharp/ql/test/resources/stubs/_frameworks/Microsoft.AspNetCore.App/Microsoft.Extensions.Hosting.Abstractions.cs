@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Hosting.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Hosting.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -95,6 +95,16 @@ namespace Microsoft
                 System.Threading.Tasks.Task StartAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
+            public interface IHostApplicationBuilder
+            {
+                Microsoft.Extensions.Configuration.IConfigurationManager Configuration { get; }
+                void ConfigureContainer<TContainerBuilder>(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder> factory, System.Action<TContainerBuilder> configure = default(System.Action<TContainerBuilder>));
+                Microsoft.Extensions.Hosting.IHostEnvironment Environment { get; }
+                Microsoft.Extensions.Logging.ILoggingBuilder Logging { get; }
+                Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder Metrics { get; }
+                System.Collections.Generic.IDictionary<object, object> Properties { get; }
+                Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
+            }
             public interface IHostApplicationLifetime
             {
                 System.Threading.CancellationToken ApplicationStarted { get; }
@@ -112,6 +122,13 @@ namespace Microsoft
                 System.Collections.Generic.IDictionary<object, object> Properties { get; }
                 Microsoft.Extensions.Hosting.IHostBuilder UseServiceProviderFactory<TContainerBuilder>(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder> factory);
                 Microsoft.Extensions.Hosting.IHostBuilder UseServiceProviderFactory<TContainerBuilder>(System.Func<Microsoft.Extensions.Hosting.HostBuilderContext, Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder>> factory);
+            }
+            public interface IHostedLifecycleService : Microsoft.Extensions.Hosting.IHostedService
+            {
+                System.Threading.Tasks.Task StartedAsync(System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task StartingAsync(System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task StoppedAsync(System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task StoppingAsync(System.Threading.CancellationToken cancellationToken);
             }
             public interface IHostedService
             {

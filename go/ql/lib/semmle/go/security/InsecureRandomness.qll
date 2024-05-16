@@ -44,6 +44,20 @@ module InsecureRandomness {
     predicate isSink(DataFlow::Node sink) { isSinkWithKind(sink, _) }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+
+    predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+      // Allow flow from tainted indexes to the base expression.
+      // Randomly selecting a character/substring/integer from a predefined set
+      // with a weak RNG is also a security risk if the result is used in
+      // a sensitive function.
+      n1.asExpr() = n2.asExpr().(IndexExpr).getIndex() and
+      (
+        n2.getType() instanceof StringType or
+        n2.getType() instanceof IntegerType
+      )
+    }
   }
 
   /**

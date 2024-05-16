@@ -5,9 +5,9 @@
 private import swift
 private import Completion
 private import ControlFlowGraphImpl
-private import codeql.swift.controlflow.ControlFlowGraph
 private import AstControlFlowTrees
 private import ControlFlowElements
+private import ControlFlowGraphImplSpecific::CfgInput as CfgInput
 
 cached
 private module Cached {
@@ -33,6 +33,8 @@ private module ConditionalCompletionSplitting {
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
+    ConditionalCompletion getCompletion() { result = completion }
+
     override string toString() { result = completion.toString() }
   }
 
@@ -44,49 +46,50 @@ private module ConditionalCompletionSplitting {
     override string toString() { result = "ConditionalCompletion" }
   }
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl, ConditionalCompletionSplit {
+  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
+  {
     override ConditionalCompletionSplitKind getKind() { any() }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       succ(pred, succ, c) and
-      last(succ, _, completion) and
+      last(succ, _, super.getCompletion()) and
       (
         astLast(succ.asAstNode().(NotExpr).getOperand().getFullyConverted(), pred, c) and
-        completion.(BooleanCompletion).getDual() = c
+        super.getCompletion().(BooleanCompletion).getDual() = c
         or
         astLast(succ.asAstNode().(LogicalAndExpr).getAnOperand().getFullyConverted(), pred, c) and
-        completion = c
+        super.getCompletion() = c
         or
         astLast(succ.asAstNode().(LogicalOrExpr).getAnOperand().getFullyConverted(), pred, c) and
-        completion = c
+        super.getCompletion() = c
         or
         succ.asAstNode() =
           any(IfExpr ce |
             astLast(ce.getBranch(_).getFullyConverted(), pred, c) and
-            completion = c
+            super.getCompletion() = c
           )
         or
         exists(Expr e, Exprs::Conversions::ConversionOrIdentityTree conv |
           succ.asAstNode() = conv.getAst() and
           conv.convertsFrom(e) and
           astLast(e, pred, c) and
-          completion = c
+          super.getCompletion() = c
         )
       )
     }
 
-    override predicate hasEntryScope(CfgScope scope, ControlFlowElement succ) { none() }
+    override predicate hasEntryScope(CfgInput::CfgScope scope, ControlFlowElement succ) { none() }
 
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesTo(pred) and
       succ(pred, succ, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
+      if c instanceof ConditionalCompletion then super.getCompletion() = c else any()
     }
 
-    override predicate hasExitScope(CfgScope scope, ControlFlowElement last, Completion c) {
+    override predicate hasExitScope(CfgInput::CfgScope scope, ControlFlowElement last, Completion c) {
       this.appliesTo(last) and
       succExit(scope, last, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
+      if c instanceof ConditionalCompletion then super.getCompletion() = c else any()
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {

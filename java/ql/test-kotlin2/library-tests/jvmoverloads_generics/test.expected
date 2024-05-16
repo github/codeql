@@ -1,0 +1,9 @@
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads() | return | T | genericFunctionWithOverloads() |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object) | param | T | genericFunctionWithOverloads(java.lang.Object) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object) | return | T | genericFunctionWithOverloads(java.lang.Object) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object,java.util.List) | param | List<? extends T> | genericFunctionWithOverloads(java.lang.Object,java.util.List) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object,java.util.List) | param | T | genericFunctionWithOverloads(java.lang.Object,java.util.List) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object,java.util.List) | return | T | genericFunctionWithOverloads(java.lang.Object,java.util.List) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object,java.util.List,java.lang.Object) | param | List<? extends T> | genericFunctionWithOverloads(java.lang.Object,java.util.List,java.lang.Object) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object,java.util.List,java.lang.Object) | param | T | genericFunctionWithOverloads(java.lang.Object,java.util.List,java.lang.Object) |
+| test.kt:3:3:4:94 | genericFunctionWithOverloads | genericFunctionWithOverloads(java.lang.Object,java.util.List,java.lang.Object) | return | T | genericFunctionWithOverloads(java.lang.Object,java.util.List,java.lang.Object) |

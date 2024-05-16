@@ -129,7 +129,7 @@ func forwarder() {
         (i: Int) -> Int in
         return 0
     })
-    sink(arg: clean)
+    sink(arg: clean) // clean
 }
 
 func lambdaFlows() {
@@ -779,7 +779,7 @@ func testDictionary() {
     sink(arg: dict2[1])
 
     for (key, value) in dict2 {
-        sink(arg: key) // $ MISSING: flow=778
+        sink(arg: key) // $ flow=778
         sink(arg: value)
     }
 
@@ -792,8 +792,8 @@ func testDictionary() {
     sink(arg: dict3.randomElement()!.1) // $ flow=786
 
     for (key, value) in dict3 {
-        sink(arg: key) // $ MISSING: flow=789
-        sink(arg: value) // $ MISSING: flow=786
+        sink(arg: key) // $ flow=789
+        sink(arg: value) // $ flow=786
     }
 
     var dict4 = [1:source()]
@@ -860,7 +860,7 @@ func testVarargs3(_ v: Int, _ args: Int...) {
     sink(arg: args[1]) // $ flow=873
 
     for arg in args {
-        sink(arg: arg) // $ MISSING: flow=873
+        sink(arg: arg) // $ flow=873
     }
 
     let myKeyPath = \[Int][1]
@@ -871,4 +871,124 @@ func testVarargsCaller() {
     testVarargs1(args: source())
     testVarargs2(source(), 2, 3)
     testVarargs3(1, 2, source())
+}
+
+func testSetForEach() {
+    var set1 = Set([source()])
+
+    for elem in set1 {
+        sink(arg: elem) // $ flow=877
+    }
+
+    var generator = set1.makeIterator()
+    sink(arg: generator.next()!) // $ flow=877
+}
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for _ in 1...100 {
+                    continuation.yield(source())
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        sink(arg: i) // $ MISSING: flow=892
+    }
+}
+
+func usesAutoclosure(_ expr: @autoclosure () -> Int) {
+  sink(arg: expr()) // $ flow=908
+}
+
+func autoclosureTest() {
+  usesAutoclosure(source())
+}
+
+// ---
+
+protocol MyProtocol {
+	func source(_ label: String) -> Int
+}
+
+class MyProcotolImpl : MyProtocol {
+	func source(_ label: String) -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func sink(arg: Int) { }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source("x.source")) // $ flow=x.source
+	sink(arg: y.source("y.source")) // $ flow=y.source
+	sink(arg: getMyProtocol().source("getMyProtocol.source")) // $ flow=getMyProtocol.source
+	sink(arg: getMyProtocolImpl().source("getMyProtocolImpl.source")) // $ flow=getMyProtocolImpl.source
+}
+
+// ---
+
+@propertyWrapper struct MyTaintPropertyWrapper {
+    var wrappedValue: Int {
+        get { return source() }
+        set { sink(arg: newValue) } // $ flow=943 flow=950
+    }
+
+    init(wrappedValue: Int) {
+        sink(arg: wrappedValue) // $ flow=948
+        self.wrappedValue = source()
+    }
+}
+
+func test_my_taint_property_wrapper() {
+    @MyTaintPropertyWrapper var x: Int = source()
+    sink(arg: x) // $ flow=937
+    x = source()
+    sink(arg: x) // $ flow=937
+}
+
+// ---
+
+@propertyWrapper struct MySimplePropertyWrapper {
+    var wrappedValue: Int {
+        didSet {
+            sink(arg: wrappedValue) // $ flow=980 flow=991
+        }
+    }
+
+    var projectedValue: Int {
+        get { wrappedValue }
+        set {
+            sink(arg: wrappedValue) // $ MISSING: flow=991
+            wrappedValue = newValue
+        }
+    }
+
+    init(wrappedValue: Int) {
+        sink(arg: wrappedValue) // $ flow=983
+        self.wrappedValue = wrappedValue
+    }
+}
+
+func test_my_property_wrapper() {
+    @MySimplePropertyWrapper var a = 0
+    sink(arg: a)
+    a = source()
+    sink(arg: a) // $ MISSING: flow=980
+
+    @MySimplePropertyWrapper var b = source()
+    sink(arg: b) // $ MISSING: flow=983
+    b = 0
+    sink(arg: b)
+
+    @MySimplePropertyWrapper var c = 0
+    sink(arg: c)
+    sink(arg: $c)
+    $c = source()
+    sink(arg: c) // $ MISSING: flow=991
+    sink(arg: $c) // $ MISSING: flow=991
 }

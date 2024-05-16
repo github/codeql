@@ -8,8 +8,8 @@ Metadata tells users important information about CodeQL queries. You must includ
 About query metadata
 --------------------
 
-Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a QLDoc comment. 
-This metadata tells the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` and the `Code scanning feature in GitHub <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning-with-codeql>`__ how to handle the query and display its results correctly. 
+Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a QLDoc comment.
+This metadata tells the CodeQL `extension for VS Code <https://docs.github.com/en/code-security/codeql-for-vs-code/>`__ and the `Code scanning feature in GitHub <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning-with-codeql>`__ how to handle the query and display its results correctly.
 It also gives other users information about what the query results mean. For more information on query metadata, see the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__ in our `open source repository <https://github.com/github/codeql>`__ on GitHub.
 
 .. pull-quote::
@@ -17,7 +17,7 @@ It also gives other users information about what the query results mean. For mor
     Note
 
     The exact metadata requirement depends on how you are going to run your query. For more information, see the section on query metadata in ":doc:`About CodeQL queries <about-codeql-queries>`."
-    
+
 Metadata properties
 -------------------
 
@@ -49,7 +49,7 @@ The following properties are supported by all query files:
 |                       | | ``warning``             |                                                                                                                                                                                                                                                                                                                                                                       |
 |                       | | ``recommendation``      |                                                                                                                                                                                                                                                                                                                                                                       |
 +-----------------------+---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``@security-severity``| ``<score>``               | Defines the level of severity, between 0.0 and 10.0, for queries with ``@tags security``. For more information about calculating ``@security-severity``, see the `GitHub changelog <https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/>`__.                                                                       |
+| ``@security-severity``| ``<score>``               | Defines the level of severity, between 0.0 and 10.0, for queries with ``@tags security``. For more information, see the `GitHub user documentation <https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts#about-alert-severity-and-security-severity-levels>`__.                                               |
 +-----------------------+---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Example

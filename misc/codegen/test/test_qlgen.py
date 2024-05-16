@@ -153,6 +153,15 @@ def test_one_empty_class(generate_classes):
     }
 
 
+def test_one_empty_internal_class(generate_classes):
+    assert generate_classes([
+        schema.Class("A", pragmas=["ql_internal"])
+    ]) == {
+        "A.qll": (a_ql_stub(name="A", internal=True),
+                  a_ql_class(name="A", final=True, internal=True)),
+    }
+
+
 def test_hierarchy(generate_classes):
     assert generate_classes([
         schema.Class("D", bases=["B", "C"]),
@@ -193,11 +202,11 @@ def test_hierarchy_children(generate_children_implementations):
         schema.Class("C", bases=["A"], derived={"D"}, pragmas=["ql_internal"]),
         schema.Class("D", bases=["B", "C"]),
     ]) == ql.GetParentImplementation(
-        classes=[a_ql_class(name="A", ql_internal=True),
+        classes=[a_ql_class(name="A", internal=True),
                  a_ql_class(name="B", bases=["A"], imports=[
                      stub_import_prefix + "A"]),
                  a_ql_class(name="C", bases=["A"], imports=[
-                     stub_import_prefix + "A"], ql_internal=True),
+                     stub_import_prefix + "A"], internal=True),
                  a_ql_class(name="D", final=True, bases=["B", "C"],
                             imports=[stub_import_prefix + cls for cls in "BC"]),
                  ],
@@ -215,6 +224,21 @@ def test_single_property(generate_classes):
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects",
                                                     tableparams=["this", "result"], doc="foo of this my object"),
+                                    ])),
+    }
+
+
+def test_internal_property(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar", pragmas=["ql_internal"])]),
+    ]) == {
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
+                         a_ql_class(name="MyObject", final=True,
+                                    properties=[
+                                        ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                    tableparams=["this", "result"], doc="foo of this my object",
+                                                    internal=True),
                                     ])),
     }
 
@@ -405,7 +429,7 @@ def test_class_with_doc(generate_classes):
     assert generate_classes([
         schema.Class("A", doc=doc),
     ]) == {
-        "A.qll": (a_ql_stub(name="A"), a_ql_class(name="A", final=True, doc=doc)),
+        "A.qll": (a_ql_stub(name="A", doc=doc), a_ql_class(name="A", final=True, doc=doc)),
     }
 
 
@@ -415,7 +439,8 @@ def test_class_dir(generate_classes):
         schema.Class("A", derived={"B"}, group=dir),
         schema.Class("B", bases=["A"]),
     ]) == {
-        f"{dir}/A.qll": (a_ql_stub(name="A", import_prefix="another.rel.path."), a_ql_class(name="A", dir=pathlib.Path(dir))),
+        f"{dir}/A.qll": (
+            a_ql_stub(name="A", import_prefix="another.rel.path."), a_ql_class(name="A", dir=pathlib.Path(dir))),
         "B.qll": (a_ql_stub(name="B"),
                   a_ql_class(name="B", final=True, bases=["A"],
                              imports=[stub_import_prefix + "another.rel.path.A"])),
@@ -688,6 +713,18 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
     }
 
 
+def test_test_with(opts, generate_tests):
+    write(opts.ql_test_output / "B" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"A", "B"}),
+        schema.Class("A", bases=["Base"], test_with="B"),
+        schema.Class("B", bases=["Base"]),
+    ]) == {
+        "B/A.ql": a_ql_class_tester(class_name="A"),
+        "B/B.ql": a_ql_class_tester(class_name="B"),
+    }
+
+
 def test_property_description(generate_classes):
     description = ["Lorem", "Ipsum"]
     assert generate_classes([
@@ -857,9 +894,9 @@ def test_stub_on_class_with_synth_from_class(generate_classes):
             ql.SynthUnderlyingAccessor(argument="Entity", type="Raw::A", constructorparams=["result"]),
         ]),
             a_ql_class(name="MyObject", final=True, properties=[
-                ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
-                            tableparams=["this", "result"], doc="foo of this my object"),
-            ])),
+                       ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
+                                   tableparams=["this", "result"], doc="foo of this my object"),
+                       ])),
     }
 
 
@@ -874,9 +911,9 @@ def test_stub_on_class_with_synth_on_arguments(generate_classes):
             ql.SynthUnderlyingAccessor(argument="Label", type="string", constructorparams=["_", "_", "result"]),
         ]),
             a_ql_class(name="MyObject", final=True, properties=[
-                ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
-                            tableparams=["this", "result"], doc="foo of this my object"),
-            ])),
+                       ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
+                                   tableparams=["this", "result"], doc="foo of this my object"),
+                       ])),
     }
 
 
@@ -888,7 +925,8 @@ def test_synth_property(generate_classes):
         "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
-                                        ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
+                                        ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                    synth=True,
                                                     tableparams=["this", "result"], doc="foo of this my object"),
                                     ])),
     }
@@ -913,9 +951,10 @@ def test_hideable_property(generate_classes):
         "Other.qll": (a_ql_stub(name="Other"),
                       a_ql_class(name="Other", imports=[stub_import_prefix + "MyObject"],
                                  final=True, properties=[
-                          ql.Property(singular="X", type="MyObject", tablename="others", type_is_hideable=True,
-                                      tableparams=["this", "result"], doc="x of this other"),
-                      ])),
+                                 ql.Property(singular="X", type="MyObject", tablename="others",
+                                             type_is_hideable=True,
+                                             tableparams=["this", "result"], doc="x of this other"),
+                                 ])),
     }
 
 

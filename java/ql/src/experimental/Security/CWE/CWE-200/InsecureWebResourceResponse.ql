@@ -19,7 +19,7 @@ import AndroidWebResourceResponse
 import InsecureWebResourceResponseFlow::PathGraph
 
 module InsecureWebResourceResponseConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof WebResourceResponseSink }
 

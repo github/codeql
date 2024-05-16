@@ -1,0 +1,25 @@
+edges
+| Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | Test.cs:15:56:15:60 | access to parameter bytes : Byte[] [element] : Object | provenance |  |
+| Test.cs:15:56:15:60 | access to parameter bytes : Byte[] [element] : Object | Test.cs:15:20:15:61 | call to method GetString : String | provenance | MaD:1878 |
+| Test.cs:23:33:23:38 | access to local variable stream : NetworkStream | Test.cs:25:29:25:34 | access to local variable stream : NetworkStream | provenance |  |
+| Test.cs:23:42:23:59 | call to method GetStream : NetworkStream | Test.cs:23:33:23:38 | access to local variable stream : NetworkStream | provenance | Src:MaD:1810  |
+| Test.cs:25:29:25:34 | access to local variable stream : NetworkStream | Test.cs:25:41:25:46 | [post] access to local variable buffer : Byte[] [element] : Object | provenance | MaD:1128 |
+| Test.cs:25:41:25:46 | [post] access to local variable buffer : Byte[] [element] : Object | Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | provenance |  |
+| Test.cs:28:85:28:105 | call to method BytesToString : String | Test.cs:28:42:28:111 | ... + ... | provenance |  Sink:MaD:948 |
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | provenance |  |
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:28:85:28:105 | call to method BytesToString : String | provenance |  |
+nodes
+| Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | semmle.label | bytes : Byte[] [element] : Object |
+| Test.cs:15:20:15:61 | call to method GetString : String | semmle.label | call to method GetString : String |
+| Test.cs:15:56:15:60 | access to parameter bytes : Byte[] [element] : Object | semmle.label | access to parameter bytes : Byte[] [element] : Object |
+| Test.cs:23:33:23:38 | access to local variable stream : NetworkStream | semmle.label | access to local variable stream : NetworkStream |
+| Test.cs:23:42:23:59 | call to method GetStream : NetworkStream | semmle.label | call to method GetStream : NetworkStream |
+| Test.cs:25:29:25:34 | access to local variable stream : NetworkStream | semmle.label | access to local variable stream : NetworkStream |
+| Test.cs:25:41:25:46 | [post] access to local variable buffer : Byte[] [element] : Object | semmle.label | [post] access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:28:42:28:111 | ... + ... | semmle.label | ... + ... |
+| Test.cs:28:85:28:105 | call to method BytesToString : String | semmle.label | call to method BytesToString : String |
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | semmle.label | access to local variable buffer : Byte[] [element] : Object |
+subpaths
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | Test.cs:15:20:15:61 | call to method GetString : String | Test.cs:28:85:28:105 | call to method BytesToString : String |
+#select
+| Test.cs:23:42:23:59 | call to method GetStream : NetworkStream | Test.cs:28:42:28:111 | ... + ... |

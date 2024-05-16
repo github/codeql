@@ -12,13 +12,14 @@ static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit
 static constexpr std::string_view unknownType = "<unknown_target_type>";
 
 const std::string_view codeql::programName = "autobuilder";
+const std::string_view codeql::extractorName = "swift";
 
-constexpr codeql::SwiftDiagnostic noProjectFound{
+constexpr codeql::Diagnostic noProjectFound{
     .id = "no-project-found",
     .name = "No Xcode project or workspace found",
     .action = "Set up a [manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
-constexpr codeql::SwiftDiagnostic noSwiftTarget{
+constexpr codeql::Diagnostic noSwiftTarget{
     .id = "no-swift-target",
     .name = "No Swift compilation target found",
     .action = "To analyze a custom set of source files, set up a [manual build "
@@ -44,17 +45,14 @@ static bool isNonSwiftOrTestTarget(const XcodeTarget& t) {
          (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
 }
 
-static void buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPackages,
+static bool buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPackages,
                                bool dryRun) {
   auto any_successful =
       std::any_of(std::begin(swiftPackages), std::end(swiftPackages), [&](auto& packageFile) {
         LOG_INFO("Building Swift package: {}", packageFile);
         return buildSwiftPackage(packageFile, dryRun);
       });
-  if (!any_successful) {
-    codeql::Log::flush();
-    exit(1);
-  }
+  return any_successful;
 }
 
 static bool autobuild(const CLIArgs& args) {
@@ -89,11 +87,11 @@ static bool autobuild(const CLIArgs& args) {
     auto buildSucceeded = buildXcodeTarget(xcodeTargets.front(), args.dryRun);
     // If build failed, try to build Swift packages
     if (!buildSucceeded && !swiftPackages.empty()) {
-      buildSwiftPackages(swiftPackages, args.dryRun);
+      return buildSwiftPackages(swiftPackages, args.dryRun);
     }
     return buildSucceeded;
   } else if (!swiftPackages.empty()) {
-    buildSwiftPackages(swiftPackages, args.dryRun);
+    return buildSwiftPackages(swiftPackages, args.dryRun);
   }
   return true;
 }

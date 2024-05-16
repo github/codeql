@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.ComponentModel.DataAnnotations.Schema", "ColumnAttribute", "ColumnAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "ColumnAttribute", "get_Name", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "DatabaseGeneratedAttribute", "DatabaseGeneratedAttribute", "(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "DatabaseGeneratedAttribute", "get_DatabaseGeneratedOption", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "ForeignKeyAttribute", "ForeignKeyAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "ForeignKeyAttribute", "get_Name", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "InversePropertyAttribute", "InversePropertyAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "InversePropertyAttribute", "get_Property", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "TableAttribute", "TableAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations.Schema", "TableAttribute", "get_Name", "()", "summary", "df-generated"]

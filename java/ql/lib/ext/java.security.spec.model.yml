@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.security.spec", "DSAPrivateKeySpec", False, "DSAPrivateKeySpec", "", "", "Argument[0..3]", "credentials-key", "manual"]
+      - ["java.security.spec", "ECPrivateKeySpec", False, "ECPrivateKeySpec", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["java.security.spec", "EncodedKeySpec", False, "EncodedKeySpec", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["java.security.spec", "PKCS8EncodedKeySpec", False, "PKCS8EncodedKeySpec", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["java.security.spec", "RSAMultiPrimePrivateCrtKeySpec", False, "RSAMultiPrimePrivateCrtKeySpec", "", "", "Argument[2]", "credentials-key", "manual"]
+      - ["java.security.spec", "RSAPrivateCrtKeySpec", False, "RSAPrivateCrtKeySpec", "", "", "Argument[2]", "credentials-key", "manual"]
+      - ["java.security.spec", "RSAPrivateKeySpec", False, "RSAPrivateKeySpec", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["java.security.spec", "X509EncodedKeySpec", False, "X509EncodedKeySpec", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]

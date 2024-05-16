@@ -7,7 +7,7 @@ import Type
 import Callable
 
 /** An expression. */
-class Expr extends Element, @dotnet_expr {
+deprecated class Expr extends Element, @dotnet_expr {
   /** Gets the callable containing this expression. */
   Callable getEnclosingCallable() { none() }
 
@@ -28,7 +28,7 @@ class Expr extends Element, @dotnet_expr {
 }
 
 /** A call. */
-class Call extends Expr, @dotnet_call {
+deprecated class Call extends Expr, @dotnet_call {
   /** Gets the target of this call. */
   Callable getTarget() { none() }
 
@@ -52,13 +52,13 @@ class Call extends Expr, @dotnet_call {
 }
 
 /** A literal expression. */
-class Literal extends Expr, @dotnet_literal { }
+deprecated class Literal extends Expr, @dotnet_literal { }
 
 /** A string literal expression. */
-class StringLiteral extends Literal, @dotnet_string_literal { }
+deprecated class StringLiteral extends Literal, @dotnet_string_literal { }
 
 /** An integer literal expression. */
-class IntLiteral extends Literal, @dotnet_int_literal { }
+deprecated class IntLiteral extends Literal, @dotnet_int_literal { }
 
 /** A `null` literal expression. */
-class NullLiteral extends Literal, @dotnet_null_literal { }
+deprecated class NullLiteral extends Literal, @dotnet_null_literal { }

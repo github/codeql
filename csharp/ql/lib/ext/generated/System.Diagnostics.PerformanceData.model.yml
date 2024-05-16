@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Diagnostics.PerformanceData", "CounterData", "Decrement", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterData", "Increment", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterData", "IncrementBy", "(System.Int64)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSet", "AddCounter", "(System.Int32,System.Diagnostics.PerformanceData.CounterType)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSet", "AddCounter", "(System.Int32,System.Diagnostics.PerformanceData.CounterType,System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSet", "CounterSet", "(System.Guid,System.Guid,System.Diagnostics.PerformanceData.CounterSetInstanceType)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSet", "CreateCounterSetInstance", "(System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSet", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSet", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSetInstance", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSetInstance", "get_Counters", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSetInstanceCounterDataSet", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSetInstanceCounterDataSet", "get_Item", "(System.Int32)", "summary", "df-generated"]
+      - ["System.Diagnostics.PerformanceData", "CounterSetInstanceCounterDataSet", "get_Item", "(System.String)", "summary", "df-generated"]
