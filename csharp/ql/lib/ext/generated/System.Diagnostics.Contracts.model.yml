@@ -10,7 +10,6 @@ extensions:
       - ["System.Diagnostics.Contracts", "ContractClassForAttribute", False, "get_TypeContractsAreFor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "ContractException", "(System.Diagnostics.Contracts.ContractFailureKind,System.String,System.String,System.String,System.Exception)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "ContractException", "(System.Diagnostics.Contracts.ContractFailureKind,System.String,System.String,System.String,System.Exception)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Diagnostics.Contracts", "ContractException", False, "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "get_Condition", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "get_Failure", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "get_UserMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
