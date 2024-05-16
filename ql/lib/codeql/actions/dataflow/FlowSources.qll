@@ -95,8 +95,7 @@ private predicate branchEvent(string context) {
         // - They cannot contain a \
         // eg: zzz";echo${IFS}"hello";# would be a valid branch name
         "github\\.event\\.pull_request\\.head\\.repo\\.default_branch",
-        "github\\.event\\.pull_request\\.head\\.ref", "github\\.head_ref",
-        "github\\.event\\.workflow_run\\.head_branch",
+        "github\\.event\\.pull_request\\.head\\.ref", "github\\.event\\.workflow_run\\.head_branch",
         "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.ref",
         "github\\.event\\.merge_group\\.head_ref",
       ]
@@ -165,7 +164,8 @@ private predicate pathEvent(string context) {
     reg =
       [
         // filename
-        "github\\.event\\.workflow\\.path",
+        "github\\.event\\.workflow\\.path", "github\\.event\\.workflow_run\\.path",
+        "github\\.event\\.workflow_run\\.referenced_workflows\\.path",
       ]
   |
     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
@@ -197,11 +197,33 @@ private predicate jsonEvent(string context) {
   )
 }
 
-class EventSource extends RemoteFlowSource {
+class GitHubSource extends RemoteFlowSource {
   string flag;
 
-  EventSource() {
-    exists(Expression e, string context | this.asExpr() = e and context = e.getExpression() |
+  GitHubSource() {
+    exists(Expression e, string context, string context_prefix |
+      this.asExpr() = e and
+      context = e.getExpression() and
+      Utils::normalizeExpr(context) = "github.head_ref" and
+      contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), context_prefix) and
+      Utils::normalizeExpr(context).matches("%" + context_prefix + "%") and
+      flag = "branch"
+    )
+  }
+
+  override string getSourceType() { result = flag }
+}
+
+class GitHubEventSource extends RemoteFlowSource {
+  string flag;
+
+  GitHubEventSource() {
+    exists(Expression e, string context, string context_prefix |
+      this.asExpr() = e and
+      context = e.getExpression() and
+      contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), context_prefix) and
+      Utils::normalizeExpr(context).matches("%" + context_prefix + "%")
+    |
       titleEvent(context) and flag = "title"
       or
       urlEvent(context) and flag = "url"
@@ -217,8 +239,33 @@ class EventSource extends RemoteFlowSource {
       usernameEvent(context) and flag = "username"
       or
       pathEvent(context) and flag = "filename"
-      or
-      jsonEvent(context) and flag = "json"
+    )
+  }
+
+  override string getSourceType() { result = flag }
+}
+
+class GitHubEventJsonSource extends RemoteFlowSource {
+  string flag;
+
+  GitHubEventJsonSource() {
+    exists(Expression e, string context |
+      this.asExpr() = e and
+      context = e.getExpression() and
+      (
+        jsonEvent(context) and
+        (
+          exists(string context_prefix |
+            contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(),
+              context_prefix) and
+            Utils::normalizeExpr(context).matches("%" + context_prefix + "%")
+          )
+          or
+          contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and
+          Utils::normalizeExpr(context).regexpMatch(".*\\bgithub.event\\b.*")
+        )
+      ) and
+      flag = "json"
     )
   }
 
