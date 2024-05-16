@@ -15,7 +15,7 @@ import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 
-from ControlCheck check, MutableRefCheckoutStep checkout
+from LabelControlCheck check, MutableRefCheckoutStep checkout
 where
   // the mutable checkout step is protected by an access check
   check = [checkout.getIf(), checkout.getEnclosingJob().getIf()] and
