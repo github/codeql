@@ -422,7 +422,7 @@ class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
   TypeAssertionCheck() {
     exists(TypeAssertExpr tae |
       this = DataFlow::exprNode(tae.getExpr()) and
-      it = tae.getTypeExpr().getType()
+      it = tae.getTypeExpr().getType().getUnderlyingType()
     )
   }
 
@@ -442,7 +442,7 @@ class TypeSwitchVarFlowStateTransformer extends DataFlow::SsaNode, FlowStateTran
   TypeSwitchVarFlowStateTransformer() {
     exists(IR::TypeSwitchImplicitVariableInstruction insn, LocalVariable lv | insn.writes(lv, _) |
       this.getSourceVariable() = lv and
-      it = lv.getType()
+      it = lv.getType().getUnderlyingType()
     )
   }
 
