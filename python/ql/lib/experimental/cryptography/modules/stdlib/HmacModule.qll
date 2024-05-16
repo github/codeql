@@ -6,7 +6,7 @@ private import experimental.cryptography.CryptoAlgorithmNames
 private import experimental.cryptography.modules.stdlib.HashlibModule as HashlibModule
 
 /**
- * `hmac` is a ptyhon standard library module for key-based hashing algorithms.
+ * `hmac` is a python standard library module for key-based hashing algorithms.
  *    https://docs.python.org/3/library/hmac.html
  */
 // -----------------------------------------------
@@ -23,6 +23,8 @@ module Hashes {
 
   DataFlow::Node getDigestModParamSrc(GenericHmacHashCall call) {
     result = Utils::getUltimateSrcFromApiNode(call.(API::CallNode).getParameter(2, "digestmod"))
+    or
+    result = Utils::getUltimateSrcFromApiNode(call.(API::CallNode).getParameter(2, "digest"))
   }
 
   /**
@@ -30,18 +32,18 @@ module Hashes {
    *    hmac.HMAC     https://docs.python.org/3/library/hmac.html#hmac.HMAC
    *    hmac.new      https://docs.python.org/3/library/hmac.html#hmac.new
    *    hmac.digest   https://docs.python.org/3/library/hmac.html#hmac.digest
-   * These operations commonly set the algorithm as a string in the third argument (`digestmod`)
+   * These operations commonly set the algorithm as a string in the third argument (`digest` or `digestmod`)
    * of the operation itself.
    *
-   * NOTE: `digestmod` is the digest name, digest constructor or module for the HMAC object to use, however
+   * NOTE: `digest` or `digestmod` is the digest name, digest constructor or module for the HMAC object to use, however
    *    this class only identifies string names. The other forms are found by CryptopgraphicArtifacts,
    *    modeled in `HmacHMACConsArtifact` and `Hashlib.qll`, specifically through hashlib.new and
    *    direct member accesses (e.g., hashlib.md5).
    *
-   * Where no `digestmod` exists, the algorithm is assumed to be `md5` per the docs found here:
+   * Where no `digest` or `digestmod` exists, the algorithm is assumed to be `md5` per the docs found here:
    *  https://docs.python.org/3/library/hmac.html#hmac.new
    *
-   * Where `digestmod` exists but is not a string and not a hashlib algorithm, it is assumed
+   * Where `digest` or `digestmod` exists but is not a string and not a hashlib algorithm, it is assumed
    * to be `UNKNOWN`. Note this includes cases wheere the digest is provided as a `A module supporting PEP 247.`
    * Such modules are currently not modeled.
    */
