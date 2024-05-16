@@ -29,6 +29,7 @@ private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FlaskAdmin
 private import semmle.python.frameworks.FlaskSqlAlchemy
+private import semmle.python.frameworks.Gradio
 private import semmle.python.frameworks.Httpx
 private import semmle.python.frameworks.Idna
 private import semmle.python.frameworks.Invoke
