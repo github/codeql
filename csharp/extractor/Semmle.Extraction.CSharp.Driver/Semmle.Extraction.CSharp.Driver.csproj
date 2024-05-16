@@ -12,5 +12,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
   </ItemGroup>
-
 </Project>
