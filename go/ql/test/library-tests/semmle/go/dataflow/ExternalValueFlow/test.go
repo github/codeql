@@ -83,6 +83,12 @@ func simpleflow() {
 
 	taint8 := test.StepArgResArrayContent(src)
 	b.Sink1(taint8[0]) // $ hasValueFlow="index expression"
+	for _, x := range taint8 {
+		b.Sink1(x) // $ hasValueFlow="x"
+	}
+	for _, x := range arraytype(taint8) {
+		b.Sink1(x) // $ hasValueFlow="x"
+	}
 
 	srcArray := []interface{}{nil, src}
 	taint9 := test.StepArgArrayContentRes(srcArray)
@@ -91,6 +97,12 @@ func simpleflow() {
 	taint10 := test.StepArgResCollectionContent(a.Src1()).(chan interface{})
 	b.Sink1(test.GetElement(taint10)) // $ hasValueFlow="call to GetElement"
 	b.Sink1(<-taint10)                // $ hasValueFlow="<-..."
+	for e := range taint10 {
+		b.Sink1(e) // $ MISSING: hasValueFlow="e"
+	}
+	for e := range channeltype(taint10) {
+		b.Sink1(e) // $ MISSING: hasValueFlow="e"
+	}
 
 	srcCollection := test.SetElement(a.Src1())
 	taint11 := test.StepArgCollectionContentRes(srcCollection)
@@ -104,6 +116,12 @@ func simpleflow() {
 	for k := range taint12 {
 		b.Sink1(k) // $ hasValueFlow="k"
 	}
+	for k, _ := range mapstringstringtype(taint12) {
+		b.Sink1(k) // $ hasValueFlow="k"
+	}
+	for k := range mapstringstringtype(taint12) {
+		b.Sink1(k) // $ hasValueFlow="k"
+	}
 
 	srcMap13 := map[string]string{src.(string): ""}
 	taint13 := test.StepArgMapKeyContentRes(srcMap13)
@@ -111,6 +129,12 @@ func simpleflow() {
 
 	taint14 := test.StepArgResMapValueContent(src).(map[string]string)
 	b.Sink1(taint14[""]) // $ hasValueFlow="index expression"
+	for _, v := range taint14 {
+		b.Sink1(v) // $ hasValueFlow="v"
+	}
+	for _, v := range mapstringstringtype(taint14) {
+		b.Sink1(v) // $ hasValueFlow="v"
+	}
 
 	srcMap15 := map[string]string{"": src.(string)}
 	taint15 := test.StepArgMapValueContentRes(srcMap15)
@@ -177,3 +201,7 @@ func simpleflow() {
 	b.Sink1(min(0, srcInt, 1)) // $ hasValueFlow="call to min"
 	b.Sink1(min(0, 1, srcInt)) // $ hasValueFlow="call to min"
 }
+
+type mapstringstringtype map[string]string
+type arraytype []interface{}
+type channeltype chan interface{}
