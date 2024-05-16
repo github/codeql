@@ -101,13 +101,13 @@ edges
 | pymongo_test.py:29:27:29:33 | ControlFlowNode for request | pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
 | pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | pymongo_test.py:29:16:29:51 | ControlFlowNode for Attribute() | provenance |  |
 | pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | provenance |  |
-| pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | provenance | AdditionalTaintStep |
+| pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | provenance | Decoding-NoSQL |
 | pymongo_test.py:39:5:39:12 | ControlFlowNode for event_id | pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | provenance |  |
 | pymongo_test.py:39:16:39:51 | ControlFlowNode for Attribute() | pymongo_test.py:39:5:39:12 | ControlFlowNode for event_id | provenance |  |
 | pymongo_test.py:39:27:39:33 | ControlFlowNode for request | pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
 | pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | pymongo_test.py:39:16:39:51 | ControlFlowNode for Attribute() | provenance |  |
 | pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | provenance |  |
-| pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | provenance | AdditionalTaintStep |
+| pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | provenance | Decoding-NoSQL |
 | pymongo_test.py:52:5:52:11 | ControlFlowNode for decoded | pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | provenance |  |
 | pymongo_test.py:52:15:52:50 | ControlFlowNode for Attribute() | pymongo_test.py:52:5:52:11 | ControlFlowNode for decoded | provenance |  |
 | pymongo_test.py:52:26:52:32 | ControlFlowNode for request | pymongo_test.py:52:26:52:49 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
@@ -115,7 +115,7 @@ edges
 | pymongo_test.py:54:5:54:10 | ControlFlowNode for search | pymongo_test.py:59:25:59:56 | ControlFlowNode for Dict | provenance |  |
 | pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | pymongo_test.py:54:5:54:10 | ControlFlowNode for search | provenance |  |
 | pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | provenance |  |
-| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | provenance | AdditionalTaintStep |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | provenance | Decoding-NoSQL |
 | pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:61:25:61:57 | ControlFlowNode for Dict | provenance |  |
 | pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:62:25:62:42 | ControlFlowNode for Dict | provenance |  |
 | pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:63:25:63:31 | ControlFlowNode for decoded | provenance |  |
