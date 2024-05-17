@@ -36,6 +36,11 @@ extensible predicate workflowDataModel(
 extensible predicate repositoryDataModel(string visibility, string default_branch_name);
 
 /**
- * Holds if context/trigger mapping exists for the given parameters.
+ * Holds if a context expression starting with context_prefix is available for a given trigger.
  */
 extensible predicate contextTriggerDataModel(string trigger, string context_prefix);
+
+/**
+ * Holds if a given trigger event can be fired by an external actor.
+ */
+extensible predicate externallyTriggerableEventsDataModel(string event);

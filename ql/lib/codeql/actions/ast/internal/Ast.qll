@@ -703,6 +703,11 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Gets the strategy for this job. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
 
+  /** Holds if the job can be triggered by an external actor. */
+  predicate isExternallyTriggerable() {
+    externallyTriggerableEventsDataModel(this.getATriggerEvent().getName())
+  }
+
   /** Holds if the job is privileged. */
   predicate isPrivileged() {
     // the job has privileged runtime permissions

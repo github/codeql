@@ -348,6 +348,8 @@ abstract class Job extends AstNode instanceof JobImpl {
 
   predicate isPrivileged() { super.isPrivileged() }
 
+  predicate isExternallyTriggerable() { super.isExternallyTriggerable() }
+
   string getARunsOnLabel() { result = super.getARunsOnLabel() }
 }
 
