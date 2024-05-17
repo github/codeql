@@ -230,11 +230,104 @@ module GLR<grammar/0 g> {
 
   module GLRparser<input/1 i>
   {
+    newtype Stack =
+    TEmpty()
+    or 
+    TShift(int position, State state, Symbol terminal, ParseNode previous)
+    {
+      position = previous.getInputPosition() + 1 and
+      terminal = i(position-1) and 
+      state = previous.getState().shift(terminal)
+    }
+    or
+    TReduce(int position, State state, Rule rule, ParseNode previous)
+    {
+      position = previous.getInputPosition() and
+      rule = previous.getState().reduce(i(position)) and
+      state = previous.skip(rule.getLength()).getState().goto(rule.getLhs())
+    }
 
-  }
+    abstract class ParseNode extends Stack
+    {
+      language[monotonicAggregates]
+      abstract string toString();
+      abstract int getInputPosition();
+      abstract State getState();
+      abstract ParseNode getPrevious();
+      abstract Symbol getSymbol();
+      string debugString()
+      {
+        result = this.toString() + "->" + this.getPrevious().debugString()
+      }
 
-  module LALRparser<input/1 i>
-  {
+      ParseNode skip(int i)  // ?? Member
+      {
+        i=0 and result = this
+        or i>0 and result = this.getPrevious().skip(i-1)
+      }
+    }
+
+    class EmptyNode extends ParseNode, TEmpty
+    {
+      override string toString() { result = "Empty" }
+      override int getInputPosition() { result = 0 }
+      override State getState() { result instanceof InitialState }
+      override ParseNode getPrevious() { none() }
+      override Symbol getSymbol() { none() }
+      override string debugString() { result = "ø" }
+    }
+
+    class TerminalNode extends ParseNode, TShift
+    {
+      int position;
+      State state;
+      Terminal terminal;
+      ParseNode previous;
+
+      TerminalNode() { this = TShift(position, state, terminal, previous) }
+      override string toString() { result = terminal + "@" + position + " state " + state.getNumber()}
+
+      override string debugString() { result = terminal + "@" + position + " state " + state.getNumber() + "->" + previous.debugString()}
+      override State getState() { result = state }
+      override ParseNode getPrevious() { result = previous }
+
+      override int getInputPosition() { result = position }
+
+      override Symbol getSymbol() { result = terminal }
+    }
+
+    class NonTerminalNode extends ParseNode, TReduce
+    {
+      int position;
+      State state;
+      Rule rule;
+      ParseNode previous;
+
+      NonTerminalNode() { this = TReduce(position, state, rule, previous) }
+
+      language[monotonicAggregates]
+      override string toString() { result = rule + "@" + position + " state " + state.getNumber()
+      }
+      override State getState() { result = state }
+      override ParseNode getPrevious() { result = previous.skip(rule.getLength()) }
+
+      override int getInputPosition() { result = position }
+
+      override Symbol getSymbol() { result = rule.getLhs() }
+
+      ParseNode getChild(int i)
+      {
+        i in [0 .. rule.getLength() - 1] and
+        result = previous.skip(rule.getLength() - i -1)
+      }
+    
+    }
+
+    predicate dumpNodes(ParseNode node, int position, State state, string closure, int stateNumber, string debug)
+    {
+      position = node.getInputPosition() and state = node.getState() and stateNumber = state.getNumber() and 
+      closure = state.getClosureString() and debug = node.debugString()
+    }
   }
 
   predicate actionTable(int state, string closure, Symbol symbol, string action)
