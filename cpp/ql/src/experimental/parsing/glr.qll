@@ -1,16 +1,15 @@
 /*
-  GLR parser framework.
-  This is purely for fun.
-
+ *  GLR parser framework.
+ *  This is purely for fun.
  */
 
 signature string grammar();
+
 signature string input(int i);
 
 // A GLR parser
 module GLR<grammar/0 g> {
-
-  // We need to add a special rule that includes the end of file symbol $  
+  // We need to add a special rule that includes the end of file symbol $
   string initialRule() { result = "Start_ -> G $" }
 
   // Gets the left hand side of a rule - for internal use
@@ -75,7 +74,7 @@ module GLR<grammar/0 g> {
     Eof() { this = "$" }
   }
 
-  Terminal follows(Rule rule, int dot, Terminal lookahead) {
+  private Terminal follows(Rule rule, int dot, Terminal lookahead) {
     dot >= 0 and
     (
       dot + 1 = rule.getLength() and lookahead = result
@@ -87,7 +86,7 @@ module GLR<grammar/0 g> {
   }
 
   // Modify the idea of a transition so that we don't need to compute the closure
-  predicate transition(
+  private predicate transition(
     Rule rule1, int dot1, Terminal lookahead1, Symbol symbol, Rule rule2, int dot2,
     Terminal lookahead2
   ) {
@@ -104,7 +103,7 @@ module GLR<grammar/0 g> {
 
   bindingset[dot, lookahead]
   string itemToString(Rule rule, int dot, Terminal lookahead) {
-    // item(rule, dot, lookahead) and 
+    // item(rule, dot, lookahead) and
     result =
       rule.getLhs() + " -> " + concat(int i | i in [0 .. dot - 1] | rule.getRhs(i) + " " order by i)
         + ". " +
@@ -118,17 +117,6 @@ module GLR<grammar/0 g> {
       rule.getLhs() + " -> " + concat(int i | i in [0 .. dot - 1] | rule.getRhs(i) + " " order by i)
         + ". " +
         concat(int i | i in [dot .. rule.getLength() - 1] | rule.getRhs(i) + " " order by i)
-  }
-
-  class KernelItem extends string {
-    Rule rule;
-    int dot;
-
-    KernelItem() { this = kernelItem(rule, dot) }
-  }
-
-  class InitialItem extends KernelItem {
-    InitialItem() { this = kernelItem(initialRule(), 0) }
   }
 
   predicate initialState(Rule rule, int dot, Terminal lookahead) {
@@ -188,39 +176,39 @@ module GLR<grammar/0 g> {
     // In this state, when the lookahead symbol is `s`, we can shift to `result`
     State shift(Terminal s) { result = this.getTransition(s) }
 
-    // In this state, when the lookahead symbol is `s`, we can reduce rule `result` 
-    Rule reduce(Terminal s)
-    {
-      this.hasItem(result, result.getLength(), s) 
-    }
+    // In this state, when the lookahead symbol is `s`, we can reduce rule `result`
+    Rule reduce(Terminal s) { this.hasItem(result, result.getLength(), s) }
 
     // This state has a reduce/reduce conflict, given by the possible shift to `state` or reduce by `rule`
-    predicate shiftReduceConflict(Terminal s, State state, Rule rule)
-    {
+    predicate shiftReduceConflict(Terminal s, State state, Rule rule) {
       this.shift(s) = state and this.reduce(s) = rule
     }
 
     // This state has a reduce/reduce conflict, given by the possible reduce by `rule1` or `rule2`
-    predicate reduceReduceConflict(Terminal s, Rule rule1, Rule rule2)
-    {
-      this.reduce(s) = rule1 and this.reduce(s) = rule2 and rule1!=rule2
+    predicate reduceReduceConflict(Terminal s, Rule rule1, Rule rule2) {
+      this.reduce(s) = rule1 and this.reduce(s) = rule2 and rule1 != rule2
     }
 
-    predicate hasClosure(Rule rule, int dot, Terminal lookahead)
-    {
+    predicate hasClosure(Rule rule, int dot, Terminal lookahead) {
       this.hasItem(rule, dot, lookahead)
       or
       exists(Rule rule0, int dot0, Terminal lookahead0 |
         this.hasClosure(rule0, dot0, lookahead0) and
-        rule.getLhs() = rule0.getRhs(dot0) and dot = 0 and lookahead = follows(rule0, dot0, lookahead0)  // ?? Is this a problem
+        rule.getLhs() = rule0.getRhs(dot0) and
+        dot = 0 and
+        lookahead = follows(rule0, dot0, lookahead0)
       )
     }
 
     string getClosureString() {
-      result = concat(string s |
-        exists(Rule rule, int dot, Terminal lookahead | this.hasClosure(rule, dot, lookahead) |
-        s = itemToString(rule, dot, lookahead)) | s + "; "
-      )
+      result =
+        concat(string s |
+          exists(Rule rule, int dot, Terminal lookahead | this.hasClosure(rule, dot, lookahead) |
+            s = itemToString(rule, dot, lookahead)
+          )
+        |
+          s + "; "
+        )
     }
   }
 
@@ -228,78 +216,84 @@ module GLR<grammar/0 g> {
     InitialState() { this = getInitialState(_, _, _) }
   }
 
-  module GLRparser<input/1 i>
-  {
+  module GLRparser<input/1 i> {
     // We need to insert $ at the end of the input
-    string getInputToken(int inputPosition) { 
-      result = i(inputPosition) or
-
+    string getInputToken(int inputPosition) {
+      result = i(inputPosition)
+      or
       inputPosition = max(int p | exists(i(p))) and result = "$"
     }
 
     /*
-      The parse stack implements a linked list where the "previous" column is the previous node on the stack.
-      With reductions `TReduce` on the stack, `skip()` skips large chunks of the stack.
+     *      The parse stack implements a linked list where the "previous" column is the previous node on the stack.
+     *      With reductions `TReduce` on the stack, `skip()` skips large chunks of the stack.
      */
-    newtype Stack =
-    TEmpty()
-    or 
-    TShift(int position, State state, Symbol terminal, ParseNode previous)
-    {
-      position = previous.getInputPosition() + 1 and
-      terminal = getInputToken(position-1) and 
-      state = previous.getState().shift(terminal)
-    }
-    or
-    TReduce(int position, State state, Rule rule, ParseNode previous)
-    {
-      position = previous.getInputPosition() and
-      rule = previous.getState().reduce(getInputToken(position)) and
-      state = previous.skip(rule.getLength()).getState().goto(rule.getLhs())
-    }
 
-    abstract class ParseNode extends Stack
-    {
+    newtype Stack =
+      TEmpty() or
+      TShift(int position, State state, Symbol terminal, ParseNode previous) {
+        position = previous.getInputPosition() + 1 and
+        terminal = getInputToken(position - 1) and
+        state = previous.getState().shift(terminal)
+      } or
+      TReduce(int position, State state, Rule rule, ParseNode previous) {
+        position = previous.getInputPosition() and
+        rule = previous.getState().reduce(getInputToken(position)) and
+        state = previous.skip(rule.getLength()).getState().goto(rule.getLhs())
+      }
+
+    abstract class ParseNode extends Stack {
       language[monotonicAggregates]
       abstract string toString();
-      abstract int getInputPosition();
-      abstract State getState();
-      abstract ParseNode getPrevious();
-      abstract Symbol getSymbol();
-      string debugString()
-      {
-        result = this.toString() + "->" + this.getPrevious().debugString()
-      }
 
-      ParseNode skip(int i)  // ?? Member
-      {
-        i=0 and result = this
-        or i>0 and result = this.getPrevious().skip(i-1)
+      abstract int getInputPosition();
+
+      abstract State getState();
+
+      abstract ParseNode getPrevious();
+
+      abstract Symbol getSymbol();
+
+      string debugString() { result = this.toString() + "->" + this.getPrevious().debugString() }
+
+      ParseNode skip(int i) {
+        i = 0 and result = this
+        or
+        i > 0 and result = this.getPrevious().skip(i - 1)
       }
     }
 
-    class EmptyNode extends ParseNode, TEmpty
-    {
+    class EmptyNode extends ParseNode, TEmpty {
       override string toString() { result = "Empty" }
+
       override int getInputPosition() { result = 0 }
+
       override State getState() { result instanceof InitialState }
+
       override ParseNode getPrevious() { none() }
+
       override Symbol getSymbol() { none() }
+
       override string debugString() { result = "ø" }
     }
 
-    class TerminalNode extends ParseNode, TShift
-    {
+    class TerminalNode extends ParseNode, TShift {
       int position;
       State state;
       Terminal terminal;
       ParseNode previous;
 
       TerminalNode() { this = TShift(position, state, terminal, previous) }
-      override string toString() { result = terminal + "@" + position } // + " state " + state.getNumber()}
 
-      override string debugString() { result = terminal + "@" + position + " state " + state.getNumber() + "->" + previous.debugString()}
+      override string toString() { result = terminal + "@" + position }
+
+      override string debugString() {
+        result =
+          terminal + "@" + position + " state " + state.getNumber() + "->" + previous.debugString()
+      }
+
       override State getState() { result = state }
+
       override ParseNode getPrevious() { result = previous }
 
       override int getInputPosition() { result = position }
@@ -307,8 +301,7 @@ module GLR<grammar/0 g> {
       override Symbol getSymbol() { result = terminal }
     }
 
-    class NonTerminalNode extends ParseNode, TReduce
-    {
+    class NonTerminalNode extends ParseNode, TReduce {
       int position;
       State state;
       Rule rule;
@@ -317,55 +310,57 @@ module GLR<grammar/0 g> {
       NonTerminalNode() { this = TReduce(position, state, rule, previous) }
 
       language[monotonicAggregates]
-      override string toString() { result = rule + "@" + position // + " state " + state.getNumber()
+      override string toString() {
+        result = rule + "@" + position
       }
+
       override State getState() { result = state }
+
       override ParseNode getPrevious() { result = previous.skip(rule.getLength()) }
 
       override int getInputPosition() { result = position }
 
       override Symbol getSymbol() { result = rule.getLhs() }
 
-      ParseNode getChild(int i)
-      {
+      ParseNode getChild(int i) {
         i in [0 .. rule.getLength() - 1] and
-        result = previous.skip(rule.getLength() - i-1)
-      }    
+        result = previous.skip(rule.getLength() - i - 1)
+      }
     }
 
-    class Root extends NonTerminalNode
-    {
+    class Root extends NonTerminalNode {
       Root() { rule.getLhs() = "G" }
     }
 
-    predicate dumpNodes(ParseNode node, int position, State state, string closure, int stateNumber, string debug)
-    {
-      position = node.getInputPosition() and state = node.getState() and stateNumber = state.getNumber() and 
-      closure = state.getClosureString() and debug = node.debugString()
+    predicate dumpNodes(
+      ParseNode node, int position, State state, string closure, int stateNumber, string debug
+    ) {
+      position = node.getInputPosition() and
+      state = node.getState() and
+      stateNumber = state.getNumber() and
+      closure = state.getClosureString() and
+      debug = node.debugString()
     }
 
-    predicate tree(NonTerminalNode node, int i, ParseNode child)
-    {
-      node.getChild(i) = child
-    }
+    predicate tree(NonTerminalNode node, int i, ParseNode child) { node.getChild(i) = child }
   }
 
-  predicate actionTable(int state, string closure, Symbol symbol, string action)
-  {
-    exists(State s | s.getNumber() = state and closure = s.getClosureString() | 
-      if exists(s.shift(symbol)) then action = "shift to state " + s.shift(symbol).getNumber()
-      else if exists(s.reduce(symbol)) then action = "reduce by rule " + s.reduce(symbol)
-      else none()
+  predicate actionTable(int state, string closure, Symbol symbol, string action) {
+    exists(State s | s.getNumber() = state and closure = s.getClosureString() |
+      if exists(s.shift(symbol))
+      then action = "shift to state " + s.shift(symbol).getNumber()
+      else
+        if exists(s.reduce(symbol))
+        then action = "reduce by rule " + s.reduce(symbol)
+        else none()
     )
   }
 
-  predicate gotoTable(int state, string closure, NonTerminal symbol, int nextState)
-  {
-    exists(State s | s.getNumber() = state and closure = s.getClosureString() | 
+  predicate gotoTable(int state, string closure, NonTerminal symbol, int nextState) {
+    exists(State s | s.getNumber() = state and closure = s.getClosureString() |
       nextState = s.goto(symbol).getNumber()
     )
   }
-
 }
 
 string grammar1() { result = ["G -> E", "E -> x", "E -> E x"] }
