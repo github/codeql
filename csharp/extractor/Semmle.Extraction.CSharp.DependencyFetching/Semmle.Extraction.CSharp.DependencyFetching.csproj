@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Semmle.Extraction.CSharp.DependencyFetching</AssemblyName>
@@ -10,13 +10,12 @@
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);CA1822</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
     <ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
