@@ -1,3 +1,4 @@
+
 int* f() {
 	int *buff = malloc(SIZE*sizeof(int));
 	do_stuff(buff);
