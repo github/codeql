@@ -1,7 +1,7 @@
 import glr
 
 string grammar1() {
-    result = ["Grammar -> E", "E -> x", "E -> E x", "X ->", "Y -> X"]
+    result = ["G -> E", "E -> x", "E -> E x", "X ->", "Y -> X"]
 }
 
 module GLR1 = GLR<grammar1/0>;

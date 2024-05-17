@@ -1,7 +1,7 @@
 signature string grammar();
 
 module GLR<grammar/0 g> {
-  string initialRule() { result = "Start_ -> Grammar $" }
+  string initialRule() { result = "Start_ -> G $" }
 
   class Rule extends string {
     Rule() { this = [g(), initialRule()] }
@@ -17,11 +17,7 @@ module GLR<grammar/0 g> {
   }
 
   class Symbol extends string {
-    Symbol() {
-      exists(Rule rule |
-        this = rule.splitAt(" ") and this != "->"
-      )
-    }
+    Symbol() { exists(Rule rule | this = rule.splitAt(" ") and this != "->") }
 
     predicate maybeEmpty() {
       this instanceof NonTerminal and
@@ -32,7 +28,7 @@ module GLR<grammar/0 g> {
     }
 
     Terminal getFirst() {
-        // We are a terminal
+      // We are a terminal
       result = this
       or
       // We are a nonterminal
@@ -82,39 +78,73 @@ module GLR<grammar/0 g> {
   predicate kernel(int state, Rule rule, int dot) { closure(state, rule, dot, _) }
 
   predicate transitions(int state, Symbol symbol, Rule rule, int dot, Terminal follows) {
-    exists(Terminal follows0 | closure(state, rule, dot-1, follows0) | 
-        rule.getRhs(dot-1) = symbol and 
-        // TODO: Follows isn't computed correctly here with empty symbols
-        (follows = rule.getRhs(dot).(Symbol).getFirst() or dot=rule.getLength() and follows = follows0
-    ))
+    exists(Terminal follows0 | closure(state, rule, dot - 1, follows0) |
+      rule.getRhs(dot - 1) = symbol and
+      // TODO: Follows isn't computed correctly here with empty symbols
+      (
+        follows = rule.getRhs(dot).(Symbol).getFirst()
+        or
+        dot = rule.getLength() and follows = follows0
+      )
+    )
   }
 
   predicate shifts(int state, Terminal terminal, Rule rule, int dot, Terminal follows) {
     transitions(state, terminal, rule, dot, follows)
-}
+  }
 
-    predicate gotos(int state, NonTerminal terminal, Rule rule, int dot, Terminal follows) {
-        transitions(state, terminal, rule, dot, follows)
-    }
+  string makeState(int state) {
+    state = 0 and
+    result =
+      concat(string itemstring |
+        dumpStates(state, itemstring)
+      |
+        itemstring + "; " order by itemstring
+      )
+  }
 
+  string makeState(int state, Symbol transition) {
+    exists(Rule rule, int dot, Terminal follows |
+      transitions(state, transition, rule, dot, follows)
+    |
+      result =
+        concat(string itemstring |
+          itemstring = itemToString(rule, dot, follows)
+        |
+          itemstring + "; " order by itemstring
+        )
+    )
+  }
+
+  predicate gotos(int state, NonTerminal terminal, Rule rule, int dot, Terminal follows) {
+    transitions(state, terminal, rule, dot, follows)
+  }
 
   // The state `state` has a reduction on `follows` when the rule `rule` is complete
-  predicate reductions(int state, Terminal follows, Rule rule)
-  {
+  predicate reductions(int state, Terminal follows, Rule rule) {
     closure(state, rule, rule.getLength(), follows)
+  }
+
+  class Dot extends int {
+    Dot() { this in [0 .. max(any(Rule r).getLength())] }
+  }
+
+  bindingset[dot, follows]
+  string itemToString(Rule rule, int dot, Terminal follows) {
+    result =
+      rule.getLhs() + " -> " + concat(int i | i in [0 .. dot - 1] | rule.getRhs(i) + " " order by i)
+        + ". " +
+        concat(int i | i in [dot .. rule.getLength() - 1] | rule.getRhs(i) + " " order by i) + "{" +
+        follows + "}"
   }
 
   predicate dumpStates(int state, string itemstring) {
     exists(Rule rule, int dot, string follows | closure(state, rule, dot, follows) |
-      itemstring =
-        rule.getLhs() + " -> " +
-          concat(int i | i in [0 .. dot - 1] | rule.getRhs(i) + " " order by i) + ". " +
-          concat(int i | i in [dot .. rule.getLength() - 1] | rule.getRhs(i) + " " order by i) + "{"
-          + follows + "}"
+      itemstring = itemToString(rule, dot, follows)
     )
   }
 }
 
-string grammar1() { result = ["Grammar -> E", "E -> x", "E -> E x", "X ->", "Y -> X"] }
+string grammar1() { result = ["G -> E", "E -> x", "E -> E x", "X ->", "Y -> X"] }
 
 module GLRTest = GLR<grammar1/0>;
