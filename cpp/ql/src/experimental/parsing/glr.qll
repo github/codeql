@@ -221,7 +221,7 @@ module GLR<grammar/0 g> {
     string getInputToken(int inputPosition) {
       result = i(inputPosition)
       or
-      inputPosition = max(int p | exists(i(p))) and result = "$"
+      inputPosition = max(int p | exists(i(p)))+1 and result = "$"
     }
 
     /*
@@ -345,23 +345,24 @@ module GLR<grammar/0 g> {
     predicate tree(NonTerminalNode node, int i, ParseNode child) { node.getChild(i) = child }
   }
 
-  predicate actionTable(int state, string closure, Symbol symbol, string action) {
+  // A combination of the actions and gotos table in one convenient output
+  predicate parseTable(int state, string closure, Symbol symbol, string action) {
     exists(State s | s.getNumber() = state and closure = s.getClosureString() |
-      if exists(s.shift(symbol))
-      then action = "shift to state " + s.shift(symbol).getNumber()
-      else
-        if exists(s.reduce(symbol))
-        then action = "reduce by rule " + s.reduce(symbol)
-        else none()
-    )
-  }
+    
+      action = "shift to state " + s.shift(symbol).getNumber()
+       or action = "reduce by rule " + s.reduce(symbol)
 
-  predicate gotoTable(int state, string closure, NonTerminal symbol, int nextState) {
-    exists(State s | s.getNumber() = state and closure = s.getClosureString() |
-      nextState = s.goto(symbol).getNumber()
+    
+    or action = "goto state " + s.goto(symbol).getNumber()
     )
   }
 }
+
+string input2(int i) { result = "I".charAt(i) }
+
+module Test2 = GLR<grammar2/0>::GLRparser<input2/1>;
+
+
 
 string grammar1() { result = ["G -> E", "E -> x", "E -> E x"] }
 
@@ -370,3 +371,9 @@ string input1(int i) { result = "xxxxx".charAt(i) }
 module GLRTest = GLR<grammar1/0>;
 
 module GLTTest2 = GLR<grammar1/0>::GLRparser<input1/1>;
+
+
+string grammar2() {
+  result = ["G -> E", "E -> E x E", "E -> I"]
+}
+
