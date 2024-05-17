@@ -23,11 +23,19 @@ extensible predicate sinkModel(
   string action, string version, string input, string kind, string provenance
 );
 
+/**
+ * Holds if workflow data model exists for the given parameters.
+ */
 extensible predicate workflowDataModel(
-  string path, string trigger, string job, string secrets_source, string permissions,
-  string runner
+  string path, string trigger, string job, string secrets_source, string permissions, string runner
 );
 
-extensible predicate repositoryDataModel(
-  string visibility, string default_branch_name
-);
+/**
+ * Holds if repository data model exists for the given parameters.
+ */
+extensible predicate repositoryDataModel(string visibility, string default_branch_name);
+
+/**
+ * Holds if context/trigger mapping exists for the given parameters.
+ */
+extensible predicate contextTriggerDataModel(string trigger, string context_prefix);
