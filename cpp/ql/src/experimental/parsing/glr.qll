@@ -1,20 +1,13 @@
 /*
- *  Problem: How do I request the closure of a new state?
- *  A state is a set of items.
- *
- *  Problem: How do I group together items from the same origin?
- *  state = transition(previousState, symbol)
- *  How do I represent a "set" in the traditional sense?
- *  Maybe I don't??
- *
- *  It's a bit like GVN - we need to number all possible states.
- *
- *  State = a set if items.
+  GLR parser framework.
+  This is purely for fun.
+
  */
 
 signature string grammar();
+signature string input(int i);
 
-// An LALR or GLR parser
+// A GLR parser
 module GLR<grammar/0 g> {
 
   // We need to add a special rule that includes the end of file symbol $  
@@ -109,8 +102,9 @@ module GLR<grammar/0 g> {
     )
   }
 
+  bindingset[dot, lookahead]
   string itemToString(Rule rule, int dot, Terminal lookahead) {
-    item(rule, dot, lookahead) and 
+    // item(rule, dot, lookahead) and 
     result =
       rule.getLhs() + " -> " + concat(int i | i in [0 .. dot - 1] | rule.getRhs(i) + " " order by i)
         + ". " +
@@ -152,7 +146,7 @@ module GLR<grammar/0 g> {
 
   string getInitialState(Rule rule, int dot, Terminal lookahead) {
     initialState(rule, dot, lookahead) and
-    result = kernelItem(rule, dot) + "; "
+    result = " " + kernelItem(rule, dot)
   }
 
   string transitionState(string previous, Symbol s, Rule rule, int dot, Terminal lookahead) {
@@ -211,13 +205,60 @@ module GLR<grammar/0 g> {
     {
       this.reduce(s) = rule1 and this.reduce(s) = rule2 and rule1!=rule2
     }
+
+    predicate hasClosure(Rule rule, int dot, Terminal lookahead)
+    {
+      this.hasItem(rule, dot, lookahead)
+      or
+      exists(Rule rule0, int dot0, Terminal lookahead0 |
+        this.hasClosure(rule0, dot0, lookahead0) and
+        rule.getLhs() = rule0.getRhs(dot0) and dot = 0 and lookahead = follows(rule0, dot0, lookahead0)  // ?? Is this a problem
+      )
+    }
+
+    string getClosureString() {
+      result = concat(string s |
+        exists(Rule rule, int dot, Terminal lookahead | this.hasClosure(rule, dot, lookahead) |
+        s = itemToString(rule, dot, lookahead)) | s + "; "
+      )
+    }
   }
 
   class InitialState extends State {
     InitialState() { this = getInitialState(_, _, _) }
   }
+
+  module GLRparser<input/1 i>
+  {
+
+  }
+
+  module LALRparser<input/1 i>
+  {
+  }
+
+  predicate actionTable(int state, string closure, Symbol symbol, string action)
+  {
+    exists(State s | s.getNumber() = state and closure = s.getClosureString() | 
+      if exists(s.shift(symbol)) then action = "shift to state " + s.shift(symbol).getNumber()
+      else if exists(s.reduce(symbol)) then action = "reduce by rule " + s.reduce(symbol)
+      else none()
+    )
+  }
+
+  predicate gotoTable(int state, string closure, NonTerminal symbol, int nextState)
+  {
+    exists(State s | s.getNumber() = state and closure = s.getClosureString() | 
+      nextState = s.goto(symbol).getNumber()
+    )
+  }
+
 }
 
 string grammar1() { result = ["G -> E", "E -> x", "E -> E x"] }
 
+string input1(int i) { result = "xxx".charAt(i) }
+
 module GLRTest = GLR<grammar1/0>;
+
+module GLTTest2 = GLR<grammar1/0>::GLRparser<input1/1>;
