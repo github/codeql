@@ -4,9 +4,10 @@ string grammar1() {
     result = ["G -> E", "E -> x", "E -> E x"]
 }
 
-module GLR1 = GLR<grammar1/0>;
+string input1(int i) { result = "xxxx".charAt(i) }
 
-from GLR1::State state1, GLR1::Symbol transition, GLR1::State state2
-where state2 = GLR1::makeTransition(state1, transition)
-// state1.
-select state1, transition, state2
+module Test1 = GLR<grammar1/0>::GLRparser<input1/1>;
+
+from Test1::ParseNode parent, int i, Test1::ParseNode child
+where Test1::tree(parent,i,child)
+select parent, i, child

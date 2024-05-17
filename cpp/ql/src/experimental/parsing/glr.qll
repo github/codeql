@@ -230,20 +230,31 @@ module GLR<grammar/0 g> {
 
   module GLRparser<input/1 i>
   {
+    // We need to insert $ at the end of the input
+    string getInputToken(int inputPosition) { 
+      result = i(inputPosition) or
+
+      inputPosition = max(int p | exists(i(p))) and result = "$"
+    }
+
+    /*
+      The parse stack implements a linked list where the "previous" column is the previous node on the stack.
+      With reductions `TReduce` on the stack, `skip()` skips large chunks of the stack.
+     */
     newtype Stack =
     TEmpty()
     or 
     TShift(int position, State state, Symbol terminal, ParseNode previous)
     {
       position = previous.getInputPosition() + 1 and
-      terminal = i(position-1) and 
+      terminal = getInputToken(position-1) and 
       state = previous.getState().shift(terminal)
     }
     or
     TReduce(int position, State state, Rule rule, ParseNode previous)
     {
       position = previous.getInputPosition() and
-      rule = previous.getState().reduce(i(position)) and
+      rule = previous.getState().reduce(getInputToken(position)) and
       state = previous.skip(rule.getLength()).getState().goto(rule.getLhs())
     }
 
@@ -285,7 +296,7 @@ module GLR<grammar/0 g> {
       ParseNode previous;
 
       TerminalNode() { this = TShift(position, state, terminal, previous) }
-      override string toString() { result = terminal + "@" + position + " state " + state.getNumber()}
+      override string toString() { result = terminal + "@" + position } // + " state " + state.getNumber()}
 
       override string debugString() { result = terminal + "@" + position + " state " + state.getNumber() + "->" + previous.debugString()}
       override State getState() { result = state }
@@ -306,7 +317,7 @@ module GLR<grammar/0 g> {
       NonTerminalNode() { this = TReduce(position, state, rule, previous) }
 
       language[monotonicAggregates]
-      override string toString() { result = rule + "@" + position + " state " + state.getNumber()
+      override string toString() { result = rule + "@" + position // + " state " + state.getNumber()
       }
       override State getState() { result = state }
       override ParseNode getPrevious() { result = previous.skip(rule.getLength()) }
@@ -318,15 +329,24 @@ module GLR<grammar/0 g> {
       ParseNode getChild(int i)
       {
         i in [0 .. rule.getLength() - 1] and
-        result = previous.skip(rule.getLength() - i -1)
-      }
-    
+        result = previous.skip(rule.getLength() - i-1)
+      }    
+    }
+
+    class Root extends NonTerminalNode
+    {
+      Root() { rule.getLhs() = "G" }
     }
 
     predicate dumpNodes(ParseNode node, int position, State state, string closure, int stateNumber, string debug)
     {
       position = node.getInputPosition() and state = node.getState() and stateNumber = state.getNumber() and 
       closure = state.getClosureString() and debug = node.debugString()
+    }
+
+    predicate tree(NonTerminalNode node, int i, ParseNode child)
+    {
+      node.getChild(i) = child
     }
   }
 
@@ -350,7 +370,7 @@ module GLR<grammar/0 g> {
 
 string grammar1() { result = ["G -> E", "E -> x", "E -> E x"] }
 
-string input1(int i) { result = "xxx".charAt(i) }
+string input1(int i) { result = "xxxxx".charAt(i) }
 
 module GLRTest = GLR<grammar1/0>;
 
