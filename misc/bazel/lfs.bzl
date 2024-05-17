@@ -1,36 +1,44 @@
 def lfs_smudge(repository_ctx, srcs, extract = False, stripPrefix = None):
-    for src in srcs:
-        repository_ctx.watch(src)
-    script = Label("//misc/bazel/internal:git_lfs_probe.py")
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     if not python:
         fail("Neither python3 nor python executables found")
-    repository_ctx.report_progress("querying LFS url(s) for: %s" % ", ".join([src.basename for src in srcs]))
-    res = repository_ctx.execute([python, script] + srcs, quiet = True)
-    if res.return_code != 0:
-        fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
-    promises = []
-    for src, loc in zip(srcs, res.stdout.splitlines()):
-        if loc == "local":
-            if extract:
-                repository_ctx.report_progress("extracting local %s" % src.basename)
-                repository_ctx.extract(src, stripPrefix = stripPrefix)
-            else:
-                repository_ctx.report_progress("symlinking local %s" % src.basename)
-                repository_ctx.symlink(src, src.basename)
+    script = Label("//misc/bazel/internal:git_lfs_probe.py")
+
+    def probe(srcs, hash_only = False):
+        repository_ctx.report_progress("querying LFS url(s) for: %s" % ", ".join([src.basename for src in srcs]))
+        cmd = [python, script]
+        if hash_only:
+            cmd.append("--hash-only")
+        cmd.extend(srcs)
+        res = repository_ctx.execute(cmd, quiet = True)
+        if res.return_code != 0:
+            fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
+        return res.stdout.splitlines()
+
+    for src in srcs:
+        repository_ctx.watch(src)
+    infos = probe(srcs, hash_only = True)
+    remote = []
+    for src, info in zip(srcs, infos):
+        if info == "local":
+            repository_ctx.report_progress("symlinking local %s" % src.basename)
+            repository_ctx.symlink(src, src.basename)
         else:
-            sha256, _, url = loc.partition(" ")
-            if extract:
-                # we can't use skylib's `paths.split_extension`, as that only gets the last extension, so `.tar.gz`
-                # or similar wouldn't work
-                # it doesn't matter if file is something like some.name.zip and possible_extension == "name.zip",
-                # download_and_extract will just append ".name.zip" its internal temporary name, so extraction works
-                possible_extension = ".".join(src.basename.rsplit(".", 2)[-2:])
-                repository_ctx.report_progress("downloading and extracting remote %s" % src.basename)
-                repository_ctx.download_and_extract(url, sha256 = sha256, stripPrefix = stripPrefix, type = possible_extension)
-            else:
+            repository_ctx.report_progress("trying cache for remote %s" % src.basename)
+            res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True)
+            if not res.success:
+                remote.append(src)
+        if remote:
+            infos = probe(remote)
+            for src, info in zip(remote, infos):
+                sha256, _, url = info.partition(" ")
                 repository_ctx.report_progress("downloading remote %s" % src.basename)
                 repository_ctx.download(url, src.basename, sha256 = sha256)
+        if extract:
+            for src in srcs:
+                repository_ctx.report_progress("extracting %s" % src.basename)
+                repository_ctx.extract(src.basename, stripPrefix = stripPrefix)
+                repository_ctx.delete(src.basename)
 
 def _download_and_extract_lfs(repository_ctx):
     attr = repository_ctx.attr
