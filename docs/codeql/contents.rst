@@ -6,7 +6,6 @@ CodeQL documentation
    :maxdepth: 3
 
    codeql-overview/index
-   codeql-for-visual-studio-code/index
    writing-codeql-queries/index
    codeql-language-guides/index
    ql-language-reference/index
