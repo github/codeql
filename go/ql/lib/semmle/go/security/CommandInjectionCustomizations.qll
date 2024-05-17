@@ -5,6 +5,7 @@
  */
 
 import go
+private import semmle.go.dataflow.barrierguardutil.RegexpCheck
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
@@ -45,8 +46,6 @@ module CommandInjection {
 
     override predicate doubleDashIsSanitizing() { exec.doubleDashIsSanitizing() }
   }
-
-  import semmle.go.dataflow.barrierguardutil.RegexpCheck
 
   /**
    * A call to a regexp match function, considered as a barrier guard for command injection.

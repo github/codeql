@@ -6,6 +6,11 @@ edges
 | CommandInjection2.go:15:34:15:88 | []type{args} [array] | CommandInjection2.go:15:34:15:88 | call to Sprintf | provenance | MaD:245 |
 | CommandInjection2.go:15:67:15:75 | imageName | CommandInjection2.go:15:34:15:88 | []type{args} [array] | provenance |  |
 | CommandInjection2.go:15:67:15:75 | imageName | CommandInjection2.go:15:34:15:88 | call to Sprintf | provenance | FunctionModel |
+| CommandInjection2.go:41:15:41:21 | selection of URL | CommandInjection2.go:41:15:41:29 | call to Query | provenance | MaD:735 |
+| CommandInjection2.go:41:15:41:29 | call to Query | CommandInjection2.go:44:67:44:75 | imageName | provenance |  |
+| CommandInjection2.go:44:34:44:88 | []type{args} [array] | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | MaD:245 |
+| CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | []type{args} [array] | provenance |  |
+| CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | FunctionModel |
 | CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:9:13:9:27 | call to Query | provenance | MaD:735 |
 | CommandInjection.go:9:13:9:27 | call to Query | CommandInjection.go:10:22:10:28 | cmdName | provenance |  |
 | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:11:13:11:27 | call to Query | provenance | MaD:735 |
@@ -115,6 +120,11 @@ nodes
 | CommandInjection2.go:15:34:15:88 | []type{args} [array] | semmle.label | []type{args} [array] |
 | CommandInjection2.go:15:34:15:88 | call to Sprintf | semmle.label | call to Sprintf |
 | CommandInjection2.go:15:67:15:75 | imageName | semmle.label | imageName |
+| CommandInjection2.go:41:15:41:21 | selection of URL | semmle.label | selection of URL |
+| CommandInjection2.go:41:15:41:29 | call to Query | semmle.label | call to Query |
+| CommandInjection2.go:44:34:44:88 | []type{args} [array] | semmle.label | []type{args} [array] |
+| CommandInjection2.go:44:34:44:88 | call to Sprintf | semmle.label | call to Sprintf |
+| CommandInjection2.go:44:67:44:75 | imageName | semmle.label | imageName |
 | CommandInjection.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | CommandInjection.go:9:13:9:27 | call to Query | semmle.label | call to Query |
 | CommandInjection.go:10:22:10:28 | cmdName | semmle.label | cmdName |
@@ -211,6 +221,7 @@ subpaths
 #select
 | ArgumentInjection.go:10:31:10:34 | path | ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:10:31:10:34 | path | This command depends on a $@. | ArgumentInjection.go:9:10:9:16 | selection of URL | user-provided value |
 | CommandInjection2.go:15:34:15:88 | call to Sprintf | CommandInjection2.go:13:15:13:21 | selection of URL | CommandInjection2.go:15:34:15:88 | call to Sprintf | This command depends on a $@. | CommandInjection2.go:13:15:13:21 | selection of URL | user-provided value |
+| CommandInjection2.go:44:34:44:88 | call to Sprintf | CommandInjection2.go:41:15:41:21 | selection of URL | CommandInjection2.go:44:34:44:88 | call to Sprintf | This command depends on a $@. | CommandInjection2.go:41:15:41:21 | selection of URL | user-provided value |
 | CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:10:22:10:28 | cmdName | This command depends on a $@. | CommandInjection.go:9:13:9:19 | selection of URL | user-provided value |
 | GitSubcommands.go:13:31:13:37 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:13:31:13:37 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
 | GitSubcommands.go:14:31:14:37 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:14:31:14:37 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
