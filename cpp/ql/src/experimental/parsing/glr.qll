@@ -1,7 +1,16 @@
 /*
-  Problem: How do I request the closure of a new state?
-  A state is a set of items.
-*/
+ *  Problem: How do I request the closure of a new state?
+ *  A state is a set of items.
+ *
+ *  Problem: How do I group together items from the same origin?
+ *  state = transition(previousState, symbol)
+ *  How do I represent a "set" in the traditional sense?
+ *  Maybe I don't??
+ *
+ *  It's a bit like GVN - we need to number all possible states.
+ *
+ *  State = a set if items.
+ */
 
 signature string grammar();
 
@@ -57,12 +66,6 @@ module GLR<grammar/0 g> {
     Eof() { this = "$" }
   }
 
-  class State extends string {
-    State() { this = "0" or this = makeTransition(_, _) }
-  }
-
-  predicate transition(State s1, Symbol s, State s2) { s2 = makeTransition(s1, s) }
-
   // Parser table construction
   language[monotonicAggregates]
   predicate closure(string state, Rule rule, int dot, Terminal follows) {
@@ -83,7 +86,7 @@ module GLR<grammar/0 g> {
       follows = rule0.getRhs(dot0 + 1).(Symbol).getFirst()
     )
     // This doesn't work due to nonmonotonic recursion
-    //or exists(string state0 | state0 = makeTransition(state, _) | 
+    //or exists(string state0 | state0 = makeTransition(state, _) |
     //  closure(state0, rule, dot, follows))
   }
 
@@ -126,7 +129,7 @@ module GLR<grammar/0 g> {
           itemstring = kernelItem(rule, dot) // Use itemToString for CLR
         )
       |
-        itemstring  + "; "
+        itemstring + "; "
       )
   }
 
@@ -138,35 +141,37 @@ module GLR<grammar/0 g> {
     state = "0" and rule = initialRule() and dot = 0 and lookahead = "$"
   }
 
-  predicate stateClosureItem(string state, Rule rule, int dot, Terminal lookahead)
-  {
+  predicate stateClosureItem(string state, Rule rule, int dot, Terminal lookahead) {
     stateKernelItem(state, rule, dot, lookahead)
     or
     exists(Rule rule0, int dot0, Terminal lookahead0 |
-      stateClosureItem(state, rule0, dot0, lookahead0) and 
-      rule0.getRhs(dot0) = rule.getLhs() and dot=0 and
+      stateClosureItem(state, rule0, dot0, lookahead0) and
+      rule0.getRhs(dot0) = rule.getLhs() and
+      dot = 0 and
       (
         dot0 = rule0.getLength() and lookahead = lookahead0
-        or 
-        lookahead = rule0.getRhs(dot0).(Symbol).getFirst() /*TODO: Empty symbols*/)
-      )
+        or
+        lookahead = rule0.getRhs(dot0).(Symbol).getFirst()
+      /*TODO: Empty symbols*/ )
+    )
   }
 
-  Terminal follows(Rule rule, int dot, Terminal lookahead)
-  {
-    dot>=0 and 
+  Terminal follows(Rule rule, int dot, Terminal lookahead) {
+    dot >= 0 and
     (
-    dot+1 = rule.getLength() and lookahead = result
-    or
-    rule.getRhs(dot).maybeEmpty() and result = follows(rule, dot + 1, lookahead)
-    or
-    result = rule.getRhs(dot+1).getFirst()
+      dot + 1 = rule.getLength() and lookahead = result
+      or
+      rule.getRhs(dot).maybeEmpty() and result = follows(rule, dot + 1, lookahead)
+      or
+      result = rule.getRhs(dot + 1).getFirst()
     )
   }
 
   // Modify the idea of a transition so that we don't need to compute the closure
-
-  predicate transition(Rule rule1, int dot1, Terminal lookahead1, Symbol symbol, Rule rule2, int dot2, Terminal lookahead2) {
+  predicate transition(
+    Rule rule1, int dot1, Terminal lookahead1, Symbol symbol, Rule rule2, int dot2,
+    Terminal lookahead2
+  ) {
     // We shift the symbol directly (a terminal or non-terminal)
     rule1.getRhs(dot1) = symbol and
     rule2 = rule1 and
@@ -212,6 +217,107 @@ module GLR<grammar/0 g> {
     exists(Rule rule, int dot, string follows | closure(state, rule, dot, follows) |
       itemstring = itemToString(rule, dot, follows)
     )
+  }
+
+  class KernelItem extends string {
+    Rule rule;
+    int dot;
+
+    KernelItem() { this = kernelItem(rule, dot) }
+  }
+
+  class InitialItem extends KernelItem {
+    InitialItem() { this = kernelItem(initialRule(), 0) }
+  }
+
+  predicate initialState(Rule rule, int dot, Terminal lookahead) {
+    rule = initialRule() and dot = 0 and lookahead = "$"
+  }
+
+  predicate initialTransition(Symbol s, Rule rule, int dot, Terminal lookahead) {
+    exists(Rule rule0, int dot0, Terminal lookahead0 | initialState(rule0, dot0, lookahead0) |
+      transition(rule0, dot0, lookahead0, s, rule, dot, lookahead)
+    )
+  }
+
+  string initialState1() {
+    result =
+      concat(string itemstring |
+        exists(Rule rule, int dot, Terminal lookahead | initialState(rule, dot, lookahead) |
+          itemstring = kernelItem(rule, dot)
+        )
+      |
+        itemstring + ";" order by itemstring
+      )
+  }
+
+  predicate sameStateDELETEME(
+    Rule rule1, int dot1, Terminal lookahead1, Rule rule2, int dot2, Terminal lookahead2
+  ) {
+    initialState(rule1, dot1, lookahead1) and
+    rule1 = rule2 and
+    dot1 = dot2 and
+    lookahead1 = lookahead2
+    or
+    exists(Rule rule0, int dot0, Terminal lookahead0, Symbol s0 |
+      transition(rule0, dot0, lookahead0, s0, rule1, dot1, lookahead1) and
+      transition(rule0, dot0, lookahead0, s0, rule2, dot2, lookahead2)
+    )
+  }
+
+  predicate item(Rule rule, int dot, Terminal lookahead) {
+    initialState(rule, dot, lookahead)
+    or
+    exists(Rule rule0, int dot0, Terminal lookahead0, Symbol s |
+      item(rule0, dot0, lookahead0) and
+      transition(rule0, dot0, lookahead0, s, rule, dot, lookahead)
+    )
+  }
+
+  string initialStateX(Rule rule, int dot, Terminal lookahead) {
+    initialState(rule, dot, lookahead) and
+    result = kernelItem(rule, dot)
+  }
+
+  string transitionState(string previous, Symbol s, Rule rule, int dot, Terminal lookahead) {
+    exists(Rule rule0, int dot0, Terminal lookahead0 | item(rule0, dot0, lookahead0) |
+      previous =
+        [transitionState(_, _, rule0, dot0, lookahead0), initialStateX(rule0, dot0, lookahead0)] and
+      transition(rule0, dot0, lookahead0, s, rule, dot, lookahead) and
+      result =
+        concat(string itemstring |
+          exists(Rule rule3, int dot3, Terminal lookahead3 |
+            transition(rule0, dot0, lookahead0, s, rule3, dot3, lookahead3) and
+            itemstring = kernelItem(rule, dot)
+          )
+        |
+          itemstring + "; " order by itemstring
+        )
+    )
+  }
+
+  class State extends string {
+    State() {
+      this = initialStateX(_, _, _)
+      or
+      this = transitionState(_, _, _, _, _)
+    }
+
+    predicate hasItem(Rule rule, int dot, Terminal lookahead) {
+      this = initialStateX(rule, dot, lookahead)
+      or
+      this = transitionState(_, _, rule, dot, lookahead)
+    }
+
+    State getTransition(Symbol s) { result = transitionState(this, s, _, _, _) }
+
+    int getNumber() { this = rank[result](State s) }
+
+    
+  }
+
+  class InitialState extends State {
+    InitialState() { this = initialStateX(_, _, _) }
   }
 }
 
