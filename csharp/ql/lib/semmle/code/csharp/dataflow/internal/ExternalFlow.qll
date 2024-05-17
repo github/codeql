@@ -516,10 +516,13 @@ string asPartialModel(UnboundCallable c) {
   )
 }
 
-/** Computes the first 4 columns for neutral CSV rows of `c`. */
-string asPartialNeutralModel(UnboundCallable c) {
+/**
+ * Gets the signature of `c` in the format `namespace;type;name;parameters`.
+ */
+string getSignature(UnboundCallable c) {
   exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters) and
+    partialModel(c, namespace, type, name, parameters)
+  |
     result =
       namespace + ";" //
         + type + ";" //
