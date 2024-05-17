@@ -1,14 +1,26 @@
 edges
 | ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:9:10:9:24 | call to Query | provenance | MaD:735 |
 | ArgumentInjection.go:9:10:9:24 | call to Query | ArgumentInjection.go:10:31:10:34 | path | provenance |  |
+| CommandInjection2.go:13:15:13:21 | selection of URL | CommandInjection2.go:13:15:13:29 | call to Query | provenance | MaD:735 |
+| CommandInjection2.go:13:15:13:29 | call to Query | CommandInjection2.go:15:67:15:75 | imageName | provenance |  |
+| CommandInjection2.go:15:34:15:88 | []type{args} [array] | CommandInjection2.go:15:34:15:88 | call to Sprintf | provenance | MaD:245 |
+| CommandInjection2.go:15:67:15:75 | imageName | CommandInjection2.go:15:34:15:88 | []type{args} [array] | provenance |  |
+| CommandInjection2.go:15:67:15:75 | imageName | CommandInjection2.go:15:34:15:88 | call to Sprintf | provenance | FunctionModel |
+| CommandInjection2.go:41:15:41:21 | selection of URL | CommandInjection2.go:41:15:41:29 | call to Query | provenance | MaD:735 |
+| CommandInjection2.go:41:15:41:29 | call to Query | CommandInjection2.go:44:67:44:75 | imageName | provenance |  |
+| CommandInjection2.go:44:34:44:88 | []type{args} [array] | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | MaD:245 |
+| CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | []type{args} [array] | provenance |  |
+| CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | FunctionModel |
 | CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:9:13:9:27 | call to Query | provenance | MaD:735 |
 | CommandInjection.go:9:13:9:27 | call to Query | CommandInjection.go:10:22:10:28 | cmdName | provenance |  |
-| GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:10:13:10:27 | call to Query | provenance | MaD:735 |
-| GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:12:31:12:37 | tainted | provenance |  |
-| GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:13:31:13:37 | tainted | provenance |  |
-| GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:14:30:14:36 | tainted | provenance |  |
-| GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:15:35:15:41 | tainted | provenance |  |
-| GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:16:36:16:42 | tainted | provenance |  |
+| GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:11:13:11:27 | call to Query | provenance | MaD:735 |
+| GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:13:31:13:37 | tainted | provenance |  |
+| GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:14:31:14:37 | tainted | provenance |  |
+| GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:15:30:15:36 | tainted | provenance |  |
+| GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:16:35:16:41 | tainted | provenance |  |
+| GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:17:36:17:42 | tainted | provenance |  |
+| GitSubcommands.go:33:13:33:19 | selection of URL | GitSubcommands.go:33:13:33:27 | call to Query | provenance | MaD:735 |
+| GitSubcommands.go:33:13:33:27 | call to Query | GitSubcommands.go:38:32:38:38 | tainted | provenance |  |
 | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:9:13:9:27 | call to Query | provenance | MaD:735 |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:13:25:13:31 | tainted | provenance |  |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:14:23:14:33 | slice expression | provenance |  |
@@ -103,16 +115,29 @@ nodes
 | ArgumentInjection.go:9:10:9:16 | selection of URL | semmle.label | selection of URL |
 | ArgumentInjection.go:9:10:9:24 | call to Query | semmle.label | call to Query |
 | ArgumentInjection.go:10:31:10:34 | path | semmle.label | path |
+| CommandInjection2.go:13:15:13:21 | selection of URL | semmle.label | selection of URL |
+| CommandInjection2.go:13:15:13:29 | call to Query | semmle.label | call to Query |
+| CommandInjection2.go:15:34:15:88 | []type{args} [array] | semmle.label | []type{args} [array] |
+| CommandInjection2.go:15:34:15:88 | call to Sprintf | semmle.label | call to Sprintf |
+| CommandInjection2.go:15:67:15:75 | imageName | semmle.label | imageName |
+| CommandInjection2.go:41:15:41:21 | selection of URL | semmle.label | selection of URL |
+| CommandInjection2.go:41:15:41:29 | call to Query | semmle.label | call to Query |
+| CommandInjection2.go:44:34:44:88 | []type{args} [array] | semmle.label | []type{args} [array] |
+| CommandInjection2.go:44:34:44:88 | call to Sprintf | semmle.label | call to Sprintf |
+| CommandInjection2.go:44:67:44:75 | imageName | semmle.label | imageName |
 | CommandInjection.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | CommandInjection.go:9:13:9:27 | call to Query | semmle.label | call to Query |
 | CommandInjection.go:10:22:10:28 | cmdName | semmle.label | cmdName |
-| GitSubcommands.go:10:13:10:19 | selection of URL | semmle.label | selection of URL |
-| GitSubcommands.go:10:13:10:27 | call to Query | semmle.label | call to Query |
-| GitSubcommands.go:12:31:12:37 | tainted | semmle.label | tainted |
+| GitSubcommands.go:11:13:11:19 | selection of URL | semmle.label | selection of URL |
+| GitSubcommands.go:11:13:11:27 | call to Query | semmle.label | call to Query |
 | GitSubcommands.go:13:31:13:37 | tainted | semmle.label | tainted |
-| GitSubcommands.go:14:30:14:36 | tainted | semmle.label | tainted |
-| GitSubcommands.go:15:35:15:41 | tainted | semmle.label | tainted |
-| GitSubcommands.go:16:36:16:42 | tainted | semmle.label | tainted |
+| GitSubcommands.go:14:31:14:37 | tainted | semmle.label | tainted |
+| GitSubcommands.go:15:30:15:36 | tainted | semmle.label | tainted |
+| GitSubcommands.go:16:35:16:41 | tainted | semmle.label | tainted |
+| GitSubcommands.go:17:36:17:42 | tainted | semmle.label | tainted |
+| GitSubcommands.go:33:13:33:19 | selection of URL | semmle.label | selection of URL |
+| GitSubcommands.go:33:13:33:27 | call to Query | semmle.label | call to Query |
+| GitSubcommands.go:38:32:38:38 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | semmle.label | call to Query |
 | SanitizingDoubleDash.go:13:15:13:32 | array literal [array] | semmle.label | array literal [array] |
@@ -195,12 +220,15 @@ nodes
 subpaths
 #select
 | ArgumentInjection.go:10:31:10:34 | path | ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:10:31:10:34 | path | This command depends on a $@. | ArgumentInjection.go:9:10:9:16 | selection of URL | user-provided value |
+| CommandInjection2.go:15:34:15:88 | call to Sprintf | CommandInjection2.go:13:15:13:21 | selection of URL | CommandInjection2.go:15:34:15:88 | call to Sprintf | This command depends on a $@. | CommandInjection2.go:13:15:13:21 | selection of URL | user-provided value |
+| CommandInjection2.go:44:34:44:88 | call to Sprintf | CommandInjection2.go:41:15:41:21 | selection of URL | CommandInjection2.go:44:34:44:88 | call to Sprintf | This command depends on a $@. | CommandInjection2.go:41:15:41:21 | selection of URL | user-provided value |
 | CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:10:22:10:28 | cmdName | This command depends on a $@. | CommandInjection.go:9:13:9:19 | selection of URL | user-provided value |
-| GitSubcommands.go:12:31:12:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:12:31:12:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:13:31:13:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:13:31:13:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:14:30:14:36 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:14:30:14:36 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:15:35:15:41 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:15:35:15:41 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:16:36:16:42 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:16:36:16:42 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
+| GitSubcommands.go:13:31:13:37 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:13:31:13:37 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
+| GitSubcommands.go:14:31:14:37 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:14:31:14:37 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
+| GitSubcommands.go:15:30:15:36 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:15:30:15:36 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
+| GitSubcommands.go:16:35:16:41 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:16:35:16:41 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
+| GitSubcommands.go:17:36:17:42 | tainted | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:17:36:17:42 | tainted | This command depends on a $@. | GitSubcommands.go:11:13:11:19 | selection of URL | user-provided value |
+| GitSubcommands.go:38:32:38:38 | tainted | GitSubcommands.go:33:13:33:19 | selection of URL | GitSubcommands.go:38:32:38:38 | tainted | This command depends on a $@. | GitSubcommands.go:33:13:33:19 | selection of URL | user-provided value |
 | SanitizingDoubleDash.go:14:23:14:33 | slice expression | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:14:23:14:33 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
 | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
 | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
