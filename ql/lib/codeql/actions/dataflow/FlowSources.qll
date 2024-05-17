@@ -178,7 +178,7 @@ private predicate jsonEvent(string context) {
     reg =
       [
         // json
-        "github\\.event", "github\\.event\\.client_payload", "github\\.event\\.comment",
+        "github", "github\\.event", "github\\.event\\.client_payload", "github\\.event\\.comment",
         "github\\.event\\.commits", "github\\.event\\.discussion", "github\\.event\\.head_commit",
         "github\\.event\\.head_commit\\.author", "github\\.event\\.head_commit\\.committer",
         "github\\.event\\.inputs", "github\\.event\\.issue", "github\\.event\\.merge_group",
@@ -262,7 +262,7 @@ class GitHubEventJsonSource extends RemoteFlowSource {
           )
           or
           contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and
-          Utils::normalizeExpr(context).regexpMatch(".*\\bgithub.event\\b.*")
+          Utils::normalizeExpr(context).regexpMatch(".*\\bgithub(\\.event)?\\b.*")
         )
       ) and
       flag = "json"
