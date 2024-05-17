@@ -152,7 +152,7 @@ module GLR<grammar/0 g> {
 
   string getInitialState(Rule rule, int dot, Terminal lookahead) {
     initialState(rule, dot, lookahead) and
-    result = kernelItem(rule, dot)
+    result = kernelItem(rule, dot) + "; "
   }
 
   string transitionState(string previous, Symbol s, Rule rule, int dot, Terminal lookahead) {
@@ -164,7 +164,7 @@ module GLR<grammar/0 g> {
         concat(string itemstring |
           exists(Rule rule3, int dot3, Terminal lookahead3 |
             transition(rule0, dot0, lookahead0, s, rule3, dot3, lookahead3) and
-            itemstring = kernelItem(rule, dot)
+            itemstring = kernelItem(rule3, dot3)
           )
         |
           itemstring + "; " order by itemstring
