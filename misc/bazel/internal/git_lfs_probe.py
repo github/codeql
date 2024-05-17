@@ -22,6 +22,7 @@ from dataclasses import dataclass
 from typing import Dict
 import argparse
 
+
 def options():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--hash-only", action="store_true")
@@ -69,7 +70,12 @@ def get_endpoint():
         server, _, path = ssh_endpoint.partition(":")
         ssh_command = shutil.which(os.environ.get("GIT_SSH", os.environ.get("GIT_SSH_COMMAND", "ssh")))
         assert ssh_command, "no ssh command found"
-        resp = json.loads(subprocess.check_output([ssh_command, server, "git-lfs-authenticate", path, "download"]))
+        resp = json.loads(subprocess.check_output([ssh_command,
+                                                   "-oStrictHostKeyChecking=accept-new",
+                                                   server,
+                                                   "git-lfs-authenticate",
+                                                   path,
+                                                   "download"]))
         endpoint.href = resp.get("href", endpoint)
         endpoint.update_headers(resp.get("header", {}))
     url = urlparse(endpoint.href)
