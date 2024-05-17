@@ -68,7 +68,7 @@ private string getTypePathComponent(string typePath, int n) {
   result = typePath.splitAt(".", n)
 }
 
-private int getNumTypePathomponents(string typePath) {
+private int getNumTypePathComponents(string typePath) {
   result = strictcount(int n | exists(getTypePathComponent(typePath, n)))
 }
 
@@ -80,7 +80,7 @@ private API::Node getNodeFromTypePath(string typePath, int n) {
 }
 
 private API::Node getNodeFromTypePath(string typePath) {
-  result = getNodeFromTypePath(typePath, getNumTypePathomponents(typePath))
+  result = getNodeFromTypePath(typePath, getNumTypePathComponents(typePath))
 }
 
 /** Gets a Python-specific interpretation of the given `type`. */
