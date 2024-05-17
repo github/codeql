@@ -1,10 +1,15 @@
 import glr
 
 string grammar2() {
-    result = ["G -> E", "E -> E + E", "E -> I"]
+    result = ["G -> E", "E -> E - I", "E -> I"]
 }
 
-string input2(int i) { result = "I+I+I".charAt(i) }
+
+query string conflicts() { result = GLR<grammar2/0>::conflicts() }
+
+query int syntax_error() { result = Test2::syntax_error_position() }
+
+string input2(int i) { result = "I-I-I".charAt(i) }
 
 module Test2 = GLR<grammar2/0>::GLRparser<input2/1>;
 

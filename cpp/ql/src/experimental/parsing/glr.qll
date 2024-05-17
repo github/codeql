@@ -3,8 +3,13 @@
  *  This is purely for fun.
  */
 
+// Specify the grammar as a set of rules of the form "A -> B C D"
+// The right hand side can be empty
 signature string grammar();
 
+// Specify the input as a sequence of tokens, with the token being equal to a symbol in the grammar
+// There is no need to terminate with $ as this is done automatically.
+// The input is indexed by an integer starting at 0.
 signature string input(int i);
 
 // A GLR parser
@@ -74,6 +79,8 @@ module GLR<grammar/0 g> {
     Eof() { this = "$" }
   }
 
+  // What terminal symbol can follow a symbol in a rule
+  // Used for calculate lookaheads
   private Terminal follows(Rule rule, int dot, Terminal lookahead) {
     dot >= 0 and
     (
@@ -85,7 +92,8 @@ module GLR<grammar/0 g> {
     )
   }
 
-  // Modify the idea of a transition so that we don't need to compute the closure
+  // For a given rule, what symbols (terminals or non-terminals) can be shifted?
+  // We automatically implement closures at this point
   private predicate transition(
     Rule rule1, int dot1, Terminal lookahead1, Symbol symbol, Rule rule2, int dot2,
     Terminal lookahead2
@@ -103,7 +111,6 @@ module GLR<grammar/0 g> {
 
   bindingset[dot, lookahead]
   string itemToString(Rule rule, int dot, Terminal lookahead) {
-    // item(rule, dot, lookahead) and
     result =
       rule.getLhs() + " -> " + concat(int i | i in [0 .. dot - 1] | rule.getRhs(i) + " " order by i)
         + ". " +
@@ -111,6 +118,7 @@ module GLR<grammar/0 g> {
         lookahead + "}"
   }
 
+  // Convert a kernel item (excluding lookahead) into a string
   string kernelItem(Rule rule, int dot) {
     dot = [0 .. rule.getLength()] and
     result =
@@ -119,10 +127,13 @@ module GLR<grammar/0 g> {
         concat(int i | i in [dot .. rule.getLength() - 1] | rule.getRhs(i) + " " order by i)
   }
 
+  // The initial state of the parser, expressed as an item.
   predicate initialState(Rule rule, int dot, Terminal lookahead) {
     rule = initialRule() and dot = 0 and lookahead = "$"
   }
 
+  // What are the items in the state graph
+  // This can be computed without actually computing the states
   predicate item(Rule rule, int dot, Terminal lookahead) {
     initialState(rule, dot, lookahead)
     or
@@ -132,11 +143,19 @@ module GLR<grammar/0 g> {
     )
   }
 
+  // The initial state string (just an identifier).
+  // We use strings to identify states
   string getInitialState(Rule rule, int dot, Terminal lookahead) {
     initialState(rule, dot, lookahead) and
     result = " " + kernelItem(rule, dot)
   }
 
+  // A state after a transition from "previous"
+  // This is really the heart of the state computation graph, where we'll concat a string of all items
+  // reachable from the previous state, and give the items in the new state.
+  // We can decide whether to go LALR or CLR at this point, by deciding how to construct the state string.
+  // In this implementation, we'll keep it as small as possible using LALR by removing lookaheads from the state identifier (using kernelItem())
+  // Amazingly, recursion doesn't blow up by pulling transitionState() out of the concat.
   string transitionState(string previous, Symbol s, Rule rule, int dot, Terminal lookahead) {
     exists(Rule rule0, int dot0, Terminal lookahead0 | item(rule0, dot0, lookahead0) |
       previous =
@@ -154,6 +173,8 @@ module GLR<grammar/0 g> {
     )
   }
 
+  // Helper class for managing states in the state machine
+  // Each state is a constructed string, but getNumber() converts states to integers.
   class State extends string {
     State() {
       this = getInitialState(_, _, _)
@@ -161,16 +182,20 @@ module GLR<grammar/0 g> {
       this = transitionState(_, _, _, _, _)
     }
 
+    // Gets a kernel item from the state
     predicate hasItem(Rule rule, int dot, Terminal lookahead) {
       this = getInitialState(rule, dot, lookahead)
       or
       this = transitionState(_, _, rule, dot, lookahead)
     }
 
+    // Gets a transition in this state, by shifting a terminal or non-terminal symbol
     State getTransition(Symbol s) { result = transitionState(this, s, _, _, _) }
 
+    // Gets an internal state number for this state
     int getNumber() { this = rank[result](State s) }
 
+    // Gets a goto transition for this state
     State goto(NonTerminal s) { result = this.getTransition(s) }
 
     // In this state, when the lookahead symbol is `s`, we can shift to `result`
@@ -189,6 +214,8 @@ module GLR<grammar/0 g> {
       this.reduce(s) = rule1 and this.reduce(s) = rule2 and rule1 != rule2
     }
 
+    // Gets all of the closure (expanded) items in this state
+    // This is only used for debugging/printing.
     predicate hasClosure(Rule rule, int dot, Terminal lookahead) {
       this.hasItem(rule, dot, lookahead)
       or
@@ -200,6 +227,7 @@ module GLR<grammar/0 g> {
       )
     }
 
+    // Gets a string showing the closure of the state for debugging purposes
     string getClosureString() {
       result =
         concat(string s |
@@ -212,16 +240,18 @@ module GLR<grammar/0 g> {
     }
   }
 
+  // The initial state
   class InitialState extends State {
     InitialState() { this = getInitialState(_, _, _) }
   }
 
+  // Module containing the parsing algorithm
   module GLRparser<input/1 i> {
     // We need to insert $ at the end of the input
     string getInputToken(int inputPosition) {
       result = i(inputPosition)
       or
-      inputPosition = max(int p | exists(i(p)))+1 and result = "$"
+      inputPosition = max(int p | exists(i(p))) + 1 and result = "$"
     }
 
     /*
@@ -231,7 +261,7 @@ module GLR<grammar/0 g> {
 
     newtype Stack =
       TEmpty() or
-      TShift(int position, State state, Symbol terminal, ParseNode previous) {
+      TShift(int position, State state, Terminal terminal, ParseNode previous) {
         position = previous.getInputPosition() + 1 and
         terminal = getInputToken(position - 1) and
         state = previous.getState().shift(terminal)
@@ -242,20 +272,28 @@ module GLR<grammar/0 g> {
         state = previous.skip(rule.getLength()).getState().goto(rule.getLhs())
       }
 
+    // A node in the parse tree, corresponding exactly to a node in the stack
     abstract class ParseNode extends Stack {
       language[monotonicAggregates]
       abstract string toString();
 
+      // The input position of the node
+      // Which is actually the rightmost position of the node due to LR parsing
       abstract int getInputPosition();
 
+      // Gets the state on top of the stack
       abstract State getState();
 
+      // Gets the previous node on the stack
+      // with the stack being implemented as a linked list.
       abstract ParseNode getPrevious();
 
+      // Gets the symbol of this parse node
       abstract Symbol getSymbol();
 
       string debugString() { result = this.toString() + "->" + this.getPrevious().debugString() }
 
+      // Move i places up the parse stack.
       ParseNode skip(int i) {
         i = 0 and result = this
         or
@@ -263,6 +301,7 @@ module GLR<grammar/0 g> {
       }
     }
 
+    // The bottom of the stack, which needs a representation
     class EmptyNode extends ParseNode, TEmpty {
       override string toString() { result = "Empty" }
 
@@ -277,6 +316,7 @@ module GLR<grammar/0 g> {
       override string debugString() { result = "ø" }
     }
 
+    // A terminal node, created by shifting a token onto the stack
     class TerminalNode extends ParseNode, TShift {
       int position;
       State state;
@@ -296,11 +336,14 @@ module GLR<grammar/0 g> {
 
       override ParseNode getPrevious() { result = previous }
 
+      // Gets the input position that matched this node
+      // This will be on the right hand side of the node.
       override int getInputPosition() { result = position }
 
       override Symbol getSymbol() { result = terminal }
     }
 
+    // A non-terminal node, created by reducing a rule on the stack
     class NonTerminalNode extends ParseNode, TReduce {
       int position;
       State state;
@@ -310,28 +353,33 @@ module GLR<grammar/0 g> {
       NonTerminalNode() { this = TReduce(position, state, rule, previous) }
 
       language[monotonicAggregates]
-      override string toString() {
-        result = rule + "@" + position
-      }
+      override string toString() { result = rule + "@" + position }
 
       override State getState() { result = state }
 
+      // When we reduce, we collapse the top of the stack.
+      // Since we can't actually do that in CodeQL, we just skip the correct number
+      // of places in the stack instead.
       override ParseNode getPrevious() { result = previous.skip(rule.getLength()) }
 
       override int getInputPosition() { result = position }
 
       override Symbol getSymbol() { result = rule.getLhs() }
 
+      // The children of this node are stored on the stack below us.
       ParseNode getChild(int i) {
         i in [0 .. rule.getLength() - 1] and
         result = previous.skip(rule.getLength() - i - 1)
       }
     }
 
+    // The root node, which is called G.
+    // There can be multiple root nodes.
     class Root extends NonTerminalNode {
       Root() { rule.getLhs() = "G" }
     }
 
+    // Dump the parser stack
     predicate dumpNodes(
       ParseNode node, int position, State state, string closure, int stateNumber, string debug
     ) {
@@ -342,38 +390,48 @@ module GLR<grammar/0 g> {
       debug = node.debugString()
     }
 
+    // Simple dump of the parse tree
     predicate tree(NonTerminalNode node, int i, ParseNode child) { node.getChild(i) = child }
+
+    // Gives the position of the syntax error if there is one
+    int syntax_error_position()
+    {
+      result = max(int i | exists(ParseNode node | i = node.getInputPosition()))
+      and not exists(Root r)
+    }
   }
 
   // A combination of the actions and gotos table in one convenient output
   predicate parseTable(int state, string closure, Symbol symbol, string action) {
     exists(State s | s.getNumber() = state and closure = s.getClosureString() |
-    
-      action = "shift to state " + s.shift(symbol).getNumber()
-       or action = "reduce by rule " + s.reduce(symbol)
+      action = "shift to state " + s.shift(symbol).getNumber() or
+      action = "reduce by rule " + s.reduce(symbol) or
+      action = "goto state " + s.goto(symbol).getNumber()
+    )
+  }
 
-    
-    or action = "goto state " + s.goto(symbol).getNumber()
+  string conflicts() {
+    exists(int sr, int rr |
+      sr = count(State s | s.shiftReduceConflict(_, _, _)) and
+      rr = count(State s | s.reduceReduceConflict(_, _, _))
+    |
+      (sr > 0 or rr > 0) and
+      result = "There are " + sr + " shift/reduce conflicts and " + rr + " reduce/reduce conflicts."
     )
   }
 }
 
-string input2(int i) { result = "I".charAt(i) }
+// Just some debugging information needed to quickeval predicates in modules
+string input2(int i) { result = "IxI".charAt(i) }
+string grammar2() { result = ["G -> E", "E -> E x E", "E -> I"] }
 
 module Test2 = GLR<grammar2/0>::GLRparser<input2/1>;
 
-
-
-string grammar1() { result = ["G -> E", "E -> x", "E -> E x"] }
+string grammar1() { result = ["G -> E", "E -> x", "E -> E + E"] }
 
 string input1(int i) { result = "xxxxx".charAt(i) }
 
 module GLRTest = GLR<grammar1/0>;
 
 module GLTTest2 = GLR<grammar1/0>::GLRparser<input1/1>;
-
-
-string grammar2() {
-  result = ["G -> E", "E -> E x E", "E -> I"]
-}
 
