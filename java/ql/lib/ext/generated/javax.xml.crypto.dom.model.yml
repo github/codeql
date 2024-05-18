@@ -9,3 +9,4 @@ extensions:
       - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setIdAttributeNS", "(Element,String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.crypto.dom", "DOMStructure", True, "DOMStructure", "(Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.crypto.dom", "DOMStructure", True, "getNode", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dom", "DOMURIReference", True, "getHere", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

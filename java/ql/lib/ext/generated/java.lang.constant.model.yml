@@ -4,7 +4,9 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.lang.constant", "ClassDesc", True, "arrayType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "ClassDesc", True, "arrayType", "(int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "ClassDesc", True, "componentType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "ClassDesc", True, "displayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "ClassDesc", True, "nested", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "ClassDesc", True, "nested", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -77,18 +79,32 @@ extensions:
       - ["java.lang.constant", "MethodHandleDesc", True, "ofMethod", "(DirectMethodHandleDesc$Kind,ClassDesc,String,MethodTypeDesc)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "MethodHandleDesc", True, "ofMethod", "(DirectMethodHandleDesc$Kind,ClassDesc,String,MethodTypeDesc)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "MethodHandleDesc", True, "ofMethod", "(DirectMethodHandleDesc$Kind,ClassDesc,String,MethodTypeDesc)", "", "Argument[3]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "changeParameterType", "(int,ClassDesc)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "changeParameterType", "(int,ClassDesc)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "changeReturnType", "(ClassDesc)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "changeReturnType", "(ClassDesc)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "MethodTypeDesc", True, "displayDescriptor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "dropParameterTypes", "(int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "insertParameterTypes", "(int,ClassDesc[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "insertParameterTypes", "(int,ClassDesc[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "MethodTypeDesc", True, "of", "(ClassDesc,ClassDesc[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "MethodTypeDesc", True, "of", "(ClassDesc,ClassDesc[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
       - ["java.lang.constant", "MethodTypeDesc", True, "ofDescriptor", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "parameterArray", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "parameterList", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "parameterType", "(int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", True, "returnType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.lang.constant", "ClassDesc", "isArray", "()", "summary", "df-generated"]
       - ["java.lang.constant", "ClassDesc", "isClassOrInterface", "()", "summary", "df-generated"]
+      - ["java.lang.constant", "ClassDesc", "isPrimitive", "()", "summary", "df-generated"]
       - ["java.lang.constant", "DirectMethodHandleDesc$Kind", "valueOf", "(int)", "summary", "df-generated"]
       - ["java.lang.constant", "DirectMethodHandleDesc$Kind", "valueOf", "(int,boolean)", "summary", "df-generated"]
       - ["java.lang.constant", "DirectMethodHandleDesc", "isOwnerInterface", "()", "summary", "df-generated"]
       - ["java.lang.constant", "DirectMethodHandleDesc", "kind", "()", "summary", "df-generated"]
       - ["java.lang.constant", "DirectMethodHandleDesc", "refKind", "()", "summary", "df-generated"]
       - ["java.lang.constant", "DynamicCallSiteDesc", "resolveCallSiteDesc", "(MethodHandles$Lookup)", "summary", "df-generated"]
+      - ["java.lang.constant", "MethodTypeDesc", "parameterCount", "()", "summary", "df-generated"]

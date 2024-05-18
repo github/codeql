@@ -20,6 +20,7 @@ extensions:
       - ["javax.print.attribute.standard", "JobOriginatingUserName", False, "JobOriginatingUserName", "(String,Locale)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.print.attribute.standard", "JobOriginatingUserName", False, "JobOriginatingUserName", "(String,Locale)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["javax.print.attribute.standard", "JobStateReasons", False, "JobStateReasons", "(Collection)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["javax.print.attribute.standard", "MediaPrintableArea", False, "toString", "(int,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["javax.print.attribute.standard", "MediaSize", True, "MediaSize", "(float,float,int,MediaSizeName)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
       - ["javax.print.attribute.standard", "MediaSize", True, "MediaSize", "(int,int,int,MediaSizeName)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
       - ["javax.print.attribute.standard", "MediaSize", True, "getMediaSizeName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

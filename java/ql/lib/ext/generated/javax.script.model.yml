@@ -50,6 +50,7 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["javax.script", "Bindings", "containsKey", "(Object)", "summary", "df-generated"]
       - ["javax.script", "CompiledScript", "eval", "()", "summary", "df-generated"]
       - ["javax.script", "CompiledScript", "eval", "(Bindings)", "summary", "df-generated"]
       - ["javax.script", "CompiledScript", "eval", "(ScriptContext)", "summary", "df-generated"]
@@ -64,3 +65,7 @@ extensions:
       - ["javax.script", "ScriptEngineManager", "ScriptEngineManager", "(ClassLoader)", "summary", "df-generated"]
       - ["javax.script", "ScriptException", "getColumnNumber", "()", "summary", "df-generated"]
       - ["javax.script", "ScriptException", "getLineNumber", "()", "summary", "df-generated"]
+      - ["javax.script", "SimpleBindings", "clear", "()", "summary", "df-generated"]
+      - ["javax.script", "SimpleBindings", "containsValue", "(Object)", "summary", "df-generated"]
+      - ["javax.script", "SimpleBindings", "isEmpty", "()", "summary", "df-generated"]
+      - ["javax.script", "SimpleBindings", "size", "()", "summary", "df-generated"]

@@ -18,7 +18,6 @@ extensions:
       - ["javax.security.auth", "Subject", False, "getPrincipals", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth", "Subject", False, "getPrivateCredentials", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth", "Subject", False, "getPublicCredentials", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["javax.security.auth", "Subject", False, "getSubject", "(AccessControlContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.security.auth", "SubjectDomainCombiner", True, "SubjectDomainCombiner", "(Subject)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.security.auth", "SubjectDomainCombiner", True, "getSubject", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
@@ -33,5 +32,6 @@ extensions:
       - ["javax.security.auth", "Subject", "getPrincipals", "(Class)", "summary", "df-generated"]
       - ["javax.security.auth", "Subject", "getPrivateCredentials", "(Class)", "summary", "df-generated"]
       - ["javax.security.auth", "Subject", "getPublicCredentials", "(Class)", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "getSubject", "(AccessControlContext)", "summary", "df-generated"]
       - ["javax.security.auth", "Subject", "isReadOnly", "()", "summary", "df-generated"]
       - ["javax.security.auth", "Subject", "setReadOnly", "()", "summary", "df-generated"]

@@ -4,7 +4,6 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.management.monitor", "Monitor", True, "getDerivedGauge", "(ObjectName)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.management.monitor", "MonitorMBean", True, "getObservedAttribute", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.management.monitor", "MonitorMBean", True, "getObservedObject", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.management.monitor", "MonitorMBean", True, "getObservedObjects", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -23,6 +22,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["javax.management.monitor", "CounterMonitorMBean", "getDerivedGauge", "()", "summary", "df-generated"]
+      - ["javax.management.monitor", "CounterMonitorMBean", "getDerivedGauge", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "CounterMonitorMBean", "getDerivedGaugeTimeStamp", "()", "summary", "df-generated"]
       - ["javax.management.monitor", "CounterMonitorMBean", "getDerivedGaugeTimeStamp", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "CounterMonitorMBean", "getDifferenceMode", "()", "summary", "df-generated"]
@@ -39,6 +39,7 @@ extensions:
       - ["javax.management.monitor", "CounterMonitorMBean", "setOffset", "(Number)", "summary", "df-generated"]
       - ["javax.management.monitor", "CounterMonitorMBean", "setThreshold", "(Number)", "summary", "df-generated"]
       - ["javax.management.monitor", "GaugeMonitorMBean", "getDerivedGauge", "()", "summary", "df-generated"]
+      - ["javax.management.monitor", "GaugeMonitorMBean", "getDerivedGauge", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "GaugeMonitorMBean", "getDerivedGaugeTimeStamp", "()", "summary", "df-generated"]
       - ["javax.management.monitor", "GaugeMonitorMBean", "getDerivedGaugeTimeStamp", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "GaugeMonitorMBean", "getDifferenceMode", "()", "summary", "df-generated"]
@@ -50,7 +51,6 @@ extensions:
       - ["javax.management.monitor", "GaugeMonitorMBean", "setNotifyHigh", "(boolean)", "summary", "df-generated"]
       - ["javax.management.monitor", "GaugeMonitorMBean", "setNotifyLow", "(boolean)", "summary", "df-generated"]
       - ["javax.management.monitor", "GaugeMonitorMBean", "setThresholds", "(Number,Number)", "summary", "df-generated"]
-      - ["javax.management.monitor", "Monitor", "getDerivedGaugeTimeStamp", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "MonitorMBean", "addObservedObject", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "MonitorMBean", "containsObservedObject", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management.monitor", "MonitorMBean", "getGranularityPeriod", "()", "summary", "df-generated"]
