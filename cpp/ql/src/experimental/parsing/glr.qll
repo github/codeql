@@ -273,8 +273,7 @@ module GLR<grammar/0 g> {
       }
 
     // A node in the parse tree, corresponding exactly to a node in the stack
-    abstract class ParseNode extends Stack {
-      language[monotonicAggregates]
+    class ParseNode extends Stack {
       abstract string toString();
 
       // The input position of the node
@@ -299,6 +298,12 @@ module GLR<grammar/0 g> {
         or
         i > 0 and result = this.getPrevious().skip(i - 1)
       }
+
+      predicate isReachable() { exists(Root r | this = r.getAChild*()) }
+
+      ParseNode getChild(int i) { none() }
+
+      ParseNode getAChild() { result = this.getChild(_) }
     }
 
     // The bottom of the stack, which needs a representation
@@ -352,7 +357,6 @@ module GLR<grammar/0 g> {
 
       NonTerminalNode() { this = TReduce(position, state, rule, previous) }
 
-      language[monotonicAggregates]
       override string toString() { result = rule + "@" + position }
 
       override State getState() { result = state }
@@ -367,7 +371,7 @@ module GLR<grammar/0 g> {
       override Symbol getSymbol() { result = rule.getLhs() }
 
       // The children of this node are stored on the stack below us.
-      ParseNode getChild(int i) {
+      override ParseNode getChild(int i) {
         i in [0 .. rule.getLength() - 1] and
         result = previous.skip(rule.getLength() - i - 1)
       }
@@ -391,13 +395,14 @@ module GLR<grammar/0 g> {
     }
 
     // Simple dump of the parse tree
-    predicate tree(NonTerminalNode node, int i, ParseNode child) { node.getChild(i) = child }
+    predicate tree(NonTerminalNode node, int i, ParseNode child) {
+      node.getChild(i) = child and child.isReachable()
+    }
 
     // Gives the position of the syntax error if there is one
-    int syntax_error_position()
-    {
-      result = max(int i | exists(ParseNode node | i = node.getInputPosition()))
-      and not exists(Root r)
+    int syntax_error_position() {
+      result = max(int i | exists(ParseNode node | i = node.getInputPosition())) and
+      not exists(Root r)
     }
   }
 
@@ -422,16 +427,8 @@ module GLR<grammar/0 g> {
 }
 
 // Just some debugging information needed to quickeval predicates in modules
-string input2(int i) { result = "IxI".charAt(i) }
-string grammar2() { result = ["G -> E", "E -> E x E", "E -> I"] }
+string test_input(int i) { result = "I+I".charAt(i) }
 
-module Test2 = GLR<grammar2/0>::GLRparser<input2/1>;
+string test_grammar() { result = ["G -> E", "E -> E + E", "E -> I"] }
 
-string grammar1() { result = ["G -> E", "E -> x", "E -> E + E"] }
-
-string input1(int i) { result = "xxxxx".charAt(i) }
-
-module GLRTest = GLR<grammar1/0>;
-
-module GLTTest2 = GLR<grammar1/0>::GLRparser<input1/1>;
-
+module DebugContext = GLR<test_grammar/0>::GLRparser<test_input/1>;
