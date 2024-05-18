@@ -1102,17 +1102,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       not inBarrier(p)
     }
 
-    /**
-     * Gets an additional term that is added to `branch` and `join` when deciding whether
-     * the amount of forward or backward branching is within the limit specified by the
-     * configuration.
-     */
-    pragma[nomagic]
-    private int getLanguageSpecificFlowIntoCallNodeCand1(ArgNodeEx arg, ParamNodeEx p) {
-      flowIntoCallNodeCand1(_, arg, p) and
-      result = getAdditionalFlowIntoCallNodeTerm(arg.projectToNode(), p.projectToNode())
-    }
-
     private module SndLevelScopeOption = Option<DataFlowSecondLevelScope>;
 
     private class SndLevelScopeOption = SndLevelScopeOption::Option;
@@ -1185,11 +1174,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private int branch(ArgNodeEx n1) {
       result =
         strictcount(DataFlowCallable c |
-            exists(NodeEx n |
-              flowIntoCallNodeCand1(_, n1, n) and
-              c = n.getEnclosingCallable()
-            )
-          ) + sum(ParamNodeEx p1 | | getLanguageSpecificFlowIntoCallNodeCand1(n1, p1))
+          exists(NodeEx n |
+            flowIntoCallNodeCand1(_, n1, n) and
+            c = n.getEnclosingCallable()
+          )
+        )
     }
 
     /**
@@ -1201,11 +1190,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private int join(ParamNodeEx n2) {
       result =
         strictcount(DataFlowCallable c |
-            exists(NodeEx n |
-              flowIntoCallNodeCand1(_, n, n2) and
-              c = n.getEnclosingCallable()
-            )
-          ) + sum(ArgNodeEx arg2 | | getLanguageSpecificFlowIntoCallNodeCand1(arg2, n2))
+          exists(NodeEx n |
+            flowIntoCallNodeCand1(_, n, n2) and
+            c = n.getEnclosingCallable()
+          )
+        )
     }
 
     /**
