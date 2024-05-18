@@ -307,6 +307,64 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       nodeFrom.asCfgNode() = def.getValue() and
       var.getScope().getScope*() = nodeFrom.getScope()
     )
+    // Class Base:
+    //  var = expr
+    //  ...
+    //  def f(self):
+    //    ...self.var is used...
+    //
+    // Class Sub(Base):
+    //  def g(self):
+    //    ...self.var is used...
+    //
+    // nodeFrom is `expr`
+    // nodeTo is entry node for `self.var`
+    or
+    exists(SelfAttributeRead read, Class baseClass, Class subClass |
+      baseClass.contains(nodeFrom.asExpr()) and
+      (
+        exists(ClassObject subClassObj |
+          subClassObj.getABaseType*() = baseClass.getClassObject() and 
+          subClassObj = subClass.getClassObject()
+        )
+        or
+        subClass = baseClass
+      )
+      and
+      subClass.contains(read) and 
+      read.getName() = nodeFrom.asExpr().toString() and
+      nodeTo.asCfgNode() = read.getAFlowNode() 
+    )
+    // Class Base:
+    //   def __init__(self, expr=expr):
+    //     self.var = expr
+    //
+    //   def f(self):
+    //     ...self.var is used...
+    // 
+    // Class Sub(Base):
+    //   def g(self):
+    //     ...self.var is used...
+    //
+    // nodeFrom is `expr`
+    // nodeTo is entry node for `self.var`
+    or
+    exists(SelfAttributeStore store, SelfAttributeRead read, Class subClass |
+      nodeFrom.asExpr() = store.getAssignedValue() and 
+      (
+        exists(Class baseClass, ClassObject subClassObj |
+          baseClass = store.getClass() and 
+          subClassObj.getABaseType*() = baseClass.getClassObject() and 
+          subClassObj = subClass.getClassObject()
+        )
+        or
+        subClass = store.getClass()
+      )
+      and
+      subClass.contains(read) and
+      read.getName() = store.getName() and
+      nodeTo.asCfgNode() = read.getAFlowNode()
+    )
   }
 
   /**
