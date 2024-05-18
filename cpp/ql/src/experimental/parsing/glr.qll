@@ -147,7 +147,7 @@ module GLR<grammar/0 g> {
   // We use strings to identify states
   string getInitialState(Rule rule, int dot, Terminal lookahead) {
     initialState(rule, dot, lookahead) and
-    result = " " + kernelItem(rule, dot)
+    result = "$" + kernelItem(rule, dot)
   }
 
   // A state after a transition from "previous"
@@ -161,6 +161,8 @@ module GLR<grammar/0 g> {
       previous =
         [transitionState(_, _, rule0, dot0, lookahead0), getInitialState(rule0, dot0, lookahead0)] and
       transition(rule0, dot0, lookahead0, s, rule, dot, lookahead) and
+      // Concern here that if there are multiple transitions from the previous state, then
+      // we'll get multiple result strings
       result =
         concat(string itemstring |
           exists(Rule rule3, int dot3, Terminal lookahead3 |
