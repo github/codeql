@@ -426,11 +426,16 @@ module GLR<grammar/0 g> {
       result = "There are " + sr + " shift/reduce conflicts and " + rr + " reduce/reduce conflicts."
     )
   }
+
+  // This should be empty
+  predicate debugStates(State state1, Symbol s) {
+    count(state1.getTransition(s))>1
+  }
 }
 
 // Just some debugging information needed to quickeval predicates in modules
-string test_input(int i) { result = "I+I".charAt(i) }
+string test_input(int i) { result = "I+I-I".charAt(i) }
 
-string test_grammar() { result = ["G -> E", "E -> E + E", "E -> I"] }
+string test_grammar() { result = ["G -> E", "E -> E + I", "E -> E - I", "E -> I"] }
 
 module DebugContext = GLR<test_grammar/0>::GLRparser<test_input/1>;
