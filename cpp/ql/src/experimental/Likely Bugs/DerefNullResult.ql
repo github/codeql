@@ -12,20 +12,23 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.new.DataFlow
 
 from Function nuller, Parameter pd, FunctionCall fc, Variable v
 where
   mayReturnNull(nuller) and
   functionDereferences(pd.getFunction(), pd.getIndex()) and
-
   // there is a function call which will deref parameter pd
   fc.getTarget() = pd.getFunction() and
   // the parameter pd comes from a variable v
-  DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()), DataFlow::exprNode(fc.getArgument(pd.getIndex()))) and
+  DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()),
+    DataFlow::exprNode(fc.getArgument(pd.getIndex()))) and
   // this variable v was assigned by a call to the nuller function
   v.getAnAssignedValue() = nuller.getACallToThisFunction() and
   // this variable v is not accessed for an operation (check for NULLness)
-  not exists (VariableAccess vc | vc.getTarget() = v and (vc.getParent() instanceof Operation or vc.getParent() instanceof IfStmt))
-
-select fc, "This function call may deref $@ when it can be NULL from $@", v, v.getName(), nuller, nuller.getName()
+  not exists(VariableAccess vc |
+    vc.getTarget() = v and
+    (vc.getParent() instanceof Operation or vc.getParent() instanceof IfStmt)
+  )
+select fc, "This function call may deref $@ when it can be NULL from $@", v, v.getName(), nuller,
+  nuller.getName()
