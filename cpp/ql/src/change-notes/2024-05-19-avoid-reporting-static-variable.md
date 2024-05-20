@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Reduce false positives of `NotInitialised.ql`. Static variables are initialised to zeros or nulls by default. See https://stackoverflow.com/questions/13251083/the-initialization-of-static-variables-in-c
+* The "Variable not initialized before use" query (`cpp/not-initialised`) no longer reports an alert on static variables.
