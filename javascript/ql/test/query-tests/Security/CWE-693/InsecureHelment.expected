@@ -1,0 +1,2 @@
+| InsecureHelmetBad.js:7:5:7:32 | content ... : false | Helmet route handler, called with $@ set to 'false' | InsecureHelmetBad.js:7:5:7:32 | content ... : false | contentSecurityPolicy |
+| InsecureHelmetBad.js:8:5:8:21 | frameguard: false | Helmet route handler, called with $@ set to 'false' | InsecureHelmetBad.js:8:5:8:21 | frameguard: false | frameguard |
