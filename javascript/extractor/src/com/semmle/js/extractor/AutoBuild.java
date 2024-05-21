@@ -1010,6 +1010,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     return config;
   }
 
+  private boolean isFileTooLarge(Path f) {
+    long fileSize = f.toFile().length();
+    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
+      warn("Skipping " + f + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
+      return true;
+    }
+    return false;
+  }
+
   private Set<Path> extractTypeScript(
       Set<Path> files,
       Set<Path> extractedFiles,
@@ -1051,9 +1060,13 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             // compiler can parse them for us.
             continue;
           }
-          if (!extractedFiles.contains(sourcePath)) {
-            typeScriptFiles.add(sourcePath);
+          if (extractedFiles.contains(sourcePath)) {
+            continue;
           }
+          if (isFileTooLarge(sourcePath)) {
+            continue;
+          }
+          typeScriptFiles.add(sourcePath);
         }
         typeScriptFiles.sort(PATH_ORDERING);
         extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
@@ -1070,7 +1083,8 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<Path> remainingTypeScriptFiles = new ArrayList<>();
       for (Path f : files) {
         if (!extractedFiles.contains(f)
-            && extractors.fileType(f) == FileType.TYPESCRIPT) {
+            && extractors.fileType(f) == FileType.TYPESCRIPT
+            && !isFileTooLarge(f)) {
           remainingTypeScriptFiles.add(f);
         }
       }
@@ -1236,9 +1250,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       warn("Skipping " + file + ", which does not exist.");
       return;
     }
-    long fileSize = f.length();
-    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
-      warn("Skipping " + file + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
+    if (isFileTooLarge(file)) {
       return;
     }
 
