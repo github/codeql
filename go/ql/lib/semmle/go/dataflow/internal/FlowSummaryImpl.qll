@@ -236,10 +236,10 @@ module SourceSinkInterpretationInput implements
   /** Provides additional source specification logic. */
   bindingset[c]
   predicate interpretInput(string c, InterpretNode mid, InterpretNode node) {
-    exists(int pos, ReturnNodeExt ret |
+    exists(int pos, ReturnNode ret |
       parseReturn(c, pos) and
       ret = node.asNode() and
-      ret.getKind().(ValueReturnKind).getKind() = getReturnKind(pos) and
+      ret.getKind() = getReturnKind(pos) and
       mid.asCallable() = getNodeEnclosingCallable(ret)
     )
     or
