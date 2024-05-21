@@ -14,11 +14,13 @@
 import semmle.javascript.frameworks.ExpressModules
 
 class HelmetProperty extends Property {
+  ExpressLibraries::HelmetRouteHandler helmet;
+
   HelmetProperty() {
-    exists(ExpressLibraries::HelmetRouteHandler helmet |
-      helmet.(DataFlow::CallNode).getAnArgument().asExpr().(ObjectExpr).getAProperty() = this
-    )
+    helmet.(DataFlow::CallNode).getAnArgument().asExpr().(ObjectExpr).getAProperty() = this
   }
+
+  ExpressLibraries::HelmetRouteHandler getHelmet() { result = helmet }
 
   predicate isFalse() { this.getInit().(BooleanLiteral).getBoolValue() = false }
 
@@ -29,8 +31,10 @@ class HelmetProperty extends Property {
   }
 }
 
-from HelmetProperty helmetSetting
+from HelmetProperty helmetSetting, ExpressLibraries::HelmetRouteHandler helmet
 where
   helmetSetting.isFalse() and
-  helmetSetting.isImportantSecuritySetting()
-select helmetSetting, "Helmet route handler, called with $@ set to 'false'", helmetSetting, helmetSetting.getName()
+  helmetSetting.isImportantSecuritySetting() and
+  helmetSetting.getHelmet() = helmet
+select helmet, "Helmet route handler, called with $@ set to 'false'.", helmetSetting,
+  helmetSetting.getName()
