@@ -19,7 +19,21 @@ private module DispatchImpl {
     )
   }
 
+  private predicate hasExactManualModel(Call c, Callable tgt) {
+    tgt = c.getCallee().getSourceDeclaration() and
+    (
+      exists(Impl::Public::SummarizedCallable sc |
+        sc.getACall() = c and sc.hasExactModel() and sc.hasManualModel()
+      )
+      or
+      exists(Impl::Public::NeutralSummaryCallable nc |
+        nc.getACall() = c and nc.hasExactModel() and nc.hasManualModel()
+      )
+    )
+  }
+
   private Callable sourceDispatch(Call c) {
+    not hasExactManualModel(c, result) and
     result = VirtualDispatch::viableCallable(c) and
     if VirtualDispatch::lowConfidenceDispatchTarget(c, result)
     then not hasHighConfidenceTarget(c)

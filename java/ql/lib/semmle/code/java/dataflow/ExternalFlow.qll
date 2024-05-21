@@ -413,25 +413,28 @@ private string paramsStringQualified(Callable c) {
 }
 
 private Element interpretElement0(
-  string package, string type, boolean subtypes, string name, string signature
+  string package, string type, boolean subtypes, string name, string signature, boolean isExact
 ) {
   elementSpec(package, type, subtypes, name, signature, _) and
   (
-    exists(Member m |
+    exists(Member m, boolean isExact0 |
       (
-        result = m
+        result = m and isExact0 = true
         or
-        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
+        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m) and isExact0 = false
       ) and
       m.hasQualifiedName(package, type, name)
     |
-      signature = "" or
-      paramsStringQualified(m) = signature or
-      paramsString(m) = signature
+      signature = "" and isExact = false
+      or
+      paramsStringQualified(m) = signature and isExact = isExact0
+      or
+      paramsString(m) = signature and isExact = isExact0
     )
     or
     exists(RefType t |
       t.hasQualifiedName(package, type) and
+      isExact = false and
       (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
       name = "" and
       signature = ""
@@ -442,13 +445,16 @@ private Element interpretElement0(
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 cached
 Element interpretElement(
-  string package, string type, boolean subtypes, string name, string signature, string ext
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  boolean isExact
 ) {
   elementSpec(package, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(package, type, subtypes, name, signature) |
-    ext = "" and result = e
+  exists(Element e, boolean isExact0 |
+    e = interpretElement0(package, type, subtypes, name, signature, isExact0)
+  |
+    ext = "" and result = e and isExact = isExact0
     or
-    ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e
+    ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e and isExact = false
   )
 }
 
@@ -538,13 +544,13 @@ predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _, _) }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
   ) {
     exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model) and
+      summaryElement(this, input, output, kind, provenance, model, _) and
       provenance.isManual()
     )
   }
@@ -553,11 +559,11 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     string input, string output, string kind, string model
   ) {
     exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model) and
+      summaryElement(this, input, output, kind, provenance, model, _) and
       provenance.isGenerated()
     ) and
     not exists(Provenance provenance |
-      neutralElement(this, "summary", provenance) and
+      neutralElement(this, "summary", provenance, _) and
       provenance.isManual()
     )
   }
@@ -576,18 +582,23 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   }
 
   override predicate hasProvenance(Provenance provenance) {
-    summaryElement(this, _, _, _, provenance, _)
+    summaryElement(this, _, _, _, provenance, _, _)
   }
+
+  override predicate hasExactModel() { summaryElement(this, _, _, _, _, _, true) }
 }
 
 // adapter class for converting Mad neutrals to `NeutralCallable`s
 private class NeutralCallableAdapter extends NeutralCallable {
   string kind;
   string provenance_;
+  boolean exact;
 
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
+  NeutralCallableAdapter() { neutralElement(this, kind, provenance_, exact) }
 
   override string getKind() { result = kind }
 
   override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+
+  override predicate hasExactModel() { exact = true }
 }
