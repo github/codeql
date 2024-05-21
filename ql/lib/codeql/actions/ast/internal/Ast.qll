@@ -1,6 +1,6 @@
 private import codeql.actions.ast.internal.Yaml
 private import codeql.Locations
-private import codeql.actions.Ast::Utils as Utils
+private import codeql.actions.Helper
 private import codeql.actions.dataflow.ExternalFlow
 
 /**
@@ -299,6 +299,47 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     n.lookup("inputs").(YamlMapping).maps(result.getNode(), _) and
     result.getNode().getValue() = name
   }
+
+  LocalJobImpl getACaller() {
+    exists(LocalJobImpl caller, string gwf_path, string path |
+      // the workflow files may not be rooted in the parent directory of .github/workflows
+      // extract the offset so we can remove it from the action path
+      gwf_path =
+        caller
+            .getLocation()
+            .getFile()
+            .getRelativePath()
+            .prefix(caller.getLocation().getFile().getRelativePath().indexOf(".github/workflows/")) and
+      path = this.getLocation().getFile().getRelativePath().replaceAll(gwf_path, "") and
+      caller.getAStep().(UsesStepImpl).getCallee() =
+        path.prefix(path.indexOf(["/action.yml", "/action.yaml"])) and
+      result = caller
+    )
+  }
+
+  /** Holds if the action is privileged. */
+  predicate isPrivileged() {
+    // there is a calling job that defines explicit write permissions
+    this.hasExplicitWritePermission()
+    or
+    // the actions has an explicit secret accesses
+    this.hasExplicitSecretAccess()
+    or
+    // there is a privileged caller job
+    this.getACaller().isPrivileged()
+  }
+
+  private predicate hasExplicitSecretAccess() {
+    // the job accesses a secret other than GITHUB_TOKEN
+    exists(SecretsExpressionImpl expr |
+      expr.getEnclosingCompositeAction() = this and not expr.getFieldName() = "GITHUB_TOKEN"
+    )
+  }
+
+  private predicate hasExplicitWritePermission() {
+    // a calling job has an explicit write permission
+    this.getACaller().getPermissions().getAPermission().matches("%write")
+  }
 }
 
 class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
@@ -328,10 +369,10 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
   string getName() { result = n.lookup("name").(YamlString).getValue() }
 
   /** Gets the job within this workflow with the given job ID. */
-  JobImpl getJob(string jobId) { result.getWorkflow() = this and result.getId() = jobId }
+  JobImpl getJob(string jobId) { result.getEnclosingWorkflow() = this and result.getId() = jobId }
 
   /** Gets a job within this workflow */
-  JobImpl getAJob() { result = this.getJob(_) }
+  JobImpl getAJob() { result.getEnclosingWorkflow() = this }
 
   /** Gets the permissions granted to this workflow. */
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
@@ -367,6 +408,10 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
   InputImpl getInput(string name) {
     workflow_call.(YamlMapping).lookup("inputs").(YamlMapping).maps(result.getNode(), _) and
     result.getNode().(YamlString).getValue() = name
+  }
+
+  ExternalJobImpl getACaller() {
+    result.getCallee() = this.getLocation().getFile().getRelativePath()
   }
 }
 
@@ -649,12 +694,10 @@ class JobImpl extends AstNodeImpl, TJobNode {
   YamlMapping n;
   string jobId;
   WorkflowImpl workflow;
-  YamlMappingLikeNode runson;
 
   JobImpl() {
     this = TJobNode(n) and
-    workflow.getNode().lookup("jobs").(YamlMapping).lookup(jobId) = n and
-    runson = n.lookup("runs-on").(YamlMappingLikeNode)
+    workflow.getNode().lookup("jobs").(YamlMapping).lookup(jobId) = n
   }
 
   override string toString() { result = "Job: " + jobId }
@@ -765,14 +808,9 @@ class JobImpl extends AstNodeImpl, TJobNode {
     count(this.getATriggerEvent()) = 1 and
     not this.getATriggerEvent().getName() = ["pull_request", "workflow_call"]
     or
-    // The Workflow is only triggered by `workflow_call` and there is
-    // a caller workflow triggered by an event other than `pull_request`
-    this.hasSingleTrigger("workflow_call") and
-    exists(ExternalJobImpl call, JobImpl caller |
-      call.getCallee() = this.getLocation().getFile().getRelativePath() and
-      caller = call.getEnclosingJob() and
-      caller.isPrivileged()
-    )
+    // The Workflow is a Reusable Workflow only and there is
+    // a privileged caller workflow
+    this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isPrivileged()
     or
     // The Workflow has multiple triggers so at least one is not "pull_request"
     count(this.getATriggerEvent()) > 1
@@ -781,14 +819,15 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Gets the trigger event that starts this workflow. */
   EventImpl getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
 
-  private predicate hasSingleTrigger(string trigger) {
-    this.getATriggerEvent().getName() = trigger and
-    count(this.getATriggerEvent()) = 1
-  }
-
+  // private predicate hasSingleTrigger(string trigger) {
+  //   this.getATriggerEvent().getName() = trigger and
+  //   count(this.getATriggerEvent()) = 1
+  // }
   /** Gets the runs-on field of the job. */
   string getARunsOnLabel() {
-    exists(ScalarValueImpl lbl |
+    exists(ScalarValueImpl lbl, YamlMappingLikeNode runson |
+      runson = n.lookup("runs-on").(YamlMappingLikeNode)
+    |
       (
         lbl.getNode() = runson.getNode(_) and
         not lbl.getNode() = runson.getNode("group")
@@ -960,14 +999,14 @@ class UsesStepImpl extends StepImpl, UsesImpl {
 
   /** Gets the owner and name of the repository where the Action comes from, e.g. `actions/checkout` in `actions/checkout@v2`. */
   override string getCallee() {
-    if u.getValue().matches("./%")
-    then result = u.getValue()
-    else
+    if u.getValue().indexOf("@") > 0
+    then
       result =
         (
           u.getValue().regexpCapture(usesParser(), 1) + "/" +
             u.getValue().regexpCapture(usesParser(), 2)
         ).toLowerCase()
+    else result = u.getValue()
   }
 
   /** Gets the version reference used when checking out the Action, e.g. `2` in `actions/checkout@v2`. */
@@ -1061,27 +1100,26 @@ abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
 }
 
 private string stepsCtxRegex() {
-  result = Utils::wrapRegexp("steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
+  result = wrapRegexp("steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
 private string needsCtxRegex() {
-  result = Utils::wrapRegexp("needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
+  result = wrapRegexp("needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
 private string jobsCtxRegex() {
-  result = Utils::wrapRegexp("jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
+  result = wrapRegexp("jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
-private string envCtxRegex() { result = Utils::wrapRegexp("env\\.([A-Za-z0-9_-]+)") }
+private string envCtxRegex() { result = wrapRegexp("env\\.([A-Za-z0-9_-]+)") }
 
-private string matrixCtxRegex() { result = Utils::wrapRegexp("matrix\\.(.+)") }
+private string matrixCtxRegex() { result = wrapRegexp("matrix\\.(.+)") }
 
 private string inputsCtxRegex() {
-  result =
-    Utils::wrapRegexp(["inputs\\.([A-Za-z0-9_-]+)", "github\\.event\\.inputs\\.([A-Za-z0-9_-]+)"])
+  result = wrapRegexp(["inputs\\.([A-Za-z0-9_-]+)", "github\\.event\\.inputs\\.([A-Za-z0-9_-]+)"])
 }
 
-private string secretsCtxRegex() { result = Utils::wrapRegexp("secrets\\.([A-Za-z0-9_-]+)") }
+private string secretsCtxRegex() { result = wrapRegexp("secrets\\.([A-Za-z0-9_-]+)") }
 
 /**
  * Holds for an expression accesing the `secrets` context.
@@ -1091,8 +1129,8 @@ class SecretsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   SecretsExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(secretsCtxRegex()) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(secretsCtxRegex(), 1)
+    normalizeExpr(expression).regexpMatch(secretsCtxRegex()) and
+    fieldName = normalizeExpr(expression).regexpCapture(secretsCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
@@ -1110,9 +1148,9 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   StepsExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(stepsCtxRegex()) and
-    stepId = Utils::normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 1) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 2)
+    normalizeExpr(expression).regexpMatch(stepsCtxRegex()) and
+    stepId = normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 1) and
+    fieldName = normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 2)
   }
 
   override string getFieldName() { result = fieldName }
@@ -1142,9 +1180,9 @@ class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   NeedsExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(needsCtxRegex()) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(needsCtxRegex(), 2) and
-    neededJob.getId() = Utils::normalizeExpr(expression).regexpCapture(needsCtxRegex(), 1) and
+    normalizeExpr(expression).regexpMatch(needsCtxRegex()) and
+    fieldName = normalizeExpr(expression).regexpCapture(needsCtxRegex(), 2) and
+    neededJob.getId() = normalizeExpr(expression).regexpCapture(needsCtxRegex(), 1) and
     neededJob.getLocation().getFile() = this.getLocation().getFile()
   }
 
@@ -1175,9 +1213,9 @@ class JobsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   JobsExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(jobsCtxRegex()) and
-    jobId = Utils::normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 1) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 2)
+    normalizeExpr(expression).regexpMatch(jobsCtxRegex()) and
+    jobId = normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 1) and
+    fieldName = normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 2)
   }
 
   override string getFieldName() { result = fieldName }
@@ -1200,8 +1238,8 @@ class InputsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   InputsExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(inputsCtxRegex()) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(inputsCtxRegex(), 1)
+    normalizeExpr(expression).regexpMatch(inputsCtxRegex()) and
+    fieldName = normalizeExpr(expression).regexpCapture(inputsCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
@@ -1225,8 +1263,8 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   EnvExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(envCtxRegex()) and
-    fieldName = Utils::normalizeExpr(expression).regexpCapture(envCtxRegex(), 1)
+    normalizeExpr(expression).regexpMatch(envCtxRegex()) and
+    fieldName = normalizeExpr(expression).regexpCapture(envCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
@@ -1251,8 +1289,8 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldAccess;
 
   MatrixExpressionImpl() {
-    Utils::normalizeExpr(expression).regexpMatch(matrixCtxRegex()) and
-    fieldAccess = Utils::normalizeExpr(expression).regexpCapture(matrixCtxRegex(), 1)
+    normalizeExpr(expression).regexpMatch(matrixCtxRegex()) and
+    fieldAccess = normalizeExpr(expression).regexpCapture(matrixCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldAccess }

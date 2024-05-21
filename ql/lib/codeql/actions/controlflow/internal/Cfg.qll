@@ -186,8 +186,8 @@ private class WorkflowTree extends StandardPreOrderTree instanceof Workflow {
       result =
         rank[i](AstNode child, Location l |
           (
-            child = super.getAJob() or
-            child = super.getStrategy()
+            child = super.getStrategy() or
+            child = super.getAJob()
           ) and
           l = child.getLocation()
         |
@@ -242,7 +242,26 @@ private class JobTree extends StandardPreOrderTree instanceof LocalJob {
   }
 }
 
-private class UsesTree extends StandardPreOrderTree instanceof Uses {
+private class ExternalJobTree extends StandardPreOrderTree instanceof ExternalJob {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](AstNode child, Location l |
+        (
+          child = super.getArgumentExpr(_) or
+          child = super.getInScopeEnvVarExpr(_) or
+          child = super.getOutputs() or
+          child = super.getStrategy()
+        ) and
+        l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class UsesTree extends StandardPreOrderTree instanceof UsesStep {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |

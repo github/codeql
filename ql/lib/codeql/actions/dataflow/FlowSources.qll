@@ -33,7 +33,7 @@ private predicate titleEvent(string context) {
         "github\\.event\\.workflow_run\\.display_title", // The event-specific title associated with the run or the run-name if set, or the value of run-name if it is set in the workflow.
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -46,7 +46,7 @@ private predicate urlEvent(string context) {
         "github\\.event\\.pull_request\\.head\\.repo\\.homepage",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -68,11 +68,9 @@ private predicate textEvent(string context) {
         "github\\.event\\.workflow_run\\.head_repository\\.description", // description
         "github\\.event\\.client_payload\\[[0-9]+\\]", // payload
         "github\\.event\\.client_payload", // payload
-        "github\\.event\\.inputs\\[[0-9]+\\]", // input
-        "github\\.event\\.inputs", // input
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -100,7 +98,7 @@ private predicate branchEvent(string context) {
         "github\\.event\\.merge_group\\.head_ref",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -114,7 +112,7 @@ private predicate labelEvent(string context) {
         "github\\.event\\.pull_request\\.head\\.label",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -134,7 +132,7 @@ private predicate emailEvent(string context) {
         "github\\.event\\.workflow_run\\.head_commit\\.committer\\.email",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -154,7 +152,7 @@ private predicate usernameEvent(string context) {
         "github\\.event\\.workflow_run\\.head_commit\\.committer\\.name",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -168,7 +166,7 @@ private predicate pathEvent(string context) {
         "github\\.event\\.workflow_run\\.referenced_workflows\\.path",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -181,7 +179,7 @@ private predicate jsonEvent(string context) {
         "github", "github\\.event", "github\\.event\\.client_payload", "github\\.event\\.comment",
         "github\\.event\\.commits", "github\\.event\\.discussion", "github\\.event\\.head_commit",
         "github\\.event\\.head_commit\\.author", "github\\.event\\.head_commit\\.committer",
-        "github\\.event\\.inputs", "github\\.event\\.issue", "github\\.event\\.merge_group",
+        "github\\.event\\.issue", "github\\.event\\.merge_group",
         "github\\.event\\.merge_group\\.committer", "github\\.event\\.pull_request",
         "github\\.event\\.pull_request\\.head", "github\\.event\\.pull_request\\.head\\.repo",
         "github\\.event\\.pages", "github\\.event\\.review", "github\\.event\\.workflow",
@@ -193,7 +191,7 @@ private predicate jsonEvent(string context) {
         "github\\.event\\.workflow_run\\.pull_requests",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+    normalizeExpr(context).regexpMatch(wrapRegexp(reg))
   )
 }
 
@@ -204,9 +202,9 @@ class GitHubSource extends RemoteFlowSource {
     exists(Expression e, string context, string context_prefix |
       this.asExpr() = e and
       context = e.getExpression() and
-      Utils::normalizeExpr(context) = "github.head_ref" and
+      normalizeExpr(context) = "github.head_ref" and
       contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), context_prefix) and
-      Utils::normalizeExpr(context).matches("%" + context_prefix + "%") and
+      normalizeExpr(context).matches("%" + context_prefix + "%") and
       flag = "branch"
     )
   }
@@ -218,11 +216,18 @@ class GitHubEventSource extends RemoteFlowSource {
   string flag;
 
   GitHubEventSource() {
-    exists(Expression e, string context, string context_prefix |
+    exists(Expression e, string context |
       this.asExpr() = e and
       context = e.getExpression() and
-      contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), context_prefix) and
-      Utils::normalizeExpr(context).matches("%" + context_prefix + "%")
+      (
+        exists(string context_prefix |
+          contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(),
+            context_prefix) and
+          normalizeExpr(context).matches("%" + context_prefix + "%")
+        )
+        or
+        exists(e.getEnclosingCompositeAction())
+      )
     |
       titleEvent(context) and flag = "title"
       or
@@ -258,11 +263,11 @@ class GitHubEventJsonSource extends RemoteFlowSource {
           exists(string context_prefix |
             contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(),
               context_prefix) and
-            Utils::normalizeExpr(context).matches("%" + context_prefix + "%")
+            normalizeExpr(context).matches("%" + context_prefix + "%")
           )
           or
           contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and
-          Utils::normalizeExpr(context).regexpMatch(".*\\bgithub(\\.event)?\\b.*")
+          normalizeExpr(context).regexpMatch(".*\\bgithub.event\\b.*")
         )
       ) and
       flag = "json"
@@ -281,17 +286,6 @@ class ExternallyDefinedSource extends RemoteFlowSource {
   ExternallyDefinedSource() { externallyDefinedSource(this, sourceType, _) }
 
   override string getSourceType() { result = sourceType }
-}
-
-/**
- * An input for a Composite Action
- */
-class CompositeActionInputSource extends RemoteFlowSource {
-  CompositeAction c;
-
-  CompositeActionInputSource() { c.getAnInput() = this.asExpr() }
-
-  override string getSourceType() { result = "input" }
 }
 
 /**

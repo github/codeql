@@ -17,6 +17,8 @@ import codeql.actions.security.PoisonableSteps
 
 from ControlCheck check, MutableRefCheckoutStep checkout
 where
+  // the job can be triggered by an external user
+  check.getEnclosingJob().isExternallyTriggerable() and
   // the mutable checkout step is protected by an access check
   check = [checkout.getIf(), checkout.getEnclosingJob().getIf()] and
   // the checked-out code may lead to arbitrary code execution
@@ -25,7 +27,7 @@ where
     // label gates do not depend on the triggering event
     check instanceof LabelControlCheck
     or
-    // actor or Association gates apply to IssueOps only
+    // actor or association gates apply to IssueOps only
     (check instanceof AssociationControlCheck or check instanceof ActorControlCheck) and
     check.getEnclosingJob().getATriggerEvent().getName().matches("%_comment")
   )

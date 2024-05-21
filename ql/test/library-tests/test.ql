@@ -1,5 +1,5 @@
 import codeql.actions.Ast
-import codeql.actions.Ast::Utils as Utils
+import codeql.actions.Helper
 import codeql.actions.Cfg as Cfg
 import codeql.actions.DataFlow
 import codeql.Locations
@@ -69,7 +69,7 @@ query string testNormalizeExpr(string s) {
       "github.event.pull_request.user['login']", "github.event.pull_request.user[\"login\"]",
       "github.event.pull_request['user']['login']", "foo['bar'] == baz"
     ] and
-  result = Utils::normalizeExpr(s)
+  result = normalizeExpr(s)
 }
 
 query predicate writeToGitHubEnv(string key, string value) {
@@ -82,7 +82,7 @@ query predicate writeToGitHubEnv(string key, string value) {
         "echo 'sha2=$(<test-results2/sha-number)' >> $GITHUB_ENV",
         "echo sha3=$(<test-results3/sha-number) >> $GITHUB_ENV",
       ] and
-    Utils::extractLineAssignment(t, "ENV", key, value)
+    extractLineAssignment(t, "ENV", key, value)
   )
 }
 
@@ -100,6 +100,6 @@ query predicate writeToGitHubOutput(string key, string value) {
         "echo sha5=$(<test-results5/sha-number) >> ${GITHUB_OUTPUT}",
         "echo sha6=$(<test-results6/sha-number) >> \"${GITHUB_OUTPUT}\"",
       ] and
-    Utils::extractLineAssignment(t, "OUTPUT", key, value)
+    extractLineAssignment(t, "OUTPUT", key, value)
   )
 }
