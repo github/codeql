@@ -762,6 +762,12 @@ private predicate compares_eq(
   exists(AbstractValue dual | value = dual.getDualValue() |
     compares_eq(test.(LogicalNotInstruction).getUnary(), left, right, k, areEqual, dual)
   )
+  or
+  exists(CallInstruction call |
+    test = call and
+    call.getStaticCallTarget().hasName("__builtin_expect") and
+    compares_eq(call.getArgument(0).(ConvertInstruction).getUnary(), left, right, k, areEqual, value)
+  )
 }
 
 /**
@@ -830,6 +836,13 @@ private predicate unary_compares_eq(
     compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
     int_value(const) = k1 and
     k = k1 + k2
+  )
+  or
+  exists(CallInstruction call, Instruction arg |
+    test = call and
+    call.getStaticCallTarget().hasName("__builtin_expect") and
+    arg = call.getArgument(0) and
+    unary_compares_eq(arg.(ConvertInstruction).getUnary(), op, k, areEqual, inNonZeroCase, value)
   )
 }
 
