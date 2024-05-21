@@ -726,20 +726,11 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
     nodeToDefOrUse(nTo, sv, bb2, i2, _) and
     adjacentDefRead(bb2, i2, sv, _, _)
   ) and
-  (
-    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
-      hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
-      hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
-      instr = op2.getDef() and
-      conversionFlow(op1, instr, _, _)
-    )
-    or
-    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
-      hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
-      hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
-      instr = op2.getDef() and
-      isDereference(instr, op1, _)
-    )
+  exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
+    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
+    instr = op2.getDef() and
+    conversionFlow(op1, instr, _, _)
   )
 }
 
