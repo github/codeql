@@ -24,7 +24,7 @@ where
   DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()),
     DataFlow::exprNode(fc.getArgument(pd.getIndex()))) and
   // this variable v was assigned by a call to the nuller function
-  v.getAnAssignedValue() = nuller.getACallToThisFunction() and
+  unique( | | v.getAnAssignedValue()) = nuller.getACallToThisFunction() and
   // this variable v is not accessed for an operation (check for NULLness)
   not exists(VariableAccess vc |
     vc.getTarget() = v and
