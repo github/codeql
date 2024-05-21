@@ -1,0 +1,11 @@
+name: Caller
+
+on:
+  issue_comment:
+
+jobs:
+  test:
+    permissions: {}
+    uses: ./.github/workflows/reusable-workflow-1.yml
+    with:
+      taint: ${{ github.event.comment.body }}

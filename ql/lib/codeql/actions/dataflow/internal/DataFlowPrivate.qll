@@ -67,7 +67,7 @@ class DataFlowExpr extends Cfg::Node {
 }
 
 /**
- * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow get called
+ * A call corresponds to a Uses steps where a local action, 3rd party action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
   DataFlowCall() { super.getAstNode() instanceof Uses }
@@ -91,7 +91,17 @@ class DataFlowCallable instanceof Cfg::CfgScope {
     then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
     else
       if this instanceof CompositeAction
-      then result = this.(CompositeAction).getLocation().getFile().getRelativePath()
+      then
+        result =
+          this.(CompositeAction)
+              .getLocation()
+              .getFile()
+              .getRelativePath()
+              .prefix(this.(CompositeAction)
+                    .getLocation()
+                    .getFile()
+                    .getRelativePath()
+                    .indexOf(["/action.yml", "/action.yaml"]))
       else none()
   }
 }
@@ -156,7 +166,10 @@ ContentApprox getContentApprox(Content c) { result = c }
  * Made a string to match the ArgumentPosition type.
  */
 class ParameterPosition extends string {
-  ParameterPosition() { exists(any(ReusableWorkflow w).getInput(this)) }
+  ParameterPosition() {
+    exists(any(ReusableWorkflow w).getInput(this)) or
+    exists(any(CompositeAction a).getInput(this))
+  }
 }
 
 /**

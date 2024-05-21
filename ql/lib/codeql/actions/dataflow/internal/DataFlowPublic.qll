@@ -53,7 +53,8 @@ class ParameterNode extends ExprNode {
   ParameterNode() { this.asExpr() = input }
 
   predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    input = c.(ReusableWorkflow).getInput(pos)
+    input = c.(ReusableWorkflow).getInput(pos) or
+    input = c.(CompositeAction).getInput(pos)
   }
 
   override string toString() { result = "input " + input.toString() }

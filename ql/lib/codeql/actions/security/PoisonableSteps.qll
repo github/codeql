@@ -75,7 +75,7 @@ class EnvVarInjectionRunStep extends PoisonableStep, Run {
       // Run step with env var definition based on file content.
       // eg: `echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV`
       // eg: `echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV`
-      Utils::writeToGitHubEnv(this, _, value) and
+      writeToGitHubEnv(this, _, value) and
       // TODO: add support for other commands like `<`, `jq`, ...
       value.regexpMatch(["\\$\\(", "`"] + ["ls\\s+", "cat\\s+", "<"] + ".*" + ["`", "\\)"])
     )

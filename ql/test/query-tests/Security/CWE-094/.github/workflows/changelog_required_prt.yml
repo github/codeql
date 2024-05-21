@@ -1,9 +1,0 @@
-name: '📋'
-
-on:
-  pull_request_target:
-    branches: [master]
-
-jobs:
-  changelog:
-    uses: ./.github/workflows/changelog_from_prt.yml

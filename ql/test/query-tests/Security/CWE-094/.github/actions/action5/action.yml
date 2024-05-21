@@ -1,0 +1,26 @@
+name: 'Test'
+description: 'Test'
+inputs:
+  taint:
+    description: 'text'
+    required: true
+    default: 'Foo'
+outputs:
+  result:
+    description: "result"
+    value: ${{ steps.step.outputs.result }}
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: echo '${{ github.event.pull_request.body }}'
+    - name: Step
+      id: step 
+      env:
+        FOO: ${{ inputs.taint }}
+      shell: bash
+      run: echo "result=$(echo $FOO)" >> $GITHUB_OUTPUT
+    - name: Sink
+      id: sink
+      shell: bash
+      run: echo "${{ inputs.taint }}"

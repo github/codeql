@@ -39,6 +39,15 @@ predicate contextTriggerDataModel(string trigger, string context_prefix) {
 }
 
 /**
+ * MaD models for externally triggerable events
+ * Fields:
+ *    - event: Event name
+ */
+predicate externallyTriggerableEventsDataModel(string event) {
+  Extensions::externallyTriggerableEventsDataModel(event)
+}
+
+/**
  * MaD sources
  * Fields:
  *    - action: Fully-qualified action name (NWO)

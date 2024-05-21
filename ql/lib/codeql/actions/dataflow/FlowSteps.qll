@@ -35,9 +35,9 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Run run, string varName, string value |
     run.getInScopeEnvVarExpr(varName) = pred.asExpr() and
     (
-      Utils::writeToGitHubEnv(run, _, value) or
-      Utils::writeToGitHubOutput(run, _, value) or
-      Utils::writeToGitHubPath(run, value)
+      writeToGitHubEnv(run, _, value) or
+      writeToGitHubOutput(run, _, value) or
+      writeToGitHubPath(run, value)
     ) and
     value.matches("%$" + ["", "{", "ENV{"] + varName + "%") and
     succ.asExpr() = run.getScriptScalar()
@@ -61,7 +61,7 @@ predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlo
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     pred.asExpr() = run.getInScopeEnvVarExpr(varName) and
     succ.asExpr() = run and
-    Utils::writeToGitHubOutput(run, key, value) and
+    writeToGitHubOutput(run, key, value) and
     value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
   )
 }
@@ -72,7 +72,7 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
     pred.asExpr() = run.getInScopeEnvVarExpr(varName) and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
     succ.asExpr() = run.getEnclosingJob() and
-    Utils::writeToGitHubEnv(run, key, value) and
+    writeToGitHubEnv(run, key, value) and
     value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
   )
 }
@@ -88,7 +88,7 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
     download.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
     succ.asExpr() = run and
-    Utils::writeToGitHubOutput(run, key, value) and
+    writeToGitHubOutput(run, key, value) and
     value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
   )
 }
@@ -100,7 +100,7 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
     pred.asExpr() = run.getScriptScalar() and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
     succ.asExpr() = run.getEnclosingJob() and
-    Utils::writeToGitHubEnv(run, key, value) and
+    writeToGitHubEnv(run, key, value) and
     value.regexpMatch([".*\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\).*"])
   )
 }

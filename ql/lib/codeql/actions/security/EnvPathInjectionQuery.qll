@@ -12,7 +12,7 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
     exists(Run run, UntrustedArtifactDownloadStep step, string value |
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
-      Utils::writeToGitHubPath(run, value) and
+      writeToGitHubPath(run, value) and
       // TODO: add support for other commands like `<`, `jq`, ...
       value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
     )
@@ -32,7 +32,7 @@ class EnvPathInjectionFromEnvVarSink extends EnvPathInjectionSink {
     exists(Run run, Expression expr, string varname, string value |
       this.asExpr().getInScopeEnvVarExpr(varname) = expr and
       run.getScriptScalar() = this.asExpr() and
-      Utils::writeToGitHubPath(run, value) and
+      writeToGitHubPath(run, value) and
       (
         value.matches("%$" + ["", "{", "ENV{"] + varname + "%")
         or

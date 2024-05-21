@@ -4,7 +4,7 @@ import codeql.actions.DataFlow
 bindingset[s]
 predicate containsPullRequestNumber(string s) {
   exists(
-    Utils::normalizeExpr(s)
+    normalizeExpr(s)
         .regexpFind([
             "\\bgithub\\.event\\.number\\b", "\\bgithub\\.event\\.issue\\.number\\b",
             "\\bgithub\\.event\\.pull_request\\.id\\b",
@@ -24,7 +24,7 @@ predicate containsPullRequestNumber(string s) {
 bindingset[s]
 predicate containsHeadSHA(string s) {
   exists(
-    Utils::normalizeExpr(s)
+    normalizeExpr(s)
         .regexpFind([
             "\\bgithub\\.event\\.pull_request\\.head\\.sha\\b",
             "\\bgithub\\.event\\.pull_request\\.merge_commit_sha\\b",
@@ -51,7 +51,7 @@ predicate containsHeadSHA(string s) {
 bindingset[s]
 predicate containsHeadRef(string s) {
   exists(
-    Utils::normalizeExpr(s)
+    normalizeExpr(s)
         .regexpFind([
             "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", "\\bgithub\\.head_ref\\b",
             "\\bgithub\\.event\\.workflow_run\\.head_branch\\b",
@@ -234,7 +234,7 @@ class LabelControlCheck extends ControlCheck {
     // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
     // eg: github.event.label.name == 'safe to test'
     exists(
-      Utils::normalizeExpr(this.getCondition())
+      normalizeExpr(this.getCondition())
           .regexpFind([
               "\\bgithub\\.event\\.pull_request\\.labels\\b", "\\bgithub\\.event\\.label\\.name\\b"
             ], _, _)
@@ -248,7 +248,7 @@ class ActorControlCheck extends ControlCheck {
     // eg: github.triggering_actor != 'CI Agent'
     // eg: github.event.pull_request.user.login == 'mybot'
     exists(
-      Utils::normalizeExpr(this.getCondition())
+      normalizeExpr(this.getCondition())
           .regexpFind([
               "\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",
               "\\bgithub\\.event\\.comment\\.user\\.login\\b",
@@ -262,7 +262,7 @@ class AssociationControlCheck extends ControlCheck {
   AssociationControlCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
     exists(
-      Utils::normalizeExpr(this.getCondition())
+      normalizeExpr(this.getCondition())
           .regexpFind([
               "\\bgithub\\.event\\.comment\\.author_association\\b",
               "\\bgithub\\.event\\.issue\\.author_association\\b",
