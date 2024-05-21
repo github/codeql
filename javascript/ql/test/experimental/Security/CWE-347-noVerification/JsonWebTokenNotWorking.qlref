@@ -1,1 +1,1 @@
-Security/CWE-347-noVerification/JsonWebTokenNotWorking.ql
+experimental/Security/CWE-347-noVerification/JsonWebTokenNotWorking.ql

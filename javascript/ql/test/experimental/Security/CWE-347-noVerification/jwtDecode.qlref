@@ -1,1 +1,1 @@
-Security/CWE-347-noVerification/jwtDecode.ql
+experimental/Security/CWE-347-noVerification/jwtDecode.ql

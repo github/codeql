@@ -17,6 +17,9 @@ nodes
 | JsonWebToken.js:31:28:31:36 | UserToken |
 | JsonWebToken.js:31:28:31:36 | UserToken |
 | JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:38:28:38:36 | UserToken |
@@ -24,6 +27,9 @@ nodes
 | JsonWebToken.js:39:28:39:36 | UserToken |
 | JsonWebToken.js:39:28:39:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken |
+| JsonWebToken.js:43:11:43:47 | UserToken |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization |
 | JsonWebToken.js:46:28:46:36 | UserToken |
@@ -51,10 +57,19 @@ edges
 | JsonWebToken.js:35:11:35:47 | UserToken | JsonWebToken.js:39:28:39:36 | UserToken |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:46:28:46:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:46:28:46:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:47:28:47:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:47:28:47:36 | UserToken |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
 #select
+| JsonWebToken.js:13:23:13:47 | req.hea ... ization | JsonWebToken.js:13:23:13:47 | req.hea ... ization | JsonWebToken.js:16:28:16:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:16:28:16:36 | UserToken | without signature verification |
+| JsonWebToken.js:20:23:20:47 | req.hea ... ization | JsonWebToken.js:20:23:20:47 | req.hea ... ization | JsonWebToken.js:23:28:23:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:23:28:23:36 | UserToken | without signature verification |
+| JsonWebToken.js:20:23:20:47 | req.hea ... ization | JsonWebToken.js:20:23:20:47 | req.hea ... ization | JsonWebToken.js:24:28:24:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:24:28:24:36 | UserToken | without signature verification |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:38:28:38:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:38:28:38:36 | UserToken | without signature verification |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:46:28:46:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:46:28:46:36 | UserToken | without signature verification |
