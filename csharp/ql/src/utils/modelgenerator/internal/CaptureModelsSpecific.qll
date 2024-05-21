@@ -137,7 +137,7 @@ class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 class ParameterPosition = DataFlowDispatch::ParameterPosition;
 
 /**
- * Gets the MaD string represention of return through parameter at position
+ * Gets the MaD string representation of return through parameter at position
  * `pos` of callable `c`.
  */
 bindingset[c]
