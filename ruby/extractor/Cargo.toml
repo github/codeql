@@ -34,7 +34,7 @@ lazy_static = "1.4.0"
 # of lock-file update time, but `rules_rust` pins generates a bazel rule that unconditionally downloads `main`, which
 # breaks build hermeticity. So, rev-pinning it is.
 # See also https://github.com/bazelbuild/rules_rust/issues/2502.
-codeql-extractor = { git = "https://github.com/github/codeql.git", rev = "bf2ae9890fc381dd74f87cd2a7c3f89e484e1d68" }
+codeql-extractor = { git = "https://github.com/github/codeql.git", rev = "bc1283c7152b0bb4d27ff6a004869f493e93d2b3" }
 
 [patch.crates-io]
 tree-sitter = {git = "https://github.com/redsun82/tree-sitter.git", rev = "1f5c1112ceaa8fc6aff61d1852690407670d2a96"}

@@ -1,5 +1,5 @@
 {
-  "checksum": "66eb923b9bff3a3315aaebb2155797150963834330f8b3ed4f72e0ccefa7ed93",
+  "checksum": "c50e77889b9291b968272c6e3a2953664e4ac18807c9546bac76d51fdc2e7d6b",
   "crates": {
     "adler 1.0.2": {
       "name": "adler",
@@ -953,7 +953,7 @@
         "Git": {
           "remote": "https://github.com/github/codeql.git",
           "commitish": {
-            "Rev": "bf2ae9890fc381dd74f87cd2a7c3f89e484e1d68"
+            "Rev": "bc1283c7152b0bb4d27ff6a004869f493e93d2b3"
           },
           "strip_prefix": "shared/tree-sitter-extractor"
         }
@@ -5938,9 +5938,9 @@
       "package_url": "https://github.com/tree-sitter/tree-sitter-ruby",
       "repository": {
         "Git": {
-          "remote": "https://github.com/hvitved/tree-sitter-ruby.git",
+          "remote": "https://github.com/tree-sitter/tree-sitter-ruby.git",
           "commitish": {
-            "Rev": "b84d897e675944ac03389a4105ccaece8106f504"
+            "Rev": "b41dc0f4c8e040905fcbb5d93bab667541c08ec7"
           }
         }
       },
