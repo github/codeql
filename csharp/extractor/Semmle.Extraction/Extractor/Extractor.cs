@@ -107,17 +107,14 @@ namespace Semmle.Extraction
         {
             get
             {
-                // the resources for git information are always attached to the entry` assembly by our build system
+                // the attribute for the git information are always attached to the entry assembly by our build system
                 var assembly = Assembly.GetEntryAssembly();
-                var describeAllStream = assembly.GetManifestResourceStream("git-ql-describe-all.log");
-                var headSHAStream = assembly.GetManifestResourceStream("git-ql-rev-parse.log");
-                if (describeAllStream == null || headSHAStream == null)
+                var versionString = assembly!.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (versionString == null)
                 {
                     return "unknown (not built from internal bazel workspace)";
                 }
-                var describeAll = new StreamReader(describeAllStream).ReadToEnd().Trim('\n');
-                var headSHA = new StreamReader(headSHAStream).ReadToEnd().Trim('\n');
-                return $"{describeAll} ({headSHA})";
+                return versionString.InformationalVersion;
             }
         }
 
