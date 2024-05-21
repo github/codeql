@@ -735,6 +735,7 @@ public class AutoBuild {
          .collect(Collectors.toList());
 
     filesToExtract = filesToExtract.stream()
+        .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
@@ -1063,9 +1064,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           if (extractedFiles.contains(sourcePath)) {
             continue;
           }
-          if (isFileTooLarge(sourcePath)) {
-            continue;
-          }
           typeScriptFiles.add(sourcePath);
         }
         typeScriptFiles.sort(PATH_ORDERING);
@@ -1083,8 +1081,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<Path> remainingTypeScriptFiles = new ArrayList<>();
       for (Path f : files) {
         if (!extractedFiles.contains(f)
-            && extractors.fileType(f) == FileType.TYPESCRIPT
-            && !isFileTooLarge(f)) {
+            && extractors.fileType(f) == FileType.TYPESCRIPT) {
           remainingTypeScriptFiles.add(f);
         }
       }
@@ -1248,9 +1245,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     File f = file.toFile();
     if (!f.exists()) {
       warn("Skipping " + file + ", which does not exist.");
-      return;
-    }
-    if (isFileTooLarge(file)) {
       return;
     }
 
