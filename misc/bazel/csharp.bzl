@@ -60,14 +60,10 @@ def codeql_csharp_binary(name, **kwargs):
         ),
     )
 
-    # we need to declare individual zip targets for each binary, as `self_contained=True` means that every binary target
-    # contributes the same runtime files. Bazel (rightfully) complains about this, so we work around this by creating individual zip files,
-    # and using zipmerge to produce the final extractor-arch file. For overlapping files, zipmerge chooses just one.
     pack_zip(
         name = name,
         srcs = [publish_binary_target],
         prefix = "csharp/tools/" + codeql_platform,
         strip_prefix = strip_prefix.files_only(),
-        compression_level = 0,
         visibility = visibility,
     )

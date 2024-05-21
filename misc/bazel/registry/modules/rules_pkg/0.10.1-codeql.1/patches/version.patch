@@ -1,0 +1,22 @@
+diff --git a/MODULE.bazel b/MODULE.bazel
+index 16d9549..9e0f714 100644
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,6 +1,6 @@
+ module(
+     name = "rules_pkg",
+-    version = "0.10.1",  # Must sync with version.bzl.
++    version = "0.10.1-codeql.1",  # Must sync with version.bzl.
+     compatibility_level = 1,
+     repo_name = "rules_pkg",
+ )
+diff --git a/version.bzl b/version.bzl
+index 7e93127..97ad831 100644
+--- a/version.bzl
++++ b/version.bzl
+@@ -13,4 +13,4 @@
+ # limitations under the License.
+ """The version of rules_pkg."""
+ 
+-version = "0.10.1"
++version = "0.10.1-codeql.1"

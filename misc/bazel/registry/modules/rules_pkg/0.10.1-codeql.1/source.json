@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/bazelbuild/rules_pkg/releases/download/0.10.1/rules_pkg-0.10.1.tar.gz",
+    "integrity": "sha256-0lCSSi7MUXaAj8TCXVz16eeeY0bXnVqxxJPiieci0dA=",
+    "patches": {
+        "version.patch": "sha256-xrShfRSZJ2senH6f9o8usMc7OgShieRporlINOd3tv8=",
+        "suppress-duplicate-warning.patch": "sha256-3wMZ+48gj7eNqT4+q5/k/mYeJWB5HchKwFlCFqkZ4P8="
+    },
+    "patch_strip": 1
+}

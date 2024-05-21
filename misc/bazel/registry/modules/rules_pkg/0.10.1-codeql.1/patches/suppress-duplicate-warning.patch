@@ -1,0 +1,16 @@
+diff --git a/pkg/private/pkg_files.bzl b/pkg/private/pkg_files.bzl
+index 6fc0971..f800719 100644
+--- a/pkg/private/pkg_files.bzl
++++ b/pkg/private/pkg_files.bzl
+@@ -147,10 +147,7 @@ def _check_dest(content_map, dest, src, origin, allow_duplicates_with_different_
+             content_map[dest].origin,
+             src,
+         )
+-        if allow_duplicates_with_different_content:
+-            # buildifier: disable=print
+-            print("WARNING:", msg)
+-        else:
++        if not allow_duplicates_with_different_content:
+             # When we default to this behaviour, we should consider telling
+             # users the attribute to set to deal with this.
+             # For now though, let's not, since they've explicitly opted in.
