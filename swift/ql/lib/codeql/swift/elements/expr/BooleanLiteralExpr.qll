@@ -1,7 +1,7 @@
 private import codeql.swift.generated.expr.BooleanLiteralExpr
 
 /**
- * An integer literal. For example `true` in:
+ * A boolean literal. For example `true` in:
  * ```
  * let x = true
  * ```
