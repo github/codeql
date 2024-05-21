@@ -575,7 +575,7 @@ func getModMode(depMode DependencyInstallerMode, baseDir string) ModMode {
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
 // The version string is returned in the "1.2.3" format.
 func tryReadGoDirective(path string) GoVersionInfo {
-	versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
+	versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)`)
 	goMod, err := os.ReadFile(path)
 	if err != nil {
 		log.Println("Failed to read go.mod to check for missing Go version")

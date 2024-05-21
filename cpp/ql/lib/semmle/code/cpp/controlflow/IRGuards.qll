@@ -790,6 +790,27 @@ private predicate simple_comparison_eq(Instruction test, Operand op, int k, Abst
     exists(switch.getSuccessor(case)) and
     case.getValue().toInt() = k
   )
+  or
+  // There's no implicit CompareInstruction in files compiled as C since C
+  // doesn't have implicit boolean conversions. So instead we check whether
+  // there's a branch on a value of pointer or integer type.
+  exists(ConditionalBranchInstruction branch, IRType type |
+    not test instanceof CompareInstruction and
+    type = test.getResultIRType() and
+    (type instanceof IRAddressType or type instanceof IRIntegerType) and
+    test = branch.getCondition() and
+    op.getDef() = test
+  |
+    // We'd like to also include a case such as:
+    // ```
+    // k = 1 and
+    // value.(BooleanValue).getValue() = true
+    // ```
+    // but all we know is that the value is non-zero in the true branch.
+    // So we can only conclude something in the false branch.
+    k = 0 and
+    value.(BooleanValue).getValue() = false
+  )
 }
 
 private predicate complex_eq(
