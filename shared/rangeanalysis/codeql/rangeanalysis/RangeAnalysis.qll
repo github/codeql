@@ -160,17 +160,62 @@ signature module Semantic {
   /** Gets a tiebreaker id in case `getBlockId1` is not unique. */
   default string getBlockId2(BasicBlock bb) { result = "" }
 
+  /**
+   * A guard in the range analysis.
+   */
   class Guard {
+    /**
+     * Gets a string representation of the guard.
+     */
     string toString();
 
+    /**
+     * Gets the basic block associated with the guard.
+     */
     BasicBlock getBasicBlock();
 
+    /**
+     * Gets the guard as an expression, if any.
+     */
     Expr asExpr();
 
+    /**
+     * Holds if the guard directly controls a given basic block. For example in
+     * the following code, the guard `(x > y)` directly controls the block
+     * beneath it:
+     * ```
+     * if (x > y)
+     * {
+     *   Console.WriteLine("x is greater than y");
+     * }
+     * ```
+     * `branch` indicates whether the basic block is entered when the guard
+     * evaluates to `true` or when it evaluates to `false`.
+     */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
+    /**
+     * Holds if this guard is an equality test between `e1` and `e2`. If the
+     * test is negated, that is `!=`, then `polarity` is false, otherwise
+     * `polarity` is true.
+     */
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
+    /**
+     * Holds if there is a branch edge between two basic blocks. For example
+     * in the following C code, there are two branch edges from the basic block
+     * containing the condition `(x > y)` to the beginnings of the true and
+     * false blocks that follow:
+     * ```
+     * if (x > y) {
+     *   printf("x is greater than y\n");
+     * } else {
+     *   printf("x is not greater than y\n");
+     * }
+     * ```
+     * `branch` indicates whether the second basic block is the one entered
+     * when the guard evaluates to `true` or when it evaluates to `false`.
+     */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
 
@@ -194,18 +239,50 @@ signature module Semantic {
   /** Gets the type of an expression. */
   Type getExprType(Expr e);
 
+  /**
+   * A static single-assignment (SSA) variable.
+   */
   class SsaVariable {
+    /**
+     * Gets an expression reading the value of this SSA variable.
+     */
     Expr getAUse();
 
+    /**
+     * Gets the basic block where this SSA variable is defined.
+     */
     BasicBlock getBasicBlock();
   }
 
+  /**
+   * A phi node in the SSA form. A phi node is a kind of node in the SSA form
+   * that represents a merge point where multiple control flow paths converge
+   * and the value of a variable needs to be selected according to which
+   * control flow path was taken. For example, in the following Ruby code:
+   * ```rb
+   * if b
+   *   x = 0
+   * else
+   *   x = 1
+   * end
+   * puts x
+   * ```
+   * A phi node for `x` is inserted just before the call `puts x`, since the
+   * value of `x` may come from either `x = 0` or `x = 1`.
+   */
   class SsaPhiNode extends SsaVariable {
     /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb);
   }
 
+  /**
+   * An SSA variable representing the value of an explicit update of the source variable.
+   */
   class SsaExplicitUpdate extends SsaVariable {
+    /**
+     * Gets the expression that defines the value of the variable in this
+     * update.
+     */
     Expr getDefiningExpr();
   }
 
@@ -289,14 +366,39 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate ignoreExprBound(Sem::Expr e);
 
   default predicate javaCompatibility() { none() }
+
+  default predicate includeConstantBounds() { any() }
+
+  default predicate includeRelativeBounds() { any() }
 }
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
+  /**
+   * A bound that the range analysis can infer for a variable. This includes
+   * constant bounds represented by the abstract value zero, SSA bounds for when
+   * a variable is bounded by the value of a different variable, and possibly
+   * other abstract values that may be useful variable bounds. Since all bounds
+   * are combined with an integer delta there's no need to represent constant
+   * bounds other than zero.
+   */
   class SemBound {
+    /**
+     * Gets a string representation of this bound.
+     */
     string toString();
 
+    /**
+     * Gets the location of this bound.
+     */
     Location getLocation();
 
+    /**
+     * Gets an expression that equals this bound plus `delta`.
+     *
+     * For the zero-bound this gets integer constants equal to `delta`, for any
+     * value `delta`. For other bounds this gets expressions equal to the bound
+     * and `delta = 0`.
+     */
     Sem::Expr getExpr(D::Delta delta);
   }
 
@@ -678,60 +780,65 @@ module RangeStage<
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
-    valueFlowStep(e2, e1, delta) and
-    (upper = true or upper = false)
-    or
-    e2.(SafeCastExpr).getOperand() = e1 and
-    delta = D::fromInt(0) and
-    (upper = true or upper = false)
-    or
-    javaCompatibility() and
-    exists(Sem::Expr x, Sem::SubExpr sub |
-      e2 = sub and
-      sub.getLeftOperand() = e1 and
-      sub.getRightOperand() = x
-    |
-      // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
-      not x instanceof Sem::ConstantIntegerExpr and
-      if strictlyPositiveIntegralExpr(x)
-      then upper = true and delta = D::fromInt(-1)
-      else
-        if semPositive(x)
-        then upper = true and delta = D::fromInt(0)
+    // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
+    not e2 instanceof Sem::ConstantIntegerExpr and
+    (
+      valueFlowStep(e2, e1, delta) and
+      upper = [true, false]
+      or
+      e2.(SafeCastExpr).getOperand() = e1 and
+      delta = D::fromInt(0) and
+      upper = [true, false]
+      or
+      javaCompatibility() and
+      exists(Sem::Expr x, Sem::SubExpr sub |
+        e2 = sub and
+        sub.getLeftOperand() = e1 and
+        sub.getRightOperand() = x
+      |
+        // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
+        not x instanceof Sem::ConstantIntegerExpr and
+        if strictlyPositiveIntegralExpr(x)
+        then upper = true and delta = D::fromInt(-1)
         else
-          if strictlyNegativeIntegralExpr(x)
-          then upper = false and delta = D::fromInt(1)
+          if semPositive(x)
+          then upper = true and delta = D::fromInt(0)
           else
-            if semNegative(x)
-            then upper = false and delta = D::fromInt(0)
-            else none()
+            if strictlyNegativeIntegralExpr(x)
+            then upper = false and delta = D::fromInt(1)
+            else
+              if semNegative(x)
+              then upper = false and delta = D::fromInt(0)
+              else none()
+      )
+      or
+      e2.(Sem::RemExpr).getRightOperand() = e1 and
+      semPositive(e1) and
+      delta = D::fromInt(-1) and
+      upper = true
+      or
+      e2.(Sem::RemExpr).getLeftOperand() = e1 and
+      semPositive(e1) and
+      delta = D::fromInt(0) and
+      upper = true
+      or
+      e2.(Sem::BitAndExpr).getAnOperand() = e1 and
+      semPositive(e1) and
+      delta = D::fromInt(0) and
+      upper = true
+      or
+      e2.(Sem::BitOrExpr).getAnOperand() = e1 and
+      semPositive(e2) and
+      delta = D::fromInt(0) and
+      upper = false
+      or
+      additionalBoundFlowStep(e2, e1, delta, upper)
     )
-    or
-    e2.(Sem::RemExpr).getRightOperand() = e1 and
-    semPositive(e1) and
-    delta = D::fromInt(-1) and
-    upper = true
-    or
-    e2.(Sem::RemExpr).getLeftOperand() = e1 and
-    semPositive(e1) and
-    delta = D::fromInt(0) and
-    upper = true
-    or
-    e2.(Sem::BitAndExpr).getAnOperand() = e1 and
-    semPositive(e1) and
-    delta = D::fromInt(0) and
-    upper = true
-    or
-    e2.(Sem::BitOrExpr).getAnOperand() = e1 and
-    semPositive(e2) and
-    delta = D::fromInt(0) and
-    upper = false
-    or
-    additionalBoundFlowStep(e2, e1, delta, upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
   private predicate boundFlowStepMul(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+    not e2 instanceof Sem::ConstantIntegerExpr and
     exists(Sem::ConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
       e2.(Sem::MulExpr).hasOperands(e1, c) and factor = D::fromInt(k)
       or
@@ -751,6 +858,7 @@ module RangeStage<
    * therefore only valid for non-negative numbers.
    */
   private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+    not e2 instanceof Sem::ConstantIntegerExpr and
     Sem::getExprType(e2) instanceof Sem::IntegerType and
     exists(Sem::ConstantIntegerExpr c, D::Delta k |
       k = D::fromInt(c.getIntValue()) and D::toFloat(k) > 0
@@ -983,16 +1091,31 @@ module RangeStage<
     )
   }
 
-  /**
-   * Holds if `e` has an upper (for `upper = true`) or lower
-   * (for `upper = false`) bound of `b`.
-   */
-  private predicate baseBound(Sem::Expr e, D::Delta b, boolean upper) {
-    hasConstantBound(e, b, upper)
+  private predicate includeBound(SemBound b) {
+    // always include phi bounds
+    b.(SemSsaBound).getVariable() instanceof Sem::SsaPhiNode
     or
-    upper = false and
-    b = D::fromInt(0) and
-    semPositive(e.(Sem::BitAndExpr).getAnOperand())
+    if b instanceof SemZeroBound then includeConstantBounds() else includeRelativeBounds()
+  }
+
+  /**
+   * Holds if `e` has an intrinsic upper (for `upper = true`) or lower
+   * (for `upper = false`) bound of `b + delta` as a base case for range analysis.
+   */
+  private predicate baseBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+    includeBound(b) and
+    (
+      e = b.getExpr(delta) and
+      upper = [true, false]
+      or
+      hasConstantBound(e, delta, upper) and
+      b instanceof SemZeroBound
+      or
+      upper = false and
+      delta = D::fromInt(0) and
+      semPositive(e.(Sem::BitAndExpr).getAnOperand()) and
+      b instanceof SemZeroBound
+    )
   }
 
   /**
@@ -1108,6 +1231,84 @@ module RangeStage<
   private float truncatingDiv(float x, float y) { result = (x - (x % y)) / y }
 
   /**
+   * Holds if `e1 + delta` is a valid bound for `e2`.
+   * - `upper = true`  : `e2 <= e1 + delta`
+   * - `upper = false` : `e2 >= e1 + delta`
+   *
+   * This is restricted to simple forward-flowing steps and disregards phi-nodes.
+   */
+  private predicate preBoundStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+    boundFlowStep(e2, e1, delta, upper)
+    or
+    exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
+      boundFlowStepSsa(v, bb, e1, delta, upper, _) and
+      bb.getAnSsaRead(v) = e2
+    )
+  }
+
+  /**
+   * Holds if simple forward-flowing steps from `e` can reach an expression that
+   * has multiple incoming bound-flow edges, that is, it has multiple ways to
+   * get a valid bound.
+   */
+  private predicate reachesBoundMergepoint(Sem::Expr e, boolean upper) {
+    2 <= strictcount(Sem::Expr mid | preBoundStep(e, mid, _, upper))
+    or
+    exists(Sem::SsaPhiNode v, SsaReadPositionBlock bb |
+      boundFlowStepSsa(v, bb, _, _, upper, _) and
+      bb.getAnSsaRead(v) = e
+    )
+    or
+    exists(Sem::Expr e2 |
+      preBoundStep(e2, e, _, upper) and
+      reachesBoundMergepoint(e2, upper)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate relevantPreBoundStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+    preBoundStep(e2, e1, delta, upper) and
+    reachesBoundMergepoint(e2, upper)
+  }
+
+  /**
+   * Holds if `b + delta` is a valid bound for `e` that can be found using only
+   * simple forward-flowing steps and disregarding phi-nodes.
+   * - `upper = true`  : `e <= b + delta`
+   * - `upper = false` : `e >= b + delta`
+   *
+   * This predicate is used as a fast approximation for `bounded` to avoid
+   * excessive computation in certain cases. In particular, this applies to
+   * loop-unrolled code like
+   * ```
+   * if (..) x+=1; else x+=100;
+   * x &= 7;
+   * if (..) x+=1; else x+=100;
+   * x &= 7;
+   * if (..) x+=1; else x+=100;
+   * x &= 7;
+   * ...
+   * ```
+   */
+  private predicate preBounded(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+    baseBound(e, b, delta, upper)
+    or
+    exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
+      relevantPreBoundStep(e, mid, d1, upper) and
+      preBounded(mid, b, d2, upper) and
+      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
+    )
+  }
+
+  private predicate bestPreBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+    delta = min(D::Delta d | preBounded(e, b, d, upper) | d order by D::toFloat(d)) and
+    upper = true
+    or
+    delta = max(D::Delta d | preBounded(e, b, d, upper) | d order by D::toFloat(d)) and
+    upper = false
+  }
+
+  /**
    * Holds if `b + delta` is a valid bound for `e`.
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
@@ -1117,15 +1318,14 @@ module RangeStage<
     D::Delta origdelta, SemReason reason
   ) {
     not ignoreExprBound(e) and
-    (
-      e = b.getExpr(delta) and
-      (upper = true or upper = false) and
-      fromBackEdge = false and
-      origdelta = delta and
-      reason = TSemNoReason()
+    // ignore poor bounds
+    not exists(D::Delta d | bestPreBound(e, b, d, upper) |
+      D::toFloat(delta) > D::toFloat(d) and upper = true
       or
-      baseBound(e, delta, upper) and
-      b instanceof SemZeroBound and
+      D::toFloat(delta) < D::toFloat(d) and upper = false
+    ) and
+    (
+      baseBound(e, b, delta, upper) and
       fromBackEdge = false and
       origdelta = delta and
       reason = TSemNoReason()
@@ -1137,8 +1337,6 @@ module RangeStage<
       or
       exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
         boundFlowStep(e, mid, d1, upper) and
-        // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
-        not e instanceof Sem::ConstantIntegerExpr and
         bounded(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
         // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
         // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
@@ -1152,7 +1350,6 @@ module RangeStage<
       or
       exists(Sem::Expr mid, D::Delta factor, D::Delta d |
         boundFlowStepMul(e, mid, factor) and
-        not e instanceof Sem::ConstantIntegerExpr and
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
         delta = D::fromFloat(D::toFloat(d) * D::toFloat(factor))
@@ -1160,7 +1357,6 @@ module RangeStage<
       or
       exists(Sem::Expr mid, D::Delta factor, D::Delta d |
         boundFlowStepDiv(e, mid, factor) and
-        not e instanceof Sem::ConstantIntegerExpr and
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
         D::toFloat(d) >= 0 and

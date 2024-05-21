@@ -60,7 +60,6 @@ Method getRunnerTarget(MethodCall ma) {
 }
 
 import semmle.code.java.dataflow.FlowSummary
-import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific as ImplSpecific
 
 private predicate mayInvokeCallback(SrcMethod m, int n) {
   m.getParameterType(n).(RefType).getSourceDeclaration() instanceof FunctionalInterface and
@@ -73,22 +72,13 @@ private class SummarizedCallableWithCallback extends SummarizedCallable {
   SummarizedCallableWithCallback() { mayInvokeCallback(this.asCallable(), pos) }
 
   override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    string input, string output, boolean preservesValue, string model
   ) {
-    input = SummaryComponentStack::argument(pos) and
-    output = SummaryComponentStack::push(SummaryComponent::parameter(-1), input) and
-    preservesValue = true
+    input = "Argument[" + pos + "]" and
+    output = "Argument[" + pos + "].Parameter[-1]" and
+    preservesValue = true and
+    model = "heuristic-callback"
   }
 
   override predicate hasProvenance(Provenance provenance) { provenance = "hq-generated" }
-}
-
-private class RequiredComponentStackForCallback extends RequiredSummaryComponentStack {
-  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    exists(int pos |
-      mayInvokeCallback(_, pos) and
-      head = SummaryComponent::parameter(-1) and
-      tail = SummaryComponentStack::argument(pos)
-    )
-  }
 }

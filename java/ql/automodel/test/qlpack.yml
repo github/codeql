@@ -7,6 +7,7 @@ groups:
 dependencies:
   codeql/java-all: ${workspace}
   codeql/java-automodel-queries: ${workspace}
+  codeql/java-tests: ${workspace}
 extractor: java
 tests: .
 warnOnImplicitThis: true

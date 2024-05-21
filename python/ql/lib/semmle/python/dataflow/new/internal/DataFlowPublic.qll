@@ -4,7 +4,7 @@
 
 private import python
 private import DataFlowPrivate
-import semmle.python.dataflow.new.TypeTracker
+import semmle.python.dataflow.new.TypeTracking
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
@@ -15,13 +15,11 @@ private import semmle.python.frameworks.data.ModelsAsData
 /**
  * IPA type for data flow nodes.
  *
- * Flow between SSA variables are computed in `Essa.qll`
+ * Nodes broadly fall into three categories.
  *
- * Flow from SSA variables to control flow nodes are generally via uses.
- *
- * Flow from control flow nodes to SSA variables are generally via assignments.
- *
- * The current implementation of these cross flows can be seen in `EssaTaintTracking`.
+ * - Control flow nodes: Flow between these is based on use-use flow computed via an SSA analysis.
+ * - Module variable nodes: These represent global variables and act as canonical targets for reads and writes of these.
+ * - Synthetic nodes: These handle flow in various special cases.
  */
 newtype TNode =
   /** A node corresponding to a control flow node. */
@@ -29,9 +27,12 @@ newtype TNode =
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
-    or
-    node = any(ScopeEntryDefinition def).getDefiningNode()
   } or
+  /**
+   * A node corresponding to a scope entry definition. That is, the value of a variable
+   * as it enters a scope.
+   */
+  TScopeEntryDefinitionNode(ScopeEntryDefinition def) { not def.getScope() instanceof Module } or
   /**
    * A synthetic node representing the value of an object before a state change.
    *
@@ -116,6 +117,14 @@ newtype TNode =
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  } or
+  /** A synthetic node representing a captured variable. */
+  TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  /** A synthetic node representing the heap of a function. Used for variable capture. */
+  TSynthCapturedVariablesParameterNode(Function f) {
+    f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
+    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
+    exists(TFunction(f))
   }
 
 private import semmle.python.internal.CachedStages
@@ -139,6 +148,7 @@ class Node extends TNode {
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -148,8 +158,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  cached
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     Stages::DataFlow::ref() and
@@ -258,6 +267,28 @@ class ExprNode extends CfgNode {
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
+
+/**
+ * A node corresponding to a scope entry definition. That is, the value of a variable
+ * as it enters a scope.
+ */
+class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
+  ScopeEntryDefinition def;
+
+  ScopeEntryDefinitionNode() { this = TScopeEntryDefinitionNode(def) }
+
+  /** Gets the `ScopeEntryDefinition` associated with this node. */
+  ScopeEntryDefinition getDefinition() { result = def }
+
+  /** Gets the source variable represented by this node. */
+  SsaSourceVariable getVariable() { result = def.getSourceVariable() }
+
+  override Location getLocation() { result = def.getLocation() }
+
+  override Scope getScope() { result = def.getScope() }
+
+  override string toString() { result = "Entry definition for " + this.getVariable().toString() }
+}
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
@@ -436,7 +467,7 @@ class IterableSequenceNode extends Node, TIterableSequenceNode {
 
   override string toString() { result = "IterableSequence" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -453,7 +484,7 @@ class IterableElementNode extends Node, TIterableElementNode {
 
   override string toString() { result = "IterableElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -468,7 +499,7 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 
   override string toString() { result = "StarPatternElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -574,9 +605,20 @@ newtype TContent =
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
-    key = any(KeyValuePair kvp).getKey().(StrConst).getS()
+    // {"key": ...}
+    key = any(KeyValuePair kvp).getKey().(StringLiteral).getText()
     or
+    // func(key=...)
     key = any(Keyword kw).getArg()
+    or
+    // d["key"] = ...
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+    or
+    // d.setdefault("key", ...)
+    exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
+      key = call.getArg(0).getNode().(StringLiteral).getText()
+    )
   } or
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
@@ -596,15 +638,19 @@ newtype TContent =
     //   name = any(AccessPathToken a).getAnArgument("Attribute")
     // instead we use a qltest to alert if we write a new summary in QL that uses an
     // attribute -- see
-    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    // python/ql/test/library-tests/dataflow/summaries-checks/missing-attribute-content.ql
     attr in ["re", "string", "pattern"]
     or
     //
     // 2) summaries in data-extension files
-    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
-  }
+  } or
+  /** A captured variable. */
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A data-flow value can have associated content.
@@ -665,6 +711,18 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v }
 }
 
 /**

@@ -70,3 +70,15 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiter
   /** Gets the field that stores the underlying task. */
   Field getUnderlyingTaskField() { result = this.getAField() and result.hasName("m_task") }
 }
+
+/** An attribute of type `System.Runtime.CompilerServices.InlineArrayAttribute`. */
+class SystemRuntimeCompilerServicesInlineArrayAttribute extends Attribute {
+  SystemRuntimeCompilerServicesInlineArrayAttribute() {
+    this.getType().hasFullyQualifiedName("System.Runtime.CompilerServices", "InlineArrayAttribute")
+  }
+
+  /**
+   * Gets the length of the inline array.
+   */
+  int getLength() { result = this.getConstructorArgument(0).getValue().toInt() }
+}

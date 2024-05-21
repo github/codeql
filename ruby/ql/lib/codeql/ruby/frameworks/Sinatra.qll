@@ -133,7 +133,7 @@ module Sinatra {
   /**
    * A synthetic global representing the hash of local variables passed to an ERB template.
    */
-  class ErbLocalsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+  class ErbLocalsHashSyntheticGlobal extends string {
     private string id;
     private MethodCall erbCall;
     private ErbFile erbFile;
@@ -172,7 +172,7 @@ module Sinatra {
 
     override MethodCall getACall() { result = any(ErbCall c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[locals:]" and
       output = "SyntheticGlobal[" + any(ErbLocalsHashSyntheticGlobal global) + "]" and
       preservesValue = true
@@ -207,7 +207,7 @@ module Sinatra {
       result.getReceiver() instanceof SelfVariableReadAccess
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "SyntheticGlobal[" + global + "].Element[:" + local + "]" and
       output = "ReturnValue" and
       preservesValue = true

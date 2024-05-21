@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -65,7 +66,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Locates .NET Desktop Runtimes.
         /// This includes Mono and Microsoft.NET.
         /// </summary>
-        private static IEnumerable<string> DesktopRuntimes
+        private IEnumerable<string> DesktopRuntimes
         {
             get
             {
@@ -76,20 +77,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
-                var monoDirs = monoPath is not null
-                    ? new[] { Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath }
-                    : new[] { "/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono" };
+                string[] monoDirs = monoPath is not null
+                    ? [Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath]
+                    : ["/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono"];
 
-                var dir = monoDirs.FirstOrDefault(Directory.Exists);
-
-                if (dir is not null)
+                var monoDir = monoDirs.FirstOrDefault(Directory.Exists);
+                if (monoDir is not null)
                 {
-                    return Directory.EnumerateDirectories(dir)
-                        .Where(d => Char.IsDigit(Path.GetFileName(d)[0]))
+                    return Directory.EnumerateDirectories(monoDir)
+                        .Where(d => char.IsDigit(Path.GetFileName(d)[0]))
                         .OrderByDescending(Path.GetFileName);
                 }
 
-                return Enumerable.Empty<string>();
+                return [];
             }
         }
 

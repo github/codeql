@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Cors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Cors, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -8,6 +8,7 @@ namespace Microsoft
         {
             public static partial class CorsEndpointConventionBuilderExtensions
             {
+                public static TBuilder RequireCors<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder RequireCors<TBuilder>(this TBuilder builder, string policyName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder RequireCors<TBuilder>(this TBuilder builder, System.Action<Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder> configurePolicy) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
             }
@@ -29,6 +30,7 @@ namespace Microsoft
             public class DisableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.IDisableCorsAttribute
             {
                 public DisableCorsAttribute() => throw null;
+                public override string ToString() => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class EnableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.IEnableCorsAttribute
@@ -36,6 +38,7 @@ namespace Microsoft
                 public EnableCorsAttribute() => throw null;
                 public EnableCorsAttribute(string policyName) => throw null;
                 public string PolicyName { get => throw null; set { } }
+                public override string ToString() => throw null;
             }
             namespace Infrastructure
             {

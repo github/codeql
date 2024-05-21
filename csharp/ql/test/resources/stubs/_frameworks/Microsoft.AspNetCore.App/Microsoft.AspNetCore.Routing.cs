@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Routing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -58,6 +58,10 @@ namespace Microsoft
                 public RouterMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.Routing.IRouter router) => throw null;
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
             }
+            public static partial class RouteShortCircuitEndpointConventionBuilderExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder ShortCircuit(this Microsoft.AspNetCore.Builder.IEndpointConventionBuilder builder, int? statusCode = default(int?)) => throw null;
+            }
             public static partial class RoutingBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRouter(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder, Microsoft.AspNetCore.Routing.IRouter router) => throw null;
@@ -65,12 +69,16 @@ namespace Microsoft
             }
             public static partial class RoutingEndpointConventionBuilderExtensions
             {
+                public static TBuilder DisableAntiforgery<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder RequireHost<TBuilder>(this TBuilder builder, params string[] hosts) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithDisplayName<TBuilder>(this TBuilder builder, string displayName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithDisplayName<TBuilder>(this TBuilder builder, System.Func<Microsoft.AspNetCore.Builder.EndpointBuilder, string> func) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+                public static TBuilder WithFormMappingOptions<TBuilder>(this TBuilder builder, int? maxCollectionSize = default(int?), int? maxRecursionDepth = default(int?), int? maxKeySize = default(int?)) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+                public static TBuilder WithFormOptions<TBuilder>(this TBuilder builder, bool? bufferBody = default(bool?), int? memoryBufferThreshold = default(int?), long? bufferBodyLengthLimit = default(long?), int? valueCountLimit = default(int?), int? keyLengthLimit = default(int?), int? valueLengthLimit = default(int?), int? multipartBoundaryLengthLimit = default(int?), int? multipartHeadersCountLimit = default(int?), int? multipartHeadersLengthLimit = default(int?), long? multipartBodyLengthLimit = default(long?)) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithGroupName<TBuilder>(this TBuilder builder, string endpointGroupName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithMetadata<TBuilder>(this TBuilder builder, params object[] items) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithName<TBuilder>(this TBuilder builder, string endpointName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+                public static TBuilder WithOrder<TBuilder>(this TBuilder builder, int order) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
             }
         }
         namespace Http
@@ -271,6 +279,7 @@ namespace Microsoft
             {
                 public DataTokensMetadata(System.Collections.Generic.IReadOnlyDictionary<string, object> dataTokens) => throw null;
                 public System.Collections.Generic.IReadOnlyDictionary<string, object> DataTokens { get => throw null; }
+                public override string ToString() => throw null;
             }
             public sealed class DefaultEndpointDataSource : Microsoft.AspNetCore.Routing.EndpointDataSource
             {
@@ -307,12 +316,14 @@ namespace Microsoft
             {
                 public EndpointNameMetadata(string endpointName) => throw null;
                 public string EndpointName { get => throw null; }
+                public override string ToString() => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)4164, AllowMultiple = false, Inherited = true)]
             public sealed class ExcludeFromDescriptionAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IExcludeFromDescriptionMetadata
             {
                 public ExcludeFromDescriptionAttribute() => throw null;
                 public bool ExcludeFromDescription { get => throw null; }
+                public override string ToString() => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = false)]
             public sealed class HostAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IHostMetadata
@@ -320,6 +331,7 @@ namespace Microsoft
                 public HostAttribute(string host) => throw null;
                 public HostAttribute(params string[] hosts) => throw null;
                 public System.Collections.Generic.IReadOnlyList<string> Hosts { get => throw null; }
+                public override string ToString() => throw null;
             }
             public sealed class HttpMethodMetadata : Microsoft.AspNetCore.Routing.IHttpMethodMetadata
             {
@@ -327,6 +339,7 @@ namespace Microsoft
                 public HttpMethodMetadata(System.Collections.Generic.IEnumerable<string> httpMethods) => throw null;
                 public HttpMethodMetadata(System.Collections.Generic.IEnumerable<string> httpMethods, bool acceptCorsPreflight) => throw null;
                 public System.Collections.Generic.IReadOnlyList<string> HttpMethods { get => throw null; }
+                public override string ToString() => throw null;
             }
             public interface IDataTokensMetadata
             {
@@ -782,10 +795,15 @@ namespace Microsoft
                 public RouteHandlerOptions() => throw null;
                 public bool ThrowOnBadRequest { get => throw null; set { } }
             }
+            public static class RouteHandlerServices
+            {
+                public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Map(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern, System.Delegate handler, System.Collections.Generic.IEnumerable<string> httpMethods, System.Func<System.Reflection.MethodInfo, Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions, Microsoft.AspNetCore.Http.RequestDelegateMetadataResult> populateMetadata, System.Func<System.Delegate, Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions, Microsoft.AspNetCore.Http.RequestDelegateMetadataResult, Microsoft.AspNetCore.Http.RequestDelegateResult> createRequestDelegate) => throw null;
+            }
             public sealed class RouteNameMetadata : Microsoft.AspNetCore.Routing.IRouteNameMetadata
             {
                 public RouteNameMetadata(string routeName) => throw null;
                 public string RouteName { get => throw null; }
+                public override string ToString() => throw null;
             }
             public class RouteOptions
             {
@@ -797,6 +815,10 @@ namespace Microsoft
                 public void SetParameterPolicy<T>(string token) where T : Microsoft.AspNetCore.Routing.IParameterPolicy => throw null;
                 public void SetParameterPolicy(string token, System.Type type) => throw null;
                 public bool SuppressCheckForUnhandledSecurityMetadata { get => throw null; set { } }
+            }
+            public static partial class RouteShortCircuitEndpointRouteBuilderExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder MapShortCircuit(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder builder, int statusCode, params string[] routePrefixes) => throw null;
             }
             public class RouteValueEqualityComparer : System.Collections.Generic.IEqualityComparer<object>
             {
@@ -822,11 +844,13 @@ namespace Microsoft
             {
                 public SuppressLinkGenerationMetadata() => throw null;
                 public bool SuppressLinkGeneration { get => throw null; }
+                public override string ToString() => throw null;
             }
             public sealed class SuppressMatchingMetadata : Microsoft.AspNetCore.Routing.ISuppressMatchingMetadata
             {
                 public SuppressMatchingMetadata() => throw null;
                 public bool SuppressMatching { get => throw null; }
+                public override string ToString() => throw null;
             }
             namespace Template
             {
@@ -992,6 +1016,7 @@ namespace Microsoft
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRouting(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRouting(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Routing.RouteOptions> configureOptions) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRoutingCore(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
             }
         }
     }

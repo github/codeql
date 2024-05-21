@@ -489,14 +489,14 @@ private module ControlFlowGraphImpl {
   private Stmt getSwitchStatement(SwitchBlock switch, int i) { result.isNthChildOf(switch, i) }
 
   /**
-   * Holds if `last` is the last node in a pattern case `pc`'s succeeding bind-and-test operation,
+   * Holds if `last` is the last node in any of pattern case `pc`'s succeeding bind-and-test operations,
    * immediately before either falling through to execute successor statements or execute a rule body
    * if present. `completion` is the completion kind of the last operation.
    */
   private predicate lastPatternCaseMatchingOp(
     PatternCase pc, ControlFlowNode last, Completion completion
   ) {
-    last(pc.getPattern(), last, completion) and
+    last(pc.getAPattern(), last, completion) and
     completion = NormalCompletion() and
     not exists(pc.getGuard())
     or
@@ -776,6 +776,18 @@ private module ControlFlowGraphImpl {
     last(try.getFinally(), last, NormalCompletion())
   }
 
+  private predicate isNextNormalSwitchStmt(SwitchBlock switch, Stmt pred, Stmt succ) {
+    exists(int i, Stmt immediateSucc |
+      getSwitchStatement(switch, i) = pred and
+      getSwitchStatement(switch, i + 1) = immediateSucc and
+      (
+        if immediateSucc instanceof PatternCase
+        then isNextNormalSwitchStmt(switch, immediateSucc, succ)
+        else succ = immediateSucc
+      )
+    )
+  }
+
   /**
    * Bind `last` to a cfg node nested inside `n` (or, indeed, `n` itself) such
    * that `last` may be the last node during an execution of `n` and finish
@@ -927,9 +939,15 @@ private module ControlFlowGraphImpl {
       completion != anonymousBreakCompletion() and
       not completion instanceof NormalOrBooleanCompletion
       or
-      // if the last case completes normally, then so does the switch
-      last(switch.getStmt(strictcount(switch.getAStmt()) - 1), last, NormalCompletion()) and
-      completion = NormalCompletion()
+      // if a statement without a non-pattern-case successor completes normally (or for a pattern case
+      // the guard succeeds) then the switch completes normally.
+      exists(Stmt lastNormalStmt, Completion stmtCompletion |
+        lastNormalStmt = getSwitchStatement(switch, _) and
+        not isNextNormalSwitchStmt(switch, lastNormalStmt, _) and
+        last(lastNormalStmt, last, stmtCompletion) and
+        (stmtCompletion = NormalCompletion() or stmtCompletion = BooleanCompletion(true, _)) and
+        completion = NormalCompletion()
+      )
       or
       // if no default case exists, then normal completion of the expression may terminate the switch
       // Note this can't happen if there are pattern cases or a null literal, as
@@ -973,9 +991,9 @@ private module ControlFlowGraphImpl {
     )
     or
     // A pattern case statement can complete:
-    // * On failure of its type test (boolean false)
+    // * On failure of its final type test (boolean false)
     // * On failure of its guard test if any (boolean false)
-    // * On completion of its variable declarations, if it is not a rule and has no guard (normal completion)
+    // * On completion of one of its pattern variable declarations, if it is not a rule and has no guard (normal completion)
     // * On success of its guard test, if it is not a rule (boolean true)
     // (the latter two cases are accounted for by lastPatternCaseMatchingOp)
     exists(PatternCase pc | n = pc |
@@ -1315,9 +1333,13 @@ private module ControlFlowGraphImpl {
       // Note this includes non-rule case statements and the successful pattern match successor
       // of a non-rule pattern case statement. Rule case statements do not complete normally
       // (they always break or yield).
-      exists(int i |
-        last(getSwitchStatement(switch, i), n, completion) and
-        result = first(getSwitchStatement(switch, i + 1)) and
+      // Exception: falling through into a pattern case statement (which necessarily does not
+      // declare any named variables) must skip one or more such statements, otherwise we would
+      // incorrectly apply their type test and/or guard.
+      exists(Stmt pred, Stmt succ |
+        isNextNormalSwitchStmt(switch, pred, succ) and
+        last(pred, n, completion) and
+        result = first(succ) and
         (completion = NormalCompletion() or completion = BooleanCompletion(true, _))
       )
       or
@@ -1328,16 +1350,19 @@ private module ControlFlowGraphImpl {
     )
     or
     // Pattern cases have internal edges:
-    // * Type test success -true-> variable declarations
+    // * Type test success -true-> one of the possible sets of variable declarations
+    //     n.b. for unnamed patterns (e.g. case A _, B _) this means that *one* of the
+    //          type tests has succeeded. There aren't enough nodes in the AST to describe
+    //          a sequential test in detail, so CFG consumers have to watch out for this case.
     // * Variable declarations -normal-> guard evaluation
     // * Variable declarations -normal-> rule execution (when there is no guard)
     // * Guard success -true-> rule execution
     exists(PatternCase pc |
       n = pc and
       completion = basicBooleanCompletion(true) and
-      result = first(pc.getPattern())
+      result = first(pc.getAPattern())
       or
-      last(pc.getPattern(), n, completion) and
+      last(pc.getAPattern(), n, completion) and
       completion = NormalCompletion() and
       result = first(pc.getGuard())
       or

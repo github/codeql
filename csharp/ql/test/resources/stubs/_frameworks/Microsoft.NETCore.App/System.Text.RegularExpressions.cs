@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Text.RegularExpressions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Text.RegularExpressions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Text
@@ -315,7 +315,7 @@ namespace System
             public abstract class RegexRunner
             {
                 protected void Capture(int capnum, int start, int end) => throw null;
-                protected static bool CharInClass(char ch, string charClass) => throw null;
+                public static bool CharInClass(char ch, string charClass) => throw null;
                 protected static bool CharInSet(char ch, string set, string category) => throw null;
                 protected void CheckTimeout() => throw null;
                 protected void Crawl(int i) => throw null;

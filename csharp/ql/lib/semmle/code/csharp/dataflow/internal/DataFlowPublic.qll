@@ -1,6 +1,4 @@
 private import csharp
-private import cil
-private import dotnet
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
@@ -12,7 +10,7 @@ private import semmle.code.csharp.Unification
  */
 class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
-  DotNet::Expr asExpr() { result = this.(ExprNode).getExpr() }
+  Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /**
    * Gets the expression corresponding to this node, at control flow node `cfn`,
@@ -23,7 +21,7 @@ class Node extends TNode {
   }
 
   /** Gets the parameter corresponding to this node, if any. */
-  DotNet::Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets the definition corresponding to this node, if any. */
   AssignableDefinition asDefinition() { result = this.asDefinitionAtNode(_) }
@@ -37,7 +35,7 @@ class Node extends TNode {
   }
 
   /** Gets the type of this node. */
-  final DotNet::Type getType() { result = this.(NodeImpl).getTypeImpl() }
+  final Type getType() { result = this.(NodeImpl).getTypeImpl() }
 
   /** Gets the enclosing callable of this node. */
   final Callable getEnclosingCallable() {
@@ -60,14 +58,12 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
-
-private class TExprNode_ = TExprNode or TCilExprNode;
 
 /**
  * An expression, viewed as a node in a data flow graph.
@@ -76,13 +72,9 @@ private class TExprNode_ = TExprNode or TCilExprNode;
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node, TExprNode_ {
+class ExprNode extends Node, TExprNode {
   /** Gets the expression corresponding to this node. */
-  DotNet::Expr getExpr() {
-    result = this.getExprAtNode(_)
-    or
-    this = TCilExprNode(result)
-  }
+  Expr getExpr() { result = this.getExprAtNode(_) }
 
   /**
    * Gets the expression corresponding to this node, at control flow node `cfn`,
@@ -94,43 +86,44 @@ class ExprNode extends Node, TExprNode_ {
   }
 }
 
+pragma[nomagic]
+private predicate isParameterOf0(DataFlowCallable c, ParameterPosition ppos, Parameter p) {
+  p.getCallable() = c.asCallable() and
+  p.getPosition() = ppos.getPosition()
+}
+
 /**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
-  DotNet::Parameter getParameter() {
+  Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.asCallable().getParameter(ppos.getPosition())
+      isParameterOf0(c, ppos, result)
     )
   }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
-class AssignableDefinitionNode extends Node, TSsaDefinitionExtNode {
-  private Ssa::ExplicitDefinition edef;
-
-  AssignableDefinitionNode() { this = TSsaDefinitionExtNode(edef) }
-
+class AssignableDefinitionNode extends Node instanceof AssignableDefinitionNodeImpl {
   /** Gets the underlying definition. */
-  AssignableDefinition getDefinition() { result = this.getDefinitionAtNode(_) }
+  AssignableDefinition getDefinition() { result = super.getDefinition() }
 
   /** Gets the underlying definition, at control flow node `cfn`, if any. */
   AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
-    result = edef.getADefinition() and
-    cfn = edef.getControlFlowNode()
+    result = super.getDefinitionAtNode(cfn)
   }
 }
 
 /** Gets a node corresponding to expression `e`. */
-ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
+ExprNode exprNode(Expr e) { result.getExpr() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
+ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets a node corresponding to the definition `def`. */
 AssignableDefinitionNode assignableDefinitionNode(AssignableDefinition def) {
@@ -151,7 +144,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localExprFlow(DotNet::Expr e1, DotNet::Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
+predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
  * A data flow node that jumps between callables. This can be extended in
@@ -239,11 +232,39 @@ class PropertyContent extends Content, TPropertyContent {
   override Location getLocation() { result = p.getLocation() }
 }
 
+/**
+ * A reference to a synthetic field corresponding to a
+ * primary constructor parameter.
+ */
+class PrimaryConstructorParameterContent extends Content, TPrimaryConstructorParameterContent {
+  private Parameter p;
+
+  PrimaryConstructorParameterContent() { this = TPrimaryConstructorParameterContent(p) }
+
+  /** Gets the underlying parameter. */
+  Parameter getParameter() { result = p }
+
+  override string toString() { result = "parameter " + p.getName() }
+
+  override Location getLocation() { result = p.getLocation() }
+}
+
 /** A reference to an element in a collection. */
 class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  override string toString() { result = "captured " + v }
+
+  override Location getLocation() { result = v.getLocation() }
 }
 
 /**

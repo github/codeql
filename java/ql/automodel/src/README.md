@@ -65,7 +65,7 @@ A significant part of the behavior of extraction queries is implemented in share
 
 ## Packaging
 
-Automodel extraction queries come as a dedicated package. See [qlpack.yml](https://github.com/github/codeql/blob/main/java/ql/automodel/src/qlpack.yml). The [publish.sh](https://github.com/github/codeql/blob/main/java/ql/automodel/publish.sh) script is responsible for publishing a new version to the [package registry](https://github.com/orgs/codeql/packages/container/package/java-automodel-queries).
+Automodel extraction queries come as a dedicated package. See [qlpack.yml](https://github.com/github/codeql/blob/main/java/ql/automodel/src/qlpack.yml). The [publish.sh](https://github.com/github/codeql/blob/main/java/ql/automodel/publish.sh) script is responsible for publishing a new version to the [package registry](https://github.com/orgs/codeql/packages/container/package/java-automodel-queries). **The extraction queries are functionally coupled with other automodel components. Only publish the query pack as part of the automodel release process.**
 
 ### Backwards Compatibility
 

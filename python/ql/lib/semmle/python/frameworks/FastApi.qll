@@ -11,18 +11,23 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Pydantic
 private import semmle.python.frameworks.Starlette
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `fastapi` PyPI package.
  * See https://fastapi.tiangolo.com/.
  */
-private module FastApi {
+module FastApi {
   /**
    * Provides models for FastAPI applications (an instance of `fastapi.FastAPI`).
    */
   module App {
+    API::Node cls() { result = API::moduleImport("fastapi").getMember("FastAPI") }
+
     /** Gets a reference to a FastAPI application (an instance of `fastapi.FastAPI`). */
-    API::Node instance() { result = API::moduleImport("fastapi").getMember("FastAPI").getReturn() }
+    API::Node instance() { result = cls().getReturn() }
   }
 
   /**
@@ -31,10 +36,14 @@ private module FastApi {
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.
    */
   module ApiRouter {
-    /** Gets a reference to an instance of `fastapi.ApiRouter`. */
-    API::Node instance() {
-      result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*().getReturn()
+    API::Node cls() {
+      result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("fastapi.APIRouter~Subclass").getASubclass*()
     }
+
+    /** Gets a reference to an instance of `fastapi.ApiRouter`. */
+    API::Node instance() { result = cls().getReturn() }
   }
 
   // ---------------------------------------------------------------------------
@@ -174,7 +183,7 @@ private module FastApi {
       |
         exists(Assign assign | assign = cls.getAStmt() |
           assign.getATarget().(Name).getId() = "media_type" and
-          result = assign.getValue().(StrConst).getText()
+          result = assign.getValue().(StringLiteral).getText()
         )
         or
         // TODO: this should use a proper MRO calculation instead
@@ -363,7 +372,7 @@ private module FastApi {
           headers.accesses(instance(), "headers") and
           this.calls(headers, "append") and
           keyArg in [this.getArg(0), this.getArgByName("key")] and
-          keyArg.getALocalSource().asExpr().(StrConst).getText().toLowerCase() = "set-cookie"
+          keyArg.getALocalSource().asExpr().(StringLiteral).getText().toLowerCase() = "set-cookie"
         )
       }
 

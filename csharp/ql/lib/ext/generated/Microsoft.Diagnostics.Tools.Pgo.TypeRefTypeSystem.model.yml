@@ -2,6 +2,11 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", False, "get_AssociatedTypeOrMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "CompareToImpl", "(Internal.TypeSystem.TypeDesc,Internal.TypeSystem.TypeSystemComparer)", "summary", "df-generated"]

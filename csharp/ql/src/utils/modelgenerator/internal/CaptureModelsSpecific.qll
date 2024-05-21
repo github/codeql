@@ -3,10 +3,10 @@
  */
 
 private import csharp as CS
-private import dotnet
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -27,6 +27,10 @@ private predicate isHigherOrder(CS::Callable api) {
   )
 }
 
+private predicate irrelevantAccessor(CS::Accessor a) {
+  a.getDeclaration().(CS::Property).isReadWrite()
+}
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
@@ -37,20 +41,28 @@ private predicate isRelevantForModels(CS::Callable api) {
   not api instanceof Util::MainMethod and
   not api instanceof CS::Destructor and
   not api instanceof CS::AnonymousFunctionExpr and
-  not api.(CS::Constructor).isParameterless()
+  not api.(CS::Constructor).isParameterless() and
+  // Disregard all APIs that have a manual model.
+  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) and
+  not api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()) and
+  // Disregard properties that have both a get and a set accessor,
+  // which implicitly means auto implemented properties.
+  not irrelevantAccessor(api)
 }
 
 /**
- * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ * Holds if it is irrelevant to generate models for `api` based on data flow analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
  */
-predicate isRelevantForDataFlowModels(CS::Callable api) {
-  isRelevantForModels(api) and not isHigherOrder(api)
-}
+predicate isUninterestingForDataFlowModels(CS::Callable api) { isHigherOrder(api) }
 
 /**
- * Holds if it is relevant to generate models for `api` based on its type.
+ * Holds if it is irrelevant to generate models for `api` based on type-based analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
  */
-predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
+predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
@@ -58,16 +70,18 @@ predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
  * In the Standard library and 3rd party libraries it the callables that can be called
  * from outside the library itself.
  */
-class TargetApiSpecific extends DotNet::Callable {
+class TargetApiSpecific extends CS::Callable {
   TargetApiSpecific() {
     this.fromSource() and
-    this.isUnboundDeclaration()
+    this.isUnboundDeclaration() and
+    isRelevantForModels(this)
   }
 }
 
 predicate asPartialModel = ExternalFlow::asPartialModel/1;
 
-predicate asPartialNeutralModel = ExternalFlow::asPartialNeutralModel/1;
+/** Computes the first 4 columns for neutral CSV rows of `c`. */
+predicate asPartialNeutralModel = ExternalFlow::getSignature/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.

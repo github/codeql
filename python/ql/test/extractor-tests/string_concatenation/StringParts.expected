@@ -1,0 +1,14 @@
+| test.py:1:5:1:8 | StringPart | b"a" |
+| test.py:1:10:1:15 | StringPart | "\\xf0" |
+| test.py:2:5:2:7 | StringPart | "b" |
+| test.py:2:9:2:15 | StringPart | b"\\xf0" |
+| test.py:3:5:3:7 | StringPart | "c" |
+| test.py:3:9:3:11 | StringPart | "c" |
+| test.py:4:5:4:11 | StringPart | b"\\xff" |
+| test.py:4:13:4:19 | StringPart | b"\\xff" |
+| test.py:5:5:5:8 | StringPart | u"e" |
+| test.py:5:10:5:16 | StringPart | u"\\xff" |
+| test.py:6:5:6:8 | StringPart | u"f" |
+| test.py:6:10:6:16 | StringPart | b"\\xff" |
+| test.py:7:5:7:11 | StringPart | b"\\xff" |
+| test.py:7:13:7:16 | StringPart | u"g" |

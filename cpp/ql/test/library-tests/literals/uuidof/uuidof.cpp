@@ -17,4 +17,9 @@ void GetUUID() {
     uuid = __uuidof(s);
     uuid = __uuidof(0);
 }
+
+template <typename Placeholder, typename ...>
+auto Wrapper = __uuidof(Placeholder);
+auto inst = Wrapper<S>;
+
 // semmle-extractor-options: --microsoft

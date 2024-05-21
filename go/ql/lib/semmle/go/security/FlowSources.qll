@@ -6,20 +6,30 @@ import go
 private import semmle.go.dataflow.ExternalFlow as ExternalFlow
 
 /**
+ * DEPRECATED: Use `RemoteFlowSource` instead.
+ */
+deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+/**
  * A source of data that is controlled by an untrusted user.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `UntrustedFlowSource::Range` instead.
+ * extend `RemoteFlowSource::Range` instead.
  */
-class UntrustedFlowSource extends DataFlow::Node instanceof UntrustedFlowSource::Range { }
+class RemoteFlowSource extends DataFlow::Node instanceof RemoteFlowSource::Range { }
+
+/**
+ * DEPRECATED: Use `RemoteFlowSource` instead.
+ */
+deprecated module UntrustedFlowSource = RemoteFlowSource;
 
 /** Provides a class for modeling new sources of untrusted data. */
-module UntrustedFlowSource {
+module RemoteFlowSource {
   /**
    * A source of data that is controlled by an untrusted user.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `UntrustedFlowSource` instead.
+   * extend `RemoteFlowSource` instead.
    */
   abstract class Range extends DataFlow::Node { }
 
@@ -29,6 +39,4 @@ module UntrustedFlowSource {
   class MaDRemoteSource extends Range {
     MaDRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
   }
-
-  deprecated class CsvRemoteSource = MaDRemoteSource;
 }

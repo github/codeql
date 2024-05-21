@@ -40,7 +40,9 @@ class MapMethod extends Method {
 
 /** A method that mutates the map it belongs to. */
 class MapMutator extends MapMethod {
-  MapMutator() { pragma[only_bind_into](this).getName().regexpMatch("(put.*|remove|clear)") }
+  MapMutator() {
+    pragma[only_bind_into](this).getName().regexpMatch("(put.*|remove|clear|replace.*)")
+  }
 }
 
 /** The `size` method of `java.util.Map`. */

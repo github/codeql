@@ -70,12 +70,12 @@ class Test
         using (var reader = new StreamReader(new FileStream("", FileMode.Open)))
             ;
 
-        // GOOD: XmlDocument.Load disposes incoming XmlReader (according to CIL)
+        // GOOD: XmlDocument.Load disposes incoming XmlReader (False positive as this is disposed in library code)
         var xmlReader = XmlReader.Create(new StringReader("xml"), null);
         var xmlDoc = new XmlDocument();
         xmlDoc.Load(xmlReader);
 
-        // GOOD: Passed to a library. This is only detected in CIL.
+        // GOOD: Passed to a library (False positive as this is disposed in library code).
         DisposalTests.Class1.Dispose(new StreamWriter("output.txt"));
 
         // GOOD: Disposed automatically.

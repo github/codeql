@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -12,20 +13,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public static IEnumerable<FileInfo> SelectRootFiles(this IEnumerable<FileInfo> files, DirectoryInfo dir) =>
             files.Where(file => file.DirectoryName == dir.FullName);
-
-        internal static IEnumerable<FileInfo> SelectSmallFiles(this IEnumerable<FileInfo> files, ProgressMonitor progressMonitor)
-        {
-            const int oneMb = 1_048_576;
-            return files.Where(file =>
-            {
-                if (file.Length > oneMb)
-                {
-                    progressMonitor.LogDebug($"Skipping {file.FullName} because it is bigger than 1MB.");
-                    return false;
-                }
-                return true;
-            });
-        }
 
         public static IEnumerable<string> SelectFileNamesByExtension(this IEnumerable<FileInfo> files, params string[] extensions) =>
             files.SelectFilesAux(fi => extensions.Contains(fi.Extension));

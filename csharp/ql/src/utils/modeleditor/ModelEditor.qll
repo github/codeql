@@ -9,9 +9,15 @@ private import Telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
-  c.getDeclaringType() instanceof TestLibrary or
-  c.(Constructor).isParameterless() or
+  c.getDeclaringType() instanceof TestLibrary
+  or
+  c.(Constructor).isParameterless()
+  or
   c.getDeclaringType() instanceof AnonymousClass
+  or
+  // The data flow library uses read/store steps for properties, so we don't need to model them,
+  // if both a getter and a setter exist.
+  c.(Accessor).getDeclaration().(Property).isReadWrite()
 }
 
 /**
@@ -34,7 +40,17 @@ class Endpoint extends Callable {
    * Gets the unbound type name of this endpoint.
    */
   bindingset[this]
-  string getTypeName() { result = nestedName(this.getDeclaringType().getUnboundDeclaration()) }
+  string getTypeName() {
+    result = qualifiedTypeName(this.getNamespace(), this.getDeclaringType().getUnboundDeclaration())
+  }
+
+  /**
+   * Gets the qualified name of this endpoint.
+   */
+  bindingset[this]
+  string getEndpointName() {
+    result = qualifiedCallableName(this.getNamespace(), this.getTypeName(), this)
+  }
 
   /**
    * Gets the parameter types of this endpoint.
@@ -100,22 +116,32 @@ string supportedType(Endpoint endpoint) {
 }
 
 string methodClassification(Call method) {
-  method.getFile() instanceof TestFile and result = "test"
+  method.getFile() instanceof TestRelatedFile and result = "test"
   or
-  not method.getFile() instanceof TestFile and
+  not method.getFile() instanceof TestRelatedFile and
   result = "source"
 }
 
 /**
- * Gets the nested name of the type `t`.
- *
- * If the type is not a nested type, the result is the same as `getName()`.
- * Otherwise the name of the nested type is prefixed with a `+` and appended to
- * the name of the enclosing type, which might be a nested type as well.
+ * Gets the fully qualified name of the type `t`.
  */
-private string nestedName(Type t) {
-  not exists(t.getDeclaringType().getUnboundDeclaration()) and
-  result = t.getName()
-  or
-  nestedName(t.getDeclaringType().getUnboundDeclaration()) + "+" + t.getName() = result
+private string qualifiedTypeName(string namespace, Type t) {
+  exists(string type | hasQualifiedTypeName(t, namespace, type) | result = type)
+}
+
+/**
+ * Gets the fully qualified name of the callable `c`.
+ */
+private string qualifiedCallableName(string namespace, string type, Callable c) {
+  exists(string name | hasQualifiedMethodName(c, namespace, type, name) | result = name)
+}
+
+/** A file that is either a test file or is only used in tests. */
+class TestRelatedFile extends File {
+  TestRelatedFile() {
+    this instanceof TestFile
+    or
+    this.getAbsolutePath().matches(["%/test/%", "%/tests/%"]) and
+    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+  }
 }

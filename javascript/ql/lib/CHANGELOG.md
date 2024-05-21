@@ -1,3 +1,78 @@
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInput` predicate from the `CryptographicOperation` class. Use `getAnInput` instead.
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `semmle/javascript/security/BadTagFilterQuery.qll`, `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/RegexpMatching.qll`, and `Security/CWE-020/HostnameRegexpShared.qll` files.
+
+### Minor Analysis Improvements
+
+* Improved detection of whether a file uses CommonJS module system.
+
+## 0.8.14
+
+No user-facing changes.
+
+## 0.8.13
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.4.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `CPU`, `TLD`, `SSA`, `ASM` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getMessageSuffix` predicates in `CodeInjectionCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedData.qll` file.
+* Deleted the deprecated `getANonHtmlHeaderDefinition` and `nonHtmlContentTypeHeader` predicates from `ReflectedXssCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/ExponentialBackTracking.qll`, `semmle/javascript/security/regexp/NfaUtils.qll`, and `semmle/javascript/security/regexp/NfaUtils.qll` files.
+* Deleted the deprecated `Expressions/TypoDatabase.qll` file.
+* The diagnostic query `js/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned JavaScript and TypeScript files, now considers any JavaScript and TypeScript file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added models for the `sqlite` and `better-sqlite3` npm packages.
+* TypeScript 5.3 is now supported.
+
 ## 0.8.3
 
 No user-facing changes.

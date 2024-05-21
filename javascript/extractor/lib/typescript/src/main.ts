@@ -554,7 +554,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     let program = project.program;
     let typeChecker = program.getTypeChecker();
 
-    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", Boolean, false);
+    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", v => v.trim().toLowerCase() === "true", false);
     let diagnostics = shouldReportDiagnostics
         ? program.getSemanticDiagnostics().filter(d => d.category === ts.DiagnosticCategory.Error)
         : [];
@@ -807,7 +807,8 @@ function handleGetMetadataCommand(command: GetMetadataCommand) {
 
 function reset() {
     state = new State();
-    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, true);
+    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", v => v.trim().toLowerCase() === "true", true);
+    state.typeTable.skipExtractingTypes = getEnvironmentVariable("CODEQL_EXTRACTOR_JAVASCRIPT_OPTION_SKIP_TYPES", v => v.trim().toLowerCase() === "true", false);
 }
 
 function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaultValue: T) {
@@ -886,6 +887,7 @@ if (process.argv.length > 2) {
     if (argument === "--version") {
         console.log("parser-wrapper with TypeScript " + ts.version);
     } else if (pathlib.basename(argument) === "tsconfig.json") {
+        reset();
         handleOpenProjectCommand({
             command: "open-project",
             tsConfig: argument,
@@ -895,7 +897,7 @@ if (process.argv.length > 2) {
             virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {
-            if (pathlib.basename(sf.fileName) === "lib.d.ts") continue;
+            if (/lib\..*\.d\.ts/.test(pathlib.basename(sf.fileName)) || pathlib.basename(sf.fileName) === "lib.d.ts") continue;
             handleParseCommand({
                 command: "parse",
                 filename: sf.fileName,

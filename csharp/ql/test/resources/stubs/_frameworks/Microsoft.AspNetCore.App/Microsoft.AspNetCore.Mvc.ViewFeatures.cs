@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -228,6 +228,7 @@ namespace Microsoft
                 {
                     Get = 0,
                     Post = 1,
+                    Dialog = 2,
                 }
                 public enum Html5DateRenderingMode
                 {

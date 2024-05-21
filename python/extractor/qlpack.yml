@@ -1,0 +1,6 @@
+name: extractor-python
+dependencies:
+  codeql/python-all: ${workspace}
+  codeql/python-queries: ${workspace}
+extractor: python
+warnOnImplicitThis: true

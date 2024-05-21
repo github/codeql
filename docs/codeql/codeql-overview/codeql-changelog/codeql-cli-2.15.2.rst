@@ -158,6 +158,14 @@ Dataflow Analysis
 
 *   The API for debugging flow using partial flow has changed slightly. Instead of using :code:`module Partial = FlowExploration<limit/0>` and choosing between :code:`Partial::partialFlow` and :code:`Partial::partialFlowRev`, you now choose between :code:`module Partial = FlowExplorationFwd<limit/0>` and :code:`module Partial = FlowExplorationRev<limit/0>`, and then always use :code:`Partial::partialFlow`.
 
+Minor Analysis Improvements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Range Analysis
+""""""""""""""
+
+*   Initial release. Moves the range analysis library into its own qlpack.
+
 New Features
 ~~~~~~~~~~~~
 

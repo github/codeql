@@ -1,8 +1,8 @@
 track
 | type_tracker.rb:1:1:10:3 | self (Container) | type tracker without call steps | type_tracker.rb:1:1:10:3 | self (Container) |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type tracker with call steps | type_tracker.rb:18:1:21:3 | self in positional |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type tracker with call steps | type_tracker.rb:25:1:28:3 | self in keyword |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type tracker without call steps | type_tracker.rb:1:1:53:4 | self (type_tracker.rb) |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type tracker with call steps | type_tracker.rb:18:1:21:3 | self in positional |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type tracker with call steps | type_tracker.rb:25:1:28:3 | self in keyword |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type tracker without call steps | type_tracker.rb:1:1:53:4 | self in type_tracker.rb |
 | type_tracker.rb:2:5:5:7 | &block | type tracker without call steps | type_tracker.rb:2:5:5:7 | &block |
 | type_tracker.rb:2:5:5:7 | field= | type tracker without call steps | type_tracker.rb:2:5:5:7 | field= |
 | type_tracker.rb:2:5:5:7 | self in field= | type tracker with call steps | type_tracker.rb:7:5:9:7 | self in field |
@@ -346,19 +346,20 @@ track
 | type_tracker.rb:52:5:52:13 | synthetic splat argument | type tracker without call steps | type_tracker.rb:52:5:52:13 | synthetic splat argument |
 trackEnd
 | type_tracker.rb:1:1:10:3 | self (Container) | type_tracker.rb:1:1:10:3 | self (Container) |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:1:1:53:4 | self (type_tracker.rb) |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:18:1:21:3 | self (positional) |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:18:1:21:3 | self in positional |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:19:5:19:11 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:20:5:20:11 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:23:1:23:16 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:25:1:28:3 | self (keyword) |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:25:1:28:3 | self in keyword |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:26:5:26:11 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:27:5:27:11 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:30:1:30:21 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:31:1:31:21 | self |
-| type_tracker.rb:1:1:53:4 | self (type_tracker.rb) | type_tracker.rb:32:1:32:27 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:1:1:53:4 | self (type_tracker.rb) |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:1:1:53:4 | self in type_tracker.rb |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:18:1:21:3 | self (positional) |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:18:1:21:3 | self in positional |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:19:5:19:11 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:20:5:20:11 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:23:1:23:16 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:25:1:28:3 | self (keyword) |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:25:1:28:3 | self in keyword |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:26:5:26:11 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:27:5:27:11 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:30:1:30:21 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:31:1:31:21 | self |
+| type_tracker.rb:1:1:53:4 | self in type_tracker.rb | type_tracker.rb:32:1:32:27 | self |
 | type_tracker.rb:2:5:5:7 | &block | type_tracker.rb:2:5:5:7 | &block |
 | type_tracker.rb:2:5:5:7 | field= | type_tracker.rb:2:5:5:7 | field= |
 | type_tracker.rb:2:5:5:7 | self in field= | type_tracker.rb:2:5:5:7 | self (field=) |

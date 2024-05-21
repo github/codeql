@@ -473,7 +473,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     pragma[noinline]
-    private predicate ssaDefReachesThroughBlock(DefinitionExt def, BasicBlock bb) {
+    predicate ssaDefReachesThroughBlock(DefinitionExt def, BasicBlock bb) {
       exists(SourceVariable v |
         ssaDefReachesEndOfBlockExt(bb, def, v) and
         not defOccursInBlock(_, bb, v, _)
@@ -741,41 +741,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     defAdjacentRead(def, bb1, bb2, i2)
   }
 
-  pragma[noinline]
-  deprecated private predicate adjacentDefRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
+  private predicate lastRefRedefExtSameBlock(
+    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, DefinitionExt next
   ) {
-    adjacentDefRead(def, bb1, i1, bb2, i2) and
-    v = def.getSourceVariable()
-  }
-
-  deprecated private predicate adjacentDefReachesRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    exists(SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-      ssaRef(bb1, i1, v, SsaDef())
-      or
-      variableRead(bb1, i1, v, true)
+    exists(int rnk, int j |
+      rnk = ssaDefRank(def, v, bb, i, _) and
+      next.definesAt(v, bb, j, _) and
+      rnk + 1 = ssaRefRank(bb, j, v, ssaDefExt())
     )
-    or
-    exists(BasicBlock bb3, int i3 |
-      adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-      variableRead(bb3, i3, _, false) and
-      adjacentDefRead(def, bb3, i3, bb2, i2)
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `adjacentDefRead`, but ignores uncertain reads.
-   */
-  pragma[nomagic]
-  deprecated predicate adjacentDefNoUncertainReads(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-    variableRead(bb2, i2, _, true)
   }
 
   /**
@@ -790,17 +763,45 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     DefinitionExt def, SourceVariable v, BasicBlock bb, int i, DefinitionExt next
   ) {
     // Next reference to `v` inside `bb` is a write
-    exists(int rnk, int j |
-      rnk = ssaDefRank(def, v, bb, i, _) and
-      next.definesAt(v, bb, j, _) and
-      rnk + 1 = ssaRefRank(bb, j, v, ssaDefExt())
-    )
+    lastRefRedefExtSameBlock(def, v, bb, i, next)
     or
     // Can reach a write using one or more steps
     lastSsaRefExt(def, v, bb, i) and
     exists(BasicBlock bb2 |
       varBlockReachesExt(def, v, bb, bb2) and
       1 = ssaDefRank(next, v, bb2, _, ssaDefExt())
+    )
+  }
+
+  /**
+   * NB: If this predicate is exposed, it should be cached.
+   *
+   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
+   * `def`. The reference is last because it can reach another write `next`,
+   * without passing through another read or write.
+   *
+   * The path from node `i` in `bb` to `next` goes via basic block `input`, which is
+   * either a predecessor of the basic block of `next`, or `input = bb` in case `next`
+   * occurs in basic block `bb`.
+   */
+  pragma[nomagic]
+  predicate lastRefRedefExt(
+    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, BasicBlock input, DefinitionExt next
+  ) {
+    // Next reference to `v` inside `bb` is a write
+    lastRefRedefExtSameBlock(def, v, bb, i, next) and
+    input = bb
+    or
+    // Can reach a write using one or more steps
+    lastSsaRefExt(def, v, bb, i) and
+    exists(BasicBlock bb2 |
+      input = getABasicBlockPredecessor(bb2) and
+      1 = ssaDefRank(next, v, bb2, _, ssaDefExt())
+    |
+      input = bb
+      or
+      varBlockReachesExt(def, v, bb, input) and
+      ssaDefReachesThroughBlock(def, input)
     )
   }
 
@@ -836,31 +837,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   pragma[nomagic]
   predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
     lastRefRedef(inp, _, _, def)
-  }
-
-  deprecated private predicate adjacentDefReachesUncertainRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-    variableRead(bb2, i2, _, false)
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `lastRefRedef`, but ignores uncertain reads.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefRedefNoUncertainReads(
-    Definition def, BasicBlock bb, int i, Definition next
-  ) {
-    lastRefRedef(def, bb, i, next) and
-    not variableRead(bb, i, def.getSourceVariable(), false)
-    or
-    exists(BasicBlock bb0, int i0 |
-      lastRefRedef(def, bb0, i0, next) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-    )
   }
 
   /**
@@ -905,22 +881,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       // Can reach a block using one or more steps, where `def` is no longer live
       varBlockReachesExit(def, bb)
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `lastRefRedef`, but ignores uncertain reads.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
-    lastRef(def, bb, i) and
-    not variableRead(bb, i, def.getSourceVariable(), false)
-    or
-    exists(BasicBlock bb0, int i0 |
-      lastRef(def, bb0, i0) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
     )
   }
 

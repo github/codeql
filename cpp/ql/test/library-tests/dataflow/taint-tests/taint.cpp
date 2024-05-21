@@ -212,7 +212,7 @@ void test_swap() {
 
 	std::swap(x, y);
 
-	sink(x); // $ SPURIOUS: ast,ir
+	sink(x); // $ SPURIOUS: ast
 	sink(y); // $ ast,ir
 }
 
@@ -744,4 +744,28 @@ void test_realloc_2_indirections(int **buffer) {
   **buffer = source();
   buffer = (int**)realloc(buffer, 16);
   sink(**buffer); // $ ir MISSING: ast
+}
+
+int sprintf(char *, const char *, ...);
+
+void call_sprintf_twice(char* path, char* data) {
+	sprintf(path, "%s", "abc");
+	sprintf(path, "%s", data);
+}
+
+void test_call_sprintf() {
+	char path[10];
+	call_sprintf_twice(path, indirect_source());
+	sink(*path); // $ ast,ir
+}
+
+struct TaintInheritingContentObject {
+	int flowFromObject;
+};
+
+TaintInheritingContentObject source(bool);
+
+void test_TaintInheritingContent() {
+	TaintInheritingContentObject obj = source(true);
+	sink(obj.flowFromObject); // $ ir MISSING: ast
 }

@@ -1,3 +1,11 @@
+/**
+ * @name Generate flow models
+ * @description Queries to generate source, sink, summary and type models.
+ * @kind table
+ * @id rb/utils/modeleditor/generate-model
+ * @tags modeleditor generate-model framework-mode
+ */
+
 private import internal.Types
 private import internal.Summaries
 

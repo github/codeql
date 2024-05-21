@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.frameworks.HTTP
 import semmle.javascript.frameworks.ExpressModules
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared

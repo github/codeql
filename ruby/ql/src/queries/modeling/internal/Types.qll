@@ -6,6 +6,8 @@
 private import ruby
 private import codeql.ruby.ApiGraphs
 private import Util as Util
+private import codeql.ruby.ast.Module
+private import codeql.ruby.ast.internal.Module
 
 /**
  * Contains predicates for generating `typeModel`s that contain typing
@@ -41,6 +43,18 @@ module Types {
     exists(API::Node node |
       valueHasTypeName(node.getAValueReachingSink(), type1) and
       Util::pathToNode(node, type2, path, true)
+    )
+    or
+    // class Type2 < Type1
+    // class Type2; include Type1
+    exists(Module m1, Module m2 |
+      m2.getAnImmediateAncestor() = m1 and
+      not m2.isBuiltin() and
+      not m1.isBuiltin() and
+      m1.getLocation().getFile() instanceof Util::RelevantFile and
+      m2.getLocation().getFile() instanceof Util::RelevantFile
+    |
+      m1.getQualifiedName() = type1 and m2.getQualifiedName() = type2 and path = ""
     )
   }
 }

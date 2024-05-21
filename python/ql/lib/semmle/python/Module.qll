@@ -125,9 +125,9 @@ class Module extends Module_, Scope, AstNode {
       a.getScope() = this and
       all.getId() = "__all__" and
       (
-        a.getValue().(List).getAnElt().(StrConst).getText() = name
+        a.getValue().(List).getAnElt().(StringLiteral).getText() = name
         or
-        a.getValue().(Tuple).getAnElt().(StrConst).getText() = name
+        a.getValue().(Tuple).getAnElt().(StringLiteral).getText() = name
       )
     )
   }
@@ -177,7 +177,7 @@ private predicate legalDottedName(string name) {
 }
 
 bindingset[name]
-private predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
+predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
 
 private string moduleNameFromBase(Container file) {
   // We used to also require `isPotentialPackage(f)` to hold in this case,

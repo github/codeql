@@ -2,10 +2,9 @@ private import codeql.ruby.AST
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql.ruby.CFG
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
-private import SsaImpl as SsaImpl
 private import codeql.ruby.ApiGraphs
 
 /**
@@ -36,7 +35,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -78,7 +77,7 @@ class Node extends TNode {
     or
     exists(DataFlowCallable c |
       lambdaCreation(this, _, c) and
-      result.asCallableAstNode() = c.asCallable()
+      result.asCallableAstNode() = c.asCfgScope()
     )
   }
 
@@ -213,12 +212,14 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends LocalSourceNode instanceof ParameterNodeImpl {
+class ParameterNode extends LocalSourceNode {
+  ParameterNode() { exists(getParameterPosition(this, _)) }
+
   /** Gets the parameter corresponding to this node, if any. */
-  final Parameter getParameter() { result = super.getParameter() }
+  final Parameter getParameter() { result = getParameter(this) }
 
   /** Gets the callable that this parameter belongs to. */
-  final Callable getCallable() { result = super.getCfgScope() }
+  final Callable getCallable() { result = getCfgScope(this) }
 
   /** Gets the name of the parameter, if any. */
   final string getName() { result = this.getParameter().(NamedParameter).getName() }
@@ -245,7 +246,7 @@ class LocalSourceNode extends Node {
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   pragma[inline]
-  predicate flowsTo(Node nodeTo) { hasLocalSource(nodeTo, this) }
+  predicate flowsTo(Node nodeTo) { flowsTo(this, nodeTo) }
 
   /**
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
@@ -261,14 +262,14 @@ class LocalSourceNode extends Node {
    * See `TypeBackTracker` for more details about how to use this.
    */
   pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
 
   /**
    * Gets a node to which data may flow from this node in zero or
    * more local data-flow steps.
    */
   pragma[inline]
-  Node getALocalUse() { hasLocalSource(result, this) }
+  Node getALocalUse() { flowsTo(this, result) }
 
   /** Gets a method call where this node flows to the receiver. */
   CallNode getAMethodCall() { Cached::hasMethodCall(this, result, _) }
@@ -349,26 +350,30 @@ class LocalSourceNode extends Node {
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
  * to the value before the update.
  */
-class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
+class PostUpdateNode extends Node {
+  private Node pre;
+
+  PostUpdateNode() { pre = getPreUpdateNode(this) }
+
   /** Gets the node before the state update. */
-  Node getPreUpdateNode() { result = super.getPreUpdateNode() }
+  Node getPreUpdateNode() { result = pre }
+}
+
+/** An SSA definition, viewed as a node in a data flow graph. */
+class SsaDefinitionNode extends Node instanceof SsaDefinitionExtNode {
+  Ssa::Definition def;
+
+  SsaDefinitionNode() { this = TSsaDefinitionExtNode(def) }
+
+  /** Gets the underlying SSA definition. */
+  Ssa::Definition getDefinition() { result = def }
+
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
 }
 
 cached
 private module Cached {
-  cached
-  predicate hasLocalSource(Node sink, Node source) {
-    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
-    // recursive case, so instead we check it explicitly here.
-    source = sink and
-    source instanceof LocalSourceNode
-    or
-    exists(Node mid |
-      hasLocalSource(mid, source) and
-      localFlowStepTypeTracker(mid, sink)
-    )
-  }
-
   cached
   predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
     source.flowsTo(call.getReceiver()) and
@@ -383,6 +388,28 @@ private module Cached {
       yield.asExpr().getExpr() = call
     )
   }
+
+  cached
+  CfgScope getCfgScope(NodeImpl node) { result = node.getCfgScope() }
+
+  cached
+  ReturnNode getAReturnNode(Callable callable) { getCfgScope(result) = callable }
+
+  cached
+  Parameter getParameter(ParameterNodeImpl param) { result = param.getParameter() }
+
+  cached
+  ParameterPosition getParameterPosition(ParameterNodeImpl param, DataFlowCallable c) {
+    param.isParameterOf(c, result)
+  }
+
+  cached
+  ParameterPosition getSourceParameterPosition(ParameterNodeImpl param, Callable c) {
+    param.isSourceParameterOf(c, result)
+  }
+
+  cached
+  Node getPreUpdateNode(PostUpdateNodeImpl node) { result = node.getPreUpdateNode() }
 
   cached
   predicate methodHasSuperCall(MethodNode method, CallNode call) {
@@ -829,24 +856,52 @@ private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2)
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private import SsaImpl as SsaImpl
+
   pragma[nomagic]
   private predicate guardChecksSsaDef(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def) {
     guardChecks(g, def.getARead(), branch)
   }
 
   pragma[nomagic]
-  private predicate guardControlsSsaDef(
+  private predicate guardControlsSsaRead(
     CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, Node n
   ) {
     def.getARead() = n.asExpr() and
     guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
   }
 
+  pragma[nomagic]
+  private predicate guardControlsPhiInput(
+    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, BasicBlock input,
+    SsaInputDefinitionExt phi
+  ) {
+    phi.hasInputFromBlock(def, _, _, input) and
+    (
+      guardControlsBlock(g, input, branch)
+      or
+      exists(SuccessorTypes::ConditionalSuccessor s |
+        g = input.getLastNode() and
+        s.getValue() = branch and
+        input.getASuccessor(s) = phi.getBasicBlock()
+      )
+    )
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
     exists(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def |
       guardChecksSsaDef(g, branch, def) and
-      guardControlsSsaDef(g, branch, def, result)
+      guardControlsSsaRead(g, branch, def, result)
+    )
+    or
+    exists(
+      CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, BasicBlock input,
+      SsaInputDefinitionExt phi
+    |
+      guardChecksSsaDef(g, branch, def) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaInputNode(phi, input)
     )
     or
     result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
@@ -1040,7 +1095,7 @@ class ModuleNode instanceof Module {
    * Does not take inheritance into account.
    */
   ParameterNode getAnOwnInstanceSelf() {
-    result = TSelfParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
+    result = TSelfMethodParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
   }
 
   /**
@@ -1145,6 +1200,11 @@ class ModuleNode instanceof Module {
   bindingset[this]
   pragma[inline]
   API::Node trackInstance() { result = API::Internal::getModuleInstance(this) }
+
+  /**
+   * Holds if this is a built-in module, e.g. `Object`.
+   */
+  predicate isBuiltin() { super.isBuiltin() }
 }
 
 /**
@@ -1272,7 +1332,7 @@ class CallableNode extends StmtSequenceNode {
   Callable asCallableAstNode() { result = callable }
 
   private ParameterPosition getParameterPosition(ParameterNodeImpl node) {
-    node.isSourceParameterOf(callable, result)
+    result = getSourceParameterPosition(node, callable)
   }
 
   /** Gets the `n`th positional parameter. */
@@ -1312,7 +1372,7 @@ class CallableNode extends StmtSequenceNode {
   /**
    * Gets a data flow node whose value is about to be returned by this callable.
    */
-  Node getAReturnNode() { result.(ReturnNode).(NodeImpl).getCfgScope() = callable }
+  Node getAReturnNode() { result = getAReturnNode(callable) }
 
   /**
    * DEPRECATED. Use `getAReturnNode` instead.

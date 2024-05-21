@@ -86,7 +86,8 @@ module Private {
 
     /** Holds if this summary node is the `i`th argument of `call`. */
     predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
+      // We do not currently have support for callback-based library models.
+      none()
     }
 
     /** Holds if this summary node is a return node. */
@@ -96,7 +97,8 @@ module Private {
 
     /** Holds if this summary node is an out node for `call`. */
     predicate isOut(DataFlowCall call) {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+      // We do not currently have support for callback-based library models.
+      none()
     }
   }
 }
@@ -153,6 +155,14 @@ module Public {
       startcolumn = 0 and
       endline = 0 and
       endcolumn = 0
+    }
+
+    /** Gets the location of this node. */
+    Location getLocation() {
+      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
     }
 
     /** Gets the file in which this node appears. */
@@ -445,8 +455,8 @@ module Public {
     CallNode getCallNode() { result = call }
 
     override Type getType() {
-      exists(Function f | f = call.getTarget() |
-        result = f.getParameterType(f.getNumParameter() - 1)
+      exists(SignatureType t | t = call.getCall().getCalleeType() |
+        result = t.getParameterType(t.getNumParameter() - 1)
       )
     }
 
@@ -473,6 +483,7 @@ module Public {
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
     result = cn.getCalleeNode() or
     basicLocalFlowStep(result, getACalleeSource(cn)) or
+    jumpStep(result, getACalleeSource(cn)) or
     result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 

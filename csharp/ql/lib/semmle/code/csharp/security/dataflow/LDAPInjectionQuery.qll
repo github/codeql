@@ -4,7 +4,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.DirectoryServices
 private import semmle.code.csharp.frameworks.system.directoryservices.Protocols
 private import semmle.code.csharp.security.Sanitizers
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for unvalidated user input that is used to construct LDAP queries.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for unvalidated user input that is used to construct LDAP queries.
@@ -66,8 +67,15 @@ module LdapInjectionConfig implements DataFlow::ConfigSig {
  */
 module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreadModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /** LDAP sinks defined through Models as Data. */
 private class ExternalLdapExprSink extends Sink {

@@ -1,3 +1,77 @@
+## 0.3.16
+
+No user-facing changes.
+
+## 0.3.15
+
+No user-facing changes.
+
+## 0.3.14
+
+No user-facing changes.
+
+## 0.3.13
+
+### Major Analysis Improvements
+
+* Upgraded to Swift 5.10
+* New AST node is extracted: `ThenStmt`
+
+## 0.3.12
+
+No user-facing changes.
+
+## 0.3.11
+
+No user-facing changes.
+
+## 0.3.10
+
+### Bug Fixes
+
+* Fixed an issue where `TypeDecl.getFullName` would get stuck in an loop and fail when minor database inconsistencies are present.
+
+## 0.3.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.3.8
+
+No user-facing changes.
+
+## 0.3.7
+
+### Minor Analysis Improvements
+
+* Swift upgraded to 5.9.2
+* The control flow graph library (`codeql.swift.controlflow`) has been transitioned to use the shared implementation from the `codeql/controlflow` qlpack. No result changes are expected due to this change.
+
+## 0.3.6
+
+### Minor Analysis Improvements
+
+* Expanded flow models for `UnsafePointer` and similar classes.
+* Added flow models for non-member `withUnsafePointer` and similar functions.
+* Added flow models for `withMemoryRebound`, `assumingMemoryBound` and `bindMemory` member functions of library pointer classes.
+* Added a sensitive data model for `SecKeyCopyExternalRepresentation`.
+* Added imprecise flow models for `append` and `insert` methods, and initializer calls with a `data` argument.
+* Tyes for patterns are now included in the database and made available through the `Pattern::getType()` method.
+
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+### Minor Analysis Improvements
+
+* Extracts Swift's `DiscardStmt` and `MaterizliePackExpr`
+* Expanded and improved flow models for `Set` and `Sequence`.
+* Added imprecise flow sources matching initializers such as `init(contentsOfFile:)`.
+* Extracts `MacroDecl` and some related information
+
 ## 0.3.3
 
 ### Major Analysis Improvements

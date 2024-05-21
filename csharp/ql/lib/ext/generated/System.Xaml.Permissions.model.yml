@@ -9,7 +9,6 @@ extensions:
       - ["System.Xaml.Permissions", "XamlAccessLevel", "PrivateAccessTo", "(System.String)", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlAccessLevel", "PrivateAccessTo", "(System.Type)", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlAccessLevel", "get_AssemblyAccessToAssemblyName", "()", "summary", "df-generated"]
-      - ["System.Xaml.Permissions", "XamlAccessLevel", "get_PrivateAccessToTypeName", "()", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlLoadPermission", "Copy", "()", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlLoadPermission", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlLoadPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
@@ -23,5 +22,3 @@ extensions:
       - ["System.Xaml.Permissions", "XamlLoadPermission", "XamlLoadPermission", "(System.Collections.Generic.IEnumerable<System.Xaml.Permissions.XamlAccessLevel>)", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlLoadPermission", "XamlLoadPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Xaml.Permissions", "XamlLoadPermission", "XamlLoadPermission", "(System.Xaml.Permissions.XamlAccessLevel)", "summary", "df-generated"]
-      - ["System.Xaml.Permissions", "XamlLoadPermission", "get_AllowedAccess", "()", "summary", "df-generated"]
-      - ["System.Xaml.Permissions", "XamlLoadPermission", "set_AllowedAccess", "(System.Collections.Generic.IList<System.Xaml.Permissions.XamlAccessLevel>)", "summary", "df-generated"]

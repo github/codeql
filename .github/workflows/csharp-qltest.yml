@@ -25,6 +25,9 @@ defaults:
   run:
     working-directory: csharp
 
+permissions:
+  contents: read
+
 jobs:
   qlupgrade:
     runs-on: ubuntu-latest
@@ -46,6 +49,7 @@ jobs:
            xargs codeql execute upgrades testdb
           diff -q testdb/semmlecode.csharp.dbscheme downgrades/initial/semmlecode.csharp.dbscheme
   qltest:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     strategy:
       fail-fast: false
@@ -74,13 +78,14 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.102
+          dotnet-version: 8.0.101
       - name: Extractor unit tests
         run: |
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Util.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Extraction.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+          dotnet tool restore
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.Cpp.Tests
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest

@@ -1,17 +1,18 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/gin-gonic/gin` package.
+ * Provides classes for working with the `github.com/gin-gonic/gin` package.
  */
 
 import go
+private import semmle.go.security.HardcodedCredentials
 
 private module Gin {
   /** Gets the package name `github.com/gin-gonic/gin`. */
   string packagePath() { result = package("github.com/gin-gonic/gin", "") }
 
   /**
-   * Data from a `Context` struct, considered as a source of untrusted flow.
+   * Data from a `Context` struct, considered as a source of remote flow.
    */
-  private class GithubComGinGonicGinContextSource extends UntrustedFlowSource::Range {
+  private class GithubComGinGonicGinContextSource extends RemoteFlowSource::Range {
     GithubComGinGonicGinContextSource() {
       // Method calls:
       exists(DataFlow::MethodCallNode call, string methodName |
@@ -38,7 +39,7 @@ private module Gin {
   /**
    * A call to a method on `Context` struct that unmarshals data into a target.
    */
-  private class GithubComGinGonicGinContextBindSource extends UntrustedFlowSource::Range {
+  private class GithubComGinGonicGinContextBindSource extends RemoteFlowSource::Range {
     GithubComGinGonicGinContextBindSource() {
       exists(DataFlow::MethodCallNode call, string methodName |
         call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
@@ -74,5 +75,14 @@ private module Gin {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
+  }
+
+  private class GinJwtSign extends HardcodedCredentials::Sink {
+    GinJwtSign() {
+      exists(Field f |
+        f.hasQualifiedName(package("github.com/appleboy/gin-jwt", ""), "GinJWTMiddleware", "Key") and
+        f.getAWrite().getRhs() = this
+      )
+    }
   }
 }

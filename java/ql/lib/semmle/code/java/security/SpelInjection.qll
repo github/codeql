@@ -2,10 +2,11 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.frameworks.spring.SpringExpression
 
 /** A data flow sink for unvalidated user input that is used to construct SpEL expressions. */
-abstract class SpelExpressionEvaluationSink extends DataFlow::ExprNode { }
+abstract class SpelExpressionEvaluationSink extends ApiSinkNode, DataFlow::ExprNode { }
 
 /**
  * A unit class for adding additional taint steps.

@@ -67,8 +67,8 @@ namespace Semmle.Extraction.CSharp
             bool argsWritten;
             using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
             {
-                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !arg.StartsWith('@')))}");
-                argsWritten = roslynArgs.WriteCommandLine(streamWriter);
+                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !CommandLineExtensions.IsFileArgument(arg)))}");
+                argsWritten = streamWriter.WriteContentFromArgumentFile(roslynArgs);
             }
 
             var hash = FileUtils.ComputeFileHash(tempFile);
@@ -175,9 +175,6 @@ namespace Semmle.Extraction.CSharp
                     Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));
             }
         }
-
-        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
-
 #nullable restore warnings
     }
 }

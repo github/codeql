@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Data.Common, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Data.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Data
@@ -194,8 +194,10 @@ namespace System
             }
             public abstract class DbBatchCommand
             {
+                public virtual bool CanCreateParameter { get => throw null; }
                 public abstract string CommandText { get; set; }
                 public abstract System.Data.CommandType CommandType { get; set; }
+                public virtual System.Data.Common.DbParameter CreateParameter() => throw null;
                 protected DbBatchCommand() => throw null;
                 protected abstract System.Data.Common.DbParameterCollection DbParameterCollection { get; }
                 public System.Data.Common.DbParameterCollection Parameters { get => throw null; }
@@ -2616,7 +2618,7 @@ namespace System
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static readonly System.Data.SqlTypes.SqlDouble Zero;
             }
-            public struct SqlGuid : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlGuid>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
+            public struct SqlGuid : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlGuid>, System.Data.SqlTypes.INullable, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
             {
                 public int CompareTo(System.Data.SqlTypes.SqlGuid value) => throw null;
                 public int CompareTo(object value) => throw null;
@@ -2628,6 +2630,7 @@ namespace System
                 public bool Equals(System.Data.SqlTypes.SqlGuid other) => throw null;
                 public override bool Equals(object value) => throw null;
                 public override int GetHashCode() => throw null;
+                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 System.Xml.Schema.XmlSchema System.Xml.Serialization.IXmlSerializable.GetSchema() => throw null;
                 public static System.Xml.XmlQualifiedName GetXsdType(System.Xml.Schema.XmlSchemaSet schemaSet) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean GreaterThan(System.Data.SqlTypes.SqlGuid x, System.Data.SqlTypes.SqlGuid y) => throw null;

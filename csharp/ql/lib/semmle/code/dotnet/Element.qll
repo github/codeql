@@ -8,7 +8,7 @@ import semmle.code.csharp.Location
 /**
  * A .Net program element.
  */
-class Element extends @dotnet_element {
+deprecated class Element extends @dotnet_element {
   /** Gets a textual representation of this element. */
   cached
   string toString() { none() }
@@ -69,7 +69,7 @@ class Element extends @dotnet_element {
 }
 
 /** An element that has a name. */
-class NamedElement extends Element, @dotnet_named_element {
+deprecated class NamedElement extends Element, @dotnet_named_element {
   /** Gets the name of this element. */
   cached
   string getName() { none() }
@@ -116,15 +116,6 @@ class NamedElement extends Element, @dotnet_named_element {
     exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
       if qualifier = "" then result = name else result = qualifier + "." + name
     )
-  }
-
-  /**
-   * DEPRECATED: Use `hasQualifiedName/2` instead.
-   * Holds if this element has qualified name `qualifiedName`, for example
-   * `System.Console.WriteLine`.
-   */
-  deprecated final predicate hasQualifiedName(string qualifiedName) {
-    qualifiedName = this.getQualifiedName()
   }
 
   /**

@@ -238,6 +238,26 @@ private class AnalyzedBinaryExpr extends DataFlow::AnalyzedValueNode {
   }
 }
 
+pragma[nomagic]
+private predicate falsyValue(AbstractValue value) { value.getBooleanValue() = false }
+
+/**
+ * Flow analysis for `&&` operators.
+ */
+private class AnalyzedLogicalAndExpr extends DataFlow::AnalyzedValueNode {
+  override LogicalAndExpr astNode;
+
+  pragma[nomagic]
+  private AnalyzedValueNode leftOperand() { result = astNode.getLeftOperand().analyze() }
+
+  override AbstractValue getALocalValue() {
+    result = super.getALocalValue()
+    or
+    result = this.leftOperand().getALocalValue() and
+    falsyValue(result)
+  }
+}
+
 /**
  * Gets the `n`th operand of the given `+` or `+=` expression.
  */

@@ -206,11 +206,24 @@ namespace My.Qltest
             Sink(MixedFlowArgs(null, o2));
         }
 
+        void M4()
+        {
+            var o1 = new object();
+            Sink(GeneratedFlowWithGeneratedNeutral(o1));
+
+            var o2 = new object();
+            Sink(GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
+        }
+
         object GeneratedFlow(object o) => throw null;
 
         object GeneratedFlowArgs(object o1, object o2) => throw null;
 
         object MixedFlowArgs(object o1, object o2) => throw null;
+
+        object GeneratedFlowWithGeneratedNeutral(object o) => throw null;
+
+        object GeneratedFlowWithManualNeutral(object o) => throw null;
 
         static void Sink(object o) { }
     }
@@ -232,6 +245,26 @@ namespace My.Qltest
             var o = h.ExtensionMethod();
             Sink(o);
         }
+
+        static void Sink(object o) { }
+    }
+
+    [System.Runtime.CompilerServices.InlineArray(10)]
+    public struct MyInlineArray
+    {
+        private object myInlineArrayElements;
+    }
+
+    public class I
+    {
+        void M1(MyInlineArray a)
+        {
+            a[0] = new object();
+            var b = GetFirst(a);
+            Sink(b);
+        }
+
+        object GetFirst(MyInlineArray arr) => throw null;
 
         static void Sink(object o) { }
     }

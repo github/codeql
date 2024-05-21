@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Xml.ReaderWriter, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Xml.ReaderWriter, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Xml
@@ -1789,6 +1789,7 @@ namespace System
         {
             public virtual System.Net.ICredentials Credentials { set { } }
             protected XmlResolver() => throw null;
+            public static System.Xml.XmlResolver FileSystemResolver { get => throw null; }
             public abstract object GetEntity(System.Uri absoluteUri, string role, System.Type ofObjectToReturn);
             public virtual System.Threading.Tasks.Task<object> GetEntityAsync(System.Uri absoluteUri, string role, System.Type ofObjectToReturn) => throw null;
             public virtual System.Uri ResolveUri(System.Uri baseUri, string relativeUri) => throw null;

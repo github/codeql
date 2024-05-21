@@ -1,6 +1,6 @@
 // Semmle test cases for rule CWE-457.
 
-void use(int data);
+void use(...);
 
 void test1() {
 	int foo = 1;
@@ -532,4 +532,37 @@ int non_exhaustive_switch_2(State s) {
 		return y; // GOOD (y is not initialized when s = StateC, but if s = StateC we won't reach this point)
 	}
 	return 0;
+}
+
+class StaticMethodClass{
+    public:
+    static int get(){
+        return 1;
+    }
+};
+
+int static_method_false_positive(){
+    StaticMethodClass *t;
+	int i = t->get(); // GOOD: the `get` method is static and this is equivalent to StaticMethodClass::get()
+}
+
+struct LinkedList
+{
+  LinkedList* next;
+};
+
+bool getBool();
+
+void test45() {
+  LinkedList *r, *s, **rP = &r;
+
+  while(getBool())
+  {
+    s = new LinkedList;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = NULL;
+  use(r); // GOOD [FALSE POSITIVE]
 }

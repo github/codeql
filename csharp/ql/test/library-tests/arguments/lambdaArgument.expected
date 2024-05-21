@@ -1,0 +1,11 @@
+| lambdas.cs:8:9:8:13 | delegate call | lambdas.cs:7:23:7:23 | x | lambdas.cs:8:12:8:12 | 1 |
+| lambdas.cs:11:9:11:16 | delegate call | lambdas.cs:10:23:10:23 | x | lambdas.cs:11:12:11:12 | 2 |
+| lambdas.cs:11:9:11:16 | delegate call | lambdas.cs:10:30:10:30 | y | lambdas.cs:11:15:11:15 | 3 |
+| lambdas.cs:12:9:12:13 | delegate call | lambdas.cs:10:23:10:23 | x | lambdas.cs:12:12:12:12 | 4 |
+| lambdas.cs:13:9:13:16 | delegate call | lambdas.cs:10:23:10:23 | x | lambdas.cs:13:12:13:12 | 5 |
+| lambdas.cs:13:9:13:16 | delegate call | lambdas.cs:10:30:10:30 | y | lambdas.cs:13:15:13:15 | 6 |
+| lambdas.cs:17:9:17:19 | delegate call | lambdas.cs:15:32:15:32 | x | lambdas.cs:17:12:17:12 | 7 |
+| lambdas.cs:17:9:17:19 | delegate call | lambdas.cs:15:32:15:32 | x | lambdas.cs:17:15:17:15 | 8 |
+| lambdas.cs:17:9:17:19 | delegate call | lambdas.cs:15:32:15:32 | x | lambdas.cs:17:18:17:18 | 9 |
+| lambdas.cs:25:9:25:23 | delegate call | lambdas.cs:24:31:24:31 | x | lambdas.cs:25:22:25:22 | 5 |
+| lambdas.cs:25:9:25:23 | delegate call | lambdas.cs:24:38:24:38 | y | lambdas.cs:25:16:25:16 | 4 |

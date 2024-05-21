@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "CreateFromFile", "(Microsoft.Win32.SafeHandles.SafeFileHandle,System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.HandleInheritability,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "CreateFromFile", "(System.IO.FileStream,System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.HandleInheritability,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "CreateFromFile", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "CreateFromFile", "(System.String,System.IO.FileMode)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]

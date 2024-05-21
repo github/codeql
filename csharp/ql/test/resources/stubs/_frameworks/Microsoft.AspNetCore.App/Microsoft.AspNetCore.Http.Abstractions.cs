@@ -1,9 +1,16 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
+        namespace Antiforgery
+        {
+            public interface IAntiforgeryMetadata
+            {
+                bool RequiresValidation { get; }
+            }
+        }
         namespace Builder
         {
             public abstract class EndpointBuilder
@@ -177,6 +184,15 @@ namespace Microsoft
             public abstract class EndpointFilterInvocationContext
             {
                 public abstract System.Collections.Generic.IList<object> Arguments { get; }
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T>(Microsoft.AspNetCore.Http.HttpContext httpContext, T arg) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2, T3>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2, T3 arg3) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2, T3, T4>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2, T3 arg3, T4 arg4) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2, T3, T4, T5>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2, T3, T4, T5, T6>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2, T3, T4, T5, T6, T7>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7) => throw null;
+                public static Microsoft.AspNetCore.Http.EndpointFilterInvocationContext Create<T1, T2, T3, T4, T5, T6, T7, T8>(Microsoft.AspNetCore.Http.HttpContext httpContext, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8) => throw null;
                 protected EndpointFilterInvocationContext() => throw null;
                 public abstract T GetArgument<T>(int index);
                 public abstract Microsoft.AspNetCore.Http.HttpContext HttpContext { get; }
@@ -365,11 +381,19 @@ namespace Microsoft
                 public static System.Threading.Tasks.Task WriteAsync(this Microsoft.AspNetCore.Http.HttpResponse response, string text, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsync(this Microsoft.AspNetCore.Http.HttpResponse response, string text, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
+            namespace HttpResults
+            {
+                public sealed class EmptyHttpResult : Microsoft.AspNetCore.Http.IResult
+                {
+                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                    public static Microsoft.AspNetCore.Http.HttpResults.EmptyHttpResult Instance { get => throw null; }
+                }
+            }
             public class HttpValidationProblemDetails : Microsoft.AspNetCore.Mvc.ProblemDetails
             {
                 public HttpValidationProblemDetails() => throw null;
                 public HttpValidationProblemDetails(System.Collections.Generic.IDictionary<string, string[]> errors) => throw null;
-                public System.Collections.Generic.IDictionary<string, string[]> Errors { get => throw null; }
+                public System.Collections.Generic.IDictionary<string, string[]> Errors { get => throw null; set { } }
             }
             public interface IBindableFromHttpContext<TSelf> where TSelf : class, Microsoft.AspNetCore.Http.IBindableFromHttpContext<TSelf>
             {
@@ -412,6 +436,7 @@ namespace Microsoft
             }
             public interface IProblemDetailsService
             {
+                virtual System.Threading.Tasks.ValueTask<bool> TryWriteAsync(Microsoft.AspNetCore.Http.ProblemDetailsContext context) => throw null;
                 System.Threading.Tasks.ValueTask WriteAsync(Microsoft.AspNetCore.Http.ProblemDetailsContext context);
             }
             public interface IProblemDetailsWriter
@@ -437,6 +462,21 @@ namespace Microsoft
             }
             namespace Metadata
             {
+                public sealed class AcceptsMetadata : Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata
+                {
+                    public System.Collections.Generic.IReadOnlyList<string> ContentTypes { get => throw null; }
+                    public AcceptsMetadata(string[] contentTypes, System.Type type = default(System.Type), bool isOptional = default(bool)) => throw null;
+                    public bool IsOptional { get => throw null; }
+                    public System.Type RequestType { get => throw null; }
+                    public override string ToString() => throw null;
+                }
+                public class FormMappingOptionsMetadata
+                {
+                    public FormMappingOptionsMetadata(int? maxCollectionSize = default(int?), int? maxRecursionDepth = default(int?), int? maxKeySize = default(int?)) => throw null;
+                    public int? MaxCollectionSize { get => throw null; }
+                    public int? MaxKeySize { get => throw null; }
+                    public int? MaxRecursionDepth { get => throw null; }
+                }
                 public interface IAcceptsMetadata
                 {
                     System.Collections.Generic.IReadOnlyList<string> ContentTypes { get; }
@@ -458,6 +498,19 @@ namespace Microsoft
                 public interface IEndpointSummaryMetadata
                 {
                     string Summary { get; }
+                }
+                public interface IFormOptionsMetadata
+                {
+                    bool? BufferBody { get; }
+                    long? BufferBodyLengthLimit { get; }
+                    int? KeyLengthLimit { get; }
+                    int? MemoryBufferThreshold { get; }
+                    long? MultipartBodyLengthLimit { get; }
+                    int? MultipartBoundaryLengthLimit { get; }
+                    int? MultipartHeadersCountLimit { get; }
+                    int? MultipartHeadersLengthLimit { get; }
+                    int? ValueCountLimit { get; }
+                    int? ValueLengthLimit { get; }
                 }
                 public interface IFromBodyMetadata
                 {
@@ -491,6 +544,10 @@ namespace Microsoft
                 public interface IRequestSizeLimitMetadata
                 {
                     long? MaxRequestBodySize { get; }
+                }
+                public interface IRouteDiagnosticsMetadata
+                {
+                    string Route { get; }
                 }
                 public interface ISkipStatusCodePagesMetadata
                 {
@@ -535,8 +592,17 @@ namespace Microsoft
             {
                 public Microsoft.AspNetCore.Http.EndpointMetadataCollection AdditionalMetadata { get => throw null; set { } }
                 public ProblemDetailsContext() => throw null;
+                public System.Exception Exception { get => throw null; set { } }
                 public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
                 public Microsoft.AspNetCore.Mvc.ProblemDetails ProblemDetails { get => throw null; set { } }
+            }
+            public sealed class ProducesResponseTypeMetadata : Microsoft.AspNetCore.Http.Metadata.IProducesResponseTypeMetadata
+            {
+                public System.Collections.Generic.IEnumerable<string> ContentTypes { get => throw null; }
+                public ProducesResponseTypeMetadata(int statusCode, System.Type type = default(System.Type), string[] contentTypes = default(string[])) => throw null;
+                public int StatusCode { get => throw null; }
+                public override string ToString() => throw null;
+                public System.Type Type { get => throw null; }
             }
             public struct QueryString : System.IEquatable<Microsoft.AspNetCore.Http.QueryString>
             {
@@ -636,6 +702,7 @@ namespace Microsoft
                 public const int Status429TooManyRequests = 429;
                 public const int Status431RequestHeaderFieldsTooLarge = 431;
                 public const int Status451UnavailableForLegalReasons = 451;
+                public const int Status499ClientClosedRequest = 499;
                 public const int Status500InternalServerError = 500;
                 public const int Status501NotImplemented = 501;
                 public const int Status502BadGateway = 502;
@@ -664,7 +731,7 @@ namespace Microsoft
             {
                 public ProblemDetails() => throw null;
                 public string Detail { get => throw null; set { } }
-                public System.Collections.Generic.IDictionary<string, object> Extensions { get => throw null; }
+                public System.Collections.Generic.IDictionary<string, object> Extensions { get => throw null; set { } }
                 public string Instance { get => throw null; set { } }
                 public int? Status { get => throw null; set { } }
                 public string Title { get => throw null; set { } }

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Server.Kestrel.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Server.Kestrel.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -69,6 +69,10 @@ namespace Microsoft
                         public interface IHttpMinResponseDataRateFeature
                         {
                             Microsoft.AspNetCore.Server.Kestrel.Core.MinDataRate MinDataRate { get; set; }
+                        }
+                        public interface ISslStreamFeature
+                        {
+                            System.Net.Security.SslStream SslStream { get; }
                         }
                         public interface ITlsApplicationProtocolFeature
                         {
@@ -199,6 +203,7 @@ namespace Microsoft
                     {
                         public bool AddServerHeader { get => throw null; set { } }
                         public bool AllowAlternateSchemes { get => throw null; set { } }
+                        public bool AllowHostHeaderOverride { get => throw null; set { } }
                         public bool AllowResponseHeaderCompression { get => throw null; set { } }
                         public bool AllowSynchronousIO { get => throw null; set { } }
                         public System.IServiceProvider ApplicationServices { get => throw null; set { } }
@@ -224,6 +229,8 @@ namespace Microsoft
                         public void ListenHandle(ulong handle, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void ListenLocalhost(int port) => throw null;
                         public void ListenLocalhost(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void ListenNamedPipe(string pipeName) => throw null;
+                        public void ListenNamedPipe(string pipeName, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void ListenUnixSocket(string socketPath) => throw null;
                         public void ListenUnixSocket(string socketPath, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public System.Func<string, System.Text.Encoding> RequestHeaderEncodingSelector { get => throw null; set { } }
@@ -234,11 +241,13 @@ namespace Microsoft
                         public System.IServiceProvider ApplicationServices { get => throw null; }
                         public Microsoft.AspNetCore.Connections.ConnectionDelegate Build() => throw null;
                         Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder.Build() => throw null;
+                        protected Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions Clone(System.Net.IPAddress address) => throw null;
                         public bool DisableAltSvcHeader { get => throw null; set { } }
                         public System.Net.EndPoint EndPoint { get => throw null; }
                         public ulong FileHandle { get => throw null; }
                         public System.Net.IPEndPoint IPEndPoint { get => throw null; }
                         public Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions KestrelServerOptions { get => throw null; }
+                        public string PipeName { get => throw null; }
                         public Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols Protocols { get => throw null; set { } }
                         public string SocketPath { get => throw null; }
                         public override string ToString() => throw null;

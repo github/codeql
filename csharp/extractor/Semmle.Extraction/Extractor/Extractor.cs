@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Semmle.Util.Logging;
 
+using CompilationInfo = (string key, string value);
+
 namespace Semmle.Extraction
 {
     /// <summary>
@@ -10,17 +12,19 @@ namespace Semmle.Extraction
     {
         public abstract ExtractorMode Mode { get; }
         public string OutputPath { get; }
+        public IEnumerable<CompilationInfo> CompilationInfos { get; }
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
         /// </summary>
         /// <param name="logger">The object used for logging.</param>
         /// <param name="pathTransformer">The object used for path transformations.</param>
-        protected Extractor(string outputPath, ILogger logger, PathTransformer pathTransformer)
+        protected Extractor(string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer)
         {
             OutputPath = outputPath;
             Logger = logger;
             PathTransformer = pathTransformer;
+            CompilationInfos = compilationInfos;
         }
 
         // Limit the number of error messages in the log file
@@ -39,7 +43,7 @@ namespace Semmle.Extraction
                     ++Errors;
                     if (Errors == maxErrors)
                     {
-                        Logger.Log(Severity.Info, "  Stopping logging after {0} errors", Errors);
+                        Logger.LogInfo("  Stopping logging after {0} errors", Errors);
                     }
                 }
 

@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.BaseSSA as BaseSsa
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 /** The class `android.content.Intent`. */
 class TypeIntent extends Class {
@@ -61,18 +62,6 @@ class AndroidServiceIntentMethod extends Method {
   AndroidServiceIntentMethod() {
     this.hasName(["onStart", "onStartCommand", "onBind", "onRebind", "onUnbind", "onTaskRemoved"]) and
     this.getDeclaringType() instanceof TypeService
-  }
-}
-
-/**
- * The method `Context.startActivity` or `startActivities`.
- *
- * DEPRECATED: Use `StartActivityMethod` instead.
- */
-deprecated class ContextStartActivityMethod extends Method {
-  ContextStartActivityMethod() {
-    (this.hasName("startActivity") or this.hasName("startActivities")) and
-    this.getDeclaringType() instanceof TypeContext
   }
 }
 
@@ -332,12 +321,10 @@ private class StartActivitiesSyntheticCallable extends SyntheticCallable {
     result.targetsComponentType(targetType)
   }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     exists(ActivityIntentSyntheticGlobal glob | glob.getTargetType() = targetType |
-      input = SummaryComponentStack::arrayElementOf(SummaryComponentStack::argument(0)) and
-      output = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(glob)) and
+      input = "Argument[0].ArrayElement" and
+      output = "SyntheticGlobal[" + glob + "]" and
       preservesValue = true
     )
   }
@@ -358,18 +345,16 @@ private class GetIntentSyntheticCallable extends SyntheticCallable {
     result.getEnclosingCallable().getDeclaringType() = targetType
   }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     exists(ActivityIntentSyntheticGlobal glob | glob.getTargetType() = targetType |
-      input = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(glob)) and
-      output = SummaryComponentStack::return() and
+      input = "SyntheticGlobal[" + glob + "]" and
+      output = "ReturnValue" and
       preservesValue = true
     )
   }
 }
 
-private class ActivityIntentSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+private class ActivityIntentSyntheticGlobal extends FlowSummaryImpl::Private::SyntheticGlobal {
   AndroidComponent targetType;
 
   ActivityIntentSyntheticGlobal() {
@@ -380,13 +365,6 @@ private class ActivityIntentSyntheticGlobal extends SummaryComponent::SyntheticG
   }
 
   AndroidComponent getTargetType() { result = targetType }
-}
-
-private class RequiredComponentStackForStartActivities extends RequiredSummaryComponentStack {
-  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    head = SummaryComponent::arrayElement() and
-    tail = SummaryComponentStack::argument(0)
-  }
 }
 
 /**

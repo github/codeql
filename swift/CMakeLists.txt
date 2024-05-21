@@ -17,4 +17,4 @@ project(codeql)
 
 include(../misc/bazel/cmake/setup.cmake)
 
-include_generated(//swift:cmake)
+generate_and_include(//swift/...)

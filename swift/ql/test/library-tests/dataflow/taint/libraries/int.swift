@@ -106,8 +106,8 @@ func taintThroughMutablePointer() {
       sink(arg: ptr5) // $ tainted=array5write
       sink(arg: ptr5[0]) // $ tainted=array5write
       ptr4.copyBytes(from: ptr5)
-      sink(arg: ptr4)
-      sink(arg: ptr4[0]) // $ MISSING: tainted=array5write
+      sink(arg: ptr4) // $ tainted=array5write
+      sink(arg: ptr4[0]) // $ tainted=array5write
       return source("return5")
     })
     sink(arg: return5) // $ tainted=return5

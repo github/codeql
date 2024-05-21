@@ -108,9 +108,9 @@ private class MissingPinningSink extends DataFlow::Node {
 /** Configuration for finding uses of non trusted URLs. */
 private module UntrustedUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    trustedDomain(_) and
     exists(string lit | lit = node.asExpr().(CompileTimeConstantExpr).getStringValue() |
       lit.matches("%://%") and // it's a URL
+      not lit.regexpMatch("^(classpath|file|jar):.*") and // discard non-network URIs
       not exists(string dom | trustedDomain(dom) and lit.matches("%" + dom + "%"))
     )
   }
@@ -121,16 +121,10 @@ private module UntrustedUrlConfig implements DataFlow::ConfigSig {
 private module UntrustedUrlFlow = TaintTracking::Global<UntrustedUrlConfig>;
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
-predicate missingPinning(DataFlow::Node node, string domain) {
+predicate missingPinning(MissingPinningSink node, string domain) {
   isAndroid() and
-  node instanceof MissingPinningSink and
-  (
-    not trustedDomain(_) and domain = ""
-    or
-    exists(DataFlow::Node src |
-      UntrustedUrlFlow::flow(src, node) and
-      domain = getDomain(src.asExpr())
-    )
+  exists(DataFlow::Node src | UntrustedUrlFlow::flow(src, node) |
+    if trustedDomain(_) then domain = getDomain(src.asExpr()) else domain = ""
   )
 }
 

@@ -11,6 +11,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 module PathInjection {
   /**
@@ -52,4 +53,8 @@ module PathInjection {
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
     StringConstArrayInclusionCallBarrier
   { }
+
+  private class ExternalPathInjectionSink extends Sink {
+    ExternalPathInjectionSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+  }
 }
