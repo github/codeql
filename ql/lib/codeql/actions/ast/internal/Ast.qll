@@ -748,7 +748,13 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Holds if the job can be triggered by an external actor. */
   predicate isExternallyTriggerable() {
-    externallyTriggerableEventsDataModel(this.getATriggerEvent().getName())
+    // the job is triggered by an event that can be triggered externally
+    externallyTriggerableEventsDataModel(this.getATriggerEvent().getName()) or
+    // the job is triggered by a workflow_call event that can be triggered externally
+    this.getATriggerEvent().getName() = "workflow_call" and
+    (exists(ExpressionImpl e, string external_trigger | e.getEnclosingJob() = this and e.getExpression().matches("%github.event" + external_trigger + "%") and externallyTriggerableEventsDataModel(external_trigger))
+    or 
+    this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isExternallyTriggerable())
   }
 
   /** Holds if the job is privileged. */
@@ -775,7 +781,9 @@ class JobImpl extends AstNodeImpl, TJobNode {
   private predicate hasExplicitSecretAccess() {
     // the job accesses a secret other than GITHUB_TOKEN
     exists(SecretsExpressionImpl expr |
-      expr.getEnclosingJob() = this and not expr.getFieldName() = "GITHUB_TOKEN"
+      (expr.getEnclosingJob() = this  or not exists(expr.getEnclosingJob()))  and
+      expr.getEnclosingWorkflow() = this.getEnclosingWorkflow() and
+      not expr.getFieldName() = "GITHUB_TOKEN" 
     )
   }
 
@@ -803,16 +811,21 @@ class JobImpl extends AstNodeImpl, TJobNode {
   }
 
   private predicate hasPrivilegedTrigger() {
-    // For workflows that are triggered by the pull_request_target event, the GITHUB_TOKEN is granted read/write repository permission unless the permissions key is specified and the workflow can access secrets, even when it is triggered from a fork.
-    // The Job is triggered by an event other than `pull_request`
+    // the Job is triggered by an event other than `pull_request`
     count(this.getATriggerEvent()) = 1 and
-    not this.getATriggerEvent().getName() = ["pull_request", "workflow_call"]
+    not this.getATriggerEvent().getName() = "pull_request" and
+    not this.getATriggerEvent().getName() = "workflow_call" 
     or
-    // The Workflow is a Reusable Workflow only and there is
-    // a privileged caller workflow
-    this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isPrivileged()
+    // the Workflow is a Reusable Workflow only and there is
+    // a privileged caller workflow or we cant find a caller
+    count(this.getATriggerEvent()) = 1 and
+    this.getATriggerEvent().getName() = "workflow_call" and
+    (
+      this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isPrivileged() or
+      not exists(this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller())
+    )
     or
-    // The Workflow has multiple triggers so at least one is not "pull_request"
+    // the Workflow has multiple triggers so at least one is not "pull_request"
     count(this.getATriggerEvent()) > 1
   }
 

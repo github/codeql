@@ -108,8 +108,8 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       exists(StepsExpression e |
         this.getArgumentExpr("ref") = e and
         (
-          e.getStepId().matches(["%head%", "%pull_request%", "%_pr_%"]) or
-          e.getFieldName().matches(["%head%", "%pull_request%", "%_pr_%"])
+          e.getStepId().matches("%" + ["head", "branch", "ref"] + "%") or
+          e.getFieldName().matches("%" + ["head", "branch", "ref"] + "%")
         )
       )
     )
@@ -138,8 +138,8 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       exists(StepsExpression e |
         this.getArgumentExpr("ref") = e and
         (
-          e.getStepId().matches(["%sha%", "%commit%"]) or
-          e.getFieldName().matches(["%sha%", "%commit%"])
+          e.getStepId().matches("%" + ["head", "sha", "commit"] + "%") or
+          e.getFieldName().matches("%" + ["head", "sha", "commit"] + "%")
         )
       )
     )
