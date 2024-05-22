@@ -365,7 +365,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       exists(Node n |
-        Config::allowImplicitRead(n, _) and
         node1.asNode() = n and
         node2.isImplicitReadNode(n, false) and
         not fullBarrier(node1) and
@@ -394,7 +393,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       exists(Node n |
-        Config::allowImplicitRead(n, _) and
         node1.isImplicitReadNode(n, true) and
         node2.asNode() = n and
         not fullBarrier(node2) and
