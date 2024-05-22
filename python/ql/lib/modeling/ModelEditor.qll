@@ -138,6 +138,18 @@ class FunctionEndpoint extends Endpoint instanceof Function {
   }
 }
 
+class ClassEndpoint extends Endpoint instanceof Class {
+  override string getType() { result = type + "." + name }
+
+  override string getName() { result = "" }
+
+  override string getParameters() { result = "" }
+
+  override boolean getSupportedStatus() { result = false }
+
+  override string getSupportedType() { result = "" }
+}
+
 /**
  * A callable where there exists a MaD sink model that applies to it.
  */
