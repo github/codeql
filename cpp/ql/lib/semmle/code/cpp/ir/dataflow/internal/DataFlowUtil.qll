@@ -2232,6 +2232,9 @@ private module Cached {
       // Def-use/Use-use flow
       Ssa::ssaFlow(nodeFrom, nodeTo)
       or
+      // Phi input -> Phi
+      nodeFrom.(SsaPhiInputNode).getPhiNode() = nodeTo.(SsaPhiNode).getPhiNode()
+      or
       IteratorFlow::localFlowStep(nodeFrom, nodeTo)
       or
       // Operand -> Instruction flow
