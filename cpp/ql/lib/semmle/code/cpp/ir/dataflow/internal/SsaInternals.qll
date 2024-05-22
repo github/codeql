@@ -1031,8 +1031,8 @@ module SsaCached {
   }
 
   cached
-  Definition phiHasInputFromBlock(PhiNode phi, IRBlock bb) {
-    SsaImpl::phiHasInputFromBlock(phi, result, bb)
+  Definition phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
+    SsaImpl::phiHasInputFromBlockExt(phi, result, bb)
   }
 
   cached
@@ -1189,11 +1189,11 @@ class Phi extends TPhi, SsaDef {
 
   final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
 
-  override string toString() { result = "Phi" }
+  override string toString() { result = phi.toString() }
 
   SsaPhiNode getNode() { result.getPhiNode() = phi }
 
-  predicate hasInputFromBlock(Definition inp, IRBlock bb) { inp = phiHasInputFromBlock(phi, bb) }
+  predicate hasInputFromBlock(Definition inp, IRBlock bb) { inp = phiHasInputFromBlockExt(phi, bb) }
 
   final Definition getAnInput() { this.hasInputFromBlock(result, _) }
 }
@@ -1221,7 +1221,7 @@ class PhiNode extends SsaImpl::DefinitionExt {
 
   /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
   predicate hasInputFromBlock(Definition inp, IRBlock bb) {
-    inp = SsaCached::phiHasInputFromBlock(this, bb)
+    inp = SsaCached::phiHasInputFromBlockExt(this, bb)
   }
 
   /** Gets a definition that is an input to this phi node. */
