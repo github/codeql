@@ -1,6 +1,6 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
-load("@semmle_code//:common.bzl", "zipmerge")
 load("@semmle_code//:dist.bzl", "dist")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files_overlay")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -50,15 +50,18 @@ pkg_files(
     ],
 )
 
-# See `csharp.bzl` for an explanation of why we need zipmerge here
-zipmerge(
-    name = "extractor-arch",
+codeql_pkg_files_overlay(
+    name = "extractor-arch-overlay",
     srcs = [
-        "//csharp/autobuilder/Semmle.Autobuild.CSharp:Semmle.Autobuild.CSharp.zip",
-        "//csharp/extractor/Semmle.Extraction.CSharp.Driver:Semmle.Extraction.CSharp.Driver.zip",
-        "//csharp/extractor/Semmle.Extraction.CSharp.Standalone:Semmle.Extraction.CSharp.Standalone.zip",
+        "//csharp/autobuilder/Semmle.Autobuild.CSharp",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Driver",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Standalone",
     ],
-    out = "extractor-arch.zip",
+)
+
+dist(
+    name = "extractor-arch",
+    srcs = [":extractor-arch-overlay"],
 )
 
 dist(
