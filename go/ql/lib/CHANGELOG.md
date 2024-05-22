@@ -1,3 +1,11 @@
+## 1.0.0
+
+### Minor Analysis Improvements
+
+* A bug has been fixed which meant that the query `go/incorrect-integer-conversion` did not consider type assertions and type switches which use a defined type whose underlying type is an integer type. This may lead to fewer false positive alerts.
+* A bug has been fixed which meant flow was not followed through some ranged for loops. This may lead to more alerts being found.
+* Converted the models for the built-in functions `append`, `copy`, `max` and `min` to value flow and Models-as-Data.
+
 ## 0.8.1
 
 ### Minor Analysis Improvements
