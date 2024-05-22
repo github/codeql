@@ -3,7 +3,14 @@
 private import python
 private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as DP
 private import Util as Util
+
+class EndpointKind extends string {
+  EndpointKind() {
+    this in ["Function", "InstanceMethod", "ClassMethod", "StaticMethod", "InitMethod", "Class"]
+  }
+}
 
 abstract class Endpoint instanceof Scope {
   string namespace;
@@ -49,6 +56,8 @@ abstract class Endpoint instanceof Scope {
   abstract boolean getSupportedStatus();
 
   abstract string getSupportedType();
+
+  abstract EndpointKind getKind();
 }
 
 /**
@@ -136,6 +145,26 @@ class FunctionEndpoint extends Endpoint instanceof Function {
     or
     not this.isSupported() and result = ""
   }
+
+  override EndpointKind getKind() {
+    if this.(Function).isMethod()
+    then
+      result = this.methodKind()
+      or
+      not exists(this.methodKind()) and result = "InstanceMethod"
+    else result = "Function"
+  }
+
+  private EndpointKind methodKind() {
+    this.(Function).isMethod() and
+    (
+      DP::isClassmethod(this) and result = "ClassMethod"
+      or
+      DP::isStaticmethod(this) and result = "StaticMethod"
+      or
+      this.(Function).isInitMethod() and result = "InitMethod"
+    )
+  }
 }
 
 class ClassEndpoint extends Endpoint instanceof Class {
@@ -148,6 +177,8 @@ class ClassEndpoint extends Endpoint instanceof Class {
   override boolean getSupportedStatus() { result = false }
 
   override string getSupportedType() { result = "" }
+
+  override EndpointKind getKind() { result = "Class" }
 }
 
 /**

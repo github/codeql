@@ -11,4 +11,4 @@ import modeling.ModelEditor
 from Endpoint endpoint
 select endpoint, endpoint.getNamespace(), endpoint.getType(), endpoint.getName(),
   endpoint.getParameters(), endpoint.getSupportedStatus(), endpoint.getFileName(),
-  endpoint.getSupportedType()
+  endpoint.getSupportedType(), endpoint.getKind()
