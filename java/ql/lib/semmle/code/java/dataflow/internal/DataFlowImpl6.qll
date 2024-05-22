@@ -1,6 +1,7 @@
 /**
  * DEPRECATED: Use `Global` and `GlobalWithState` instead.
  *
+ *
  * Provides a `Configuration` class backwards-compatible interface to the data
  * flow library.
  */
