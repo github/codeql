@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # The below were bulk-converted from df-generated taint models
+      - ["java.time.temporal", "Temporal", "minus", "(TemporalAmount)", "summary", "manual"]
+      - ["java.time.temporal", "Temporal", "minus", "(long,TemporalUnit)", "summary", "manual"]
+      - ["java.time.temporal", "Temporal", "plus", "(TemporalAmount)", "summary", "manual"]
+      - ["java.time.temporal", "Temporal", "plus", "(long,TemporalUnit)", "summary", "manual"]
+      - ["java.time.temporal", "Temporal", "with", "(TemporalAdjuster)", "summary", "manual"]
+      - ["java.time.temporal", "Temporal", "with", "(TemporalAdjuster)", "summary", "manual"]
+      - ["java.time.temporal", "Temporal", "with", "(TemporalField,long)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalAccessor", "query", "(TemporalQuery)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalAccessor", "range", "(TemporalField)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalAdjuster", "adjustInto", "(Temporal)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalAmount", "addTo", "(Temporal)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalAmount", "subtractFrom", "(Temporal)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "adjustInto", "(Temporal,long)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "getBaseUnit", "()", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "getDisplayName", "(Locale)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "getDisplayName", "(Locale)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "getRangeUnit", "()", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "range", "()", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "rangeRefinedBy", "(TemporalAccessor)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalField", "resolve", "(Map,TemporalAccessor,ResolverStyle)", "summary", "manual"]
+      - ["java.time.temporal", "TemporalUnit", "addTo", "(Temporal,long)", "summary", "manual"]
+      - ["java.time.temporal", "WeekFields", "dayOfWeek", "()", "summary", "manual"]
+      - ["java.time.temporal", "WeekFields", "weekBasedYear", "()", "summary", "manual"]
+      - ["java.time.temporal", "WeekFields", "weekOfMonth", "()", "summary", "manual"]
+      - ["java.time.temporal", "WeekFields", "weekOfWeekBasedYear", "()", "summary", "manual"]
+      - ["java.time.temporal", "WeekFields", "weekOfYear", "()", "summary", "manual"]
