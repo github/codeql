@@ -723,7 +723,7 @@ predicate nodeToDefOrUse(Node node, SourceVariable sv, IRBlock bb, int i, boolea
  */
 private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
   not exists(SourceVariable sv, IRBlock bb2, int i2 |
-    nodeToDefOrUse(nTo, sv, bb2, i2, _) and
+    useToNode(bb2, i2, sv, nTo) and
     adjacentDefRead(bb2, i2, sv, _, _)
   ) and
   exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
