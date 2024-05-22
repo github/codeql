@@ -2852,7 +2852,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Stage2::revFlow(node2, pragma[only_bind_into](state2), false)
         or
         additionalLocalStateStep(node1, state1, node2, state2) and
-        label = "" and
+        label = "Config" and
         Stage2::revFlow(node1, state1, false) and
         Stage2::revFlow(node2, state2, false)
       }
@@ -4243,7 +4243,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ap = TAccessPathNil() and
       isStoreStep = false and
       summaryLabel = "-" and
-      label = ""
+      label = "Config"
       or
       exists(Content c, DataFlowType t0, AccessPath ap0 |
         pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and
