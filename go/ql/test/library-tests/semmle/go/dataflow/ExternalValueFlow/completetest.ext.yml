@@ -5,7 +5,8 @@ extensions:
     data:
       - ["github.com/nonexistent/test", "T", False, "StepArgRes", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "T", False, "StepArgRes1", "", "", "Argument[0]", "ReturnValue[1]", "value", "manual"]
-      - ["github.com/nonexistent/test", "T", False, "StepArgArg", "", "", "Argument[0]", "Argument[1]", "value", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgArg", "", "", "Argument[0]", "Argument[1]", "value", "df-generated"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgArgIgnored", "", "", "Argument[0]", "Argument[1]", "value", "df-generated"]
       - ["github.com/nonexistent/test", "T", False, "StepArgQual", "", "", "Argument[0]", "Argument[receiver]", "value", "manual"]
       - ["github.com/nonexistent/test", "T", False, "StepQualRes", "", "", "Argument[receiver]", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "T", False, "StepQualArg", "", "", "Argument[receiver]", "Argument[0]", "value", "manual"]
@@ -25,13 +26,16 @@ extensions:
       - ["github.com/nonexistent/test", "C", False, "GetThroughPointer", "", "", "Argument[receiver].Dereference.Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "C", False, "Set", "", "", "Argument[0]", "Argument[receiver].Field[github.com/nonexistent/test.C.F]", "value", "manual"]
       - ["github.com/nonexistent/test", "C", False, "SetThroughPointer", "", "", "Argument[0]", "Argument[receiver].Dereference.Field[github.com/nonexistent/test.C.F]", "value", "manual"]
-
+  - addsTo:
+      pack: codeql/go-all
+      extensible: neutralModel
+    data:
+      - ["github.com/nonexistent/test", "T", "StepArgArgIgnored", "", "summary", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sourceModel
     data:
       - ["github.com/nonexistent/test", "A", False, "Src1", "", "", "ReturnValue", "qltest", "manual"]
-
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel
