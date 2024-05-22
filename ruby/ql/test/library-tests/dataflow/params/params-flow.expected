@@ -176,12 +176,14 @@ edges
 | params_flow.rb:137:11:137:43 | call to [] [element 1] | params_flow.rb:137:10:137:43 | * ... [element 1] | provenance |  |
 | params_flow.rb:137:23:137:31 | call to taint | params_flow.rb:137:11:137:43 | call to [] [element 1] | provenance |  |
 | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:154:18:154:19 | p2 | provenance |  |
+| params_flow.rb:154:5:154:6 | [post] p1 [element 0] | params_flow.rb:153:23:153:24 | p1 [Return] [element 0] | provenance |  |
 | params_flow.rb:154:18:154:19 | p2 | params_flow.rb:154:5:154:6 | [post] p1 [element 0] | provenance |  |
 | params_flow.rb:164:23:164:24 | [post] p1 [element 0] | params_flow.rb:165:6:165:7 | p1 [element 0] | provenance |  |
 | params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | provenance |  |
 | params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:164:23:164:24 | [post] p1 [element 0] | provenance |  |
 | params_flow.rb:165:6:165:7 | p1 [element 0] | params_flow.rb:165:6:165:10 | ...[...] | provenance |  |
 | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:182:18:182:19 | p2 | provenance |  |
+| params_flow.rb:182:5:182:6 | [post] p1 [element 0] | params_flow.rb:181:24:181:25 | p1 [Return] [element 0] | provenance |  |
 | params_flow.rb:182:18:182:19 | p2 | params_flow.rb:182:5:182:6 | [post] p1 [element 0] | provenance |  |
 | params_flow.rb:192:20:192:21 | [post] p1 [element 0] | params_flow.rb:193:6:193:7 | p1 [element 0] | provenance |  |
 | params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | provenance |  |
@@ -387,6 +389,7 @@ nodes
 | params_flow.rb:137:10:137:43 | * ... [element 1] | semmle.label | * ... [element 1] |
 | params_flow.rb:137:11:137:43 | call to [] [element 1] | semmle.label | call to [] [element 1] |
 | params_flow.rb:137:23:137:31 | call to taint | semmle.label | call to taint |
+| params_flow.rb:153:23:153:24 | p1 [Return] [element 0] | semmle.label | p1 [Return] [element 0] |
 | params_flow.rb:153:28:153:29 | p2 | semmle.label | p2 |
 | params_flow.rb:154:5:154:6 | [post] p1 [element 0] | semmle.label | [post] p1 [element 0] |
 | params_flow.rb:154:18:154:19 | p2 | semmle.label | p2 |
@@ -394,6 +397,7 @@ nodes
 | params_flow.rb:164:31:164:39 | call to taint | semmle.label | call to taint |
 | params_flow.rb:165:6:165:7 | p1 [element 0] | semmle.label | p1 [element 0] |
 | params_flow.rb:165:6:165:10 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:181:24:181:25 | p1 [Return] [element 0] | semmle.label | p1 [Return] [element 0] |
 | params_flow.rb:181:28:181:29 | p2 | semmle.label | p2 |
 | params_flow.rb:182:5:182:6 | [post] p1 [element 0] | semmle.label | [post] p1 [element 0] |
 | params_flow.rb:182:18:182:19 | p2 | semmle.label | p2 |
@@ -402,8 +406,8 @@ nodes
 | params_flow.rb:193:6:193:7 | p1 [element 0] | semmle.label | p1 [element 0] |
 | params_flow.rb:193:6:193:10 | ...[...] | semmle.label | ...[...] |
 subpaths
-| params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:154:5:154:6 | [post] p1 [element 0] | params_flow.rb:164:23:164:24 | [post] p1 [element 0] |
-| params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:182:5:182:6 | [post] p1 [element 0] | params_flow.rb:192:20:192:21 | [post] p1 [element 0] |
+| params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:153:23:153:24 | p1 [Return] [element 0] | params_flow.rb:164:23:164:24 | [post] p1 [element 0] |
+| params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:181:24:181:25 | p1 [Return] [element 0] | params_flow.rb:192:20:192:21 | [post] p1 [element 0] |
 #select
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:14:12:14:19 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:14:12:14:19 | call to taint | call to taint |
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:44:12:44:20 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:44:12:44:20 | call to taint | call to taint |

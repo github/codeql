@@ -11,6 +11,7 @@ private import semmle.code.csharp.frameworks.system.linq.Expressions
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 module DataFlow = CS::DataFlow;
 
@@ -80,7 +81,8 @@ class TargetApiSpecific extends CS::Callable {
 
 predicate asPartialModel = ExternalFlow::asPartialModel/1;
 
-predicate asPartialNeutralModel = ExternalFlow::asPartialNeutralModel/1;
+/** Computes the first 4 columns for neutral CSV rows of `c`. */
+predicate asPartialNeutralModel = ExternalFlow::getSignature/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.
@@ -132,32 +134,24 @@ string parameterAccess(CS::Parameter p) {
 
 class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
-pragma[nomagic]
-private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
-  result = node.(DataFlow::Node).getEnclosingCallable().getParameter(pos.getPosition())
-}
+class ParameterPosition = DataFlowDispatch::ParameterPosition;
 
 /**
- * Gets the MaD string representation of the the return node `node`.
+ * Gets the MaD string representation of return through parameter at position
+ * `pos` of callable `c`.
  */
-string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
-  if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
-  then result = "ReturnValue"
-  else
-    exists(ParameterPosition pos |
-      pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()
-    |
-      result = parameterAccess(getParameter(node, pos))
-      or
-      pos.isThisParameter() and
-      result = qualifierString()
-    )
+bindingset[c]
+string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
+  result = parameterAccess(c.getParameter(pos.getPosition()))
+  or
+  pos.isThisParameter() and
+  result = qualifierString()
 }
 
 /**
  * Gets the enclosing callable of `ret`.
  */
-CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+CS::Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 

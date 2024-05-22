@@ -3,4 +3,4 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - [ "NoSummaries", "ManuallyModelled", "HasNeutralSummaryNoFlow", "(System.Object)", "summary", "manual"]
+      - [ "Models", "ManuallyModelled", "HasNeutralSummaryNoFlow", "(System.Object)", "summary", "manual"]

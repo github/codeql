@@ -1692,10 +1692,11 @@ module Make<
               )
             )
             or
-            exists(ReturnNodeExt ret |
+            exists(ReturnNode ret, ValueReturnKind kind |
               c = "ReturnValue" and
               ret = node.asNode() and
-              ret.getKind().(ValueReturnKind).getKind() = getStandardReturnValueKind() and
+              valueReturnNode(ret, kind) and
+              kind.getKind() = getStandardReturnValueKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
             )
             or

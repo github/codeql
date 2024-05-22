@@ -735,6 +735,7 @@ public class AutoBuild {
          .collect(Collectors.toList());
 
     filesToExtract = filesToExtract.stream()
+        .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
@@ -1010,6 +1011,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     return config;
   }
 
+  private boolean isFileTooLarge(Path f) {
+    long fileSize = f.toFile().length();
+    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
+      warn("Skipping " + f + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
+      return true;
+    }
+    return false;
+  }
+
   private Set<Path> extractTypeScript(
       Set<Path> files,
       Set<Path> extractedFiles,
@@ -1051,9 +1061,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             // compiler can parse them for us.
             continue;
           }
-          if (!extractedFiles.contains(sourcePath)) {
-            typeScriptFiles.add(sourcePath);
+          if (extractedFiles.contains(sourcePath)) {
+            continue;
           }
+          typeScriptFiles.add(sourcePath);
         }
         typeScriptFiles.sort(PATH_ORDERING);
         extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
@@ -1234,11 +1245,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     File f = file.toFile();
     if (!f.exists()) {
       warn("Skipping " + file + ", which does not exist.");
-      return;
-    }
-    long fileSize = f.length();
-    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
-      warn("Skipping " + file + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
       return;
     }
 

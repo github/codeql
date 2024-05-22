@@ -2,9 +2,10 @@
 
 """
 Probe lfs files.
-For each source file provided as output, this will print:
+For each source file provided as input, this will print:
 * "local", if the source file is not an LFS pointer
 * the sha256 hash, a space character and a transient download link obtained via the LFS protocol otherwise
+If --hash-only is provided, the transient URL will not be fetched and printed
 """
 
 import sys
@@ -19,6 +20,14 @@ import re
 import base64
 from dataclasses import dataclass
 from typing import Dict
+import argparse
+
+
+def options():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--hash-only", action="store_true")
+    p.add_argument("sources", type=pathlib.Path, nargs="+")
+    return p.parse_args()
 
 
 @dataclass
@@ -30,7 +39,8 @@ class Endpoint:
         self.headers.update((k.capitalize(), v) for k, v in d.items())
 
 
-sources = [pathlib.Path(arg).resolve() for arg in sys.argv[1:]]
+opts = options()
+sources = [p.resolve() for p in opts.sources]
 source_dir = pathlib.Path(os.path.commonpath(src.parent for src in sources))
 source_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"], cwd=source_dir, text=True).strip()
 
@@ -60,7 +70,12 @@ def get_endpoint():
         server, _, path = ssh_endpoint.partition(":")
         ssh_command = shutil.which(os.environ.get("GIT_SSH", os.environ.get("GIT_SSH_COMMAND", "ssh")))
         assert ssh_command, "no ssh command found"
-        resp = json.loads(subprocess.check_output([ssh_command, server, "git-lfs-authenticate", path, "download"]))
+        resp = json.loads(subprocess.check_output([ssh_command,
+                                                   "-oStrictHostKeyChecking=accept-new",
+                                                   server,
+                                                   "git-lfs-authenticate",
+                                                   path,
+                                                   "download"]))
         endpoint.href = resp.get("href", endpoint)
         endpoint.update_headers(resp.get("header", {}))
     url = urlparse(endpoint.href)
@@ -84,11 +99,15 @@ def get_endpoint():
 # see https://github.com/git-lfs/git-lfs/blob/310d1b4a7d01e8d9d884447df4635c7a9c7642c2/docs/api/basic-transfers.md
 def get_locations(objects):
     ret = ["local" for _ in objects]
-    endpoint = get_endpoint()
     indexes = [i for i, o in enumerate(objects) if o]
     if not indexes:
         # all objects are local, do not send an empty request as that would be an error
         return ret
+    if opts.hash_only:
+        for i in indexes:
+            ret[i] = objects[i]["oid"]
+        return ret
+    endpoint = get_endpoint()
     data = {
         "operation": "download",
         "transfers": ["basic"],

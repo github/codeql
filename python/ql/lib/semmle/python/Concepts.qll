@@ -200,10 +200,11 @@ module Decoding {
 }
 
 private class DecodingAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     exists(Decoding decoding |
       nodeFrom = decoding.getAnInput() and
-      nodeTo = decoding.getOutput()
+      nodeTo = decoding.getOutput() and
+      model = "Decoding-" + decoding.getFormat()
     )
   }
 }
