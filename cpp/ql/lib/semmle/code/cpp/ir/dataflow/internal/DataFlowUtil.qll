@@ -626,7 +626,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
-  override string toStringImpl() { result = "Phi" }
+  override string toStringImpl() { result = phi.toString() }
 
   /**
    * Gets a node that is used as input to this phi node.
