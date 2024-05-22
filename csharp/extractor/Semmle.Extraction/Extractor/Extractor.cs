@@ -109,7 +109,7 @@ namespace Semmle.Extraction
             {
                 // the attribute for the git information are always attached to the entry assembly by our build system
                 var assembly = Assembly.GetEntryAssembly();
-                var versionString = assembly!.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                var versionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
                 if (versionString == null)
                 {
                     return "unknown (not built from internal bazel workspace)";

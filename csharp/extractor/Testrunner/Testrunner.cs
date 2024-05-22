@@ -63,23 +63,25 @@ public class Testrunner
     public int RunTests()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var testrunner = AssemblyRunner.WithoutAppDomain(assembly.Location);
-        testrunner.OnDiscoveryComplete = OnDiscoveryComplete;
-        testrunner.OnExecutionComplete = OnExecutionComplete;
-        testrunner.OnTestFailed = OnTestFailed;
-        testrunner.OnTestSkipped = OnTestSkipped;
+        using (var testrunner = AssemblyRunner.WithoutAppDomain(assembly.Location))
+        {
+            testrunner.OnDiscoveryComplete = OnDiscoveryComplete;
+            testrunner.OnExecutionComplete = OnExecutionComplete;
+            testrunner.OnTestFailed = OnTestFailed;
+            testrunner.OnTestSkipped = OnTestSkipped;
 
-        Console.WriteLine("Discovering tests...");
-        testrunner.Start(parallelAlgorithm: null);
+            Console.WriteLine("Discovering tests...");
+            testrunner.Start(parallelAlgorithm: null);
 
-        Finished.WaitOne();
-        Finished.Dispose();
+            Finished.WaitOne();
+            Finished.Dispose();
 
-        // Wait for assembly runner to finish.
-        // If we try to dispose while runner is executing,
-        // it will throw an error.
-        while (testrunner.Status != AssemblyRunnerStatus.Idle)
-            Thread.Sleep(100);
+            // Wait for assembly runner to finish.
+            // If we try to dispose while runner is executing,
+            // it will throw an error.
+            while (testrunner.Status != AssemblyRunnerStatus.Idle)
+                Thread.Sleep(100);
+        }
         return Result;
     }
 
