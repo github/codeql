@@ -5,12 +5,12 @@ edges
 | test.py:5:26:5:32 | ControlFlowNode for request | test.py:34:12:34:18 | ControlFlowNode for request | provenance |  |
 | test.py:5:26:5:32 | ControlFlowNode for request | test.py:42:12:42:18 | ControlFlowNode for request | provenance |  |
 | test.py:5:26:5:32 | ControlFlowNode for request | test.py:54:12:54:18 | ControlFlowNode for request | provenance |  |
-| test.py:13:5:13:12 | ControlFlowNode for data_raw | test.py:14:5:14:8 | ControlFlowNode for data | provenance | AdditionalTaintStep |
+| test.py:13:5:13:12 | ControlFlowNode for data_raw | test.py:14:5:14:8 | ControlFlowNode for data | provenance | Decoding-Base64 |
 | test.py:13:16:13:22 | ControlFlowNode for request | test.py:13:16:13:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | test.py:13:16:13:27 | ControlFlowNode for Attribute | test.py:13:16:13:39 | ControlFlowNode for Attribute() | provenance | dict.get |
 | test.py:13:16:13:39 | ControlFlowNode for Attribute() | test.py:13:5:13:12 | ControlFlowNode for data_raw | provenance |  |
 | test.py:14:5:14:8 | ControlFlowNode for data | test.py:15:36:15:39 | ControlFlowNode for data | provenance |  |
-| test.py:23:5:23:12 | ControlFlowNode for data_raw | test.py:24:5:24:8 | ControlFlowNode for data | provenance | AdditionalTaintStep |
+| test.py:23:5:23:12 | ControlFlowNode for data_raw | test.py:24:5:24:8 | ControlFlowNode for data | provenance | Decoding-Base64 |
 | test.py:23:16:23:22 | ControlFlowNode for request | test.py:23:16:23:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | test.py:23:16:23:27 | ControlFlowNode for Attribute | test.py:23:16:23:39 | ControlFlowNode for Attribute() | provenance | dict.get |
 | test.py:23:16:23:39 | ControlFlowNode for Attribute() | test.py:23:5:23:12 | ControlFlowNode for data_raw | provenance |  |

@@ -14,13 +14,14 @@
  *   - id: a user name or other account information;
  *   - password: a password or authorization key;
  *   - certificate: a certificate.
+ *   - private: private data such as credit card numbers
  *
  * While classifications are represented as strings, this should not be relied upon.
  * Instead, use the predicates in `SensitiveDataClassification::` to work with
  * classifications.
  */
 class SensitiveDataClassification extends string {
-  SensitiveDataClassification() { this in ["secret", "id", "password", "certificate"] }
+  SensitiveDataClassification() { this in ["secret", "id", "password", "certificate", "private"] }
 }
 
 /**
@@ -38,6 +39,9 @@ module SensitiveDataClassification {
 
   /** Gets the classification for certificates. */
   SensitiveDataClassification certificate() { result = "certificate" }
+
+  /** Gets the classification for private data. */
+  SensitiveDataClassification private() { result = "private" }
 }
 
 /**
@@ -78,6 +82,40 @@ module HeuristicNames {
   string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name|ification)).*" }
 
   /**
+   * Gets a regular expression that identifies strings that may indicate the presence of
+   * private data.
+   */
+  string maybePrivate() {
+    result =
+      "(?is).*(" +
+        // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
+        // Government identifiers, such as Social Security Numbers
+        "social.?security|employer.?identification|national.?insurance|resident.?id|" +
+        "passport.?(num|no)|([_-]|\\b)ssn([_-]|\\b)|" +
+        // Contact information, such as home addresses
+        "post.?code|zip.?code|home.?addr|" +
+        // and telephone numbers
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax|phone).?(num|no)|telephone|" +
+        "emergency.?contact|" +
+        // Geographic location - where the user is (or was)
+        "latitude|longitude|nationality|" +
+        // Financial data - such as credit card numbers, salary, bank accounts, and debts
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou)?nt)|acc(ou)?nt.?(no|num|credit)|" +
+        "salary|billing|credit.?(rating|score)|([_-]|\\b)ccn([_-]|\\b)|" +
+        // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
+        // "e(mail|_mail)|" + // this seems too noisy
+        // Health - medical conditions, insurance status, prescription records
+        "birth.?da(te|y)|da(te|y).?(of.?)?birth|" +
+        "medical|(health|care).?plan|healthkit|appointment|prescription|" +
+        "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
+        "menstrua|pregnan|insulin|inhaler|" +
+        // Relationships - work and family
+        "employ(er|ee)|spouse|maiden.?name" +
+        // ---
+        ").*"
+  }
+
+  /**
    * Gets a regular expression that identifies strings that may indicate the presence
    * of sensitive data, with `classification` describing the kind of sensitive data involved.
    */
@@ -90,6 +128,9 @@ module HeuristicNames {
     or
     result = maybeCertificate() and
     classification = SensitiveDataClassification::certificate()
+    or
+    result = maybePrivate() and
+    classification = SensitiveDataClassification::private()
   }
 
   /**

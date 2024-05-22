@@ -140,6 +140,8 @@ SINK(subclass_via_positional.config)  # $ flow="SOURCE, l:-1 -> subclass_via_pos
 subclass_via_kw = C(x = SOURCE)
 SINK(subclass_via_kw.config)  # $ flow="SOURCE, l:-1 -> subclass_via_kw.config"
 
+SINK(subclass_via_kw.instance_method(SOURCE))  # $ flow="SOURCE -> subclass_via_kw.instance_method(..)"
+
 class D(MS_Class_transitive):
     def __init__(x, y):
         # special handling of y
