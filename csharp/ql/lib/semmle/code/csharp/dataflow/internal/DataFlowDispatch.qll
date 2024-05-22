@@ -24,19 +24,6 @@ newtype TReturnKind =
   TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
   TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() }
 
-/**
- * A summarized callable where the summary should be used for dataflow analysis.
- */
-class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
-  DataFlowSummarizedCallable() {
-    not this.hasBody()
-    or
-    this.hasBody() and not this.applyGeneratedModel()
-  }
-
-  string toString() { result = super.toString() }
-}
-
 cached
 private module Cached {
   /**
@@ -47,7 +34,7 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TCallable(Callable c) { c.isUnboundDeclaration() } or
-    TSummarizedCallable(DataFlowSummarizedCallable sc) or
+    TSummarizedCallable(FlowSummary::SummarizedCallable sc) or
     TFieldOrPropertyCallable(FieldOrProperty f) or
     TCapturedVariableCallable(LocalScopeVariable v) { v.isCaptured() }
 
