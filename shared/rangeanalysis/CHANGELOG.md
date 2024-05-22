@@ -1,3 +1,7 @@
+## 1.0.0
+
+No user-facing changes.
+
 ## 0.0.15
 
 No user-facing changes.

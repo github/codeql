@@ -1,3 +1,9 @@
+## 1.0.0
+
+### Minor Analysis Improvements
+
+* Added models of `gradio` PyPI package.
+
 ## 0.9.16
 
 ### New Queries

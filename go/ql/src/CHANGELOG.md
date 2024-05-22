@@ -1,3 +1,9 @@
+## 1.0.0
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` has now been restricted to only use flow through value-preserving steps. This reduces false positives, especially around type switches.
+
 ## 0.7.16
 
 No user-facing changes.
