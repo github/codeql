@@ -1,7 +1,7 @@
 ---
 library: false
 name: githubsecuritylab/actions-queries
-version: 0.0.27
+version: 0.0.28
 groups:
   - actions
   - queries
