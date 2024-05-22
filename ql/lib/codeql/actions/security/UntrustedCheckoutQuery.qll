@@ -108,8 +108,8 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       exists(StepsExpression e |
         this.getArgumentExpr("ref") = e and
         (
-          e.getStepId().matches(["%ref%", "%branch%"]) or
-          e.getFieldName().matches(["%ref%", "%branch%"])
+          e.getStepId().matches(["%head%", "%pull_request%", "%_pr_%"]) or
+          e.getFieldName().matches(["%head%", "%pull_request%", "%_pr_%"])
         )
       )
     )

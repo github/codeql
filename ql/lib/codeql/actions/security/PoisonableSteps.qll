@@ -5,7 +5,7 @@ abstract class PoisonableStep extends Step { }
 // source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
 private string dangerousActions() {
   result =
-    ["pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action", "ruby/setup-ruby"]
+    ["pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action", "ruby/setup-ruby", "actions/jekyll-build-pages"]
 }
 
 class DangerousActionUsesStep extends PoisonableStep, UsesStep {
