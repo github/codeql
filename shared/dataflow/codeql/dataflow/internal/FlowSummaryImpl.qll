@@ -256,8 +256,8 @@ module Make<
 
       /**
        * Holds if there exists a model for which this callable is an exact
-       * match, that is, no overriding or overloading was used to identify this
-       * callable from the model.
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
        */
       predicate hasExactModel() { none() }
     }
@@ -302,8 +302,8 @@ module Make<
 
       /**
        * Holds if there exists a model for which this callable is an exact
-       * match, that is, no overriding or overloading was used to identify this
-       * callable from the model.
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
        */
       predicate hasExactModel() { none() }
     }

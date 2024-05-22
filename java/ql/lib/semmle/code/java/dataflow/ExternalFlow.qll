@@ -417,19 +417,19 @@ private Element interpretElement0(
 ) {
   elementSpec(package, type, subtypes, name, signature, _) and
   (
-    exists(Member m, boolean isExact0 |
+    exists(Member m |
       (
-        result = m and isExact0 = true
+        result = m and isExact = true
         or
-        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m) and isExact0 = false
+        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m) and isExact = false
       ) and
       m.hasQualifiedName(package, type, name)
     |
-      signature = "" and isExact = false
+      signature = ""
       or
-      paramsStringQualified(m) = signature and isExact = isExact0
+      paramsStringQualified(m) = signature
       or
-      paramsString(m) = signature and isExact = isExact0
+      paramsString(m) = signature
     )
     or
     exists(RefType t |
