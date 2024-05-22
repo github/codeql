@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      - ["MyPackage.Foo.C1","Member[m1].ReturnValue","remote"]
+      - ["MyPackage","Member[Foo].Member[C1].Instance.Member[m2].ReturnValue","remote"]

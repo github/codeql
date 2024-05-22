@@ -6,7 +6,7 @@
  * @tags modeleditor endpoints framework-mode
  */
 
-import ModelEditor
+import modeling.ModelEditor
 
 from Endpoint endpoint
 select endpoint, endpoint.getNamespace(), endpoint.getType(), endpoint.getName(),

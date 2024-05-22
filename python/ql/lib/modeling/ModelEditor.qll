@@ -3,7 +3,7 @@
 private import python
 private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions
-private import queries.modeling.internal.Util as Util
+private import Util as Util
 
 abstract class Endpoint instanceof Scope {
   string namespace;
