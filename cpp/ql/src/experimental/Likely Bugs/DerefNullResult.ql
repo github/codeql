@@ -1,6 +1,6 @@
 /**
  * @name Null dereference from a function result
- * @description A function parameter is dereference,
+ * @description A function parameter is dereferenced,
  *              while it comes from a function that may return NULL,
  *              and is not checked for nullness by the caller.
  * @kind problem
