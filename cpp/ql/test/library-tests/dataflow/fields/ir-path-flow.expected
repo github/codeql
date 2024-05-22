@@ -15,7 +15,7 @@ edges
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | provenance |  |
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] | provenance |  |
 | A.cpp:41:5:41:6 | insert output argument | A.cpp:43:10:43:12 | *& ... | provenance |  |
-| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | insert output argument | provenance |  |
+| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | insert output argument | provenance | Config |
 | A.cpp:47:12:47:18 | new | A.cpp:47:12:47:18 | new | provenance |  |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c | provenance |  |
 | A.cpp:48:12:48:18 | *call to make [c] | A.cpp:48:12:48:18 | *call to make [c] | provenance |  |
