@@ -6,13 +6,13 @@ load("//:defs.bzl", "codeql_platform")
 TARGET_FRAMEWORK = "net8.0"
 
 def codeql_csharp_library(name, **kwargs):
-    nullable = kwargs.pop("nullable", "enable")
-    target_frameworks = kwargs.pop("target_frameworks", [TARGET_FRAMEWORK])
-    csharp_library(name = name, nullable = nullable, target_frameworks = target_frameworks, **kwargs)
+    kwargs.setdefault("nullable", "enable")
+    kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
+    csharp_library(name = name, **kwargs)
 
 def codeql_xunit_test(name, **kwargs):
-    nullable = kwargs.pop("nullable", "enable")
-    target_frameworks = kwargs.pop("target_frameworks", [TARGET_FRAMEWORK])
+    kwargs.setdefault("nullable", "enable")
+    kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
 
     srcs = kwargs.pop("srcs", []) + [
         "//csharp/extractor/Testrunner:Testrunner.cs",
@@ -29,14 +29,14 @@ def codeql_xunit_test(name, **kwargs):
         name = name,
         deps = deps,
         srcs = srcs,
-        nullable = nullable,
-        target_frameworks = target_frameworks,
         tags = tags,
         **kwargs
     )
 
 def codeql_csharp_binary(name, **kwargs):
-    nullable = kwargs.pop("nullable", "enable")
+    kwargs.setdefault("nullable", "enable")
+    kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
+
     visibility = kwargs.pop("visibility", ["//visibility:public"])
     resources = kwargs.pop("resources", [])
     srcs = kwargs.pop("srcs", [])
@@ -44,10 +44,9 @@ def codeql_csharp_binary(name, **kwargs):
     # always add the assembly info file that sets the AssemblyInformationalVersion attribute to the extractor version
     srcs.append("//csharp/scripts:assembly-info-src")
 
-    target_frameworks = kwargs.pop("target_frameworks", [TARGET_FRAMEWORK])
     csharp_binary_target = "bin/" + name
     publish_binary_target = "publish/" + name
-    csharp_binary(name = csharp_binary_target, srcs = srcs, nullable = nullable, target_frameworks = target_frameworks, resources = resources, visibility = visibility, **kwargs)
+    csharp_binary(name = csharp_binary_target, srcs = srcs, resources = resources, visibility = visibility, **kwargs)
     publish_binary(
         name = publish_binary_target,
         binary = csharp_binary_target,
