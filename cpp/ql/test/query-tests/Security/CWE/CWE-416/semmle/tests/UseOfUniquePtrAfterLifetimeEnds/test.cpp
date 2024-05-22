@@ -206,7 +206,7 @@ void test2(bool b1, bool b2) {
 }
 
 void test_convert_to_bool() {
-  bool b = get_unique_ptr().get(); // GOOD [FALSE POSITIVE]
+  bool b = get_unique_ptr().get(); // GOOD
 
   if(get_unique_ptr().get()) { // GOOD
 

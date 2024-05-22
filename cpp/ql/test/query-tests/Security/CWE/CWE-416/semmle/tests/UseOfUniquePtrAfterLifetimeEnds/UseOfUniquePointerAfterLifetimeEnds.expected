@@ -9,4 +9,3 @@
 | test.cpp:177:16:177:16 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |
 | test.cpp:177:36:177:36 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |
 | test.cpp:179:11:179:11 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |
-| test.cpp:209:29:209:31 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
