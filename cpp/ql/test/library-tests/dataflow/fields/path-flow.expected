@@ -12,8 +12,9 @@ edges
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | provenance |  |
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] | provenance |  |
 | A.cpp:41:5:41:6 | ref arg ct | A.cpp:43:11:43:12 | ct | provenance |  |
-| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | ref arg ct | provenance |  |
+| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | ref arg ct | provenance | Config |
 | A.cpp:43:11:43:12 | ct | A.cpp:43:10:43:12 | & ... | provenance |  |
+| A.cpp:43:11:43:12 | ct | A.cpp:43:10:43:12 | & ... | provenance | Config |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c | provenance |  |
 | A.cpp:48:12:48:18 | call to make [c] | A.cpp:49:10:49:10 | b [c] | provenance |  |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | provenance |  |
