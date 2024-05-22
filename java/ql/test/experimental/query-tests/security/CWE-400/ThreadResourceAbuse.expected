@@ -19,9 +19,9 @@ edges
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) : UploadListener [slowUploads] : Number | provenance |  |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | provenance |  |
 | ThreadResourceAbuse.java:215:19:215:50 | getHeader(...) : String | ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number | provenance | Src:MaD:44641 TaintPreservingCallable |
-| ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number | ThreadResourceAbuse.java:219:17:219:33 | ... * ... | provenance |  Sink:MaD:1982 |
+| ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number | ThreadResourceAbuse.java:219:17:219:33 | ... * ... | provenance | Config Sink:MaD:1982 |
 | ThreadResourceAbuse.java:227:19:227:50 | getHeader(...) : String | ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | provenance | Src:MaD:44641 TaintPreservingCallable |
-| ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | provenance |  |
+| ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | provenance | Config |
 | ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | ThreadResourceAbuse.java:233:17:233:26 | retryAfter | provenance |  Sink:MaD:1982 |
 | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | provenance |  |
 | UploadListener.java:16:3:16:13 | this <.field> [post update] : UploadListener [slowUploads] : Number | UploadListener.java:15:9:15:22 | parameter this [Return] : UploadListener [slowUploads] : Number | provenance |  |

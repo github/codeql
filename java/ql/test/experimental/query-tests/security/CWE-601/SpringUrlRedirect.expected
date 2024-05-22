@@ -14,7 +14,7 @@ edges
 | SpringUrlRedirect.java:91:38:91:48 | redirectUrl : String | SpringUrlRedirect.java:91:27:91:49 | create(...) | provenance | MaD:42953 |
 | SpringUrlRedirect.java:96:39:96:56 | redirectUrl : String | SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String | provenance |  |
 | SpringUrlRedirect.java:98:9:98:19 | httpHeaders : HttpHeaders | SpringUrlRedirect.java:100:37:100:47 | httpHeaders | provenance |  |
-| SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | SpringUrlRedirect.java:98:9:98:19 | httpHeaders : HttpHeaders | provenance |  |
+| SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | SpringUrlRedirect.java:98:9:98:19 | httpHeaders : HttpHeaders | provenance | Config |
 | SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String | SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | provenance | MaD:42953 |
 | SpringUrlRedirect.java:104:39:104:56 | redirectUrl : String | SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | provenance |  |
 | SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:108:68:108:78 | httpHeaders | provenance |  |
@@ -33,7 +33,7 @@ edges
 | SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | provenance | MaD:49439 |
 | SpringUrlRedirect.java:128:33:128:50 | redirectUrl : String | SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | provenance |  |
 | SpringUrlRedirect.java:130:9:130:19 | httpHeaders : HttpHeaders | SpringUrlRedirect.java:132:49:132:59 | httpHeaders | provenance |  |
-| SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | SpringUrlRedirect.java:130:9:130:19 | httpHeaders : HttpHeaders | provenance |  |
+| SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | SpringUrlRedirect.java:130:9:130:19 | httpHeaders : HttpHeaders | provenance | Config |
 | SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | provenance | MaD:42953 |
 nodes
 | SpringUrlRedirect.java:17:30:17:47 | redirectUrl : String | semmle.label | redirectUrl : String |
