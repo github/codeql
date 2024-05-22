@@ -88,9 +88,9 @@ namespace Semmle.Autobuild.CSharp
                 AddDiagnostic(new DiagnosticMessage(
                     Options.Language,
                     "buildless/mode-active",
-                    "C# with build-mode set to 'none'",
+                    "C# was extracted with build-mode set to 'none'",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "C# with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
+                    markdownMessage: "C# was extracted with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
                     severity: DiagnosticMessage.TspSeverity.Note
                 ));
                 return 0;
