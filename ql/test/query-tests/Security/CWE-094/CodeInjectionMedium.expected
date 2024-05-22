@@ -233,7 +233,6 @@ nodes
 | .github/workflows/test3.yml:60:27:60:66 | needs.parse-issue.outputs.payload | semmle.label | needs.parse-issue.outputs.payload |
 | .github/workflows/test4.yml:15:21:15:55 | toJSON(github.event.comment) | semmle.label | toJSON(github.event.comment) |
 | .github/workflows/test4.yml:19:21:19:53 | toJSON(github.event.issue) | semmle.label | toJSON(github.event.issue) |
-| .github/workflows/test4.yml:23:21:23:41 | toJSON(github) | semmle.label | toJSON(github) |
 | .github/workflows/test4.yml:27:21:27:47 | toJSON(github.event) | semmle.label | toJSON(github.event) |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
 | .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |

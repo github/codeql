@@ -18,7 +18,7 @@ import codeql.actions.security.PoisonableSteps
 from ControlCheck check, MutableRefCheckoutStep checkout
 where
   // the job can be triggered by an external user
-  check.getEnclosingJob().isExternallyTriggerable() and
+  inPrivilegedExternallyTriggerableJob(check) and
   // the mutable checkout step is protected by an access check
   check = [checkout.getIf(), checkout.getEnclosingJob().getIf()] and
   // the checked-out code may lead to arbitrary code execution
