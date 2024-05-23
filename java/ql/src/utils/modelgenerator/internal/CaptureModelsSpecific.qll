@@ -13,6 +13,7 @@ private import semmle.code.java.dataflow.TaintTracking as Tt
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.code.java.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 module DataFlow = Df::DataFlow;
 
@@ -202,26 +203,23 @@ string parameterAccess(J::Parameter p) {
 
 class InstanceParameterNode = DataFlow::InstanceParameterNode;
 
+class ParameterPosition = DataFlowDispatch::ParameterPosition;
+
 /**
- * Gets the MaD string represention of the the return node `node`.
+ * Gets the MaD string representation of return through parameter at position
+ * `pos` of callable `c`.
  */
-string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
-  if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
-  then result = "ReturnValue"
-  else
-    exists(int pos |
-      pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()
-    |
-      result = parameterAccess(node.(DataFlow::Node).getEnclosingCallable().getParameter(pos))
-      or
-      result = qualifierString() and pos = -1
-    )
+bindingset[c]
+string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
+  result = parameterAccess(c.getParameter(pos))
+  or
+  result = qualifierString() and pos = -1
 }
 
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 

@@ -609,7 +609,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate accessPathLimit = Config::accessPathLimit/0;
 
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = ""
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
     }
 
@@ -631,7 +631,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate accessPathLimit = Config::accessPathLimit/0;
 
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = ""
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
     }
 

@@ -3,7 +3,7 @@ edges
 | tests.cpp:33:34:33:39 | *call to getenv | tests.cpp:33:34:33:39 | *call to getenv | provenance |  |
 | tests.cpp:33:34:33:39 | *call to getenv | tests.cpp:38:39:38:49 | *environment | provenance |  |
 | tests.cpp:38:25:38:36 | strncat output argument | tests.cpp:42:12:42:15 | *data | provenance |  |
-| tests.cpp:38:39:38:49 | *environment | tests.cpp:38:25:38:36 | strncat output argument | provenance |  |
+| tests.cpp:38:39:38:49 | *environment | tests.cpp:38:25:38:36 | strncat output argument | provenance | Config |
 | tests.cpp:42:12:42:15 | *data | tests.cpp:26:15:26:23 | **badSource | provenance |  |
 | tests.cpp:51:5:51:26 | *... = ... | tests.cpp:53:16:53:19 | *data | provenance |  |
 | tests.cpp:51:12:51:20 | *call to badSource | tests.cpp:51:5:51:26 | *... = ... | provenance |  |
