@@ -88,4 +88,29 @@ public class Inheritance {
       return s;
     }
   }
+
+  public interface INeutral {
+    String id(String s);
+  }
+
+  public class F implements INeutral {
+    // SPURIOUS-neutral=p;Inheritance$INeutral;id;(String);summary;df-generated
+    public String id(String s) {
+      return "";
+    }
+  }
+
+  public class G implements INeutral {
+    // SPURIOUS-neutral=p;Inheritance$INeutral;id;(String);summary;df-generated
+    public String id(String s) {
+      return "";
+    }
+  }
+
+  private class H implements INeutral {
+    // SPURIOUS-neutral=p;Inheritance$INeutral;id;(String);summary;df-generated
+    public String id(String s) {
+      return "";
+    }
+  }
 }
