@@ -136,12 +136,18 @@ private module DispatchImpl {
     mayBenefitFromCallContext(call.asCall(), _, _)
   }
 
+  bindingset[call, tgt]
+  pragma[inline_late]
+  private predicate viableCallableFilter(DataFlowCall call, DataFlowCallable tgt) {
+    tgt = viableCallable(call)
+  }
+
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    result = viableCallable(call) and
+    viableCallableFilter(call, result) and
     exists(int i, Callable c, Method def, RefType t, boolean exact, MethodCall ma |
       ma = call.asCall() and
       mayBenefitFromCallContext(ma, c, i) and
