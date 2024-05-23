@@ -16,12 +16,10 @@ namespace Semmle.Extraction.CSharp
         public void Initialize(string outputPath, IEnumerable<(string, string)> compilationInfos, CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
-            extractor = new StandaloneExtractor(outputPath, compilationInfos, Logger, PathTransformer, options);
+            extractor = new StandaloneExtractor(Directory.GetCurrentDirectory(), outputPath, compilationInfos, Logger, PathTransformer, options);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
-
-            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), Array.Empty<string>());
         }
 
 #nullable disable warnings
