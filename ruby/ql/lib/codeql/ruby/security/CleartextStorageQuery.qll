@@ -45,7 +45,7 @@ private module Config implements DataFlow::ConfigSig {
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet cs) {
-    exists(cs) and
+    cs.isAny() and
     isSink(node)
   }
 }
