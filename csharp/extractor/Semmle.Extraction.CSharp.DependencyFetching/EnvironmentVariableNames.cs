@@ -61,6 +61,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
 
         /// <summary>
+        /// Controls whether to include NuGet feeds from nuget.config files in the fallback restore logic.
+        /// </summary>
+        public const string AddNugetConfigFeedsToFallback = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK_INCLUDE_NUGET_CONFIG_FEEDS";
+
+        /// <summary>
         /// Specifies the path to the nuget executable to be used for package restoration.
         /// </summary>
         public const string NugetExePath = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_PATH";
