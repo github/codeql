@@ -60,6 +60,22 @@ abstract class Endpoint instanceof Scope {
   abstract EndpointKind getKind();
 }
 
+predicate sourceModelPath(string type, string path) { sourceModel(type, path, _, _) }
+
+module FindSourceModel = Util::FindModel<sourceModelPath/2>;
+
+predicate sinkModelPath(string type, string path) { sinkModel(type, path, _, _) }
+
+module FindSinkModel = Util::FindModel<sinkModelPath/2>;
+
+predicate summaryModelPath(string type, string path) { summaryModel(type, path, _, _, _, _) }
+
+module FindSummaryModel = Util::FindModel<summaryModelPath/2>;
+
+predicate neutralModelPath(string type, string path) { neutralModel(type, path, _) }
+
+module FindNeutralModel = Util::FindModel<neutralModelPath/2>;
+
 /**
  * A callable function or method from source code.
  */
@@ -108,19 +124,19 @@ class FunctionEndpoint extends Endpoint instanceof Function {
 
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  predicate hasSummary() { this instanceof SummaryCallable }
+  predicate hasSummary() { FindSummaryModel::hasModel(this) }
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
-  predicate isSource() { this instanceof SourceCallable }
+  predicate isSource() { FindSourceModel::hasModel(this) }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { this instanceof SinkCallable }
+  predicate isSink() { FindSinkModel::hasModel(this) }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { this instanceof NeutralCallable }
+  predicate isNeutral() { FindNeutralModel::hasModel(this) }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -179,52 +195,4 @@ class ClassEndpoint extends Endpoint instanceof Class {
   override string getSupportedType() { result = "" }
 
   override EndpointKind getKind() { result = "Class" }
-}
-
-/**
- * A callable where there exists a MaD sink model that applies to it.
- */
-class SinkCallable extends Function {
-  SinkCallable() {
-    exists(string type, string path |
-      Util::pathToFunction(this, type, path) and
-      sinkModel(type, Util::extendFunctionPath(path), _, _)
-    )
-  }
-}
-
-/**
- * A callable where there exists a MaD source model that applies to it.
- */
-class SourceCallable extends Function {
-  SourceCallable() {
-    exists(string type, string path |
-      Util::pathToFunction(this, type, path) and
-      sourceModel(type, Util::extendFunctionPath(path), _, _)
-    )
-  }
-}
-
-/**
- * A callable where there exists a MaD summary model that applies to it.
- */
-class SummaryCallable extends Function {
-  SummaryCallable() {
-    exists(string type, string path |
-      Util::pathToFunction(this, type, path) and
-      summaryModel(type, path, _, _, _, _)
-    )
-  }
-}
-
-/**
- * A callable where there exists a MaD neutral model that applies to it.
- */
-class NeutralCallable extends Function {
-  NeutralCallable() {
-    exists(string type, string path |
-      Util::pathToFunction(this, type, path) and
-      neutralModel(type, path, _)
-    )
-  }
 }

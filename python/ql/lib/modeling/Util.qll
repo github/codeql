@@ -57,46 +57,37 @@ string computeScopePath(Scope scope) {
   result = computeAnnotatedScopePath(scope).replaceAll("!", "")
 }
 
-bindingset[fullyQualified]
-predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
-  exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
-    type2 = fullyQualified.prefix(firstDot) and
-    path =
-      (
-        "Member[" +
-          fullyQualified
-              .suffix(firstDot + 1)
-              .replaceAll("!.", "]InstanceMember[")
-              .replaceAll(".", "].Member[")
-              .replaceAll("]InstanceMember[", "].Instance.Member[") + "]"
-      ).replaceAll(".Member[__init__].", "").replaceAll("Member[__init__].", "").replaceAll("!", "")
-  )
-}
+signature predicate modelSig(string type, string path);
 
-/**
- * Holds if `(type,path)` evaluates to the given function or method, when evalauted from a client of the current library.
- */
-predicate pathToFunction(Function function, string type, string path) {
-  function.getLocation().getFile() instanceof RelevantFile and
-  function.isPublic() and // only public methods are modeled
-  fullyQualifiedToYamlFormat(computeAnnotatedScopePath(function), type, path)
-}
+module FindModel<modelSig/2 model> {
+  predicate hasModel(Scope scope) {
+    exists(string type, string path, string searchPath | model(type, path) |
+      searchPath = possibleMemberPathPrefix(path, scope.getName()) and
+      pathToScope(scope, type, searchPath)
+    )
+  }
 
-bindingset[result]
-string extendFunctionPath(string path) {
-  // already ends with `Member` or `Method`
-  exists(int index, string functionName |
-    functionName = result.regexpFind("(Member|Method)\\[[^\\]]+\\]", index, _) and
-    result.length() = index + functionName.length() and
-    result = path
-  )
-  or
-  // ends with `ReturnValue`
-  result = path + ".ReturnValue"
-  or
-  // ends with `Argument`
-  exists(string argument |
-    argument = result.regexpFind("\\.Argument\\[[^\\]]+\\]", _, _) and
-    result = path + argument
-  )
+  /**
+   * returns the prefix of `path` that might be a path to `member`
+   */
+  bindingset[path, member]
+  string possibleMemberPathPrefix(string path, string member) {
+    // functionName must be a substring of path
+    exists(int index | index = path.indexOf(["Member", "Method"] + "[" + member + "]") |
+      result = path.prefix(index)
+    )
+  }
+
+  /**
+   * Holds if `(type,path)` evaluates to the given entity, when evalauted from a client of the current library.
+   */
+  bindingset[type, path]
+  predicate pathToScope(Scope scope, string type, string path) {
+    scope.getLocation().getFile() instanceof RelevantFile and
+    scope.isPublic() and // only public methods are modeled
+    computeScopePath(scope) =
+      type.replaceAll("!", "") + "." +
+        path.replaceAll("Member[", "").replaceAll("]", "").replaceAll("Instance.", "") +
+        scope.getName()
+  }
 }
