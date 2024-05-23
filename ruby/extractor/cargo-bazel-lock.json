@@ -1,5 +1,5 @@
 {
-  "checksum": "76aa7a86db3d70a3b257062c5c6b87da62e07258e6f16a487d8c42aa561c0224",
+  "checksum": "c50e77889b9291b968272c6e3a2953664e4ac18807c9546bac76d51fdc2e7d6b",
   "crates": {
     "adler 1.0.2": {
       "name": "adler",
@@ -35,58 +35,6 @@
         "0BSD",
         "Apache-2.0",
         "MIT"
-      ],
-      "license_file": null
-    },
-    "aho-corasick 0.7.20": {
-      "name": "aho-corasick",
-      "version": "0.7.20",
-      "package_url": "https://github.com/BurntSushi/aho-corasick",
-      "repository": {
-        "Http": {
-          "url": "https://static.crates.io/crates/aho-corasick/0.7.20/download",
-          "sha256": "cc936419f96fa211c1b9166887b38e5e40b19958e5b895be7c1f93adec7071ac"
-        }
-      },
-      "targets": [
-        {
-          "Library": {
-            "crate_name": "aho_corasick",
-            "crate_root": "src/lib.rs",
-            "srcs": [
-              "**/*.rs"
-            ]
-          }
-        }
-      ],
-      "library_target_name": "aho_corasick",
-      "common_attrs": {
-        "compile_data_glob": [
-          "**"
-        ],
-        "crate_features": {
-          "common": [
-            "default",
-            "std"
-          ],
-          "selects": {}
-        },
-        "deps": {
-          "common": [
-            {
-              "id": "memchr 2.7.1",
-              "target": "memchr"
-            }
-          ],
-          "selects": {}
-        },
-        "edition": "2018",
-        "version": "0.7.20"
-      },
-      "license": "Unlicense OR MIT",
-      "license_ids": [
-        "MIT",
-        "Unlicense"
       ],
       "license_file": null
     },
@@ -587,14 +535,14 @@
       ],
       "license_file": null
     },
-    "cc 1.0.79": {
+    "cc 1.0.98": {
       "name": "cc",
-      "version": "1.0.79",
+      "version": "1.0.98",
       "package_url": "https://github.com/rust-lang/cc-rs",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/cc/1.0.79/download",
-          "sha256": "50d30906286121d95be3d479533b458f87493b30a4b5f79a607db8f5d11aa91f"
+          "url": "https://static.crates.io/crates/cc/1.0.98/download",
+          "sha256": "41c270e7540d725e65ac7f1b212ac8ce349719624d7bcff99f8e2e488e8cf03f"
         }
       },
       "targets": [
@@ -614,7 +562,7 @@
           "**"
         ],
         "edition": "2018",
-        "version": "1.0.79"
+        "version": "1.0.98"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -1005,7 +953,7 @@
         "Git": {
           "remote": "https://github.com/github/codeql.git",
           "commitish": {
-            "Rev": "cee6f003fd58c64916c629f7d8b27b870d6f78c5"
+            "Rev": "bc1283c7152b0bb4d27ff6a004869f493e93d2b3"
           },
           "strip_prefix": "shared/tree-sitter-extractor"
         }
@@ -1057,7 +1005,7 @@
               "target": "rayon"
             },
             {
-              "id": "regex 1.7.3",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
@@ -1073,7 +1021,7 @@
               "target": "tracing"
             },
             {
-              "id": "tree-sitter 0.20.10",
+              "id": "tree-sitter 0.22.6",
               "target": "tree_sitter"
             }
           ],
@@ -1120,7 +1068,7 @@
               "target": "rayon"
             },
             {
-              "id": "regex 1.7.3",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
@@ -1132,21 +1080,21 @@
               "target": "tracing_subscriber"
             },
             {
-              "id": "tree-sitter 0.20.10",
+              "id": "tree-sitter 0.22.6",
               "target": "tree_sitter"
             },
             {
-              "id": "tree-sitter-embedded-template 0.20.0",
+              "id": "tree-sitter-embedded-template 0.21.0",
               "target": "tree_sitter_embedded_template"
             },
             {
-              "id": "tree-sitter-ruby 0.20.0",
+              "id": "tree-sitter-ruby 0.21.0",
               "target": "tree_sitter_ruby"
             }
           ],
           "selects": {}
         },
-        "edition": "2018",
+        "edition": "2021",
         "version": "0.1.0"
       },
       "license": null,
@@ -1737,7 +1685,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
             },
             {
@@ -1794,7 +1742,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
             },
             {
@@ -2403,7 +2351,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
@@ -2521,7 +2469,7 @@
               "target": "log"
             },
             {
-              "id": "regex-automata 0.4.3",
+              "id": "regex-automata 0.4.6",
               "target": "regex_automata"
             },
             {
@@ -3305,7 +3253,7 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
@@ -3507,7 +3455,6 @@
         "crate_features": {
           "common": [
             "alloc",
-            "default",
             "std"
           ],
           "selects": {}
@@ -4272,14 +4219,14 @@
       ],
       "license_file": null
     },
-    "regex 1.7.3": {
+    "regex 1.10.4": {
       "name": "regex",
-      "version": "1.7.3",
+      "version": "1.10.4",
       "package_url": "https://github.com/rust-lang/regex",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/regex/1.7.3/download",
-          "sha256": "8b1f693b24f6ac912f4893ef08244d70b6067480d2f1a46e950c9691e6749d1d"
+          "url": "https://static.crates.io/crates/regex/1.10.4/download",
+          "sha256": "c117dbdfde9c8308975b6a18d71f3f385c89461f7b3fb054288ecf2a2058ba4c"
         }
       },
       "targets": [
@@ -4300,14 +4247,14 @@
         ],
         "crate_features": {
           "common": [
-            "aho-corasick",
             "default",
-            "memchr",
             "perf",
+            "perf-backtrack",
             "perf-cache",
             "perf-dfa",
             "perf-inline",
             "perf-literal",
+            "perf-onepass",
             "std",
             "unicode",
             "unicode-age",
@@ -4323,7 +4270,7 @@
         "deps": {
           "common": [
             {
-              "id": "aho-corasick 0.7.20",
+              "id": "aho-corasick 1.1.2",
               "target": "aho_corasick"
             },
             {
@@ -4331,14 +4278,18 @@
               "target": "memchr"
             },
             {
-              "id": "regex-syntax 0.6.29",
+              "id": "regex-automata 0.4.6",
+              "target": "regex_automata"
+            },
+            {
+              "id": "regex-syntax 0.8.2",
               "target": "regex_syntax"
             }
           ],
           "selects": {}
         },
-        "edition": "2018",
-        "version": "1.7.3"
+        "edition": "2021",
+        "version": "1.10.4"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -4400,14 +4351,14 @@
       ],
       "license_file": null
     },
-    "regex-automata 0.4.3": {
+    "regex-automata 0.4.6": {
       "name": "regex-automata",
-      "version": "0.4.3",
+      "version": "0.4.6",
       "package_url": "https://github.com/rust-lang/regex/tree/master/regex-automata",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/regex-automata/0.4.3/download",
-          "sha256": "5f804c7828047e88b2d32e2d7fe5a105da8ee3264f01902f796c8e067dc2483f"
+          "url": "https://static.crates.io/crates/regex-automata/0.4.6/download",
+          "sha256": "86b83b8b9847f9bf95ef68afb0b8e6cdb80f498442f5179a29fad448fcc1eaea"
         }
       },
       "targets": [
@@ -4429,6 +4380,7 @@
         "crate_features": {
           "common": [
             "alloc",
+            "dfa-onepass",
             "hybrid",
             "meta",
             "nfa",
@@ -4441,7 +4393,16 @@
             "perf-literal-multisubstring",
             "perf-literal-substring",
             "std",
-            "syntax"
+            "syntax",
+            "unicode",
+            "unicode-age",
+            "unicode-bool",
+            "unicode-case",
+            "unicode-gencat",
+            "unicode-perl",
+            "unicode-script",
+            "unicode-segment",
+            "unicode-word-boundary"
           ],
           "selects": {}
         },
@@ -4463,7 +4424,7 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.4.3"
+        "version": "0.4.6"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -4550,7 +4511,16 @@
         ],
         "crate_features": {
           "common": [
-            "std"
+            "default",
+            "std",
+            "unicode",
+            "unicode-age",
+            "unicode-bool",
+            "unicode-case",
+            "unicode-gencat",
+            "unicode-perl",
+            "unicode-script",
+            "unicode-segment"
           ],
           "selects": {}
         },
@@ -5766,7 +5736,7 @@
               "target": "once_cell"
             },
             {
-              "id": "regex 1.7.3",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
@@ -5805,14 +5775,17 @@
       ],
       "license_file": null
     },
-    "tree-sitter 0.20.10": {
+    "tree-sitter 0.22.6": {
       "name": "tree-sitter",
-      "version": "0.20.10",
+      "version": "0.22.6",
       "package_url": "https://github.com/tree-sitter/tree-sitter",
       "repository": {
-        "Http": {
-          "url": "https://static.crates.io/crates/tree-sitter/0.20.10/download",
-          "sha256": "e747b1f9b7b931ed39a548c1fae149101497de3c1fc8d9e18c62c1a66c683d3d"
+        "Git": {
+          "remote": "https://github.com/redsun82/tree-sitter.git",
+          "commitish": {
+            "Rev": "1f5c1112ceaa8fc6aff61d1852690407670d2a96"
+          },
+          "strip_prefix": "lib"
         }
       },
       "targets": [
@@ -5843,18 +5816,18 @@
         "deps": {
           "common": [
             {
-              "id": "regex 1.7.3",
+              "id": "regex 1.10.4",
               "target": "regex"
             },
             {
-              "id": "tree-sitter 0.20.10",
+              "id": "tree-sitter 0.22.6",
               "target": "build_script_build"
             }
           ],
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.20.10"
+        "version": "0.22.6"
       },
       "build_script_attrs": {
         "data_glob": [
@@ -5863,12 +5836,13 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
             }
           ],
           "selects": {}
-        }
+        },
+        "links": "tree-sitter"
       },
       "license": "MIT",
       "license_ids": [
@@ -5876,15 +5850,15 @@
       ],
       "license_file": null
     },
-    "tree-sitter-embedded-template 0.20.0": {
+    "tree-sitter-embedded-template 0.21.0": {
       "name": "tree-sitter-embedded-template",
-      "version": "0.20.0",
+      "version": "0.21.0",
       "package_url": "https://github.com/tree-sitter/tree-sitter-embedded-template",
       "repository": {
         "Git": {
           "remote": "https://github.com/tree-sitter/tree-sitter-embedded-template.git",
           "commitish": {
-            "Rev": "203f7bd3c1bbfbd98fc19add4b8fcb213c059205"
+            "Rev": "38d5004a797298dc42c85e7706c5ceac46a3f29f"
           }
         }
       },
@@ -5916,18 +5890,18 @@
         "deps": {
           "common": [
             {
-              "id": "tree-sitter 0.20.10",
+              "id": "tree-sitter 0.22.6",
               "target": "tree_sitter"
             },
             {
-              "id": "tree-sitter-embedded-template 0.20.0",
+              "id": "tree-sitter-embedded-template 0.21.0",
               "target": "build_script_build"
             }
           ],
           "selects": {}
         },
-        "edition": "2018",
-        "version": "0.20.0"
+        "edition": "2021",
+        "version": "0.21.0"
       },
       "build_script_attrs": {
         "data_glob": [
@@ -5936,8 +5910,17 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
+            }
+          ],
+          "selects": {}
+        },
+        "link_deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
             }
           ],
           "selects": {}
@@ -5949,15 +5932,15 @@
       ],
       "license_file": null
     },
-    "tree-sitter-ruby 0.20.0": {
+    "tree-sitter-ruby 0.21.0": {
       "name": "tree-sitter-ruby",
-      "version": "0.20.0",
+      "version": "0.21.0",
       "package_url": "https://github.com/tree-sitter/tree-sitter-ruby",
       "repository": {
         "Git": {
           "remote": "https://github.com/tree-sitter/tree-sitter-ruby.git",
           "commitish": {
-            "Rev": "4d9ad3f010fdc47a8433adcf9ae30c8eb8475ae7"
+            "Rev": "b41dc0f4c8e040905fcbb5d93bab667541c08ec7"
           }
         }
       },
@@ -5989,18 +5972,18 @@
         "deps": {
           "common": [
             {
-              "id": "tree-sitter 0.20.10",
+              "id": "tree-sitter 0.22.6",
               "target": "tree_sitter"
             },
             {
-              "id": "tree-sitter-ruby 0.20.0",
+              "id": "tree-sitter-ruby 0.21.0",
               "target": "build_script_build"
             }
           ],
           "selects": {}
         },
-        "edition": "2018",
-        "version": "0.20.0"
+        "edition": "2021",
+        "version": "0.21.0"
       },
       "build_script_attrs": {
         "data_glob": [
@@ -6009,8 +5992,17 @@
         "deps": {
           "common": [
             {
-              "id": "cc 1.0.79",
+              "id": "cc 1.0.98",
               "target": "cc"
+            }
+          ],
+          "selects": {}
+        },
+        "link_deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
             }
           ],
           "selects": {}
@@ -8370,12 +8362,12 @@
     "encoding 0.2.33",
     "lazy_static 1.4.0",
     "rayon 1.7.0",
-    "regex 1.7.3",
+    "regex 1.10.4",
     "tracing 0.1.37",
     "tracing-subscriber 0.3.16",
-    "tree-sitter 0.20.10",
-    "tree-sitter-embedded-template 0.20.0",
-    "tree-sitter-ruby 0.20.0"
+    "tree-sitter 0.22.6",
+    "tree-sitter-embedded-template 0.21.0",
+    "tree-sitter-ruby 0.21.0"
   ],
   "direct_dev_deps": []
 }

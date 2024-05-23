@@ -163,6 +163,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       TNodeNormal(Node n) or
       TNodeImplicitRead(Node n, boolean hasRead) {
         Config::allowImplicitRead(n, _) and hasRead = [false, true]
+      } or
+      TParamReturnNode(ParameterNode p, SndLevelScopeOption scope) {
+        paramReturnNode(_, p, scope, _)
       }
 
     private class NodeEx extends TNodeEx {
@@ -170,13 +173,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         result = this.asNode().toString()
         or
         exists(Node n | this.isImplicitReadNode(n, _) | result = n.toString() + " [Ext]")
+        or
+        result = this.asParamReturnNode().toString() + " [Return]"
       }
 
       Node asNode() { this = TNodeNormal(result) }
 
       predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
 
-      Node projectToNode() { this = TNodeNormal(result) or this = TNodeImplicitRead(result, _) }
+      ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
+
+      Node projectToNode() {
+        this = TNodeNormal(result) or
+        this = TNodeImplicitRead(result, _) or
+        this = TParamReturnNode(result, _)
+      }
 
       pragma[nomagic]
       private DataFlowCallable getEnclosingCallable0() {
@@ -189,7 +200,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      private DataFlowType getDataFlowType0() { nodeDataFlowType(this.asNode(), result) }
+      private DataFlowType getDataFlowType0() {
+        nodeDataFlowType(this.asNode(), result)
+        or
+        nodeDataFlowType(this.asParamReturnNode(), result)
+      }
 
       pragma[inline]
       DataFlowType getDataFlowType() {
@@ -215,12 +230,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ParameterPosition getPosition() { this.isParameterOf(_, result) }
     }
 
+    /**
+     * A node from which flow can return to the caller. This is either a regular
+     * `ReturnNode` or a synthesized node for flow out via a parameter.
+     */
     private class RetNodeEx extends NodeEx {
-      RetNodeEx() { this.asNode() instanceof ReturnNodeExt }
+      private ReturnPosition pos;
 
-      ReturnPosition getReturnPosition() { result = getReturnPosition(this.asNode()) }
+      RetNodeEx() {
+        pos = getValueReturnPosition(this.asNode()) or
+        pos = getParamReturnPosition(_, this.asParamReturnNode())
+      }
 
-      ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
+      ReturnPosition getReturnPosition() { result = pos }
+
+      ReturnKindExt getKind() { result = pos.getKind() }
     }
 
     private predicate inBarrier(NodeEx node) {
@@ -341,10 +365,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       exists(Node n |
-        Config::allowImplicitRead(n, _) and
         node1.asNode() = n and
         node2.isImplicitReadNode(n, false) and
         not fullBarrier(node1) and
+        model = ""
+      )
+      or
+      exists(Node n1, Node n2, SndLevelScopeOption scope |
+        node1.asNode() = n1 and
+        node2 = TParamReturnNode(n2, scope) and
+        paramReturnNode(pragma[only_bind_into](n1), pragma[only_bind_into](n2),
+          pragma[only_bind_into](scope), _) and
         model = ""
       )
     }
@@ -362,7 +393,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       exists(Node n |
-        Config::allowImplicitRead(n, _) and
         node1.isImplicitReadNode(n, true) and
         node2.asNode() = n and
         not fullBarrier(node2) and
@@ -1113,26 +1143,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       result = getAdditionalFlowIntoCallNodeTerm(arg.projectToNode(), p.projectToNode())
     }
 
-    private module SndLevelScopeOption = Option<DataFlowSecondLevelScope>;
-
-    private class SndLevelScopeOption = SndLevelScopeOption::Option;
-
-    pragma[nomagic]
-    private SndLevelScopeOption getScope(RetNodeEx ret) {
-      result = SndLevelScopeOption::some(getSecondLevelScopeCached(ret.asNode()))
-      or
-      result instanceof SndLevelScopeOption::None and
-      not exists(getSecondLevelScopeCached(ret.asNode()))
-    }
-
     pragma[nomagic]
     private predicate returnCallEdge1(
       DataFlowCallable c, SndLevelScopeOption scope, DataFlowCall call, NodeEx out
     ) {
       exists(RetNodeEx ret |
         flowOutOfCallNodeCand1(call, ret, _, out) and
-        c = ret.getEnclosingCallable() and
-        scope = getScope(ret)
+        c = ret.getEnclosingCallable()
+      |
+        scope = getSecondLevelScopeCached(ret.asNode())
+        or
+        ret = TParamReturnNode(_, scope)
       )
     }
 
@@ -2831,7 +2852,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Stage2::revFlow(node2, pragma[only_bind_into](state2), false)
         or
         additionalLocalStateStep(node1, state1, node2, state2) and
-        label = "" and
+        label = "Config" and
         Stage2::revFlow(node1, state1, false) and
         Stage2::revFlow(node2, state2, false)
       }
@@ -3802,6 +3823,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           not this instanceof PathNodeSink
           or
           this.getNodeEx() instanceof TNodeImplicitRead
+          or
+          hiddenNode(this.getNodeEx().asParamReturnNode())
         )
       }
 
@@ -3924,6 +3947,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets the underlying `Node`. */
       final Node getNode() { super.getNodeEx().projectToNode() = result }
+
+      /** Gets the parameter node through which data is returned, if any. */
+      final ParameterNode asParameterReturnNode() { result = super.getNodeEx().asParamReturnNode() }
 
       /** Gets the `FlowState` of this node. */
       final FlowState getState() { result = super.getState() }
@@ -4217,7 +4243,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ap = TAccessPathNil() and
       isStoreStep = false and
       summaryLabel = "-" and
-      label = ""
+      label = "Config"
       or
       exists(Content c, DataFlowType t0, AccessPath ap0 |
         pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and
@@ -5620,7 +5646,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         exists(ReturnPosition pos |
           revPartialPathIntoReturn(mid, pos, state, sc1, sc2, sc3, _, ap) and
-          pos = getReturnPosition(node.asNode()) and
+          pos = node.(RetNodeEx).getReturnPosition() and
           isStoreStep = false
         )
         or

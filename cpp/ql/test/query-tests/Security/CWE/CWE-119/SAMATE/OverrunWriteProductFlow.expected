@@ -53,6 +53,7 @@ edges
 | test.cpp:228:27:228:54 | call to malloc | test.cpp:228:27:228:54 | call to malloc | provenance |  |
 | test.cpp:228:27:228:54 | call to malloc | test.cpp:232:10:232:15 | buffer | provenance |  |
 | test.cpp:235:40:235:45 | buffer | test.cpp:236:5:236:26 | ... = ... | provenance |  |
+| test.cpp:236:5:236:9 | *p_str [post update] [string] | test.cpp:235:27:235:31 | *p_str [Return] [string] | provenance |  |
 | test.cpp:236:5:236:9 | *p_str [post update] [string] | test.cpp:235:27:235:31 | *p_str [string] | provenance |  |
 | test.cpp:236:5:236:26 | ... = ... | test.cpp:236:5:236:9 | *p_str [post update] [string] | provenance |  |
 | test.cpp:241:20:241:38 | call to malloc | test.cpp:241:20:241:38 | call to malloc | provenance |  |
@@ -128,6 +129,7 @@ nodes
 | test.cpp:228:27:228:54 | call to malloc | semmle.label | call to malloc |
 | test.cpp:228:27:228:54 | call to malloc | semmle.label | call to malloc |
 | test.cpp:232:10:232:15 | buffer | semmle.label | buffer |
+| test.cpp:235:27:235:31 | *p_str [Return] [string] | semmle.label | *p_str [Return] [string] |
 | test.cpp:235:27:235:31 | *p_str [string] | semmle.label | *p_str [string] |
 | test.cpp:235:40:235:45 | buffer | semmle.label | buffer |
 | test.cpp:236:5:236:9 | *p_str [post update] [string] | semmle.label | *p_str [post update] [string] |
@@ -150,8 +152,8 @@ nodes
 | test.cpp:264:13:264:30 | call to malloc | semmle.label | call to malloc |
 | test.cpp:266:12:266:12 | p | semmle.label | p |
 subpaths
+| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:235:27:235:31 | *p_str [Return] [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
 | test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:235:27:235:31 | *p_str [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
-| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:236:5:236:9 | *p_str [post update] [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
 #select
 | test.cpp:42:5:42:11 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:42:18:42:23 | string | This write may overflow $@ by 1 element. | test.cpp:42:18:42:23 | string | string |
 | test.cpp:72:9:72:15 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:72:22:72:27 | string | This write may overflow $@ by 1 element. | test.cpp:72:22:72:27 | string | string |

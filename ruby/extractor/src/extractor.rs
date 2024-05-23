@@ -109,7 +109,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             if path.extension().map_or(false, |x| x == "erb") {
                 tracing::info!("scanning: {}", path.display());
                 extractor::extract(
-                    erb,
+                    &erb,
                     "erb",
                     &erb_schema,
                     &mut diagnostics_writer,
@@ -120,7 +120,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 );
 
                 let (ranges, line_breaks) = scan_erb(
-                    erb,
+                    &erb,
                     &source,
                     erb_directive_id,
                     erb_output_directive_id,
@@ -196,7 +196,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 code_ranges = vec![];
             }
             extractor::extract(
-                language,
+                &language,
                 "ruby",
                 &schema,
                 &mut diagnostics_writer,
@@ -249,7 +249,7 @@ fn write_trap(
 }
 
 fn scan_erb(
-    erb: Language,
+    erb: &Language,
     source: &[u8],
     directive_id: u16,
     output_directive_id: u16,

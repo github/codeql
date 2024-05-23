@@ -17,15 +17,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly string? nugetExe;
         private readonly Util.Logging.ILogger logger;
 
-        /// <summary>
-        /// The list of package files.
-        /// </summary>
-        private readonly ICollection<string> packageFiles;
-
-        public int PackageCount => packageFiles.Count;
+        public int PackageCount => fileProvider.PackagesConfigs.Count;
 
         private readonly string? backupNugetConfig;
         private readonly string? nugetConfigPath;
+        private readonly FileProvider fileProvider;
 
         /// <summary>
         /// The computed packages directory.
@@ -39,15 +35,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public NugetExeWrapper(FileProvider fileProvider, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
         {
+            this.fileProvider = fileProvider;
             this.packageDirectory = packageDirectory;
             this.logger = logger;
 
-            packageFiles = fileProvider.PackagesConfigs;
-
-            if (packageFiles.Count > 0)
+            if (fileProvider.PackagesConfigs.Count > 0)
             {
                 logger.LogInfo($"Found packages.config files, trying to use nuget.exe for package restore");
-                nugetExe = ResolveNugetExe(fileProvider.SourceDir.FullName);
+                nugetExe = ResolveNugetExe();
                 if (HasNoPackageSource())
                 {
                     // We only modify or add a top level nuget.config file
@@ -87,25 +82,44 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Tries to find the location of `nuget.exe` in the nuget directory under the directory
-        /// containing the executing assembly. If it can't be found, it is downloaded to the
-        /// `.nuget` directory under the source directory.
+        /// Tries to find the location of `nuget.exe`. It looks for
+        /// - the environment variable specifying a location,
+        /// - files in the repository,
+        /// - tries to resolve nuget from the PATH, or
+        /// - downloads it if it is not found.
         /// </summary>
-        /// <param name="sourceDir">The source directory.</param>
-        private string ResolveNugetExe(string sourceDir)
+        private string ResolveNugetExe()
         {
-            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var directory = Path.GetDirectoryName(currentAssembly)
-                ?? throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
-
-            var nuget = Path.Combine(directory, "nuget", "nuget.exe");
-            if (File.Exists(nuget))
+            var envVarPath = Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetExePath);
+            if (!string.IsNullOrEmpty(envVarPath))
             {
-                logger.LogInfo($"Found nuget.exe at {nuget}");
-                return nuget;
+                logger.LogInfo($"Using nuget.exe from environment variable: '{envVarPath}'");
+                return envVarPath;
             }
 
-            return DownloadNugetExe(sourceDir);
+            var nugetExesInRepo = fileProvider.NugetExes;
+            if (nugetExesInRepo.Count > 1)
+            {
+                logger.LogInfo($"Found multiple nuget.exe files in the repository: {string.Join(", ", nugetExesInRepo.OrderBy(s => s))}");
+            }
+
+            if (nugetExesInRepo.Count > 0)
+            {
+                var path = nugetExesInRepo.First();
+                logger.LogInfo($"Using nuget.exe from path '{path}'");
+                return path;
+            }
+
+            var executableName = Win32.IsWindows() ? "nuget.exe" : "nuget";
+            var nugetPath = FileUtils.FindProgramOnPath(executableName);
+            if (nugetPath is not null)
+            {
+                nugetPath = Path.Combine(nugetPath, executableName);
+                logger.LogInfo($"Using nuget.exe from PATH: {nugetPath}");
+                return nugetPath;
+            }
+
+            return DownloadNugetExe(fileProvider.SourceDir.FullName);
         }
 
         private string DownloadNugetExe(string sourceDir)
@@ -135,6 +149,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private bool RunWithMono => !Win32.IsWindows() && !string.IsNullOrEmpty(Path.GetExtension(nugetExe));
+
         /// <summary>
         /// Restore all files in a specified package.
         /// </summary>
@@ -150,15 +166,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
              */
 
             string exe, args;
-            if (Win32.IsWindows())
-            {
-                exe = nugetExe!;
-                args = $"install -OutputDirectory {packageDirectory} {package}";
-            }
-            else
+            if (RunWithMono)
             {
                 exe = "mono";
                 args = $"{nugetExe} install -OutputDirectory {packageDirectory} {package}";
+            }
+            else
+            {
+                exe = nugetExe!;
+                args = $"install -OutputDirectory {packageDirectory} {package}";
             }
 
             var pi = new ProcessStartInfo(exe, args)
@@ -189,7 +205,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public int InstallPackages()
         {
-            return packageFiles.Count(package => TryRestoreNugetPackage(package));
+            return fileProvider.PackagesConfigs.Count(package => TryRestoreNugetPackage(package));
         }
 
         private bool HasNoPackageSource()
@@ -219,8 +235,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void RunMonoNugetCommand(string command, out IList<string> stdout)
         {
-            var exe = "mono";
-            var args = $"{nugetExe} {command}";
+            string exe, args;
+            if (RunWithMono)
+            {
+                exe = "mono";
+                args = $"{nugetExe} {command}";
+            }
+            else
+            {
+                exe = nugetExe!;
+                args = command;
+            }
+
             var pi = new ProcessStartInfo(exe, args)
             {
                 RedirectStandardOutput = true,

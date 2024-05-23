@@ -61,6 +61,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
 
         /// <summary>
+        /// Specifies the path to the nuget executable to be used for package restoration.
+        /// </summary>
+        public const string NugetExePath = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_PATH";
+
+        /// <summary>
         /// Specifies the location of the diagnostic directory.
         /// </summary>
         public const string DiagnosticDir = "CODEQL_EXTRACTOR_CSHARP_DIAGNOSTIC_DIR";
