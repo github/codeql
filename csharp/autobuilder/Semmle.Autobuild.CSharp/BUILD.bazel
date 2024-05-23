@@ -14,6 +14,7 @@ codeql_csharp_binary(
         "//csharp/autobuilder/Semmle.Autobuild.Shared",
         "//csharp/extractor/Semmle.Extraction.CSharp",
         "//csharp/extractor/Semmle.Extraction.CSharp.DependencyFetching",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Standalone:bin/Semmle.Extraction.CSharp.Standalone",
         "//csharp/extractor/Semmle.Util",
         "@paket.main//microsoft.build",
         "@paket.main//newtonsoft.json",
