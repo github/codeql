@@ -1,4 +1,7 @@
 edges
+| SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | SecondOrderSqlInjection.cs:25:119:25:132 | access to local variable customerReader : SqlDataReader | provenance |  |
+| SecondOrderSqlInjection.cs:20:48:20:78 | call to method ExecuteReader : SqlDataReader | SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | provenance |  |
+| SecondOrderSqlInjection.cs:25:119:25:132 | access to local variable customerReader : SqlDataReader | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | provenance | MaD:15977 |
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | provenance |  Sink:MaD:948 |
 | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | provenance |  |
 | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | provenance | Src:MaD:1075  |
@@ -70,7 +73,10 @@ edges
 | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | provenance | MaD:2757 |
 | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:56:25:56:27 | access to local variable sql : String | provenance |  |
 nodes
+| SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
+| SecondOrderSqlInjection.cs:20:48:20:78 | call to method ExecuteReader : SqlDataReader | semmle.label | call to method ExecuteReader : SqlDataReader |
 | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | semmle.label | ... + ... |
+| SecondOrderSqlInjection.cs:25:119:25:132 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | semmle.label | call to method GetString : String |
 | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | semmle.label | access to local variable fs : FileStream |
 | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | semmle.label | object creation of type FileStream : FileStream |
@@ -159,7 +165,7 @@ nodes
 | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql | semmle.label | access to local variable sql |
 subpaths
 #select
-| SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | This query depends on $@. | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | this database input |
+| SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | SecondOrderSqlInjection.cs:20:48:20:78 | call to method ExecuteReader : SqlDataReader | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | This query depends on $@. | SecondOrderSqlInjection.cs:20:48:20:78 | call to method ExecuteReader : SqlDataReader | this database input |
 | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | This query depends on $@. | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | this file stream |
 | SqlInjection.cs:34:50:34:55 | access to local variable query1 | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:34:50:34:55 | access to local variable query1 | This query depends on $@. | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | this ASP.NET user input |
 | SqlInjection.cs:69:56:69:61 | access to local variable query1 | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:69:56:69:61 | access to local variable query1 | This query depends on $@. | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | this ASP.NET user input |
