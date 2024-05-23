@@ -16,7 +16,14 @@ brew install bazelisk
 then from the `ql` directory run
 
 ```bash
-bazel run //swift:create-extractor-pack    # --cpu=darwin_x86_64 # Uncomment on Arm-based Macs
+bazel run //swift:create-extractor-pack
+```
+
+If you are running on macOS and you encounter errors mentioning `XXX is unavailable: introduced in macOS YY.ZZ`,
+you will need to run this from the root of your `codeql` checkout:
+
+```bash
+echo common --macos_sdk_version=$(sw_vers --productVersion) >> local.bazelrc
 ```
 
 which will install `swift/extractor-pack`.
