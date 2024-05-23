@@ -11,26 +11,18 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         internal readonly ConcurrentDictionary<string, int> messageCounts = new();
 
-        private static (string Cwd, string[] Args) settings;
-        private static int hashCode;
-
-        public static (string Cwd, string[] Args) Settings
-        {
-            get { return settings; }
-            set
-            {
-                settings = value;
-                hashCode = settings.Cwd.GetHashCode();
-                for (var i = 0; i < settings.Args.Length; i++)
-                {
-                    hashCode = HashCode.Combine(hashCode, settings.Args[i].GetHashCode());
-                }
-            }
-        }
+        private readonly (string Cwd, string[] Args) settings;
+        private readonly int hashCode;
 
 #nullable disable warnings
         private Compilation(Context cx) : base(cx, null)
         {
+            settings = (cx.Extractor.Cwd, cx.Extractor.Args);
+            hashCode = settings.Cwd.GetHashCode();
+            for (var i = 0; i < settings.Args.Length; i++)
+            {
+                hashCode = HashCode.Combine(hashCode, settings.Args[i].GetHashCode());
+            }
         }
 #nullable restore warnings
 
@@ -38,14 +30,14 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var assembly = Assembly.CreateOutputAssembly(Context);
 
-            trapFile.compilations(this, FileUtils.ConvertToUnix(Compilation.Settings.Cwd));
+            trapFile.compilations(this, FileUtils.ConvertToUnix(settings.Cwd));
             trapFile.compilation_assembly(this, assembly);
 
             // Arguments
             var expandedIndex = 0;
-            for (var i = 0; i < Compilation.Settings.Args.Length; i++)
+            for (var i = 0; i < settings.Args.Length; i++)
             {
-                var arg = Compilation.Settings.Args[i];
+                var arg = settings.Args[i];
                 trapFile.compilation_args(this, i, arg);
 
                 if (CommandLineExtensions.IsFileArgument(arg))
