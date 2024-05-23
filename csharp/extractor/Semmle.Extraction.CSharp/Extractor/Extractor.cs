@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Basic.CompilerLog.Util;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -97,60 +98,120 @@ namespace Semmle.Extraction.CSharp
             stopwatch.Start();
 
             var options = Options.CreateWithEnvironment(args);
-            var workingDirectory = Directory.GetCurrentDirectory();
-            var compilerArgs = options.CompilerArguments.ToArray();
-
             using var logger = MakeLogger(options.Verbosity, options.Console);
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
 
             try
             {
-                if (options.ProjectsToLoad.Any())
+                var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+                var pathTransformer = new PathTransformer(canonicalPathCache);
+
+                if (options.BinaryLogPath is string binlogPath)
                 {
-                    AddSourceFilesFromProjects(options.ProjectsToLoad, options.CompilerArguments, logger);
+                    logger.LogInfo("  Running binary log analysis.");
+                    return RunBinaryLogAnalysis(stopwatch, binlogPath, options, logger, pathTransformer);
                 }
-
-                var compilerVersion = new CompilerVersion(options);
-
-                if (compilerVersion.SkipExtraction)
+                else
                 {
-                    logger.Log(Severity.Warning, "  Unrecognized compiler '{0}' because {1}", compilerVersion.SpecifiedCompiler, compilerVersion.SkipReason);
-                    return ExitCode.Ok;
+                    logger.LogInfo("  Running tracing analysis.");
+                    return RunTracingAnalysis(stopwatch, options, logger, canonicalPathCache, pathTransformer);
                 }
-
-                var compilerArguments = CSharpCommandLineParser.Default.Parse(
-                    compilerVersion.ArgsWithResponse,
-                    workingDirectory,
-                    compilerVersion.FrameworkPath,
-                    compilerVersion.AdditionalReferenceDirectories
-                    );
-
-                if (compilerArguments is null)
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("  Failed to parse command line: ").AppendList(" ", compilerArgs);
-                    logger.Log(Severity.Error, sb.ToString());
-                    ++analyser.CompilationErrors;
-                    return ExitCode.Failed;
-                }
-
-                if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
-                {
-                    logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
-                    return ExitCode.Ok;
-                }
-
-                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, canonicalPathCache, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
                 return ExitCode.Errors;
             }
+        }
+
+        private static ExitCode RunBinaryLogAnalysis(Stopwatch stopwatch, string binlogPath, Options options, ILogger logger, PathTransformer pathTransformer)
+        {
+            using var fileStream = new FileStream(binlogPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            // Filter out compiler calls that aren't interesting for examination
+            static bool filter(CompilerCall compilerCall)
+            {
+                return compilerCall.IsCSharp &&
+                    compilerCall.Kind == CompilerCallKind.Regular;
+            }
+
+            using var reader = BinaryLogReader.Create(fileStream);
+            var allCompilationData = reader.ReadAllCompilationData(filter);
+
+            var exitCode = ExitCode.Ok;
+
+            logger.LogInfo($"  Found {allCompilationData.Count} compilations in binary log");
+
+            foreach (var compilationData in allCompilationData)
+            {
+                if (compilationData.GetCompilationAfterGenerators() is not CSharpCompilation compilation)
+                {
+                    logger.LogError("  Compilation data is not C#");
+                    continue;
+                }
+
+                var compilerCall = compilationData.CompilerCall;
+                var compilerArgs = compilerCall.GetArguments();
+                var args = reader.ReadCommandLineArguments(compilerCall);
+
+                using var analyser = new BinaryLogAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
+
+                var exit = Analyse(stopwatch, analyser, options,
+                    references => [() => compilation.References.ForEach(r => references.Add(r))],
+                    (analyser, syntaxTrees) => [() => syntaxTrees.AddRange(compilation.SyntaxTrees)],
+                    (syntaxTrees, references) => compilation,
+                    (compilation, options) => analyser.Initialize(compilerCall.ProjectDirectory, compilerArgs?.ToArray() ?? [], TracingAnalyser.GetOutputName(compilation, args), compilation, options),
+                    () => { });
+
+                if (exitCode == ExitCode.Ok && exit != ExitCode.Ok)
+                {
+                    exitCode = ExitCode.Errors;
+                }
+            }
+            return exitCode;
+        }
+
+        private static ExitCode RunTracingAnalysis(Stopwatch stopwatch, Options options, ILogger logger, CanonicalPathCache canonicalPathCache, PathTransformer pathTransformer)
+        {
+            var workingDirectory = Directory.GetCurrentDirectory();
+            var compilerArgs = options.CompilerArguments.ToArray();
+
+            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
+
+            if (options.ProjectsToLoad.Any())
+            {
+                AddSourceFilesFromProjects(options.ProjectsToLoad, options.CompilerArguments, logger);
+            }
+
+            var compilerVersion = new CompilerVersion(options);
+
+            if (compilerVersion.SkipExtraction)
+            {
+                logger.Log(Severity.Warning, "  Unrecognized compiler '{0}' because {1}", compilerVersion.SpecifiedCompiler, compilerVersion.SkipReason);
+                return ExitCode.Ok;
+            }
+
+            var compilerArguments = CSharpCommandLineParser.Default.Parse(
+                compilerVersion.ArgsWithResponse,
+                workingDirectory,
+                compilerVersion.FrameworkPath,
+                compilerVersion.AdditionalReferenceDirectories
+                );
+
+            if (compilerArguments is null)
+            {
+                var sb = new StringBuilder();
+                sb.Append("  Failed to parse command line: ").AppendList(" ", compilerArgs);
+                logger.Log(Severity.Error, sb.ToString());
+                ++analyser.CompilationErrors;
+                return ExitCode.Failed;
+            }
+
+            if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
+            {
+                logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
+                return ExitCode.Ok;
+            }
+
+            return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, canonicalPathCache, stopwatch);
         }
 
         private static void AddSourceFilesFromProjects(IEnumerable<string> projectsToLoad, IList<string> compilerArguments, ILogger logger)

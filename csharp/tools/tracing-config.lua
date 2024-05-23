@@ -1,9 +1,27 @@
 function RegisterExtractorPack(id)
+    -- local charset = {}  do -- [0-9a-zA-Z]
+    --     for c = 48, 57  do table.insert(charset, string.char(c)) end
+    --     for c = 65, 90  do table.insert(charset, string.char(c)) end
+    --     for c = 97, 122 do table.insert(charset, string.char(c)) end
+    -- end
+
+    -- function RandomString(length)
+    --     if not length or length <= 0 then return '' end
+    --     math.randomseed(os.clock()^5)
+    --     return RandomString(length - 1) .. charset[math.random(1, #charset)]
+    -- end
+
+    function RandomString(length)
+        return '1234'
+    end
+
     function Exify(path)
         if OperatingSystem == 'windows' then return path .. '.exe' else return path end
     end
 
     local extractor = Exify(GetPlatformToolsDirectory() .. 'Semmle.Extraction.CSharp.Driver')
+
+    local dotnetScript = 'tools' .. PathSep .. 'run-dotnet.sh'
 
     local function isDotnet(name)
         return name == 'dotnet' or name == 'dotnet.exe'
@@ -25,6 +43,50 @@ function RegisterExtractorPack(id)
 
     local function isPathToExecutable(path)
         return path:match('%.exe$') or path:match('%.dll')
+    end
+
+    local function isBinLogArg(arg)
+        return arg:match('^[-/]bl:.*$')
+        -- TODO: handle other variants of bl, such as
+        -- bl without file name too, or
+        -- bl:output.binlog;ProjectImports=ZipFile, or
+        -- binaryLogger:...
+    end
+
+    function DotnetMatcherBuildBinaryLog(compilerName, compilerPath, compilerArguments,
+        _languageId)
+        if not isDotnet(compilerName) then
+            return nil
+        end
+
+        local filename = nil
+        local argv = compilerArguments.argv
+        if OperatingSystem == 'windows' then
+            -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
+            -- or, at least, that it is close enough
+            argv = NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
+        end
+
+        -- TODO: do we need to be more specific about the command that we're intercepting? Is `-bl` specific to `dotnet build`?
+        for i, arg in ipairs(argv) do
+            if isBinLogArg(arg) then
+                filename = string.sub(arg, 5) -- TODO: fix getting the filename
+                break
+            end
+        end
+
+        if filename then
+            local extractorArgs = { '--binlog', filename }
+            return {
+                order = ORDER_AFTER,
+                invocation = {
+                    path = AbsolutifyExtractorPath(id, extractor),
+                    arguments = {
+                        argv = extractorArgs
+                    }
+                }
+            }
+        end
     end
 
     function DotnetMatcherBuild(compilerName, compilerPath, compilerArguments,
@@ -59,6 +121,14 @@ function RegisterExtractorPack(id)
             argv =
             NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
         end
+
+        for i, arg in ipairs(argv) do
+            if isBinLogArg(arg) then
+                Log(1, 'Found binlog argument in dotnet command line, not changing command')
+                return nil
+            end
+        end
+
         for i, arg in ipairs(argv) do
             -- if dotnet is being used to execute any application except dotnet itself, we should
             -- not inject any flags.
@@ -115,29 +185,28 @@ function RegisterExtractorPack(id)
             end
         end
         if match then
-            local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
+            -- TODO: Add real temporary file name
+            local injections = { '-bl:codeql_' .. RandomString(15) .. '.binlog' }
             if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
             end
-            if dotnetRunInjectionIndex == nil then
-                -- Simple case; just append at the end
-                return {
-                    order = ORDER_REPLACE,
-                    invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil,
-                        injections)
-                }
-            end
 
-            -- Complex case; splice injections into the middle of the command line
+            -- Adding compiler path to the arguments. This is needed to execute the same `dotnet` that we traced.
+            table.insert(argv, 1, compilerPath)
+
             for i, injectionArg in ipairs(injections) do
-                table.insert(argv, dotnetRunInjectionIndex + i - 1, injectionArg)
+                if dotnetRunInjectionIndex == nil then
+                    table.insert(argv, injectionArg)
+                else
+                    table.insert(argv, dotnetRunInjectionIndex + i, injectionArg)
+                end
             end
 
             if OperatingSystem == 'windows' then
                 return {
                     order = ORDER_REPLACE,
                     invocation = {
-                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        path = AbsolutifyExtractorPath(id, compilerPath), -- TODO: support windows too
                         arguments = {
                             commandLineString = ArgvToCommandLineString(argv)
                         }
@@ -147,7 +216,7 @@ function RegisterExtractorPack(id)
                 return {
                     order = ORDER_REPLACE,
                     invocation = {
-                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        path = AbsolutifyExtractorPath(id, dotnetScript),
                         arguments = {
                             argv = argv
                         }
@@ -221,6 +290,7 @@ function RegisterExtractorPack(id)
     }
     local posixMatchers = {
         DotnetMatcherBuild,
+        DotnetMatcherBuildBinaryLog,
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
             extractor, {
             prepend = { '--compiler', '"${compiler}"' },
