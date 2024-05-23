@@ -11,17 +11,19 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         internal readonly ConcurrentDictionary<string, int> messageCounts = new();
 
-        private readonly (string Cwd, string[] Args) settings;
+        private readonly string cwd;
+        private readonly string[] args;
         private readonly int hashCode;
 
 #nullable disable warnings
         private Compilation(Context cx) : base(cx, null)
         {
-            settings = (cx.Extractor.Cwd, cx.Extractor.Args);
-            hashCode = settings.Cwd.GetHashCode();
-            for (var i = 0; i < settings.Args.Length; i++)
+            cwd = cx.Extractor.Cwd;
+            args = cx.Extractor.Args;
+            hashCode = cwd.GetHashCode();
+            for (var i = 0; i < args.Length; i++)
             {
-                hashCode = HashCode.Combine(hashCode, settings.Args[i].GetHashCode());
+                hashCode = HashCode.Combine(hashCode, args[i].GetHashCode());
             }
         }
 #nullable restore warnings
@@ -30,14 +32,14 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var assembly = Assembly.CreateOutputAssembly(Context);
 
-            trapFile.compilations(this, FileUtils.ConvertToUnix(settings.Cwd));
+            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
             trapFile.compilation_assembly(this, assembly);
 
             // Arguments
             var expandedIndex = 0;
-            for (var i = 0; i < settings.Args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                var arg = settings.Args[i];
+                var arg = args[i];
                 trapFile.compilation_args(this, i, arg);
 
                 if (CommandLineExtensions.IsFileArgument(arg))
