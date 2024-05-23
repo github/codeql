@@ -4,7 +4,6 @@ load(
     "codeql_pkg_filegroup",
     "codeql_pkg_files",
     "codeql_pkg_runfiles",
-    "codeql_pkg_wrap",
 )
 
 filegroup(
@@ -26,68 +25,67 @@ filegroup(
 )
 
 codeql_pkg_files(
-    name = "dbscheme_files",
-    srcs = [
-        "ql/lib/swift.dbscheme.stats",
-        "//swift/extractor/trap:generated_dbscheme",
-    ],
-)
-
-codeql_pkg_files(
-    name = "manifest",
-    srcs = ["codeql-extractor.yml"],
-)
-
-codeql_pkg_filegroup(
-    name = "extractor",
-    srcs = ["//swift/extractor:pkg"],
-    prefix = "tools",
-)
-
-codeql_pkg_files(
     name = "autobuilder-incompatible-os",
-    arch_specific = True,
     exes = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
-    prefix = "tools",
 )
 
 codeql_pkg_runfiles(
     name = "autobuilder",
     arch_specific = True,
     exes = ["//swift/swift-autobuilder"],
+)
+
+codeql_pkg_filegroup(
+    name = "tools-arch",
+    srcs = select({
+        "@platforms//os:macos": [
+            ":autobuilder",
+            "//swift/extractor:pkg",
+        ],
+        "@platforms//os:linux": [
+            ":autobuilder-incompatible-os",
+            "//swift/extractor:pkg",
+        ],
+        "@platforms//os:windows": [
+            ":autobuilder-incompatible-os",
+        ],
+    }),
+    arch_specific = True,
+)
+
+codeql_pkg_filegroup(
+    name = "tools",
+    srcs = [
+        ":tools-arch",
+        "//swift/tools",
+    ],
     prefix = "tools",
 )
 
-codeql_pkg_wrap(
+codeql_pkg_filegroup(
     name = "resource-dir",
     srcs = ["//swift/third_party/swift-llvm-support:swift-resource-dir"],
     arch_specific = True,
     prefix = "resource-dir",
 )
 
+codeql_pkg_files(
+    name = "root-files",
+    srcs = [
+        "codeql-extractor.yml",
+        "ql/lib/swift.dbscheme.stats",
+        "//swift/extractor/trap:generated_dbscheme",
+    ],
+)
+
 codeql_pack(
     name = "swift",
     srcs = [
-        ":dbscheme_files",
-        ":manifest",
+        ":resource-dir",
+        ":root-files",
+        ":tools",
         "//swift/downgrades",
-        "//swift/tools",
     ],
-    srcs_select = {
-        "@platforms//os:macos": [
-            ":extractor",
-            ":resource-dir",
-            ":autobuilder",
-        ],
-        "@platforms//os:linux": [
-            ":extractor",
-            ":resource-dir",
-            ":autobuilder-incompatible-os",
-        ],
-        "@platforms//os:windows": [
-            ":autobuilder-incompatible-os",
-        ],
-    },
     visibility = ["//visibility:public"],
 )
 

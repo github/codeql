@@ -27,6 +27,5 @@ codeql_pkg_files(
         ":identify-environment",
         ":qltest",
     ],
-    prefix = "tools",
     visibility = ["//swift:__pkg__"],
 )

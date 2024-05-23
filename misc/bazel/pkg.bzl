@@ -5,11 +5,12 @@ Wrappers and helpers around `rules_pkg` to build codeql packs.
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", _strip_prefix = "strip_prefix")
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
+load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo")
 load("@rules_python//python:defs.bzl", "py_binary")
 load("//:defs.bzl", "codeql_platform")
 
 def _make_internal(name):
-    def internal(suffix):
+    def internal(suffix = "internal"):
         return "%s-%s" % (name, suffix)
 
     return internal
@@ -20,151 +21,173 @@ def _get_subrule(label, suffix):
     path, _, pkg = label.rpartition("/")
     return "%s/%s:%s-%s" % (path, pkg, pkg, suffix)
 
+_PackageFileWrapperInfo = provider(fields = {"pfi": "", "src": "", "arch_specific": ""})
+
+CodeqlFilesInfo = provider(
+    doc = """Wrapper around `rules_pkg` `PackageFilesInfo` carrying information about generic and arch-specific files.""",
+    fields = {
+        "files": "list of `_PackageFileWrapperInfo`.",
+    },
+)
+
+def _codeql_pkg_filegroup_impl(ctx):
+    prefix = ctx.attr.prefix
+    if prefix:
+        prefix += "/"
+    generic_prefix = prefix
+    if ctx.attr.arch_specific:
+        if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]):
+            plat = "windows64"
+        elif ctx.target_platform_has_constraint(ctx.attr._macos[platform_common.ConstraintValueInfo]):
+            plat = "osx64"
+        else:
+            plat = "linux64"
+        prefix = prefix + plat + "/"
+
+    def transform_pfi(pfi, src, prefix = prefix, arch_specific = ctx.attr.arch_specific):
+        return _PackageFileWrapperInfo(
+            pfi = PackageFilesInfo(
+                attributes = pfi.attributes,
+                dest_src_map = {prefix + d: s for d, s in pfi.dest_src_map.items()},
+            ),
+            src = src,
+            arch_specific = arch_specific,
+        )
+
+    files = []
+
+    for src in ctx.attr.srcs:
+        if PackageFilesInfo in src:
+            pfi = src[PackageFilesInfo]
+            files.append(transform_pfi(pfi, src.label))
+        elif PackageFilegroupInfo in src:
+            pfgi = src[PackageFilegroupInfo]
+            if pfgi.pkg_dirs or pfgi.pkg_symlinks:
+                fail("while assembling %s found %s which contains `pkg_dirs` or `pkg_symlinks` targets" %
+                     (ctx.label, src.label) + ", which is not currently supported")
+            files += [transform_pfi(pfi, src) for pfi, src in pfgi.pkg_files]
+        else:
+            cfi = src[CodeqlFilesInfo]
+            files += [
+                transform_pfi(
+                    pfwi.pfi,
+                    pfwi.src,
+                    # if it was already arch specific the plat prefix was already added
+                    generic_prefix if pfwi.arch_specific else prefix,
+                    pfwi.arch_specific or ctx.attr.arch_specific,
+                )
+                for pfwi in cfi.files
+            ]
+
+    return [
+        CodeqlFilesInfo(
+            files = files,
+        ),
+        DefaultInfo(
+            files = depset(transitive = [src[DefaultInfo].files for src in ctx.attr.srcs]),
+        ),
+    ]
+
+codeql_pkg_filegroup = rule(
+    implementation = _codeql_pkg_filegroup_impl,
+    doc = """CodeQL specific packaging mapping. No `pkg_mkdirs` or `pkg_symlink` rules are supported, either directly
+    or transitively. Only `pkg_files` and `pkg_filegroup` thereof are allowed.""",
+    attrs = {
+        "srcs": attr.label_list(
+            doc = "List of arch-agnostic `pkg_files`, `pkg_filegroup` or `codeql_pkg_filegroup` targets",
+            providers = [
+                [PackageFilesInfo, DefaultInfo],
+                [PackageFilegroupInfo, DefaultInfo],
+                [CodeqlFilesInfo, DefaultInfo],
+            ],
+            default = [],
+        ),
+        "prefix": attr.string(doc = "Prefix to add to the files", default = ""),
+        "arch_specific": attr.bool(doc = "Whether the included files should be treated as arch-specific"),
+        "_windows": attr.label(default = "@platforms//os:windows"),
+        "_macos": attr.label(default = "@platforms//os:macos"),
+    },
+)
+
 def codeql_pkg_files(
         *,
         name,
-        arch_specific = False,
         srcs = None,
         exes = None,
-        renames = None,
+        arch_specific = False,
         prefix = None,
         visibility = None,
         **kwargs):
     """
     Wrapper around `pkg_files`. Added functionality:
-    * `exes` get their file attributes set to be executable. This is important only for POSIX files, there's no need
-      to mark windows executables as such
-    * `arch_specific` auto-adds the codeql platform specific directory (linux64, osx64 or windows64), and will be
-      consumed by a downstream `codeql_pack` to create the arch specific zip.
-    This should be consumed by `codeql_pkg_filegroup` and `codeql_pack` only.
+    * `exes` will get their file attributes set to be executable. This is important only for POSIX files, there's no
+      need to mark windows executables as such
+    If `exes` and `srcs` are both used, the resulting rule is a `pkg_filegroup` one.
     """
     internal = _make_internal(name)
-    main_rule = internal("generic")
-    empty_rule = internal("arch")
-    if arch_specific:
-        main_rule, empty_rule = empty_rule, main_rule
-        prefix = (prefix + "/" if prefix else "") + codeql_platform
-    pkg_files(
-        name = empty_rule,
-        srcs = [],
-        visibility = visibility,
-    )
-    if not srcs and not exes:
-        fail("either srcs or exes should be specified for %s" % name)
+    if "attributes" in kwargs:
+        fail("codeql_pkg_files does not support `attributes`. Use `exes` to mark executable files.")
+    internal_srcs = []
     if srcs and exes:
-        if renames:
-            src_renames = {k: v for k, v in renames.items() if k in srcs}
-            exe_renames = {k: v for k, v in renames.items() if k in exes}
-        else:
-            src_renames = None
-            exe_renames = None
         pkg_files(
             name = internal("srcs"),
             srcs = srcs,
-            renames = src_renames,
-            prefix = prefix,
             visibility = ["//visibility:private"],
             **kwargs
         )
         pkg_files(
             name = internal("exes"),
             srcs = exes,
-            renames = exe_renames,
-            prefix = prefix,
             visibility = ["//visibility:private"],
-            attributes = pkg_attributes(mode = "0755"),
+            attributes = pkg_attributes(mode = "755"),
             **kwargs
         )
-        pkg_filegroup(
-            name = main_rule,
-            srcs = [internal("srcs"), internal("exes")],
-            visibility = visibility,
-        )
+        internal_srcs = [internal("srcs"), internal("exes")]
     else:
         pkg_files(
-            name = main_rule,
+            name = internal(),
             srcs = srcs or exes,
-            attributes = pkg_attributes(mode = "0755") if exes else None,
-            prefix = prefix,
             visibility = visibility,
+            attributes = pkg_attributes(mode = "755") if exes else None,
             **kwargs
         )
-    native.filegroup(
+        internal_srcs = [internal()]
+    codeql_pkg_filegroup(
         name = name,
-        srcs = [main_rule],
-        visibility = visibility,
-    )
-
-def codeql_pkg_wrap(*, name, srcs, arch_specific = False, prefix = None, visibility = None, **kwargs):
-    """
-    Wrap a native `rules_pkg` rule, providing the `arch_specific` functionality and making it consumable by
-    `codeql_pkg_filegroup` and `codeql_pack`.
-    """
-    internal = _make_internal(name)
-    main_rule = internal("generic")
-    empty_rule = internal("arch")
-    if arch_specific:
-        main_rule, empty_rule = empty_rule, main_rule
-        prefix = (prefix + "/" if prefix else "") + codeql_platform
-    pkg_filegroup(
-        name = main_rule,
-        srcs = srcs,
+        srcs = internal_srcs,
+        arch_specific = arch_specific,
         prefix = prefix,
         visibility = visibility,
-        **kwargs
-    )
-    pkg_files(
-        name = empty_rule,
-        srcs = [],
-        visibility = visibility,
-    )
-    native.filegroup(
-        name = name,
-        srcs = [main_rule],
-        visibility = visibility,
     )
 
-def codeql_pkg_filegroup(
+def _extract_pkg_filegroup_impl(ctx):
+    src = ctx.attr.src[CodeqlFilesInfo]
+    pfi_lbls = [(pfwi.pfi, pfwi.src) for pfwi in src.files if pfwi.arch_specific == ctx.attr.arch_specific]
+    files = [depset(pfi.dest_src_map.values()) for pfi, _ in pfi_lbls]
+    return [
+        PackageFilegroupInfo(pkg_files = pfi_lbls, pkg_dirs = [], pkg_symlinks = []),
+        DefaultInfo(files = depset(transitive = files)),
+    ]
+
+_extrac_pkg_filegroup = rule(
+    implementation = _extract_pkg_filegroup_impl,
+    attrs = {
+        "src": attr.label(providers = [CodeqlFilesInfo, DefaultInfo]),
+        "arch_specific": attr.bool(),
+    },
+)
+
+def codeql_pack(
         *,
         name,
-        srcs,
-        srcs_select = None,
+        srcs = None,
+        zip_prefix = None,
+        zip_filename = "extractor",
         visibility = None,
+        install_dest = "extractor-pack",
         **kwargs):
     """
-    Combine `codeql_pkg_files` and other `codeql_pkg_filegroup` rules, similar to what `pkg_filegroup` does.
-    `srcs` is not selectable, but `srcs_select` accepts the same dictionary that a select would accept.
-    """
-    internal = _make_internal(name)
-
-    def transform(srcs, suffix):
-        return [_get_subrule(src, suffix) for src in srcs]
-
-    pkg_filegroup(
-        name = internal("generic"),
-        srcs = transform(srcs, "generic") + (select(
-            {k: transform(v, "generic") for k, v in srcs_select.items()},
-        ) if srcs_select else []),
-        visibility = visibility,
-        **kwargs
-    )
-    pkg_filegroup(
-        name = internal("arch"),
-        srcs = transform(srcs, "arch") + (select(
-            {k: transform(v, "arch") for k, v in srcs_select.items()},
-        ) if srcs_select else []),
-        visibility = visibility,
-        **kwargs
-    )
-    native.filegroup(
-        name = name,
-        srcs = [internal("generic"), internal("arch")],
-        visibility = visibility,
-    )
-
-def codeql_pack(*, name, srcs, zip_prefix = None, zip_filename = "extractor", visibility = visibility, install_dest = "extractor-pack", **kwargs):
-    """
-    Define a codeql pack. This accepts the same arguments as `codeql_pkg_filegroup`, and additionally:
+    Define a codeql pack. This accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
     * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
       prefixed with `zip_prefix` (`name` by default)
     * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
@@ -182,31 +205,32 @@ def codeql_pack(*, name, srcs, zip_prefix = None, zip_filename = "extractor", vi
         visibility = visibility,
         **kwargs
     )
-    codeql_pkg_filegroup(
-        name = internal("zip-contents"),
-        srcs = [name],
-        prefix = zip_prefix,
-        visibility = ["//visibility:private"],
-    )
-    pkg_zip(
-        name = internal("generic-zip"),
-        srcs = [internal("zip-contents-generic")],
-        package_file_name = zip_filename + "-generic.zip",
-        visibility = visibility,
-    )
-    pkg_zip(
-        name = internal("arch-zip"),
-        srcs = [internal("zip-contents-arch")],
-        package_file_name = zip_filename + "-" + codeql_platform + ".zip",
-        visibility = visibility,
-    )
+    for kind in ("generic", "arch"):
+        _extrac_pkg_filegroup(
+            name = internal(kind),
+            src = name,
+            arch_specific = kind == "arch",
+            visibility = ["//visibility:private"],
+        )
+        pkg_filegroup(
+            name = internal(kind + "-zip-contents"),
+            srcs = [internal(kind)],
+            prefix = zip_prefix,
+            visibility = ["//visibility:private"],
+        )
+        pkg_zip(
+            name = internal(kind + "-zip"),
+            srcs = [internal(kind + "-zip-contents")],
+            package_file_name = zip_filename + "-" + (codeql_platform if kind == "arch" else kind) + ".zip",
+            visibility = visibility,
+        )
     pkg_install(
         name = internal("script"),
         srcs = [internal("generic"), internal("arch")],
         visibility = ["//visibility:private"],
     )
     native.filegroup(
-        # used to locate current source directory
+        # used to locate current src directory
         name = internal("build-file"),
         srcs = ["BUILD.bazel"],
         visibility = ["//visibility:private"],
