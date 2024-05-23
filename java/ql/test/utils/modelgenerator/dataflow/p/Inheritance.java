@@ -94,21 +94,20 @@ public class Inheritance {
   }
 
   public class F implements INeutral {
-    // SPURIOUS-neutral=p;Inheritance$INeutral;id;(String);summary;df-generated
+    // neutral=p;Inheritance$F;id;(String);summary;df-generated
     public String id(String s) {
       return "";
     }
   }
 
   public class G implements INeutral {
-    // SPURIOUS-neutral=p;Inheritance$INeutral;id;(String);summary;df-generated
+    // neutral=p;Inheritance$G;id;(String);summary;df-generated
     public String id(String s) {
       return "";
     }
   }
 
   private class H implements INeutral {
-    // SPURIOUS-neutral=p;Inheritance$INeutral;id;(String);summary;df-generated
     public String id(String s) {
       return "";
     }
