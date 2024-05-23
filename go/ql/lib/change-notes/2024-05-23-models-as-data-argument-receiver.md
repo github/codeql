@@ -1,0 +1,5 @@
+---
+category: feature
+---
+* When writing models-as-data models, the receiver is now referred to as `Argument[receiver]` rather than `Argument[-1]`.
+* Neutral models are now supported. They have no effect except that a manual neutral summary model will stop a generated summary model from having any effect.
