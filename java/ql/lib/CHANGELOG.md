@@ -1,3 +1,13 @@
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* JDK version detection based on Gradle projects has been improved. Java extraction using build-modes `autobuild` or `none` is more likely to pick an appropriate JDK version, particularly when the Android Gradle Plugin or Spring Boot Plugin are in use.
+
 ## 0.11.0
 
 ### Breaking Changes
