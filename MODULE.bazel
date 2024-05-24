@@ -62,16 +62,19 @@ lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
 lfs_files(
     name = "ripunzip-linux",
     srcs = ["//misc/bazel/internal/bin:linux/ripunzip"],
+    executable = True,
 )
 
 lfs_files(
     name = "ripunzip-windows",
     srcs = ["//misc/bazel/internal/bin:windows/ripunzip.exe"],
+    executable = True,
 )
 
 lfs_files(
     name = "ripunzip-macos",
     srcs = ["//misc/bazel/internal/bin:macos/ripunzip"],
+    executable = True,
 )
 
 lfs_files(
@@ -79,10 +82,10 @@ lfs_files(
     srcs = ["//swift/third_party/resource-dir:resource-dir-linux.zip"],
 )
 
-#lfs_files(
-#    name = "swift-resource-dir-macos",
-#    srcs = ["//swift/third_party/resource-dir:resource-dir-macos.zip"],
-#)
+lfs_files(
+    name = "swift-resource-dir-macos",
+    srcs = ["//swift/third_party/resource-dir:resource-dir-macos.zip"],
+)
 
 register_toolchains(
     "@nodejs_toolchains//:all",
