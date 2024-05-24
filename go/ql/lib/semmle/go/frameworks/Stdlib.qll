@@ -96,24 +96,22 @@ module IntegerParser {
 
 /** Provides models of commonly used functions in the `net/url` package. */
 module Url {
-  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
-  /** The `JoinPath` function. */
-  class JoinPath extends TaintTracking::FunctionModel {
+  /**
+   * DEPRECATED: Use a locally defined class instead.
+   *
+   * The `JoinPath` function.
+   */
+  class JoinPath extends Function {
     JoinPath() { this.hasQualifiedName("net/url", "JoinPath") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isResult(0)
-    }
   }
 
-  /** The method `URL.JoinPath`. */
-  class JoinPathMethod extends TaintTracking::FunctionModel, Method {
+  /**
+   * DEPRECATED: Use a locally defined class instead.
+   *
+   * The method `URL.JoinPath`.
+   */
+  class JoinPathMethod extends Method {
     JoinPathMethod() { this.hasQualifiedName("net/url", "URL", "JoinPath") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      (inp.isReceiver() or inp.isParameter(_)) and
-      outp.isResult(0)
-    }
   }
 
   /** A method that returns a part of a URL. */
