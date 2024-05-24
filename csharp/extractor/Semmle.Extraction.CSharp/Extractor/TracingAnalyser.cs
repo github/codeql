@@ -110,8 +110,8 @@ namespace Semmle.Extraction.CSharp
         /// <param name="compilation">Information about the compilation.</param>
         /// <param name="cancel">Cancellation token required.</param>
         /// <returns>The filename.</returns>
-        private static string GetOutputName(CSharpCompilation compilation,
-            CSharpCommandLineArguments commandLineArguments)
+        internal static string GetOutputName(CSharpCompilation compilation,
+            CommandLineArguments commandLineArguments)
         {
             // There's no apparent way to access the output filename from the compilation,
             // so we need to re-parse the command line arguments.
