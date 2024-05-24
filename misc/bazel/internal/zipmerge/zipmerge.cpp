@@ -16,7 +16,7 @@
   Filename adjustment consists of optionally prepending a prefix to the filename.
 */
 
-#include "misc/bazel/internal/bin/zipmerge/zipmerge.h"
+#include "misc/bazel/internal/zipmerge/zipmerge.h"
 
 #include <stdbool.h>
 #include <stdint.h>

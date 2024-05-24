@@ -66,15 +66,16 @@ def _download_lfs(repository_ctx):
 
     # with bzlmod the name is qualified with `~` separators, and we want the base name here
     name = repository_ctx.name.split("~")[-1]
-    repository_ctx.file("BUILD.bazel", """
-exports_files({files})
+    basenames = [src.basename for src in srcs]
+    build = "exports_files(%s)\n" % repr(basenames)
 
-filegroup(
-    name = "{name}",
-    srcs = {files},
-    visibility = ["//visibility:public"],
-)
-""".format(name = name, files = repr([src.basename for src in srcs])))
+    # add a main `name` filegroup only if it doesn't conflict with existing exported files
+    if name not in basenames:
+        build += 'filegroup(name = "%s", srcs = %s, visibility = ["//visibility:public"])\n' % (
+            name,
+            basenames,
+        )
+    repository_ctx.file("BUILD.bazel", build)
 
 lfs_archive = repository_rule(
     doc = "Export the contents from an on-demand LFS archive. The corresponding path should be added to be ignored " +

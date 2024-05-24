@@ -61,19 +61,19 @@ lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
 
 lfs_files(
     name = "ripunzip-linux",
-    srcs = ["//misc/bazel/internal/bin:linux/ripunzip"],
+    srcs = ["//misc/bazel/internal/ripunzip:ripunzip-linux"],
     executable = True,
 )
 
 lfs_files(
     name = "ripunzip-windows",
-    srcs = ["//misc/bazel/internal/bin:windows/ripunzip.exe"],
+    srcs = ["//misc/bazel/internal/ripunzip:ripunzip-windows.exe"],
     executable = True,
 )
 
 lfs_files(
     name = "ripunzip-macos",
-    srcs = ["//misc/bazel/internal/bin:macos/ripunzip"],
+    srcs = ["//misc/bazel/internal/ripunzip:ripunzip-macos"],
     executable = True,
 )
 

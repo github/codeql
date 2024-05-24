@@ -305,11 +305,11 @@ def codeql_pack(
         )
         native.genrule(
             name = internal(kind + "-zip"),
-            tools = ["//misc/bazel/internal/bin/zipmerge", internal(kind + "-zipmerge.params")],
+            tools = ["//misc/bazel/internal/zipmerge", internal(kind + "-zipmerge.params")],
             srcs = [internal(kind + "-zip-base"), internal(kind + "-zip-manifests")],
             outs = ["%s-%s.zip" % (zip_filename, kind)],
             cmd = " ".join([
-                "$(execpath //misc/bazel/internal/bin/zipmerge)",
+                "$(execpath //misc/bazel/internal/zipmerge)",
                 "$@",
                 "$(execpath %s)" % internal(kind + "-zip-base"),
                 "$$(cat $(execpath %s))" % internal(kind + "-zipmerge.params"),
@@ -337,7 +337,7 @@ def codeql_pack(
             internal("generic-zip-manifests"),
             internal("arch-install.params"),
             internal("arch-zip-manifests"),
-            "//misc/bazel/internal/bin:ripunzip",
+            "//misc/bazel/internal/ripunzip",
         ],
         deps = ["@rules_python//python/runfiles"],
         args = [
@@ -345,7 +345,7 @@ def codeql_pack(
             "--script=$(rlocationpath %s)" % internal("script"),
             "--destdir",
             install_dest,
-            "--ripunzip=$(rlocationpath //misc/bazel/internal/bin:ripunzip)",
+            "--ripunzip=$(rlocationpath //misc/bazel/internal/ripunzip)",
             "--zip-manifest=$(rlocationpath %s)" % internal("generic-install.params"),
             "--zip-manifest=$(rlocationpath %s)" % internal("arch-install.params"),
         ],
