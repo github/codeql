@@ -216,30 +216,64 @@ def _imported_zips_manifest_impl(ctx):
     src = ctx.attr.src[CodeqlFilesInfo]
     zips = [czi for czi in src.zips if czi.arch_specific == ctx.attr.arch_specific]
 
-    # zipmerge is run in a build context, so it requries File.path pointers to find the zips
-    # installation runs in a run context, so it requries File.short_path to find the zips
-    # hence we require two separate files, regardless of the format
+    output = ctx.actions.declare_file(ctx.label.name + ".params")
     ctx.actions.write(
-        ctx.outputs.zipmerge_out,
-        "\n".join(["--prefix=%s %s" % (czi.prefix.rstrip("/"), czi.src.path) for czi in zips]),
-    )
-    ctx.actions.write(
-        ctx.outputs.install_out,
+        output,
         "\n".join(["%s:%s" % (czi.prefix, czi.src.short_path) for czi in zips]),
     )
-    outputs = [ctx.outputs.zipmerge_out, ctx.outputs.install_out] + [czi.src for czi in zips]
     return DefaultInfo(
-        files = depset(outputs),
+        files = depset([output]),
+        runfiles = ctx.runfiles([czi.src for czi in zips]),
     )
 
-_imported_zips_manifests = rule(
+_imported_zips_manifest = rule(
     implementation = _imported_zips_manifest_impl,
     attrs = {
         "src": attr.label(providers = [CodeqlFilesInfo]),
         "arch_specific": attr.bool(),
-        "zipmerge_out": attr.output(),
-        "install_out": attr.output(),
+        "zip_prefix": attr.string(),
     },
+)
+
+def _zipmerge_impl(ctx):
+    src = ctx.attr.src[CodeqlFilesInfo]
+    zip_infos = [czi for czi in src.zips if czi.arch_specific == ctx.attr.arch_specific]
+    zips = depset([ctx.file.base_zip] + [czi.src for czi in zip_infos])
+    filename = ctx.attr.zip_name + "-"
+    if ctx.attr.arch_specific:
+        filename += _detect_plat(ctx)
+    else:
+        filename += "generic"
+    filename += ".zip"
+    output = ctx.actions.declare_file(filename)
+    args = [output.path, ctx.file.base_zip.path]
+    for info in zip_infos:
+        args += [
+            "--prefix=%s/%s" % (ctx.attr.zip_prefix, info.prefix.rstrip("/")),
+            info.src.path,
+        ]
+
+    ctx.actions.run(
+        outputs = [output],
+        executable = ctx.executable._zipmerge,
+        inputs = zips,
+        arguments = args,
+    )
+
+    return [
+        DefaultInfo(files = depset([output])),
+    ]
+
+_zipmerge = rule(
+    implementation = _zipmerge_impl,
+    attrs = {
+        "src": attr.label(providers = [CodeqlFilesInfo]),
+        "base_zip": attr.label(allow_single_file = True),
+        "zip_name": attr.string(),
+        "arch_specific": attr.bool(),
+        "zip_prefix": attr.string(),
+        "_zipmerge": attr.label(default = "//misc/bazel/internal/zipmerge", executable = True, cfg = "exec"),
+    } | _PLAT_DETECTION_ATTRS,
 )
 
 _extrac_pkg_filegroup = rule(
@@ -291,30 +325,28 @@ def codeql_pack(
             prefix = zip_prefix,
             visibility = ["//visibility:private"],
         )
+        _imported_zips_manifest(
+            name = internal(kind + "-zip-manifest"),
+            src = name,
+            arch_specific = kind == "arch",
+            zip_prefix = zip_prefix,
+            visibility = ["//visibility:private"],
+        )
         pkg_zip(
             name = internal(kind + "-zip-base"),
             srcs = [internal(kind + "-zip-contents")],
+            visibility = ["//visibility:private"],
+        )
+        _zipmerge(
+            name = internal(kind + "-zip"),
+            base_zip = internal(kind + "-zip-base"),
+            zip_name = zip_filename,
+            zip_prefix = zip_prefix,
+            src = name,
+            arch_specific = kind == "arch",
             visibility = visibility,
         )
-        _imported_zips_manifests(
-            name = internal(kind + "-zip-manifests"),
-            src = name,
-            zipmerge_out = internal(kind + "-zipmerge.params"),
-            install_out = internal(kind + "-install.params"),
-            arch_specific = kind == "arch",
-        )
-        native.genrule(
-            name = internal(kind + "-zip"),
-            tools = ["//misc/bazel/internal/zipmerge", internal(kind + "-zipmerge.params")],
-            srcs = [internal(kind + "-zip-base"), internal(kind + "-zip-manifests")],
-            outs = ["%s-%s.zip" % (zip_filename, kind)],
-            cmd = " ".join([
-                "$(execpath //misc/bazel/internal/zipmerge)",
-                "$@",
-                "$(execpath %s)" % internal(kind + "-zip-base"),
-                "$$(cat $(execpath %s))" % internal(kind + "-zipmerge.params"),
-            ]),
-        )
+
     pkg_install(
         name = internal("script"),
         srcs = [internal("generic"), internal("arch")],
@@ -333,10 +365,8 @@ def codeql_pack(
         data = [
             internal("build-file"),
             internal("script"),
-            internal("generic-install.params"),
-            internal("generic-zip-manifests"),
-            internal("arch-install.params"),
-            internal("arch-zip-manifests"),
+            internal("generic-zip-manifest"),
+            internal("arch-zip-manifest"),
             "//misc/bazel/internal/ripunzip",
         ],
         deps = ["@rules_python//python/runfiles"],
@@ -346,8 +376,8 @@ def codeql_pack(
             "--destdir",
             install_dest,
             "--ripunzip=$(rlocationpath //misc/bazel/internal/ripunzip)",
-            "--zip-manifest=$(rlocationpath %s)" % internal("generic-install.params"),
-            "--zip-manifest=$(rlocationpath %s)" % internal("arch-install.params"),
+            "--zip-manifest=$(rlocationpath %s)" % internal("generic-zip-manifest"),
+            "--zip-manifest=$(rlocationpath %s)" % internal("arch-zip-manifest"),
         ],
         visibility = visibility,
     )
