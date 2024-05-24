@@ -4,11 +4,43 @@ use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use crate::trap;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
+use std::env;
 use std::path::Path;
 
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
+
+/// Sets the tracing level based on the environment variables
+/// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
+/// falling back to `warn` if neither is set.
+pub fn set_tracing_level(language: &str) {
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .without_time()
+        .with_level(true)
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
+                |_| -> tracing_subscriber::EnvFilter {
+                    let verbosity = env::var("CODEQL_VERBOSITY")
+                        .map(|v| match v.to_lowercase().as_str() {
+                            "off" | "errors" => "error",
+                            "warnings" => "warn",
+                            "info" | "progress" => "info",
+                            "debug" | "progress+" => "debug",
+                            "trace" | "progress++" | "progress+++" => "trace",
+                            _ => "warn",
+                        })
+                        .unwrap_or_else(|_| "warn");
+                    tracing_subscriber::EnvFilter::new(format!(
+                        "{}_extractor={}",
+                        language, verbosity
+                    ))
+                },
+            ),
+        )
+        .init();
+}
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
