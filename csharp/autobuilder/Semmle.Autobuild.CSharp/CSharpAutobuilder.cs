@@ -13,8 +13,10 @@ namespace Semmle.Autobuild.CSharp
     {
         private const string buildModeEnvironmentVariable = "CODEQL_EXTRACTOR_CSHARP_BUILD_MODE";
         internal const string ExtractorOptionBuildless = "CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS";
+        internal const string ExtractorOptionBinlog = "CODEQL_EXTRACTOR_CSHARP_OPTION_BINLOG";
 
         public bool Buildless { get; }
+        public string? Binlog { get; }
 
         public override Language Language => Language.CSharp;
 
@@ -29,7 +31,7 @@ namespace Semmle.Autobuild.CSharp
                 actions.GetEnvironmentVariable(ExtractorOptionBuildless).AsBool("buildless", false) ||
                 actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
 
-
+            Binlog = actions.GetEnvironmentVariable(ExtractorOptionBinlog);
         }
     }
 
