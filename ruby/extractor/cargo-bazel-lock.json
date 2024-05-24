@@ -1,5 +1,5 @@
 {
-  "checksum": "ec7840d3326d3ea97d8b1ce0f748dc4e7e3528695e3302133cb5e8518aa3d7a1",
+  "checksum": "93d0053faf939037ac2cd61edfa1ee0f5d5918cb9e1773a0e0574fcbc13325c3",
   "crates": {
     "adler 1.0.2": {
       "name": "adler",
@@ -987,7 +987,7 @@
         "Git": {
           "remote": "https://github.com/github/codeql.git",
           "commitish": {
-            "Rev": "a523be4d0a1e2420a1884f7c4f8754a7c4fb7e21"
+            "Rev": "0dbce3d077f6f31a8d660aea104ee31cacf6bacd"
           },
           "strip_prefix": "shared/tree-sitter-extractor"
         }
