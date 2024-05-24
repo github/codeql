@@ -45,7 +45,6 @@ public class PrivateFlowViaPublicInterface {
       return null;
     }
 
-    // neutral=p;PrivateFlowViaPublicInterface$SPI;openStreamNone;();summary;df-generated
     @Override
     public OutputStream openStreamNone() throws IOException {
       return new FileOutputStream(new RandomPojo().someFile);
