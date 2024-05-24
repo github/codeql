@@ -77,4 +77,10 @@ ruby/extractor/cargo-bazel-lock.json -merge
 # auto-generated files for the C# build
 csharp/paket.lock linguist-generated=true
 # needs eol=crlf, as `paket` touches this file and saves it als crlf
-csharp/.paket/Paket.Restore.targets linguist-generated=true eol=crlf
+csharp/.paket/Paket.Restore.targets linguist-generated=true eol=cr
+
+# ripunzip tool
+/misc/bazel/internal/bin/*/ripunzip* filter=lfs diff=lfs merge=lfs -text
+
+# swift prebuilt resources
+/swift/third_party/resource-dir/*.zip filter=lfs diff=lfs merge=lfs -text

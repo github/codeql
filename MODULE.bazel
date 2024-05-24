@@ -57,6 +57,33 @@ use_repo(node, "nodejs", "nodejs_toolchains")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.2")
 
+lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
+
+lfs_files(
+    name = "ripunzip-linux",
+    srcs = ["//misc/bazel/internal/bin:linux/ripunzip"],
+)
+
+lfs_files(
+    name = "ripunzip-windows",
+    srcs = ["//misc/bazel/internal/bin:windows/ripunzip.exe"],
+)
+
+lfs_files(
+    name = "ripunzip-macos",
+    srcs = ["//misc/bazel/internal/bin:macos/ripunzip"],
+)
+
+lfs_files(
+    name = "swift-resource-dir-linux",
+    srcs = ["//swift/third_party/resource-dir:resource-dir-linux.zip"],
+)
+
+#lfs_files(
+#    name = "swift-resource-dir-macos",
+#    srcs = ["//swift/third_party/resource-dir:resource-dir-macos.zip"],
+#)
+
 register_toolchains(
     "@nodejs_toolchains//:all",
 )

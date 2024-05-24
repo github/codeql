@@ -64,8 +64,7 @@ codeql_pkg_filegroup(
 
 codeql_pkg_filegroup(
     name = "resource-dir",
-    srcs = ["//swift/third_party/swift-llvm-support:swift-resource-dir"],
-    arch_specific = True,
+    srcs = ["//swift/third_party/resource-dir"],
     prefix = "resource-dir",
 )
 

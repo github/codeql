@@ -1,0 +1,20 @@
+cc_library(
+    name = "lib",
+    srcs = [
+        "zipmerge.cpp",
+    ],
+    hdrs = ["zipmerge.h"],
+)
+
+cc_binary(
+    name = "zipmerge",
+    srcs = [
+        "zipmerge_main.cpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":lib",
+    ],
+)
+
+#TODO port tests from internal repo

@@ -1,0 +1,9 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_zip")
+
+codeql_pkg_zip(
+    name = "resource-dir",
+    src = select({"@platforms//os:" + os: "@swift-resource-dir-" + os for os in ("linux", "macos")}),
+    arch_specific = True,
+    target_compatible_with = select({"@platforms//os:windows": ["@platforms//:incompatible"]}),
+    visibility = ["//swift:__pkg__"],
+)
