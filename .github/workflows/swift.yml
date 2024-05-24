@@ -35,6 +35,7 @@ on:
       - main
       - rc/*
       - codeql-cli-*
+  workflow_dispatch:
 
 permissions:
   contents: read

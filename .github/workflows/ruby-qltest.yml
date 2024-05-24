@@ -5,8 +5,11 @@ on:
     paths:
       - "ruby/**"
       - "shared/**"
-      - .github/workflows/ruby-build.yml
+      - .github/workflows/ruby-qltest.yml
       - .github/actions/fetch-codeql/action.yml
+      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/reasonable-memory/action.yml
+      - csharp/actions/create-extractor-pack/action.yml
       - codeql-workspace.yml
     branches:
       - main
@@ -17,10 +20,14 @@ on:
       - "shared/**"
       - .github/workflows/ruby-qltest.yml
       - .github/actions/fetch-codeql/action.yml
+      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/reasonable-memory/action.yml
+      - csharp/actions/create-extractor-pack/action.yml
       - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -59,6 +66,9 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
+      - name: Allocate memory
+        id: memory
+        uses: ./.github/actions/reasonable-memory
       - uses: ./.github/actions/fetch-codeql
       - uses: ./ruby/actions/create-extractor-pack
       - name: Cache compilation cache
@@ -68,6 +78,7 @@ jobs:
           key: ruby-qltest
       - name: Run QL tests
         run: |
-          codeql test run --threads=0 --ram 50000 --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql test run --threads=0 --ram $memory --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          memory: ${{ steps.memory.outputs.suggested }}

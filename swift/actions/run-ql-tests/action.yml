@@ -8,6 +8,9 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Allocate memory
+      id: memory
+      uses: ./.github/actions/reasonable-memory
     - uses: ./swift/actions/share-extractor-pack
     - uses: ./.github/actions/fetch-codeql
     - id: query-cache
@@ -19,7 +22,7 @@ runs:
       run: |
         codeql test run \
           --threads=0 \
-          --ram 50000 \
+          --ram $memory \
           --search-path "${{ github.workspace }}/swift/extractor-pack" \
           --check-databases \
           --check-unused-labels \
@@ -32,3 +35,4 @@ runs:
           swift/ql/test
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        memory: ${{ steps.memory.outputs.suggested }}
