@@ -7,7 +7,6 @@ import go
 import semmle.go.security.Xss
 private import semmle.go.security.SafeUrlFlowCustomizations
 
-// Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /**
  * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the [Beego](https://github.com/beego/beego) package.
@@ -326,14 +325,5 @@ module Beego {
     }
 
     override Http::ResponseWriter getResponseWriter() { none() }
-  }
-
-  private class UtilsTaintPropagators extends TaintTracking::FunctionModel {
-    UtilsTaintPropagators() { this.hasQualifiedName(utilsPackagePath(), "GetDisplayString") }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(_) and
-      output.isResult(0)
-    }
   }
 }
