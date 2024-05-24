@@ -10,7 +10,14 @@ namespace Semmle.Autobuild.CSharp
     {
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
-            return BuildScript.Create(_ => Semmle.Extraction.CSharp.Standalone.Program.Main([]));
+            if (builder.Options.Binlog is string binlog)
+            {
+                return BuildScript.Create(_ => Semmle.Extraction.CSharp.Driver.Main(["--binlog", binlog]));
+            }
+            else
+            {
+                return BuildScript.Create(_ => Semmle.Extraction.CSharp.Standalone.Program.Main([]));
+            }
         }
     }
 }

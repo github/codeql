@@ -65,3 +65,6 @@ options:
             - progress+++
         type: string
         pattern: "^(off|errors|warnings|(info|progress)|(debug|progress\\+)|(trace|progress\\+\\+)|progress\\+\\+\\+)$"
+  binlog:
+    title: Binlog
+    type: string
