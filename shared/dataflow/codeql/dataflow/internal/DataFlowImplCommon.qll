@@ -502,7 +502,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private module CallSetsInput implements MkSetsInp {
+    private module CallSetsInput implements MkSetsInputSig {
       class Key = TCallEdge;
 
       class Value = DataFlowCall;
@@ -523,7 +523,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     private class CallSet = CallSetOption::Option;
 
-    private module DispatchSetsInput implements MkSetsInp {
+    private module DispatchSetsInput implements MkSetsInputSig {
       class Key = TCallEdge;
 
       class Value = TCallEdge;
@@ -585,10 +585,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      *
      * There are four cases:
      * - `TAnyCallContext()` : No restrictions on method flow.
-     * - `TSpecificCall(DataFlowCall call)` : Flow entered through the
-     *    given `call`. This call improves the set of viable
-     *    dispatch targets for at least one method call in the current callable
-     *    or helps prune unreachable nodes in the current callable.
+     * - `TSpecificCall(CallSet calls, DispatchSet tgts, UnreachableSetOption unreachable)` :
+     *    Flow entered through a specific call that improves the set of viable
+     *    dispatch targets for all of `calls` to the set of dispatch targets in
+     *    `tgts`, and/or the specific call prunes unreachable nodes in the
+     *    current callable as given by `unreachable`.
      * - `TSomeCall()` : Flow entered through a parameter. The
      *    originating call does not improve the set of dispatch targets for any
      *    method call in the current callable and was therefore not recorded.
@@ -1498,7 +1499,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     int callOrder(DataFlowCall call) { result = call.totalorder() }
 
-    private module UnreachableSetsInput implements MkSetsInp {
+    private module UnreachableSetsInput implements MkSetsInputSig {
       class Key = TCallEdge;
 
       class Value = NodeRegion;

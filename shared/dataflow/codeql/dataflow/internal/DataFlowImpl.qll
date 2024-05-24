@@ -1369,6 +1369,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         CcCall ccSomeCall();
 
+        /*
+         * The following `instanceof` predicates are necessary for proper
+         * caching, since we're able to cache predicates, but not the underlying
+         * types.
+         */
+
         predicate instanceofCc(Cc cc);
 
         predicate instanceofCcCall(CcCall cc);

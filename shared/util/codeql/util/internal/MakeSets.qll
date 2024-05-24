@@ -5,7 +5,7 @@
  */
 
 /** The input signature for `MakeSets`. */
-signature module MkSetsInp {
+signature module MkSetsInputSig {
   class Key;
 
   class Value;
@@ -31,7 +31,7 @@ signature module MkSetsInp {
  * reasonable fallback where `getValueSet(k).contains(v)` remains equivalent to
  * `v = getAValue(k)`.
  */
-module MakeSets<MkSetsInp Inp> {
+module MakeSets<MkSetsInputSig Inp> {
   private import Inp
 
   private int totalorderExt(Value v) {
@@ -53,7 +53,7 @@ module MakeSets<MkSetsInp Inp> {
   private newtype TValList =
     TValListNil() or
     TValListCons(Value head, int r, TValList tail) { hasValListCons(_, head, r, tail) } or
-    TValListUnordered(Key k) { exists(getAValue(k)) and unordered(k) }
+    TValListUnordered(Key k) { unordered(k) }
 
   private predicate hasValListCons(Key k, Value head, int r, TValList tail) {
     rankedValue(k, head, r) and
