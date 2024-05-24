@@ -21,10 +21,11 @@ from LocalJob j, PRHeadCheckoutStep checkout
 where
   j = checkout.getEnclosingJob() and
   j.getAStep() = checkout and
+  // the checkout is followed by a known poisonable step
   checkout.getAFollowingStep() instanceof PoisonableStep and
-  not exists(ControlCheck check |
-    checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
-  ) and
+  // the checkout is not controlled by an access check
+  not exists(ControlCheck check | check.dominates(checkout)) and
+  // the checkout occurs in a privileged context
   (
     inPrivilegedCompositeAction(checkout)
     or

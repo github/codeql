@@ -227,7 +227,14 @@ class GhSHACheckout extends SHACheckoutStep instanceof Run {
 }
 
 /** An If node that contains an actor, user or label check */
-abstract class ControlCheck extends If { }
+abstract class ControlCheck extends If {
+  predicate dominates(Step step) {
+    step.getIf() = this or 
+    step.getEnclosingJob().getIf() = this or
+    step.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this  or
+    step.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this 
+  }
+}
 
 class LabelControlCheck extends ControlCheck {
   LabelControlCheck() {
@@ -244,15 +251,28 @@ class LabelControlCheck extends ControlCheck {
 
 class ActorControlCheck extends ControlCheck {
   ActorControlCheck() {
-    // eg: contains(github.actor, 'dependabot')
-    // eg: github.triggering_actor != 'CI Agent'
+    // eg: github.actor == 'dependabot[bot]'
+    // eg: github.triggering_actor == 'CI Agent'
     // eg: github.event.pull_request.user.login == 'mybot'
     exists(
       normalizeExpr(this.getCondition())
           .regexpFind([
               "\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",
               "\\bgithub\\.event\\.comment\\.user\\.login\\b",
-              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
+              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", 
+            ], _, _)
+    )
+  }
+}
+
+class RepositoryControlCheck extends ControlCheck {
+  RepositoryControlCheck() {
+    // eg: github.repository == 'test/foo'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind([
+              "\\bgithub\\.repository\\b",
+              "\\bgithub\\.repository_owner\\b",
             ], _, _)
     )
   }

@@ -21,9 +21,9 @@ from LocalJob j, PRHeadCheckoutStep checkout
 where
   j = checkout.getEnclosingJob() and
   j.getAStep() = checkout and
-  not exists(ControlCheck check |
-    checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
-  ) and
+  // the checkout is not controlled by an access check
+  not exists(ControlCheck check | check.dominates(checkout)) and
+  // the checkout occurs in a non-privileged context
   (
     inNonPrivilegedCompositeAction(checkout) or
     inNonPrivilegedJob(checkout)
