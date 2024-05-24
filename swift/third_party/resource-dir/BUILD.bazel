@@ -1,9 +1,30 @@
-load("//misc/bazel:pkg.bzl", "codeql_pkg_zip")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_zip_import")
 
-codeql_pkg_zip(
+codeql_pkg_zip_import(
     name = "resource-dir",
     src = select({"@platforms//os:" + os: "@swift-resource-dir-" + os for os in ("linux", "macos")}),
     arch_specific = True,
-    target_compatible_with = select({"@platforms//os:windows": ["@platforms//:incompatible"]}),
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
     visibility = ["//swift:__pkg__"],
 )
+
+[
+    sh_binary(
+        name = "update-" + os,
+        srcs = ["update.sh"],
+        args = [
+            "$(rlocationpath @swift_toolchain_%s)" % os,
+            "$(rlocationpath resource-dir-%s.zip)" % os,
+        ],
+        data = [
+            "resource-dir-%s.zip" % os,
+            "@swift_toolchain_" + os,
+        ],
+        target_compatible_with = ["@platforms//os:" + os],
+        deps = ["@bazel_tools//tools/bash/runfiles"],
+    )
+    for os in ("linux", "macos")
+]
