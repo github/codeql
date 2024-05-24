@@ -32,7 +32,6 @@ import semmle.go.frameworks.stdlib.NetHttp
 import semmle.go.frameworks.stdlib.NetHttpHttputil
 import semmle.go.frameworks.stdlib.NetTextproto
 import semmle.go.frameworks.stdlib.Os
-import semmle.go.frameworks.stdlib.Reflect
 import semmle.go.frameworks.stdlib.Regexp
 import semmle.go.frameworks.stdlib.Strconv
 import semmle.go.frameworks.stdlib.Strings
