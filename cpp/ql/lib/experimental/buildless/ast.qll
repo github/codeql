@@ -1,42 +1,51 @@
-
 import compiled_ast
 import ast_sig
 
-module Buildless<BuildlessASTSig AST>
-{
-    final class Node = AST::Node;
+module Buildless<BuildlessASTSig AST> {
+  final class Node = AST::Node;
 
-    class Function extends Node {
-        Function() { AST::function(this) }
+  class SourceElement extends Node {
+    Location getLocation() { AST::nodeLocation(this, result) }
 
-        string toString() { AST::functionName(this, result) }
+    string toString() { result = "element" }
+  }
 
-        BlockStmt getBody() { AST::functionBody(this, result) }
+  class SourceFunction extends SourceElement {
+    SourceFunction() { AST::function(this) }
 
-        Location getLocation() { AST::nodeLocation(this, result) }
-    }
+    string getName() { AST::functionName(this, result) }
 
-    class Stmt extends Node {
-        Stmt() { AST::stmt(this) }
+    override string toString() { result = getName() }
 
-        string toString() { result = "stmt" }
+    BlockStmt getBody() { AST::functionBody(this, result) }
 
-        Location getLocation() { AST::nodeLocation(this, result) }
-    }
+    VariableDeclaration getParameter(int i) { AST::functionParameter(this, i, result) }
+  }
 
-    class BlockStmt extends Stmt
-    {
-        BlockStmt()
-        {
-            AST::blockStmt(this)
-        }
+  class VariableDeclaration extends SourceElement {
+    VariableDeclaration() { AST::variableDeclaration(this) }
+  }
 
-        override string toString() { result = "{ ... }" }
-    }
+  class SourceParameter extends VariableDeclaration {
+    SourceFunction fn;
+    int index;
+
+    SourceParameter() { AST::functionParameter(fn, index, this) }
+  }
+
+  class Stmt extends SourceElement {
+    Stmt() { AST::stmt(this) }
+
+    override string toString() { result = "stmt" }
+  }
+
+  class BlockStmt extends Stmt {
+    BlockStmt() { AST::blockStmt(this) }
+
+    override string toString() { result = "{ ... }" }
+
+    Stmt getChild(int i) { AST::blockMember(this, i, result) }
+  }
 }
-
-
-
-
 
 module TestAST = Buildless<CompiledAST>;

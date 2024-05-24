@@ -8,42 +8,24 @@ module CompiledAST implements BuildlessASTSig {
 
   private newtype TNode =
     TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
-    TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) }
+    TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) } or
+    TDeclaration(SourceLocation loc) { exists(DeclarationEntry decl | decl.getLocation() = loc) }
 
-  abstract class Node extends TNode {
-    abstract string toString();
+  class Node extends TNode {
+    string toString() { result = "node" }
 
-    abstract Location getLocation();
+    Location getLocation()
+    {
+      this = TFunction(result) or
+      this = TStatement(result) or
+      this = TDeclaration(result)
+    }
 
-    string getName() { none() }
+    Stmt getStmt() { result.getLocation() = this.getLocation() }
 
-    Node getBody() { none() }
-  }
+    Function getFunction() { result.getLocation() = this.getLocation() }
 
-  private class FunctionNode extends Node, TFunction {
-    Function function;
-
-    FunctionNode() { this = TFunction(function.getLocation()) }
-
-    override string toString() { result = function.toString() }
-
-    override Location getLocation() { result = function.getLocation() }
-
-    override string getName() { result = function.getName() }
-
-    override Node getBody() { result = TStatement(function.getBlock().getLocation()) }
-  }
-
-  private class StatementNode extends Node, TStatement {
-    Stmt statement;
-
-    StatementNode() { this = TStatement(statement.getLocation()) }
-
-    override string toString() { result = statement.toString() }
-
-    override Location getLocation() { result = statement.getLocation() }
-
-    Stmt getStmt() { result = statement }
+    DeclarationEntry getDeclaration() { result.getLocation() = this.getLocation() }
   }
 
   predicate nodeLocation(Node node, Location location) { location = node.getLocation() }
@@ -54,22 +36,24 @@ module CompiledAST implements BuildlessASTSig {
   predicate systemInclude(Node include, string path) { none() }
 
   // Functions
-  predicate function(Node fn) { fn instanceof FunctionNode }
+  predicate function(Node fn) { exists(fn.getFunction()) }
 
-  predicate functionBody(Node fn, Node body) { body = fn.getBody() }
+  predicate functionBody(Node fn, Node body) { body.getStmt() = fn.getFunction().getBlock() }
 
   predicate functionReturn(Node fn, Node returnType) { none() }
 
-  predicate functionName(Node fn, string name) { name = fn.getName() }
+  predicate functionName(Node fn, string name) { name = fn.getFunction().getName() }
 
-  predicate functionParameter(Node fn, int i, Node parameterDecl) { none() }
+  predicate functionParameter(Node fn, int i, Node parameterDecl) { fn.getFunction().getParameter(i).getADeclarationEntry() = parameterDecl.getDeclaration() }
 
   // Statements
-  predicate stmt(Node node) { node instanceof StatementNode }
+  predicate stmt(Node node) { exists(node.getStmt()) }
 
-  predicate blockStmt(Node stmt) { stmt.(StatementNode).getStmt() instanceof BlockStmt }
+  predicate blockStmt(Node stmt) { stmt.getStmt() instanceof BlockStmt }
 
-  predicate blockMember(Node stmt, int index, Node child) { none() }
+  predicate blockMember(Node stmt, int index, Node child) {
+    child.getStmt() = stmt.getStmt().(BlockStmt).getChild(index)
+  }
 
   predicate ifStmt(Node stmt, Node condition, Node thenBranch) { none() }
 
@@ -115,7 +99,7 @@ module CompiledAST implements BuildlessASTSig {
   predicate typeParameterDefault(Node templateParameter, Node defaultTypeOrValue) { none() }
 
   // Declarations
-  predicate variableDeclaration(Node decl) { none() }
+  predicate variableDeclaration(Node decl) { exists(decl.getDeclaration()) }
 
   predicate variableDeclarationType(Node decl, Node type) { none() }
 
