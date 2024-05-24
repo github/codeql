@@ -521,6 +521,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     private module CallSetOption = Option<CallSets::ValueSet>;
 
+    /**
+     * A set of call sites for which dispatch is affected by the call context.
+     *
+     * A `None` value indicates the empty set.
+     */
     private class CallSet = CallSetOption::Option;
 
     private module DispatchSetsInput implements MkSetsInputSig {
@@ -544,6 +549,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     private module DispatchSetsOption = Option<DispatchSets::ValueSet>;
 
+    /**
+     * A set of call edges that are allowed in the call context. This applies to
+     * all calls in the associated `CallSet`, in particular, this means that if
+     * a call has no associated edges in the `DispatchSet`, then either all
+     * edges are allowed or none are depending on whether the call is in the
+     * `CallSet`.
+     *
+     * A `None` value indicates the empty set.
+     */
     private class DispatchSet = DispatchSetsOption::Option;
 
     private predicate relevantCtx(TCallEdge ctx) {
@@ -795,9 +809,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         }
 
         private LocalCallContext getLocalCallContext(CallContext ctx) {
-          if exists(getUnreachable(ctx))
-          then result = TSpecificLocalCall(getUnreachable(ctx))
-          else result instanceof LocalCallContextAny
+          result = TSpecificLocalCall(getUnreachable(ctx))
+          or
+          not exists(getUnreachable(ctx)) and
+          result instanceof LocalCallContextAny
         }
 
         bindingset[cc]
