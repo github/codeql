@@ -34,4 +34,4 @@ for zip_manifest in zip_manifests:
             assert zip, f"missing prefix for {prefix}, you should use prefix:zip format"
             dest = destdir / prefix
             dest.mkdir(parents=True, exist_ok=True)
-            subprocess.run([ripunzip, "unzip-file", zip, "-d", dest])
+            subprocess.run([ripunzip, "unzip-file", zip, "-d", dest], check=True)
