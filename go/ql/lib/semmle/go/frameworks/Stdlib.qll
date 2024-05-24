@@ -18,7 +18,6 @@ import semmle.go.frameworks.stdlib.EncodingGob
 import semmle.go.frameworks.stdlib.EncodingJson
 import semmle.go.frameworks.stdlib.EncodingPem
 import semmle.go.frameworks.stdlib.EncodingXml
-import semmle.go.frameworks.stdlib.Errors
 import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
