@@ -425,16 +425,16 @@ module NodeJSLib {
     ServerDefinition() { isCreateServer(this) }
   }
 
-  // /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
-  // class Credentials extends CredentialsNode {
-  //   Credentials() {
-  //     exists(string http | http = "http" or http = "https" |
-  //       this = DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth")
-  //     )
-  //   }
+  /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
+  class Credentials extends CredentialsNode {
+    Credentials() {
+      exists(string http | http = "http" or http = "https" |
+        this = DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth")
+      )
+    }
 
-  //   override string getCredentialsKind() { result = "credentials" }
-  // }
+    override string getCredentialsKind() { result = "credentials" }
+  }
 
   /**
    * A call a process-terminating function, such as `process.exit`.
@@ -1035,27 +1035,27 @@ module NodeJSLib {
     }
   }
 
-  // /**
-  //  * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
-  //  */
-  // private class ClientRequestLoginUsername extends CredentialsNode {
-  //   ClientRequestLoginUsername() {
-  //     exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
-  //   }
+  /**
+   * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
+   */
+  private class ClientRequestLoginUsername extends CredentialsNode {
+    ClientRequestLoginUsername() {
+      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
+    }
 
-  //   override string getCredentialsKind() { result = "Node.js http(s) client login username" }
-  // }
+    override string getCredentialsKind() { result = "Node.js http(s) client login username" }
+  }
 
-  // /**
-  //  * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
-  //  */
-  // private class ClientRequestLoginPassword extends CredentialsNode {
-  //   ClientRequestLoginPassword() {
-  //     exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
-  //   }
+  /**
+   * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
+   */
+  private class ClientRequestLoginPassword extends CredentialsNode {
+    ClientRequestLoginPassword() {
+      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
+    }
 
-  //   override string getCredentialsKind() { result = "Node.js http(s) client login password" }
-  // }
+    override string getCredentialsKind() { result = "Node.js http(s) client login password" }
+  }
 
   /**
    * A data flow node that is the parameter of an error callback for an HTTP or HTTPS request made by a Node.js process, for example `err` in `http.request(url).on('error', (err) => {})`.

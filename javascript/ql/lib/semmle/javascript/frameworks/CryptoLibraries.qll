@@ -34,9 +34,9 @@ abstract class CryptographicKeyCreation extends DataFlow::Node {
 /**
  * A key used in a cryptographic algorithm, viewed as a `CredentialsNode`.
  */
-// class CryptographicKeyCredentialsExpr extends CredentialsNode instanceof CryptographicKey {
-//   override string getCredentialsKind() { result = "key" }
-// }
+class CryptographicKeyCredentialsExpr extends CredentialsNode instanceof CryptographicKey {
+  override string getCredentialsKind() { result = "key" }
+}
 
 // Holds if `algorithm` is an `EncryptionAlgorithm` that uses a block cipher
 private predicate isBlockEncryptionAlgorithm(CryptographicAlgorithm algorithm) {

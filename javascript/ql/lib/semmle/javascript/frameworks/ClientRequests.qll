@@ -285,21 +285,21 @@ module ClientRequest {
   }
 
   /** An expression that is used as a credential in a request. */
-  // private class AuthorizationHeader extends CredentialsNode {
-  //   AuthorizationHeader() {
-  //     exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
-  //       this = write.getRhs()
-  //     )
-  //     or
-  //     exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
-  //       call.getNumArgument() = 2 and
-  //       call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
-  //       this = call.getArgument(1)
-  //     )
-  //   }
+  private class AuthorizationHeader extends CredentialsNode {
+    AuthorizationHeader() {
+      exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
+        this = write.getRhs()
+      )
+      or
+      exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
+        call.getNumArgument() = 2 and
+        call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
+        this = call.getArgument(1)
+      )
+    }
 
-  //   override string getCredentialsKind() { result = "authorization header" }
-  // }
+    override string getCredentialsKind() { result = "authorization header" }
+  }
 
   /**
    * A model of a URL request made using an implementation of the `fetch` API.

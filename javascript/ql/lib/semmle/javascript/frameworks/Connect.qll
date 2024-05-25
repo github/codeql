@@ -100,23 +100,23 @@ module Connect {
     DataFlow::Node getARouteHandlerNode() { result = this.getAnArgument() }
   }
 
-  // /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
-  // class Credentials extends CredentialsNode {
-  //   string kind;
+  /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
+  class Credentials extends CredentialsNode {
+    string kind;
 
-  //   Credentials() {
-  //     exists(DataFlow::CallNode call |
-  //       call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation() and
-  //       call.getNumArgument() = 2
-  //     |
-  //       this = call.getArgument(0) and kind = "user name"
-  //       or
-  //       this = call.getArgument(1) and kind = "password"
-  //     )
-  //   }
+    Credentials() {
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation() and
+        call.getNumArgument() = 2
+      |
+        this = call.getArgument(0) and kind = "user name"
+        or
+        this = call.getArgument(1) and kind = "password"
+      )
+    }
 
-  //   override string getCredentialsKind() { result = kind }
-  // }
+    override string getCredentialsKind() { result = kind }
+  }
 
   deprecated class RequestExpr = NodeJSLib::RequestExpr;
 

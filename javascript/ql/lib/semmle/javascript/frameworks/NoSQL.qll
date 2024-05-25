@@ -77,22 +77,22 @@ private module MongoDB {
     result = API::Node::ofType("mongoose", "ConnectOptions")
   }
 
-//   /**
-//    * An expression passed to `mongodb` or `mongoose` to supply credentials.
-//    */
-//   class Credentials extends CredentialsNode {
-//     string kind;
+  /**
+   * An expression passed to `mongodb` or `mongoose` to supply credentials.
+   */
+  class Credentials extends CredentialsNode {
+    string kind;
 
-//     Credentials() {
-//       exists(string prop | this = credentialsObject().getMember(prop).asSink() |
-//         prop = "user" and kind = "user name"
-//         or
-//         prop = "pass" and kind = "password"
-//       )
-//     }
+    Credentials() {
+      exists(string prop | this = credentialsObject().getMember(prop).asSink() |
+        prop = "user" and kind = "user name"
+        or
+        prop = "pass" and kind = "password"
+      )
+    }
 
-//     override string getCredentialsKind() { result = kind }
-//   }
+    override string getCredentialsKind() { result = kind }
+  }
 }
 
 private module Mongoose {
