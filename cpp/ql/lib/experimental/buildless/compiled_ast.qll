@@ -7,16 +7,15 @@ module CompiledAST implements BuildlessASTSig {
   }
 
   private newtype TNode =
-    TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
+    // TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
     TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) } or
     TDeclaration(SourceLocation loc) { exists(DeclarationEntry decl | decl.getLocation() = loc) }
 
   class Node extends TNode {
     string toString() { result = "node" }
 
-    Location getLocation()
-    {
-      this = TFunction(result) or
+    Location getLocation() {
+      // this = TFunction(result) or
       this = TStatement(result) or
       this = TDeclaration(result)
     }
@@ -44,7 +43,9 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate functionName(Node fn, string name) { name = fn.getFunction().getName() }
 
-  predicate functionParameter(Node fn, int i, Node parameterDecl) { fn.getFunction().getParameter(i).getADeclarationEntry() = parameterDecl.getDeclaration() }
+  predicate functionParameter(Node fn, int i, Node parameterDecl) {
+    fn.getFunction().getParameter(i).getADeclarationEntry() = parameterDecl.getDeclaration()
+  }
 
   // Statements
   predicate stmt(Node node) { exists(node.getStmt()) }
