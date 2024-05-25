@@ -12,7 +12,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import jsonWebToken
+import JWT
 
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "jsonwebtoken without any signature verification" }
