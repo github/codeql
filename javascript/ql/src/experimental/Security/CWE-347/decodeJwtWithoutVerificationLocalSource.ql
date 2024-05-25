@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 8.0
  * @precision high
- * @id js/jwt-missing-verification-jsonwebtoken-local-source
+ * @id js/decode-jwt-without-verification-local-source
  * @tags security
  *       external/cwe/cwe-347
  */
