@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.owasp.esapi</groupId>
       <artifactId>esapi</artifactId>
-      <version>2.2.3.1</version>
+      <version>2.5.3.1</version>
     </dependency>
     <dependency>
       <groupId>com.unboundid</groupId>
