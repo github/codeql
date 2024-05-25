@@ -1,4 +1,4 @@
-# github.com/go-jose/go-jose/v3 v3.0.0
+# github.com/go-jose/go-jose/v3 v3.0.3
 ## explicit; go 1.12
 github.com/go-jose/go-jose/v3
 github.com/go-jose/go-jose/v3/cipher
@@ -7,8 +7,6 @@ github.com/go-jose/go-jose/v3/jwt
 # github.com/golang-jwt/jwt/v5 v5.0.0
 ## explicit; go 1.18
 github.com/golang-jwt/jwt/v5
-# github.com/google/go-cmp v0.5.9
-## explicit; go 1.13
 # github.com/stretchr/testify v1.8.3
 ## explicit; go 1.20
 # golang.org/x/crypto v0.21.0
