@@ -1,6 +1,6 @@
+using System.IO;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -21,11 +21,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(Context, operand, this, 0);
-            OperatorCall(trapFile, Syntax);
 
             if ((operatorKind == ExprKind.POST_INCR || operatorKind == ExprKind.POST_DECR) &&
                 Kind == ExprKind.OPERATOR_INVOCATION)
             {
+                OperatorCall(trapFile, Syntax);
                 trapFile.mutator_invocation_mode(this, 2);
             }
         }

@@ -4,4 +4,4 @@ extensions:
       extensible: sourceModel
     data:
       - ["org.apache.hc.core5.http.io", "HttpRequestHandler", True, "handle", "(ClassicHttpRequest,ClassicHttpResponse,HttpContext)", "", "Parameter[0]", "remote", "manual"]
-      - ["org.apache.hc.core5.http.io", "HttpServerRequestHandler", True, "handle", "(ClassicHttpRequest,ResponseTrigger,HttpContext)", "", "Parameter[0]", "remote", "manual"]
+      - ["org.apache.hc.core5.http.io", "HttpServerRequestHandler", True, "handle", "(ClassicHttpRequest,HttpServerRequestHandler$ResponseTrigger,HttpContext)", "", "Parameter[0]", "remote", "manual"]

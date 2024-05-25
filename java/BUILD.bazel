@@ -1,0 +1,11 @@
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//java/ql/lib/config:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//java/ql/lib/config:dbscheme-stats",
+)

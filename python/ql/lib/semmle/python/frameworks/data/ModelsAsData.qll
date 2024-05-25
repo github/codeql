@@ -17,31 +17,44 @@ import Shared::ModelOutput as ModelOutput
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
-private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.FlowSummary
 
 /**
  * A remote flow source originating from a CSV source row.
  */
-private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
+private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
   RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
 
   override string getSourceType() { result = "Remote flow (from model)" }
 }
 
-/**
- * Like `ModelOutput::summaryStep` but with API nodes mapped to data-flow nodes.
- */
-private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
-  exists(API::Node predNode, API::Node succNode |
-    Specific::summaryStep(predNode, succNode, kind) and
-    pred = predNode.asSink() and
-    succ = succNode.asSource()
-  )
-}
+private class SummarizedCallableFromModel extends SummarizedCallable {
+  string type;
+  string path;
 
-/** Taint steps induced by summary models of kind `taint`. */
-private class TaintStepFromSummary extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "taint")
+  SummarizedCallableFromModel() {
+    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
+    this = type + ";" + path
+  }
+
+  override DataFlow::CallCfgNode getACall() { ModelOutput::resolvedSummaryBase(type, path, result) }
+
+  override DataFlow::ArgumentNode getACallback() {
+    exists(API::Node base |
+      ModelOutput::resolvedSummaryRefBase(type, path, base) and
+      result = base.getAValueReachableFromSource()
+    )
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
   }
 }

@@ -1,6 +1,6 @@
 name: codeql/csharp-queries
-version: 0.6.4-dev
-groups: 
+version: 1.0.0-dev
+groups:
   - csharp
   - queries
 suites: codeql-suites

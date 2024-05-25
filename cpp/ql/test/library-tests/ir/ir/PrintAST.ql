@@ -7,5 +7,5 @@ private import semmle.code.cpp.PrintAST
 private import PrintConfig
 
 private class PrintConfig extends PrintAstConfiguration {
-  override predicate shouldPrintFunction(Function func) { shouldDumpFunction(func) }
+  override predicate shouldPrintDeclaration(Declaration decl) { shouldDumpDeclaration(decl) }
 }

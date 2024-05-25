@@ -49,7 +49,10 @@ private newtype TCompletion =
     nestedFinallyCompletion(outer, nestLevel)
   }
 
-pragma[noinline]
+pragma[nomagic]
+private int getAFinallyNestLevel() { result = any(Statements::TryStmtTree t).nestLevel() }
+
+pragma[nomagic]
 private predicate nestedFinallyCompletion(Completion outer, int nestLevel) {
   (
     outer = TReturnCompletion()
@@ -64,7 +67,7 @@ private predicate nestedFinallyCompletion(Completion outer, int nestLevel) {
     or
     outer = TExitCompletion()
   ) and
-  nestLevel = any(Statements::TryStmtTree t).nestLevel()
+  nestLevel = getAFinallyNestLevel()
 }
 
 pragma[noinline]

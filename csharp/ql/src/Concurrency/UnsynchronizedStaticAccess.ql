@@ -28,7 +28,7 @@ ControlFlow::Node unlockedReachable(Callable a) {
   result = a.getEntryPoint()
   or
   exists(ControlFlow::Node mid | mid = unlockedReachable(a) |
-    not mid.getElement() instanceof LockingCall and
+    not mid.getAstNode() instanceof LockingCall and
     result = mid.getASuccessor()
   )
 }

@@ -1,0 +1,298 @@
+edges
+| test.cpp:4:15:4:33 | call to malloc | test.cpp:4:15:4:33 | call to malloc | provenance |  |
+| test.cpp:4:15:4:33 | call to malloc | test.cpp:5:15:5:22 | ... + ... | provenance | Config |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:5:15:5:22 | ... + ... | provenance |  |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | * ... | provenance | Config |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | * ... | provenance | Config |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | * ... | provenance | Config |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | * ... | provenance | Config |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:14:8:21 | * ... | provenance | Config |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:14:8:21 | * ... | provenance | Config |
+| test.cpp:6:14:6:15 | * ... | test.cpp:8:14:8:21 | * ... | provenance |  |
+| test.cpp:16:15:16:33 | call to malloc | test.cpp:16:15:16:33 | call to malloc | provenance |  |
+| test.cpp:16:15:16:33 | call to malloc | test.cpp:20:14:20:21 | * ... | provenance | Config |
+| test.cpp:28:15:28:37 | call to malloc | test.cpp:28:15:28:37 | call to malloc | provenance |  |
+| test.cpp:28:15:28:37 | call to malloc | test.cpp:29:15:29:28 | ... + ... | provenance | Config |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:29:15:29:28 | ... + ... | provenance |  |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | * ... | provenance | Config |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | * ... | provenance | Config |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | * ... | provenance | Config |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | * ... | provenance | Config |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:14:32:21 | * ... | provenance | Config |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:14:32:21 | * ... | provenance | Config |
+| test.cpp:30:14:30:15 | * ... | test.cpp:32:14:32:21 | * ... | provenance |  |
+| test.cpp:51:33:51:35 | *end | test.cpp:60:34:60:37 | mk_array output argument | provenance |  |
+| test.cpp:52:19:52:37 | call to malloc | test.cpp:52:19:52:37 | call to malloc | provenance |  |
+| test.cpp:52:19:52:37 | call to malloc | test.cpp:53:12:53:23 | ... + ... | provenance | Config |
+| test.cpp:53:5:53:23 | ... = ... | test.cpp:51:33:51:35 | *end | provenance |  |
+| test.cpp:53:12:53:23 | ... + ... | test.cpp:53:5:53:23 | ... = ... | provenance |  |
+| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:67:9:67:14 | ... = ... | provenance | Config |
+| test.cpp:205:15:205:33 | call to malloc | test.cpp:205:15:205:33 | call to malloc | provenance |  |
+| test.cpp:205:15:205:33 | call to malloc | test.cpp:206:17:206:23 | ... + ... | provenance | Config |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | ... + ... | provenance |  |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | ... = ... | provenance | Config |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | ... = ... | provenance | Config |
+| test.cpp:260:13:260:24 | new[] | test.cpp:260:13:260:24 | new[] | provenance |  |
+| test.cpp:260:13:260:24 | new[] | test.cpp:261:14:261:21 | ... + ... | provenance | Config |
+| test.cpp:261:14:261:21 | ... + ... | test.cpp:261:14:261:21 | ... + ... | provenance |  |
+| test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance | Config |
+| test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance | Config |
+| test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance | Config |
+| test.cpp:261:14:261:21 | ... + ... | test.cpp:264:13:264:14 | * ... | provenance | Config |
+| test.cpp:262:31:262:33 | *... ++ | test.cpp:264:13:264:14 | * ... | provenance |  |
+| test.cpp:262:31:262:33 | *... ++ | test.cpp:264:13:264:14 | * ... | provenance |  |
+| test.cpp:264:13:264:14 | * ... | test.cpp:262:31:262:33 | *... ++ | provenance |  |
+| test.cpp:270:13:270:24 | new[] | test.cpp:270:13:270:24 | new[] | provenance |  |
+| test.cpp:270:13:270:24 | new[] | test.cpp:271:14:271:21 | ... + ... | provenance | Config |
+| test.cpp:271:14:271:21 | ... + ... | test.cpp:271:14:271:21 | ... + ... | provenance |  |
+| test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance | Config |
+| test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance | Config |
+| test.cpp:355:14:355:27 | new[] | test.cpp:355:14:355:27 | new[] | provenance |  |
+| test.cpp:355:14:355:27 | new[] | test.cpp:356:15:356:23 | ... + ... | provenance | Config |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:356:15:356:23 | ... + ... | provenance |  |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | * ... | provenance | Config |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | * ... | provenance | Config |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | * ... | provenance | Config |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | * ... | provenance | Config |
+| test.cpp:377:14:377:27 | new[] | test.cpp:377:14:377:27 | new[] | provenance |  |
+| test.cpp:377:14:377:27 | new[] | test.cpp:378:15:378:23 | ... + ... | provenance | Config |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:378:15:378:23 | ... + ... | provenance |  |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | * ... | provenance | Config |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | * ... | provenance | Config |
+| test.cpp:410:14:410:27 | new[] | test.cpp:410:14:410:27 | new[] | provenance |  |
+| test.cpp:410:14:410:27 | new[] | test.cpp:411:15:411:23 | & ... | provenance | Config |
+| test.cpp:410:14:410:27 | new[] | test.cpp:415:7:415:15 | ... = ... | provenance | Config |
+| test.cpp:411:15:411:23 | & ... | test.cpp:411:15:411:23 | & ... | provenance |  |
+| test.cpp:411:15:411:23 | & ... | test.cpp:415:7:415:15 | ... = ... | provenance | Config |
+| test.cpp:411:15:411:23 | & ... | test.cpp:415:7:415:15 | ... = ... | provenance | Config |
+| test.cpp:421:14:421:27 | new[] | test.cpp:421:14:421:27 | new[] | provenance |  |
+| test.cpp:421:14:421:27 | new[] | test.cpp:422:15:422:23 | & ... | provenance | Config |
+| test.cpp:421:14:421:27 | new[] | test.cpp:426:7:426:15 | ... = ... | provenance | Config |
+| test.cpp:422:15:422:23 | & ... | test.cpp:422:15:422:23 | & ... | provenance |  |
+| test.cpp:422:15:422:23 | & ... | test.cpp:426:7:426:15 | ... = ... | provenance | Config |
+| test.cpp:422:15:422:23 | & ... | test.cpp:426:7:426:15 | ... = ... | provenance | Config |
+| test.cpp:432:14:432:27 | new[] | test.cpp:432:14:432:27 | new[] | provenance |  |
+| test.cpp:432:14:432:27 | new[] | test.cpp:433:15:433:23 | & ... | provenance | Config |
+| test.cpp:432:14:432:27 | new[] | test.cpp:438:7:438:15 | ... = ... | provenance | Config |
+| test.cpp:433:15:433:23 | & ... | test.cpp:433:15:433:23 | & ... | provenance |  |
+| test.cpp:433:15:433:23 | & ... | test.cpp:438:7:438:15 | ... = ... | provenance | Config |
+| test.cpp:433:15:433:23 | & ... | test.cpp:438:7:438:15 | ... = ... | provenance | Config |
+| test.cpp:444:14:444:27 | new[] | test.cpp:444:14:444:27 | new[] | provenance |  |
+| test.cpp:444:14:444:27 | new[] | test.cpp:445:15:445:23 | & ... | provenance | Config |
+| test.cpp:444:14:444:27 | new[] | test.cpp:450:7:450:15 | ... = ... | provenance | Config |
+| test.cpp:445:15:445:23 | & ... | test.cpp:445:15:445:23 | & ... | provenance |  |
+| test.cpp:445:15:445:23 | & ... | test.cpp:450:7:450:15 | ... = ... | provenance | Config |
+| test.cpp:445:15:445:23 | & ... | test.cpp:450:7:450:15 | ... = ... | provenance | Config |
+| test.cpp:480:14:480:27 | new[] | test.cpp:480:14:480:27 | new[] | provenance |  |
+| test.cpp:480:14:480:27 | new[] | test.cpp:481:15:481:23 | & ... | provenance | Config |
+| test.cpp:480:14:480:27 | new[] | test.cpp:486:7:486:15 | ... = ... | provenance | Config |
+| test.cpp:481:15:481:23 | & ... | test.cpp:481:15:481:23 | & ... | provenance |  |
+| test.cpp:481:15:481:23 | & ... | test.cpp:486:7:486:15 | ... = ... | provenance | Config |
+| test.cpp:481:15:481:23 | & ... | test.cpp:486:7:486:15 | ... = ... | provenance | Config |
+| test.cpp:543:14:543:27 | new[] | test.cpp:543:14:543:27 | new[] | provenance |  |
+| test.cpp:543:14:543:27 | new[] | test.cpp:548:5:548:19 | ... = ... | provenance | Config |
+| test.cpp:554:14:554:27 | new[] | test.cpp:554:14:554:27 | new[] | provenance |  |
+| test.cpp:554:14:554:27 | new[] | test.cpp:559:5:559:19 | ... = ... | provenance | Config |
+| test.cpp:642:14:642:31 | new[] | test.cpp:642:14:642:31 | new[] | provenance |  |
+| test.cpp:642:14:642:31 | new[] | test.cpp:647:5:647:19 | ... = ... | provenance | Config |
+| test.cpp:730:12:730:28 | new[] | test.cpp:730:12:730:28 | new[] | provenance |  |
+| test.cpp:730:12:730:28 | new[] | test.cpp:732:16:732:26 | ... + ... | provenance | Config |
+| test.cpp:732:16:732:26 | ... + ... | test.cpp:732:16:732:26 | ... + ... | provenance |  |
+| test.cpp:732:16:732:26 | ... + ... | test.cpp:733:5:733:12 | ... = ... | provenance | Config |
+| test.cpp:732:16:732:26 | ... + ... | test.cpp:733:5:733:12 | ... = ... | provenance | Config |
+| test.cpp:754:18:754:31 | new[] | test.cpp:754:18:754:31 | new[] | provenance |  |
+| test.cpp:754:18:754:31 | new[] | test.cpp:767:16:767:29 | access to array | provenance | Config |
+| test.cpp:754:18:754:31 | new[] | test.cpp:767:16:767:29 | access to array | provenance | Config |
+| test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array | provenance | Config |
+| test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array | provenance | Config |
+| test.cpp:781:14:781:27 | new[] | test.cpp:781:14:781:27 | new[] | provenance |  |
+| test.cpp:781:14:781:27 | new[] | test.cpp:786:18:786:27 | access to array | provenance | Config |
+| test.cpp:792:60:792:62 | *end | test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | provenance |  |
+| test.cpp:792:60:792:62 | *end | test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | provenance |  |
+| test.cpp:793:5:793:32 | ... = ... | test.cpp:794:12:794:24 | ... + ... | provenance | Config |
+| test.cpp:793:14:793:32 | call to malloc | test.cpp:793:5:793:32 | ... = ... | provenance |  |
+| test.cpp:794:5:794:24 | ... = ... | test.cpp:792:60:792:62 | *end | provenance |  |
+| test.cpp:794:12:794:24 | ... + ... | test.cpp:794:5:794:24 | ... = ... | provenance |  |
+| test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | test.cpp:807:7:807:12 | ... = ... | provenance | Config |
+| test.cpp:815:52:815:54 | end | test.cpp:815:52:815:54 | end | provenance |  |
+| test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... | provenance | Config |
+| test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... | provenance | Config |
+| test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | test.cpp:833:37:833:39 | end | provenance |  |
+| test.cpp:833:37:833:39 | end | test.cpp:815:52:815:54 | end | provenance |  |
+| test.cpp:841:18:841:35 | call to malloc | test.cpp:841:18:841:35 | call to malloc | provenance |  |
+| test.cpp:841:18:841:35 | call to malloc | test.cpp:842:3:842:20 | ... = ... | provenance | Config |
+| test.cpp:848:20:848:37 | call to malloc | test.cpp:848:20:848:37 | call to malloc | provenance |  |
+| test.cpp:848:20:848:37 | call to malloc | test.cpp:849:5:849:22 | ... = ... | provenance | Config |
+| test.cpp:856:12:856:35 | call to malloc | test.cpp:856:12:856:35 | call to malloc | provenance |  |
+| test.cpp:856:12:856:35 | call to malloc | test.cpp:857:16:857:29 | ... + ... | provenance | Config |
+| test.cpp:857:16:857:29 | ... + ... | test.cpp:857:16:857:29 | ... + ... | provenance |  |
+| test.cpp:857:16:857:29 | ... + ... | test.cpp:860:5:860:11 | ... = ... | provenance | Config |
+| test.cpp:857:16:857:29 | ... + ... | test.cpp:860:5:860:11 | ... = ... | provenance | Config |
+| test.cpp:868:15:868:35 | call to g_malloc | test.cpp:868:15:868:35 | call to g_malloc | provenance |  |
+| test.cpp:868:15:868:35 | call to g_malloc | test.cpp:869:15:869:22 | ... + ... | provenance | Config |
+| test.cpp:869:15:869:22 | ... + ... | test.cpp:869:15:869:22 | ... + ... | provenance |  |
+| test.cpp:869:15:869:22 | ... + ... | test.cpp:870:14:870:15 | * ... | provenance | Config |
+| test.cpp:869:15:869:22 | ... + ... | test.cpp:870:14:870:15 | * ... | provenance | Config |
+nodes
+| test.cpp:4:15:4:33 | call to malloc | semmle.label | call to malloc |
+| test.cpp:4:15:4:33 | call to malloc | semmle.label | call to malloc |
+| test.cpp:5:15:5:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:5:15:5:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:6:14:6:15 | * ... | semmle.label | * ... |
+| test.cpp:6:14:6:15 | * ... | semmle.label | * ... |
+| test.cpp:8:14:8:21 | * ... | semmle.label | * ... |
+| test.cpp:16:15:16:33 | call to malloc | semmle.label | call to malloc |
+| test.cpp:16:15:16:33 | call to malloc | semmle.label | call to malloc |
+| test.cpp:20:14:20:21 | * ... | semmle.label | * ... |
+| test.cpp:28:15:28:37 | call to malloc | semmle.label | call to malloc |
+| test.cpp:28:15:28:37 | call to malloc | semmle.label | call to malloc |
+| test.cpp:29:15:29:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:29:15:29:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:30:14:30:15 | * ... | semmle.label | * ... |
+| test.cpp:30:14:30:15 | * ... | semmle.label | * ... |
+| test.cpp:32:14:32:21 | * ... | semmle.label | * ... |
+| test.cpp:51:33:51:35 | *end | semmle.label | *end |
+| test.cpp:52:19:52:37 | call to malloc | semmle.label | call to malloc |
+| test.cpp:52:19:52:37 | call to malloc | semmle.label | call to malloc |
+| test.cpp:53:5:53:23 | ... = ... | semmle.label | ... = ... |
+| test.cpp:53:12:53:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:60:34:60:37 | mk_array output argument | semmle.label | mk_array output argument |
+| test.cpp:67:9:67:14 | ... = ... | semmle.label | ... = ... |
+| test.cpp:205:15:205:33 | call to malloc | semmle.label | call to malloc |
+| test.cpp:205:15:205:33 | call to malloc | semmle.label | call to malloc |
+| test.cpp:206:17:206:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:206:17:206:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:213:5:213:13 | ... = ... | semmle.label | ... = ... |
+| test.cpp:260:13:260:24 | new[] | semmle.label | new[] |
+| test.cpp:260:13:260:24 | new[] | semmle.label | new[] |
+| test.cpp:261:14:261:21 | ... + ... | semmle.label | ... + ... |
+| test.cpp:261:14:261:21 | ... + ... | semmle.label | ... + ... |
+| test.cpp:262:31:262:33 | *... ++ | semmle.label | *... ++ |
+| test.cpp:264:13:264:14 | * ... | semmle.label | * ... |
+| test.cpp:264:13:264:14 | * ... | semmle.label | * ... |
+| test.cpp:270:13:270:24 | new[] | semmle.label | new[] |
+| test.cpp:270:13:270:24 | new[] | semmle.label | new[] |
+| test.cpp:271:14:271:21 | ... + ... | semmle.label | ... + ... |
+| test.cpp:271:14:271:21 | ... + ... | semmle.label | ... + ... |
+| test.cpp:274:5:274:10 | ... = ... | semmle.label | ... = ... |
+| test.cpp:355:14:355:27 | new[] | semmle.label | new[] |
+| test.cpp:355:14:355:27 | new[] | semmle.label | new[] |
+| test.cpp:356:15:356:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:356:15:356:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:358:14:358:26 | * ... | semmle.label | * ... |
+| test.cpp:359:14:359:32 | * ... | semmle.label | * ... |
+| test.cpp:377:14:377:27 | new[] | semmle.label | new[] |
+| test.cpp:377:14:377:27 | new[] | semmle.label | new[] |
+| test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:384:13:384:16 | * ... | semmle.label | * ... |
+| test.cpp:410:14:410:27 | new[] | semmle.label | new[] |
+| test.cpp:410:14:410:27 | new[] | semmle.label | new[] |
+| test.cpp:411:15:411:23 | & ... | semmle.label | & ... |
+| test.cpp:411:15:411:23 | & ... | semmle.label | & ... |
+| test.cpp:415:7:415:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:421:14:421:27 | new[] | semmle.label | new[] |
+| test.cpp:421:14:421:27 | new[] | semmle.label | new[] |
+| test.cpp:422:15:422:23 | & ... | semmle.label | & ... |
+| test.cpp:422:15:422:23 | & ... | semmle.label | & ... |
+| test.cpp:426:7:426:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:432:14:432:27 | new[] | semmle.label | new[] |
+| test.cpp:432:14:432:27 | new[] | semmle.label | new[] |
+| test.cpp:433:15:433:23 | & ... | semmle.label | & ... |
+| test.cpp:433:15:433:23 | & ... | semmle.label | & ... |
+| test.cpp:438:7:438:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:444:14:444:27 | new[] | semmle.label | new[] |
+| test.cpp:444:14:444:27 | new[] | semmle.label | new[] |
+| test.cpp:445:15:445:23 | & ... | semmle.label | & ... |
+| test.cpp:445:15:445:23 | & ... | semmle.label | & ... |
+| test.cpp:450:7:450:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:480:14:480:27 | new[] | semmle.label | new[] |
+| test.cpp:480:14:480:27 | new[] | semmle.label | new[] |
+| test.cpp:481:15:481:23 | & ... | semmle.label | & ... |
+| test.cpp:481:15:481:23 | & ... | semmle.label | & ... |
+| test.cpp:486:7:486:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:543:14:543:27 | new[] | semmle.label | new[] |
+| test.cpp:543:14:543:27 | new[] | semmle.label | new[] |
+| test.cpp:548:5:548:19 | ... = ... | semmle.label | ... = ... |
+| test.cpp:554:14:554:27 | new[] | semmle.label | new[] |
+| test.cpp:554:14:554:27 | new[] | semmle.label | new[] |
+| test.cpp:559:5:559:19 | ... = ... | semmle.label | ... = ... |
+| test.cpp:642:14:642:31 | new[] | semmle.label | new[] |
+| test.cpp:642:14:642:31 | new[] | semmle.label | new[] |
+| test.cpp:647:5:647:19 | ... = ... | semmle.label | ... = ... |
+| test.cpp:730:12:730:28 | new[] | semmle.label | new[] |
+| test.cpp:730:12:730:28 | new[] | semmle.label | new[] |
+| test.cpp:732:16:732:26 | ... + ... | semmle.label | ... + ... |
+| test.cpp:732:16:732:26 | ... + ... | semmle.label | ... + ... |
+| test.cpp:733:5:733:12 | ... = ... | semmle.label | ... = ... |
+| test.cpp:754:18:754:31 | new[] | semmle.label | new[] |
+| test.cpp:754:18:754:31 | new[] | semmle.label | new[] |
+| test.cpp:767:16:767:29 | access to array | semmle.label | access to array |
+| test.cpp:767:16:767:29 | access to array | semmle.label | access to array |
+| test.cpp:772:16:772:29 | access to array | semmle.label | access to array |
+| test.cpp:772:16:772:29 | access to array | semmle.label | access to array |
+| test.cpp:781:14:781:27 | new[] | semmle.label | new[] |
+| test.cpp:781:14:781:27 | new[] | semmle.label | new[] |
+| test.cpp:786:18:786:27 | access to array | semmle.label | access to array |
+| test.cpp:792:60:792:62 | *end | semmle.label | *end |
+| test.cpp:793:5:793:32 | ... = ... | semmle.label | ... = ... |
+| test.cpp:793:14:793:32 | call to malloc | semmle.label | call to malloc |
+| test.cpp:794:5:794:24 | ... = ... | semmle.label | ... = ... |
+| test.cpp:794:12:794:24 | ... + ... | semmle.label | ... + ... |
+| test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | semmle.label | mk_array_no_field_flow output argument |
+| test.cpp:807:7:807:12 | ... = ... | semmle.label | ... = ... |
+| test.cpp:815:52:815:54 | end | semmle.label | end |
+| test.cpp:815:52:815:54 | end | semmle.label | end |
+| test.cpp:821:7:821:12 | ... = ... | semmle.label | ... = ... |
+| test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | semmle.label | mk_array_no_field_flow output argument |
+| test.cpp:833:37:833:39 | end | semmle.label | end |
+| test.cpp:841:18:841:35 | call to malloc | semmle.label | call to malloc |
+| test.cpp:841:18:841:35 | call to malloc | semmle.label | call to malloc |
+| test.cpp:842:3:842:20 | ... = ... | semmle.label | ... = ... |
+| test.cpp:848:20:848:37 | call to malloc | semmle.label | call to malloc |
+| test.cpp:848:20:848:37 | call to malloc | semmle.label | call to malloc |
+| test.cpp:849:5:849:22 | ... = ... | semmle.label | ... = ... |
+| test.cpp:856:12:856:35 | call to malloc | semmle.label | call to malloc |
+| test.cpp:856:12:856:35 | call to malloc | semmle.label | call to malloc |
+| test.cpp:857:16:857:29 | ... + ... | semmle.label | ... + ... |
+| test.cpp:857:16:857:29 | ... + ... | semmle.label | ... + ... |
+| test.cpp:860:5:860:11 | ... = ... | semmle.label | ... = ... |
+| test.cpp:868:15:868:35 | call to g_malloc | semmle.label | call to g_malloc |
+| test.cpp:868:15:868:35 | call to g_malloc | semmle.label | call to g_malloc |
+| test.cpp:869:15:869:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:869:15:869:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:870:14:870:15 | * ... | semmle.label | * ... |
+subpaths
+#select
+| test.cpp:6:14:6:15 | * ... | test.cpp:4:15:4:33 | call to malloc | test.cpp:6:14:6:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:33 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
+| test.cpp:8:14:8:21 | * ... | test.cpp:4:15:4:33 | call to malloc | test.cpp:8:14:8:21 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:4:15:4:33 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
+| test.cpp:20:14:20:21 | * ... | test.cpp:16:15:16:33 | call to malloc | test.cpp:20:14:20:21 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:16:15:16:33 | call to malloc | call to malloc | test.cpp:17:19:17:22 | size | size |
+| test.cpp:30:14:30:15 | * ... | test.cpp:28:15:28:37 | call to malloc | test.cpp:30:14:30:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:28:15:28:37 | call to malloc | call to malloc | test.cpp:29:20:29:27 | ... + ... | ... + ... |
+| test.cpp:32:14:32:21 | * ... | test.cpp:28:15:28:37 | call to malloc | test.cpp:32:14:32:21 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:28:15:28:37 | call to malloc | call to malloc | test.cpp:29:20:29:27 | ... + ... | ... + ... |
+| test.cpp:67:9:67:14 | ... = ... | test.cpp:52:19:52:37 | call to malloc | test.cpp:67:9:67:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:52:19:52:37 | call to malloc | call to malloc | test.cpp:53:20:53:23 | size | size |
+| test.cpp:213:5:213:13 | ... = ... | test.cpp:205:15:205:33 | call to malloc | test.cpp:213:5:213:13 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:205:15:205:33 | call to malloc | call to malloc | test.cpp:206:21:206:23 | len | len |
+| test.cpp:264:13:264:14 | * ... | test.cpp:260:13:260:24 | new[] | test.cpp:264:13:264:14 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:260:13:260:24 | new[] | new[] | test.cpp:261:19:261:21 | len | len |
+| test.cpp:274:5:274:10 | ... = ... | test.cpp:270:13:270:24 | new[] | test.cpp:274:5:274:10 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:270:13:270:24 | new[] | new[] | test.cpp:271:19:271:21 | len | len |
+| test.cpp:358:14:358:26 | * ... | test.cpp:355:14:355:27 | new[] | test.cpp:358:14:358:26 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
+| test.cpp:359:14:359:32 | * ... | test.cpp:355:14:355:27 | new[] | test.cpp:359:14:359:32 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 2. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
+| test.cpp:384:13:384:16 | * ... | test.cpp:377:14:377:27 | new[] | test.cpp:384:13:384:16 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:377:14:377:27 | new[] | new[] | test.cpp:378:20:378:23 | size | size |
+| test.cpp:415:7:415:15 | ... = ... | test.cpp:410:14:410:27 | new[] | test.cpp:415:7:415:15 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:410:14:410:27 | new[] | new[] | test.cpp:411:19:411:22 | size | size |
+| test.cpp:426:7:426:15 | ... = ... | test.cpp:421:14:421:27 | new[] | test.cpp:426:7:426:15 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:421:14:421:27 | new[] | new[] | test.cpp:422:19:422:22 | size | size |
+| test.cpp:438:7:438:15 | ... = ... | test.cpp:432:14:432:27 | new[] | test.cpp:438:7:438:15 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:432:14:432:27 | new[] | new[] | test.cpp:433:19:433:22 | size | size |
+| test.cpp:450:7:450:15 | ... = ... | test.cpp:444:14:444:27 | new[] | test.cpp:450:7:450:15 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:444:14:444:27 | new[] | new[] | test.cpp:445:19:445:22 | size | size |
+| test.cpp:486:7:486:15 | ... = ... | test.cpp:480:14:480:27 | new[] | test.cpp:486:7:486:15 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@ + 498. | test.cpp:480:14:480:27 | new[] | new[] | test.cpp:481:19:481:22 | size | size |
+| test.cpp:548:5:548:19 | ... = ... | test.cpp:543:14:543:27 | new[] | test.cpp:548:5:548:19 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:543:14:543:27 | new[] | new[] | test.cpp:548:8:548:14 | src_pos | src_pos |
+| test.cpp:559:5:559:19 | ... = ... | test.cpp:554:14:554:27 | new[] | test.cpp:559:5:559:19 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:554:14:554:27 | new[] | new[] | test.cpp:559:8:559:14 | src_pos | src_pos |
+| test.cpp:647:5:647:19 | ... = ... | test.cpp:642:14:642:31 | new[] | test.cpp:647:5:647:19 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:642:14:642:31 | new[] | new[] | test.cpp:647:8:647:14 | src_pos | src_pos |
+| test.cpp:733:5:733:12 | ... = ... | test.cpp:730:12:730:28 | new[] | test.cpp:733:5:733:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:730:12:730:28 | new[] | new[] | test.cpp:732:21:732:25 | ... + ... | ... + ... |
+| test.cpp:767:16:767:29 | access to array | test.cpp:754:18:754:31 | new[] | test.cpp:767:16:767:29 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:754:18:754:31 | new[] | new[] | test.cpp:767:22:767:28 | ... + ... | ... + ... |
+| test.cpp:767:16:767:29 | access to array | test.cpp:754:18:754:31 | new[] | test.cpp:767:16:767:29 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:754:18:754:31 | new[] | new[] | test.cpp:772:22:772:28 | ... + ... | ... + ... |
+| test.cpp:772:16:772:29 | access to array | test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:754:18:754:31 | new[] | new[] | test.cpp:767:22:767:28 | ... + ... | ... + ... |
+| test.cpp:772:16:772:29 | access to array | test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:754:18:754:31 | new[] | new[] | test.cpp:772:22:772:28 | ... + ... | ... + ... |
+| test.cpp:786:18:786:27 | access to array | test.cpp:781:14:781:27 | new[] | test.cpp:786:18:786:27 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:781:14:781:27 | new[] | new[] | test.cpp:786:20:786:26 | ... + ... | ... + ... |
+| test.cpp:807:7:807:12 | ... = ... | test.cpp:793:14:793:32 | call to malloc | test.cpp:807:7:807:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:793:14:793:32 | call to malloc | call to malloc | test.cpp:794:21:794:24 | size | size |
+| test.cpp:821:7:821:12 | ... = ... | test.cpp:793:14:793:32 | call to malloc | test.cpp:821:7:821:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:793:14:793:32 | call to malloc | call to malloc | test.cpp:794:21:794:24 | size | size |
+| test.cpp:842:3:842:20 | ... = ... | test.cpp:841:18:841:35 | call to malloc | test.cpp:842:3:842:20 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:841:18:841:35 | call to malloc | call to malloc | test.cpp:842:11:842:15 | index | index |
+| test.cpp:849:5:849:22 | ... = ... | test.cpp:848:20:848:37 | call to malloc | test.cpp:849:5:849:22 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:848:20:848:37 | call to malloc | call to malloc | test.cpp:849:13:849:17 | index | index |
+| test.cpp:860:5:860:11 | ... = ... | test.cpp:856:12:856:35 | call to malloc | test.cpp:860:5:860:11 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:856:12:856:35 | call to malloc | call to malloc | test.cpp:857:21:857:28 | ... + ... | ... + ... |
+| test.cpp:870:14:870:15 | * ... | test.cpp:868:15:868:35 | call to g_malloc | test.cpp:870:14:870:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:868:15:868:35 | call to g_malloc | call to g_malloc | test.cpp:869:19:869:22 | size | size |

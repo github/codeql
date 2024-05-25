@@ -1,3 +1,176 @@
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `security/cwe-020/HostnameRegexpShared.qll` file.
+
+## 0.8.14
+
+No user-facing changes.
+
+## 0.8.13
+
+### Minor Analysis Improvements
+
+* Data flow is now tracked through `ActiveRecord` scopes.
+* Modeled instances of `ActionDispatch::Http::UploadedFile` that can be obtained from element reads of `ActionController::Parameters`, with calls to `original_filename`, `content_type`, and `read` now propagating taint from their receiver. 
+* The second argument, `subquery_name`, of the `ActiveRecord::QueryMethods::from` method, is now recognized as an sql injection sink.
+* Calls to `Typhoeus::Request.new` are now considered as instances of the `Http::Client::Request` concept, with the response body being treated as a remote flow source.
+* New command injection sinks have been added, including `Process.spawn`, `Process.exec`, `Terrapin::CommandLine` and the `open4` gem.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `I18n.translate` as well as Rails helper translate methods now propagate taint from their keyword arguments. The Rails translate methods are also recognized as XSS sanitizers when using keys marked as html safe.
+* Calls to `Arel::Nodes::SqlLiteral.new` are now modeled as instances of the `SqlConstruction` concept, as well as propagating taint from their argument.
+* Additional arguments beyond the first of calls to the  `ActiveRecord` methods `select`, `reselect`, `order`, `reorder`, `joins`, `group`, and `pluck` are now recognized as sql injection sinks. 
+* Calls to several methods of `ActiveRecord::Connection`, such as `ActiveRecord::Connection#exec_query`, are now recognized as SQL executions, including those via subclasses.
+
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Raw output ERB tags of the form `<%== ... %>` are now recognised as cross-site scripting sinks.
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Flow is now tracked through Rails `render` calls, when the argument is a `ViewComponent`. In this case, data flow is tracked into the accompanying `.html.erb` file.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getAUse` and `getARhs` predicates from `API::Node`, use `getASource` and `getASink` instead.
+* Deleted the deprecated `disablesCertificateValidation` predicate from the `Http` module.
+* Deleted the deprecated `ParamsCall`, `CookiesCall`, and `ActionControllerControllerClass` classes from `ActionController.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.
+* Deleted the deprecated `HtmlSafeCall`, `HtmlEscapeCall`, `RenderCall`, and `RenderToCall` classes from `ActionView.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.
+* Deleted the deprecated `HtmlSafeCall` class from `Rails.qll`.
+* Deleted the deprecated `codeql/ruby/security/BadTagFilterQuery.qll`, `codeql/ruby/security/OverlyLargeRangeQuery.qll`, `codeql/ruby/security/regexp/ExponentialBackTracking.qll`, `codeql/ruby/security/regexp/NfaUtils.qll`, `codeql/ruby/security/regexp/RegexpMatching.qll`, and `codeql/ruby/security/regexp/SuperlinearBackTracking.qll` files.
+* Deleted the deprecated `localSourceStoreStep` predicate from `TypeTracker.qll`, use `flowsToStoreStep` instead.
+* The diagnostic query `rb/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Ruby files, now considers any Ruby file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* Parsing of division operators (`/`) at the end of a line has been improved. Before they were wrongly interpreted as the start of a regular expression literal (`/.../`) leading to syntax errors.
+* Parsing of `case` statements that are formatted with the value expression on a different line than the `case` keyword  has been improved and should no longer lead to syntax errors.
+* Ruby now makes use of the shared type tracking library, exposed as `codeql.ruby.typetracking.TypeTracking`. The existing type tracking library, `codeql.ruby.typetracking.TypeTracker`, has consequently been deprecated.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Improved modeling for `ActiveRecord`s `update_all` method
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `isWeak` predicate from the `CryptographicOperation` class.
+* Deleted the deprecated `getStringOrSymbol` and `isStringOrSymbol` predicates from the `ConstantValue` class.
+* Deleted the deprecated `getAPI` from the `IOOrFileMethodCall` class.
+* Deleted the deprecated `codeql.ruby.security.performance` folder, use `codeql.ruby.security.regexp` instead.
+* GraphQL enums are no longer considered remote flow sources.
+
+## 0.8.0
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Flow between positional arguments and splat parameters (`*args`) is now tracked more precisely.
+* Flow between splat arguments (`*args`) and positional parameters is now tracked more precisely.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Major Analysis Improvements
+
+* The API graph library (`codeql.ruby.ApiGraphs`) has been significantly improved, with better support for inheritance,
+  and data-flow nodes can now be converted to API nodes by calling `.track()` or `.backtrack()` on the node.
+  API graphs allow for efficient modelling of how a given value is used by the code base, or how values produced by the code base
+  are consumed by a library. See the documentation for `API::Node` for details and examples.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* The `'QUERY_STRING'` field of a Rack `env` parameter is now recognized as a source of remote user input.
+* Query parameters and cookies from `Rack::Response` objects are recognized as potential sources of remote flow input.
+* Calls to `Rack::Utils.parse_query` now propagate taint.
+
+## 0.7.0
+
+### Deprecated APIs
+
+* The `Configuration` taint flow configuration class from `codeql.ruby.security.InsecureDownloadQuery` has been deprecated. Use the `Flow` module instead.
+
+### Minor Analysis Improvements
+
+* More kinds of rack applications are now recognized.
+* Rack::Response instances are now recognized as potential responses from rack applications.
+* HTTP redirect responses from Rack applications are now recognized as a potential sink for open redirect alerts.
+* Additional sinks for `rb/unsafe-deserialization` have been added. This includes various methods from the `yaml` and `plist` gems, which deserialize YAML and Property List data, respectively.
+
+## 0.6.4
+
+No user-facing changes.
+
 ## 0.6.3
 
 ### Minor Analysis Improvements

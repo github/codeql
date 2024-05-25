@@ -1,11 +1,5 @@
 package com.semmle.ts.extractor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -145,17 +139,22 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
-import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.data.IntList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for converting a <a
@@ -177,7 +176,8 @@ public class TypeScriptASTConverter {
   private static final Pattern EXPORT_DECL_START =
       Pattern.compile("^export" + "(" + WHITESPACE_CHAR + "+default)?" + WHITESPACE_CHAR + "+");
   private static final Pattern TYPEOF_START = Pattern.compile("^typeof" + WHITESPACE_CHAR + "+");
-  private static final Pattern ASSERT_START = Pattern.compile("^assert" + WHITESPACE_CHAR + "+");
+  private static final Pattern IMPORT_ATTRIBUTE_START =
+      Pattern.compile("^(assert|with)" + WHITESPACE_CHAR + "+");
   private static final Pattern WHITESPACE_END_PAREN =
       Pattern.compile("^" + WHITESPACE_CHAR + "*\\)");
 
@@ -343,10 +343,10 @@ public class TypeScriptASTConverter {
         return convertArrowFunction(node, loc);
       case "AsExpression":
         return convertTypeAssertionExpression(node, loc);
-      case "AssertClause":
-        return convertAssertClause(node, loc);
-      case "AssertEntry":
-        return convertAssertEntry(node, loc);
+      case "ImportAttributes":
+        return convertImportAttributes(node, loc);
+      case "ImportAttribute":
+        return convertImportAttribute(node, loc);
       case "SatisfiesExpression":
         return convertSatisfiesExpression(node, loc);
       case "AwaitExpression":
@@ -877,8 +877,10 @@ public class TypeScriptASTConverter {
     }
   }
 
-  private Node convertStaticInitializerBlock(JsonObject node, SourceLocation loc) throws ParseError {
-    BlockStatement body = new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
+  private Node convertStaticInitializerBlock(JsonObject node, SourceLocation loc)
+      throws ParseError {
+    BlockStatement body =
+        new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
     return new StaticInitializer(loc, body);
   }
 
@@ -893,7 +895,8 @@ public class TypeScriptASTConverter {
   private Node convertCallExpression(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> arguments = convertChildren(node, "arguments");
     if (arguments.size() >= 1 && hasKind(node.get("expression"), "ImportKeyword")) {
-      return new DynamicImport(loc, arguments.get(0), arguments.size() > 1 ? arguments.get(1) : null);
+      return new DynamicImport(
+          loc, arguments.get(0), arguments.size() > 1 ? arguments.get(1) : null);
     }
     Expression callee = convertChild(node, "expression");
     List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
@@ -1198,16 +1201,16 @@ public class TypeScriptASTConverter {
 
   private Node convertExportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
-    Expression assertion = convertChild(node, "assertClause");
+    Expression attributes = convertChild(node, "attributes");
     if (hasChild(node, "exportClause")) {
       boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
       List<ExportSpecifier> specifiers =
           hasKind(node.get("exportClause"), "NamespaceExport")
               ? Collections.singletonList(convertChild(node, "exportClause"))
               : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
-      return new ExportNamedDeclaration(loc, null, specifiers, source, assertion, hasTypeKeyword);
+      return new ExportNamedDeclaration(loc, null, specifiers, source, attributes, hasTypeKeyword);
     } else {
-      return new ExportAllDeclaration(loc, source, assertion);
+      return new ExportAllDeclaration(loc, source, attributes);
     }
   }
 
@@ -1238,7 +1241,8 @@ public class TypeScriptASTConverter {
 
   private Node convertExternalModuleReference(JsonObject node, SourceLocation loc)
       throws ParseError {
-    ExternalModuleReference moduleRef = new ExternalModuleReference(loc, convertChild(node, "expression"));
+    ExternalModuleReference moduleRef =
+        new ExternalModuleReference(loc, convertChild(node, "expression"));
     attachSymbolInformation(moduleRef, node);
     return moduleRef;
   }
@@ -1389,7 +1393,7 @@ public class TypeScriptASTConverter {
 
   private Node convertImportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
-    Expression assertion = convertChild(node, "assertClause");
+    Expression attributes = convertChild(node, "attributes");
     List<ImportSpecifier> specifiers = new ArrayList<>();
     boolean hasTypeKeyword = false;
     if (hasChild(node, "importClause")) {
@@ -1407,7 +1411,8 @@ public class TypeScriptASTConverter {
       }
       hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
     }
-    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, assertion, hasTypeKeyword);
+    ImportDeclaration importDecl =
+        new ImportDeclaration(loc, specifiers, src, attributes, hasTypeKeyword);
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }
@@ -1558,7 +1563,9 @@ public class TypeScriptASTConverter {
       nameNode = nameNode.get("name").getAsJsonObject();
     }
     return new JSXAttribute(
-        loc, convertJSXName(((Expression)convertNode(nameNode, null))), convertChild(node, "initializer")); // 2
+        loc,
+        convertJSXName(((Expression) convertNode(nameNode, null))),
+        convertChild(node, "initializer")); // 2
   }
 
   private Node convertJsxClosingElement(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1649,8 +1656,10 @@ public class TypeScriptASTConverter {
       }
     }
     if (literal instanceof TemplateLiteral) {
-      // A LiteralType containing a NoSubstitutionTemplateLiteral must produce a TemplateLiteralTypeExpr
-      return new TemplateLiteralTypeExpr(literal.getLoc(), new ArrayList<>(), ((TemplateLiteral)literal).getQuasis());
+      // A LiteralType containing a NoSubstitutionTemplateLiteral must produce a
+      // TemplateLiteralTypeExpr
+      return new TemplateLiteralTypeExpr(
+          literal.getLoc(), new ArrayList<>(), ((TemplateLiteral) literal).getQuasis());
     }
     return literal;
   }
@@ -2254,7 +2263,7 @@ public class TypeScriptASTConverter {
     for (JsonElement element : node.get("elements").getAsJsonArray()) {
       Identifier id = null;
       if (getKind(element).equals("NamedTupleMember")) {
-        id = (Identifier)convertNode(element.getAsJsonObject().get("name").getAsJsonObject());
+        id = (Identifier) convertNode(element.getAsJsonObject().get("name").getAsJsonObject());
       }
       names.add(id);
     }
@@ -2262,7 +2271,8 @@ public class TypeScriptASTConverter {
     return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"), names);
   }
 
-  // This method just does a trivial forward to the type. The names have already been extracted in `convertTupleType`.
+  // This method just does a trivial forward to the type. The names have already been extracted in
+  // `convertTupleType`.
   private Node convertNamedTupleMember(JsonObject node, SourceLocation loc) throws ParseError {
     return convertChild(node, "type");
   }
@@ -2288,27 +2298,22 @@ public class TypeScriptASTConverter {
     return new TypeAssertion(loc, convertChild(node, "expression"), type, false);
   }
 
-  private Node convertAssertClause(JsonObject node, SourceLocation loc) throws ParseError {
+  private Node convertImportAttributes(JsonObject node, SourceLocation loc) throws ParseError {
     List<Property> properties = new ArrayList<>();
     for (INode child : convertChildren(node, "elements")) {
-      properties.add((Property)child);
+      properties.add((Property) child);
     }
-    // Adjust location to skip over the `assert` keyword.
-    Matcher m = ASSERT_START.matcher(loc.getSource());
+    // Adjust location to skip over the `with` or `assert` keyword.
+    Matcher m = IMPORT_ATTRIBUTE_START.matcher(loc.getSource());
     if (m.find()) {
       advance(loc, m.group(0));
     }
     return new ObjectExpression(loc, properties);
   }
 
-  private Node convertAssertEntry(JsonObject node, SourceLocation loc) throws ParseError {
+  private Node convertImportAttribute(JsonObject node, SourceLocation loc) throws ParseError {
     return new Property(
-        loc,
-        convertChild(node, "key"),
-        convertChild(node, "value"),
-        "init",
-        false,
-        false);
+        loc, convertChild(node, "key"), convertChild(node, "value"), "init", false, false);
   }
 
   private Node convertSatisfiesExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2490,7 +2495,8 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null, null);
+        return new ExportNamedDeclaration(
+            outerLoc, (Statement) decl, new ArrayList<>(), null, null);
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;
@@ -2586,8 +2592,9 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Returns a specific modifier from the given node (or <code>null</code> if absent), as defined by its
-   * <code>modifiers</code> property and the <code>kind</code> property of the modifier AST node.
+   * Returns a specific modifier from the given node (or <code>null</code> if absent), as defined by
+   * its <code>modifiers</code> property and the <code>kind</code> property of the modifier AST
+   * node.
    */
   private JsonObject getModifier(JsonObject node, String modKind) {
     for (JsonElement mod : getModifiers(node))
@@ -2597,8 +2604,8 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Check whether a node has a particular modifier, as defined by its <code>modifiers</code> property
-   * and the <code>kind</code> property of the modifier AST node.
+   * Check whether a node has a particular modifier, as defined by its <code>modifiers</code>
+   * property and the <code>kind</code> property of the modifier AST node.
    */
   private boolean hasModifier(JsonObject node, String modKind) {
     return getModifier(node, modKind) != null;
@@ -2639,8 +2646,8 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Check whether a node has a particular flag, as defined by its <code>flags</code> property and the
-   * <code>ts.NodeFlags</code> in enum.
+   * Check whether a node has a particular flag, as defined by its <code>flags</code> property and
+   * the <code>ts.NodeFlags</code> in enum.
    */
   private boolean hasFlag(JsonObject node, String flagName) {
     int flagId = metadata.getNodeFlagId(flagName);
@@ -2683,10 +2690,13 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Gets the declaration kind of the given node, which is one of {@code "var"}, {@code "let"} or
-   * {@code "const"}.
+   * Gets the declaration kind of the given node, which is one of {@code "var"}, {@code "let"},
+   * {@code "const"}, or {@code "using"}.
    */
   private String getDeclarationKind(JsonObject declarationList) {
+    if (hasFlag(declarationList, "Using")) {
+      return "using";
+    }
     return declarationList.get("$declarationKind").getAsString();
   }
 }

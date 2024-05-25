@@ -1,10 +1,10 @@
 name: codeql/csharp-solorigate-queries
-version: 1.5.4-dev
+version: 1.7.17-dev
 groups:
-    - csharp
-    - solorigate
+  - csharp
+  - solorigate
 defaultSuiteFile: codeql-suites/solorigate.qls
 dependencies:
-    codeql/csharp-all: ${workspace}
-    codeql/csharp-solorigate-all: ${workspace}
+  codeql/csharp-all: ${workspace}
+  codeql/csharp-solorigate-all: ${workspace}
 warnOnImplicitThis: true

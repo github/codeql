@@ -7,20 +7,35 @@
 import cpp
 import semmle.code.cpp.controlflow.Guards
 
-from GuardCondition guard, Expr left, Expr right, int k, string which, string op, string msg
+from GuardCondition guard, Expr left, int k, string op, string msg
 where
-  exists(boolean sense |
+  exists(boolean sense, string which |
     sense = true and which = "true"
     or
     sense = false and which = "false"
   |
-    guard.comparesLt(left, right, k, true, sense) and op = " < "
+    exists(Expr right |
+      guard.comparesLt(left, right, k, true, sense) and op = " < "
+      or
+      guard.comparesLt(left, right, k, false, sense) and op = " >= "
+      or
+      guard.comparesEq(left, right, k, true, sense) and op = " == "
+      or
+      guard.comparesEq(left, right, k, false, sense) and op = " != "
+    |
+      msg = left + op + right + "+" + k + " when " + guard + " is " + which
+    )
+  )
+  or
+  exists(AbstractValue value |
+    guard.comparesLt(left, k, true, value) and op = " < "
     or
-    guard.comparesLt(left, right, k, false, sense) and op = " >= "
+    guard.comparesLt(left, k, false, value) and op = " >= "
     or
-    guard.comparesEq(left, right, k, true, sense) and op = " == "
+    guard.comparesEq(left, k, true, value) and op = " == "
     or
-    guard.comparesEq(left, right, k, false, sense) and op = " != "
-  ) and
-  msg = left + op + right + "+" + k + " when " + guard + " is " + which
+    guard.comparesEq(left, k, false, value) and op = " != "
+  |
+    msg = left + op + k + " when " + guard + " is " + value
+  )
 select guard.getLocation().getStartLine(), msg

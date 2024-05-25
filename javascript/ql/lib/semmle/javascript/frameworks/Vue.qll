@@ -20,9 +20,7 @@ module Vue {
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
 
-    override DataFlow::Node getASink() {
-      result = any(SingleFileComponent c).getModule().getDefaultOrBulkExport()
-    }
+    override DataFlow::Node getASink() { result = getModuleFromVueFile(_).getDefaultOrBulkExport() }
   }
 
   /**
@@ -455,6 +453,13 @@ module Vue {
     }
   }
 
+  private Module getModuleFromVueFile(VueFile file) {
+    exists(HTML::ScriptElement elem |
+      xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
+      result.getTopLevel() = elem.getScript()
+    )
+  }
+
   /**
    * A single file Vue component in a `.vue` file.
    */
@@ -482,12 +487,7 @@ module Vue {
     }
 
     /** Gets the module defined by the `script` tag in this .vue file, if any. */
-    Module getModule() {
-      exists(HTML::ScriptElement elem |
-        xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
-        result.getTopLevel() = elem.getScript()
-      )
-    }
+    Module getModule() { result = getModuleFromVueFile(file) }
 
     override API::Node getComponentRef() {
       // There is no explicit `new Vue()` call in .vue files, so instead get all the imports

@@ -65,34 +65,12 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED: Use `ResponseNode` instead.
-   * A Node.js HTTP response.
-   *
-   * A server library that provides an (enhanced) NodesJS HTTP response
-   * object should implement a library specific subclass of this class.
-   */
-  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
-    ResponseExpr() { this.flow() instanceof ResponseNode }
-  }
-
-  /**
    * A Node.js HTTP response.
    *
    * A server library that provides an (enhanced) NodesJS HTTP response
    * object should implement a library specific subclass of this class.
    */
   abstract class ResponseNode extends Http::Servers::StandardResponseNode { }
-
-  /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * A Node.js HTTP request.
-   *
-   * A server library that provides an (enhanced) NodesJS HTTP request
-   * object should implement a library specific subclass of this class.
-   */
-  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
-    RequestExpr() { this.flow() instanceof RequestNode }
-  }
 
   /**
    * A Node.js HTTP request.
@@ -169,26 +147,10 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED: Use `BuiltinRouteHandlerResponseNode` instead.
-   * A builtin Node.js HTTP response.
-   */
-  deprecated private class BuiltinRouteHandlerResponseExpr extends ResponseExpr {
-    BuiltinRouteHandlerResponseExpr() { src instanceof ResponseSource }
-  }
-
-  /**
    * A builtin Node.js HTTP response.
    */
   private class BuiltinRouteHandlerResponseNode extends ResponseNode {
     BuiltinRouteHandlerResponseNode() { src instanceof ResponseSource }
-  }
-
-  /**
-   * DEPRECATED: Use `BuiltinRouteHandlerRequestNode` instead.
-   * A builtin Node.js HTTP request.
-   */
-  deprecated private class BuiltinRouteHandlerRequestExpr extends RequestExpr {
-    BuiltinRouteHandlerRequestExpr() { src instanceof RequestSource }
   }
 
   /**
@@ -287,12 +249,6 @@ module NodeJSLib {
     }
 
     override DataFlow::Node getServer() { result = server }
-
-    /**
-     * DEPRECATED: Use `getRouteHandlerNode` instead.
-     * Gets the expression for the handler registered by this setup.
-     */
-    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
 
     /**
      * Gets the expression for the handler registered by this setup.
@@ -554,7 +510,11 @@ module NodeJSLib {
       t.start()
       or
       t.start() and
-      result = DataFlow::moduleMember("fs", "promises")
+      (
+        result = DataFlow::moduleMember("fs", "promises")
+        or
+        result = DataFlow::moduleImport("fs/promises")
+      )
       or
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
         result = pred.track(t2, t)
@@ -1043,7 +1003,7 @@ module NodeJSLib {
       exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
     }
 
-    override string getCredentialsKind() { result = "Node.js http(s) client login username" }
+    override string getCredentialsKind() { result = "user name" }
   }
 
   /**
@@ -1054,7 +1014,7 @@ module NodeJSLib {
       exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
     }
 
-    override string getCredentialsKind() { result = "Node.js http(s) client login password" }
+    override string getCredentialsKind() { result = "password" }
   }
 
   /**

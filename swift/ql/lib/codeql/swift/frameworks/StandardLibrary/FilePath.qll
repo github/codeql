@@ -31,8 +31,10 @@ private class FilePathSummaries extends SummaryModelCsv {
         ";FilePath;true;init(root:_:);;;Argument[0..1];ReturnValue;taint",
         ";FilePath;true;init(root:components:);;;Argument[0..1];ReturnValue;taint",
         ";FilePath;true;encode(to:);;;Argument[-1];Argument[0];taint",
-        ";FilePath;true;withCString(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
-        ";FilePath;true;withPlatformString(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";FilePath;true;withCString(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";FilePath;true;withCString(_:);;;Argument[0].ReturnValue;ReturnValue;taint",
+        ";FilePath;true;withPlatformString(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";FilePath;true;withPlatformString(_:);;;Argument[0].ReturnValue;ReturnValue;taint",
         ";FilePath;true;append(_:);;;Argument[0];Argument[-1];taint",
         ";FilePath;true;appending(_:);;;Argument[-1..0];ReturnValue;taint",
         ";FilePath;true;lexicallyNormalized();;;Argument[-1];ReturnValue;taint",
@@ -61,11 +63,7 @@ private class FilePathFieldsInheritTaint extends TaintInheritingContent,
   FilePathFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
       f.getEnclosingDecl().asNominalTypeDecl() instanceof FilePath and
-      f.getName() =
-        [
-          "description", "debugDescription", "components", "extension", "lastComponent", "root",
-          "stem", "string"
-        ]
+      f.getName() = ["components", "extension", "lastComponent", "root", "stem", "string"]
     )
   }
 }

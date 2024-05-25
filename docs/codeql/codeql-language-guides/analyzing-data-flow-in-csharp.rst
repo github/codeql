@@ -12,6 +12,8 @@ This article describes how data flow analysis is implemented in the CodeQL libra
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
+.. include:: ../reusables/new-data-flow-api.rst
+
 Local data flow
 ---------------
 
@@ -146,23 +148,23 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The global data flow library is used by extending the class ``DataFlow::Configuration``:
+The global data flow library is used by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
    import csharp
 
-   class MyDataFlowConfiguration extends DataFlow::Configuration {
-     MyDataFlowConfiguration() { this = "..." }
-
-     override predicate isSource(DataFlow::Node source) {
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        ...
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        ...
      }
    }
+
+   module MyFlow = DataFlow::Global<MyFlowConfiguration>;
 
 These predicates are defined in the configuration:
 
@@ -171,45 +173,36 @@ These predicates are defined in the configuration:
 -  ``isBarrier`` - optionally, restricts the data flow.
 -  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
 
-The characteristic predicate (``MyDataFlowConfiguration()``) defines the name of the configuration, so ``"..."`` must be replaced with a unique name.
-
-The data flow analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``:
+The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
 .. code-block:: ql
 
-   from MyDataFlowConfiguation dataflow, DataFlow::Node source, DataFlow::Node sink
-   where dataflow.hasFlow(source, sink)
+   from DataFlow::Node source, DataFlow::Node sink
+   where MyFlow::flow(source, sink)
    select source, "Dataflow to $@.", sink, sink.toString()
 
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking is to global data flow what local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. The global taint tracking library is used by extending the class ``TaintTracking::Configuration``:
+Global taint tracking is to global data flow what local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. The global taint tracking library is used by applying the module ``TaintTracking::Global<ConfigSig>`` to your configuration instead of ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
    import csharp
 
-   class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
-     MyTaintTrackingConfiguration() { this = "..." }
-
-     override predicate isSource(DataFlow::Node source) {
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        ...
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        ...
      }
    }
 
-These predicates are defined in the configuration:
+   module MyFlow = TaintTracking::Global<MyFlowConfiguration>;
 
--  ``isSource`` - defines where taint may flow from.
--  ``isSink`` - defines where taint may flow to.
--  ``isSanitizer`` - optionally, restricts the taint flow.
--  ``isAdditionalTaintStep`` - optionally, adds additional taint steps.
-
-Similar to global data flow, the characteristic predicate (``MyTaintTrackingConfiguration()``) defines the unique name of the configuration and the taint analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``.
+The resulting module has an identical signature to the one obtained from ``DataFlow::Global<ConfigSig>``.
 
 Flow sources
 ~~~~~~~~~~~~
@@ -228,12 +221,8 @@ This query shows a data flow configuration that uses all public API parameters a
    import csharp
    import semmle.code.csharp.dataflow.flowsources.PublicCallableParameter
 
-   class MyDataFlowConfiguration extends DataFlow::Configuration {
-     MyDataFlowConfiguration() {
-       this = "..."
-     }
-
-     override predicate isSource(DataFlow::Node source) {
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        source instanceof PublicCallableParameterFlowSource
      }
 
@@ -243,7 +232,6 @@ This query shows a data flow configuration that uses all public API parameters a
 Class hierarchy
 ~~~~~~~~~~~~~~~
 
--  ``DataFlow::Configuration`` - base class for custom global data flow analysis.
 -  ``DataFlow::Node`` - an element behaving as a data flow node.
 
    -  ``DataFlow::ExprNode`` - an expression behaving as a data flow node.
@@ -261,8 +249,6 @@ Class hierarchy
       -  ``WcfRemoteFlowSource`` - data flow from a WCF web service.
       -  ``AspNetServiceRemoteFlowSource`` - data flow from an ASP.NET web service.
 
--  ``TaintTracking::Configuration`` - base class for custom global taint tracking analysis.
-
 Examples
 ~~~~~~~~
 
@@ -272,17 +258,15 @@ This data flow configuration tracks data flow from environment variables to open
 
    import csharp
 
-   class EnvironmentToFileConfiguration extends DataFlow::Configuration {
-     EnvironmentToFileConfiguration() { this = "Environment opening files" }
-
-     override predicate isSource(DataFlow::Node source) {
+   module EnvironmentToFileConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        exists(Method m |
          m = source.asExpr().(MethodCall).getTarget() and
          m.hasQualifiedName("System.Environment.GetEnvironmentVariable")
        )
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        exists(MethodCall mc |
          mc.getTarget().hasQualifiedName("System.IO.File.Open") and
          sink.asExpr() = mc.getArgument(0)
@@ -290,8 +274,10 @@ This data flow configuration tracks data flow from environment variables to open
      }
    }
 
-   from Expr environment, Expr fileOpen, EnvironmentToFileConfiguration config
-   where config.hasFlow(DataFlow::exprNode(environment), DataFlow::exprNode(fileOpen))
+   module EnvironmentToFileFlow = DataFlow::Global<EnvironmentToFileConfiguration>;
+
+   from Expr environment, Expr fileOpen
+   where EnvironmentToFileFlow::flow(DataFlow::exprNode(environment), DataFlow::exprNode(fileOpen))
    select fileOpen, "This 'File.Open' uses data from $@.",
      environment, "call to 'GetEnvironmentVariable'"
 
@@ -435,21 +421,21 @@ Exercise 2
 
    import csharp
 
-   class Configuration extends DataFlow::Configuration {
-     Configuration() { this="String to System.Uri" }
-
-     override predicate isSource(DataFlow::Node src) {
+   module StringToUriConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node src) {
        src.asExpr().hasValue()
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
        and sink.asExpr()=c.getArgument(0))
      }
    }
 
-   from DataFlow::Node src, DataFlow::Node sink, Configuration config
-   where config.hasFlow(src, sink)
+   module StringToUriFlow = DataFlow::Global<StringToUriConfig>;
+
+   from DataFlow::Node src, DataFlow::Node sink
+   where StringToUriFlow::flow(src, sink)
    select src, "This string constructs a 'System.Uri' $@.", sink, "here"
 
 Exercise 3
@@ -476,21 +462,21 @@ Exercise 4
      }
    }
 
-   class Configuration extends DataFlow::Configuration {
-     Configuration() { this="Environment to System.Uri" }
-
-     override predicate isSource(DataFlow::Node src) {
+   module EnvironmentToUriConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node src) {
        src instanceof EnvironmentVariableFlowSource
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
        and sink.asExpr()=c.getArgument(0))
      }
    }
 
-   from DataFlow::Node src, DataFlow::Node sink, Configuration config
-   where config.hasFlow(src, sink)
+   module EnvironmentToUriFlow = DataFlow::Global<EnvironmentToUriConfig>;
+
+   from DataFlow::Node src, DataFlow::Node sink
+   where EnvironmentToUriFlow::flow(src, sink)
    select src, "This environment variable constructs a 'System.Uri' $@.", sink, "here"
 
 Exercise 5
@@ -555,7 +541,7 @@ This can be adapted from the ``SystemUriFlow`` class:
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/csharp-further-reading.rst

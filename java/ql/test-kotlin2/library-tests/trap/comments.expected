@@ -1,0 +1,5 @@
+| long_comments.kt:13:1:13:1048575 | long_comments.kt:13:1:13:1048575 | 1048575 | //A01...BBBBC | KtComment |
+| long_comments.kt:14:1:14:1048576 | long_comments.kt:14:1:14:1048576 | 1048576 | //A02...BBBCD | KtComment |
+| long_comments.kt:15:1:15:1048577 | long_comments.kt:15:1:15:1048577 | 1048576 | //A03...BBBCD | KtComment |
+| long_comments.kt:16:1:16:1048578 | long_comments.kt:16:1:16:1048578 | 1048576 | //A04...BBBCD | KtComment |
+| long_comments.kt:17:1:17:1048578 | long_comments.kt:17:1:17:1048578 | 1048576 | //A05..."""CD | KtComment |

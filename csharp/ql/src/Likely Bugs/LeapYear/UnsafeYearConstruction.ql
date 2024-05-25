@@ -16,14 +16,14 @@ module UnsafeYearCreationFromArithmeticConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(ArithmeticOperation ao, PropertyAccess pa | ao = source.asExpr() |
       pa = ao.getAChild*() and
-      pa.getProperty().hasQualifiedName("System.DateTime", "Year")
+      pa.getProperty().hasFullyQualifiedName("System.DateTime", "Year")
     )
   }
 
   predicate isSink(DataFlow::Node sink) {
     exists(ObjectCreation oc |
       sink.asExpr() = oc.getArgumentForName("year") and
-      oc.getObjectType().getABaseType*().hasQualifiedName("System", "DateTime")
+      oc.getObjectType().getABaseType*().hasFullyQualifiedName("System", "DateTime")
     )
   }
 }

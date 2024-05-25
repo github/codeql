@@ -99,7 +99,7 @@ from Field f, RefType t, string name, string prefix, string qualifier, string ty
 where
   f.getType() = t and
   f.getName() = name and
-  t.hasQualifiedName(qualifier, type) and
+  t.hasFullyQualifiedName(qualifier, type) and
   prefix = prefix(qualifier, type) and
   not name.matches(prefix + "%")
 select f, "This field should have the prefix '" + prefix + "' to match its types."

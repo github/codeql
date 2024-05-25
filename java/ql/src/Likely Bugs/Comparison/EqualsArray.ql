@@ -12,7 +12,7 @@
 
 import java
 
-from MethodAccess ma, Array recvtype, Method m
+from MethodCall ma, Array recvtype, Method m
 where
   recvtype = ma.getQualifier().getType() and
   m = ma.getMethod() and

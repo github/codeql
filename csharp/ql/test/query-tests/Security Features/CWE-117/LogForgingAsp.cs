@@ -18,4 +18,24 @@ public class AspController : ControllerBase
         // GOOD: DateTime is a sanitizer.
         logger.Warn($"Warning about the date: {date:yyyy-MM-dd}");
     }
+
+    public void Action2(DateTime? date)
+    {
+        var logger = new ILogger();
+        if (date is not null)
+        {
+            // GOOD: DateTime? is a sanitizer.
+            logger.Warn($"Warning about the date: {date:yyyy-MM-dd}");
+        }
+    }
+
+    public void Action2(bool? b)
+    {
+        var logger = new ILogger();
+        if (b is not null)
+        {
+            // GOOD: Boolean? is a sanitizer.
+            logger.Warn($"Warning about the bool: {b}");
+        }
+    }
 }

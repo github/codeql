@@ -7,7 +7,7 @@ private import ControlFlow
 private import ControlFlow::BasicBlocks
 private import SuccessorTypes
 private import semmle.code.csharp.Caching
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as Impl
 
 /**
  * A program element that can possess control flow. That is, either a statement or
@@ -39,20 +39,20 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * several `ControlFlow::Node`s, for example to represent the continuation
    * flow in a `try/catch/finally` construction.
    */
-  Nodes::ElementNode getAControlFlowNode() { result.getElement() = this }
+  Nodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
 
   /**
    * Gets a first control flow node executed within this element.
    */
   Nodes::ElementNode getAControlFlowEntryNode() {
-    result = getAControlFlowEntryNode(this).getAControlFlowNode()
+    result = Impl::getAControlFlowEntryNode(this).(ControlFlowElement).getAControlFlowNode()
   }
 
   /**
    * Gets a potential last control flow node executed within this element.
    */
   Nodes::ElementNode getAControlFlowExitNode() {
-    result = getAControlFlowExitNode(this).getAControlFlowNode()
+    result = Impl::getAControlFlowExitNode(this).(ControlFlowElement).getAControlFlowNode()
   }
 
   /**
@@ -88,7 +88,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   ) {
     // Only calculate dominance by explicit recursion for split nodes;
     // all other nodes can use regular CFG dominance
-    this instanceof SplitControlFlowElement and
+    this instanceof Impl::SplitAstNode and
     cb.getLastNode() = this.getAControlFlowNode() and
     succ = cb.getASuccessorByType(s)
   }
@@ -111,7 +111,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
       succ.dominates(pred)
       or
       // `pred` might be another split of this element
-      pred.getLastNode().getElement() = this and
+      pred.getLastNode().getAstNode() = this and
       t = s
     )
   }

@@ -9,7 +9,7 @@ import csharp
  * the class with the specified `qualifier` and `type`.
  */
 private predicate isCreatingObject(ObjectCreation oc, string qualifier, string type) {
-  exists(RefType t | t = oc.getType() | t.getBaseClass*().hasQualifiedName(qualifier, type))
+  exists(RefType t | t = oc.getType() | t.getBaseClass*().hasFullyQualifiedName(qualifier, type))
 }
 
 /**
@@ -18,7 +18,7 @@ private predicate isCreatingObject(ObjectCreation oc, string qualifier, string t
  */
 private predicate isReturningObject(MethodCall mc, string qualifier, string type) {
   mc.getTarget().fromLibrary() and
-  exists(RefType t | t = mc.getType() | t.hasQualifiedName(qualifier, type))
+  exists(RefType t | t = mc.getType() | t.hasFullyQualifiedName(qualifier, type))
 }
 
 /**
@@ -31,7 +31,7 @@ private predicate isMethodCalledWithArg(
   string argumentValue
 ) {
   mc.getTarget().fromLibrary() and
-  mc.getTarget().hasQualifiedName(namespace, type, methodName) and
+  mc.getTarget().hasFullyQualifiedName(namespace, type, methodName) and
   mc.getArgument(argumentIndex).getValue().toUpperCase() = argumentValue.toUpperCase()
 }
 
@@ -40,7 +40,7 @@ private predicate isMethodCalledWithArg(
  */
 class SymmetricAlgorithm extends Class {
   SymmetricAlgorithm() {
-    this.getABaseType*().hasQualifiedName("System.Security.Cryptography", "SymmetricAlgorithm")
+    this.getABaseType*().hasFullyQualifiedName("System.Security.Cryptography", "SymmetricAlgorithm")
   }
 
   /** Gets the `IV` property. */

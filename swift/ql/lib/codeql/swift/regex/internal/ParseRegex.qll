@@ -1,11 +1,27 @@
 /**
  * Library for parsing Swift regular expressions.
  *
+ * See https://developer.apple.com/documentation/foundation/nsregularexpression
+ * for the regular expression syntax we aim to support.
+ *
  * N.B. does not yet handle stripping whitespace and comments in regexes with
  * the `x` (free-spacing) flag.
  */
 
 import swift
+private import RegexTracking
+private import codeql.swift.regex.Regex
+
+/**
+ * A mode character that can be used in a regular expression.
+ * ```
+ * NSRegularExpression accepts: dim suwxDPSUW
+ * Regex accepts:                imns  x
+ * ```
+ */
+private predicate availableRegexModeCharacter(string char) {
+  char = ["d", "i", "m", "n", "s", "u", "w", "x", "D", "P", "S", "U", "W"]
+}
 
 /**
  * A `Expr` containing a regular expression term, that is, either
@@ -16,17 +32,17 @@ abstract class RegExp extends Expr {
   /**
    * Holds if this `RegExp` has the `s` flag for multi-line matching.
    */
-  predicate isDotAll() { none() }
+  predicate isDotAll() { this.getAMode() = "DOTALL" }
 
   /**
    * Holds if this `RegExp` has the `i` flag for case-insensitive matching.
    */
-  predicate isIgnoreCase() { none() }
+  predicate isIgnoreCase() { this.getAMode() = "IGNORECASE" }
 
   /**
-   * Gets the flags for this `RegExp`, or the empty string if it has no flags.
+   * Gets a string representing the flags for this `RegExp`, or the empty string if it has no flags.
    */
-  string getFlags() { result = "" }
+  string getFlags() { result = concat(string mode | mode = this.getAMode() | mode, " | ") }
 
   /**
    * Helper predicate for `charSetStart(int start, int end)`.
@@ -273,6 +289,91 @@ abstract class RegExp extends Expr {
   private predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
 
   private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
+
+  /**
+   * Holds if the initial part of a parse mode, not containing any
+   * mode characters is between `start` and `end`.
+   */
+  private predicate flagGroupStartNoModes(int start, int end) {
+    this.isGroupStart(start) and
+    this.getChar(start + 1) = "?" and
+    availableRegexModeCharacter(this.getChar(start + 2)) and
+    end = start + 2
+  }
+
+  /**
+   * Holds if `pos` contains a mode character from the
+   * flag group starting at `start`.
+   */
+  private predicate modeCharacter(int start, int pos) {
+    this.flagGroupStartNoModes(start, pos)
+    or
+    this.modeCharacter(start, pos - 1) and
+    availableRegexModeCharacter(this.getChar(pos))
+  }
+
+  /**
+   * Holds if a parse mode group is between `start` and `end`.
+   */
+  private predicate flagGroupStart(int start, int end) {
+    this.flagGroupStartNoModes(start, _) and
+    end = max(int i | this.modeCharacter(start, i) | i + 1)
+  }
+
+  /**
+   * Holds if a parse mode group of this regex includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `"i"`:
+   * ```
+   * (?i)
+   * ```
+   */
+  private predicate flag(string c) {
+    exists(int pos |
+      this.modeCharacter(_, pos) and
+      this.getChar(pos) = c
+    )
+  }
+
+  /**
+   * Gets a mode of this regular expression string if it is defined by a mode prefix.
+   */
+  string getModeFromPrefix() {
+    exists(string c | this.flag(c) |
+      c = "i" and result = "IGNORECASE" // case insensitive
+      or
+      c = "x" and result = "VERBOSE" // ignores whitespace and `#` comments within patterns
+      or
+      c = "s" and result = "DOTALL" // dot matches all characters, including line terminators
+      or
+      c = "m" and result = "MULTILINE" // `^` and `$` also match beginning and end of lines
+      or
+      c = "w" and result = "UNICODEBOUNDARY" // Unicode UAX 29 word boundary mode
+      or
+      c = "u" and result = "UNICODE" // Unicode matching
+      // (other flags exist that are not translated here)
+    )
+  }
+
+  /**
+   * Gets a mode (if any) of this regular expression in any evaluation. Can be
+   * any of:
+   * IGNORECASE
+   * VERBOSE
+   * DOTALL
+   * MULTILINE
+   * UNICODEBOUNDARY
+   * UNICODE
+   */
+  string getAMode() {
+    // mode flags from inside the regex string
+    result = this.getModeFromPrefix()
+    or
+    // mode flags applied to the regex object before evaluation
+    exists(RegexEval e |
+      e.getARegex() = this and
+      result = e.getAParseMode().getName()
+    )
+  }
 
   /**
    * Holds if the `i`th character could not be parsed.
@@ -653,6 +754,8 @@ abstract class RegExp extends Expr {
     this.commentGroupStart(start, end)
     or
     this.simpleGroupStart(start, end)
+    or
+    this.flagGroupStart(start, end)
   }
 
   /** Matches the start of a non-capturing group, e.g. `(?:` */

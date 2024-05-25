@@ -10,6 +10,11 @@ import semmle.go.dataflow.DataFlow
  * global (inter-procedural) taint-tracking analyses.
  */
 module TaintTracking {
-  import semmle.go.dataflow.internal.tainttracking1.TaintTracking
+  import semmle.go.dataflow.internal.tainttracking1.TaintTrackingParameter::Public
+  private import semmle.go.dataflow.internal.DataFlowImplSpecific
+  private import semmle.go.dataflow.internal.TaintTrackingImplSpecific
+  private import semmle.go.Locations
+  private import codeql.dataflow.TaintTracking
+  import TaintFlowMake<Location, GoDataFlow, GoTaintTracking>
   import semmle.go.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

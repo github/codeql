@@ -44,7 +44,7 @@ class ObjectMapperReadMethod extends Method {
 }
 
 /** A call that enables the default typing in `ObjectMapper`. */
-class EnableJacksonDefaultTyping extends MethodAccess {
+class EnableJacksonDefaultTyping extends MethodCall {
   EnableJacksonDefaultTyping() {
     this.getMethod().getDeclaringType() instanceof ObjectMapper and
     this.getMethod().hasName("enableDefaultTyping")
@@ -54,7 +54,7 @@ class EnableJacksonDefaultTyping extends MethodAccess {
 /** A qualifier of a call to one of the methods in `ObjectMapper` that deserialize data. */
 class ObjectMapperReadQualifier extends DataFlow::ExprNode {
   ObjectMapperReadQualifier() {
-    exists(MethodAccess ma | ma.getQualifier() = this.asExpr() |
+    exists(MethodCall ma | ma.getQualifier() = this.asExpr() |
       ma.getMethod() instanceof ObjectMapperReadMethod
     )
   }
@@ -63,7 +63,7 @@ class ObjectMapperReadQualifier extends DataFlow::ExprNode {
 /** A source that sets a type validator. */
 class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
   SetPolymorphicTypeValidatorSource() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       (
         m.getDeclaringType() instanceof ObjectMapper and
         m.hasName("setPolymorphicTypeValidator")
@@ -83,7 +83,7 @@ class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
  * if passed to an unsafely-configured `ObjectMapper`'s `readValue` method.
  */
 predicate createJacksonJsonParserStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     (m.getDeclaringType() instanceof ObjectMapper or m.getDeclaringType() instanceof JsonFactory) and
     m.hasName("createParser") and
     ma.getArgument(0) = fromNode.asExpr() and
@@ -98,14 +98,14 @@ predicate createJacksonJsonParserStep(DataFlow::Node fromNode, DataFlow::Node to
  * if passed to an unsafely-configured `ObjectMapper`'s `treeToValue` method.
  */
 predicate createJacksonTreeNodeStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType() instanceof ObjectMapper and
     m.hasName("readTree") and
     ma.getArgument(0) = fromNode.asExpr() and
     ma = toNode.asExpr()
   )
   or
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType() instanceof JsonParser and
     m.hasName("readValueAsTree") and
     ma.getQualifier() = fromNode.asExpr() and
@@ -138,7 +138,7 @@ private predicate hasFieldWithJsonTypeAnnotation(RefType type) {
  * Holds if `call` is a method call to a Jackson deserialization method such as `ObjectMapper.readValue(String, Class)`,
  * and the target deserialized class has a field with a `JsonTypeInfo` annotation that enables polymorphic typing.
  */
-predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
+predicate hasArgumentWithUnsafeJacksonAnnotation(MethodCall call) {
   call.getMethod() instanceof ObjectMapperReadMethod and
   exists(RefType argType, int i | i > 0 and argType = call.getArgument(i).getType() |
     hasJsonTypeInfoAnnotation(argType.(ParameterizedType).getATypeArgument())

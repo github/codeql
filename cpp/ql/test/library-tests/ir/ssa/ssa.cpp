@@ -434,3 +434,7 @@ int noreturnTest2(int x) {
     }
     return x;
 }
+
+void Conditional(bool a, int x, int y) {
+    int z = a ? x : y;
+}

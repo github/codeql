@@ -1,3 +1,4 @@
+WARNING: Module DataFlow has been deprecated and may be removed in future (partial-definition.ql:6,8-51)
 | A.cpp:25:7:25:10 | this |
 | A.cpp:25:13:25:13 | c |
 | A.cpp:27:22:27:25 | this |

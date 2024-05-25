@@ -2002,3 +2002,45 @@ ssa.cpp:
 #  431|     v431_8(void)       = ReturnValue              : &:r431_7, m435_4
 #  431|     v431_9(void)       = AliasedUse               : ~m?
 #  431|     v431_10(void)      = ExitFunction             : 
+
+#  438| void Conditional(bool, int, int)
+#  438|   Block 0
+#  438|     v438_1(void)        = EnterFunction          : 
+#  438|     mu438_2(unknown)    = AliasedDefinition      : 
+#  438|     mu438_3(unknown)    = InitializeNonLocal     : 
+#  438|     r438_4(glval<bool>) = VariableAddress[a]     : 
+#  438|     m438_5(bool)        = InitializeParameter[a] : &:r438_4
+#  438|     r438_6(glval<int>)  = VariableAddress[x]     : 
+#  438|     m438_7(int)         = InitializeParameter[x] : &:r438_6
+#  438|     r438_8(glval<int>)  = VariableAddress[y]     : 
+#  438|     m438_9(int)         = InitializeParameter[y] : &:r438_8
+#  439|     r439_1(glval<int>)  = VariableAddress[z]     : 
+#  439|     r439_2(glval<bool>) = VariableAddress[a]     : 
+#  439|     r439_3(bool)        = Load[a]                : &:r439_2, m438_5
+#  439|     v439_4(void)        = ConditionalBranch      : r439_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  439|   Block 1
+#  439|     m439_5(int)        = Phi                          : from 2:m439_12, from 3:m439_16
+#  439|     r439_6(glval<int>) = VariableAddress[#temp439:13] : 
+#  439|     r439_7(int)        = Load[#temp439:13]            : &:r439_6, m439_5
+#  439|     m439_8(int)        = Store[z]                     : &:r439_1, r439_7
+#  440|     v440_1(void)       = NoOp                         : 
+#  438|     v438_10(void)      = ReturnVoid                   : 
+#  438|     v438_11(void)      = AliasedUse                   : ~m?
+#  438|     v438_12(void)      = ExitFunction                 : 
+
+#  439|   Block 2
+#  439|     r439_9(glval<int>)  = VariableAddress[x]           : 
+#  439|     r439_10(int)        = Load[x]                      : &:r439_9, m438_7
+#  439|     r439_11(glval<int>) = VariableAddress[#temp439:13] : 
+#  439|     m439_12(int)        = Store[#temp439:13]           : &:r439_11, r439_10
+#-----|   Goto -> Block 1
+
+#  439|   Block 3
+#  439|     r439_13(glval<int>) = VariableAddress[y]           : 
+#  439|     r439_14(int)        = Load[y]                      : &:r439_13, m438_9
+#  439|     r439_15(glval<int>) = VariableAddress[#temp439:13] : 
+#  439|     m439_16(int)        = Store[#temp439:13]           : &:r439_15, r439_14
+#-----|   Goto -> Block 1

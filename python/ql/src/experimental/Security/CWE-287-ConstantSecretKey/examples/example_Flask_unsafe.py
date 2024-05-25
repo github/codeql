@@ -14,9 +14,7 @@ app.config.from_object('settings')
 
 
 @app.route('/')
-def DEB_EX():
-    if 'logged_in' not in session:
-        session['logged_in'] = 'value'
+def CheckForSecretKeyValue():
     # debugging whether secret_key is secure or not
     return app.secret_key, session.get('logged_in')
 

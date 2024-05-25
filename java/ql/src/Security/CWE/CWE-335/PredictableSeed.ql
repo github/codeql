@@ -14,7 +14,7 @@
 import java
 import semmle.code.java.security.RandomQuery
 
-from GetRandomData da, RValue use, PredictableSeedExpr source
+from GetRandomData da, VarRead use, PredictableSeedExpr source
 where
   da.getQualifier() = use and
   unsafelySeeded(use, source)

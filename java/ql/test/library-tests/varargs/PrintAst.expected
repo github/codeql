@@ -49,7 +49,7 @@ varargs/Test.java:
 #   10|       5: [BlockStmt] { ... }
 #   11|     9: [BlockStmt] { ... }
 #   12|       0: [ExprStmt] <Expr>;
-#   12|         0: [MethodAccess] asList(...)
+#   12|         0: [MethodCall] asList(...)
 #   12|           -1: [TypeAccess] Arrays
 #   12|           0: [IntegerLiteral] 1
 #   12|           1: [IntegerLiteral] 2

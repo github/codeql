@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.Moq
 private import semmle.code.csharp.frameworks.system.web.Security
 private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
 private import semmle.code.csharp.frameworks.Test
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 
 /**
  * A data flow source for hard coded credentials.
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::ExprNode { }
 /**
  * A data flow sink for hard coded credentials.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /**
    * Gets a description of this sink, including a placeholder for the sink and a placeholder for
    * the supplementary element.
@@ -169,7 +170,7 @@ private class CredentialVar extends Assignable {
     exists(string name | name = this.getName() |
       name.regexpMatch("(?i).*pass(wd|word|code|phrase)(?!.*question).*")
       or
-      name.regexpMatch("(?i).*(puid|username|userid).*")
+      name.regexpMatch("(?i).*(puid|username|userid)(?!.*(characters|claimtype)).*")
       or
       name.regexpMatch("(?i).*(cert)(?!.*(format|name)).*")
     )

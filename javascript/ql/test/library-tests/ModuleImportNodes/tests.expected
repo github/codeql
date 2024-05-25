@@ -1,31 +1,3 @@
-test_ModuleImportNode
-| amd1.js:1:25:1:26 | fs | fs | amd1.js:1:25:1:26 | fs | fs |
-| amd1.js:1:25:1:26 | fs | fs | amd1.js:2:3:2:4 | fs | fs |
-| amd2.js:2:12:2:24 | require('fs') | fs | amd2.js:3:3:3:4 | fs | fs |
-| client1.ts:4:28:4:29 | F1 | framework1 | client1.ts:4:28:4:29 | F1 | F1 |
-| client1.ts:6:9:6:11 | net | net | client1.ts:6:9:6:11 | net | net |
-| client2.ts:4:28:4:29 | F2 | framework2 | client2.ts:4:28:4:29 | F2 | F2 |
-| client2_lazy.ts:4:28:4:29 | F2 | framework2 | client2_lazy.ts:4:28:4:29 | F2 | F2 |
-| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:2:1:2:35 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
-| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:4:5:4:39 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
-| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:2:1:2:37 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
-| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:4:5:4:41 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
-| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:2:1:2:28 | myRequi ... nceName | myRequiredModuleInstanceName |
-| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:4:5:4:32 | myRequi ... nceName | myRequiredModuleInstanceName |
-| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:3:1:3:3 | mod | mod |
-| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:5:9:5:11 | mod | mod |
-| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:8:9:8:11 | mod | mod |
-| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:11:1:11:3 | mod | mod |
-| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:13:1:13:3 | mod | mod |
-| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:15:5:15:7 | mod | mod |
-| process2.js:2:10:2:16 | process | process | process2.js:2:10:2:16 | process | process |
-test_ModuleImportNode_getAConstructorInvocation
-| client1.ts:4:28:4:29 | F1 | client1.ts:4:24:4:41 | new F1.Component() |
-| client2.ts:4:28:4:29 | F2 | client2.ts:4:24:4:41 | new F2.Component() |
-| client2_lazy.ts:4:28:4:29 | F2 | client2_lazy.ts:4:24:4:41 | new F2.Component() |
-| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
-| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
-| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |
 test_moduleImport
 | electron | destructuringES6.js:1:1:1:41 | import  ... ctron'; |
 | electron | destructuringRequire.js:1:27:1:45 | require('electron') |
@@ -64,6 +36,43 @@ test_moduleMember
 | mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
 | myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
 | net | createServer | client1.ts:6:9:6:24 | net.createServer |
+test_ModuleImportNode
+| amd1.js:1:25:1:26 | fs | fs | amd1.js:1:25:1:26 | fs | fs |
+| amd1.js:1:25:1:26 | fs | fs | amd1.js:2:3:2:4 | fs | fs |
+| amd2.js:2:12:2:24 | require('fs') | fs | amd2.js:3:3:3:4 | fs | fs |
+| client1.ts:4:28:4:29 | F1 | framework1 | client1.ts:4:28:4:29 | F1 | F1 |
+| client1.ts:6:9:6:11 | net | net | client1.ts:6:9:6:11 | net | net |
+| client2.ts:4:28:4:29 | F2 | framework2 | client2.ts:4:28:4:29 | F2 | F2 |
+| client2_lazy.ts:4:28:4:29 | F2 | framework2 | client2_lazy.ts:4:28:4:29 | F2 | F2 |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:2:1:2:35 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:4:5:4:39 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
+| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:2:1:2:37 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
+| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:4:5:4:41 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
+| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:2:1:2:28 | myRequi ... nceName | myRequiredModuleInstanceName |
+| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:4:5:4:32 | myRequi ... nceName | myRequiredModuleInstanceName |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:3:1:3:3 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:5:9:5:11 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:8:9:8:11 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:11:1:11:3 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:13:1:13:3 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:15:5:15:7 | mod | mod |
+| process2.js:2:10:2:16 | process | process | process2.js:2:10:2:16 | process | process |
+test_moduleImportProp
+| electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
+| electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
+| foo | C | declare-module-client2.ts:3:9:3:9 | C |
+| foo | C | declare-module-client.ts:3:9:3:9 | C |
+| framework1 | Component | client1.ts:4:28:4:39 | F1.Component |
+| framework2 | Component | client2.ts:4:28:4:39 | F2.Component |
+| framework2 | Component | client2_lazy.ts:4:28:4:39 | F2.Component |
+| fs | readFileSync | amd1.js:2:3:2:17 | fs.readFileSync |
+| fs | readFileSync | amd2.js:3:3:3:17 | fs.readFileSync |
+| mod | constructorFunction | moduleUses.js:8:9:8:31 | mod.con ... unction |
+| mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
+| mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
+| mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
+| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
+| net | createServer | client1.ts:6:9:6:24 | net.createServer |
 test_ModuleImportNode_getPath
 | amd1.js:1:25:1:26 | fs | fs |
 | amd2.js:2:12:2:24 | require('fs') | fs |
@@ -86,45 +95,17 @@ test_ModuleImportNode_getPath
 | process2.js:1:1:1:13 | require('fs') | fs |
 | process2.js:2:10:2:16 | process | process |
 | process.js:1:10:1:27 | require('process') | process |
-test_ModuleImportNode_getAMethodCall
-| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
-| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
-| client1.ts:6:9:6:11 | net | client1.ts:6:9:6:26 | net.createServer() |
-| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
-test_ModuleImportNode_getAMemberInvocation
-| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
-| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
-| client1.ts:4:28:4:29 | F1 | client1.ts:4:24:4:41 | new F1.Component() |
-| client1.ts:6:9:6:11 | net | client1.ts:6:9:6:26 | net.createServer() |
-| client2.ts:4:28:4:29 | F2 | client2.ts:4:24:4:41 | new F2.Component() |
-| client2_lazy.ts:4:28:4:29 | F2 | client2_lazy.ts:4:24:4:41 | new F2.Component() |
-| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
-| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
-| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
-| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:6:1:6:3 | f() |
-| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |
-test_moduleImportProp
-| electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
-| electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
-| foo | C | declare-module-client2.ts:3:9:3:9 | C |
-| foo | C | declare-module-client.ts:3:9:3:9 | C |
-| framework1 | Component | client1.ts:4:28:4:39 | F1.Component |
-| framework2 | Component | client2.ts:4:28:4:39 | F2.Component |
-| framework2 | Component | client2_lazy.ts:4:28:4:39 | F2.Component |
-| fs | readFileSync | amd1.js:2:3:2:17 | fs.readFileSync |
-| fs | readFileSync | amd2.js:3:3:3:17 | fs.readFileSync |
-| mod | constructorFunction | moduleUses.js:8:9:8:31 | mod.con ... unction |
-| mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
-| mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
-| mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
-| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
-| net | createServer | client1.ts:6:9:6:24 | net.createServer |
 test_ModuleImportNode_getAMemberCall
 | amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
 | amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
 | client1.ts:6:9:6:11 | net | client1.ts:6:9:6:26 | net.createServer() |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:6:1:6:3 | f() |
+test_ModuleImportNode_getAMethodCall
+| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
+| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
+| client1.ts:6:9:6:11 | net | client1.ts:6:9:6:26 | net.createServer() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
 test_ModuleImportNode_getAPropertyRead
 | amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:17 | fs.readFileSync |
 | amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:17 | fs.readFileSync |
@@ -141,3 +122,22 @@ test_ModuleImportNode_getAPropertyRead
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:5:9:5:26 | mod.moduleFunction |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:8:9:8:31 | mod.con ... unction |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:11:1:11:15 | mod.moduleField |
+test_ModuleImportNode_getAMemberInvocation
+| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
+| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
+| client1.ts:4:28:4:29 | F1 | client1.ts:4:24:4:41 | new F1.Component() |
+| client1.ts:6:9:6:11 | net | client1.ts:6:9:6:26 | net.createServer() |
+| client2.ts:4:28:4:29 | F2 | client2.ts:4:24:4:41 | new F2.Component() |
+| client2_lazy.ts:4:28:4:29 | F2 | client2_lazy.ts:4:24:4:41 | new F2.Component() |
+| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
+| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:6:1:6:3 | f() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |
+test_ModuleImportNode_getAConstructorInvocation
+| client1.ts:4:28:4:29 | F1 | client1.ts:4:24:4:41 | new F1.Component() |
+| client2.ts:4:28:4:29 | F2 | client2.ts:4:24:4:41 | new F2.Component() |
+| client2_lazy.ts:4:28:4:29 | F2 | client2_lazy.ts:4:24:4:41 | new F2.Component() |
+| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
+| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |

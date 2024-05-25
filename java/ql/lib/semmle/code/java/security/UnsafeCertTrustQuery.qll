@@ -53,14 +53,14 @@ private class SslConnectionWithSafeSslParameters extends SslUnsafeCertTrustSanit
 
 private module SafeSslParametersFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma instanceof SafeSetEndpointIdentificationAlgorithm and
       DataFlow::getInstanceArgument(ma) = source.(DataFlow::PostUpdateNode).getPreUpdateNode()
     )
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, RefType t | t instanceof SslSocket or t instanceof SslEngine |
+    exists(MethodCall ma, RefType t | t instanceof SslSocket or t instanceof SslEngine |
       ma.getMethod().hasName("setSSLParameters") and
       ma.getMethod().getDeclaringType().getAnAncestor() = t and
       ma.getArgument(0) = sink.asExpr()
@@ -73,7 +73,7 @@ private module SafeSslParametersFlow = DataFlow::Global<SafeSslParametersFlowCon
 /**
  * A call to `SSLParameters.setEndpointIdentificationAlgorithm` with a non-null and non-empty parameter.
  */
-private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
+private class SafeSetEndpointIdentificationAlgorithm extends MethodCall {
   SafeSetEndpointIdentificationAlgorithm() {
     this.getMethod().hasName("setEndpointIdentificationAlgorithm") and
     this.getMethod().getDeclaringType() instanceof SslParameters and

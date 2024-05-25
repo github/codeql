@@ -1,5 +1,5 @@
-| Builtin.Int8 | getName: | Builtin.Int8 | getCanonicalType: | Builtin.Int8 | hasWidth: | yes |
-| Builtin.Int16 | getName: | Builtin.Int16 | getCanonicalType: | Builtin.Int16 | hasWidth: | yes |
-| Builtin.Int32 | getName: | Builtin.Int32 | getCanonicalType: | Builtin.Int32 | hasWidth: | yes |
-| Builtin.Int64 | getName: | Builtin.Int64 | getCanonicalType: | Builtin.Int64 | hasWidth: | yes |
-| Builtin.Word | getName: | Builtin.Word | getCanonicalType: | Builtin.Word | hasWidth: | no |
+| Builtin.Int8 | getName: | Int8 | getCanonicalType: | Builtin.Int8 | hasWidth: | yes |
+| Builtin.Int16 | getName: | Int16 | getCanonicalType: | Builtin.Int16 | hasWidth: | yes |
+| Builtin.Int32 | getName: | Int32 | getCanonicalType: | Builtin.Int32 | hasWidth: | yes |
+| Builtin.Int64 | getName: | Int64 | getCanonicalType: | Builtin.Int64 | hasWidth: | yes |
+| Builtin.Word | getName: | Word | getCanonicalType: | Builtin.Word | hasWidth: | no |

@@ -84,7 +84,7 @@ private predicate createUrlStep(DataFlow::Node node1, DataFlow::Node node2) {
 
 /** Method call of `HttpURLOpenMethod` */
 private predicate urlOpenStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod() instanceof UrlOpenConnectionMethod and
     node1.asExpr() = ma.getQualifier() and
     ma = node2.asExpr()

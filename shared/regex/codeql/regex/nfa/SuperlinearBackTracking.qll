@@ -365,9 +365,17 @@ module Make<RegexTreeViewSig TreeImpl> {
       )
     }
 
-    string getChar(CharNode t) {
+    private string getCharInternal(CharNode t) {
       exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 | t = Step(s1, s2, s3, _) |
         result = getAThreewayIntersect(s1, s2, s3)
+      )
+    }
+
+    string getChar(CharNode t) {
+      result = getCharInternal(t) and
+      not (
+        // skip the upper-case char if we have the lower-case version.
+        result.toLowerCase() != result and result.toLowerCase() = getCharInternal(t)
       )
     }
   }
@@ -418,11 +426,13 @@ module Make<RegexTreeViewSig TreeImpl> {
         "' can start matching anywhere after the start of the preceeding " + prev
   }
 
+  final private class FinalInfiniteRepetitionQuantifier = InfiniteRepetitionQuantifier;
+
   /**
    * A term that may cause a regular expression engine to perform a
    * polynomial number of match attempts, relative to the input length.
    */
-  class PolynomialBackTrackingTerm instanceof InfiniteRepetitionQuantifier {
+  class PolynomialBackTrackingTerm extends FinalInfiniteRepetitionQuantifier {
     string reason;
     string pump;
     string prefixMsg;
@@ -463,18 +473,5 @@ module Make<RegexTreeViewSig TreeImpl> {
      * Gets the reason for the number of match attempts.
      */
     string getReason() { result = reason }
-
-    /** Gets a string representation of this term. */
-    string toString() { result = super.toString() }
-
-    /** Gets the outermost term of this regular expression. */
-    RegExpTerm getRootTerm() { result = super.getRootTerm() }
-
-    /** Holds if this term has the specific location. */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 }

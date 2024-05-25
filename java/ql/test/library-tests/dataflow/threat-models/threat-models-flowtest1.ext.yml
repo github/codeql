@@ -1,0 +1,9 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["testlib", "TestSources", False, "executeQuery", "(String)", "", "ReturnValue", "database", "manual"]
+      - ["testlib", "TestSources", False, "readEnv", "(String)", "", "ReturnValue", "environment", "manual"]
+      - ["testlib", "TestSources", False, "getCustom", "(String)", "", "ReturnValue", "custom", "manual"]

@@ -3,7 +3,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 private import semmle.code.csharp.security.PrivateData
 
@@ -15,7 +16,7 @@ abstract class Source extends DataFlow::ExprNode { }
 /**
  * A data flow sink for private information flowing unencrypted to an external location.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for private information flowing unencrypted to an external location.

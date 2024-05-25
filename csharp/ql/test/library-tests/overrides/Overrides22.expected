@@ -71,13 +71,6 @@
 | overrides.C2.get_Prop() | overrides.I3.get_Prop() | implements |
 | overrides.C2.set_Prop(string) | overrides.C1.set_Prop(string) | overrides |
 | overrides.C2.set_Prop(string) | overrides.I3.set_Prop(string) | implements |
-| overrides.C3<>.Item[int] | overrides.I4.MyIndexer[int] | implements |
-| overrides.C3<>.Method() | overrides.I4.Method() | implements |
-| overrides.C3<>.Prop | overrides.I3.Prop | implements |
-| overrides.C3<>.get_Item(int) | overrides.I4.get_MyIndexer(int) | implements |
-| overrides.C3<>.get_Prop() | overrides.I3.get_Prop() | implements |
-| overrides.C3<>.set_Item(int, string) | overrides.I4.set_MyIndexer(int, string) | implements |
-| overrides.C3<>.set_Prop(string) | overrides.I3.set_Prop(string) | implements |
 | overrides.C3<System.Int32>.Item[int] | overrides.I4.MyIndexer[int] | implements |
 | overrides.C3<System.Int32>.Method() | overrides.I4.Method() | implements |
 | overrides.C3<System.Int32>.Prop | overrides.I3.Prop | implements |
@@ -85,6 +78,13 @@
 | overrides.C3<System.Int32>.get_Prop() | overrides.I3.get_Prop() | implements |
 | overrides.C3<System.Int32>.set_Item(int, string) | overrides.I4.set_MyIndexer(int, string) | implements |
 | overrides.C3<System.Int32>.set_Prop(string) | overrides.I3.set_Prop(string) | implements |
+| overrides.C3`1.Item[int] | overrides.I4.MyIndexer[int] | implements |
+| overrides.C3`1.Method() | overrides.I4.Method() | implements |
+| overrides.C3`1.Prop | overrides.I3.Prop | implements |
+| overrides.C3`1.get_Item(int) | overrides.I4.get_MyIndexer(int) | implements |
+| overrides.C3`1.get_Prop() | overrides.I3.get_Prop() | implements |
+| overrides.C3`1.set_Item(int, string) | overrides.I4.set_MyIndexer(int, string) | implements |
+| overrides.C3`1.set_Prop(string) | overrides.I3.set_Prop(string) | implements |
 | overrides.D.ToString() | overrides.C.ToString() | overrides |
 | overrides.D.f2() | overrides.A.f2() | overrides |
 | overrides.E2.M() | overrides.E.M() | overrides |
@@ -92,5 +92,5 @@
 | overrides.F.M() | overrides.I.M() | implements |
 | overrides.G2.M<S>(string, S) | overrides.G.M<S>(string, S) | overrides |
 | overrides.G.M<S>(string, S) | overrides.I2<System.String>.M<S>(string, S) | implements |
-| overrides.H<>.M<S>(TA, S) | overrides.I2<TA>.M<S>(TA, S) | implements |
-| overrides.Outer<>+A10.M<T>(Inner) | overrides.Outer<>+I6.M<T>(Inner) | implements |
+| overrides.H`1.M<S>(TA, S) | overrides.I2<TA>.M<S>(TA, S) | implements |
+| overrides.Outer`1+A10.M<T>(Inner) | overrides.Outer`1+I6.M<T>(Inner) | implements |

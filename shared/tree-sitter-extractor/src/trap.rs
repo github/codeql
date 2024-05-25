@@ -5,6 +5,14 @@ use std::path::Path;
 
 use flate2::write::GzEncoder;
 
+#[derive(Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
+pub struct Location {
+    pub start_line: usize,
+    pub start_column: usize,
+    pub end_line: usize,
+    pub end_column: usize,
+}
+
 pub struct Writer {
     /// The accumulated trap entries
     trap_output: Vec<Entry>,
@@ -12,6 +20,8 @@ pub struct Writer {
     counter: u32,
     /// cache of global keys
     global_keys: std::collections::HashMap<String, Label>,
+    /// Labels for locations, which don't use global keys
+    location_labels: std::collections::HashMap<Location, Label>,
 }
 
 impl Writer {
@@ -20,6 +30,7 @@ impl Writer {
             counter: 0,
             trap_output: Vec::new(),
             global_keys: std::collections::HashMap::new(),
+            location_labels: std::collections::HashMap::new(),
         }
     }
 
@@ -47,6 +58,17 @@ impl Writer {
         self.global_keys.insert(key.to_owned(), label);
         self.trap_output
             .push(Entry::MapLabelToKey(label, key.to_owned()));
+        (label, true)
+    }
+
+    /// Gets the label for the given location. The first call for a given location will define it as
+    /// a fresh (star) ID.
+    pub fn location_label(&mut self, loc: Location) -> (Label, bool) {
+        if let Some(label) = self.location_labels.get(&loc) {
+            return (*label, false);
+        }
+        let label = self.fresh_id();
+        self.location_labels.insert(loc, label);
         (label, true)
     }
 

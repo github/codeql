@@ -1,1 +1,2 @@
-semmle-extractor-options: /r:System.Collections.dll /r:System.Runtime.Extensions.dll /r:System.Linq.Expressions.dll /r:System.Collections.NonGeneric.dll
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../resources/stubs/_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj

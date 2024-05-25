@@ -55,20 +55,11 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerEdge(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl
-  ) {
+  override predicate isSanitizerOut(DataFlow::Node node, DataFlow::FlowLabel lbl) {
     // Suppress the value-preserving step src -> dst in `extend(dst, src)`. This is modeled as a value-preserving
     // step because it preserves all properties, but the destination is not actually Object.prototype.
-    exists(ExtendCall call |
-      pred = call.getASourceOperand() and
-      (
-        succ = call.getDestinationOperand().getALocalSource()
-        or
-        succ = call
-      ) and
-      lbl instanceof ObjectPrototype
-    )
+    node = any(ExtendCall call).getASourceOperand() and
+    lbl instanceof ObjectPrototype
   }
 
   override predicate isAdditionalFlowStep(

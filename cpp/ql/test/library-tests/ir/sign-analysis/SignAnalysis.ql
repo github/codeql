@@ -1,15 +1,13 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.SignAnalysisCommon
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeUtils
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisRelativeSpecific
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
-module SignAnalysisInstantiated =
-  SignAnalysis<FloatDelta, RangeUtil<FloatDelta, CppLangImplRelative>>;
+module SignAnalysisInstantiated = SignAnalysis<FloatDelta>;
 
 module SignAnalysisTest implements TestSig {
   string getARelevantTag() { result = "sign" }

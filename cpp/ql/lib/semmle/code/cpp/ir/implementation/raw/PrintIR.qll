@@ -4,8 +4,8 @@
  * This file contains the actual implementation of `PrintIR.ql`. For test cases and very small
  * databases, `PrintIR.ql` can be run directly to dump the IR for the entire database. For most
  * uses, however, it is better to write a query that imports `PrintIR.qll`, extends
- * `PrintIRConfiguration`, and overrides `shouldPrintFunction()` to select a subset of functions to
- * dump.
+ * `PrintIRConfiguration`, and overrides `shouldPrintDeclaration()` to select a subset of declarations
+ * to dump.
  */
 
 private import internal.IRInternal
@@ -16,7 +16,7 @@ import Imports::IRConfiguration
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
 /**
- * The query can extend this class to control which functions are printed.
+ * The query can extend this class to control which declarations are printed.
  */
 class PrintIRConfiguration extends TPrintIRConfiguration {
   /** Gets a textual representation of this configuration. */
@@ -24,9 +24,9 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
 
   /**
    * Holds if the IR for `func` should be printed. By default, holds for all
-   * functions.
+   * functions, global and namespace variables, and static local variables.
    */
-  predicate shouldPrintFunction(Language::Declaration decl) { any() }
+  predicate shouldPrintDeclaration(Language::Declaration decl) { any() }
 }
 
 /**
@@ -34,12 +34,12 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
  */
 private class FilteredIRConfiguration extends IRConfiguration {
   override predicate shouldEvaluateDebugStringsForFunction(Language::Declaration func) {
-    shouldPrintFunction(func)
+    shouldPrintDeclaration(func)
   }
 }
 
-private predicate shouldPrintFunction(Language::Declaration decl) {
-  exists(PrintIRConfiguration config | config.shouldPrintFunction(decl))
+private predicate shouldPrintDeclaration(Language::Declaration decl) {
+  exists(PrintIRConfiguration config | config.shouldPrintDeclaration(decl))
 }
 
 private predicate shouldPrintInstruction(Instruction i) {
@@ -90,10 +90,10 @@ private string getOperandPropertyString(Operand operand) {
 }
 
 private newtype TPrintableIRNode =
-  TPrintableIRFunction(IRFunction irFunc) { shouldPrintFunction(irFunc.getFunction()) } or
-  TPrintableIRBlock(IRBlock block) { shouldPrintFunction(block.getEnclosingFunction()) } or
+  TPrintableIRFunction(IRFunction irFunc) { shouldPrintDeclaration(irFunc.getFunction()) } or
+  TPrintableIRBlock(IRBlock block) { shouldPrintDeclaration(block.getEnclosingFunction()) } or
   TPrintableInstruction(Instruction instr) {
-    shouldPrintInstruction(instr) and shouldPrintFunction(instr.getEnclosingFunction())
+    shouldPrintInstruction(instr) and shouldPrintDeclaration(instr.getEnclosingFunction())
   }
 
 /**

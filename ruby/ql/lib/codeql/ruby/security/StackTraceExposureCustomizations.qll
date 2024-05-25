@@ -6,6 +6,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.frameworks.core.Kernel
 
@@ -29,10 +30,10 @@ module StackTraceExposure {
    */
   class BacktraceCall extends Source, DataFlow::CallNode {
     BacktraceCall() {
-      exists(DataFlow::LocalSourceNode varAccess |
-        varAccess.asExpr().(ExprNodes::VariableReadAccessCfgNode).getExpr().getVariable() =
-          any(RescueClause rc).getVariableExpr().(VariableAccess).getVariable() and
-        varAccess.flowsTo(this.getReceiver())
+      exists(DataFlow::SsaDefinitionNode ssaDef |
+        ssaDef.getDefinition().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
+          any(RescueClause rc).getVariableExpr() and
+        ssaDef.(DataFlow::LocalSourceNode).flowsTo(this.getReceiver())
       ) and
       this.getMethodName() = ["backtrace", "backtrace_locations"]
     }

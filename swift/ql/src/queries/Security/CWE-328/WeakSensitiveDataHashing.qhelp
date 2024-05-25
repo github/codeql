@@ -51,18 +51,25 @@
             </li>
         </ul>
 
+        <p>
+            Note that special purpose algorithms, which are used to ensure that a message comes from a particular sender, exist for message authentication. These algorithms should be used when appropriate, as they address common vulnerabilities of simple hashing schemes in this context.
+        </p>
+
     </recommendation>
     <example>
 
         <p>
-            The following examples show a function for checking whether the hash
-            of a certificate matches a known value -- to prevent tampering.
+            The following examples show a function for fetching data from a
+            URL along with a hash of the data, perhaps to check the data has
+            not been tampered with.
+        </p>
 
+        <p>
             In the first case the MD5 hashing algorithm is used that is known to be vulnerable to collision attacks.
         </p>
         <sample src="WeakSensitiveDataHashingBad.swift"/>
-        <p>
 
+        <p>
             Here is the same function using SHA-512, which is a strong cryptographic hashing function.
         </p>
         <sample src="WeakSensitiveDataHashingGood.swift"/>

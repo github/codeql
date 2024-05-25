@@ -101,12 +101,12 @@ private module FindRegexMode {
 }
 
 /**
- * DEPRECATED: Use `Regex` instead.
+ * DEPRECATED: Use `RegExp` instead.
  */
 deprecated class Regex = RegExp;
 
-/** A StrConst used as a regular expression */
-class RegExp extends Expr instanceof StrConst {
+/** A StringLiteral used as a regular expression */
+class RegExp extends Expr instanceof StringLiteral {
   DataFlow::Node use;
 
   RegExp() { this = RegExpTracking::regExpSource(use).asExpr() }
@@ -116,13 +116,14 @@ class RegExp extends Expr instanceof StrConst {
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
-   * IGNORECASE
-   * LOCALE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
-   * VERBOSE
+   * - DEBUG
+   * - ASCII
+   * - IGNORECASE
+   * - LOCALE
+   * - MULTILINE
+   * - DOTALL
+   * - UNICODE
+   * - VERBOSE
    */
   string getAMode() {
     result = FindRegexMode::getAMode(this)
@@ -326,6 +327,17 @@ class RegExp extends Expr instanceof StrConst {
 
   /** Gets the text of this regex */
   string getText() { result = super.getText() }
+
+  /**
+   * Gets the prefix of this regex
+   *
+   * Examples:
+   *
+   *   - The prefix of `'x*y'` is `'`.
+   *   - The prefix of `r''` is `r'`.
+   *   - The prefix of `r"""x*y"""` is `r"""`.
+   */
+  string getPrefix() { result = super.getPrefix() }
 
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }
@@ -617,7 +629,7 @@ class RegExp extends Expr instanceof StrConst {
   private predicate group_start(int start, int end) {
     this.non_capturing_group_start(start, end)
     or
-    this.flag_group_start(start, end, _)
+    this.flag_group_start(start, end)
     or
     this.named_group_start(start, end)
     or
@@ -679,12 +691,48 @@ class RegExp extends Expr instanceof StrConst {
     end = min(int i | i > start + 4 and this.getChar(i) = "?")
   }
 
-  private predicate flag_group_start(int start, int end, string c) {
+  /**
+   * Holds if a parse mode starts between `start` and `end`.
+   */
+  private predicate flag_group_start(int start, int end) {
+    this.flag_group_start_no_modes(start, _) and
+    end = max(int i | this.mode_character(start, i) | i + 1)
+  }
+
+  /**
+   * Holds if the initial part of a parse mode, not containing any
+   * mode characters is between `start` and `end`.
+   */
+  private predicate flag_group_start_no_modes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    end = start + 3 and
-    c = this.getChar(start + 2) and
-    c in ["i", "L", "m", "s", "u", "x"]
+    this.getChar(start + 2) in ["a", "i", "L", "m", "s", "u", "x"] and
+    end = start + 2
+  }
+
+  /**
+   * Holds if `pos` contains a mode character from the
+   * flag group starting at `start`.
+   */
+  private predicate mode_character(int start, int pos) {
+    this.flag_group_start_no_modes(start, pos)
+    or
+    this.mode_character(start, pos - 1) and
+    this.getChar(pos) in ["a", "i", "L", "m", "s", "u", "x"]
+  }
+
+  /**
+   * Holds if a parse mode group includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
+   */
+  private predicate flag(string c) {
+    exists(int pos |
+      this.mode_character(_, pos) and
+      this.getChar(pos) = c
+    )
   }
 
   /**
@@ -692,7 +740,9 @@ class RegExp extends Expr instanceof StrConst {
    * it is defined by a prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flag_group_start(_, _, c) |
+    exists(string c | this.flag(c) |
+      c = "a" and result = "ASCII"
+      or
       c = "i" and result = "IGNORECASE"
       or
       c = "L" and result = "LOCALE"

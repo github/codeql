@@ -39,3 +39,13 @@ private class PredicateInjectionSinkCsv extends SinkModelCsv {
       ]
   }
 }
+
+/**
+ * A barrier for predicate injection vulnerabilities vulnerabilities.
+ */
+private class PredicateInjectionDefaultBarrier extends PredicateInjectionBarrier {
+  PredicateInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+  }
+}

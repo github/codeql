@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_Category", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_EventId", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_Exception", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_Formatter", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_LogLevel", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_State", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger", "BeginScope<TState>", "(TState)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger", "IsEnabled", "(Microsoft.Extensions.Logging.LogLevel)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger", "get_Instance", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger<T>", "BeginScope<TState>", "(TState)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger<T>", "IsEnabled", "(Microsoft.Extensions.Logging.LogLevel)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "AddProvider", "(Microsoft.Extensions.Logging.ILoggerProvider)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "CreateLogger", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "CreateLogger", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "get_Instance", "()", "summary", "df-generated"]

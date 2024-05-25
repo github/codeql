@@ -1,0 +1,4 @@
+# this file should contain bazel settings required to build things from `semmle-code`
+
+common --registry=file:///%workspace%/ql/misc/bazel/registry
+common --registry=https://bcr.bazel.build

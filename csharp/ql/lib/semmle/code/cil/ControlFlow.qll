@@ -5,7 +5,7 @@
 private import CIL
 
 /** A node in the control flow graph. */
-class ControlFlowNode extends @cil_controlflow_node {
+deprecated class ControlFlowNode extends @cil_controlflow_node {
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 
@@ -149,31 +149,31 @@ class ControlFlowNode extends @cil_controlflow_node {
  *
  * Handlers are control flow nodes because they push the handled exception onto the stack.
  */
-class EntryPoint extends ControlFlowNode, @cil_entry_point {
+deprecated class EntryPoint extends ControlFlowNode, @cil_entry_point {
   override int getStackSizeBefore() { result = 0 }
 }
 
-private newtype TFlowType =
+deprecated private newtype TFlowType =
   TNormalFlow() or
   TTrueFlow() or
   TFalseFlow()
 
 /** A type of control flow. Either normal flow (`NormalFlow`), true flow (`TrueFlow`) or false flow (`FalseFlow`). */
-abstract class FlowType extends TFlowType {
+abstract deprecated class FlowType extends TFlowType {
   abstract string toString();
 }
 
 /** Normal control flow. */
-class NormalFlow extends FlowType, TNormalFlow {
+deprecated class NormalFlow extends FlowType, TNormalFlow {
   override string toString() { result = "" }
 }
 
 /** True control flow. */
-class TrueFlow extends FlowType, TTrueFlow {
+deprecated class TrueFlow extends FlowType, TTrueFlow {
   override string toString() { result = "true" }
 }
 
 /** False control flow. */
-class FalseFlow extends FlowType, TFalseFlow {
+deprecated class FalseFlow extends FlowType, TFalseFlow {
   override string toString() { result = "false" }
 }

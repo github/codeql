@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.DataFlow
  */
 class WebRequestSource extends DataFlow::Node {
   WebRequestSource() {
-    exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    exists(MethodCall ma, Method m | ma.getMethod() = m |
       m.getDeclaringType() instanceof WebRequest and
       (
         m.hasName("getHeader") or

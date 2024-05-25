@@ -4,7 +4,7 @@ import TestUtils
 
 from
   EnumDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
-  Type getInterfaceType, string getName, int getNumberOfBaseTypes, Type getType
+  Type getInterfaceType, string getName, int getNumberOfInheritedTypes, Type getType
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -13,8 +13,8 @@ where
   getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
-  getNumberOfBaseTypes = x.getNumberOfBaseTypes() and
+  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
   getType = x.getType()
 select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
   "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
-  getName, "getNumberOfBaseTypes:", getNumberOfBaseTypes, "getType:", getType
+  getName, "getNumberOfInheritedTypes:", getNumberOfInheritedTypes, "getType:", getType

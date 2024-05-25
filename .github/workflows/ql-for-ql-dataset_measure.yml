@@ -11,6 +11,10 @@ on:
       - ql/ql/src/ql.dbscheme
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: read
+
 jobs:
   measure:
     env:
@@ -21,11 +25,11 @@ jobs:
           - github/codeql
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
@@ -42,7 +46,7 @@ jobs:
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Checkout ${{ matrix.repo }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ matrix.repo }}
           path: ${{ github.workspace }}/repo
@@ -71,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: measure
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: measurements

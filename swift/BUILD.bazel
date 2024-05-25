@@ -1,5 +1,5 @@
-load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "strip_prefix")
-load("@rules_pkg//:install.bzl", "pkg_install")
+load("@rules_pkg//pkg:install.bzl", "pkg_install")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
 load("//:defs.bzl", "codeql_platform")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
@@ -57,8 +57,8 @@ pkg_filegroup(
 )
 
 pkg_runfiles(
-    name = "xcode-autobuilder",
-    srcs = ["//swift/xcode-autobuilder"],
+    name = "swift-autobuilder",
+    srcs = ["//swift/swift-autobuilder"],
     prefix = "tools/" + codeql_platform,
 )
 
@@ -75,13 +75,6 @@ pkg_filegroup(
     visibility = ["//visibility:public"],
 )
 
-pkg_files(
-    name = "swift-test-sdk-arch",
-    srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
-    prefix = "qltest/" + codeql_platform,
-    strip_prefix = strip_prefix.from_pkg(),
-)
-
 pkg_filegroup(
     name = "extractor-pack-arch",
     srcs = select({
@@ -89,11 +82,10 @@ pkg_filegroup(
         "//conditions:default": [
             ":extractor",
             ":resource-dir-arch",
-            ":swift-test-sdk-arch",
         ],
     }) + select({
         "@platforms//os:macos": [
-            ":xcode-autobuilder",
+            ":swift-autobuilder",
         ],
         "//conditions:default": [
             ":diagnostics",
@@ -123,6 +115,7 @@ py_binary(
     deps = [":_create_extractor_pack"],
 )
 
+# TODO this is unneeded here but still used in the internal repo. Remove once it's not
 generate_cmake(
     name = "cmake",
     targets = [
@@ -130,7 +123,7 @@ generate_cmake(
         "//swift/logging/tests/assertion-diagnostics:assert-false",
     ] + select({
         "@platforms//os:linux": ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
-        "@platforms//os:macos": ["//swift/xcode-autobuilder"],
+        "@platforms//os:macos": ["//swift/swift-autobuilder"],
     }),
     visibility = ["//visibility:public"],
 )

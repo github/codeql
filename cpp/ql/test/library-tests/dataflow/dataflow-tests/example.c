@@ -12,7 +12,7 @@ typedef struct
 	char isTrue;
 } MyBool;
 
-void myTest_with_local_flow(MyBool *b, int pos) // $ ast-def=b 
+void myTest_with_local_flow(MyBool *b, int pos) // $ ast-def=b ir-def=*b
 {
 	MyCoords coords = {0};
 

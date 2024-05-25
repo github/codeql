@@ -62,6 +62,26 @@ module TaintTracking {
      */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
+    /**
+     * Holds if flow into `node` is prohibited.
+     */
+    predicate isSanitizerIn(DataFlow::Node node) { none() }
+
+    /**
+     * Holds if flow out `node` is prohibited.
+     */
+    predicate isSanitizerOut(DataFlow::Node node) { none() }
+
+    /**
+     * Holds if flow into `node` is prohibited for the flow label `lbl`.
+     */
+    predicate isSanitizerIn(DataFlow::Node node, DataFlow::FlowLabel lbl) { none() }
+
+    /**
+     * Holds if flow out `node` is prohibited for the flow label `lbl`.
+     */
+    predicate isSanitizerOut(DataFlow::Node node, DataFlow::FlowLabel lbl) { none() }
+
     /** Holds if the edge from `pred` to `succ` is a taint sanitizer. */
     predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
@@ -106,6 +126,22 @@ module TaintTracking {
       this.isSanitizerEdge(source, sink, lbl)
       or
       this.isSanitizerEdge(source, sink) and lbl.isTaint()
+    }
+
+    final override predicate isBarrierIn(DataFlow::Node node) { none() }
+
+    final override predicate isBarrierOut(DataFlow::Node node) { none() }
+
+    final override predicate isBarrierIn(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+      this.isSanitizerIn(node, lbl)
+      or
+      this.isSanitizerIn(node) and lbl.isTaint()
+    }
+
+    final override predicate isBarrierOut(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+      this.isSanitizerOut(node, lbl)
+      or
+      this.isSanitizerOut(node) and lbl.isTaint()
     }
 
     final override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {

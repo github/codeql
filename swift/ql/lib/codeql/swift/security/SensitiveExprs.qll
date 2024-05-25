@@ -6,8 +6,11 @@
 
 import swift
 import internal.SensitiveDataHeuristics
+private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.ExternalFlow
 
 private newtype TSensitiveDataType =
+  TPassword() or
   TCredential() or
   TPrivateInfo()
 
@@ -24,18 +27,33 @@ abstract class SensitiveDataType extends TSensitiveDataType {
 }
 
 /**
- * The type of sensitive expression for passwords and other credentials.
+ * The type of sensitive expression for passwords.
+ */
+class SensitivePassword extends SensitiveDataType, TPassword {
+  override string toString() { result = "password" }
+
+  override string getRegexp() {
+    result = HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::password())
+    or
+    result = "(?is).*pass.?phrase.*"
+  }
+}
+
+/**
+ * The type of sensitive expression for credentials and secrets other than passwords.
  */
 class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
   override string getRegexp() {
     exists(SensitiveDataClassification classification |
+      not classification = SensitiveDataClassification::password() and // covered by `SensitivePassword`
       not classification = SensitiveDataClassification::id() and // not accurate enough
+      not classification = SensitiveDataClassification::private() and // covered by `SensitivePrivateInfo`
       result = HeuristicNames::maybeSensitiveRegexp(classification)
     )
     or
-    result = "(?is).*(account|accnt|license).?(id|key).*"
+    result = "(?is).*((account|accnt|licen(se|ce)).?(id|key)|one.?time.?code).*"
   }
 }
 
@@ -50,21 +68,27 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
       "(?is).*(" +
         // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
         // Government identifiers, such as Social Security Numbers
-        "social.?security|national.?insurance|" +
+        "social.?security|employer.?identification|national.?insurance|resident.?id|" +
+        "passport.?(num|no)|" +
         // Contact information, such as home addresses
-        "post.?code|zip.?code|home.?address|" +
+        "post.?code|zip.?code|home.?addr|" +
         // and telephone numbers
-        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no)|telephone|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax|phone).?(num|no)|telephone|" +
+        "emergency.?contact|" +
         // Geographic location - where the user is (or was)
-        "latitude|longitude|" +
+        "l(atitude|ongitude)|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "credit.?card|debit.?card|salary|bank.?account|acc(ou)?nt.?(no|num)|" +
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
+        "salary|billing|credit.?(rating|score)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-        "email|" +
+        "e(mail|_mail)|" +
         // Health - medical conditions, insurance status, prescription records
-        "birthday|birth.?date|date.?of.?birth|medical|" +
+        "birth.?da(te|y)|da(te|y).?(of.?)?birth|" +
+        "medical|(health|care).?plan|healthkit|appointment|prescription|" +
+        "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
+        "menstrua|pregnan|insulin|inhaler|" +
         // Relationships - work and family
-        "employer|spouse" +
+        "employ(er|ee)|spouse|maiden.?name" +
         // ---
         ").*"
   }
@@ -81,12 +105,31 @@ private string regexpProbablySafe() {
 }
 
 /**
+ * Gets a string that is to be tested for sensitivity.
+ */
+private string sensitiveCandidateStrings() {
+  result = any(VarDecl v).getName()
+  or
+  result = any(Function f).getShortName()
+  or
+  result = any(Argument a).getLabel()
+}
+
+/**
+ * Gets a string from the candidates that is sensitive.
+ */
+private string sensitiveStrings(SensitiveDataType sensitiveType) {
+  result = sensitiveCandidateStrings() and
+  result.regexpMatch(sensitiveType.getRegexp())
+}
+
+/**
  * A `VarDecl` that might be used to contain sensitive data.
  */
 private class SensitiveVarDecl extends VarDecl {
   SensitiveDataType sensitiveType;
 
-  SensitiveVarDecl() { this.getName().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveVarDecl() { this.getName() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getName() and
@@ -99,15 +142,11 @@ private class SensitiveVarDecl extends VarDecl {
  */
 private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
-  string name; // name of the function, not including the argument list.
 
-  SensitiveFunction() {
-    name = this.getShortName() and
-    name.regexpMatch(sensitiveType.getRegexp())
-  }
+  SensitiveFunction() { this.getShortName() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
-    label = name and
+    label = this.getShortName() and
     sensitiveType = type
   }
 }
@@ -118,7 +157,7 @@ private class SensitiveFunction extends Function {
 private class SensitiveArgument extends Argument {
   SensitiveDataType sensitiveType;
 
-  SensitiveArgument() { this.getLabel().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveArgument() { this.getLabel() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getLabel() and
@@ -152,6 +191,23 @@ class SensitiveExpr extends Expr {
     ) and
     // do not mark as sensitive it if it is probably safe
     not label.regexpMatch(regexpProbablySafe())
+    or
+    (
+      // modeled sensitive password
+      sourceNode(DataFlow::exprNode(this), "sensitive-password") and
+      sensitiveType = TPassword() and
+      label = "password"
+      or
+      // modeled sensitive credential
+      sourceNode(DataFlow::exprNode(this), "sensitive-credential") and
+      sensitiveType = TCredential() and
+      label = "credential"
+      or
+      // modeled sensitive private information
+      sourceNode(DataFlow::exprNode(this), "sensitive-private-info") and
+      sensitiveType = TPrivateInfo() and
+      label = "private information"
+    )
   }
 
   /**
@@ -169,6 +225,7 @@ class SensitiveExpr extends Expr {
  * A function that is likely used to encrypt or hash data.
  */
 private class EncryptionFunction extends Function {
+  cached
   EncryptionFunction() { this.getName().regexpMatch("(?is).*(crypt|hash|encode|protect).*") }
 }
 

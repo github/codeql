@@ -27,7 +27,7 @@ private FieldRead nonFinalFieldRead(Callable m, Field f) {
   not f.isFinal()
 }
 
-private MethodAccess unqualifiedCallToNonAbstractMethod(Constructor c, Method m) {
+private MethodCall unqualifiedCallToNonAbstractMethod(Constructor c, Method m) {
   result.getEnclosingCallable() = c and
   (
     not exists(result.getQualifier()) or
@@ -38,7 +38,7 @@ private MethodAccess unqualifiedCallToNonAbstractMethod(Constructor c, Method m)
 }
 
 from
-  Constructor c, MethodAccess ma, Method m, Method n, Field f, FieldRead fa, Constructor d,
+  Constructor c, MethodCall ma, Method m, Method n, Field f, FieldRead fa, Constructor d,
   FieldWrite fw
 where
   // Method access in a constructor

@@ -1,3 +1,182 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug that stopped built-in functions from being referenced using the predicate `hasQualifiedName` because technically they do not belong to any package. Now you can use the empty string as the package, e.g. `f.hasQualifiedName("", "len")`.
+* Fixed a bug that stopped data flow models for built-in functions from having any effect because the package "" was not parsed correctly.
+* Fixed a bug that stopped data flow from being followed through variadic arguments to built-in functions or to functions called using a variable.
+
+## 0.8.0
+
+### Breaking Changes
+
+* Deleted the deprecated `CsvRemoteSource` alias. Use `MaDRemoteSource` instead.
+
+### Deprecated APIs
+
+* To make Go consistent with other language libraries, the `UntrustedFlowSource` name has been deprecated throughout. Use `RemoteFlowSource` instead, which replaces it. 
+* Where modules have classes named `UntrustedFlowAsSource`, these are also deprecated and the `Source` class in the same module or the `RemoteFlowSource` class should be used instead.
+
+## 0.7.14
+
+### Minor Analysis Improvements
+
+* Data flow through variables declared in statements of the form `x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
+* Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
+
+## 0.7.13
+
+### Minor Analysis Improvements
+
+* The `CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO` option, which speeds up retrieval of dependency information, is now on by default. This was originally an external contribution by @xhd2015.
+* Added dataflow sources for the package `gopkg.in/macaron.v1`.
+
+## 0.7.12
+
+No user-facing changes.
+
+## 0.7.11
+
+No user-facing changes.
+
+## 0.7.10
+
+### Major Analysis Improvements
+
+* We have significantly improved the Go autobuilder to understand a greater range of project layouts, which allows Go source files to be analysed that could previously not be processed.
+* Go 1.22 has been included in the range of supported Go versions.
+
+### Bug Fixes
+
+* Fixed dataflow out of a `map` using a `range` statement.
+
+## 0.7.9
+
+No user-facing changes.
+
+## 0.7.8
+
+No user-facing changes.
+
+## 0.7.7
+
+### Deprecated APIs
+
+* The class `Fmt::AppenderOrSprinter` of the `Fmt.qll` module has been deprecated. Use the new `Fmt::AppenderOrSprinterFunc` class instead. Its taint flow features have been migrated to models-as-data.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `TLD`, `HTTP`, `SQL`, `URL` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated and unused `Source` class from the `SharedXss` module of `Xss.qll`
+* Support for flow sources in [AWS Lambda function handlers](https://docs.aws.amazon.com/lambda/latest/dg/golang-handler.html) has been added.
+* Support for the [fasthttp framework](https://github.com/valyala/fasthttp/) has been added.
+
+## 0.7.6
+
+### Minor Analysis Improvements
+
+* The diagnostic query `go/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Go files, now considers any Go file seen during extraction, even one with some errors, to be extracted / scanned.
+* The XPath library, which is used for the XPath injection query (`go/xml/xpath-injection`), now includes support for `Parser` sinks from the [libxml2](https://github.com/lestrrat-go/libxml2) package.
+* `CallNode::getACallee` and related predicates now recognise more callees accessed via a function variable, in particular when the callee is stored into a global variable or is captured by an anonymous function. This may lead to new alerts where data-flow into such a callee is relevant.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through a slice expression was not tracked correctly. Taint flow was tracked correctly.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Added the [gin-contrib/cors](https://github.com/gin-contrib/cors) library to the experimental query "CORS misconfiguration" (`go/cors-misconfiguration`).
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through an array was not tracked correctly in some circumstances. Taint flow was tracked correctly.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* Added [Request.Cookie](https://pkg.go.dev/net/http#Request.Cookie) to reflected XSS sanitizers.
+
+### Bug Fixes
+
+* Fixed a bug where data flow nodes in files that are not in the project being analyzed (such as libraries) and are not contained within a function were not given an enclosing `Callable`. Note that for nodes that are not contained within a function, the enclosing callable is considered to be the file itself. This may cause some minor changes to results.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Support has been added for file system access sinks in the following libraries: [net/http](https://pkg.go.dev/net/http), [Afero](https://github.com/spf13/afero), [beego](https://pkg.go.dev/github.com/astaxie/beego), [Echo](https://pkg.go.dev/github.com/labstack/echo), [Fiber](https://github.com/kataras/iris), [Gin](https://pkg.go.dev/github.com/gin-gonic/gin), [Iris](https://github.com/kataras/iris).
+* Added `GoKit.qll` to `go.qll` enabling the GoKit framework by default
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Added Numeric and Boolean types to SQL injection sanitzers.
+
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+### Minor Analysis Improvements
+
+* Added [http.Error](https://pkg.go.dev/net/http#Error) to XSS sanitzers.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Logrus' `WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
+
+## 0.6.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Parameter nodes now exist for unused parameters as well as used parameters.
+* Add support for v4 of the [Go Micro framework](https://github.com/go-micro/go-micro).
+* Support for the [Bun framework](https://bun.uptrace.dev/) has been added.
+* Support for [gqlgen](https://github.com/99designs/gqlgen) has been added.
+* Support for the [go-pg framework](https://github.com/go-pg/pg) has been improved.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The `LogInjection::Configuration` taint flow configuration class has been deprecated. Use the `LogInjection::Flow` module instead.
+
+### Minor Analysis Improvements
+
+* When a result of path query flows through a function modeled using `DataFlow::FunctionModel` or `TaintTracking::FunctionModel`, the path now includes nodes corresponding to the input and output to the function. This brings it in line with functions modeled using Models-as-Data.
+
+## 0.5.4
+
+No user-facing changes.
+
 ## 0.5.3
 
 No user-facing changes.

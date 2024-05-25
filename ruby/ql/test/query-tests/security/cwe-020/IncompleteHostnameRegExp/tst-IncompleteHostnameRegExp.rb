@@ -65,3 +65,17 @@ end
 def convert2(domain)
 	return Regexp.new(domain[:hostname]);
 end
+
+class A
+	def self.match?(x) = true
+end
+
+A.match?("^http://test.example.com") # OK
+
+class B
+	def self.match?(x)
+		some_string.match?(x)
+	end
+end
+
+B.match?("^http://test.example.com") # NOT OK
