@@ -12,24 +12,50 @@ function getSecret() {
 
 app.get('/jose1', (req, res) => {
     const UserToken = req.headers.authorization;
-    // BAD: no signature verification
-    jose.decodeJwt(UserToken)
+    // no signature verification
+    jose.decodeJwt(UserToken) // NOT OK
 })
 
 
 app.get('/jose2', async (req, res) => {
     const UserToken = req.headers.authorization;
-    // GOOD: with signature verification
-    await jose.jwtVerify(UserToken, new TextEncoder().encode(getSecret()))
+    // with signature verification
+    await jose.jwtVerify(UserToken, new TextEncoder().encode(getSecret())) // OK
 })
 
 app.get('/jose3', async (req, res) => {
     const UserToken = req.headers.authorization;
-    // GOOD: first without signature verification then with signature verification for same UserToken
-    jose.decodeJwt(UserToken)
-    await jose.jwtVerify(UserToken, new TextEncoder().encode(getSecret()))
+    // first without signature verification then with signature verification for same UserToken
+    jose.decodeJwt(UserToken)  // OK
+    await jose.jwtVerify(UserToken, new TextEncoder().encode(getSecret())) // OK
 })
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+function aJWT() {
+    return "A JWT provided by user"
+}
+
+(function () {
+    const UserToken = aJwt()
+
+    // no signature verification
+    jose.decodeJwt(UserToken) // NOT OK
+})();
+
+(async function () {
+    const UserToken = aJwt()
+
+    // first without signature verification then with signature verification for same UserToken
+    jose.decodeJwt(UserToken)  // OK
+    await jose.jwtVerify(UserToken, new TextEncoder().encode(getSecret()))  // OK
+})();
+
+(async function () {
+    const UserToken = aJwt()
+
+    // with signature verification
+    await jose.jwtVerify(UserToken, new TextEncoder().encode(getSecret()))  // OK
+})();

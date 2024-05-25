@@ -18,12 +18,7 @@ class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "jsonwebtoken without any signature verification" }
 
   override predicate isSource(DataFlow::Node source) {
-    source =
-      API::moduleImport("jsonwebtoken")
-          .getMember("decode")
-          .getParameter(0)
-          .asSink()
-          .getALocalSource()
+    source = [unverifiedDecode(), verifiedDecode()].getALocalSource()
   }
 
   override predicate isSink(DataFlow::Node sink) {

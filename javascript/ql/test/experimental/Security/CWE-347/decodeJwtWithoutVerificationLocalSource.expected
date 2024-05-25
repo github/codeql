@@ -11,11 +11,6 @@ nodes
 | JsonWebToken.js:23:28:23:36 | UserToken |
 | JsonWebToken.js:24:28:24:36 | UserToken |
 | JsonWebToken.js:24:28:24:36 | UserToken |
-| JsonWebToken.js:28:11:28:47 | UserToken |
-| JsonWebToken.js:28:23:28:47 | req.hea ... ization |
-| JsonWebToken.js:28:23:28:47 | req.hea ... ization |
-| JsonWebToken.js:31:28:31:36 | UserToken |
-| JsonWebToken.js:31:28:31:36 | UserToken |
 | JsonWebToken.js:35:11:35:47 | UserToken |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization |
@@ -41,10 +36,6 @@ edges
 | JsonWebToken.js:20:11:20:47 | UserToken | JsonWebToken.js:24:28:24:36 | UserToken |
 | JsonWebToken.js:20:23:20:47 | req.hea ... ization | JsonWebToken.js:20:11:20:47 | UserToken |
 | JsonWebToken.js:20:23:20:47 | req.hea ... ization | JsonWebToken.js:20:11:20:47 | UserToken |
-| JsonWebToken.js:28:11:28:47 | UserToken | JsonWebToken.js:31:28:31:36 | UserToken |
-| JsonWebToken.js:28:11:28:47 | UserToken | JsonWebToken.js:31:28:31:36 | UserToken |
-| JsonWebToken.js:28:23:28:47 | req.hea ... ization | JsonWebToken.js:28:11:28:47 | UserToken |
-| JsonWebToken.js:28:23:28:47 | req.hea ... ization | JsonWebToken.js:28:11:28:47 | UserToken |
 | JsonWebToken.js:35:11:35:47 | UserToken | JsonWebToken.js:38:28:38:36 | UserToken |
 | JsonWebToken.js:35:11:35:47 | UserToken | JsonWebToken.js:38:28:38:36 | UserToken |
 | JsonWebToken.js:35:11:35:47 | UserToken | JsonWebToken.js:39:28:39:36 | UserToken |

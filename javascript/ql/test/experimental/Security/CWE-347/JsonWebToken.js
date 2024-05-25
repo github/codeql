@@ -13,40 +13,83 @@ app.get('/jwtJsonwebtoken1', (req, res) => {
     const UserToken = req.headers.authorization;
 
     // BAD: no signature verification
-    jwtJsonwebtoken.decode(UserToken)
+    jwtJsonwebtoken.decode(UserToken) // NOT OK
 })
 
 app.get('/jwtJsonwebtoken2', (req, res) => {
     const UserToken = req.headers.authorization;
 
     // BAD: no signature verification
-    jwtJsonwebtoken.decode(UserToken)
-    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] })
+    jwtJsonwebtoken.decode(UserToken) // NOT OK
+    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] }) // NOT OK
 })
 
 app.get('/jwtJsonwebtoken3', (req, res) => {
     const UserToken = req.headers.authorization;
 
     // GOOD: with signature verification
-    jwtJsonwebtoken.verify(UserToken, getSecret())
+    jwtJsonwebtoken.verify(UserToken, getSecret()) // OK
 })
 
 app.get('/jwtJsonwebtoken4', (req, res) => {
     const UserToken = req.headers.authorization;
 
     // GOOD: first without signature verification then with signature verification for same UserToken
-    jwtJsonwebtoken.decode(UserToken)
-    jwtJsonwebtoken.verify(UserToken, getSecret())
+    jwtJsonwebtoken.decode(UserToken) // OK
+    jwtJsonwebtoken.verify(UserToken, getSecret()) // OK
 })
 
 app.get('/jwtJsonwebtoken5', (req, res) => {
     const UserToken = req.headers.authorization;
 
     // GOOD: first without signature verification then with signature verification for same UserToken
-    jwtJsonwebtoken.decode(UserToken)
-    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256"] })
+    jwtJsonwebtoken.decode(UserToken) // OK
+    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256"] }) // OK
 })
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
+function aJWT() {
+    return "A JWT provided by user"
+}
+
+(function () {
+    const UserToken = aJwt()
+
+    // BAD: no signature verification
+    jwtJsonwebtoken.decode(UserToken) // NOT OK
+})();
+
+(function () {
+    const UserToken = aJwt()
+
+    // BAD: no signature verification
+    jwtJsonwebtoken.decode(UserToken) // NOT OK
+    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] }) // NOT OK
+})();
+
+(function () {
+    const UserToken = aJwt()
+
+    // GOOD: with signature verification
+    jwtJsonwebtoken.verify(UserToken, getSecret())  // OK
+})();
+
+(function () {
+    const UserToken = aJwt()
+
+    // GOOD: first without signature verification then with signature verification for same UserToken
+    jwtJsonwebtoken.decode(UserToken)  // OK
+    jwtJsonwebtoken.verify(UserToken, getSecret())  // OK
+})();
+
+(function () {
+    const UserToken = aJwt()
+
+    // GOOD: first without signature verification then with signature verification for same UserToken
+    jwtJsonwebtoken.decode(UserToken) // OK
+    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256"] }) // OK
+})();
