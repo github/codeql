@@ -1,0 +1,39 @@
+nodes
+| test.js:5:9:5:28 | { EnvValue, EnvKey } |
+| test.js:5:9:5:39 | EnvKey |
+| test.js:5:9:5:39 | EnvValue |
+| test.js:5:11:5:18 | EnvValue |
+| test.js:5:21:5:26 | EnvKey |
+| test.js:5:32:5:39 | req.body |
+| test.js:5:32:5:39 | req.body |
+| test.js:6:15:6:20 | EnvKey |
+| test.js:6:15:6:20 | EnvKey |
+| test.js:6:25:6:32 | EnvValue |
+| test.js:6:25:6:32 | EnvValue |
+| test.js:7:15:7:20 | EnvKey |
+| test.js:7:15:7:20 | EnvKey |
+| test.js:7:25:7:32 | EnvValue |
+| test.js:7:25:7:32 | EnvValue |
+| test.js:8:24:8:31 | EnvValue |
+| test.js:8:24:8:31 | EnvValue |
+edges
+| test.js:5:9:5:28 | { EnvValue, EnvKey } | test.js:5:11:5:18 | EnvValue |
+| test.js:5:9:5:28 | { EnvValue, EnvKey } | test.js:5:21:5:26 | EnvKey |
+| test.js:5:9:5:39 | EnvKey | test.js:6:15:6:20 | EnvKey |
+| test.js:5:9:5:39 | EnvKey | test.js:6:15:6:20 | EnvKey |
+| test.js:5:9:5:39 | EnvKey | test.js:7:15:7:20 | EnvKey |
+| test.js:5:9:5:39 | EnvKey | test.js:7:15:7:20 | EnvKey |
+| test.js:5:9:5:39 | EnvValue | test.js:6:25:6:32 | EnvValue |
+| test.js:5:9:5:39 | EnvValue | test.js:6:25:6:32 | EnvValue |
+| test.js:5:9:5:39 | EnvValue | test.js:7:25:7:32 | EnvValue |
+| test.js:5:9:5:39 | EnvValue | test.js:7:25:7:32 | EnvValue |
+| test.js:5:9:5:39 | EnvValue | test.js:8:24:8:31 | EnvValue |
+| test.js:5:9:5:39 | EnvValue | test.js:8:24:8:31 | EnvValue |
+| test.js:5:11:5:18 | EnvValue | test.js:5:9:5:39 | EnvValue |
+| test.js:5:21:5:26 | EnvKey | test.js:5:9:5:39 | EnvKey |
+| test.js:5:32:5:39 | req.body | test.js:5:9:5:28 | { EnvValue, EnvKey } |
+| test.js:5:32:5:39 | req.body | test.js:5:9:5:28 | { EnvValue, EnvKey } |
+#select
+| test.js:6:25:6:32 | EnvValue | test.js:5:32:5:39 | req.body | test.js:6:25:6:32 | EnvValue | arbitrary environment variable assignment from this $@. | test.js:5:32:5:39 | req.body | user controllable source |
+| test.js:7:25:7:32 | EnvValue | test.js:5:32:5:39 | req.body | test.js:7:25:7:32 | EnvValue | arbitrary environment variable assignment from this $@. | test.js:5:32:5:39 | req.body | user controllable source |
+| test.js:8:24:8:31 | EnvValue | test.js:5:32:5:39 | req.body | test.js:8:24:8:31 | EnvValue | arbitrary environment variable assignment from this $@. | test.js:5:32:5:39 | req.body | user controllable source |

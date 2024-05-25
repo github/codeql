@@ -1,8 +1,8 @@
 /**
- * @name User controlled environment injection
- * @description full control on creating environment variables from user controlled data is not secure
+ * @name User controlled arbitrary environment variable injection
+ * @description creating arbitrary environment variables from user controlled data is not secure
  * @kind path-problem
- * @id js/envinjection
+ * @id js/env-key-and-value-injection
  * @problem.severity error
  * @security-severity 7.5
  * @precision medium
@@ -46,13 +46,13 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 from
-  Configuration cfg, Configuration cfg2, DataFlow::PathNode source, DataFlow::PathNode sink,
+  Configuration cfg, Configuration cfg2, DataFlow::PathNode source, DataFlow::PathNode sink1,
   DataFlow::PathNode sink2
 where
-  cfg.hasFlowPath(source, sink) and
-  sink.getNode() = API::moduleImport("process").getMember("env").getAMember().asSink() and
+  cfg.hasFlowPath(source, sink1) and
+  sink1.getNode() = API::moduleImport("process").getMember("env").getAMember().asSink() and
   cfg2.hasFlowPath(source, sink2) and
-  sink.getNode().asExpr() =
+  sink2.getNode().asExpr() =
     NodeJSLib::process()
         .getAPropertyRead("env")
         .asExpr()
@@ -60,5 +60,5 @@ where
         .(IndexExpr)
         .getAChildExpr()
         .(VarRef)
-select sink.getNode(), source, sink, "this environment variable assignment is $@.",
-  source.getNode(), "user controllable"
+select sink1.getNode(), source, sink1, "arbitrary environment variable assignment from this $@.",
+  source.getNode(), "user controllable source"
