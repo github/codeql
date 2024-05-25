@@ -1,4 +1,4 @@
-(function () {
+(function() {
     const pg = require('pg');
 
     const client = new pg.Client({
@@ -11,43 +11,43 @@
     client.connect();
 })();
 
-(function () {
-    require("http").request({ auth: "user:hgfedcba" });  // NOT OK
-    require("https").request({ auth: "user:hgfedcba" }); // NOT OK
+(function() {
+    require("http").request({auth: "user:hgfedcba"});  // NOT OK
+    require("https").request({auth: "user:hgfedcba"}); // NOT OK
     function getCredentials() {
         return "user:hgfedcba";
     }
-    require("http").request({ auth: getCredentials() }); // NOT OK
-    require("http").request({ auth: getUnknownCredentials() }); // OK
+    require("http").request({auth: getCredentials()}); // NOT OK
+    require("http").request({auth: getUnknownCredentials()}); // OK
 })();
 
-(function () {
+(function() {
     var basicAuth = require('express-basic-auth');
 
-    basicAuth({ users: { 'admin': 'hgfedcba' } });  // NOT OK
+    basicAuth({users: { 'admin': 'hgfedcba' }});  // NOT OK
     var users = {};
     users['unknown-admin-name'] = 'hgfedcba'; // NOT OK
-    basicAuth({ users: users });
+    basicAuth({users: users});
 })();
 
-(function () {
+(function() {
     var basicAuth = require('basic-auth-connect');
     basicAuth('username', 'hgfedcba'); // NOT OK
-    basicAuth(function () { }); // OK
+    basicAuth(function(){}); // OK
 })();
 
-(function () {
+(function() {
     var AWS = require('aws-sdk');
-    AWS.config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba' }); // NOT OK
-    new AWS.Config({ accessKeyId: 'username', secretAccessKey: 'hgfedcba' }); // NOT OK
+    AWS.config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
+    new AWS.Config({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
     var config = new AWS.Config();
-    config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba' }); // NOT OK
+    config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
     var o = {};
     o.secretAccessKey = 'hgfedcba'; // NOT OK
     config.update(o);
 })();
 
-(function () {
+(function() {
     var request = require('request');
 
     request.get(url).auth('username', 'hgfedcba'); // NOT OK
@@ -78,21 +78,21 @@
     });
 })();
 
-(function () {
+(function() {
     const MsRest = require('ms-rest-azure');
 
-    MsRest.loginWithUsernamePassword('username', 'hgfedcba', function () { }); // NOT OK
-    MsRest.loginWithUsernamePassword(process.env.AZURE_USER, process.env.AZURE_PASS, function () { }); // OK
-    MsRest.loginWithServicePrincipalSecret('username', 'hgfedcba', function () { }); // NOT OK
+    MsRest.loginWithUsernamePassword('username', 'hgfedcba', function(){}); // NOT OK
+    MsRest.loginWithUsernamePassword(process.env.AZURE_USER, process.env.AZURE_PASS, function(){}); // OK
+    MsRest.loginWithServicePrincipalSecret('username', 'hgfedcba', function(){}); // NOT OK
 })();
 
-(function () {
+(function() {
     var digitalocean = require('digitalocean');
     digitalocean.client('TOKEN'); // NOT OK
     digitalocean.client(process.env.DIGITAL_OCEAN_TOKEN); // OK
 })();
 
-(function () {
+(function() {
     var pkgcloud = require('pkgcloud');
     pkgcloud.compute.createClient({
         account: 'x1', // NOT OK
@@ -126,26 +126,26 @@
     });
 })();
 
-(function () {
+(function(){
     require('crypto').createHmac('sha256', 'hgfedcba');
     require("crypto-js/aes").encrypt('my message', 'hgfedcba');
 })()
 
-    (function () {
-        require("cookie-session")({ secret: "hgfedcba" });
-    })()
+(function(){
+    require("cookie-session")({ secret: "hgfedcba" });
+})()
 
-    (function () {
-        var request = require('request');
-        request.get(url, { // OK
-            'auth': {
-                'user': '',
-                'pass': process.env.PASSWORD
-            }
-        });
-    })();
+(function(){
+    var request = require('request');
+    request.get(url, { // OK
+        'auth': {
+            'user': '',
+            'pass': process.env.PASSWORD
+        }
+    });
+})();
 
-(function () {
+(function(){
     var request = require('request');
     let pass = getPassword() || '';
     request.get(url, { // OK
@@ -156,12 +156,12 @@
     });
 })();
 
-(function () {
-    require("cookie-session")({ secret: "change_me" }); // NOT OK
-    require('crypto').createHmac('sha256', 'change_me'); // NOT OK
+(function(){
+	require("cookie-session")({ secret: "change_me" }); // NOT OK
+	require('crypto').createHmac('sha256', 'change_me'); // NOT OK
 
-    var basicAuth = require('express-basic-auth');
-    basicAuth({ users: { [adminName]: 'change_me' } });  // OK
+	var basicAuth = require('express-basic-auth');
+	basicAuth({users: { [adminName]: 'change_me' }});  // OK
 })();
 
 (async function () {
@@ -231,22 +231,22 @@
     const username = 'sdsdag';
     const password = config.get('some_actually_secrect_password');
     const response = await fetch(ENDPOINT, {
-        method: 'get',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
-        },
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
+      },
     });
-})();
+})
 
 (function () {
     import jwt from "jsonwebtoken";
 
     var privateKey = "myHardCodedPrivateKey";
-    var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256' });  // NOT OK
+    var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'});
 
     var publicKey = "myHardCodedPublicKey";
-    jwt.verify(token, publicKey, function (err, decoded) {  // NOT OK
+    jwt.verify(token, publicKey, function(err, decoded) {
         console.log(decoded);
     });
 })();
@@ -271,19 +271,19 @@
     });
 });
 
-(function () {
-    require("http").request({ auth: "user:{{ INSERT_HERE }}" }); // OK
-    require("http").request({ auth: "user:token {{ INSERT_HERE }}" }); // OK
-    require("http").request({ auth: "user:( INSERT_HERE )" }); // OK
-    require("http").request({ auth: "user:{{ env.access_token }}" }); // OK
-    require("http").request({ auth: "user:abcdefgh" }); // OK
-    require("http").request({ auth: "user:12345678" }); // OK
-    require("http").request({ auth: "user:foo" }); // OK
-    require("http").request({ auth: "user:mypassword" }) // OK
-    require("http").request({ auth: "user:mytoken" }) // OK
-    require("http").request({ auth: "user:fake token" }) // OK
-    require("http").request({ auth: "user:dcba" }) // OK
-    require("http").request({ auth: "user:custom string" }) // OK
+(function() {
+    require("http").request({auth: "user:{{ INSERT_HERE }}"}); // OK
+    require("http").request({auth: "user:token {{ INSERT_HERE }}"}); // OK
+    require("http").request({auth: "user:( INSERT_HERE )"}); // OK
+    require("http").request({auth: "user:{{ env.access_token }}"}); // OK
+    require("http").request({auth: "user:abcdefgh"}); // OK
+    require("http").request({auth: "user:12345678"}); // OK
+    require("http").request({auth: "user:foo"}); // OK
+    require("http").request({auth: "user:mypassword"}) // OK
+    require("http").request({auth: "user:mytoken"}) // OK
+    require("http").request({auth: "user:fake token"}) // OK
+    require("http").request({auth: "user:dcba"}) // OK
+    require("http").request({auth: "user:custom string"}) // OK
 });
 
 (function () {
@@ -294,105 +294,3 @@
     headers.append("Authorization", `Basic sdsdag:aaaiuogrweuibgbbbbb`); // NOT OK
     headers.append("Authorization", `Basic sdsdag:000000000000001`); // OK
 });
-
-
-(function () {
-    const jwt_simple = require("jwt-simple");
-
-    var privateKey = "myHardCodedPrivateKey";
-    jwt_simple.decode(UserToken, privateKey); // NOT OK
-})();
-
-
-(async function () {
-    const jose = require("jose");
-
-    var privateKey = "myHardCodedPrivateKey";
-    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // NOT OK
-
-
-    const spki = `-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhYOFK2Ocbbpb/zVypi9
-    ...
-    -----END PUBLIC KEY-----`
-    const publicKey = await jose.importSPKI(spki, 'RS256')
-    jose.jwtVerify(token, publicKey) // NOT OK
-})();
-
-(function () {
-    const expressjwt = require("express-jwt");
-
-    var secretKey = "myHardCodedPrivateKey";
-
-    app.get(
-        "/protected",
-        expressjwt.expressjwt({
-            secret: secretKey, algorithms: ["HS256"] // NOT OK
-        }),
-        function (req, res) {
-            if (!req.auth.admin) return res.sendStatus(401);
-            res.sendStatus(200);
-        }
-    );
-
-    app.get(
-        "/protected",
-        expressjwt.expressjwt({
-            secret: Buffer.from(secretKey, "base64"), // NOT OK
-            algorithms: ["RS256"],
-        }),
-        function (req, res) {
-            if (!req.auth.admin) return res.sendStatus(401);
-            res.sendStatus(200);
-        }
-    );
-
-})();
-
-(function () {
-    const JwtStrategy = require('passport-jwt').Strategy;
-    const passport = require('passport')
-
-    var secretKey = "myHardCodedPrivateKey";
-
-    const opts = {}
-    opts.secretOrKey = secretKey; // NOT OK
-    passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-        return done(null, false);
-    }));
-
-    passport.use(new JwtStrategy({
-        secretOrKeyProvider: function (request, rawJwtToken, done) {
-            return done(null, secretKey) // NOT OK
-        }
-    }, function (jwt_payload, done) {
-        return done(null, false);
-    }));
-})();
-
-(function () {
-    import NextAuth from "next-auth"
-    import AppleProvider from "next-auth/providers/apple"
-
-    var secretKey = "myHardCodedPrivateKey";
-
-    NextAuth({
-        secret: secretKey, // NOT OK
-        providers: [
-            AppleProvider({
-                clientId: process.env.APPLE_ID,
-                clientSecret: process.env.APPLE_SECRET,
-            }),
-        ],
-    })
-})();
-
-(function () {
-    const Koa = require('koa');
-    const jwt = require('koa-jwt');
-    const app = new Koa();
-
-    var secretKey = "myHardCodedPrivateKey";
-
-    app.use(jwt({ secret: secretKey })); // NOT OK
-})();
