@@ -5,7 +5,7 @@ using System.Linq;
 using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
-using Newtonsoft.Json.Linq;
+using Semmle.Extraction.CSharp.DependencyFetching;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -32,21 +32,21 @@ namespace Semmle.Autobuild.CSharp
             if (auto)
             {
                 NotDotNetProjects = builder.ProjectsOrSolutionsToBuild
-                    .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
+                    .SelectMany(p => new[] { p }.Concat(p.IncludedProjects))
                     .OfType<Project<CSharpAutobuildOptions>>()
                     .Where(p => !p.DotNetProject);
                 var notDotNetProject = NotDotNetProjects.FirstOrDefault();
 
                 if (notDotNetProject is not null)
                 {
-                    builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
+                    builder.Logger.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
                     return BuildScript.Failure;
                 }
 
-                builder.Log(Severity.Info, "Attempting to build using .NET Core");
+                builder.Logger.LogInfo("Attempting to build using .NET Core");
             }
 
-            return WithDotNet(builder, (dotNetPath, environment) =>
+            return WithDotNet(builder, ensureDotNetAvailable: false, (dotNetPath, environment) =>
                 {
                     var ret = GetInfoCommand(builder.Actions, dotNetPath, environment);
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
@@ -79,31 +79,24 @@ namespace Semmle.Autobuild.CSharp
         /// variables needed by the installed .NET Core (<code>null</code> when no variables
         /// are needed).
         /// </summary>
-        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
+        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, bool ensureDotNetAvailable, Func<string?, IDictionary<string, string>?, BuildScript> f)
         {
-            var installDir = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".dotnet");
-            var installScript = DownloadDotNet(builder, installDir);
-            return BuildScript.Bind(installScript, installed =>
+            var temp = FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var shouldCleanUp);
+            return DotNet.WithDotNet(builder.Actions, builder.Logger, builder.Paths.Select(x => x.Item1), temp, shouldCleanUp, ensureDotNetAvailable, builder.Options.DotNetVersion, installDir =>
             {
-                Dictionary<string, string>? env;
-                if (installed == 0)
+                var env = new Dictionary<string, string>
                 {
-                    // The installation succeeded, so use the newly installed .NET Core
+                    { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
+                    { "MSBUILDDISABLENODEREUSE", "1" }
+                };
+                if (installDir is not null)
+                {
+                    // The installation succeeded, so use the newly installed .NET
                     var path = builder.Actions.GetEnvironmentVariable("PATH");
                     var delim = builder.Actions.IsWindows() ? ";" : ":";
-                    env = new Dictionary<string, string>{
-                            { "DOTNET_MULTILEVEL_LOOKUP", "false" }, // prevent look up of other .NET Core SDKs
-                            { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
-                            { "MSBUILDDISABLENODEREUSE", "1" },
-                            { "PATH", installDir + delim + path }
-                        };
+                    env.Add("DOTNET_MULTILEVEL_LOOKUP", "false"); // prevent look up of other .NET SDKs
+                    env.Add("PATH", installDir + delim + path);
                 }
-                else
-                {
-                    installDir = null;
-                    env = null;
-                }
-
                 return f(installDir, env);
             });
         }
@@ -117,126 +110,7 @@ namespace Semmle.Autobuild.CSharp
         /// are needed).
         /// </summary>
         public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<IDictionary<string, string>?, BuildScript> f)
-            => WithDotNet(builder, (_1, env) => f(env));
-
-        /// <summary>
-        /// Returns a script for downloading relevant versions of the
-        /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
-        /// (provided that the script succeeds).
-        /// </summary>
-        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
-        {
-            if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
-                // Specific version supplied in configuration: always use that
-                return DownloadDotNetVersion(builder, installDir, builder.Options.DotNetVersion);
-
-            // Download versions mentioned in `global.json` files
-            // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
-            var installScript = BuildScript.Success;
-            var validGlobalJson = false;
-            foreach (var path in builder.Paths.Select(p => p.Item1).Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
-            {
-                string version;
-                try
-                {
-                    var o = JObject.Parse(File.ReadAllText(path));
-                    version = (string)(o?["sdk"]?["version"]!);
-                }
-                catch  // lgtm[cs/catch-of-all-exceptions]
-                {
-                    // not a valid global.json file
-                    continue;
-                }
-
-                installScript &= DownloadDotNetVersion(builder, installDir, version);
-                validGlobalJson = true;
-            }
-
-            return validGlobalJson ? installScript : BuildScript.Failure;
-        }
-
-        /// <summary>
-        /// Returns a script for downloading a specific .NET Core SDK version, if the
-        /// version is not already installed.
-        ///
-        /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
-        /// </summary>
-        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version)
-        {
-            return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
-                {
-                    if (sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
-                        // The requested SDK is already installed (and no other SDKs are installed), so
-                        // no need to reinstall
-                        return BuildScript.Failure;
-
-                    builder.Log(Severity.Info, "Attempting to download .NET Core {0}", version);
-
-                    if (builder.Actions.IsWindows())
-                    {
-
-                        var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
-
-                        BuildScript GetInstall(string pwsh) =>
-                            new CommandBuilder(builder.Actions).
-                            RunCommand(pwsh).
-                            Argument("-NoProfile").
-                            Argument("-ExecutionPolicy").
-                            Argument("unrestricted").
-                            Argument("-Command").
-                            Argument("\"" + psCommand + "\"").
-                            Script;
-
-                        return GetInstall("pwsh") | GetInstall("powershell");
-                    }
-                    else
-                    {
-                        var dotnetInstallPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(
-                            builder.Actions.GetEnvironmentVariable,
-                            builder.Options.Language.UpperCaseName,
-                            out var shouldCleanUp), ".dotnet", "dotnet-install.sh");
-
-                        var downloadDotNetInstallSh = BuildScript.DownloadFile(
-                            "https://dot.net/v1/dotnet-install.sh",
-                            dotnetInstallPath,
-                            e => builder.Log(Severity.Warning, $"Failed to download 'dotnet-install.sh': {e.Message}"));
-
-                        var chmod = new CommandBuilder(builder.Actions).
-                            RunCommand("chmod").
-                            Argument("u+x").
-                            Argument(dotnetInstallPath);
-
-                        var install = new CommandBuilder(builder.Actions).
-                            RunCommand(dotnetInstallPath).
-                            Argument("--channel").
-                            Argument("release").
-                            Argument("--version").
-                            Argument(version).
-                            Argument("--install-dir").
-                            Argument(path);
-
-                        var buildScript = downloadDotNetInstallSh & chmod.Script & install.Script;
-
-                        if (shouldCleanUp)
-                        {
-                            var removeScript = new CommandBuilder(builder.Actions).
-                                RunCommand("rm").
-                                Argument(dotnetInstallPath);
-                            buildScript &= removeScript.Script;
-                        }
-
-                        return buildScript;
-                    }
-                });
-        }
-
-        private static BuildScript GetInstalledSdksScript(IBuildActions actions)
-        {
-            var listSdks = new CommandBuilder(actions, silent: true).
-                RunCommand("dotnet").
-                Argument("--list-sdks");
-            return listSdks.Script;
-        }
+            => WithDotNet(builder, ensureDotNetAvailable: false, (_, env) => f(env));
 
         private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
             dotNetPath is not null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
@@ -276,8 +150,7 @@ namespace Semmle.Autobuild.CSharp
                 Argument("--no-incremental");
 
             return
-                script.Argument(builder.Options.DotNetArguments).
-                    QuoteArgument(projOrSln).
+                script.QuoteArgument(projOrSln).
                     Script;
         }
     }

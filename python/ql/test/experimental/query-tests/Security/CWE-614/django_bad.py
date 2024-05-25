@@ -7,7 +7,7 @@ def django_response(request):
                     httponly=False, samesite='None')
     return resp
 
-
+# This test no longer produces an output due to django header setting methods not being modeled in the main query pack
 def django_response():
     response = django.http.HttpResponse()
     response['Set-Cookie'] = "name=value; SameSite=None;"
@@ -21,7 +21,7 @@ def django_response(request):
                     secure=False, httponly=False, samesite='None')
     return resp
 
-
+# This test no longer produces an output due to django header setting methods not being modeled in the main query pack
 def django_response():
     response = django.http.HttpResponse()
     response['Set-Cookie'] = f"{django.http.request.GET.get('name')}={django.http.request.GET.get('value')}; SameSite=None;"

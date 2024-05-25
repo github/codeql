@@ -794,8 +794,10 @@
 | test.swift:680:10:680:11 | &... | test.swift:681:15:681:15 | x |
 | test.swift:680:11:680:11 | [post] x | test.swift:680:10:680:11 | &... |
 | test.swift:680:11:680:11 | x | test.swift:680:10:680:11 | &... |
+| test.swift:680:11:680:11 | x | test.swift:680:15:680:15 | [post] y |
 | test.swift:680:14:680:15 | &... | test.swift:682:15:682:15 | y |
 | test.swift:680:15:680:15 | [post] y | test.swift:680:14:680:15 | &... |
+| test.swift:680:15:680:15 | y | test.swift:680:11:680:11 | [post] x |
 | test.swift:680:15:680:15 | y | test.swift:680:14:680:15 | &... |
 | test.swift:686:9:686:9 | SSA def(arr1) | test.swift:687:15:687:15 | arr1 |
 | test.swift:686:9:686:9 | arr1 | test.swift:686:9:686:9 | SSA def(arr1) |

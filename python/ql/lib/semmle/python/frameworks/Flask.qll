@@ -220,6 +220,43 @@ module Flask {
 
     /** Gets a reference to an instance of `flask.Response`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /** An `Headers` instance that is part of a Flask response. */
+    private class FlaskResponseHeadersInstances extends Werkzeug::Headers::InstanceSource {
+      FlaskResponseHeadersInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "headers"
+      }
+    }
+
+    /** A class instantiation of `Response` that sets response headers. */
+    private class ResponseClassHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range,
+      ClassInstantiation
+    {
+      override DataFlow::Node getBulkArg() {
+        result = [this.getArg(2), this.getArgByName("headers")]
+      }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /** A call to `make_response that sets response headers. */
+    private class MakeResponseHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range,
+      FlaskMakeResponseCall
+    {
+      override DataFlow::Node getBulkArg() {
+        result = this.getArg(2)
+        or
+        strictcount(this.getArg(_)) = 2 and
+        result = this.getArg(1)
+      }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
   }
 
   // ---------------------------------------------------------------------------

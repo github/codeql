@@ -20,13 +20,23 @@ repos:
       - id: autopep8
         files: ^misc/codegen/.*\.py
 
-  - repo: https://github.com/warchant/pre-commit-buildifier
-    rev: 0.0.2
-    hooks:
-      - id: buildifier
-
   - repo: local
     hooks:
+      - id: buildifier
+        name: Format bazel files
+        files: \.(bazel|bzl)
+        language: system
+        entry: bazel run //misc/bazel:buildifier
+        pass_filenames: false
+
+#      DISABLED: can be enabled by copying this config and installing `pre-commit` with `--config` on the copy
+#      - id: go-gen
+#        name: Check checked in generated files in go
+#        files: ^go/.*
+#        language: system
+#        entry: bazel run //go:gen
+#        pass_filenames: false
+
       - id: codeql-format
         name: Fix QL file formatting
         files: \.qll?$

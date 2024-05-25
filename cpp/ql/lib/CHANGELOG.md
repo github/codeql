@@ -1,3 +1,63 @@
+## 0.13.1
+
+No user-facing changes.
+
+## 0.13.0
+
+### Breaking Changes
+
+* Deleted the deprecated `GlobalValueNumberingImpl.qll` implementation.
+
+### New Features
+
+* Models-as-Data support has been added for C/C++. This feature allows flow sources, sinks and summaries to be expressed in compact strings as an alternative to modelling each source / sink / summary with explicit QL. See `dataflow/ExternalFlow.qll` for documentation and specification of the model format, and `models/implementations/ZMQ.qll` for a simple example of models. Importing models from `.yml` is not yet supported.
+
+### Minor Analysis Improvements
+
+* Source models have been added for the standard library function `getc` (and variations).
+* Source, sink and flow models for the ZeroMQ (ZMQ) networking library have been added.
+* Parameters of functions without definitions now have `ParameterNode`s.
+* The alias analysis used internally by various libraries has been improved to answer alias questions more conservatively. As a result, some queries may report fewer false positives.
+
+## 0.12.11
+
+No user-facing changes.
+
+## 0.12.10
+
+### New Features
+
+* Added a `TaintInheritingContent` class that can be extended to model taint flowing from a qualifier to a field.
+* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant. 
+* Added a predicate `GuardCondition.ensuresEq/4` to query whether a basic block is guarded by an expression being equal to a constant.
+* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant. 
+* Added a predicate `GuardCondition.ensuresLt/4` to query whether a basic block is guarded by an expression being less than a constant.
+* Added a predicate `GuardCondition.valueControls` to query whether a basic block is guarded by a particular `case` of a `switch` statement.
+
+### Minor Analysis Improvements
+
+* Added destructors for temporary objects with extended lifetimes to the intermediate representation.
+
+## 0.12.9
+
+No user-facing changes.
+
+## 0.12.8
+
+No user-facing changes.
+
+## 0.12.7
+
+### Minor Analysis Improvements
+
+* Added destructors for named objects to the intermediate representation.
+
+## 0.12.6
+
+### New Features
+
+* A `getInitialization` predicate was added to the `RangeBasedForStmt` class that yields the C++20-style initializer of the range-based `for` statement when it exists.
+
 ## 0.12.5
 
 ### New Features

@@ -1,3 +1,37 @@
+## 0.3.16
+
+No user-facing changes.
+
+## 0.3.15
+
+No user-facing changes.
+
+## 0.3.14
+
+No user-facing changes.
+
+## 0.3.13
+
+No user-facing changes.
+
+## 0.3.12
+
+No user-facing changes.
+
+## 0.3.11
+
+No user-facing changes.
+
+## 0.3.10
+
+No user-facing changes.
+
+## 0.3.9
+
+### New Queries
+
+* Added a new experimental query, `swift/unsafe-unpacking`, that detects unpacking user controlled zips without validating the destination file path is within the destination directory.
+
 ## 0.3.8
 
 No user-facing changes.

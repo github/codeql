@@ -118,6 +118,8 @@ private class StdSequenceContainerData extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -147,6 +149,8 @@ private class StdSequenceContainerPushModel extends StdSequenceContainerPush, Ta
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -207,6 +211,8 @@ private class StdSequenceContainerInsertModel extends StdSequenceContainerInsert
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -247,13 +253,15 @@ private class StdSequenceContainerAssign extends TaintFunction {
 /**
  * The standard container functions `at` and `operator[]`.
  */
-private class StdSequenceContainerAt extends TaintFunction {
+class StdSequenceContainerAt extends MemberFunction {
   StdSequenceContainerAt() {
     this.getClassAndName(["at", "operator[]"]) instanceof Array or
     this.getClassAndName(["at", "operator[]"]) instanceof Deque or
     this.getClassAndName(["at", "operator[]"]) instanceof Vector
   }
+}
 
+private class StdSequenceContainerAtModel extends StdSequenceContainerAt, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
     input.isQualifierObject() and
@@ -263,6 +271,8 @@ private class StdSequenceContainerAt extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -297,6 +307,8 @@ private class StdSequenceEmplaceModel extends StdSequenceEmplace, TaintFunction 
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -335,6 +347,8 @@ private class StdSequenceEmplaceBackModel extends StdSequenceEmplaceBack, TaintF
     input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**

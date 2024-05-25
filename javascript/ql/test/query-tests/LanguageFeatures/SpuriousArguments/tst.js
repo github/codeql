@@ -130,3 +130,12 @@ function sum2() {
 
 // OK
 sum2(1, 2, 3);
+
+const $ = function (x, arr) {
+  console.log(x, arr);
+};
+
+// OK
+async function tagThing(repoUrl, directory) {
+  await $`git clone ${repoUrl} ${directory}`;
+}

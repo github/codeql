@@ -8,7 +8,7 @@ private import DataFlowImplSpecific
 private import TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<CppDataFlow> {
+private module Input implements InputSig<Location, CppDataFlow> {
   predicate argHasPostUpdateExclude(Private::ArgumentNode n) {
     // The rules for whether an IR argument gets a post-update node are too
     // complex to model here.
@@ -16,4 +16,4 @@ private module Input implements InputSig<CppDataFlow> {
   }
 }
 
-module Consistency = MakeConsistency<CppDataFlow, CppTaintTracking, Input>;
+module Consistency = MakeConsistency<Location, CppDataFlow, CppTaintTracking, Input>;

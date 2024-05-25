@@ -15,7 +15,7 @@ RegExpTerm getTermForExecution(Concepts::RegexExecution exec) {
   )
 }
 
-/** A StrConst used as a regular expression */
+/** A StringLiteral used as a regular expression */
 deprecated class RegexString extends Regex {
   RegexString() { this = RegExpTracking::regExpSource(_).asExpr() }
 }

@@ -72,7 +72,7 @@ class ArrayInitAtNonZeroIndex extends DataFlow::Node {
 class StreamConcatAtNonZeroIndex extends DataFlow::Node {
   StreamConcatAtNonZeroIndex() {
     exists(MethodCall call, int index |
-      call.getMethod().getQualifiedName() = "java.util.stream.Stream.concat" and
+      call.getMethod().hasQualifiedName("java.util.stream", "Stream", "concat") and
       call.getArgument(index) = this.asExpr() and
       index != 0
     )

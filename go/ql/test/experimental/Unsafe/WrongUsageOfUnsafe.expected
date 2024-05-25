@@ -1,20 +1,20 @@
 edges
-| WrongUsageOfUnsafe.go:17:24:17:48 | type conversion | WrongUsageOfUnsafe.go:17:13:17:49 | type conversion |
-| WrongUsageOfUnsafe.go:34:24:34:51 | type conversion | WrongUsageOfUnsafe.go:34:13:34:52 | type conversion |
-| WrongUsageOfUnsafe.go:55:24:55:51 | type conversion | WrongUsageOfUnsafe.go:55:13:55:52 | type conversion |
-| WrongUsageOfUnsafe.go:77:27:77:54 | type conversion | WrongUsageOfUnsafe.go:77:16:77:55 | type conversion |
-| WrongUsageOfUnsafe.go:93:20:93:44 | type conversion | WrongUsageOfUnsafe.go:93:13:93:45 | type conversion |
-| WrongUsageOfUnsafe.go:111:31:111:58 | type conversion | WrongUsageOfUnsafe.go:111:16:111:59 | type conversion |
-| WrongUsageOfUnsafe.go:129:31:129:55 | type conversion | WrongUsageOfUnsafe.go:129:16:129:56 | type conversion |
-| WrongUsageOfUnsafe.go:149:31:149:55 | type conversion | WrongUsageOfUnsafe.go:149:16:149:56 | type conversion |
-| WrongUsageOfUnsafe.go:166:33:166:57 | type conversion | WrongUsageOfUnsafe.go:166:16:166:58 | type conversion |
-| WrongUsageOfUnsafe.go:189:31:189:55 | type conversion | WrongUsageOfUnsafe.go:189:16:189:56 | type conversion |
-| WrongUsageOfUnsafe.go:211:31:211:60 | type conversion | WrongUsageOfUnsafe.go:211:16:211:61 | type conversion |
-| WrongUsageOfUnsafe.go:227:31:227:55 | type conversion | WrongUsageOfUnsafe.go:236:21:236:23 | definition of req |
-| WrongUsageOfUnsafe.go:236:21:236:23 | definition of req | WrongUsageOfUnsafe.go:243:9:243:27 | type conversion |
-| WrongUsageOfUnsafe.go:256:28:256:52 | type conversion | WrongUsageOfUnsafe.go:256:16:256:53 | type conversion |
-| WrongUsageOfUnsafe.go:274:25:274:49 | type conversion | WrongUsageOfUnsafe.go:274:16:274:50 | type conversion |
-| WrongUsageOfUnsafe.go:292:23:292:47 | type conversion | WrongUsageOfUnsafe.go:292:16:292:48 | type conversion |
+| WrongUsageOfUnsafe.go:17:24:17:48 | type conversion | WrongUsageOfUnsafe.go:17:13:17:49 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:34:24:34:51 | type conversion | WrongUsageOfUnsafe.go:34:13:34:52 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:55:24:55:51 | type conversion | WrongUsageOfUnsafe.go:55:13:55:52 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:77:27:77:54 | type conversion | WrongUsageOfUnsafe.go:77:16:77:55 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:93:20:93:44 | type conversion | WrongUsageOfUnsafe.go:93:13:93:45 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:111:31:111:58 | type conversion | WrongUsageOfUnsafe.go:111:16:111:59 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:129:31:129:55 | type conversion | WrongUsageOfUnsafe.go:129:16:129:56 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:149:31:149:55 | type conversion | WrongUsageOfUnsafe.go:149:16:149:56 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:166:33:166:57 | type conversion | WrongUsageOfUnsafe.go:166:16:166:58 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:189:31:189:55 | type conversion | WrongUsageOfUnsafe.go:189:16:189:56 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:211:31:211:60 | type conversion | WrongUsageOfUnsafe.go:211:16:211:61 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:227:31:227:55 | type conversion | WrongUsageOfUnsafe.go:236:21:236:23 | definition of req | provenance |  |
+| WrongUsageOfUnsafe.go:236:21:236:23 | definition of req | WrongUsageOfUnsafe.go:243:9:243:27 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:256:28:256:52 | type conversion | WrongUsageOfUnsafe.go:256:16:256:53 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:274:25:274:49 | type conversion | WrongUsageOfUnsafe.go:274:16:274:50 | type conversion | provenance |  |
+| WrongUsageOfUnsafe.go:292:23:292:47 | type conversion | WrongUsageOfUnsafe.go:292:16:292:48 | type conversion | provenance |  |
 nodes
 | WrongUsageOfUnsafe.go:17:13:17:49 | type conversion | semmle.label | type conversion |
 | WrongUsageOfUnsafe.go:17:24:17:48 | type conversion | semmle.label | type conversion |

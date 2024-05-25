@@ -1,3 +1,59 @@
+## 0.9.12
+
+### New Queries
+
+* Added a new query, `cpp/iterator-to-expired-container`, to detect the creation of iterators owned by a temporary objects that are about to be destroyed.
+
+## 0.9.11
+
+### Minor Analysis Improvements
+
+* The "Uncontrolled data used in path expression" query (`cpp/path-injection`) query produces fewer near-duplicate results.
+* The "Global variable may be used before initialization" query (`cpp/global-use-before-init`) no longer raises an alert on global variables that are initialized when they are declared.
+* The "Inconsistent null check of pointer" query (`cpp/inconsistent-nullness-testing`) query no longer raises an alert when the guarded check is in a macro expansion.
+
+## 0.9.10
+
+No user-facing changes.
+
+## 0.9.9
+
+### New Queries
+
+* Added a new query, `cpp/type-confusion`, to detect casts to invalid types.
+
+### Query Metadata Changes
+
+* `@precision medium` metadata was added to the `cpp/boost/tls-settings-misconfiguration` and `cpp/boost/use-of-deprecated-hardcoded-security-protocol` queries, and these queries are now included in the security-extended suite. The `@name` metadata of these queries were also updated.
+
+### Minor Analysis Improvements
+
+* The "Missing return-value check for a 'scanf'-like function" query (`cpp/missing-check-scanf`) has been converted to a `path-problem` query.
+* The "Potentially uninitialized local variable" query (`cpp/uninitialized-local`) has been converted to a `path-problem` query.
+* Added models for `GLib` allocation and deallocation functions.
+
+## 0.9.8
+
+No user-facing changes.
+
+## 0.9.7
+
+No user-facing changes.
+
+## 0.9.6
+
+### Minor Analysis Improvements
+
+* The "non-constant format string" query (`cpp/non-constant-format`) has been converted to a `path-problem` query.
+* The new C/C++ dataflow and taint-tracking libraries (`semmle.code.cpp.dataflow.new.DataFlow` and `semmle.code.cpp.dataflow.new.TaintTracking`) now implicitly assume that dataflow and taint modelled via `DataFlowFunction` and `TaintFunction` always fully overwrite their buffers and thus act as flow barriers. As a result, many dataflow and taint-tracking queries now produce fewer false positives. To remove this assumption and go back to the previous behavior for a given model, one can override the new `isPartialWrite` predicate.
+
+## 0.9.5
+
+### Minor Analysis Improvements
+
+* The "non-constant format string" query (`cpp/non-constant-format`) has been updated to produce fewer false positives.
+* Added dataflow models for the `gettext` function variants. 
+
 ## 0.9.4
 
 ### Minor Analysis Improvements

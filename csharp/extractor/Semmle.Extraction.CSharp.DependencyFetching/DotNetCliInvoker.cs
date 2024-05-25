@@ -19,9 +19,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             this.logger = logger;
             this.Exec = exec;
+            logger.LogInfo($"Using .NET CLI executable: '{Exec}'");
         }
 
-        private ProcessStartInfo MakeDotnetStartInfo(string args)
+        private ProcessStartInfo MakeDotnetStartInfo(string args, string? workingDirectory)
         {
             var startInfo = new ProcessStartInfo(Exec, args)
             {
@@ -29,6 +30,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             };
+            if (!string.IsNullOrWhiteSpace(workingDirectory))
+            {
+                startInfo.WorkingDirectory = workingDirectory;
+            }
             // Set the .NET CLI language to English to avoid localized output.
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
             startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
@@ -36,26 +41,30 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return startInfo;
         }
 
-        private bool RunCommandAux(string args, out IList<string> output)
+        private bool RunCommandAux(string args, string? workingDirectory, out IList<string> output, bool silent)
         {
-            logger.LogInfo($"Running {Exec} {args}");
-            var pi = MakeDotnetStartInfo(args);
+            var dirLog = string.IsNullOrWhiteSpace(workingDirectory) ? "" : $" in {workingDirectory}";
+            logger.LogInfo($"Running '{Exec} {args}'{dirLog}");
+            var pi = MakeDotnetStartInfo(args, workingDirectory);
             var threadId = Environment.CurrentManagedThreadId;
-            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onOut(string s) => logger.Log(silent ? Severity.Debug : Severity.Info, s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {
-                logger.LogError($"Command {Exec} {args} failed with exit code {exitCode}");
+                logger.LogError($"Command '{Exec} {args}'{dirLog} failed with exit code {exitCode}");
                 return false;
             }
             return true;
         }
 
-        public bool RunCommand(string args) =>
-            RunCommandAux(args, out _);
+        public bool RunCommand(string args, bool silent) =>
+            RunCommandAux(args, null, out _, silent);
 
-        public bool RunCommand(string args, out IList<string> output) =>
-            RunCommandAux(args, out output);
+        public bool RunCommand(string args, out IList<string> output, bool silent) =>
+            RunCommandAux(args, null, out output, silent);
+
+        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent) =>
+            RunCommandAux(args, workingDirectory, out output, silent);
     }
 }

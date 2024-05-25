@@ -203,7 +203,7 @@ void test_string_assign() {
 	sink(s5); // $ ast,ir
 
 	sink(s6.assign(s1));
-	sink(s6); // $ SPURIOUS: ast,ir
+	sink(s6); // $ SPURIOUS: ast
 }
 
 void test_string_insert() {
@@ -495,7 +495,7 @@ void test_string_iterator_methods()
 		sink(h); // $ ast,ir
 
 		sink(s6.assign(s5.cbegin(), s5.cend()));
-		sink(s6); // $ SPURIOUS: ast,ir
+		sink(s6); // $ SPURIOUS: ast
 	}
 }
 

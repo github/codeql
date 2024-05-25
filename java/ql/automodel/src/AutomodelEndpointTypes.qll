@@ -50,6 +50,26 @@ class CommandInjectionSinkType extends SinkType {
   CommandInjectionSinkType() { this = "command-injection" }
 }
 
+/** A sink relevant to file storage. */
+class FileContentStoreSinkType extends SinkType {
+  FileContentStoreSinkType() { this = "file-content-store" }
+}
+
+/** A sink relevant to HTML injection. */
+class HtmlInjectionSinkType extends SinkType {
+  HtmlInjectionSinkType() { this = "html-injection" }
+}
+
+/** A sink relevant to LDAP injection. */
+class LdapInjectionSinkType extends SinkType {
+  LdapInjectionSinkType() { this = "ldap-injection" }
+}
+
+/** A sink relevant to URL redirection. */
+class UrlRedirectionSinkType extends SinkType {
+  UrlRedirectionSinkType() { this = "url-redirection" }
+}
+
 /** A class for source types that can be predicted by a classifier. */
 abstract class SourceType extends EndpointType {
   bindingset[this]

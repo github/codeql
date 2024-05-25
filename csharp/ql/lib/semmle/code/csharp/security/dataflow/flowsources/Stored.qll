@@ -21,6 +21,8 @@ abstract class StoredFlowSource extends SourceNode {
  */
 abstract class DatabaseInputSource extends StoredFlowSource {
   override string getThreatModel() { result = "database" }
+
+  override string getSourceType() { result = "database input" }
 }
 
 /**
@@ -71,9 +73,15 @@ deprecated class ORMMappedProperty extends DataFlow::Node {
   }
 }
 
+private class ExternalDatabaseInputSource extends DatabaseInputSource {
+  ExternalDatabaseInputSource() { sourceNode(this, "database") }
+}
+
 /** A file stream source is considered a stored flow source. */
 class FileStreamStoredFlowSource extends StoredFlowSource {
   FileStreamStoredFlowSource() { sourceNode(this, "file") }
 
   override string getThreatModel() { result = "file" }
+
+  override string getSourceType() { result = "file stream" }
 }

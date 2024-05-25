@@ -120,7 +120,7 @@ module Ssa {
           result = prefix + "." + this.getAssignable()
         |
           if f.(Modifiable).isStatic()
-          then prefix = f.getDeclaringType().getFullyQualifiedName()
+          then prefix = f.getDeclaringType().getName()
           else prefix = "this"
         )
       }
@@ -447,6 +447,8 @@ module Ssa {
     final AssignableDefinition getADefinition() { result = SsaImpl::getADefinition(this) }
 
     /**
+     * DEPRECATED.
+     *
      * Holds if this definition updates a captured local scope variable, and the updated
      * value may be read from the implicit entry definition `def` using one or more calls
      * (as indicated by `additionalCalls`), starting from call `c`.
@@ -467,13 +469,15 @@ module Ssa {
      * If this definition is the update of `i` on line 5, then the value may be read inside
      * `M2` via the call on line 6.
      */
-    final predicate isCapturedVariableDefinitionFlowIn(
+    deprecated final predicate isCapturedVariableDefinitionFlowIn(
       ImplicitEntryDefinition def, ControlFlow::Nodes::ElementNode c, boolean additionalCalls
     ) {
-      SsaImpl::isCapturedVariableDefinitionFlowIn(this, def, c, additionalCalls)
+      none()
     }
 
     /**
+     * DEPRECATED.
+     *
      * Holds if this definition updates a captured local scope variable, and the updated
      * value may be read from the implicit call definition `cdef` using one or more calls
      * (as indicated by `additionalCalls`).
@@ -494,10 +498,10 @@ module Ssa {
      * If this definition is the update of `i` on line 4, then the value may be read outside
      * of `M2` via the call on line 5.
      */
-    final predicate isCapturedVariableDefinitionFlowOut(
+    deprecated final predicate isCapturedVariableDefinitionFlowOut(
       ImplicitCallDefinition cdef, boolean additionalCalls
     ) {
-      SsaImpl::isCapturedVariableDefinitionFlowOut(this, cdef, additionalCalls)
+      none()
     }
 
     override Element getElement() { result = ad.getElement() }
@@ -525,8 +529,6 @@ module Ssa {
         i = -1
         or
         SsaImpl::updatesNamedFieldOrProp(bb, i, _, v, _)
-        or
-        SsaImpl::updatesCapturedVariable(bb, i, _, v, _, _)
         or
         SsaImpl::variableWriteQualifier(bb, i, v, _)
       )
@@ -572,10 +574,9 @@ module Ssa {
     private Call c;
 
     ImplicitCallDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
+      exists(ControlFlow::BasicBlock bb, SourceVariable v, int i |
+        this.definesAt(v, bb, i) and
         SsaImpl::updatesNamedFieldOrProp(bb, i, c, v, _)
-        or
-        SsaImpl::updatesCapturedVariable(bb, i, c, v, _, _)
       )
     }
 
@@ -593,9 +594,6 @@ module Ssa {
         result.getEnclosingCallable() = setter and
         result.getTarget() = this.getSourceVariable().getAssignable()
       )
-      or
-      SsaImpl::updatesCapturedVariable(_, _, this.getCall(), _, result, _) and
-      result.getTarget() = this.getSourceVariable().getAssignable()
     }
 
     override string toString() {

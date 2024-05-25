@@ -5,7 +5,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
 private import codeql.ruby.dataflow.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<RubyDataFlow> {
+private module Input implements InputSig<Location, RubyDataFlow> {
   private import RubyDataFlow
 
   predicate postWithInFlowExclude(Node n) { n instanceof FlowSummaryNode }
@@ -46,4 +46,4 @@ private module Input implements InputSig<RubyDataFlow> {
   }
 }
 
-import MakeConsistency<RubyDataFlow, RubyTaintTracking, Input>
+import MakeConsistency<Location, RubyDataFlow, RubyTaintTracking, Input>

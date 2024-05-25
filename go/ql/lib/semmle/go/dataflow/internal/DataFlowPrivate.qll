@@ -4,6 +4,7 @@ private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.FlowSummary as FlowSummary
+private import semmle.go.dataflow.ExternalFlow
 private import codeql.util.Unit
 import DataFlowNodes::Private
 
@@ -251,8 +252,6 @@ class DataFlowType extends TDataFlowType {
   string toString() { result = "" }
 }
 
-class DataFlowLocation = Location;
-
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
   TFileScope(File f) or
@@ -411,6 +410,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

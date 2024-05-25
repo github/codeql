@@ -40,7 +40,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                         output.Name, syntaxTrees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true)
                         ),
                     (compilation, options) => analyser.Initialize(output.FullName, extractionInput.CompilationInfos, compilation, options),
-                    _ => { },
                     () =>
                     {
                         foreach (var type in analyser.MissingNamespaces)
@@ -60,10 +59,9 @@ namespace Semmle.Extraction.CSharp.Standalone
             {
                 try
                 {
-                    FileUtils.TryDelete(output.FullName);
                     if (shouldCleanUpContainingFolder)
                     {
-                        output.Directory?.Delete(true);
+                        FileUtils.TryDelete(output.FullName);
                     }
                 }
                 catch
@@ -105,27 +103,37 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
-                logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
-                    action == AnalysisAction.Extracted
-                        ? time.ToString()
-                        : action == AnalysisAction.Excluded
-                            ? "excluded"
-                            : "up to date");
+                var extra = action switch
+                {
+                    AnalysisAction.Extracted => time.ToString(),
+                    AnalysisAction.Excluded => "excluded",
+                    AnalysisAction.UpToDate => "up to date",
+                    _ => "unknown action"
+                };
+                logger.LogDebug($"[{item}/{total}] {source} ({extra})");
+            }
+
+            public void Started(int item, int total, string source)
+            {
+                logger.LogDebug($"[{item}/{total}] {source} (processing started)");
             }
 
             public void MissingType(string type)
             {
-                logger.Log(Severity.Debug, "Missing type {0}", type);
+                logger.LogDebug($"Missing type {type}");
             }
 
             public void MissingNamespace(string @namespace)
             {
-                logger.Log(Severity.Info, "Missing namespace {0}", @namespace);
+                logger.LogInfo($"Missing namespace {@namespace}");
             }
 
             public void MissingSummary(int missingTypes, int missingNamespaces)
             {
-                logger.Log(Severity.Info, "Failed to resolve {0} types in {1} namespaces", missingTypes, missingNamespaces);
+                if (missingTypes > 0 || missingNamespaces > 0)
+                {
+                    logger.LogInfo($"Failed to resolve {missingTypes} types in {missingNamespaces} namespaces");
+                }
             }
         }
 
@@ -137,10 +145,10 @@ namespace Semmle.Extraction.CSharp.Standalone
             stopwatch.Start();
 
             using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
-            logger.Log(Severity.Info, "Extracting C# in buildless mode");
-            using var dependencyManager = new DependencyManager(options.SrcDir, options.Dependencies, logger);
+            logger.Log(Severity.Info, "Extracting C# with build-mode set to 'none'");
+            using var dependencyManager = new DependencyManager(options.SrcDir, logger);
 
-            if (!dependencyManager.AllSourceFiles.Any())
+            if (!dependencyManager.NonGeneratedSourcesFiles.Any())
             {
                 logger.Log(Severity.Error, "No source files found");
                 return ExitCode.Errors;

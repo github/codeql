@@ -63,7 +63,7 @@ namespace std {
   template<class T> T&& move(T& t) noexcept; // simplified signature
 }
 
-void identityOperations(int* source1) { // $ ast-def=source1 
+void identityOperations(int* source1) { // $ ast-def=source1 ir-def=*source1
   const int *x1 = std::move(source1);
   int* x2 = const_cast<int*>(x1);
   int* x3 = (x2);
@@ -346,7 +346,7 @@ namespace FlowThroughGlobals {
   void taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast ir=333:17 ir=347:17
+    sink(globalVar); // $ ast ir
   }
 }
 
@@ -398,14 +398,14 @@ void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
 void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
   int tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast,ir
+  sink(tmp); // $ SPURIOUS: ast
 }
 
 void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast,ir
+  sink(tmp); // $ SPURIOUS: ast
 }
 
 void intRefSource(int &ref_source);
@@ -484,7 +484,7 @@ struct MyStruct {
   int* content; 
 };
 
-void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) { // $ ast-def=s 
+void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) { // $ ast-def=s ir-def=*s
   writes_to_content(s->content);
   int* p_content = s->content;
   sink(*p_content);
@@ -521,12 +521,12 @@ void uncertain_definition() {
   sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
 }
 
-void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=**e ir-def=*e
+void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=*e ir-def=**e
 {
   *e = &x;
 }
 
-void test_set_through_const_pointer(int *e) // $ ast-def=e
+void test_set_through_const_pointer(int *e) // $ ast-def=e ir-def=*e
 {
   set_through_const_pointer(source(), &e);
   sink(*e); // $ ir MISSING: ast
@@ -575,11 +575,11 @@ namespace IndirectFlowThroughGlobals {
   void taintAndCall() {
     globalInt = indirect_source();
     calledAfterTaint();
-    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
+    sink(*globalInt); // $ ir MISSING: ast=562:17 ast=576:17
   }
 }
 
-void write_to_param(int* x) { // $ ast-def=x
+void write_to_param(int* x) { // $ ast-def=x ir-def=*x
   int s = source();
   x = &s;
 }
@@ -587,7 +587,7 @@ void write_to_param(int* x) { // $ ast-def=x
 void test_write_to_param() {
   int x = 0;
   write_to_param(&x);
-  sink(x); // $ SPURIOUS: ast
+  sink(x); // $ SPURIOUS: ast,ir
 }
 
 void test_indirect_flow_to_array() {
@@ -609,7 +609,7 @@ void test_def_by_ref_followed_by_uncertain_write_pointer(int* p) { // $ ast-def=
   sink(*p); // $ ir MISSING: ast
 }
 
-void test_flow_through_void_double_pointer(int *p) // $ ast-def=p
+void test_flow_through_void_double_pointer(int *p) // $ ast-def=p ir-def=*p
 {
   intPointerSource(p);
   void* q = (void*)&p;
@@ -695,11 +695,11 @@ void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
   sink(buf); // $ SPURIOUS: ast
 }
 
-void call_increment_buf(int** buf) { // $ ast-def=buf
+void call_increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
   increment_buf(buf);
 }
 
-void test_conflation_regression(int* source) { // $ ast-def=source
+void test_conflation_regression(int* source) { // $ ast-def=source ir-def=*source
   int* buf = source;
   call_increment_buf(&buf);
 }
@@ -709,13 +709,13 @@ void write_to_star_star_p(unsigned char **p) // $ ast-def=p ir-def=**p ir-def=*p
   **p = 0;
 }
 
-void write_to_star_buf(unsigned char *buf) // $ ast-def=buf
+void write_to_star_buf(unsigned char *buf) // $ ast-def=buf ir-def=*buf
 {
   unsigned char *c = buf;
   write_to_star_star_p(&c);
 }
 
-void test_write_to_star_buf(unsigned char *source) // $ ast-def=source
+void test_write_to_star_buf(unsigned char *source) // $ ast-def=source ir-def=*source
 {
   write_to_star_buf(source);
   sink(*source); // clean
@@ -1037,4 +1037,39 @@ namespace test_gettext {
     sink(translated); // clean 
     indirect_sink(translated); // clean
   }
+}
+
+void* memset(void*, int, size_t);
+
+void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
+	memset(buf, source(), 10);
+	sink(*buf); // $ ir MISSING: ast
+}
+
+void flow_out_of_address_with_local_flow() {
+  MyStruct a;
+  a.content = nullptr;
+  sink(&a); // $ SPURIOUS: ast
+}
+
+static void static_func_that_reassigns_pointer_before_sink(char** pp) { // $ ast-def=pp ir-def=*pp ir-def=**pp
+    *pp = "";
+    indirect_sink(*pp); // clean
+}
+
+void test_static_func_that_reassigns_pointer_before_sink() {
+    char* p = (char*)indirect_source();
+    static_func_that_reassigns_pointer_before_sink(&p);
+}
+
+void single_object_in_both_cases(bool b, int x, int y) {
+  int* p;
+  if(b) {
+    p = &x;
+  } else {
+    p = &y;
+  }
+  *p = source();
+  *p = 0;
+  sink(*p); // clean
 }

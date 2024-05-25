@@ -1,8 +1,0 @@
-edges
-| StoredCommandInjection.cs:22:54:22:80 | call to method GetString : String | StoredCommandInjection.cs:22:46:22:80 | ... + ... |
-nodes
-| StoredCommandInjection.cs:22:46:22:80 | ... + ... | semmle.label | ... + ... |
-| StoredCommandInjection.cs:22:54:22:80 | call to method GetString : String | semmle.label | call to method GetString : String |
-subpaths
-#select
-| StoredCommandInjection.cs:22:46:22:80 | ... + ... | StoredCommandInjection.cs:22:54:22:80 | call to method GetString : String | StoredCommandInjection.cs:22:46:22:80 | ... + ... | This command line depends on a $@. | StoredCommandInjection.cs:22:54:22:80 | call to method GetString | stored (potentially user-provided) value |

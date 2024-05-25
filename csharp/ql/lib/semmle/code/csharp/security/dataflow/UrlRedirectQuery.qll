@@ -3,7 +3,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.system.Web
@@ -20,7 +21,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for unvalidated URL redirect vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for unvalidated URL redirect vulnerabilities.
@@ -58,8 +59,15 @@ private module UrlRedirectConfig implements DataFlow::ConfigSig {
  */
 module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /** URL Redirection sinks defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {
@@ -137,6 +145,79 @@ private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
  */
 class LocalUrlSanitizer extends Sanitizer {
   LocalUrlSanitizer() { this = DataFlow::BarrierGuard<isLocalUrlSanitizer/3>::getABarrierNode() }
+}
+
+/**
+ * An argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
+ */
+private predicate isContainsUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
+  guard =
+    any(MethodCall method |
+      exists(Method m | m = method.getTarget() |
+        m.hasName("Contains") and
+        e = method.getArgument(0)
+      ) and
+      v.(AbstractValues::BooleanValue).getValue() = true
+    )
+}
+
+/**
+ * An URL argument to a call to `.Contains()` that is a sanitizer for URL redirects.
+ *
+ * This `Contains` method is usually called on a list, but the sanitizer matches any call to a method
+ * called `Contains`, so other methods with the same name will also be considered sanitizers.
+ */
+class ContainsUrlSanitizer extends Sanitizer {
+  ContainsUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isContainsUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A check that the URL is relative, and therefore safe for URL redirects.
+ */
+private predicate isRelativeUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
+  guard =
+    any(PropertyAccess access |
+      access.getProperty().hasFullyQualifiedName("System", "Uri", "IsAbsoluteUri") and
+      e = access.getQualifier() and
+      v.(AbstractValues::BooleanValue).getValue() = false
+    )
+}
+
+/**
+ * A check that the URL is relative, and therefore safe for URL redirects.
+ */
+class RelativeUrlSanitizer extends Sanitizer {
+  RelativeUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ * E.g. `url.Host == "example.org"`
+ */
+private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v) {
+  guard =
+    any(EqualityOperation comparison |
+      exists(PropertyAccess access | access = comparison.getAnOperand() |
+        access.getProperty().hasFullyQualifiedName("System", "Uri", "Host") and
+        e = access.getQualifier()
+      ) and
+      if comparison instanceof EQExpr
+      then v.(AbstractValues::BooleanValue).getValue() = true
+      else v.(AbstractValues::BooleanValue).getValue() = false
+    )
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ */
+class HostComparisonSanitizer extends Sanitizer {
+  HostComparisonSanitizer() {
+    this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
+  }
 }
 
 /**

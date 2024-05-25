@@ -11,6 +11,7 @@ private import InstructionTag
 private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedCall
 private import TranslatedStmt
 private import TranslatedFunction
 private import TranslatedGlobalVar
@@ -374,6 +375,10 @@ CppType getInstructionResultType(TStageInstruction instr) {
   or
   instr instanceof TRawUnreachedInstruction and
   result = getVoidType()
+}
+
+IRType getInstructionResultIRType(Instruction instr) {
+  result = instr.getResultLanguageType().getIRType()
 }
 
 predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {

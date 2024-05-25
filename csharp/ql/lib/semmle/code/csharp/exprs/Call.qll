@@ -8,7 +8,6 @@ import Expr
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dispatch.Dispatch
-private import dotnet
 
 /**
  * A call. Either a method call (`MethodCall`), a constructor initializer call
@@ -16,7 +15,7 @@ private import dotnet
  * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), a
  * constructor call (`ObjectCreation`), or a local function call (`LocalFunctionCall`).
  */
-class Call extends DotNet::Call, Expr, @call {
+class Call extends Expr, @call {
   /**
    * Gets the static (compile-time) target of this call. For example, the
    * static target of `x.M()` on line 9 is `A.M` in
@@ -38,13 +37,19 @@ class Call extends DotNet::Call, Expr, @call {
    * Use `getARuntimeTarget()` instead to get a potential run-time target (will
    * include `B.M` in the example above).
    */
-  override Callable getTarget() { none() }
+  Callable getTarget() { none() }
 
-  override Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
+  /** Gets the `i`th argument to this call, if any. */
+  Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
 
-  override Expr getRawArgument(int i) { result = this.getArgument(i) }
+  /**
+   * Gets the `i`th "raw" argument to this call, if any.
+   * For instance methods, argument 0 is the qualifier.
+   */
+  Expr getRawArgument(int i) { result = this.getArgument(i) }
 
-  override Expr getAnArgument() { result = this.getArgument(_) }
+  /** Gets an argument to this call. */
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the number of arguments of this call. */
   int getNumberOfArguments() { result = count(this.getAnArgument()) }
@@ -59,7 +64,7 @@ class Call extends DotNet::Call, Expr, @call {
    * consider default arguments.
    */
   cached
-  override Expr getArgumentForParameter(DotNet::Parameter p) {
+  Expr getArgumentForParameter(Parameter p) {
     // Appears in the positional part of the call
     result = this.getImplicitArgument(p)
     or
@@ -69,7 +74,7 @@ class Call extends DotNet::Call, Expr, @call {
   }
 
   pragma[noinline]
-  private Expr getImplicitArgument(DotNet::Parameter p) {
+  private Expr getImplicitArgument(Parameter p) {
     this.getTarget().getAParameter() = p and
     not exists(result.getExplicitArgumentName()) and
     (
@@ -144,7 +149,7 @@ class Call extends DotNet::Call, Expr, @call {
    * - Line 16: There is no static target (delegate call) but the delegate `i => { }`
    *   (line 20) is a run-time target.
    */
-  override Callable getARuntimeTarget() {
+  Callable getARuntimeTarget() {
     exists(DispatchCall dc | dc.getCall() = this | result = dc.getADynamicTarget())
   }
 

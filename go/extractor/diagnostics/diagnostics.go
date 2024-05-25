@@ -493,3 +493,33 @@ func EmitNewerSystemGoRequired(requiredVersion string) {
 		noLocation,
 	)
 }
+
+func EmitExtractionFailedForProjects(path []string) {
+	emitDiagnostic(
+		"go/autobuilder/extraction-failed-for-project",
+		"Unable to extract some Go projects",
+		fmt.Sprintf(
+			"The following %d Go project%s could not be extracted successfully:\n\n`%s`\n",
+			len(path),
+			plural(len(path), "", "s"),
+			strings.Join(path, "`, `")),
+		severityWarning,
+		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitInvalidToolchainVersion(goModPath string, version string) {
+	emitDiagnostic(
+		"go/autobuilder/invalid-go-toolchain-version",
+		"Invalid Go toolchain version",
+		strings.Join([]string{
+			"As of Go 1.21, toolchain versions [must use the 1.N.P syntax](https://go.dev/doc/toolchain#version).",
+			fmt.Sprintf("`%s` in `%s` does not match this syntax and there is no additional `toolchain` directive, which may cause some `go` commands to fail.", version, goModPath),
+		},
+			"\n\n"),
+		severityWarning,
+		fullVisibility,
+		&locationStruct{File: goModPath},
+	)
+}

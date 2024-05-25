@@ -20,8 +20,10 @@ private class StandardDeallocationFunction extends DeallocationFunction {
     freedArg = 0
     or
     this.hasGlobalName([
-        // --- OpenSSL memory allocation
-        "CRYPTO_free", "CRYPTO_secure_free"
+        // --- OpenSSL memory deallocation
+        "CRYPTO_free", "CRYPTO_secure_free",
+        // --- glib memory deallocation
+        "g_free"
       ]) and
     freedArg = 0
     or

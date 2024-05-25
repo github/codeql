@@ -2,6 +2,7 @@
  * Provides Ruby-specific definitions for use in the data flow library.
  */
 
+private import codeql.Locations
 private import codeql.dataflow.DataFlow
 
 module Private {
@@ -13,7 +14,7 @@ module Public {
   import DataFlowPublic
 }
 
-module RubyDataFlow implements InputSig {
+module RubyDataFlow implements InputSig<Location> {
   import Private
   import Public
 
@@ -31,4 +32,6 @@ module RubyDataFlow implements InputSig {
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { exists(c.asLibraryCallable()) }
 }

@@ -14,6 +14,9 @@ abstract class SourceNode extends DataFlow::Node {
    * Gets a string that represents the source kind with respect to threat modeling.
    */
   abstract string getThreatModel();
+
+  /** Gets a string that describes the type of this flow source. */
+  abstract string getSourceType();
 }
 
 /**
@@ -28,4 +31,19 @@ class ThreatModelFlowSource extends DataFlow::Node {
       (this.(SourceNode).getThreatModel() = kind or sourceNode(this, kind))
     )
   }
+}
+
+/**
+ * A data flow source node for an API, which should be considered
+ * supported from a modeling perspective.
+ */
+abstract class ApiSourceNode extends DataFlow::Node { }
+
+private class AddSourceNodes extends ApiSourceNode instanceof SourceNode { }
+
+/**
+ * Add all source models as data sources.
+ */
+private class ApiSourceNodeExternal extends ApiSourceNode {
+  ApiSourceNodeExternal() { sourceNode(this, _) }
 }

@@ -16,6 +16,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.TaintedPathQuery
 import JFinalController
 import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.security.Sanitizers
@@ -52,7 +53,7 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sinkNode(sink, "path-injection") and
+    sink instanceof TaintedPathSink and
     not sink instanceof NormalizedPathNode
   }
 

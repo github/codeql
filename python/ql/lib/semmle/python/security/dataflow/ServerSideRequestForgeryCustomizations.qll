@@ -88,7 +88,9 @@ module ServerSideRequestForgery {
       exists(BinaryExprNode add |
         add.getOp() instanceof Add and
         add.getRight() = this.asCfgNode() and
-        not add.getLeft().getNode().(StrConst).getText().toLowerCase() in ["http://", "https://"]
+        not add.getLeft().getNode().(StringLiteral).getText().toLowerCase() in [
+            "http://", "https://"
+          ]
       )
       or
       // % formatting
@@ -97,7 +99,7 @@ module ServerSideRequestForgery {
         fmt.getRight() = this.asCfgNode() and
         // detecting %-formatting is not super easy, so we simplify it to only handle
         // when there is a **single** substitution going on.
-        not fmt.getLeft().getNode().(StrConst).getText().regexpMatch("^(?i)https?://%s[^%]*$")
+        not fmt.getLeft().getNode().(StringLiteral).getText().regexpMatch("^(?i)https?://%s[^%]*$")
       )
       or
       // arguments to a format call
@@ -106,9 +108,9 @@ module ServerSideRequestForgery {
       |
         call.getMethodName() = "format" and
         (
-          if call.getObject().asExpr().(StrConst).getText().regexpMatch(httpPrefixRe)
+          if call.getObject().asExpr().(StringLiteral).getText().regexpMatch(httpPrefixRe)
           then
-            exists(string text | text = call.getObject().asExpr().(StrConst).getText() |
+            exists(string text | text = call.getObject().asExpr().(StringLiteral).getText() |
               // `http://{}...`
               exists(text.regexpCapture(httpPrefixRe, 1)) and
               this in [call.getArg(any(int i | i >= 1)), call.getArgByName(_)]
@@ -129,7 +131,7 @@ module ServerSideRequestForgery {
       or
       // f-string
       exists(Fstring fstring |
-        if fstring.getValue(0).(StrConst).getText().toLowerCase() in ["http://", "https://"]
+        if fstring.getValue(0).(StringLiteral).getText().toLowerCase() in ["http://", "https://"]
         then fstring.getValue(any(int i | i >= 2)) = this.asExpr()
         else fstring.getValue(any(int i | i >= 1)) = this.asExpr()
       )

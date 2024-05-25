@@ -28,29 +28,27 @@ newtype TApplicationModeEndpoint =
     AutomodelJavaUtil::isFromSource(call) and
     exists(Argument argExpr |
       arg.asExpr() = argExpr and call = argExpr.getCall() and not argExpr.isVararg()
-    )
+    ) and
+    not AutomodelJavaUtil::isUnexploitableType(arg.getType())
   } or
   TInstanceArgument(Call call, DataFlow::Node arg) {
     AutomodelJavaUtil::isFromSource(call) and
     arg = DataFlow::getInstanceArgument(call) and
-    not call instanceof ConstructorCall
+    not call instanceof ConstructorCall and
+    not AutomodelJavaUtil::isUnexploitableType(arg.getType())
   } or
-  TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
+  TImplicitVarargsArray(Call call, DataFlow::ImplicitVarargsArray arg, int idx) {
     AutomodelJavaUtil::isFromSource(call) and
-    exists(Argument argExpr |
-      arg.asExpr() = argExpr and
-      call.getArgument(idx) = argExpr and
-      argExpr.isVararg() and
-      not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
-    )
+    call = arg.getCall() and
+    idx = call.getCallee().getVaragsParameterIndex() and
+    not AutomodelJavaUtil::isUnexploitableType(arg.getType())
   } or
-  TMethodReturnValue(Call call) {
+  TMethodReturnValue(MethodCall call) {
     AutomodelJavaUtil::isFromSource(call) and
-    not call instanceof ConstructorCall
+    not AutomodelJavaUtil::isUnexploitableType(call.getType())
   } or
   TOverriddenParameter(Parameter p, Method overriddenMethod) {
     AutomodelJavaUtil::isFromSource(p) and
-    not p.getCallable().callsConstructor(_) and
     p.getCallable().(Method).overrides(overriddenMethod)
   }
 
@@ -167,7 +165,7 @@ class ImplicitVarargsArray extends CallArgument, TImplicitVarargsArray {
  * may be a source.
  */
 class MethodReturnValue extends ApplicationModeEndpoint, TMethodReturnValue {
-  Call call;
+  MethodCall call;
 
   MethodReturnValue() { this = TMethodReturnValue(call) }
 
@@ -255,45 +253,74 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string input |
-      sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string input
+    |
+      sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
+      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
+        provenance, _)
     )
     or
     isCustomSink(e, kind) and provenance = "custom-sink"
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string output |
-      sourceSpec(e, package, type, name, signature, ext, output) and
-      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
-        provenance)
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string output
+    |
+      sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
+        provenance, _)
     )
   }
 
   predicate isNeutral(Endpoint e) {
-    exists(string package, string type, string name, string signature |
-      sinkSpec(e, package, type, name, signature, _, _) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
+    exists(string package, string type, string name, string signature, string endpointType |
+      sinkSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "sink"
+      or
+      sourceSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "source"
+    |
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], endpointType, _)
     )
   }
 
-  // XXX how to extend to support sources?
-  additional predicate sinkSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext, string input
+  /**
+   * Holds if the endpoint concerns a callable with the given package, type, name and signature.
+   *
+   * If `subtypes` is `false`, only the exact callable is considered. If `true`, the callable and
+   * all its overrides are considered.
+   */
+  additional predicate endpointCallable(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    exists(Callable c |
+      c = e.getCallable() and subtypes in [true, false]
+      or
+      e.getCallable().(Method).getSourceDeclaration().overrides+(c) and subtypes = true
+    |
+      c.hasQualifiedName(package, type, name) and
+      signature = ExternalFlow::paramsString(c)
+    )
+  }
+
+  additional predicate sinkSpec(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string input
+  ) {
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     input = e.getMaDInput()
   }
 
   additional predicate sourceSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext,
-    string output
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string output
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     output = e.getMaDOutput()
   }
@@ -465,7 +492,7 @@ predicate isPositiveExample(
  * TODO: this might filter too much, it's possible that methods with more than one parameter contain interesting sinks
  */
 private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
-  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
+  UnexploitableIsCharacteristic() { this = "argument of is-style boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getName().matches("is%") and
@@ -483,7 +510,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
 private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+  UnexploitableExistsCharacteristic() { this = "argument of existence-checking boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     exists(Callable callable | callable = e.getCallable() |
@@ -499,7 +526,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
  */
 private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  ExceptionCharacteristic() { this = "exception" }
+  ExceptionCharacteristic() { this = "argument/result of exception-related method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and

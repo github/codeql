@@ -11,7 +11,7 @@ extensions:
       - ["hudson", "FilePath", True, "copyFrom", "(FileItem)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "", "", "Argument[this]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(DirScanner,FilePath,String,FilePath$TarCompression)", "", "Argument[1]", "path-injection", "ai-manual"]
-      - ["hudson", "FilePath", True, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "file-content-store", "ai-manual"]
+      - ["hudson", "FilePath", True, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(String,FilePath)", "", "Argument[1]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[2]", "path-injection", "ai-manual"]

@@ -785,24 +785,26 @@ module TypeTracking<TypeTrackingInput I> {
         )
       }
 
+      private Node getNodeMid(PathNodeFwd n) { n = TPathNodeMid(result, _) }
+
+      private Node getNodeSink(PathNodeFwd n) { n = TPathNodeSink(result) }
+
       private predicate edgeCand(PathNodeFwd n1, PathNodeFwd n2) {
         exists(PathNodeFwd tgt |
-          edgeCand(n1.getNode(), n1.getTypeTracker(), tgt.getNode(), tgt.getTypeTracker())
+          edgeCand(getNodeMid(n1), n1.getTypeTracker(), getNodeMid(tgt), tgt.getTypeTracker())
         |
           n2 = tgt
           or
-          n2 = TPathNodeSink(tgt.getNode()) and tgt.getTypeTracker().end()
+          n2 = TPathNodeSink(getNodeMid(tgt)) and tgt.getTypeTracker().end()
         )
         or
         n1.getTypeTracker().end() and
-        flowsTo(n1.getNode(), n2.getNode()) and
-        n1.getNode() != n2.getNode() and
-        n2 instanceof TPathNodeSink
+        flowsTo(getNodeMid(n1), getNodeSink(n2)) and
+        getNodeMid(n1) != getNodeSink(n2)
         or
-        sourceSimpleLocalSmallSteps(n1.getNode(), n2.getNode()) and
-        n1.getNode() != n2.getNode() and
-        n1.isSource() and
-        n2.isSink()
+        sourceSimpleLocalSmallSteps(n1.getNode(), getNodeSink(n2)) and
+        n1.getNode() != getNodeSink(n2) and
+        n1.isSource()
       }
 
       private predicate reachRev(PathNodeFwd n) {

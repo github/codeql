@@ -13,7 +13,6 @@ import core.Module
 import core.Array
 import core.Hash
 import core.String
-import core.Regexp
 import core.IO
 import core.Digest
 import core.Base64

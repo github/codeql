@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node,String)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "getNextSibling", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "getNode", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "setNextSibling", "(Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "setNode", "(Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "DOMSource", "(Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "DOMSource", "(Node,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "DOMSource", "(Node,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "getNode", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "setNode", "(Node)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
