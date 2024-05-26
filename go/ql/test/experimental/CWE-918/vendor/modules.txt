@@ -1,10 +1,43 @@
-# github.com/gorilla/websocket v1.4.2
-# golang.org/x/net v0.0.0-20200421231249-e086a090c8fd
+# github.com/gin-contrib/sse v0.1.0
+github.com/gin-contrib/sse
 # github.com/gin-gonic/gin v1.6.3
+github.com/gin-gonic/gin
+github.com/gin-gonic/gin/binding
+github.com/gin-gonic/gin/internal/bytesconv
+github.com/gin-gonic/gin/internal/json
+github.com/gin-gonic/gin/render
 # github.com/go-chi/chi v4.1.2+incompatible
+github.com/go-chi/chi
+# github.com/go-playground/locales v0.13.0
+github.com/go-playground/locales
+github.com/go-playground/locales/currency
+# github.com/go-playground/universal-translator v0.17.0
+github.com/go-playground/universal-translator
+# github.com/go-playground/validator v9.31.0+incompatible
+github.com/go-playground/validator
+# github.com/go-playground/validator/v10 v10.2.0
+github.com/go-playground/validator/v10
+# github.com/golang/protobuf v1.3.3
+github.com/golang/protobuf/proto
 # github.com/gorilla/mux v1.8.0
-# github.com/kr/text v0.2.0
-# github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
-# github.com/stretchr/testify v1.6.0
-# golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4
-# gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f
+github.com/gorilla/mux
+# github.com/gorilla/websocket v1.4.2
+github.com/gorilla/websocket
+# github.com/json-iterator/go v1.1.9
+github.com/json-iterator/go
+# github.com/leodido/go-urn v1.2.0
+github.com/leodido/go-urn
+# github.com/mattn/go-isatty v0.0.12
+github.com/mattn/go-isatty
+# github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421
+github.com/modern-go/concurrent
+# github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
+github.com/modern-go/reflect2
+# github.com/ugorji/go/codec v1.1.7
+github.com/ugorji/go/codec
+# golang.org/x/net v0.23.0
+golang.org/x/net/websocket
+# golang.org/x/sys v0.18.0
+golang.org/x/sys/unix
+# gopkg.in/yaml.v2 v2.2.8
+gopkg.in/yaml.v2
