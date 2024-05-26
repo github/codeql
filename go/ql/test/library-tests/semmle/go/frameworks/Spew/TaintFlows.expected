@@ -1,0 +1,5 @@
+| test.go:45:19:45:42 | comment | Missing result:hasTaintFlow="str1" |
+| test.go:48:19:48:42 | comment | Missing result:hasTaintFlow="str2" |
+| test.go:51:19:51:42 | comment | Missing result:hasTaintFlow="str3" |
+| test.go:54:19:54:42 | comment | Missing result:hasTaintFlow="str4" |
+| test.go:57:19:57:42 | comment | Missing result:hasTaintFlow="str5" |

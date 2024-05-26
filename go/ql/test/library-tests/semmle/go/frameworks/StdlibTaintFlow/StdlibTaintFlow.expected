@@ -1,0 +1,10 @@
+| DatabaseSql.go:99:13:99:24 | call to newSource | No flow to its sink |
+| DatabaseSql.go:104:13:104:24 | call to newSource | No flow to its sink |
+| Fmt.go:241:13:241:24 | call to newSource | No flow to its sink |
+| Fmt.go:246:13:246:24 | call to newSource | No flow to its sink |
+| Fmt.go:251:13:251:24 | call to newSource | No flow to its sink |
+| Fmt.go:256:13:256:24 | call to newSource | No flow to its sink |
+| Fmt.go:281:13:281:25 | call to newSource | No flow to its sink |
+| Fmt.go:286:13:286:25 | call to newSource | No flow to its sink |
+| Fmt.go:291:13:291:25 | call to newSource | No flow to its sink |
+| Fmt.go:296:13:296:25 | call to newSource | No flow to its sink |
