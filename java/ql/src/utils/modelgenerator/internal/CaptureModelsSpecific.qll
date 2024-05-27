@@ -80,10 +80,11 @@ predicate isUninterestingForDataFlowModels(Callable api) {
 predicate isUninterestingForTypeBasedFlowModels(Callable api) { none() }
 
 /**
- * A class of Callables that are relevant for generating summary, source and sinks models for.
+ * A class of callables that are potentially relevant for generating summary, source, sink
+ * and neutral models.
  *
- * In the Standard library and 3rd party libraries it the Callables that can be called
- * from outside the library itself.
+ * In the Standard library and 3rd party libraries it is the callables (or callables that have a
+ * super implementation) that can be called from outside the library itself.
  */
 class TargetApiSpecific extends Callable {
   private Callable lift;
@@ -97,6 +98,11 @@ class TargetApiSpecific extends Callable {
    * Gets the callable that a model will be lifted to.
    */
   Callable lift() { result = lift }
+
+  /**
+   * Holds if this callable is relevant in terms of generating models.
+   */
+  predicate isRelevant() { relevant(this) }
 }
 
 private string isExtensible(Callable c) {
@@ -114,15 +120,13 @@ private string typeAsModel(Callable c) {
   )
 }
 
-private predicate partialLiftedModel(
-  TargetApiSpecific api, string type, string extensible, string name, string parameters
+private predicate partialModel(
+  Callable api, string type, string extensible, string name, string parameters
 ) {
-  exists(Callable c | c = api.lift() |
-    type = typeAsModel(c) and
-    extensible = isExtensible(c) and
-    name = c.getName() and
-    parameters = ExternalFlow::paramsString(c)
-  )
+  type = typeAsModel(api) and
+  extensible = isExtensible(api) and
+  name = api.getName() and
+  parameters = ExternalFlow::paramsString(api)
 }
 
 /**
@@ -130,7 +134,7 @@ private predicate partialLiftedModel(
  */
 string asPartialModel(TargetApiSpecific api) {
   exists(string type, string extensible, string name, string parameters |
-    partialLiftedModel(api, type, extensible, name, parameters) and
+    partialModel(api.lift(), type, extensible, name, parameters) and
     result =
       type + ";" //
         + extensible + ";" //
@@ -145,7 +149,7 @@ string asPartialModel(TargetApiSpecific api) {
  */
 string asPartialNeutralModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
-    partialLiftedModel(api, type, _, name, parameters) and
+    partialModel(api, type, _, name, parameters) and
     result =
       type + ";" //
         + name + ";" //

@@ -24,8 +24,18 @@ bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
 bazel_dep(name = "rules_kotlin", version = "1.9.4-codeql.1")
 bazel_dep(name = "gazelle", version = "0.36.0")
+bazel_dep(name = "rules_dotnet", version = "0.15.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+
+dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
+dotnet.toolchain(dotnet_version = "8.0.101")
+use_repo(dotnet, "dotnet_toolchains")
+
+register_toolchains("@dotnet_toolchains//:all")
+
+csharp_main_extension = use_extension("//csharp:paket.main_extension.bzl", "main_extension")
+use_repo(csharp_main_extension, "paket.main")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(

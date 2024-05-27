@@ -160,6 +160,9 @@ astGuardsCompare
 | 137 | 0 == 0 when 0 is false |
 | 146 | ! ... != 0 when ! ... is true |
 | 146 | ! ... == 0 when ! ... is false |
+| 146 | x != 0 when ! ... is false |
+| 146 | x != 0 when x is true |
+| 146 | x == 0 when x is false |
 | 152 | x != 0 when ... && ... is true |
 | 152 | x != 0 when x is true |
 | 152 | x == 0 when x is false |
@@ -518,6 +521,7 @@ astGuardsEnsure_const
 | test.c:131:7:131:7 | b | test.c:131:7:131:7 | b | != | 0 | 131 | 132 |
 | test.c:137:7:137:7 | 0 | test.c:137:7:137:7 | 0 | == | 0 | 142 | 136 |
 | test.c:146:7:146:8 | ! ... | test.c:146:7:146:8 | ! ... | != | 0 | 146 | 147 |
+| test.c:146:8:146:8 | x | test.c:146:8:146:8 | x | == | 0 | 146 | 147 |
 | test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | != | 0 | 151 | 152 |
 | test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | != | 0 | 152 | 152 |
 | test.c:152:10:152:15 | ... && ... | test.c:152:10:152:10 | x | != | 0 | 151 | 152 |
@@ -689,6 +693,9 @@ irGuardsCompare
 | 137 | 0 == 0 when Constant: 0 is false |
 | 146 | ! ... != 0 when LogicalNot: ! ... is true |
 | 146 | ! ... == 0 when LogicalNot: ! ... is false |
+| 146 | x != 0 when Load: x is true |
+| 146 | x != 0 when LogicalNot: ! ... is false |
+| 146 | x == 0 when Load: x is false |
 | 152 | x != 0 when Load: x is true |
 | 152 | x == 0 when Load: x is false |
 | 152 | y != 0 when Load: y is true |
@@ -1063,6 +1070,7 @@ irGuardsEnsure_const
 | test.c:131:7:131:7 | Load: b | test.c:131:7:131:7 | Load: b | != | 0 | 132 | 132 |
 | test.c:137:7:137:7 | Constant: 0 | test.c:137:7:137:7 | Constant: 0 | == | 0 | 142 | 142 |
 | test.c:146:7:146:8 | LogicalNot: ! ... | test.c:146:7:146:8 | LogicalNot: ! ... | != | 0 | 147 | 147 |
+| test.c:146:8:146:8 | Load: x | test.c:146:8:146:8 | Load: x | == | 0 | 147 | 147 |
 | test.c:152:10:152:10 | Load: x | test.c:152:10:152:10 | Load: x | != | 0 | 152 | 152 |
 | test.c:152:15:152:15 | Load: y | test.c:152:15:152:15 | Load: y | != | 0 | 152 | 152 |
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | != | 0 | 175 | 175 |

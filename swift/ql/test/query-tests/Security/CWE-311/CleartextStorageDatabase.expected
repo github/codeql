@@ -74,8 +74,8 @@ edges
 | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | testCoreData2.swift:23:13:23:13 | self [Return] [notStoredBankAccountNumber] | provenance |  |
 | file://:0:0:0:0 | [post] self [password] | testRealm.swift:34:6:34:6 | self [Return] [password] | provenance |  |
 | file://:0:0:0:0 | [post] self [value] | testCoreData2.swift:70:9:70:9 | self [Return] [value] | provenance |  |
-| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance |  |
-| file://:0:0:0:0 | self | file://:0:0:0:0 | .value2 | provenance |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value2 | provenance | Config |
 | file://:0:0:0:0 | self [value] | file://:0:0:0:0 | .value | provenance |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [data] | provenance |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [data] | provenance |  |
@@ -122,21 +122,21 @@ edges
 | testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | testCoreData2.swift:80:18:80:28 | ...! | provenance |  |
 | testCoreData2.swift:82:2:82:2 | [post] dbObj [myValue] | testCoreData2.swift:82:2:82:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:70:9:70:9 | self | provenance |  |
-| testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:82:18:82:32 | .value | provenance |  |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:82:18:82:32 | .value | provenance | Config |
 | testCoreData2.swift:82:18:82:32 | .value | testCoreData2.swift:82:2:82:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:83:2:83:2 | [post] dbObj [myValue] | testCoreData2.swift:83:2:83:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:71:9:71:9 | self | provenance |  |
-| testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:83:18:83:32 | .value2 | provenance |  |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:83:18:83:32 | .value2 | provenance | Config |
 | testCoreData2.swift:83:18:83:32 | ...! | testCoreData2.swift:83:2:83:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:83:18:83:32 | .value2 | testCoreData2.swift:83:18:83:32 | ...! | provenance |  |
 | testCoreData2.swift:84:2:84:2 | [post] dbObj [myValue] | testCoreData2.swift:84:2:84:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:84:18:84:18 | ...! | testCoreData2.swift:70:9:70:9 | self | provenance |  |
-| testCoreData2.swift:84:18:84:18 | ...! | testCoreData2.swift:84:18:84:33 | .value | provenance |  |
+| testCoreData2.swift:84:18:84:18 | ...! | testCoreData2.swift:84:18:84:33 | .value | provenance | Config |
 | testCoreData2.swift:84:18:84:18 | bankAccountNo2 | testCoreData2.swift:84:18:84:18 | ...! | provenance |  |
 | testCoreData2.swift:84:18:84:33 | .value | testCoreData2.swift:84:2:84:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:85:2:85:2 | [post] dbObj [myValue] | testCoreData2.swift:85:2:85:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:85:18:85:18 | ...! | testCoreData2.swift:71:9:71:9 | self | provenance |  |
-| testCoreData2.swift:85:18:85:18 | ...! | testCoreData2.swift:85:18:85:33 | .value2 | provenance |  |
+| testCoreData2.swift:85:18:85:18 | ...! | testCoreData2.swift:85:18:85:33 | .value2 | provenance | Config |
 | testCoreData2.swift:85:18:85:18 | bankAccountNo2 | testCoreData2.swift:85:18:85:18 | ...! | provenance |  |
 | testCoreData2.swift:85:18:85:33 | ...! | testCoreData2.swift:85:2:85:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:85:18:85:33 | .value2 | testCoreData2.swift:85:18:85:33 | ...! | provenance |  |
@@ -144,24 +144,24 @@ edges
 | testCoreData2.swift:87:22:87:32 | .bankAccountNo | testCoreData2.swift:87:2:87:10 | [post] ...? [myValue] | provenance |  |
 | testCoreData2.swift:88:2:88:10 | [post] ...? [myValue] | testCoreData2.swift:88:2:88:10 | [post] ...? | provenance |  |
 | testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:70:9:70:9 | self | provenance |  |
-| testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:88:22:88:36 | .value | provenance |  |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:88:22:88:36 | .value | provenance | Config |
 | testCoreData2.swift:88:22:88:36 | .value | testCoreData2.swift:88:2:88:10 | [post] ...? [myValue] | provenance |  |
 | testCoreData2.swift:89:2:89:10 | [post] ...? [myValue] | testCoreData2.swift:89:2:89:10 | [post] ...? | provenance |  |
 | testCoreData2.swift:89:22:89:22 | ...! | testCoreData2.swift:71:9:71:9 | self | provenance |  |
-| testCoreData2.swift:89:22:89:22 | ...! | testCoreData2.swift:89:22:89:37 | .value2 | provenance |  |
+| testCoreData2.swift:89:22:89:22 | ...! | testCoreData2.swift:89:22:89:37 | .value2 | provenance | Config |
 | testCoreData2.swift:89:22:89:22 | bankAccountNo2 | testCoreData2.swift:89:22:89:22 | ...! | provenance |  |
 | testCoreData2.swift:89:22:89:37 | ...! | testCoreData2.swift:89:2:89:10 | [post] ...? [myValue] | provenance |  |
 | testCoreData2.swift:89:22:89:37 | .value2 | testCoreData2.swift:89:22:89:37 | ...! | provenance |  |
 | testCoreData2.swift:91:10:91:10 | bankAccountNo | testCoreData2.swift:92:10:92:10 | a | provenance |  |
 | testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:70:9:70:9 | self | provenance |  |
-| testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:92:10:92:12 | .value | provenance |  |
+| testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:92:10:92:12 | .value | provenance | Config |
 | testCoreData2.swift:92:10:92:12 | .value | testCoreData2.swift:93:18:93:18 | b | provenance |  |
 | testCoreData2.swift:93:2:93:2 | [post] dbObj [myValue] | testCoreData2.swift:93:2:93:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:93:18:93:18 | b | testCoreData2.swift:93:2:93:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:95:10:95:10 | bankAccountNo | testCoreData2.swift:97:12:97:12 | c | provenance |  |
 | testCoreData2.swift:97:2:97:2 | [post] d [value] | testCoreData2.swift:98:18:98:18 | d [value] | provenance |  |
 | testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:70:9:70:9 | self | provenance |  |
-| testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:97:12:97:14 | .value | provenance |  |
+| testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:97:12:97:14 | .value | provenance | Config |
 | testCoreData2.swift:97:12:97:14 | .value | testCoreData2.swift:70:9:70:9 | value | provenance |  |
 | testCoreData2.swift:97:12:97:14 | .value | testCoreData2.swift:97:2:97:2 | [post] d [value] | provenance |  |
 | testCoreData2.swift:98:2:98:2 | [post] dbObj [myValue] | testCoreData2.swift:98:2:98:2 | [post] dbObj | provenance |  |
@@ -172,12 +172,12 @@ edges
 | testCoreData2.swift:103:13:103:13 | e | testCoreData2.swift:104:18:104:18 | e | provenance |  |
 | testCoreData2.swift:104:2:104:2 | [post] dbObj [myValue] | testCoreData2.swift:104:2:104:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:70:9:70:9 | self | provenance |  |
-| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:104:18:104:20 | .value | provenance |  |
+| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:104:18:104:20 | .value | provenance | Config |
 | testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:105:18:105:18 | e | provenance |  |
 | testCoreData2.swift:104:18:104:20 | .value | testCoreData2.swift:104:2:104:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:105:2:105:2 | [post] dbObj [myValue] | testCoreData2.swift:105:2:105:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:71:9:71:9 | self | provenance |  |
-| testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:105:18:105:20 | .value2 | provenance |  |
+| testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:105:18:105:20 | .value2 | provenance | Config |
 | testCoreData2.swift:105:18:105:20 | ...! | testCoreData2.swift:105:2:105:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:105:18:105:20 | .value2 | testCoreData2.swift:105:18:105:20 | ...! | provenance |  |
 | testCoreData.swift:18:19:18:26 | value | testCoreData.swift:19:12:19:12 | value | provenance |  |

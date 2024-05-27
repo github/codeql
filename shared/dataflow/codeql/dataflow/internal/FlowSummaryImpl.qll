@@ -253,6 +253,13 @@ module Make<
        * that has provenance `provenance`.
        */
       predicate hasProvenance(Provenance provenance) { provenance = "manual" }
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
 
     final private class NeutralCallableFinal = NeutralCallable;
@@ -292,6 +299,13 @@ module Make<
        * Gets the kind of the neutral.
        */
       abstract string getKind();
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
   }
 

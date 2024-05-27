@@ -161,11 +161,20 @@
 | 137 | 0 == 0 when 0 is false |
 | 146 | ! ... != 0 when ! ... is true |
 | 146 | ! ... == 0 when ! ... is false |
+| 146 | x != 0 when ! ... is false |
+| 146 | x != 0 when x is true |
+| 146 | x == 0 when x is false |
 | 152 | p != 0 when p is true |
 | 152 | p == 0 when p is false |
 | 158 | ! ... != 0 when ! ... is true |
 | 158 | ! ... == 0 when ! ... is false |
+| 158 | p != 0 when ! ... is false |
+| 158 | p != 0 when p is true |
+| 158 | p == 0 when p is false |
 | 164 | s != 0 when s is true |
 | 164 | s == 0 when s is false |
 | 170 | ! ... != 0 when ! ... is true |
 | 170 | ! ... == 0 when ! ... is false |
+| 170 | s != 0 when ! ... is false |
+| 170 | s != 0 when s is true |
+| 170 | s == 0 when s is false |

@@ -365,7 +365,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       exists(Node n |
-        Config::allowImplicitRead(n, _) and
         node1.asNode() = n and
         node2.isImplicitReadNode(n, false) and
         not fullBarrier(node1) and
@@ -394,7 +393,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       exists(Node n |
-        Config::allowImplicitRead(n, _) and
         node1.isImplicitReadNode(n, true) and
         node2.asNode() = n and
         not fullBarrier(node2) and
@@ -2854,7 +2852,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Stage2::revFlow(node2, pragma[only_bind_into](state2), false)
         or
         additionalLocalStateStep(node1, state1, node2, state2) and
-        label = "" and
+        label = "Config" and
         Stage2::revFlow(node1, state1, false) and
         Stage2::revFlow(node2, state2, false)
       }
@@ -4245,7 +4243,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ap = TAccessPathNil() and
       isStoreStep = false and
       summaryLabel = "-" and
-      label = ""
+      label = "Config"
       or
       exists(Content c, DataFlowType t0, AccessPath ap0 |
         pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and

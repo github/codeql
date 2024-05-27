@@ -125,26 +125,17 @@ class TokenValidationParametersProperty extends Property {
 predicate callableHasAReturnStmtAndAlwaysReturnsTrue(Callable c) {
   c.getReturnType() instanceof BoolType and
   not callableMayThrowException(c) and
-  forall(ReturnStmt rs | rs.getEnclosingCallable() = c |
+  forex(ReturnStmt rs | rs.getEnclosingCallable() = c |
     rs.getNumberOfChildren() = 1 and
     isExpressionAlwaysTrue(rs.getChildExpr(0))
-  ) and
-  exists(ReturnStmt rs | rs.getEnclosingCallable() = c)
+  )
 }
 
 /**
  * Holds if the lambda expression `le` always returns true
  */
 predicate lambdaExprReturnsOnlyLiteralTrue(AnonymousFunctionExpr le) {
-  le.getExpressionBody().(BoolLiteral).getBoolValue() = true
-  or
-  // special scenarios where the expression is not a `BoolLiteral`, but it will evaluatue to `true`
-  exists(Expr e | le.getExpressionBody() = e |
-    not e instanceof Call and
-    not e instanceof Literal and
-    e.getType() instanceof BoolType and
-    e.getValue() = "true"
-  )
+  isExpressionAlwaysTrue(le.getExpressionBody())
 }
 
 class CallableAlwaysReturnsTrue extends Callable {
@@ -152,12 +143,6 @@ class CallableAlwaysReturnsTrue extends Callable {
     callableHasAReturnStmtAndAlwaysReturnsTrue(this)
     or
     lambdaExprReturnsOnlyLiteralTrue(this)
-    or
-    exists(AnonymousFunctionExpr le, Call call, Callable callable | this = le |
-      callable.getACall() = call and
-      call = le.getExpressionBody() and
-      callableHasAReturnStmtAndAlwaysReturnsTrue(callable)
-    )
   }
 }
 
@@ -169,32 +154,6 @@ predicate callableOnlyThrowsArgumentNullException(Callable c) {
   forall(ThrowElement thre | c = thre.getEnclosingCallable() |
     thre.getThrownExceptionType().hasFullyQualifiedName("System", "ArgumentNullException")
   )
-}
-
-/**
- * A specialization of `CallableAlwaysReturnsTrue` that takes into consideration exceptions being thrown for higher precision.
- */
-class CallableAlwaysReturnsTrueHigherPrecision extends CallableAlwaysReturnsTrue {
-  CallableAlwaysReturnsTrueHigherPrecision() {
-    callableOnlyThrowsArgumentNullException(this) and
-    (
-      forall(Call call, Callable callable | call.getEnclosingCallable() = this |
-        callable.getACall() = call and
-        callable instanceof CallableAlwaysReturnsTrueHigherPrecision
-      )
-      or
-      exists(AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsTrueHigherPrecision cat |
-        this = le
-      |
-        le.canReturn(call) and
-        cat.getACall() = call
-      )
-      or
-      exists(LambdaExpr le | le = this |
-        le.getBody() instanceof CallableAlwaysReturnsTrueHigherPrecision
-      )
-    )
-  }
 }
 
 /**

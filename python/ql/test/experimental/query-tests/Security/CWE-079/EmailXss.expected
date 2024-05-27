@@ -13,7 +13,7 @@ edges
 | sendgrid_mail.py:1:19:1:25 | ControlFlowNode for request | sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | provenance |  |
 | sendgrid_mail.py:14:22:14:28 | ControlFlowNode for request | sendgrid_mail.py:14:22:14:49 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
 | sendgrid_mail.py:26:34:26:40 | ControlFlowNode for request | sendgrid_mail.py:26:34:26:61 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
-| sendgrid_mail.py:26:34:26:61 | ControlFlowNode for Subscript | sendgrid_mail.py:26:22:26:62 | ControlFlowNode for HtmlContent() | provenance |  |
+| sendgrid_mail.py:26:34:26:61 | ControlFlowNode for Subscript | sendgrid_mail.py:26:22:26:62 | ControlFlowNode for HtmlContent() | provenance | Config |
 | sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | sendgrid_mail.py:37:41:37:68 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
 | sendgrid_via_mail_send_post_request_body_bad.py:3:19:3:25 | ControlFlowNode for ImportMember | sendgrid_via_mail_send_post_request_body_bad.py:3:19:3:25 | ControlFlowNode for request | provenance |  |
 | sendgrid_via_mail_send_post_request_body_bad.py:3:19:3:25 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | provenance |  |

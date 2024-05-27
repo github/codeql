@@ -554,7 +554,13 @@ private predicate interpretNeutral(UnboundCallable c, string kind, string proven
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() {
+    exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
+      not this.hasBody()
+      or
+      this.hasBody() and provenance.isManual()
+    )
+  }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
