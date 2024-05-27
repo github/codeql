@@ -4,6 +4,9 @@ cc_library(
         "zipmerge.cpp",
     ],
     hdrs = ["zipmerge.h"],
+    visibility = ["//visibility:public"],
+    # this is to make internal repo be able to keep on testing this code
+    # before we fully port tests here
 )
 
 cc_binary(
