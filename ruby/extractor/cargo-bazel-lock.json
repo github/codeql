@@ -1,5 +1,5 @@
 {
-  "checksum": "93d0053faf939037ac2cd61edfa1ee0f5d5918cb9e1773a0e0574fcbc13325c3",
+  "checksum": "bf577b30a6fa1893707e2384a92d21f3d271344127cb80069a477cb5308a6c64",
   "crates": {
     "adler 1.0.2": {
       "name": "adler",
@@ -927,7 +927,7 @@
               "target": "quote"
             },
             {
-              "id": "syn 2.0.65",
+              "id": "syn 2.0.66",
               "target": "syn"
             }
           ],
@@ -983,15 +983,7 @@
       "name": "codeql-extractor",
       "version": "0.2.0",
       "package_url": null,
-      "repository": {
-        "Git": {
-          "remote": "https://github.com/github/codeql.git",
-          "commitish": {
-            "Rev": "0dbce3d077f6f31a8d660aea104ee31cacf6bacd"
-          },
-          "strip_prefix": "shared/tree-sitter-extractor"
-        }
-      },
+      "repository": null,
       "targets": [
         {
           "Library": {
@@ -1065,6 +1057,23 @@
           ],
           "selects": {}
         },
+        "deps_dev": {
+          "common": [
+            {
+              "id": "rand 0.8.5",
+              "target": "rand"
+            },
+            {
+              "id": "tree-sitter-json 0.21.0",
+              "target": "tree_sitter_json"
+            },
+            {
+              "id": "tree-sitter-ql 0.22.5",
+              "target": "tree_sitter_ql"
+            }
+          ],
+          "selects": {}
+        },
         "edition": "2021",
         "version": "0.2.0"
       },
@@ -1088,10 +1097,6 @@
             {
               "id": "clap 4.5.4",
               "target": "clap"
-            },
-            {
-              "id": "codeql-extractor 0.2.0",
-              "target": "codeql_extractor"
             },
             {
               "id": "encoding 0.2.33",
@@ -1845,6 +1850,70 @@
         },
         "edition": "2018",
         "version": "1.0.30"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "getrandom 0.2.15": {
+      "name": "getrandom",
+      "version": "0.2.15",
+      "package_url": "https://github.com/rust-random/getrandom",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/getrandom/0.2.15/download",
+          "sha256": "c4567c8db10ae91089c99af84c68c38da3ec2f087c3f82960bcdbf3656b6f4d7"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "getrandom",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "getrandom",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "cfg-if 1.0.0",
+              "target": "cfg_if"
+            }
+          ],
+          "selects": {
+            "cfg(target_os = \"wasi\")": [
+              {
+                "id": "wasi 0.11.0+wasi-snapshot-preview1",
+                "target": "wasi"
+              }
+            ],
+            "cfg(unix)": [
+              {
+                "id": "libc 0.2.155",
+                "target": "libc"
+              }
+            ]
+          }
+        },
+        "edition": "2018",
+        "version": "0.2.15"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -2836,6 +2905,49 @@
       ],
       "license_file": null
     },
+    "ppv-lite86 0.2.17": {
+      "name": "ppv-lite86",
+      "version": "0.2.17",
+      "package_url": "https://github.com/cryptocorrosion/cryptocorrosion",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/ppv-lite86/0.2.17/download",
+          "sha256": "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "ppv_lite86",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "ppv_lite86",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "simd",
+            "std"
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.2.17"
+      },
+      "license": "MIT/Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
     "proc-macro2 1.0.83": {
       "name": "proc-macro2",
       "version": "1.0.83",
@@ -2950,6 +3062,182 @@
         },
         "edition": "2018",
         "version": "1.0.36"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "rand 0.8.5": {
+      "name": "rand",
+      "version": "0.8.5",
+      "package_url": "https://github.com/rust-random/rand",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/rand/0.8.5/download",
+          "sha256": "34af8d1a0e25924bc5b7c43c079c942339d8f0a8b57c39049bef581b46327404"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "rand",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "rand",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "alloc",
+            "default",
+            "getrandom",
+            "libc",
+            "rand_chacha",
+            "std",
+            "std_rng"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "rand_chacha 0.3.1",
+              "target": "rand_chacha"
+            },
+            {
+              "id": "rand_core 0.6.4",
+              "target": "rand_core"
+            }
+          ],
+          "selects": {
+            "cfg(unix)": [
+              {
+                "id": "libc 0.2.155",
+                "target": "libc"
+              }
+            ]
+          }
+        },
+        "edition": "2018",
+        "version": "0.8.5"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "rand_chacha 0.3.1": {
+      "name": "rand_chacha",
+      "version": "0.3.1",
+      "package_url": "https://github.com/rust-random/rand",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/rand_chacha/0.3.1/download",
+          "sha256": "e6c10a63a0fa32252be49d21e7709d4d4baf8d231c2dbce1eaa8141b9b127d88"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "rand_chacha",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "rand_chacha",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "ppv-lite86 0.2.17",
+              "target": "ppv_lite86"
+            },
+            {
+              "id": "rand_core 0.6.4",
+              "target": "rand_core"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.3.1"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "rand_core 0.6.4": {
+      "name": "rand_core",
+      "version": "0.6.4",
+      "package_url": "https://github.com/rust-random/rand",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/rand_core/0.6.4/download",
+          "sha256": "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "rand_core",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "rand_core",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "alloc",
+            "getrandom",
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "getrandom 0.2.15",
+              "target": "getrandom"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.6.4"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -3546,7 +3834,7 @@
               "target": "quote"
             },
             {
-              "id": "syn 2.0.65",
+              "id": "syn 2.0.66",
               "target": "syn"
             }
           ],
@@ -3755,14 +4043,14 @@
       ],
       "license_file": null
     },
-    "syn 2.0.65": {
+    "syn 2.0.66": {
       "name": "syn",
-      "version": "2.0.65",
+      "version": "2.0.66",
       "package_url": "https://github.com/dtolnay/syn",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/syn/2.0.65/download",
-          "sha256": "d2863d96a84c6439701d7a38f9de935ec562c8832cc55d1dde0f513b52fad106"
+          "url": "https://static.crates.io/crates/syn/2.0.66/download",
+          "sha256": "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
         }
       },
       "targets": [
@@ -3817,7 +4105,7 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "2.0.65"
+        "version": "2.0.66"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -3978,7 +4266,7 @@
               "target": "quote"
             },
             {
-              "id": "syn 2.0.65",
+              "id": "syn 2.0.66",
               "target": "syn"
             }
           ],
@@ -4369,6 +4657,170 @@
       ],
       "license_file": null
     },
+    "tree-sitter-json 0.21.0": {
+      "name": "tree-sitter-json",
+      "version": "0.21.0",
+      "package_url": "https://github.com/tree-sitter/tree-sitter-json",
+      "repository": {
+        "Git": {
+          "remote": "https://github.com/tree-sitter/tree-sitter-json",
+          "commitish": {
+            "Branch": "master"
+          }
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "tree_sitter_json",
+            "crate_root": "bindings/rust/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        },
+        {
+          "BuildScript": {
+            "crate_name": "build_script_build",
+            "crate_root": "bindings/rust/build.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "tree_sitter_json",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
+            },
+            {
+              "id": "tree-sitter-json 0.21.0",
+              "target": "build_script_build"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.21.0"
+      },
+      "build_script_attrs": {
+        "data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "cc 1.0.98",
+              "target": "cc"
+            }
+          ],
+          "selects": {}
+        },
+        "link_deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
+            }
+          ],
+          "selects": {}
+        }
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": null
+    },
+    "tree-sitter-ql 0.22.5": {
+      "name": "tree-sitter-ql",
+      "version": "0.22.5",
+      "package_url": "https://github.com/tree-sitter/tree-sitter-ql",
+      "repository": {
+        "Git": {
+          "remote": "https://github.com/tree-sitter/tree-sitter-ql",
+          "commitish": {
+            "Branch": "master"
+          }
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "tree_sitter_ql",
+            "crate_root": "bindings/rust/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        },
+        {
+          "BuildScript": {
+            "crate_name": "build_script_build",
+            "crate_root": "bindings/rust/build.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "tree_sitter_ql",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
+            },
+            {
+              "id": "tree-sitter-ql 0.22.5",
+              "target": "build_script_build"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.22.5"
+      },
+      "build_script_attrs": {
+        "data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "cc 1.0.98",
+              "target": "cc"
+            }
+          ],
+          "selects": {}
+        },
+        "link_deps": {
+          "common": [
+            {
+              "id": "tree-sitter 0.22.6",
+              "target": "tree_sitter"
+            }
+          ],
+          "selects": {}
+        }
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": null
+    },
     "tree-sitter-ruby 0.21.0": {
       "name": "tree-sitter-ruby",
       "version": "0.21.0",
@@ -4588,6 +5040,42 @@
       ],
       "license_file": null
     },
+    "wasi 0.11.0+wasi-snapshot-preview1": {
+      "name": "wasi",
+      "version": "0.11.0+wasi-snapshot-preview1",
+      "package_url": "https://github.com/bytecodealliance/wasi",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/wasi/0.11.0+wasi-snapshot-preview1/download",
+          "sha256": "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "wasi",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "wasi",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "edition": "2018",
+        "version": "0.11.0+wasi-snapshot-preview1"
+      },
+      "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": null
+    },
     "wasm-bindgen 0.2.92": {
       "name": "wasm-bindgen",
       "version": "0.2.92",
@@ -4723,7 +5211,7 @@
               "target": "quote"
             },
             {
-              "id": "syn 2.0.65",
+              "id": "syn 2.0.66",
               "target": "syn"
             },
             {
@@ -4841,7 +5329,7 @@
               "target": "quote"
             },
             {
-              "id": "syn 2.0.65",
+              "id": "syn 2.0.66",
               "target": "syn"
             },
             {
@@ -5789,6 +6277,7 @@
   },
   "binary_crates": [],
   "workspace_members": {
+    "codeql-extractor 0.2.0": "ruby/extractor/codeql-extractor-fake-crate",
     "codeql-extractor-ruby 0.1.0": "ruby/extractor"
   },
   "conditions": {
@@ -5901,6 +6390,9 @@
     ],
     "cfg(target_os = \"haiku\")": [],
     "cfg(target_os = \"hermit\")": [],
+    "cfg(target_os = \"wasi\")": [
+      "wasm32-wasi"
+    ],
     "cfg(target_os = \"windows\")": [
       "aarch64-pc-windows-msvc",
       "i686-pc-windows-msvc",
@@ -6010,17 +6502,26 @@
     ]
   },
   "direct_deps": [
+    "chrono 0.4.38",
     "clap 4.5.4",
-    "codeql-extractor 0.2.0",
     "encoding 0.2.33",
+    "flate2 1.0.30",
+    "globset 0.4.14",
     "lazy_static 1.4.0",
+    "num_cpus 1.16.0",
     "rayon 1.10.0",
     "regex 1.10.4",
+    "serde 1.0.202",
+    "serde_json 1.0.117",
     "tracing 0.1.40",
     "tracing-subscriber 0.3.18",
     "tree-sitter 0.22.6",
     "tree-sitter-embedded-template 0.21.0",
     "tree-sitter-ruby 0.21.0"
   ],
-  "direct_dev_deps": []
+  "direct_dev_deps": [
+    "rand 0.8.5",
+    "tree-sitter-json 0.21.0",
+    "tree-sitter-ql 0.22.5"
+  ]
 }
