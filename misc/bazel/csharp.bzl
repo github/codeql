@@ -33,7 +33,7 @@ def codeql_xunit_test(name, **kwargs):
         **kwargs
     )
 
-def codeql_csharp_binary(name, **kwargs):
+def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
     kwargs.setdefault("nullable", "enable")
     kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
 
@@ -63,7 +63,7 @@ def codeql_csharp_binary(name, **kwargs):
     pack_zip(
         name = name,
         srcs = [publish_binary_target],
-        prefix = "csharp/tools/" + codeql_platform,
+        prefix = language_prefix + "/tools/" + codeql_platform,
         strip_prefix = strip_prefix.files_only(),
         visibility = visibility,
     )
