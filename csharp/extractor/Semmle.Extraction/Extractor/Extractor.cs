@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Reflection;
+using System.IO;
 using Semmle.Util.Logging;
-
 using CompilationInfo = (string key, string value);
 
 namespace Semmle.Extraction
@@ -106,7 +107,20 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+        public static string Version
+        {
+            get
+            {
+                // the attribute for the git information are always attached to the entry assembly by our build system
+                var assembly = Assembly.GetEntryAssembly();
+                var versionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (versionString == null)
+                {
+                    return "unknown (not built from internal bazel workspace)";
+                }
+                return versionString.InformationalVersion;
+            }
+        }
 
         public PathTransformer PathTransformer { get; }
     }

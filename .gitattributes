@@ -78,6 +78,8 @@ ruby/extractor/cargo-bazel-lock.json -merge
 csharp/paket.lock linguist-generated=true
 # needs eol=crlf, as `paket` touches this file and saves it als crlf
 csharp/.paket/Paket.Restore.targets linguist-generated=true eol=crlf
+csharp/paket.main.bzl linguist-generated=true
+csharp/paket.main_extension.bzl linguist-generated=true
 
 # ripunzip tool
 /misc/bazel/internal/ripunzip/ripunzip-* filter=lfs diff=lfs merge=lfs -text
