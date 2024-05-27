@@ -1,3 +1,12 @@
+"""
+Helper script for installing `codeql_pack` targets.
+
+This mainly wraps around a `pkg_install` script from `rules_pkg` adding:
+* resolving destination directory with respect to a provided `--build-file`
+* clean-up of target destination directory before a reinstall
+* installing imported zip files using a provided `--ripunzip`
+"""
+
 import argparse
 import pathlib
 import shutil
@@ -7,12 +16,17 @@ from python.runfiles import runfiles
 runfiles = runfiles.Create()
 assert runfiles, "Installer should be run with `bazel run`"
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--destdir", type=pathlib.Path, required=True)
-parser.add_argument("--script", required=True)
-parser.add_argument("--build-file", required=True)
-parser.add_argument("--ripunzip", required=True)
-parser.add_argument("--zip-manifest", action="append", default=[], dest="zip_manifests")
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--destdir", type=pathlib.Path, required=True,
+                    help="Desination directory, relative to `--build-file`")
+parser.add_argument("--script", required=True,
+                    help="The wrapped `pkg_install` installation script rlocation")
+parser.add_argument("--build-file", required=True,
+                    help="BUILD.bazel rlocation relative to which the installation should take place")
+parser.add_argument("--ripunzip", required=True,
+                    help="ripunzip executable rlocation")
+parser.add_argument("--zip-manifest", action="append", default=[], dest="zip_manifests",
+                    help="The rlocation of a file containing newline-separated `prefix:zip_file` entries")
 opts = parser.parse_args()
 
 build_file = runfiles.Rlocation(opts.build_file)
