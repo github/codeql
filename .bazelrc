@@ -22,4 +22,6 @@ common --enable_runfiles
 common --registry=file:///%workspace%/misc/bazel/registry
 common --registry=https://bcr.bazel.build
 
+common --@rules_dotnet//dotnet/settings:strict_deps=false
+
 try-import %workspace%/local.bazelrc
