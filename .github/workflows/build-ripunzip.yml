@@ -8,7 +8,7 @@ on:
         required: false
         default: v1.2.1
       openssl-version:
-        description: "what reference to checktout from openssl/openssl for Linux"
+        description: "what reference to checkout from openssl/openssl for Linux"
         required: false
         default: openssl-3.3.0
 
