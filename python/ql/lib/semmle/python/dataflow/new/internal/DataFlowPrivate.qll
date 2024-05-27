@@ -1023,13 +1023,21 @@ predicate attributeClearStep(Node n, AttributeContent c) {
   exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
 //--------
 // Fancy context-sensitive guards
 //--------
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

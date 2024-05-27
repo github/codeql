@@ -73,11 +73,17 @@ signature module InputSig<LocationSig Location> {
     string toString();
 
     DataFlowCallable getEnclosingCallable();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class DataFlowCallable {
     /** Gets a textual representation of this element. */
     string toString();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class ReturnKind {
@@ -251,10 +257,18 @@ signature module InputSig<LocationSig Location> {
    */
   predicate expectsContent(Node n, ContentSet c);
 
+  /** A set of `Node`s in a `DataFlowCallable`. */
+  class NodeRegion {
+    /** Holds if this region contains `n`. */
+    predicate contains(Node n);
+
+    int totalOrder();
+  }
+
   /**
-   * Holds if the node `n` is unreachable when the call context is `call`.
+   * Holds if the nodes in `nr` are unreachable when the call context is `call`.
    */
-  predicate isUnreachableInCall(Node n, DataFlowCall call);
+  predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call);
 
   default int accessPathLimit() { result = 5 }
 
