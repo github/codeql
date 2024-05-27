@@ -364,6 +364,8 @@ class ConversionNode extends ExprNode {
     childIndex = 0 and
     result.getAst() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
+    or
+    result.getAst() = expr.getImplicitDestructorCall(childIndex - 1)
   }
 }
 
@@ -458,6 +460,25 @@ class StmtNode extends AstNode {
 
   override string getChildAccessorPredicateInternal(int childIndex) {
     result = getChildAccessorWithoutConversions(ast, this.getChildInternal(childIndex).getAst())
+  }
+}
+
+/**
+ * A node representing a child of a `Stmt` that is itself a `Stmt`.
+ */
+class ChildStmtNode extends StmtNode {
+  Stmt childStmt;
+
+  ChildStmtNode() { exists(Stmt parent | parent.getAChild() = childStmt and childStmt = ast) }
+
+  override BaseAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    exists(int destructorIndex |
+      result.getAst() = childStmt.getImplicitDestructorCall(destructorIndex) and
+      childIndex =
+        destructorIndex + max(int index | exists(childStmt.getChild(index)) or index = 0) + 1
+    )
   }
 }
 
@@ -672,6 +693,13 @@ class FunctionNode extends FunctionOrGlobalOrNamespaceVariableNode {
 private string getChildAccessorWithoutConversions(Locatable parent, Element child) {
   shouldPrintDeclaration(getAnEnclosingDeclaration(parent)) and
   (
+    exists(Stmt s, int i | s.getChild(i) = parent |
+      exists(int n |
+        s.getChild(i).(Stmt).getImplicitDestructorCall(n) = child and
+        result = "getImplicitDestructorCall(" + n + ")"
+      )
+    )
+    or
     exists(Stmt s | s = parent |
       namedStmtChildPredicates(s, child, result)
       or

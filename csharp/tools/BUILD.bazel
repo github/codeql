@@ -1,0 +1,11 @@
+load("@semmle_code//:dist.bzl", "pack_zip")
+
+pack_zip(
+    name = "tools",
+    srcs = glob(["**/*"]),
+    excludes = [
+        "BUILD.bazel",
+    ],
+    prefix = "tools",
+    visibility = ["//csharp:__pkg__"],
+)

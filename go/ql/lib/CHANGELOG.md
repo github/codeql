@@ -1,3 +1,29 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug that stopped built-in functions from being referenced using the predicate `hasQualifiedName` because technically they do not belong to any package. Now you can use the empty string as the package, e.g. `f.hasQualifiedName("", "len")`.
+* Fixed a bug that stopped data flow models for built-in functions from having any effect because the package "" was not parsed correctly.
+* Fixed a bug that stopped data flow from being followed through variadic arguments to built-in functions or to functions called using a variable.
+
+## 0.8.0
+
+### Breaking Changes
+
+* Deleted the deprecated `CsvRemoteSource` alias. Use `MaDRemoteSource` instead.
+
+### Deprecated APIs
+
+* To make Go consistent with other language libraries, the `UntrustedFlowSource` name has been deprecated throughout. Use `RemoteFlowSource` instead, which replaces it. 
+* Where modules have classes named `UntrustedFlowAsSource`, these are also deprecated and the `Source` class in the same module or the `RemoteFlowSource` class should be used instead.
+
+## 0.7.14
+
+### Minor Analysis Improvements
+
+* Data flow through variables declared in statements of the form `x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
+* Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
+
 ## 0.7.13
 
 ### Minor Analysis Improvements

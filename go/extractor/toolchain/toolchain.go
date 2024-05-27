@@ -2,6 +2,8 @@ package toolchain
 
 import (
 	"bufio"
+	"encoding/json"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -36,7 +38,14 @@ func GetEnvGoVersion() string {
 		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
 		// to use the local Go toolchain instead.
 		cmd := Version()
-		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+
+		// If 'GOTOOLCHAIN' is already set, then leave it as is. This allows us to force a specific
+		// Go version in tests and also allows users to override the system default more generally.
+		_, hasToolchainVar := os.LookupEnv("GOTOOLCHAIN")
+		if !hasToolchainVar {
+			cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		}
+
 		out, err := cmd.CombinedOutput()
 
 		if err != nil {
@@ -169,4 +178,152 @@ func VendorModule(path string) *exec.Cmd {
 func Version() *exec.Cmd {
 	version := exec.Command("go", "version")
 	return version
+}
+
+// Runs `go list` with `format`, `patterns`, and `flags` for the respective inputs.
+func RunList(format string, patterns []string, flags ...string) (string, error) {
+	return RunListWithEnv(format, patterns, nil, flags...)
+}
+
+// Runs `go list`.
+func RunListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) (string, error) {
+	args := append([]string{"list", "-e", "-f", format}, flags...)
+	args = append(args, patterns...)
+	cmd := exec.Command("go", args...)
+	cmd.Env = append(os.Environ(), additionalEnv...)
+	out, err := cmd.Output()
+
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			log.Printf("Warning: go list command failed, output below:\nstdout:\n%s\nstderr:\n%s\n", out, exitErr.Stderr)
+		} else {
+			log.Printf("Warning: Failed to run go list: %s", err.Error())
+		}
+		return "", err
+	}
+
+	return strings.TrimSpace(string(out)), nil
+}
+
+// PkgInfo holds package directory and module directory (if any) for a package
+type PkgInfo struct {
+	PkgDir string // the directory directly containing source code of this package
+	ModDir string // the module directory containing this package, empty if not a module
+}
+
+// GetPkgsInfo gets the absolute module and package root directories for the packages matched by the
+// patterns `patterns`. It passes to `go list` the flags specified by `flags`.  If `includingDeps`
+// is true, all dependencies will also be included.
+func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[string]PkgInfo, error) {
+	// enable module mode so that we can find a module root if it exists, even if go module support is
+	// disabled by a build
+	if includingDeps {
+		// the flag `-deps` causes all dependencies to be retrieved
+		flags = append(flags, "-deps")
+	}
+
+	// using -json overrides -f format
+	output, err := RunList("", patterns, append(flags, "-json")...)
+	if err != nil {
+		return nil, err
+	}
+
+	// the output of `go list -json` is a stream of json object
+	type goListPkgInfo struct {
+		ImportPath string
+		Dir        string
+		Module     *struct {
+			Dir string
+		}
+	}
+	pkgInfoMapping := make(map[string]PkgInfo)
+	streamDecoder := json.NewDecoder(strings.NewReader(output))
+	for {
+		var pkgInfo goListPkgInfo
+		decErr := streamDecoder.Decode(&pkgInfo)
+		if decErr == io.EOF {
+			break
+		}
+		if decErr != nil {
+			log.Printf("Error decoding output of go list -json: %s", err.Error())
+			return nil, decErr
+		}
+		pkgAbsDir, err := filepath.Abs(pkgInfo.Dir)
+		if err != nil {
+			log.Printf("Unable to make package dir %s absolute: %s", pkgInfo.Dir, err.Error())
+		}
+		var modAbsDir string
+		if pkgInfo.Module != nil {
+			modAbsDir, err = filepath.Abs(pkgInfo.Module.Dir)
+			if err != nil {
+				log.Printf("Unable to make module dir %s absolute: %s", pkgInfo.Module.Dir, err.Error())
+			}
+		}
+		pkgInfoMapping[pkgInfo.ImportPath] = PkgInfo{
+			PkgDir: pkgAbsDir,
+			ModDir: modAbsDir,
+		}
+	}
+	return pkgInfoMapping, nil
+}
+
+// GetPkgInfo fills the package info structure for the specified package path.
+// It passes the `go list` the flags specified by `flags`.
+func GetPkgInfo(pkgpath string, flags ...string) PkgInfo {
+	return PkgInfo{
+		PkgDir: GetPkgDir(pkgpath, flags...),
+		ModDir: GetModDir(pkgpath, flags...),
+	}
+}
+
+// GetModDir gets the absolute directory of the module containing the package with path
+// `pkgpath`. It passes the `go list` the flags specified by `flags`.
+func GetModDir(pkgpath string, flags ...string) string {
+	// enable module mode so that we can find a module root if it exists, even if go module support is
+	// disabled by a build
+	mod, err := RunListWithEnv("{{.Module}}", []string{pkgpath}, []string{"GO111MODULE=on"}, flags...)
+	if err != nil || mod == "<nil>" {
+		// if the command errors or modules aren't being used, return the empty string
+		return ""
+	}
+
+	modDir, err := RunListWithEnv("{{.Module.Dir}}", []string{pkgpath}, []string{"GO111MODULE=on"}, flags...)
+	if err != nil {
+		return ""
+	}
+
+	abs, err := filepath.Abs(modDir)
+	if err != nil {
+		log.Printf("Warning: unable to make %s absolute: %s", modDir, err.Error())
+		return ""
+	}
+	return abs
+}
+
+// GetPkgDir gets the absolute directory containing the package with path `pkgpath`. It passes the
+// `go list` command the flags specified by `flags`.
+func GetPkgDir(pkgpath string, flags ...string) string {
+	pkgDir, err := RunList("{{.Dir}}", []string{pkgpath}, flags...)
+	if err != nil {
+		return ""
+	}
+
+	abs, err := filepath.Abs(pkgDir)
+	if err != nil {
+		log.Printf("Warning: unable to make %s absolute: %s", pkgDir, err.Error())
+		return ""
+	}
+	return abs
+}
+
+// DepErrors checks there are any errors resolving dependencies for `pkgpath`. It passes the `go
+// list` command the flags specified by `flags`.
+func DepErrors(pkgpath string, flags ...string) bool {
+	out, err := RunList("{{if .DepsErrors}}error{{else}}{{end}}", []string{pkgpath}, flags...)
+	if err != nil {
+		// if go list failed, assume dependencies are broken
+		return false
+	}
+
+	return out != ""
 }

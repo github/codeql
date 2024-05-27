@@ -4,6 +4,7 @@ private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.FlowSummary as FlowSummary
+private import semmle.go.dataflow.ExternalFlow
 private import codeql.util.Unit
 import DataFlowNodes::Private
 
@@ -309,6 +310,16 @@ class DataFlowCallable extends TDataFlowCallable {
     this.asSummarizedCallable()
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
+  }
 }
 
 /** A function call relevant for data flow. */
@@ -331,6 +342,16 @@ class DataFlowCall extends Expr {
     result.asCallable().getFuncDef() = this.getEnclosingFunction()
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
+  }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCall c, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        c order by startline, startcolumn
+      )
   }
 }
 
@@ -370,11 +391,26 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
   )
 }
 
+class NodeRegion instanceof BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { n.getBasicBlock() = this }
+
+  int totalOrder() {
+    this =
+      rank[result](BasicBlock b, int startline, int startcolumn |
+        b.hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        b order by startline, startcolumn
+      )
+  }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
-  getAFalsifiedGuard(call).dominates(n.getBasicBlock())
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
+  getAFalsifiedGuard(call).dominates(nr)
 }
 
 /**
@@ -409,6 +445,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

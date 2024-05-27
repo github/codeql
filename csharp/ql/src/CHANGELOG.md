@@ -1,3 +1,15 @@
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+No user-facing changes.
+
+## 0.8.14
+
+No user-facing changes.
+
 ## 0.8.13
 
 ### Major Analysis Improvements

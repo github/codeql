@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Reflection;
+using System.IO;
 using Semmle.Util.Logging;
-
 using CompilationInfo = (string key, string value);
 
 namespace Semmle.Extraction
@@ -10,6 +11,8 @@ namespace Semmle.Extraction
     /// </summary>
     public abstract class Extractor
     {
+        public string Cwd { get; init; }
+        public string[] Args { get; init; }
         public abstract ExtractorMode Mode { get; }
         public string OutputPath { get; }
         public IEnumerable<CompilationInfo> CompilationInfos { get; }
@@ -19,12 +22,14 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="logger">The object used for logging.</param>
         /// <param name="pathTransformer">The object used for path transformations.</param>
-        protected Extractor(string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer)
+        protected Extractor(string cwd, string[] args, string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer)
         {
             OutputPath = outputPath;
             Logger = logger;
             PathTransformer = pathTransformer;
             CompilationInfos = compilationInfos;
+            Cwd = cwd;
+            Args = args;
         }
 
         // Limit the number of error messages in the log file
@@ -102,7 +107,20 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+        public static string Version
+        {
+            get
+            {
+                // the attribute for the git information are always attached to the entry assembly by our build system
+                var assembly = Assembly.GetEntryAssembly();
+                var versionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (versionString == null)
+                {
+                    return "unknown (not built from internal bazel workspace)";
+                }
+                return versionString.InformationalVersion;
+            }
+        }
 
         public PathTransformer PathTransformer { get; }
     }

@@ -195,7 +195,14 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   or
   // This format was supported until Rails 2.3.8
   call = activeRecordQueryBuilderCall(["all", "find", "first", "last"]) and
-  sink = call.getKeywordArgument("conditions")
+  exists(DataFlow::LocalSourceNode sn |
+    sn = call.getKeywordArgument("conditions").getALocalSource()
+  |
+    sink = sn.(DataFlow::ArrayLiteralNode).getElement(0)
+    or
+    sn.(DataFlow::LiteralNode).asLiteralAstNode() instanceof StringlikeLiteral and
+    sink = sn
+  )
   or
   call = activeRecordQueryBuilderCall("reload") and
   sink = call.getKeywordArgument("lock")
@@ -790,5 +797,38 @@ class ActiveRecordScopeCallTarget extends AdditionalCallTarget {
       ) and
       scopeCall = model.getAnImmediateReference().getAMethodCall(scopeName).asExpr()
     )
+  }
+}
+
+/** Sinks for the mass assignment query. */
+private module MassAssignmentSinks {
+  private import codeql.ruby.security.MassAssignmentCustomizations
+
+  pragma[nomagic]
+  private predicate massAssignmentCall(DataFlow::CallNode call, string name) {
+    call = activeRecordBaseClass().getAMethodCall(name)
+    or
+    call instanceof ActiveRecordInstanceMethodCall and
+    call.getMethodName() = name
+  }
+
+  /** A call to a method that sets attributes of an database record using a hash. */
+  private class MassAssignmentSink extends MassAssignment::Sink {
+    MassAssignmentSink() {
+      exists(DataFlow::CallNode call, string name | massAssignmentCall(call, name) |
+        name =
+          [
+            "build", "create", "create!", "create_with", "create_or_find_by", "create_or_find_by!",
+            "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "insert", "insert!",
+            "insert_all", "insert_all!", "instantiate", "new", "update", "update!", "upsert",
+            "upsert_all"
+          ] and
+        this = call.getArgument(0)
+        or
+        // These methods have an optional first id parameter.
+        name = ["update", "update!"] and
+        this = call.getArgument(1)
+      )
+    }
   }
 }

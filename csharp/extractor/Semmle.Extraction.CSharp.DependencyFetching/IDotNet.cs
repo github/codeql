@@ -14,6 +14,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         IList<string> GetListedSdks();
         bool Exec(string execArgs);
         IList<string> GetNugetFeeds(string nugetConfig);
+        IList<string> GetNugetFeedsFromFolder(string folderPath);
     }
 
     public record class RestoreSettings(string File, string PackageDirectory, bool ForceDotnetRefAssemblyFetching, string? PathToNugetConfig = null, bool ForceReevaluation = false);
@@ -28,6 +29,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly Lazy<bool> hasNugetPackageSourceError = new(() => Output.Any(s => s.Contains("NU1301")));
         public bool HasNugetPackageSourceError => hasNugetPackageSourceError.Value;
+
+        private readonly Lazy<bool> hasNugetNoStablePackageVersionError = new(() => Output.Any(s => s.Contains("NU1103")));
+        public bool HasNugetNoStablePackageVersionError => hasNugetNoStablePackageVersionError.Value;
 
         private static IEnumerable<string> GetFirstGroupOnMatch(Regex regex, IEnumerable<string> lines) =>
             lines

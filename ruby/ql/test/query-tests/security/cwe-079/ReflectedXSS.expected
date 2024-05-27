@@ -1,18 +1,18 @@
 edges
 | app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params | app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] | provenance |  |
-| app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] | app/views/foo/bars/show.html.erb:46:5:46:13 | call to user_name | provenance |  |
+| app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] | app/views/foo/bars/show.html.erb:46:5:46:13 | call to user_name | provenance | Config |
 | app/controllers/foo/bars_controller.rb:13:5:13:14 | [post] self [@user_name] | app/controllers/foo/bars_controller.rb:13:5:13:14 | [post] self [@user_name] | provenance |  |
-| app/controllers/foo/bars_controller.rb:13:5:13:14 | [post] self [@user_name] | app/views/foo/bars/show.html.erb:50:5:50:18 | call to user_name_memo | provenance |  |
+| app/controllers/foo/bars_controller.rb:13:5:13:14 | [post] self [@user_name] | app/views/foo/bars/show.html.erb:50:5:50:18 | call to user_name_memo | provenance | Config |
 | app/controllers/foo/bars_controller.rb:13:20:13:25 | call to params | app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] | provenance |  |
 | app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] | app/controllers/foo/bars_controller.rb:13:5:13:14 | [post] self [@user_name] | provenance |  |
-| app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] | app/views/foo/bars/show.html.erb:50:5:50:18 | call to user_name_memo | provenance |  |
+| app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] | app/views/foo/bars/show.html.erb:50:5:50:18 | call to user_name_memo | provenance | Config |
 | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] | provenance |  |
-| app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website | provenance |  |
+| app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website | provenance | Config |
 | app/controllers/foo/bars_controller.rb:18:5:18:6 | dt | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | provenance |  |
 | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] | provenance |  |
 | app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] | app/controllers/foo/bars_controller.rb:18:5:18:6 | dt | provenance |  |
 | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | provenance |  |
-| app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | app/views/foo/bars/show.html.erb:40:3:40:16 | @instance_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | app/views/foo/bars/show.html.erb:40:3:40:16 | @instance_text | provenance | Config |
 | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] | provenance |  |
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | provenance |  |
 | app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:5:9:5:20 | call to display_text | provenance |  |

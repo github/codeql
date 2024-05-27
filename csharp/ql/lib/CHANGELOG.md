@@ -1,3 +1,25 @@
+## 0.10.1
+
+No user-facing changes.
+
+## 0.10.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getAssemblyName` predicate from the `Operator` class. Use `getFunctionName` instead.
+* Deleted the deprecated `LShiftOperator`, `RShiftOperator`, `AssignLShiftExpr`, `AssignRShiftExpr`, `LShiftExpr`, and `RShiftExpr` aliases.
+* Deleted the deprecated `getCallableDescription` predicate from the `ExternalApiDataNode` class. Use `hasQualifiedName` instead.
+
+### Minor Analysis Improvements
+
+* Generated .NET Runtime models for properties with both getters and setters have been removed as this is now handled by the data flow library.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* Extracting suppress nullable warning expressions did not work when applied directly to a method call (like `System.Console.Readline()!`). This has been fixed.
+
 ## 0.9.0
 
 ### Breaking Changes

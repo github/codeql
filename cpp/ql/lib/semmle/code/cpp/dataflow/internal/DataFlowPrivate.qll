@@ -242,7 +242,17 @@ class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 
-class DataFlowCallable = Function;
+class DataFlowCallable extends Function {
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
+  }
+}
 
 class DataFlowExpr = Expr;
 
@@ -261,10 +271,28 @@ class DataFlowCall extends Expr instanceof Call {
   ExprNode getNode() { result.getExpr() = this }
 
   /** Gets the enclosing callable of this call. */
-  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+  DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCall c, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        c order by startline, startcolumn
+      )
+  }
 }
 
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // stub implementation
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -285,6 +313,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

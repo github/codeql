@@ -1,3 +1,18 @@
+## 0.7.16
+
+No user-facing changes.
+
+## 0.7.15
+
+### Minor Analysis Improvements
+
+* The query `go/incomplete-hostname-regexp` now recognizes more sources involving concatenation of string literals and also follows flow through string concatenation. This may lead to more alerts.
+* Added some more barriers to flow for `go/incorrect-integer-conversion` to reduce false positives, especially around type switches.
+
+## 0.7.14
+
+No user-facing changes.
+
 ## 0.7.13
 
 ### New Queries

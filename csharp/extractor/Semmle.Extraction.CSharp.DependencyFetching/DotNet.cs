@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
             if (!res)
             {
                 throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
@@ -95,9 +95,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IList<string> GetListedSdks() => GetResultList("--list-sdks");
 
-        private IList<string> GetResultList(string args)
+        private IList<string> GetResultList(string args, string? workingDirectory = null, bool silent = true)
         {
-            if (dotnetCliInvoker.RunCommand(args, out var results))
+            if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results, silent))
             {
                 return results;
             }
@@ -111,7 +111,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetNugetFeeds(string nugetConfig) => GetResultList($"nuget list source --format Short --configfile \"{nugetConfig}\"");
+        private const string nugetListSourceCommand = "nuget list source --format Short";
+
+        public IList<string> GetNugetFeeds(string nugetConfig)
+        {
+            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
+        }
+
+        public IList<string> GetNugetFeedsFromFolder(string folderPath)
+        {
+            logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
+            return GetResultList(nugetListSourceCommand, folderPath);
+        }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
         public const string LatestDotNetSdkVersion = "8.0.101";
@@ -131,7 +143,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
             var versions = new List<string>();
 
-            foreach (var path in files.Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
+            foreach (var path in files.Where(p => string.Equals(FileUtils.SafeGetFileName(p, logger), "global.json", StringComparison.OrdinalIgnoreCase)))
             {
                 try
                 {

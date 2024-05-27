@@ -16,7 +16,7 @@ module CodeInjection {
   module FlowState {
     /**
      * Flow state used for normal tainted data, where an attacker might only control a substring.
-     * DEPRECATED: Use `Full()`
+     * DEPRECATED: Use `SubString()`
      */
     deprecated DataFlow::FlowState substring() { result = "substring" }
 

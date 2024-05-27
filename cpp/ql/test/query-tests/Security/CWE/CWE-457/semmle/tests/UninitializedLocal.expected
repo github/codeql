@@ -13,6 +13,7 @@ nodes
 | test.cpp:458:6:458:6 | definition of x | semmle.label | definition of x |
 | test.cpp:464:6:464:6 | definition of x | semmle.label | definition of x |
 | test.cpp:471:6:471:6 | definition of x | semmle.label | definition of x |
+| test.cpp:557:15:557:15 | definition of r | semmle.label | definition of r |
 #select
 | test.cpp:12:6:12:8 | foo | test.cpp:11:6:11:8 | definition of foo | test.cpp:11:6:11:8 | definition of foo | The variable $@ may not be initialized at this access. | test.cpp:11:6:11:8 | foo | foo |
 | test.cpp:113:6:113:8 | foo | test.cpp:111:6:111:8 | definition of foo | test.cpp:111:6:111:8 | definition of foo | The variable $@ may not be initialized at this access. | test.cpp:111:6:111:8 | foo | foo |
@@ -27,3 +28,4 @@ nodes
 | test.cpp:460:7:460:7 | x | test.cpp:458:6:458:6 | definition of x | test.cpp:458:6:458:6 | definition of x | The variable $@ may not be initialized at this access. | test.cpp:458:6:458:6 | x | x |
 | test.cpp:467:2:467:2 | x | test.cpp:464:6:464:6 | definition of x | test.cpp:464:6:464:6 | definition of x | The variable $@ may not be initialized at this access. | test.cpp:464:6:464:6 | x | x |
 | test.cpp:474:7:474:7 | x | test.cpp:471:6:471:6 | definition of x | test.cpp:471:6:471:6 | definition of x | The variable $@ may not be initialized at this access. | test.cpp:471:6:471:6 | x | x |
+| test.cpp:567:7:567:7 | r | test.cpp:557:15:557:15 | definition of r | test.cpp:557:15:557:15 | definition of r | The variable $@ may not be initialized at this access. | test.cpp:557:15:557:15 | r | r |

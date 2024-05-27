@@ -84,7 +84,7 @@ newtype TObject =
   /** The unicode string `s` */
   TUnicode(string s) {
     // Any string explicitly mentioned in the source code.
-    exists(StrConst str |
+    exists(StringLiteral str |
       s = str.getText() and
       str.isUnicode()
     )
@@ -100,7 +100,7 @@ newtype TObject =
   /** The byte string `s` */
   TBytes(string s) {
     // Any string explicitly mentioned in the source code.
-    exists(StrConst str |
+    exists(StringLiteral str |
       s = str.getText() and
       not str.isUnicode()
     )

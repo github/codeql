@@ -142,7 +142,7 @@ module GoMicro {
   /**
    * A set of remote requests from a service handler.
    */
-  class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
+  class Request extends RemoteFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
       exists(ServiceHandler handler |
         this.asParameter().isParameterOf(handler.getFuncDecl(), 1) and

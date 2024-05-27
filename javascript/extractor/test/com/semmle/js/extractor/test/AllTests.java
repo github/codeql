@@ -18,6 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
   JSXTests.class,
   NodeJSDetectorTests.class,
+  ES2015DetectorTests.class,
   TrapTests.class,
   ObjectRestSpreadTests.class,
   ClassPropertiesTests.class,

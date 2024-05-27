@@ -22,9 +22,13 @@ module CppDataFlow implements InputSig<Location> {
 
   predicate getAdditionalFlowIntoCallNodeTerm = Private::getAdditionalFlowIntoCallNodeTerm/2;
 
+  predicate getSecondLevelScope = Private::getSecondLevelScope/1;
+
   predicate validParameterAliasStep = Private::validParameterAliasStep/2;
 
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 }

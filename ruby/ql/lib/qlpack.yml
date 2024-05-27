@@ -1,5 +1,5 @@
 name: codeql/ruby-all
-version: 0.8.14-dev
+version: 1.0.0-dev
 groups: ruby
 extractor: ruby
 dbscheme: ruby.dbscheme
@@ -15,4 +15,5 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
+  - codeql/ruby/frameworks/**/*.model.yml
 warnOnImplicitThis: true

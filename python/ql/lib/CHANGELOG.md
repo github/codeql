@@ -1,3 +1,26 @@
+## 0.12.1
+
+### Major Analysis Improvements
+
+* Added modeling of the `pyramid` framework, leading to new remote flow sources and sinks.
+
+## 0.12.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `Security/CWE-020/HostnameRegexpShared.qll` file.
+
+### Deprecated APIs
+
+- Renamed the `StrConst` class to `StringLiteral`, for greater consistency with other languages. The `StrConst` and `Str` classes are now deprecated and will be removed in a future release.
+
+## 0.11.14
+
+### Minor Analysis Improvements
+
+* Improved the type-tracking capabilities (and therefore also API graphs) to allow tracking items in tuples and dictionaries.
+
 ## 0.11.13
 
 No user-facing changes.

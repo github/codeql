@@ -1,10 +1,10 @@
 edges
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance |  |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance |  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:44663  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:44663  |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
-| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance |  |
-| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance |  |
-| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance |  |
+| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:42746 |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:44663  |
+| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance |  Sink:MaD:48983 |
 nodes
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |

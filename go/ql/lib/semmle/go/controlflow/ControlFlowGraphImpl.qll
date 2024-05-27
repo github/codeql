@@ -307,6 +307,19 @@ newtype TControlFlowNode =
    */
   MkCaseCheckNode(CaseClause cc, int i) { exists(cc.getExpr(i)) } or
   /**
+   * A control-flow node that represents the implicit declaration of the
+   * variable `lv` in case clause `cc` and its assignment of the value
+   * `switchExpr` from the guard. This only occurs in case clauses in a type
+   * switch statement which declares a variable in its guard.
+   */
+  MkTypeSwitchImplicitVariable(CaseClause cc, LocalVariable lv, Expr switchExpr) {
+    exists(TypeSwitchStmt ts, DefineStmt ds | ds = ts.getAssign() |
+      cc = ts.getACase() and
+      lv = cc.getImplicitlyDeclaredVariable() and
+      switchExpr = ds.getRhs().(TypeAssertExpr).getExpr()
+    )
+  } or
+  /**
    * A control-flow node that represents the implicit lower bound of a slice expression.
    */
   MkImplicitLowerSliceBound(SliceExpr sl) { not exists(sl.getLow()) } or
@@ -1099,6 +1112,10 @@ module CFG {
       first = this.getExprStart(0)
       or
       not exists(this.getAnExpr()) and
+      first = MkTypeSwitchImplicitVariable(this, _, _)
+      or
+      not exists(this.getAnExpr()) and
+      not exists(MkTypeSwitchImplicitVariable(this, _, _)) and
       first = this.getBodyStart()
     }
 
@@ -1119,6 +1136,9 @@ module CFG {
     override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       ControlFlowTree.super.succ0(pred, succ)
       or
+      pred = MkTypeSwitchImplicitVariable(this, _, _) and
+      succ = this.getBodyStart()
+      or
       exists(int i |
         lastNode(this.getExpr(i), pred, normalCompletion()) and
         succ = MkCaseCheckNode(this, i)
@@ -1137,8 +1157,13 @@ module CFG {
 
     predicate isPassingEdge(int i, ControlFlow::Node pred, ControlFlow::Node succ, Expr testExpr) {
       pred = this.getExprEnd(i, true) and
-      succ = this.getBodyStart() and
-      testExpr = this.getExpr(i)
+      testExpr = this.getExpr(i) and
+      (
+        succ = MkTypeSwitchImplicitVariable(this, _, _)
+        or
+        not exists(MkTypeSwitchImplicitVariable(this, _, _)) and
+        succ = this.getBodyStart()
+      )
     }
 
     override ControlFlowTree getChildTree(int i) { result = this.getStmt(i) }

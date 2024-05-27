@@ -1,3 +1,22 @@
+## 0.11.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `ODASA_JAVA_LAYOUT`, `ODASA_TOOLS` and `ODASA_HOME` legacy environment variables.
+* The Java extractor no longer supports the `ODASA_BUILD_ERROR_DIR` legacy environment variable.
+
+## 0.10.0
+
+### Breaking Changes
+
+* Deleted the deprecated `AssignLShiftExpr`, `AssignRShiftExpr`, `AssignURShiftExpr`, `LShiftExpr`, `RShiftExpr`, and `URShiftExpr` aliases.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* About 6,700 summary models and 6,800 neutral summary models for the JDK that were generated using data flow have been added. This may lead to new alerts being reported.
+
 ## 0.9.0
 
 ### Breaking Changes

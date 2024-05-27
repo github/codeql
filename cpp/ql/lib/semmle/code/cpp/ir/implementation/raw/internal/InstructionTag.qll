@@ -89,7 +89,8 @@ newtype TInstructionTag =
   ImplicitDestructorTag(int index) {
     exists(Expr e | exists(e.getImplicitDestructorCall(index))) or
     exists(Stmt s | exists(s.getImplicitDestructorCall(index)))
-  }
+  } or
+  CoAwaitBranchTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = getInstructionTagId(this) }
@@ -186,6 +187,8 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = BoolConversionCompareTag() and result = "BoolConvComp"
   or
+  tag = ResultCopyTag() and result = "ResultCopy"
+  or
   tag = LoadTag() and result = "Load" // Implicit load due to lvalue-to-rvalue conversion
   or
   tag = CatchTag() and result = "Catch"
@@ -263,4 +266,6 @@ string getInstructionTagId(TInstructionTag tag) {
   exists(int index |
     tag = ImplicitDestructorTag(index) and result = "ImplicitDestructor(" + index + ")"
   )
+  or
+  tag = CoAwaitBranchTag() and result = "CoAwaitBranch"
 }

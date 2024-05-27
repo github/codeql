@@ -3,6 +3,7 @@ private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -471,12 +472,12 @@ import StepRelationTransformations
  *
  * It includes flow steps from flow summaries.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo) and model = ""
   or
-  summaryLocalStep(nodeFrom, nodeTo)
+  summaryLocalStep(nodeFrom, nodeTo, model)
   or
-  variableCaptureLocalFlowStep(nodeFrom, nodeTo)
+  variableCaptureLocalFlowStep(nodeFrom, nodeTo) and model = ""
 }
 
 /**
@@ -490,9 +491,9 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
   LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }
 
-private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
+private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
@@ -812,7 +813,7 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
   exists(KeyValuePair item |
     item = nodeTo.asCfgNode().(DictNode).getNode().(Dict).getAnItem() and
     nodeFrom.getNode().getNode() = item.getValue() and
-    c.getKey() = item.getKey().(StrConst).getS()
+    c.getKey() = item.getKey().(StringLiteral).getS()
   )
 }
 
@@ -828,13 +829,13 @@ private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent 
   exists(SubscriptNode subscript |
     nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
     nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
-    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+    c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
   or
   // see https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
   exists(MethodCallNode call |
     call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), "setdefault") and
-    call.getArg(0).asExpr().(StrConst).getText() = c.getKey() and
+    call.getArg(0).asExpr().(StringLiteral).getText() = c.getKey() and
     nodeFrom = call.getArg(1)
   )
 }
@@ -843,7 +844,7 @@ predicate dictClearStep(Node node, DictionaryElementContent c) {
   exists(SubscriptNode subscript |
     subscript instanceof DefinitionNode and
     node.asCfgNode() = subscript.getObject() and
-    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+    c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
 }
 
@@ -953,7 +954,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
     or
     c.(DictionaryElementContent).getKey() =
-      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StringLiteral).getS()
   )
 }
 
@@ -1022,13 +1023,21 @@ predicate attributeClearStep(Node n, AttributeContent c) {
   exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
 //--------
 // Fancy context-sensitive guards
 //--------
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -1077,6 +1086,16 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
+
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

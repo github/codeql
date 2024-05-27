@@ -63,6 +63,12 @@ class Expr extends StmtParent, @expr {
    * order of destruction.
    */
   DestructorCall getImplicitDestructorCall(int n) {
+    exists(Expr e |
+      e = this.(TemporaryObjectExpr).getExpr() and
+      synthetic_destructor_call(e, max(int i | synthetic_destructor_call(e, i, _)) - n, result)
+    )
+    or
+    not this = any(TemporaryObjectExpr temp).getExpr() and
     synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
   }
 
@@ -1332,6 +1338,24 @@ class CoAwaitExpr extends UnaryOperation, @co_await {
   override string getOperator() { result = "co_await" }
 
   override int getPrecedence() { result = 16 }
+
+  /**
+   * Gets the Boolean expression that is used to decide if the enclosing
+   * coroutine should be suspended.
+   */
+  Expr getAwaitReady() { result = this.getChild(1) }
+
+  /**
+   * Gets the expression that represents the resume point if the enclosing
+   * coroutine was suspended.
+   */
+  Expr getAwaitResume() { result = this.getChild(2) }
+
+  /**
+   * Gets the expression that is evaluated when the enclosing coroutine is
+   * suspended.
+   */
+  Expr getAwaitSuspend() { result = this.getChild(3) }
 }
 
 /**
@@ -1346,6 +1370,24 @@ class CoYieldExpr extends UnaryOperation, @co_yield {
   override string getOperator() { result = "co_yield" }
 
   override int getPrecedence() { result = 2 }
+
+  /**
+   * Gets the Boolean expression that is used to decide if the enclosing
+   * coroutine should be suspended.
+   */
+  Expr getAwaitReady() { result = this.getChild(1) }
+
+  /**
+   * Gets the expression that represents the resume point if the enclosing
+   * coroutine was suspended.
+   */
+  Expr getAwaitResume() { result = this.getChild(2) }
+
+  /**
+   * Gets the expression that is evaluated when the enclosing coroutine is
+   * suspended.
+   */
+  Expr getAwaitSuspend() { result = this.getChild(3) }
 }
 
 /**
@@ -1365,17 +1407,7 @@ class ReuseExpr extends Expr, @reuseexpr {
   /**
    * Gets the expression that is being re-used.
    */
-  Expr getReusedExpr() {
-    // In the case of a prvalue, the extractor outputs the expression
-    // before conversion, but the converted expression is intended.
-    if this.isPRValueCategory()
-    then result = this.getBaseReusedExpr().getFullyConverted()
-    else result = this.getBaseReusedExpr()
-  }
-
-  private Expr getBaseReusedExpr() {
-    expr_reuse(underlyingElement(this), unresolveElement(result), _)
-  }
+  Expr getReusedExpr() { expr_reuse(underlyingElement(this), unresolveElement(result), _) }
 
   override Type getType() { result = this.getReusedExpr().getType() }
 

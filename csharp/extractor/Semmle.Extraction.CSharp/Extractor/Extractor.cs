@@ -97,7 +97,8 @@ namespace Semmle.Extraction.CSharp
             stopwatch.Start();
 
             var options = Options.CreateWithEnvironment(args);
-            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
+            var workingDirectory = Directory.GetCurrentDirectory();
+            var compilerArgs = options.CompilerArguments.ToArray();
 
             using var logger = MakeLogger(options.Verbosity, options.Console);
 
@@ -123,7 +124,7 @@ namespace Semmle.Extraction.CSharp
 
                 var compilerArguments = CSharpCommandLineParser.Default.Parse(
                     compilerVersion.ArgsWithResponse,
-                    Entities.Compilation.Settings.Cwd,
+                    workingDirectory,
                     compilerVersion.FrameworkPath,
                     compilerVersion.AdditionalReferenceDirectories
                     );
@@ -131,7 +132,7 @@ namespace Semmle.Extraction.CSharp
                 if (compilerArguments is null)
                 {
                     var sb = new StringBuilder();
-                    sb.Append("  Failed to parse command line: ").AppendList(" ", Entities.Compilation.Settings.Args);
+                    sb.Append("  Failed to parse command line: ").AppendList(" ", compilerArgs);
                     logger.Log(Severity.Error, sb.ToString());
                     ++analyser.CompilationErrors;
                     return ExitCode.Failed;
@@ -143,7 +144,7 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                return AnalyseTracing(analyser, compilerArguments, options, canonicalPathCache, stopwatch);
+                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, canonicalPathCache, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -309,7 +310,6 @@ namespace Semmle.Extraction.CSharp
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
             Action<CSharpCompilation, CommonOptions> initializeAnalyser,
-            Action<Entities.PerformanceMetrics> logPerformance,
             Action postProcess)
         {
             using var references = new BlockingCollection<MetadataReference>();
@@ -368,7 +368,7 @@ namespace Semmle.Extraction.CSharp
                 PeakWorkingSet = currentProcess.PeakWorkingSet64
             };
 
-            logPerformance(performance);
+            analyser.LogPerformance(performance);
             analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
 
             postProcess();
@@ -377,6 +377,8 @@ namespace Semmle.Extraction.CSharp
         }
 
         private static ExitCode AnalyseTracing(
+            string cwd,
+            string[] args,
             TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
             Options options,
@@ -421,8 +423,7 @@ namespace Semmle.Extraction.CSharp
                             .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
-                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
-                performance => analyser.LogPerformance(performance),
+                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation, cwd, args),
                 () => { });
         }
 

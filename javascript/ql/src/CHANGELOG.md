@@ -1,3 +1,23 @@
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+### Minor Analysis Improvements
+
+* The JavaScript extractor will on longer report syntax errors related to "strict mode".
+  Files containing such errors are now being fully analyzed along with other sources files.
+  This improves our support for source files that technically break the "strict mode" rules,
+  but where a build steps transforms the code such that it ends up working at runtime.
+
+## 0.8.14
+
+### Minor Analysis Improvements
+
+* `API::Node#getInstance()` now includes instances of subclasses, include transitive subclasses.
+  The same changes applies to uses of the `Instance` token in data extensions.
+
 ## 0.8.13
 
 ### Query Metadata Changes

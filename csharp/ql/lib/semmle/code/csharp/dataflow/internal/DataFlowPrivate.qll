@@ -5,6 +5,7 @@ private import DataFlowImplCommon
 private import ControlFlowReachability
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.Conversion
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
@@ -796,7 +797,7 @@ module LocalFlow {
     node1 =
       unique(FlowSummaryNode n1 |
         FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-          node2.(FlowSummaryNode).getSummaryNode(), true)
+          node2.(FlowSummaryNode).getSummaryNode(), true, _)
       )
   }
 }
@@ -809,36 +810,39 @@ predicate localMustFlowStep = LocalFlow::localMustFlowStep/2;
  * is handled by the global data-flow library, but includes various other steps
  * that are only relevant for global flow.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
-  or
-  exists(SsaImpl::DefinitionExt def |
-    not LocalFlow::usesInstanceField(def) and
-    not def instanceof VariableCapture::CapturedSsaDefinitionExt
-  |
-    LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  (
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _) and
-    nodeFrom != nodeTo
-    or
-    // Flow into phi (read)/uncertain SSA definition node from read
-    exists(Node read | LocalFlow::localFlowSsaInputFromRead(read, def, nodeTo) |
-      nodeFrom = read and
-      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+    exists(SsaImpl::DefinitionExt def |
+      not LocalFlow::usesInstanceField(def) and
+      not def instanceof VariableCapture::CapturedSsaDefinitionExt
+    |
+      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
       or
-      nodeFrom.(PostUpdateNode).getPreUpdateNode() = read
+      LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _) and
+      nodeFrom != nodeTo
+      or
+      // Flow into phi (read)/uncertain SSA definition node from read
+      exists(Node read | LocalFlow::localFlowSsaInputFromRead(read, def, nodeTo) |
+        nodeFrom = read and
+        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+        or
+        nodeFrom.(PostUpdateNode).getPreUpdateNode() = read
+      )
     )
-  )
+    or
+    nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
+    or
+    VariableCapture::valueStep(nodeFrom, nodeTo)
+    or
+    nodeTo = nodeFrom.(LocalFunctionCreationNode).getAnAccess(true)
+  ) and
+  model = ""
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
-  or
-  nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
-  or
-  VariableCapture::valueStep(nodeFrom, nodeTo)
-  or
-  nodeTo = nodeFrom.(LocalFunctionCreationNode).getAnAccess(true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 /**
@@ -902,7 +906,7 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
         FlowSummaryImpl::Private::SummarizedCallableImpl sc,
         FlowSummaryImpl::Private::SummaryComponentStack input
       |
-        sc.propagatesFlow(input, _, _) and
+        sc.propagatesFlow(input, _, _, _) and
         input.contains(FlowSummaryImpl::Private::SummaryComponent::content(f.getContent()))
       )
     )
@@ -1177,8 +1181,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo,
-      any(DataFlowSummarizedCallable sc))
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
   cached
@@ -2377,16 +2380,31 @@ predicate expectsContent(Node n, ContentSet c) {
   n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
+class NodeRegion instanceof ControlFlow::BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
+
+  int totalOrder() {
+    this =
+      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
+        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        b order by startline, startcolumn
+      )
+  }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, Guard guard, ControlFlow::SuccessorTypes::BooleanSuccessor bs
   |
     viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs, _)
+    guard.controlsBlock(nr, bs, _)
   )
 }
 
@@ -2873,6 +2891,12 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
   VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo) and
   preservesValue = true
 }
+
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

@@ -1,5 +1,5 @@
 edges
-| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url | provenance |  |
+| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url | provenance | Src:MaD:44641  Sink:MaD:44655 |
 nodes
 | UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | semmle.label | getHeader(...) : String |
 | UnvalidatedCors.java:27:67:27:69 | url | semmle.label | url |

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
 
@@ -28,11 +29,29 @@ namespace Semmle.Util
             return threads;
         }
 
+        public static bool GetBooleanOptOut(string name)
+        {
+            var env = Environment.GetEnvironmentVariable(name);
+            if (env == null ||
+                bool.TryParse(env, out var value) &&
+                value)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool GetBoolean(string name)
         {
             var env = Environment.GetEnvironmentVariable(name);
             var _ = bool.TryParse(env, out var value);
             return value;
+        }
+
+        public static IEnumerable<string> GetURLs(string name)
+        {
+            return Environment.GetEnvironmentVariable(name)?.Split(" ", StringSplitOptions.RemoveEmptyEntries) ?? [];
         }
     }
 }

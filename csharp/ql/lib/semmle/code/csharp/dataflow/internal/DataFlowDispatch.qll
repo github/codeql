@@ -24,19 +24,6 @@ newtype TReturnKind =
   TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
   TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() }
 
-/**
- * A summarized callable where the summary should be used for dataflow analysis.
- */
-class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
-  DataFlowSummarizedCallable() {
-    not this.hasBody()
-    or
-    this.hasBody() and not this.applyGeneratedModel()
-  }
-
-  string toString() { result = super.toString() }
-}
-
 cached
 private module Cached {
   /**
@@ -47,7 +34,7 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TCallable(Callable c) { c.isUnboundDeclaration() } or
-    TSummarizedCallable(DataFlowSummarizedCallable sc) or
+    TSummarizedCallable(FlowSummary::SummarizedCallable sc) or
     TFieldOrPropertyCallable(FieldOrProperty f) or
     TCapturedVariableCallable(LocalScopeVariable v) { v.isCaptured() }
 
@@ -204,6 +191,16 @@ class DataFlowCallable extends TDataFlowCallable {
     or
     result = this.asCapturedVariable().getLocation()
   }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
+  }
 }
 
 /** A call relevant for data flow. */
@@ -246,6 +243,16 @@ abstract class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCall c, int startline, int startcolumn |
+        c.hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        c order by startline, startcolumn
+      )
   }
 }
 

@@ -565,7 +565,7 @@ class IRGuardCondition extends Instruction {
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   cached
   predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
-    compares_eq(this, op, k, areEqual, value)
+    unary_compares_eq(this, op, k, areEqual, false, value)
   }
 
   /**
@@ -586,7 +586,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      compares_eq(this, op, k, areEqual, value) and this.valueControls(block, value)
+      unary_compares_eq(this, op, k, areEqual, false, value) and this.valueControls(block, value)
     )
   }
 
@@ -611,7 +611,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
     exists(AbstractValue value |
-      compares_eq(this, op, k, areEqual, value) and
+      unary_compares_eq(this, op, k, areEqual, false, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -737,26 +737,66 @@ private predicate compares_eq(
   )
 }
 
-/** Holds if `op == k` is `areEqual` given that `test` is equal to `value`. */
-private predicate compares_eq(
-  Instruction test, Operand op, int k, boolean areEqual, AbstractValue value
+/**
+ * Holds if `op == k` is `areEqual` given that `test` is equal to `value`.
+ *
+ * Many internal predicates in this file have a `inNonZeroCase` column.
+ * Ideally, the `k` column would be a type such as `Option<int>::Option`, to
+ * represent whether we have a concrete value `k` such that `op == k`, or whether
+ * we only know that `op != 0`.
+ * However, cannot instantiate `Option` with an infinite type. Thus the boolean
+ * `inNonZeroCase` is used to distinquish the `Some` (where we have a concrete
+ * value `k`) and `None` cases (where we only know that `op != 0`).
+ *
+ * Thus, if `inNonZeroCase = true` then `op != 0` and the value of `k` is
+ * meaningless.
+ *
+ * To see why `inNonZeroCase` is needed consider the following C program:
+ * ```c
+ * char* p = ...;
+ * if(p) {
+ *   use(p);
+ * }
+ * ```
+ * in C++ there would be an int-to-bool conversion on `p`. However, since C
+ * does not have booleans there is no conversion. We want to be able to
+ * conclude that `p` is non-zero in the true branch, so we need to give `k`
+ * some value. However, simply setting `k = 1` would make the rest of the
+ * analysis think that `k == 1` holds inside the branch. So we distinquish
+ * between the above case and
+ * ```c
+ * if(p == 1) {
+ *   use(p)
+ * }
+ * ```
+ * by setting `inNonZeroCase` to `true` in the former case, but not in the
+ * latter.
+ */
+private predicate unary_compares_eq(
+  Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
 ) {
   /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-  exists(AbstractValue v | simple_comparison_eq(test, op, k, v) |
+  exists(AbstractValue v | unary_simple_comparison_eq(test, op, k, inNonZeroCase, v) |
     areEqual = true and value = v
     or
     areEqual = false and value = v.getDualValue()
   )
   or
-  complex_eq(test, op, k, areEqual, value)
+  unary_complex_eq(test, op, k, areEqual, inNonZeroCase, value)
   or
   /* (x is true => (op == k)) => (!x is false => (op == k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_eq(test.(LogicalNotInstruction).getUnary(), op, k, areEqual, dual)
+  exists(AbstractValue dual, boolean inNonZeroCase0 |
+    value = dual.getDualValue() and
+    unary_compares_eq(test.(LogicalNotInstruction).getUnary(), op, k, inNonZeroCase0, areEqual, dual)
+  |
+    k = 0 and inNonZeroCase = inNonZeroCase0
+    or
+    k != 0 and inNonZeroCase = true
   )
   or
   // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
   // test is `areEqual` => op == k1 + k2
+  inNonZeroCase = false and
   exists(int k1, int k2, ConstantInstruction const |
     compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
     int_value(const) = k1 and
@@ -781,14 +821,53 @@ private predicate simple_comparison_eq(
   value.(BooleanValue).getValue() = false
 }
 
-/** Rearrange various simple comparisons into `op == k` form. */
-private predicate simple_comparison_eq(Instruction test, Operand op, int k, AbstractValue value) {
+/**
+ * Holds if `test` is an instruction that is part of test that eventually is
+ * used in a conditional branch.
+ */
+private predicate relevantUnaryComparison(Instruction test) {
+  not test instanceof CompareInstruction and
+  exists(IRType type, ConditionalBranchInstruction branch |
+    type instanceof IRAddressType or type instanceof IRIntegerType
+  |
+    type = test.getResultIRType() and
+    branch.getCondition() = test
+  )
+  or
+  exists(LogicalNotInstruction logicalNot |
+    relevantUnaryComparison(logicalNot) and
+    test = logicalNot.getUnary()
+  )
+}
+
+/**
+ * Rearrange various simple comparisons into `op == k` form.
+ */
+private predicate unary_simple_comparison_eq(
+  Instruction test, Operand op, int k, boolean inNonZeroCase, AbstractValue value
+) {
   exists(SwitchInstruction switch, CaseEdge case |
     test = switch.getExpression() and
     op.getDef() = test and
     case = value.(MatchValue).getCase() and
     exists(switch.getSuccessor(case)) and
-    case.getValue().toInt() = k
+    case.getValue().toInt() = k and
+    inNonZeroCase = false
+  )
+  or
+  // There's no implicit CompareInstruction in files compiled as C since C
+  // doesn't have implicit boolean conversions. So instead we check whether
+  // there's a branch on a value of pointer or integer type.
+  relevantUnaryComparison(test) and
+  op.getDef() = test and
+  (
+    k = 1 and
+    value.(BooleanValue).getValue() = true and
+    inNonZeroCase = true
+    or
+    k = 0 and
+    value.(BooleanValue).getValue() = false and
+    inNonZeroCase = false
   )
 }
 
@@ -800,12 +879,12 @@ private predicate complex_eq(
   add_eq(cmp, left, right, k, areEqual, value)
 }
 
-private predicate complex_eq(
-  Instruction test, Operand op, int k, boolean areEqual, AbstractValue value
+private predicate unary_complex_eq(
+  Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
 ) {
-  sub_eq(test, op, k, areEqual, value)
+  unary_sub_eq(test, op, k, areEqual, inNonZeroCase, value)
   or
-  add_eq(test, op, k, areEqual, value)
+  unary_add_eq(test, op, k, areEqual, inNonZeroCase, value)
 }
 
 /*
@@ -1069,16 +1148,20 @@ private predicate sub_eq(
 }
 
 // op - x == c => op == (c+x)
-private predicate sub_eq(Instruction test, Operand op, int k, boolean areEqual, AbstractValue value) {
+private predicate unary_sub_eq(
+  Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
+) {
+  inNonZeroCase = false and
   exists(SubInstruction sub, int c, int x |
-    compares_eq(test, sub.getAUse(), c, areEqual, value) and
+    unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
     op = sub.getLeftOperand() and
     x = int_value(sub.getRight()) and
     k = c + x
   )
   or
+  inNonZeroCase = false and
   exists(PointerSubInstruction sub, int c, int x |
-    compares_eq(test, sub.getAUse(), c, areEqual, value) and
+    unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
     op = sub.getLeftOperand() and
     x = int_value(sub.getRight()) and
     k = c + x
@@ -1132,11 +1215,13 @@ private predicate add_eq(
 }
 
 // left + x == right + c => left == right + (c-x)
-private predicate add_eq(
-  Instruction test, Operand left, int k, boolean areEqual, AbstractValue value
+private predicate unary_add_eq(
+  Instruction test, Operand left, int k, boolean areEqual, boolean inNonZeroCase,
+  AbstractValue value
 ) {
+  inNonZeroCase = false and
   exists(AddInstruction lhs, int c, int x |
-    compares_eq(test, lhs.getAUse(), c, areEqual, value) and
+    unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -1145,8 +1230,9 @@ private predicate add_eq(
     k = c - x
   )
   or
+  inNonZeroCase = false and
   exists(PointerAddInstruction lhs, int c, int x |
-    compares_eq(test, lhs.getAUse(), c, areEqual, value) and
+    unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -1156,5 +1242,14 @@ private predicate add_eq(
   )
 }
 
+private class IntegerOrPointerConstantInstruction extends ConstantInstruction {
+  IntegerOrPointerConstantInstruction() {
+    this instanceof IntegerConstantInstruction or
+    this instanceof PointerConstantInstruction
+  }
+}
+
 /** The int value of integer constant expression. */
-private int int_value(Instruction i) { result = i.(IntegerConstantInstruction).getValue().toInt() }
+private int int_value(Instruction i) {
+  result = i.(IntegerOrPointerConstantInstruction).getValue().toInt()
+}

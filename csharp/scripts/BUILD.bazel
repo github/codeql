@@ -1,0 +1,17 @@
+py_binary(
+    name = "gen-assembly-info",
+    srcs = ["gen-assembly-info.py"],
+    deps = ["@rules_python//python/runfiles"],
+)
+
+# this is an instance of the dbscheme kept in the bazel build tree
+# this allows everything that bazel builds to be up-to-date,
+# independently from whether //go:gen was already run to update the checked in files
+genrule(
+    name = "assembly-info-src",
+    srcs = ["@semmle_code//:git_info"],
+    outs = ["AssemblyInfo.cs"],
+    cmd = "$(execpath :gen-assembly-info) $@ $(SRCS)",
+    tools = [":gen-assembly-info"],
+    visibility = ["//csharp:__subpackages__"],
+)

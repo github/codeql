@@ -3,11 +3,11 @@ edges
 | TarSlipImprov.py:15:7:15:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:15:1:15:3 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:17:5:17:10 | ControlFlowNode for member | TarSlipImprov.py:20:19:20:24 | ControlFlowNode for member | provenance |  |
 | TarSlipImprov.py:20:5:20:10 | [post] ControlFlowNode for result | TarSlipImprov.py:22:35:22:40 | ControlFlowNode for result | provenance |  |
-| TarSlipImprov.py:20:19:20:24 | ControlFlowNode for member | TarSlipImprov.py:20:5:20:10 | [post] ControlFlowNode for result | provenance |  |
+| TarSlipImprov.py:20:19:20:24 | ControlFlowNode for member | TarSlipImprov.py:20:5:20:10 | [post] ControlFlowNode for result | provenance | list.append |
 | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile | TarSlipImprov.py:28:9:28:14 | ControlFlowNode for member | provenance |  |
 | TarSlipImprov.py:28:9:28:14 | ControlFlowNode for member | TarSlipImprov.py:35:23:35:28 | ControlFlowNode for member | provenance |  |
 | TarSlipImprov.py:35:9:35:14 | [post] ControlFlowNode for result | TarSlipImprov.py:36:12:36:17 | ControlFlowNode for result | provenance |  |
-| TarSlipImprov.py:35:23:35:28 | ControlFlowNode for member | TarSlipImprov.py:35:9:35:14 | [post] ControlFlowNode for result | provenance |  |
+| TarSlipImprov.py:35:23:35:28 | ControlFlowNode for member | TarSlipImprov.py:35:9:35:14 | [post] ControlFlowNode for result | provenance | list.append |
 | TarSlipImprov.py:38:1:38:3 | ControlFlowNode for tar | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:38:7:38:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:38:1:38:3 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile | provenance |  |
@@ -33,14 +33,14 @@ edges
 | TarSlipImprov.py:141:34:141:36 | ControlFlowNode for tar | TarSlipImprov.py:142:9:142:13 | ControlFlowNode for entry | provenance |  |
 | TarSlipImprov.py:142:9:142:13 | ControlFlowNode for entry | TarSlipImprov.py:143:36:143:40 | ControlFlowNode for entry | provenance |  |
 | TarSlipImprov.py:151:14:151:50 | ControlFlowNode for closing() | TarSlipImprov.py:151:55:151:56 | ControlFlowNode for tf | provenance |  |
-| TarSlipImprov.py:151:22:151:49 | ControlFlowNode for Attribute() | TarSlipImprov.py:151:14:151:50 | ControlFlowNode for closing() | provenance |  |
+| TarSlipImprov.py:151:22:151:49 | ControlFlowNode for Attribute() | TarSlipImprov.py:151:14:151:50 | ControlFlowNode for closing() | provenance | Config |
 | TarSlipImprov.py:151:55:151:56 | ControlFlowNode for tf | TarSlipImprov.py:152:19:152:20 | ControlFlowNode for tf | provenance |  |
 | TarSlipImprov.py:152:19:152:20 | ControlFlowNode for tf | TarSlipImprov.py:157:18:157:40 | ControlFlowNode for py2_tarxz() | provenance |  |
 | TarSlipImprov.py:157:9:157:14 | ControlFlowNode for tar_cm | TarSlipImprov.py:162:20:162:23 | ControlFlowNode for tarc | provenance |  |
 | TarSlipImprov.py:157:18:157:40 | ControlFlowNode for py2_tarxz() | TarSlipImprov.py:157:9:157:14 | ControlFlowNode for tar_cm | provenance |  |
 | TarSlipImprov.py:159:9:159:14 | ControlFlowNode for tar_cm | TarSlipImprov.py:162:20:162:23 | ControlFlowNode for tarc | provenance |  |
 | TarSlipImprov.py:159:18:159:52 | ControlFlowNode for closing() | TarSlipImprov.py:159:9:159:14 | ControlFlowNode for tar_cm | provenance |  |
-| TarSlipImprov.py:159:26:159:51 | ControlFlowNode for Attribute() | TarSlipImprov.py:159:18:159:52 | ControlFlowNode for closing() | provenance |  |
+| TarSlipImprov.py:159:26:159:51 | ControlFlowNode for Attribute() | TarSlipImprov.py:159:18:159:52 | ControlFlowNode for closing() | provenance | Config |
 | TarSlipImprov.py:162:20:162:23 | ControlFlowNode for tarc | TarSlipImprov.py:169:9:169:12 | ControlFlowNode for tarc | provenance |  |
 | TarSlipImprov.py:176:6:176:31 | ControlFlowNode for Attribute() | TarSlipImprov.py:176:36:176:38 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:176:36:176:38 | ControlFlowNode for tar | TarSlipImprov.py:177:9:177:13 | ControlFlowNode for entry | provenance |  |
@@ -58,7 +58,7 @@ edges
 | TarSlipImprov.py:231:43:231:52 | ControlFlowNode for corpus_tar | TarSlipImprov.py:233:9:233:9 | ControlFlowNode for f | provenance |  |
 | TarSlipImprov.py:233:9:233:9 | ControlFlowNode for f | TarSlipImprov.py:235:28:235:28 | ControlFlowNode for f | provenance |  |
 | TarSlipImprov.py:235:13:235:19 | [post] ControlFlowNode for members | TarSlipImprov.py:236:44:236:50 | ControlFlowNode for members | provenance |  |
-| TarSlipImprov.py:235:28:235:28 | ControlFlowNode for f | TarSlipImprov.py:235:13:235:19 | [post] ControlFlowNode for members | provenance |  |
+| TarSlipImprov.py:235:28:235:28 | ControlFlowNode for f | TarSlipImprov.py:235:13:235:19 | [post] ControlFlowNode for members | provenance | list.append |
 | TarSlipImprov.py:258:6:258:26 | ControlFlowNode for Attribute() | TarSlipImprov.py:258:31:258:33 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:258:31:258:33 | ControlFlowNode for tar | TarSlipImprov.py:259:9:259:13 | ControlFlowNode for entry | provenance |  |
 | TarSlipImprov.py:259:9:259:13 | ControlFlowNode for entry | TarSlipImprov.py:261:25:261:29 | ControlFlowNode for entry | provenance |  |
@@ -83,7 +83,7 @@ edges
 | TarSlipImprov.py:304:7:304:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:304:1:304:3 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:306:5:306:10 | ControlFlowNode for member | TarSlipImprov.py:309:19:309:24 | ControlFlowNode for member | provenance |  |
 | TarSlipImprov.py:309:5:309:10 | [post] ControlFlowNode for result | TarSlipImprov.py:310:49:310:54 | ControlFlowNode for result | provenance |  |
-| TarSlipImprov.py:309:19:309:24 | ControlFlowNode for member | TarSlipImprov.py:309:5:309:10 | [post] ControlFlowNode for result | provenance |  |
+| TarSlipImprov.py:309:19:309:24 | ControlFlowNode for member | TarSlipImprov.py:309:5:309:10 | [post] ControlFlowNode for result | provenance | list.append |
 nodes
 | TarSlipImprov.py:15:1:15:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | TarSlipImprov.py:15:7:15:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |

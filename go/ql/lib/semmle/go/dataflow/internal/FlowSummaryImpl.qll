@@ -104,12 +104,14 @@ module SourceSinkInterpretationInput implements
    * `output`, kind `kind`, and provenance `provenance`.
    */
   predicate sourceElement(
-    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance
+    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance, string model
   ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance) and
+      sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -119,12 +121,14 @@ module SourceSinkInterpretationInput implements
    * `input`, kind `kind` and provenance `provenance`.
    */
   predicate sinkElement(
-    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance
+    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance, string model
   ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance) and
+      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -232,10 +236,10 @@ module SourceSinkInterpretationInput implements
   /** Provides additional source specification logic. */
   bindingset[c]
   predicate interpretInput(string c, InterpretNode mid, InterpretNode node) {
-    exists(int pos, ReturnNodeExt ret |
+    exists(int pos, ReturnNode ret |
       parseReturn(c, pos) and
       ret = node.asNode() and
-      ret.getKind().(ValueReturnKind).getKind() = getReturnKind(pos) and
+      ret.getKind() = getReturnKind(pos) and
       mid.asCallable() = getNodeEnclosingCallable(ret)
     )
     or

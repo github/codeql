@@ -1,8 +1,8 @@
 edges
-| RegExpInjection.rb:4:5:4:8 | name | RegExpInjection.rb:5:13:5:21 | /#{...}/ | provenance |  |
+| RegExpInjection.rb:4:5:4:8 | name | RegExpInjection.rb:5:13:5:21 | /#{...}/ | provenance | AdditionalTaintStep |
 | RegExpInjection.rb:4:12:4:17 | call to params | RegExpInjection.rb:4:12:4:24 | ...[...] | provenance |  |
 | RegExpInjection.rb:4:12:4:24 | ...[...] | RegExpInjection.rb:4:5:4:8 | name | provenance |  |
-| RegExpInjection.rb:10:5:10:8 | name | RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | provenance |  |
+| RegExpInjection.rb:10:5:10:8 | name | RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | provenance | AdditionalTaintStep |
 | RegExpInjection.rb:10:12:10:17 | call to params | RegExpInjection.rb:10:12:10:24 | ...[...] | provenance |  |
 | RegExpInjection.rb:10:12:10:24 | ...[...] | RegExpInjection.rb:10:5:10:8 | name | provenance |  |
 | RegExpInjection.rb:16:5:16:8 | name | RegExpInjection.rb:17:24:17:27 | name | provenance |  |
