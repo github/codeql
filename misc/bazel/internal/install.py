@@ -19,7 +19,7 @@ build_file = runfiles.Rlocation(opts.build_file)
 script = runfiles.Rlocation(opts.script)
 ripunzip = runfiles.Rlocation(opts.ripunzip)
 zip_manifests = [runfiles.Rlocation(z) for z in opts.zip_manifests]
-destdir = pathlib.Path(build_file).parent / opts.destdir
+destdir = pathlib.Path(build_file).resolve().parent / opts.destdir
 
 if destdir.exists():
     shutil.rmtree(destdir)

@@ -19,6 +19,9 @@ build:windows --cxxopt=/std:c++20 --cxxopt=/Zc:preprocessor --host_cxxopt=/std:c
 startup --windows_enable_symlinks
 common --enable_runfiles
 
+# with the above, we can avoid building python zips which is the default on windows as that's expensive
+build --nobuild_python_zip
+
 common --registry=file:///%workspace%/misc/bazel/registry
 common --registry=https://bcr.bazel.build
 
