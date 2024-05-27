@@ -14,27 +14,18 @@ def _make_internal(name):
 
     return internal
 
-def _get_subrule(label, suffix):
-    if ":" in label or "/" not in label:
-        return "%s-%s" % (label, suffix)
-    path, _, pkg = label.rpartition("/")
-    return "%s/%s:%s-%s" % (path, pkg, pkg, suffix)
-
-_PackageFileWrapperInfo = provider(fields = {"pfi": "", "src": "", "arch_specific": ""})
-CodeqlZipInfo = provider(fields = {"prefix": "", "src": "", "arch_specific": ""})
-
-CodeqlFilesInfo = provider(
-    doc = """Wrapper around `rules_pkg` `PackageFilesInfo` carrying information about generic and arch-specific files.""",
-    fields = {
-        "files": "list of `_PackageFileWrapperInfo`.",
-        "zips": "list of `CodeqlPackageZipInfo`.",
-    },
-)
-
 _PLAT_DETECTION_ATTRS = {
     "_windows": attr.label(default = "@platforms//os:windows"),
     "_macos": attr.label(default = "@platforms//os:macos"),
 }
+
+_PLAT_PLACEHOLDER = "{CODEQL_PLATFORM}"
+
+def _process_path(path, plat):
+    if _PLAT_PLACEHOLDER in path:
+        path = path.replace(_PLAT_PLACEHOLDER, plat)
+        return ("arch", path)
+    return ("generic", path)
 
 def _detect_plat(ctx):
     if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]):
@@ -44,107 +35,20 @@ def _detect_plat(ctx):
     else:
         return "linux64"
 
-def _codeql_pkg_filegroup_impl(ctx):
-    prefix = ctx.attr.prefix
-    if prefix:
-        prefix += "/"
-    generic_prefix = prefix
-    if ctx.attr.arch_specific:
-        prefix = prefix + _detect_plat(ctx) + "/"
-
-    def transform_pfi(pfi, src, prefix = prefix, arch_specific = ctx.attr.arch_specific):
-        return _PackageFileWrapperInfo(
-            pfi = PackageFilesInfo(
-                attributes = pfi.attributes,
-                dest_src_map = {prefix + d: s for d, s in pfi.dest_src_map.items()},
-            ),
-            src = src,
-            arch_specific = arch_specific,
-        )
-
-    def transform_pfwi(pfwi):
-        return transform_pfi(
-            pfwi.pfi,
-            pfwi.src,
-            # if it was already arch-specific the plat prefix was already added
-            generic_prefix if pfwi.arch_specific else prefix,
-            pfwi.arch_specific or ctx.attr.arch_specific,
-        )
-
-    def transform_czi(czi):
-        return CodeqlZipInfo(
-            # if it was already arch-specific the plat prefix was already added
-            prefix = (generic_prefix if czi.arch_specific else prefix) + czi.prefix,
-            src = czi.src,
-            arch_specific = czi.arch_specific or ctx.attr.arch_specific,
-        )
-
-    files = []
-    zips = []
-
-    for src in ctx.attr.srcs:
-        if PackageFilesInfo in src:
-            files.append(transform_pfi(src[PackageFilesInfo], src.label))
-        elif PackageFilegroupInfo in src:
-            pfgi = src[PackageFilegroupInfo]
-            if pfgi.pkg_dirs or pfgi.pkg_symlinks:
-                fail("while assembling %s found %s which contains `pkg_dirs` or `pkg_symlinks` targets" %
-                     (ctx.label, src.label) + ", which is not currently supported")
-            files += [transform_pfi(pfi, src) for pfi, src in pfgi.pkg_files]
-        elif CodeqlZipInfo in src:
-            zips.append(transform_czi(src[CodeqlZipInfo]))
-        else:
-            files += [transform_pfwi(pfwi) for pfwi in src[CodeqlFilesInfo].files]
-            zips += [transform_czi(czi) for czi in src[CodeqlFilesInfo].zips]
-
-    return [
-        CodeqlFilesInfo(
-            files = files,
-            zips = zips,
-        ),
-        DefaultInfo(
-            files = depset(transitive = [src[DefaultInfo].files for src in ctx.attr.srcs]),
-        ),
-    ]
-
-codeql_pkg_filegroup = rule(
-    implementation = _codeql_pkg_filegroup_impl,
-    doc = """CodeQL specific packaging mapping. No `pkg_mkdirs` or `pkg_symlink` rules are supported, either directly
-    or transitively. Only `pkg_files` and `pkg_filegroup` thereof are allowed.""",
-    attrs = {
-        "srcs": attr.label_list(
-            doc = "List of arch-agnostic `pkg_files`, `pkg_filegroup` or `codeql_pkg_filegroup` targets",
-            providers = [
-                [PackageFilesInfo, DefaultInfo],
-                [PackageFilegroupInfo, DefaultInfo],
-                [CodeqlFilesInfo, DefaultInfo],
-                [CodeqlZipInfo, DefaultInfo],
-            ],
-            default = [],
-        ),
-        "prefix": attr.string(doc = "Prefix to add to the files", default = ""),
-        "arch_specific": attr.bool(doc = "Whether the included files should be treated as arch-specific"),
-    } | _PLAT_DETECTION_ATTRS,
-)
-
 def codeql_pkg_files(
         *,
         name,
         srcs = None,
         exes = None,
-        arch_specific = False,
-        prefix = None,
         visibility = None,
         **kwargs):
+    """ Wrapper around `pkg_files` adding a distinction between `srcs` and `exes`, where the
+    latter will get executable permissions.
     """
-    Wrapper around `pkg_files`. Added functionality:
-    * `exes` will get their file attributes set to be executable. This is important only for POSIX files, there's no
-      need to mark windows executables as such
-    If `exes` and `srcs` are both used, the resulting rule is a `pkg_filegroup` one.
-    """
+
     internal = _make_internal(name)
     if "attributes" in kwargs:
-        fail("codeql_pkg_files does not support `attributes`. Use `exes` to mark executable files.")
+        fail("do not use attributes with codeql_pkg_* rules. Use `exes` to mark executable files.")
     internal_srcs = []
     if srcs and exes:
         pkg_files(
@@ -160,103 +64,98 @@ def codeql_pkg_files(
             attributes = pkg_attributes(mode = "755"),
             **kwargs
         )
-        internal_srcs = [internal("srcs"), internal("exes")]
+        pkg_filegroup(
+            name = name,
+            srcs = [internal("srcs"), internal("exes")],
+            visibility = visibility,
+        )
     else:
         pkg_files(
-            name = internal(),
+            name = name,
             srcs = srcs or exes,
             visibility = visibility,
             attributes = pkg_attributes(mode = "755") if exes else None,
             **kwargs
         )
-        internal_srcs = [internal()]
-    codeql_pkg_filegroup(
-        name = name,
-        srcs = internal_srcs,
-        arch_specific = arch_specific,
-        prefix = prefix,
-        visibility = visibility,
-    )
 
 def _extract_pkg_filegroup_impl(ctx):
-    src = ctx.attr.src[CodeqlFilesInfo]
-    pfi_lbls = [(pfwi.pfi, pfwi.src) for pfwi in src.files if pfwi.arch_specific == ctx.attr.arch_specific]
-    files = [depset(pfi.dest_src_map.values()) for pfi, _ in pfi_lbls]
+    src = ctx.attr.src[PackageFilegroupInfo]
+    plat = _detect_plat(ctx)
+
+    if src.pkg_dirs or src.pkg_symlinks:
+        fail("`pkg_dirs` and `pkg_symlinks` are not supported for codeql packaging rules")
+
+    pkg_files = []
+    for pfi, origin in src.pkg_files:
+        dest_src_map = {}
+        for dest, file in pfi.dest_src_map.items():
+            file_kind, dest = _process_path(dest, plat)
+            if file_kind == ctx.attr.kind:
+                dest_src_map[dest] = file
+        if dest_src_map:
+            pkg_files.append((PackageFilesInfo(dest_src_map = dest_src_map, attributes = pfi.attributes), origin))
+
+    files = [depset(pfi.dest_src_map.values()) for pfi, _ in pkg_files]
     return [
-        PackageFilegroupInfo(pkg_files = pfi_lbls, pkg_dirs = [], pkg_symlinks = []),
+        PackageFilegroupInfo(pkg_files = pkg_files, pkg_dirs = [], pkg_symlinks = []),
         DefaultInfo(files = depset(transitive = files)),
     ]
 
-def _codeql_pkg_zip_import_impl(ctx):
-    prefix = ctx.attr.prefix
-    if prefix:
-        prefix += "/"
-    if ctx.attr.arch_specific:
-        prefix += _detect_plat(ctx) + "/"
-    return [
-        CodeqlZipInfo(
-            prefix = prefix,
-            src = ctx.file.src,
-            arch_specific = ctx.attr.arch_specific,
-        ),
-        DefaultInfo(files = depset([ctx.file.src])),
-    ]
-
-codeql_pkg_zip_import = rule(
-    implementation = _codeql_pkg_zip_import_impl,
-    doc = "Wrap a zip file to be consumed by `codeql_pkg_filegroup` and `codeql_pack` rules",
+_extrac_pkg_filegroup = rule(
+    implementation = _extract_pkg_filegroup_impl,
     attrs = {
-        "src": attr.label(mandatory = True, allow_single_file = True, doc = "Zip file to wrap"),
-        "prefix": attr.string(doc = "Posix path prefix to nest the zip contents into"),
-        "arch_specific": attr.bool(doc = "Whether this is to be considered arch-specific"),
+        "src": attr.label(providers = [PackageFilegroupInfo, DefaultInfo]),
+        "kind": attr.string(doc = "generic or arch", values = ["generic", "arch"]),
     } | _PLAT_DETECTION_ATTRS,
 )
 
 def _imported_zips_manifest_impl(ctx):
-    src = ctx.attr.src[CodeqlFilesInfo]
-    zips = [czi for czi in src.zips if czi.arch_specific == ctx.attr.arch_specific]
+    plat = _detect_plat(ctx)
+
+    manifest = []
+    files = []
+    for zip, prefix in ctx.attr.zips.items():
+        zip_kind, prefix = _process_path(prefix, plat)
+        if zip_kind == ctx.attr.kind:
+            zip_files = zip.files.to_list()
+            manifest += ["%s:%s" % (prefix, f.short_path) for f in zip_files]
+            files += zip_files
 
     output = ctx.actions.declare_file(ctx.label.name + ".params")
     ctx.actions.write(
         output,
-        "\n".join(["%s:%s" % (czi.prefix, czi.src.short_path) for czi in zips]),
+        "\n".join(manifest),
     )
     return DefaultInfo(
         files = depset([output]),
-        runfiles = ctx.runfiles([czi.src for czi in zips]),
+        runfiles = ctx.runfiles(files),
     )
 
 _imported_zips_manifest = rule(
     implementation = _imported_zips_manifest_impl,
     attrs = {
-        "src": attr.label(providers = [CodeqlFilesInfo]),
-        "arch_specific": attr.bool(),
-        "zip_prefix": attr.string(),
-    },
+        "zips": attr.label_keyed_string_dict(allow_files = True),
+        "kind": attr.string(doc = "generic or arch", values = ["generic", "arch"]),
+    } | _PLAT_DETECTION_ATTRS,
 )
 
 def _zipmerge_impl(ctx):
-    src = ctx.attr.src[CodeqlFilesInfo]
-    zip_infos = [czi for czi in src.zips if czi.arch_specific == ctx.attr.arch_specific]
-    zips = depset([ctx.file.base_zip] + [czi.src for czi in zip_infos])
+    zips = []
     filename = ctx.attr.zip_name + "-"
-    if ctx.attr.arch_specific:
-        filename += _detect_plat(ctx)
-    else:
-        filename += "generic"
-    filename += ".zip"
+    plat = _detect_plat(ctx)
+    filename = "%s-%s.zip" % (ctx.attr.zip_name, plat if ctx.attr.kind == "arch" else "generic")
     output = ctx.actions.declare_file(filename)
-    args = [output.path, ctx.file.base_zip.path]
-    for info in zip_infos:
-        args += [
-            "--prefix=%s/%s" % (ctx.attr.zip_prefix, info.prefix.rstrip("/")),
-            info.src.path,
-        ]
-
+    args = [output.path, "--prefix=%s" % ctx.attr.zip_prefix, ctx.file.base.path]
+    for zip, prefix in ctx.attr.zips.items():
+        zip_kind, prefix = _process_path(prefix, plat)
+        if zip_kind == ctx.attr.kind:
+            args.append("--prefix=%s/%s" % (ctx.attr.zip_prefix, prefix.rstrip("/")))
+            args += [f.path for f in zip.files.to_list()]
+            zips.append(zip.files)
     ctx.actions.run(
         outputs = [output],
         executable = ctx.executable._zipmerge,
-        inputs = zips,
+        inputs = depset([ctx.file.base], transitive = zips),
         arguments = args,
     )
 
@@ -267,84 +166,74 @@ def _zipmerge_impl(ctx):
 _zipmerge = rule(
     implementation = _zipmerge_impl,
     attrs = {
-        "src": attr.label(providers = [CodeqlFilesInfo]),
-        "base_zip": attr.label(allow_single_file = True),
+        "base": attr.label(allow_single_file = True),
+        "zips": attr.label_keyed_string_dict(allow_files = True),
         "zip_name": attr.string(),
-        "arch_specific": attr.bool(),
+        "kind": attr.string(doc = "generic or arch", values = ["generic", "arch"]),
         "zip_prefix": attr.string(),
         "_zipmerge": attr.label(default = "//misc/bazel/internal/zipmerge", executable = True, cfg = "exec"),
     } | _PLAT_DETECTION_ATTRS,
-)
-
-_extrac_pkg_filegroup = rule(
-    implementation = _extract_pkg_filegroup_impl,
-    attrs = {
-        "src": attr.label(providers = [CodeqlFilesInfo, DefaultInfo]),
-        "arch_specific": attr.bool(),
-    },
 )
 
 def codeql_pack(
         *,
         name,
         srcs = None,
-        zip_prefix = None,
+        zips = None,
         zip_filename = "extractor",
         visibility = None,
         install_dest = "extractor-pack",
         **kwargs):
     """
-    Define a codeql pack. This accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
+    Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
+    `zips` is a map from prefixes to `.zip` files to import.
     * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
-      prefixed with `zip_prefix` (`name` by default)
+      prefixed with `name`
     * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
       arch-specific bits, prefixed with `zip_prefix` (`name` by default)
     * defines a runnable `<name>-installer` target that will install the pack in `install_dest`, relative to where the
       rule is used. The install destination can be overridden appending `-- --destdir=...` to the `bazel run`
       invocation. This installation does not use the `zip_prefix`.
+
+    The distinction between arch-specific and generic contents is made based on whether the paths (including possible
+    prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
+    be replaced by the appropriate platform (`linux64`, `windows64` or `osx64`).
     """
     internal = _make_internal(name)
-    zip_prefix = zip_prefix or name
     zip_filename = zip_filename or name
-    codeql_pkg_filegroup(
-        name = name,
+    zips = zips or {}
+    pkg_filegroup(
+        name = internal("base"),
         srcs = srcs,
-        visibility = visibility,
+        visibility = ["//visibility:private"],
         **kwargs
     )
     for kind in ("generic", "arch"):
         _extrac_pkg_filegroup(
             name = internal(kind),
-            src = name,
-            arch_specific = kind == "arch",
-            visibility = ["//visibility:private"],
-        )
-        pkg_filegroup(
-            name = internal(kind + "-zip-contents"),
-            srcs = [internal(kind)],
-            prefix = zip_prefix,
-            visibility = ["//visibility:private"],
-        )
-        _imported_zips_manifest(
-            name = internal(kind + "-zip-manifest"),
-            src = name,
-            arch_specific = kind == "arch",
-            zip_prefix = zip_prefix,
+            src = internal("base"),
+            kind = kind,
             visibility = ["//visibility:private"],
         )
         pkg_zip(
             name = internal(kind + "-zip-base"),
-            srcs = [internal(kind + "-zip-contents")],
+            srcs = [internal(kind)],
             visibility = ["//visibility:private"],
         )
         _zipmerge(
             name = internal(kind + "-zip"),
-            base_zip = internal(kind + "-zip-base"),
+            base = internal(kind + "-zip-base"),
+            zips = zips,
             zip_name = zip_filename,
-            zip_prefix = zip_prefix,
-            src = name,
-            arch_specific = kind == "arch",
+            zip_prefix = name,
+            kind = kind,
             visibility = visibility,
+        )
+        _imported_zips_manifest(
+            name = internal(kind + "-zip-manifest"),
+            zips = zips,
+            kind = kind,
+            visibility = ["//visibility:private"],
         )
 
     pkg_install(
@@ -380,6 +269,10 @@ def codeql_pack(
             "--zip-manifest=$(rlocationpath %s)" % internal("arch-zip-manifest"),
         ],
         visibility = visibility,
+    )
+    native.filegroup(
+        name = name,
+        srcs = [internal("generic-zip"), internal("arch-zip")],
     )
 
 strip_prefix = _strip_prefix

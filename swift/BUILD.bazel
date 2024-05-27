@@ -1,7 +1,7 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
 load(
     "//misc/bazel:pkg.bzl",
     "codeql_pack",
-    "codeql_pkg_filegroup",
     "codeql_pkg_files",
     "codeql_pkg_runfiles",
 )
@@ -31,11 +31,10 @@ codeql_pkg_files(
 
 codeql_pkg_runfiles(
     name = "autobuilder",
-    arch_specific = True,
     exes = ["//swift/swift-autobuilder"],
 )
 
-codeql_pkg_filegroup(
+pkg_filegroup(
     name = "tools-arch",
     srcs = select({
         "@platforms//os:macos": [
@@ -50,22 +49,16 @@ codeql_pkg_filegroup(
             ":autobuilder-incompatible-os",
         ],
     }),
-    arch_specific = True,
+    prefix = "{CODEQL_PLATFORM}",
 )
 
-codeql_pkg_filegroup(
+pkg_filegroup(
     name = "tools",
     srcs = [
         ":tools-arch",
         "//swift/tools",
     ],
     prefix = "tools",
-)
-
-codeql_pkg_filegroup(
-    name = "resource-dir",
-    srcs = ["//swift/third_party/resource-dir"],
-    prefix = "resource-dir",
 )
 
 codeql_pkg_files(
@@ -80,12 +73,14 @@ codeql_pkg_files(
 codeql_pack(
     name = "swift",
     srcs = [
-        ":resource-dir",
         ":root-files",
         ":tools",
         "//swift/downgrades",
     ],
     visibility = ["//visibility:public"],
+    zips = {
+        "//swift/third_party/resource-dir": "resource-dir/{CODEQL_PLATFORM}",
+    },
 )
 
 alias(

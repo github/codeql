@@ -1,9 +1,6 @@
-load("//misc/bazel:pkg.bzl", "codeql_pkg_zip_import")
-
-codeql_pkg_zip_import(
+alias(
     name = "resource-dir",
-    src = select({"@platforms//os:" + os: "@swift-resource-dir-" + os for os in ("linux", "macos")}),
-    arch_specific = True,
+    actual = select({"@platforms//os:" + os: "@swift-resource-dir-" + os for os in ("linux", "macos")}),
     target_compatible_with = select({
         "@platforms//os:windows": ["@platforms//:incompatible"],
         "//conditions:default": [],

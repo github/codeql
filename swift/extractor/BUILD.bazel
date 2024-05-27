@@ -31,7 +31,6 @@ sh_binary(
 
 codeql_pkg_runfiles(
     name = "pkg",
-    arch_specific = True,
     excludes = ["extractor.sh"],  # script gets copied as "extractor", no need for the original .sh file
     exes = [":extractor"],
     visibility = ["//swift:__pkg__"],
