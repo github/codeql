@@ -6,6 +6,7 @@
 
 import javascript
 import Cors::Cors
+import Apollo
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {

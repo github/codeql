@@ -71,7 +71,6 @@ import semmle.javascript.frameworks.ActionsLib
 import semmle.javascript.frameworks.Angular2
 import semmle.javascript.frameworks.AngularJS
 import semmle.javascript.frameworks.Anser
-import semmle.javascript.frameworks.Apollo
 import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
