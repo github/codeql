@@ -27,6 +27,8 @@ parser.add_argument("--ripunzip", required=True,
                     help="ripunzip executable rlocation")
 parser.add_argument("--zip-manifest", required=True,
                     help="The rlocation of a file containing newline-separated `prefix:zip_file` entries")
+parser.add_argument("--cleanup", action=argparse.BooleanOptionalAction, default=True,
+                    help="Whether to wipe the destination directory before installing (true by default)")
 opts = parser.parse_args()
 
 build_file = runfiles.Rlocation(opts.build_file)
@@ -35,10 +37,10 @@ ripunzip = runfiles.Rlocation(opts.ripunzip)
 zip_manifest = runfiles.Rlocation(opts.zip_manifest)
 destdir = pathlib.Path(build_file).resolve().parent / opts.destdir
 
-if destdir.exists():
+if destdir.exists() and opts.cleanup:
     shutil.rmtree(destdir)
 
-destdir.mkdir(parents=True)
+destdir.mkdir(parents=True, exist_ok=True)
 subprocess.run([script, "--destdir", destdir], check=True)
 
 with open(zip_manifest) as manifest:
