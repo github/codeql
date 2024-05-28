@@ -20,4 +20,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          bazel test //misc/bazel/internal/zipmerge:test
+          bazel test //misc/bazel/internal/zipmerge:test --test_output=all
