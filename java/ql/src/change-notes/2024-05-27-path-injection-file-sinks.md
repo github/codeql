@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Added more `File`-related sinks to the path injection query.
+* Added more `java.io.File`-related sinks to the path injection query.

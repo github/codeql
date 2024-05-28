@@ -37,6 +37,8 @@ public class Test {
         getClass().getResource((String) source()); // $ hasTaintFlow
         // "java.lang;ClassLoader;true;getSystemResourceAsStream;(String);;Argument[0];read-file;ai-generated"
         ClassLoader.getSystemResourceAsStream((String) source()); // $ hasTaintFlow
+        // "java.io;File;True;canExecute;();;Argument[this];path-injection;manual"
+        ((File) source()).canExecute(); // $ hasTaintFlow
         // "java.io;File;True;canRead;();;Argument[this];path-injection;manual"
         ((File) source()).canRead(); // $ hasTaintFlow
         // "java.io;File;True;canWrite;();;Argument[this];path-injection;manual"
@@ -51,6 +53,12 @@ public class Test {
         ((File) source()).deleteOnExit(); // $ hasTaintFlow
         // "java.io;File;True;exists;();;Argument[this];path-injection;manual"
         ((File) source()).exists(); // $ hasTaintFlow
+        // "java.io:File;True;isDirectory;();;Argument[this];path-injection;manual"
+        ((File) source()).isDirectory(); // $ hasTaintFlow
+        // "java.io:File;True;isFile;();;Argument[this];path-injection;manual"
+        ((File) source()).isFile(); // $ hasTaintFlow
+        // "java.io:File;True;isHidden;();;Argument[this];path-injection;manual"
+        ((File) source()).isHidden(); // $ hasTaintFlow
         // "java.io;File;True;mkdir;();;Argument[this];path-injection;manual"
         ((File) source()).mkdir(); // $ hasTaintFlow
         // "java.io;File;True;mkdirs;();;Argument[this];path-injection;manual"
