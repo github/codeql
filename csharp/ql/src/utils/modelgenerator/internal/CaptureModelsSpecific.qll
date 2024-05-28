@@ -70,8 +70,8 @@ private Callable getARelevantOverrideeOrImplementee(Overridable m) {
 }
 
 /**
- * Gets the super implementation of `m` if it is relevant.
- * If such a super implementation does not exist, returns `m` if it is relevant.
+ * Gets the super implementation of `api` if it is relevant.
+ * If such a super implementation does not exist, returns `api` if it is relevant.
  */
 private Callable liftedImpl(Callable api) {
   (
