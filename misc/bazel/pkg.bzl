@@ -228,6 +228,7 @@ def codeql_pack(
         zip_filename = None,
         visibility = None,
         install_dest = "extractor-pack",
+        compression_level = None,
         **kwargs):
     """
     Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
@@ -243,6 +244,9 @@ def codeql_pack(
     The distinction between arch-specific and generic contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
     be replaced by the appropriate platform (`linux64`, `win64` or `osx64`).
+
+    `compression_level` can be used to tweak the compression level used when creating archives. Consider that this
+    does not affect the contents of `zips`, only `srcs`.
     """
     internal = _make_internal(name)
     zip_filename = zip_filename or name
@@ -265,6 +269,7 @@ def codeql_pack(
                 name = internal(kind + "-zip-base"),
                 srcs = [internal(kind)],
                 visibility = ["//visibility:private"],
+                compression_level = compression_level,
             )
             _zipmerge(
                 name = internal(kind + "-zip"),
@@ -282,6 +287,7 @@ def codeql_pack(
                 visibility = ["//visibility:private"],
                 package_dir = name,
                 package_file_name = name + "-" + (_detect_platform() if kind == "arch" else "generic") + ".zip",
+                compression_level = compression_level,
             )
     if zips:
         _imported_zips_manifest(
