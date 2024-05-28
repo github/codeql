@@ -147,7 +147,10 @@ _imported_zips_manifest = rule(
         {CODEQL_PLATFORM} can be used as zip prefixes and will be expanded to the relevant codeql platform.
     """,
     attrs = {
-        "zips": attr.label_keyed_string_dict(doc = "mapping from zip files to install prefixes", allow_files = True),
+        "zips": attr.label_keyed_string_dict(
+            doc = "mapping from zip files to install prefixes",
+            allow_files = [".zip"],
+        ),
     } | _PLAT_DETECTION_ATTRS,
 )
 
@@ -189,9 +192,12 @@ _zipmerge = rule(
     attrs = {
         "base": attr.label(
             doc = "Base zip file to which zips from `zips` will be merged with",
-            allow_single_file = True,
+            allow_single_file = [".zip"],
         ),
-        "zips": attr.label_keyed_string_dict(doc = "mapping from zip files to install prefixes", allow_files = True),
+        "zips": attr.label_keyed_string_dict(
+            doc = "mapping from zip files to install prefixes",
+            allow_files = [".zip"],
+        ),
         "zip_name": attr.string(doc = "Prefix to use for the output file name"),
         "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
         "zip_prefix": attr.string(doc = "Prefix posix path to add to the zip contents in the archive"),
