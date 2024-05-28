@@ -21,7 +21,7 @@ _PLAT_DETECTION_ATTRS = {
 
 _PLAT_PLACEHOLDER = "{CODEQL_PLATFORM}"
 
-def _process_path(path, platform):
+def _expand_path(path, platform):
     if _PLAT_PLACEHOLDER in path:
         path = path.replace(_PLAT_PLACEHOLDER, platform)
         return ("arch", path)
@@ -89,9 +89,9 @@ def _extract_pkg_filegroup_impl(ctx):
     for pfi, origin in src.pkg_files:
         dest_src_map = {}
         for dest, file in pfi.dest_src_map.items():
-            file_kind, dest = _process_path(dest, platform)
+            file_kind, expanded_dest = _expand_path(dest, platform)
             if file_kind == ctx.attr.kind:
-                dest_src_map[dest] = file
+                dest_src_map[expanded_dest] = file
         if dest_src_map:
             pkg_files.append((PackageFilesInfo(dest_src_map = dest_src_map, attributes = pfi.attributes), origin))
 
@@ -124,9 +124,10 @@ def _imported_zips_manifest_impl(ctx):
     manifest = []
     files = []
     for zip, prefix in ctx.attr.zips.items():
-        _, prefix = _process_path(prefix, platform)
+        # we don't care about the kind here, as we're taking all zips together
+        _, expanded_prefix = _expand_path(prefix, platform)
         zip_files = zip.files.to_list()
-        manifest += ["%s:%s" % (prefix, f.short_path) for f in zip_files]
+        manifest += ["%s:%s" % (expanded_prefix, f.short_path) for f in zip_files]
         files += zip_files
 
     output = ctx.actions.declare_file(ctx.label.name + ".params")
@@ -158,9 +159,9 @@ def _zipmerge_impl(ctx):
     output = ctx.actions.declare_file(filename)
     args = [output.path, "--prefix=%s" % ctx.attr.zip_prefix, ctx.file.base.path]
     for zip, prefix in ctx.attr.zips.items():
-        zip_kind, prefix = _process_path(prefix, platform)
+        zip_kind, expanded_prefix = _expand_path(prefix, platform)
         if zip_kind == ctx.attr.kind:
-            args.append("--prefix=%s/%s" % (ctx.attr.zip_prefix, prefix.rstrip("/")))
+            args.append("--prefix=%s/%s" % (ctx.attr.zip_prefix, expanded_prefix.rstrip("/")))
             args += [f.path for f in zip.files.to_list()]
             zips.append(zip.files)
     ctx.actions.run(
