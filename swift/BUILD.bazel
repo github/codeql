@@ -78,9 +78,12 @@ codeql_pack(
         "//swift/downgrades",
     ],
     visibility = ["//visibility:public"],
-    zips = {
-        "//swift/third_party/resource-dir": "resource-dir/{CODEQL_PLATFORM}",
-    },
+    zips = select({
+        "@platforms//os:windows": {},
+        "//conditions:default": {
+            "//swift/third_party/resource-dir": "resource-dir/{CODEQL_PLATFORM}",
+        },
+    }),
 )
 
 alias(
