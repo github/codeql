@@ -8,9 +8,9 @@ void test() {
 
 	ymlSink(0);
 
-	ymlSink(x); // $ MISSING: ir
+	ymlSink(x); // $ ir
 
 	int y = ymlStep(x);
 
-	ymlSink(y); // $ MISSING: ir
+	ymlSink(y); // $ ir
 }
