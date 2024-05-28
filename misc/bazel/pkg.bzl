@@ -9,8 +9,9 @@ load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo"
 load("@rules_python//python:defs.bzl", "py_binary")
 
 def _make_internal(name):
-    def internal(suffix = "internal"):
-        return "%s-%s" % (name, suffix)
+    def internal(suffix = "internal", *args):
+        args = (name, suffix) + args
+        return "-".join(args)
 
     return internal
 
@@ -133,17 +134,63 @@ _extract_pkg_filegroup = rule(
     } | _PLAT_DETECTION_ATTRS,
 )
 
-def _imported_zips_manifest_impl(ctx):
-    platform = _detect_platform(ctx)
+_ZipInfo = provider(fields = {"zips_to_prefixes": "mapping of zip files to prefixes"})
 
+def _zip_info_impl(ctx):
+    zips = {}
+    for zip_target, prefix in ctx.attr.srcs.items():
+        for zip in zip_target.files.to_list():
+            zips[zip] = prefix
+    return [
+        _ZipInfo(zips_to_prefixes = zips),
+    ]
+
+_zip_info = rule(
+    implementation = _zip_info_impl,
+    doc = """
+        This internal rule simply instantiates a _ZipInfo provider out of `zips`.
+    """,
+    attrs = {
+        "srcs": attr.label_keyed_string_dict(
+            doc = "mapping from zip files to install prefixes",
+            allow_files = [".zip"],
+        ),
+    },
+)
+
+def _zip_info_filter_impl(ctx):
+    platform = _detect_platform(ctx)
+    filtered_zips = {}
+    for zip_info in ctx.attr.srcs:
+        for zip, prefix in zip_info[_ZipInfo].zips_to_prefixes.items():
+            zip_kind, expanded_prefix = _expand_path(prefix, platform)
+            if zip_kind == ctx.attr.kind:
+                filtered_zips[zip] = expanded_prefix
+    return [
+        _ZipInfo(zips_to_prefixes = filtered_zips),
+    ]
+
+_zip_info_filter = rule(
+    implementation = _zip_info_filter_impl,
+    doc = """
+        This internal rule transforms a _ZipInfo provider so that:
+        * only zips matching `kind` are included
+        * a kind of a zip is given by its prefix: if it contains {CODEQL_PLATFORM} it is arch, otherwise it's generic
+        * in the former case, {CODEQL_PLATFORM} is expanded
+    """,
+    attrs = {
+        "srcs": attr.label_list(doc = "_ZipInfos to transform", providers = [_ZipInfo]),
+        "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
+    } | _PLAT_DETECTION_ATTRS,
+)
+
+def _imported_zips_manifest_impl(ctx):
     manifest = []
     files = []
-    for zip, prefix in ctx.attr.zips.items():
-        # we don't care about the kind here, as we're taking all zips together
-        _, expanded_prefix = _expand_path(prefix, platform)
-        zip_files = zip.files.to_list()
-        manifest += ["%s:%s" % (expanded_prefix, f.short_path) for f in zip_files]
-        files += zip_files
+    for zip_info in ctx.attr.srcs:
+        zip_info = zip_info[_ZipInfo]
+        manifest += ["%s:%s" % (p, z.short_path) for z, p in zip_info.zips_to_prefixes.items()]
+        files += list(zip_info.zips_to_prefixes)
 
     output = ctx.actions.declare_file(ctx.label.name + ".params")
     ctx.actions.write(
@@ -162,30 +209,39 @@ _imported_zips_manifest = rule(
         {CODEQL_PLATFORM} can be used as zip prefixes and will be expanded to the relevant codeql platform.
     """,
     attrs = {
-        "zips": attr.label_keyed_string_dict(
-            doc = "mapping from zip files to install prefixes",
-            allow_files = [".zip"],
+        "srcs": attr.label_list(
+            doc = "mappings from zip files to install prefixes in _ZipInfo format",
+            providers = [_ZipInfo],
         ),
-    } | _PLAT_DETECTION_ATTRS,
+    },
 )
 
 def _zipmerge_impl(ctx):
     zips = []
-    filename = ctx.attr.zip_name + "-"
-    platform = _detect_platform(ctx)
-    filename = "%s-%s.zip" % (ctx.attr.zip_name, platform if ctx.attr.kind == "arch" else "generic")
-    output = ctx.actions.declare_file(filename)
-    args = [output.path, "--prefix=%s" % ctx.attr.prefix, ctx.file.base.path]
-    for zip, prefix in ctx.attr.zips.items():
-        zip_kind, expanded_prefix = _expand_path(prefix, platform)
-        if zip_kind == ctx.attr.kind:
-            args.append("--prefix=%s/%s" % (ctx.attr.prefix, expanded_prefix.rstrip("/")))
-            args += [f.path for f in zip.files.to_list()]
-            zips.append(zip.files)
+    transitive_zips = []
+    output = ctx.actions.declare_file(ctx.attr.out)
+    args = [output.path]
+    for zip_target in ctx.attr.srcs:
+        if _ZipInfo in zip_target:
+            zip_info = zip_target[_ZipInfo]
+            for zip, prefix in zip_info.zips_to_prefixes.items():
+                args += [
+                    "--prefix=%s/%s" % (ctx.attr.prefix, prefix.rstrip("/")),
+                    zip.path,
+                ]
+                zips.append(zip)
+        else:
+            zips = zip_target.files.to_list()
+            for zip in zips:
+                if zip.extension != "zip":
+                    fail("%s file found while expecting a .zip file " % zip.short_path)
+            args.append("--prefix=%s" % ctx.attr.prefix)
+            args += [z.path for z in zips]
+            transitive_zips.append(zip_target.files)
     ctx.actions.run(
         outputs = [output],
         executable = ctx.executable._zipmerge,
-        inputs = depset([ctx.file.base], transitive = zips),
+        inputs = depset(zips, transitive = transitive_zips),
         arguments = args,
     )
 
@@ -196,29 +252,21 @@ def _zipmerge_impl(ctx):
 _zipmerge = rule(
     implementation = _zipmerge_impl,
     doc = """
-        This internal rule merges a `base` zip file with the ones indicated by the `zips` mapping where the prefix
-        indicates a matching kind between arch and generic. An imported zip file will be considered arch-specific
-        if its prefix contains `{CODEQL_PLATFORM}` (and this prefix will have that expanded to the appropriate
-        platform).
-
-        The output filename will be either `{zip_name}-generic.zip` or `{zip_name}-{CODEQL_PLATFORM}.zip`, depending on
-        the requested `kind`.
+        This internal rule merges a zip files together
     """,
     attrs = {
-        "base": attr.label(
-            doc = "Base zip file to which zips from `zips` will be merged with",
-            allow_single_file = [".zip"],
-        ),
-        "zips": attr.label_keyed_string_dict(
-            doc = "mapping from zip files to install prefixes",
-            allow_files = [".zip"],
-        ),
-        "zip_name": attr.string(doc = "Prefix to use for the output file name"),
-        "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
+        "srcs": attr.label_list(doc = "Zip file to include, either as straight up `.zip` files or `_ZipInfo` data"),
+        "out": attr.string(doc = "output file name"),
         "prefix": attr.string(doc = "Prefix posix path to add to the zip contents in the archive"),
         "_zipmerge": attr.label(default = "//misc/bazel/internal/zipmerge", executable = True, cfg = "exec"),
-    } | _PLAT_DETECTION_ATTRS,
+    },
 )
+
+def _get_zip_filename(name_prefix, kind):
+    if kind == "arch":
+        return name_prefix + "-" + _detect_platform() + ".zip"  # using + because there's a select
+    else:
+        return "%s-generic.zip" % name_prefix
 
 def codeql_pack(
         *,
@@ -252,47 +300,57 @@ def codeql_pack(
     zip_filename = zip_filename or name
     zips = zips or {}
     pkg_filegroup(
-        name = internal("base"),
+        name = internal("all"),
         srcs = srcs,
         visibility = ["//visibility:private"],
         **kwargs
     )
+    if zips:
+        _zip_info(
+            name = internal("zip-info"),
+            srcs = zips,
+            visibility = ["//visibility:private"],
+        )
     for kind in ("generic", "arch"):
         _extract_pkg_filegroup(
             name = internal(kind),
-            src = internal("base"),
+            src = internal("all"),
             kind = kind,
             visibility = ["//visibility:private"],
         )
         if zips:
             pkg_zip(
-                name = internal(kind + "-zip-base"),
+                name = internal(kind, "zip-base"),
                 srcs = [internal(kind)],
                 visibility = ["//visibility:private"],
                 compression_level = compression_level,
             )
-            _zipmerge(
-                name = internal(kind + "-zip"),
-                base = internal(kind + "-zip-base"),
-                zips = zips,
-                zip_name = zip_filename,
+            _zip_info_filter(
+                name = internal(kind, "zip-info"),
                 kind = kind,
+                srcs = [internal("zip-info")],
+                visibility = ["//visibility:private"],
+            )
+            _zipmerge(
+                name = internal(kind, "zip"),
+                srcs = [internal(kind, "zip-base"), internal(kind, "zip-info")],
+                out = _get_zip_filename(name, kind),
                 prefix = name,
                 visibility = visibility,
             )
         else:
             pkg_zip(
-                name = internal(kind + "-zip"),
+                name = internal(kind, "zip"),
                 srcs = [internal(kind)],
-                visibility = ["//visibility:private"],
+                visibility = visibility,
                 package_dir = name,
-                package_file_name = name + "-" + (_detect_platform() if kind == "arch" else "generic") + ".zip",
+                package_file_name = _get_zip_filename(name, kind),
                 compression_level = compression_level,
             )
     if zips:
         _imported_zips_manifest(
             name = internal("zip-manifest"),
-            zips = zips,
+            srcs = [internal("generic-zip-info"), internal("arch-zip-info")],
             visibility = ["//visibility:private"],
         )
 
