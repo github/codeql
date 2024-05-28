@@ -4,9 +4,6 @@ cc_library(
         "zipmerge.cpp",
     ],
     hdrs = ["zipmerge.h"],
-    visibility = ["//visibility:public"],
-    # this is to make internal repo be able to keep on testing this code
-    # before we fully port tests here
 )
 
 cc_binary(
@@ -20,4 +17,12 @@ cc_binary(
     ],
 )
 
-#TODO port tests from internal repo
+cc_test(
+    name = "test",
+    size = "small",
+    deps = [
+        ":lib",
+        "@bazel_tools//tools/cpp/runfiles",
+        "@googletest//:gtest_main",
+    ],
+)
