@@ -23,18 +23,18 @@ parser.add_argument("--pkg-install-script", required=True,
                     help="The wrapped `pkg_install` installation script rlocation")
 parser.add_argument("--build-file", required=True,
                     help="BUILD.bazel rlocation relative to which the installation should take place")
-parser.add_argument("--ripunzip", required=True,
-                    help="ripunzip executable rlocation")
-parser.add_argument("--zip-manifest", required=True,
+parser.add_argument("--ripunzip",
+                    help="ripunzip executable rlocation. Must be provided if `--zip-manifest` is.")
+parser.add_argument("--zip-manifest",
                     help="The rlocation of a file containing newline-separated `prefix:zip_file` entries")
 parser.add_argument("--cleanup", action=argparse.BooleanOptionalAction, default=True,
                     help="Whether to wipe the destination directory before installing (true by default)")
 opts = parser.parse_args()
+if opts.zip_manifest and not opts.ripunzip:
+    parser.error("Provide `--ripunzip` when specifying `--zip-manifest`")
 
 build_file = runfiles.Rlocation(opts.build_file)
 script = runfiles.Rlocation(opts.pkg_install_script)
-ripunzip = runfiles.Rlocation(opts.ripunzip)
-zip_manifest = runfiles.Rlocation(opts.zip_manifest)
 destdir = pathlib.Path(build_file).resolve().parent / opts.destdir
 
 if destdir.exists() and opts.cleanup:
@@ -43,10 +43,13 @@ if destdir.exists() and opts.cleanup:
 destdir.mkdir(parents=True, exist_ok=True)
 subprocess.run([script, "--destdir", destdir], check=True)
 
-with open(zip_manifest) as manifest:
-    for line in manifest:
-        prefix, _, zip = line.partition(":")
-        assert zip, f"missing prefix for {prefix}, you should use prefix:zip format"
-        dest = destdir / prefix
-        dest.mkdir(parents=True, exist_ok=True)
-        subprocess.run([ripunzip, "unzip-file", zip, "-d", dest], check=True)
+if opts.zip_manifest:
+    ripunzip = runfiles.Rlocation(opts.ripunzip)
+    zip_manifest = runfiles.Rlocation(opts.zip_manifest)
+    with open(zip_manifest) as manifest:
+        for line in manifest:
+            prefix, _, zip = line.partition(":")
+            assert zip, f"missing prefix for {prefix}, you should use prefix:zip format"
+            dest = destdir / prefix
+            dest.mkdir(parents=True, exist_ok=True)
+            subprocess.run([ripunzip, "unzip-file", zip, "-d", dest], check=True)

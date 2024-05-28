@@ -27,13 +27,28 @@ def _expand_path(path, platform):
         return ("arch", path)
     return ("generic", path)
 
-def _detect_platform(ctx):
-    if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]):
-        return "win64"
-    elif ctx.target_platform_has_constraint(ctx.attr._macos[platform_common.ConstraintValueInfo]):
-        return "osx64"
+def _platform_select(
+        ctx = None,
+        *,
+        linux,
+        windows,
+        macos):
+    if ctx:
+        if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]):
+            return windows
+        elif ctx.target_platform_has_constraint(ctx.attr._macos[platform_common.ConstraintValueInfo]):
+            return macos
+        else:
+            return linux
     else:
-        return "linux64"
+        return select({
+            "@platforms//os:linux": linux,
+            "@platforms//os:macos": macos,
+            "@platforms//os:windows": windows,
+        })
+
+def _detect_platform(ctx = None):
+    return _platform_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
 
 def codeql_pkg_files(
         *,
@@ -160,11 +175,11 @@ def _zipmerge_impl(ctx):
     platform = _detect_platform(ctx)
     filename = "%s-%s.zip" % (ctx.attr.zip_name, platform if ctx.attr.kind == "arch" else "generic")
     output = ctx.actions.declare_file(filename)
-    args = [output.path, "--prefix=%s" % ctx.attr.zip_prefix, ctx.file.base.path]
+    args = [output.path, "--prefix=%s" % ctx.attr.prefix, ctx.file.base.path]
     for zip, prefix in ctx.attr.zips.items():
         zip_kind, expanded_prefix = _expand_path(prefix, platform)
         if zip_kind == ctx.attr.kind:
-            args.append("--prefix=%s/%s" % (ctx.attr.zip_prefix, expanded_prefix.rstrip("/")))
+            args.append("--prefix=%s/%s" % (ctx.attr.prefix, expanded_prefix.rstrip("/")))
             args += [f.path for f in zip.files.to_list()]
             zips.append(zip.files)
     ctx.actions.run(
@@ -200,7 +215,7 @@ _zipmerge = rule(
         ),
         "zip_name": attr.string(doc = "Prefix to use for the output file name"),
         "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
-        "zip_prefix": attr.string(doc = "Prefix posix path to add to the zip contents in the archive"),
+        "prefix": attr.string(doc = "Prefix posix path to add to the zip contents in the archive"),
         "_zipmerge": attr.label(default = "//misc/bazel/internal/zipmerge", executable = True, cfg = "exec"),
     } | _PLAT_DETECTION_ATTRS,
 )
@@ -245,25 +260,35 @@ def codeql_pack(
             kind = kind,
             visibility = ["//visibility:private"],
         )
-        pkg_zip(
-            name = internal(kind + "-zip-base"),
-            srcs = [internal(kind)],
+        if zips:
+            pkg_zip(
+                name = internal(kind + "-zip-base"),
+                srcs = [internal(kind)],
+                visibility = ["//visibility:private"],
+            )
+            _zipmerge(
+                name = internal(kind + "-zip"),
+                base = internal(kind + "-zip-base"),
+                zips = zips,
+                zip_name = zip_filename,
+                kind = kind,
+                prefix = name,
+                visibility = visibility,
+            )
+        else:
+            pkg_zip(
+                name = internal(kind + "-zip"),
+                srcs = [internal(kind)],
+                visibility = ["//visibility:private"],
+                package_dir = name,
+                package_file_name = name + "-" + (_detect_platform() if kind == "arch" else "generic") + ".zip",
+            )
+    if zips:
+        _imported_zips_manifest(
+            name = internal("zip-manifest"),
+            zips = zips,
             visibility = ["//visibility:private"],
         )
-        _zipmerge(
-            name = internal(kind + "-zip"),
-            base = internal(kind + "-zip-base"),
-            zips = zips,
-            zip_name = zip_filename,
-            zip_prefix = name,  # this is prefixing the zip contents with the pack name
-            kind = kind,
-            visibility = visibility,
-        )
-    _imported_zips_manifest(
-        name = internal("zip-manifest"),
-        zips = zips,
-        visibility = ["//visibility:private"],
-    )
 
     pkg_install(
         name = internal("script"),
@@ -283,18 +308,20 @@ def codeql_pack(
         data = [
             internal("build-file"),
             internal("script"),
+        ] + ([
             internal("zip-manifest"),
             "//misc/bazel/internal/ripunzip",
-        ],
+        ] if zips else []),
         deps = ["@rules_python//python/runfiles"],
         args = [
             "--build-file=$(rlocationpath %s)" % internal("build-file"),
             "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
             "--destdir",
             install_dest,
+        ] + ([
             "--ripunzip=$(rlocationpath //misc/bazel/internal/ripunzip)",
             "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
-        ],
+        ] if zips else []),
         visibility = visibility,
     )
     native.filegroup(
