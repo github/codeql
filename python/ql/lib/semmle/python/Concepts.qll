@@ -1234,6 +1234,29 @@ module Http {
       }
     }
 
+    /** A write to a `Set-Cookie` header that sets a cookie directly. */
+    private class CookieHeaderWrite extends CookieWrite::Range instanceof Http::Server::ResponseHeaderWrite
+    {
+      CookieHeaderWrite() {
+        exists(StringLiteral str |
+          str.getText() = "Set-Cookie" and
+          DataFlow::exprNode(str)
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
+        )
+      }
+
+      override DataFlow::Node getNameArg() {
+        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+      }
+
+      override DataFlow::Node getHeaderArg() {
+        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+      }
+
+      override DataFlow::Node getValueArg() { none() }
+    }
+
     /**
      * A data-flow node that enables or disables Cross-site request forgery protection
      * in a global manner.
