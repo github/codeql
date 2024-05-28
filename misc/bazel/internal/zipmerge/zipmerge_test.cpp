@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cstring>
+#include <filesystem>
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -12,6 +13,7 @@
 
 using bazel::tools::cpp::runfiles::Runfiles;
 using namespace std::string_literals;
+namespace fs = std::filesystem;
 
 namespace codeql_testing {
 
@@ -72,7 +74,15 @@ std::string get_file(const char* name) {
     EXPECT_TRUE(ret) << error;
     return ret;
   }();
-  return runfiles->Rlocation("_main/misc/bazel/internal/zipmerge/test-files/"s + name);
+  // this works from both `codeql` and the internal repository
+  for (auto prefix : {"_main", "codeql~"}) {
+    auto ret = runfiles->Rlocation(prefix + "/misc/bazel/internal/zipmerge/test-files/"s + name);
+    if (fs::exists(ret)) {
+      return ret;
+    }
+  }
+  EXPECT_TRUE(false) << "test file " << name << " not found";
+  return "";
 }
 
 void expect_same_file(const char* actual, const char* expected) {
