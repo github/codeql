@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cstring>
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -53,10 +54,7 @@ TEST(Zipmerge, FindEocd) {
   EXPECT_EQ(find_eocd(buf, sizeof(buf)), buf + 101);
 }
 
-const size_t num_hash_bytes = 128 / 8;
-const size_t num_hash_uint64s = 2;
-
-std::string read_file(std::string_view filename) {
+std::string read_file(const std::string& filename) {
   std::ifstream f(filename, std::ios::binary);
   EXPECT_TRUE(f) << "Could not open '" << filename << "' (" << std::strerror(errno) << ")";
   if (!f) {
@@ -68,12 +66,12 @@ std::string read_file(std::string_view filename) {
 }
 
 std::string get_file(const char* name) {
-  static auto runfiles = []{
-std::string error;
-  auto ret = Runfiles::CreateForTest(&error);
-  EXPECT_TRUE(ret) << error;
-return ret;
-}();
+  static auto runfiles = [] {
+    std::string error;
+    auto ret = Runfiles::CreateForTest(&error);
+    EXPECT_TRUE(ret) << error;
+    return ret;
+  }();
   return runfiles->Rlocation("_main/misc/bazel/internal/zipmerge/test-files/"s + name);
 }
 
@@ -90,7 +88,7 @@ template <typename... Args>
 const char* zipmerge(Args*... inputs) {
   reset();
   const char* output = nullptr;
-  std::vector<const char*> args{"self"};
+  std::vector<std::string> args{"self"};
   std::array<const char*, sizeof...(Args)> flags{{inputs...}};
   auto i = 0u;
   for (; i < flags.size() && std::string_view{flags[i]}.starts_with("-"); ++i) {
@@ -102,7 +100,10 @@ const char* zipmerge(Args*... inputs) {
   for (; i < flags.size(); ++i) {
     args.push_back(std::string_view{flags[i]}.starts_with("-") ? flags[i] : get_file(flags[i]));
   }
-  EXPECT_EQ(zipmerge_main(args.size(), args.data()), 0);
+  std::vector<const char*> argv;
+  std::transform(args.begin(), args.end(), std::back_inserter(argv),
+                 [](const std::string& s) { return s.c_str(); });
+  EXPECT_EQ(zipmerge_main(argv.size(), argv.data()), 0);
   return output;
 }
 
