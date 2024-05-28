@@ -40,6 +40,18 @@ module CleartextSources {
     re.getConstantValue().getStringlikeValue() = [".*", ".+"]
   }
 
+  /** Holds if the given name indicates the presence of sensitive data that is relevant to consider for Cleartext Storage queries. */
+  bindingset[name]
+  private predicate nameIndicatesRelevantSensitiveData(string name) {
+    exists(SensitiveDataClassification classification |
+      nameIndicatesSensitiveData(name, classification) and
+      classification in [
+          SensitiveDataClassification::password(), SensitiveDataClassification::certificate(),
+          SensitiveDataClassification::secret(), SensitiveDataClassification::private(),
+        ]
+    )
+  }
+
   /**
    * Holds if `re` may be a regular expression that can be used to sanitize
    * sensitive data with a call to `gsub`.
@@ -166,9 +178,8 @@ module CleartextSources {
     private DataFlow::ExprNode recv;
 
     HashKeyWriteSensitiveSource() {
-      exists(DataFlow::CallNode writeNode, SensitiveDataClassification classification |
-        nameIndicatesSensitiveData(name, classification) and
-        not classification = SensitiveDataClassification::id() and
+      exists(DataFlow::CallNode writeNode |
+        nameIndicatesRelevantSensitiveData(name) and
         not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
         not this instanceof NonCleartextSensitive and
@@ -199,11 +210,8 @@ module CleartextSources {
     private string name;
 
     HashLiteralSensitiveSource() {
-      exists(
-        CfgNodes::ExprNodes::HashLiteralCfgNode lit, SensitiveDataClassification classification
-      |
-        nameIndicatesSensitiveData(name, classification) and
-        not classification = SensitiveDataClassification::id() and
+      exists(CfgNodes::ExprNodes::HashLiteralCfgNode lit |
+        nameIndicatesRelevantSensitiveData(name) and
         not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
         not this instanceof NonCleartextSensitive and
@@ -223,16 +231,13 @@ module CleartextSources {
     string name;
 
     AssignSensitiveVariableSource() {
-      exists(SensitiveDataClassification classification |
-        // avoid safe values assigned to presumably unsafe names
-        not this instanceof NonCleartextSensitive and
-        nameIndicatesSensitiveData(name, classification) and
-        not classification = SensitiveDataClassification::id() and
-        not nameIsNotSensitive(name) and
-        exists(Assignment a |
-          this.asExpr().getExpr() = a.getRightOperand() and
-          a.getLeftOperand().getAVariable().getName() = name
-        )
+      // avoid safe values assigned to presumably unsafe names
+      not this instanceof NonCleartextSensitive and
+      nameIndicatesRelevantSensitiveData(name) and
+      not nameIsNotSensitive(name) and
+      exists(Assignment a |
+        this.asExpr().getExpr() = a.getRightOperand() and
+        a.getLeftOperand().getAVariable().getName() = name
       )
     }
 
@@ -244,16 +249,13 @@ module CleartextSources {
     private string name;
 
     ParameterSensitiveSource() {
-      exists(SensitiveDataClassification classification |
-        nameIndicatesSensitiveData(name, classification) and
-        not classification = SensitiveDataClassification::id() and
-        not nameIsNotSensitive(name) and
-        not this instanceof NonCleartextSensitive and
-        exists(Parameter p, LocalVariable v |
-          v = p.getAVariable() and
-          v.getName() = name and
-          this.asExpr().getExpr() = v.getAnAccess()
-        )
+      nameIndicatesRelevantSensitiveData(name) and
+      not nameIsNotSensitive(name) and
+      not this instanceof NonCleartextSensitive and
+      exists(Parameter p, LocalVariable v |
+        v = p.getAVariable() and
+        v.getName() = name and
+        this.asExpr().getExpr() = v.getAnAccess()
       )
     }
 
