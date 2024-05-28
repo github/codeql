@@ -108,35 +108,36 @@ const char* zipmerge(Args*... inputs) {
 }
 
 TEST(Zipmerge, Identity) {
-  expect_same_file(zipmerge("out.zip", "CPython.zip"), "CPython.zip");
+  expect_same_file(zipmerge("out.zip", "directory.zip"), "directory.zip");
 }
 
 TEST(Zipmerge, Idempotent) {
-  expect_same_file(zipmerge("out.zip", "CPython.zip", "CPython.zip", "CPython.zip"), "CPython.zip");
+  expect_same_file(zipmerge("out.zip", "directory.zip", "directory.zip", "directory.zip"),
+                   "directory.zip");
 }
 
 TEST(Zipmerge, RemoveEverything) {
-  expect_same_file(zipmerge("--remove=CPython", "out.zip", "CPython.zip"), "empty.zip");
+  expect_same_file(zipmerge("--remove=directory", "out.zip", "directory.zip"), "empty.zip");
 }
 
 TEST(Zipmerge, RemoveEverythingWildcard) {
-  expect_same_file(zipmerge("--remove=*on", "out.zip", "CPython.zip"), "empty.zip");
+  expect_same_file(zipmerge("--remove=*ory", "out.zip", "directory.zip"), "empty.zip");
 }
 
 TEST(Zipmerge, RemovePrefixedPaths) {
-  expect_same_file(zipmerge("--remove=My/CPython", "out.zip", "--prefix=My", "CPython.zip"),
+  expect_same_file(zipmerge("--remove=My/directory", "out.zip", "--prefix=My", "directory.zip"),
                    "empty.zip");
 }
 TEST(Zipmerge, RemoveSome) {
-  expect_same_file(zipmerge("--remove=CPython/Extensions.qll", "--remove=CPython/ReturnTypeTrap.ql",
-                            "out.zip", "CPython.zip"),
-                   "CPython-partial.zip");
+  expect_same_file(
+      zipmerge("--remove=directory/b.txt", "--remove=directory/c.txt", "out.zip", "directory.zip"),
+      "directory-partial.zip");
 }
 
 TEST(Zipmerge, RemoveSomeWildcard) {
-  expect_same_file(zipmerge("--remove=CPython/E*.qll", "--remove=CPython/R*", "--remove=CP*l",
-                            "out.zip", "CPython.zip"),
-                   "CPython-partial.zip");
+  expect_same_file(zipmerge("--remove=directory/b*t", "--remove=directory/c*", "--remove=dir*t",
+                            "out.zip", "directory.zip"),
+                   "directory-partial.zip");
 }
 
 TEST(Zipmerge, Prefix) {
