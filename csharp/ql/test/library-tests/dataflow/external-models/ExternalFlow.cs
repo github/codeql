@@ -262,4 +262,33 @@ namespace My.Qltest
 
         static void Sink(object o) { }
     }
+
+    public class J
+    {
+        public virtual object Prop1 { get; }
+
+        public virtual void SetProp1(object o) => throw null;
+
+        public virtual object Prop2 { get; }
+
+        public virtual void SetProp2(object o) => throw null;
+
+        void M1()
+        {
+            var j = new object();
+            SetProp1(j);
+            // flow as there is a manual summary.
+            Sink(this.Prop1);
+        }
+
+        void M2()
+        {
+            var j = new object();
+            SetProp2(j);
+            // no flow as there is only a generated summary and source code is available.
+            Sink(this.Prop2);
+        }
+
+        static void Sink(object o) { }
+    }
 }
