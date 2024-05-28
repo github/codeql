@@ -203,7 +203,7 @@ def codeql_pack(
         name,
         srcs = None,
         zips = None,
-        zip_filename = "extractor",
+        zip_filename = None,
         visibility = None,
         install_dest = "extractor-pack",
         **kwargs):
@@ -248,7 +248,7 @@ def codeql_pack(
             base = internal(kind + "-zip-base"),
             zips = zips,
             zip_name = zip_filename,
-            zip_prefix = name,
+            zip_prefix = name,  # this is prefixing the zip contents with the pack name
             kind = kind,
             visibility = visibility,
         )
