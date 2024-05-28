@@ -1,5 +1,6 @@
 import python
 import experimental.semmle.python.Concepts
+import semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
@@ -8,16 +9,16 @@ class CookieSink extends DataFlow::Node {
   string flag;
 
   CookieSink() {
-    exists(Cookie cookie |
-      this in [cookie.getNameArg(), cookie.getValueArg()] and
+    exists(Http::Server::CookieWrite cookie |
+      this in [cookie.getNameArg(), cookie.getValueArg(), cookie.getHeaderArg()] and
       (
-        not cookie.isSecure() and
+        cookie.getSecureFlag() = false and
         flag = "secure"
         or
-        not cookie.isHttpOnly() and
+        cookie.getHttpOnlyFlag() = false and
         flag = "httponly"
         or
-        not cookie.isSameSite() and
+        cookie.getSameSiteFlag() = false and
         flag = "samesite"
       )
     )
@@ -33,7 +34,9 @@ private module CookieInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(Cookie c | sink in [c.getNameArg(), c.getValueArg()])
+    exists(Http::Server::CookieWrite c |
+      sink in [c.getNameArg(), c.getValueArg(), c.getHeaderArg()]
+    )
   }
 }
 

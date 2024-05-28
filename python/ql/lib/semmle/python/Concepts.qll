@@ -1203,6 +1203,21 @@ module Http {
        * Gets the argument, if any, specifying the cookie value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Gets the value of the `Secure` flag of the cookie, if known.
+       */
+      boolean getSecureFlag() { result = super.getSecureFlag() }
+
+      /**
+       * Gets the value of the `HttpOnly` flag of the cookie, if known
+       */
+      boolean getHttpOnlyFlag() { result = super.getHttpOnlyFlag() }
+
+      /**
+       * Gets the value of the `SameSite` flag of the cookie, if known.
+       */
+      boolean getSameSiteFlag() { result = super.getSameSiteFlag() }
     }
 
     /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -1231,6 +1246,21 @@ module Http {
          * Gets the argument, if any, specifying the cookie value.
          */
         abstract DataFlow::Node getValueArg();
+
+        /**
+         * Gets the value of the `Secure` flag of the cookie, if known.
+         */
+        boolean getSecureFlag() { none() }
+
+        /**
+         * Gets the value of the `HttpOnly` flag of the cookie, if known
+         */
+        boolean getHttpOnlyFlag() { none() }
+
+        /**
+         * Gets the value of the `SameSite` flag of the cookie, if known.
+         */
+        boolean getSameSiteFlag() { none() }
       }
     }
 

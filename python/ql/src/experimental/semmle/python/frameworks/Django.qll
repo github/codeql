@@ -107,7 +107,9 @@ private module ExperimentalPrivateDjango {
            * * `isHttpOnly()` predicate would succeed.
            * * `isSameSite()` predicate would succeed.
            */
-          class DjangoResponseSetCookieCall extends DataFlow::MethodCallNode, Cookie::Range {
+          class DjangoResponseSetCookieCall extends DataFlow::MethodCallNode,
+            Http::Server::CookieWrite::Range
+          {
             DjangoResponseSetCookieCall() {
               this.calls(PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponse::instance(),
                 "set_cookie")
@@ -121,25 +123,34 @@ private module ExperimentalPrivateDjango {
               result in [this.getArg(1), this.getArgByName("value")]
             }
 
-            override predicate isSecure() {
-              DataFlow::exprNode(any(True t))
-                  .(DataFlow::LocalSourceNode)
-                  .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
-            }
-
-            override predicate isHttpOnly() {
-              DataFlow::exprNode(any(True t))
-                  .(DataFlow::LocalSourceNode)
-                  .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
-            }
-
-            override predicate isSameSite() {
-              exists(StringLiteral str |
-                str.getText() in ["Strict", "Lax"] and
-                DataFlow::exprNode(str)
+            override boolean getSecureFlag() {
+              if
+                DataFlow::exprNode(any(True t))
                     .(DataFlow::LocalSourceNode)
-                    .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
-              )
+                    .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
+              then result = true
+              else result = false
+            }
+
+            override boolean getHttpOnlyFlag() {
+              if
+                DataFlow::exprNode(any(True t))
+                    .(DataFlow::LocalSourceNode)
+                    .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
+              then result = true
+              else result = false
+            }
+
+            override boolean getSameSiteFlag() {
+              if
+                exists(StringLiteral str |
+                  str.getText() in ["Strict", "Lax"] and
+                  DataFlow::exprNode(str)
+                      .(DataFlow::LocalSourceNode)
+                      .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
+                )
+              then result = true
+              else result = false
             }
 
             override DataFlow::Node getHeaderArg() { none() }

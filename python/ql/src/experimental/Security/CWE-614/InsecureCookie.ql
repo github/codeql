@@ -16,16 +16,17 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.Concepts
+import semmle.python.Concepts
 import experimental.semmle.python.CookieHeader
 
-from Cookie cookie, string alert
+from Http::Server::CookieWrite cookie, string alert
 where
-  not cookie.isSecure() and
+  cookie.getSecureFlag() = false and
   alert = "secure"
   or
-  not cookie.isHttpOnly() and
+  cookie.getHttpOnlyFlag() = false and
   alert = "httponly"
   or
-  not cookie.isSameSite() and
+  cookie.getSameSiteFlag() = false and
   alert = "samesite"
 select cookie, "Cookie is added without the '" + alert + "' flag properly set."

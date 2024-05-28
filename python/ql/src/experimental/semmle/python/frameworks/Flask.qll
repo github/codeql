@@ -7,6 +7,7 @@ private import python
 private import semmle.python.frameworks.Flask
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
+private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Flask
 
@@ -31,30 +32,40 @@ module ExperimentalFlask {
    * * `isHttpOnly()` predicate would succeed.
    * * `isSameSite()` predicate would succeed.
    */
-  class FlaskSetCookieCall extends Cookie::Range instanceof Flask::FlaskResponseSetCookieCall {
+  class FlaskSetCookieCall extends Http::Server::CookieWrite::Range instanceof Flask::FlaskResponseSetCookieCall
+  {
     override DataFlow::Node getNameArg() { result = this.getNameArg() }
 
     override DataFlow::Node getValueArg() { result = this.getValueArg() }
 
-    override predicate isSecure() {
-      DataFlow::exprNode(any(True t))
-          .(DataFlow::LocalSourceNode)
-          .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
-    }
-
-    override predicate isHttpOnly() {
-      DataFlow::exprNode(any(True t))
-          .(DataFlow::LocalSourceNode)
-          .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
-    }
-
-    override predicate isSameSite() {
-      exists(StringLiteral str |
-        str.getText() in ["Strict", "Lax"] and
-        DataFlow::exprNode(str)
+    override boolean getSecureFlag() {
+      if
+        DataFlow::exprNode(any(True t))
             .(DataFlow::LocalSourceNode)
-            .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
-      )
+            .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
+      then result = true
+      else result = false
+    }
+
+    override boolean getHttpOnlyFlag() {
+      if
+        DataFlow::exprNode(any(True t))
+            .(DataFlow::LocalSourceNode)
+            .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
+      then result = true
+      else result = false
+    }
+
+    override boolean getSameSiteFlag() {
+      if
+        exists(StringLiteral str |
+          str.getText() in ["Strict", "Lax"] and
+          DataFlow::exprNode(str)
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
+        )
+      then result = true
+      else result = false
     }
 
     override DataFlow::Node getHeaderArg() { none() }
