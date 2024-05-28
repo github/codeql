@@ -151,7 +151,6 @@ TEST(Zipmerge, InputFileOrder) {
 }
 
 TEST(Zipmerge, LocalFileFooters) {
-  expect_same_file(zipmerge("out.jar", "slf4j-api-classes-with-footers.jar"),
-                   "slf4j-api-classes-without-footers.jar");
+  expect_same_file(zipmerge("out.jar", "footers.jar"), "no-footers.jar");
 }
 }  // namespace codeql_testing
