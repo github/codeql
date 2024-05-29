@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>            
+            In Windows environments, handles to processes, threads, and files are used to manage and interact with system resources. These handles can be opened with various permissions, such as process or thread access rights, which control what operations can be performed using the handle.
+        </p>
+        <p>            
+            A common issue arises when these handles are not properly closed before creating new processes. If the function
+        <code>CreateProcessAsUser</code>
+            or one of its variants is called with handle inheritance enabled, the opened handles may be inherited by the newly created process. This situation can lead to a privileged handle being leaked to a child process, which could potentially be exploited by an attacker to escalate privileges.
+        </p>
+        <p>            
+            Ensuring proper management of handles, including closing them with
+        <code>CloseHandle</code>
+            before creating new processes, is crucial to prevent these types of vulnerabilities. By doing so, the risk of handle inheritance and the subsequent security implications can be mitigated.
+        </p>
+    </overview>
+    <recommendation>
+        <p>Ensure that all handles are properly closed using <code>CloseHandle</code> before creating new processes with handle inheritance enabled.</p>
+    </recommendation>
+    <example>
+        <p>The following example demonstrates several erroneous uses of handle management in a Windows application.</p>
+        <sample src="LeakyHandles.cpp" />
+    </example>
+    <references>
+        <li>
+            <a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/leaked-handle-exploitation">Leaked Handle Exploitation</a>
+        </li>
+    </references>
+</qhelp>
