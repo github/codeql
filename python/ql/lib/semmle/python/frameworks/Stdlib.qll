@@ -1503,6 +1503,8 @@ module StdlibPrivate {
     or
     // io.open is a special case, since it is an alias for the builtin `open`
     result = API::moduleImport("io").getMember("open")
+    or
+    result = API::moduleImport("codecs").getMember("open")
   }
 
   /**
@@ -2666,6 +2668,16 @@ module StdlibPrivate {
     }
   }
 
+  // // Codecs
+  // /** A file system access from a `pathlib.Path` method call. */
+  // private class CodecsFileAccess extends FileSystemAccess::Range, API::CallNode {
+  //   DataFlow::Node pathArgument;
+  //   CodecsFileAccess() {
+  //     this = API::moduleImport("codecs").getMember("open").getACall() and
+  //     pathArgument = this.getParameter(0, "filename").asSink()
+  //   }
+  //   override DataFlow::Node getAPathArgument() { result = pathArgument }
+  // }
   // ---------------------------------------------------------------------------
   // pathlib
   // ---------------------------------------------------------------------------

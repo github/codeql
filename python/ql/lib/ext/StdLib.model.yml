@@ -7,7 +7,8 @@ extensions:
   - addsTo:
       pack: codeql/python-all
       extensible: sinkModel
-    data: []
+    data:
+      - ["subprocess", "Member[Popen].Subclass.Call.Argument[0,args:]", "log-injection"]
 
   - addsTo:
       pack: codeql/python-all
@@ -73,11 +74,14 @@ extensions:
       - ["urllib", "Member[request].Member[Request].Subclass.Instance.Member[get_full_url]", "Argument[self]", "ReturnValue", "taint"]
       - ["urllib", "Member[request].Member[url2pathname]", "Argument[0,pathname:]", "ReturnValue", "taint"]
       - ["urllib", "Member[request].Member[urlretrieve]", "Argument[0,url:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["urllib2", "Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
       - ["zipfile", "Member[CompleteDirs].Subclass.Instance.Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
       - ["zipfile", "Member[ZipFile].Subclass.Call", "Argument[0,file:]", "ReturnValue", "taint"]
       - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[_extract_member]", "Argument[1,targetpath:]", "ReturnValue", "taint"]
       - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[infolist]", "Argument[self]", "ReturnValue", "taint"]
       - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
+      - ["shutil", "Member[rmtree]", "Argument[0,path:]", "Argument[2,onerror:].Argument[1]", "taint"]
   - addsTo:
       pack: codeql/python-all
       extensible: neutralModel
