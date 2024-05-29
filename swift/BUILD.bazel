@@ -1,4 +1,5 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+load("//:defs.bzl", "codeql_platform")
 load(
     "//misc/bazel:pkg.bzl",
     "codeql_pack",
@@ -91,15 +92,28 @@ alias(
     actual = ":swift-installer",
 )
 
-# TODO: aliases for internal repo backward compatibility
+# TODO: following rules are for internal repo backward compatibility only
 alias(
     name = "extractor-pack-generic",
     actual = "swift-generic",
     visibility = ["//visibility:public"],
 )
 
-alias(
+pkg_filegroup(
+    name = "resource-dir",
+    srcs = select({
+        "@platforms//os:linux": ["@swift_toolchain_linux//:resource-dir-files"],
+        "@platforms//os:macos": ["@swift_toolchain_macos//:resource-dir-files"],
+        "@platforms//os:windows": [],
+    }),
+    prefix = "resource-dir/" + codeql_platform,
+)
+
+pkg_filegroup(
     name = "extractor-pack-arch",
-    actual = "swift-arch",
+    srcs = [
+        ":resource-dir",
+        ":swift-arch",
+    ],
     visibility = ["//visibility:public"],
 )

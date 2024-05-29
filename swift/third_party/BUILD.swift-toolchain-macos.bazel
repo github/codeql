@@ -9,6 +9,7 @@ pkg_files(
         ["usr/lib/swift/**/*"],
     ),
     strip_prefix = _strip_prefix,
+    visibility = ["//visibility:public"],
 )
 
 pkg_zip(
