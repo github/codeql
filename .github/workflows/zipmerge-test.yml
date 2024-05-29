@@ -1,0 +1,23 @@
+name: "Test zipmerge code"
+
+on:
+  pull_request:
+    paths:
+      - "misc/bazel/internal/zipmerge/**"
+      - "MODULE.bazel"
+      - ".bazelrc*"
+    branches:
+      - main
+      - "rc/*"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          bazel test //misc/bazel/internal/zipmerge:test --test_output=all

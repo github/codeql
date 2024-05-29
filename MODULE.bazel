@@ -24,6 +24,7 @@ bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
 bazel_dep(name = "gazelle", version = "0.36.0")
 bazel_dep(name = "rules_dotnet", version = "0.15.1")
+bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
 
@@ -66,6 +67,36 @@ use_repo(node, "nodejs", "nodejs_toolchains")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.2")
+
+lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
+
+lfs_files(
+    name = "ripunzip-linux",
+    srcs = ["//misc/bazel/internal/ripunzip:ripunzip-linux"],
+    executable = True,
+)
+
+lfs_files(
+    name = "ripunzip-windows",
+    srcs = ["//misc/bazel/internal/ripunzip:ripunzip-windows.exe"],
+    executable = True,
+)
+
+lfs_files(
+    name = "ripunzip-macos",
+    srcs = ["//misc/bazel/internal/ripunzip:ripunzip-macos"],
+    executable = True,
+)
+
+lfs_files(
+    name = "swift-resource-dir-linux",
+    srcs = ["//swift/third_party/resource-dir:resource-dir-linux.zip"],
+)
+
+lfs_files(
+    name = "swift-resource-dir-macos",
+    srcs = ["//swift/third_party/resource-dir:resource-dir-macos.zip"],
+)
 
 register_toolchains(
     "@nodejs_toolchains//:all",

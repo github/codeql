@@ -1,0 +1,31 @@
+cc_library(
+    name = "lib",
+    srcs = [
+        "zipmerge.cpp",
+    ],
+    hdrs = ["zipmerge.h"],
+)
+
+cc_binary(
+    name = "zipmerge",
+    srcs = [
+        "zipmerge_main.cpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":lib",
+    ],
+)
+
+cc_test(
+    name = "test",
+    size = "small",
+    srcs = ["zipmerge_test.cpp"],
+    data = glob(["test-files/*"]),
+    linkstatic = True,  # required to build the test in the internal repo
+    deps = [
+        ":lib",
+        "@bazel_tools//tools/cpp/runfiles",
+        "@googletest//:gtest_main",
+    ],
+)
