@@ -17,8 +17,7 @@ private module Paramiko {
    * The first argument of `paramiko.ProxyCommand`.
    *
    * the `paramiko.ProxyCommand` is equivalent of `ssh -o ProxyCommand="CMD"`
-   *  and it run CMD on current system that running the ssh command
-   *
+   * which runs `CMD` on the local system.
    * See https://paramiko.pydata.org/docs/reference/api/paramiko.eval.html
    */
   class ParamikoProxyCommand extends SystemCommandExecution::Range, API::CallNode {
