@@ -10,7 +10,8 @@ module CompiledAST implements BuildlessASTSig {
     // TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
     TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) } or
     TDeclaration(SourceLocation loc) { exists(DeclarationEntry decl | decl.getLocation() = loc) } or
-    TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) }
+    TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) } or
+    TFunctionCallName(SourceLocation loc) { exists(FunctionCall c | c.getLocation() = loc) }
 
   class Node extends TNode {
     string toString() { result = "node" }
@@ -18,16 +19,19 @@ module CompiledAST implements BuildlessASTSig {
     Location getLocation() {
       this = TStatement(result) or
       this = TDeclaration(result) or
-      this = TExpression(result)
+      this = TExpression(result) or
+      this = TFunctionCallName(result)
     }
 
-    Stmt getStmt() { result.getLocation() = this.getLocation() }
+    Stmt getStmt() { this = TStatement(result.getLocation()) }
 
     Function getFunction() { result.getLocation() = this.getLocation() }
 
-    DeclarationEntry getDeclaration() { result.getLocation() = this.getLocation() }
+    DeclarationEntry getDeclaration() { this = TDeclaration(result.getLocation()) }
 
-    Expr getExpr() { result.getLocation() = this.getLocation() }
+    Expr getExpr() { this = TExpression(result.getLocation()) }
+
+    FunctionCall getFunctionCallName() { this = TFunctionCallName(result.getLocation()) }
   }
 
   predicate nodeLocation(Node node, Location location) { location = node.getLocation() }
@@ -113,7 +117,9 @@ module CompiledAST implements BuildlessASTSig {
   predicate typeParameterDefault(Node templateParameter, Node defaultTypeOrValue) { none() }
 
   // Declarations
-  predicate variableDeclaration(Node decl) { decl.getDeclaration() instanceof VariableDeclarationEntry }
+  predicate variableDeclaration(Node decl) {
+    decl.getDeclaration() instanceof VariableDeclarationEntry
+  }
 
   predicate variableDeclarationType(Node decl, Node type) { none() }
 
@@ -121,7 +127,9 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate variableDeclarationEntryInitializer(Node entry, Node initializer) { none() }
 
-  predicate variableName(Node decl, string name) { decl.getDeclaration().(VariableDeclarationEntry).getName() = name }
+  predicate variableName(Node decl, string name) {
+    decl.getDeclaration().(VariableDeclarationEntry).getName() = name
+  }
 
   predicate ptrEntry(Node entry, Node element) { none() }
 
@@ -132,7 +140,7 @@ module CompiledAST implements BuildlessASTSig {
   predicate arrayEntry(Node entry, Node element) { none() }
 
   // Expressions
-  predicate expression(Node node) { exists(node.getExpr()) }
+  predicate expression(Node node) { exists(node.getExpr()) or exists(node.getFunctionCallName()) }
 
   predicate prefixExpr(Node expr, string operator, Node operand) { none() }
 
@@ -142,11 +150,18 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate castExpr(Node expr, Node type, Node operand) { none() }
 
-  predicate callExpr(Node call) { none() }
+  predicate callExpr(Node call) { call.getExpr() instanceof Call }
 
-  predicate callArgument(Node call, int i, Node arg) { none() }
+  predicate callArgument(Node call, int i, Node arg) {
+    arg.getExpr() = call.getExpr().(Call).getArgument(i)
+  }
 
-  predicate callReceiver(Node call, Node receiver) { none() }
+  predicate callReceiver(Node call, Node receiver) {
+    receiver.getFunctionCallName() = call.getExpr()
+  }
 
-  predicate accessExpr(Node expr, string name) { expr.getExpr().(VariableAccess).getTarget().getName() = name }
+  predicate accessExpr(Node expr, string name) {
+    expr.getExpr().(VariableAccess).getTarget().getName() = name or
+    expr.getFunctionCallName().getTarget().getName() = name
+  }
 }

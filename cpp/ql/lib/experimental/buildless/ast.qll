@@ -59,12 +59,22 @@ module Buildless<BuildlessASTSig AST> {
   class AccessExpr extends Expr
   {
     string identifier;
-    
+
     AccessExpr() { AST::accessExpr(this, identifier) }
 
     string getName() { result = identifier }
 
     override string toString() { result = this.getName() }
+  }
+
+  class CallExpr extends Expr
+  {
+    CallExpr() { AST::callExpr(this) }
+
+    Expr getReceiver() { AST::callReceiver(this, result) }
+    Expr getArgument(int i) { AST::callArgument(this, i, result) }
+
+    override string toString() { result = "...(...)" }
   }
 }
 

@@ -15,6 +15,12 @@ query predicate variables(TestAST::VariableDeclaration v)
     any()
 }
 
+query predicate naiveCallTargets(TestAST::CallExpr call, TestAST::SourceFunction target)
+{
+    call.getReceiver().(TestAST::AccessExpr).getName() = target.getName()
+
+    and target.getName() = "max"
+}
 
 from TestAST::SourceFunction fn, int i
 // where fn.getName() = "lua_copy" and i=0
