@@ -102,31 +102,29 @@ private module Pandas {
      */
     class DataFrameMethods extends DataFrame {
       DataFrameMethods() {
-        exists(API::Node dataFrame | dataFrame = any(DataFrame df) |
-          this =
-            dataFrame
-                .getMember([
-                    "copy", "from_records", "from_dict", "from_spmatrix", "assign", "select_dtypes",
-                    "set_flags", "astype", "infer_objects", "head", "xs", "get", "isin", "where",
-                    "mask", "query", "add", "mul", "truediv", "mod", "pow", "dot", "radd", "rsub",
-                    "rdiv", "rfloordiv", "rtruediv", "rpow", "lt", "gt", "le", "ne", "agg",
-                    "combine", "apply", "aggregate", "transform", "all", "any", "clip", "corr",
-                    "cov", "cummax", "cummin", "cumprod", "describe", "mode", "pct_change",
-                    "quantile", "rank", "round", "sem", "add_prefix", "add_suffix", "at_time",
-                    "between_time", "drop", "drop_duplicates", "filter", "first", "head", "idxmin",
-                    "last", "reindex", "reindex_like", "reset_index", "sample", "set_axis", "tail",
-                    "take", "truncate", "bfill", "dropna", "ffill", "fillna", "interpolate", "isna",
-                    "isnull", "notna", "notnull", "pad", "replace", "droplevel", "pivot",
-                    "pivot_table", "reorder_levels", "sort_values", "sort_index", "nlargest",
-                    "nsmallest", "swaplevel", "stack", "unstack", "isnull", "notna", "notnull",
-                    "replace", "droplevel", "pivot", "pivot_table", "reorder_levels", "sort_values",
-                    "sort_index", "nlargest", "nsmallest", "swaplevel", "stack", "unstack", "melt",
-                    "explode", "squeeze", "T", "transpose", "compare", "join", "from_spmatrix",
-                    "shift", "asof", "merge", "from_dict", "tz_convert", "to_period", "asfreq",
-                    "to_dense", "tz_localize", "box", "__dataframe__"
-                  ])
-                .getReturn()
-        )
+        this =
+          any(DataFrame df)
+              .getMember([
+                  "copy", "from_records", "from_dict", "from_spmatrix", "assign", "select_dtypes",
+                  "set_flags", "astype", "infer_objects", "head", "xs", "get", "isin", "where",
+                  "mask", "query", "add", "mul", "truediv", "mod", "pow", "dot", "radd", "rsub",
+                  "rdiv", "rfloordiv", "rtruediv", "rpow", "lt", "gt", "le", "ne", "agg", "combine",
+                  "apply", "aggregate", "transform", "all", "any", "clip", "corr", "cov", "cummax",
+                  "cummin", "cumprod", "describe", "mode", "pct_change", "quantile", "rank",
+                  "round", "sem", "add_prefix", "add_suffix", "at_time", "between_time", "drop",
+                  "drop_duplicates", "filter", "first", "head", "idxmin", "last", "reindex",
+                  "reindex_like", "reset_index", "sample", "set_axis", "tail", "take", "truncate",
+                  "bfill", "dropna", "ffill", "fillna", "interpolate", "isna", "isnull", "notna",
+                  "notnull", "pad", "replace", "droplevel", "pivot", "pivot_table",
+                  "reorder_levels", "sort_values", "sort_index", "nlargest", "nsmallest",
+                  "swaplevel", "stack", "unstack", "isnull", "notna", "notnull", "replace",
+                  "droplevel", "pivot", "pivot_table", "reorder_levels", "sort_values",
+                  "sort_index", "nlargest", "nsmallest", "swaplevel", "stack", "unstack", "melt",
+                  "explode", "squeeze", "T", "transpose", "compare", "join", "from_spmatrix",
+                  "shift", "asof", "merge", "from_dict", "tz_convert", "to_period", "asfreq",
+                  "to_dense", "tz_localize", "box", "__dataframe__"
+                ])
+              .getReturn()
       }
     }
   }
@@ -136,8 +134,8 @@ private module Pandas {
    * See https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html
    * https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.eval.html
    */
-  class DataFlowQueryCall extends CodeExecution::Range, API::CallNode {
-    DataFlowQueryCall() {
+  class CodeExecutionCall extends CodeExecution::Range, API::CallNode {
+    CodeExecutionCall() {
       this = any(DataFrame::DataFrame df).getMember(["query", "eval"]).getACall()
     }
 
