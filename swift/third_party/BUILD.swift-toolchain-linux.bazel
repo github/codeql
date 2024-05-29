@@ -1,4 +1,5 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
 
 _strip_prefix = "usr/lib/swift"
 
@@ -42,8 +43,13 @@ _pm_interface_files = [
     for dir, interface, module in _pm_interface_files
 ]
 
-pkg_filegroup(
-    name = "resource-dir",
+pkg_zip(
+    name = "resource-dir-linux",
     srcs = [":resource-dir-original"] + [":pkg-%s" % module for _, _, module in _pm_interface_files],
+)
+
+alias(
+    name = "swift_toolchain_linux",
+    actual = ":resource-dir-linux",
     visibility = ["//visibility:public"],
 )
