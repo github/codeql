@@ -1,11 +1,11 @@
 /**
- * @name Command execution on a secondary remote server
+ * @name Command execution on a remote remote server
  * @description user provided command can lead to execute code on a external server that can be belong to other users or admins
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
  * @precision high
- * @id py/paramiko-command-injection
+ * @id py/remote-command-injection
  * @tags security
  *       experimental
  *       external/cwe/cwe-074
