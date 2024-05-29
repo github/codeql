@@ -16,9 +16,7 @@ provide:
   - "csharp/ql/campaigns/Solorigate/test/qlpack.yml"
   - "misc/legacy-support/*/qlpack.yml"
   - "misc/suite-helpers/qlpack.yml"
-  - "ruby/extractor-pack/codeql-extractor.yml"
-  - "swift/extractor-pack/codeql-extractor.yml"
-  - "ql/extractor-pack/codeql-extractor.yml"
+  - "*/extractor-pack/codeql-extractor.yml"
   - ".github/codeql/extensions/**/codeql-pack.yml"
 
 versionPolicies:
