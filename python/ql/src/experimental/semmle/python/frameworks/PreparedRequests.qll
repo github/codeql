@@ -17,18 +17,48 @@ module ExperimentalRequests {
 
     API::Node sessionObject() { result = requests().getMember("Session") }
 
-    class RequestObject extends DataFlow::CallCfgNode {
-      RequestObject() {
-        this = requestObject().getACall()
+    module RequestObject { 
+      class RequestObject extends DataFlow::CallCfgNode {
+        RequestObject() {
+          this = requestObject().getACall()
+        }
+
+        DataFlow::Node getAUrlPart() {
+          result = this.getArg(1)
+        }
       }
 
-      DataFlow::Node getAUrlPart() {
-        result = this.getArg(1)
+      DataFlow::TypeTrackingNode instance(TypeTracker tt) {
+        tt.start() and 
+        result instanceof RequestObject
+        or
+        exists(TypeTracker tt2 |
+          tt = tt2.step(instance(tt2), result)
+        )
       }
 
-      DataFlow::Node getPrepareCall() {
-        result = this.getAMethodCall("prepare")
+      DataFlow::Node instance() { instance(TypeTracker::end()).flowsTo(result) }    
+    }
+
+    class PrepareCall extends DataFlow::MethodCallNode {
+      PrepareCall() {
+        exists(string method | 
+          method in ["prepare"]
+          |
+          this.(DataFlow::MethodCallNode).calls(RequestObject::instance(), method)
+        )
       }
+
+      DataFlow::TypeTrackingNode getARequestObject(TypeBackTracker tt) {
+        tt.start() and 
+        result = this.getObject().getALocalSource()
+        or
+        exists(TypeBackTracker tt2 |
+          tt = tt2.step(result, this.getARequestObject(tt2))
+        )
+      }
+    
+      RequestObject::RequestObject getARequestObject() { result = this.getARequestObject(TypeBackTracker::end())}
     }
 
     class OutgoingSessionObjectSendCall extends Http::Client::Request::Range, API::CallNode {
@@ -37,7 +67,7 @@ module ExperimentalRequests {
       }
 
       override DataFlow::Node getAUrlPart() {
-        result = this.getARequestObject().getAUrlPart()
+        result = this.getAPrepareCall().getARequestObject().getAUrlPart()
       }
 
       override predicate disablesCertificateValidation(
@@ -61,23 +91,7 @@ module ExperimentalRequests {
         )
       }
     
-      DataFlow::Node getAPrepareCall() { result = this.getAPrepareCall(TypeBackTracker::end())}
-    
-      DataFlow::TypeTrackingNode getARequestObject(TypeBackTracker tt) {
-        tt.start() and 
-        (
-          exists(RequestObject ro | 
-            ro.getPrepareCall() = this.getAPrepareCall().getALocalSource() and 
-            result = ro.getALocalSource())
-        )
-        or
-        exists(TypeBackTracker tt2 |
-          tt = tt2.step(result, this.getARequestObject(tt2))
-        )
-      }
-    
-      RequestObject getARequestObject() { result = this.getARequestObject(TypeBackTracker::end())}
-
+      PrepareCall getAPrepareCall() { result = this.getAPrepareCall(TypeBackTracker::end())}
     }
   }
 }
