@@ -1,4 +1,4 @@
-load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 
 sh_binary(
     name = "qltest",
@@ -6,16 +6,39 @@ sh_binary(
     visibility = ["//swift/tools/test/qltest:__pkg__"],
 )
 
-codeql_pkg_files(
-    name = "tools",
+sh_binary(
+    name = "autobuild",
+    srcs = ["autobuild.sh"],
+)
+
+sh_binary(
+    name = "identify-environment",
+    srcs = ["identify-environment.sh"],
+)
+
+pkg_files(
+    name = "scripts",
     srcs = [
         "autobuild.cmd",
-        "tracing-config.lua",
+        ":autobuild",
+        ":identify-environment",
+        ":qltest",
     ],
-    exes = [
-        "autobuild.sh",
-        "identify-environment.sh",
-        "qltest.sh",
+    attributes = pkg_attributes(mode = "0755"),
+    prefix = "tools",
+)
+
+pkg_files(
+    name = "tracing-config",
+    srcs = ["tracing-config.lua"],
+    prefix = "tools",
+)
+
+pkg_filegroup(
+    name = "tools",
+    srcs = [
+        ":scripts",
+        ":tracing-config",
     ],
     visibility = ["//swift:__pkg__"],
 )

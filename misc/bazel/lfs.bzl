@@ -1,4 +1,4 @@
-def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, executable = False):
+def lfs_smudge(repository_ctx, srcs, extract = False, stripPrefix = None):
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     if not python:
         fail("Neither python3 nor python executables found")
@@ -25,7 +25,7 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
             repository_ctx.symlink(src, src.basename)
         else:
             repository_ctx.report_progress("trying cache for remote %s" % src.basename)
-            res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True, executable = executable)
+            res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True)
             if not res.success:
                 remote.append(src)
         if remote:
@@ -33,7 +33,7 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
             for src, info in zip(remote, infos):
                 sha256, _, url = info.partition(" ")
                 repository_ctx.report_progress("downloading remote %s" % src.basename)
-                repository_ctx.download(url, src.basename, sha256 = sha256, executable = executable)
+                repository_ctx.download(url, src.basename, sha256 = sha256)
         if extract:
             for src in srcs:
                 repository_ctx.report_progress("extracting %s" % src.basename)
@@ -62,20 +62,19 @@ def _download_lfs(repository_ctx):
         if not dir.is_dir:
             fail("`dir` not a directory in @%s" % repository_ctx.name)
         srcs = [f for f in dir.readdir() if not f.is_dir]
-    lfs_smudge(repository_ctx, srcs, executable = repository_ctx.attr.executable)
+    lfs_smudge(repository_ctx, srcs)
 
     # with bzlmod the name is qualified with `~` separators, and we want the base name here
     name = repository_ctx.name.split("~")[-1]
-    basenames = [src.basename for src in srcs]
-    build = "exports_files(%s)\n" % repr(basenames)
+    repository_ctx.file("BUILD.bazel", """
+exports_files({files})
 
-    # add a main `name` filegroup only if it doesn't conflict with existing exported files
-    if name not in basenames:
-        build += 'filegroup(name = "%s", srcs = %s, visibility = ["//visibility:public"])\n' % (
-            name,
-            basenames,
-        )
-    repository_ctx.file("BUILD.bazel", build)
+filegroup(
+    name = "{name}",
+    srcs = {files},
+    visibility = ["//visibility:public"],
+)
+""".format(name = name, files = repr([src.basename for src in srcs])))
 
 lfs_archive = repository_rule(
     doc = "Export the contents from an on-demand LFS archive. The corresponding path should be added to be ignored " +
@@ -99,6 +98,5 @@ lfs_files = repository_rule(
         "srcs": attr.label_list(doc = "Local paths to the LFS files to export."),
         "dir": attr.label(doc = "Local path to a directory containing LFS files to export. Only the direct contents " +
                                 "of the directory are exported"),
-        "executable": attr.bool(doc = "Whether files should be marked as executable"),
     },
 )
