@@ -190,7 +190,7 @@ def _imported_zips_manifest_impl(ctx):
     for zip_info in ctx.attr.srcs:
         zip_info = zip_info[_ZipInfo]
         manifest += ["%s:%s" % (p, z.short_path) for z, p in zip_info.zips_to_prefixes.items()]
-        files += list(zip_info.zips_to_prefixes)
+        files.extend(zip_info.zips_to_prefixes)
 
     output = ctx.actions.declare_file(ctx.label.name + ".params")
     ctx.actions.write(
