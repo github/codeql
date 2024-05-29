@@ -20,9 +20,9 @@ cc_binary(
 cc_test(
     name = "test",
     size = "small",
-    linkstatic = True,  # required to build the test in the internal repo
     srcs = ["zipmerge_test.cpp"],
     data = glob(["test-files/*"]),
+    linkstatic = True,  # required to build the test in the internal repo
     deps = [
         ":lib",
         "@bazel_tools//tools/cpp/runfiles",
