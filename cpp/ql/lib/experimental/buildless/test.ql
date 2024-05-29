@@ -10,6 +10,11 @@ query int lua_copy_count()
     result = count(lua_copy())
 }
 
+query predicate variables(TestAST::VariableDeclaration v)
+{
+    any()
+}
+
 
 from TestAST::SourceFunction fn, int i
 // where fn.getName() = "lua_copy" and i=0

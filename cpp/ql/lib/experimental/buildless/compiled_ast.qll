@@ -110,7 +110,7 @@ module CompiledAST implements BuildlessASTSig {
   predicate typeParameterDefault(Node templateParameter, Node defaultTypeOrValue) { none() }
 
   // Declarations
-  predicate variableDeclaration(Node decl) { exists(decl.getDeclaration()) }
+  predicate variableDeclaration(Node decl) { decl.getDeclaration() instanceof VariableDeclarationEntry }
 
   predicate variableDeclarationType(Node decl, Node type) { none() }
 
@@ -118,7 +118,7 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate variableDeclarationEntryInitializer(Node entry, Node initializer) { none() }
 
-  predicate variableName(Node entry, string name) { none() }
+  predicate variableName(Node decl, string name) { decl.getDeclaration().(VariableDeclarationEntry).getName() = name }
 
   predicate ptrEntry(Node entry, Node element) { none() }
 

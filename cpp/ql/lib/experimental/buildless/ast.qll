@@ -24,6 +24,10 @@ module Buildless<BuildlessASTSig AST> {
 
   class VariableDeclaration extends SourceElement {
     VariableDeclaration() { AST::variableDeclaration(this) }
+
+    string getName() { AST::variableName(this, result) }
+
+    override string toString() { result = getName() }
   }
 
   class SourceParameter extends VariableDeclaration {
