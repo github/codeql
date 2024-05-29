@@ -27,7 +27,7 @@ private module Ssh2 {
   }
 
   /**
-   * A `execute` method responsible for executing commands on remote secondary servers.
+   * An `execute` method responsible for executing commands on remote secondary servers.
    */
   class Ssh2Execute extends SecondaryCommandInjection {
     Ssh2Execute() {
