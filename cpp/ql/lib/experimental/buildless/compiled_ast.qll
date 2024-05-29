@@ -44,7 +44,17 @@ module CompiledAST implements BuildlessASTSig {
   predicate functionName(Node fn, string name) { name = fn.getFunction().getName() }
 
   predicate functionParameter(Node fn, int i, Node parameterDecl) {
-    fn.getFunction().getParameter(i).getADeclarationEntry() = parameterDecl.getDeclaration()
+    functionParameter0(fn, i, parameterDecl) and
+    not exists(Node param2 | functionParameter0(fn, i, param2) |
+      param2.getLocation().getStartLine() < parameterDecl.getLocation().getStartLine()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate functionParameter0(Node fn, int i, Node parameterDecl) {
+    fn.getFunction().getParameter(i).getADeclarationEntry() = parameterDecl.getDeclaration() and
+    fn.getLocation().getFile() = parameterDecl.getLocation().getFile() and
+    fn.getLocation().getStartLine() <= parameterDecl.getLocation().getStartLine()
   }
 
   // Statements
