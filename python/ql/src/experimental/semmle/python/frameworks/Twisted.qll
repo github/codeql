@@ -19,7 +19,7 @@ private module Twisted {
   /**
    * The `newConnection` and `existingConnection` functions of `twisted.conch.endpoints.SSHCommandClientEndpoint` class execute command on ssh target server
    */
-  class ParamikoExecCommand extends SecondaryCommandInjection {
+  class ParamikoExecCommand extends RemoteCommandExecution::Range, API::CallNode {
     ParamikoExecCommand() {
       this =
         API::moduleImport("twisted")
@@ -28,8 +28,8 @@ private module Twisted {
             .getMember("SSHCommandClientEndpoint")
             .getMember(["newConnection", "existingConnection"])
             .getACall()
-            .getParameter(1, "command")
-            .asSink()
     }
+
+    override DataFlow::Node getCommand() { result = this.getParameter(1, "command").asSink() }
   }
 }

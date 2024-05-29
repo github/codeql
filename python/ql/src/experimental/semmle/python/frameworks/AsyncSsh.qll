@@ -22,16 +22,9 @@ private module Asyncssh {
   /**
    * A `run` method responsible for executing commands on remote secondary servers.
    */
-  class AsyncsshRun extends SecondaryCommandInjection {
-    AsyncsshRun() {
-      this =
-        asyncssh()
-            .getMember("connect")
-            .getReturn()
-            .getMember("run")
-            .getACall()
-            .getParameter(0, "command")
-            .asSink()
-    }
+  class AsyncsshRun extends RemoteCommandExecution::Range, API::CallNode {
+    AsyncsshRun() { this = asyncssh().getMember("connect").getReturn().getMember("run").getACall() }
+
+    override DataFlow::Node getCommand() { result = this.getParameter(0, "command").asSink() }
   }
 }

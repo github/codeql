@@ -17,7 +17,7 @@ private module Pexpect {
    * The calls to `pexpect.pxssh.pxssh` functions that execute commands
    * See https://pexpect.readthedocs.io/en/stable/api/pxssh.html
    */
-  class PexpectCommandExec extends SecondaryCommandInjection {
+  class PexpectCommandExec extends RemoteCommandExecution::Range, API::CallNode {
     PexpectCommandExec() {
       this =
         API::moduleImport("pexpect")
@@ -26,8 +26,8 @@ private module Pexpect {
             .getReturn()
             .getMember(["send", "sendline"])
             .getACall()
-            .getParameter(0, "s")
-            .asSink()
     }
+
+    override DataFlow::Node getCommand() { result = this.getParameter(0, "s").asSink() }
   }
 }

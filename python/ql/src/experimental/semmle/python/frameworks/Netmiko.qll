@@ -29,21 +29,27 @@ private module Netmiko {
   /**
    * The `send_*` methods responsible for executing commands on remote secondary servers.
    */
-  class NetmikoSendCommand extends SecondaryCommandInjection {
+  class NetmikoSendCommand extends RemoteCommandExecution::Range, API::CallNode {
+    boolean isMultiline;
+
     NetmikoSendCommand() {
       this =
         netmikoConnectHandler()
             .getMember(["send_command", "send_command_expect", "send_command_timing"])
-            .getACall()
-            .getParameter(0, "command_string")
-            .asSink()
+            .getACall() and
+      isMultiline = false
       or
       this =
-        netmikoConnectHandler()
-            .getMember(["send_multiline", "send_multiline_timing"])
-            .getACall()
-            .getParameter(0, "commands")
-            .asSink()
+        netmikoConnectHandler().getMember(["send_multiline", "send_multiline_timing"]).getACall() and
+      isMultiline = true
+    }
+
+    override DataFlow::Node getCommand() {
+      result = this.getParameter(0, "command_string").asSink() and
+      isMultiline = false
+      or
+      result = this.getParameter(0, "commands").asSink() and
+      isMultiline = true
     }
   }
 }

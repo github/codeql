@@ -27,10 +27,9 @@ private module Paramiko {
   /**
    * The `exec_command` of `paramiko.SSHClient` class execute command on ssh target server
    */
-  class ParamikoExecCommand extends SecondaryCommandInjection {
-    ParamikoExecCommand() {
-      this =
-        paramikoClient().getMember("exec_command").getACall().getParameter(0, "command").asSink()
-    }
+  class ParamikoExecCommand extends RemoteCommandExecution::Range, API::CallNode {
+    ParamikoExecCommand() { this = paramikoClient().getMember("exec_command").getACall() }
+
+    override DataFlow::Node getCommand() { result = this.getParameter(0, "command").asSink() }
   }
 }

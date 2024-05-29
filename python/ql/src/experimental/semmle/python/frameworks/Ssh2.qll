@@ -29,16 +29,11 @@ private module Ssh2 {
   /**
    * An `execute` method responsible for executing commands on remote secondary servers.
    */
-  class Ssh2Execute extends SecondaryCommandInjection {
+  class Ssh2Execute extends RemoteCommandExecution::Range, API::CallNode {
     Ssh2Execute() {
-      this =
-        ssh2Session()
-            .getMember("open_session")
-            .getReturn()
-            .getMember("execute")
-            .getACall()
-            .getParameter(0, "command")
-            .asSink()
+      this = ssh2Session().getMember("open_session").getReturn().getMember("execute").getACall()
     }
+
+    override DataFlow::Node getCommand() { result = this.getParameter(0, "command").asSink() }
   }
 }

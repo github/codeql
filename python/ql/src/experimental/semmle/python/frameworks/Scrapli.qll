@@ -32,7 +32,7 @@ private module Scrapli {
   /**
    * A `send_command` method responsible for executing commands on remote secondary servers.
    */
-  class ScrapliSendCommand extends SecondaryCommandInjection {
+  class ScrapliSendCommand extends RemoteCommandExecution::Range, API::CallNode {
     ScrapliSendCommand() {
       this =
         scrapliCore()
@@ -44,26 +44,13 @@ private module Scrapli {
             .getReturn()
             .getMember("send_command")
             .getACall()
-            .getParameter(0, "command")
-            .asSink()
+      or
+      this = scrapli().getMember("Scrapli").getReturn().getMember("send_command").getACall()
       or
       this =
-        scrapli()
-            .getMember("Scrapli")
-            .getReturn()
-            .getMember("send_command")
-            .getACall()
-            .getParameter(0, "command")
-            .asSink()
-      or
-      this =
-        scrapliDriver()
-            .getMember("GenericDriver")
-            .getReturn()
-            .getMember("send_command")
-            .getACall()
-            .getParameter(0, "command")
-            .asSink()
+        scrapliDriver().getMember("GenericDriver").getReturn().getMember("send_command").getACall()
     }
+
+    override DataFlow::Node getCommand() { result = this.getParameter(0, "command").asSink() }
   }
 }

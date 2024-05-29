@@ -15,12 +15,23 @@ private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 private import semmle.python.Concepts
 
-/**
- * A data-flow node that responsible for a command that can be executed on a secondary remote system,
- *
- * Extend this class to model new APIs.
- */
-abstract class SecondaryCommandInjection extends DataFlow::Node { }
+/** Provides classes for modeling remote server command execution related APIs. */
+module RemoteCommandExecution {
+  /**
+   * A data-flow node that executes an operating system command,
+   * on a remote server likely by SSH connections.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SystemCommandExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the command to be executed. */
+    abstract DataFlow::Node getCommand();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
+  }
+}
 
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
