@@ -9,15 +9,16 @@ module CompiledAST implements BuildlessASTSig {
   private newtype TNode =
     // TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
     TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) } or
-    TDeclaration(SourceLocation loc) { exists(DeclarationEntry decl | decl.getLocation() = loc) }
+    TDeclaration(SourceLocation loc) { exists(DeclarationEntry decl | decl.getLocation() = loc) } or
+    TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) }
 
   class Node extends TNode {
     string toString() { result = "node" }
 
     Location getLocation() {
-      // this = TFunction(result) or
       this = TStatement(result) or
-      this = TDeclaration(result)
+      this = TDeclaration(result) or
+      this = TExpression(result)
     }
 
     Stmt getStmt() { result.getLocation() = this.getLocation() }
@@ -25,6 +26,8 @@ module CompiledAST implements BuildlessASTSig {
     Function getFunction() { result.getLocation() = this.getLocation() }
 
     DeclarationEntry getDeclaration() { result.getLocation() = this.getLocation() }
+
+    Expr getExpr() { result.getLocation() = this.getLocation() }
   }
 
   predicate nodeLocation(Node node, Location location) { location = node.getLocation() }
@@ -129,7 +132,7 @@ module CompiledAST implements BuildlessASTSig {
   predicate arrayEntry(Node entry, Node element) { none() }
 
   // Expressions
-  predicate expression(Node node) { none() }
+  predicate expression(Node node) { exists(node.getExpr()) }
 
   predicate prefixExpr(Node expr, string operator, Node operand) { none() }
 
@@ -144,4 +147,6 @@ module CompiledAST implements BuildlessASTSig {
   predicate callArgument(Node call, int i, Node arg) { none() }
 
   predicate callReceiver(Node call, Node receiver) { none() }
+
+  predicate accessExpr(Node expr, string name) { expr.getExpr().(VariableAccess).getTarget().getName() = name }
 }

@@ -27,7 +27,7 @@ module Buildless<BuildlessASTSig AST> {
 
     string getName() { AST::variableName(this, result) }
 
-    override string toString() { result = getName() }
+    override string toString() { result = this.getName() }
   }
 
   class SourceParameter extends VariableDeclaration {
@@ -49,6 +49,22 @@ module Buildless<BuildlessASTSig AST> {
     override string toString() { result = "{ ... }" }
 
     Stmt getChild(int i) { AST::blockMember(this, i, result) }
+  }
+
+  class Expr extends SourceElement
+  {
+    Expr() { AST::expression(this) }
+  }
+
+  class AccessExpr extends Expr
+  {
+    string identifier;
+    
+    AccessExpr() { AST::accessExpr(this, identifier) }
+
+    string getName() { result = identifier }
+
+    override string toString() { result = this.getName() }
   }
 }
 

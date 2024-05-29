@@ -1,8 +1,8 @@
 Names:
-- [ ] Identify all function names
-- [ ] Identify all parameter names
-- [ ] Identify all variable declaration names
-- [ ] Identify variable accesses
+- [x] Identify all function names
+- [x] Identify all parameter names
+- [x] Identify all variable declaration names
+- [x] Identify variable accesses
 
 Types:
 - [ ] Locate user type definitions and typedefs

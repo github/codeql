@@ -70,4 +70,5 @@ signature module BuildlessASTSig
     predicate callExpr(Node call);
     predicate callArgument(Node call, int i, Node arg);
     predicate callReceiver(Node call, Node receiver);
+    predicate accessExpr(Node expr, string name);
 }
