@@ -12,5 +12,5 @@ module SecondaryCommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof SecondaryCommandInjection }
 }
 
-/** Global taint-tracking for detecting "paramiko command injection" vulnerabilities. */
+/** Global taint-tracking for detecting "secondary server command injection" vulnerabilities. */
 module SecondaryCommandInjectionFlow = TaintTracking::Global<SecondaryCommandInjectionConfig>;
