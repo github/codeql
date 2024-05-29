@@ -42,11 +42,7 @@ module ExperimentalRequests {
 
     class PrepareCall extends DataFlow::MethodCallNode {
       PrepareCall() {
-        exists(string method | 
-          method in ["prepare"]
-          |
-          this.(DataFlow::MethodCallNode).calls(RequestObject::instance(), method)
-        )
+          this.calls(RequestObject::instance(), "prepare")
       }
 
       DataFlow::TypeTrackingNode getARequestObject(TypeBackTracker tt) {
