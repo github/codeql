@@ -21,7 +21,7 @@ private module Torch {
 
     override predicate mayExecuteInput() {
       not exists(this.getParameter(2, "pickle_module").asSink()) or
-      exists(this.getParameter(2, "pickle_module").asSink().asExpr().(None))
+      this.getParameter(2, "pickle_module").asSink().asExpr() instanceof None
     }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(0, "f").asSink() }
