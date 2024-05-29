@@ -113,7 +113,7 @@ module FabricV2 {
          * library.
          */
         abstract class Instance extends API::Node {
-          override string toString() { result = "a fabric connection instance" }
+          override string toString() { result = this.(API::Node).toString() }
         }
 
         /**
@@ -188,9 +188,6 @@ module FabricV2 {
     module Tasks {
       /** Gets a reference to the `fabric.tasks.task` decorator. */
       API::Node task() { result in [tasks().getMember("task"), fabric().getMember("task")] }
-
-      /** Gets a reference to the `fabric.tasks.task` decorator. */
-      API::Node test() { result in [tasks().getMember("task"), fabric().getMember("task")] }
     }
 
     class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::Instance
