@@ -6,16 +6,16 @@ private import semmle.python.dataflow.new.internal.PrintNode
 import experimental.semmle.python.Concepts
 
 module SystemCommandExecutionTest implements TestSig {
-  string getARelevantTag() { result = "getSecondaryCommand" }
+  string getARelevantTag() { result = "getRemoteCommand" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(SecondaryCommandInjection sci, DataFlow::Node command |
-      command = sci and
+    exists(RemoteCommandExecution sci, DataFlow::Node command |
+      command = sci.getCommand() and
       location = command.getLocation() and
       element = command.toString() and
       value = prettyNodeForInlineTest(command) and
-      tag = "getSecondaryCommand"
+      tag = "getRemoteCommand"
     )
   }
 }

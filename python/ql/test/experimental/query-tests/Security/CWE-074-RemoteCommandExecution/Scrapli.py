@@ -21,19 +21,19 @@ async def bad1(cmd: str):
     }
     driver = AsyncIOSXEDriver
     async with driver(**dev_connect) as conn:
-        output = await conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = await conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = AsyncIOSXRDriver
     async with driver(**dev_connect) as conn:
-        output = await conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = await conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = AsyncNXOSDriver
     async with driver(**dev_connect) as conn:
-        output = await conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = await conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = AsyncEOSDriver
     async with driver(**dev_connect) as conn:
-        output = await conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = await conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = AsyncJunosDriver
     async with driver(**dev_connect) as conn:
-        output = await conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = await conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     return {"success": "Dangerous"}
 
 @app.get("/bad1")
@@ -48,19 +48,19 @@ def bad2(cmd: str):
     }
     driver = NXOSDriver
     with driver(**dev_connect) as conn:
-        output = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = IOSXRDriver
     with driver(**dev_connect) as conn:
-        output = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = IOSXEDriver
     with driver(**dev_connect) as conn:
-        output = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = EOSDriver
     with driver(**dev_connect) as conn:
-        output = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     driver = JunosDriver
     with driver(**dev_connect) as conn:
-        output = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        output = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
 
     dev_connect = {
         "host": "65.65.65.65",
@@ -71,7 +71,7 @@ def bad2(cmd: str):
         "platform": "cisco_iosxe",
     }
     with Scrapli(**dev_connect) as conn:
-        result = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        result = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
 
     dev_connect = {
         "host": "65.65.65.65",
@@ -81,5 +81,5 @@ def bad2(cmd: str):
         "transport": "ssh2",
     }
     with GenericDriver(**dev_connect) as conn:
-        result = conn.send_command(cmd) # $ result=BAD getSecondaryCommand=cmd
+        result = conn.send_command(cmd) # $ result=BAD getRemoteCommand=cmd
     return {"success": "Dangerous"}

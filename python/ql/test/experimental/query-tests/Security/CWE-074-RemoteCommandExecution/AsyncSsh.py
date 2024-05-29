@@ -14,6 +14,6 @@ session.userauth_password("user", "password")
 @app.get("/bad1")
 async def bad1(cmd: str):
     async with asyncssh.connect('localhost') as conn:
-        result = await conn.run(cmd, check=True) # $ result=BAD getSecondaryCommand=cmd
+        result = await conn.run(cmd, check=True) # $ result=BAD getRemoteCommand=cmd
         print(result.stdout, end='')
     return {"success": "Dangerous"}

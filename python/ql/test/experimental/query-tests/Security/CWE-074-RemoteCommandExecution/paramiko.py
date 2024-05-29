@@ -13,10 +13,10 @@ app = FastAPI()
 
 @app.get("/bad1")
 async def bad1(cmd: str):
-    stdin, stdout, stderr = paramiko_ssh_client.exec_command(cmd)  # $ result=BAD getSecondaryCommand=cmd
+    stdin, stdout, stderr = paramiko_ssh_client.exec_command(cmd)  # $ result=BAD getRemoteCommand=cmd
     return {"success": "Dangerous"}
 
 @app.get("/bad2")
 async def bad2(cmd: str):
-    stdin, stdout, stderr = paramiko_ssh_client.exec_command(command=cmd)  # $ result=BAD getSecondaryCommand=cmd
+    stdin, stdout, stderr = paramiko_ssh_client.exec_command(command=cmd)  # $ result=BAD getRemoteCommand=cmd
     return {"success": "Dangerous"}

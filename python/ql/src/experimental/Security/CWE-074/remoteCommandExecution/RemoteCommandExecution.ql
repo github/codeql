@@ -12,10 +12,10 @@
  */
 
 import python
-import experimental.semmle.python.security.SecondaryServerCmdInjection
-import SecondaryCommandInjectionFlow::PathGraph
+import experimental.semmle.python.security.RemoteCommandExecution
+import RemoteCommandExecutionFlow::PathGraph
 
-from SecondaryCommandInjectionFlow::PathNode source, SecondaryCommandInjectionFlow::PathNode sink
-where SecondaryCommandInjectionFlow::flowPath(source, sink)
+from RemoteCommandExecutionFlow::PathNode source, RemoteCommandExecutionFlow::PathNode sink
+where RemoteCommandExecutionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
   "a user-provided value"
