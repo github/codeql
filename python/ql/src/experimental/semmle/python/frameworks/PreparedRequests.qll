@@ -15,7 +15,7 @@ module ExperimentalRequests {
   module ExperimentalPreparedRequests { 
     API::Node requestObject() { result = requests().getMember("Request") }
 
-    API::Node sessionObject() { result = API::moduleImport("requests").getMember("Session") }
+    API::Node sessionObject() { result = requests().getMember("Session") }
 
     class RequestObject extends DataFlow::CallCfgNode {
       RequestObject() {
