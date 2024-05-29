@@ -3,15 +3,15 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.TypeTracking
   
-/**
- * An outgoing Http Requests using Prepared Request, from the `requests` library 
- * 
- * See https://requests.readthedocs.io/en/latest/user/advanced/#prepared-requests
- */
 module ExperimentalRequests {
 
   API::Node requests() { result = API::moduleImport("requests") }
 
+  /**
+   * An outgoing Http Requests using Prepared Request, from the `requests` library 
+   * 
+   * See https://requests.readthedocs.io/en/latest/user/advanced/#prepared-requests
+   */
   module ExperimentalPreparedRequests { 
     API::Node requestObject() { result = requests().getMember("Request") }
 
