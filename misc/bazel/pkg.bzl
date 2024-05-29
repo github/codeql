@@ -231,12 +231,12 @@ def _zipmerge_impl(ctx):
                 ]
                 zips.append(zip)
         else:
-            zips = zip_target.files.to_list()
-            for zip in zips:
+            zip_files = zip_target.files.to_list()
+            for zip in zip_files:
                 if zip.extension != "zip":
                     fail("%s file found while expecting a .zip file " % zip.short_path)
             args.append("--prefix=%s" % ctx.attr.prefix)
-            args += [z.path for z in zips]
+            args += [z.path for z in zip_files]
             transitive_zips.append(zip_target.files)
     ctx.actions.run(
         outputs = [output],
