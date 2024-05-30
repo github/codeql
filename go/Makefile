@@ -28,7 +28,7 @@ qhelp-to-markdown:
 	scripts/qhelp-to-markdown.sh ql/src "$(QHELP_OUT_DIR)"
 
 extractor:
-	bazel run :create-extractor-pack
+	bazel run :go-installer
 
 gen:
 	bazel run :gen
