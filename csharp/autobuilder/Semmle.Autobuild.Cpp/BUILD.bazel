@@ -9,7 +9,6 @@ codeql_csharp_binary(
         "*.cs",
         "Properties/*.cs",
     ]),
-    language_prefix = "cpp",
     visibility = ["//visibility:public"],
     deps = [
         "//csharp/autobuilder/Semmle.Autobuild.Shared",

@@ -33,7 +33,7 @@ def codeql_xunit_test(name, **kwargs):
         **kwargs
     )
 
-def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
+def codeql_csharp_binary(name, **kwargs):
     kwargs.setdefault("nullable", "enable")
     kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
 
