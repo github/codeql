@@ -69,13 +69,15 @@ module Beego {
         )
       )
     }
-
-    predicate isSafeUrlSource() { methodName in ["URI", "URL"] }
   }
 
   /** `BeegoInput` sources that are safe to use for redirection. */
   private class BeegoInputSafeUrlSource extends SafeUrlFlow::Source {
-    BeegoInputSafeUrlSource() { this.(BeegoInputSource).isSafeUrlSource() }
+    BeegoInputSafeUrlSource() {
+      exists(Method m | m.hasQualifiedName(contextPackagePath(), "BeegoInput", ["URI", "URL"]) |
+        this = m.getACall().getResult(0)
+      )
+    }
   }
 
   /**
