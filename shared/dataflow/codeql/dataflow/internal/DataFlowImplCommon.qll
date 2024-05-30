@@ -1539,7 +1539,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       string toString() { result = "Unreachable" }
 
       cached
-      predicate contains(Node n) { exists(NodeRegion nr | super.contains(nr) and nr.contains(n)) }
+      predicate contains(NodeRegion nr) { super.contains(nr) }
 
       cached
       DataFlowCallable getEnclosingCallable() {
@@ -2071,8 +2071,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       ns.getEnclosingCallable() = callable
     }
 
-    /** Holds if this call context makes `n` unreachable. */
-    predicate unreachable(Node n) { ns.contains(n) }
+    /** Holds if this call context makes `nr` unreachable. */
+    predicate unreachable(NodeRegion nr) { ns.contains(nr) }
   }
 
   private DataFlowCallable getNodeRegionEnclosingCallable(NodeRegion nr) {
