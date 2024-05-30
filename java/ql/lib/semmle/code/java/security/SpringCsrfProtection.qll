@@ -5,9 +5,15 @@ import java
 /** Holds if `call` disables CSRF protection in Spring. */
 predicate disablesSpringCsrfProtection(MethodCall call) {
   call.getMethod().hasName("disable") and
-  call.getReceiverType()
-      .hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
-        "CsrfConfigurer<HttpSecurity>")
+  (
+    call.getReceiverType()
+        .hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
+          "CsrfConfigurer<HttpSecurity>")
+    or
+    call.getReceiverType()
+        .hasQualifiedName("org.springframework.security.config.web.server",
+          "ServerHttpSecurity$CsrfSpec")
+  )
   or
   call.getMethod()
       .hasQualifiedName("org.springframework.security.config.annotation.web.builders",
