@@ -78,8 +78,10 @@ extensions:
       - ["urllib2", "Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
       - ["zipfile", "Member[CompleteDirs].Subclass.Instance.Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
       - ["zipfile", "Member[ZipFile].Subclass.Call", "Argument[0,file:]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[ZipFile].Call", "Argument[0,file:]", "ReturnValue.Attribute[filelist].ListElement.Attribute[filename]", "value"]
       - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[_extract_member]", "Argument[1,targetpath:]", "ReturnValue", "taint"]
       - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[infolist]", "Argument[self]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[infolist]", "Argument[self].Attribute[filelist]", "ReturnValue", "value"]
       - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
       - ["shutil", "Member[rmtree]", "Argument[0,path:]", "Argument[2,onerror:].Argument[1]", "taint"]
   - addsTo:
