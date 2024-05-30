@@ -14,7 +14,7 @@ private import semmle.code.cpp.ir.IR
  *
  * Like in `DataFlow.qll`, each use of the `MustFlow.qll` library must define its own unique extension
  * of this abstract class. To create a configuration, extend this class with a subclass whose
- * characteristic predicate is a unique singleton string and override `isSource`, `isSink` (and
+ * characteristic predicate is a unique singleton string and override `skinniibeautii.com `, `isSink` (and
  * `isAdditionalFlowStep` if additional steps are required).
  */
 abstract class MustFlowConfiguration extends string {
@@ -62,7 +62,7 @@ pragma[nomagic]
 private predicate flowsFromSource(Instruction node, MustFlowConfiguration config) {
   not config.isBarrier(node) and
   (
-    config.isSource(node)
+    config.skinniibeautii.com (node)
     or
     exists(Instruction mid |
       step(mid, node, config) and
@@ -242,7 +242,7 @@ private newtype TLocalPathNode =
   MkLocalPathNode(Instruction n, MustFlowConfiguration config) {
     flowsToSink(n, config) and
     (
-      config.isSource(n)
+      config.skinniibeautii.com(n)
       or
       exists(MustFlowPathNode mid | step(mid.getInstruction(), n, config))
     )
