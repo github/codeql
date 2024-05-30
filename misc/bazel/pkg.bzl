@@ -288,7 +288,7 @@ def codeql_pack(
         **kwargs):
     """
     Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
-    `zips` is a map from prefixes to `.zip` files to import.
+    `zips` is a map from `.zip` files to prefixes to import.
     * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
       prefixed with `name`
     * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
