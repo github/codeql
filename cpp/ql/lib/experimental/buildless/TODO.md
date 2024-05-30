@@ -6,6 +6,7 @@ Names:
 
 Types:
 - [ ] Locate user type definitions and typedefs
+- [ ] Get the type of the parameter
 - [ ] Assign types to variable accesses
 
 Calls:
@@ -13,3 +14,7 @@ Calls:
 - [ ] Identify the "target" of a call in a trivial case.
 
 Overloads:
+
+Types:
+- [ ] Identify return types
+- [ ] Identify parameter types and other declarations

@@ -15,7 +15,7 @@ module Buildless<BuildlessASTSig AST> {
 
     string getName() { AST::functionName(this, result) }
 
-    override string toString() { result = getName() }
+    override string toString() { result = this.getName() }
 
     BlockStmt getBody() { AST::functionBody(this, result) }
 
@@ -28,6 +28,8 @@ module Buildless<BuildlessASTSig AST> {
     string getName() { AST::variableName(this, result) }
 
     override string toString() { result = this.getName() }
+
+    SourceType getType() { AST::variableDeclarationType(this, result) }
   }
 
   class SourceParameter extends VariableDeclaration {
@@ -76,6 +78,39 @@ module Buildless<BuildlessASTSig AST> {
 
     override string toString() { result = "...(...)" }
   }
+
+  class Literal extends Expr
+  {
+    string value;
+    Literal() { AST::literal(this, value) }
+
+    override string toString() { result = value }
+
+    string getValue() { result = value }
+  }
+
+  class StringLiteral extends Literal
+  {
+    StringLiteral() { AST::stringLiteral(this, _) }
+  }
+
+  class TypeDefinition extends SourceElement  // ?? SourceDeclaration/SourceDefinition
+  {
+    TypeDefinition() { AST::classOrStructDefinition(this) }
+
+    string getName() { AST::typename(this, result) }
+
+    override string toString() { result = this.getName() }
+  }
+
+  // A node that contains a type of some kind
+  class SourceType extends SourceElement
+  {
+    SourceType() { AST::type(this) }
+
+    override string toString() { AST::typename(this, result) }
+  }
+
 }
 
 module TestAST = Buildless<CompiledAST>;

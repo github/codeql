@@ -34,6 +34,7 @@ signature module BuildlessASTSig
     // etc
 
     // Types
+    predicate type(Node type);
     predicate ptrType(Node type, Node element);
     predicate refType(Node type, Node element);
     predicate rvalueRefType(Node type, Node element);
@@ -71,4 +72,6 @@ signature module BuildlessASTSig
     predicate callArgument(Node call, int i, Node arg);
     predicate callReceiver(Node call, Node receiver);
     predicate accessExpr(Node expr, string name);
+    predicate literal(Node expr, string value);
+    predicate stringLiteral(Node expr, string value);
 }
