@@ -1,3 +1,10 @@
+Next:
+- [ ] Return type nodes
+- [ ] Construction of types
+- [ ] Construction of functions
+- [ ] Construction of Variables
+
+
 Names:
 - [x] Identify all function names
 - [x] Identify all parameter names
@@ -5,16 +12,16 @@ Names:
 - [x] Identify variable accesses
 
 Types:
-- [ ] Locate user type definitions and typedefs
-- [ ] Get the type of the parameter
+- [x] Locate user type definitions and typedefs
+- [x] Get the type of the parameter
 - [ ] Assign types to variable accesses
 
 Calls:
-- [ ] Identify function call expressions
-- [ ] Identify the "target" of a call in a trivial case.
+- [x] Identify function call expressions
+- [x] Identify the "target" of a call in a trivial case.
 
 Overloads:
 
 Types:
 - [ ] Identify return types
-- [ ] Identify parameter types and other declarations
+- [x] Identify parameter types and other declarations

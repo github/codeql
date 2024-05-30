@@ -1,4 +1,5 @@
 import ast
+import types
 
 query TestAST::SourceFunction lua_copy()
 {
@@ -10,9 +11,9 @@ query int lua_copy_count()
     result = count(lua_copy())
 }
 
-query predicate variables(TestAST::VariableDeclaration v)
+query predicate variables(TestAST::SourceVariableDeclaration decl, TestAST::SourceType sourceType)
 {
-    any()
+    sourceType = decl.getType()
 }
 
 query predicate naiveCallTargets(TestAST::CallExpr call, TestAST::SourceFunction target)
@@ -23,5 +24,5 @@ query predicate naiveCallTargets(TestAST::CallExpr call, TestAST::SourceFunction
 }
 
 
-from TestAST::VariableDeclaration decl
+from TestAST::SourceVariableDeclaration decl
 select decl, decl.getType()

@@ -4,13 +4,20 @@ import ast_sig
 module Buildless<BuildlessASTSig AST> {
   final class Node = AST::Node;
 
+  // Any node in the abstract syntax tree
   class SourceElement extends Node {
     Location getLocation() { AST::nodeLocation(this, result) }
 
     string toString() { result = "element" }
   }
 
-  class SourceFunction extends SourceElement {
+  // Any syntax node that is a declaration
+  abstract class SourceDeclaration extends SourceElement
+  {
+  }
+
+  // A syntax node that declares or defines a function
+  class SourceFunction extends SourceDeclaration {
     SourceFunction() { AST::function(this) }
 
     string getName() { AST::functionName(this, result) }
@@ -19,11 +26,12 @@ module Buildless<BuildlessASTSig AST> {
 
     BlockStmt getBody() { AST::functionBody(this, result) }
 
-    VariableDeclaration getParameter(int i) { AST::functionParameter(this, i, result) }
+    SourceParameter getParameter(int i) { AST::functionParameter(this, i, result) }
   }
 
-  class VariableDeclaration extends SourceElement {
-    VariableDeclaration() { AST::variableDeclaration(this) }
+  // A syntax node that declares a variable (including fields and parameters)
+  class SourceVariableDeclaration extends SourceDeclaration {
+    SourceVariableDeclaration() { AST::variableDeclaration(this) }
 
     string getName() { AST::variableName(this, result) }
 
@@ -32,7 +40,8 @@ module Buildless<BuildlessASTSig AST> {
     SourceType getType() { AST::variableDeclarationType(this, result) }
   }
 
-  class SourceParameter extends VariableDeclaration {
+  // A syntax node that declares a parameter
+  class SourceParameter extends SourceVariableDeclaration {
     SourceFunction fn;
     int index;
 
@@ -94,9 +103,13 @@ module Buildless<BuildlessASTSig AST> {
     StringLiteral() { AST::stringLiteral(this, _) }
   }
 
-  class TypeDefinition extends SourceElement  // ?? SourceDeclaration/SourceDefinition
+  abstract class SourceDefinition extends SourceDeclaration
   {
-    TypeDefinition() { AST::classOrStructDefinition(this) }
+  }
+
+  class SourceTypeDefinition extends SourceDefinition
+  {
+    SourceTypeDefinition() { AST::classOrStructDefinition(this) }
 
     string getName() { AST::typename(this, result) }
 
