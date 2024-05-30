@@ -27,5 +27,5 @@ runs:
       with:
         name: swift-integration-tests-logs-${{ runner.os }}
         path: |
-          swift/ql/integration-tests/**/db/log
+          swift/ql/integration-tests/**/*db/log
         retention-days: 1

@@ -72,6 +72,9 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this element. */
     string toString();
 
+    /** Gets the location of this call. */
+    Location getLocation();
+
     DataFlowCallable getEnclosingCallable();
 
     /** Gets a best-effort total ordering. */
@@ -81,6 +84,9 @@ signature module InputSig<LocationSig Location> {
   class DataFlowCallable {
     /** Gets a textual representation of this element. */
     string toString();
+
+    /** Gets the location of this callable. */
+    Location getLocation();
 
     /** Gets a best-effort total ordering. */
     int totalorder();
