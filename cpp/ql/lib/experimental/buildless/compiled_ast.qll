@@ -29,7 +29,7 @@ module CompiledAST implements BuildlessASTSig {
 
     Stmt getStmt() { this = TStatement(result.getLocation()) }
 
-    Function getFunction() { result.getLocation() = this.getLocation() }
+    Function getFunction() { this = TDeclaration(result.getLocation()) }
 
     DeclarationEntry getDeclaration() {
       this = TDeclaration(result.getLocation())
@@ -57,11 +57,9 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate functionBody(Node fn, Node body) { body.getStmt() = fn.getFunction().getBlock() }
 
-  predicate functionReturn(Node fn, Node returnType) { 
-    returnType.getVariableDeclaration() = fn.getDeclaration()
-    and
-    fn.getDeclaration().(FunctionDeclarationEntry).getDeclaration().getType() = 
-    returnType.getType()
+  predicate functionReturn(Node fn, Node returnType) {
+    returnType.getVariableDeclaration() = fn.getDeclaration() and
+    fn.getDeclaration().(FunctionDeclarationEntry).getDeclaration().getType() = returnType.getType()
   }
 
   predicate functionName(Node fn, string name) { name = fn.getFunction().getName() }
@@ -142,10 +140,14 @@ module CompiledAST implements BuildlessASTSig {
     decl.getDeclaration() instanceof VariableDeclarationEntry
   }
 
-  predicate variableDeclarationType(Node decl, Node type) {
+  pragma[nomagic]
+  private predicate variableDeclarationType2(Node decl, Node type) {
     decl.getDeclaration() = type.getVariableDeclaration()
-    and
-    pragma[only_bind_into](type.getType()) = pragma[only_bind_into](decl.getDeclaration().getType())
+  }
+
+  predicate variableDeclarationType(Node decl, Node type) {
+    variableDeclarationType2(decl, type) and
+    type.getType() = decl.getDeclaration().getType()
   }
 
   predicate variableDeclarationEntry(Node decl, int index, Node entry) { none() }

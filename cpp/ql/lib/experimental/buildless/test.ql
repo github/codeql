@@ -23,6 +23,5 @@ query predicate naiveCallTargets(TestAST::CallExpr call, TestAST::SourceFunction
     and target.getName() = "max"
 }
 
-
-from TestAST::SourceVariableDeclaration decl
-select decl, decl.getType()
+from TestAST::SourceFunction fn
+select fn, fn.getReturnType(), count(fn.getReturnType()), fn.getReturnType().getAQlClass()
