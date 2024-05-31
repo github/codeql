@@ -58,7 +58,7 @@ runs:
       if: ${{ github.event_name == 'pull_request' }}
       shell: bash
       run: |
-        bazel test --build_tests_only //swift/...
+        bazel test //swift/...
     - name: Evict bazel cache
       if: ${{ github.event_name != 'pull_request' }}
       shell: bash

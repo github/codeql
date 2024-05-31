@@ -10,6 +10,9 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
+# we use transitions that break builds of `...`, so for `test` to work with that we need the following
+test --build_tests_only
+
 # this requires developer mode, but is required to have pack installer functioning
 startup --windows_enable_symlinks
 common --enable_runfiles
