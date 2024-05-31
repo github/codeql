@@ -27,6 +27,8 @@ module Buildless<BuildlessASTSig AST> {
     BlockStmt getBody() { AST::functionBody(this, result) }
 
     SourceParameter getParameter(int i) { AST::functionParameter(this, i, result) }
+
+    SourceType getReturnType() { AST::functionReturn(this, result) }
   }
 
   // A syntax node that declares a variable (including fields and parameters)

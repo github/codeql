@@ -57,7 +57,12 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate functionBody(Node fn, Node body) { body.getStmt() = fn.getFunction().getBlock() }
 
-  predicate functionReturn(Node fn, Node returnType) { none() }
+  predicate functionReturn(Node fn, Node returnType) { 
+    returnType.getVariableDeclaration() = fn.getDeclaration()
+    and
+    fn.getDeclaration().(FunctionDeclarationEntry).getDeclaration().getType() = 
+    returnType.getType()
+  }
 
   predicate functionName(Node fn, string name) { name = fn.getFunction().getName() }
 
