@@ -130,6 +130,21 @@ class TargetApiSpecific extends Callable {
   predicate isRelevant() { relevant(this) }
 }
 
+/**
+ * A class of members that should be considered tainted from a model generation
+ * perspective.
+ */
+private class TaintRelevantMembers extends TaintTracking::TaintedMember {
+  TaintRelevantMembers() {
+    this.isEffectivelyPublic() and
+    this.fromSource() and
+    (this.(Property).getSetter().isEffectivelyPublic() or this instanceof CS::Field) and
+    exists(DataFlow::ParameterNode p | p.getEnclosingCallable() instanceof TargetApiSpecific |
+      this.getDeclaringType() = p.getType()
+    )
+  }
+}
+
 string asPartialModel(TargetApiSpecific api) { result = ExternalFlow::asPartialModel(api.lift()) }
 
 string asPartialNeutralModel(TargetApiSpecific api) { result = ExternalFlow::getSignature(api) }
