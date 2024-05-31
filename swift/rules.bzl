@@ -31,12 +31,15 @@ def _transition_impl(settings, attr):
             "//command_line_option:cxxopt": [
                 "-std=c++20",
             ],
+            "//command_line_option:linkopt": [],
         },
         "windows": {
+            "//command_line_option:copt": [],
             "//command_line_option:cxxopt": [
                 "/std:c++20",
                 "--cxxopt=/Zc:preprocessor",
             ],
+            "//command_line_option:linkopt": [],
         },
     }[attr.os]
 
