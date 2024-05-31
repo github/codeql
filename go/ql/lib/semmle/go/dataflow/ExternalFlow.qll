@@ -264,15 +264,17 @@ private string paramsStringPart(Function f, int i) {
  */
 string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
 
+/**
+ * Find packages which match the `p`, where "$ANYVERSION" is replaced with any
+ * version that has been seen using `package`.
+ */
 bindingset[p]
 private string interpretPackage(string p) {
   exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
     if exists(p.regexpCapture(r, 4))
     then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
-    else result = package(p, "")
+    else result = p
   )
-  or
-  p = "" and result = ""
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
