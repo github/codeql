@@ -430,6 +430,18 @@ public class SimpleTypes
     {
         return i;
     }
+
+    // SPURIOUS-summary=Models;SimpleTypes;false;M5;(System.DateTime);;Argument[0];ReturnValue;taint;df-generated
+    public DateTime M5(DateTime d)
+    {
+        return d;
+    }
+
+    // SPURIOUS-summary=Models;SimpleTypes;false;M6;(System.Type);;Argument[0];ReturnValue;taint;df-generated
+    public Type M6(Type t)
+    {
+        return t;
+    }
 }
 
 // No models as higher order methods are excluded
