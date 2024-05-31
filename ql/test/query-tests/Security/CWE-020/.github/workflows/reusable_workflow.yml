@@ -27,7 +27,7 @@ jobs:
           CONFIG_PATH: ${{ inputs.config-path }}
         run: |
           echo ${{ inputs.config-path }}
-          echo "::set-output name=step-output:: $CONFIG_PATH"
+          echo "::set-output name=step-output::$CONFIG_PATH"
       - name: Get changed files
         id: step2
         uses: tj-actions/changed-files@v40

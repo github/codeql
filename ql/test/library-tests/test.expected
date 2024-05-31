@@ -4,18 +4,18 @@ files
 | .github/workflows/test.yml:0:0:0:0 | .github/workflows/test.yml |
 workflows
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
-| .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | on:  |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 reusableWorkflows
 compositeActions
 jobs
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
-| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
 localJobs
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
-| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
 extJobs
@@ -30,7 +30,17 @@ steps
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step |
 | .github/workflows/multiline.yml:20:9:24:6 | Run Step |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step |
 | .github/workflows/test.yml:11:9:15:6 | Uses Step |
 | .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
 | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
@@ -48,7 +58,17 @@ runSteps
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | ${{ github.event.pull_request.head.ref }} |
 | .github/workflows/test.yml:39:9:40:53 | Run Step: sink | echo ${{needs.job1.outputs.job_output}} |
@@ -64,7 +84,7 @@ runExprs
 | .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | .github/workflows/expression_nodes.yml:19:24:19:55 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:27:20:27:64 | steps.source.outputs.all_changed_files |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:29:15:29:55 | github.event.pull_request.head.ref |
 | .github/workflows/test.yml:39:9:40:53 | Run Step: sink | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
@@ -89,7 +109,27 @@ runStepChildren
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:20:9:24:6 | Run Step | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step | .github/workflows/multiline.yml:34:15:34:23 | heredoc11 |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step | .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step | .github/workflows/multiline.yml:40:15:40:23 | heredoc12 |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step | .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step | .github/workflows/multiline.yml:46:15:46:23 | heredoc21 |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step | .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step | .github/workflows/multiline.yml:52:15:52:23 | heredoc22 |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step | .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step | .github/workflows/multiline.yml:58:15:58:23 | heredoc23 |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step | .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | .github/workflows/multiline.yml:63:15:63:19 | line1 |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | .github/workflows/multiline.yml:66:15:66:24 | multiline1 |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step | .github/workflows/multiline.yml:71:15:71:21 | block11 |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step | .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step | .github/workflows/multiline.yml:78:15:78:21 | block12 |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step | .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step | .github/workflows/multiline.yml:85:15:85:21 | block13 |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:26:13:26:23 | simplesink1 |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:28:13:28:23 | simplesink2 |
@@ -141,37 +181,107 @@ parentNodes
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/multiline.yml:2:3:2:14 | workflow_run | .github/workflows/multiline.yml:2:3:5:18 | workflow_run: |
-| .github/workflows/multiline.yml:2:3:5:18 | workflow_run: | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:2:3:5:18 | workflow_run: | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:1:1:89:29 | on:  |
 | .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:2:3:2:14 | workflow_run |
 | .github/workflows/multiline.yml:3:17:3:22 | Prev | .github/workflows/multiline.yml:2:3:5:18 | workflow_run: |
-| .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:1:1:89:29 | on:  |
 | .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:2:3:2:14 | workflow_run |
 | .github/workflows/multiline.yml:5:9:5:17 | completed | .github/workflows/multiline.yml:2:3:5:18 | workflow_run: |
-| .github/workflows/multiline.yml:9:5:33:14 | Job: Test | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:11:9:15:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:9:5:89:29 | Job: Test | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:9:14:9:26 | ubuntu-latest | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:11:9:15:6 | Run Step |
-| .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:15:14:19:40 | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64)\necho "status<<$EOF" >> $GITHUB_OUTPUT\necho "$(cat status.output.json)" >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:15:9:20:6 | Run Step |
-| .github/workflows/multiline.yml:20:9:24:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:20:9:24:6 | Run Step |
-| .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:24:9:30:6 | Run Step |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
-| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:30:9:34:6 | Run Step |
 | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:34:15:34:23 | heredoc11 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:34:15:34:23 | heredoc11 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:34:15:34:23 | heredoc11 | .github/workflows/multiline.yml:34:9:40:6 | Run Step |
+| .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:34:9:40:6 | Run Step |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:40:15:40:23 | heredoc12 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:40:15:40:23 | heredoc12 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:40:15:40:23 | heredoc12 | .github/workflows/multiline.yml:40:9:46:6 | Run Step |
+| .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:40:9:46:6 | Run Step |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:46:15:46:23 | heredoc21 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:46:15:46:23 | heredoc21 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:46:15:46:23 | heredoc21 | .github/workflows/multiline.yml:46:9:52:6 | Run Step |
+| .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:46:9:52:6 | Run Step |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:52:15:52:23 | heredoc22 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:52:15:52:23 | heredoc22 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:52:15:52:23 | heredoc22 | .github/workflows/multiline.yml:52:9:58:6 | Run Step |
+| .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n | .github/workflows/multiline.yml:52:9:58:6 | Run Step |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:58:15:58:23 | heredoc23 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:58:15:58:23 | heredoc23 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:58:15:58:23 | heredoc23 | .github/workflows/multiline.yml:58:9:63:6 | Run Step |
+| .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n | .github/workflows/multiline.yml:58:9:63:6 | Run Step |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:63:15:63:19 | line1 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:63:15:63:19 | line1 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:63:15:63:19 | line1 | .github/workflows/multiline.yml:63:9:66:6 | Run Step |
+| .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n | .github/workflows/multiline.yml:63:9:66:6 | Run Step |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:66:15:66:24 | multiline1 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:66:15:66:24 | multiline1 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:66:15:66:24 | multiline1 | .github/workflows/multiline.yml:66:9:71:6 | Run Step |
+| .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n | .github/workflows/multiline.yml:66:9:71:6 | Run Step |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:71:15:71:21 | block11 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:71:15:71:21 | block11 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:71:15:71:21 | block11 | .github/workflows/multiline.yml:71:9:78:6 | Run Step |
+| .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:71:9:78:6 | Run Step |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:78:15:78:21 | block12 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:78:15:78:21 | block12 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:78:15:78:21 | block12 | .github/workflows/multiline.yml:78:9:85:6 | Run Step |
+| .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:78:9:85:6 | Run Step |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:85:15:85:21 | block13 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:85:15:85:21 | block13 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:85:15:85:21 | block13 | .github/workflows/multiline.yml:85:9:89:29 | Run Step |
+| .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
+| .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:85:9:89:29 | Run Step |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:5:1:8 | push |
@@ -292,11 +402,11 @@ cfgNodes
 | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
-| .github/workflows/multiline.yml:1:1:33:14 | enter on:  |
-| .github/workflows/multiline.yml:1:1:33:14 | exit on:  |
-| .github/workflows/multiline.yml:1:1:33:14 | exit on:  (normal) |
-| .github/workflows/multiline.yml:1:1:33:14 | on:  |
-| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:1:1:89:29 | enter on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | exit on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | exit on:  (normal) |
+| .github/workflows/multiline.yml:1:1:89:29 | on:  |
+| .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step |
 | .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step |
@@ -305,9 +415,29 @@ cfgNodes
 | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step |
 | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step |
 | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
 | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step |
+| .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step |
+| .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step |
+| .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step |
+| .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step |
+| .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step |
+| .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step |
+| .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step |
+| .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step |
+| .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step |
+| .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/test.yml:1:1:40:53 | enter on: push |
 | .github/workflows/test.yml:1:1:40:53 | exit on: push |
 | .github/workflows/test.yml:1:1:40:53 | exit on: push (normal) |
@@ -354,7 +484,7 @@ dfNodes
 | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body |
-| .github/workflows/multiline.yml:9:5:33:14 | Job: Test |
+| .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step |
 | .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step |
@@ -363,9 +493,29 @@ dfNodes
 | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step |
 | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step |
 | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n |
 | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step |
+| .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step |
+| .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step |
+| .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step |
+| .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step |
+| .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step |
+| .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step |
+| .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step |
+| .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step |
+| .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step |
+| .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node |
 | .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value |
@@ -413,7 +563,7 @@ nodeLocations
 | .github/workflows/expression_nodes.yml:20:14:21:46 | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' | .github/workflows/expression_nodes.yml:20:14:21:46 | .github/workflows/expression_nodes.yml@20:14:21:46 |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.comment.body | .github/workflows/expression_nodes.yml:20:14:21:46 | .github/workflows/expression_nodes.yml@20:14:21:46 |
 | .github/workflows/expression_nodes.yml:20:14:21:46 | github.event.issue.body | .github/workflows/expression_nodes.yml:20:14:21:46 | .github/workflows/expression_nodes.yml@20:14:21:46 |
-| .github/workflows/multiline.yml:9:5:33:14 | Job: Test | .github/workflows/multiline.yml:9:5:33:14 | .github/workflows/multiline.yml@9:5:33:14 |
+| .github/workflows/multiline.yml:9:5:89:29 | Job: Test | .github/workflows/multiline.yml:9:5:89:29 | .github/workflows/multiline.yml@9:5:89:29 |
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step | .github/workflows/multiline.yml:11:9:15:6 | .github/workflows/multiline.yml@11:9:15:6 |
 | .github/workflows/multiline.yml:11:14:14:48 | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT\necho -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT\necho "CHANGELOGEOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:11:14:14:48 | .github/workflows/multiline.yml@11:14:14:48 |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | .github/workflows/multiline.yml:15:9:20:6 | .github/workflows/multiline.yml@15:9:20:6 |
@@ -422,9 +572,29 @@ nodeLocations
 | .github/workflows/multiline.yml:20:14:23:40 | echo "response<<$EOF" >> $GITHUB_OUTPUT\necho $output >> $GITHUB_OUTPUT\necho "$EOF" >> $GITHUB_OUTPUT\n | .github/workflows/multiline.yml:20:14:23:40 | .github/workflows/multiline.yml@20:14:23:40 |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | .github/workflows/multiline.yml:24:9:30:6 | .github/workflows/multiline.yml@24:9:30:6 |
 | .github/workflows/multiline.yml:24:14:29:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:24:14:29:29 | .github/workflows/multiline.yml@24:14:29:29 |
-| .github/workflows/multiline.yml:30:9:33:14 | Run Step | .github/workflows/multiline.yml:30:9:33:14 | .github/workflows/multiline.yml@30:9:33:14 |
+| .github/workflows/multiline.yml:30:9:34:6 | Run Step | .github/workflows/multiline.yml:30:9:34:6 | .github/workflows/multiline.yml@30:9:34:6 |
 | .github/workflows/multiline.yml:30:14:33:14 | cat <<-"EOF" > event.json\n  ${{ toJson(github.event) }}\nEOF\n | .github/workflows/multiline.yml:30:14:33:14 | .github/workflows/multiline.yml@30:14:33:14 |
 | .github/workflows/multiline.yml:32:13:32:39 | toJson(github.event) | .github/workflows/multiline.yml:32:13:32:39 | .github/workflows/multiline.yml@32:13:32:39 |
+| .github/workflows/multiline.yml:34:9:40:6 | Run Step | .github/workflows/multiline.yml:34:9:40:6 | .github/workflows/multiline.yml@34:9:40:6 |
+| .github/workflows/multiline.yml:35:14:39:14 | cat >> $GITHUB_ENV << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:35:14:39:14 | .github/workflows/multiline.yml@35:14:39:14 |
+| .github/workflows/multiline.yml:40:9:46:6 | Run Step | .github/workflows/multiline.yml:40:9:46:6 | .github/workflows/multiline.yml@40:9:46:6 |
+| .github/workflows/multiline.yml:41:14:45:14 | cat > issue.txt << EOL\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:41:14:45:14 | .github/workflows/multiline.yml@41:14:45:14 |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step | .github/workflows/multiline.yml:46:9:52:6 | .github/workflows/multiline.yml@46:9:52:6 |
+| .github/workflows/multiline.yml:47:14:51:14 | cat << EOL >> $GITHUB_ENV\n${ISSUE_BODY}\nFOO\nEOL\n | .github/workflows/multiline.yml:47:14:51:14 | .github/workflows/multiline.yml@47:14:51:14 |
+| .github/workflows/multiline.yml:52:9:58:6 | Run Step | .github/workflows/multiline.yml:52:9:58:6 | .github/workflows/multiline.yml@52:9:58:6 |
+| .github/workflows/multiline.yml:53:14:57:14 | cat <<EOF \|  sed 's/l/e/g' > file.txt\nHello\nWorld\nEOF\n | .github/workflows/multiline.yml:53:14:57:14 | .github/workflows/multiline.yml@53:14:57:14 |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step | .github/workflows/multiline.yml:58:9:63:6 | .github/workflows/multiline.yml@58:9:63:6 |
+| .github/workflows/multiline.yml:59:14:62:14 | cat <<-EOF >> "$GITHUB_ENV"\necho "FOO=$TITLE"\nEOF\n | .github/workflows/multiline.yml:59:14:62:14 | .github/workflows/multiline.yml@59:14:62:14 |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | .github/workflows/multiline.yml:63:9:66:6 | .github/workflows/multiline.yml@63:9:66:6 |
+| .github/workflows/multiline.yml:64:14:65:136 | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV\n | .github/workflows/multiline.yml:64:14:65:136 | .github/workflows/multiline.yml@64:14:65:136 |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | .github/workflows/multiline.yml:66:9:71:6 | .github/workflows/multiline.yml@66:9:71:6 |
+| .github/workflows/multiline.yml:67:14:70:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n | .github/workflows/multiline.yml:67:14:70:36 | .github/workflows/multiline.yml@67:14:70:36 |
+| .github/workflows/multiline.yml:71:9:78:6 | Run Step | .github/workflows/multiline.yml:71:9:78:6 | .github/workflows/multiline.yml@71:9:78:6 |
+| .github/workflows/multiline.yml:72:14:77:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:72:14:77:29 | .github/workflows/multiline.yml@72:14:77:29 |
+| .github/workflows/multiline.yml:78:9:85:6 | Run Step | .github/workflows/multiline.yml:78:9:85:6 | .github/workflows/multiline.yml@78:9:85:6 |
+| .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:79:14:84:29 | .github/workflows/multiline.yml@79:14:84:29 |
+| .github/workflows/multiline.yml:85:9:89:29 | Run Step | .github/workflows/multiline.yml:85:9:89:29 | .github/workflows/multiline.yml@85:9:89:29 |
+| .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:86:14:89:29 | .github/workflows/multiline.yml@86:14:89:29 |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 | .github/workflows/test.yml:5:5:31:2 | .github/workflows/test.yml@5:5:31:2 |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node | .github/workflows/test.yml:8:7:10:4 | .github/workflows/test.yml@8:7:10:4 |
 | .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value | .github/workflows/test.yml:8:20:8:50 | .github/workflows/test.yml@8:20:8:50 |
@@ -444,7 +614,7 @@ nodeLocations
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output | .github/workflows/test.yml:40:20:40:53 | .github/workflows/test.yml@40:20:40:53 |
 scopes
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
-| .github/workflows/multiline.yml:1:1:33:14 | on:  |
+| .github/workflows/multiline.yml:1:1:89:29 | on:  |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 sources
 | ahmadnassri/action-changed-files | * | output.files | filename | manual |
@@ -575,20 +745,59 @@ testNormalizeExpr
 | github.event.pull_request.user["login"] | github.event.pull_request.user.login |
 | github.event.pull_request.user['login'] | github.event.pull_request.user.login |
 | github.event.pull_request['user']['login'] | github.event.pull_request.user.login |
+writeToGitHubEnv1
+| JSON_RESPONSE<<EOF\n  ls \| grep -E "*.(tar.gz\|zip)$"\nEOF |
 writeToGitHubEnv
-| id1 | $(<pr-id1.txt) |
-| id2 | $(<pr-id2.txt) |
-| id3 | $(<pr-id3.txt) |
-| sha1 | $(<test-results1/sha-number) |
-| sha2 | $(<test-results2/sha-number) |
-| sha3 | $(<test-results3/sha-number) |
+| PACKAGES_FILE_LIST | $(ls \| grep -E "*.(tar.gz\|zip)$" >> "${GITHUB_ENV}"\nls \| grep -E "*.(txt\|md)$" >> "${GITHUB_ENV}) | PACKAGES_FILE_LIST<<EOF\n$(ls \| grep -E "*.(tar.gz\|zip)$" >> "${GITHUB_ENV}"\nls \| grep -E "*.(txt\|md)$" >> "${GITHUB_ENV})\nEOF |
+| VAR0 | $TITLE | VAR0<<EOF\n$TITLE\nEOF |
+| VAR1 | $TITLE | VAR1<<EOF\n$TITLE\nEOF |
+| VAR2 | $ISSUE | VAR2<<EOF\n$ISSUE\nEOF |
+| VAR3 | $(echo "$TITLE" >> $GITHUB_ENV) | VAR3<<EOF\n$(echo "$TITLE" >> $GITHUB_ENV)\nEOF |
+| VAR4 | ${ISSUE_BODY1} | VAR4=${ISSUE_BODY1} |
+| VAR5 | Hello\nWorld | VAR5<<DELIM\nHello\nWorld\nDELIM |
+| VAR6 | ${ISSUE_BODY3} | VAR6=${ISSUE_BODY3} |
+| VAR7 | Hello\nWorld | VAR7<<DELIM\nHello\nWorld\nDELIM |
+| VAR8 | $(echo "FOO") | VAR8=$(echo "FOO")\nVAR9<<DELIM\nHello\nWorld\nDELIM |
+| VAR9 | Hello\nWorld | VAR8=$(echo "FOO")\nVAR9<<DELIM\nHello\nWorld\nDELIM |
+| VAR10 | $(<pr-id1.txt) | VAR10=$(<pr-id1.txt) |
+| VAR11 | $(<pr-id2.txt) | VAR11=$(<pr-id2.txt) |
+| VAR12 | $(<pr-id3.txt) | VAR12=$(<pr-id3.txt) |
+| VAR13 | $(<test-results1/sha-number) | VAR13=$(<test-results1/sha-number) |
+| VAR14 | $(<test-results2/sha-number) | VAR14=$(<test-results2/sha-number) |
+| VAR15 | $(<test-results3/sha-number) | VAR15=$(<test-results3/sha-number) |
+| VAR16 | $(cat issue.txt \| sed 's/\\r/\\n/g' \| grep -ioE '\\s*[a-z0-9_-]+/[a-z0-9_-]+\\s*$' \| tr -d ' ') | VAR16=$(cat issue.txt \| sed 's/\\r/\\n/g' \| grep -ioE '\\s*[a-z0-9_-]+/[a-z0-9_-]+\\s*$' \| tr -d ' ') |
+| VAR22 | ls \| grep -E "*.(tar.gz\|zip)$ | VAR22<<EOF\n  ls \| grep -E "*.(tar.gz\|zip)$"\nEOF |
 writeToGitHubOutput
-| id1 | $(<pr-id1.txt) |
-| id2 | $(<pr-id2.txt) |
-| id3 | $(<pr-id3.txt) |
-| sha1 | $(<test-results1/sha-number) |
-| sha2 | $(<test-results2/sha-number) |
-| sha3 | $(<test-results3/sha-number) |
-| sha4 | $(<test-results4/sha-number) |
-| sha5 | $(<test-results5/sha-number) |
-| sha6 | $(<test-results6/sha-number) |
+| VAR1 | $(<pr-id1.txt) | VAR1=$(<pr-id1.txt) |
+| VAR2 | $(<pr-id2.txt) | VAR2=$(<pr-id2.txt) |
+| VAR3 | $(<pr-id3.txt) | VAR3=$(<pr-id3.txt) |
+| VAR4 | $(<test-results1/sha-number) | VAR4=$(<test-results1/sha-number) |
+| VAR5 | $(<test-results2/sha-number) | VAR5=$(<test-results2/sha-number) |
+| VAR6 | $(<test-results3/sha-number) | VAR6=$(<test-results3/sha-number) |
+| VAR7 | $(<test-results4/sha-number) | VAR7=$(<test-results4/sha-number) |
+| VAR8 | $(<test-results5/sha-number) | VAR8=$(<test-results5/sha-number) |
+| VAR9 | $(<test-results6/sha-number) | VAR9=$(<test-results6/sha-number) |
+isBashParameterExpansion
+| parameter1 |  |  |
+| parameter2 |  |  |
+| parameter3 | ! |  |
+| parameter4 | # |  |
+| parameter5 | :- | value |
+| parameter6 | : | =value |
+| parameter7 | :+ | value |
+| parameter8 | : | ?value |
+| parameter9 | : | =default value |
+| parameter10 | ## | */ |
+| parameter11 | /# | pattern/string |
+| parameter12 | /% | pattern/string |
+| parameter13 | , | pattern |
+| parameter14 | ,, | pattern |
+| parameter15 | ^ | pattern |
+| parameter16 | ^^ | pattern |
+| parameter17 | : | start |
+| parameter18 | # | pattern |
+| parameter19 | ## | pattern |
+| parameter20 | % | pattern |
+| parameter21 | %% | pattern |
+| parameter22 | / | pattern/string |
+| parameter23 | // | pattern/string |

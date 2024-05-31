@@ -32,15 +32,20 @@ class AdditionalTaintStep extends Unit {
  *      echo "foo=$(echo $BODY)" >> $GITHUB_ENV
  */
 predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Run run, string varName, string value |
-    run.getInScopeEnvVarExpr(varName) = pred.asExpr() and
-    (
-      writeToGitHubEnv(run, _, value) or
-      writeToGitHubOutput(run, _, value) or
-      writeToGitHubPath(run, value)
-    ) and
-    value.matches("%$" + ["", "{", "ENV{"] + varName + "%") and
+  exists(Run run, string var_name, string content, string value |
+    run.getInScopeEnvVarExpr(var_name) = pred.asExpr() and
     succ.asExpr() = run.getScriptScalar()
+  |
+    (
+      writeToGitHubEnv(run, content) or
+      writeToGitHubOutput(run, content)
+    ) and
+    extractVariableAndValue(content, _, value) and
+    value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+    or
+    writeToGitHubPath(run, content) and
+    value = content and
+    value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
   )
 }
 
@@ -55,25 +60,28 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
  *      echo "::set-output name=foo::$BODY"
  *      echo "foo=$(echo $BODY)" >> $GITHUB_OUTPUT
  *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
+ *      echo "::set-output name=step-output::$BODY"
  */
 predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string varName, string key, string value |
+  exists(Run run, string var_name, string content, string key, string value |
+    writeToGitHubOutput(run, content) and
+    extractVariableAndValue(content, key, value) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getInScopeEnvVarExpr(varName) and
+    pred.asExpr() = run.getInScopeEnvVarExpr(var_name) and
     succ.asExpr() = run and
-    writeToGitHubOutput(run, key, value) and
-    value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
+    value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
   )
 }
 
 predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string varName, string key, string value |
+  exists(Run run, string var_name, string content, string key, string value |
+    writeToGitHubEnv(run, content) and
+    extractVariableAndValue(content, key, value) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getInScopeEnvVarExpr(varName) and
+    pred.asExpr() = run.getInScopeEnvVarExpr(var_name) and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
     succ.asExpr() = run.getEnclosingJob() and
-    writeToGitHubEnv(run, key, value) and
-    value.matches("%$" + ["", "{", "ENV{"] + varName + "%")
+    isBashParameterExpansion(value, var_name, _, _)
   )
 }
 
@@ -83,25 +91,27 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
  * - run: echo "::set-output name=id::$(<pr-id.txt)"
  */
 predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string key, string value, UntrustedArtifactDownloadStep download |
+  exists(Run run, string content, string key, string value, UntrustedArtifactDownloadStep download |
+    writeToGitHubOutput(run, content) and
+    extractVariableAndValue(content, key, value) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
     succ.asExpr() = run and
-    writeToGitHubOutput(run, key, value) and
     value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
   )
 }
 
 predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string key, string value, UntrustedArtifactDownloadStep download |
+  exists(Run run, string content, string key, string value, UntrustedArtifactDownloadStep download |
+    writeToGitHubEnv(run, content) and
+    extractVariableAndValue(content, key, value) and
+    value.regexpMatch([".*\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\).*"]) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
-    succ.asExpr() = run.getEnclosingJob() and
-    writeToGitHubEnv(run, key, value) and
-    value.regexpMatch([".*\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\).*"])
+    succ.asExpr() = run.getEnclosingJob()
   )
 }
 

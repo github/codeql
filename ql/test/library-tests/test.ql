@@ -72,34 +72,84 @@ query string testNormalizeExpr(string s) {
   result = normalizeExpr(s)
 }
 
-query predicate writeToGitHubEnv(string key, string value) {
+query predicate writeToGitHubEnv1(string content) {
   exists(string t |
     t =
       [
-        "echo \"::set-env name=id1::$(<pr-id1.txt)\"", "echo '::set-env name=id2::$(<pr-id2.txt)'",
-        "echo ::set-env name=id3::$(<pr-id3.txt)",
-        "echo \"sha1=$(<test-results1/sha-number)\" >> $GITHUB_ENV",
-        "echo 'sha2=$(<test-results2/sha-number)' >> $GITHUB_ENV",
-        "echo sha3=$(<test-results3/sha-number) >> $GITHUB_ENV",
+        "FOO\n{\n  echo 'JSON_RESPONSE<<EOF'\n  ls | grep -E \"*.(tar.gz|zip)$\"\n  echo EOF\n  } >> \"$GITHUB_ENV\"\nBAR"
+        //"FOO\n{\n  echo 'JSON_RESPONSE<<EOF'\n  echo \"$TITLE\"\n  echo EOF\n} >> \"$GITHUB_ENV\"\nBAR",
+        //"FOO\necho \"VAR3<<EOF\" >> $GITHUB_ENV\necho \"$TITLE\" >> $GITHUB_ENV\necho \"EOF\" >> $GITHUB_ENV\nBAR",
       ] and
-    extractLineAssignment(t, "ENV", key, value)
+    //linesFileWrite(t, _, "$GITHUB_ENV", content, _)
+    blockFileWrite(t, _, "$GITHUB_ENV", content, _)
+    //extractFileWrite(t, "GITHUB_ENV", content)
   )
 }
 
-query predicate writeToGitHubOutput(string key, string value) {
+query predicate writeToGitHubEnv(string key, string value, string content) {
   exists(string t |
     t =
       [
-        "echo \"::set-output name=id1::$(<pr-id1.txt)\"",
-        "echo '::set-output name=id2::$(<pr-id2.txt)'",
-        "echo ::set-output name=id3::$(<pr-id3.txt)",
-        "echo \"sha1=$(<test-results1/sha-number)\" >> $GITHUB_OUTPUT",
-        "echo 'sha2=$(<test-results2/sha-number)' >> $GITHUB_OUTPUT",
-        "echo sha3=$(<test-results3/sha-number) >> $GITHUB_OUTPUT",
-        "echo sha4=$(<test-results4/sha-number) >> \"$GITHUB_OUTPUT\"",
-        "echo sha5=$(<test-results5/sha-number) >> ${GITHUB_OUTPUT}",
-        "echo sha6=$(<test-results6/sha-number) >> \"${GITHUB_OUTPUT}\"",
+        // block
+        "{\n  echo 'VAR0<<EOF'\n  echo \"$TITLE\"\n  echo EOF\n} >> \"$GITHUB_ENV\"\n",
+        "{\necho 'VAR1<<EOF'\necho \"$TITLE\"\necho EOF\n} >> \"$GITHUB_ENV\"",
+        "{\necho 'VAR2<<EOF'\necho '$ISSUE'\necho 'EOF'\n} >> \"$GITHUB_ENV\"",
+        "FOO\n{\n  echo 'VAR22<<EOF'\n  ls | grep -E \"*.(tar.gz|zip)$\"\n  echo EOF\n  } >> \"$GITHUB_ENV\"\nBAR",
+        // multiline
+        "FOO\necho \"VAR3<<EOF\" >> $GITHUB_ENV\necho \"$TITLE\" >> $GITHUB_ENV\necho \"EOF\" >> $GITHUB_ENV\nBAR",
+        "echo \"PACKAGES_FILE_LIST<<EOF\" >> \"${GITHUB_ENV}\"\nls | grep -E \"*.(tar.gz|zip)$\" >> \"${GITHUB_ENV}\"\nls | grep -E \"*.(txt|md)$\" >> \"${GITHUB_ENV}\"\necho \"EOF\" >> \"${GITHUB_ENV}\"",
+        // heredoc 1
+        "cat >> $GITHUB_ENV << EOL\nVAR4=${ISSUE_BODY1}\nEOL",
+        "cat > $GITHUB_ENV << EOL\nVAR5<<DELIM\nHello\nWorld\nDELIM\nEOL",
+        // heredoc 2
+        "cat << EOL >> $GITHUB_ENV\nVAR6=${ISSUE_BODY3}\nEOL\n",
+        "cat <<EOF |  sed 's/l/e/g' > $GITHUB_ENV\nVAR7<<DELIM\nHello\nWorld\nDELIM\nEOF\n",
+        "\ncat <<-EOF >> \"$GITHUB_ENV\"\nVAR8=$(echo \"FOO\")\nVAR9<<DELIM\nHello\nWorld\nDELIM\nEOF",
+        // single line
+        "\necho \"::set-env name=VAR10::$(<pr-id1.txt)\"",
+        "echo '::set-env name=VAR11::$(<pr-id2.txt)'", "echo ::set-env name=VAR12::$(<pr-id3.txt)",
+        "echo \"VAR13=$(<test-results1/sha-number)\" >> $GITHUB_ENV",
+        "echo 'VAR14=$(<test-results2/sha-number)' >> $GITHUB_ENV",
+        "echo VAR15=$(<test-results3/sha-number) >> $GITHUB_ENV",
+        "echo VAR16=$(cat issue.txt | sed 's/\\r/\\n/g' | grep -ioE '\\s*[a-z0-9_-]+/[a-z0-9_-]+\\s*$' | tr -d ' ') >> $GITHUB_ENV",
       ] and
-    extractLineAssignment(t, "OUTPUT", key, value)
+    extractFileWrite(t, "GITHUB_ENV", content) and
+    extractVariableAndValue(content, key, value)
+  )
+}
+
+query predicate writeToGitHubOutput(string key, string value, string content) {
+  exists(string t |
+    t =
+      [
+        "echo \"::set-output name=VAR1::$(<pr-id1.txt)\"",
+        "echo '::set-output name=VAR2::$(<pr-id2.txt)'",
+        "echo ::set-output name=VAR3::$(<pr-id3.txt)",
+        "echo \"VAR4=$(<test-results1/sha-number)\" >> $GITHUB_OUTPUT",
+        "echo 'VAR5=$(<test-results2/sha-number)' >> $GITHUB_OUTPUT",
+        "echo VAR6=$(<test-results3/sha-number) >> $GITHUB_OUTPUT",
+        "echo VAR7=$(<test-results4/sha-number) >> \"$GITHUB_OUTPUT\"",
+        "echo VAR8=$(<test-results5/sha-number) >> ${GITHUB_OUTPUT}",
+        "echo VAR9=$(<test-results6/sha-number) >> \"${GITHUB_OUTPUT}\"",
+      ] and
+    extractFileWrite(t, "GITHUB_OUTPUT", content) and
+    extractVariableAndValue(content, key, value)
+  )
+}
+
+query predicate isBashParameterExpansion(string parameter, string operator, string params) {
+  exists(string test |
+    test =
+      [
+        "$parameter1", "${parameter2}", "${!parameter3}", "${#parameter4}", "${parameter5:-value}",
+        "${parameter6:=value}", "${parameter7:+value}", "${parameter8:?value}",
+        "${parameter9:=default value}", "${parameter10##*/}", "${parameter11/#pattern/string}",
+        "${parameter12/%pattern/string}", "${parameter13,pattern}", "${parameter14,,pattern}",
+        "${parameter15^pattern}", "${parameter16^^pattern}", "${parameter17:start}",
+        "${parameter18#pattern}", "${parameter19##pattern}", "${parameter20%pattern}",
+        "${parameter21%%pattern}", "${parameter22/pattern/string}",
+        "${parameter23//pattern/string}",
+      ] and
+    isBashParameterExpansion(test, parameter, operator, params)
   )
 }

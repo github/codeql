@@ -5,7 +5,10 @@ abstract class PoisonableStep extends Step { }
 // source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
 private string dangerousActions() {
   result =
-    ["pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action", "ruby/setup-ruby", "actions/jekyll-build-pages"]
+    [
+      "pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action",
+      "ruby/setup-ruby", "actions/jekyll-build-pages"
+    ]
 }
 
 class DangerousActionUsesStep extends PoisonableStep, UsesStep {
@@ -70,14 +73,14 @@ class LocalActionUsesStep extends PoisonableStep, UsesStep {
 
 class EnvVarInjectionRunStep extends PoisonableStep, Run {
   EnvVarInjectionRunStep() {
-    exists(string value |
+    exists(string content, string value |
       // Heuristic:
       // Run step with env var definition based on file content.
       // eg: `echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV`
       // eg: `echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV`
-      writeToGitHubEnv(this, _, value) and
-      // TODO: add support for other commands like `<`, `jq`, ...
-      value.regexpMatch(["\\$\\(", "`"] + ["ls\\s+", "cat\\s+", "<"] + ".*" + ["`", "\\)"])
+      writeToGitHubEnv(this, content) and
+      extractVariableAndValue(content, _, value) and
+      value.matches("%" + ["ls ", "cat ", "jq ", "$(<"] + "%")
     )
   }
 }
