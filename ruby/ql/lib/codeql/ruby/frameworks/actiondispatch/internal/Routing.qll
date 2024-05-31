@@ -340,20 +340,20 @@ module Routing {
      */
     string getAPrimaryQlClass() { result = "RouteImpl" }
 
-    MethodCall method;
+    MethodCall methodCall;
 
     /** Gets a string representation of this route. */
-    string toString() { result = method.toString() }
+    string toString() { result = methodCall.toString() }
 
     /**
      * Gets the location of the method call that defines this route.
      */
-    Location getLocation() { result = method.getLocation() }
+    Location getLocation() { result = methodCall.getLocation() }
 
     /**
      * Gets the method call that defines this route.
      */
-    MethodCall getDefiningMethodCall() { result = method }
+    MethodCall getDefiningMethodCall() { result = methodCall }
 
     /**
      * Get the last component of the path. For example, in
@@ -473,20 +473,20 @@ module Routing {
   private class ExplicitRoute extends RouteImpl, TExplicitRoute {
     RouteBlock parentBlock;
 
-    ExplicitRoute() { this = TExplicitRoute(parentBlock, method) }
+    ExplicitRoute() { this = TExplicitRoute(parentBlock, methodCall) }
 
     override string getAPrimaryQlClass() { result = "ExplicitRoute" }
 
     override RouteBlock getParentBlock() { result = parentBlock }
 
     override string getLastPathComponent() {
-      method.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getLastControllerComponent() {
-      method.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result)
       or
-      not exists(method.getKeywordArgument("controller")) and
+      not exists(methodCall.getKeywordArgument("controller")) and
       (
         result = extractController(this.getActionString())
         or
@@ -508,17 +508,17 @@ module Routing {
     }
 
     private string getActionString() {
-      method.getKeywordArgument("to").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("to").getConstantValue().isStringlikeValue(result)
       or
-      method.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
+      methodCall.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
       result = "<redirect>#<redirect>"
     }
 
     override string getAction() {
       // get "/photos", action: "index"
-      method.getKeywordArgument("action").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("action").getConstantValue().isStringlikeValue(result)
       or
-      not exists(method.getKeywordArgument("action")) and
+      not exists(methodCall.getKeywordArgument("action")) and
       (
         // get "/photos", to: "photos#index"
         // get "/photos", to: redirect("some_url")
@@ -531,11 +531,11 @@ module Routing {
         or
         // get :some_action
         not exists(this.getActionString()) and
-        method.getArgument(0).getConstantValue().isStringlikeValue(result)
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
       )
     }
 
-    override string getHttpMethod() { result = method.getMethodName().toString() }
+    override string getHttpMethod() { result = methodCall.getMethodName().toString() }
   }
 
   /**
@@ -577,8 +577,8 @@ module Routing {
 
     ResourcesRoute() {
       exists(string resource |
-        this = TResourcesRoute(parent, method, action) and
-        method.getArgument(0).getConstantValue().isStringlikeValue(resource) and
+        this = TResourcesRoute(parent, methodCall, action) and
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(resource) and
         isDefaultResourceRoute(resource, httpMethod, pathComponent, action)
       )
     }
@@ -590,7 +590,7 @@ module Routing {
     override string getLastPathComponent() { result = pathComponent }
 
     override string getLastControllerComponent() {
-      method.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getAction() { result = action }
@@ -615,8 +615,8 @@ module Routing {
 
     SingularResourceRoute() {
       exists(string resource |
-        this = TResourceRoute(parent, method, action) and
-        method.getArgument(0).getConstantValue().isStringlikeValue(resource) and
+        this = TResourceRoute(parent, methodCall, action) and
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(resource) and
         isDefaultSingularResourceRoute(resource, httpMethod, pathComponent, action)
       )
     }
@@ -628,7 +628,7 @@ module Routing {
     override string getLastPathComponent() { result = pathComponent }
 
     override string getLastControllerComponent() {
-      method.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getAction() { result = action }
@@ -652,24 +652,27 @@ module Routing {
   private class MatchRoute extends RouteImpl, TMatchRoute {
     private RouteBlock parent;
 
-    MatchRoute() { this = TMatchRoute(parent, method) }
+    MatchRoute() { this = TMatchRoute(parent, methodCall) }
 
     override string getAPrimaryQlClass() { result = "MatchRoute" }
 
     override RouteBlock getParentBlock() { result = parent }
 
     override string getLastPathComponent() {
-      [method.getArgument(0), method.getArgument(0).(Pair).getKey()]
+      [methodCall.getArgument(0), methodCall.getArgument(0).(Pair).getKey()]
           .getConstantValue()
           .isStringlikeValue(result)
     }
 
     override string getLastControllerComponent() {
       result =
-        extractController(method.getKeywordArgument("to").getConstantValue().getStringlikeValue()) or
-      method.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result) or
+        extractController(methodCall
+              .getKeywordArgument("to")
+              .getConstantValue()
+              .getStringlikeValue()) or
+      methodCall.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result) or
       result =
-        extractController(method
+        extractController(methodCall
               .getArgument(0)
               .(Pair)
               .getValue()
@@ -679,7 +682,7 @@ module Routing {
 
     override string getHttpMethod() {
       exists(string via |
-        method.getKeywordArgument("via").getConstantValue().isStringlikeValue(via)
+        methodCall.getKeywordArgument("via").getConstantValue().isStringlikeValue(via)
       |
         via = "all" and result = anyHttpMethod()
         or
@@ -687,7 +690,7 @@ module Routing {
       )
       or
       result =
-        method
+        methodCall
             .getKeywordArgument("via")
             .(ArrayLiteral)
             .getElement(_)
@@ -697,10 +700,10 @@ module Routing {
 
     override string getAction() {
       result =
-        extractAction(method.getKeywordArgument("to").getConstantValue().getStringlikeValue()) or
-      method.getKeywordArgument("action").getConstantValue().isStringlikeValue(result) or
+        extractAction(methodCall.getKeywordArgument("to").getConstantValue().getStringlikeValue()) or
+      methodCall.getKeywordArgument("action").getConstantValue().isStringlikeValue(result) or
       result =
-        extractAction(method
+        extractAction(methodCall
               .getArgument(0)
               .(Pair)
               .getValue()
