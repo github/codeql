@@ -72,6 +72,7 @@ def codeql_pkg_files(
 
 def _extract_pkg_filegroup_impl(ctx):
     src = ctx.attr.src[PackageFilegroupInfo]
+    arch_overrides = ctx.attr.arch_overrides
     platform = _detect_platform(ctx)
 
     if src.pkg_dirs or src.pkg_symlinks:
@@ -82,8 +83,11 @@ def _extract_pkg_filegroup_impl(ctx):
         dest_src_map = {}
         for dest, file in pfi.dest_src_map.items():
             file_kind, expanded_dest = _expand_path(dest, platform)
+            if file_kind == "generic" and dest in arch_overrides:
+                file_kind = "arch"
             if file_kind == ctx.attr.kind:
                 dest_src_map[expanded_dest] = file
+
         if dest_src_map:
             pkg_files.append((PackageFilesInfo(dest_src_map = dest_src_map, attributes = pfi.attributes), origin))
 
@@ -101,12 +105,14 @@ _extract_pkg_filegroup = rule(
         destination paths to the relevant codeql platform (linux64, win64 or osx64).
         The distinction between generic and arch contents is given on a per-file basis depending on the install path
         containing {CODEQL_PLATFORM}, which will typically have been added by a `prefix` attribute to a `pkg_*` rule.
+        Files that are arch-specific, but outside of the `CODEQL_PLATFORM` path can be specified in `arch_overrides`.
         No `pkg_dirs` or `pkg_symlink` must have been used for assembling the source mapping information: we could
         easily add support for that, but we don't require it for now.
     """,
     attrs = {
         "src": attr.label(providers = [PackageFilegroupInfo, DefaultInfo]),
         "kind": attr.string(doc = "What part to extract", values = ["generic", "arch"]),
+        "arch_overrides": attr.string_list(doc = "A list of files that should be included in the arch package regardless of the path"),
     } | OS_DETECTION_ATTRS,
 )
 
@@ -253,21 +259,26 @@ def codeql_pack(
         visibility = None,
         install_dest = "extractor-pack",
         compression_level = None,
+        arch_overrides = None,
+        zip_prefix = None,
         **kwargs):
     """
     Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
-    `zips` is a map from prefixes to `.zip` files to import.
+    `zips` is a map from `.zip` files to prefixes to import.
     * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
-      prefixed with `name`
+      prefixed with `zip_prefix`
     * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
-      arch-specific bits, prefixed with `name`
+      arch-specific bits, prefixed with `zip_prefix`
     * defines a runnable `<name>-installer` target that will install the pack in `install_dest`, relative to where the
       rule is used. The install destination can be overridden appending `-- --destdir=...` to the `bazel run`
-      invocation. This installation _does not_ prefix the contents with `name`.
+      invocation. This installation _does not_ prefix the contents with `zip_prefix`.
+    The prefix for the zip files can be set with `zip_prefix`, it is `name` by default.
 
     The distinction between arch-specific and generic contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
     be replaced by the appropriate platform (`linux64`, `win64` or `osx64`).
+    Specific file paths can be placed in the arch-specific package by adding them to `arch_overrides`, even if their
+    path doesn't contain the `CODEQL_PLATFORM` placeholder.
 
     `compression_level` can be used to tweak the compression level used when creating archives. Consider that this
     does not affect the contents of `zips`, only `srcs`.
@@ -275,6 +286,8 @@ def codeql_pack(
     internal = _make_internal(name)
     zip_filename = zip_filename or name
     zips = zips or {}
+    if zip_prefix == None:
+        zip_prefix = name
     pkg_filegroup(
         name = internal("all"),
         srcs = srcs,
@@ -292,6 +305,7 @@ def codeql_pack(
             name = internal(kind),
             src = internal("all"),
             kind = kind,
+            arch_overrides = arch_overrides,
             visibility = ["//visibility:private"],
         )
         if zips:
@@ -311,7 +325,7 @@ def codeql_pack(
                 name = internal(kind, "zip"),
                 srcs = [internal(kind, "zip-base"), internal(kind, "zip-info")],
                 out = _get_zip_filename(name, kind),
-                prefix = name,
+                prefix = zip_prefix,
                 visibility = visibility,
             )
         else:
@@ -319,7 +333,7 @@ def codeql_pack(
                 name = internal(kind, "zip"),
                 srcs = [internal(kind)],
                 visibility = visibility,
-                package_dir = name,
+                package_dir = zip_prefix,
                 package_file_name = _get_zip_filename(name, kind),
                 compression_level = compression_level,
             )
