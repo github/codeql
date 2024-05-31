@@ -4,7 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.ComponentModel.DataAnnotations", "AssociatedMetadataTypeTypeDescriptionProvider", False, "AssociatedMetadataTypeTypeDescriptionProvider", "(System.Type,System.Type)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "DisplayAttribute", False, "GetAutoGenerateField", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "DisplayAttribute", False, "GetAutoGenerateFilter", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "DisplayAttribute", False, "GetDescription", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -14,8 +13,6 @@ extensions:
       - ["System.ComponentModel.DataAnnotations", "DisplayAttribute", False, "GetPrompt", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "DisplayAttribute", False, "GetShortName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "DisplayFormatAttribute", False, "GetNullDisplayText", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.ComponentModel.DataAnnotations", "MetadataTypeAttribute", False, "MetadataTypeAttribute", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.ComponentModel.DataAnnotations", "MetadataTypeAttribute", False, "get_MetadataClassType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "ValidationAttribute", True, "FormatErrorMessage", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "ValidationAttribute", True, "FormatErrorMessage", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "ValidationContext", False, "get_Items", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -28,6 +25,7 @@ extensions:
       - ["System.ComponentModel.DataAnnotations", "AllowedValuesAttribute", "IsValid", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "AllowedValuesAttribute", "get_Values", "()", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "AssociatedMetadataTypeTypeDescriptionProvider", "AssociatedMetadataTypeTypeDescriptionProvider", "(System.Type)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations", "AssociatedMetadataTypeTypeDescriptionProvider", "AssociatedMetadataTypeTypeDescriptionProvider", "(System.Type,System.Type)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "AssociationAttribute", "AssociationAttribute", "(System.String,System.String,System.String)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "AssociationAttribute", "get_Name", "()", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "AssociationAttribute", "get_OtherKey", "()", "summary", "df-generated"]
@@ -83,6 +81,8 @@ extensions:
       - ["System.ComponentModel.DataAnnotations", "MaxLengthAttribute", "IsValid", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "MaxLengthAttribute", "MaxLengthAttribute", "(System.Int32)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "MaxLengthAttribute", "get_Length", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations", "MetadataTypeAttribute", "MetadataTypeAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.ComponentModel.DataAnnotations", "MetadataTypeAttribute", "get_MetadataClassType", "()", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "MinLengthAttribute", "IsValid", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "MinLengthAttribute", "MinLengthAttribute", "(System.Int32)", "summary", "df-generated"]
       - ["System.ComponentModel.DataAnnotations", "MinLengthAttribute", "get_Length", "()", "summary", "df-generated"]

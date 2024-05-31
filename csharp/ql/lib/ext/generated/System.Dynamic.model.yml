@@ -9,7 +9,6 @@ extensions:
       - ["System.Dynamic", "BindingRestrictions", False, "GetInstanceRestriction", "(System.Linq.Expressions.Expression,System.Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "GetInstanceRestriction", "(System.Linq.Expressions.Expression,System.Object)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "GetTypeRestriction", "(System.Linq.Expressions.Expression,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Dynamic", "BindingRestrictions", False, "GetTypeRestriction", "(System.Linq.Expressions.Expression,System.Type)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "Merge", "(System.Dynamic.BindingRestrictions)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "ToExpression", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "ConvertBinder", True, "FallbackConvert", "(System.Dynamic.DynamicMetaObject,System.Dynamic.DynamicMetaObject)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]

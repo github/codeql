@@ -79,7 +79,6 @@ extensions:
       - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "BooleanToAtomicValue", "(System.Boolean,System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "BytesToAtomicValue", "(System.Byte[],System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "BytesToAtomicValue", "(System.Byte[],System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "DateTimeToAtomicValue", "(System.DateTime,System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "DateTimeToAtomicValue", "(System.DateTime,System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "DecimalToAtomicValue", "(System.Decimal,System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl.Runtime", "XmlILStorageConverter", False, "DoubleToAtomicValue", "(System.Double,System.Int32,System.Xml.Xsl.Runtime.XmlQueryRuntime)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]

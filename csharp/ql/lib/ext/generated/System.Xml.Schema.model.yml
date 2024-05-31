@@ -133,6 +133,7 @@ extensions:
       - ["System.Xml.Schema", "ValidationEventArgs", "get_Severity", "()", "summary", "df-generated"]
       - ["System.Xml.Schema", "XmlAtomicValue", "get_IsNode", "()", "summary", "df-generated"]
       - ["System.Xml.Schema", "XmlAtomicValue", "get_ValueAsBoolean", "()", "summary", "df-generated"]
+      - ["System.Xml.Schema", "XmlAtomicValue", "get_ValueAsDateTime", "()", "summary", "df-generated"]
       - ["System.Xml.Schema", "XmlAtomicValue", "get_ValueAsDouble", "()", "summary", "df-generated"]
       - ["System.Xml.Schema", "XmlAtomicValue", "get_ValueAsInt", "()", "summary", "df-generated"]
       - ["System.Xml.Schema", "XmlAtomicValue", "get_ValueAsLong", "()", "summary", "df-generated"]
