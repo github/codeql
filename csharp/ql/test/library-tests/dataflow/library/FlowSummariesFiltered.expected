@@ -6551,11 +6551,6 @@
 | System.Data;IDataParameterCollection;get_Item;(System.String);Argument[this].Element;ReturnValue;value;manual |
 | System.Data;IDataParameterCollection;set_Item;(System.String,System.Object);Argument[1];Argument[this].Element;value;manual |
 | System.Data;IDataReader;GetSchemaTable;();Argument[this];ReturnValue;taint;df-generated |
-| System.Data;IDataRecord;GetDataTypeName;(System.Int32);Argument[this];ReturnValue;taint;manual |
-| System.Data;IDataRecord;GetDateTime;(System.Int32);Argument[this];ReturnValue;taint;manual |
-| System.Data;IDataRecord;GetFieldType;(System.Int32);Argument[this];ReturnValue;taint;manual |
-| System.Data;IDataRecord;GetGuid;(System.Int32);Argument[this];ReturnValue;taint;manual |
-| System.Data;IDataRecord;GetName;(System.Int32);Argument[this];ReturnValue;taint;manual |
 | System.Data;IDataRecord;GetString;(System.Int32);Argument[this];ReturnValue;taint;manual |
 | System.Data;IDataRecord;GetValue;(System.Int32);Argument[this];ReturnValue;taint;manual |
 | System.Data;IDataRecord;GetValues;(System.Object[]);Argument[this];Argument[0].Element;taint;manual |
