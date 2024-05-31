@@ -79,3 +79,16 @@ public class NewSinks
         response.WriteFile(PrivateSetTaintedProp);
     }
 }
+
+public class CompoundSinks
+{
+    public void WrapNewSinkProp(NewSinks ns)
+    {
+        ns.WrapPropResponseWriteFile();
+    }
+
+    public void WrapNewSinkField(NewSinks ns)
+    {
+        ns.WrapFieldResponseWriteFile();
+    }
+}
