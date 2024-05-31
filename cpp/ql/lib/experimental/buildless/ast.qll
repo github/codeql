@@ -126,6 +126,21 @@ module Buildless<BuildlessASTSig AST> {
     override string toString() { AST::typename(this, result) }
   }
 
+  class SourcePointer extends SourceType
+  {
+  }
+
+  class SourceConst extends SourceType
+  {
+    SourceType type;
+    SourceConst() { AST::constType(this, type) }
+
+    SourceType getType() { result = type }
+  }
+
+  class SourceReference extends SourceType
+  {
+  }
 }
 
 module TestAST = Buildless<CompiledAST>;

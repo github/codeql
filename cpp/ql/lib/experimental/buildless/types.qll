@@ -7,11 +7,14 @@ module BuildlessTypes<BuildlessASTSig AST> {
     TBuiltinType(string name) { name = ["int", "char"] }
     or
     TUserType(string fqn) { exists(A::SourceTypeDefinition d | d.getName() = fqn) }
+    // or
+    // TPointerType(Type type) { exists(A::SourcePointerType
 
   class Type extends TType {
     string toString() { result = this.getName() }
 
     abstract string getName();
+    Location getLocation() { none() }
   }
 
   class BuiltinType extends Type, TBuiltinType {
@@ -22,7 +25,7 @@ module BuildlessTypes<BuildlessASTSig AST> {
   {
     override string getName() { this = TUserType(result) }
 
-    Location getLocation() { exists(A::SourceTypeDefinition d | this.getName() = d.getName() | result = d.getLocation()) }
+    override Location getLocation() { exists(A::SourceTypeDefinition d | this.getName() = d.getName() | result = d.getLocation()) }
   }
 }
 

@@ -37,6 +37,7 @@ signature module BuildlessASTSig
     predicate type(Node type);
     predicate ptrType(Node type, Node element);
     predicate refType(Node type, Node element);
+    predicate constType(Node type, Node element);
     predicate rvalueRefType(Node type, Node element);
     predicate arrayType(Node type, Node element, Node size);
     predicate arrayType(Node type, Node element);

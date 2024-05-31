@@ -13,7 +13,13 @@ module CompiledAST implements BuildlessASTSig {
     TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) } or
     TFunctionCallName(SourceLocation loc) { exists(FunctionCall c | c.getLocation() = loc) } or
     TDeclarationType(SourceLocation loc, Type type) {
-      exists(DeclarationEntry decl | decl.getLocation() = loc and type = decl.getType())
+      exists(DeclarationEntry decl | decl.getLocation() = loc |
+        type = decl.getType()
+        or
+        type = decl.getType().stripTopLevelSpecifiers*()
+        or
+        decl.getType().(ReferenceType).getUnderlyingType() = type
+      )
     }
 
   class Node extends TNode {
@@ -199,4 +205,12 @@ module CompiledAST implements BuildlessASTSig {
   }
 
   predicate type(Node node) { node = TDeclarationType(_, _) }
+
+  predicate constType(Node node, Node element) {
+    exists(SpecifiedType type, Location loc |
+      node = TDeclarationType(loc, type) and
+      element = TDeclarationType(loc, type.getBaseType()) and
+      type.isConst()
+    )
+  }
 }
