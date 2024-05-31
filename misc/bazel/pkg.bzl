@@ -7,6 +7,7 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_fil
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo")
 load("@rules_python//python:defs.bzl", "py_binary")
+load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "os_select")
 
 def _make_internal(name):
     def internal(suffix = "internal", *args):
@@ -14,11 +15,6 @@ def _make_internal(name):
         return "-".join(args)
 
     return internal
-
-_PLAT_DETECTION_ATTRS = {
-    "_windows": attr.label(default = "@platforms//os:windows"),
-    "_macos": attr.label(default = "@platforms//os:macos"),
-}
 
 _PLAT_PLACEHOLDER = "{CODEQL_PLATFORM}"
 
@@ -28,28 +24,8 @@ def _expand_path(path, platform):
         return ("arch", path)
     return ("generic", path)
 
-def _platform_select(
-        ctx = None,
-        *,
-        linux,
-        windows,
-        macos):
-    if ctx:
-        if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]):
-            return windows
-        elif ctx.target_platform_has_constraint(ctx.attr._macos[platform_common.ConstraintValueInfo]):
-            return macos
-        else:
-            return linux
-    else:
-        return select({
-            "@platforms//os:linux": linux,
-            "@platforms//os:macos": macos,
-            "@platforms//os:windows": windows,
-        })
-
 def _detect_platform(ctx = None):
-    return _platform_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
+    return os_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
 
 def codeql_pkg_files(
         *,
@@ -137,7 +113,7 @@ _extract_pkg_filegroup = rule(
         "src": attr.label(providers = [PackageFilegroupInfo, DefaultInfo]),
         "kind": attr.string(doc = "What part to extract", values = ["generic", "arch"]),
         "arch_overrides": attr.string_list(doc = "A list of files that should be included in the arch package regardless of the path"),
-    } | _PLAT_DETECTION_ATTRS,
+    } | OS_DETECTION_ATTRS,
 )
 
 _ZipInfo = provider(fields = {"zips_to_prefixes": "mapping of zip files to prefixes"})
@@ -187,7 +163,7 @@ _zip_info_filter = rule(
     attrs = {
         "srcs": attr.label_list(doc = "_ZipInfos to transform", providers = [_ZipInfo]),
         "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
-    } | _PLAT_DETECTION_ATTRS,
+    } | OS_DETECTION_ATTRS,
 )
 
 def _imported_zips_manifest_impl(ctx):
