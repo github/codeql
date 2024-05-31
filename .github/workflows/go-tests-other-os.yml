@@ -7,6 +7,9 @@ on:
       - .github/workflows/go-tests-other-os.yml
       - .github/actions/**
       - codeql-workspace.yml
+      - MODULE.bazel
+      - .bazelrc
+      - misc/bazel/**
 
 permissions:
   contents: read
