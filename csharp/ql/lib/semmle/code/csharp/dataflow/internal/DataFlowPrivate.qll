@@ -1235,6 +1235,18 @@ private module Cached {
   newtype TDataFlowType =
     TGvnDataFlowType(Gvn::GvnType t) or
     TDelegateDataFlowType(Callable lambda) { lambdaCreationExpr(_, lambda) }
+
+  cached
+  newtype TNodeRegion =
+    TBasicBlockRegion(ControlFlow::BasicBlock bb) or
+    TSecondLevelScopeRegion(DataFlowSecondLevelScope scope)
+
+  cached
+  predicate nodeRegionContains(NodeRegion nr, Node n) {
+    nr.asBasicBlock() = n.getControlFlowNode().getBasicBlock()
+    or
+    nr.asSecondLevelScope() = getSecondLevelScope(n)
+  }
 }
 
 import Cached
@@ -2380,17 +2392,53 @@ predicate expectsContent(Node n, ContentSet c) {
   n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
-class NodeRegion instanceof ControlFlow::BasicBlock {
+private class MultiBodyCallable extends Callable {
+  MultiBodyCallable() { strictcount(this.getBody()) > 1 }
+}
+
+bindingset[e1, e2]
+pragma[inline_late]
+private predicate inSameFile(Element e1, Element e2) { e1.getFile() = e2.getFile() }
+
+pragma[nomagic]
+private predicate callTargetsMultiBodyInSameFile(DataFlowCall call, MultiBodyCallable target) {
+  target = call.getARuntimeTarget().asCallable() and
+  inSameFile(call.getExpr(), target.getBody())
+}
+
+/**
+ * A method body belonging to a method with multiple bodies.
+ *
+ * Methods with multiple bodies are treated as virtual dispatch.
+ */
+class DataFlowSecondLevelScope extends ControlFlowElement {
+  DataFlowSecondLevelScope() { this = any(MultiBodyCallable c).getBody() }
+}
+
+DataFlowSecondLevelScope getSecondLevelScope(Node n) {
+  result.getAControlFlowNode().getBasicBlock().getASuccessor*() =
+    n.getControlFlowNode().getBasicBlock()
+}
+
+class NodeRegion extends TNodeRegion {
   string toString() { result = "NodeRegion" }
 
-  predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
+  ControlFlow::BasicBlock asBasicBlock() { this = TBasicBlockRegion(result) }
+
+  DataFlowSecondLevelScope asSecondLevelScope() { this = TSecondLevelScopeRegion(result) }
+
+  predicate contains(Node n) { nodeRegionContains(this, n) }
 
   int totalOrder() {
     this =
-      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
-        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      rank[result](NodeRegion r, int i, string filePath, int startline, int startcolumn |
+        i = 0 and
+        r.asBasicBlock().getLocation().hasLocationInfo(filePath, startline, startcolumn, _, _)
+        or
+        i = 1 and
+        r.asSecondLevelScope().getLocation().hasLocationInfo(filePath, startline, startcolumn, _, _)
       |
-        b order by startline, startcolumn
+        r order by i, filePath, startline, startcolumn
       )
   }
 }
@@ -2404,7 +2452,16 @@ predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   |
     viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(nr, bs, _)
+    guard.controlsBlock(nr.asBasicBlock(), bs, _)
+  )
+  or
+  // When a call targets a method with multiple bodies, and one of the bodies
+  // is in the same file as the call, we prohibit flow to all other bodies.
+  exists(MultiBodyCallable target, DataFlowSecondLevelScope scope |
+    callTargetsMultiBodyInSameFile(call, target) and
+    nr.asSecondLevelScope() = scope and
+    scope = target.getBody() and
+    not inSameFile(call.getExpr(), scope)
   )
 }
 
@@ -2895,8 +2952,6 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
 predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
 
 predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
-
-class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

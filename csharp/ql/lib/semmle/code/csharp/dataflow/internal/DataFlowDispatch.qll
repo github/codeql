@@ -239,7 +239,7 @@ abstract class DataFlowCall extends TDataFlowCall {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  final predicate hasLocationInfo(
+  deprecated final predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -248,10 +248,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a best-effort total ordering. */
   int totalorder() {
     this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.hasLocationInfo(_, startline, startcolumn, _, _)
+      rank[result](DataFlowCall c, string filePath, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(filePath, startline, startcolumn, _, _)
       |
-        c order by startline, startcolumn
+        c order by filePath, startline, startcolumn
       )
   }
 }
