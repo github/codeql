@@ -20,7 +20,7 @@ pub struct Extractor {
     pub languages: Vec<LanguageSpec>,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
-    pub file_list: PathBuf,
+    pub file_lists: Vec<PathBuf>,
     // Typically constructed via `trap::Compression::from_env`.
     // This allow us to report the error using our diagnostics system
     // without exposing it to consumers.
@@ -74,7 +74,14 @@ impl Extractor {
             .build_global()
             .unwrap();
 
-        let file_list = File::open(&self.file_list)?;
+        let file_lists: Vec<File> = self
+            .file_lists
+            .iter()
+            .map(|file_list| {
+                File::open(file_list)
+                    .unwrap_or_else(|_| panic!("Unable to open file list at {:?}", file_list))
+            })
+            .collect();
 
         let mut schemas = vec![];
         for lang in &self.languages {
@@ -103,8 +110,10 @@ impl Extractor {
             )
         };
 
-        let lines: std::io::Result<Vec<String>> =
-            std::io::BufReader::new(file_list).lines().collect();
+        let lines: std::io::Result<Vec<String>> = file_lists
+            .iter()
+            .flat_map(|file_list| std::io::BufReader::new(file_list).lines())
+            .collect();
         let lines = lines?;
 
         lines
