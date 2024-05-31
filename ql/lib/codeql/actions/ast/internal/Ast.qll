@@ -818,8 +818,9 @@ class JobImpl extends AstNodeImpl, TJobNode {
   }
 
   private predicate hasPrivilegedTrigger() {
-    // the Job is triggered by an event other than `pull_request`
+    // the Job is triggered by an event other than `pull_request`, `push`, or `workflow_call`
     count(this.getATriggerEvent()) = 1 and
+    not this.getATriggerEvent().getName() = "push" and
     not this.getATriggerEvent().getName() = "pull_request" and
     not this.getATriggerEvent().getName() = "workflow_call"
     or
@@ -832,8 +833,11 @@ class JobImpl extends AstNodeImpl, TJobNode {
       not exists(this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller())
     )
     or
-    // the Workflow has multiple triggers so at least one is not "pull_request"
-    count(this.getATriggerEvent()) > 1
+    // the Job is triggered by an event other than `push`, `pull_request`, or `workflow_call`
+    exists(string event |
+      this.getATriggerEvent().getName() = event and
+      not event = ["push", "pull_request", "workflow_call"]
+    )
   }
 
   /** Gets the trigger event that starts this workflow. */

@@ -1,0 +1,2 @@
+| .github/workflows/dependabot1.yml:15:9:19:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/dependabot1.yml:39:9:43:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
