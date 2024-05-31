@@ -8,6 +8,6 @@ class PostsController < ApplicationController
   def upvote
   end
 
-#  def downvote
-#  end
+  def downvote
+  end
 end
