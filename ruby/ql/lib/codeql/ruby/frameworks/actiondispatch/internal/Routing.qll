@@ -86,13 +86,13 @@ module Routing {
    * ```
    */
   private class TopLevelRouteBlock extends RouteBlock, TTopLevelRouteBlock {
-    MethodCall call;
+    MethodCall methodCall;
     // Routing blocks create scopes which define the namespace for controllers and paths,
     // though they can be overridden in various ways.
     // The namespaces can differ, so we track them separately.
     Block block;
 
-    TopLevelRouteBlock() { this = TTopLevelRouteBlock(_, call, block) }
+    TopLevelRouteBlock() { this = TTopLevelRouteBlock(_, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "TopLevelRouteBlock" }
 
@@ -102,9 +102,9 @@ module Routing {
 
     override RouteBlock getParent() { none() }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
 
     override string getPathComponent() { none() }
 
@@ -122,9 +122,9 @@ module Routing {
    */
   private class ConstraintsRouteBlock extends NestedRouteBlock, TConstraintsRouteBlock {
     private Block block;
-    private MethodCall call;
+    private MethodCall methodCall;
 
-    ConstraintsRouteBlock() { this = TConstraintsRouteBlock(parent, call, block) }
+    ConstraintsRouteBlock() { this = TConstraintsRouteBlock(parent, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "ConstraintsRouteBlock" }
 
@@ -134,9 +134,9 @@ module Routing {
 
     override string getControllerComponent() { result = "" }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
   }
 
   /**
@@ -149,28 +149,31 @@ module Routing {
    * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-scope
    */
   private class ScopeRouteBlock extends NestedRouteBlock, TScopeRouteBlock {
-    private MethodCall call;
+    private MethodCall methodCall;
     private Block block;
 
-    ScopeRouteBlock() { this = TScopeRouteBlock(parent, call, block) }
+    ScopeRouteBlock() { this = TScopeRouteBlock(parent, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "ScopeRouteBlock" }
 
     override Stmt getAStmt() { result = block.getAStmt() }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
 
     override string getPathComponent() {
-      call.getKeywordArgument("path").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("path").getConstantValue().isStringlikeValue(result)
       or
-      not exists(call.getKeywordArgument("path")) and
-      call.getArgument(0).getConstantValue().isStringlikeValue(result)
+      not exists(methodCall.getKeywordArgument("path")) and
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getControllerComponent() {
-      call.getKeywordArgument(["controller", "module"]).getConstantValue().isStringlikeValue(result)
+      methodCall
+          .getKeywordArgument(["controller", "module"])
+          .getConstantValue()
+          .isStringlikeValue(result)
     }
   }
 
@@ -184,10 +187,10 @@ module Routing {
    * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
    */
   private class ResourcesRouteBlock extends NestedRouteBlock, TResourcesRouteBlock {
-    private MethodCall call;
+    private MethodCall methodCall;
     private Block block;
 
-    ResourcesRouteBlock() { this = TResourcesRouteBlock(parent, call, block) }
+    ResourcesRouteBlock() { this = TResourcesRouteBlock(parent, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "ResourcesRouteBlock" }
 
@@ -196,19 +199,21 @@ module Routing {
     /**
      * Gets the `resources` call that gives rise to this route block.
      */
-    MethodCall getDefiningMethodCall() { result = call }
+    MethodCall getDefiningMethodCall() { result = methodCall }
 
     override string getPathComponent() {
-      exists(string resource | call.getArgument(0).getConstantValue().isStringlikeValue(resource) |
+      exists(string resource |
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(resource)
+      |
         result = resource + "/:" + singularize(resource) + "_id"
       )
     }
 
     override string getControllerComponent() { result = "" }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
   }
 
   /**
@@ -250,10 +255,10 @@ module Routing {
    * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-namespace
    */
   private class NamespaceRouteBlock extends NestedRouteBlock, TNamespaceRouteBlock {
-    private MethodCall call;
+    private MethodCall methodCall;
     private Block block;
 
-    NamespaceRouteBlock() { this = TNamespaceRouteBlock(parent, call, block) }
+    NamespaceRouteBlock() { this = TNamespaceRouteBlock(parent, methodCall, block) }
 
     override Stmt getAStmt() { result = block.getAStmt() }
 
@@ -262,12 +267,12 @@ module Routing {
     override string getControllerComponent() { result = this.getNamespace() }
 
     private string getNamespace() {
-      call.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
   }
 
   /**
