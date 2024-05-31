@@ -177,6 +177,28 @@ module Routing {
     }
   }
 
+  private Expr getActionFromMethodCall(MethodCall methodCall) {
+    result =
+      [
+        // e.g. `get "/comments", to: "comments#index"
+        methodCall.getKeywordArgument("to"),
+        // e.g. `get "/comments" => "comments#index"
+        methodCall.getArgument(0).(Pair).getValue()
+      ]
+  }
+
+  /**
+   * Gets a string representation of the controller-action pair that is routed
+   * to by this method call.
+   */
+  private string getActionStringFromMethodCall(MethodCall methodCall) {
+    getActionFromMethodCall(methodCall).getConstantValue().isStringlikeValue(result)
+    or
+    // TODO: use the redirect call argument to resolve the redirect target
+    getActionFromMethodCall(methodCall).(MethodCall).getMethodName() = "redirect" and
+    result = "<redirect>#<redirect>"
+  }
+
   /**
    * A route block defined by a call to `resources`.
    * ```rb
@@ -512,12 +534,7 @@ module Routing {
       )
     }
 
-    private string getActionString() {
-      methodCall.getKeywordArgument("to").getConstantValue().isStringlikeValue(result)
-      or
-      methodCall.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
-      result = "<redirect>#<redirect>"
-    }
+    private string getActionString() { result = getActionStringFromMethodCall(methodCall) }
 
     override string getAction() {
       // get "/photos", action: "index"
@@ -670,11 +687,7 @@ module Routing {
     }
 
     override string getLastControllerComponent() {
-      result =
-        extractController(methodCall
-              .getKeywordArgument("to")
-              .getConstantValue()
-              .getStringlikeValue()) or
+      result = extractController(getActionStringFromMethodCall(methodCall)) or
       methodCall.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result) or
       result =
         extractController(methodCall
@@ -704,8 +717,7 @@ module Routing {
     }
 
     override string getAction() {
-      result =
-        extractAction(methodCall.getKeywordArgument("to").getConstantValue().getStringlikeValue()) or
+      result = extractAction(getActionStringFromMethodCall(methodCall)) or
       methodCall.getKeywordArgument("action").getConstantValue().isStringlikeValue(result) or
       result =
         extractAction(methodCall

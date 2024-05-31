@@ -12,6 +12,7 @@ actionDispatchRoutes
 | app/config/routes.rb:4:7:4:41 | call to resources | post | posts/:post_id/comments/:comment_id/replies | replies | create |
 | app/config/routes.rb:5:7:5:28 | call to post | post | posts/:post_id/comments/:comment_id/flag | comments | flag |
 | app/config/routes.rb:7:5:7:37 | call to post | post | posts/:post_id/upvote | posts | upvote |
+| app/config/routes.rb:8:5:8:39 | call to post | post | posts/:post_id | posts | downvote |
 | app/config/routes.rb:12:5:12:54 | call to post | post | destroy_all_posts | posts | destroy_alll |
 | app/config/routes.rb:16:5:16:46 | call to get | get | numbers/:number | numbers | show |
 | app/config/routes.rb:20:5:20:44 | call to get | get | admin/jobs | background_jobs | index |
@@ -39,6 +40,7 @@ actionDispatchControllerMethods
 | app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:39:5 | index |
 | app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:41:3:42:5 | show |
 | app/config/routes.rb:7:5:7:37 | call to post | app/controllers/posts_controller.rb:8:3:9:5 | upvote |
+| app/config/routes.rb:8:5:8:39 | call to post | app/controllers/posts_controller.rb:11:3:12:5 | downvote |
 | app/config/routes.rb:28:3:28:48 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:29:3:29:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:30:3:30:69 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
