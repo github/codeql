@@ -749,12 +749,19 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Holds if the job can be triggered by an external actor. */
   predicate isExternallyTriggerable() {
     // the job is triggered by an event that can be triggered externally
-    externallyTriggerableEventsDataModel(this.getATriggerEvent().getName()) or
+    externallyTriggerableEventsDataModel(this.getATriggerEvent().getName())
+    or
     // the job is triggered by a workflow_call event that can be triggered externally
     this.getATriggerEvent().getName() = "workflow_call" and
-    (exists(ExpressionImpl e, string external_trigger | e.getEnclosingJob() = this and e.getExpression().matches("%github.event" + external_trigger + "%") and externallyTriggerableEventsDataModel(external_trigger))
-    or 
-    this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isExternallyTriggerable())
+    (
+      exists(ExpressionImpl e, string external_trigger |
+        e.getEnclosingJob() = this and
+        e.getExpression().matches("%github.event" + external_trigger + "%") and
+        externallyTriggerableEventsDataModel(external_trigger)
+      )
+      or
+      this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isExternallyTriggerable()
+    )
   }
 
   /** Holds if the job is privileged. */
@@ -781,9 +788,9 @@ class JobImpl extends AstNodeImpl, TJobNode {
   private predicate hasExplicitSecretAccess() {
     // the job accesses a secret other than GITHUB_TOKEN
     exists(SecretsExpressionImpl expr |
-      (expr.getEnclosingJob() = this  or not exists(expr.getEnclosingJob()))  and
+      (expr.getEnclosingJob() = this or not exists(expr.getEnclosingJob())) and
       expr.getEnclosingWorkflow() = this.getEnclosingWorkflow() and
-      not expr.getFieldName() = "GITHUB_TOKEN" 
+      not expr.getFieldName() = "GITHUB_TOKEN"
     )
   }
 
@@ -814,7 +821,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
     // the Job is triggered by an event other than `pull_request`
     count(this.getATriggerEvent()) = 1 and
     not this.getATriggerEvent().getName() = "pull_request" and
-    not this.getATriggerEvent().getName() = "workflow_call" 
+    not this.getATriggerEvent().getName() = "workflow_call"
     or
     // the Workflow is a Reusable Workflow only and there is
     // a privileged caller workflow or we cant find a caller

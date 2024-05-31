@@ -29,14 +29,14 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
  */
 class EnvPathInjectionFromEnvVarSink extends EnvPathInjectionSink {
   EnvPathInjectionFromEnvVarSink() {
-    exists(Run run, Expression expr, string varname, string value |
-      this.asExpr().getInScopeEnvVarExpr(varname) = expr and
+    exists(Run run, Expression expr, string var_name, string value |
+      this.asExpr().getInScopeEnvVarExpr(var_name) = expr and
       run.getScriptScalar() = this.asExpr() and
       writeToGitHubPath(run, value) and
       (
-        value.matches("%$" + ["", "{", "ENV{"] + varname + "%")
+        value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
         or
-        value.matches("$(echo %") and value.indexOf(varname) > 0
+        value.matches("$(echo %") and value.indexOf(var_name) > 0
       )
     )
   }

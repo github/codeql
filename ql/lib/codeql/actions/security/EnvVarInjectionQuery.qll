@@ -9,21 +9,23 @@ abstract class EnvVarInjectionSink extends DataFlow::Node { }
 
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
-    exists(Run run, Expression expr, string varname, string key, string value |
-      expr = run.getInScopeEnvVarExpr(varname) and
-      writeToGitHubEnv(run, key, value) and
+    exists(Run run, Expression expr, string var_name, string content, string value |
+      expr = run.getInScopeEnvVarExpr(var_name) and
+      writeToGitHubEnv(run, content) and
+      extractVariableAndValue(content, _, value) and
       run.getScriptScalar() = this.asExpr() and
-      value.matches("%$" + ["", "{", "ENV{"] + varname + "%")
+      value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
     )
   }
 }
 
 class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
   EnvVarInjectionFromFileReadSink() {
-    exists(Run run, UntrustedArtifactDownloadStep step, string value |
+    exists(Run run, UntrustedArtifactDownloadStep step, string content, string value |
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
-      writeToGitHubEnv(run, _, value) and
+      writeToGitHubEnv(run, content) and
+      extractVariableAndValue(content, _, value) and
       // TODO: add support for other commands like `<`, `jq`, ...
       value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
     )
