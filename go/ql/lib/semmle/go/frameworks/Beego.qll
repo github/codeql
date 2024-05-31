@@ -47,30 +47,6 @@ module Beego {
     result = package(v2modulePath(), "core/utils")
   }
 
-  /**
-   * `BeegoInput` sources of untrusted data.
-   */
-  private class BeegoInputSource extends RemoteFlowSource::Range {
-    string methodName;
-
-    BeegoInputSource() {
-      exists(FunctionOutput output |
-        methodName = "Bind" and
-        output.isParameter(0)
-        or
-        methodName in [
-            "Cookie", "Data", "GetData", "Header", "Param", "Params", "Query", "Refer", "Referer",
-            "URI", "URL", "UserAgent"
-          ] and
-        output.isResult(0)
-      |
-        exists(DataFlow::MethodCallNode c | this = output.getExitNode(c) |
-          c.getTarget().hasQualifiedName(contextPackagePath(), "BeegoInput", methodName)
-        )
-      )
-    }
-  }
-
   /** `BeegoInput` sources that are safe to use for redirection. */
   private class BeegoInputSafeUrlSource extends SafeUrlFlow::Source {
     BeegoInputSafeUrlSource() {
