@@ -173,6 +173,10 @@ predicate isRelevantType(CS::Type t) {
   not irrelevantCollectionType(t)
 }
 
+CS::Type getUnderlyingContentTypeSpecific(DataFlow::Content c) {
+  result = c.(DataFlow::PropertyContent).getProperty().getType()
+}
+
 /**
  * Gets the MaD string representation of the qualifier.
  */
