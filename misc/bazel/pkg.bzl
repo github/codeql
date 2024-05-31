@@ -284,19 +284,19 @@ def codeql_pack(
         install_dest = "extractor-pack",
         compression_level = None,
         arch_overrides = None,
-        prefix_override = None,
+        zip_prefix = None,
         **kwargs):
     """
     Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
     `zips` is a map from `.zip` files to prefixes to import.
     * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
-      prefixed with `name`
+      prefixed with `zip_prefix`
     * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
-      arch-specific bits, prefixed with `name`
+      arch-specific bits, prefixed with `zip_prefix`
     * defines a runnable `<name>-installer` target that will install the pack in `install_dest`, relative to where the
       rule is used. The install destination can be overridden appending `-- --destdir=...` to the `bazel run`
-      invocation. This installation _does not_ prefix the contents with `name`.
-    The prefix for the zip files can be overriden with `prefix_override`.
+      invocation. This installation _does not_ prefix the contents with `zip_prefix`.
+    The prefix for the zip files can be set with `zip_prefix`, it is `name` by default.
 
     The distinction between arch-specific and generic contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
@@ -310,9 +310,8 @@ def codeql_pack(
     internal = _make_internal(name)
     zip_filename = zip_filename or name
     zips = zips or {}
-    prefix = name
-    if prefix_override != None:
-        prefix = prefix_override
+    if zip_prefix == None:
+        zip_prefix = name
     pkg_filegroup(
         name = internal("all"),
         srcs = srcs,
@@ -350,7 +349,7 @@ def codeql_pack(
                 name = internal(kind, "zip"),
                 srcs = [internal(kind, "zip-base"), internal(kind, "zip-info")],
                 out = _get_zip_filename(name, kind),
-                prefix = prefix,
+                prefix = zip_prefix,
                 visibility = visibility,
             )
         else:
@@ -358,7 +357,7 @@ def codeql_pack(
                 name = internal(kind, "zip"),
                 srcs = [internal(kind)],
                 visibility = visibility,
-                package_dir = prefix,
+                package_dir = zip_prefix,
                 package_file_name = _get_zip_filename(name, kind),
                 compression_level = compression_level,
             )
