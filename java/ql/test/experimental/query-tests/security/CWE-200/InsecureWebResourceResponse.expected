@@ -34,7 +34,7 @@ edges
 | InsecureWebResourceResponse.java:86:41:86:43 | url : String | InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | provenance | MaD:514 |
 | InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | provenance |  |
 | InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | provenance | MaD:503 |
-| InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | provenance | MaD:42592 |
+| InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | provenance | MaD:42607 |
 | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:91:75:91:85 | inputStream | provenance |  |
 | InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
 | InsecureWebResourceResponse.java:101:20:101:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
@@ -47,10 +47,10 @@ edges
 | InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | provenance |  |
 | InsecureWebResourceResponse.java:112:41:112:43 | url : String | InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | provenance | MaD:514 |
 | InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | provenance | MaD:504 |
-| InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | provenance | MaD:42755 |
+| InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | provenance | MaD:42770 |
 | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | InsecureWebResourceResponse.java:115:75:115:78 | path : String | provenance |  |
 | InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:117:75:117:85 | inputStream | provenance |  |
-| InsecureWebResourceResponse.java:115:75:115:78 | path : String | InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | provenance | MaD:42755 |
+| InsecureWebResourceResponse.java:115:75:115:78 | path : String | InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | provenance | MaD:42770 |
 | InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
 | InsecureWebResourceResponse.java:127:20:127:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:127:20:127:22 | url : String | InsecureWebResourceResponse.java:84:77:84:86 | url : String | provenance | AdditionalTaintStep |
@@ -81,7 +81,7 @@ edges
 | InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | provenance |  |
 | InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | provenance |  |
 | InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | provenance | MaD:503 |
-| InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | provenance | MaD:42592 |
+| InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | provenance | MaD:42607 |
 | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:199:75:199:85 | inputStream | provenance |  |
 | InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
 | InsecureWebResourceResponse.java:209:20:209:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
