@@ -12,7 +12,8 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="logger">The object used for logging.</param>
         /// <param name="pathTransformer">The object used for path transformations.</param>
-        public StandaloneExtractor(string outputPath, IEnumerable<(string, string)> compilationInfos, ILogger logger, PathTransformer pathTransformer, CommonOptions options) : base(outputPath, compilationInfos, logger, pathTransformer)
+        public StandaloneExtractor(string cwd, string outputPath, IEnumerable<(string, string)> compilationInfos, ILogger logger, PathTransformer pathTransformer, CommonOptions options)
+            : base(cwd, [], outputPath, compilationInfos, logger, pathTransformer)
         {
             Mode = ExtractorMode.Standalone;
             if (options.QlTest)

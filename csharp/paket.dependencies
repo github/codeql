@@ -8,6 +8,7 @@ nuget Mono.Posix.NETStandard
 nuget Newtonsoft.Json
 nuget xunit
 nuget xunit.runner.visualstudio
+nuget xunit.runner.utility
 nuget Microsoft.NET.Test.Sdk
 nuget Microsoft.CodeAnalysis.CSharp 4.8.0
 nuget Microsoft.CodeAnalysis 4.8.0
@@ -17,4 +18,3 @@ nuget System.Net.Primitives
 nuget System.Security.Principal
 nuget System.Threading.ThreadPool
 nuget System.IO.FileSystem
-nuget GitInfo 3.3.3

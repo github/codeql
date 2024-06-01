@@ -15,8 +15,8 @@ edges
 | tst.go:36:2:36:2 | u | tst.go:36:2:36:2 | u | provenance |  |
 | tst.go:36:2:36:2 | u | tst.go:37:11:37:11 | u | provenance |  |
 | tst.go:36:2:36:2 | u [pointer] | tst.go:36:2:36:2 | implicit dereference | provenance |  |
-| tst.go:36:11:36:17 | tainted | tst.go:36:2:36:2 | u | provenance |  |
-| tst.go:36:11:36:17 | tainted | tst.go:37:11:37:11 | u | provenance |  |
+| tst.go:36:11:36:17 | tainted | tst.go:36:2:36:2 | u | provenance | Config |
+| tst.go:36:11:36:17 | tainted | tst.go:37:11:37:11 | u | provenance | Config |
 | tst.go:37:11:37:11 | u | tst.go:37:11:37:20 | call to String | provenance | MaD:235 |
 | websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput | provenance | Src:MaD:673  |
 | websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput | provenance | Src:MaD:673  |

@@ -1,5 +1,5 @@
 {
-  "checksum": "35a1ce4b6c4f997c496c11d3a8fcfaadc5833dfd41bebb022941687d73dde159",
+  "checksum": "14572337bc5747880ff328af42451cce3549f743dc79eac7314f3b3f55b74d25",
   "crates": {
     "ahash 0.4.7": {
       "name": "ahash",
@@ -1755,7 +1755,7 @@
           ],
           "selects": {}
         },
-        "edition": "2018",
+        "edition": "2021",
         "version": "0.1.0"
       },
       "license": null,
@@ -1986,7 +1986,6 @@
         "crate_features": {
           "common": [
             "consoleapi",
-            "errhandlingapi",
             "minwinbase",
             "minwindef",
             "processenv",
