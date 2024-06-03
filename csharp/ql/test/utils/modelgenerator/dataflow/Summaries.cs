@@ -583,7 +583,7 @@ public class MemberFlow
         public string Prop { get; set; }
     }
 
-    // SPURIOUS-neutral=Models;MemberFlow;M1;(Models.MemberFlow+C);summary;df-generated
+    // summary=Models;MemberFlow;false;M1;(Models.MemberFlow+C);;Argument[0];ReturnValue;taint;df-generated
     public string M1(C p)
     {
         return p.Prop;
