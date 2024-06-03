@@ -31,7 +31,7 @@ First, get an extractor pack. There are two options:
 Then run
 
 ```bash
-codeql database create <database-path> -l ruby -s <project-source-path> --search-path <extractor-pack-path>
+codeql database create <database-path> -l ruby -s <project-source-path>
 ```
 
 ## Running qltests
@@ -39,7 +39,7 @@ codeql database create <database-path> -l ruby -s <project-source-path> --search
 Run
 
 ```bash
-codeql test run <test-path> --search-path <extractor-pack-path>
+codeql test run <test-path>
 ```
 
 ## Writing database upgrade scripts

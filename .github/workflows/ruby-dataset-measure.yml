@@ -44,7 +44,6 @@ jobs:
       - name: Create database
         run: |
           codeql database create \
-            --search-path "${{ github.workspace }}/ruby/extractor-pack" \
             --threads 4 \
             --language ruby --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
