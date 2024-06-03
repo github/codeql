@@ -72,7 +72,9 @@ extensions:
       - ["System.Security.Cryptography.Xml", "SignedInfo", False, "LoadXml", "(System.Xml.XmlElement)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedInfo", False, "get_CanonicalizationMethodObject", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedInfo", False, "get_References", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "SignedXml", False, "AddReference", "(System.Security.Cryptography.Xml.Reference)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "CheckSignature", "(System.Security.Cryptography.KeyedHashAlgorithm)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "SignedXml", False, "CheckSignatureReturningKey", "(System.Security.Cryptography.AsymmetricAlgorithm)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "ComputeSignature", "(System.Security.Cryptography.KeyedHashAlgorithm)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "GetXml", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "LoadXml", "(System.Xml.XmlElement)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
@@ -80,10 +82,13 @@ extensions:
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "SignedXml", "(System.Xml.XmlElement)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "get_SafeCanonicalizationMethods", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "get_Signature", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "SignedXml", False, "get_SignatureLength", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "SignedXml", False, "get_SignatureMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "get_SignatureValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "get_SignedInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", False, "set_Resolver", "(System.Xml.XmlResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", True, "GetIdElement", "(System.Xml.XmlDocument,System.String)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "SignedXml", True, "GetPublicKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "Transform", False, "GetXml", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "Transform", False, "get_PropagatedNamespaces", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "Transform", True, "GetDigestedOutput", "(System.Security.Cryptography.HashAlgorithm)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -98,6 +103,17 @@ extensions:
       - ["System.Security.Cryptography.Xml", "TransformChain", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "TransformChain", False, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Xml", "XmlDsigExcC14NTransform", False, "XmlDsigExcC14NTransform", "(System.Boolean,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "DecryptData", "(System.Security.Cryptography.Xml.EncryptedData,System.Security.Cryptography.SymmetricAlgorithm)", "", "Argument[1]", "encryption-decryptor", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "DecryptKey", "(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)", "", "Argument[1]", "encryption-decryptor", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "DecryptKey", "(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)", "", "Argument[1]", "encryption-keyprop", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "EncryptData", "(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)", "", "Argument[1]", "encryption-encryptor", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "EncryptData", "(System.Xml.XmlElement,System.Security.Cryptography.SymmetricAlgorithm,System.Boolean)", "", "Argument[1]", "encryption-encryptor", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "EncryptKey", "(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)", "", "Argument[1]", "encryption-encryptor", "df-generated"]
+      - ["System.Security.Cryptography.Xml", "EncryptedXml", False, "EncryptKey", "(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)", "", "Argument[1]", "encryption-keyprop", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -168,15 +184,10 @@ extensions:
       - ["System.Security.Cryptography.Xml", "SignedInfo", "get_IsReadOnly", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedInfo", "get_IsSynchronized", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", "AddObject", "(System.Security.Cryptography.Xml.DataObject)", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Xml", "SignedXml", "AddReference", "(System.Security.Cryptography.Xml.Reference)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", "CheckSignature", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", "CheckSignature", "(System.Security.Cryptography.AsymmetricAlgorithm)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", "CheckSignature", "(System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean)", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Xml", "SignedXml", "CheckSignatureReturningKey", "(System.Security.Cryptography.AsymmetricAlgorithm)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "SignedXml", "ComputeSignature", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Xml", "SignedXml", "GetPublicKey", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Xml", "SignedXml", "get_SignatureLength", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Xml", "SignedXml", "get_SignatureMethod", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "TransformChain", "get_Count", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "XmlDecryptionTransform", "AddExceptUri", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Xml", "XmlDecryptionTransform", "IsTargetElement", "(System.Xml.XmlElement,System.String)", "summary", "df-generated"]

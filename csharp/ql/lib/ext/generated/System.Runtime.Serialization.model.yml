@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Runtime.Serialization.DataContractSerializerSettings)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "get_DataContractResolver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -83,7 +84,6 @@ extensions:
       - ["System.Runtime.Serialization", "DataContractResolver", "TryResolveType", "(System.Type,System.Type,System.Runtime.Serialization.DataContractResolver,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.Runtime.Serialization.DataContractSerializerSettings)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.String,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.String,System.String,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString)", "summary", "df-generated"]

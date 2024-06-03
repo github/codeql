@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "DataContractJsonSerializer", "(System.Type,System.Runtime.Serialization.Json.DataContractJsonSerializerSettings)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "GetSerializationSurrogateProvider", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "SetSerializationSurrogateProvider", "(System.Runtime.Serialization.ISerializationSurrogateProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "get_DateTimeFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -23,7 +24,6 @@ extensions:
     data:
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.Runtime.Serialization.Json.DataContractJsonSerializerSettings)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.String,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.Xml.XmlDictionaryString)", "summary", "df-generated"]

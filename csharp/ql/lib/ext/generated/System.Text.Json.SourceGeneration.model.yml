@@ -2,6 +2,11 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", False, "GetEffectivePropertyNamingPolicy", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Text.Json.SourceGeneration", "ContextGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.ContextGenerationSpec,System.Text.Json.SourceGeneration.ContextGenerationSpec)", "summary", "df-generated"]
@@ -16,7 +21,6 @@ extensions:
       - ["System.Text.Json.SourceGeneration", "PropertyGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.PropertyGenerationSpec,System.Text.Json.SourceGeneration.PropertyGenerationSpec)", "summary", "df-generated"]
       - ["System.Text.Json.SourceGeneration", "PropertyInitializerGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec,System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec)", "summary", "df-generated"]
       - ["System.Text.Json.SourceGeneration", "PropertyInitializerGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec,System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec)", "summary", "df-generated"]
-      - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", "GetEffectivePropertyNamingPolicy", "()", "summary", "df-generated"]
       - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", "op_Equality", "(System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec,System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec)", "summary", "df-generated"]
       - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec,System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec)", "summary", "df-generated"]
       - ["System.Text.Json.SourceGeneration", "TypeGenerationSpec", "IsFastPathSupported", "()", "summary", "df-generated"]
