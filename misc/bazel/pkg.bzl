@@ -383,7 +383,7 @@ def codeql_pack(
             "--destdir",
             install_dest,
         ] + ([
-            "--ripunzip=$(rlocationpath " + str(Label("//misc/bazel/internal/ripunzip")) + ")",
+            "--ripunzip=$(rlocationpath %s)" % Label("//misc/bazel/internal/ripunzip"),
             "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
         ] if zips else []),
         visibility = visibility,
