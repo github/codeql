@@ -20,7 +20,6 @@ runs:
         codeql test run \
           --threads=0 \
           --ram 50000 \
-          --search-path "${{ github.workspace }}/swift/extractor-pack" \
           --check-databases \
           --check-unused-labels \
           --check-repeated-labels \
