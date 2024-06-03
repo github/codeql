@@ -82,11 +82,13 @@ public class NewSinks
 
 public class CompoundSinks
 {
+    // neutral=Sinks;CompoundSinks;WrapNewSinkProp;(Sinks.NewSinks);summary;df-generated
     public void WrapNewSinkProp(NewSinks ns)
     {
         ns.WrapPropResponseWriteFile();
     }
 
+    // neutral=Sinks;CompoundSinks;WrapNewSinkField;(Sinks.NewSinks);summary;df-generated
     public void WrapNewSinkField(NewSinks ns)
     {
         ns.WrapFieldResponseWriteFile();
