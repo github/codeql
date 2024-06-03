@@ -1763,7 +1763,7 @@ module IteratorFlow {
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesRead(sv, result.asDef(), bb, i)
+        Ssa::ssaDefReachesReadExt(sv, result.asDef(), bb, i)
       )
     }
 
@@ -1797,7 +1797,7 @@ module IteratorFlow {
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesRead(_, def.asDef(), bbStar, iStar) and
+        Ssa::ssaDefReachesReadExt(_, def.asDef(), bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
