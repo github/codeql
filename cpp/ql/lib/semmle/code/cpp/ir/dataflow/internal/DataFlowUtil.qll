@@ -635,7 +635,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    */
   cached
   final Node getAnInput(boolean fromBackEdge) {
-    localFlowStep(result, this) and
+    result.(SsaPhiInputNode).getPhiNode() = phi and
     exists(IRBlock bPhi, IRBlock bResult |
       bPhi = phi.getBasicBlock() and bResult = result.getBasicBlock()
     |
