@@ -357,14 +357,14 @@ def codeql_pack(
     )
     py_binary(
         name = internal("installer"),
-        srcs = ["//misc/bazel/internal:install.py"],
-        main = "//misc/bazel/internal:install.py",
+        srcs = [Label("//misc/bazel/internal:install.py")],
+        main = Label("//misc/bazel/internal:install.py"),
         data = [
             internal("build-file"),
             internal("script"),
         ] + ([
             internal("zip-manifest"),
-            "//misc/bazel/internal/ripunzip",
+            Label("//misc/bazel/internal/ripunzip"),
         ] if zips else []),
         deps = ["@rules_python//python/runfiles"],
         args = [
@@ -373,7 +373,7 @@ def codeql_pack(
             "--destdir",
             install_dest,
         ] + ([
-            "--ripunzip=$(rlocationpath //misc/bazel/internal/ripunzip)",
+            "--ripunzip=$(rlocationpath %s)" % Label("//misc/bazel/internal/ripunzip"),
             "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
         ] if zips else []),
         visibility = visibility,
