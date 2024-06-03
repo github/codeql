@@ -58,7 +58,7 @@ def test_global_attribute_read():
 
 def test_local_attribute_assignment():
     # Same as `test_global_attribute_assignment`, but the assigned variable is not global
-    # In this case, we don't want flow going to the `ModuleVariableNode` for `local_var` 
+    # In this case, we don't want flow going to the `ModuleVariableNode` for `local_var`
     # (which is referenced in `test_local_attribute_read`).
     local_var = object() # $ tracked=foo
     local_var.foo = tracked # $ tracked tracked=foo
@@ -143,7 +143,7 @@ def dunder_dict_indirect_read():
 # Tracking of attribute on class instance
 # ------------------------------------------------------------------------------
 
-# attribute set in method
+# attribute set in constructor (so is always called)
 # inspired by https://github.com/github/codeql/pull/6023
 
 class MyClass2(object):
@@ -177,3 +177,88 @@ instance = MyClass3() # $ tracked=foo
 instance.print_self() # $ tracked=foo
 instance.foo = tracked # $ tracked=foo tracked
 instance.print_foo() # $ tracked=foo
+
+
+# attribute set from method on class (which may or may not be called for a specific instance)
+
+class MyClass4(object):
+    def set_foo(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+    def print_foo(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+instance = MyClass4() # $ MISSING: tracked=foo
+instance.set_foo() # $ MISSING: tracked=foo
+instance.print_foo() # $ MISSING: tracked=foo
+print(instance.foo) # $ MISSING: tracked=foo tracked
+
+
+# class-level attributes
+
+class MyClass5(object): # $ tracked=foo
+    foo = tracked # $ tracked
+    # bar is set from a classmethod
+    bar = None
+
+    def on_self(self):
+        print(self.foo) # $ MISSING: tracked=foo tracked
+        print(self.bar) # $ MISSING: tracked=bar tracked
+
+    def on_classref(self):
+        print(MyClass5.foo) # $ tracked=foo tracked
+        print(MyClass5.bar) # $ tracked=foo MISSING: tracked=bar tracked
+
+    @classmethod
+    def on_cls(cls):
+        print(cls.foo) # $ MISSING: tracked=foo tracked
+        print(cls.bar) # $ MISSING: tracked=bar tracked
+
+    @classmethod
+    def set_bar(cls): # $ tracked=bar
+        cls.bar = tracked # $ tracked=bar tracked
+
+instance = MyClass5() # $ tracked=foo
+print(instance.foo) # $ MISSING: tracked=foo tracked
+print(instance.bar) # $ MISSING: tracked=bar tracked
+
+
+# shadowing of class-level attribute by instance attribute
+
+class MyClass6(object): # $ int=foo
+    foo = int() # $ int
+
+    def set_instance_foo(self): # $ str=foo
+        self.foo = str() # $ str str=foo
+
+    def use_im(self):
+        print(self.foo) # $ MISSING: int str
+
+    @classmethod
+    def use_cls(cls):
+        print(cls.foo) # $ MISSING: int
+
+
+print(MyClass6.foo) # $ int int=foo
+
+instance = MyClass6() # $ int=foo
+print(instance.foo) # $ MISSING: int
+instance.set_instance_foo()
+print(instance.foo) # $ MISSING: int str
+
+
+# class-level attributes flowing between subclasses
+
+class BaseClass(object):
+    def set_foo(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+    def use_foo(self):
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+class SubClass(BaseClass): # $ MISSING: tracked=foo
+    def also_use_foo(self):
+        print(self.foo) # $ MISSING: tracked=foo tracked
