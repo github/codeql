@@ -1,7 +1,7 @@
 import TestUtilities.dataflow.FlowTestCommon
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.dataflow.ExternalFlow
+import semmle.code.cpp.security.FlowSources
 
 module IRTest {
   private import semmle.code.cpp.ir.IR
@@ -10,11 +10,22 @@ module IRTest {
   /** Common data flow configuration to be used by tests. */
   module TestAllocationConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
+      // external flow source node
       sourceNode(source, _)
+      or
+      // test source function
+      source.asExpr().(FunctionCall).getTarget().getName() = "source"
     }
 
     predicate isSink(DataFlow::Node sink) {
-      sinkNode(sink, "test-sink")
+      // external flow sink node
+      sinkNode(sink, _)
+      or
+      // test sink function
+      exists(FunctionCall call |
+        call.getTarget().getName() = "sink" and
+        sink.asExpr() = call.getAnArgument()
+      )
     }
   }
 
