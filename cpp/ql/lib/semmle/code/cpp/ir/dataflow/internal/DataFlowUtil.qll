@@ -160,6 +160,12 @@ class Node extends TIRDataFlowNode {
   Operand asOperand() { result = this.(OperandNode).getOperand() }
 
   /**
+   * Gets the operand that is indirectly tracked by this node behind `index`
+   * number of indirections.
+   */
+  Operand asIndirectOperand(int index) { hasOperandAndIndex(this, result, index) }
+
+  /**
    * Holds if this node is at index `i` in basic block `block`.
    *
    * Note: Phi nodes are considered to be at index `-1`.
@@ -2673,6 +2679,22 @@ class ContentSet instanceof Content {
   }
 }
 
+pragma[nomagic]
+private predicate guardControlsPhiInput(
+  IRGuardCondition g, boolean branch, Ssa::Definition def, IRBlock input, Ssa::PhiInputNodeExt phi
+) {
+  phi.hasInputFromBlock(def, input) and
+  (
+    g.controls(input, branch)
+    or
+    exists(EdgeKind kind |
+      g.getBlock() = input and
+      kind = getConditionalEdge(branch) and
+      input.getSuccessor(kind) = phi.getBasicBlock()
+    )
+  )
+}
+
 /**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
@@ -2721,12 +2743,21 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
    */
-  ExprNode getABarrierNode() {
+  Node getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
-      result.getConvertedExpr() = e and
+      result.asConvertedExpr() = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input,
+      Ssa::PhiInputNodeExt phi
+    |
+      guardChecks(g, def.getARead().asOperand().getDef().getConvertedResultExpression(), branch) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaPhiInputNode(phi.getPhi(), input)
     )
   }
 
@@ -2763,7 +2794,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
-  IndirectExprNode getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
+  Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
 
   /**
    * Gets an indirect expression node with indirection index `indirectionIndex` that is
@@ -2799,12 +2830,23 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
-  IndirectExprNode getAnIndirectBarrierNode(int indirectionIndex) {
+  Node getAnIndirectBarrierNode(int indirectionIndex) {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
-      result.getConvertedExpr(indirectionIndex) = e and
+      result.asIndirectConvertedExpr(indirectionIndex) = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input,
+      Ssa::PhiInputNodeExt phi
+    |
+      guardChecks(g,
+        def.getARead().asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
+        branch) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaPhiInputNode(phi.getPhi(), input)
     )
   }
 }
@@ -2814,6 +2856,14 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  */
 signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction instr, boolean branch);
 
+private EdgeKind getConditionalEdge(boolean branch) {
+  branch = true and
+  result instanceof TrueEdge
+  or
+  branch = false and
+  result instanceof FalseEdge
+}
+
 /**
  * Provides a set of barrier nodes for a guard that validates an instruction.
  *
@@ -2822,12 +2872,21 @@ signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction in
  */
 module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
-  ExprNode getABarrierNode() {
+  Node getABarrierNode() {
     exists(IRGuardCondition g, ValueNumber value, boolean edge, Operand use |
       instructionGuardChecks(g, value.getAnInstruction(), edge) and
       use = value.getAnInstruction().getAUse() and
       result.asOperand() = use and
-      g.controls(use.getDef().getBlock(), edge)
+      g.controls(result.getBasicBlock(), edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input,
+      Ssa::PhiInputNodeExt phi
+    |
+      instructionGuardChecks(g, def.getARead().asOperand().getDef(), branch) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaPhiInputNode(phi.getPhi(), input)
     )
   }
 }
