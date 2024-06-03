@@ -8,7 +8,8 @@ extensions:
       pack: codeql/python-all
       extensible: sinkModel
     data:
-      - ["subprocess", "Member[Popen].Subclass.Call.Argument[0,args:]", "log-injection"]
+      - ["subprocess.Popen!","Subclass.Call.Argument[0,args:]", "log-injection"]
+      - ["zipfile.ZipFile","Member[extractall].Argument[0,path:]", "path-injection"]
 
   - addsTo:
       pack: codeql/python-all
