@@ -65,5 +65,4 @@ codeql_pack(
         "//go/downgrades",
         "//go/extractor:tokenizer",
     ],
-    install_dest = "build/codeql-extractor-pack",
 )
