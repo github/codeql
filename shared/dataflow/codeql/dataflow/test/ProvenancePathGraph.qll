@@ -26,6 +26,7 @@ signature module PathGraphSig<PathNodeSig PathNode> {
   predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
 }
 
+/** Transforms a `PathGraph` by printing the provenance information. */
 module ShowProvenance<
   interpretModelForTestSig/2 interpretModelForTest, PathNodeSig PathNode,
   PathGraphSig<PathNode> PathGraph>
