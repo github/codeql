@@ -13,6 +13,7 @@ extensions:
       - ["System.Composition", "CompositionContext", False, "TryGetExport", "(System.Type,System.String,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition", "CompositionContext", False, "TryGetExport<TExport>", "(System.String,TExport)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition", "CompositionContext", False, "TryGetExport<TExport>", "(TExport)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Composition", "CompositionContext", True, "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition", "SharingBoundaryAttribute", False, "SharingBoundaryAttribute", "(System.String[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Composition", "SharingBoundaryAttribute", False, "get_SharingBoundaryNames", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
@@ -23,7 +24,6 @@ extensions:
       - ["System.Composition", "CompositionContext", "GetExports", "(System.Type,System.String)", "summary", "df-generated"]
       - ["System.Composition", "CompositionContext", "GetExports<TExport>", "()", "summary", "df-generated"]
       - ["System.Composition", "CompositionContext", "GetExports<TExport>", "(System.String)", "summary", "df-generated"]
-      - ["System.Composition", "CompositionContext", "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "summary", "df-generated"]
       - ["System.Composition", "CompositionContextExtensions", "SatisfyImports", "(System.Composition.CompositionContext,System.Object)", "summary", "df-generated"]
       - ["System.Composition", "CompositionContextExtensions", "SatisfyImports", "(System.Composition.CompositionContext,System.Object,System.Composition.Convention.AttributedModelProvider)", "summary", "df-generated"]
       - ["System.Composition", "Export<T>", "Dispose", "()", "summary", "df-generated"]

@@ -4,6 +4,7 @@ cc_library(
         "zipmerge.cpp",
     ],
     hdrs = ["zipmerge.h"],
+    copts = ["-std=c++20"],
 )
 
 cc_binary(
@@ -11,6 +12,7 @@ cc_binary(
     srcs = [
         "zipmerge_main.cpp",
     ],
+    copts = ["-std=c++20"],
     visibility = ["//visibility:public"],
     deps = [
         ":lib",
@@ -21,6 +23,7 @@ cc_test(
     name = "test",
     size = "small",
     srcs = ["zipmerge_test.cpp"],
+    copts = ["-std=c++20"],
     data = glob(["test-files/*"]),
     linkstatic = True,  # required to build the test in the internal repo
     deps = [

@@ -96,7 +96,6 @@ extensions:
       - ["Microsoft.Extensions.Options", "OptionsMonitor<TOptions>", "get_CurrentValue", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsValidationException", "OptionsValidationException", "(System.String,System.Type,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsValidationException", "get_Failures", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Options", "OptionsValidationException", "get_Message", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsValidationException", "get_OptionsName", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsValidationException", "get_OptionsType", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsWrapper<TOptions>", "OptionsWrapper", "(TOptions)", "summary", "df-generated"]

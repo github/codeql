@@ -7,6 +7,7 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_fil
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo")
 load("@rules_python//python:defs.bzl", "py_binary")
+load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "os_select")
 
 def _make_internal(name):
     def internal(suffix = "internal", *args):
@@ -14,11 +15,6 @@ def _make_internal(name):
         return "-".join(args)
 
     return internal
-
-_PLAT_DETECTION_ATTRS = {
-    "_windows": attr.label(default = "@platforms//os:windows"),
-    "_macos": attr.label(default = "@platforms//os:macos"),
-}
 
 _PLAT_PLACEHOLDER = "{CODEQL_PLATFORM}"
 
@@ -28,28 +24,8 @@ def _expand_path(path, platform):
         return ("arch", path)
     return ("generic", path)
 
-def _platform_select(
-        ctx = None,
-        *,
-        linux,
-        windows,
-        macos):
-    if ctx:
-        if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]):
-            return windows
-        elif ctx.target_platform_has_constraint(ctx.attr._macos[platform_common.ConstraintValueInfo]):
-            return macos
-        else:
-            return linux
-    else:
-        return select({
-            "@platforms//os:linux": linux,
-            "@platforms//os:macos": macos,
-            "@platforms//os:windows": windows,
-        })
-
 def _detect_platform(ctx = None):
-    return _platform_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
+    return os_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
 
 def codeql_pkg_files(
         *,
@@ -137,7 +113,7 @@ _extract_pkg_filegroup = rule(
         "src": attr.label(providers = [PackageFilegroupInfo, DefaultInfo]),
         "kind": attr.string(doc = "What part to extract", values = ["generic", "arch"]),
         "arch_overrides": attr.string_list(doc = "A list of files that should be included in the arch package regardless of the path"),
-    } | _PLAT_DETECTION_ATTRS,
+    } | OS_DETECTION_ATTRS,
 )
 
 _ZipInfo = provider(fields = {"zips_to_prefixes": "mapping of zip files to prefixes"})
@@ -187,7 +163,7 @@ _zip_info_filter = rule(
     attrs = {
         "srcs": attr.label_list(doc = "_ZipInfos to transform", providers = [_ZipInfo]),
         "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
-    } | _PLAT_DETECTION_ATTRS,
+    } | OS_DETECTION_ATTRS,
 )
 
 def _imported_zips_manifest_impl(ctx):
@@ -284,19 +260,19 @@ def codeql_pack(
         install_dest = "extractor-pack",
         compression_level = None,
         arch_overrides = None,
-        prefix_override = None,
+        zip_prefix = None,
         **kwargs):
     """
     Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
-    `zips` is a map from prefixes to `.zip` files to import.
+    `zips` is a map from `.zip` files to prefixes to import.
     * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
-      prefixed with `name`
+      prefixed with `zip_prefix`
     * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
-      arch-specific bits, prefixed with `name`
+      arch-specific bits, prefixed with `zip_prefix`
     * defines a runnable `<name>-installer` target that will install the pack in `install_dest`, relative to where the
       rule is used. The install destination can be overridden appending `-- --destdir=...` to the `bazel run`
-      invocation. This installation _does not_ prefix the contents with `name`.
-    The prefix for the zip files can be overriden with `prefix_override`.
+      invocation. This installation _does not_ prefix the contents with `zip_prefix`.
+    The prefix for the zip files can be set with `zip_prefix`, it is `name` by default.
 
     The distinction between arch-specific and generic contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
@@ -310,9 +286,8 @@ def codeql_pack(
     internal = _make_internal(name)
     zip_filename = zip_filename or name
     zips = zips or {}
-    prefix = name
-    if prefix_override != None:
-        prefix = prefix_override
+    if zip_prefix == None:
+        zip_prefix = name
     pkg_filegroup(
         name = internal("all"),
         srcs = srcs,
@@ -350,7 +325,7 @@ def codeql_pack(
                 name = internal(kind, "zip"),
                 srcs = [internal(kind, "zip-base"), internal(kind, "zip-info")],
                 out = _get_zip_filename(name, kind),
-                prefix = prefix,
+                prefix = zip_prefix,
                 visibility = visibility,
             )
         else:
@@ -358,7 +333,7 @@ def codeql_pack(
                 name = internal(kind, "zip"),
                 srcs = [internal(kind)],
                 visibility = visibility,
-                package_dir = prefix,
+                package_dir = zip_prefix,
                 package_file_name = _get_zip_filename(name, kind),
                 compression_level = compression_level,
             )
@@ -382,14 +357,14 @@ def codeql_pack(
     )
     py_binary(
         name = internal("installer"),
-        srcs = ["//misc/bazel/internal:install.py"],
-        main = "//misc/bazel/internal:install.py",
+        srcs = [Label("//misc/bazel/internal:install.py")],
+        main = Label("//misc/bazel/internal:install.py"),
         data = [
             internal("build-file"),
             internal("script"),
         ] + ([
             internal("zip-manifest"),
-            "//misc/bazel/internal/ripunzip",
+            Label("//misc/bazel/internal/ripunzip"),
         ] if zips else []),
         deps = ["@rules_python//python/runfiles"],
         args = [
@@ -398,7 +373,7 @@ def codeql_pack(
             "--destdir",
             install_dest,
         ] + ([
-            "--ripunzip=$(rlocationpath //misc/bazel/internal/ripunzip)",
+            "--ripunzip=$(rlocationpath %s)" % Label("//misc/bazel/internal/ripunzip"),
             "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
         ] if zips else []),
         visibility = visibility,

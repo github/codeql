@@ -50,6 +50,7 @@ if opts.zip_manifest:
         for line in manifest:
             prefix, _, zip = line.partition(":")
             assert zip, f"missing prefix for {prefix}, you should use prefix:zip format"
+            zip = zip.strip()
             dest = destdir / prefix
             dest.mkdir(parents=True, exist_ok=True)
             subprocess.run([ripunzip, "unzip-file", zip, "-d", dest], check=True)

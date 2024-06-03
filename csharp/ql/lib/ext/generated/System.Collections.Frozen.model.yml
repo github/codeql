@@ -6,10 +6,8 @@ extensions:
     data:
       - ["System.Collections.Frozen", "FrozenDictionary", False, "ToFrozenDictionary<TKey,TValue>", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>", False, "get_SyncRoot", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet", False, "ToFrozenSet<T>", "(System.Collections.Generic.IEnumerable<T>,System.Collections.Generic.IEqualityComparer<T>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet<T>+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Collections.Frozen", "FrozenSet<T>", False, "get_SyncRoot", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

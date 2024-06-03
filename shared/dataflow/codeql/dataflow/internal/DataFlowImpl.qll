@@ -348,7 +348,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       not stateBarrier(node2, state2)
     }
 
-    pragma[nomagic]
+    bindingset[n, cc]
+    pragma[inline_late]
     private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
       cc.unreachable(n.asNode())
     }

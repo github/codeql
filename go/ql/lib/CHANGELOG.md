@@ -8,7 +8,7 @@
 
 * A bug has been fixed which meant that the query `go/incorrect-integer-conversion` did not consider type assertions and type switches which use a defined type whose underlying type is an integer type. This may lead to fewer false positive alerts.
 * A bug has been fixed which meant flow was not followed through some ranged for loops. This may lead to more alerts being found.
-* Converted the models for the built-in functions `append`, `copy`, `max` and `min` to value flow and Models-as-Data.
+* Added value flow models for the built-in functions `append`, `copy`, `max` and `min` using Models-as-Data. Removed the old-style models for `max` and `min`.
 
 ## 0.8.1
 
