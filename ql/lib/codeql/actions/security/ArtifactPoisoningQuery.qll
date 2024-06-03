@@ -44,7 +44,7 @@ class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep
     ) and
     (
       not exists(this.getArgument(["run-id", "run_id", "workflow-run-id", "workflow_run_id"])) or
-      not this.getArgument(["run-id", "run_id", "workflow-run-id", "workflow_run_id"])
+      this.getArgument(["run-id", "run_id", "workflow-run-id", "workflow_run_id"])
           .matches("%github.event.workflow_run.id%")
     ) and
     (
