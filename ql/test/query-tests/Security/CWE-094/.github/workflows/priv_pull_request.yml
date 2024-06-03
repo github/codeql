@@ -1,0 +1,14 @@
+name: Privileged (only when local) pull request
+
+on:
+  pull_request:
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.body }}"

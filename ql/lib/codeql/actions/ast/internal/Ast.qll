@@ -890,7 +890,8 @@ class JobImpl extends AstNodeImpl, TJobNode {
       e.isExternallyTriggerable() and
       // job is privileged (write access or access to secrets)
       (
-        this.isPrivileged()
+        this.isPrivileged() and
+        not e.getName() = "pull_request"
         or
         not this.isPrivileged() and
         e.isPrivileged()
