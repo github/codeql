@@ -7,6 +7,12 @@ dependencies:
     version: 1.0.0
   codeql/ssa:
     version: 1.0.0
+  codeql/javascript-all:
+    version: 1.0.0
+  codeql/regex:
+    version: 1.0.0
+  codeql/tutorial:
+    version: 1.0.0
   codeql/typetracking:
     version: 1.0.0
   codeql/util:

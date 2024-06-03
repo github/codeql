@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["plasmicapp/plasmic-action", "*", "input.project_id", "command-injection", "manual"]
       - ["plasmicapp/plasmic-action", "*", "input.project_api_token", "command-injection", "manual"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["intel-analytics/ipex-llm", "*", "input.extra-dependency", "code-injection", "generated"]

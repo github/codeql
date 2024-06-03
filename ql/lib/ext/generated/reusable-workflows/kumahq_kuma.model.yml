@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["kumahq/kuma/.github/workflows/_build_publish.yaml", "*", "input.VERSION_NAME", "code-injection", "generated"]
      - ["kumahq/kuma/.github/workflows/_build_publish.yaml", "*", "input.REGISTRY", "code-injection", "generated"]

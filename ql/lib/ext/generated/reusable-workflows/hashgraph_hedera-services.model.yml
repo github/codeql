@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["hashgraph/hedera-services/.github/workflows/zxc-publish-production-image.yaml", "*", "input.version", "output.docker-image-tag", "taint", "manual"]
       - ["hashgraph/hedera-services/.github/workflows/zxc-publish-production-image.yaml", "*", "input.version", "output.docker-image", "taint", "manual"]

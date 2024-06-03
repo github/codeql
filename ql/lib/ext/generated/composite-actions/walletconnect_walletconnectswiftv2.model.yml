@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["walletconnect/walletconnectswiftv2", "*", "input.js-client-api-host", "code-injection", "generated"]
      - ["walletconnect/walletconnectswiftv2", "*", "input.project-id", "code-injection", "generated"]

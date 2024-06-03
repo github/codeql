@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["sonarr/sonarr/.github/workflows/deploy.yml", "*", "input.version", "code-injection", "generated"]
      - ["sonarr/sonarr/.github/workflows/deploy.yml", "*", "input.branch", "code-injection", "generated"]

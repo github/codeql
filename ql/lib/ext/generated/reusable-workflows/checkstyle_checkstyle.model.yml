@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["checkstyle/checkstyle/.github/workflows/release-upload-all-jar.yml", "*", "input.version", "code-injection", "generated"]
      - ["checkstyle/checkstyle/.github/workflows/release-update-xdoc-with-releasenotes.yml", "*", "input.version", "code-injection", "generated"]

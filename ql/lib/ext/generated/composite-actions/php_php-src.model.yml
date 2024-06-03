@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["php/php-src", "*", "input.jitType", "code-injection", "generated"]
      - ["php/php-src", "*", "input.runTestsParameters", "code-injection", "generated"]

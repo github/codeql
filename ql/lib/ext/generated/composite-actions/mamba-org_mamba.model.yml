@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["mamba-org/mamba", "*", "input.key_suffix", "code-injection", "generated"]
      - ["mamba-org/mamba", "*", "input.key_base", "code-injection", "generated"]

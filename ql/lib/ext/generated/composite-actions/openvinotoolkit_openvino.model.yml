@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["openvinotoolkit/openvino", "*", "input.skip_when_only_listed_files_changed", "code-injection", "generated"]
      - ["openvinotoolkit/openvino", "*", "input.skip_when_only_listed_labels_set", "code-injection", "generated"]

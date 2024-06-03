@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["argoproj/argo-rollouts/.github/workflows/image-reuse.yaml", "*", "input.docker_image_name", "code-injection", "generated"]
      - ["argoproj/argo-rollouts/.github/workflows/image-reuse.yaml", "*", "input.ghcr_image_name", "code-injection", "generated"]

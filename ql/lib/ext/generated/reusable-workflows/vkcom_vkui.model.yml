@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["vkcom/vkui/.github/workflows/reusable_workflow_test.yml", "*", "input.workspace", "code-injection", "generated"]

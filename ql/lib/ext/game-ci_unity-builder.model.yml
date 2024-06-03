@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["game-ci/unity-builder", "*", "input.cacheKey", "command-injection", "manual"]
       - ["game-ci/unity-builder", "*", "input.unityHubVersionOnMac", "command-injection", "manual"]

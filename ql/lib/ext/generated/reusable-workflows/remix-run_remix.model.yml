@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["remix-run/remix/.github/workflows/stacks.yml", "*", "input.version", "code-injection", "generated"]

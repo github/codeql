@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["jhipster/generator-jhipster", "*", "input.generator-path", "code-injection", "generated"]
      - ["jhipster/generator-jhipster", "*", "input.application-packaging", "code-injection", "generated"]
@@ -22,6 +22,6 @@ extensions:
      - ["jhipster/generator-jhipster", "*", "input.extra-args", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["jhipster/generator-jhipster", "*", "input.skip-workflow", "output.skip-workflow", "taint", "manual"]

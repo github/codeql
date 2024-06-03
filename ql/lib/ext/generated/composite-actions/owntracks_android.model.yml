@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["owntracks/android", "*", "input.name", "code-injection", "generated"]
      - ["owntracks/android", "*", "input.path", "code-injection", "generated"]

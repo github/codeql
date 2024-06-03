@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["metabase/metabase", "*", "input.organization_name", "code-injection", "generated"]
      - ["metabase/metabase", "*", "input.github_token", "code-injection", "generated"]

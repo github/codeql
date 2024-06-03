@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["apache/nuttx", "*", "input.haskell", "code-injection", "generated"]
      - ["apache/nuttx", "*", "input.dotnet", "code-injection", "generated"]

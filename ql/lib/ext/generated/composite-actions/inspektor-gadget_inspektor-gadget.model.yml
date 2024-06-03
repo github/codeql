@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["inspektor-gadget/inspektor-gadget", "*", "input.runtime", "code-injection", "generated"]
      - ["inspektor-gadget/inspektor-gadget", "*", "input.registry", "code-injection", "generated"]

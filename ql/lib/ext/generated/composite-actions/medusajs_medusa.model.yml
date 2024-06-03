@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["medusajs/medusa", "*", "input.pathToSeedData", "code-injection", "generated"]
      - ["medusajs/medusa", "*", "input.password", "code-injection", "generated"]

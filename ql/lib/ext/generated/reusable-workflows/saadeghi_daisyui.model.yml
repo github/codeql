@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["saadeghi/daisyui/.github/workflows/write-release-notes.yml", "*", "input.daisyuiversion", "code-injection", "generated"]
      - ["saadeghi/daisyui/.github/workflows/deploy-docs.yml", "*", "input.daisyuiversion", "code-injection", "generated"]

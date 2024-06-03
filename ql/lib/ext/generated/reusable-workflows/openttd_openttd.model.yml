@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["openttd/openttd/.github/workflows/release-windows.yml", "*", "input.survey_key", "code-injection", "generated"]
      - ["openttd/openttd/.github/workflows/upload-steam.yml", "*", "input.trigger_type", "code-injection", "generated"]

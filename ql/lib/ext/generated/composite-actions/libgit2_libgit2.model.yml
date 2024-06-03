@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["libgit2/libgit2", "*", "input.command", "code-injection", "generated"]
      - ["libgit2/libgit2", "*", "input.container-version", "code-injection", "generated"]

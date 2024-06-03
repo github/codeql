@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["thesofproject/sof/.github/workflows/ipc_fuzzer.yml", "*", "input.fuzzing_duration_s", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["apache/camel-k", "*", "input.test-suite", "code-injection", "generated"]
      - ["apache/camel-k", "*", "input.image-version", "code-injection", "generated"]

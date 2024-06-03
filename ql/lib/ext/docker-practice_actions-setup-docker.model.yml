@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["docker-practice/actions-setup-docker", "*", "input.docker_version", "command-injection", "manual"]
       - ["docker-practice/actions-setup-docker", "*", "input.docker_channel", "command-injection", "manual"]

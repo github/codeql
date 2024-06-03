@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["homebrew/actions", "*", "input.casks", "code-injection", "generated"]
      - ["homebrew/actions", "*", "input.formulae", "code-injection", "generated"]

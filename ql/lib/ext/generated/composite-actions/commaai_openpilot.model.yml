@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["commaai/openpilot", "*", "input.sleep_time", "code-injection", "generated"]
      - ["commaai/openpilot", "*", "input.docker_hub_pat", "code-injection", "generated"]

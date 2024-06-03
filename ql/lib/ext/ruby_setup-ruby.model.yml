@@ -1,11 +1,11 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["ruby/setup-ruby", "*", "input.ruby-version", "output.ruby-prefix", "taint", "manual"]
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["ruby/setup-ruby", "*", "input.ruby-version", "command-injection", "manual"]

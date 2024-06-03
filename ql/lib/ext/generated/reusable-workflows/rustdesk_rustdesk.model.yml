@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "input.target_version", "code-injection", "generated"]
      - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "input.configuration", "code-injection", "generated"]

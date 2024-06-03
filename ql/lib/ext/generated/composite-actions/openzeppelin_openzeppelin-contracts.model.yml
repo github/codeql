@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["openzeppelin/openzeppelin-contracts", "*", "input.layout", "code-injection", "generated"]
      - ["openzeppelin/openzeppelin-contracts", "*", "input.out_layout", "code-injection", "generated"]

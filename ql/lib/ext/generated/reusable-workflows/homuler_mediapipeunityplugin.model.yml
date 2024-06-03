@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.windowsBuildArgs", "code-injection", "generated"]
      - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.bazelBuildArgs", "code-injection", "generated"]

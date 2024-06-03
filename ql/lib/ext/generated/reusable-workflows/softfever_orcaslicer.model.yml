@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["softfever/orcaslicer/.github/workflows/build_orca.yml", "*", "input.arch", "code-injection", "generated"]
      - ["softfever/orcaslicer/.github/workflows/build_deps.yml", "*", "input.arch", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["solidusio/solidus", "*", "input.last_minor", "code-injection", "generated"]
      - ["solidusio/solidus", "*", "input.labels", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["newrelic/newrelic-dotnet-agent/.github/workflows/publish_release_notes.yml", "*", "input.agent_version", "code-injection", "generated"]
      - ["newrelic/newrelic-dotnet-agent/.github/workflows/post_deploy_agent.yml", "*", "input.test_mode", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["lf-edge/eve", "*", "input.command", "code-injection", "generated"]
      - ["lf-edge/eve", "*", "input.dockerhub-account", "code-injection", "generated"]

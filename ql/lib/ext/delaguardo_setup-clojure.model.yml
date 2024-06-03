@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["delaguardo/setup-clojure", "*", "input.boot", "env.BOOT_VERSION", "taint", "manual"]

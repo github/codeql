@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["juicedata/juicefs", "*", "input.compress", "code-injection", "generated"]
      - ["juicedata/juicefs", "*", "input.storage", "code-injection", "generated"]

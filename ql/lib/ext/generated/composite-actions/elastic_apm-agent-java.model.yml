@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["elastic/apm-agent-java", "*", "input.tag", "code-injection", "generated"]
      - ["elastic/apm-agent-java", "*", "input.path", "code-injection", "generated"]

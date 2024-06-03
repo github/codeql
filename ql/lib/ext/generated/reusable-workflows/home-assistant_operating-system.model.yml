@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["home-assistant/operating-system/.github/workflows/test.yaml", "*", "input.version", "code-injection", "generated"]
      - ["home-assistant/operating-system/.github/workflows/artifacts-index.yaml", "*", "input.version", "code-injection", "generated"]

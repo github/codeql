@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["rmcrackan/libation/.github/workflows/build-windows.yml", "*", "input.version_override", "code-injection", "generated"]
      - ["rmcrackan/libation/.github/workflows/build-linux.yml", "*", "input.architecture", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["saltstack/salt", "*", "input.version", "code-injection", "generated"]
      - ["saltstack/salt", "*", "input.upload-chunk-size", "code-injection", "generated"]

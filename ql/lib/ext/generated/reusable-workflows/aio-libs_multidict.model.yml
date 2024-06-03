@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["aio-libs/multidict/.github/workflows/reusable-build-wheel.yml", "*", "input.wheel-tags-to-skip", "code-injection", "generated"]
      - ["aio-libs/multidict/.github/workflows/reusable-build-wheel.yml", "*", "input.qemu", "code-injection", "generated"]

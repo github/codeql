@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["hyperledger/fabric-samples", "*", "input.ca-version", "code-injection", "generated"]
      - ["hyperledger/fabric-samples", "*", "input.fabric-version", "code-injection", "generated"]

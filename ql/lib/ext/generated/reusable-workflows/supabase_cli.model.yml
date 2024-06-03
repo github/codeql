@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["supabase/cli/.github/workflows/mirror-image.yml", "*", "input.image", "code-injection", "generated"]

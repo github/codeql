@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["cesiumgs/cesium-unreal/.github/workflows/testWindows.yml", "*", "input.unreal-program-name", "code-injection", "generated"]
      - ["cesiumgs/cesium-unreal/.github/workflows/testWindows.yml", "*", "input.test-package-base-name", "code-injection", "generated"]

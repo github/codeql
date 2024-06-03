@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["phalcon/cphalcon", "*", "input.target-name", "code-injection", "generated"]
      - ["phalcon/cphalcon", "*", "input.ext-path", "code-injection", "generated"]

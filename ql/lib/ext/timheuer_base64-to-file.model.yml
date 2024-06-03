@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["timheuer/base64-to-file", "*", "input.fileName", "output.filePath", "taint", "manual"]
       - ["timheuer/base64-to-file", "*", "input.fileDir", "output.filePath", "taint", "manual"]

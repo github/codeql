@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["azure/mlops-templates/.github/workflows/tf-gha-install-terraform.yml", "*", "input.terraform_workingdir", "code-injection", "generated"]
      - ["azure/mlops-templates/.github/workflows/run-pipeline.yml", "*", "input.parameters-file", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "input.org", "code-injection", "generated"]
      - ["foundatiofx/foundatio/.github/workflows/build-workflow.yml", "*", "input.solution", "code-injection", "generated"]

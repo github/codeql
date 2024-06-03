@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["linkerd/linkerd2", "*", "input.component", "code-injection", "generated"]
      - ["linkerd/linkerd2", "*", "input.docker-registry", "code-injection", "generated"]
@@ -9,7 +9,7 @@ extensions:
      - ["linkerd/linkerd2", "*", "input.docker-ghcr-pat", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["linkerd/linkerd2", "*", "input.component", "output.image", "taint", "manual"]
       - ["linkerd/linkerd2", "*", "input.tag", "output.image", "taint", "manual"]

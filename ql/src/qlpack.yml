@@ -6,8 +6,9 @@ groups:
   - actions
   - queries
 suites: codeql-suites
-extractor: yaml
+extractor: javascript
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
+  codeql/javascript-all: ^1.0.0
   githubsecuritylab/actions-all: ${workspace}
 warnOnImplicitThis: true

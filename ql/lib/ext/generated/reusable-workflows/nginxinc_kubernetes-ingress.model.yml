@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "input.target_tag", "code-injection", "generated"]
      - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "input.source_tag", "code-injection", "generated"]

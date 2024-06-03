@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["rook/rook", "*", "input.use-tmate", "code-injection", "generated"]
      - ["rook/rook", "*", "input.kubernetes-version", "code-injection", "generated"]

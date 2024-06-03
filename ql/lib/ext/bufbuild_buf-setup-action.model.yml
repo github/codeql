@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["bufbuild/buf-setup-action", "*", "input.buf_domain", "command-injection", "manual"]
       - ["bufbuild/buf-setup-action", "*", "input.buf_user", "command-injection", "manual"]

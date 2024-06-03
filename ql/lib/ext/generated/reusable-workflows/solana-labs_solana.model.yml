@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["solana-labs/solana/.github/workflows/release-artifacts.yml", "*", "input.commit", "code-injection", "generated"]
