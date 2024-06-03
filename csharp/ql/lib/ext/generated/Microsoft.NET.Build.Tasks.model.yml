@@ -4,7 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", False, "GenerateResponseFileCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateResponseFileCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

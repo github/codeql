@@ -430,6 +430,18 @@ public class SimpleTypes
     {
         return i;
     }
+
+    // neutral=Models;SimpleTypes;M5;(System.DateTime);summary;df-generated
+    public DateTime M5(DateTime d)
+    {
+        return d;
+    }
+
+    // neutral=Models;SimpleTypes;M6;(System.Type);summary;df-generated
+    public Type M6(Type t)
+    {
+        return t;
+    }
 }
 
 // No models as higher order methods are excluded
