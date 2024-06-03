@@ -53,6 +53,12 @@ func Zero() SemVer {
 // versions are also automatically corrected from e.g. "go1.20rc1" to "v1.20-rc1". If given
 // the empty string, this function return `nil`. Otherwise, for invalid version strings, the function
 // prints a message to the log and exits the process.
+//
+// Note that we deliberately do not format the resulting [SemVer] to be in a `Canonical` representation.
+// This is because we want to maintain the input version specificity for as long as possible. This is useful
+// for e.g. `IdentifyEnvironment` where we want to output "1.22" if the project specifies "1.22" as the
+// required Go version, rather than outputting "1.22.0", which implies a specific patch-level version
+// when the intention is that any patch-level version of "1.22" is acceptable.
 func NewSemVer(version string) SemVer {
 	// If the input is the empty string, return `nil` since we use `nil` to represent "no version".
 	if version == "" {
