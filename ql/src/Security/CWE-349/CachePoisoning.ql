@@ -24,7 +24,7 @@ where
   // TODO: Consider adding artifact downloads as a potential source of cache poisoning
   j.getAStep() = checkout and
   // job can be triggered by an external user
-  j.isExternallyTriggerable() and
+  j.getATriggerEvent().isExternallyTriggerable() and
   (
     // the job writes to the cache
     // (No need to follow the checkout step as the cache writing is normally done after the job completes)

@@ -22,7 +22,7 @@ where
   CodeInjectionFlow::flowPath(source, sink) and
   j = sink.getNode().asExpr().getEnclosingJob() and
   // job can be triggered by an external user
-  j.isExternallyTriggerable() and
+  j.getATriggerEvent().isExternallyTriggerable() and
   // excluding privileged workflows since they can be easily exploited in similar circumstances
   not j.isPrivileged() and
   // The workflow runs in the context of the default branch

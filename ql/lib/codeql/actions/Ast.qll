@@ -77,6 +77,8 @@ class CompositeAction extends AstNode instanceof CompositeActionImpl {
   LocalJob getACaller() { result = super.getACaller() }
 
   predicate isPrivileged() { super.isPrivileged() }
+
+  predicate isPrivilegedExternallyTriggerable() { super.isPrivilegedExternallyTriggerable() }
 }
 
 /**
@@ -169,6 +171,10 @@ class Event extends AstNode instanceof EventImpl {
   string getAPropertyValue(string prop) { result = super.getAPropertyValue(prop) }
 
   predicate hasProperty(string prop) { super.hasProperty(prop) }
+
+  predicate isExternallyTriggerable() { super.isExternallyTriggerable() }
+
+  predicate isPrivileged() { super.isPrivileged() }
 }
 
 /**
@@ -198,11 +204,11 @@ abstract class Job extends AstNode instanceof JobImpl {
 
   Strategy getStrategy() { result = super.getStrategy() }
 
+  string getARunsOnLabel() { result = super.getARunsOnLabel() }
+
   predicate isPrivileged() { super.isPrivileged() }
 
-  predicate isExternallyTriggerable() { super.isExternallyTriggerable() }
-
-  string getARunsOnLabel() { result = super.getARunsOnLabel() }
+  predicate isPrivilegedExternallyTriggerable() { super.isPrivilegedExternallyTriggerable() }
 }
 
 class LocalJob extends Job instanceof LocalJobImpl {

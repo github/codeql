@@ -210,54 +210,28 @@ predicate writeToGitHubPath(Run run, string content) {
 
 predicate inPrivilegedCompositeAction(AstNode node) {
   exists(CompositeAction a |
-    // node is in a privileged composite action
     a = node.getEnclosingCompositeAction() and
-    (
-      a.isPrivileged()
-      or
-      exists(Job caller |
-        caller = a.getACaller() and
-        caller.isPrivileged() and
-        caller.isExternallyTriggerable()
-      )
-    )
-  )
-}
-
-predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
-  exists(Job j |
-    // node is in a privileged and externally triggereable job
-    j = node.getEnclosingJob() and
-    // job is privileged (write access or access to secrets)
-    j.isPrivileged() and
-    // job is triggereable by an external user
-    j.isExternallyTriggerable()
+    a.isPrivilegedExternallyTriggerable()
   )
 }
 
 predicate inNonPrivilegedCompositeAction(AstNode node) {
   exists(CompositeAction a |
-    // node is in a non-privileged composite action
     a = node.getEnclosingCompositeAction() and
-    not a.isPrivileged() and
-    not exists(LocalJob caller |
-      caller = a.getACaller() and
-      caller.isPrivileged() and
-      caller.isExternallyTriggerable()
-    )
+    not a.isPrivilegedExternallyTriggerable()
+  )
+}
+
+predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
+  exists(Job j |
+    j = node.getEnclosingJob() and
+    j.isPrivilegedExternallyTriggerable()
   )
 }
 
 predicate inNonPrivilegedJob(AstNode node) {
   exists(Job j |
-    // node is in a non-privileged or not externally triggereable job
     j = node.getEnclosingJob() and
-    (
-      // job is non-privileged (no write access and no access to secrets)
-      not j.isPrivileged()
-      or
-      // job is triggereable by an external user
-      not j.isExternallyTriggerable()
-    )
+    not j.isPrivilegedExternallyTriggerable()
   )
 }

@@ -317,18 +317,6 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     )
   }
 
-  /** Holds if the action is privileged. */
-  predicate isPrivileged() {
-    // there is a calling job that defines explicit write permissions
-    this.hasExplicitWritePermission()
-    or
-    // the actions has an explicit secret accesses
-    this.hasExplicitSecretAccess()
-    or
-    // there is a privileged caller job
-    this.getACaller().isPrivileged()
-  }
-
   private predicate hasExplicitSecretAccess() {
     // the job accesses a secret other than GITHUB_TOKEN
     exists(SecretsExpressionImpl expr |
@@ -339,6 +327,35 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   private predicate hasExplicitWritePermission() {
     // a calling job has an explicit write permission
     this.getACaller().getPermissions().getAPermission().matches("%write")
+  }
+
+  /** Holds if the action is privileged. */
+  predicate isPrivileged() {
+    // there is a calling job that defines explicit write permissions
+    this.hasExplicitWritePermission()
+    or
+    // the actions has an explicit secret accesses
+    this.hasExplicitSecretAccess()
+    or
+    // there is a privileged caller job
+    (
+      this.getACaller().isPrivileged()
+      or
+      not this.getACaller().isPrivileged() and
+      this.getACaller().getATriggerEvent().isPrivileged()
+    )
+  }
+
+  /** Holds if the action is privileged and externally triggerable. */
+  predicate isPrivilegedExternallyTriggerable() {
+    // the action is externally triggerable
+    exists(JobImpl caller, EventImpl event |
+      caller = this.getACaller() and
+      event = caller.getATriggerEvent() and
+      event.isExternallyTriggerable() and
+      // the action is privileged
+      (this.isPrivileged() or caller.isPrivileged())
+    )
   }
 }
 
@@ -688,6 +705,42 @@ class EventImpl extends AstNodeImpl, TEventNode {
 
   /** Holds if the event has a property with the given name */
   predicate hasProperty(string prop) { exists(this.getAPropertyValue(prop)) }
+
+  /** Holds if the event can be triggered by an external actor. */
+  predicate isExternallyTriggerable() {
+    // the job is triggered by an event that can be triggered externally
+    externallyTriggerableEventsDataModel(this.getName())
+    or
+    // the event is `workflow_call` and there is a caller workflow that can be triggered externally
+    this.getName() = "workflow_call" and
+    (
+      // there are hints that this workflow is meant to be called by external triggers
+      exists(ExpressionImpl expr, string external_trigger |
+        expr.getEnclosingWorkflow() = this.getEnclosingWorkflow() and
+        expr.getExpression().matches("%github.event" + external_trigger + "%") and
+        externallyTriggerableEventsDataModel(external_trigger)
+      )
+      or
+      this.getEnclosingWorkflow()
+          .(ReusableWorkflowImpl)
+          .getACaller()
+          .getATriggerEvent()
+          .isExternallyTriggerable()
+    )
+  }
+
+  predicate isPrivileged() {
+    // the Job is triggered by an event other than `pull_request`, or `workflow_call`
+    not this.getName() = "pull_request" and
+    not this.getName() = "workflow_call"
+    or
+    // Reusable Workflow with a privileged caller or we cant find a caller
+    this.getName() = "workflow_call" and
+    (
+      this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isPrivileged() or
+      not exists(this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller())
+    )
+  }
 }
 
 class JobImpl extends AstNodeImpl, TJobNode {
@@ -746,43 +799,39 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Gets the strategy for this job. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
 
-  /** Holds if the job can be triggered by an external actor. */
-  predicate isExternallyTriggerable() {
-    // the job is triggered by an event that can be triggered externally
-    externallyTriggerableEventsDataModel(this.getATriggerEvent().getName())
-    or
-    // the job is triggered by a workflow_call event that can be triggered externally
-    this.getATriggerEvent().getName() = "workflow_call" and
-    (
-      exists(ExpressionImpl e, string external_trigger |
-        e.getEnclosingJob() = this and
-        e.getExpression().matches("%github.event" + external_trigger + "%") and
-        externallyTriggerableEventsDataModel(external_trigger)
-      )
-      or
-      this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isExternallyTriggerable()
-    )
-  }
+  /** Gets the trigger event that starts this workflow. */
+  EventImpl getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
 
-  /** Holds if the job is privileged. */
-  predicate isPrivileged() {
-    // the job has privileged runtime permissions
-    this.hasRuntimeWritePermissions()
-    or
-    // the job has an explicit secret accesses
-    this.hasExplicitSecretAccess()
-    or
-    // the job has an explicit write permission
-    this.hasExplicitWritePermission()
-    or
-    // the job has no explicit permissions but the workflow has write permissions
-    not exists(this.getPermissions()) and
-    this.hasImplicitWritePermission()
-    or
-    // neither the job nor the workflow have permissions but the job has a privileged trigger
-    not exists(this.getPermissions()) and
-    not exists(this.getEnclosingWorkflow().getPermissions()) and
-    this.hasPrivilegedTrigger()
+  // private predicate hasSingleTrigger(string trigger) {
+  //   this.getATriggerEvent().getName() = trigger and
+  //   count(this.getATriggerEvent()) = 1
+  // }
+  /** Gets the runs-on field of the job. */
+  string getARunsOnLabel() {
+    exists(ScalarValueImpl lbl, YamlMappingLikeNode runson |
+      runson = n.lookup("runs-on").(YamlMappingLikeNode)
+    |
+      (
+        lbl.getNode() = runson.getNode(_) and
+        not lbl.getNode() = runson.getNode("group")
+        or
+        lbl.getNode() = runson.getNode("labels").(YamlMappingLikeNode).getNode(_)
+      ) and
+      (
+        not exists(MatrixExpressionImpl e | e.getParentNode() = lbl) and
+        result =
+          lbl.getValue()
+              .trim()
+              .regexpReplaceAll("^('|\")", "")
+              .regexpReplaceAll("('|\")$", "")
+              .trim()
+        or
+        exists(MatrixExpressionImpl e |
+          e.getParentNode() = lbl and
+          result = e.getLiteralValues()
+        )
+      )
+    )
   }
 
   private predicate hasExplicitSecretAccess() {
@@ -817,60 +866,34 @@ class JobImpl extends AstNodeImpl, TJobNode {
     )
   }
 
-  private predicate hasPrivilegedTrigger() {
-    // the Job is triggered by an event other than `pull_request`, `push`, or `workflow_call`
-    count(this.getATriggerEvent()) = 1 and
-    not this.getATriggerEvent().getName() = "push" and
-    not this.getATriggerEvent().getName() = "pull_request" and
-    not this.getATriggerEvent().getName() = "workflow_call"
+  /** Holds if the job is privileged. */
+  predicate isPrivileged() {
+    // the job has privileged runtime permissions
+    this.hasRuntimeWritePermissions()
     or
-    // the Workflow is a Reusable Workflow only and there is
-    // a privileged caller workflow or we cant find a caller
-    count(this.getATriggerEvent()) = 1 and
-    this.getATriggerEvent().getName() = "workflow_call" and
-    (
-      this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().isPrivileged() or
-      not exists(this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller())
-    )
+    // the job has an explicit secret accesses
+    this.hasExplicitSecretAccess()
     or
-    // the Job is triggered by an event other than `push`, `pull_request`, or `workflow_call`
-    exists(string event |
-      this.getATriggerEvent().getName() = event and
-      not event = ["push", "pull_request", "workflow_call"]
-    )
+    // the job has an explicit write permission
+    this.hasExplicitWritePermission()
+    or
+    // the job has no explicit permissions but the workflow has write permissions
+    not exists(this.getPermissions()) and
+    this.hasImplicitWritePermission()
   }
 
-  /** Gets the trigger event that starts this workflow. */
-  EventImpl getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
-
-  // private predicate hasSingleTrigger(string trigger) {
-  //   this.getATriggerEvent().getName() = trigger and
-  //   count(this.getATriggerEvent()) = 1
-  // }
-  /** Gets the runs-on field of the job. */
-  string getARunsOnLabel() {
-    exists(ScalarValueImpl lbl, YamlMappingLikeNode runson |
-      runson = n.lookup("runs-on").(YamlMappingLikeNode)
-    |
+  /** Holds if the action is privileged and externally triggerable. */
+  predicate isPrivilegedExternallyTriggerable() {
+    exists(EventImpl e |
+      // job is triggereable by an external user
+      this.getATriggerEvent() = e and
+      e.isExternallyTriggerable() and
+      // job is privileged (write access or access to secrets)
       (
-        lbl.getNode() = runson.getNode(_) and
-        not lbl.getNode() = runson.getNode("group")
+        this.isPrivileged()
         or
-        lbl.getNode() = runson.getNode("labels").(YamlMappingLikeNode).getNode(_)
-      ) and
-      (
-        not exists(MatrixExpressionImpl e | e.getParentNode() = lbl) and
-        result =
-          lbl.getValue()
-              .trim()
-              .regexpReplaceAll("^('|\")", "")
-              .regexpReplaceAll("('|\")$", "")
-              .trim()
-        or
-        exists(MatrixExpressionImpl e |
-          e.getParentNode() = lbl and
-          result = e.getLiteralValues()
-        )
+        not this.isPrivileged() and
+        e.isPrivileged()
       )
     )
   }
