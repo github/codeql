@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["hashicorp/consul/.github/workflows/reusable-unit.yml", "*", "input.package-names-command", "code-injection", "generated"]
      - ["hashicorp/consul/.github/workflows/reusable-unit.yml", "*", "input.go-test-flags", "code-injection", "generated"]

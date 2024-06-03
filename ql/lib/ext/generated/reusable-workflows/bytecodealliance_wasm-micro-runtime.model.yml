@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["bytecodealliance/wasm-micro-runtime/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.the_path", "code-injection", "generated"]
      - ["bytecodealliance/wasm-micro-runtime/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.last_commit", "code-injection", "generated"]

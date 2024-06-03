@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["esphome/esphome", "*", "input.target", "code-injection", "generated"]
      - ["esphome/esphome", "*", "input.suffix", "code-injection", "generated"]

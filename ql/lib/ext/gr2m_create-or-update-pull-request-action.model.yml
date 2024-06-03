@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["gr2m/create-or-update-pull-request-action", "*", "input.branch", "command-injection", "manual"]
       - ["gr2m/create-or-update-pull-request-action", "*", "input.path", "command-injection", "manual"]

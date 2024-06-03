@@ -5,8 +5,14 @@ dependencies:
     version: 0.1.8
   codeql/dataflow:
     version: 0.1.8
+  codeql/javascript-all:
+    version: 0.5.2
+  codeql/regex:
+    version: 0.0.10
   codeql/ssa:
     version: 0.2.8
+  codeql/tutorial:
+    version: 0.0.7
   codeql/typetracking:
     version: 0.2.8
   codeql/util:

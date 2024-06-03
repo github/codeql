@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["pyg-team/pytorch/geometric", "*", "input.torchvision-version", "code-injection", "generated"]
      - ["pyg-team/pytorch/geometric", "*", "input.cuda-version", "code-injection", "generated"]

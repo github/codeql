@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["demarches-simplifiees/demarches-simplifiees.fr", "*", "input.results_path", "code-injection", "generated"]

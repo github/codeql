@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["jamesives/github-pages-deploy-action", "*", "input.branch", "command-injection", "manual"]
       - ["jamesives/github-pages-deploy-action", "*", "input.commit-message", "command-injection", "manual"]

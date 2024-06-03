@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.triggered_by_callable", "code-injection", "generated"]
      - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.package_version_number", "code-injection", "generated"]

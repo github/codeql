@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["nats-io/nats-server", "*", "input.label", "code-injection", "generated"]
      - ["nats-io/nats-server", "*", "input.hub_password", "code-injection", "generated"]

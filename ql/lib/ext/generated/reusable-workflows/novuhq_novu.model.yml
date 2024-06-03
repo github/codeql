@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["novuhq/novu/.github/workflows/reusable-workers-service-deploy.yml", "*", "input.docker_image", "code-injection", "generated"]
      - ["novuhq/novu/.github/workflows/reusable-workers-service-deploy.yml", "*", "input.terraform_workspace", "code-injection", "generated"]

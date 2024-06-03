@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["neondatabase/neon", "*", "input.save_perf_report", "code-injection", "generated"]
      - ["neondatabase/neon", "*", "input.real_s3_region", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["adap/flower", "*", "input.poetry-version", "code-injection", "generated"]
      - ["adap/flower", "*", "input.setuptools-version", "code-injection", "generated"]

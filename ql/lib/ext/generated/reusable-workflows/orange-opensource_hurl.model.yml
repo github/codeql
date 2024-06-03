@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["orange-opensource/hurl/.github/workflows/update-branch-version.yml", "*", "input.new_version", "code-injection", "generated"]

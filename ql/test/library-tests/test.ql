@@ -50,13 +50,13 @@ query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = 
 query predicate scopes(Cfg::CfgScope c) { any() }
 
 query predicate sources(string action, string version, string output, string kind, string provenance) {
-  sourceModel(action, version, output, kind, provenance)
+  actionsSourceModel(action, version, output, kind, provenance)
 }
 
 query predicate summaries(
   string action, string version, string input, string output, string kind, string provenance
 ) {
-  summaryModel(action, version, input, output, kind, provenance)
+  actionsSummaryModel(action, version, input, output, kind, provenance)
 }
 
 query predicate calls(DataFlow::CallNode call, string callee) { callee = call.getCallee() }

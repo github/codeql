@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["nanasess/setup-chromedriver", "*", "input.chromedriver-version", "command-injection", "manual"]

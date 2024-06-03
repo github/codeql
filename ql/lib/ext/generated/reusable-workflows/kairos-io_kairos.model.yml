@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["kairos-io/kairos/.github/workflows/reusable-zfs-test.yaml", "*", "input.flavor", "code-injection", "generated"]
      - ["kairos-io/kairos/.github/workflows/reusable-upgrade-with-cli-test.yaml", "*", "input.flavor_release", "code-injection", "generated"]

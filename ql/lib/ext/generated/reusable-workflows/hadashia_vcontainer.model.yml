@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["hadashia/vcontainer/.github/workflows/update-version-number.yaml", "*", "input.dry-run", "code-injection", "generated"]
      - ["hadashia/vcontainer/.github/workflows/update-version-number.yaml", "*", "input.tag", "code-injection", "generated"]

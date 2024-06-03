@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["jsdaniell/create-json", "*", "input.name", "output.successfully", "taint", "manual"]
       - ["jsdaniell/create-json", "*", "input.json", "output.successfully", "taint", "manual"]

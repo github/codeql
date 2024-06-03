@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["huggingface/doc-builder/.github/workflows/upload_pr_documentation.yml", "*", "input.package_name", "code-injection", "generated"]
      - ["huggingface/doc-builder/.github/workflows/upload_pr_documentation.yml", "*", "input.repo_owner", "code-injection", "generated"]

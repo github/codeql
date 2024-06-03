@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sourceModel
+      extensible: actionsSourceModel
     data:
       # https://github.com/tj-actions/branch-names
       - ["tj-actions/branch-names", "*", "output.current_branch", "branch", "manual"]

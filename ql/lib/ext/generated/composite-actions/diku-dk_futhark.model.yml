@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["diku-dk/futhark", "*", "input.script", "code-injection", "generated"]
      - ["diku-dk/futhark", "*", "input.slurm-options", "code-injection", "generated"]

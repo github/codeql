@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["seleniumhq/selenium/.github/workflows/bazel.yml", "*", "input.run", "code-injection", "generated"]
      - ["seleniumhq/selenium/.github/workflows/bazel.yml", "*", "input.ruby-version", "code-injection", "generated"]

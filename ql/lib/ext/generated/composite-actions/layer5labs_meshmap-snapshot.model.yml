@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["layer5labs/meshmap-snapshot", "*", "input.assetLocation", "code-injection", "generated"]
      - ["layer5labs/meshmap-snapshot", "*", "input.mesheryToken", "code-injection", "generated"]

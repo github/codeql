@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["maierj/fastlane-action", "*", "input.lane", "command-injection", "manual"]
       - ["maierj/fastlane-action", "*", "input.options", "command-injection", "manual"]

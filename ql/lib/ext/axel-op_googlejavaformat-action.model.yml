@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["axel-op/googlejavaformat-action", "*", "input.commitMessage", "command-injection", "manual"]
       - ["axel-op/googlejavaformat-action", "*", "input.commit-message", "command-injection", "manual"]

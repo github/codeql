@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["microsoft/chat-copilot/.github/workflows/copilot-run-integration-tests.yml", "*", "input.BACKEND_HOST", "code-injection", "generated"]
      - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]

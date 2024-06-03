@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["ilammy/msvc-dev-cmd", "*", "input.vsversion", "command-injection", "manual"]
       - ["ilammy/msvc-dev-cmd", "*", "input.arch", "command-injection", "manual"]

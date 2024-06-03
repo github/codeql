@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["rethinkdb/rethinkdb", "*", "input.command", "code-injection", "generated"]
      - ["rethinkdb/rethinkdb", "*", "input.install_command", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["igniterealtime/openfire", "*", "input.domain", "code-injection", "generated"]
      - ["igniterealtime/openfire", "*", "input.ip", "code-injection", "generated"]

@@ -55,8 +55,8 @@ predicate externallyTriggerableEventsDataModel(string event) {
  *    - output arg: To node (prefixed with either `env.` or `output.`)
  *    - provenance: verification of the model
  */
-predicate sourceModel(string action, string version, string output, string kind, string provenance) {
-  Extensions::sourceModel(action, version, output, kind, provenance)
+predicate actionsSourceModel(string action, string version, string output, string kind, string provenance) {
+  Extensions::actionsSourceModel(action, version, output, kind, provenance)
 }
 
 /**
@@ -69,10 +69,10 @@ predicate sourceModel(string action, string version, string output, string kind,
  *    - kind: Either 'Taint' or 'Value'
  *    - provenance: verification of the model
  */
-predicate summaryModel(
+predicate actionsSummaryModel(
   string action, string version, string input, string output, string kind, string provenance
 ) {
-  Extensions::summaryModel(action, version, input, output, kind, provenance)
+  Extensions::actionsSummaryModel(action, version, input, output, kind, provenance)
 }
 
 /**
@@ -84,13 +84,13 @@ predicate summaryModel(
  *    - kind: sink kind
  *    - provenance: verification of the model
  */
-predicate sinkModel(string action, string version, string input, string kind, string provenance) {
-  Extensions::sinkModel(action, version, input, kind, provenance)
+predicate actionsSinkModel(string action, string version, string input, string kind, string provenance) {
+  Extensions::actionsSinkModel(action, version, input, kind, provenance)
 }
 
 predicate externallyDefinedSource(DataFlow::Node source, string sourceType, string fieldName) {
   exists(Uses uses, string action, string version, string kind |
-    sourceModel(action, version, fieldName, kind, _) and
+    actionsSourceModel(action, version, fieldName, kind, _) and
     uses.getCallee() = action.toLowerCase() and
     (
       if version.trim() = "*"
@@ -113,7 +113,7 @@ predicate externallyDefinedStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
 ) {
   exists(Uses uses, string action, string version, string input, string output |
-    summaryModel(action, version, input, output, "taint", _) and
+    actionsSummaryModel(action, version, input, output, "taint", _) and
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output.", "")) and
     uses.getCallee() = action.toLowerCase() and
     (
@@ -135,7 +135,7 @@ predicate externallyDefinedStoreStep(
 
 predicate externallyDefinedSink(DataFlow::Node sink, string kind) {
   exists(Uses uses, string action, string version, string input |
-    sinkModel(action, version, input, kind, _) and
+    actionsSinkModel(action, version, input, kind, _) and
     uses.getCallee() = action.toLowerCase() and
     (
       if input.trim().matches("env.%")

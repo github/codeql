@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.sample-max", "code-injection", "generated"]
      - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.sample-name", "code-injection", "generated"]
@@ -16,7 +16,7 @@ extensions:
      - ["hashicorp/vault/.github/workflows/test-enos-scenario-ui.yml", "*", "input.storage_backend", "code-injection", "generated"]
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-version-package", "output.testable-packages", "taint", "manual"]
       - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-revision", "output.testable-containers", "taint", "manual"]

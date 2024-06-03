@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["forcedotcom/salesforcedx-vscode", "*", "input.email", "code-injection", "generated"]

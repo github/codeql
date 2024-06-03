@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["azerothcore/azerothcore-wotlk", "*", "input.CXX", "code-injection", "generated"]
      - ["azerothcore/azerothcore-wotlk", "*", "input.CC", "code-injection", "generated"]

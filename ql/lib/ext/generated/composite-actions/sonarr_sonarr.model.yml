@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["sonarr/sonarr", "*", "input.filter", "code-injection", "generated"]
      - ["sonarr/sonarr", "*", "input.binary_path", "code-injection", "generated"]

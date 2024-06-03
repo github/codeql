@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["gravitational/teleport", "*", "input.target", "code-injection", "generated"]
      - ["gravitational/teleport", "*", "input.attempts", "code-injection", "generated"]

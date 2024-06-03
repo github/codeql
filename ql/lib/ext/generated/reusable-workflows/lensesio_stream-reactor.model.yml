@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["lensesio/stream-reactor/.github/workflows/build.yml", "*", "input.version", "code-injection", "generated"]

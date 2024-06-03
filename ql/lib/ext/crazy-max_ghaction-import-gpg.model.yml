@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["crazy-max/ghaction-import-gpg", "*", "input.fingerprint", "output.fingerprint", "taint", "manual"]

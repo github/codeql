@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.module", "code-injection", "generated"]
      - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.jdk", "code-injection", "generated"]

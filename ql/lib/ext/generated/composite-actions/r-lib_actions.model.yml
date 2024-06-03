@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["r-lib/actions", "*", "input.lockfile-create-lib", "code-injection", "generated"]
      - ["r-lib/actions", "*", "input.dependencies", "code-injection", "generated"]

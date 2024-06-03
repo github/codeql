@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sourceModel
+      extensible: actionsSourceModel
     data:
       - ["jitterbit/get-changed-files", "*", "output.all", "filename", "manual"]
       - ["jitterbit/get-changed-files", "*", "output.added", "filename", "manual"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["zeroc-ice/ice", "*", "input.flags", "code-injection", "generated"]
      - ["zeroc-ice/ice", "*", "input.make_flags", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["alphagov/publishing-api/.github/workflows/pact-verify.yml", "*", "input.pact_artifact_file_to_verify", "code-injection", "generated"]

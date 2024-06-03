@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sourceModel
+      extensible: actionsSourceModel
     data:
       - ["redhat-plumbers-in-action/download-artifact", "*", "output.*", "artifact", "manual"]
 

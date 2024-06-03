@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["ashley-taylor/regex-property-action", "*", "input.replacement", "output.value", "taint", "manual"]
       - ["ashley-taylor/regex-property-action", "*", "input.value", "output.value", "taint", "manual"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["open-goal/jak-project/.github/workflows/windows-build-msvc.yaml", "*", "input.cmakePreset", "code-injection", "generated"]
      - ["open-goal/jak-project/.github/workflows/windows-build-clang.yaml", "*", "input.cmakePreset", "code-injection", "generated"]

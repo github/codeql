@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.BINARY", "code-injection", "generated"]
      - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.SUDO", "code-injection", "generated"]

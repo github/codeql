@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["mumble-voip/mumble", "*", "input.arch", "code-injection", "generated"]
      - ["mumble-voip/mumble", "*", "input.type", "code-injection", "generated"]

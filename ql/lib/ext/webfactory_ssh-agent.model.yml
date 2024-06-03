@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["webfactory/ssh-agent", "*", "input.ssh-agent-cmd", "command-injection", "manual"]
       - ["webfactory/ssh-agent", "*", "input.ssh-add-cmd", "command-injection", "manual"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["anchore/grype", "*", "input.bootstrap-apt-packages", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["gaphor/gaphor", "*", "input.version", "code-injection", "generated"]
      - ["gaphor/gaphor", "*", "input.base64_encoded_pfx", "code-injection", "generated"]

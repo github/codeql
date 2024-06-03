@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["dotintent/react-native-ble-plx", "*", "input.REACT_NATIVE_VERSION", "code-injection", "generated"]

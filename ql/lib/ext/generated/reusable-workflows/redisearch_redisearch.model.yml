@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["redisearch/redisearch/.github/workflows/flow-build-artifacts.yml", "*", "input.architecture", "code-injection", "generated"]

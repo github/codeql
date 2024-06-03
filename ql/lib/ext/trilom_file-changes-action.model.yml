@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sourceModel
+      extensible: actionsSourceModel
     data:
       - ["trilom/file-changes-action", "*", "output.files", "filename", "manual"]
       - ["trilom/file-changes-action", "*", "output.files_added", "filename", "manual"]

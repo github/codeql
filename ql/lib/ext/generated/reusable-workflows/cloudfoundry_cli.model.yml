@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["cloudfoundry/cli/.github/workflows/tests-integration-reusable.yml", "*", "input.os", "code-injection", "generated"]

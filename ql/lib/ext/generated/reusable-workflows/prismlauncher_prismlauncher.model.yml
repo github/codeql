@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["prismlauncher/prismlauncher/.github/workflows/build.yml", "*", "input.build_type", "code-injection", "generated"]

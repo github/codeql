@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["scikit-learn/scikit-learn/.github/workflows/update_tracking_issue.yml", "*", "input.job_status", "code-injection", "generated"]

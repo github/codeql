@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["huggingface/transformers/.github/workflows/slack-report.yml", "*", "input.folder_slices", "code-injection", "generated"]
      - ["huggingface/transformers/.github/workflows/slack-report.yml", "*", "input.setup_status", "code-injection", "generated"]

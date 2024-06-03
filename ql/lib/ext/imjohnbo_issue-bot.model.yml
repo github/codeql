@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["imjohnbo/issue-bot", "*", "input.body", "code-injection", "manual"]
       - ["imjohnbo/issue-bot", "*", "input.linked-comments-previous-issue-text", "code-injection", "manual"]

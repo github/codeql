@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["rasterio/rasterio/.github/workflows/test_gdal_build.yaml", "*", "input.gdal_ref", "code-injection", "generated"]

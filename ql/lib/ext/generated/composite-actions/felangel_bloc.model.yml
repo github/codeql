@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["felangel/bloc", "*", "input.coverage_excludes", "code-injection", "generated"]
      - ["felangel/bloc", "*", "input.analyze_directories", "code-injection", "generated"]

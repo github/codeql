@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["msys2/setup-msys2", "*", "input.install", "command-injection", "manual"]
       - ["msys2/setup-msys2", "*", "input.pacboy", "command-injection", "manual"]

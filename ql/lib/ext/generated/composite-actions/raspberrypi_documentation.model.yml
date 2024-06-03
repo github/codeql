@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["raspberrypi/documentation", "*", "input.secondary_host", "code-injection", "generated"]
      - ["raspberrypi/documentation", "*", "input.destination", "code-injection", "generated"]

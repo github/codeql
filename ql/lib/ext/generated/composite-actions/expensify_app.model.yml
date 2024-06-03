@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["expensify/app", "*", "input.GPG_PASSPHRASE", "code-injection", "generated"]
      - ["expensify/app", "*", "input.PACKAGE_SCRIPT_NAME", "code-injection", "generated"]
