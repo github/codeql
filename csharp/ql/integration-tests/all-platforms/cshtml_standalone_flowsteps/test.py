@@ -1,4 +1,5 @@
 import os
 from create_database_utils import *
 
-run_codeql_database_create(lang="csharp", extra_args=["--build-mode=none"])
+os.environ['CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS'] = 'true'
+run_codeql_database_create(lang="csharp")
