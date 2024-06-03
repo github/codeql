@@ -44,6 +44,6 @@ codeql_pkg_files(
         ":python3src",
     ] + glob(["data/**"]),
     prefix = "tools",
-    strip_prefix=strip_prefix.from_pkg(),
+    strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//python:__pkg__"],
 )
