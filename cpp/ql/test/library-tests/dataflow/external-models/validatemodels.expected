@@ -1,6 +1,9 @@
 | Dubious namespace "" in sink model. |
 | Dubious namespace "" in source model. |
 | Dubious namespace "" in summary model. |
+| Dubious namespace "boost::asio" in sink model. |
+| Dubious namespace "boost::asio" in source model. |
+| Dubious namespace "boost::asio" in summary model. |
 | Dubious type "" in sink model. |
 | Dubious type "" in source model. |
 | Dubious type "" in summary model. |

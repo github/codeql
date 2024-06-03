@@ -88,9 +88,9 @@ void test(boost::asio::ip::tcp::socket &socket) {
 	if (error) {
 		// ...
 	}
-	sink(recv_buffer); // $ MISSING: ir
+	sink(recv_buffer); // $ ir
 
-	boost::asio::write(socket, recv_buffer, error); // $ MISSING: ir
+	boost::asio::write(socket, recv_buffer, error); // $ ir
 
 	// ---
 
@@ -98,9 +98,9 @@ void test(boost::asio::ip::tcp::socket &socket) {
 	sink(send_str); // $ ir
 
 	boost::asio::mutable_buffer send_buffer = boost::asio::buffer(send_str);
-	sink(send_buffer); // $ MISSING: ir
+	sink(send_buffer); // $ ir
 
-	boost::asio::write(socket, send_buffer, error); // $ MISSING: ir
+	boost::asio::write(socket, send_buffer, error); // $ ir
 	if (error) {
 		// ...
 	}

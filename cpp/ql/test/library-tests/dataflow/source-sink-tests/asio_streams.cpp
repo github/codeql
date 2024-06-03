@@ -75,14 +75,14 @@ void test(boost::asio::ip::tcp::socket &socket) {
 	boost::asio::streambuf recv_buffer;
 	boost::system::error_code error;
 
-	boost::asio::read_until(socket, recv_buffer, '\0', error); // $ MISSING: remote_source
+	boost::asio::read_until(socket, recv_buffer, '\0', error); // $ remote_source
 	if (error) {
 		// ...
 	}
 
 	std::string send_str = std::string("message");
 	boost::asio::mutable_buffer send_buffer = boost::asio::buffer(send_str);
-	boost::asio::write(socket, send_buffer, error); // $ MISSING: remote_sink
+	boost::asio::write(socket, send_buffer, error); // $ remote_sink
 	if (error) {
 		// ...
 	}
