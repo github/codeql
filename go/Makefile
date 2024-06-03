@@ -45,9 +45,9 @@ ql/lib/go.dbscheme.stats: ql/lib/go.dbscheme build/stats/src.stamp extractor
 	codeql dataset measure -o $@ build/stats/database/db-go
 
 test: all build/testdb/check-upgrade-path
-	codeql test run -j0 ql/test --consistency-queries ql/test/consistency --compilation-cache=$(cache)
+	codeql test run -j0 ql/test --search-path .. --consistency-queries ql/test/consistency --compilation-cache=$(cache)
 #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
-	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --consistency-queries ql/test/consistency --compilation-cache=$(cache)
+	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path .. --consistency-queries ql/test/consistency --compilation-cache=$(cache)
 	cd extractor; bazel test ...
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
