@@ -83,5 +83,5 @@ void test_guard_and_reassign() {
   if(!guarded(x)) {
     x = 0;
   }
-  sink(x); // $ SPURIOUS: ast,ir
+  sink(x); // $ SPURIOUS: ast
 }
