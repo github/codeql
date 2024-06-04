@@ -245,7 +245,7 @@ public class DerivedClass1Flow : BaseClassFlow
 
 public class DerivedClass2Flow : BaseClassFlow
 {
-    // summary=Models;DerivedClass2Flow;false;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated
+    // summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated
     public override object ReturnParam(object input)
     {
         return input;
@@ -430,6 +430,18 @@ public class SimpleTypes
     {
         return i;
     }
+
+    // neutral=Models;SimpleTypes;M5;(System.DateTime);summary;df-generated
+    public DateTime M5(DateTime d)
+    {
+        return d;
+    }
+
+    // neutral=Models;SimpleTypes;M6;(System.Type);summary;df-generated
+    public Type M6(Type t)
+    {
+        return t;
+    }
 }
 
 // No models as higher order methods are excluded
@@ -488,5 +500,78 @@ public class ParameterlessConstructor
     public ParameterlessConstructor()
     {
         IsInitialized = true;
+    }
+}
+
+public class Inheritance
+{
+    public abstract class BasePublic
+    {
+        public abstract string Id(string x);
+    }
+
+    public class AImplBasePublic : BasePublic
+    {
+        // summary=Models;Inheritance+BasePublic;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        public override string Id(string x)
+        {
+            return x;
+        }
+    }
+
+    public interface IPublic1
+    {
+        string Id(string x);
+    }
+
+    public interface IPublic2
+    {
+        string Id(string x);
+    }
+
+    public abstract class B : IPublic1
+    {
+        public abstract string Id(string x);
+    }
+
+    private abstract class C : IPublic2
+    {
+        public abstract string Id(string x);
+    }
+
+    public class BImpl : B
+    {
+        // summary=Models;Inheritance+IPublic1;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        public override string Id(string x)
+        {
+            return x;
+        }
+    }
+
+    private class CImpl : C
+    {
+        // summary=Models;Inheritance+IPublic2;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        public override string Id(string x)
+        {
+            return x;
+        }
+    }
+
+    public interface IPublic3
+    {
+        string Prop { get; }
+    }
+
+    public abstract class D : IPublic3
+    {
+        public abstract string Prop { get; }
+    }
+
+    public class DImpl : D
+    {
+        private string tainted;
+
+        // summary=Models;Inheritance+IPublic3;true;get_Prop;();;Argument[this];ReturnValue;taint;df-generated
+        public override string Prop { get { return tainted; } }
     }
 }

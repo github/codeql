@@ -4,9 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["ILLink.Shared.TrimAnalysis", "FieldReferenceValue", False, "DeepCopy", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", False, "FlowAnnotations", "(Mono.Linker.LinkContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["ILLink.Shared.TrimAnalysis", "LocalVariableReferenceValue", False, "DeepCopy", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

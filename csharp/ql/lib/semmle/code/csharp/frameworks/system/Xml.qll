@@ -136,7 +136,9 @@ private Expr getBitwiseOrOperand(Expr e) { result = e.(BitwiseOrExpr).getAnOpera
 
 /** A creation of an instance of `System.Xml.XmlReaderSettings`. */
 class XmlReaderSettingsCreation extends ObjectCreation {
-  XmlReaderSettingsCreation() { this.getType() instanceof SystemXmlXmlReaderSettingsClass }
+  private SystemXmlXmlReaderSettingsClass settings;
+
+  XmlReaderSettingsCreation() { settings = this.getType() }
 
   /** Gets a value set on the `ValidationType` property, if any. */
   SystemXmlValidationType getValidationType() {
@@ -152,7 +154,7 @@ class XmlReaderSettingsCreation extends ObjectCreation {
 
   /** Gets a value set for the given property in this local context. */
   private Expr getPropertyValue(Property p) {
-    p = this.getType().(RefType).getAProperty() and
+    p = settings.getAProperty() and
     exists(PropertyCall set, Expr arg |
       set.getTarget() = p.getSetter() and
       DataFlow::localExprFlow(this, set.getQualifier()) and

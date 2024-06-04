@@ -1,7 +1,6 @@
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "csharp_test", "publish_binary")
 load("@rules_pkg//pkg:mappings.bzl", "strip_prefix")
-load("@semmle_code//:dist.bzl", "pack_zip")
-load("//:defs.bzl", "codeql_platform")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
 TARGET_FRAMEWORK = "net8.0"
 
@@ -33,7 +32,7 @@ def codeql_xunit_test(name, **kwargs):
         **kwargs
     )
 
-def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
+def codeql_csharp_binary(name, **kwargs):
     kwargs.setdefault("nullable", "enable")
     kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
 
@@ -60,10 +59,10 @@ def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
         ),
     )
 
-    pack_zip(
+    codeql_pkg_files(
         name = name,
-        srcs = [publish_binary_target],
-        prefix = language_prefix + "/tools/" + codeql_platform,
+        exes = [publish_binary_target],
+        prefix = "tools/{CODEQL_PLATFORM}",
         strip_prefix = strip_prefix.files_only(),
         visibility = visibility,
     )

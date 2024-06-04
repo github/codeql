@@ -348,7 +348,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       not stateBarrier(node2, state2)
     }
 
-    pragma[nomagic]
+    bindingset[n, cc]
+    pragma[inline_late]
     private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
       cc.unreachable(n.asNode())
     }
@@ -3370,6 +3371,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Location getLocation() { result = p.getLocation() }
     }
 
+    pragma[nomagic]
+    private predicate stage5ConsCand(Content c, DataFlowType t, AccessPathFront apf, int len) {
+      Stage5::consCand(c, t, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
+    }
+
     /**
      * Gets the number of length 2 access path approximations that correspond to `apa`.
      */
@@ -3377,11 +3383,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(Content c, int len |
         c = apa.getHead() and
         len = apa.len() and
-        result =
-          strictcount(DataFlowType t, AccessPathFront apf |
-            Stage5::consCand(c, t,
-              any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
-          )
+        result = strictcount(DataFlowType t, AccessPathFront apf | stage5ConsCand(c, t, apf, len))
       )
     }
 
