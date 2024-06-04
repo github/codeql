@@ -1170,6 +1170,7 @@ class DataFlowCall extends TDataFlowCall {
    */
   Location getLocation() { none() }
 
+<<<<<<< HEAD
   // #43: Stub Implementation
   /** Gets an argument to this call as a Node. */
   ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
@@ -1177,6 +1178,8 @@ class DataFlowCall extends TDataFlowCall {
   // #43: Stub Implementation
   /** Gets the target of the call, as a DataFlowCallable. */
   DataFlowCallable getARuntimeTarget(){ none() } // TODO getCallTarget() returns `Instruction`
+=======
+>>>>>>> codeql-cli/v2.17.4
   /** Gets a best-effort total ordering. */
   int totalorder() {
     this =
