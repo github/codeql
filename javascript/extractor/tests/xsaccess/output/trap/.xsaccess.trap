@@ -1,5 +1,5 @@
 #10000=@"/.xsaccess;sourcefile"
-files(#10000,".xsaccess")
+files(#10000,"/.xsaccess")
 #10001=@"/;folder"
 folders(#10001,"/")
 containerparent(#10001,#10000)
@@ -14,8 +14,8 @@ json_locations(#20000,#20001)
 #20002=*
 json(#20002,1,#20000,0,"true")
 #20003=@"loc,{#10000},2,14,2,17"
-locations_default(#20001,#10000,2,14,2,17)
-json_locations(#20000,#20001)
+locations_default(#20003,#10000,2,14,2,17)
+json_locations(#20002,#20003)
 json_literals("true","true",#20002)
 json_properties(#20000,"exposed",#20002)
 numlines(#10000,3,0,0)
