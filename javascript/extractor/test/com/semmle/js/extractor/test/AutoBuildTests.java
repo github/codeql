@@ -461,8 +461,10 @@ public class AutoBuildTests {
 
   @Test
   public void hiddenFiles() throws IOException {
-    Path eslintrc = addFile(true, LGTM_SRC, ".eslintrc.json");
+    Path eslintrc = addFile(true, LGTM_SRC, ".eslintrc.json", ".xsaccess");
     hide(eslintrc);
+    Path xsaccess = addFile(true, LGTM_SRC, ".xsaccess");
+    hide(xsaccess);
     runTest();
   }
 
