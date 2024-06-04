@@ -45,6 +45,7 @@ private newtype TIRDataFlowNode =
     or
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
+  TSsaPhiInputNode(Ssa::PhiNode phi, IRBlock input) { phi.hasInputFromBlock(_, _, _, _, input) } or
   TSsaPhiNode(Ssa::PhiNode phi) or
   TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
   TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
@@ -169,6 +170,9 @@ class Node extends TIRDataFlowNode {
     this.asOperand().getUse() = block.getInstruction(i)
     or
     this.(SsaPhiNode).getPhiNode().getBasicBlock() = block and i = -1
+    or
+    this.(SsaPhiInputNode).getBlock() = block and
+    i = block.getInstructionCount()
     or
     this.(RawIndirectOperand).getOperand().getUse() = block.getInstruction(i)
     or
@@ -652,6 +656,58 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    * on reads instead of writes.
    */
   predicate isPhiRead() { phi.isPhiRead() }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A note that is used as an input to a phi node.
+ *
+ * This class exists to allow more powerful barrier guards. Consider this
+ * example:
+ *
+ * ```cpp
+ * int x = source();
+ * if(!safe(x)) {
+ *   x = clear();
+ * }
+ * // phi node for x here
+ * sink(x);
+ * ```
+ *
+ * At the phi node for `x` it is neither the case that `x` is dominated by
+ * `safe(x)`, or is the case that the phi is dominated by a clearing of `x`.
+ *
+ * However, by inserting an "phi input" nodes as the last entry in the basic
+ * block that defines the inputs to the phi we can conclude that each of those
+ * inputs are safe to pass to `sink`.
+ */
+class SsaPhiInputNode extends Node, TSsaPhiInputNode {
+  Ssa::PhiNode phi;
+  IRBlock block;
+
+  SsaPhiInputNode() { this = TSsaPhiInputNode(phi, block) }
+
+  /** Gets the phi node associated with this node. */
+  Ssa::PhiNode getPhiNode() { result = phi }
+
+  /** Gets the basic block in which this input originates. */
+  IRBlock getBlock() { result = block }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
+
+  override DataFlowType getType() { result = this.getSourceVariable().getType() }
+
+  override predicate isGLValue() { phi.getSourceVariable().isGLValue() }
+
+  final override Location getLocationImpl() { result = block.getLastInstruction().getLocation() }
+
+  override string toStringImpl() { result = "Phi input" }
+
+  /** Gets the source variable underlying this phi node. */
+  Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
 }
 
 /**
