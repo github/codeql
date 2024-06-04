@@ -394,10 +394,10 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, .xaccess files, package.json files, 
+    // include .eslintrc files, .xsaccess files, package.json files, 
     // tsconfig.json files, and codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
-    patterns.add("**/.xaccess");
+    patterns.add("**/.xsaccess");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
