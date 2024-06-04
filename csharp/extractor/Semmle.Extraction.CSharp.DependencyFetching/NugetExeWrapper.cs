@@ -170,7 +170,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (RunWithMono)
             {
                 exe = "mono";
-                args = $"{nugetExe} install -OutputDirectory \"{packageDirectory}\" \"{packagesConfig}\"";
+                args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" \"{packagesConfig}\"";
             }
             else
             {
@@ -240,7 +240,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (RunWithMono)
             {
                 exe = "mono";
-                args = $"{nugetExe} {command}";
+                args = $"\"{nugetExe}\" {command}";
             }
             else
             {
