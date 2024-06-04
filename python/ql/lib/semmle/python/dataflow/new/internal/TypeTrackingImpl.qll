@@ -235,6 +235,29 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
     not nodeFrom instanceof DataFlowPublic::IterableElementNode
     or
     TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
+    or
+    // class-level attribute store
+    classmethodSoreStep(nodeFrom, nodeTo, content)
+  }
+
+  /** Holds if `write` writes to the `attrName` attribute of the class parameter of a classmethod on `cls`. */
+  private predicate classmethodStoreOnCls(
+    DataFlowPublic::AttrWrite write, Class cls, string attrName
+  ) {
+    exists(DataFlowDispatch::DataFlowClassmethod writeMethod |
+      writeMethod.getClass() = cls and
+      write.getObject().getALocalSource() =
+        writeMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf())) and
+      write.getAttributeName() = attrName
+    )
+  }
+
+  private predicate classmethodSoreStep(Node nodeFrom, Node nodeTo, Content content) {
+    exists(Class cls, DataFlowPublic::AttrWrite write |
+      classmethodStoreOnCls(write, cls, content.(DataFlowPublic::AttributeContent).getAttribute()) and
+      nodeFrom = write.getValue() and
+      nodeTo = DataFlowPublic::exprNode(cls.getParent())
+    )
   }
 
   /**

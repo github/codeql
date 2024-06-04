@@ -199,7 +199,7 @@ print(instance.foo) # $ MISSING: tracked=foo tracked
 
 # class-level attributes
 
-class MyClass5(object): # $ tracked=foo
+class MyClass5(object): # $ tracked=foo tracked=bar
     foo = tracked # $ tracked
     # bar is set from a classmethod
     bar = None
@@ -209,8 +209,8 @@ class MyClass5(object): # $ tracked=foo
         print(self.bar) # $ MISSING: tracked=bar tracked
 
     def on_classref(self):
-        print(MyClass5.foo) # $ tracked=foo tracked
-        print(MyClass5.bar) # $ tracked=foo MISSING: tracked=bar tracked
+        print(MyClass5.foo) # $ tracked=foo tracked tracked=bar
+        print(MyClass5.bar) # $ tracked=foo tracked=bar tracked
 
     @classmethod
     def on_cls(cls):
@@ -221,7 +221,7 @@ class MyClass5(object): # $ tracked=foo
     def set_bar(cls): # $ tracked=bar
         cls.bar = tracked # $ tracked=bar tracked
 
-instance = MyClass5() # $ tracked=foo
+instance = MyClass5() # $ tracked=foo tracked=bar
 print(instance.foo) # $ MISSING: tracked=foo tracked
 print(instance.bar) # $ MISSING: tracked=bar tracked
 
