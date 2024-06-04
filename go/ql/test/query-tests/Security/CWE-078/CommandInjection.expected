@@ -39,7 +39,6 @@ edges
 | SanitizingDoubleDash.go:39:14:39:44 | call to append | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:39:14:39:44 | call to append [array] | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:39:31:39:37 | tainted | SanitizingDoubleDash.go:39:14:39:44 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:39:31:39:37 | tainted | SanitizingDoubleDash.go:39:14:39:44 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:52:15:52:31 | slice literal [array] | SanitizingDoubleDash.go:53:21:53:28 | arrayLit [array] | provenance |  |
 | SanitizingDoubleDash.go:52:24:52:30 | tainted | SanitizingDoubleDash.go:52:15:52:31 | slice literal [array] | provenance |  |
 | SanitizingDoubleDash.go:53:14:53:35 | call to append | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | provenance |  |
@@ -52,7 +51,6 @@ edges
 | SanitizingDoubleDash.go:68:14:68:38 | call to append | SanitizingDoubleDash.go:69:21:69:28 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:68:14:68:38 | call to append [array] | SanitizingDoubleDash.go:69:21:69:28 | arrayLit [array] | provenance |  |
 | SanitizingDoubleDash.go:68:31:68:37 | tainted | SanitizingDoubleDash.go:68:14:68:38 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:68:31:68:37 | tainted | SanitizingDoubleDash.go:68:14:68:38 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:69:14:69:35 | call to append | SanitizingDoubleDash.go:70:23:70:30 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:69:14:69:35 | call to append [array] | SanitizingDoubleDash.go:70:23:70:30 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:69:21:69:28 | arrayLit | SanitizingDoubleDash.go:69:14:69:35 | call to append | provenance | MaD:28 |
@@ -91,19 +89,16 @@ edges
 | SanitizingDoubleDash.go:111:14:111:44 | call to append | SanitizingDoubleDash.go:112:24:112:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:111:14:111:44 | call to append [array] | SanitizingDoubleDash.go:112:24:112:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:111:37:111:43 | tainted | SanitizingDoubleDash.go:111:14:111:44 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:111:37:111:43 | tainted | SanitizingDoubleDash.go:111:14:111:44 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:117:14:117:44 | []type{args} [array] | SanitizingDoubleDash.go:117:14:117:44 | call to append | provenance | MaD:31 |
 | SanitizingDoubleDash.go:117:14:117:44 | []type{args} [array] | SanitizingDoubleDash.go:117:14:117:44 | call to append [array] | provenance | MaD:31 |
 | SanitizingDoubleDash.go:117:14:117:44 | call to append | SanitizingDoubleDash.go:118:24:118:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:117:14:117:44 | call to append [array] | SanitizingDoubleDash.go:118:24:118:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:117:31:117:37 | tainted | SanitizingDoubleDash.go:117:14:117:44 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:117:31:117:37 | tainted | SanitizingDoubleDash.go:117:14:117:44 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:123:14:123:38 | []type{args} [array] | SanitizingDoubleDash.go:123:14:123:38 | call to append | provenance | MaD:31 |
 | SanitizingDoubleDash.go:123:14:123:38 | []type{args} [array] | SanitizingDoubleDash.go:123:14:123:38 | call to append [array] | provenance | MaD:31 |
 | SanitizingDoubleDash.go:123:14:123:38 | call to append | SanitizingDoubleDash.go:124:24:124:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:123:14:123:38 | call to append [array] | SanitizingDoubleDash.go:124:24:124:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:123:31:123:37 | tainted | SanitizingDoubleDash.go:123:14:123:38 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:123:31:123:37 | tainted | SanitizingDoubleDash.go:123:14:123:38 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:128:15:128:31 | slice literal [array] | SanitizingDoubleDash.go:129:21:129:28 | arrayLit [array] | provenance |  |
 | SanitizingDoubleDash.go:128:24:128:30 | tainted | SanitizingDoubleDash.go:128:15:128:31 | slice literal [array] | provenance |  |
 | SanitizingDoubleDash.go:129:14:129:35 | call to append | SanitizingDoubleDash.go:130:24:130:31 | arrayLit | provenance |  |
@@ -116,13 +111,11 @@ edges
 | SanitizingDoubleDash.go:136:14:136:38 | call to append | SanitizingDoubleDash.go:137:24:137:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:136:14:136:38 | call to append [array] | SanitizingDoubleDash.go:137:24:137:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:136:31:136:37 | tainted | SanitizingDoubleDash.go:136:14:136:38 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:136:31:136:37 | tainted | SanitizingDoubleDash.go:136:14:136:38 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:142:14:142:38 | []type{args} [array] | SanitizingDoubleDash.go:142:14:142:38 | call to append | provenance | MaD:31 |
 | SanitizingDoubleDash.go:142:14:142:38 | []type{args} [array] | SanitizingDoubleDash.go:142:14:142:38 | call to append [array] | provenance | MaD:31 |
 | SanitizingDoubleDash.go:142:14:142:38 | call to append | SanitizingDoubleDash.go:143:21:143:28 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:142:14:142:38 | call to append [array] | SanitizingDoubleDash.go:143:21:143:28 | arrayLit [array] | provenance |  |
 | SanitizingDoubleDash.go:142:31:142:37 | tainted | SanitizingDoubleDash.go:142:14:142:38 | []type{args} [array] | provenance |  |
-| SanitizingDoubleDash.go:142:31:142:37 | tainted | SanitizingDoubleDash.go:142:14:142:38 | call to append | provenance | FunctionModel |
 | SanitizingDoubleDash.go:143:14:143:35 | call to append | SanitizingDoubleDash.go:144:24:144:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:143:14:143:35 | call to append [array] | SanitizingDoubleDash.go:144:24:144:31 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:143:21:143:28 | arrayLit | SanitizingDoubleDash.go:143:14:143:35 | call to append | provenance | MaD:28 |

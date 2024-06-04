@@ -3,10 +3,8 @@
 | main.go:38:13:38:13 | 1 | main.go:38:7:38:20 | slice literal |
 | main.go:38:16:38:16 | 2 | main.go:38:7:38:20 | slice literal |
 | main.go:38:19:38:19 | 3 | main.go:38:7:38:20 | slice literal |
+| main.go:39:8:39:25 | []type{args} | main.go:39:8:39:25 | call to append |
 | main.go:39:15:39:15 | s | main.go:39:8:39:25 | call to append |
-| main.go:39:18:39:18 | 4 | main.go:39:8:39:25 | call to append |
-| main.go:39:21:39:21 | 5 | main.go:39:8:39:25 | call to append |
-| main.go:39:24:39:24 | 6 | main.go:39:8:39:25 | call to append |
 | main.go:40:15:40:15 | s | main.go:40:8:40:23 | call to append |
 | main.go:40:18:40:19 | s1 | main.go:40:8:40:23 | call to append |
 | main.go:42:10:42:11 | s4 | main.go:38:2:38:2 | definition of s |
