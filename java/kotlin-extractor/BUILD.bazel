@@ -90,14 +90,14 @@ kt_javac_options(
             outs = [
                 "%s/com/github/codeql/extractor.name" % v,
             ] + [
-                "%s/%s" % (v, tgt)
-                for _, tgt in _resources
+                "%s/%s" % (v, target)
+                for _, target in _resources
             ],
             cmd = "\n".join([
                 "echo %s-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (_extractor_name_prefix, v, v),
             ] + [
-                "cp $(execpath %s) $(RULEDIR)/%s/%s" % (src, v, tgt)
-                for src, tgt in _resources
+                "cp $(execpath %s) $(RULEDIR)/%s/%s" % (source, v, target)
+                for source, target in _resources
             ]),
         ),
         kt_jvm_library(
