@@ -214,13 +214,13 @@ class MyClass5(object): # $ tracked=foo tracked=bar
         print(MyClass5.bar) # $ tracked=foo tracked=bar tracked
 
     @classmethod
-    def on_cls(cls):
-        print(cls.foo) # $ MISSING: tracked=foo tracked
-        print(cls.bar) # $ MISSING: tracked=bar tracked
+    def on_cls(cls): # $ tracked=bar tracked=foo
+        print(cls.foo) # $ tracked=foo tracked tracked=bar
+        print(cls.bar) # $ tracked=bar tracked tracked=foo
 
     @classmethod
-    def set_bar(cls): # $ tracked=bar
-        cls.bar = tracked # $ tracked=bar tracked
+    def set_bar(cls): # $ tracked=bar tracked=foo
+        cls.bar = tracked # $ tracked=bar tracked tracked=foo
 
 instance = MyClass5() # $ tracked=foo tracked=bar
 print(instance.foo) # $ tracked=foo tracked tracked=bar
@@ -239,8 +239,8 @@ class MyClass6(object): # $ int=foo
         print(self.foo) # $ int int=foo str str=foo
 
     @classmethod
-    def use_cls(cls):
-        print(cls.foo) # $ MISSING: int
+    def use_cls(cls): # $ int=foo
+        print(cls.foo) # $ int int=foo
 
 
 print(MyClass6.foo) # $ int int=foo

@@ -298,11 +298,12 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
     TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
     or
     // Class attribute -> self attribute/instance
-    exists(Class cls, string attrName |
+    exists(Class cls, string attrName, boolean storeOnClass |
       loadContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
       storeContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
       (
         // class attribute
+        storeOnClass = true and
         nodeFrom = DataFlowPublic::exprNode(cls.getParent()) and
         (
           exists(DataFlowPublic::AttrWrite write | write.accesses(nodeFrom, attrName))
@@ -311,14 +312,23 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
         )
         or
         // `self.foo = <value>` in normal method
+        storeOnClass = false and
         exists(DataFlowPublic::AttrWrite write |
           instanceMethodStoreOnSelf(write, cls, attrName) and nodeFrom = write.getObject()
         )
       ) and
       (
+        // cls in classmethod on same class
+        storeOnClass = true and
+        exists(DataFlowDispatch::DataFlowClassmethod classMethod |
+          classMethod.getClass() = cls and
+          nodeTo = classMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf()))
+        )
+        or
         // self in (plain) method on same class
         //
         // TODO: handle subclasses
+        storeOnClass in [true, false] and
         exists(DataFlowDispatch::DataFlowMethod instanceMethod |
           not instanceMethod instanceof DataFlowDispatch::DataFlowClassmethod and
           not instanceMethod instanceof DataFlowDispatch::DataFlowStaticmethod
@@ -333,6 +343,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
         // TODO: proper tracking of class (we can't just use type-tracking right now,
         // since we're using a late-inlined relation in a recursive setting, which is
         // not supported)
+        storeOnClass in [true, false] and
         nodeTo.(DataFlowPublic::CallCfgNode).getFunction().getALocalSource() =
           DataFlowPublic::exprNode(cls.getParent())
       )
