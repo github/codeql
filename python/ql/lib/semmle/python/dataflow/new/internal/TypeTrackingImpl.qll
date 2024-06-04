@@ -297,7 +297,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
   predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content loadContent, Content storeContent) {
     TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
     or
-    // Class attribute -> self attribute/instance
+    // flow from class/self -> cls/self/instance, for the relevant attributes.
+    // Using loadStoreStep is more powerful than a potential solution utilizing levelStepNoCall targeting attribute read; with this setup, a flow summary that reads a class attribute will actually work!
     exists(Class cls, string attrName, boolean storeOnClass |
       loadContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
       storeContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
