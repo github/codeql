@@ -87,4 +87,3 @@ if __name__ == "__main__":
         print(get_single_version(*args[2:]))
     else:
         raise Exception("Unknown command: " + command)
-
