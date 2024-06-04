@@ -182,7 +182,6 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "package.json");
     addFile(true, LGTM_SRC, ".eslintrc.yml");
     addFile(true, LGTM_SRC, "vendor", "leftpad", "index.js");
-    addFile(true, LGTM_SRC, ".xsaccess");
     runTest();
   }
 
