@@ -251,7 +251,7 @@ instance.set_instance_foo() # $ int=foo str=foo
 print(instance.foo) # $ int int=foo str str=foo
 
 
-# class-level attributes flowing between subclasses
+# attributes flowing between subclass and base class
 
 class BaseClass(object):
     def set_foo(self): # $ tracked=foo
@@ -260,6 +260,12 @@ class BaseClass(object):
     def use_foo(self): # $ tracked=foo
         print(self.foo) # $ tracked=foo tracked
 
+    def use_bar(self): # $ tracked=foo MISSING: tracked=bar
+        print(self.bar) # $ tracked=foo MISSING: tracked tracked=bar
+
 class SubClass(BaseClass): # $ MISSING: tracked=foo
-    def also_use_foo(self):
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def also_use_foo(self): # $ tracked=bar
+        print(self.foo) # $ tracked=bar MISSING: tracked=foo tracked
+
+    def set_bar(self): # $ tracked=bar
+        self.bar = tracked # $ tracked=bar tracked
