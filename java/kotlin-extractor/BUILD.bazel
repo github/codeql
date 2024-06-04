@@ -1,6 +1,9 @@
 """
 # Usage overview
-Building the extractor can be done via
+Building the extractor can be done with bazel. If building from the internal repository, it is recommended to use
+`tools/bazel` from there.
+
+A specific kotlin extractor variant can be built with
 ```
 bazel build @codeql//java/kotlin-extractor:codeql-extractor-kotlin-<variant>-<version>
 ```
@@ -16,8 +19,8 @@ will build a default variant:
 
 If `kotlinc` is updated, bazel won't be aware of it and will therefore keep the same default version. Possible workarounds for that:
 * `bazel clean`
-* `bazel fetch --force @codeql_kotlin_defaults\\:all`
-* `CODEQL_KOTLIN_SINGLE_VERSION= bazel build //java/kotlin-extractor`
+* `bazel fetch --force @codeql//java/kotlin-extractor`
+* `bazel fetch --force @codeql_kotlin_defaults//:all` (only from `codeql`)
 
 If building from the `codeql` repository, `@codeql` can be skipped.
 """
