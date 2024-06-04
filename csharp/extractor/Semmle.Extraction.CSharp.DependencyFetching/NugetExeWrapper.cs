@@ -97,6 +97,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return envVarPath;
             }
 
+            try
+            {
+                return DownloadNugetExe(fileProvider.SourceDir.FullName);
+            }
+            catch (Exception exc)
+            {
+                logger.LogInfo($"Download of nuget.exe failed: {exc.Message}");
+            }
+
             var nugetExesInRepo = fileProvider.NugetExes;
             if (nugetExesInRepo.Count > 1)
             {
@@ -119,7 +128,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return nugetPath;
             }
 
-            return DownloadNugetExe(fileProvider.SourceDir.FullName);
+            throw new Exception("Could not find or download nuget.exe.");
         }
 
         private string DownloadNugetExe(string sourceDir)
@@ -136,17 +145,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Directory.CreateDirectory(directory);
             logger.LogInfo("Attempting to download nuget.exe");
-            try
-            {
-                FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
-                logger.LogInfo($"Downloaded nuget.exe to {nuget}");
-                return nuget;
-            }
-            catch
-            {
-                // Download failed.
-                throw new FileNotFoundException("Download of nuget.exe failed.");
-            }
+            FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
+            logger.LogInfo($"Downloaded nuget.exe to {nuget}");
+            return nuget;
         }
 
         private bool RunWithMono => !Win32.IsWindows() && !string.IsNullOrEmpty(Path.GetExtension(nugetExe));
