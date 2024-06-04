@@ -297,7 +297,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
   predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content loadContent, Content storeContent) {
     TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
     or
-    // Class attribute -> self attribute
+    // Class attribute -> self attribute/instance
     exists(Class cls, string attrName |
       loadContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
       storeContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
@@ -322,6 +322,14 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
           nodeTo =
             instanceMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf()))
         )
+        or
+        // instantiation of class
+        //
+        // TODO: proper tracking of class (we can't just use type-tracking right now,
+        // since we're using a late-inlined relation in a recursive setting, which is
+        // not supported)
+        nodeTo.(DataFlowPublic::CallCfgNode).getFunction().getALocalSource() =
+          DataFlowPublic::exprNode(cls.getParent())
       )
     )
   }

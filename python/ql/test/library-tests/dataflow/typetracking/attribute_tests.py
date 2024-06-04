@@ -76,7 +76,7 @@ class MyClass: # $tracked=field
 
 lookup = MyClass.field # $tracked tracked=field
 instance = MyClass() # $tracked=field
-lookup2 = instance.field # MISSING: tracked
+lookup2 = instance.field # $ tracked tracked=field
 
 # ------------------------------------------------------------------------------
 # Dynamic attribute access
@@ -223,8 +223,8 @@ class MyClass5(object): # $ tracked=foo tracked=bar
         cls.bar = tracked # $ tracked=bar tracked
 
 instance = MyClass5() # $ tracked=foo tracked=bar
-print(instance.foo) # $ MISSING: tracked=foo tracked
-print(instance.bar) # $ MISSING: tracked=bar tracked
+print(instance.foo) # $ tracked=foo tracked tracked=bar
+print(instance.bar) # $ tracked=bar tracked tracked=foo
 
 
 # shadowing of class-level attribute by instance attribute
@@ -246,9 +246,9 @@ class MyClass6(object): # $ int=foo
 print(MyClass6.foo) # $ int int=foo
 
 instance = MyClass6() # $ int=foo
-print(instance.foo) # $ MISSING: int
-instance.set_instance_foo()
-print(instance.foo) # $ MISSING: int str
+print(instance.foo) # $ int int=foo
+instance.set_instance_foo() # $ int=foo
+print(instance.foo) # $ int int=foo MISSING: str
 
 
 # class-level attributes flowing between subclasses
