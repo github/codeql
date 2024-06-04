@@ -96,8 +96,10 @@ namespace Semmle.Extraction.CSharp
         public static ExitCode Run(string[] args)
         {
             var options = Options.CreateWithEnvironment(args);
+            using var logger = MakeLogger(options.Verbosity, options.Console);
             if (options.BinaryLogPath is string binlogPath)
             {
+                logger.LogInfo($"Reading compiler calls from binary log {binlogPath}");
                 using var fileStream = new FileStream(binlogPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
                 // Filter out compiler calls that aren't interesting for examination
@@ -121,11 +123,13 @@ namespace Semmle.Extraction.CSharp
                 var exitCode = ExitCode.Ok;
                 foreach (var compilerCall in compilerCalls)
                 {
-                    Console.WriteLine($"Processing {compilerCall.GetDiagnosticName()}");
+                    var diagnosticName = compilerCall.GetDiagnosticName();
+                    Console.WriteLine($"Processing {diagnosticName}");
                     var compilerCallOptions = Options.CreateWithEnvironment([]);
                     compilerCallOptions.CompilerName = compilerCall.CompilerFilePath;
                     compilerCallOptions.CompilerArguments.AddRange(compilerCall.GetArguments());
-                    var ec = Run(compilerCallOptions);
+                    logger.LogInfo($"Running extractor on arguments from binary log. Processing {diagnosticName}.");
+                    var ec = Run(compilerCallOptions, logger);
                     if (ec != ExitCode.Ok)
                     {
                         exitCode = ec;
@@ -136,18 +140,16 @@ namespace Semmle.Extraction.CSharp
             }
             else
             {
-                return Run(options);
+                return Run(options, logger);
             }
         }
 
-        public static ExitCode Run(Options options)
+        public static ExitCode Run(Options options, ILogger logger)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var workingDirectory = Directory.GetCurrentDirectory();
             var compilerArgs = options.CompilerArguments.ToArray();
-
-            using var logger = MakeLogger(options.Verbosity, options.Console);
 
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
