@@ -22,6 +22,7 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
+bazel_dep(name = "rules_kotlin", version = "1.9.4-codeql.1")
 bazel_dep(name = "gazelle", version = "0.36.0")
 bazel_dep(name = "rules_dotnet", version = "0.15.1")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
@@ -64,6 +65,51 @@ node.toolchain(
     node_version = "18.15.0",
 )
 use_repo(node, "nodejs", "nodejs_toolchains")
+
+kotlin_extractor_deps = use_extension("//java/kotlin-extractor:deps.bzl", "kotlin_extractor_deps")
+
+# following list can be kept in sync by running `bazel mod tidy` in `codeql`
+use_repo(
+    kotlin_extractor_deps,
+    "codeql_kotlin_defaults",
+    "codeql_kotlin_embeddable",
+    "kotlin-compiler-1.5.0",
+    "kotlin-compiler-1.5.10",
+    "kotlin-compiler-1.5.20",
+    "kotlin-compiler-1.5.30",
+    "kotlin-compiler-1.6.0",
+    "kotlin-compiler-1.6.20",
+    "kotlin-compiler-1.7.0",
+    "kotlin-compiler-1.7.20",
+    "kotlin-compiler-1.8.0",
+    "kotlin-compiler-1.9.0-Beta",
+    "kotlin-compiler-1.9.20-Beta",
+    "kotlin-compiler-2.0.0-RC1",
+    "kotlin-compiler-embeddable-1.5.0",
+    "kotlin-compiler-embeddable-1.5.10",
+    "kotlin-compiler-embeddable-1.5.20",
+    "kotlin-compiler-embeddable-1.5.30",
+    "kotlin-compiler-embeddable-1.6.0",
+    "kotlin-compiler-embeddable-1.6.20",
+    "kotlin-compiler-embeddable-1.7.0",
+    "kotlin-compiler-embeddable-1.7.20",
+    "kotlin-compiler-embeddable-1.8.0",
+    "kotlin-compiler-embeddable-1.9.0-Beta",
+    "kotlin-compiler-embeddable-1.9.20-Beta",
+    "kotlin-compiler-embeddable-2.0.0-RC1",
+    "kotlin-stdlib-1.5.0",
+    "kotlin-stdlib-1.5.10",
+    "kotlin-stdlib-1.5.20",
+    "kotlin-stdlib-1.5.30",
+    "kotlin-stdlib-1.6.0",
+    "kotlin-stdlib-1.6.20",
+    "kotlin-stdlib-1.7.0",
+    "kotlin-stdlib-1.7.20",
+    "kotlin-stdlib-1.8.0",
+    "kotlin-stdlib-1.9.0-Beta",
+    "kotlin-stdlib-1.9.20-Beta",
+    "kotlin-stdlib-2.0.0-RC1",
+)
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.2")
