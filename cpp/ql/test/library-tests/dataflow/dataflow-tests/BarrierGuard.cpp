@@ -76,3 +76,12 @@ void bg_indirect_expr() {
     sink(buf);
   }
 }
+
+void test_guard_and_reassign() {
+  int x = source();
+
+  if(!guarded(x)) {
+    x = 0;
+  }
+  sink(x); // $ SPURIOUS: ast,ir
+}

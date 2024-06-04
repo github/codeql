@@ -12,6 +12,7 @@ astFlow
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:62:14:62:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| BarrierGuard.cpp:81:11:81:16 | call to source | BarrierGuard.cpp:86:8:86:8 | x |
 | acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:22:8:22:20 | & ... |
@@ -141,6 +142,7 @@ irFlow
 | BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:55:13:55:13 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| BarrierGuard.cpp:81:11:81:16 | call to source | BarrierGuard.cpp:86:8:86:8 | x |
 | acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:23:17:23:29 | *& ... |
