@@ -23,6 +23,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           bazel query //java/kotlin-extractor/...
-          # only build the default version as a sanity check that we can build from `codeql`
+          # only build the default version as a quick check that we can build from `codeql`
           # the full official build will be checked by QLucie
           bazel build //java/kotlin-extractor
