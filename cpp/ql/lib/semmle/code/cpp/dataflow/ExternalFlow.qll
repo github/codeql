@@ -203,8 +203,9 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * Holds if MaD framework coverage of `package` is `n` api endpoints of the
+ * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
+ * which have MaD framework coverage (including `package` itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
