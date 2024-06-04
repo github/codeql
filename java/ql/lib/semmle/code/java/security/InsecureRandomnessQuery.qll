@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.frameworks.OpenSaml
 private import semmle.code.java.frameworks.Servlets
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.Cookies
 private import semmle.code.java.security.RandomQuery
@@ -49,7 +50,7 @@ abstract class InsecureRandomnessSink extends DataFlow::Node { }
 /**
  * A node which sets the value of a cookie.
  */
-private class CookieSink extends InsecureRandomnessSink {
+private class CookieSink extends InsecureRandomnessSink, ApiSinkNode {
   CookieSink() { this.asExpr() instanceof SetCookieValue }
 }
 

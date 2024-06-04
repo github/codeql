@@ -1,6 +1,7 @@
 /** Provides classes to reason about local information disclosure in a temporary directory. */
 
 import java
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.os.OSCheck
 private import semmle.code.java.security.TempDirUtils
@@ -29,7 +30,7 @@ private class MethodFileFileCreation extends MethodFileSystemFileCreation {
 /**
  * A dataflow node that creates a file or directory in the file system.
  */
-abstract private class FileCreationSink extends DataFlow::Node { }
+abstract private class FileCreationSink extends ApiSinkNode { }
 
 /**
  * The qualifier of a call to one of `File`'s file-creating or directory-creating methods,

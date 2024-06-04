@@ -4,29 +4,33 @@
 <qhelp>
 <overview>
 <p>Each call to the <code>printf</code> function or a related function should include
-the type and sequence of arguments defined by the format. If the function is passed arguments 
+the type and sequence of arguments defined by the format. If the function is passed arguments
 of a different type or in a different sequence then the arguments are reinterpreted to fit the type and sequence expected, resulting in unpredictable behavior.</p>
 
 </overview>
 <recommendation>
-<p>Review the format and arguments expected by the highlighted function calls. Update either 
-the format or the arguments so that the expected type and sequence of arguments are passed to 
+<p>Review the format and arguments expected by the highlighted function calls. Update either
+the format or the arguments so that the expected type and sequence of arguments are passed to
 the function.
 </p>
 
 </recommendation>
-<example><sample src="WrongTypeFormatArguments.cpp" />
+<example>
+
+<p>In the following example, the wrong format specifier is given for an integer format argument:</p>
+
+<sample src="WrongTypeFormatArgumentsBad.cpp" />
+
+<p>The corrected version uses <code>%i</code> as the format specifier for the integer format argument:</p>
+
+<sample src="WrongTypeFormatArgumentsGood.cpp" />
 
 </example>
 <references>
 
-<li>CERT C Coding
-Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings">FIO30-C. Exclude user input from format strings</a>.</li>
-<li>cplusplus.com: <a href="http://www.tutorialspoint.com/cplusplus/cpp_functions.htm">C++ Functions</a>.</li>
-<li>CRT Alphabetical Function Reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/printf-printf-l-wprintf-wprintf-l">printf, _printf_l, wprintf, _wprintf_l</a>.</li>
-
-
-
+<li>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-170">Format specification syntax: printf and wprintf functions</a>.</li>
+<li>cplusplus.com:<a href="https://cplusplus.com/reference/cstdio/printf/"></a>printf</li>
+<li>CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO47-C.+Use+valid+format+strings">FIO47-C. Use valid format strings</a>.</li>
 
 </references>
 </qhelp>

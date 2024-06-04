@@ -271,6 +271,8 @@ private string interpretPackage(string p) {
     then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
     else result = package(p, "")
   )
+  or
+  p = "" and result = ""
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */

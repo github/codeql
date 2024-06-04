@@ -140,6 +140,10 @@ predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+    succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
 /** Holds if taint flows from `pred` to `succ` via a field read. */

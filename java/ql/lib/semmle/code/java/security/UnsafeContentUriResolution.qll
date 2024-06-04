@@ -1,13 +1,14 @@
 /** Provides classes to reason about vulnerabilites related to content URIs. */
 
 import java
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.security.Sanitizers
 
 /** A URI that gets resolved by a `ContentResolver`. */
-abstract class ContentUriResolutionSink extends DataFlow::Node { }
+abstract class ContentUriResolutionSink extends ApiSinkNode { }
 
 /** A sanitizer for content URIs. */
 abstract class ContentUriResolutionSanitizer extends DataFlow::Node { }

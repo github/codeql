@@ -4,6 +4,7 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 abstract private class AbstractSanitizerMethod extends Method { }
@@ -327,6 +328,11 @@ private predicate wrapperCheckGuard(Guard g, Expr e, AbstractValue v) {
 }
 
 /**
+ * A data flow sink for unsafe zip extraction.
+ */
+abstract class Sink extends ApiSinkExprNode { }
+
+/**
  * A sanitizer for unsafe zip extraction.
  */
 abstract private class Sanitizer extends DataFlow::ExprNode { }
@@ -352,11 +358,6 @@ class ArchiveEntryFullName extends Source {
     )
   }
 }
-
-/**
- * A data flow sink for unsafe zip extraction.
- */
-abstract private class Sink extends DataFlow::Node { }
 
 /**
  * Argument to extract to file extension method

@@ -38,13 +38,15 @@ namespace Semmle.Extraction.CSharp
         public void EndInitialize(
            CSharpCommandLineArguments commandLineArguments,
            CommonOptions options,
-           CSharpCompilation compilation)
+           CSharpCompilation compilation,
+           string cwd,
+           string[] args)
         {
             if (!init)
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
+            this.extractor = new TracingExtractor(cwd, args, GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
             LogDiagnostics();
 
             SetReferencePaths();

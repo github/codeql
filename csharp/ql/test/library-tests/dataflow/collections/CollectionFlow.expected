@@ -216,6 +216,7 @@ edges
 | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | provenance |  |
 | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:311:18:311:24 | access to property Key | provenance |  |
 | CollectionFlow.cs:328:32:328:38 | element : A | CollectionFlow.cs:328:55:328:61 | access to parameter element : A | provenance |  |
+| CollectionFlow.cs:328:44:328:48 | [post] access to parameter array : A[] [element] : A | CollectionFlow.cs:328:23:328:27 | array [Return] : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:328:55:328:61 | access to parameter element : A | CollectionFlow.cs:328:44:328:48 | [post] access to parameter array : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:332:13:332:13 | access to local variable a : A | CollectionFlow.cs:334:23:334:23 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:332:17:332:23 | object creation of type A : A | CollectionFlow.cs:332:13:332:13 | access to local variable a : A | provenance |  |
@@ -229,6 +230,7 @@ edges
 | CollectionFlow.cs:337:20:337:22 | access to local variable as : A[] [element] : A | CollectionFlow.cs:22:34:22:35 | ts : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:337:20:337:22 | access to local variable as : A[] [element] : A | CollectionFlow.cs:337:14:337:23 | call to method First<A> | provenance |  |
 | CollectionFlow.cs:350:34:350:40 | element : A | CollectionFlow.cs:350:55:350:61 | access to parameter element : A | provenance |  |
+| CollectionFlow.cs:350:46:350:49 | [post] access to parameter list : List<T> [element] : A | CollectionFlow.cs:350:26:350:29 | list [Return] : List<T> [element] : A | provenance |  |
 | CollectionFlow.cs:350:55:350:61 | access to parameter element : A | CollectionFlow.cs:350:46:350:49 | [post] access to parameter list : List<T> [element] : A | provenance | MaD:605 |
 | CollectionFlow.cs:354:13:354:13 | access to local variable a : A | CollectionFlow.cs:356:23:356:23 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:354:17:354:23 | object creation of type A : A | CollectionFlow.cs:354:13:354:13 | access to local variable a : A | provenance |  |
@@ -520,6 +522,7 @@ nodes
 | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | semmle.label | kvp : KeyValuePair<T,T> [property Key] : A |
 | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | semmle.label | access to parameter kvp : KeyValuePair<T,T> [property Key] : A |
 | CollectionFlow.cs:311:18:311:24 | access to property Key | semmle.label | access to property Key |
+| CollectionFlow.cs:328:23:328:27 | array [Return] : A[] [element] : A | semmle.label | array [Return] : A[] [element] : A |
 | CollectionFlow.cs:328:32:328:38 | element : A | semmle.label | element : A |
 | CollectionFlow.cs:328:44:328:48 | [post] access to parameter array : A[] [element] : A | semmle.label | [post] access to parameter array : A[] [element] : A |
 | CollectionFlow.cs:328:55:328:61 | access to parameter element : A | semmle.label | access to parameter element : A |
@@ -532,6 +535,7 @@ nodes
 | CollectionFlow.cs:336:18:336:20 | access to local variable as : A[] [element] : A | semmle.label | access to local variable as : A[] [element] : A |
 | CollectionFlow.cs:337:14:337:23 | call to method First<A> | semmle.label | call to method First<A> |
 | CollectionFlow.cs:337:20:337:22 | access to local variable as : A[] [element] : A | semmle.label | access to local variable as : A[] [element] : A |
+| CollectionFlow.cs:350:26:350:29 | list [Return] : List<T> [element] : A | semmle.label | list [Return] : List<T> [element] : A |
 | CollectionFlow.cs:350:34:350:40 | element : A | semmle.label | element : A |
 | CollectionFlow.cs:350:46:350:49 | [post] access to parameter list : List<T> [element] : A | semmle.label | [post] access to parameter list : List<T> [element] : A |
 | CollectionFlow.cs:350:55:350:61 | access to parameter element : A | semmle.label | access to parameter element : A |
@@ -640,9 +644,9 @@ subpaths
 | CollectionFlow.cs:222:27:222:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:57:34:60 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:66:34:81 | access to property Key : A | CollectionFlow.cs:222:14:222:31 | call to method DictFirstKey<A> |
 | CollectionFlow.cs:240:28:240:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:58:32:61 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:67:32:83 | call to method First<T> : A | CollectionFlow.cs:240:14:240:32 | call to method DictKeysFirst<A> |
 | CollectionFlow.cs:241:27:241:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:57:34:60 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:66:34:81 | access to property Key : A | CollectionFlow.cs:241:14:241:31 | call to method DictFirstKey<A> |
-| CollectionFlow.cs:334:23:334:23 | access to local variable a : A | CollectionFlow.cs:328:32:328:38 | element : A | CollectionFlow.cs:328:44:328:48 | [post] access to parameter array : A[] [element] : A | CollectionFlow.cs:334:18:334:20 | [post] access to local variable as : A[] [element] : A |
+| CollectionFlow.cs:334:23:334:23 | access to local variable a : A | CollectionFlow.cs:328:32:328:38 | element : A | CollectionFlow.cs:328:23:328:27 | array [Return] : A[] [element] : A | CollectionFlow.cs:334:18:334:20 | [post] access to local variable as : A[] [element] : A |
 | CollectionFlow.cs:337:20:337:22 | access to local variable as : A[] [element] : A | CollectionFlow.cs:22:34:22:35 | ts : A[] [element] : A | CollectionFlow.cs:22:41:22:45 | access to array element : A | CollectionFlow.cs:337:14:337:23 | call to method First<A> |
-| CollectionFlow.cs:356:23:356:23 | access to local variable a : A | CollectionFlow.cs:350:34:350:40 | element : A | CollectionFlow.cs:350:46:350:49 | [post] access to parameter list : List<T> [element] : A | CollectionFlow.cs:356:17:356:20 | [post] access to local variable list : List<T> [element] : A |
+| CollectionFlow.cs:356:23:356:23 | access to local variable a : A | CollectionFlow.cs:350:34:350:40 | element : A | CollectionFlow.cs:350:26:350:29 | list [Return] : List<T> [element] : A | CollectionFlow.cs:356:17:356:20 | [post] access to local variable list : List<T> [element] : A |
 | CollectionFlow.cs:359:24:359:27 | access to local variable list : List<T> [element] : A | CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | CollectionFlow.cs:24:52:24:58 | access to indexer : A | CollectionFlow.cs:359:14:359:28 | call to method ListFirst<A> |
 #select
 | CollectionFlow.cs:40:17:40:23 | object creation of type A : A | CollectionFlow.cs:40:17:40:23 | object creation of type A : A | CollectionFlow.cs:14:52:14:56 | access to array element | $@ | CollectionFlow.cs:14:52:14:56 | access to array element | access to array element |

@@ -1,25 +1,2 @@
-| p;Factory;getIntValue;();summary;df-generated |
-| p;FinalClass;returnsConstant;();summary;df-generated |
-| p;FluentAPI$Inner;notThis;(String);summary;df-generated |
-| p;ImmutablePojo;getX;();summary;df-generated |
-| p;Joiner;length;();summary;df-generated |
-| p;ParamFlow;ignorePrimitiveReturnValue;(String);summary;df-generated |
-| p;ParamFlow;mapType;(Class);summary;df-generated |
-| p;Pojo;doNotSetValue;(String);summary;df-generated |
-| p;Pojo;getBigDecimal;();summary;df-generated |
-| p;Pojo;getBigInt;();summary;df-generated |
-| p;Pojo;getBoxedArray;();summary;df-generated |
-| p;Pojo;getBoxedCollection;();summary;df-generated |
-| p;Pojo;getBoxedValue;();summary;df-generated |
-| p;Pojo;getFloatArray;();summary;df-generated |
-| p;Pojo;getIntValue;();summary;df-generated |
-| p;Pojo;getPrimitiveArray;();summary;df-generated |
-| p;PrivateFlowViaPublicInterface$SPI;openStreamNone;();summary;df-generated |
-| p;PrivateFlowViaPublicInterface;createAnSPIWithoutTrackingFile;(File);summary;df-generated |
-| p;Sinks;copyFileToDirectory;(Path,Path,CopyOption[]);summary;df-generated |
-| p;Sinks;propagate;(String);summary;df-generated |
-| p;Sinks;readUrl;(URL,Charset);summary;df-generated |
-| p;Sources;readUrl;(URL);summary;df-generated |
-| p;Sources;socketStream;();summary;df-generated |
-| p;Sources;sourceToParameter;(InputStream[],List);summary;df-generated |
-| p;Sources;wrappedSocketStream;();summary;df-generated |
+unexpectedModel
+expectedModel

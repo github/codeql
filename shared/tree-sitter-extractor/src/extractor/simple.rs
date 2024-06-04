@@ -137,7 +137,7 @@ impl Extractor {
                                 let lang = &self.languages[i];
 
                                 crate::extractor::extract(
-                                    lang.ts_language,
+                                    &lang.ts_language,
                                     lang.prefix,
                                     &schemas[i],
                                     &mut diagnostics_writer,
