@@ -61,64 +61,19 @@ The CodeQL library for CPP analysis exposes the following extensible predicates:
 
 The extensible predicates are populated using the models defined in data extension files.
 
-Examples of custom model definitions
+Example of custom model definitions
 ------------------------------------
-
-TODO: one good example might do, but we currently have zero.
 
 The examples in this section are taken from the standard CodeQL CPP query pack published by GitHub. They demonstrate how to add tuples to extend extensible predicates that are used by the standard queries.
 
-Example: Taint sink in the ``System.Data.SqlClient`` namespace
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example: Taint source from the ``boost::asio`` namespace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example shows how the CPP query pack models the argument of the ``SqlCommand`` constructor as a SQL injection sink.
-This is the constructor of the ``SqlCommand`` class, which is located in the ``System.Data.SqlClient`` namespace.
+This example shows how the CPP query pack models the return value from the ``read_until`` function as a ``remote`` source.
 
-.. code-block:: csharp TODO
+.. code-block:: cpp
 
-   public static void TaintSink(SqlConnection conn, string query) {
-        SqlCommand command = new SqlCommand(query, connection) // The argument to this method is a SQL injection sink.
-        ...
-   }
-
-We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
-
-.. code-block:: yaml
-
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: sinkModel
-       data:
-         - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
-
-Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
-The first five values identify the callable (in this case a method) to be modeled as a sink.
-
-- The first value ``System.Data.SqlClient`` is the namespace name.
-- The second value ``SqlCommand`` is the name of the class (type) that contains the method.
-- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method.
-- The fourth value ``SqlCommand`` is the method name. Constructors are named after the class.
-- The fifth value ``(System.String,System.Data.SqlClient.SqlConnection)`` is the method input type signature. The type names must be fully qualified.
-
-The sixth value should be left empty and is out of scope for this documentation.
-The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the sink.
-
-- The seventh value ``Argument[0]`` is the ``access path`` to the first argument passed to the method, which means that this is the location of the sink.
-- The eighth value ``sql-injection`` is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
-- The ninth value ``manual`` is the provenance of the sink, which is used to identify the origin of the sink.
-
-Example: Taint source from the ``System.Net.Sockets`` namespace
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how the CPP query pack models the return value from the ``GetStream`` method as a ``remote`` source.
-This is the ``GetStream`` method in the ``TcpClient`` class, which is located in the ``System.Net.Sockets`` namespace.
-
-.. code-block:: csharp TODO
-
-   public static void Tainted(TcpClient client) {
-       NetworkStream stream = client.GetStream(); // The return value of this method is a remote source of taint.
-       ...
-   }
+   boost::asio::read_until(socket, recv_buffer, '\0', error);
 
 We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.
 
@@ -129,36 +84,68 @@ We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, 
          pack: codeql/cpp-all
          extensible: sourceModel
        data:
-         - ["System.Net.Sockets", "TcpClient", False, "GetStream", "()", "", "ReturnValue", "remote", "manual"]
-
+         - ["boost::asio", "", False, "read_until", "", "", "Argument[*1]", "remote", "manual"]
 
 Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
-The first five values identify the callable (in this case a method) to be modeled as a source.
+The first five values identify the callable (in this case a free function) to be modeled as a source.
 
-- The first value ``System.Net.Sockets`` is the namespace name.
-- The second value ``TcpClient`` is the name of the class (type) that contains the source.
-- The third value ``False`` is a flag that indicates whether or not the source also applies to all overrides of the method.
-- The fourth value ``GetStream`` is the method name.
-- The fifth value ``()`` is the method input type signature.
+- The first value ``"boost::asio"`` is the namespace name.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modelling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method. For a free function, this should be ``False``.
+- The fourth value ``"read_until"`` is the function name.
+- The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``read_until``.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
 
-- The seventh value ``ReturnValue`` is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.
-- The eighth value ``remote`` is the kind of the source. The source kind is used to define the threat model where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses ``remote`` sources. For more information, see ":ref:`Threat models <threat-models-cpp>`."
-- The ninth value ``manual`` is the provenance of the source, which is used to identify the origin of the source.
+- The seventh value ``"Argument[*1]"`` is the ``access path``, which means that the sink is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
+- The eighth value ``"remote"`` is the kind of the source. The source kind is used to define the threat model where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. For more information, see ":ref:`Threat models <threat-models-cpp>`."
+- The ninth value ``"manual"`` is the provenance of the source, which is used to identify the origin of the source.
 
-Example: Add flow through the ``Concat`` method
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how the CPP query pack models flow through a method for a simple case.
-This pattern covers many of the cases where we need to summarize flow through a method that is stored in a library or framework outside the repository.
+Example: Taint sink in the ``boost::asio`` namespace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: cpp TODO
+This example shows how the CPP query pack models the second argument of the ``boost::asio::write`` function as a remote flow sink. A remote flow sink is where data is transmitted to other machines across a network, which is used for example by the "Cleartext transmission of sensitive information" (`cpp/cleartext-transmission`) query.
 
-   public static void TaintFlow(string s1, string s2) {
-       string t = String.Concat(s1, s2); // There is taint flow from s1 and s2 to t.
-       ...
-   }
+.. code-block:: cpp
+
+   boost::asio::write(socket, send_buffer, error);
+
+We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
+
+.. code-block:: yaml
+
+   extensions:
+     - addsTo:
+         pack: codeql/cpp-all
+         extensible: sinkModel
+       data:
+         - ["boost::asio", "", False, "write", "", "", "Argument[*1]", "remote-sink", "manual"]
+
+Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
+The first five values identify the callable (in this case a free function) to be modeled as a sink.
+
+- The first value ``"boost::asio"`` is the namespace name.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modelling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method. For a free function, this should be ``False``.
+- The fourth value ``"write"`` is the function name.
+- The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``write``.
+
+The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the sink.
+
+- The seventh value ``"Argument[*1]"`` is the ``access path``, which means that the sink is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
+- The eighth value ``"remote-sink"`` is the kind of the sink. The sink kind is used to define the queries where the sink is in scope.
+- The ninth value ``"manual"`` is the provenance of the sink, which is used to identify the origin of the sink.
+
+Example: Add flow through the ``boost::asio::buffer`` method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example shows how the CPP query pack models flow through a function for a simple case.
+
+.. code-block:: cpp
+
+   boost::asio::write(socket, boost::asio::buffer(send_str), error);
 
 We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
 
@@ -169,144 +156,25 @@ We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, 
          pack: codeql/cpp-all
          extensible: summaryModel
        data:
-         - ["System", "String", False, "Concat", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-         - ["System", "String", False, "Concat", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+         - ["boost::asio", "", False, "buffer", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
 
-Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
-Each tuple defines flow from one argument to the return value.
-The first row defines flow from the first argument (``s1`` in the example) to the return value (``t`` in the example) and the second row defines flow from the second argument (``s2`` in the example) to the return value (``t`` in the example).
+Since we are adding flow through a function, we need to add tuples to the ``summaryModel`` extensible predicate.
 
-The first five values identify the callable (in this case a method) to be modeled as a summary.
-These are the same for both of the rows above as we are adding two summaries for the same method.
+The first five values identify the callable (in this case free function) to be modeled as a summary.
 
-- The first value ``System`` is the namespace name.
-- The second value ``String`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
-- The fourth value ``Concat`` is the method name.
-- The fifth value ``(System.Object,System.Object)`` is the method input type signature.
+- The first value ``"boost::asio"`` is the namespace name.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modelling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method. For a free function, this should be ``False``.
+- The fourth value ``"buffer"`` is the function name.
+- The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``buffer``.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). ``Argument[0]`` is the access path to the first argument (``s1`` in the example) and ``Argument[1]`` is the access path to the second argument (``s2`` in the example).
-- The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
-- The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
-- The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
-
-It would also be possible to merge the two rows into one by using a comma-separated list in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
-
-.. code-block:: yaml
-
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: summaryModel
-       data:
-         - ["System", "String", False, "Concat", "(System.Object,System.Object)", "", "Argument[0,1]", "ReturnValue", "taint", "manual"]
-
-This row defines flow from both the first and the second argument to the return value. The seventh value ``Argument[0,1]`` is shorthand for specifying an access path to both ``Argument[0]`` and ``Argument[1]``.
-
-Example: Add flow through the ``Trim`` method
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how the CPP query pack models flow through a method for a simple case.
-
-.. code-block:: cpp TODO
-
-   public static void TaintFlow(string s) {
-       string t = s.Trim(); // There is taint flow from s to t.
-       ...
-   }
-
-We need to add a tuple to the ``summaryModel``\(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
-
-.. code-block:: yaml
-
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: summaryModel
-       data:
-         - ["System", "String", False, "Trim", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-
-Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
-Each tuple defines flow from one argument to the return value.
-The first row defines flow from the qualifier of the method call (``s1`` in the example) to the return value (``t`` in the example).
-
-The first five values identify the callable (in this case a method) to be modeled as a summary.
-These are the same for both of the rows above as we are adding two summaries for the same method.
-
-- The first value ``System`` is the namespace name.
-- The second value ``String`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
-- The fourth value ``Trim`` is the method name.
-- The fifth value ``()`` is the method input type signature.
-
-The sixth value should be left empty and is out of scope for this documentation.
-The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
-
-- The seventh value is the access path to the input (where data flows from). ``Argument[this]`` is the access path to the qualifier (``s`` in the example).
-- The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
-- The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
-- The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
-
-Example: Add flow through the ``Select`` method
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how the CPP query pack models a more complex flow through a method.
-Here we model flow through higher order methods and collection types, as well as how to handle extension methods and generics.
-
-.. code-block:: cpp TODO
-
-   public static void TaintFlow(IEnumerable<string> stream) {
-     IEnumerable<string> lines = stream.Select(item => item + "\n");
-     ...
-   }
-
-We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
-
-.. code-block:: yaml
-
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: summaryModel
-       data:
-         - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
-         - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)", "", "Argument[1].ReturnValue", "ReturnValue.Element", "value", "manual"]
-
-
-Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
-Each tuple defines part of the flow that comprises the total flow through the ``Select`` method.
-The first five values identify the callable (in this case a method) to be modeled as a summary.
-These are the same for both of the rows above as we are adding two summaries for the same method.
-
-- The first value ``System.Linq`` is the namespace name.
-- The second value ``Enumerable`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
-- The fourth value ``Select<TSource,TResult>`` is the method name, along with the type parameters for the method. The names of the generic type parameters provided in the model must match the names of the generic type parameters in the method signature in the source code.
-- The fifth value ``(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)`` is the method input type signature. The generics in the signature must match the generics in the method signature in the source code.
-
-The sixth value should be left empty and is out of scope for this documentation.
-The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary definition.
-
-- The seventh value is the access path to the ``input`` (where data flows from).
-- The eighth value is the access path to the ``output`` (where data flows to).
-
-For the first row:
-
-- The seventh value is ``Argument[0].Element``, which is the access path to the elements of the qualifier (the elements of the enumerable ``stream`` in the example).
-- The eight value is ``Argument[1].Parameter[0]``, which is the access path to the first parameter of the ``System.Func<TSource,TResult>`` argument of ``Select`` (the lambda parameter ``item`` in the example).
-
-For the second row:
-
-- The seventh value is ``Argument[1].ReturnValue``, which is the access path to the return value of the ``System.Func<TSource,TResult>`` argument of ``Select`` (the return value of the lambda in the example).
-- The eighth value is ``ReturnValue.Element``, which is the access path to the elements of the return value of ``Select`` (the elements of the enumerable ``lines`` in the example).
-
-For the remaining values for both rows:
-
-- The ninth value ``value`` is the kind of the flow. ``value`` means that the value is preserved.
-- The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
-
-That is, the first row specifies that values can flow from the elements of the qualifier enumerable into the first argument of the function provided to ``Select``.  The second row specifies that values can flow from the return value of the function to the elements of the enumerable returned from ``Select``.
+- The seventh value is the access path to the input (where data flows from). ``Argument[*0]`` is the access path to the first indirection (or pointed-to value, ``*``) of the first argument (``Argument[0]``) passed to the function.
+- The eighth value ``"ReturnValue"`` is the access path to the output (where data flows to), in this case the return value.
+- The ninth value ``"taint"`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
+- The tenth value ``"manual"`` is the provenance of the summary, which is used to identify the origin of the summary.
 
 .. _threat-models-cpp:
 
