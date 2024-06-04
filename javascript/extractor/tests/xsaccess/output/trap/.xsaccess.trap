@@ -1,5 +1,5 @@
-#10000=@"/.xaccess;sourcefile"
-files(#10000,".xaccess")
+#10000=@"/.xsaccess;sourcefile"
+files(#10000,".xsaccess")
 #10001=@"/;folder"
 folders(#10001,"/")
 containerparent(#10001,#10000)
