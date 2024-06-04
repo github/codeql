@@ -657,19 +657,9 @@ class GlobalDefImpl extends DefImpl, TGlobalDefImpl {
  */
 predicate adjacentDefRead(IRBlock bb1, int i1, SourceVariable sv, IRBlock bb2, int i2) {
   adjacentDefReadExt(_, sv, bb1, i1, bb2, i2)
-  or
-  exists(PhiNode phi |
-    lastRefRedefExt(_, sv, bb1, i1, phi) and
-    phi.definesAt(sv, bb2, i2, _)
-  )
 }
 
 predicate useToNode(IRBlock bb, int i, SourceVariable sv, Node nodeTo) {
-  exists(Phi phi |
-    phi.asPhi().definesAt(sv, bb, i, _) and
-    nodeTo = phi.getNode()
-  )
-  or
   exists(UseImpl use |
     use.hasIndexInBlock(bb, i, sv) and
     nodeTo = use.getNode()
@@ -735,25 +725,14 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
 }
 
 /**
- * The reason for this predicate is a bit annoying:
- * We cannot mark a `PointerArithmeticInstruction` that computes an offset based on some SSA
- * variable `x` as a use of `x` since this creates taint-flow in the following example:
- * ```c
- * int x = array[source]
- * sink(*array)
- * ```
- * This is because `source` would flow from the operand of `PointerArithmeticInstruction` to the
- * result of the instruction, and into the `IndirectOperand` that represents the value of `*array`.
- * Then, via use-use flow, flow will arrive at `*array` in `sink(*array)`.
- *
- * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
- * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
+ * Holds if `node` is a phi input node that should receive flow from the
+ * definition to (or use of) `sv` at `(bb1, i1)`.
  */
-private predicate adjustForPointerArith(PostUpdateNode pun, SourceVariable sv, IRBlock bb2, int i2) {
-  exists(IRBlock bb1, int i1, Node adjusted |
-    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
-    nodeToDefOrUse(adjusted, sv, bb1, i1, _) and
-    adjacentDefRead(bb1, i1, sv, bb2, i2)
+private predicate phiToNode(SsaPhiInputNode node, SourceVariable sv, IRBlock bb1, int i1) {
+  exists(PhiNode phi, IRBlock input |
+    phi.hasInputFromBlock(_, sv, bb1, i1, input) and
+    node.getPhiNode() = phi and
+    node.getBlock() = input
   )
 }
 
@@ -768,10 +747,14 @@ private predicate adjustForPointerArith(PostUpdateNode pun, SourceVariable sv, I
 private predicate ssaFlowImpl(
   IRBlock bb1, int i1, SourceVariable sv, Node nodeFrom, Node nodeTo, boolean uncertain
 ) {
-  exists(IRBlock bb2, int i2 |
-    nodeToDefOrUse(nodeFrom, sv, bb1, i1, uncertain) and
-    adjacentDefRead(bb1, i1, sv, bb2, i2) and
-    useToNode(bb2, i2, sv, nodeTo)
+  nodeToDefOrUse(nodeFrom, sv, bb1, i1, uncertain) and
+  (
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      useToNode(bb2, i2, sv, nodeTo)
+    )
+    or
+    phiToNode(nodeTo, sv, bb1, i1)
   ) and
   nodeFrom != nodeTo
 }
@@ -780,7 +763,7 @@ private predicate ssaFlowImpl(
 private Node getAPriorDefinition(DefinitionExt next) {
   exists(IRBlock bb, int i, SourceVariable sv |
     lastRefRedefExt(_, pragma[only_bind_into](sv), pragma[only_bind_into](bb),
-      pragma[only_bind_into](i), next) and
+      pragma[only_bind_into](i), _, next) and
     nodeToDefOrUse(result, sv, bb, i, _)
   )
 }
@@ -887,9 +870,32 @@ private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
  * Holds if there is use-use flow from `pun`'s pre-update node to `n`.
  */
 private predicate postUpdateNodeToFirstUse(PostUpdateNode pun, Node n) {
-  exists(SourceVariable sv, IRBlock bb2, int i2 |
-    adjustForPointerArith(pun, sv, bb2, i2) and
-    useToNode(bb2, i2, sv, n)
+  // The reason for this predicate is a bit annoying:
+  // We cannot mark a `PointerArithmeticInstruction` that computes an offset
+  // based on some SSA
+  // variable `x` as a use of `x` since this creates taint-flow in the
+  // following example:
+  // ```c
+  // int x = array[source]
+  // sink(*array)
+  // ```
+  // This is because `source` would flow from the operand of `PointerArithmetic`
+  // instruction to the result of the instruction, and into the `IndirectOperand`
+  // that represents the value of `*array`. Then, via use-use flow, flow will
+  // arrive at `*array` in `sink(*array)`.
+  // So this predicate recurses back along conversions and `PointerArithmetic`
+  // instructions to find the first use that has provides use-use flow, and
+  // uses that target as the target of the `nodeFrom`.
+  exists(Node adjusted, IRBlock bb1, int i1, SourceVariable sv |
+    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
+    useToNode(bb1, i1, sv, adjusted)
+  |
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      useToNode(bb2, i2, sv, n)
+    )
+    or
+    phiToNode(n, sv, bb1, i1)
   )
 }
 
@@ -944,11 +950,16 @@ predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
 
 /** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
-  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, IRBlock bb2, int i2 |
+  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1 |
     phi = nodeFrom.getPhiNode() and
-    phi.definesAt(sv, bb1, i1, _) and
-    adjacentDefRead(bb1, i1, sv, bb2, i2) and
-    useToNode(bb2, i2, sv, nodeTo)
+    phi.definesAt(sv, bb1, i1, _)
+  |
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      useToNode(bb2, i2, sv, nodeTo)
+    )
+    or
+    phiToNode(nodeTo, sv, bb1, i1)
   )
 }
 
@@ -1022,12 +1033,16 @@ module SsaCached {
    * Holds if the node at index `i` in `bb` is a last reference to SSA definition
    * `def`. The reference is last because it can reach another write `next`,
    * without passing through another read or write.
+   *
+   * The path from node `i` in `bb` to `next` goes via basic block `input`,
+   * which is either a predecessor of the basic block of `next`, or `input` =
+   * `bb` in case `next` occurs in basic block `bb`.
    */
   cached
   predicate lastRefRedefExt(
-    DefinitionExt def, SourceVariable sv, IRBlock bb, int i, DefinitionExt next
+    DefinitionExt def, SourceVariable sv, IRBlock bb, int i, IRBlock input, DefinitionExt next
   ) {
-    SsaImpl::lastRefRedefExt(def, sv, bb, i, next)
+    SsaImpl::lastRefRedefExt(def, sv, bb, i, input, next)
   }
 
   cached
@@ -1191,7 +1206,7 @@ class Phi extends TPhi, SsaDef {
 
   override string toString() { result = phi.toString() }
 
-  SsaPhiNode getNode() { result.getPhiNode() = phi }
+  SsaPhiInputNode getNode(IRBlock block) { result.getPhiNode() = phi and result.getBlock() = block }
 
   predicate hasInputFromBlock(Definition inp, IRBlock bb) { inp = phiHasInputFromBlockExt(phi, bb) }
 
@@ -1199,6 +1214,23 @@ class Phi extends TPhi, SsaDef {
 }
 
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
+
+/**
+ * An static single assignment (SSA) definition that is used as an input to a
+ * phi or phi-read node.
+ */
+class PhiInputNodeExt extends SsaImpl::DefinitionExt {
+  PhiNode phi;
+
+  PhiInputNodeExt() { this = SsaCached::phiHasInputFromBlockExt(phi, _) }
+
+  /** Gets the phi or phi-read node that receives this node as input. */
+  PhiNode getPhi() { result = phi }
+
+  predicate hasInputFromBlock(DefinitionExt def, IRBlock input) {
+    SsaCached::lastRefRedefExt(def, _, _, _, input, this)
+  }
+}
 
 /**
  * An static single assignment (SSA) phi node.
@@ -1219,13 +1251,21 @@ class PhiNode extends SsaImpl::DefinitionExt {
    */
   predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
 
-  /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
-  predicate hasInputFromBlock(Definition inp, IRBlock bb) {
-    inp = SsaCached::phiHasInputFromBlockExt(this, bb)
+  /**
+   * Holds if the node at index `i` in `bb` is a last reference to SSA
+   * definition `def` of `sv`. The reference is last because it can reach
+   * this phi node, without passing through another read or write.
+   *
+   * The path from node `i` in `bb` to this phi node goes via basic block
+   * `input`, which is either a predecessor of the basic block of this phi
+   * node, or `input` = `bb` in case this phi node occurs in basic block `bb`.
+   */
+  predicate hasInputFromBlock(DefinitionExt def, SourceVariable sv, IRBlock bb, int i, IRBlock input) {
+    SsaCached::lastRefRedefExt(def, sv, bb, i, input, this)
   }
 
   /** Gets a definition that is an input to this phi node. */
-  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
+  final Definition getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
 }
 
 /** An static single assignment (SSA) definition. */
@@ -1239,6 +1279,15 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
   final DefinitionExt getAnUltimateDefinition() {
     result = this.getAPhiInputOrPriorDefinition*() and
     not result instanceof PhiNode
+  }
+
+  /** Gets a node that represents a read of this SSA definition. */
+  Node getARead() {
+    exists(SourceVariable sv, IRBlock bb, int i | SsaCached::ssaDefReachesReadExt(sv, this, bb, i) |
+      useToNode(bb, i, sv, result)
+      or
+      phiToNode(result, sv, bb, i)
+    )
   }
 }
 
