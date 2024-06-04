@@ -22,3 +22,4 @@
 | test.cpp:416:2:418:2 | for(...;...;...) ... | test.cpp:416:18:416:23 | ... < ... | 1 | i | { ... } | i | return ... |
 | test.cpp:424:2:425:2 | for(...;...;...) ... | test.cpp:424:18:424:23 | ... < ... | 1 | i | { ... } | i | return ... |
 | test.cpp:433:2:434:2 | for(...;...;...) ... | test.cpp:433:18:433:22 | 0 | 0 |  | { ... } | 0 | return ... |
+| test.cpp:559:3:564:3 | while (...) ... | test.cpp:559:9:559:15 | call to getBool |  | call to getBool | { ... } | call to getBool | ExprStmt |

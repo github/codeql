@@ -4,15 +4,15 @@ import semmle.code.csharp.dataflow.internal.ExternalFlow
 final private class NeutralCallableFinal = NeutralCallable;
 
 class RelevantNeutralCallable extends NeutralCallableFinal {
-  final string getCallableCsv() { result = asPartialNeutralModel(this) }
+  final string getCallableCsv() { result = getSignature(this) }
 }
 
 class RelevantSourceCallable extends SourceCallable {
-  string getCallableCsv() { result = asPartialModel(this) }
+  string getCallableCsv() { result = getSignature(this) }
 }
 
 class RelevantSinkCallable extends SinkCallable {
-  string getCallableCsv() { result = asPartialModel(this) }
+  string getCallableCsv() { result = getSignature(this) }
 }
 
 import TestSummaryOutput<IncludeSummarizedCallable>

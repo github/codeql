@@ -3,11 +3,12 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.frameworks.Jndi
 private import semmle.code.java.frameworks.SpringLdap
 
 /** A data flow sink for unvalidated user input that is used in JNDI lookup. */
-abstract class JndiInjectionSink extends DataFlow::Node { }
+abstract class JndiInjectionSink extends ApiSinkNode { }
 
 /** A sanitizer for JNDI injection vulnerabilities. */
 abstract class JndiInjectionSanitizer extends DataFlow::Node { }

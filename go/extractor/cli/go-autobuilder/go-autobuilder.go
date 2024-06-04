@@ -320,21 +320,26 @@ func setGopath(root string) {
 	log.Printf("GOPATH set to %s.\n", newGopath)
 }
 
-// Try to build the project without custom commands. If that fails, return a boolean indicating
-// that we should install dependencies ourselves.
+// Try to build the project with a build script. If that fails, return a boolean indicating
+// that we should install dependencies in the normal way.
 func buildWithoutCustomCommands(modMode project.ModMode) bool {
 	shouldInstallDependencies := false
-	// try to build the project
-	buildSucceeded := autobuilder.Autobuild()
+	// try to run a build script
+	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
+	scriptCount := len(scriptsExecuted)
 
-	// Build failed or there are still dependency errors; we'll try to install dependencies
-	// ourselves
-	if !buildSucceeded {
-		log.Println("Build failed, continuing to install dependencies.")
+	// If there is no build script we could invoke successfully or there are still dependency errors;
+	// we'll try to install dependencies ourselves in the normal Go way.
+	if !scriptSucceeded {
+		if scriptCount > 0 {
+			log.Printf("Unsuccessfully ran %d build scripts(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		} else {
+			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
+		}
 
 		shouldInstallDependencies = true
-	} else if util.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+		log.Printf("Dependencies are still not resolving after executing %d build script(s), continuing to install dependencies in the normal way.\n", scriptCount)
 
 		shouldInstallDependencies = true
 	}
@@ -487,7 +492,9 @@ func extract(workspace project.GoWorkspace) bool {
 
 // Build the project and run the extractor.
 func installDependenciesAndBuild() {
-	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), toolchain.GetEnvGoVersion())
+	// do not print experiments the autobuilder was built with if any, only the version
+	version := strings.SplitN(runtime.Version(), " ", 2)[0]
+	log.Printf("Autobuilder was built with %s, environment has %s\n", version, toolchain.GetEnvGoVersion())
 
 	srcdir := getSourceDir()
 
