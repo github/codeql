@@ -27,7 +27,7 @@ import shutil
 import io
 import os
 
-DEFAULT_VERSION = "1.9.0"
+DEFAULT_VERSION = "2.0.0"
 
 def options():
     parser = argparse.ArgumentParser(add_help=False)
