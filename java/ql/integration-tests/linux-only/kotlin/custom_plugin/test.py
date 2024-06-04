@@ -3,17 +3,17 @@ from create_database_utils import *
 import pathlib
 import shutil
 
-this_dir = pathlib.Path(__file__).resolve().parent
+root = get_semmle_code_path()
 cwd = pathlib.Path.cwd()
 builddir = cwd / 'build'
 
 builddir.mkdir(exist_ok=True)
 
 try:
-    runSuccessfully(['bazel', f'--output_user_root={builddir}', '--max_idle_secs=1', 'build',
+    runSuccessfully([f'{root}/tools/bazel', f'--output_user_root={builddir}', '--max_idle_secs=1', 'build',
                     '//java/ql/integration-tests/linux-only/kotlin/custom_plugin/plugin', '--spawn_strategy=local',
                      '--nouse_action_cache', '--noremote_accept_cached', '--noremote_upload_local_results',
-                     f'--symlink_prefix={cwd / "bazel-"}'], cwd=this_dir)
+                     f'--symlink_prefix={cwd / "bazel-"}'], cwd=root)
 finally:
     # rules_python creates a read-only directory in bazel's output, this allows cleanup to succeed
     runSuccessfully(['chmod', '-R', '+w', builddir])
