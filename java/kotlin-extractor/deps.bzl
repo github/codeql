@@ -49,8 +49,8 @@ def _walk(dir):
             next_dirs.extend([c for c in children if c.is_dir])
             res.extend([c for c in children if not c.is_dir])
         if not next_dirs:
-            break
-    return res
+            return res
+    fail("%s directory too deep" % dir)
 
 def _embeddable_source_impl(repository_ctx):
     src_dir = repository_ctx.path(Label("//java/kotlin-extractor:src"))
