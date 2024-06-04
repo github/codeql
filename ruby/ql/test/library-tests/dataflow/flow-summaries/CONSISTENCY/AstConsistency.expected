@@ -1,0 +1,3 @@
+extractionError
+| semantics.rb:36:18:36:23 | A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis. |
+| semantics.rb:36:35:36:40 | A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis. |
