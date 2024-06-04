@@ -22,4 +22,4 @@ shutil.copy(
     'bazel-bin/java/ql/integration-tests/linux-only/kotlin/custom_plugin/plugin/plugin.jar', 'plugin.jar')
 
 run_codeql_database_create(
-    ["kotlinc -J-Xmx2G -Xplugin=plugin.jar a.kt b.kt c.kt d.kt e.kt"], lang="java")
+    ["kotlinc -J-Xmx2G -language-version 1.9 -Xplugin=plugin.jar a.kt b.kt c.kt d.kt e.kt"], lang="java")

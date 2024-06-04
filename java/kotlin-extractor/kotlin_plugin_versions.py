@@ -44,7 +44,7 @@ def version_string_to_version(version):
     return Version(int(m.group(1)), int(m.group(2)), int(m.group(3)), m.group(4))
 
 # Version number used by CI.
-ci_version = '1.9.0'
+ci_version = '2.0.0'
 
 many_versions = [ '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta', '1.9.20-Beta', '2.0.0-RC1' ]
 

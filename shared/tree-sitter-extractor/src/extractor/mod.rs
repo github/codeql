@@ -33,8 +33,7 @@ pub fn set_tracing_level(language: &str) {
                         })
                         .unwrap_or_else(|_| "warn");
                     tracing_subscriber::EnvFilter::new(format!(
-                        "{}_extractor={}",
-                        language, verbosity
+                        "{language}_extractor={verbosity},codeql_extractor={verbosity}"
                     ))
                 },
             ),
@@ -75,7 +74,7 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
 
 pub fn populate_empty_location(writer: &mut trap::Writer) {
     let file_label = populate_empty_file(writer);
-    global_location(
+    let loc_label = global_location(
         writer,
         file_label,
         trap::Location {
@@ -85,6 +84,7 @@ pub fn populate_empty_location(writer: &mut trap::Writer) {
             end_column: 0,
         },
     );
+    writer.add_tuple("empty_location", vec![trap::Arg::Label(loc_label)]);
 }
 
 pub fn populate_parent_folders(

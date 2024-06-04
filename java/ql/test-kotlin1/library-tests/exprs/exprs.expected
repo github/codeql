@@ -51,7 +51,7 @@
 | delegatedProperties.kt:6:32:9:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | ConsoleKt | delegatedProperties.kt:6:32:9:9 | invoke | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | println(...) | delegatedProperties.kt:6:32:9:9 | invoke | MethodCall |
-| delegatedProperties.kt:7:22:7:25 | "init" | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
+| delegatedProperties.kt:7:21:7:26 | "init" | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
 | delegatedProperties.kt:8:13:8:13 | 5 | delegatedProperties.kt:6:32:9:9 | invoke | IntegerLiteral |
 | delegatedProperties.kt:10:9:10:22 | ConsoleKt | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:10:9:10:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
@@ -311,23 +311,23 @@
 | delegatedProperties.kt:60:1:60:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:1:60:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:24:60:24 | 0 | delegatedProperties.kt:0:0:0:0 | <clinit> | IntegerLiteral |
-| delegatedProperties.kt:62:25:62:48 | ...=... | delegatedProperties.kt:62:1:62:49 | ClassWithDelegate | KtInitializerAssignExpr |
-| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:1:62:49 | ClassWithDelegate | VarAccess |
-| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:1:62:49 | ClassWithDelegate | VarAccess |
+| delegatedProperties.kt:62:25:62:48 | ...=... | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | KtInitializerAssignExpr |
+| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | VarAccess |
+| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | VarAccess |
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:62:25:62:48 | this | delegatedProperties.kt:62:25:62:48 | getAnotherClassInt | ThisAccess |
 | delegatedProperties.kt:62:25:62:48 | this.anotherClassInt | delegatedProperties.kt:62:25:62:48 | getAnotherClassInt | VarAccess |
-| delegatedProperties.kt:63:17:63:37 | ...=... | delegatedProperties.kt:63:6:63:38 | Base | KtInitializerAssignExpr |
-| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:6:63:38 | Base | VarAccess |
-| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:6:63:38 | Base | VarAccess |
+| delegatedProperties.kt:63:17:63:37 | ...=... | delegatedProperties.kt:63:16:63:38 | Base | KtInitializerAssignExpr |
+| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:16:63:38 | Base | VarAccess |
+| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:16:63:38 | Base | VarAccess |
 | delegatedProperties.kt:63:17:63:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:63:17:63:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:63:17:63:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:63:17:63:37 | this | delegatedProperties.kt:63:17:63:37 | getBaseClassInt | ThisAccess |
 | delegatedProperties.kt:63:17:63:37 | this.baseClassInt | delegatedProperties.kt:63:17:63:37 | getBaseClassInt | VarAccess |
-| delegatedProperties.kt:65:15:65:32 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:65:15:65:32 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:65:15:65:32 | ...=... | delegatedProperties.kt:65:15:65:32 | setMemberInt | AssignExpr |
 | delegatedProperties.kt:65:15:65:32 | <set-?> | delegatedProperties.kt:65:15:65:32 | setMemberInt | VarAccess |
 | delegatedProperties.kt:65:15:65:32 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
@@ -335,24 +335,24 @@
 | delegatedProperties.kt:65:15:65:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:65:15:65:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:65:15:65:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:65:15:65:32 | memberInt | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:65:15:65:32 | memberInt | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:65:15:65:32 | memberInt | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
+| delegatedProperties.kt:65:15:65:32 | memberInt | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:65:15:65:32 | this | delegatedProperties.kt:65:15:65:32 | getMemberInt | ThisAccess |
 | delegatedProperties.kt:65:15:65:32 | this | delegatedProperties.kt:65:15:65:32 | setMemberInt | ThisAccess |
 | delegatedProperties.kt:65:15:65:32 | this.memberInt | delegatedProperties.kt:65:15:65:32 | getMemberInt | VarAccess |
 | delegatedProperties.kt:65:15:65:32 | this.memberInt | delegatedProperties.kt:65:15:65:32 | setMemberInt | VarAccess |
-| delegatedProperties.kt:65:35:65:77 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:65:35:65:77 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:65:35:65:77 | ClassWithDelegate | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:65:35:65:77 | ClassWithDelegate | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:65:35:65:77 | ClassWithDelegate | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:65:35:65:77 | anotherClassInstance | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:65:35:65:77 | anotherClassInstance | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:65:35:65:77 | anotherClassInstance | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
+| delegatedProperties.kt:65:35:65:77 | anotherClassInstance | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:65:35:65:77 | this | delegatedProperties.kt:65:35:65:77 | getAnotherClassInstance | ThisAccess |
 | delegatedProperties.kt:65:35:65:77 | this.anotherClassInstance | delegatedProperties.kt:65:35:65:77 | getAnotherClassInstance | VarAccess |
-| delegatedProperties.kt:65:87:65:95 | memberInt | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:65:87:65:95 | memberInt | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | ...::... | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | PropertyRefExpr |
 | delegatedProperties.kt:66:33:66:50 | ...::... | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | PropertyRefExpr |
-| delegatedProperties.kt:66:33:66:50 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:66:33:66:50 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:66:33:66:50 | Integer | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | TypeAccess |
 | delegatedProperties.kt:66:33:66:50 | Integer | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | TypeAccess |
 | delegatedProperties.kt:66:33:66:50 | Integer | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | TypeAccess |
@@ -374,7 +374,7 @@
 | delegatedProperties.kt:66:33:66:50 | a0 | delegatedProperties.kt:66:33:66:50 | set | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | a1 | delegatedProperties.kt:66:33:66:50 | set | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | a1 | delegatedProperties.kt:66:33:66:50 | set | VarAccess |
-| delegatedProperties.kt:66:33:66:50 | delegatedToMember1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:66:33:66:50 | delegatedToMember1$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | get(...) | delegatedProperties.kt:66:33:66:50 | invoke | MethodCall |
 | delegatedProperties.kt:66:33:66:50 | get(...) | delegatedProperties.kt:66:33:66:50 | invoke | MethodCall |
 | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | get | MethodCall |
@@ -391,14 +391,14 @@
 | delegatedProperties.kt:66:33:66:50 | this | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | ThisAccess |
 | delegatedProperties.kt:66:33:66:50 | this.delegatedToMember1$delegate | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | this.delegatedToMember1$delegate | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | VarAccess |
-| delegatedProperties.kt:66:36:66:39 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:66:36:66:39 | MyClass.this | delegatedProperties.kt:65:1:85:1 | MyClass | ThisAccess |
-| delegatedProperties.kt:66:36:66:50 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:66:36:66:39 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:66:36:66:39 | MyClass.this | delegatedProperties.kt:65:14:65:78 | MyClass | ThisAccess |
+| delegatedProperties.kt:66:36:66:50 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:66:36:66:50 | ...=... | delegatedProperties.kt:66:36:66:50 |  | AssignExpr |
 | delegatedProperties.kt:66:36:66:50 | <dispatchReceiver> | delegatedProperties.kt:66:36:66:50 |  | VarAccess |
 | delegatedProperties.kt:66:36:66:50 | <set-?> | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | VarAccess |
-| delegatedProperties.kt:66:36:66:50 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:66:36:66:50 | KMutableProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:66:36:66:50 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:66:36:66:50 | KMutableProperty0<Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:66:36:66:50 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:66:36:66:50 | a0 | delegatedProperties.kt:66:36:66:50 | set | VarAccess |
 | delegatedProperties.kt:66:36:66:50 | get(...) | delegatedProperties.kt:66:36:66:50 | invoke | MethodCall |
@@ -413,7 +413,7 @@
 | delegatedProperties.kt:66:36:66:50 | this.<dispatchReceiver> | delegatedProperties.kt:66:36:66:50 | set | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | ...::... | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | PropertyRefExpr |
 | delegatedProperties.kt:67:33:67:53 | ...::... | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | PropertyRefExpr |
-| delegatedProperties.kt:67:33:67:53 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:67:33:67:53 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:67:33:67:53 | Integer | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | TypeAccess |
 | delegatedProperties.kt:67:33:67:53 | Integer | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | TypeAccess |
 | delegatedProperties.kt:67:33:67:53 | Integer | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | TypeAccess |
@@ -438,7 +438,7 @@
 | delegatedProperties.kt:67:33:67:53 | a0 | delegatedProperties.kt:67:33:67:53 | set | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | a1 | delegatedProperties.kt:67:33:67:53 | set | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | a1 | delegatedProperties.kt:67:33:67:53 | set | VarAccess |
-| delegatedProperties.kt:67:33:67:53 | delegatedToMember2$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:67:33:67:53 | delegatedToMember2$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | get(...) | delegatedProperties.kt:67:33:67:53 | invoke | MethodCall |
 | delegatedProperties.kt:67:33:67:53 | get(...) | delegatedProperties.kt:67:33:67:53 | invoke | MethodCall |
 | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | get | MethodCall |
@@ -455,11 +455,11 @@
 | delegatedProperties.kt:67:33:67:53 | this | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | ThisAccess |
 | delegatedProperties.kt:67:33:67:53 | this.delegatedToMember2$delegate | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | this.delegatedToMember2$delegate | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | VarAccess |
-| delegatedProperties.kt:67:36:67:53 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:67:36:67:53 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:67:36:67:53 | <set-?> | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | VarAccess |
-| delegatedProperties.kt:67:36:67:53 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:67:36:67:53 | KMutableProperty1<MyClass,Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:67:36:67:53 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:67:36:67:53 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:67:36:67:53 | KMutableProperty1<MyClass,Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:67:36:67:53 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:67:36:67:53 | a0 | delegatedProperties.kt:67:36:67:53 | get | VarAccess |
 | delegatedProperties.kt:67:36:67:53 | a0 | delegatedProperties.kt:67:36:67:53 | invoke | VarAccess |
 | delegatedProperties.kt:67:36:67:53 | a0 | delegatedProperties.kt:67:36:67:53 | set | VarAccess |
@@ -470,7 +470,7 @@
 | delegatedProperties.kt:67:36:67:53 | this | delegatedProperties.kt:67:36:67:53 | invoke | ThisAccess |
 | delegatedProperties.kt:69:36:69:56 | ...::... | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | PropertyRefExpr |
 | delegatedProperties.kt:69:36:69:56 | ...::... | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | PropertyRefExpr |
-| delegatedProperties.kt:69:36:69:56 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:69:36:69:56 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:69:36:69:56 | Integer | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | TypeAccess |
 | delegatedProperties.kt:69:36:69:56 | Integer | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | TypeAccess |
 | delegatedProperties.kt:69:36:69:56 | Integer | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | TypeAccess |
@@ -492,7 +492,7 @@
 | delegatedProperties.kt:69:36:69:56 | a0 | delegatedProperties.kt:69:36:69:56 | set | VarAccess |
 | delegatedProperties.kt:69:36:69:56 | a1 | delegatedProperties.kt:69:36:69:56 | set | VarAccess |
 | delegatedProperties.kt:69:36:69:56 | a1 | delegatedProperties.kt:69:36:69:56 | set | VarAccess |
-| delegatedProperties.kt:69:36:69:56 | delegatedToExtMember1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:69:36:69:56 | delegatedToExtMember1$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:69:36:69:56 | get(...) | delegatedProperties.kt:69:36:69:56 | invoke | MethodCall |
 | delegatedProperties.kt:69:36:69:56 | get(...) | delegatedProperties.kt:69:36:69:56 | invoke | MethodCall |
 | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | get | MethodCall |
@@ -509,16 +509,16 @@
 | delegatedProperties.kt:69:36:69:56 | this | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | ThisAccess |
 | delegatedProperties.kt:69:36:69:56 | this.delegatedToExtMember1$delegate | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | VarAccess |
 | delegatedProperties.kt:69:36:69:56 | this.delegatedToExtMember1$delegate | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | VarAccess |
-| delegatedProperties.kt:69:39:69:42 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:69:39:69:42 | MyClass.this | delegatedProperties.kt:65:1:85:1 | MyClass | ThisAccess |
-| delegatedProperties.kt:69:39:69:56 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:69:39:69:42 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:69:39:69:42 | MyClass.this | delegatedProperties.kt:65:14:65:78 | MyClass | ThisAccess |
+| delegatedProperties.kt:69:39:69:56 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:69:39:69:56 | ...=... | delegatedProperties.kt:69:39:69:56 |  | AssignExpr |
 | delegatedProperties.kt:69:39:69:56 | <extensionReceiver> | delegatedProperties.kt:69:39:69:56 |  | VarAccess |
 | delegatedProperties.kt:69:39:69:56 | <set-?> | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | VarAccess |
 | delegatedProperties.kt:69:39:69:56 | DelegatedPropertiesKt | delegatedProperties.kt:69:39:69:56 | get | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | DelegatedPropertiesKt | delegatedProperties.kt:69:39:69:56 | set | TypeAccess |
-| delegatedProperties.kt:69:39:69:56 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:69:39:69:56 | KMutableProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:69:39:69:56 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:69:39:69:56 | KMutableProperty0<Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | a0 | delegatedProperties.kt:69:39:69:56 | set | VarAccess |
 | delegatedProperties.kt:69:39:69:56 | get(...) | delegatedProperties.kt:69:39:69:56 | invoke | MethodCall |
@@ -533,7 +533,7 @@
 | delegatedProperties.kt:69:39:69:56 | this.<extensionReceiver> | delegatedProperties.kt:69:39:69:56 | set | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | ...::... | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | PropertyRefExpr |
 | delegatedProperties.kt:70:36:70:59 | ...::... | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | PropertyRefExpr |
-| delegatedProperties.kt:70:36:70:59 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:70:36:70:59 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:70:36:70:59 | Integer | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | TypeAccess |
 | delegatedProperties.kt:70:36:70:59 | Integer | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | TypeAccess |
 | delegatedProperties.kt:70:36:70:59 | Integer | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | TypeAccess |
@@ -558,7 +558,7 @@
 | delegatedProperties.kt:70:36:70:59 | a0 | delegatedProperties.kt:70:36:70:59 | set | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | a1 | delegatedProperties.kt:70:36:70:59 | set | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | a1 | delegatedProperties.kt:70:36:70:59 | set | VarAccess |
-| delegatedProperties.kt:70:36:70:59 | delegatedToExtMember2$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:70:36:70:59 | delegatedToExtMember2$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | get(...) | delegatedProperties.kt:70:36:70:59 | invoke | MethodCall |
 | delegatedProperties.kt:70:36:70:59 | get(...) | delegatedProperties.kt:70:36:70:59 | invoke | MethodCall |
 | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | get | MethodCall |
@@ -575,13 +575,13 @@
 | delegatedProperties.kt:70:36:70:59 | this | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | ThisAccess |
 | delegatedProperties.kt:70:36:70:59 | this.delegatedToExtMember2$delegate | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | this.delegatedToExtMember2$delegate | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | VarAccess |
-| delegatedProperties.kt:70:39:70:59 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:70:39:70:59 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:70:39:70:59 | <set-?> | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | VarAccess |
 | delegatedProperties.kt:70:39:70:59 | DelegatedPropertiesKt | delegatedProperties.kt:70:39:70:59 | get | TypeAccess |
 | delegatedProperties.kt:70:39:70:59 | DelegatedPropertiesKt | delegatedProperties.kt:70:39:70:59 | set | TypeAccess |
-| delegatedProperties.kt:70:39:70:59 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:70:39:70:59 | KMutableProperty1<MyClass,Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:70:39:70:59 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:70:39:70:59 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:70:39:70:59 | KMutableProperty1<MyClass,Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:70:39:70:59 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:70:39:70:59 | a0 | delegatedProperties.kt:70:39:70:59 | get | VarAccess |
 | delegatedProperties.kt:70:39:70:59 | a0 | delegatedProperties.kt:70:39:70:59 | invoke | VarAccess |
 | delegatedProperties.kt:70:39:70:59 | a0 | delegatedProperties.kt:70:39:70:59 | set | VarAccess |
@@ -591,7 +591,7 @@
 | delegatedProperties.kt:70:39:70:59 | setExtDelegated(...) | delegatedProperties.kt:70:39:70:59 | set | MethodCall |
 | delegatedProperties.kt:70:39:70:59 | this | delegatedProperties.kt:70:39:70:59 | invoke | ThisAccess |
 | delegatedProperties.kt:72:36:72:56 | ...::... | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | PropertyRefExpr |
-| delegatedProperties.kt:72:36:72:56 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:72:36:72:56 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:72:36:72:56 | Integer | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | TypeAccess |
 | delegatedProperties.kt:72:36:72:56 | Integer | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | TypeAccess |
 | delegatedProperties.kt:72:36:72:56 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
@@ -601,7 +601,7 @@
 | delegatedProperties.kt:72:36:72:56 | PropertyReferenceDelegatesKt | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | TypeAccess |
 | delegatedProperties.kt:72:36:72:56 | a0 | delegatedProperties.kt:72:36:72:56 | get | VarAccess |
 | delegatedProperties.kt:72:36:72:56 | a0 | delegatedProperties.kt:72:36:72:56 | invoke | VarAccess |
-| delegatedProperties.kt:72:36:72:56 | delegatedToBaseClass1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:72:36:72:56 | delegatedToBaseClass1$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:72:36:72:56 | get(...) | delegatedProperties.kt:72:36:72:56 | invoke | MethodCall |
 | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1(...) | delegatedProperties.kt:72:36:72:56 | get | MethodCall |
 | delegatedProperties.kt:72:36:72:56 | getValue(...) | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | MethodCall |
@@ -609,13 +609,13 @@
 | delegatedProperties.kt:72:36:72:56 | this | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | ThisAccess |
 | delegatedProperties.kt:72:36:72:56 | this | delegatedProperties.kt:72:36:72:56 | invoke | ThisAccess |
 | delegatedProperties.kt:72:36:72:56 | this.delegatedToBaseClass1$delegate | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | VarAccess |
-| delegatedProperties.kt:72:39:72:42 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:72:39:72:42 | MyClass.this | delegatedProperties.kt:65:1:85:1 | MyClass | ThisAccess |
-| delegatedProperties.kt:72:39:72:56 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:72:39:72:42 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:72:39:72:42 | MyClass.this | delegatedProperties.kt:65:14:65:78 | MyClass | ThisAccess |
+| delegatedProperties.kt:72:39:72:56 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:72:39:72:56 | ...=... | delegatedProperties.kt:72:39:72:56 |  | AssignExpr |
 | delegatedProperties.kt:72:39:72:56 | <dispatchReceiver> | delegatedProperties.kt:72:39:72:56 |  | VarAccess |
-| delegatedProperties.kt:72:39:72:56 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:72:39:72:56 | KProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:72:39:72:56 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:72:39:72:56 | KProperty0<Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:72:39:72:56 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:72:39:72:56 | get(...) | delegatedProperties.kt:72:39:72:56 | invoke | MethodCall |
 | delegatedProperties.kt:72:39:72:56 | getBaseClassInt(...) | delegatedProperties.kt:72:39:72:56 | get | MethodCall |
@@ -625,7 +625,7 @@
 | delegatedProperties.kt:72:39:72:56 | this.<dispatchReceiver> | delegatedProperties.kt:72:39:72:56 |  | VarAccess |
 | delegatedProperties.kt:72:39:72:56 | this.<dispatchReceiver> | delegatedProperties.kt:72:39:72:56 | get | VarAccess |
 | delegatedProperties.kt:73:36:73:56 | ...::... | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | PropertyRefExpr |
-| delegatedProperties.kt:73:36:73:56 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:73:36:73:56 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:73:36:73:56 | Base | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | TypeAccess |
 | delegatedProperties.kt:73:36:73:56 | Base | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:73:36:73:56 | Integer | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | TypeAccess |
@@ -637,7 +637,7 @@
 | delegatedProperties.kt:73:36:73:56 | PropertyReferenceDelegatesKt | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | TypeAccess |
 | delegatedProperties.kt:73:36:73:56 | a0 | delegatedProperties.kt:73:36:73:56 | get | VarAccess |
 | delegatedProperties.kt:73:36:73:56 | a0 | delegatedProperties.kt:73:36:73:56 | invoke | VarAccess |
-| delegatedProperties.kt:73:36:73:56 | delegatedToBaseClass2$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:73:36:73:56 | delegatedToBaseClass2$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:73:36:73:56 | get(...) | delegatedProperties.kt:73:36:73:56 | invoke | MethodCall |
 | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2(...) | delegatedProperties.kt:73:36:73:56 | get | MethodCall |
 | delegatedProperties.kt:73:36:73:56 | getValue(...) | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | MethodCall |
@@ -645,17 +645,17 @@
 | delegatedProperties.kt:73:36:73:56 | this | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | ThisAccess |
 | delegatedProperties.kt:73:36:73:56 | this | delegatedProperties.kt:73:36:73:56 | invoke | ThisAccess |
 | delegatedProperties.kt:73:36:73:56 | this.delegatedToBaseClass2$delegate | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | VarAccess |
-| delegatedProperties.kt:73:39:73:56 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
-| delegatedProperties.kt:73:39:73:56 | Base | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:73:39:73:56 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:73:39:73:56 | KProperty1<Base,Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:73:39:73:56 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:73:39:73:56 | Base | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:73:39:73:56 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:73:39:73:56 | KProperty1<Base,Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:73:39:73:56 | a0 | delegatedProperties.kt:73:39:73:56 | get | VarAccess |
 | delegatedProperties.kt:73:39:73:56 | a0 | delegatedProperties.kt:73:39:73:56 | invoke | VarAccess |
 | delegatedProperties.kt:73:39:73:56 | get(...) | delegatedProperties.kt:73:39:73:56 | invoke | MethodCall |
 | delegatedProperties.kt:73:39:73:56 | getBaseClassInt(...) | delegatedProperties.kt:73:39:73:56 | get | MethodCall |
 | delegatedProperties.kt:73:39:73:56 | this | delegatedProperties.kt:73:39:73:56 | invoke | ThisAccess |
 | delegatedProperties.kt:75:39:75:78 | ...::... | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | PropertyRefExpr |
-| delegatedProperties.kt:75:39:75:78 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:75:39:75:78 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:75:39:75:78 | Integer | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | TypeAccess |
 | delegatedProperties.kt:75:39:75:78 | Integer | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | TypeAccess |
 | delegatedProperties.kt:75:39:75:78 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
@@ -665,7 +665,7 @@
 | delegatedProperties.kt:75:39:75:78 | PropertyReferenceDelegatesKt | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | TypeAccess |
 | delegatedProperties.kt:75:39:75:78 | a0 | delegatedProperties.kt:75:39:75:78 | get | VarAccess |
 | delegatedProperties.kt:75:39:75:78 | a0 | delegatedProperties.kt:75:39:75:78 | invoke | VarAccess |
-| delegatedProperties.kt:75:39:75:78 | delegatedToAnotherClass1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:75:39:75:78 | delegatedToAnotherClass1$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:75:39:75:78 | get(...) | delegatedProperties.kt:75:39:75:78 | invoke | MethodCall |
 | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1(...) | delegatedProperties.kt:75:39:75:78 | get | MethodCall |
 | delegatedProperties.kt:75:39:75:78 | getValue(...) | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | MethodCall |
@@ -673,15 +673,15 @@
 | delegatedProperties.kt:75:39:75:78 | this | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | ThisAccess |
 | delegatedProperties.kt:75:39:75:78 | this | delegatedProperties.kt:75:39:75:78 | invoke | ThisAccess |
 | delegatedProperties.kt:75:39:75:78 | this.delegatedToAnotherClass1$delegate | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | VarAccess |
-| delegatedProperties.kt:75:42:75:61 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:75:42:75:61 | MyClass.this | delegatedProperties.kt:65:1:85:1 | MyClass | ThisAccess |
-| delegatedProperties.kt:75:42:75:61 | getAnotherClassInstance(...) | delegatedProperties.kt:65:1:85:1 | MyClass | MethodCall |
-| delegatedProperties.kt:75:42:75:78 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:75:42:75:61 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:75:42:75:61 | MyClass.this | delegatedProperties.kt:65:14:65:78 | MyClass | ThisAccess |
+| delegatedProperties.kt:75:42:75:61 | getAnotherClassInstance(...) | delegatedProperties.kt:65:14:65:78 | MyClass | MethodCall |
+| delegatedProperties.kt:75:42:75:78 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:75:42:75:78 | ...=... | delegatedProperties.kt:75:42:75:78 |  | AssignExpr |
 | delegatedProperties.kt:75:42:75:78 | <dispatchReceiver> | delegatedProperties.kt:75:42:75:78 |  | VarAccess |
 | delegatedProperties.kt:75:42:75:78 | ClassWithDelegate | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:75:42:75:78 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:75:42:75:78 | KProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:75:42:75:78 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:75:42:75:78 | KProperty0<Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:75:42:75:78 | get(...) | delegatedProperties.kt:75:42:75:78 | invoke | MethodCall |
 | delegatedProperties.kt:75:42:75:78 | getAnotherClassInt(...) | delegatedProperties.kt:75:42:75:78 | get | MethodCall |
 | delegatedProperties.kt:75:42:75:78 | this | delegatedProperties.kt:75:42:75:78 |  | ThisAccess |
@@ -691,7 +691,7 @@
 | delegatedProperties.kt:75:42:75:78 | this.<dispatchReceiver> | delegatedProperties.kt:75:42:75:78 | get | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | ...::... | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | PropertyRefExpr |
 | delegatedProperties.kt:77:34:77:49 | ...::... | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | PropertyRefExpr |
-| delegatedProperties.kt:77:34:77:49 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:77:34:77:49 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:77:34:77:49 | Integer | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | TypeAccess |
 | delegatedProperties.kt:77:34:77:49 | Integer | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | TypeAccess |
 | delegatedProperties.kt:77:34:77:49 | Integer | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | TypeAccess |
@@ -713,7 +713,7 @@
 | delegatedProperties.kt:77:34:77:49 | a0 | delegatedProperties.kt:77:34:77:49 | set | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | a1 | delegatedProperties.kt:77:34:77:49 | set | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | a1 | delegatedProperties.kt:77:34:77:49 | set | VarAccess |
-| delegatedProperties.kt:77:34:77:49 | delegatedToTopLevel$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:77:34:77:49 | delegatedToTopLevel$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | get(...) | delegatedProperties.kt:77:34:77:49 | invoke | MethodCall |
 | delegatedProperties.kt:77:34:77:49 | get(...) | delegatedProperties.kt:77:34:77:49 | invoke | MethodCall |
 | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | get | MethodCall |
@@ -730,19 +730,19 @@
 | delegatedProperties.kt:77:34:77:49 | this | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | ThisAccess |
 | delegatedProperties.kt:77:34:77:49 | this.delegatedToTopLevel$delegate | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | this.delegatedToTopLevel$delegate | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | VarAccess |
-| delegatedProperties.kt:77:37:77:49 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:77:37:77:49 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:77:37:77:49 | <set-?> | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | VarAccess |
 | delegatedProperties.kt:77:37:77:49 | DelegatedPropertiesKt | delegatedProperties.kt:77:37:77:49 | get | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | DelegatedPropertiesKt | delegatedProperties.kt:77:37:77:49 | set | TypeAccess |
-| delegatedProperties.kt:77:37:77:49 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:77:37:77:49 | KMutableProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:77:37:77:49 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:77:37:77:49 | KMutableProperty0<Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | a0 | delegatedProperties.kt:77:37:77:49 | set | VarAccess |
 | delegatedProperties.kt:77:37:77:49 | get(...) | delegatedProperties.kt:77:37:77:49 | invoke | MethodCall |
 | delegatedProperties.kt:77:37:77:49 | getTopLevelInt(...) | delegatedProperties.kt:77:37:77:49 | get | MethodCall |
 | delegatedProperties.kt:77:37:77:49 | setTopLevelInt(...) | delegatedProperties.kt:77:37:77:49 | set | MethodCall |
 | delegatedProperties.kt:77:37:77:49 | this | delegatedProperties.kt:77:37:77:49 | invoke | ThisAccess |
 | delegatedProperties.kt:79:18:79:38 | ...::... | delegatedProperties.kt:79:18:79:38 | getMax | PropertyRefExpr |
-| delegatedProperties.kt:79:18:79:38 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
+| delegatedProperties.kt:79:18:79:38 | ...=... | delegatedProperties.kt:65:14:65:78 | MyClass | KtInitializerAssignExpr |
 | delegatedProperties.kt:79:18:79:38 | Integer | delegatedProperties.kt:79:18:79:38 | getMax | TypeAccess |
 | delegatedProperties.kt:79:18:79:38 | Integer | delegatedProperties.kt:79:18:79:38 | getMax | TypeAccess |
 | delegatedProperties.kt:79:18:79:38 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
@@ -756,13 +756,13 @@
 | delegatedProperties.kt:79:18:79:38 | getMax(...) | delegatedProperties.kt:79:18:79:38 | get | MethodCall |
 | delegatedProperties.kt:79:18:79:38 | getValue(...) | delegatedProperties.kt:79:18:79:38 | getMax | MethodCall |
 | delegatedProperties.kt:79:18:79:38 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:79:18:79:38 | max$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
+| delegatedProperties.kt:79:18:79:38 | max$delegate | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:79:18:79:38 | this | delegatedProperties.kt:79:18:79:38 | getMax | ThisAccess |
 | delegatedProperties.kt:79:18:79:38 | this | delegatedProperties.kt:79:18:79:38 | invoke | ThisAccess |
 | delegatedProperties.kt:79:18:79:38 | this.max$delegate | delegatedProperties.kt:79:18:79:38 | getMax | VarAccess |
-| delegatedProperties.kt:79:21:79:38 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
-| delegatedProperties.kt:79:21:79:38 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:79:21:79:38 | KProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
+| delegatedProperties.kt:79:21:79:38 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
+| delegatedProperties.kt:79:21:79:38 | Integer | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
+| delegatedProperties.kt:79:21:79:38 | KProperty0<Integer> | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:79:21:79:38 | MAX_VALUE | delegatedProperties.kt:79:21:79:38 | get | VarAccess |
 | delegatedProperties.kt:79:21:79:38 | get(...) | delegatedProperties.kt:79:21:79:38 | invoke | MethodCall |
 | delegatedProperties.kt:79:21:79:38 | this | delegatedProperties.kt:79:21:79:38 | invoke | ThisAccess |
@@ -1341,9 +1341,9 @@
 | exprs.kt:123:9:123:9 | c | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:123:13:123:15 | x | exprs.kt:4:1:142:1 | topLevelMethod | CharacterLiteral |
 | exprs.kt:124:9:124:11 | str | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:124:16:124:25 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:124:15:124:26 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:125:9:125:20 | strWithQuote | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:125:25:125:37 | "string \\" lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:125:24:125:38 | "string \\" lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:126:9:126:10 | b6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:126:14:126:15 | i1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:126:14:126:22 | ...instanceof... | exprs.kt:4:1:142:1 | topLevelMethod | InstanceOfExpr |
@@ -1357,9 +1357,9 @@
 | exprs.kt:128:14:128:26 | (...)... | exprs.kt:4:1:142:1 | topLevelMethod | CastExpr |
 | exprs.kt:128:14:128:26 | boolean | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
 | exprs.kt:129:9:129:12 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:129:25:129:34 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:129:24:129:35 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:130:9:130:12 | str2 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:130:26:130:35 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:130:25:130:36 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:131:9:131:12 | str3 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:131:25:131:28 | null | exprs.kt:4:1:142:1 | topLevelMethod | NullLiteral |
 | exprs.kt:132:9:132:12 | str4 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
@@ -1407,12 +1407,12 @@
 | exprs.kt:145:9:145:9 | d | exprs.kt:144:1:146:1 | getClass | LocalVariableDeclExpr |
 | exprs.kt:145:13:145:16 | true | exprs.kt:144:1:146:1 | getClass | BooleanLiteral |
 | exprs.kt:145:13:145:23 | ::class | exprs.kt:144:1:146:1 | getClass | ClassExpr |
-| exprs.kt:148:9:148:18 | ...=... | exprs.kt:148:1:150:1 | C | KtInitializerAssignExpr |
+| exprs.kt:148:9:148:18 | ...=... | exprs.kt:148:8:148:19 | C | KtInitializerAssignExpr |
 | exprs.kt:148:9:148:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:148:9:148:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:148:9:148:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:148:9:148:18 | n | exprs.kt:148:1:150:1 | C | VarAccess |
-| exprs.kt:148:9:148:18 | n | exprs.kt:148:1:150:1 | C | VarAccess |
+| exprs.kt:148:9:148:18 | n | exprs.kt:148:8:148:19 | C | VarAccess |
+| exprs.kt:148:9:148:18 | n | exprs.kt:148:8:148:19 | C | VarAccess |
 | exprs.kt:148:9:148:18 | this | exprs.kt:148:9:148:18 | getN | ThisAccess |
 | exprs.kt:148:9:148:18 | this.n | exprs.kt:148:9:148:18 | getN | VarAccess |
 | exprs.kt:149:5:149:33 | C | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1503,17 +1503,17 @@
 | exprs.kt:175:25:175:28 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:175:25:175:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:175:25:175:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | 0 | exprs.kt:178:6:182:1 | Color | IntegerLiteral |
-| exprs.kt:178:1:182:1 | Color | exprs.kt:178:6:182:1 | Color | TypeAccess |
-| exprs.kt:178:1:182:1 | Enum<Color> | exprs.kt:178:6:182:1 | Color | TypeAccess |
-| exprs.kt:178:1:182:1 | new Enum(...) | exprs.kt:178:6:182:1 | Color | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | null | exprs.kt:178:6:182:1 | Color | NullLiteral |
-| exprs.kt:178:18:178:29 | ...=... | exprs.kt:178:6:182:1 | Color | KtInitializerAssignExpr |
+| exprs.kt:178:1:182:1 | 0 | exprs.kt:178:17:178:30 | Color | IntegerLiteral |
+| exprs.kt:178:1:182:1 | Color | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:1:182:1 | Enum<Color> | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:1:182:1 | new Enum(...) | exprs.kt:178:17:178:30 | Color | ClassInstanceExpr |
+| exprs.kt:178:1:182:1 | null | exprs.kt:178:17:178:30 | Color | NullLiteral |
+| exprs.kt:178:18:178:29 | ...=... | exprs.kt:178:17:178:30 | Color | KtInitializerAssignExpr |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:18:178:29 | rgb | exprs.kt:178:6:182:1 | Color | VarAccess |
-| exprs.kt:178:18:178:29 | rgb | exprs.kt:178:6:182:1 | Color | VarAccess |
+| exprs.kt:178:18:178:29 | rgb | exprs.kt:178:17:178:30 | Color | VarAccess |
+| exprs.kt:178:18:178:29 | rgb | exprs.kt:178:17:178:30 | Color | VarAccess |
 | exprs.kt:178:18:178:29 | this | exprs.kt:178:18:178:29 | getRgb | ThisAccess |
 | exprs.kt:178:18:178:29 | this.rgb | exprs.kt:178:18:178:29 | getRgb | VarAccess |
 | exprs.kt:179:5:179:18 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
@@ -1609,11 +1609,11 @@
 | exprs.kt:215:13:215:14 | d0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:215:18:215:44 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
 | exprs.kt:215:18:215:44 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
-| exprs.kt:215:38:215:42 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
+| exprs.kt:215:37:215:43 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:216:13:216:14 | d1 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:216:24:216:39 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
 | exprs.kt:216:24:216:39 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
-| exprs.kt:216:33:216:37 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
+| exprs.kt:216:32:216:38 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:220:1:222:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:221:5:221:10 | StandardKt | exprs.kt:220:1:222:1 | todo | TypeAccess |
 | exprs.kt:221:5:221:10 | TODO(...) | exprs.kt:220:1:222:1 | todo | MethodCall |
@@ -3249,7 +3249,7 @@
 | funcExprs.kt:75:14:75:14 | Generic<Generic<Integer>> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:75:14:75:14 | Generic<Integer> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:75:14:75:14 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:75:20:75:20 | "a" | funcExprs.kt:75:12:75:22 | invoke | StringLiteral |
+| funcExprs.kt:75:19:75:21 | "a" | funcExprs.kt:75:12:75:22 | invoke | StringLiteral |
 | funcExprs.kt:77:13:77:60 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:77:20:77:55 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | funcExprs.kt:77:20:77:55 | Function1<? super Generic<Generic<Integer>>,String> | file://:0:0:0:0 | <none> | TypeAccess |
@@ -4383,6 +4383,6 @@
 | whenExpr.kt:6:5:6:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
 | whenExpr.kt:6:16:6:44 | Exception | whenExpr.kt:1:1:9:1 | testWhen | TypeAccess |
 | whenExpr.kt:6:16:6:44 | new Exception(...) | whenExpr.kt:1:1:9:1 | testWhen | ClassInstanceExpr |
-| whenExpr.kt:6:27:6:42 | "No threes please" | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
+| whenExpr.kt:6:26:6:43 | "No threes please" | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
 | whenExpr.kt:7:13:7:15 | 999 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
 | whenExpr.kt:7:13:7:15 | true | whenExpr.kt:1:1:9:1 | testWhen | BooleanLiteral |
