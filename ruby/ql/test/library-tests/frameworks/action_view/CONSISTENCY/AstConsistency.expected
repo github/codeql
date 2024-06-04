@@ -1,2 +1,0 @@
-extractionError
-| app/views/foo/bars/show.html.erb:10:8:11:7 | A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis. |
