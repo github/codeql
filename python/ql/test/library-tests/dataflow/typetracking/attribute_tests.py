@@ -204,11 +204,12 @@ class MyClass5(object): # $ tracked=foo tracked=bar
     # bar is set from a classmethod
     bar = None
 
-    def on_self(self):
-        print(self.foo) # $ MISSING: tracked=foo tracked
-        print(self.bar) # $ MISSING: tracked=bar tracked
+    def on_self(self): # $ tracked=bar tracked=foo
+        print(self.foo) # $ tracked=foo tracked tracked=bar
+        print(self.bar) # $ tracked=bar tracked tracked=foo
 
-    def on_classref(self):
+    @staticmethod
+    def on_classref():
         print(MyClass5.foo) # $ tracked=foo tracked tracked=bar
         print(MyClass5.bar) # $ tracked=foo tracked=bar tracked
 
@@ -231,11 +232,11 @@ print(instance.bar) # $ MISSING: tracked=bar tracked
 class MyClass6(object): # $ int=foo
     foo = int() # $ int
 
-    def set_instance_foo(self): # $ str=foo
-        self.foo = str() # $ str str=foo
+    def set_instance_foo(self): # $ str=foo int=foo
+        self.foo = str() # $ str str=foo int=foo
 
-    def use_im(self):
-        print(self.foo) # $ MISSING: int str
+    def use_im(self): # $ int=foo
+        print(self.foo) # $ int int=foo MISSING: str
 
     @classmethod
     def use_cls(cls):

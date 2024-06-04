@@ -296,6 +296,34 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
    */
   predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content loadContent, Content storeContent) {
     TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
+    or
+    // Class attribute -> self attribute
+    exists(Class cls, string attrName |
+      loadContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      storeContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      (
+        // class attribute
+        nodeFrom = DataFlowPublic::exprNode(cls.getParent()) and
+        (
+          exists(DataFlowPublic::AttrWrite write | write.accesses(nodeFrom, attrName))
+          or
+          classmethodStoreOnCls(_, cls, attrName)
+        )
+      ) and
+      (
+        // self in (plain) method on same class
+        //
+        // TODO: handle subclasses
+        exists(DataFlowDispatch::DataFlowMethod instanceMethod |
+          not instanceMethod instanceof DataFlowDispatch::DataFlowClassmethod and
+          not instanceMethod instanceof DataFlowDispatch::DataFlowStaticmethod
+        |
+          instanceMethod.getClass() = cls and
+          nodeTo =
+            instanceMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf()))
+        )
+      )
+    )
   }
 
   /**
