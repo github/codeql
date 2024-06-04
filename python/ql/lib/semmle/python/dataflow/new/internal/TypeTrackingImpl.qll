@@ -309,6 +309,11 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
           or
           classmethodStoreOnCls(_, cls, attrName)
         )
+        or
+        // `self.foo = <value>` in normal method
+        exists(DataFlowPublic::AttrWrite write |
+          instanceMethodStoreOnSelf(write, cls, attrName) and nodeFrom = write.getObject()
+        )
       ) and
       (
         // self in (plain) method on same class
@@ -331,6 +336,21 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
         nodeTo.(DataFlowPublic::CallCfgNode).getFunction().getALocalSource() =
           DataFlowPublic::exprNode(cls.getParent())
       )
+    )
+  }
+
+  /** Holds if `write` writes to the `attrName` attribute of the "self" parameter of a normal method on `cls`. */
+  private predicate instanceMethodStoreOnSelf(
+    DataFlowPublic::AttrWrite write, Class cls, string attrName
+  ) {
+    exists(DataFlowDispatch::DataFlowMethod writeMethod |
+      not writeMethod instanceof DataFlowDispatch::DataFlowClassmethod and
+      not writeMethod instanceof DataFlowDispatch::DataFlowStaticmethod
+    |
+      writeMethod.getClass() = cls and
+      write.getObject().getALocalSource() =
+        writeMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf())) and
+      write.getAttributeName() = attrName
     )
   }
 

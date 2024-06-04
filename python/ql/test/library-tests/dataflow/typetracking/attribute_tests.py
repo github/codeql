@@ -150,15 +150,15 @@ class MyClass2(object):
     def __init__(self): # $ tracked=foo
         self.foo = tracked # $ tracked=foo tracked
 
-    def print_foo(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def print_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
-    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def possibly_uncalled_method(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
-instance = MyClass2()
-print(instance.foo) # $ MISSING: tracked=foo tracked
-instance.print_foo() # $ MISSING: tracked=foo
+instance = MyClass2() # $ tracked=foo
+print(instance.foo) # $ tracked=foo tracked
+instance.print_foo() # $ tracked=foo
 
 
 # attribute set from outside of class
@@ -185,16 +185,16 @@ class MyClass4(object):
     def set_foo(self): # $ tracked=foo
         self.foo = tracked # $ tracked=foo tracked
 
-    def print_foo(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def print_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
-    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def possibly_uncalled_method(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
-instance = MyClass4() # $ MISSING: tracked=foo
-instance.set_foo() # $ MISSING: tracked=foo
-instance.print_foo() # $ MISSING: tracked=foo
-print(instance.foo) # $ MISSING: tracked=foo tracked
+instance = MyClass4() # $ tracked=foo
+instance.set_foo() # $ tracked=foo
+instance.print_foo() # $ tracked=foo
+print(instance.foo) # $ tracked=foo tracked
 
 
 # class-level attributes
@@ -235,8 +235,8 @@ class MyClass6(object): # $ int=foo
     def set_instance_foo(self): # $ str=foo int=foo
         self.foo = str() # $ str str=foo int=foo
 
-    def use_im(self): # $ int=foo
-        print(self.foo) # $ int int=foo MISSING: str
+    def use_im(self): # $ int=foo str=foo
+        print(self.foo) # $ int int=foo str str=foo
 
     @classmethod
     def use_cls(cls):
@@ -245,10 +245,10 @@ class MyClass6(object): # $ int=foo
 
 print(MyClass6.foo) # $ int int=foo
 
-instance = MyClass6() # $ int=foo
-print(instance.foo) # $ int int=foo
-instance.set_instance_foo() # $ int=foo
-print(instance.foo) # $ int int=foo MISSING: str
+instance = MyClass6() # $ int=foo str=foo
+print(instance.foo) # $ int int=foo str str=foo
+instance.set_instance_foo() # $ int=foo str=foo
+print(instance.foo) # $ int int=foo str str=foo
 
 
 # class-level attributes flowing between subclasses
@@ -257,8 +257,8 @@ class BaseClass(object):
     def set_foo(self): # $ tracked=foo
         self.foo = tracked # $ tracked=foo tracked
 
-    def use_foo(self):
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def use_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
 class SubClass(BaseClass): # $ MISSING: tracked=foo
     def also_use_foo(self):
