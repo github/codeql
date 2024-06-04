@@ -1,6 +1,10 @@
+| [...]/Basic.CompilerLog.Util.dll |
 | [...]/Humanizer.dll |
+| [...]/MessagePack.Annotations.dll |
+| [...]/MessagePack.dll |
 | [...]/Microsoft.Bcl.AsyncInterfaces.dll |
 | [...]/Microsoft.Build.Framework.dll |
+| [...]/Microsoft.Build.Utilities.Core.dll |
 | [...]/Microsoft.Build.dll |
 | [...]/Microsoft.CSharp.dll |
 | [...]/Microsoft.CodeAnalysis.CSharp.Workspaces.dll |
@@ -9,6 +13,7 @@
 | [...]/Microsoft.CodeAnalysis.VisualBasic.dll |
 | [...]/Microsoft.CodeAnalysis.Workspaces.dll |
 | [...]/Microsoft.CodeAnalysis.dll |
+| [...]/Microsoft.Extensions.ObjectPool.dll |
 | [...]/Microsoft.NET.StringTools.dll |
 | [...]/Microsoft.VisualBasic.Core.dll |
 | [...]/Microsoft.VisualBasic.dll |
@@ -17,6 +22,7 @@
 | [...]/Microsoft.Win32.SystemEvents.dll |
 | [...]/Mono.Posix.NETStandard.dll |
 | [...]/Newtonsoft.Json.dll |
+| [...]/StructuredLogger.dll |
 | [...]/System.AppContext.dll |
 | [...]/System.Buffers.dll |
 | [...]/System.Collections.Concurrent.dll |
