@@ -154,6 +154,7 @@ typeInferenceMismatch
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:42:8:42:51 | JSON.st ... urce))) |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:45:8:45:23 | fastJson(source) |
 | json-stringify.js:3:15:3:22 | source() | json-stringify.js:8:8:8:31 | jsonStr ... (taint) |
+| logical-and.js:2:17:2:24 | source() | logical-and.js:4:10:4:24 | "safe" && taint |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
@@ -231,6 +232,7 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
 | tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
+| tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |

@@ -37,7 +37,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
   string path;
 
   SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(type, path, _, _, _) and
+    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
     this = type + ";" + path
   }
 
@@ -48,8 +48,10 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
     )
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind) |
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
       kind = "value" and
       preservesValue = true
       or

@@ -1,0 +1,12 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "strip_prefix")
+
+codeql_pkg_files(
+    name = "externs",
+    srcs = glob(
+        ["**/*"],
+        exclude = ["BUILD.bazel"],
+    ),
+    prefix = "tools/data/externs",
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//javascript:__pkg__"],
+)

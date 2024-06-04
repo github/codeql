@@ -1,3 +1,105 @@
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+No user-facing changes.
+
+## 0.8.14
+
+### New Queries
+
+* Added a new query, `rb/insecure-mass-assignment`, for finding instances of mass assignment operations accepting arbitrary parameters from remote user input.
+* Added a new query, `rb/csrf-protection-not-enabled`, to detect cases where Cross-Site Request Forgery protection is not enabled in Ruby on Rails controllers.
+
+## 0.8.13
+
+No user-facing changes.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `Object#method`, `Object#public_method` and `Object#singleton_method` with untrusted data are now recognised as sinks for code injection.
+* Added additional request sources for Ruby on Rails.
+
+## 0.8.9
+
+No user-facing changes.
+
+## 0.8.8
+
+### New Queries
+
+* Added a new experimental query, `rb/insecure-randomness`, to detect when application uses random values that are not cryptographically secure.
+
+### Minor Analysis Improvements
+
+* Added new unsafe deserialization sinks for the ox gem.
+* Added an additional unsafe deserialization sink for the oj gem.
+
+## 0.8.7
+
+No user-facing changes.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### New Queries
+
+* Added a new experimental query, `rb/jwt-empty-secret-or-algorithm`, to detect when application uses an empty secret or weak algorithm.
+* Added a new experimental query, `rb/jwt-missing-verification`, to detect when the application does not verify a JWT payload.
+
+## 0.8.0
+
+### Minor Analysis Improvements
+
+* Built-in Ruby queries now use the new DataFlow API.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added a new experimental query, `rb/improper-ldap-auth`, to detect cases where user input is used during LDAP authentication without proper validation or sanitization, potentially leading to authentication bypass.
+
 ## 0.7.3
 
 No user-facing changes.

@@ -133,9 +133,6 @@ module Electron {
       override IpcDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
     }
 
-    /** DEPRECATED: Alias for IpcSendRegistration */
-    deprecated class IPCSendRegistration = IpcSendRegistration;
-
     /**
      * A dispatch of an IPC event.
      * An IPC event is sent from the renderer to the main process.
@@ -171,9 +168,6 @@ module Electron {
         result.getEmitter() instanceof RendererProcess
       }
     }
-
-    /** DEPRECATED: Alias for IpcDispatch */
-    deprecated class IPCDispatch = IpcDispatch;
   }
 
   /**

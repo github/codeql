@@ -13,24 +13,25 @@ private import AutomodelEndpointTypes
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, SinkType sinkType, ApplicationModeMetadataExtractor meta,
+  Endpoint endpoint, EndpointType endpointType, ApplicationModeMetadataExtractor meta,
   DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
-  DollarAtString signature, DollarAtString input, DollarAtString isVarargsArray
+  DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString isVarargsArray, DollarAtString extensibleType
 where
-  // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
-  // certain about in the prompt.
-  not erroneousEndpoints(endpoint, _, _, _, _, false) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, isVarargsArray) and
-  // Extract positive examples of sinks belonging to the existing ATM query configurations.
-  CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
-  exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
+  isPositiveExample(endpoint, endpointType, package, type, subtypes, name, signature, input, output,
+    isVarargsArray, extensibleType)
 select endpoint.asNode(),
-  sinkType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
+  endpointType + "\nrelated locations: $@, $@, $@." +
+    "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
   type, "type", //
   subtypes, "subtypes", //
   name, "name", //
   signature, "signature", //
   input, "input", //
-  isVarargsArray, "isVarargsArray"
+  output, "output", //
+  isVarargsArray, "isVarargsArray", //
+  extensibleType, "extensibleType"

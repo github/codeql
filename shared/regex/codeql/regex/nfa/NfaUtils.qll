@@ -4,6 +4,7 @@
 
 private import codeql.regex.RegexTreeView
 private import codeql.util.Numbers
+private import codeql.util.Strings
 
 /**
  * Classes and predicates that create an NFA and various algorithms for working with it.
@@ -15,34 +16,7 @@ module Make<RegexTreeViewSig TreeImpl> {
    * Gets the char after `c` (from a simplified ASCII table).
    */
   private string nextChar(string c) {
-    exists(int code | code = ascii(c) | code + 1 = ascii(result))
-  }
-
-  /**
-   * Gets the `i`th codepoint in `s`.
-   */
-  bindingset[s]
-  private string getCodepointAt(string s, int i) { result = s.regexpFind("(.|\\s)", i, _) }
-
-  /**
-   * Gets the length of `s` in codepoints.
-   */
-  bindingset[str]
-  private int getCodepointLength(string str) {
-    result = str.regexpReplaceAll("(.|\\s)", "x").length()
-  }
-
-  /**
-   * Gets an approximation for the ASCII code for `char`.
-   * Only the easily printable chars are included (so no newline, tab, null, etc).
-   */
-  private int ascii(string char) {
-    char =
-      rank[result](string c |
-        c =
-          "! \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-              .charAt(_)
-      )
+    exists(int code | code = asciiPrintable(c) | code + 1 = asciiPrintable(result))
   }
 
   /**
@@ -74,10 +48,12 @@ module Make<RegexTreeViewSig TreeImpl> {
     forex(RegExpTerm child | child = t.(RegExpSequence).getAChild() | matchesEpsilon(child))
   }
 
+  final private class FinalRegExpSubPattern = RegExpSubPattern;
+
   /**
    * A lookahead/lookbehind that matches the empty string.
    */
-  class EmptyPositiveSubPattern instanceof RegExpSubPattern {
+  class EmptyPositiveSubPattern extends FinalRegExpSubPattern {
     EmptyPositiveSubPattern() {
       (
         this instanceof RegExpPositiveLookahead
@@ -86,19 +62,15 @@ module Make<RegexTreeViewSig TreeImpl> {
       ) and
       matchesEpsilon(this.getOperand())
     }
-
-    /** Gets a string representation of this sub-pattern. */
-    string toString() { result = super.toString() }
   }
 
-  /** DEPRECATED: Use `EmptyPositiveSubPattern` instead. */
-  deprecated class EmptyPositiveSubPatttern = EmptyPositiveSubPattern;
+  final private class FinalRegExpTerm = RegExpTerm;
 
   /**
    * A branch in a disjunction that is the root node in a literal, or a literal
    * whose root node is not a disjunction.
    */
-  class RegExpRoot instanceof RegExpTerm {
+  class RegExpRoot extends FinalRegExpTerm {
     RegExpRoot() {
       exists(RegExpParent parent |
         exists(RegExpAlt alt |
@@ -122,12 +94,6 @@ module Make<RegexTreeViewSig TreeImpl> {
       // not excluded for library specific reasons
       not isExcluded(super.getRootTerm().getParent())
     }
-
-    /** Gets a string representation of this root term. */
-    string toString() { result = this.(RegExpTerm).toString() }
-
-    /** Gets the outermost term of this regular expression. */
-    RegExpTerm getRootTerm() { result = super.getRootTerm() }
   }
 
   /**
@@ -146,17 +112,8 @@ module Make<RegexTreeViewSig TreeImpl> {
   /**
    * A regexp term that is relevant for this ReDoS analysis.
    */
-  class RelevantRegExpTerm instanceof RegExpTerm {
+  class RelevantRegExpTerm extends FinalRegExpTerm {
     RelevantRegExpTerm() { getRoot(this).isRelevant() }
-
-    /** Gets a string representation of this term. */
-    string toString() { result = super.toString() }
-
-    /** Gets the raw source text of this term. */
-    string getRawValue() { result = super.getRawValue() }
-
-    /** Gets the outermost term of this regular expression. */
-    RegExpTerm getRootTerm() { result = super.getRootTerm() }
   }
 
   /**
@@ -204,17 +161,17 @@ module Make<RegexTreeViewSig TreeImpl> {
     /** An input symbol corresponding to character `c`. */
     Char(string c) {
       c =
-        getCodepointAt(any(RegexpCharacterConstant cc |
+        getACodepoint(any(RegexpCharacterConstant cc |
             cc instanceof RelevantRegExpTerm and
             not isIgnoreCase(cc.getRootTerm())
-          ).getValue(), _)
+          ).getValue())
       or
       // normalize everything to lower case if the regexp is case insensitive
       c =
         any(RegexpCharacterConstant cc, string char |
           cc instanceof RelevantRegExpTerm and
           isIgnoreCase(cc.getRootTerm()) and
-          char = getCodepointAt(cc.getValue(), _)
+          char = getACodepoint(cc.getValue())
         |
           char.toLowerCase()
         )
@@ -408,9 +365,9 @@ module Make<RegexTreeViewSig TreeImpl> {
      * Includes all printable ascii chars, all constants mentioned in a regexp, and all chars matches by the regexp `/\s|\d|\w/`.
      */
     string getARelevantChar() {
-      exists(ascii(result))
+      exists(asciiPrintable(result))
       or
-      exists(RegexpCharacterConstant c | result = getCodepointAt(c.getValue(), _))
+      exists(RegexpCharacterConstant c | result = getACodepoint(c.getValue()))
       or
       classEscapeMatches(_, result)
     }
@@ -864,7 +821,7 @@ module Make<RegexTreeViewSig TreeImpl> {
    * which represents the state of the NFA before starting to
    * match `t`, or the `i`th character in `t` if `t` is a constant.
    */
-  class State extends TState {
+  final class State extends TState {
     RegExpTerm repr;
 
     State() {
@@ -1056,16 +1013,10 @@ module Make<RegexTreeViewSig TreeImpl> {
     }
 
     /** A state within a regular expression that contains a candidate state. */
-    class RelevantState instanceof State {
+    class RelevantState extends State {
       RelevantState() {
         exists(State s | isCandidate(s) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
       }
-
-      /** Gets a string representation for this state in a regular expression. */
-      string toString() { result = State.super.toString() }
-
-      /** Gets the term represented by this state. */
-      RegExpTerm getRepr() { result = State.super.getRepr() }
     }
   }
 
@@ -1211,7 +1162,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       private string relevant(RegExpRoot root) {
         root = relevantRoot() and
         (
-          exists(ascii(result)) and exists(root)
+          exists(asciiPrintable(result)) and exists(root)
           or
           exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
           or
@@ -1304,7 +1255,7 @@ module Make<RegexTreeViewSig TreeImpl> {
        * Gets a `char` that occurs in a `pump` string.
        */
       private string getAProcessChar() {
-        result = getCodepointAt(any(string s | isReDoSCandidate(_, s)), _)
+        result = getACodepoint(any(string s | isReDoSCandidate(_, s)))
       }
     }
 
@@ -1340,49 +1291,6 @@ module Make<RegexTreeViewSig TreeImpl> {
         or
         not exists(Prefix::prefix(s)) and prefixMsg = ""
       )
-    }
-
-    /**
-     * Gets the result of backslash-escaping newlines, carriage-returns and
-     * backslashes in `s`.
-     */
-    bindingset[s]
-    private string escape(string s) {
-      result =
-        escapeUnicodeString(s.replaceAll("\\", "\\\\")
-              .replaceAll("\n", "\\n")
-              .replaceAll("\r", "\\r")
-              .replaceAll("\t", "\\t"))
-    }
-
-    /**
-     * Gets a string where the unicode characters in `s` have been escaped.
-     */
-    bindingset[s]
-    private string escapeUnicodeString(string s) {
-      result =
-        concat(int i, string char | char = escapeUnicodeChar(getCodepointAt(s, i)) | char order by i)
-    }
-
-    /**
-     * Gets a unicode escaped string for `char`.
-     * If `char` is a printable char, then `char` is returned.
-     */
-    bindingset[char]
-    private string escapeUnicodeChar(string char) {
-      if isPrintable(char)
-      then result = char
-      else
-        if exists(to4digitHex(any(int i | i.toUnicode() = char)))
-        then result = "\\u" + to4digitHex(any(int i | i.toUnicode() = char))
-        else result = "\\u{" + toHex(any(int i | i.toUnicode() = char)) + "}"
-    }
-
-    /** Holds if `char` is easily printable char, or whitespace. */
-    private predicate isPrintable(string char) {
-      exists(ascii(char))
-      or
-      char = "\n\r\t".charAt(_)
     }
 
     /**

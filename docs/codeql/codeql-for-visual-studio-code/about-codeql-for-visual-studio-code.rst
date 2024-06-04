@@ -5,6 +5,8 @@
 About CodeQL for Visual Studio Code
 =================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 CodeQL for Visual Studio Code is an extension that lets you write, run, and test CodeQL queries in Visual Studio Code.
 
 Features

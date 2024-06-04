@@ -12,9 +12,9 @@
 import codeql.ruby.DataFlow
 import codeql.ruby.security.ImproperLdapAuthQuery
 import codeql.ruby.Concepts
-import DataFlow::PathGraph
+import ImproperLdapAuthFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from ImproperLdapAuthFlow::PathNode source, ImproperLdapAuthFlow::PathNode sink
+where ImproperLdapAuthFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP authencation depends on a $@.", source.getNode(),
   "user-provided value"

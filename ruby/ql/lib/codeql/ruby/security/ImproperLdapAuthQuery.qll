@@ -9,8 +9,9 @@ private import ImproperLdapAuthCustomizations::ImproperLdapAuth
 
 /**
  * A taint-tracking configuration for detecting improper LDAP authentication vulnerabilities.
+ * DEPRECATED: Use `ImproperLdapAuthFlow` instead
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ImproperLdapAuth" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -19,3 +20,16 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+private module ImproperLdapAuthConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * Taint-tracking for detecting improper LDAP authentication vulnerabilities.
+ */
+module ImproperLdapAuthFlow = TaintTracking::Global<ImproperLdapAuthConfig>;

@@ -1,3 +1,165 @@
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### New Features
+
+* A Python MaD (Models as Data) row may now contain a dotted path in the `type` column. Like in Ruby, a path to a class will refer to instances of that class. This means that the summary `["foo", "Member[MyClass].Instance.Member[instance_method]", "Argument[0]", "ReturnValue", "value"]` can now be written `["foo.MS_Class", "Member[instance_method]", "Argument[0]", "ReturnValue", "value"]`. To refer to an actual class, one may add a `!` at the end of the path.
+
+### Minor Analysis Improvements
+
+* The `request` parameter of Flask `SessionInterface.open_session` method is now modeled as a remote flow source.
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `py/clear-text-storage-sensitive-data` and `py/clear-text-logging-sensitive-data`.
+
+## 0.12.1
+
+### Major Analysis Improvements
+
+* Added modeling of the `pyramid` framework, leading to new remote flow sources and sinks.
+
+## 0.12.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `Security/CWE-020/HostnameRegexpShared.qll` file.
+
+### Deprecated APIs
+
+- Renamed the `StrConst` class to `StringLiteral`, for greater consistency with other languages. The `StrConst` and `Str` classes are now deprecated and will be removed in a future release.
+
+## 0.11.14
+
+### Minor Analysis Improvements
+
+* Improved the type-tracking capabilities (and therefore also API graphs) to allow tracking items in tuples and dictionaries.
+
+## 0.11.13
+
+No user-facing changes.
+
+## 0.11.12
+
+No user-facing changes.
+
+## 0.11.11
+
+No user-facing changes.
+
+## 0.11.10
+
+### Minor Analysis Improvements
+
+* Fixed missing flow for dictionary updates (`d[<key>] = ...`) when `<key>` is a string constant not used in dictionary literals or as name of keyword-argument.
+* Fixed flow for iterable unpacking (`a,b = my_tuple`) when it occurs on top-level (module) scope.
+
+## 0.11.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+* Added modeling of the `psycopg` PyPI package as a SQL database library.
+
+## 0.11.8
+
+### Minor Analysis Improvements
+
+* Added `html.escape` as a sanitizer for HTML.
+
+### Bug Fixes
+
+* Fixed the `a` (ASCII) inline flag not being recognized by the regular expression library.
+
+## 0.11.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `LDAP`, `HTTP`, `URL`, `CGI` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `localSourceStoreStep` predicate, use `flowsToStoreStep` instead.
+* Deleted the deprecated `iteration_defined_variable` predicate from the `SSA` library.
+* Deleted various deprecated predicates from the points-to libraries.
+* Deleted the deprecated `semmle/python/security/OverlyLargeRangeQuery.qll`, `semmle/python/security/regexp/ExponentialBackTracking.qll`, `semmle/python/security/regexp/NfaUtils.qll`, and `semmle/python/security/regexp/NfaUtils.qll` files.
+* The diagnostic query `py/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Python files, now considers any Python file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.11.6
+
+### Major Analysis Improvements
+
+* Added support for global data-flow through captured variables.
+
+### Minor Analysis Improvements
+
+* Captured subclass relationships ahead-of-time for most popular PyPI packages so we are able to resolve subclass relationships even without having the packages installed. For example we have captured that `flask_restful.Resource` is a subclass of `flask.views.MethodView`, so our Flask modeling will still consider a function named `post` on a `class Foo(flask_restful.Resource):` as a HTTP request handler.
+* Python now makes use of the shared type tracking library, exposed as `semmle.python.dataflow.new.TypeTracking`. The existing type tracking library, `semmle.python.dataflow.new.TypeTracker`, has consequently been deprecated.
+
+### Bug Fixes
+
+- We would previously confuse all captured variables into a single scope entry node. Now they each get their own node so they can be tracked properly.
+- The dataflow graph no longer contains SSA variables. Instead, flow is directed via the corresponding controlflow nodes. This should make the graph and the flow simpler to understand. Minor improvements in flow computation has been observed, but in general negligible changes to alerts are expected.
+
+## 0.11.5
+
+No user-facing changes.
+
+## 0.11.4
+
+### Minor Analysis Improvements
+
+- Added support for tarfile extraction filters as defined in [PEP-706](https://peps.python.org/pep-0706). In particular, calls to `TarFile.extract`, and `TarFile.extractall` are no longer considered to be sinks for the `py/tarslip` query if a sufficiently safe filter is provided.
+* Added modeling of `*args` and `**kwargs` as routed-parameters in request handlers for django/flask/FastAPI/tornado.
+- Added support for type parameters in function and class definitions, as well as the new Python 3.12 type alias statement.
+* Added taint-flow modeling for regular expressions with `re` module from the standard library.
+
+## 0.11.3
+
+### Minor Analysis Improvements
+
+* Added basic flow for attributes defined on classes, when the attribute lookup is on a direct reference to that class (so not instance, cls parameter, or self parameter). Example: class definition `class Foo: my_tuples = (dangerous, safe)` and usage `SINK(Foo.my_tuples[0])`.
+
+## 0.11.2
+
+### Minor Analysis Improvements
+
+* Added support for functions decorated with `contextlib.contextmanager`.
+* Namespace packages in the form of regular packages with missing `__init__.py`-files are now allowed. This enables the analysis to resolve modules and functions inside such packages.
+
+## 0.11.1
+
+### Minor Analysis Improvements
+
+* Added better support for API graphs when encountering `from ... import *`. For example in the code `from foo import *; Bar()`, we will now find a result for `API::moduleImport("foo").getMember("Bar").getACall()`
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAUse`, `getAnImmediateUse`, `getARhs`, and `getAValueReachingRhs` predicates from the `API::Node` class.
+* Deleted the deprecated `fullyQualifiedToAPIGraphPath` class from `SubclassFinder.qll`, use `fullyQualifiedToApiGraphPath` instead.
+* Deleted the deprecated `Paths.qll` file.
+* Deleted the deprecated `semmle.python.security.performance` folder, use `semmle.python.security.regexp` instead.
+* Deleted the deprecated `semmle.python.security.strings` and `semmle.python.web` folders.
+* Improved modeling of decoding through pickle related functions (which can lead to code execution), resulting in additional sinks for the _Deserializing untrusted input_ query (`py/unsafe-deserialization`). Added support for `pandas.read_pickle`, `numpy.load` and `joblib.load`.
+
+## 0.11.0
+
+### Minor Analysis Improvements
+
+* Django Rest Framework better handles custom `ModelViewSet` classes functions
+* Regular expression fragments residing inside implicitly concatenated strings now have better location information.
+
+### Bug Fixes
+
+* Subterms of regular expressions encoded as single-line string literals now have better source-location information.
+
+## 0.10.5
+
+No user-facing changes.
+
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+* Added `shlex.quote` as a sanitizer for the `py/shell-command-constructed-from-input` query.
+
 ## 0.10.3
 
 ### Minor Analysis Improvements

@@ -11,15 +11,15 @@ import Generics
  * A type. Either a value or reference type (`ValueOrRefType`), a type parameter (`TypeParameter`),
  * a pointer type (`PointerType`), or an array type (`ArrayType`).
  */
-class Type extends Declaration, @dotnet_type {
-  /** Gets the name of this type without additional syntax such as `[]`, `*`, or `<...>`. */
+deprecated class Type extends Declaration, @dotnet_type {
+  /** Gets the name of this type without additional syntax such as `[]` or `*`. */
   override string getUndecoratedName() { none() }
 }
 
 /**
  * A value or reference type.
  */
-class ValueOrRefType extends Type, @dotnet_valueorreftype {
+deprecated class ValueOrRefType extends Type, @dotnet_valueorreftype {
   /** Gets the namespace declaring this type, if any. */
   Namespace getDeclaringNamespace() { none() }
 
@@ -57,7 +57,7 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
 /**
  * A type parameter, for example `T` in `System.Nullable<T>`.
  */
-class TypeParameter extends Type, @dotnet_type_parameter {
+deprecated class TypeParameter extends Type, @dotnet_type_parameter {
   /** Gets the generic type or method declaring this type parameter. */
   UnboundGeneric getDeclaringGeneric() { this = result.getATypeParameter() }
 
@@ -70,7 +70,7 @@ class TypeParameter extends Type, @dotnet_type_parameter {
 }
 
 /** A pointer type. */
-class PointerType extends Type, @dotnet_pointer_type {
+deprecated class PointerType extends Type, @dotnet_pointer_type {
   /** Gets the type referred by this pointer type, for example `char` in `char*`. */
   Type getReferentType() { none() }
 
@@ -82,7 +82,7 @@ class PointerType extends Type, @dotnet_pointer_type {
 }
 
 /** An array type. */
-class ArrayType extends ValueOrRefType, @dotnet_array_type {
+deprecated class ArrayType extends ValueOrRefType, @dotnet_array_type {
   /** Gets the type of the array element. */
   Type getElementType() { none() }
 

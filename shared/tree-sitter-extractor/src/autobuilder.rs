@@ -54,6 +54,12 @@ impl Autobuilder {
         let mut cmd = Command::new(codeql);
         cmd.arg("database").arg("index-files");
 
+        let verbosity = env::var("CODEQL_VERBOSITY");
+
+        if let Ok(verbosity) = verbosity {
+            cmd.arg(format!("--verbosity={}", verbosity));
+        }
+
         for ext in &self.include_extensions {
             cmd.arg(format!("--include-extension={}", ext));
         }
@@ -74,14 +80,35 @@ impl Autobuilder {
         cmd.arg("--working-dir=.");
         cmd.arg(&self.database);
 
-        for line in env::var("LGTM_INDEX_FILTERS")
-            .unwrap_or_default()
-            .split('\n')
-        {
+        // LGTM_INDEX_FILTERS is a prioritized list of include/exclude filters, where
+        // later filters take priority over earlier ones.
+        // 1) If we only see includes, we should ignore everything else, which is
+        //    achieved by using `--also-match={filter}`.
+        // 2) if we see both includes and excludes, we process them in order by using
+        //    `--also-match={filter}` for includes and `--also-match=!{filter}` for
+        //    excludes.
+        // 3) If we only see excludes, we should accept everything else. Naive solution
+        //    of just using `--also-match=!{filter}` is not good enough, since nothing
+        //    will make the `--also-match`` pass for any file. In that case, we add a dummy
+        //    initial `--also-match=**/*``to get the desired behavior.
+        let tmp = env::var("LGTM_INDEX_FILTERS").unwrap_or_default();
+        let lgtm_index_filters = tmp.split('\n');
+        let lgtm_index_filters_has_include = lgtm_index_filters
+            .clone()
+            .any(|s| s.starts_with("include:"));
+        let lgtm_index_filters_has_exclude = lgtm_index_filters
+            .clone()
+            .any(|s| s.starts_with("exclude:"));
+
+        if !lgtm_index_filters_has_include && lgtm_index_filters_has_exclude {
+            cmd.arg("--also-match=**/*");
+        }
+
+        for line in lgtm_index_filters {
             if let Some(stripped) = line.strip_prefix("include:") {
                 cmd.arg("--also-match=".to_owned() + stripped);
             } else if let Some(stripped) = line.strip_prefix("exclude:") {
-                cmd.arg("--exclude=".to_owned() + stripped);
+                cmd.arg("--also-match=!".to_owned() + stripped);
             }
         }
         let exit = &cmd.spawn()?.wait()?;

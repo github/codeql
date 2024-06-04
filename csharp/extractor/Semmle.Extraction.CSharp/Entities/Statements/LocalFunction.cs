@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             if (Symbol is null)
             {
-                Context.ExtractionError("Could not get local function symbol", null, Context.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Warning);
+                Context.ExtractionError("Could not get local function symbol", null, Context.CreateLocation(this.ReportingLocation), severity: Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 

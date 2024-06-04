@@ -234,7 +234,7 @@ module TS45 {
   }
 }
 
-import * as Foo3 from "./something.json" assert { type: "json" };
+import * as Foo3 from "./something.json" with { type: "json" };
 var foo = Foo3.foo;
 
 module TS46 {
@@ -481,4 +481,16 @@ module TS52 {
     type Pair3<T> = [first: T, T];
 
     console.log(["hello", "world"] satisfies Pair3<string>);
+}
+
+module TS54 {
+  function createStreetLight<C extends string>(colors: C[], defaultColor?: NoInfer<C>) {
+    return colors[0];
+  }
+
+  createStreetLight(["red", "yellow", "green"], "yellow");
+
+  const myObj = Object.groupBy([0, 1, 2, 3, 4, 5], (num, index) => {
+    return num % 2 === 0 ? "even": "odd";
+  });
 }

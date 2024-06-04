@@ -4,14 +4,13 @@
  * It must export the following members:
  * ```ql
  * class Unit // a unit type
- * module AccessPathSyntax // a re-export of the AccessPathSyntax module
  * class InvokeNode // a type representing an invocation connected to the API graph
  * module API // the API graph module
  * predicate isPackageUsed(string package)
  * API::Node getExtraNodeFromPath(string package, string type, string path, int n)
- * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token)
- * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token)
- * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token)
+ * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token)
+ * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathTokenBase token)
+ * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathTokenBase token)
  * InvokeNode getAnInvocationOf(API::Node node)
  * predicate isExtraValidTokenNameInIdentifyingAccessPath(string name)
  * predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name)
@@ -21,13 +20,12 @@
 
 private import codeql.ruby.AST
 private import ApiGraphModels
+private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.dataflow.internal.AccessPathSyntax
 // Re-export libraries needed by ApiGraphModels.qll
 import codeql.ruby.ApiGraphs
-import codeql.ruby.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 import codeql.ruby.DataFlow::DataFlow as DataFlow
-private import AccessPathSyntax
-private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
-private import codeql.ruby.dataflow.internal.FlowSummaryImpl::Public
+private import FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 pragma[nomagic]
@@ -140,7 +138,7 @@ private predicate methodMatchedByName(AccessPath path, string methodName) {
  * Gets a Ruby-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   token.getName() = "Member" and
   result = node.getMember(token.getAnArgument())
   or
@@ -152,13 +150,13 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Parameter" and
   exists(DataFlowDispatch::ArgumentPosition argPos, DataFlowDispatch::ParameterPosition paramPos |
-    argPos = FlowSummaryImplSpecific::parseParamBody(token.getAnArgument()) and
+    token.getAnArgument() = FlowSummaryImpl::Input::encodeArgumentPosition(argPos) and
     DataFlowDispatch::parameterMatch(paramPos, argPos) and
     result = node.getParameterAtPosition(paramPos)
   )
   or
   exists(DataFlow::ContentSet contents |
-    SummaryComponent::content(contents) = FlowSummaryImplSpecific::interpretComponentSpecific(token) and
+    token.getName() = FlowSummaryImpl::Input::encodeContent(contents, token.getAnArgument()) and
     result = node.getContents(contents)
   )
 }
@@ -167,10 +165,10 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets a Ruby-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
+API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathTokenBase token) {
   token.getName() = "Argument" and
   exists(DataFlowDispatch::ArgumentPosition argPos, DataFlowDispatch::ParameterPosition paramPos |
-    paramPos = FlowSummaryImplSpecific::parseArgBody(token.getAnArgument()) and
+    token.getAnArgument() = FlowSummaryImpl::Input::encodeParameterPosition(paramPos) and
     DataFlowDispatch::parameterMatch(paramPos, argPos) and
     result = node.getArgumentAtPosition(argPos)
   )
@@ -199,7 +197,7 @@ API::Node getAFuzzySuccessor(API::Node node) {
  * Holds if `invoke` matches the Ruby-specific call site filter in `token`.
  */
 bindingset[token]
-predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token) {
+predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathTokenBase token) {
   token.getName() = "WithBlock" and
   exists(invoke.getBlock())
   or
@@ -243,7 +241,7 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
   or
   name = ["Argument", "Parameter"] and
   (
-    argument = ["self", "block", "any", "any-named"]
+    argument = ["self", "lambda-self", "block", "any", "any-named"]
     or
     argument.regexpMatch("\\w+:") // keyword argument
   )

@@ -5,8 +5,9 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
+private import codeql.util.Location
 
-signature module InputSig<DF::InputSig DataFlowLang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
   /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
   default predicate uniqueEnclosingCallableExclude(DataFlowLang::Node n) { none() }
 
@@ -58,11 +59,21 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 
   /** Holds if `n` should be excluded from the consistency test `identityLocalStep`. */
   default predicate identityLocalStepExclude(DataFlowLang::Node n) { none() }
+
+  /** Holds if `arg` should be excluded from the consistency test `missingArgumentCall`. */
+  default predicate missingArgumentCallExclude(DataFlowLang::ArgumentNode arg) { none() }
+
+  /** Holds if `(arg, call)` should be excluded from the consistency test `multipleArgumentCall`. */
+  default predicate multipleArgumentCallExclude(
+    DataFlowLang::ArgumentNode arg, DataFlowLang::DataFlowCall call
+  ) {
+    none()
+  }
 }
 
 module MakeConsistency<
-  DF::InputSig DataFlowLang, TT::InputSig<DataFlowLang> TaintTrackingLang,
-  InputSig<DataFlowLang> Input>
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  TT::InputSig<Location, DataFlowLang> TaintTrackingLang, InputSig<Location, DataFlowLang> Input>
 {
   private import DataFlowLang
   private import TaintTrackingLang
@@ -75,16 +86,16 @@ module MakeConsistency<
       this instanceof ParameterNode or
       this instanceof ReturnNode or
       this = getAnOutNode(_, _) or
-      simpleLocalFlowStep(this, _) or
-      simpleLocalFlowStep(_, this) or
+      simpleLocalFlowStep(this, _, _) or
+      simpleLocalFlowStep(_, this, _) or
       jumpStep(this, _) or
       jumpStep(_, this) or
       storeStep(this, _, _) or
       storeStep(_, _, this) or
       readStep(this, _, _) or
       readStep(_, _, this) or
-      defaultAdditionalTaintStep(this, _) or
-      defaultAdditionalTaintStep(_, this)
+      defaultAdditionalTaintStep(this, _, _) or
+      defaultAdditionalTaintStep(_, this, _)
     }
   }
 
@@ -118,10 +129,7 @@ module MakeConsistency<
 
   query predicate uniqueNodeLocation(Node n, string msg) {
     exists(int c |
-      c =
-        count(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-          n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-        ) and
+      c = count(n.getLocation()) and
       c != 1 and
       not Input::uniqueNodeLocationExclude(n) and
       msg = "Node should have one location but has " + c + "."
@@ -132,7 +140,7 @@ module MakeConsistency<
     exists(int c |
       c =
         strictcount(Node n |
-          not n.hasLocationInfo(_, _, _, _, _) and
+          not exists(n.getLocation()) and
           not Input::missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c
@@ -147,20 +155,13 @@ module MakeConsistency<
     )
   }
 
-  query predicate missingToString(string msg) {
-    exists(int c |
-      c = strictcount(Node n | not exists(n.toString())) and
-      msg = "Nodes without toString: " + c
-    )
-  }
-
   query predicate parameterCallable(ParameterNode p, string msg) {
     exists(DataFlowCallable c | isParameterNode(p, c, _) and c != nodeGetEnclosingCallable(p)) and
     msg = "Callable mismatch for parameter."
   }
 
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
-    simpleLocalFlowStep(n1, n2) and
+    simpleLocalFlowStep(n1, n2, _) and
     nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
@@ -186,8 +187,9 @@ module MakeConsistency<
   }
 
   query predicate unreachableNodeCCtx(Node n, DataFlowCall call, string msg) {
-    isUnreachableInCall(n, call) and
-    exists(DataFlowCallable c |
+    exists(DataFlowCallable c, NodeRegion nr |
+      isUnreachableInCall(nr, call) and
+      nr.contains(n) and
       c = nodeGetEnclosingCallable(n) and
       not viableCallable(call) = c
     ) and
@@ -246,7 +248,7 @@ module MakeConsistency<
 
   query predicate postWithInFlow(PostUpdateNode n, string msg) {
     not clearsContent(n, _) and
-    simpleLocalFlowStep(_, n) and
+    simpleLocalFlowStep(_, n, _) and
     not Input::postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
@@ -259,21 +261,33 @@ module MakeConsistency<
     not Input::viableImplInCallContextTooLargeExclude(call, ctx, callable)
   }
 
+  private predicate uniqueParameterNodeAtPositionInclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
+    isParameterNode(p, c, pos)
+  }
+
   query predicate uniqueParameterNodeAtPosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
-    isParameterNode(p, c, pos) and
-    not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
+    uniqueParameterNodeAtPositionInclude(c, pos, p) and
+    not exists(unique(Node p0 | uniqueParameterNodeAtPositionInclude(c, pos, p0))) and
     msg = "Parameters with overlapping positions."
+  }
+
+  private predicate uniqueParameterNodePositionInclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
+    isParameterNode(p, c, pos)
   }
 
   query predicate uniqueParameterNodePosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
-    isParameterNode(p, c, pos) and
-    not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
+    uniqueParameterNodePositionInclude(c, pos, p) and
+    not exists(unique(ParameterPosition pos0 | uniqueParameterNodePositionInclude(c, pos0, p))) and
     msg = "Parameter node with multiple positions."
   }
 
@@ -283,8 +297,30 @@ module MakeConsistency<
   }
 
   query predicate identityLocalStep(Node n, string msg) {
-    simpleLocalFlowStep(n, n) and
+    simpleLocalFlowStep(n, n, _) and
     not Input::identityLocalStepExclude(n) and
     msg = "Node steps to itself"
+  }
+
+  query predicate missingArgumentCall(ArgumentNode arg, string msg) {
+    not Input::missingArgumentCallExclude(arg) and
+    not isArgumentNode(arg, _, _) and
+    msg = "Missing call for argument node."
+  }
+
+  private predicate multipleArgumentCallInclude(ArgumentNode arg, DataFlowCall call) {
+    isArgumentNode(arg, call, _) and
+    not Input::multipleArgumentCallExclude(arg, call)
+  }
+
+  query predicate multipleArgumentCall(ArgumentNode arg, DataFlowCall call, string msg) {
+    multipleArgumentCallInclude(arg, call) and
+    strictcount(DataFlowCall call0 | multipleArgumentCallInclude(arg, call0)) > 1 and
+    msg = "Multiple calls for argument node."
+  }
+
+  query predicate lambdaCallEnclosingCallableMismatch(DataFlowCall call, Node receiver) {
+    lambdaCall(call, _, receiver) and
+    not nodeGetEnclosingCallable(receiver) = call.getEnclosingCallable()
   }
 }

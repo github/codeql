@@ -25,18 +25,20 @@ private import AutomodelJavaUtil
 bindingset[limit]
 private Endpoint getSampleForSignature(
   int limit, string package, string type, string subtypes, string name, string signature,
-  string input, string isVarargs
+  string input, string output, string isVarargs, string extensibleType, string alreadyAiModeled
 ) {
   exists(int n, int num_endpoints, ApplicationModeMetadataExtractor meta |
     num_endpoints =
       count(Endpoint e |
-        meta.hasMetadata(e, package, type, subtypes, name, signature, input, isVarargs)
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs,
+          alreadyAiModeled, extensibleType)
       )
   |
     result =
       rank[n](Endpoint e, Location loc |
         loc = e.asTop().getLocation() and
-        meta.hasMetadata(e, package, type, subtypes, name, signature, input, isVarargs)
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs,
+          alreadyAiModeled, extensibleType)
       |
         e
         order by
@@ -53,45 +55,27 @@ private Endpoint getSampleForSignature(
 }
 
 from
-  Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString isVarargsArray, DollarAtString alreadyAiModeled
+  Endpoint endpoint, DollarAtString package, DollarAtString type, DollarAtString subtypes,
+  DollarAtString name, DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString isVarargsArray, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
-  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
-    u.appliesToEndpoint(endpoint)
-  ) and
+  isCandidate(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray,
+    extensibleType, alreadyAiModeled) and
   endpoint =
-    getSampleForSignature(9, package, type, subtypes, name, signature, input, isVarargsArray) and
-  // If a node is already a known sink for any of our existing ATM queries and is already modeled as a MaD sink, we
-  // don't include it as a candidate. Otherwise, we might include it as a candidate for query A, but the model will
-  // label it as a sink for one of the sink types of query B, for which it's already a known sink. This would result in
-  // overlap between our detected sinks and the pre-existing modeling. We assume that, if a sink has already been
-  // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
-  (
-    not CharacteristicsImpl::isSink(endpoint, _, _) and alreadyAiModeled = ""
-    or
-    alreadyAiModeled.matches("%ai-%") and
-    CharacteristicsImpl::isSink(endpoint, _, alreadyAiModeled)
-  ) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, isVarargsArray) and
-  includeAutomodelCandidate(package, type, name, signature) and
-  // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
-  // a non-sink, and we surface only endpoints that have at least one such sink type.
-  message =
-    strictconcat(AutomodelEndpointTypes::SinkType sinkType |
-      not CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
-      CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
-    |
-      sinkType, ", "
-    )
+    getSampleForSignature(9, package, type, subtypes, name, signature, input, output,
+      isVarargsArray, extensibleType, alreadyAiModeled)
 select endpoint.asNode(),
-  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  "Related locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
   type, "type", //
   subtypes, "subtypes", //
   name, "name", // method name
   signature, "signature", //
   input, "input", //
+  output, "output", //
   isVarargsArray, "isVarargsArray", //
-  alreadyAiModeled, "alreadyAiModeled"
+  alreadyAiModeled, "alreadyAiModeled", //
+  extensibleType, "extensibleType"

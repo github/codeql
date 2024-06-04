@@ -1,0 +1,3 @@
+| test.kt:2:1:11:1 | MyClass |
+| test.kt:4:13:9:13 |  |
+| test.kt:5:17:6:17 | SomeClass |

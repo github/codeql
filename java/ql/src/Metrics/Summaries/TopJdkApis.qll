@@ -304,7 +304,7 @@ class TopJdkApi extends Callable {
 
   /** Holds if this API has a manual neutral summary model. */
   private predicate hasManualNeutralSummary() {
-    this.(FlowSummaryImpl::Public::NeutralSummaryCallable).hasManualModel()
+    this = any(FlowSummaryImpl::Public::NeutralSummaryCallable n | n.hasManualModel()).asCallable()
   }
 
   /** Holds if this API has a manual MaD model. */

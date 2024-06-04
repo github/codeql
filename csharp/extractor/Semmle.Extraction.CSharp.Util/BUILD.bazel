@@ -1,0 +1,17 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_library",
+)
+
+codeql_csharp_library(
+    name = "Semmle.Extraction.CSharp.Util",
+    srcs = glob([
+        "Properties/*.cs",
+        "*.cs",
+    ]),
+    visibility = ["//csharp:__subpackages__"],
+    deps = [
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.codeanalysis.csharp",
+    ],
+)

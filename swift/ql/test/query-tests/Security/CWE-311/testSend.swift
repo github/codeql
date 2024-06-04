@@ -80,3 +80,17 @@ func test2(password : String, license_key: String, ms: MyStruct, connection : NW
 	connection.send(content: ms.MyCreditRating, completion: .idempotent) // BAD
 	connection.send(content: ms.OneTimeCode, completion: .idempotent) // BAD [NOT DETECTED]
 }
+
+struct MyOuter {
+	struct MyInner {
+		var value: String
+	}
+
+	var password: MyInner
+	var harmless: MyInner
+}
+
+func test3(mo : MyOuter, connection : NWConnection) {
+	connection.send(content: mo.password.value, completion: .idempotent) // BAD
+	connection.send(content: mo.harmless.value, completion: .idempotent) // GOOD
+}

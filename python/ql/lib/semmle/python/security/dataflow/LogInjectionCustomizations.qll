@@ -32,13 +32,6 @@ module LogInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "log injection" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
@@ -97,7 +90,7 @@ module LogInjection {
     // TODO: Consider rewriting using flow states.
     ReplaceLineBreaksSanitizer() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
-      this.getArg(0).asExpr().(StrConst).getText() in ["\r\n", "\n"]
+      this.getArg(0).asExpr().(StringLiteral).getText() in ["\r\n", "\n"]
     }
   }
 }

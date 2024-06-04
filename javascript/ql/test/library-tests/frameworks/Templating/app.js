@@ -66,3 +66,16 @@ app.get('/angularjs', (req, res) => {
         rawHtml: req.query.rawHtml,
     });
 });
+
+app.get('/dotjs', (req, res) => {
+    // Currently we don't auto-insert the full .html.dot extension. Test all variations.
+    res.render('dot_sinks.html.dot', {
+        tainted: req.query.foo,
+    });
+    res.render('dot_sinks.html', {
+        tainted: req.query.foo,
+    });
+    res.render('dot_sinks', {
+        tainted: req.query.foo,
+    });
+});

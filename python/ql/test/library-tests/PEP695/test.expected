@@ -1,0 +1,18 @@
+type_vars_without_bound
+| test.py:1:8:1:9 | TypeVar | T1 | TypeAlias T |
+| test.py:3:7:3:8 | TypeVar | T6 | Function f |
+| test.py:5:9:5:11 | TypeVar | T10 | Class C |
+type_vars_with_bound
+| test.py:1:12:1:17 | TypeVar | T2 | E1 | TypeAlias T |
+| test.py:3:11:3:16 | TypeVar | T7 | E2 | Function f |
+| test.py:5:14:5:20 | TypeVar | T11 | E3 | Class C |
+type_var_tuples
+| test.py:1:20:1:22 | TypeVarTuple | T3 | TypeAlias T |
+| test.py:3:19:3:21 | TypeVarTuple | T8 | Function f |
+| test.py:5:23:5:26 | TypeVarTuple | T12 | Class C |
+param_specs
+| test.py:1:25:1:28 | ParamSpec | T4 | TypeAlias T |
+| test.py:3:24:3:27 | ParamSpec | T9 | Function f |
+| test.py:5:29:5:33 | ParamSpec | T13 | Class C |
+type_aliases
+| test.py:1:1:1:34 | TypeAlias | T | T5 |

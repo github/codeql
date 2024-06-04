@@ -15,7 +15,7 @@
 import python
 import semmle.python.strings
 
-predicate string_format(BinaryExpr operation, StrConst str, Value args, AstNode origin) {
+predicate string_format(BinaryExpr operation, StringLiteral str, Value args, AstNode origin) {
   operation.getOp() instanceof Mod and
   exists(Context ctx |
     operation.getLeft().pointsTo(ctx, _, str) and
@@ -34,7 +34,7 @@ int sequence_length(Value args) {
 }
 
 from
-  BinaryExpr operation, StrConst fmt, Value args, int slen, int alen, AstNode origin,
+  BinaryExpr operation, StringLiteral fmt, Value args, int slen, int alen, AstNode origin,
   string provided
 where
   string_format(operation, fmt, args, origin) and

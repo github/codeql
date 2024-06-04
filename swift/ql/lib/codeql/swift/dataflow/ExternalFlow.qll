@@ -25,11 +25,7 @@
  *    types can be short names or fully qualified names (mixing these two options
  *    is not allowed within a single signature).
  * 6. The `ext` column specifies additional API-graph-like edges. Currently
- *    there are only two valid values: "" and "Annotated". The empty string has no
- *    effect. "Annotated" applies if `name` and `signature` were left blank and
- *    acts by selecting an element that is annotated by the annotation type
- *    selected by the first 4 columns. This can be another member such as a field
- *    or method, or a parameter.
+ *    there is only one valid value: "".
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
@@ -44,15 +40,12 @@
  *
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
- *    - "": Selects a read of a selected field, or a selected parameter.
+ *    - "": Selects a read of a selected field.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
  *      The arguments are zero-indexed, and `-1` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
  *      the given range. The range is inclusive at both ends.
- *    - "Parameter": Selects the value of a parameter of the selected element.
- *      "Parameter" is also allowed in case the selected element is already a
- *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
@@ -66,13 +59,13 @@
  */
 
 import swift
-private import internal.AccessPathSyntax
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
 private import internal.DataFlowPublic
+private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
 private import FlowSummary as FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
 
@@ -417,14 +410,6 @@ private Element interpretElement0(
       subtypes = true and
       declWithMethod.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
-      // member declared in a type that's extended with a protocol that is the named type
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithMethod.asNominalTypeDecl()
-      |
-        subtypes = true and
-        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
-      )
-      or
       // member declared directly in the named type (or an extension of it)
       subtypes = false and
       declWithMethod.asNominalTypeDecl() = namedTypeDecl
@@ -441,14 +426,6 @@ private Element interpretElement0(
       // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
       declWithField.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
-      or
-      // field declared in a type that's extended with a protocol that is the named type
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithField.asNominalTypeDecl()
-      |
-        subtypes = true and
-        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
-      )
       or
       // field declared directly in the named type (or an extension of it)
       subtypes = false and
@@ -467,7 +444,7 @@ Element interpretElement(
   )
 }
 
-private predicate parseField(AccessPathToken c, Content::FieldContent f) {
+deprecated private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   exists(string fieldRegex, string name |
     c.getName() = "Field" and
     fieldRegex = "^([^.]+)$" and
@@ -476,12 +453,12 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   )
 }
 
-private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
+deprecated private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
   c.getName() = "TupleElement" and
   t.getIndex() = c.getAnArgument().toInt()
 }
 
-private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
+deprecated private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
   c.getName() = "EnumElement" and
   c.getAnArgument() = e.getSignature()
   or
@@ -490,15 +467,16 @@ private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
 }
 
 /** Holds if the specification component parses as a `Content`. */
-predicate parseContent(AccessPathToken component, Content content) {
+deprecated predicate parseContent(AccessPathToken component, Content content) {
   parseField(component, content)
   or
   parseTuple(component, content)
   or
   parseEnum(component, content)
   or
+  // map legacy "ArrayElement" specification components to `CollectionContent`
   component.getName() = "ArrayElement" and
-  content instanceof Content::ArrayContent
+  content instanceof Content::CollectionContent
   or
   component.getName() = "CollectionElement" and
   content instanceof Content::CollectionContent
@@ -511,8 +489,10 @@ private module Cached {
    * model.
    */
   cached
-  predicate sourceNode(Node node, string kind) {
-    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+  predicate sourceNode(Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind, model) and n.asNode() = node
+    )
   }
 
   /**
@@ -520,9 +500,93 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(Node node, string kind) {
-    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+  predicate sinkNode(Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSinkNode(n, kind, model) and n.asNode() = node
+    )
   }
 }
 
 import Cached
+
+/**
+ * Holds if `node` is specified as a source with the given kind in a MaD flow
+ * model.
+ */
+predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a sink with the given kind in a MaD flow
+ * model.
+ */
+predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
+
+private predicate interpretSummary(
+  Function f, string input, string output, string kind, string provenance, string model
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    model = "" and // TODO: Insert MaD provenance from summaryModel
+    f = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends SummarizedCallable {
+  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+
+  private predicate relevantSummaryElementManual(
+    string input, string output, string kind, string model
+  ) {
+    exists(Provenance provenance |
+      interpretSummary(this, input, output, kind, provenance, model) and
+      provenance.isManual()
+    )
+  }
+
+  private predicate relevantSummaryElementGenerated(
+    string input, string output, string kind, string model
+  ) {
+    exists(Provenance provenance |
+      interpretSummary(this, input, output, kind, provenance, model) and
+      provenance.isGenerated()
+    )
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    exists(string kind |
+      this.relevantSummaryElementManual(input, output, kind, model)
+      or
+      not this.relevantSummaryElementManual(_, _, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind, model)
+    |
+      if kind = "value" then preservesValue = true else preservesValue = false
+    )
+  }
+
+  override predicate hasProvenance(Provenance provenance) {
+    interpretSummary(this, _, _, _, provenance, _)
+  }
+}
+
+// adapter class for converting Mad neutrals to `NeutralCallable`s
+private class NeutralCallableAdapter extends NeutralCallable {
+  string kind;
+  string provenance_;
+
+  NeutralCallableAdapter() {
+    // Neutral models have not been implemented for Swift.
+    none() and
+    exists(this) and
+    exists(kind) and
+    exists(provenance_)
+  }
+
+  override string getKind() { result = kind }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+}

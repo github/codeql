@@ -8,8 +8,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.ApiGraphShared
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -802,12 +801,6 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** DEPRECATED. This predicate has been renamed to `getASource`. */
-    deprecated DataFlow::LocalSourceNode getAUse() { none() }
-
-    /** DEPRECATED. This predicate has been renamed to `getASink`. */
-    deprecated DataFlow::Node getARhs() { none() }
-
     /** Gets a data-flow node corresponding to a use-node for this entry point. */
     DataFlow::LocalSourceNode getASource() { none() }
 
@@ -886,8 +879,6 @@ module API {
       )
       or
       implicitCallEdge(pred, succ)
-      or
-      exists(DataFlow::HashLiteralNode splat | hashSplatEdge(splat, pred, succ))
     }
 
     /**
@@ -987,29 +978,6 @@ module API {
     }
 
     pragma[nomagic]
-    private DataFlow::Node getHashSplatArgument(DataFlow::HashLiteralNode literal) {
-      result = DataFlowPrivate::TSynthHashSplatArgumentNode(literal.asExpr())
-    }
-
-    /**
-     * Holds if the epsilon edge `pred -> succ` should be generated to account for the members of a hash literal.
-     *
-     * This currently exists because hash literals are desugared to `Hash.[]` calls, whose summary relies on `WithContent`.
-     * However, `contentEdge` does not currently generate edges for `WithContent` steps.
-     */
-    bindingset[literal]
-    pragma[inline_late]
-    private predicate hashSplatEdge(DataFlow::HashLiteralNode literal, ApiNode pred, ApiNode succ) {
-      exists(TypeTracker t |
-        pred = Impl::MkForwardNode(getALocalSourceStrict(getHashSplatArgument(literal)), t) and
-        succ = Impl::MkForwardNode(pragma[only_bind_out](literal), pragma[only_bind_out](t))
-        or
-        succ = Impl::MkBackwardNode(getALocalSourceStrict(getHashSplatArgument(literal)), t) and
-        pred = Impl::MkBackwardNode(pragma[only_bind_out](literal), pragma[only_bind_out](t))
-      )
-    }
-
-    pragma[nomagic]
     private DataFlow::LocalSourceNode getAModuleReference(DataFlow::ModuleNode mod) {
       result = mod.getAnImmediateReference()
       or
@@ -1075,9 +1043,9 @@ module API {
 
   /** INTERNAL USE ONLY. */
   module Internal {
-    private module Shared = ApiGraphShared<SharedArg>;
+    private module MkShared = ApiGraphShared<SharedArg>;
 
-    import Shared
+    import MkShared
 
     /** Gets the API node corresponding to the module/class object for `mod`. */
     bindingset[mod]
@@ -1118,7 +1086,7 @@ module API {
     private predicate needsSinkNode(DataFlow::Node node) {
       node instanceof DataFlowPrivate::ArgumentNode
       or
-      TypeTrackerSpecific::basicStoreStep(node, _, _)
+      TypeTrackingInput::storeStep(node, _, _)
       or
       node = any(DataFlow::CallableNode callable).getAReturnNode()
       or
@@ -1228,10 +1196,8 @@ module API {
 
     cached
     predicate contentEdge(Node pred, DataFlow::Content content, Node succ) {
-      exists(
-        DataFlow::Node object, DataFlow::Node value, TypeTrackerSpecific::TypeTrackerContent c
-      |
-        TypeTrackerSpecific::basicLoadStep(object, value, c) and
+      exists(DataFlow::Node object, DataFlow::Node value, DataFlow::ContentSet c |
+        TypeTrackingInput::loadStep(object, value, c) and
         content = c.getAStoreContent() and
         not c.isSingleton(any(DataFlow::Content::AttributeNameContent k)) and
         // `x -> x.foo` with content "foo"
@@ -1239,7 +1205,7 @@ module API {
         succ = getForwardStartNode(value)
         or
         // Based on `object.c = value` generate `object -> value` with content `c`
-        TypeTrackerSpecific::basicStoreStep(value, object, c) and
+        TypeTrackingInput::storeStep(value, object, c) and
         content = c.getAStoreContent() and
         pred = getForwardOrBackwardEndNode(getALocalSourceStrict(object)) and
         succ = MkSinkNode(value)

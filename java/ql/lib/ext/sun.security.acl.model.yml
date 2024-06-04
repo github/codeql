@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.acl", "PrincipalImpl", False, "PrincipalImpl", "(String)", "", "Argument[0]", "credentials-username", "hq-generated"]

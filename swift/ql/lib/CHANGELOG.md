@@ -1,3 +1,163 @@
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.3.16
+
+No user-facing changes.
+
+## 0.3.15
+
+No user-facing changes.
+
+## 0.3.14
+
+No user-facing changes.
+
+## 0.3.13
+
+### Major Analysis Improvements
+
+* Upgraded to Swift 5.10
+* New AST node is extracted: `ThenStmt`
+
+## 0.3.12
+
+No user-facing changes.
+
+## 0.3.11
+
+No user-facing changes.
+
+## 0.3.10
+
+### Bug Fixes
+
+* Fixed an issue where `TypeDecl.getFullName` would get stuck in an loop and fail when minor database inconsistencies are present.
+
+## 0.3.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.3.8
+
+No user-facing changes.
+
+## 0.3.7
+
+### Minor Analysis Improvements
+
+* Swift upgraded to 5.9.2
+* The control flow graph library (`codeql.swift.controlflow`) has been transitioned to use the shared implementation from the `codeql/controlflow` qlpack. No result changes are expected due to this change.
+
+## 0.3.6
+
+### Minor Analysis Improvements
+
+* Expanded flow models for `UnsafePointer` and similar classes.
+* Added flow models for non-member `withUnsafePointer` and similar functions.
+* Added flow models for `withMemoryRebound`, `assumingMemoryBound` and `bindMemory` member functions of library pointer classes.
+* Added a sensitive data model for `SecKeyCopyExternalRepresentation`.
+* Added imprecise flow models for `append` and `insert` methods, and initializer calls with a `data` argument.
+* Tyes for patterns are now included in the database and made available through the `Pattern::getType()` method.
+
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+### Minor Analysis Improvements
+
+* Extracts Swift's `DiscardStmt` and `MaterizliePackExpr`
+* Expanded and improved flow models for `Set` and `Sequence`.
+* Added imprecise flow sources matching initializers such as `init(contentsOfFile:)`.
+* Extracts `MacroDecl` and some related information
+
+## 0.3.3
+
+### Major Analysis Improvements
+
+* Added Swift 5.9.1 support
+* New AST node is extracted: `SingleValueStmtExpr`
+
+### Minor Analysis Improvements
+
+* AST and types related to parameter packs are now extracted
+* Added taint flow models for the `NSString.enumerate*` methods.
+* Generalized the data flow model for subscript writes (`a[index] = b`) so that it applies to subscripts on all kinds of objects, not just arrays.
+* Fixed a bug where some flow sinks at field accesses were not being correctly identified.
+* Added indexed `getVariable` to `CaptureListExpr`, improving its AST printing and data flow.
+* Added flow models for `String` methods involving closures such as `String.withUTF8(_:)`.
+* AST and types related to move semantics (`copy`, `consume`, `_borrow`) are now extracted
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+* Added children of `UnspecifiedElement`, which will be present only in certain downgraded databases.
+* Collection content is now automatically read at taint flow sinks. This removes the need to define an `allowImplicitRead` predicate on data flow configurations where the sink might be an array, set or similar type with tainted contents. Where that step had not been defined, taint may find additional results now.
+* Added taint models for `StringProtocol.appendingFormat` and `String.decodeCString`.
+* Added taint flow models for members of `Substring`.
+* Added taint flow models for `RawRepresentable`.
+* The contents of autoclosure function parameters are now included in the control flow graph and data flow libraries.
+* Added models of `StringProtocol` and `NSString` methods that evaluate regular expressions.
+* Flow through 'open existential expressions', implicit expressions created by the compiler when a method is called on a protocol. This may apply, for example, when the method is a modelled taint source.
+
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Improved taint models for `Numeric` types and `RangeReplaceableCollection`s.
+* The nil-coalescing operator `??` is now supported by the CFG construction and dataflow libraries.
+* The data flow library now supports flow to the loop variable of for-in loops.
+* The methods `getIteratorVar` and `getNextCall` have been added to the `ForEachStmt` class.
+
+## 0.3.0
+
+### Deprecated APIs
+
+* The `ArrayContent` type in the data flow library has been deprecated and made an alias for the `CollectionContent` type, to better reflect the hierarchy of the Swift standard library. Uses of `ArrayElement` in model files will be interpreted as referring to `CollectionContent`.
+
+### Major Analysis Improvements
+
+* The predicates `getABaseType`, `getABaseTypeDecl`, `getADerivedType` and `getADerivedTypeDecl` on `Type` and `TypeDecl` now behave more usefully and consistently. They now explore through type aliases used in base class declarations, and include protocols added in extensions.
+
+To examine base class declarations at a low level without these enhancements, use `TypeDecl.getInheritedType`.
+
+`Type.getABaseType` (only) previously resolved a type alias it was called directly on. This behaviour no longer exists. To find any base type of a type that could be an alias, the construct `Type.getUnderlyingType().getABaseType*()` is recommended.
+
+### Minor Analysis Improvements
+
+* Modelled varargs function in `NSString` more accurately.
+* Modelled `CustomStringConvertible.description` and `CustomDebugStringConvertible.debugDescription`, replacing ad-hoc models of these properties on derived classes.
+* The regular expressions library now accepts a wider range of mode flags in a regular expression mode flag group (such as `(?u)`). The `(?w`) flag has been renamed from "UNICODE" to "UNICODEBOUNDARY", and the `(?u)` flag is called "UNICODE" in the libraries.
+* Renamed `TypeDecl.getBaseType/1` to `getInheritedType`.
+* Flow through writes via keypaths is now supported by the data flow library.
+* Added flow through variadic arguments, and the `getVaList` function.
+* Added flow steps through `Dictionary` keys and values.
+* Added taint models for `Numeric` conversions.
+
+### Bug Fixes
+
+* The regular expressions library no longer incorrectly matches mode flag characters against the input.
+
+## 0.2.5
+
+No user-facing changes.
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Flow through optional chaining and forced unwrapping in keypaths is now supported by the data flow library.
+* Added flow models of collection `.withContiguous[Mutable]StorageIfAvailable`, `.withUnsafe[Mutable]BufferPointer` and `.withUnsafe[Mutable]Bytes` methods.
+
 ## 0.2.3
 
 ### Major Analysis Improvements

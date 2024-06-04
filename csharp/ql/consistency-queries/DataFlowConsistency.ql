@@ -1,28 +1,24 @@
 import csharp
-import cil
+private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<CsharpDataFlow> {
+private module Input implements InputSig<Location, CsharpDataFlow> {
   private import CsharpDataFlow
 
-  predicate uniqueEnclosingCallableExclude(Node n) {
+  private predicate isStaticAssignable(Assignable a) { a.(Modifiable).isStatic() }
+
+  predicate uniqueEnclosingCallableExclude(Node node) {
     // TODO: Remove once static initializers are folded into the
     // static constructors
-    exists(ControlFlow::Node cfn |
-      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
-      cfn = n.getControlFlowNode()
-    )
+    isStaticAssignable(ControlFlowGraphImpl::getNodeCfgScope(node.getControlFlowNode()))
   }
 
   predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     // TODO: Remove once static initializers are folded into the
     // static constructors
-    exists(ControlFlow::Node cfn |
-      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
-      cfn = call.getControlFlowNode()
-    )
+    isStaticAssignable(ControlFlowGraphImpl::getNodeCfgScope(call.getControlFlowNode()))
   }
 
   predicate uniqueNodeLocationExclude(Node n) {
@@ -30,11 +26,8 @@ private module Input implements InputSig<CsharpDataFlow> {
     n instanceof ParameterNode
     or
     missingLocationExclude(n)
-  }
-
-  predicate missingLocationExclude(Node n) {
-    // Some CIL methods are missing locations
-    n.asParameter() instanceof CIL::Parameter
+    or
+    n instanceof FlowInsensitiveFieldNode
   }
 
   predicate postWithInFlowExclude(Node n) {
@@ -48,11 +41,7 @@ private module Input implements InputSig<CsharpDataFlow> {
     or
     not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or
-    n instanceof ImplicitCapturedArgumentNode
-    or
     n instanceof ParamsArgumentNode
-    or
-    n.asExpr() instanceof CIL::Expr
   }
 
   predicate postHasUniquePreExclude(PostUpdateNode n) {
@@ -72,11 +61,42 @@ private module Input implements InputSig<CsharpDataFlow> {
   }
 
   predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
+
+  predicate missingArgumentCallExclude(ArgumentNode arg) {
+    // TODO: Remove once object initializers are modeled properly
+    arg.(Private::PostUpdateNodes::ObjectInitializerNode).getInitializer() instanceof
+      ObjectInitializer
+    or
+    // TODO: Remove once underlying issue is fixed
+    exists(QualifiableExpr qe |
+      qe.isConditional() and
+      qe.getQualifier() = arg.asExpr()
+    )
+  }
+
+  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
+    isArgumentNode(arg, call, _) and
+    (
+      // TODO: Remove once object initializers are modeled properly
+      arg =
+        any(Private::PostUpdateNodes::ObjectInitializerNode init |
+          init.argumentOf(call, _) and
+          init.getInitializer().getNumberOfChildren() > 1
+        )
+      or
+      exists(ControlFlow::Nodes::ElementNode cfn, ControlFlow::Nodes::Split split |
+        exists(arg.asExprAtNode(cfn))
+      |
+        split = cfn.getASplit() and
+        not split = call.getControlFlowNode().getASplit()
+        or
+        split = call.getControlFlowNode().getASplit() and
+        not split = cfn.getASplit()
+      )
+      or
+      call.(NonDelegateDataFlowCall).getDispatchCall().isReflection()
+    )
+  }
 }
 
-import MakeConsistency<CsharpDataFlow, CsharpTaintTracking, Input>
-
-query predicate multipleToString(DataFlow::Node n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
-}
+import MakeConsistency<Location, CsharpDataFlow, CsharpTaintTracking, Input>

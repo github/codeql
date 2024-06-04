@@ -569,6 +569,10 @@
             <v>8439</v>
         </e>
         <e>
+            <k>@recordpatternexpr</k>
+            <v>50</v>
+        </e>
+        <e>
             <k>@localvar</k>
             <v>385272</v>
         </e>
@@ -9473,6 +9477,17 @@
             <columnsizes>
                 <e>
                     <k>id</k>
+                    <v>417</v>
+                </e>
+            </columnsizes>
+            <dependencies/>
+        </relation>
+        <relation>
+            <name>isCanonicalConstr</name>
+            <cardinality>417</cardinality>
+            <columnsizes>
+                <e>
+                    <k>constructorid</k>
                     <v>417</v>
                 </e>
             </columnsizes>
@@ -26946,6 +26961,17 @@
                 <e>
                     <k>id</k>
                     <v>15467</v>
+                </e>
+            </columnsizes>
+            <dependencies/>
+        </relation>
+        <relation>
+            <name>isNullDefaultCase</name>
+            <cardinality>50</cardinality>
+            <columnsizes>
+                <e>
+                    <k>id</k>
+                    <v>50</v>
                 </e>
             </columnsizes>
             <dependencies/>

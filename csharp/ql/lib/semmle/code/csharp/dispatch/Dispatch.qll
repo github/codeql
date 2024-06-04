@@ -50,6 +50,9 @@ class DispatchCall extends Internal::TDispatchCall {
   RuntimeCallable getADynamicTargetInCallContext(DispatchCall ctx) {
     result = Internal::getADynamicTargetInCallContext(this, ctx)
   }
+
+  /** Holds if this call uses reflection. */
+  predicate isReflection() { this instanceof Internal::TDispatchReflectionCall }
 }
 
 /** Internal implementation details. */

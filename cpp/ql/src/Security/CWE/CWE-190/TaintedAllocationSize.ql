@@ -26,7 +26,7 @@ import TaintedAllocationSize::PathGraph
  * taint sink.
  */
 predicate allocSink(HeuristicAllocationExpr alloc, DataFlow::Node sink) {
-  exists(Expr e | e = sink.asConvertedExpr() |
+  exists(Expr e | e = sink.asExpr() |
     e = alloc.getAChild() and
     e.getUnspecifiedType() instanceof IntegralType
   )

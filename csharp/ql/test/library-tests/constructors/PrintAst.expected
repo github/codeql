@@ -17,3 +17,33 @@ constructors.cs:
 #   16|             -1: [TypeMention] int
 #   16|             0: [LocalVariableAccess] access to local variable i
 #   16|             1: [IntLiteral] 0
+#   21| [NamespaceDeclaration] namespace ... { ... }
+#   23|   1: [Class] C1
+#   23|     4: [InstanceConstructor,PrimaryConstructor] C1
+#-----|       2: (Parameters)
+#   23|         0: [Parameter] o
+#   23|           -1: [TypeMention] object
+#   23|         1: [Parameter] s
+#   23|           -1: [TypeMention] string
+#   25|     5: [InstanceConstructor] C1
+#-----|       2: (Parameters)
+#   25|         0: [Parameter] o
+#   25|           -1: [TypeMention] object
+#   25|       3: [ConstructorInitializer] call to constructor C1
+#   25|         0: [ParameterAccess] access to parameter o
+#   25|         1: [StringLiteralUtf16] "default"
+#   25|       4: [BlockStmt] {...}
+#   28|   2: [Class] C2
+#-----|     3: (Base types)
+#   28|       0: [TypeMention] C1
+#   28|     4: [InstanceConstructor,PrimaryConstructor] C2
+#-----|       2: (Parameters)
+#   28|         0: [Parameter] o
+#   28|           -1: [TypeMention] object
+#   28|         1: [Parameter] s
+#   28|           -1: [TypeMention] string
+#   28|         2: [Parameter] i
+#   28|           -1: [TypeMention] int
+#   28|       3: [ConstructorInitializer] call to constructor C1
+#   28|         0: [ParameterAccess] access to parameter o
+#   28|         1: [ParameterAccess] access to parameter s

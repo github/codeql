@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+
+<qhelp>
+  <overview>
+    <p>Using untrusted input to allocate slices with the built-in <code>make</code> function could
+      lead to excessive memory allocation and potentially cause the program to crash due to running
+      out of memory. This vulnerability could be exploited to perform a denial-of-service attack by
+      consuming all available server resources.</p>
+  </overview>
+
+  <recommendation>
+    <p>Implement a maximum allowed value for size allocations with the built-in <code>make</code>
+      function to prevent excessively large allocations.</p>
+  </recommendation>
+
+  <example>
+    <p>In the following example snippet, the <code>n</code> parameter is user-controlled.</p>
+    <p>If the external user provides an excessively large value, the application allocates a slice
+      of size <code>n</code> without further verification, potentially exhausting all the available
+      memory.</p>
+
+    <sample src="UncontrolledAllocationSizeBad.go" />
+
+    <p>One way to prevent this vulnerability is by implementing a maximum allowed value for the
+      user-controlled input, as seen in the following example:</p>
+
+    <sample src="UncontrolledAllocationSizeGood.go" />
+  </example>
+
+  <references>
+    <li> OWASP: <a
+        href="https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html">Denial
+      of Service Cheat Sheet</a>
+    </li>
+  </references>
+</qhelp>

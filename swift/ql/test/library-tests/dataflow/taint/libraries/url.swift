@@ -154,16 +154,17 @@ struct URLResource {
 	let subdirectory: String?
 }
 
-struct URLRequest {
+struct URLRequest : CustomStringConvertible, CustomDebugStringConvertible {
 	enum CachePolicy { case none }
 	enum NetworkServiceType { case none }
 	enum Attribution { case none }
 	var cachePolicy: CachePolicy = .none
-	var httpMethod: String = ""
-	var url: URL = URL(string: "")!
-	var httpBody: Data = Data("")
+	var httpMethod: String? = ""
+	var url: URL? = URL(string: "")
+	var httpBody: Data? = Data("")
 	var httpBodyStream: InputStream? = nil
 	var mainDocument: URL = URL(string: "")!
+	var mainDocumentURL: URL? = URL(string: "")
 	var allHTTPHeaderFields: [String : String]? = nil
 	var timeoutInterval: TimeInterval = TimeInterval()
 	var httpShouldHandleCookies: Bool = false
@@ -204,7 +205,6 @@ func sink(data: Data) {}
 func sink(string: String) {}
 func sink(int: Int) {}
 func sink(any: Any) {}
-
 func taintThroughURL() {
 	let clean = "http://example.com/"
 	let tainted = source() as! String
@@ -287,7 +287,7 @@ func taintThroughURL() {
 	let _ = clean.withCString({
 		ptrClean in
 		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: nil))
-		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: urlTainted)) // $ MISSING: tainted=210
+		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
 	});
 	sink(arg: URL(fileURLWithFileSystemRepresentation: 0 as! UnsafePointer<Int8>, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
 	let _ = tainted.withCString({
@@ -436,14 +436,16 @@ func taintThroughUrlRequest() {
 	sink(any: tainted.cachePolicy)
 	sink(any: clean.httpMethod)
 	sink(any: tainted.httpMethod)
-	sink(any: clean.url)
-	sink(any: tainted.url) // $ tainted=431
-	sink(any: clean.httpBody)
-	sink(any: tainted.httpBody) // $ tainted=431
+	sink(any: clean.url!)
+	sink(any: tainted.url!) // $ tainted=431
+	sink(any: clean.httpBody!)
+	sink(any: tainted.httpBody!) // $ tainted=431
 	sink(any: clean.httpBodyStream!)
 	sink(any: tainted.httpBodyStream!) // $ tainted=431
 	sink(any: clean.mainDocument)
 	sink(any: tainted.mainDocument) // $ tainted=431
+	sink(any: clean.mainDocumentURL!)
+	sink(any: tainted.mainDocumentURL!) // $ tainted=431
 	sink(any: clean.allHTTPHeaderFields!)
 	sink(any: tainted.allHTTPHeaderFields!) // $ tainted=431
 	sink(any: clean.timeoutInterval)
@@ -463,9 +465,9 @@ func taintThroughUrlRequest() {
 	sink(any: clean.attribution)
 	sink(any: tainted.attribution)
 	sink(any: clean.description)
-	sink(any: tainted.description)
+	sink(any: tainted.description) // $ tainted=431
 	sink(any: clean.debugDescription)
-	sink(any: tainted.debugDescription)
+	sink(any: tainted.debugDescription) // $ tainted=431
 	sink(any: clean.customMirror)
 	sink(any: tainted.customMirror)
 	sink(any: clean.hashValue)
@@ -481,19 +483,19 @@ func taintThroughUrlResource() {
 	let tainted = source() as! URLResource
 
 	sink(string: clean.name)
-	sink(string: tainted.name) // $ tainted=481
+	sink(string: tainted.name) // $ tainted=483
 	sink(string: clean.subdirectory!)
-	sink(string: tainted.subdirectory!) // $ tainted=481
+	sink(string: tainted.subdirectory!) // $ tainted=483
 }
 
 func taintUrlAsync() async throws {
 	let tainted = source() as! String
 	let urlTainted = URL(string: tainted)!
 
-	sink(any: urlTainted.lines) // $ tainted=490
+	sink(any: urlTainted.lines) // $ tainted=492
 
 	for try await line in urlTainted.lines {
-		sink(string: line) // $ MISSING: tainted=490
+		sink(string: line) // $ MISSING: tainted=492
 	}
 }
 
@@ -510,5 +512,5 @@ func closureReturnValue() {
 		ptr in
 		return source() as! String
 	})
-	sink(string: r2) // $ tainted=511
+	sink(string: r2) // $ tainted=513
 }

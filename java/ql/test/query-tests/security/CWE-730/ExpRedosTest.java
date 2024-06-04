@@ -86,6 +86,9 @@ class ExpRedosTest {
         // NOT GOOD; attack: "\n".repeat(100) + "."
         "(?s)(.|\\n)*!", // $ hasExpRedos
 
+        // NOT GOOD; attack: "\n".repeat(100) + "."
+        "(?is)(.|\\n)*!", // $ hasExpRedos
+
         // GOOD
         "([\\w.]+)*",
 
@@ -120,7 +123,7 @@ class ExpRedosTest {
         "\"((?:\\\\[\\x00-\\x7f]|[^\\x00-\\x08\\x0a-\\x1f\\x7f\"])*)\"", // $ MISSING: hasExpRedos
 
         // GOOD
-        "\"((?:\\\\[\\x00-\\x7f]|[^\\x00-\\x08\\x0a-\\x1f\\x7f\"\\\\])*)\"", 
+        "\"((?:\\\\[\\x00-\\x7f]|[^\\x00-\\x08\\x0a-\\x1f\\x7f\"\\\\])*)\"",
 
         // NOT GOOD
         "(([a-z]|[d-h])*)\"", // $ hasExpRedos
@@ -428,7 +431,10 @@ class ExpRedosTest {
         "(a*)*b", // $ hasExpRedos
 
         // BAD - but not detected due to the way possessive quantifiers are approximated
-        "((aa|a*+)b)*c" // $ MISSING: hasExpRedos
+        "((aa|a*+)b)*c", // $ MISSING: hasExpRedos
+
+        // BAD - testing mode flag groups
+        "(?is)(a|aa?)*b" // $ hasExpRedos hasPrefixMsg= hasPump=a
     };
 
     void test() {

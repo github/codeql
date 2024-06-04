@@ -7,7 +7,7 @@ module CleartextStorageSharedPrefsTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasCleartextStorageSharedPrefs" and
-    exists(SensitiveSource data, SharedPreferencesEditorMethodAccess s, Expr input, Expr store |
+    exists(SensitiveSource data, SharedPreferencesEditorMethodCall s, Expr input, Expr store |
       input = s.getAnInput() and
       store = s.getAStore() and
       data.flowsTo(input)

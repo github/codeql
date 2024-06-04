@@ -9,11 +9,8 @@ using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp
 {
-    public class TracingAnalyser : Analyser, IDisposable
+    public class TracingAnalyser : Analyser
     {
-        private Entities.Compilation? compilationEntity;
-        private IDisposable? compilationTrapFile;
-
         private bool init;
 
         public TracingAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
@@ -41,32 +38,20 @@ namespace Semmle.Extraction.CSharp
         public void EndInitialize(
            CSharpCommandLineArguments commandLineArguments,
            CommonOptions options,
-           CSharpCompilation compilation)
+           CSharpCompilation compilation,
+           string cwd,
+           string[] args)
         {
             if (!init)
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
+            this.extractor = new TracingExtractor(cwd, args, GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
             LogDiagnostics();
 
             SetReferencePaths();
 
             CompilationErrors += FilteredDiagnostics.Count();
-        }
-
-        public override void Dispose()
-        {
-            compilationTrapFile?.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
-        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
-        /// </summary>
-        public void AnalyseCompilation()
-        {
-            extractionTasks.Add(() => DoAnalyseCompilation());
         }
 
         /// <summary>
@@ -84,8 +69,8 @@ namespace Semmle.Extraction.CSharp
             bool argsWritten;
             using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
             {
-                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !arg.StartsWith('@')))}");
-                argsWritten = roslynArgs.WriteCommandLine(streamWriter);
+                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !CommandLineExtensions.IsFileArgument(arg)))}");
+                argsWritten = streamWriter.WriteContentFromArgumentFile(roslynArgs);
             }
 
             var hash = FileUtils.ComputeFileHash(tempFile);
@@ -192,28 +177,6 @@ namespace Semmle.Extraction.CSharp
                     Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));
             }
         }
-
-        private void DoAnalyseCompilation()
-        {
-            try
-            {
-                var assemblyPath = ((TracingExtractor?)extractor).OutputPath;
-                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
-                var assembly = compilation.Assembly;
-                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
-                compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
-
-                compilationEntity = Entities.Compilation.Create(cx);
-            }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-            {
-                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
-            }
-        }
-
-        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
-
 #nullable restore warnings
     }
 }

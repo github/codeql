@@ -4,7 +4,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl as CfgImpl
-private import internal.Splitting
+private import internal.Splitting as Splitting
 private import internal.Completion
 
 /**
@@ -292,4 +292,11 @@ module SuccessorTypes {
   class ExitSuccessor extends SuccessorType, CfgImpl::TExitSuccessor {
     final override string toString() { result = "exit" }
   }
+}
+
+class Split = Splitting::Split;
+
+/** Provides different kinds of control flow graph splittings. */
+module Split {
+  class ConditionalCompletionSplit = Splitting::ConditionalCompletionSplit;
 }

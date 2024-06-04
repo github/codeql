@@ -11,6 +11,10 @@ on:
       - ql/ql/src/ql.dbscheme
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: read
+
 jobs:
   measure:
     env:
@@ -25,7 +29,7 @@ jobs:
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
@@ -49,8 +53,8 @@ jobs:
       - name: Create database
         run: |
           "${CODEQL}" database create \
-            --search-path "ql/extractor-pack" \
-            --threads 4 \
+          --search-path "${{ github.workspace }}"
+          --threads 4 \
             --language ql --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
         env:

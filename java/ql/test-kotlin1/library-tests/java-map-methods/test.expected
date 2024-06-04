@@ -1,0 +1,7 @@
+#select
+| Integer |
+| Iterable<? extends T> |
+| Object |
+| int |
+diagnostics
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Number.toChar in java.lang.Number |

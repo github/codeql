@@ -1,8 +1,24 @@
 private import codeql.swift.generated.decl.VarDecl
 private import codeql.swift.elements.decl.Decl
 
+// the following QLdoc is generated: if you need to edit it, do it in the schema file
 /**
- * A variable declaration.
+ * A declaration of a variable such as
+ * * a local variable in a function:
+ * ```
+ * func foo() {
+ *   var x = 42  // <-
+ *   let y = "hello"  // <-
+ *   ...
+ * }
+ * ```
+ * * a member of a `struct` or `class`:
+ * ```
+ * struct S {
+ *   var size : Int  // <-
+ * }
+ * ```
+ * * ...
  */
 class VarDecl extends Generated::VarDecl {
   override string toString() { result = this.getName() }

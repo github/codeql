@@ -35,7 +35,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
       branch = false and upper = true
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MethodAbs and
       ma.getArgument(0) = ssaRead(v, 0) and
       (
@@ -47,7 +47,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     )
     or
     // overflow test
-    exists(AddExpr add, RValue use, Expr pos |
+    exists(AddExpr add, VarRead use, Expr pos |
       use = ssaRead(v, 0) and
       add.hasOperands(use, pos) and
       positive(use) and
@@ -67,7 +67,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
   result.isEquality(ssaRead(v, 0), _, branch) and
   (upper = true or upper = false)
   or
-  exists(MethodAccess call, Method m, int ix |
+  exists(MethodCall call, Method m, int ix |
     call = result and
     call.getArgument(ix) = ssaRead(v, 0) and
     call.getMethod().getSourceDeclaration() = m and
@@ -112,7 +112,7 @@ predicate guardedLessThanSomething(Expr e) {
   or
   negative(e)
   or
-  e.(MethodAccess).getMethod() instanceof MethodMathMin
+  e.(MethodCall).getMethod() instanceof MethodMathMin
 }
 
 /**
@@ -127,7 +127,7 @@ predicate guardedGreaterThanSomething(Expr e) {
   or
   positive(e)
   or
-  e.(MethodAccess).getMethod() instanceof MethodMathMax
+  e.(MethodCall).getMethod() instanceof MethodMathMax
 }
 
 /** Holds if `e` occurs in a context where it will be upcast to a wider type. */

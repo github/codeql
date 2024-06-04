@@ -77,7 +77,11 @@ private predicate isUnlikelyExternalCall(API::MethodAccessNode node) {
 }
 
 private API::Node activeRecordConnectionInstance() {
-  result = activeRecordBaseClass().getReturn("connection")
+  result =
+    [
+      activeRecordBaseClass().getReturn("connection"),
+      activeRecordBaseClass().getInstance().getReturn("connection")
+    ]
 }
 
 /**
@@ -171,11 +175,16 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   call =
     activeRecordQueryBuilderCall([
         "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
-        "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-        "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where", "rewhere",
-        "select", "reselect", "update_all"
+        "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "having",
+        "lock", "not", "where", "rewhere"
       ]) and
   sink = call.getArgument(0)
+  or
+  call =
+    activeRecordQueryBuilderCall([
+        "from", "group", "joins", "order", "reorder", "pluck", "select", "reselect"
+      ]) and
+  sink = call.getArgument(_)
   or
   call = activeRecordQueryBuilderCall("calculate") and
   sink = call.getArgument(1)
@@ -186,7 +195,14 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   or
   // This format was supported until Rails 2.3.8
   call = activeRecordQueryBuilderCall(["all", "find", "first", "last"]) and
-  sink = call.getKeywordArgument("conditions")
+  exists(DataFlow::LocalSourceNode sn |
+    sn = call.getKeywordArgument("conditions").getALocalSource()
+  |
+    sink = sn.(DataFlow::ArrayLiteralNode).getElement(0)
+    or
+    sn.(DataFlow::LiteralNode).asLiteralAstNode() instanceof StringlikeLiteral and
+    sink = sn
+  )
   or
   call = activeRecordQueryBuilderCall("reload") and
   sink = call.getKeywordArgument("lock")
@@ -196,16 +212,33 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   call = activeRecordQueryBuilderCall("annotate") and
   sink = call.getArgument(_)
   or
-  call = activeRecordConnectionInstance().getAMethodCall("execute") and
+  call =
+    activeRecordConnectionInstance()
+        .getAMethodCall([
+            "create", "delete", "exec_query", "exec_delete", "exec_insert", "exec_update",
+            "execute", "insert", "select_all", "select_one", "select_rows", "select_value",
+            "select_values", "update"
+          ]) and
   sink = call.getArgument(0)
+  or
+  call = activeRecordQueryBuilderCall("update_all") and
+  (
+    // `update_all([sink, var1, var2, var3])`
+    sink = call.getArgument(0).getALocalSource().(DataFlow::ArrayLiteralNode).getElement(0)
+    or
+    // or arg0 is not of a known "safe" type
+    sink = call.getArgument(0) and
+    not (
+      sink.getALocalSource() = any(DataFlow::ArrayLiteralNode arr) or
+      sink.getALocalSource() = any(DataFlow::HashLiteralNode hash) or
+      sink.getALocalSource() = any(DataFlow::PairNode pair)
+    )
+  )
 }
 
 private predicate sqlFragmentArgument(DataFlow::CallNode call, DataFlow::Node sink) {
-  exists(DataFlow::Node arg |
-    sqlFragmentArgumentInner(call, arg) and
-    sink = [arg, arg.(DataFlow::ArrayLiteralNode).getElement(0)] and
-    unsafeSqlExpr(sink.asExpr().getExpr())
-  )
+  sqlFragmentArgumentInner(call, sink) and
+  unsafeSqlExpr(sink.asExpr().getExpr())
 }
 
 // An expression that, if tainted by unsanitized input, should not be used as
@@ -737,5 +770,65 @@ private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecord
 {
   override ActiveRecordModelClass getClass() {
     result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
+  }
+}
+
+/**
+ * An additional call step for calls to ActiveRecord scopes. For example, in the following code:
+ *
+ * ```rb
+ * class User < ActiveRecord::Base
+ *   scope :with_role, ->(role) { where(role: role) }
+ * end
+ *
+ * User.with_role(r)
+ * ```
+ *
+ * the call to `with_role` targets the lambda, and argument `r` flows to the parameter `role`.
+ */
+class ActiveRecordScopeCallTarget extends AdditionalCallTarget {
+  override DataFlowCallable viableTarget(ExprNodes::CallCfgNode scopeCall) {
+    exists(DataFlow::ModuleNode model, string scopeName |
+      model = activeRecordBaseClass().getADescendentModule() and
+      exists(DataFlow::CallNode scope |
+        scope = model.getAModuleLevelCall("scope") and
+        scope.getArgument(0).getConstantValue().isStringlikeValue(scopeName) and
+        scope.getArgument(1).asCallable().asCallableAstNode() = result.asCfgScope()
+      ) and
+      scopeCall = model.getAnImmediateReference().getAMethodCall(scopeName).asExpr()
+    )
+  }
+}
+
+/** Sinks for the mass assignment query. */
+private module MassAssignmentSinks {
+  private import codeql.ruby.security.MassAssignmentCustomizations
+
+  pragma[nomagic]
+  private predicate massAssignmentCall(DataFlow::CallNode call, string name) {
+    call = activeRecordBaseClass().getAMethodCall(name)
+    or
+    call instanceof ActiveRecordInstanceMethodCall and
+    call.getMethodName() = name
+  }
+
+  /** A call to a method that sets attributes of an database record using a hash. */
+  private class MassAssignmentSink extends MassAssignment::Sink {
+    MassAssignmentSink() {
+      exists(DataFlow::CallNode call, string name | massAssignmentCall(call, name) |
+        name =
+          [
+            "build", "create", "create!", "create_with", "create_or_find_by", "create_or_find_by!",
+            "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "insert", "insert!",
+            "insert_all", "insert_all!", "instantiate", "new", "update", "update!", "upsert",
+            "upsert_all"
+          ] and
+        this = call.getArgument(0)
+        or
+        // These methods have an optional first id parameter.
+        name = ["update", "update!"] and
+        this = call.getArgument(1)
+      )
+    }
   }
 }

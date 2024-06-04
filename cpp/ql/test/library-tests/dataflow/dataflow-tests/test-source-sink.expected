@@ -1,0 +1,320 @@
+WARNING: Module DataFlow has been deprecated and may be removed in future (test-source-sink.ql:3,25-42)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test-source-sink.ql:3,57-74)
+astFlow
+| BarrierGuard.cpp:5:19:5:24 | source | BarrierGuard.cpp:9:10:9:15 | source |
+| BarrierGuard.cpp:13:17:13:22 | source | BarrierGuard.cpp:15:10:15:15 | source |
+| BarrierGuard.cpp:21:17:21:22 | source | BarrierGuard.cpp:25:10:25:15 | source |
+| BarrierGuard.cpp:29:16:29:21 | source | BarrierGuard.cpp:31:10:31:15 | source |
+| BarrierGuard.cpp:29:16:29:21 | source | BarrierGuard.cpp:33:10:33:15 | source |
+| BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:51:13:51:13 | x |
+| BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:53:13:53:13 | x |
+| BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:55:13:55:13 | x |
+| BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:62:14:62:14 | x |
+| BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
+| BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
+| clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
+| clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:22:8:22:20 | & ... |
+| clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:23:17:23:29 | & ... |
+| clang.cpp:29:27:29:32 | call to source | clang.cpp:30:27:30:28 | m1 |
+| clang.cpp:29:27:29:32 | call to source | clang.cpp:31:27:31:34 | call to getFirst |
+| clang.cpp:35:32:35:37 | call to source | clang.cpp:38:10:38:11 | m2 |
+| clang.cpp:44:35:44:40 | call to source | clang.cpp:46:17:46:18 | m2 |
+| clang.cpp:51:19:51:24 | call to source | clang.cpp:52:8:52:17 | stackArray |
+| clang.cpp:51:19:51:24 | call to source | clang.cpp:53:17:53:26 | stackArray |
+| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:35:16:35:25 | call to notSource1 |
+| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:43:15:43:24 | call to notSource1 |
+| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:36:16:36:25 | call to notSource2 |
+| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:44:15:44:24 | call to notSource2 |
+| dispatch.cpp:37:19:37:24 | call to source | dispatch.cpp:11:38:11:38 | x |
+| dispatch.cpp:45:18:45:23 | call to source | dispatch.cpp:11:38:11:38 | x |
+| flowOut.cpp:44:7:44:7 | x | flowOut.cpp:46:8:46:11 | access to array |
+| flowOut.cpp:59:7:59:7 | x | flowOut.cpp:61:8:61:11 | access to array |
+| globals.cpp:5:17:5:22 | call to source | globals.cpp:6:10:6:14 | local |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:14:3:14:6 | t |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:18:8:18:8 | call to operator() |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:21:3:21:6 | t |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:29:3:29:6 | t |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:35:8:35:8 | a |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:41:8:41:8 | a |
+| lambdas.cpp:43:7:43:12 | call to source | lambdas.cpp:46:7:46:7 | w |
+| ref.cpp:29:11:29:16 | call to source | ref.cpp:62:10:62:11 | x3 |
+| ref.cpp:53:9:53:10 | x1 | ref.cpp:56:10:56:11 | x1 |
+| ref.cpp:53:13:53:14 | x2 | ref.cpp:59:10:59:11 | x2 |
+| ref.cpp:53:17:53:18 | x3 | ref.cpp:62:10:62:11 | x3 |
+| ref.cpp:53:21:53:22 | x4 | ref.cpp:65:10:65:11 | x4 |
+| ref.cpp:55:23:55:28 | call to source | ref.cpp:56:10:56:11 | x1 |
+| ref.cpp:94:15:94:20 | call to source | ref.cpp:129:13:129:15 | val |
+| ref.cpp:109:15:109:20 | call to source | ref.cpp:132:13:132:15 | val |
+| ref.cpp:122:23:122:28 | call to source | ref.cpp:123:13:123:15 | val |
+| ref.cpp:125:19:125:24 | call to source | ref.cpp:126:13:126:15 | val |
+| self-Iterator.cpp:19:23:19:28 | call to source | self-Iterator.cpp:20:10:20:10 | x |
+| test.cpp:6:12:6:17 | call to source | test.cpp:7:8:7:9 | t1 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:9:8:9:9 | t1 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:10:8:10:9 | t2 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:15:8:15:9 | t2 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:26:8:26:9 | t1 |
+| test.cpp:35:10:35:15 | call to source | test.cpp:30:8:30:8 | t |
+| test.cpp:36:13:36:18 | call to source | test.cpp:31:8:31:8 | c |
+| test.cpp:50:14:50:19 | call to source | test.cpp:58:10:58:10 | t |
+| test.cpp:66:30:66:36 | source1 | test.cpp:71:8:71:9 | x4 |
+| test.cpp:75:7:75:8 | u1 | test.cpp:76:8:76:9 | u1 |
+| test.cpp:83:7:83:8 | u2 | test.cpp:84:8:84:18 | ... ? ... : ... |
+| test.cpp:83:7:83:8 | u2 | test.cpp:86:8:86:9 | i1 |
+| test.cpp:89:28:89:34 | source1 | test.cpp:90:8:90:14 | source1 |
+| test.cpp:100:13:100:18 | call to source | test.cpp:103:10:103:12 | ref |
+| test.cpp:138:27:138:32 | call to source | test.cpp:140:8:140:8 | y |
+| test.cpp:151:33:151:38 | call to source | test.cpp:144:8:144:8 | s |
+| test.cpp:151:33:151:38 | call to source | test.cpp:152:8:152:8 | y |
+| test.cpp:164:34:164:39 | call to source | test.cpp:157:8:157:8 | x |
+| test.cpp:164:34:164:39 | call to source | test.cpp:165:8:165:8 | y |
+| test.cpp:171:11:171:16 | call to source | test.cpp:178:8:178:8 | y |
+| test.cpp:245:14:245:19 | call to source | test.cpp:260:12:260:12 | x |
+| test.cpp:265:22:265:27 | call to source | test.cpp:266:12:266:12 | x |
+| test.cpp:305:17:305:22 | call to source | test.cpp:289:14:289:14 | x |
+| test.cpp:314:4:314:9 | call to source | test.cpp:318:7:318:7 | x |
+| test.cpp:347:17:347:22 | call to source | test.cpp:349:10:349:18 | globalVar |
+| test.cpp:359:13:359:18 | call to source | test.cpp:365:10:365:14 | field |
+| test.cpp:373:13:373:18 | call to source | test.cpp:369:10:369:14 | field |
+| test.cpp:373:13:373:18 | call to source | test.cpp:375:10:375:14 | field |
+| test.cpp:382:48:382:54 | source1 | test.cpp:385:8:385:10 | tmp |
+| test.cpp:388:53:388:59 | source1 | test.cpp:392:8:392:10 | tmp |
+| test.cpp:388:53:388:59 | source1 | test.cpp:394:10:394:12 | tmp |
+| test.cpp:399:7:399:9 | tmp | test.cpp:401:8:401:10 | tmp |
+| test.cpp:405:7:405:9 | tmp | test.cpp:408:8:408:10 | tmp |
+| test.cpp:416:7:416:11 | local | test.cpp:418:8:418:12 | local |
+| test.cpp:417:16:417:20 | ref arg local | test.cpp:418:8:418:12 | local |
+| test.cpp:422:7:422:11 | local | test.cpp:424:8:424:12 | local |
+| test.cpp:423:20:423:25 | ref arg & ... | test.cpp:424:8:424:12 | local |
+| test.cpp:433:7:433:11 | local | test.cpp:435:8:435:12 | local |
+| test.cpp:433:7:433:11 | local | test.cpp:436:8:436:13 | * ... |
+| test.cpp:434:20:434:24 | ref arg local | test.cpp:435:8:435:12 | local |
+| test.cpp:434:20:434:24 | ref arg local | test.cpp:436:8:436:13 | * ... |
+| test.cpp:440:7:440:11 | local | test.cpp:442:8:442:12 | local |
+| test.cpp:441:18:441:23 | ref arg & ... | test.cpp:442:8:442:12 | local |
+| test.cpp:448:7:448:11 | local | test.cpp:450:8:450:12 | local |
+| test.cpp:448:7:448:11 | local | test.cpp:451:8:451:13 | * ... |
+| test.cpp:449:18:449:22 | ref arg local | test.cpp:450:8:450:12 | local |
+| test.cpp:449:18:449:22 | ref arg local | test.cpp:451:8:451:13 | * ... |
+| test.cpp:456:26:456:32 | source1 | test.cpp:457:9:457:22 | (statement expression) |
+| test.cpp:456:26:456:32 | source1 | test.cpp:468:8:468:12 | local |
+| test.cpp:472:8:472:13 | call to source | test.cpp:478:8:478:8 | x |
+| test.cpp:506:8:506:13 | call to source | test.cpp:513:8:513:8 | x |
+| test.cpp:517:7:517:16 | stackArray | test.cpp:521:8:521:20 | access to array |
+| test.cpp:519:19:519:24 | call to source | test.cpp:521:8:521:20 | access to array |
+| test.cpp:551:9:551:9 | y | test.cpp:541:10:541:10 | y |
+| test.cpp:583:11:583:16 | call to source | test.cpp:590:8:590:8 | x |
+| test.cpp:628:20:628:25 | ref arg buffer | test.cpp:629:17:629:22 | buffer |
+| test.cpp:633:18:633:23 | call to source | test.cpp:634:8:634:8 | x |
+| test.cpp:702:38:702:43 | source | test.cpp:695:8:695:10 | buf |
+| test.cpp:726:11:726:16 | call to source | test.cpp:735:8:735:8 | x |
+| test.cpp:733:7:733:7 | x | test.cpp:735:8:735:8 | x |
+| test.cpp:749:27:749:32 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:751:27:751:32 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:753:32:753:37 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:755:32:755:37 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:769:27:769:32 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:771:27:771:32 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:773:32:773:37 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:775:32:775:37 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:788:31:788:36 | call to source | test.cpp:782:12:782:12 | x |
+| test.cpp:790:31:790:36 | call to source | test.cpp:782:12:782:12 | x |
+| test.cpp:797:22:797:28 | ref arg content | test.cpp:798:19:798:25 | content |
+| test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
+| test.cpp:846:13:846:27 | call to indirect_source | test.cpp:848:23:848:25 | rpx |
+| test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
+| test.cpp:1050:12:1050:12 | a | test.cpp:1052:8:1052:9 | & ... |
+| true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
+| true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
+| true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
+| true_upon_entry.cpp:43:11:43:16 | call to source | true_upon_entry.cpp:49:8:49:8 | x |
+| true_upon_entry.cpp:54:11:54:16 | call to source | true_upon_entry.cpp:57:8:57:8 | x |
+| true_upon_entry.cpp:70:11:70:16 | call to source | true_upon_entry.cpp:78:8:78:8 | x |
+| true_upon_entry.cpp:83:11:83:16 | call to source | true_upon_entry.cpp:86:8:86:8 | x |
+irFlow
+| BarrierGuard.cpp:5:19:5:24 | source | BarrierGuard.cpp:9:10:9:15 | source |
+| BarrierGuard.cpp:13:17:13:22 | source | BarrierGuard.cpp:15:10:15:15 | source |
+| BarrierGuard.cpp:21:17:21:22 | source | BarrierGuard.cpp:25:10:25:15 | source |
+| BarrierGuard.cpp:29:16:29:21 | source | BarrierGuard.cpp:31:10:31:15 | source |
+| BarrierGuard.cpp:29:16:29:21 | source | BarrierGuard.cpp:33:10:33:15 | source |
+| BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:53:13:53:13 | x |
+| BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:55:13:55:13 | x |
+| BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
+| BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
+| clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
+| clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:23:17:23:29 | *& ... |
+| clang.cpp:29:27:29:32 | call to source | clang.cpp:30:27:30:28 | m1 |
+| clang.cpp:29:27:29:32 | call to source | clang.cpp:31:27:31:34 | call to getFirst |
+| clang.cpp:35:32:35:37 | call to source | clang.cpp:38:10:38:11 | m2 |
+| clang.cpp:40:42:40:47 | call to source | clang.cpp:42:18:42:19 | m2 |
+| clang.cpp:44:35:44:40 | call to source | clang.cpp:46:17:46:18 | m2 |
+| clang.cpp:50:7:50:16 | definition of stackArray | clang.cpp:52:8:52:17 | stackArray |
+| clang.cpp:50:25:50:30 | call to source | clang.cpp:53:17:53:26 | *stackArray |
+| clang.cpp:50:35:50:40 | call to source | clang.cpp:53:17:53:26 | *stackArray |
+| clang.cpp:51:19:51:24 | call to source | clang.cpp:53:17:53:26 | *stackArray |
+| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:35:16:35:25 | call to notSource1 |
+| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:43:15:43:24 | call to notSource1 |
+| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:36:16:36:25 | call to notSource2 |
+| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:44:15:44:24 | call to notSource2 |
+| dispatch.cpp:16:37:16:42 | call to source | dispatch.cpp:32:16:32:24 | call to isSource2 |
+| dispatch.cpp:16:37:16:42 | call to source | dispatch.cpp:40:15:40:23 | call to isSource2 |
+| dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:31:16:31:24 | call to isSource1 |
+| dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:39:15:39:23 | call to isSource1 |
+| dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:55:22:55:30 | call to isSource1 |
+| dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:58:28:58:36 | call to isSource1 |
+| dispatch.cpp:33:18:33:23 | call to source | dispatch.cpp:23:38:23:38 | x |
+| dispatch.cpp:37:19:37:24 | call to source | dispatch.cpp:11:38:11:38 | x |
+| dispatch.cpp:41:17:41:22 | call to source | dispatch.cpp:23:38:23:38 | x |
+| dispatch.cpp:45:18:45:23 | call to source | dispatch.cpp:11:38:11:38 | x |
+| dispatch.cpp:69:15:69:20 | call to source | dispatch.cpp:23:38:23:38 | x |
+| dispatch.cpp:73:14:73:19 | call to source | dispatch.cpp:23:38:23:38 | x |
+| dispatch.cpp:81:13:81:18 | call to source | dispatch.cpp:23:38:23:38 | x |
+| dispatch.cpp:107:17:107:22 | call to source | dispatch.cpp:96:8:96:8 | x |
+| dispatch.cpp:140:8:140:13 | call to source | dispatch.cpp:96:8:96:8 | x |
+| dispatch.cpp:144:8:144:13 | call to source | dispatch.cpp:96:8:96:8 | x |
+| flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:31:9:31:9 | x |
+| flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:61:8:61:11 | access to array |
+| flowOut.cpp:84:18:84:23 | call to source | flowOut.cpp:85:8:85:9 | * ... |
+| flowOut.cpp:90:8:90:13 | call to source | flowOut.cpp:102:8:102:9 | * ... |
+| flowOut.cpp:131:15:131:20 | call to source | flowOut.cpp:161:8:161:10 | * ... |
+| flowOut.cpp:131:15:131:20 | call to source | flowOut.cpp:202:8:202:10 | * ... |
+| flowOut.cpp:168:14:168:19 | call to source | flowOut.cpp:185:8:185:9 | * ... |
+| globals.cpp:5:17:5:22 | call to source | globals.cpp:6:10:6:14 | local |
+| globals.cpp:13:23:13:28 | call to source | globals.cpp:12:10:12:24 | flowTestGlobal1 |
+| globals.cpp:23:23:23:28 | call to source | globals.cpp:19:10:19:24 | flowTestGlobal2 |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:14:8:14:8 | t |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:18:8:18:8 | call to operator() |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:21:8:21:8 | t |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:29:8:29:8 | t |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:35:8:35:8 | a |
+| lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:41:8:41:8 | a |
+| lambdas.cpp:43:7:43:12 | call to source | lambdas.cpp:46:7:46:7 | w |
+| ref.cpp:29:11:29:16 | call to source | ref.cpp:62:10:62:11 | x3 |
+| ref.cpp:53:9:53:10 | definition of x1 | ref.cpp:56:10:56:11 | x1 |
+| ref.cpp:53:13:53:14 | definition of x2 | ref.cpp:59:10:59:11 | x2 |
+| ref.cpp:53:17:53:18 | definition of x3 | ref.cpp:62:10:62:11 | x3 |
+| ref.cpp:53:21:53:22 | definition of x4 | ref.cpp:65:10:65:11 | x4 |
+| ref.cpp:55:23:55:28 | call to source | ref.cpp:56:10:56:11 | x1 |
+| ref.cpp:94:15:94:20 | call to source | ref.cpp:129:13:129:15 | val |
+| ref.cpp:109:15:109:20 | call to source | ref.cpp:132:13:132:15 | val |
+| ref.cpp:122:23:122:28 | call to source | ref.cpp:123:13:123:15 | val |
+| ref.cpp:125:19:125:24 | call to source | ref.cpp:126:13:126:15 | val |
+| self-Iterator.cpp:19:23:19:30 | call to source | self-Iterator.cpp:20:10:20:10 | x |
+| test.cpp:6:12:6:17 | call to source | test.cpp:7:8:7:9 | t1 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:9:8:9:9 | t1 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:10:8:10:9 | t2 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:15:8:15:9 | t2 |
+| test.cpp:6:12:6:17 | call to source | test.cpp:26:8:26:9 | t1 |
+| test.cpp:35:10:35:15 | call to source | test.cpp:30:8:30:8 | t |
+| test.cpp:36:13:36:18 | call to source | test.cpp:31:8:31:8 | c |
+| test.cpp:50:14:50:19 | call to source | test.cpp:58:10:58:10 | t |
+| test.cpp:66:30:66:36 | source1 | test.cpp:71:8:71:9 | x4 |
+| test.cpp:75:7:75:8 | definition of u1 | test.cpp:76:8:76:9 | u1 |
+| test.cpp:83:7:83:8 | definition of u2 | test.cpp:84:8:84:18 | ... ? ... : ... |
+| test.cpp:83:7:83:8 | definition of u2 | test.cpp:86:8:86:9 | i1 |
+| test.cpp:89:28:89:34 | *source1 | test.cpp:90:8:90:14 | source1 |
+| test.cpp:100:13:100:18 | call to source | test.cpp:103:10:103:12 | ref |
+| test.cpp:138:27:138:32 | call to source | test.cpp:140:8:140:8 | y |
+| test.cpp:151:33:151:38 | call to source | test.cpp:144:8:144:8 | s |
+| test.cpp:151:33:151:38 | call to source | test.cpp:152:8:152:8 | y |
+| test.cpp:164:34:164:39 | call to source | test.cpp:157:8:157:8 | x |
+| test.cpp:164:34:164:39 | call to source | test.cpp:165:8:165:8 | y |
+| test.cpp:171:11:171:16 | call to source | test.cpp:178:8:178:8 | y |
+| test.cpp:245:14:245:19 | call to source | test.cpp:260:12:260:12 | x |
+| test.cpp:265:22:265:27 | call to source | test.cpp:266:12:266:12 | x |
+| test.cpp:305:17:305:22 | call to source | test.cpp:289:14:289:14 | x |
+| test.cpp:314:4:314:9 | call to source | test.cpp:318:7:318:7 | x |
+| test.cpp:333:17:333:22 | call to source | test.cpp:337:10:337:18 | globalVar |
+| test.cpp:333:17:333:22 | call to source | test.cpp:339:10:339:18 | globalVar |
+| test.cpp:333:17:333:22 | call to source | test.cpp:343:10:343:18 | globalVar |
+| test.cpp:347:17:347:22 | call to source | test.cpp:337:10:337:18 | globalVar |
+| test.cpp:347:17:347:22 | call to source | test.cpp:339:10:339:18 | globalVar |
+| test.cpp:347:17:347:22 | call to source | test.cpp:343:10:343:18 | globalVar |
+| test.cpp:347:17:347:22 | call to source | test.cpp:349:10:349:18 | globalVar |
+| test.cpp:359:13:359:18 | call to source | test.cpp:365:10:365:14 | field |
+| test.cpp:373:13:373:18 | call to source | test.cpp:369:10:369:14 | field |
+| test.cpp:373:13:373:18 | call to source | test.cpp:375:10:375:14 | field |
+| test.cpp:382:48:382:54 | source1 | test.cpp:385:8:385:10 | tmp |
+| test.cpp:388:53:388:59 | source1 | test.cpp:392:8:392:10 | tmp |
+| test.cpp:388:53:388:59 | source1 | test.cpp:394:10:394:12 | tmp |
+| test.cpp:416:7:416:11 | definition of local | test.cpp:418:8:418:12 | local |
+| test.cpp:417:16:417:20 | intRefSource output argument | test.cpp:418:8:418:12 | local |
+| test.cpp:422:7:422:11 | definition of local | test.cpp:424:8:424:12 | local |
+| test.cpp:423:20:423:25 | intPointerSource output argument | test.cpp:424:8:424:12 | local |
+| test.cpp:433:7:433:11 | definition of local | test.cpp:435:8:435:12 | local |
+| test.cpp:434:20:434:24 | intPointerSource output argument | test.cpp:436:8:436:13 | * ... |
+| test.cpp:440:7:440:11 | definition of local | test.cpp:442:8:442:12 | local |
+| test.cpp:441:18:441:23 | intArraySource output argument | test.cpp:442:8:442:12 | local |
+| test.cpp:448:7:448:11 | definition of local | test.cpp:450:8:450:12 | local |
+| test.cpp:449:18:449:22 | intArraySource output argument | test.cpp:451:8:451:13 | * ... |
+| test.cpp:456:26:456:32 | source1 | test.cpp:457:9:457:22 | (statement expression) |
+| test.cpp:456:26:456:32 | source1 | test.cpp:468:8:468:12 | local |
+| test.cpp:472:8:472:13 | call to source | test.cpp:478:8:478:8 | x |
+| test.cpp:506:8:506:13 | call to source | test.cpp:513:8:513:8 | x |
+| test.cpp:519:19:519:24 | call to source | test.cpp:521:8:521:20 | access to array |
+| test.cpp:531:29:531:34 | call to source | test.cpp:532:8:532:9 | * ... |
+| test.cpp:547:9:547:9 | definition of x | test.cpp:536:10:536:11 | * ... |
+| test.cpp:551:9:551:9 | definition of y | test.cpp:541:10:541:10 | y |
+| test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:566:10:566:19 | * ... |
+| test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
+| test.cpp:562:17:562:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |
+| test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:566:10:566:19 | * ... |
+| test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
+| test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |
+| test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:578:10:578:19 | * ... |
+| test.cpp:583:11:583:16 | call to source | test.cpp:590:8:590:8 | x |
+| test.cpp:594:12:594:26 | *call to indirect_source | test.cpp:597:8:597:13 | * ... |
+| test.cpp:601:20:601:20 | intPointerSource output argument | test.cpp:603:8:603:9 | * ... |
+| test.cpp:607:20:607:20 | intPointerSource output argument | test.cpp:609:8:609:9 | * ... |
+| test.cpp:614:20:614:20 | intPointerSource output argument | test.cpp:616:8:616:17 | * ... |
+| test.cpp:628:20:628:25 | intPointerSource output argument | test.cpp:629:17:629:22 | *buffer |
+| test.cpp:633:18:633:23 | call to source | test.cpp:634:8:634:8 | x |
+| test.cpp:646:7:646:12 | call to source | test.cpp:645:8:645:8 | x |
+| test.cpp:660:7:660:12 | call to source | test.cpp:658:8:658:8 | x |
+| test.cpp:664:18:664:23 | call to source | test.cpp:666:8:666:16 | * ... |
+| test.cpp:681:7:681:12 | call to source | test.cpp:679:8:679:16 | * ... |
+| test.cpp:733:7:733:7 | definition of x | test.cpp:735:8:735:8 | x |
+| test.cpp:751:27:751:32 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:753:32:753:37 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:755:32:755:37 | call to source | test.cpp:740:10:740:10 | x |
+| test.cpp:771:27:771:32 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:773:32:773:37 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:775:32:775:37 | call to source | test.cpp:760:10:760:10 | x |
+| test.cpp:788:31:788:36 | call to source | test.cpp:782:12:782:12 | x |
+| test.cpp:790:31:790:36 | call to source | test.cpp:782:12:782:12 | x |
+| test.cpp:797:22:797:28 | intPointerSource output argument | test.cpp:798:19:798:25 | *content |
+| test.cpp:808:25:808:39 | *call to indirect_source | test.cpp:813:19:813:35 | ** ... |
+| test.cpp:818:26:818:31 | call to source | test.cpp:823:10:823:27 | * ... |
+| test.cpp:832:21:832:26 | call to source | test.cpp:836:10:836:22 | global_direct |
+| test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
+| test.cpp:846:13:846:27 | *call to indirect_source | test.cpp:848:17:848:25 | *rpx |
+| test.cpp:853:55:853:62 | call to source | test.cpp:854:10:854:36 | * ... |
+| test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
+| test.cpp:872:46:872:51 | call to source | test.cpp:875:10:875:31 | global_pointer_dynamic |
+| test.cpp:880:64:880:83 | indirect_source(1) | test.cpp:883:10:883:45 | static_local_array_static_indirect_1 |
+| test.cpp:881:64:881:83 | *indirect_source(2) | test.cpp:886:19:886:54 | *static_local_array_static_indirect_2 |
+| test.cpp:890:54:890:61 | source | test.cpp:893:10:893:36 | static_local_pointer_static |
+| test.cpp:891:65:891:84 | *indirect_source(1) | test.cpp:895:19:895:56 | *static_local_pointer_static_indirect_1 |
+| test.cpp:901:56:901:75 | indirect_source(1) | test.cpp:907:10:907:39 | global_array_static_indirect_1 |
+| test.cpp:902:56:902:75 | *indirect_source(2) | test.cpp:911:19:911:48 | *global_array_static_indirect_2 |
+| test.cpp:914:46:914:53 | source | test.cpp:919:10:919:30 | global_pointer_static |
+| test.cpp:915:57:915:76 | *indirect_source(1) | test.cpp:921:19:921:50 | *global_pointer_static_indirect_1 |
+| test.cpp:932:23:932:28 | call to source | test.cpp:937:10:937:24 | * ... |
+| test.cpp:958:18:958:32 | *call to indirect_source | test.cpp:961:19:961:28 | *translated |
+| test.cpp:973:18:973:32 | *call to indirect_source | test.cpp:977:19:977:28 | *translated |
+| test.cpp:994:18:994:32 | *call to indirect_source | test.cpp:999:19:999:28 | *translated |
+| test.cpp:994:18:994:32 | *call to indirect_source | test.cpp:1003:19:1003:28 | *translated |
+| test.cpp:1021:18:1021:32 | *call to indirect_source | test.cpp:1027:19:1027:28 | *translated |
+| test.cpp:1021:18:1021:32 | *call to indirect_source | test.cpp:1031:19:1031:28 | *translated |
+| test.cpp:1045:14:1045:19 | call to source | test.cpp:1046:7:1046:10 | * ... |
+| true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
+| true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
+| true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
+| true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
+| true_upon_entry.cpp:43:11:43:16 | call to source | true_upon_entry.cpp:49:8:49:8 | x |
+| true_upon_entry.cpp:54:11:54:16 | call to source | true_upon_entry.cpp:57:8:57:8 | x |
+| true_upon_entry.cpp:62:11:62:16 | call to source | true_upon_entry.cpp:66:8:66:8 | x |
+| true_upon_entry.cpp:70:11:70:16 | call to source | true_upon_entry.cpp:78:8:78:8 | x |
+| true_upon_entry.cpp:83:11:83:16 | call to source | true_upon_entry.cpp:86:8:86:8 | x |
+| true_upon_entry.cpp:98:11:98:16 | call to source | true_upon_entry.cpp:105:8:105:8 | x |

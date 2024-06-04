@@ -3,8 +3,9 @@
  */
 
 import codeql.ruby.CFG
-import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::TestOutput
 
-class MyRelevantNode extends RelevantNode {
-  MyRelevantNode() { exists(this) }
+class MyRelevantNode extends CfgNode {
+  string getOrderDisambiguation() { result = "" }
 }
+
+import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::TestOutput<MyRelevantNode>

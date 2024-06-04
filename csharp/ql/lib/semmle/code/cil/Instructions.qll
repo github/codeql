@@ -8,7 +8,7 @@
 private import CIL
 private import semmle.code.dotnet.Variable as DotNet
 
-module Opcodes {
+deprecated module Opcodes {
   /** An `ldc.i4.m1` instruction. */
   class Ldc_i4_m1 extends IntLiteral, @cil_ldc_i4_m1 {
     override string getOpcodeName() { result = "ldc.i4.m1" }
@@ -529,7 +529,7 @@ module Opcodes {
     /** Gets the type that is being tested against. */
     Type getTestedType() { result = this.getAccess() }
 
-    override string getExtra() { result = this.getTestedType().getQualifiedName() }
+    override string getExtra() { result = this.getTestedType().getFullyQualifiedName() }
   }
 
   /** A `castclass` instruction. */
@@ -541,7 +541,7 @@ module Opcodes {
     /** Gets the type that is being cast to. */
     Type getTestedType() { result = this.getAccess() }
 
-    override string getExtra() { result = this.getTestedType().getQualifiedName() }
+    override string getExtra() { result = this.getTestedType().getFullyQualifiedName() }
   }
 
   /** An `stloc.0` instruction. */
@@ -788,9 +788,6 @@ module Opcodes {
     }
   }
 
-  /** DEPRECATED: Alias for NewObj */
-  deprecated class Newobj = NewObj;
-
   /** An `initobj` instruction. */
   class Initobj extends Instruction, @cil_initobj {
     override string getOpcodeName() { result = "initobj" }
@@ -854,9 +851,6 @@ module Opcodes {
     override string getOpcodeName() { result = "rethrow" }
   }
 
-  /** DEPRECATED: Alias for ReThrow */
-  deprecated class Rethrow = ReThrow;
-
   /** A `ldlen` instruction. */
   class Ldlen extends UnaryExpr, @cil_ldlen {
     override string getOpcodeName() { result = "ldlen" }
@@ -879,7 +873,7 @@ module Opcodes {
       result = this.getAccess()
     }
 
-    override string getExtra() { result = this.getType().getQualifiedName() }
+    override string getExtra() { result = this.getType().getFullyQualifiedName() }
   }
 
   /** An `ldelem` instruction. */

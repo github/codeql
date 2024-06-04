@@ -7,7 +7,6 @@ import subprocess
 import sys
 import tempfile
 
-
 def quote_if_needed(v):
     # string columns
     if type(v) is str:
@@ -15,24 +14,13 @@ def quote_if_needed(v):
     # bool column
     return str(v)
 
-def insert_update(rows, key, value):
-    if key in rows:
-        rows[key] += value
-    else:
-        rows[key] = value
-
-def merge(*dicts):
-    merged = {}
-    for d in dicts:
-        for entry in d:
-            insert_update(merged, entry, d[entry])
-    return merged
-
 def parseData(data):
-    rows = { }
+    rows = [{ }, { }]
     for row in data:
         d = map(quote_if_needed, row)
-        insert_update(rows, row[0], "      - [" + ', '.join(d) + ']\n')
+        provenance = row[-1]
+        targetRows = rows[1] if provenance.endswith("generated") else rows[0]
+        helpers.insert_update(targetRows, row[0], "      - [" + ', '.join(d) + ']\n')
 
     return rows
 
@@ -57,9 +45,10 @@ class Converter:
 
 
     def asAddsTo(self, rows, predicate):
-        extensions = { }
-        for key in rows:
-            extensions[key] = helpers.addsToTemplate.format(f"codeql/{self.language}-all", predicate, rows[key])
+        extensions = [{ }, { }]
+        for i in range(2):
+            for key in rows[i]:
+                extensions[i][key] = helpers.addsToTemplate.format(f"codeql/{self.language}-all", predicate, rows[i][key])
     
         return extensions
 
@@ -75,7 +64,7 @@ class Converter:
         sources = self.getAddsTo("ExtractSources.ql", helpers.sourceModelPredicate)
         sinks = self.getAddsTo("ExtractSinks.ql", helpers.sinkModelPredicate)
         neutrals = self.getAddsTo("ExtractNeutrals.ql", helpers.neutralModelPredicate)
-        return merge(sources, sinks, summaries, neutrals)
+        return [helpers.merge(sources[0], sinks[0], summaries[0], neutrals[0]), helpers.merge(sources[1], sinks[1], summaries[1], neutrals[1])]
 
 
     def save(self, extensions):
@@ -85,9 +74,13 @@ class Converter:
         # Create a file for each namespace and save models.
         extensionTemplate = """extensions:
 {0}"""
-        for entry in extensions:
+        for entry in extensions[0]:
             with open(self.extDir + "/" + entry + self.modelFileExtension, "w") as f:
-                f.write(extensionTemplate.format(extensions[entry]))
+                f.write(extensionTemplate.format(extensions[0][entry]))
+        
+        for entry in extensions[1]:
+            with open(self.extDir + "/generated/" + entry + self.modelFileExtension, "w") as f:
+                f.write(extensionTemplate.format(extensions[1][entry]))
 
     def run(self):
         extensions = self.makeContent()

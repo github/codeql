@@ -276,6 +276,12 @@ exprValue
 | control/cases.rb:162:10:162:10 | :x | :x | symbol |
 | control/cases.rb:162:16:162:16 | :y | :y | symbol |
 | control/cases.rb:162:19:162:19 | 1 | 1 | int |
+| control/cases.rb:165:3:165:5 | foo | 42 | int |
+| control/cases.rb:166:6:166:6 | 1 | 1 | int |
+| control/cases.rb:166:13:166:13 | 2 | 2 | int |
+| control/cases.rb:170:3:170:5 | foo | 42 | int |
+| control/cases.rb:171:4:171:4 | 3 | 3 | int |
+| control/cases.rb:171:11:171:17 | "three" | three | string |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 | int |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 | int |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 | int |
@@ -921,6 +927,7 @@ exprValue
 | operations/operations.rb:104:25:104:25 | 1 | 1 | int |
 | operations/operations.rb:104:28:104:28 | 2 | 2 | int |
 | operations/operations.rb:104:31:104:31 | 3 | 3 | int |
+| operations/operations.rb:107:1:107:1 | 5 | 5 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |
@@ -1184,6 +1191,12 @@ exprCfgNodeValue
 | control/cases.rb:160:13:160:13 | 2 | 2 | int |
 | control/cases.rb:162:1:162:20 | nil | nil | nil |
 | control/cases.rb:162:19:162:19 | 1 | 1 | int |
+| control/cases.rb:165:3:165:5 | foo | 42 | int |
+| control/cases.rb:166:6:166:6 | 1 | 1 | int |
+| control/cases.rb:166:13:166:13 | 2 | 2 | int |
+| control/cases.rb:170:3:170:5 | foo | 42 | int |
+| control/cases.rb:171:4:171:4 | 3 | 3 | int |
+| control/cases.rb:171:11:171:17 | "three" | three | string |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 | int |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 | int |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 | int |
@@ -1828,6 +1841,7 @@ exprCfgNodeValue
 | operations/operations.rb:104:25:104:25 | 1 | 1 | int |
 | operations/operations.rb:104:28:104:28 | 2 | 2 | int |
 | operations/operations.rb:104:31:104:31 | 3 | 3 | int |
+| operations/operations.rb:107:1:107:1 | 5 | 5 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |

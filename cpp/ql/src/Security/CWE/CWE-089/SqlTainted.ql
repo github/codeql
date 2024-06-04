@@ -30,7 +30,7 @@ Expr asSinkExpr(DataFlow::Node node) {
   result = node.asIndirectArgument()
   or
   // We want the conversion so we only get one node for the expression
-  result = node.asConvertedExpr()
+  result = node.asExpr()
 }
 
 module SqlTaintedConfig implements DataFlow::ConfigSig {

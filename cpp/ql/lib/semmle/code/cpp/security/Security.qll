@@ -45,7 +45,7 @@ class SecurityOptions extends string {
   /**
    * The argument of the given function is filled in from user input.
    */
-  predicate userInputArgument(FunctionCall functionCall, int arg) {
+  deprecated predicate userInputArgument(FunctionCall functionCall, int arg) {
     exists(string fname |
       functionCall.getTarget().hasGlobalOrStdName(fname) and
       exists(functionCall.getArgument(arg)) and
@@ -73,7 +73,7 @@ class SecurityOptions extends string {
   /**
    * The return value of the given function is filled in from user input.
    */
-  predicate userInputReturned(FunctionCall functionCall) {
+  deprecated predicate userInputReturned(FunctionCall functionCall) {
     exists(string fname |
       functionCall.getTarget().getName() = fname and
       (
@@ -91,12 +91,8 @@ class SecurityOptions extends string {
 
   /**
    * DEPRECATED: Users should override `userInputReturned()` instead.
-   *
-   * note: this function is not formally tagged as `deprecated` since the
-   * new `userInputReturned` uses it to provide compatibility with older
-   * custom SecurityOptions.qll files.
    */
-  predicate userInputReturn(string function) { none() }
+  deprecated predicate userInputReturn(string function) { none() }
 
   /**
    * The argument of the given function is used for running a process or loading
@@ -117,7 +113,7 @@ class SecurityOptions extends string {
    * computed from user input. Such expressions are treated as
    * sources of taint.
    */
-  predicate isUserInput(Expr expr, string cause) {
+  deprecated predicate isUserInput(Expr expr, string cause) {
     exists(FunctionCall fc, int i |
       this.userInputArgument(fc, i) and
       expr = fc.getArgument(i) and
@@ -178,17 +174,17 @@ predicate argv(Parameter argv) {
 predicate isPureFunction(string name) { exists(SecurityOptions opts | opts.isPureFunction(name)) }
 
 /** Convenience accessor for SecurityOptions.userInputArgument */
-predicate userInputArgument(FunctionCall functionCall, int arg) {
+deprecated predicate userInputArgument(FunctionCall functionCall, int arg) {
   exists(SecurityOptions opts | opts.userInputArgument(functionCall, arg))
 }
 
 /** Convenience accessor for SecurityOptions.userInputReturn */
-predicate userInputReturned(FunctionCall functionCall) {
+deprecated predicate userInputReturned(FunctionCall functionCall) {
   exists(SecurityOptions opts | opts.userInputReturned(functionCall))
 }
 
 /** Convenience accessor for SecurityOptions.isUserInput */
-predicate isUserInput(Expr expr, string cause) {
+deprecated predicate isUserInput(Expr expr, string cause) {
   exists(SecurityOptions opts | opts.isUserInput(expr, cause))
 }
 

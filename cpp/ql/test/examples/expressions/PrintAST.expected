@@ -105,9 +105,23 @@ ConditionDecl.cpp:
 #    3|         getVariableAccess(): [VariableAccess] k
 #    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue(load)
+#    3|         getInitializingExpr(): [LTExpr] ... < ...
+#    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|           getLesserOperand(): [VariableAccess] j
+#    3|               Type = [IntType] int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getGreaterOperand(): [Literal] 5
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 5
+#    3|               ValueCategory = prvalue
 #    3|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #    3|             Conversion = [BoolConversion] conversion to bool
 #    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|         getInitializingExpr().getFullyConverted(): [CStyleCast] (int)...
+#    3|             Conversion = [IntegralConversion] integral conversion
+#    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue
 #    3|       getStmt(): [BlockStmt] { ... }
 #    5|     getStmt(2): [ReturnStmt] return ...
@@ -412,11 +426,14 @@ DestructorCall.cpp:
 #   12|           getQualifier(): [VariableAccess] c
 #   12|               Type = [PointerType] C *
 #   12|               ValueCategory = prvalue(load)
+#   12|         getExprWithReuse(): [ReuseExpr] reuse of c
+#   12|             Type = [PointerType] C *
+#   12|             ValueCategory = prvalue
 #   13|     getStmt(1): [ExprStmt] ExprStmt
 #   13|       getExpr(): [DeleteExpr] delete
 #   13|           Type = [VoidType] void
 #   13|           ValueCategory = prvalue
-#   13|         getExpr(): [VariableAccess] d
+#   13|         getExprWithReuse(): [VariableAccess] d
 #   13|             Type = [PointerType] D *
 #   13|             ValueCategory = prvalue(load)
 #   14|     getStmt(2): [ReturnStmt] return ...
@@ -763,7 +780,7 @@ StaticMemberAccess.cpp:
 #    7|             ValueCategory = lvalue
 #    7|         getRValue(): [VariableAccess] i
 #    7|             Type = [IntType] int
-#    7|             ValueCategory = prvalue
+#    7|             ValueCategory = prvalue(load)
 #    7|           getQualifier(): [VariableAccess] xref
 #    7|               Type = [LValueReferenceType] X &
 #    7|               ValueCategory = prvalue(load)
@@ -1298,7 +1315,7 @@ union_etc.cpp:
 #    6|       getExpr(): [AssignExpr] ... = ...
 #    6|           Type = [IntType] int
 #    6|           ValueCategory = lvalue
-#    6|         getLValue(): [PointerFieldAccess] x
+#    6|         getLValue(): [ImplicitThisFieldAccess,PointerFieldAccess] x
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
 #    6|           getQualifier(): [ThisExpr] this
@@ -1394,7 +1411,7 @@ union_etc.cpp:
 #   26|                 ValueCategory = lvalue
 #   26|         getRValue(): [AssignExpr] ... = ...
 #   26|             Type = [IntType] int
-#   26|             ValueCategory = prvalue
+#   26|             ValueCategory = prvalue(load)
 #   26|           getLValue(): [ValueFieldAccess] e
 #   26|               Type = [IntType] int
 #   26|               ValueCategory = lvalue
@@ -1406,7 +1423,7 @@ union_etc.cpp:
 #   26|                   ValueCategory = lvalue
 #   26|           getRValue(): [AssignExpr] ... = ...
 #   26|               Type = [IntType] int
-#   26|               ValueCategory = prvalue
+#   26|               ValueCategory = prvalue(load)
 #   26|             getLValue(): [ValueFieldAccess] i
 #   26|                 Type = [IntType] int
 #   26|                 ValueCategory = lvalue
@@ -1488,7 +1505,7 @@ union_etc.cpp:
 #   33|       getExpr(): [AssignExpr] ... = ...
 #   33|           Type = [IntType] int
 #   33|           ValueCategory = lvalue
-#   33|         getLValue(): [PointerFieldAccess] q
+#   33|         getLValue(): [ImplicitThisFieldAccess,PointerFieldAccess] q
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = lvalue
 #   33|           getQualifier(): [ThisExpr] this

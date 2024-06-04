@@ -9,7 +9,7 @@ private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
 private import internal.InlineExpectationsTestImpl
 
-private module FlowTestImpl implements InputSig<CsharpDataFlow> {
+private module FlowTestImpl implements InputSig<Location, CsharpDataFlow> {
   predicate defaultSource(DataFlow::Node source) {
     source.asExpr().(MethodCall).getTarget().getUndecoratedName() = ["Source", "Taint"]
   }
@@ -26,9 +26,13 @@ private module FlowTestImpl implements InputSig<CsharpDataFlow> {
   }
 
   string getArgString(DataFlow::Node src, DataFlow::Node sink) {
-    (if exists(getSourceArgString(src)) then result = getSourceArgString(src) else result = "") and
+    (
+      result = getSourceArgString(src)
+      or
+      not exists(getSourceArgString(src)) and result = "line:" + src.getLocation().getStartLine()
+    ) and
     exists(sink)
   }
 }
 
-import InlineFlowTestMake<CsharpDataFlow, CsharpTaintTracking, Impl, FlowTestImpl>
+import InlineFlowTestMake<Location, CsharpDataFlow, CsharpTaintTracking, Impl, FlowTestImpl>

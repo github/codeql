@@ -7,7 +7,7 @@ private import internal.CryptoAlgorithmNames
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
@@ -139,9 +139,6 @@ module Ciphers {
       ]
   }
 
-  /** DEPRECATED: Alias for isOpenSslCipher */
-  deprecated predicate isOpenSSLCipher = isOpenSslCipher/1;
-
   /**
    * Gets the canonical cipher name in cases where this isn't simply an
    * upcased version of the provided name. This may be because a default block
@@ -269,9 +266,6 @@ module Ciphers {
     name.toUpperCase().regexpMatch(getInsecureAlgorithmRegex())
   }
 
-  /** DEPRECATED: Alias for isWeakOpenSslCipher */
-  deprecated predicate isWeakOpenSSLCipher = isWeakOpenSslCipher/1;
-
   /**
    * Holds if `name` is the name of an OpenSSL cipher that is known to be strong.
    */
@@ -281,9 +275,6 @@ module Ciphers {
     // exclude algorithms that include a weak component
     not name.toUpperCase().regexpMatch(getInsecureAlgorithmRegex())
   }
-
-  /** DEPRECATED: Alias for isStrongOpenSslCipher */
-  deprecated predicate isStrongOpenSSLCipher = isStrongOpenSslCipher/1;
 }
 
 private import Ciphers
@@ -333,9 +324,6 @@ class OpenSslCipher extends MkOpenSslCipher {
   /** Gets the encryption algorithm used by this cipher. */
   Cryptography::EncryptionAlgorithm getAlgorithm() { result.matchesName(this.getCanonicalName()) }
 }
-
-/** DEPRECATED: Alias for OpenSslCipher */
-deprecated class OpenSSLCipher = OpenSslCipher;
 
 /** `OpenSSL::Cipher` or `OpenSSL::Cipher::Cipher` */
 private API::Node cipherApi() {
@@ -569,6 +557,8 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
     this.getMethodName() = "update"
   }
 
+  override DataFlow::Node getInitialization() { result = cipherNode }
+
   override Cryptography::EncryptionAlgorithm getAlgorithm() {
     result = cipherNode.getCipher().getAlgorithm()
   }
@@ -591,20 +581,20 @@ private module Digest {
   private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
   {
     Cryptography::HashingAlgorithm algo;
+    API::MethodAccessNode call;
 
     DigestCall() {
-      exists(API::MethodAccessNode call |
-        call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new")
-      |
-        this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
-        algo.matchesName(call.asCall()
-              .getArgument(0)
-              .asExpr()
-              .getExpr()
-              .getConstantValue()
-              .getString())
-      )
+      call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new") and
+      this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
+      algo.matchesName(call.asCall()
+            .getArgument(0)
+            .asExpr()
+            .getExpr()
+            .getConstantValue()
+            .getString())
     }
+
+    override DataFlow::Node getInitialization() { result = call.asCall() }
 
     override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
 
@@ -617,11 +607,15 @@ private module Digest {
   private class DigestCallDirect extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
   {
     Cryptography::HashingAlgorithm algo;
+    API::Node digestNode;
 
     DigestCallDirect() {
-      this = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("digest").asCall() and
+      digestNode = API::getTopLevelMember("OpenSSL").getMember("Digest") and
+      this = digestNode.getMethod("digest").asCall() and
       algo.matchesName(this.getArgument(0).asExpr().getExpr().getConstantValue().getString())
     }
+
+    override DataFlow::Node getInitialization() { result = digestNode.asSource() }
 
     override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
 

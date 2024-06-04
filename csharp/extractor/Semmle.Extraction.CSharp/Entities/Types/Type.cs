@@ -52,9 +52,15 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType
-                                ? Kinds.TypeKind.TUPLE
-                                : Kinds.TypeKind.STRUCT;
+                            {
+                                if (((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType)
+                                {
+                                    return Kinds.TypeKind.TUPLE;
+                                }
+                                return Symbol.IsInlineArray()
+                                    ? Kinds.TypeKind.INLINE_ARRAY
+                                    : Kinds.TypeKind.STRUCT;
+                            }
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
                         case TypeKind.Array: return Kinds.TypeKind.ARRAY;
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;
@@ -87,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var hasExpandingCycle = GenericsRecursionGraph.HasExpandingCycle(Symbol);
             if (hasExpandingCycle)
             {
-                Context.ExtractionError("Found recursive generic inheritance hierarchy. Base class of type is not extracted", Symbol.ToDisplayString(), Context.CreateLocation(ReportingLocation), severity: Util.Logging.Severity.Warning);
+                Context.ExtractionError("Found recursive generic inheritance hierarchy. Base class of type is not extracted", Symbol.ToDisplayString(), Context.CreateLocation(ReportingLocation), severity: Semmle.Util.Logging.Severity.Warning);
             }
 
             // Visit base types
@@ -250,41 +256,44 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public void PopulateGenerics()
         {
-            if (Symbol is null || !NeedsPopulation || !Context.ExtractGenerics(this))
-                return;
-
-            var members = new List<ISymbol>();
-
-            foreach (var member in Symbol.GetMembers())
-                members.Add(member);
-            foreach (var member in Symbol.GetTypeMembers())
-                members.Add(member);
-
-            // Mono extractor puts all BASE interface members as members of the current interface.
-
-            if (Symbol.TypeKind == TypeKind.Interface)
+            Context.PopulateLater(() =>
             {
-                foreach (var baseInterface in Symbol.Interfaces)
+                if (Symbol is null || !NeedsPopulation || !Context.ExtractGenerics(this))
+                    return;
+
+                var members = new List<ISymbol>();
+
+                foreach (var member in Symbol.GetMembers())
+                    members.Add(member);
+                foreach (var member in Symbol.GetTypeMembers())
+                    members.Add(member);
+
+                // Mono extractor puts all BASE interface members as members of the current interface.
+
+                if (Symbol.TypeKind == TypeKind.Interface)
                 {
-                    foreach (var member in baseInterface.GetMembers())
-                        members.Add(member);
-                    foreach (var member in baseInterface.GetTypeMembers())
-                        members.Add(member);
+                    foreach (var baseInterface in Symbol.Interfaces)
+                    {
+                        foreach (var member in baseInterface.GetMembers())
+                            members.Add(member);
+                        foreach (var member in baseInterface.GetTypeMembers())
+                            members.Add(member);
+                    }
                 }
-            }
 
-            foreach (var member in members)
-            {
-                Context.CreateEntity(member);
-            }
+                foreach (var member in members)
+                {
+                    Context.CreateEntity(member);
+                }
 
-            if (Symbol.BaseType is not null)
-                Create(Context, Symbol.BaseType).PopulateGenerics();
+                if (Symbol.BaseType is not null)
+                    Create(Context, Symbol.BaseType).PopulateGenerics();
 
-            foreach (var i in Symbol.Interfaces)
-            {
-                Create(Context, i).PopulateGenerics();
-            }
+                foreach (var i in Symbol.Interfaces)
+                {
+                    Create(Context, i).PopulateGenerics();
+                }
+            }, preserveDuplicationKey: false);
         }
 
         public void ExtractRecursive(TextWriter trapFile, IEntity parent)

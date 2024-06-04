@@ -74,6 +74,8 @@ module CleartextLogging {
       )
     }
 
+    predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
     predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data-flow edge through structs: a tainted write taints the entire struct.
       exists(Write write |
@@ -82,7 +84,7 @@ module CleartextLogging {
       or
       // taint steps that do not include flow through fields. Field reads would produce FPs due to
       // the additional taint step above that taints whole structs from individual field writes.
-      TaintTracking::localTaintStep(src, trg) and
+      TaintTracking::defaultAdditionalTaintStep(src, trg, _) and
       not TaintTracking::fieldReadStep(src, trg) and
       // Also exclude protobuf field fetches, since they amount to single field reads.
       not any(Protobuf::GetMethod gm).taintStep(src, trg)

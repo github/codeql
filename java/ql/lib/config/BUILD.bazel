@@ -1,0 +1,15 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//java:__pkg__"])
+
+pkg_files(
+    name = "dbscheme",
+    srcs = ["semmlecode.dbscheme"],
+    prefix = "java",
+)
+
+pkg_files(
+    name = "dbscheme-stats",
+    srcs = ["semmlecode.dbscheme.stats"],
+    prefix = "java",
+)

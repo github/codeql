@@ -1,0 +1,4 @@
+| PropertyReferenceDelegatesKt | getValue(KProperty0<? extends V>, Object, KProperty<?>) |
+| PropertyReferenceDelegatesKt | getValue(KProperty1<T,? extends V>, T, KProperty<?>) |
+| StringsKt | removePrefix(String, CharSequence) |
+| StringsKt | startsWith$default(String, String, boolean, int, Object) |

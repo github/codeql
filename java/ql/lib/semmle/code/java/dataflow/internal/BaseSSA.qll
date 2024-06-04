@@ -118,7 +118,7 @@ private module SsaImpl {
   }
 
   /** Holds if `VarAccess` `use` of `v` occurs in `b` at index `i`. */
-  private predicate variableUse(BaseSsaSourceVariable v, RValue use, BasicBlock b, int i) {
+  private predicate variableUse(BaseSsaSourceVariable v, VarRead use, BasicBlock b, int i) {
     v.getAnAccess() = use and b.getNode(i) = use
   }
 
@@ -243,7 +243,7 @@ private module SsaImpl {
      * without crossing another SSA definition of `v`.
      */
     private predicate ssaDefReachesUseWithinBlock(
-      BaseSsaSourceVariable v, TrackedSsaDef def, RValue use
+      BaseSsaSourceVariable v, TrackedSsaDef def, VarRead use
     ) {
       exists(BasicBlock b, int rankix, int i |
         ssaDefReachesRank(v, def, b, rankix) and
@@ -257,7 +257,7 @@ private module SsaImpl {
      * SSA definition of `v`.
      */
     cached
-    predicate ssaDefReachesUse(BaseSsaSourceVariable v, TrackedSsaDef def, RValue use) {
+    predicate ssaDefReachesUse(BaseSsaSourceVariable v, TrackedSsaDef def, VarRead use) {
       ssaDefReachesUseWithinBlock(v, def, use)
       or
       exists(BasicBlock b |
@@ -378,7 +378,7 @@ private module SsaImpl {
    * any other uses, but possibly through phi nodes.
    */
   cached
-  predicate firstUse(TrackedSsaDef def, RValue use) {
+  predicate firstUse(TrackedSsaDef def, VarRead use) {
     exists(BaseSsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
       adjacentVarRefs(v, b1, i1, b2, i2) and
       def.definesAt(v, b1, i1) and
@@ -405,7 +405,7 @@ private module SsaImpl {
      * through any other use or any SSA definition of the variable.
      */
     cached
-    predicate baseSsaAdjacentUseUseSameVar(RValue use1, RValue use2) {
+    predicate baseSsaAdjacentUseUseSameVar(VarRead use1, VarRead use2) {
       exists(BaseSsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
         variableUse(v, use1, b1, i1) and
@@ -420,7 +420,7 @@ private module SsaImpl {
      * except for phi nodes.
      */
     cached
-    predicate baseSsaAdjacentUseUse(RValue use1, RValue use2) {
+    predicate baseSsaAdjacentUseUse(VarRead use1, VarRead use2) {
       baseSsaAdjacentUseUseSameVar(use1, use2)
       or
       exists(
@@ -490,7 +490,7 @@ class BaseSsaVariable extends TBaseSsaVariable {
   BasicBlock getBasicBlock() { result = this.getCfgNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
-  RValue getAUse() { ssaDefReachesUse(_, this, result) }
+  VarRead getAUse() { ssaDefReachesUse(_, this, result) }
 
   /**
    * Gets an access of the SSA source variable underlying this SSA variable
@@ -500,7 +500,7 @@ class BaseSsaVariable extends TBaseSsaVariable {
    * Subsequent uses can be found by following the steps defined by
    * `baseSsaAdjacentUseUse`.
    */
-  RValue getAFirstUse() { firstUse(this, result) }
+  VarRead getAFirstUse() { firstUse(this, result) }
 
   /** Holds if this SSA variable is live at the end of `b`. */
   predicate isLiveAtEndOfBlock(BasicBlock b) { ssaDefReachesEndOfBlock(_, this, b) }

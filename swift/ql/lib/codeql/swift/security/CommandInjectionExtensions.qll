@@ -29,57 +29,40 @@ class CommandInjectionAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-private class ProcessSink2 extends CommandInjectionSink instanceof DataFlow::Node {
-  ProcessSink2() {
-    exists(AssignExpr assign, ProcessHost s |
-      assign.getDest() = s and
-      this.asExpr() = assign.getSource()
-    )
-    or
-    exists(AssignExpr assign, ProcessHost s, ArrayExpr a |
-      assign.getDest() = s and
-      a = assign.getSource() and
-      this.asExpr() = a.getAnElement()
-    )
-  }
-}
-
-private class ProcessHost extends MemberRefExpr {
-  ProcessHost() { this.getBase() instanceof ProcessRef }
-}
-
-/** An expression of type `Process`. */
-private class ProcessRef extends Expr {
-  ProcessRef() {
-    this.getType() instanceof ProcessType or
-    this.getType() = any(OptionalType t | t.getBaseType() instanceof ProcessType)
-  }
-}
-
-/** The type `Process`. */
-private class ProcessType extends NominalType {
-  ProcessType() { this.getFullName() = "Process" }
-}
-
-/**
- * A `DataFlow::Node` that is written into a `Process` object.
- */
-private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node {
-  ProcessSink() {
-    // any write into a class derived from `Process` is a sink. For
-    // example in `Process.launchPath = sensitive` the post-update node corresponding
-    // with `Process.launchPath` is a sink.
-    exists(NominalType t, Expr e |
-      t.getABaseType*().getUnderlyingType().getName() = "Process" and
-      e.getFullyConverted() = this.asExpr() and
-      e.getFullyConverted().getType() = t
-    )
-  }
-}
-
 /**
  * A sink defined in a CSV model.
  */
 private class DefaultCommandInjectionSink extends CommandInjectionSink {
   DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
+}
+
+private class CommandInjectionSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";Process;true;run(_:arguments:terminationHandler:);;;Argument[0..1];command-injection",
+        ";Process;true;launchedProcess(launchPath:arguments:);;;Argument[0..1];command-injection",
+        ";Process;true;arguments;;;PostUpdate;command-injection",
+        ";Process;true;currentDirectory;;;PostUpdate;command-injection",
+        ";Process;true;environment;;;PostUpdate;command-injection",
+        ";Process;true;executableURL;;;PostUpdate;command-injection",
+        ";Process;true;standardError;;;PostUpdate;command-injection",
+        ";Process;true;standardInput;;;PostUpdate;command-injection",
+        ";Process;true;standardOutput;;;PostUpdate;command-injection",
+        ";Process;true;currentDirectoryPath;;;PostUpdate;command-injection",
+        ";Process;true;launchPath;;;PostUpdate;command-injection",
+        ";NSUserScriptTask;true;init(url:);;;Argument[0];command-injection",
+        ";NSUserUnixTask;true;execute(withArguments:completionHandler:);;;Argument[0];command-injection",
+      ]
+  }
+}
+
+/**
+ * A barrier for command injection vulnerabilities.
+ */
+private class CommandInjectionDefaultBarrier extends CommandInjectionBarrier {
+  CommandInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+  }
 }

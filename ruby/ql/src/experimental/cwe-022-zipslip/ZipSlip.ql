@@ -12,11 +12,10 @@
  *       external/cwe/cwe-022
  */
 
-import ruby
 import codeql.ruby.experimental.ZipSlipQuery
-import DataFlow::PathGraph
+import ZipSlipFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ZipSlipFlow::PathNode source, ZipSlipFlow::PathNode sink
+where ZipSlipFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
   "potentially untrusted source"

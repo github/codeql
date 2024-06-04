@@ -28,7 +28,7 @@ deprecated class GroovyInjectionConfig extends TaintTracking::Configuration {
  * that is used to evaluate a Groovy expression.
  */
 module GroovyInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof GroovyInjectionSink }
 

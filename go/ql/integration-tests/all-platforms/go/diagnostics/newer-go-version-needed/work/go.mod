@@ -1,3 +1,3 @@
-go 999.0
+go 1.999.0
 
 module test
