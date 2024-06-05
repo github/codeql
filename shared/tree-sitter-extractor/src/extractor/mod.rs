@@ -4,11 +4,42 @@ use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use crate::trap;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
+use std::env;
 use std::path::Path;
 
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
+
+/// Sets the tracing level based on the environment variables
+/// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
+/// falling back to `warn` if neither is set.
+pub fn set_tracing_level(language: &str) {
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .without_time()
+        .with_level(true)
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
+                |_| -> tracing_subscriber::EnvFilter {
+                    let verbosity = env::var("CODEQL_VERBOSITY")
+                        .map(|v| match v.to_lowercase().as_str() {
+                            "off" | "errors" => "error",
+                            "warnings" => "warn",
+                            "info" | "progress" => "info",
+                            "debug" | "progress+" => "debug",
+                            "trace" | "progress++" | "progress+++" => "trace",
+                            _ => "warn",
+                        })
+                        .unwrap_or_else(|_| "warn");
+                    tracing_subscriber::EnvFilter::new(format!(
+                        "{language}_extractor={verbosity},codeql_extractor={verbosity}"
+                    ))
+                },
+            ),
+        )
+        .init();
+}
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
@@ -43,7 +74,7 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
 
 pub fn populate_empty_location(writer: &mut trap::Writer) {
     let file_label = populate_empty_file(writer);
-    global_location(
+    let loc_label = global_location(
         writer,
         file_label,
         trap::Location {
@@ -53,6 +84,7 @@ pub fn populate_empty_location(writer: &mut trap::Writer) {
             end_column: 0,
         },
     );
+    writer.add_tuple("empty_location", vec![trap::Arg::Label(loc_label)]);
 }
 
 pub fn populate_parent_folders(
@@ -150,7 +182,7 @@ fn location_label(
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
-    language: Language,
+    language: &Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,

@@ -24,6 +24,7 @@ function dotnet_publish {
   dotnet publish --self-contained --configuration Release --runtime ${dotnet_platform} -p:RuntimeFrameworkVersion=8.0.1 $1 --output extractor-pack/tools/${platform}
 }
 
+dotnet tool restore
 dotnet_publish extractor/Semmle.Extraction.CSharp.Standalone
 dotnet_publish extractor/Semmle.Extraction.CSharp.Driver
 dotnet_publish autobuilder/Semmle.Autobuild.CSharp

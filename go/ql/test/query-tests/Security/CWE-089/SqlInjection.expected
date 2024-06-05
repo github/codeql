@@ -103,10 +103,10 @@ edges
 | mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:78:23:78:28 | filter | provenance |  |
 | mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:79:23:79:28 | filter | provenance |  |
 | mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:80:22:80:27 | filter | provenance |  |
-| mongoDB.go:42:28:42:41 | untrustedInput | mongoDB.go:42:19:42:42 | struct literal | provenance |  |
+| mongoDB.go:42:28:42:41 | untrustedInput | mongoDB.go:42:19:42:42 | struct literal | provenance | Config |
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:57:22:57:29 | pipeline | provenance |  |
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:81:18:81:25 | pipeline | provenance |  |
-| mongoDB.go:50:34:50:39 | filter | mongoDB.go:50:23:50:40 | struct literal | provenance |  |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:50:23:50:40 | struct literal | provenance | Config |
 nodes
 | SqlInjection.go:10:7:11:30 | []type{args} [array] | semmle.label | []type{args} [array] |
 | SqlInjection.go:10:7:11:30 | call to Sprintf | semmle.label | call to Sprintf |

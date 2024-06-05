@@ -94,6 +94,8 @@ private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Private::External
 private import semmle.code.csharp.commons.QualifiedName
+private import semmle.code.csharp.dispatch.OverridableCallable
+private import semmle.code.csharp.frameworks.System
 private import codeql.mad.ModelValidation as SharedModelVal
 
 private predicate relevantNamespace(string namespace) {
@@ -442,20 +444,16 @@ predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
  */
 predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
-/** Holds if the summary should apply for all overrides of `c`. */
-predicate isBaseCallableOrPrototype(UnboundCallable c) {
-  c.getDeclaringType() instanceof Interface
-  or
-  exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
-    m.isAbstract()
-    or
-    c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+private predicate isOverridableCallable(OverridableCallable c) {
+  not exists(Type t, Callable base | c.getOverridee+() = base and t = base.getDeclaringType() |
+    t instanceof SystemObjectClass or
+    t instanceof SystemValueTypeClass
   )
 }
 
 /** Gets a string representing whether the summary should apply for all overrides of `c`. */
 private string getCallableOverride(UnboundCallable c) {
-  if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+  if isOverridableCallable(c) then result = "true" else result = "false"
 }
 
 private module QualifiedNameInput implements QualifiedNameInputSig {
@@ -516,10 +514,13 @@ string asPartialModel(UnboundCallable c) {
   )
 }
 
-/** Computes the first 4 columns for neutral CSV rows of `c`. */
-string asPartialNeutralModel(UnboundCallable c) {
+/**
+ * Gets the signature of `c` in the format `namespace;type;name;parameters`.
+ */
+string getSignature(UnboundCallable c) {
   exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters) and
+    partialModel(c, namespace, type, name, parameters)
+  |
     result =
       namespace + ";" //
         + type + ";" //
@@ -551,7 +552,13 @@ private predicate interpretNeutral(UnboundCallable c, string kind, string proven
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() {
+    exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
+      not this.hasBody()
+      or
+      this.hasBody() and provenance.isManual()
+    )
+  }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model

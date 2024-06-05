@@ -29,6 +29,7 @@ private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FlaskAdmin
 private import semmle.python.frameworks.FlaskSqlAlchemy
+private import semmle.python.frameworks.Gradio
 private import semmle.python.frameworks.Httpx
 private import semmle.python.frameworks.Idna
 private import semmle.python.frameworks.Invoke
@@ -44,6 +45,7 @@ private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Numpy
+private import semmle.python.frameworks.Opml
 private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Pandas
 private import semmle.python.frameworks.Peewee

@@ -2,7 +2,7 @@
 | test.kt:19:3:22:3 | f | test.kt:19:3:22:3 | f$default |
 | test.kt:34:14:36:3 | f | test.kt:34:14:36:3 | f$default |
 | test.kt:56:3:58:3 | test | test.kt:56:3:58:3 | test$default |
-| test.kt:68:1:80:1 | TestConstructor | test.kt:68:1:80:1 | TestConstructor |
+| test.kt:68:22:68:75 | TestConstructor | test.kt:68:22:68:75 | TestConstructor |
 | test.kt:86:5:88:5 | f | test.kt:86:5:88:5 | f$default |
 | test.kt:106:7:108:7 | f | test.kt:106:7:108:7 | f$default |
 | test.kt:124:3:126:3 | f | test.kt:124:3:126:3 | f$default |
