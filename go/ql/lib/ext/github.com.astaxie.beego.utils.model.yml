@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
+      - ["github.com/astaxie/beego/utils", "", False, "GetDisplayString", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "", False, "SliceChunk", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "", False, "SliceDiff", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "", False, "SliceFilter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -16,6 +17,7 @@ extensions:
       - ["github.com/astaxie/beego/utils", "BeeMap", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "BeeMap", True, "Items", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "BeeMap", True, "Set", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["github.com/beego/beego/core/utils", "", False, "GetDisplayString", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
       - ["github.com/beego/beego/core/utils", "", False, "SliceChunk", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/beego/beego/core/utils", "", False, "SliceDiff", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/beego/beego/core/utils", "", False, "SliceFilter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

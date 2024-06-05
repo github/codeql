@@ -18,7 +18,6 @@ import semmle.go.frameworks.stdlib.EncodingGob
 import semmle.go.frameworks.stdlib.EncodingJson
 import semmle.go.frameworks.stdlib.EncodingPem
 import semmle.go.frameworks.stdlib.EncodingXml
-import semmle.go.frameworks.stdlib.Errors
 import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
@@ -33,12 +32,8 @@ import semmle.go.frameworks.stdlib.NetHttp
 import semmle.go.frameworks.stdlib.NetHttpHttputil
 import semmle.go.frameworks.stdlib.NetTextproto
 import semmle.go.frameworks.stdlib.Os
-import semmle.go.frameworks.stdlib.Path
-import semmle.go.frameworks.stdlib.PathFilepath
-import semmle.go.frameworks.stdlib.Reflect
 import semmle.go.frameworks.stdlib.Regexp
 import semmle.go.frameworks.stdlib.Strconv
-import semmle.go.frameworks.stdlib.Strings
 import semmle.go.frameworks.stdlib.Syscall
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
@@ -97,24 +92,22 @@ module IntegerParser {
 
 /** Provides models of commonly used functions in the `net/url` package. */
 module Url {
-  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
-  /** The `JoinPath` function. */
-  class JoinPath extends TaintTracking::FunctionModel {
+  /**
+   * DEPRECATED: Use a locally defined class instead.
+   *
+   * The `JoinPath` function.
+   */
+  class JoinPath extends Function {
     JoinPath() { this.hasQualifiedName("net/url", "JoinPath") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isResult(0)
-    }
   }
 
-  /** The method `URL.JoinPath`. */
-  class JoinPathMethod extends TaintTracking::FunctionModel, Method {
+  /**
+   * DEPRECATED: Use a locally defined class instead.
+   *
+   * The method `URL.JoinPath`.
+   */
+  class JoinPathMethod extends Method {
     JoinPathMethod() { this.hasQualifiedName("net/url", "URL", "JoinPath") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      (inp.isReceiver() or inp.isParameter(_)) and
-      outp.isResult(0)
-    }
   }
 
   /** A method that returns a part of a URL. */

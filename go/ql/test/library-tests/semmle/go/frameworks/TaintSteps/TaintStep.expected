@@ -24,7 +24,6 @@
 | io.go:39:6:39:6 | definition of w | io.go:39:3:39:19 | ... := ...[0] |
 | io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | ... := ...[0] |
 | io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | ... := ...[1] |
-| io.go:40:17:40:31 | "some string\\n" | io.go:39:6:39:6 | definition of w |
 | io.go:43:16:43:16 | r | io.go:42:3:42:5 | definition of buf |
 | io.go:44:13:44:15 | buf | io.go:44:13:44:24 | call to String |
 | io.go:48:31:48:43 | "some string" | io.go:48:13:48:44 | call to NewReader |
@@ -44,9 +43,6 @@
 | io.go:82:27:82:36 | "reader1 " | io.go:82:9:82:37 | call to NewReader |
 | io.go:83:27:83:36 | "reader2 " | io.go:83:9:83:37 | call to NewReader |
 | io.go:84:27:84:35 | "reader3" | io.go:84:9:84:36 | call to NewReader |
-| io.go:85:23:85:24 | r1 | io.go:85:8:85:33 | call to MultiReader |
-| io.go:85:27:85:28 | r2 | io.go:85:8:85:33 | call to MultiReader |
-| io.go:85:31:85:32 | r3 | io.go:85:8:85:33 | call to MultiReader |
 | io.go:86:22:86:22 | r | io.go:86:11:86:19 | selection of Stdout |
 | io.go:89:26:89:38 | "some string" | io.go:89:8:89:39 | call to NewReader |
 | io.go:91:23:91:23 | r | io.go:91:10:91:30 | call to TeeReader |

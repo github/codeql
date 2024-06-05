@@ -46,14 +46,13 @@ module Zap {
     override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
-  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
-  /** The function `Fields` that creates an `Option` that can be added to the logger out of `Field`s. */
-  class FieldsFunction extends TaintTracking::FunctionModel {
+  /**
+   * DEPRECATED: Use a locally defined class instead.
+   *
+   * The function `Fields` that creates an `Option` that can be added to the logger out of `Field`s.
+   */
+  deprecated class FieldsFunction extends Function {
     FieldsFunction() { this.hasQualifiedName(packagePath(), "Fields") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isResult()
-    }
   }
 
   /** A Zap logging function which always panics. */

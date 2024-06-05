@@ -42,14 +42,4 @@ module Spew {
       result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
     }
   }
-
-  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
-  /** The `Sprint` function or one of its variants. */
-  class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() { this.hasQualifiedName(packagePath(), ["Sdump", "Sprint", "Sprintln", "Sprintf"]) }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isResult()
-    }
-  }
 }
