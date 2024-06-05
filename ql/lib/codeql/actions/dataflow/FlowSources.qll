@@ -200,7 +200,7 @@ class GitHubEventCtxSource extends RemoteFlowSource {
         or
         regexp = pathEvent() and flag = "filename"
       ) and
-      normalizeExpr(context).regexpMatch("(?i).*" + wrapRegexp(regexp) + ".*")
+      normalizeExpr(context).regexpMatch("(?i)\\s*" + wrapRegexp(regexp) + ".*")
     )
   }
 
