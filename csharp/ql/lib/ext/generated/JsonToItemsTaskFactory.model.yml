@@ -4,8 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+CaseInsensitiveDictionaryConverter", False, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItemConverter", False, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+CaseInsensitiveDictionaryConverter", True, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItemConverter", True, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", False, "SetPropertyValue", "(Microsoft.Build.Framework.TaskPropertyInfo,System.Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", False, "GetTaskParameters", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", False, "Initialize", "(System.String,System.Collections.Generic.IDictionary<System.String,Microsoft.Build.Framework.TaskPropertyInfo>,System.String,Microsoft.Build.Framework.IBuildEngine)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
