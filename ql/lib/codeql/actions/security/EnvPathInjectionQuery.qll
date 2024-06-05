@@ -13,8 +13,9 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
       writeToGitHubPath(run, value) and
-      // TODO: add support for other commands like `<`, `jq`, ...
-      value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+      // (eg: echo DATABASE_SHA=`yq '.creationMetadata.sha' codeql-database.yml` >> $GITHUB_ENV)
+      value
+          .regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<", "jq\\s+", "yq\\s+"] + ".*" + ["`", "\\)"])
     )
   }
 }

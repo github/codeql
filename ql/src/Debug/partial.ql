@@ -5,6 +5,8 @@
  * @precision low
  * @problem.severity error
  * @id actions/test-dataflow
+ * @tags actions
+ *       debug
  */
 
 import actions

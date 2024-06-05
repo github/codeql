@@ -17,3 +17,5 @@
     tags contain:
       - experimental
       - testing
+      - debug
+      - model-generator

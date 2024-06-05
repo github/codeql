@@ -26,8 +26,9 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
       step.getAFollowingStep() = run and
       writeToGitHubEnv(run, content) and
       extractVariableAndValue(content, _, value) and
-      // TODO: add support for other commands like `<`, `jq`, ...
-      value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+      // (eg: echo DATABASE_SHA=`yq '.creationMetadata.sha' codeql-database.yml` >> $GITHUB_ENV)
+      value
+          .regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<", "jq\\s+", "yq\\s+"] + ".*" + ["`", "\\)"])
     )
   }
 }
