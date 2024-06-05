@@ -211,7 +211,8 @@ private predicate canonicalPkgLink(string package, string subpkg) {
 
 /**
  * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
+ * which have MaD framework coverage (including `package` itself).
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
   pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
