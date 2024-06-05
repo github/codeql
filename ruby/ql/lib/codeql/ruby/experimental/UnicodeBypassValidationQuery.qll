@@ -100,8 +100,7 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
             "partition", "prepend", "replace", "rpartition", "scan", "split", "undump",
             "unpack" + ["", "1"]
           ] and
-        source = cn and
-        source.getLocation().getFile().getBaseName().matches("object.rb")
+        source = cn 
       )
       or
       exists(DataFlow::CallNode cn |
