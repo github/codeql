@@ -15,6 +15,11 @@ private module FlowSummaries {
   private import semmle.go.dataflow.FlowSummary as F
 }
 
+bindingset[pos]
+private string positionToString(int pos) {
+  if pos = -1 then result = "receiver" else result = pos.toString()
+}
+
 module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   class SummarizedCallableBase = Callable;
 
@@ -22,9 +27,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
 
   ReturnKind getStandardReturnValueKind() { result = getReturnKind(0) }
 
-  string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
+  string encodeParameterPosition(ParameterPosition pos) { result = positionToString(pos) }
 
-  string encodeArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
+  string encodeArgumentPosition(ArgumentPosition pos) { result = positionToString(pos) }
 
   string encodeReturn(ReturnKind rk, string arg) {
     exists(int pos |
@@ -273,6 +278,37 @@ module Private {
   module External {
     import Impl::Private::External
     import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
+
+    /**
+     * Holds if an external flow summary exists for `c` with input specification
+     * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
+     */
+    predicate summaryElement(
+      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance,
+      string model
+    ) {
+      exists(
+        string namespace, string type, boolean subtypes, string name, string signature, string ext,
+        QlBuiltins::ExtensionId madId
+      |
+        summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+          provenance, madId) and
+        model = "MaD:" + madId.toString() and
+        c.asFunction() =
+          interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
+      )
+    }
+
+    /**
+     * Holds if a neutral model exists for `c` of kind `kind`
+     * and with provenance `provenance`.
+     */
+    predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
+      exists(string namespace, string type, string name, string signature |
+        neutralModel(namespace, type, name, signature, kind, provenance) and
+        c.asFunction() = interpretElement(namespace, type, false, name, signature, "").asEntity()
+      )
+    }
   }
 
   /**

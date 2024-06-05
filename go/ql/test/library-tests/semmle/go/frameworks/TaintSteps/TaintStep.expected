@@ -1,3 +1,5 @@
+invalidModelRow
+#select
 | crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[0] |
 | crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[1] |
 | crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | ... := ...[0] |
