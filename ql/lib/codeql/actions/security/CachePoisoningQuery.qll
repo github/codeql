@@ -17,50 +17,39 @@ string defaultBranchNames() {
     result = default_branch_name
   )
   or
-  not exists(string default_branch_name |
-    repositoryDataModel(_, default_branch_name)
-  ) and
+  not exists(string default_branch_name | repositoryDataModel(_, default_branch_name)) and
   result = ["main", "master"]
 }
 
-predicate runsOnDefaultBranch(Job j) {
-  exists(Event e |
-    j.getATriggerEvent() = e and
+predicate runsOnDefaultBranch(Event e) {
+  (
+    e.getName() = defaultBranchTriggerEvent() and
+    not e.getName() = "pull_request_target"
+    or
+    e.getName() = "push" and
+    e.getAPropertyValue("branches") = defaultBranchNames()
+    or
+    e.getName() = "pull_request_target" and
     (
-      e.getName() = defaultBranchTriggerEvent() and
-      not e.getName() = "pull_request_target"
+      // no filtering
+      not e.hasProperty("branches") and not e.hasProperty("branches-ignore")
       or
-      e.getName() = "push" and
+      // only branches-ignore filter
+      e.hasProperty("branches-ignore") and
+      not e.hasProperty("branches") and
+      not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
+      or
+      // only branches filter
+      e.hasProperty("branches") and
+      not e.hasProperty("branches-ignore") and
       e.getAPropertyValue("branches") = defaultBranchNames()
       or
-      e.getName() = "pull_request_target" and
-      (
-        // no filtering
-        not e.hasProperty("branches") and not e.hasProperty("branches-ignore")
-        or
-        // only branches-ignore filter
-        e.hasProperty("branches-ignore") and
-        not e.hasProperty("branches") and
-        not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
-        or
-        // only branches filter
-        e.hasProperty("branches") and
-        not e.hasProperty("branches-ignore") and
-        e.getAPropertyValue("branches") = defaultBranchNames()
-        or
-        // branches and branches-ignore filters
-        e.hasProperty("branches") and
-        e.hasProperty("branches-ignore") and
-        e.getAPropertyValue("branches") = defaultBranchNames() and
-        not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
-      )
+      // branches and branches-ignore filters
+      e.hasProperty("branches") and
+      e.hasProperty("branches-ignore") and
+      e.getAPropertyValue("branches") = defaultBranchNames() and
+      not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
     )
-  )
-  or
-  j.getATriggerEvent().getName() = "workflow_call" and
-  exists(ExternalJob call |
-    call.getCallee() = j.getLocation().getFile().getRelativePath() and
-    runsOnDefaultBranch(call)
   )
 }
 

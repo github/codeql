@@ -17,16 +17,26 @@ import codeql.actions.security.CodeInjectionQuery
 import codeql.actions.security.CachePoisoningQuery
 import CodeInjectionFlow::PathGraph
 
-from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, LocalJob j
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, LocalJob j, Event e
 where
-  CodeInjectionFlow::flowPath(source, sink) and
-  j = sink.getNode().asExpr().getEnclosingJob() and
+  j.getATriggerEvent() = e and
   // job can be triggered by an external user
-  j.getATriggerEvent().isExternallyTriggerable() and
-  // excluding privileged workflows since they can be easily exploited in similar circumstances
+  e.isExternallyTriggerable() and
+  (
+    // the workflow runs in the context of the default branch
+    runsOnDefaultBranch(e)
+    or
+    // the workflow caller runs in the context of the default branch
+    e.getName() = "workflow_call" and
+    exists(ExternalJob caller |
+      caller.getCallee() = j.getLocation().getFile().getRelativePath() and
+      runsOnDefaultBranch(caller.getATriggerEvent())
+    )
+  ) and
+  // excluding privileged workflows since they can be exploited in easier circumstances
   not j.isPrivileged() and
-  // The workflow runs in the context of the default branch
-  runsOnDefaultBranch(j)
+  CodeInjectionFlow::flowPath(source, sink) and
+  j = sink.getNode().asExpr().getEnclosingJob()
 select sink.getNode(), source, sink,
   "Unprivileged code injection in $@, which may lead to cache poisoning.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()

@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  verify-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Rebuild the dist/ directory
+        run: npm run build
+
+      - name: Compare the expected and actual dist/ directories
+        run: bin/check-build-output-in-dist-directory

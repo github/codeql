@@ -16,15 +16,25 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
 
-from LocalJob j, PRHeadCheckoutStep checkout, Step s
+from LocalJob j, Event e, PRHeadCheckoutStep checkout, Step s
 where
-  // the workflow runs in the context of the default branch
-  runsOnDefaultBranch(j) and
+  j.getATriggerEvent() = e and
+  // job can be triggered by an external user
+  e.isExternallyTriggerable() and
+  (
+    // the workflow runs in the context of the default branch
+    runsOnDefaultBranch(e)
+    or
+    // the workflow caller runs in the context of the default branch
+    e.getName() = "workflow_call" and
+    exists(ExternalJob caller |
+      caller.getCallee() = j.getLocation().getFile().getRelativePath() and
+      runsOnDefaultBranch(caller.getATriggerEvent())
+    )
+  ) and
   // the job checkouts untrusted code from a pull request
   // TODO: Consider adding artifact downloads as a potential source of cache poisoning
   j.getAStep() = checkout and
-  // job can be triggered by an external user
-  j.getATriggerEvent().isExternallyTriggerable() and
   (
     // the job writes to the cache
     // (No need to follow the checkout step as the cache writing is normally done after the job completes)
@@ -35,7 +45,7 @@ where
     // (The cache specific token can be leaked even for non-privileged workflows)
     checkout.getAFollowingStep() = s and
     s instanceof PoisonableStep and
-    // excluding privileged workflows since they can be easily exploited in similar circumstances
+    // excluding privileged workflows since they can be exploited in easier circumstances
     not j.isPrivileged()
   )
 select checkout, "Potential cache poisoning in the context of the default branch on step $@.", s,
