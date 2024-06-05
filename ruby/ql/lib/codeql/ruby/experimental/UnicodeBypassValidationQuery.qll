@@ -83,7 +83,7 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
     (
       exists(Escaping escaping | source = escaping.getOutput())
       or
-      exists(RegexExecution re | source = re)
+      source instanceof RegexExecution
       or
       // String Manipulation Method Calls
       // https://ruby-doc.org/core-2.7.0/String.html
@@ -100,7 +100,7 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
             "partition", "prepend", "replace", "rpartition", "scan", "split", "undump",
             "unpack" + ["", "1"]
           ] and
-        source = cn 
+        source = cn
       )
       or
       exists(DataFlow::CallNode cn |
