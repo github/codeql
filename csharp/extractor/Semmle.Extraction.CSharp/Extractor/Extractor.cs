@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp
                 };
 
                 var compilerCalls = BinaryLogUtil.ReadAllCompilerCalls(fileStream, predicate);
-                var exitCode = ExitCode.Ok;
+                var allFailed = true;
                 foreach (var compilerCall in compilerCalls)
                 {
                     var diagnosticName = compilerCall.GetDiagnosticName();
@@ -130,13 +130,13 @@ namespace Semmle.Extraction.CSharp
                     compilerCallOptions.CompilerArguments.AddRange(compilerCall.GetArguments());
                     logger.LogInfo($"Running extractor on arguments from binary log. Processing {diagnosticName}.");
                     var ec = Run(compilerCallOptions, logger);
-                    if (ec != ExitCode.Ok)
+                    if (ec != ExitCode.Failed)
                     {
-                        exitCode = ec;
+                        allFailed &= false;
                     }
                 }
 
-                return exitCode;
+                return allFailed ? ExitCode.Failed : ExitCode.Ok;
             }
             else
             {
