@@ -1,4 +1,4 @@
-// semmle-extractor-options: -I${testdir}/subdir1
+// semmle-extractor-options: -I${testdir}/subdir1 --edg --ms_compatibility
 // main1.cpp
 #include "common.h"
 
