@@ -20,7 +20,7 @@ func testIntSinkAmd64() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed)
+		_ = int(parsed) // $ hasValueFlow="parsed"
 		_ = uint(parsed)
 	}
 }

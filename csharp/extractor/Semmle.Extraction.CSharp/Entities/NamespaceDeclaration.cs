@@ -1,10 +1,9 @@
 
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Entities;
-using System.IO;
-using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -28,7 +27,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol!;
+            var @namespace = (INamespaceSymbol?)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol;
+            if (@namespace is null)
+            {
+                throw new InternalError(node, "Namespace symbol not found");
+            }
+
             var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
             trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));

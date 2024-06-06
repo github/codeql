@@ -61,7 +61,7 @@ enum Variant {
 
 protocol BlockMode { }
 
-struct CBC: BlockMode { 
+struct CBC: BlockMode {
 	init() { }
 }
 
@@ -98,13 +98,13 @@ func test() {
 	let blockMode = CBC()
 	let padding = Padding.noPadding
 	let variant = Variant.sha2
-	
+
 	let iv = getRandomArray()
 	let ivString = String(cString: iv)
 
 	// AES test cases
-	let ab1 = AES(key: key2, blockMode: blockMode, padding: padding) // BAD [NOT DETECTED]
-	let ab2 = AES(key: key2, blockMode: blockMode) // BAD [NOT DETECTED]
+	let ab1 = AES(key: key2, blockMode: blockMode, padding: padding) // BAD
+	let ab2 = AES(key: key2, blockMode: blockMode) // BAD
 	let ab3 = AES(key: keyString, iv: ivString) // BAD
 	let ab4 = AES(key: keyString, iv: ivString, padding: padding) // BAD
 

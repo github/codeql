@@ -18,7 +18,7 @@ predicate instanceofInEquals(EqualsMethod m, InstanceOfExpr e) {
   e.getEnclosingCallable() = m and
   e.getExpr().(VarAccess).getVariable() = m.getParameter() and
   exists(RefType instanceofType |
-    instanceofType = e.getCheckedType() and
+    instanceofType = e.getSyntacticCheckedType() and
     not instanceofType.isFinal()
   )
 }

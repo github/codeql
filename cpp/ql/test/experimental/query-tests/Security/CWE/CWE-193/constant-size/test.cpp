@@ -143,6 +143,76 @@ void testStrncmp1() {
     testStrncmp2(asdf);
 }
 
+void countdownBuf1(int **p) {
+  *--(*p) = 1; // GOOD [FALSE POSITIVE]
+  *--(*p) = 2; // GOOD
+  *--(*p) = 3; // GOOD
+  *--(*p) = 4; // GOOD
+}
+
+void countdownBuf2() {
+  int buf[4];
+
+  int *x = buf + 4;
+
+  countdownBuf1(&x);
+}
+
+int access(int *p) {
+    return p[0];
+}
+
+
+// unrolled loop style seen in crypto code.
+int countdownLength1(int *p, int len) {
+    while(len > 0) {
+        access(p);
+        p[1] = 1;
+        p[2] = 2;
+        p[3] = 3;
+        p[4] = 4;
+        p[5] = 5;
+        p[6] = 6; // BAD [FALSE NEGATIVE]
+        p[7] = 7; // BAD [FALSE NEGATIVE]
+        p += 8;
+        len -= 8;
+    }
+
+    return p[5];
+}
+
+int callCountdownLength() {
+    
+    int buf[6];
+
+    return countdownLength1(buf, 6);
+}
+
+int countdownLength2() {
+    int buf[6];
+    int len = 6;
+    int *p = buf;
+    
+    if(len % 8) {
+        return -1;
+    }
+
+    while(len > 0) {
+        p[0] = 0;
+        p[1] = 1;
+        p[2] = 2;
+        p[3] = 3;
+        p[4] = 4;
+        p[5] = 5;
+        p[6] = 6; // GOOD
+        p[7] = 7; // GOOD
+        p += 8;
+        len -= 8;
+    }
+
+    return p[5];
+}
+
 void pointer_size_larger_than_array_element_size() {
     unsigned char buffer[100]; // getByteSize() = 100
     int *ptr = (int *)buffer; // pai.getElementSize() will be sizeof(int) = 4 -> size = 25
@@ -217,4 +287,68 @@ void test_call_use2() {
 
     unsigned char buffer3[3];
     call_call_use(buffer3,3);
+}
+
+int guardingCallee(int *arr, int size) {
+    if (size > MAX_SIZE) {
+        return -1;
+    }
+
+    int sum;
+    for (int i = 0; i < size; i++) {
+        sum += arr[i]; // GOOD [FALSE POSITIVE] - guarded by size
+    }
+    return sum;
+}
+
+int guardingCaller() {
+    int arr1[MAX_SIZE];
+    guardingCallee(arr1, MAX_SIZE);
+    
+    int arr2[10];
+    guardingCallee(arr2, 10);
+}
+
+// simplified md5 padding
+void correlatedCondition(int num) {
+    char temp[64];
+
+    char *end;
+    if(num < 64) {
+        if (num < 56) {
+            end = temp + 56;
+        }
+        else if (num < 64) {
+            end = temp + 64; // GOOD [FALSE POSITVE]
+        }
+        char *temp2 = temp + num;
+        while(temp2 != end) {
+            *temp2 = 0;
+            temp2++;
+        }
+        if(num < 56) {
+            temp2[0] = 0;
+            temp2[1] = 0;
+            // ...
+            temp2[7] = 0;
+        }
+    }
+}
+
+int positiveRange(int x) {
+    if (x < 40) {
+        return -1;
+    }
+    if (x > 1024) {
+        return -1;
+    }
+
+    int offset = (unsigned char)(x + 7)/8;
+
+    int arr[128];
+
+    for(int i=127-offset; i>= 0; i--) {
+        arr[i] = arr[i+1] + arr[i+offset]; // GOOD
+    }
+    return arr[0];
 }

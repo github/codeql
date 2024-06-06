@@ -1,3 +1,252 @@
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| .b
+#-----|  -> return ...
+
+#-----| .b
+#-----|  -> value
+
+#-----| .bs
+#-----|  -> return ...
+
+#-----| .bs
+#-----|  -> value
+
+#-----| .c
+#-----|  -> return ...
+
+#-----| .field
+#-----|  -> return ...
+
+#-----| .field
+#-----|  -> value
+
+#-----| .mayB
+#-----|  -> return ...
+
+#-----| .mayB
+#-----|  -> value
+
+#-----| .myInt
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> value
+
+#-----| .x
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> value
+
+#-----| .x
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> value
+
+#-----| KeyPathComponent
+#-----|  -> #keyPath(...)
+
+#-----| await ...
+#-----|  -> for ... in ... { ... }
+
+#-----| getter for .b
+#-----|  -> &...
+
+#-----| getter for .bs
+#-----|  -> &...
+
+#-----| getter for .field
+#-----|  -> &...
+
+#-----| getter for .mayB
+#-----|  -> &...
+
+#-----| getter for .x
+#-----|  -> &...
+
+#-----| getter for .x
+#-----|  -> &...
+
+#-----| getter for .x
+#-----|  -> &...
+
+#-----| n
+#-----|  -> _unimplementedInitializer(className:initName:file:line:column:)
+
+#-----| return
+#-----| return -> exit Derived.init(n:) (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| self
+#-----|  -> .myInt
+
+#-----| self
+#-----|  -> .c
+
+#-----| self
+#-----|  -> .field
+
+#-----| self
+#-----|  -> .field
+
+#-----| self
+#-----|  -> getter for .field
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> getter for .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> getter for .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> getter for .x
+
+#-----| self
+#-----|  -> .mayB
+
+#-----| self
+#-----|  -> .mayB
+
+#-----| self
+#-----|  -> getter for .mayB
+
+#-----| self
+#-----|  -> .bs
+
+#-----| self
+#-----|  -> .bs
+
+#-----| self
+#-----|  -> getter for .bs
+
+#-----| self
+#-----|  -> .b
+
+#-----| self
+#-----|  -> .b
+
+#-----| self
+#-----|  -> getter for .b
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| var ... = ...
+#-----|  -> .next()
+
+#-----| var ... = ...
+#-----|  -> .next()
+
+#-----| var ... = ...
+#-----|  -> .next()
+
 cfg.swift:
 #    5| enter returnZero()
 #-----|  -> returnZero()
@@ -91,9 +340,9 @@ cfg.swift:
 #-----| exception -> exit mightThrow(x:) (abnormal)
 
 #   19| MyError.Type
-#-----|  -> (Error) ...
+#-----|  -> (any Error) ...
 
-#   19| (Error) ...
+#   19| (any Error) ...
 #-----|  -> throw ...
 
 #   19| .error1
@@ -130,11 +379,11 @@ cfg.swift:
 #   22| .error3
 #-----|  -> MyError.Type
 
-#   22| (Error) ...
+#   22| (any Error) ...
 #-----|  -> throw ...
 
 #   22| call to ...
-#-----|  -> (Error) ...
+#-----|  -> (any Error) ...
 
 #   22| x
 #-----|  -> 1
@@ -956,6 +1205,7 @@ cfg.swift:
 #-----|  -> self
 
 #   99| self
+#-----|  -> self
 
 #  100| self
 #-----|  -> n
@@ -1422,7 +1672,19 @@ cfg.swift:
 #-----|  -> x
 
 #  137| x
-#-----|  -> ....(_:_:)
+#-----|  -> $generator
+
+#  138| $generator
+#-----|  -> &...
+
+#  138| &...
+#-----|  -> call to next()
+
+#  138| .next()
+#-----|  -> $generator
+
+#  138| call to next()
+#-----|  -> for ... in ... { ... }
 
 #  138| for ... in ... { ... }
 #-----| non-empty -> _
@@ -1431,11 +1693,20 @@ cfg.swift:
 #  138| _
 #-----| match -> { ... }
 
+#  138| $generator
+#-----| match -> .makeIterator()
+
 #  138| 0
 #-----|  -> 10
 
 #  138| ... ....(_:_:) ...
-#-----|  -> for ... in ... { ... }
+#-----|  -> call to makeIterator()
+
+#  138| .makeIterator()
+#-----|  -> ....(_:_:)
+
+#  138| call to makeIterator()
+#-----|  -> var ... = ...
 
 #  138| ....(_:_:)
 #-----|  -> Int.Type
@@ -1447,7 +1718,7 @@ cfg.swift:
 #-----|  -> ... ....(_:_:) ...
 
 #  138| { ... }
-#-----|  -> for ... in ... { ... }
+#-----|  -> .next()
 
 #  140| switch x { ... }
 #-----|  -> x
@@ -1458,25 +1729,43 @@ cfg.swift:
 #  141| case ...
 #-----|  -> =~ ...
 
-#  141| 0
+#  141| $match
+#-----|  -> ... ~=(_:_:) ...
+
+#  141| ... ~=(_:_:) ...
 #-----|  -> =~ ...
 
+#  141| 0
+#-----|  -> $match
+
 #  141| =~ ...
-#-----|  -> 0
+#-----|  -> ~=(_:_:)
 
 #  141| =~ ...
 #-----| no-match -> =~ ...
 #-----| match -> true
 
-#  141| 1
+#  141| ~=(_:_:)
+#-----|  -> 0
+
+#  141| $match
+#-----|  -> ... ~=(_:_:) ...
+
+#  141| ... ~=(_:_:) ...
 #-----|  -> =~ ...
 
+#  141| 1
+#-----|  -> $match
+
 #  141| =~ ...
-#-----|  -> 1
+#-----|  -> ~=(_:_:)
 
 #  141| =~ ...
 #-----| match -> true
 #-----| no-match -> case ...
+
+#  141| ~=(_:_:)
+#-----|  -> 1
 
 #  142| return ...
 #-----| return -> exit patterns(x:) (normal)
@@ -1487,15 +1776,24 @@ cfg.swift:
 #  144| case ...
 #-----|  -> =~ ... where ...
 
+#  144| $match
+#-----|  -> ... ~=(_:_:) ...
+
+#  144| ... ~=(_:_:) ...
+#-----|  -> =~ ...
+
 #  144| =~ ...
 #-----| match, no-match -> ... .&&(_:_:) ...
 #-----| no-match -> case ...
 
 #  144| x
-#-----|  -> =~ ...
+#-----|  -> $match
+
+#  144| ~=(_:_:)
+#-----|  -> x
 
 #  144| =~ ... where ...
-#-----|  -> x
+#-----|  -> ~=(_:_:)
 
 #  144| ... .&&(_:_:) ...
 
@@ -4559,6 +4857,7 @@ cfg.swift:
 #-----|  -> self
 
 #  353| self
+#-----|  -> self
 
 #  354| self
 #-----|  -> arg
@@ -4828,6 +5127,7 @@ cfg.swift:
 #-----|  -> cfg.Derived
 
 #  377| call to _unimplementedInitializer(className:initName:file:line:column:)
+#-----|  -> return
 
 #  377| cfg.Derived
 #-----|  -> #...
@@ -4858,6 +5158,7 @@ cfg.swift:
 #-----|  -> exit Derived.init(n:)
 
 #  377| self
+#-----|  -> n
 
 #  378| self
 #-----|  -> C.init(n:)
@@ -5022,16 +5323,19 @@ cfg.swift:
 #-----|  -> self
 
 #  394| self
+#-----|  -> self
 
 #  394| self
 #-----|  -> value
 
 #  394| self
+#-----|  -> self
 
 #  394| set
 #-----|  -> self
 
 #  394| value
+#-----|  -> self
 
 #  394| yield ...
 #-----|  -> exit _modify (normal)
@@ -5194,16 +5498,19 @@ cfg.swift:
 #-----|  -> self
 
 #  410| self
+#-----|  -> self
 
 #  410| self
 #-----|  -> value
 
 #  410| self
+#-----|  -> self
 
 #  410| set
 #-----|  -> self
 
 #  410| value
+#-----|  -> self
 
 #  410| yield ...
 #-----|  -> exit _modify (normal)
@@ -5271,16 +5578,19 @@ cfg.swift:
 #-----|  -> self
 
 #  417| self
+#-----|  -> self
 
 #  417| self
 #-----|  -> value
 
 #  417| self
+#-----|  -> self
 
 #  417| set
 #-----|  -> self
 
 #  417| value
+#-----|  -> self
 
 #  417| yield ...
 #-----|  -> exit _modify (normal)
@@ -5363,16 +5673,19 @@ cfg.swift:
 #-----|  -> self
 
 #  446| self
+#-----|  -> self
 
 #  446| self
 #-----|  -> value
 
 #  446| self
+#-----|  -> self
 
 #  446| set
 #-----|  -> self
 
 #  446| value
+#-----|  -> self
 
 #  446| yield ...
 #-----|  -> exit _modify (normal)
@@ -5408,16 +5721,19 @@ cfg.swift:
 #-----|  -> self
 
 #  450| self
+#-----|  -> self
 
 #  450| self
 #-----|  -> value
 
 #  450| self
+#-----|  -> self
 
 #  450| set
 #-----|  -> self
 
 #  450| value
+#-----|  -> self
 
 #  450| yield ...
 #-----|  -> exit _modify (normal)
@@ -5453,16 +5769,19 @@ cfg.swift:
 #-----|  -> self
 
 #  451| self
+#-----|  -> self
 
 #  451| self
 #-----|  -> value
 
 #  451| self
+#-----|  -> self
 
 #  451| set
 #-----|  -> self
 
 #  451| value
+#-----|  -> self
 
 #  451| yield ...
 #-----|  -> exit _modify (normal)
@@ -5498,16 +5817,19 @@ cfg.swift:
 #-----|  -> self
 
 #  452| self
+#-----|  -> self
 
 #  452| self
 #-----|  -> value
 
 #  452| self
+#-----|  -> self
 
 #  452| set
 #-----|  -> self
 
 #  452| value
+#-----|  -> self
 
 #  452| yield ...
 #-----|  -> exit _modify (normal)
@@ -5640,6 +5962,7 @@ cfg.swift:
 #-----|  -> KeyPathComponent
 
 #  459| KeyPathComponent
+#-----|  -> KeyPathComponent
 
 #  461| var ... = ...
 #-----|  -> apply_kpGet_bs_0_x
@@ -5965,3 +6288,719 @@ cfg.swift:
 
 #  519| x
 #-----|  -> (Int) ...
+
+#  522| enter testAsyncFor()
+#-----|  -> testAsyncFor()
+
+#  522| exit testAsyncFor()
+
+#  522| exit testAsyncFor() (normal)
+#-----|  -> exit testAsyncFor()
+
+#  522| testAsyncFor()
+#-----|  -> stream
+
+#  523| var ... = ...
+#-----|  -> $i$generator
+
+#  523| stream
+#-----| match -> AsyncStream<Element>.init(_:bufferingPolicy:_:)
+
+#  523| AsyncStream<Element>.init(_:bufferingPolicy:_:)
+#-----|  -> AsyncStream<Int>.Type
+
+#  523| AsyncStream<Int>.Type
+#-----|  -> Int.Type
+
+#  523| call to AsyncStream<Element>.init(_:bufferingPolicy:_:)
+#-----|  -> var ... = ...
+
+#  523| Int.Type
+#-----|  -> .self
+
+#  523| .self
+#-----|  -> .bufferingNewest
+
+#  523| AsyncStream<Int>.Continuation.BufferingPolicy.Type
+#-----|  -> 5
+
+#  523| .bufferingNewest
+#-----|  -> AsyncStream<Int>.Continuation.BufferingPolicy.Type
+
+#  523| call to ...
+#-----|  -> { ... }
+
+#  523| 5
+#-----|  -> call to ...
+
+#  523| enter { ... }
+#-----|  -> { ... }
+
+#  523| exit { ... }
+
+#  523| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  523| { ... }
+#-----|  -> continuation
+
+#  523| { ... }
+#-----|  -> call to AsyncStream<Element>.init(_:bufferingPolicy:_:)
+
+#  524| continuation
+#-----|  -> .detached(priority:operation:)
+
+#  525| Task<(), Never>.Type
+#-----|  -> default priority
+
+#  525| .detached(priority:operation:)
+#-----|  -> Task<(), Never>.Type
+
+#  525| call to detached(priority:operation:)
+#-----|  -> exit { ... } (normal)
+
+#  525| default priority
+#-----|  -> { ... }
+
+#  525| enter { ... }
+#-----|  -> { ... }
+
+#  525| exit { ... }
+
+#  525| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  525| { ... }
+#-----|  -> $i$generator
+
+#  525| { ... }
+#-----|  -> call to detached(priority:operation:)
+
+#  526| $i$generator
+#-----|  -> &...
+
+#  526| &...
+#-----|  -> call to next()
+
+#  526| .next()
+#-----|  -> $i$generator
+
+#  526| call to next()
+#-----|  -> for ... in ... { ... }
+
+#  526| for ... in ... { ... }
+#-----| non-empty -> i
+#-----| empty -> .finish()
+
+#  526| i
+#-----| match -> .yield(_:)
+
+#  526| $i$generator
+#-----| match -> .makeIterator()
+
+#  526| 1
+#-----|  -> 100
+
+#  526| ... ....(_:_:) ...
+#-----|  -> call to makeIterator()
+
+#  526| .makeIterator()
+#-----|  -> ....(_:_:)
+
+#  526| call to makeIterator()
+#-----|  -> var ... = ...
+
+#  526| ....(_:_:)
+#-----|  -> Int.Type
+
+#  526| Int.Type
+#-----|  -> 1
+
+#  526| 100
+#-----|  -> ... ....(_:_:) ...
+
+#  527| continuation
+#-----|  -> i
+
+#  527| .yield(_:)
+#-----|  -> continuation
+
+#  527| call to yield(_:)
+#-----|  -> .next()
+
+#  527| i
+#-----|  -> call to yield(_:)
+
+#  529| continuation
+#-----|  -> call to finish()
+
+#  529| .finish()
+#-----|  -> continuation
+
+#  529| call to finish()
+#-----|  -> exit { ... } (normal)
+
+#  533| $i$generator
+#-----|  -> &...
+
+#  533| &...
+#-----|  -> call to next()
+
+#  533| .next()
+#-----|  -> $i$generator
+
+#  533| call to next()
+#-----|  -> await ...
+
+#  533| for ... in ... { ... }
+#-----| empty -> exit testAsyncFor() (normal)
+#-----| non-empty -> i
+
+#  533| i
+#-----| match -> print(_:separator:terminator:)
+
+#  533| $i$generator
+#-----| match -> .makeAsyncIterator()
+
+#  533| (AsyncStream<Int>) ...
+#-----|  -> call to makeAsyncIterator()
+
+#  533| .makeAsyncIterator()
+#-----|  -> stream
+
+#  533| call to makeAsyncIterator()
+#-----|  -> var ... = ...
+
+#  533| stream
+#-----|  -> (AsyncStream<Int>) ...
+
+#  534| print(_:separator:terminator:)
+#-----|  -> i
+
+#  534| call to print(_:separator:terminator:)
+#-----|  -> .next()
+
+#  534| default separator
+#-----|  -> default terminator
+
+#  534| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#  534| (Any) ...
+#-----|  -> [...]
+
+#  534| [...]
+#-----|  -> [...]
+
+#  534| [...]
+#-----|  -> default separator
+
+#  534| i
+#-----|  -> (Any) ...
+
+#  538| enter testNilCoalescing(x:)
+#-----|  -> testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:) (abnormal)
+#-----|  -> exit testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:) (normal)
+#-----|  -> exit testNilCoalescing(x:)
+
+#  538| testNilCoalescing(x:)
+#-----|  -> x
+
+#  538| x
+#-----|  -> x
+
+#  539| return ...
+#-----| return -> exit testNilCoalescing(x:) (normal)
+
+#  539| x
+#-----|  -> emptiness test for ... ??(_:_:) ...
+
+#  539| ... ??(_:_:) ...
+#-----| exception -> exit testNilCoalescing(x:) (abnormal)
+#-----|  -> return ...
+
+#  539| emptiness test for ... ??(_:_:) ...
+#-----| non-empty -> ... ??(_:_:) ...
+#-----| empty -> { ... }
+
+#  539| 0
+#-----|  -> return ...
+
+#  539| return ...
+#-----|  -> ... ??(_:_:) ...
+
+#  539| { ... }
+#-----|  -> 0
+
+#  542| enter testNilCoalescing2(x:)
+#-----|  -> testNilCoalescing2(x:)
+
+#  542| exit testNilCoalescing2(x:)
+
+#  542| exit testNilCoalescing2(x:) (abnormal)
+#-----|  -> exit testNilCoalescing2(x:)
+
+#  542| exit testNilCoalescing2(x:) (normal)
+#-----|  -> exit testNilCoalescing2(x:)
+
+#  542| testNilCoalescing2(x:)
+#-----|  -> x
+
+#  542| x
+#-----|  -> if ... then { ... } else { ... }
+
+#  543| if ... then { ... } else { ... }
+#-----|  -> StmtCondition
+
+#  543| x
+#-----|  -> emptiness test for ... ??(_:_:) ...
+
+#  543| ... ??(_:_:) ...
+#-----| exception -> exit testNilCoalescing2(x:) (abnormal)
+#-----| true -> 1
+#-----| false -> 0
+
+#  543| StmtCondition
+#-----|  -> x
+
+#  543| emptiness test for ... ??(_:_:) ...
+#-----| non-empty -> ... ??(_:_:) ...
+#-----| empty -> { ... }
+
+#  543| false
+#-----|  -> return ...
+
+#  543| return ...
+#-----|  -> ... ??(_:_:) ...
+
+#  543| { ... }
+#-----|  -> false
+
+#  544| return ...
+#-----| return -> exit testNilCoalescing2(x:) (normal)
+
+#  544| 1
+#-----|  -> return ...
+
+#  546| return ...
+#-----| return -> exit testNilCoalescing2(x:) (normal)
+
+#  546| 0
+#-----|  -> return ...
+
+#  550| enter usesAutoclosure(_:)
+#-----|  -> usesAutoclosure(_:)
+
+#  550| exit usesAutoclosure(_:)
+
+#  550| exit usesAutoclosure(_:) (normal)
+#-----|  -> exit usesAutoclosure(_:)
+
+#  550| usesAutoclosure(_:)
+#-----|  -> expr
+
+#  550| expr
+#-----|  -> expr
+
+#  551| return ...
+#-----| return -> exit usesAutoclosure(_:) (normal)
+
+#  551| expr
+#-----|  -> call to ...
+
+#  551| call to ...
+#-----|  -> return ...
+
+#  554| autoclosureTest()
+#-----|  -> usesAutoclosure(_:)
+
+#  554| enter autoclosureTest()
+#-----|  -> autoclosureTest()
+
+#  554| exit autoclosureTest()
+
+#  554| exit autoclosureTest() (normal)
+#-----|  -> exit autoclosureTest()
+
+#  555| usesAutoclosure(_:)
+#-----|  -> { ... }
+
+#  555| call to usesAutoclosure(_:)
+#-----|  -> exit autoclosureTest() (normal)
+
+#  555| 1
+#-----|  -> return ...
+
+#  555| enter { ... }
+#-----|  -> { ... }
+
+#  555| exit { ... }
+
+#  555| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  555| return ...
+#-----|  -> exit { ... } (normal)
+
+#  555| { ... }
+#-----|  -> 1
+
+#  555| { ... }
+#-----|  -> call to usesAutoclosure(_:)
+
+#  564| MyProcotolImpl.deinit()
+#-----|  -> self
+
+#  564| MyProcotolImpl.init()
+#-----|  -> self
+
+#  564| enter MyProcotolImpl.deinit()
+#-----|  -> MyProcotolImpl.deinit()
+
+#  564| enter MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.init()
+
+#  564| exit MyProcotolImpl.deinit()
+
+#  564| exit MyProcotolImpl.deinit() (normal)
+#-----|  -> exit MyProcotolImpl.deinit()
+
+#  564| exit MyProcotolImpl.init()
+
+#  564| exit MyProcotolImpl.init() (normal)
+#-----|  -> exit MyProcotolImpl.init()
+
+#  564| return
+#-----| return -> exit MyProcotolImpl.init() (normal)
+
+#  564| self
+#-----|  -> { ... }
+
+#  564| self
+#-----|  -> return
+
+#  564| { ... }
+#-----|  -> exit MyProcotolImpl.deinit() (normal)
+
+#  565| enter source()
+#-----|  -> source()
+
+#  565| exit source()
+
+#  565| exit source() (normal)
+#-----|  -> exit source()
+
+#  565| source()
+#-----|  -> self
+
+#  565| self
+#-----|  -> 0
+
+#  565| return ...
+#-----| return -> exit source() (normal)
+
+#  565| 0
+#-----|  -> return ...
+
+#  568| enter getMyProtocol()
+#-----|  -> getMyProtocol()
+
+#  568| exit getMyProtocol()
+
+#  568| exit getMyProtocol() (normal)
+#-----|  -> exit getMyProtocol()
+
+#  568| getMyProtocol()
+#-----|  -> MyProcotolImpl.init()
+
+#  568| return ...
+#-----| return -> exit getMyProtocol() (normal)
+
+#  568| MyProcotolImpl.Type
+#-----|  -> call to MyProcotolImpl.init()
+
+#  568| MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.Type
+
+#  568| (any MyProtocol) ...
+#-----|  -> return ...
+
+#  568| call to MyProcotolImpl.init()
+#-----|  -> (any MyProtocol) ...
+
+#  569| enter getMyProtocolImpl()
+#-----|  -> getMyProtocolImpl()
+
+#  569| exit getMyProtocolImpl()
+
+#  569| exit getMyProtocolImpl() (normal)
+#-----|  -> exit getMyProtocolImpl()
+
+#  569| getMyProtocolImpl()
+#-----|  -> MyProcotolImpl.init()
+
+#  569| return ...
+#-----| return -> exit getMyProtocolImpl() (normal)
+
+#  569| MyProcotolImpl.Type
+#-----|  -> call to MyProcotolImpl.init()
+
+#  569| MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.Type
+
+#  569| call to MyProcotolImpl.init()
+#-----|  -> return ...
+
+#  571| enter sink(arg:)
+#-----|  -> sink(arg:)
+
+#  571| exit sink(arg:)
+
+#  571| exit sink(arg:) (normal)
+#-----|  -> exit sink(arg:)
+
+#  571| sink(arg:)
+#-----|  -> arg
+
+#  571| arg
+#-----|  -> { ... }
+
+#  571| { ... }
+#-----|  -> exit sink(arg:) (normal)
+
+#  573| enter testOpenExistentialExpr(x:y:)
+#-----|  -> testOpenExistentialExpr(x:y:)
+
+#  573| exit testOpenExistentialExpr(x:y:)
+
+#  573| exit testOpenExistentialExpr(x:y:) (normal)
+#-----|  -> exit testOpenExistentialExpr(x:y:)
+
+#  573| testOpenExistentialExpr(x:y:)
+#-----|  -> x
+
+#  573| x
+#-----|  -> y
+
+#  573| y
+#-----|  -> sink(arg:)
+
+#  574| sink(arg:)
+#-----|  -> x
+
+#  574| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  574| OpaqueValueExpr
+#-----|  -> call to source()
+
+#  574| x
+#-----|  -> .source()
+
+#  574| .source()
+#-----|  -> OpaqueValueExpr
+
+#  574| OpenExistentialExpr
+#-----|  -> call to sink(arg:)
+
+#  574| call to source()
+#-----|  -> OpenExistentialExpr
+
+#  575| sink(arg:)
+#-----|  -> .source()
+
+#  575| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  575| y
+#-----|  -> call to source()
+
+#  575| .source()
+#-----|  -> y
+
+#  575| call to source()
+#-----|  -> call to sink(arg:)
+
+#  576| sink(arg:)
+#-----|  -> getMyProtocol()
+
+#  576| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  576| getMyProtocol()
+#-----|  -> call to getMyProtocol()
+
+#  576| OpaqueValueExpr
+#-----|  -> call to source()
+
+#  576| call to getMyProtocol()
+#-----|  -> .source()
+
+#  576| .source()
+#-----|  -> OpaqueValueExpr
+
+#  576| OpenExistentialExpr
+#-----|  -> call to sink(arg:)
+
+#  576| call to source()
+#-----|  -> OpenExistentialExpr
+
+#  577| sink(arg:)
+#-----|  -> .source()
+
+#  577| call to sink(arg:)
+#-----|  -> exit testOpenExistentialExpr(x:y:) (normal)
+
+#  577| getMyProtocolImpl()
+#-----|  -> call to getMyProtocolImpl()
+
+#  577| call to getMyProtocolImpl()
+#-----|  -> call to source()
+
+#  577| .source()
+#-----|  -> getMyProtocolImpl()
+
+#  577| call to source()
+#-----|  -> call to sink(arg:)
+
+#  580| enter singleStmtExpr(_:)
+#-----|  -> singleStmtExpr(_:)
+
+#  580| exit singleStmtExpr(_:)
+
+#  580| exit singleStmtExpr(_:) (normal)
+#-----|  -> exit singleStmtExpr(_:)
+
+#  580| singleStmtExpr(_:)
+#-----|  -> x
+
+#  580| x
+#-----|  -> a
+
+#  581| var ... = ...
+#-----|  -> b
+
+#  581| a
+#-----| match -> switch x { ... }
+
+#  581| SingleValueStmtExpr
+#-----|  -> var ... = ...
+
+#  581| switch x { ... }
+#-----|  -> x
+
+#  581| x
+#-----|  -> case ...
+
+#  582| case ...
+#-----|  -> =~ ...
+
+#  582| .~=(_:_:)
+#-----|  -> Range<Int>.Type
+
+#  582| 0
+#-----|  -> 5
+
+#  582| Range<Int>.Type
+#-----|  -> ...<(_:_:)
+
+#  582| ... ...<(_:_:) ...
+#-----|  -> $match
+
+#  582| ... .~=(_:_:) ...
+#-----|  -> =~ ...
+
+#  582| =~ ...
+#-----|  -> .~=(_:_:)
+
+#  582| =~ ...
+#-----| match -> 1
+#-----| no-match -> case ...
+
+#  582| ...<(_:_:)
+#-----|  -> Int.Type
+
+#  582| Int.Type
+#-----|  -> 0
+
+#  582| $match
+#-----|  -> ... .~=(_:_:) ...
+
+#  582| 5
+#-----|  -> ... ...<(_:_:) ...
+
+#  582| 1
+#-----|  -> ThenStmt
+
+#  582| ThenStmt
+#-----|  -> SingleValueStmtExpr
+
+#  583| _
+#-----| match -> 2
+
+#  583| _
+#-----|  -> _
+
+#  583| case ...
+#-----|  -> _
+
+#  583| 2
+#-----|  -> ThenStmt
+
+#  583| ThenStmt
+#-----|  -> SingleValueStmtExpr
+
+#  585| var ... = ...
+#-----|  -> exit singleStmtExpr(_:) (normal)
+
+#  585| b
+#-----| match -> if ... then { ... } else { ... }
+
+#  585| SingleValueStmtExpr
+#-----|  -> var ... = ...
+
+#  585| if ... then { ... } else { ... }
+#-----|  -> StmtCondition
+
+#  585| StmtCondition
+#-----|  -> .<(_:_:)
+
+#  585| [false] (...)
+#-----| false -> 2
+
+#  585| [true] (...)
+#-----| true -> 1
+
+#  585| x
+#-----|  -> 42
+
+#  585| ... .<(_:_:) ...
+#-----| false -> [false] (...)
+#-----| true -> [true] (...)
+
+#  585| .<(_:_:)
+#-----|  -> Int.Type
+
+#  585| Int.Type
+#-----|  -> x
+
+#  585| 42
+#-----|  -> ... .<(_:_:) ...
+
+#  585| 1
+#-----|  -> ThenStmt
+
+#  585| ThenStmt
+#-----|  -> SingleValueStmtExpr
+
+#  585| 2
+#-----|  -> ThenStmt
+
+#  585| ThenStmt
+#-----|  -> SingleValueStmtExpr

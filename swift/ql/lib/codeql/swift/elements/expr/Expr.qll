@@ -1,5 +1,9 @@
 private import codeql.swift.generated.expr.Expr
 
+// the following QLdoc is generated: if you need to edit it, do it in the schema file
+/**
+ * The base class for all expressions in Swift.
+ */
 class Expr extends Generated::Expr {
   final override Expr getResolveStep() { this.convertsFrom(result) }
 

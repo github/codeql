@@ -12,9 +12,11 @@ import semmle.python.dataflow.new.TaintTracking
 import XpathInjectionCustomizations::XpathInjection
 
 /**
+ * DEPRECATED: Use `XpathInjectionFlow` module instead.
+ *
  * A taint-tracking configuration for detecting "Xpath Injection" vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "Xpath Injection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -22,8 +24,15 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
+
+private module XpathInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/** Global taint-tracking for detecting "Xpath Injection" vulnerabilities. */
+module XpathInjectionFlow = TaintTracking::Global<XpathInjectionConfig>;

@@ -10,5 +10,5 @@ where
   e.getEnclosingCallable() = m and
   e.getExpr() = a and
   a.getTarget().hasName("cd7") and
-  a.getTarget().getType().(DelegateType).hasQualifiedName("Expressions", "D")
+  a.getTarget().getType().(DelegateType).hasFullyQualifiedName("Expressions", "D")
 select m, e, a

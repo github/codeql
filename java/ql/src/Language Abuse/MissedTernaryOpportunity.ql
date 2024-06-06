@@ -15,7 +15,7 @@ import java
 
 predicate complicatedBranch(Stmt branch) {
   any(ConditionalExpr ce).getParent*() = branch or
-  count(MethodAccess a | a.getParent*() = branch) > 1
+  count(MethodCall a | a.getParent*() = branch) > 1
 }
 
 predicate complicatedCondition(Expr cond) {

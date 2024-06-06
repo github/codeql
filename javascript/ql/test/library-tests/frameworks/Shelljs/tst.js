@@ -56,3 +56,6 @@ shelljs.touch(file1, file2);
 shelljs.uniq(file);
 shelljs.uniq(file1, file2);
 shelljs.uniq(opts, file1, file2);
+
+shelljs.cat(file).sed(regex, replacement).exec(cmd);
+shelljs.cat(file).exec(cmd);

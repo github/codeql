@@ -12,6 +12,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for
@@ -65,12 +66,14 @@ private module FabricV1 {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for
  * version 2.x.
  *
  * See http://docs.fabfile.org/en/2.5/getting-st  arted.html.
  */
-private module FabricV2 {
+module FabricV2 {
   /** Gets a reference to the `fabric` module. */
   API::Node fabric() { result = API::moduleImport("fabric") }
 
@@ -95,6 +98,9 @@ private module FabricV2 {
           result = fabric().getMember("Connection")
           or
           result = connection().getMember("Connection")
+          or
+          result =
+            ModelOutput::getATypeNode("fabric.connection.Connection~Subclass").getASubclass*()
         }
 
         /**

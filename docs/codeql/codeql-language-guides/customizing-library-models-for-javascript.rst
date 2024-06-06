@@ -1,8 +1,5 @@
 .. _customizing-library-models-for-javascript:
 
-:orphan:
-:nosearch:
-
 Customizing Library Models for JavaScript
 =========================================
 
@@ -29,8 +26,6 @@ The CodeQL library for JavaScript exposes the following extensible predicates:
 - **sinkModel**\(type, path, kind)
 - **typeModel**\(type1, type2, path)
 - **summaryModel**\(type, path, input, output, kind)
-
-See the `CLI documentation for how to load and use data extensions in a CodeQL evaluation run <https://docs.google.com/document/d/14IYCHX8wWuU-HTvJ2gPSdXQKHKYbWCHQKOgn8oLaa80/edit#heading=h.m0v53lpi6w2n>`__ (internal access required).
 
 We'll explain how to use these using a few examples, and provide some reference material at the end of this article.
 
@@ -219,6 +214,59 @@ For example, the **mysql** model that is included with the CodeQL JS analysis in
 .. code-block:: yaml
 
   - ["mysql.Connection", "mysql", "Member[createConnection].ReturnValue"]
+
+Example: Using fuzzy models to simplify modeling
+------------------------------------------------
+
+In this example, we'll show how to add the following SQL injection sink using a "fuzzy" model:
+
+.. code-block:: ts
+
+  import * as mysql from 'mysql';
+  const pool = mysql.createPool({...});
+  pool.getConnection((err, conn) => {
+    conn.query(q, (err, rows) => {...}); // <-- add 'q' as a SQL injection sink
+  });
+
+We can recognize this using a fuzzy model, as shown in the following extension:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: sinkModel
+      data:
+        - ["mysql", "Fuzzy.Member[query].Argument[0]", "sql-injection"]
+
+- The first column, **"mysql"**, begins the search at places where the `mysql` package is imported.
+- **Fuzzy** selects all objects that appear to originate from the `mysql` package, such as the `pool`, `conn`, `err`, and `rows` objects.
+- **Member[query]** selects the **query** member from any of those objects. In this case, the only such member is `conn.query`.
+  In principle, this would also find expressions such as `pool.query` and `err.query`, but in practice such expressions
+  are not likely to occur, because the `pool` and `err` objects do not have a member named `query`.
+- **Argument[0]** selects the first argument of a call to the selected member, that is, the `q` argument to `conn.query`.
+- **sql-injection** indicates that this is considered as a sink for the SQL injection query.
+
+For reference, a more detailed model might look like this, as described in the preceding examples:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: sinkModel
+      data:
+        - ["mysql.Connection", "Member[query].Argument[0]", "sql-injection"]
+
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: typeModel
+      data:
+        - ["mysql.Pool", "mysql", "Member[createPool].ReturnValue"]
+        - ["mysql.Connection", "mysql.Pool", "Member[getConnection].Argument[0].Parameter[1]"]
+
+The model using the **Fuzzy** component is simpler, at the cost of being approximate.
+This technique is useful when modeling a large or complex library, where it is difficult to write a detailed model.
 
 Example: Adding flow through 'decodeURIComponent'
 -------------------------------------------------
@@ -430,7 +478,10 @@ The following components are supported:
 - **Element** selects an element of an array, iterator, or set object.
 - **MapValue** selects a value of a map object.
 - **Awaited** selects the value of a promise.
-- **Instance** selects instances of a class.
+- **Instance** selects instances of a class, including instances of its subclasses.
+- **Fuzzy** selects all values that are derived from the current value through a combination of the other operations described in this list.
+  For example, this can be used to find all values that appear to originate from a particular package. This can be useful for finding method calls
+  from a known package, but where the receiver type is not known or is difficult to model.
 
 The following components are called "call site filters". They select a subset of the previously-selected calls, if the call fits certain criteria:
 
@@ -471,6 +522,7 @@ Unlike sources, sinks tend to be highly query-specific, rarely affecting more th
 - **request-forgery**: A sink that controls the URL of a request, such as in a **fetch** call.
 - **url-redirection**: A sink that can be used to redirect the user to a malicious URL.
 - **unsafe-deserialization**: A deserialization sink that can lead to code execution or other unsafe behaviour, such as an unsafe YAML parser.
+- **log-injection**: A sink that can be used for log injection, such as in a **console.log** call.
 
 Summary kinds
 ~~~~~~~~~~~~~

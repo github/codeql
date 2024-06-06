@@ -25,9 +25,9 @@ class TestLibrary extends RefType {
 }
 
 /** Holds if the given file is a test file. */
-private predicate isInTestFile(File file) {
+predicate isInTestFile(File file) {
   file.getAbsolutePath().matches(["%/test/%", "%/guava-tests/%", "%/guava-testlib/%"]) and
-  not file.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+  not file.getAbsolutePath().matches(["%/ql/test/%", "%/ql/automodel/test/%"]) // allows our test cases to work
 }
 
 /** Holds if the given compilation unit's package is a JDK internal. */
@@ -53,11 +53,33 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
+/** Holds if the given compilation unit's package is internal. */
+private predicate isInternal(CompilationUnit cu) {
+  isJdkInternal(cu) or
+  cu.getPackage().getName().matches("%internal%")
+}
+
+/** A method relating to lambda flow. */
+private class LambdaFlowMethod extends Method {
+  LambdaFlowMethod() {
+    this.hasQualifiedName("java.lang", "Runnable", "run") or
+    this.hasQualifiedName("java.util", "Comparator",
+      ["comparing", "comparingDouble", "comparingInt", "comparingLong"]) or
+    this.hasQualifiedName("java.util.function", "BiConsumer", "accept") or
+    this.hasQualifiedName("java.util.function", "BiFunction", "apply") or
+    this.hasQualifiedName("java.util.function", "Consumer", "accept") or
+    this.hasQualifiedName("java.util.function", "Function", "apply") or
+    this.hasQualifiedName("java.util.function", "Supplier", "get")
+  }
+}
+
 /** Holds if the given callable is not worth modeling. */
 predicate isUninterestingForModels(Callable c) {
   isInTestFile(c.getCompilationUnit().getFile()) or
-  isJdkInternal(c.getCompilationUnit()) or
+  isInternal(c.getCompilationUnit()) or
   c instanceof MainMethod or
+  c instanceof ToStringMethod or
+  c instanceof LambdaFlowMethod or
   c instanceof StaticInitializer or
   exists(FunctionalExpr funcExpr | c = funcExpr.asMethod()) or
   c.getDeclaringType() instanceof TestLibrary or

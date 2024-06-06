@@ -1,6 +1,6 @@
 name: codeql/javascript-queries
-version: 0.6.4-dev
-groups: 
+version: 1.0.1-dev
+groups:
   - javascript
   - queries
 suites: codeql-suites

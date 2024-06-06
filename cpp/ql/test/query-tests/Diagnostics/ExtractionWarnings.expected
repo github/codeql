@@ -1,0 +1,2 @@
+| doesnotcompile.cpp:4:2:4:2 | Recoverable extraction error: identifier 'This' is undefined | Extraction failed in doesnotcompile.cpp with warning "doesnotcompile.cpp", line 4: error: identifier "This" is undefined\n  \tThis is not correct C/C++ code.\n  \t^\n\n | 1 |
+| doesnotcompile.cpp:4:10:4:10 | Recoverable extraction error: expected a ';' | Extraction failed in doesnotcompile.cpp with warning "doesnotcompile.cpp", line 4: error: expected a ";"\n  \tThis is not correct C/C++ code.\n  \t        ^\n\n | 1 |

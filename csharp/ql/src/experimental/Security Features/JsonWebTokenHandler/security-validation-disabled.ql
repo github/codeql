@@ -21,6 +21,6 @@ from
 where
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation::flow(source, sink) and
   sink.asExpr() = pw.getAnAssignedValue() and
-  pw.hasQualifiedName(qualifier, name)
+  pw.hasFullyQualifiedName(qualifier, name)
 select sink, "The security sensitive property $@ is being disabled by the following value: $@.", pw,
   getQualifiedName(qualifier, name), source, "false"

@@ -2,12 +2,10 @@ import java
 import semmle.code.java.dataflow.DataFlow
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("taint") }
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
 
   predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess sink |
-      sink.getAnArgument() = n.asExpr() and sink.getMethod().hasName("sink")
-    )
+    exists(MethodCall sink | sink.getAnArgument() = n.asExpr() and sink.getMethod().hasName("sink"))
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {

@@ -155,18 +155,6 @@ module API {
      */
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource()`. */
-    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
-
-    /** DEPRECATED. This predicate has been renamed to `asSource()`. */
-    deprecated DataFlow::LocalSourceNode getAnImmediateUse() { result = this.asSource() }
-
-    /** DEPRECATED. This predicate has been renamed to `asSink()`. */
-    deprecated DataFlow::Node getARhs() { result = this.asSink() }
-
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink()`. */
-    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
-
     /**
      * Gets a call to the function represented by this API component.
      */
@@ -239,6 +227,11 @@ module API {
     Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
+     * Gets a node representing an instance of the class (or a transitive subclass of the class) represented by this node.
+     */
+    Node getAnInstance() { result = this.getASubclass*().getReturn() }
+
+    /**
      * Gets a node representing the result from awaiting this node.
      */
     Node getAwaited() { result = this.getASuccessor(Label::await()) }
@@ -269,7 +262,7 @@ module API {
      */
     Node getSubscript(string key) {
       exists(API::Node index | result = this.getSubscriptAt(index) |
-        key = index.getAValueReachingSink().asExpr().(PY::StrConst).getText()
+        key = index.getAValueReachingSink().asExpr().(PY::StringLiteral).getText()
       )
     }
 
@@ -340,6 +333,9 @@ module API {
      */
     DataFlow::Node getInducingNode() { this = Impl::MkUse(result) or this = Impl::MkDef(result) }
 
+    /** Gets the location of this node */
+    PY::Location getLocation() { result = this.getInducingNode().getLocation() }
+
     /**
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
@@ -347,7 +343,7 @@ module API {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)

@@ -185,3 +185,39 @@ class C < A
 end
 
 c = C.new (taint 32)
+
+def invoke_block1 x
+  yield x
+end
+
+def invoke_block2 x
+  invoke_block1 x do |x|
+    yield x
+  end
+end
+
+invoke_block2 (taint 37) do |x|
+  sink x # $ hasValueFlow=37
+end
+
+invoke_block2 "safe" do |x|
+  sink x # $ SPURIOUS hasValueFlow=37
+end
+
+def call_m (x, y)
+  if x.respond_to? :m
+    x.m y
+  end
+end
+
+class D
+  def m x
+    sink x # $ hasValueFlow=38
+  end
+end
+
+class E
+end
+
+call_m(D.new, (taint 38))
+call_m(E.new, (taint 39))

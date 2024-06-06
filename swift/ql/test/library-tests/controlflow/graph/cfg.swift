@@ -518,3 +518,70 @@ func testAvailable() -> Int {
 
   return x
 }
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for i in 1...100 {
+                    continuation.yield(i)
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        print(i)
+    }
+}
+
+func testNilCoalescing(x: Int?) -> Int {
+  return x ?? 0
+}
+
+func testNilCoalescing2(x: Bool?) -> Int {
+  if x ?? false {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
+  return expr()
+}
+
+func autoclosureTest() {
+  usesAutoclosure(1)
+}
+
+// ---
+
+protocol MyProtocol {
+	func source() -> Int
+}
+
+class MyProcotolImpl : MyProtocol {
+	func source() -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func sink(arg: Int) { }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source())
+	sink(arg: y.source())
+	sink(arg: getMyProtocol().source())
+	sink(arg: getMyProtocolImpl().source())
+}
+
+func singleStmtExpr(_ x: Int) {
+  let a = switch x {
+    case 0..<5: 1
+    default: 2
+  }
+  let b = if (x < 42) { 1 } else { 2 }
+}
+// ---

@@ -13,11 +13,13 @@
 
 import java
 
-predicate dangerousMethod(string descriptor) { descriptor = "java.lang.Thread.stop" }
+predicate dangerousMethod(string pack, string type, string name) {
+  pack = "java.lang" and type = "Thread" and name = "stop"
+}
 
-from MethodAccess call, Method target, string descriptor
+from MethodCall call, Method target, string pack, string type, string name
 where
   call.getCallee() = target and
-  descriptor = target.getDeclaringType().getQualifiedName() + "." + target.getName() and
-  dangerousMethod(descriptor)
-select call, "Call to " + descriptor + " is potentially dangerous."
+  target.hasQualifiedName(pack, type, name) and
+  dangerousMethod(pack, type, name)
+select call, "Call to " + pack + "." + type + "." + name + " is potentially dangerous."

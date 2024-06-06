@@ -16,7 +16,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import DataFlow::PathGraph
+import TarSlipImprovFlow::PathGraph
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.Attributes
 import semmle.python.dataflow.new.BarrierGuards
@@ -54,12 +54,10 @@ class AllTarfileOpens extends API::CallNode {
 /**
  * A taint-tracking configuration for detecting more "TarSlip" vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "TarSlip" }
+private module TarSlipImprovConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source = tarfileOpen().getACall() }
 
-  override predicate isSource(DataFlow::Node source) { source = tarfileOpen().getACall() }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     (
       // A sink capturing method calls to `extractall` without `members` argument.
       // For a call to `file.extractall` without `members` argument, `file` is considered a sink.
@@ -100,7 +98,7 @@ class Configuration extends TaintTracking::Configuration {
     not sink.getScope().getLocation().getFile().inStdlib()
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     nodeTo.(MethodCallNode).calls(nodeFrom, "getmembers") and
     nodeFrom instanceof AllTarfileOpens
     or
@@ -113,7 +111,10 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+/** Global taint-tracking for detecting more "TarSlip" vulnerabilities. */
+module TarSlipImprovFlow = TaintTracking::Global<TarSlipImprovConfig>;
+
+from TarSlipImprovFlow::PathNode source, TarSlipImprovFlow::PathNode sink
+where TarSlipImprovFlow::flowPath(source, sink)
 select sink, source, sink, "Extraction of tarfile from $@ to a potentially untrusted source $@.",
   source.getNode(), source.getNode().toString(), sink.getNode(), sink.getNode().toString()

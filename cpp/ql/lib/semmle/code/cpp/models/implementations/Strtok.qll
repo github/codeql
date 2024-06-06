@@ -32,6 +32,8 @@ private class Strtok extends ArrayFunction, AliasFunction, TaintFunction, SideEf
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and output.isReturnValue()
+    or
+    input.isParameterDeref(0) and output.isReturnValueDeref()
   }
 
   override predicate hasOnlySpecificReadSideEffects() { none() }

@@ -22,9 +22,14 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
 
   final override Declaration getFunction() { result = var }
 
-  final Location getLocation() { result = var.getLocation() }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(EnterFunctionTag()) and
+    kind instanceof GotoEdge
+  }
 
-  override Instruction getFirstInstruction() { result = this.getInstruction(EnterFunctionTag()) }
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(ExitFunctionTag())
+  }
 
   override TranslatedElement getChild(int n) {
     n = 1 and
@@ -57,7 +62,7 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     type = getVoidType()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       tag = EnterFunctionTag() and
@@ -65,10 +70,13 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
       or
       tag = AliasedDefinitionTag() and
       result = this.getInstruction(InitializerVariableAddressTag())
-      or
-      tag = InitializerVariableAddressTag() and
-      result = this.getChild(1).getFirstInstruction()
-      or
+    )
+    or
+    tag = InitializerVariableAddressTag() and
+    result = this.getChild(1).getFirstInstruction(kind)
+    or
+    kind instanceof GotoEdge and
+    (
       tag = ReturnTag() and
       result = this.getInstruction(AliasedUseTag())
       or
@@ -77,9 +85,10 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getChild(1) and
-    result = this.getInstruction(ReturnTag())
+    result = this.getInstruction(ReturnTag()) and
+    kind instanceof GotoEdge
   }
 
   final override CppType getInstructionMemoryOperandType(

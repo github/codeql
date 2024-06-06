@@ -18,7 +18,7 @@ extensions:
       - ["org.springframework.util", "AntPathMatcher", False, "tokenizePath", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"]
       - ["org.springframework.util", "AntPathMatcher", False, "tokenizePattern", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"]
       - ["org.springframework.util", "AutoPopulatingList", False, "AutoPopulatingList", "(java.util.List,java.lang.Class)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
-      - ["org.springframework.util", "AutoPopulatingList", False, "AutoPopulatingList", "(java.util.List,org.springframework.util.AutoPopulatingList.ElementFactory)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["org.springframework.util", "AutoPopulatingList", False, "AutoPopulatingList", "(java.util.List,org.springframework.util.AutoPopulatingList$ElementFactory)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["org.springframework.util", "Base64Utils", False, "decode", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "Base64Utils", False, "decodeFromString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "Base64Utils", False, "decodeFromUrlSafeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

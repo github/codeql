@@ -1,5 +1,5 @@
 
-class ViableCallable {
+public class ViableCallable {
 	public <T1, T2, T3> void Run(C1<T1, T2> x1, C1<T1[], T2> x2, T1 t1, T1[] t1s) {
 		// Viable callables: C2.M(), C3.M(), C4.M(), C5.M(), C6.M(), C7.M(), C8.M(), C9.M()
 		x1.M(t1, 8);

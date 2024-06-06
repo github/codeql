@@ -1,36 +1,36 @@
 interfacemembers
-| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | abstract |
-| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | public |
-| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | static |
-| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | public |
-| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | static |
-| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | virtual |
-| INumber<> | StaticInterfaceMembers.cs:7:32:7:32 | + | abstract |
-| INumber<> | StaticInterfaceMembers.cs:7:32:7:32 | + | public |
-| INumber<> | StaticInterfaceMembers.cs:7:32:7:32 | + | static |
-| INumber<> | StaticInterfaceMembers.cs:9:31:9:31 | - | public |
-| INumber<> | StaticInterfaceMembers.cs:9:31:9:31 | - | static |
-| INumber<> | StaticInterfaceMembers.cs:9:31:9:31 | - | virtual |
-| INumber<> | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | abstract |
-| INumber<> | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | public |
-| INumber<> | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | static |
-| INumber<> | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | abstract |
-| INumber<> | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | public |
-| INumber<> | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | static |
-| INumber<> | StaticInterfaceMembers.cs:15:23:15:25 | Inc | abstract |
-| INumber<> | StaticInterfaceMembers.cs:15:23:15:25 | Inc | public |
-| INumber<> | StaticInterfaceMembers.cs:15:23:15:25 | Inc | static |
-| INumber<> | StaticInterfaceMembers.cs:17:22:17:24 | Dec | public |
-| INumber<> | StaticInterfaceMembers.cs:17:22:17:24 | Dec | static |
-| INumber<> | StaticInterfaceMembers.cs:17:22:17:24 | Dec | virtual |
-| INumber<> | StaticInterfaceMembers.cs:19:23:19:25 | Add | abstract |
-| INumber<> | StaticInterfaceMembers.cs:19:23:19:25 | Add | public |
-| INumber<> | StaticInterfaceMembers.cs:19:23:19:25 | Add | static |
-| INumber<> | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | public |
-| INumber<> | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | static |
-| INumber<> | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | virtual |
-| INumber<> | StaticInterfaceMembers.cs:23:14:23:17 | Zero | public |
-| INumber<> | StaticInterfaceMembers.cs:23:14:23:17 | Zero | static |
+| INumber`1 | StaticInterfaceMembers.cs:3:32:3:33 | ++ | abstract |
+| INumber`1 | StaticInterfaceMembers.cs:3:32:3:33 | ++ | public |
+| INumber`1 | StaticInterfaceMembers.cs:3:32:3:33 | ++ | static |
+| INumber`1 | StaticInterfaceMembers.cs:5:31:5:32 | -- | public |
+| INumber`1 | StaticInterfaceMembers.cs:5:31:5:32 | -- | static |
+| INumber`1 | StaticInterfaceMembers.cs:5:31:5:32 | -- | virtual |
+| INumber`1 | StaticInterfaceMembers.cs:7:32:7:32 | + | abstract |
+| INumber`1 | StaticInterfaceMembers.cs:7:32:7:32 | + | public |
+| INumber`1 | StaticInterfaceMembers.cs:7:32:7:32 | + | static |
+| INumber`1 | StaticInterfaceMembers.cs:9:31:9:31 | - | public |
+| INumber`1 | StaticInterfaceMembers.cs:9:31:9:31 | - | static |
+| INumber`1 | StaticInterfaceMembers.cs:9:31:9:31 | - | virtual |
+| INumber`1 | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | abstract |
+| INumber`1 | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | public |
+| INumber`1 | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | static |
+| INumber`1 | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | abstract |
+| INumber`1 | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | public |
+| INumber`1 | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | static |
+| INumber`1 | StaticInterfaceMembers.cs:15:23:15:25 | Inc | abstract |
+| INumber`1 | StaticInterfaceMembers.cs:15:23:15:25 | Inc | public |
+| INumber`1 | StaticInterfaceMembers.cs:15:23:15:25 | Inc | static |
+| INumber`1 | StaticInterfaceMembers.cs:17:22:17:24 | Dec | public |
+| INumber`1 | StaticInterfaceMembers.cs:17:22:17:24 | Dec | static |
+| INumber`1 | StaticInterfaceMembers.cs:17:22:17:24 | Dec | virtual |
+| INumber`1 | StaticInterfaceMembers.cs:19:23:19:25 | Add | abstract |
+| INumber`1 | StaticInterfaceMembers.cs:19:23:19:25 | Add | public |
+| INumber`1 | StaticInterfaceMembers.cs:19:23:19:25 | Add | static |
+| INumber`1 | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | public |
+| INumber`1 | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | static |
+| INumber`1 | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | virtual |
+| INumber`1 | StaticInterfaceMembers.cs:23:14:23:17 | Zero | public |
+| INumber`1 | StaticInterfaceMembers.cs:23:14:23:17 | Zero | static |
 implements
 | StaticInterfaceMembers.cs:35:36:35:37 | ++ | StaticInterfaceMembers.cs:3:32:3:33 | ++ |
 | StaticInterfaceMembers.cs:38:36:38:37 | -- | StaticInterfaceMembers.cs:5:31:5:32 | -- |

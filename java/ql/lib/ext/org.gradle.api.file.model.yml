@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.file", "Directory", True, "getAsFile", "()", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]
+      - ["org.gradle.api.file", "DirectoryProperty", True, "dir", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["org.gradle.api.file", "DirectoryProperty", True, "file", "(String)", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]

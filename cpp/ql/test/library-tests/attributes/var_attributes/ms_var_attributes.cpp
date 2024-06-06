@@ -16,3 +16,5 @@ class AddressOfGetter {
     &field;
   }
 };
+
+__declspec("SAL_volatile") char* pBuf;

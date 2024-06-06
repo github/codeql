@@ -1,0 +1,6 @@
+# go-micro.dev/v4 v4.10.2
+## explicit
+go-micro.dev/v4
+# google.golang.org/protobuf v1.28.1
+## explicit
+google.golang.org/protobuf

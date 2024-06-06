@@ -81,7 +81,7 @@ private class UserActivityUrlInheritTaint extends TaintInheritingContent,
 {
   UserActivityUrlInheritTaint() {
     this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "NSUserActivity" and
-    this.getField().getName() = "webpageURL"
+    this.getField().getName() = ["webpageURL", "referrerURL"]
   }
 }
 

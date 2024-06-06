@@ -1,1 +1,0 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/servlet-api-2.4:${testdir}/../../../../stubs/springframework-5.3.8/:${testdir}/../../../../stubs/javax-faces-2.3/:${testdir}/../../../../stubs/undertow-io-2.2/:${testdir}/../../../../stubs/jboss-vfs-3.2/:${testdir}/../../../../stubs/springframework-5.3.8/

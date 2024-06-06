@@ -9,6 +9,11 @@ class Diagnostic extends @diagnostic {
   /** Gets the compilation that generated this diagnostic. */
   Compilation getCompilation() { diagnostic_for(this, result, _, _) }
 
+  /** Gets the compilation information for this diagnostic. */
+  predicate getCompilationInfo(Compilation c, int fileNumber, int diagnosticNumber) {
+    diagnostic_for(this, c, fileNumber, diagnosticNumber)
+  }
+
   /**
    * Gets the program that generated this diagnostic.
    */

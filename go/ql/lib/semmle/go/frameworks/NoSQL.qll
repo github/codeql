@@ -115,6 +115,3 @@ module NoSql {
     )
   }
 }
-
-/** DEPRECATED: Alias for NoSql */
-deprecated module NoSQL = NoSql;

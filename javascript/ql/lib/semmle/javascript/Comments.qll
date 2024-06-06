@@ -15,8 +15,6 @@ import javascript
  * </pre>
  */
 class Comment extends @comment, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the toplevel element this comment belongs to. */
   TopLevel getTopLevel() { comments(this, _, result, _, _) }
 

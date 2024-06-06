@@ -1,0 +1,198 @@
+nodes
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| tst.html:1:5:1:9 | [ExprStmt] using | semmle.label | [ExprStmt] using |
+| tst.html:1:5:1:9 | [ExprStmt] using | semmle.order | 1 |
+| tst.html:1:5:1:9 | [VarRef] using | semmle.label | [VarRef] using |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | semmle.label | [FunctionDeclStmt] functio ... } } |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | semmle.order | 2 |
+| tst.js:1:10:1:10 | [VarDecl] g | semmle.label | [VarDecl] g |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | semmle.label | [BlockStmt] { u ... } } |
+| tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.label | [DeclStmt] using stream = ... |
+| tst.js:2:11:2:16 | [VarDecl] stream | semmle.label | [VarDecl] stream |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | semmle.label | [VariableDeclarator] stream ... ource() |
+| tst.js:2:20:2:30 | [VarRef] getResource | semmle.label | [VarRef] getResource |
+| tst.js:2:20:2:32 | [CallExpr] getResource() | semmle.label | [CallExpr] getResource() |
+| tst.js:4:5:4:7 | [VarRef] let | semmle.label | [VarRef] let |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | semmle.label | [CallExpr] let (test = 20) |
+| tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | semmle.label | [ExprStmt] let (test = 20); |
+| tst.js:4:10:4:13 | [VarRef] test | semmle.label | [VarRef] test |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.label | [AssignExpr] test = 20 |
+| tst.js:4:17:4:18 | [Literal] 20 | semmle.label | [Literal] 20 |
+| tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | semmle.label | [ForStmt] for (us ... ; } |
+| tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | semmle.label | [DeclStmt] using stream2 = ... |
+| tst.js:6:16:6:22 | [VarDecl] stream2 | semmle.label | [VarDecl] stream2 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | semmle.label | [VariableDeclarator] stream2 ... ource() |
+| tst.js:6:26:6:36 | [VarRef] getResource | semmle.label | [VarRef] getResource |
+| tst.js:6:26:6:38 | [CallExpr] getResource() | semmle.label | [CallExpr] getResource() |
+| tst.js:6:45:9:5 | [BlockStmt] { ... ; } | semmle.label | [BlockStmt] { ... ; } |
+| tst.js:8:9:8:14 | [BreakStmt] break; | semmle.label | [BreakStmt] break; |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | semmle.label | [FunctionDeclStmt] async f ... nd"); } |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | semmle.order | 3 |
+| tst.js:12:16:12:16 | [VarDecl] h | semmle.label | [VarDecl] h |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | semmle.label | [BlockStmt] { a ... nd"); } |
+| tst.js:13:5:13:39 | [DeclStmt] using stream = ... | semmle.label | [DeclStmt] using stream = ... |
+| tst.js:13:17:13:22 | [VarDecl] stream | semmle.label | [VarDecl] stream |
+| tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | semmle.label | [VariableDeclarator] stream ... ource() |
+| tst.js:13:26:13:36 | [VarRef] getResource | semmle.label | [VarRef] getResource |
+| tst.js:13:26:13:38 | [CallExpr] getResource() | semmle.label | [CallExpr] getResource() |
+| tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | semmle.label | [ForStmt] for (aw ... ; } |
+| tst.js:15:16:15:44 | [DeclStmt] using stream2 = ... | semmle.label | [DeclStmt] using stream2 = ... |
+| tst.js:15:22:15:28 | [VarDecl] stream2 | semmle.label | [VarDecl] stream2 |
+| tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | semmle.label | [VariableDeclarator] stream2 ... ource() |
+| tst.js:15:32:15:42 | [VarRef] getResource | semmle.label | [VarRef] getResource |
+| tst.js:15:32:15:44 | [CallExpr] getResource() | semmle.label | [CallExpr] getResource() |
+| tst.js:15:51:18:5 | [BlockStmt] { ... ; } | semmle.label | [BlockStmt] { ... ; } |
+| tst.js:17:9:17:14 | [BreakStmt] break; | semmle.label | [BreakStmt] break; |
+| tst.js:20:5:20:11 | [VarRef] console | semmle.label | [VarRef] console |
+| tst.js:20:5:20:15 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | semmle.label | [MethodCallExpr] console.log("end") |
+| tst.js:20:5:20:23 | [ExprStmt] console.log("end"); | semmle.label | [ExprStmt] console.log("end"); |
+| tst.js:20:13:20:15 | [Label] log | semmle.label | [Label] log |
+| tst.js:20:17:20:21 | [Literal] "end" | semmle.label | [Literal] "end" |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | semmle.label | [FunctionDeclStmt] functio ... ing); } |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | semmle.order | 4 |
+| tst.js:23:10:23:18 | [VarDecl] usesUsing | semmle.label | [VarDecl] usesUsing |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | semmle.label | [BlockStmt] { u ... ing); } |
+| tst.js:24:5:24:9 | [VarRef] using | semmle.label | [VarRef] using |
+| tst.js:24:5:24:16 | [CallExpr] using("foo") | semmle.label | [CallExpr] using("foo") |
+| tst.js:24:5:24:17 | [ExprStmt] using("foo"); | semmle.label | [ExprStmt] using("foo"); |
+| tst.js:24:11:24:15 | [Literal] "foo" | semmle.label | [Literal] "foo" |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | semmle.label | [FunctionDeclStmt] functio ... . } |
+| tst.js:25:14:25:18 | [VarDecl] using | semmle.label | [VarDecl] using |
+| tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.label | [SimpleParameter] foo |
+| tst.js:25:25:27:5 | [BlockStmt] { ... . } | semmle.label | [BlockStmt] { ... . } |
+| tst.js:28:5:28:9 | [VarRef] using | semmle.label | [VarRef] using |
+| tst.js:28:5:28:16 | [CallExpr] using(using) | semmle.label | [CallExpr] using(using) |
+| tst.js:28:5:28:17 | [ExprStmt] using(using); | semmle.label | [ExprStmt] using(using); |
+| tst.js:28:11:28:15 | [VarRef] using | semmle.label | [VarRef] using |
+edges
+| file://:0:0:0:0 | (Arguments) | tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:20:17:20:21 | [Literal] "end" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:20:17:20:21 | [Literal] "end" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:24:11:24:15 | [Literal] "foo" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:24:11:24:15 | [Literal] "foo" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:28:11:28:15 | [VarRef] using | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:28:11:28:15 | [VarRef] using | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.order | 0 |
+| tst.html:1:5:1:9 | [ExprStmt] using | tst.html:1:5:1:9 | [VarRef] using | semmle.label | 1 |
+| tst.html:1:5:1:9 | [ExprStmt] using | tst.html:1:5:1:9 | [VarRef] using | semmle.order | 1 |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:10:1:10 | [VarDecl] g | semmle.label | 0 |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:10:1:10 | [VarDecl] g | semmle.order | 0 |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:14:10:1 | [BlockStmt] { u ... } } | semmle.label | 5 |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:14:10:1 | [BlockStmt] { u ... } } | semmle.order | 5 |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.label | 1 |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.order | 1 |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | semmle.label | 2 |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | semmle.order | 2 |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | semmle.label | 3 |
+| tst.js:1:14:10:1 | [BlockStmt] { u ... } } | tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | semmle.order | 3 |
+| tst.js:2:5:2:33 | [DeclStmt] using stream = ... | tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | semmle.label | 1 |
+| tst.js:2:5:2:33 | [DeclStmt] using stream = ... | tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | semmle.order | 1 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:11:2:16 | [VarDecl] stream | semmle.label | 1 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:11:2:16 | [VarDecl] stream | semmle.order | 1 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:20:2:32 | [CallExpr] getResource() | semmle.label | 2 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:20:2:32 | [CallExpr] getResource() | semmle.order | 2 |
+| tst.js:2:20:2:32 | [CallExpr] getResource() | tst.js:2:20:2:30 | [VarRef] getResource | semmle.label | 0 |
+| tst.js:2:20:2:32 | [CallExpr] getResource() | tst.js:2:20:2:30 | [VarRef] getResource | semmle.order | 0 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | tst.js:4:5:4:7 | [VarRef] let | semmle.label | 0 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | tst.js:4:5:4:7 | [VarRef] let | semmle.order | 0 |
+| tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | tst.js:4:5:4:19 | [CallExpr] let (test = 20) | semmle.label | 1 |
+| tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | tst.js:4:5:4:19 | [CallExpr] let (test = 20) | semmle.order | 1 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:10:4:13 | [VarRef] test | semmle.label | 1 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:10:4:13 | [VarRef] test | semmle.order | 1 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:17:4:18 | [Literal] 20 | semmle.label | 2 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:17:4:18 | [Literal] 20 | semmle.order | 2 |
+| tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | semmle.label | 1 |
+| tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | semmle.order | 1 |
+| tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | tst.js:6:45:9:5 | [BlockStmt] { ... ; } | semmle.label | 2 |
+| tst.js:6:5:9:5 | [ForStmt] for (us ... ; } | tst.js:6:45:9:5 | [BlockStmt] { ... ; } | semmle.order | 2 |
+| tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | semmle.label | 1 |
+| tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | semmle.order | 1 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:16:6:22 | [VarDecl] stream2 | semmle.label | 1 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:16:6:22 | [VarDecl] stream2 | semmle.order | 1 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:26:6:38 | [CallExpr] getResource() | semmle.label | 2 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:26:6:38 | [CallExpr] getResource() | semmle.order | 2 |
+| tst.js:6:26:6:38 | [CallExpr] getResource() | tst.js:6:26:6:36 | [VarRef] getResource | semmle.label | 0 |
+| tst.js:6:26:6:38 | [CallExpr] getResource() | tst.js:6:26:6:36 | [VarRef] getResource | semmle.order | 0 |
+| tst.js:6:45:9:5 | [BlockStmt] { ... ; } | tst.js:8:9:8:14 | [BreakStmt] break; | semmle.label | 1 |
+| tst.js:6:45:9:5 | [BlockStmt] { ... ; } | tst.js:8:9:8:14 | [BreakStmt] break; | semmle.order | 1 |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | tst.js:12:16:12:16 | [VarDecl] h | semmle.label | 0 |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | tst.js:12:16:12:16 | [VarDecl] h | semmle.order | 0 |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | semmle.label | 5 |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | semmle.order | 5 |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | tst.js:13:5:13:39 | [DeclStmt] using stream = ... | semmle.label | 1 |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | tst.js:13:5:13:39 | [DeclStmt] using stream = ... | semmle.order | 1 |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | semmle.label | 2 |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | semmle.order | 2 |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | tst.js:20:5:20:23 | [ExprStmt] console.log("end"); | semmle.label | 3 |
+| tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | tst.js:20:5:20:23 | [ExprStmt] console.log("end"); | semmle.order | 3 |
+| tst.js:13:5:13:39 | [DeclStmt] using stream = ... | tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | semmle.label | 1 |
+| tst.js:13:5:13:39 | [DeclStmt] using stream = ... | tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | semmle.order | 1 |
+| tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | tst.js:13:17:13:22 | [VarDecl] stream | semmle.label | 1 |
+| tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | tst.js:13:17:13:22 | [VarDecl] stream | semmle.order | 1 |
+| tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | tst.js:13:26:13:38 | [CallExpr] getResource() | semmle.label | 2 |
+| tst.js:13:17:13:38 | [VariableDeclarator] stream ... ource() | tst.js:13:26:13:38 | [CallExpr] getResource() | semmle.order | 2 |
+| tst.js:13:26:13:38 | [CallExpr] getResource() | tst.js:13:26:13:36 | [VarRef] getResource | semmle.label | 0 |
+| tst.js:13:26:13:38 | [CallExpr] getResource() | tst.js:13:26:13:36 | [VarRef] getResource | semmle.order | 0 |
+| tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | tst.js:15:16:15:44 | [DeclStmt] using stream2 = ... | semmle.label | 1 |
+| tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | tst.js:15:16:15:44 | [DeclStmt] using stream2 = ... | semmle.order | 1 |
+| tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | tst.js:15:51:18:5 | [BlockStmt] { ... ; } | semmle.label | 2 |
+| tst.js:15:5:18:5 | [ForStmt] for (aw ... ; } | tst.js:15:51:18:5 | [BlockStmt] { ... ; } | semmle.order | 2 |
+| tst.js:15:16:15:44 | [DeclStmt] using stream2 = ... | tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | semmle.label | 1 |
+| tst.js:15:16:15:44 | [DeclStmt] using stream2 = ... | tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | semmle.order | 1 |
+| tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | tst.js:15:22:15:28 | [VarDecl] stream2 | semmle.label | 1 |
+| tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | tst.js:15:22:15:28 | [VarDecl] stream2 | semmle.order | 1 |
+| tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | tst.js:15:32:15:44 | [CallExpr] getResource() | semmle.label | 2 |
+| tst.js:15:22:15:44 | [VariableDeclarator] stream2 ... ource() | tst.js:15:32:15:44 | [CallExpr] getResource() | semmle.order | 2 |
+| tst.js:15:32:15:44 | [CallExpr] getResource() | tst.js:15:32:15:42 | [VarRef] getResource | semmle.label | 0 |
+| tst.js:15:32:15:44 | [CallExpr] getResource() | tst.js:15:32:15:42 | [VarRef] getResource | semmle.order | 0 |
+| tst.js:15:51:18:5 | [BlockStmt] { ... ; } | tst.js:17:9:17:14 | [BreakStmt] break; | semmle.label | 1 |
+| tst.js:15:51:18:5 | [BlockStmt] { ... ; } | tst.js:17:9:17:14 | [BreakStmt] break; | semmle.order | 1 |
+| tst.js:20:5:20:15 | [DotExpr] console.log | tst.js:20:5:20:11 | [VarRef] console | semmle.label | 1 |
+| tst.js:20:5:20:15 | [DotExpr] console.log | tst.js:20:5:20:11 | [VarRef] console | semmle.order | 1 |
+| tst.js:20:5:20:15 | [DotExpr] console.log | tst.js:20:13:20:15 | [Label] log | semmle.label | 2 |
+| tst.js:20:5:20:15 | [DotExpr] console.log | tst.js:20:13:20:15 | [Label] log | semmle.order | 2 |
+| tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | tst.js:20:5:20:15 | [DotExpr] console.log | semmle.label | 0 |
+| tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | tst.js:20:5:20:15 | [DotExpr] console.log | semmle.order | 0 |
+| tst.js:20:5:20:23 | [ExprStmt] console.log("end"); | tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | semmle.label | 1 |
+| tst.js:20:5:20:23 | [ExprStmt] console.log("end"); | tst.js:20:5:20:22 | [MethodCallExpr] console.log("end") | semmle.order | 1 |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | tst.js:23:10:23:18 | [VarDecl] usesUsing | semmle.label | 0 |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | tst.js:23:10:23:18 | [VarDecl] usesUsing | semmle.order | 0 |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | semmle.label | 5 |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | semmle.order | 5 |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | tst.js:24:5:24:17 | [ExprStmt] using("foo"); | semmle.label | 1 |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | tst.js:24:5:24:17 | [ExprStmt] using("foo"); | semmle.order | 1 |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | semmle.label | 2 |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | semmle.order | 2 |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | tst.js:28:5:28:17 | [ExprStmt] using(using); | semmle.label | 3 |
+| tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | tst.js:28:5:28:17 | [ExprStmt] using(using); | semmle.order | 3 |
+| tst.js:24:5:24:16 | [CallExpr] using("foo") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.js:24:5:24:16 | [CallExpr] using("foo") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.js:24:5:24:16 | [CallExpr] using("foo") | tst.js:24:5:24:9 | [VarRef] using | semmle.label | 0 |
+| tst.js:24:5:24:16 | [CallExpr] using("foo") | tst.js:24:5:24:9 | [VarRef] using | semmle.order | 0 |
+| tst.js:24:5:24:17 | [ExprStmt] using("foo"); | tst.js:24:5:24:16 | [CallExpr] using("foo") | semmle.label | 1 |
+| tst.js:24:5:24:17 | [ExprStmt] using("foo"); | tst.js:24:5:24:16 | [CallExpr] using("foo") | semmle.order | 1 |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | tst.js:25:14:25:18 | [VarDecl] using | semmle.label | 0 |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | tst.js:25:14:25:18 | [VarDecl] using | semmle.order | 0 |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | tst.js:25:25:27:5 | [BlockStmt] { ... . } | semmle.label | 5 |
+| tst.js:25:5:27:5 | [FunctionDeclStmt] functio ... . } | tst.js:25:25:27:5 | [BlockStmt] { ... . } | semmle.order | 5 |
+| tst.js:28:5:28:16 | [CallExpr] using(using) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.js:28:5:28:16 | [CallExpr] using(using) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.js:28:5:28:16 | [CallExpr] using(using) | tst.js:28:5:28:9 | [VarRef] using | semmle.label | 0 |
+| tst.js:28:5:28:16 | [CallExpr] using(using) | tst.js:28:5:28:9 | [VarRef] using | semmle.order | 0 |
+| tst.js:28:5:28:17 | [ExprStmt] using(using); | tst.js:28:5:28:16 | [CallExpr] using(using) | semmle.label | 1 |
+| tst.js:28:5:28:17 | [ExprStmt] using(using); | tst.js:28:5:28:16 | [CallExpr] using(using) | semmle.order | 1 |
+graphProperties
+| semmle.graphKind | tree |

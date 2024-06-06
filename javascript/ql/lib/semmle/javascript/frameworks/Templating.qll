@@ -36,8 +36,6 @@ module Templating {
 
   /** A placeholder tag for a templating engine. */
   class TemplatePlaceholderTag extends @template_placeholder_tag, Locatable {
-    override Location getLocation() { hasLocation(this, result) }
-
     override string toString() { template_placeholder_tag_info(this, _, result) }
 
     /** Gets the full text of the template tag, including delimiters. */
@@ -107,7 +105,12 @@ module Templating {
      * Gets the innermost JavaScript expression containing this template tag, if any.
      */
     pragma[nomagic]
-    Expr getEnclosingExpr() { expr_contains_template_tag_location(result, this.getLocation()) }
+    Expr getEnclosingExpr() {
+      exists(@location loc |
+        hasLocation(this, loc) and
+        expr_contains_template_tag_location(result, loc)
+      )
+    }
   }
 
   /**
@@ -578,6 +581,22 @@ module Templating {
     override string getAFileExtension() { result = "ejs" }
 
     override string getAPackageName() { result = "ejs" }
+  }
+
+  /**
+   * doT-style syntax, using `{{! }}` for safe interpolation, and `{{= }}` for
+   * unsafe interpolation.
+   */
+  private class DotStyleSyntax extends TemplateSyntax {
+    DotStyleSyntax() { this = "dot" }
+
+    override string getRawInterpolationRegexp() { result = "(?s)\\{\\{!(.*?)\\}\\}" }
+
+    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{=(.*?)\\}\\}" }
+
+    override string getAFileExtension() { result = "dot" }
+
+    override string getAPackageName() { result = "dot" }
   }
 
   private TemplateSyntax getOwnTemplateSyntaxInFolder(Folder f) {

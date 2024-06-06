@@ -1,6 +1,7 @@
 /** Provides classes for working with errors and warnings recorded during extraction. */
 
 import go
+private import semmle.go.internal.Locations
 
 /** Gets the SARIF severity level that indicates an error. */
 private int getErrorSeverity() { result = 2 }
@@ -29,10 +30,30 @@ private class Diagnostic extends @diagnostic {
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(Location l | diagnostics(this, _, _, _, _, l) | l.hasLocationInfo(path, sl, sc, el, ec))
+    getDiagnosticLocation(this).hasLocationInfo(path, sl, sc, el, ec)
   }
 
   string toString() { result = this.getMessage() }
+}
+
+bindingset[msg]
+private string removeAbsolutePaths(string msg) {
+  exists(string r |
+    // turn both
+    // cannot find package "subdir1/subsubdir1" in any of:\n\t/usr/local/Cellar/go/1.20.5/libexec/src/subdir1/subsubdir1 (from $GOROOT)\n\t/Users/owen-mc/go/src/subdir1/subsubdir1 (from $GOPATH)
+    // and
+    // cannot find package "subdir1/subsubdir1" in any of:\n\tC:\\hostedtoolcache\\windows\\go\\1.20.5\\x64\\src\\subdir1\\subsubdir1 (from $GOROOT)\n\tC:\\Users\\runneradmin\\go\\src\\subdir1\\subsubdir1 (from $GOPATH)
+    // into
+    // cannot find package "subdir1/subsubdir1" in any of:\n\t(absolute path) (from $GOROOT)\n\t(absolute path) (from $GOPATH)
+    r =
+      "(cannot find package [^ ]* in any of:\\n\\t).*( \\(from \\$GOROOT\\)\\n\\t).*( \\(from \\$GOPATH\\))" and
+    if exists(msg.regexpCapture(r, 1))
+    then
+      result =
+        msg.regexpCapture(r, 1) + "(absolute path)" + msg.regexpCapture(r, 2) + "(absolute path)" +
+          msg.regexpCapture(r, 3)
+    else result = msg
+  )
 }
 
 /**
@@ -47,10 +68,11 @@ predicate reportableDiagnostics(Diagnostic d, string msg, int sev) {
     exists(File f | f = d.getFile() |
       exists(f.getAChild()) and
       msg =
-        "Extraction failed in " + d.getFile().getRelativePath() + " with error " + d.getMessage()
+        "Extraction failed in " + d.getFile().getRelativePath() + " with error " +
+          removeAbsolutePaths(d.getMessage())
     )
     or
     not exists(d.getFile()) and
-    msg = "Extraction failed with error " + d.getMessage()
+    msg = "Extraction failed with error " + removeAbsolutePaths(d.getMessage())
   )
 }

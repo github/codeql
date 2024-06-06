@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", True, "EnumerateFileSystemInfos", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", True, "GetDirectory", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", True, "GetDirectory", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", True, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileInfoWrapper", False, "FileInfoWrapper", "(System.IO.FileInfo)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileSystemInfoBase", True, "get_FullName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileSystemInfoBase", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileSystemInfoBase", True, "get_ParentDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoWrapper", "DirectoryInfoWrapper", "(System.IO.DirectoryInfo)", "summary", "df-generated"]

@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/servlet-api-2.4:${testdir}/../../../stubs/apache-commons-lang3-3.7:${testdir}/../../../stubs/esapi-2.0.1:${testdir}/../../../stubs/netty-4.1.x

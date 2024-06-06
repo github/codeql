@@ -13,6 +13,9 @@ on:
       - '.github/actions/fetch-codeql/action.yml'
       - 'misc/scripts/generate-code-scanning-query-list.py'
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
@@ -20,7 +23,7 @@ jobs:
 
     steps:
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: codeql 
     - name: Set up Python 3.8

@@ -1,0 +1,12 @@
+| Number of calls with call target | 1 |
+| Number of calls with missing call target | 0 |
+| Number of expressions with known type | 0 |
+| Number of expressions with unknown type | 0 |
+| Number of files with extension jar | 1 |
+| Number of files with extension kt | 1 |
+| Number of lines of code | 2 |
+| Number of lines of code with extension kt | 2 |
+| Percentage of calls with call target | 100 |
+| Total number of lines | 3 |
+| Total number of lines with extension kt | 3 |
+| Uses Kotlin 2: false | 1 |

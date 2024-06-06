@@ -152,4 +152,6 @@
   n.cloneNode(false).outerHTML.replace(/<\/?[\w:\-]+ ?|=[\"][^\"]+\"|=\'[^\']+\'|=[\w\-]+|>/gi, '').replace(/[\w:\-]+/gi, function(a) { // NOT OK
     o.push({specified : 1, nodeName : a});
   });  
+
+  content = content.replace(/.+?(?=\s)/, ''); // OK
 });

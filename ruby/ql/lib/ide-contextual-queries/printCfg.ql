@@ -7,16 +7,35 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared::TestOutput
-private import codeql.IDEContextual
+private import codeql.Locations
+private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl
+private import codeql.ruby.controlflow.ControlFlowGraph
 
-/**
- * Gets the source file to generate a CFG from.
- */
 external string selectedSourceFile();
 
-class MyRelevantNode extends RelevantNode {
-  MyRelevantNode() {
-    this.getScope().getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
+private predicate selectedSourceFileAlias = selectedSourceFile/0;
+
+external int selectedSourceLine();
+
+private predicate selectedSourceLineAlias = selectedSourceLine/0;
+
+external int selectedSourceColumn();
+
+private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
+
+module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+  predicate selectedSourceFile = selectedSourceFileAlias/0;
+
+  predicate selectedSourceLine = selectedSourceLineAlias/0;
+
+  predicate selectedSourceColumn = selectedSourceColumnAlias/0;
+
+  predicate cfgScopeSpan(
+    CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
+  ) {
+    file = scope.getFile() and
+    scope.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
   }
 }
+
+import ViewCfgQuery<File, ViewCfgQueryInput>

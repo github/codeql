@@ -20,7 +20,12 @@ module SsaSource {
   /** Holds if `v` is defined by assignment at `defn` and given `value`. */
   cached
   predicate assignment_definition(Variable v, ControlFlowNode defn, ControlFlowNode value) {
-    defn.(NameNode).defines(v) and defn.(DefinitionNode).getValue() = value
+    defn.(NameNode).defines(v) and
+    defn.(DefinitionNode).getValue() = value and
+    // since parameter will be considered a DefinitionNode, if it has a default value,
+    // we need to exclude it here since it is already covered by parameter_definition
+    // (and points-to was unhappy that it was included in both)
+    not parameter_definition(v, defn)
   }
 
   /** Holds if `v` is defined by assignment of the captured exception. */
@@ -81,15 +86,6 @@ module SsaSource {
     not exists(defn.(DefinitionNode).getValue()) and
     lhs.getElement(n) = defn and
     lhs.getBasicBlock().dominates(defn.getBasicBlock())
-  }
-
-  /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
-  cached
-  deprecated predicate iteration_defined_variable(
-    Variable v, ControlFlowNode defn, ControlFlowNode sequence
-  ) {
-    exists(ForNode for | for.iterates(defn, sequence)) and
-    defn.(NameNode).defines(v)
   }
 
   /** Holds if `v` is a parameter variable and `defn` is the CFG node for that parameter. */

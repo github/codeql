@@ -1,0 +1,26 @@
+edges
+| main.go:18:46:18:48 | definition of req | main.go:18:46:18:48 | definition of req [Return] | provenance |  |
+| main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | provenance |  |
+| main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | provenance |  |
+| main.go:18:46:18:48 | definition of req [Return] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Return] | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in | proto/Hello.pb.micro.go:86:37:86:38 | in | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in | proto/Hello.pb.micro.go:86:37:86:38 | in | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Return] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in | main.go:18:46:18:48 | definition of req | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in | main.go:18:46:18:48 | definition of req | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+nodes
+| main.go:18:46:18:48 | definition of req | semmle.label | definition of req |
+| main.go:18:46:18:48 | definition of req | semmle.label | definition of req |
+| main.go:18:46:18:48 | definition of req [Return] | semmle.label | definition of req [Return] |
+| main.go:21:28:21:31 | name | semmle.label | name |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in | semmle.label | definition of in |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in | semmle.label | definition of in |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Return] | semmle.label | definition of in [Return] |
+| proto/Hello.pb.micro.go:86:37:86:38 | in | semmle.label | in |
+| proto/Hello.pb.micro.go:86:37:86:38 | in | semmle.label | in |
+subpaths
+#select
+| main.go:21:28:21:31 | name | main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | This log entry depends on a $@. | main.go:18:46:18:48 | definition of req | user-provided value |

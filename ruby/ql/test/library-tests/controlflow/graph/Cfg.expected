@@ -2377,7 +2377,7 @@ cfg.rb:
 #-----|  -> \u1234
 
 #   88| ... = ...
-#-----|  -> Array
+#-----|  -> x
 
 #   88| "\u1234#{...}\n"
 #-----|  -> ... = ...
@@ -2394,6 +2394,9 @@ cfg.rb:
 #   88| \n
 #-----|  -> "\u1234#{...}\n"
 
+#   90| ...
+#-----|  -> $global
+
 #   90| ... = ...
 #-----|  -> x
 
@@ -2404,7 +2407,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #   90| call to each
-#-----|  -> $global
+#-----|  -> ...
 
 #   90| enter { ... }
 #-----|  -> __synth__0__1
@@ -2416,6 +2419,31 @@ cfg.rb:
 
 #   90| { ... }
 #-----|  -> call to each
+
+#   90| ... = ...
+#-----|  -> if ...
+
+#   90| [false] ! ...
+#-----| false -> if ...
+
+#   90| [true] ! ...
+#-----| true -> x
+
+#   90| defined? ...
+#-----| false -> [true] ! ...
+#-----| true -> [false] ! ...
+
+#   90| if ...
+#-----|  -> Array
+
+#   90| nil
+#-----|  -> ... = ...
+
+#   90| x
+#-----|  -> nil
+
+#   90| x
+#-----|  -> defined? ...
 
 #   90| x
 #-----|  -> __synth__0__1
@@ -6887,7 +6915,7 @@ raise.rb:
 #-----|  -> exit m
 
 #  167| m
-#-----|  -> exit raise.rb (normal)
+#-----|  -> m16
 
 #  167| self
 #-----|  -> m
@@ -6900,3 +6928,68 @@ raise.rb:
 
 #  168| ""
 #-----|  -> call to raise
+
+#  172| enter m16
+#-----|  -> b1
+
+#  172| exit m16
+
+#  172| exit m16 (abnormal)
+#-----|  -> exit m16
+
+#  172| exit m16 (normal)
+#-----|  -> exit m16
+
+#  172| m16
+#-----|  -> exit raise.rb (normal)
+
+#  172| b1
+#-----|  -> b2
+
+#  172| b2
+#-----|  -> b1
+
+#  174| b1
+#-----| true -> [true] ... || ...
+#-----| false -> b2
+
+#  174| [false] ... || ...
+#-----| false -> 2
+#-----| raise -> ExceptionA
+
+#  174| [true] ... || ...
+#-----| true -> 1
+#-----| raise -> ExceptionA
+
+#  174| b2
+#-----|  -> true
+
+#  174| ... == ...
+#-----| false -> [false] ... || ...
+#-----| true -> [true] ... || ...
+#-----| raise -> ExceptionA
+
+#  174| true
+#-----|  -> ... == ...
+
+#  175| return
+#-----| return -> exit m16 (normal)
+
+#  175| 1
+#-----|  -> return
+
+#  177| return
+#-----| return -> exit m16 (normal)
+
+#  177| 2
+#-----|  -> return
+
+#  179| ExceptionA
+#-----| raise -> exit m16 (abnormal)
+#-----| match -> 3
+
+#  180| return
+#-----| return -> exit m16 (normal)
+
+#  180| 3
+#-----|  -> return

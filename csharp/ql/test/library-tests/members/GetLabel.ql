@@ -1,5 +1,5 @@
-import dotnet::DotNet
+import csharp
 
-from NamedElement ne
-where ne.fromSource()
-select ne, ne.getLabel()
+deprecated query predicate labels(NamedElement ne, string label) {
+  ne.getLabel() = label and ne.fromSource()
+}

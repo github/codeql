@@ -13,11 +13,11 @@
  */
 
 import go
-import semmle.go.security.ZipSlip::ZipSlip
-import DataFlow::PathGraph
+import semmle.go.security.ZipSlip
+import ZipSlip::Flow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ZipSlip::Flow::PathNode source, ZipSlip::Flow::PathNode sink
+where ZipSlip::Flow::flowPath(source, sink)
 select source.getNode(), source, sink,
   "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"

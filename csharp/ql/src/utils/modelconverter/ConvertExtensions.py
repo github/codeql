@@ -27,7 +27,15 @@ projectDir = os.path.join(workDir, "project")
 dbDir = os.path.join(workDir, "db")
 
 # Make dummy project
-helpers.run_cmd(['dotnet', 'new', 'console', '-o', projectDir], "Failed to create dummy project.")
+helpers.run_cmd(['dotnet', 'new', 'webapp', '-o', projectDir], "Failed to create dummy project.")
+# Add nuget packages for all packages where we have models
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'Newtonsoft.Json'])
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'Microsoft.EntityFrameworkCore'])
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'Microsoft.EntityFrameworkCore.Relational'])
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'Dapper'])
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'ServiceStack'])
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'ServiceStack.OrmLite'])
+helpers.run_cmd(['dotnet', 'add', projectDir, 'package', 'System.Collections.Immutable'])
 helpers.run_cmd(['codeql', 'database', 'create', f'--language={language}', '-c', f'dotnet build {projectDir}', dbDir], "Failed to create dummy database.")
 
 print('Converting data extensions for C#.')

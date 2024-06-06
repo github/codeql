@@ -88,6 +88,11 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
       hasUpperBoundsCheck(checkedVar)
     )
   }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node)
+  }
 }
 
 module TaintedPath = TaintTracking::Global<TaintedPathConfig>;

@@ -1,0 +1,5 @@
+extractedFiles
+| src/go.mod:0:0:0:0 | src/go.mod |
+| src/subdir/add.go:0:0:0:0 | src/subdir/add.go |
+| src/test.go:0:0:0:0 | src/test.go |
+#select

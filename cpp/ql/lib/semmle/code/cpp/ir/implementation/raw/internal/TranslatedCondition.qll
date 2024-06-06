@@ -7,9 +7,17 @@ private import TranslatedElement
 private import TranslatedExpr
 
 abstract class ConditionContext extends TranslatedElement {
-  abstract Instruction getChildTrueSuccessor(TranslatedCondition child);
+  /**
+   * Gets the instruction to be executed when `child` evaluates to `true`. The
+   * successor edge kind is specified by `kind`.
+   */
+  abstract Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind);
 
-  abstract Instruction getChildFalseSuccessor(TranslatedCondition child);
+  /**
+   * Gets the instruction to be executed when `child` evaluates to `false`. The
+   * successor edge kind is specified by `kind`.
+   */
+  abstract Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind);
 }
 
 TranslatedCondition getTranslatedCondition(Expr expr) { result.getExpr() = expr }
@@ -42,19 +50,29 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 {
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getOperand().getFirstInstruction()
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getOperand().getFirstInstruction(kind)
+  }
+
+  final override Instruction getALastInstructionInternal() {
+    result = this.getOperand().getALastInstruction()
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 
   abstract TranslatedCondition getOperand();
 }
@@ -62,14 +80,14 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
   override ParenthesisExpr expr;
 
-  final override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  final override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getOperand() and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
+    result = this.getConditionContext().getChildTrueSuccessor(this, kind)
   }
 
-  final override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getOperand() and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
+    result = this.getConditionContext().getChildFalseSuccessor(this, kind)
   }
 
   final override TranslatedCondition getOperand() {
@@ -77,32 +95,18 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
   }
 }
 
-class TranslatedNotCondition extends TranslatedFlexibleCondition {
-  override NotExpr expr;
-
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = this.getOperand() and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
-  }
-
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    child = this.getOperand() and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
-  }
-
-  override TranslatedCondition getOperand() {
-    result = getTranslatedCondition(expr.getOperand().getFullyConverted())
-  }
-}
-
 abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslatedNativeCondition {
   TranslatedNativeCondition() { this = TTranslatedNativeCondition(expr) }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 }
 
 abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeCondition, ConditionContext {
   override BinaryLogicalOperation expr;
+
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getLeftOperand()
@@ -110,15 +114,23 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     id = 1 and result = this.getRightOperand()
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getLeftOperand().getFirstInstruction()
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getLeftOperand().getFirstInstruction(kind)
+  }
+
+  final override Instruction getALastInstructionInternal() {
+    result = this.getLeftOperand().getALastInstruction()
+    or
+    result = this.getRightOperand().getALastInstruction()
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
   final TranslatedCondition getLeftOperand() {
     result = getTranslatedCondition(expr.getLeftOperand().getFullyConverted())
@@ -132,34 +144,34 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
 class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
   TranslatedLogicalAndExpr() { expr instanceof LogicalAndExpr }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getLeftOperand() and
-    result = this.getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction(kind)
     or
     child = this.getRightOperand() and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
+    result = this.getConditionContext().getChildTrueSuccessor(this, kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     (child = this.getLeftOperand() or child = this.getRightOperand()) and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
+    result = this.getConditionContext().getChildFalseSuccessor(this, kind)
   }
 }
 
 class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   override LogicalOrExpr expr;
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     (child = this.getLeftOperand() or child = this.getRightOperand()) and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
+    result = this.getConditionContext().getChildTrueSuccessor(this, kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getLeftOperand() and
-    result = this.getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction(kind)
     or
     child = this.getRightOperand() and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
+    result = this.getConditionContext().getChildFalseSuccessor(this, kind)
   }
 }
 
@@ -168,7 +180,15 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getValueExpr() }
 
-  override Instruction getFirstInstruction() { result = this.getValueExpr().getFirstInstruction() }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getValueExpr().getFirstInstruction(kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(ValueConditionConditionalBranchTag())
+  }
+
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = ValueConditionConditionalBranchTag() and
@@ -176,19 +196,20 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     resultType = getVoidType()
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getValueExpr() and
-    result = this.getInstruction(ValueConditionConditionalBranchTag())
+    result = this.getInstruction(ValueConditionConditionalBranchTag()) and
+    kind instanceof GotoEdge
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = ValueConditionConditionalBranchTag() and
     (
       kind instanceof TrueEdge and
-      result = this.getConditionContext().getChildTrueSuccessor(this)
+      result = this.getConditionContext().getChildTrueSuccessor(this, any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
-      result = this.getConditionContext().getChildFalseSuccessor(this)
+      result = this.getConditionContext().getChildFalseSuccessor(this, any(GotoEdge edge))
     )
   }
 

@@ -14,11 +14,10 @@
 
 import java
 import semmle.code.java.security.CommandLineQuery
-import RemoteUserInputToArgumentToExecFlow::PathGraph
+import InputToArgumentToExecFlow::PathGraph
 
 from
-  RemoteUserInputToArgumentToExecFlow::PathNode source,
-  RemoteUserInputToArgumentToExecFlow::PathNode sink, Expr execArg
+  InputToArgumentToExecFlow::PathNode source, InputToArgumentToExecFlow::PathNode sink, Expr execArg
 where execIsTainted(source, sink, execArg)
 select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

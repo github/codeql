@@ -22,7 +22,8 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
-    node instanceof Sanitizer
+    node instanceof Sanitizer or
+    node = any(DataFlow::PropRead read | read.getPropertyName() = "length")
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
@@ -31,10 +32,6 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
     guard instanceof UpperBoundsCheckSanitizerGuard
-  }
-
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    succ.(DataFlow::PropRead).accesses(pred, "length")
   }
 }
 

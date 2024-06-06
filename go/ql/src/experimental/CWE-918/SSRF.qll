@@ -17,9 +17,11 @@ module ServerSideRequestForgery {
   private import semmle.go.dataflow.Properties
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about request forgery.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SSRF" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -44,6 +46,26 @@ module ServerSideRequestForgery {
     }
   }
 
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      // propagate to a URL when its host is assigned to
+      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(v.getAUse(), f, node1) and node2 = v.getAUse()
+      )
+    }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+  }
+
+  /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
+
   /** A data flow source for request forgery vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
 
@@ -66,9 +88,14 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+
+  /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.

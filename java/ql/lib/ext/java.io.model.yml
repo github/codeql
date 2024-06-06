@@ -3,17 +3,34 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.io", "File", False, "File", "(File,String)", "", "Argument[1]", "path-injection", "manual"] # old PathCreation
-      - ["java.io", "File", False, "File", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
-      - ["java.io", "File", False, "File", "(String,String)", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
-      - ["java.io", "File", False, "File", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.io", "File", True, "canExecute", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "canRead", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "canWrite", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "createNewFile", "()", "", "Argument[this]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "path-injection", "ai-manual"]
+      - ["java.io", "File", True, "delete", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "deleteOnExit", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "exists", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "isDirectory", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "isFile", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "isHidden", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "mkdir", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "mkdirs", "()", "", "Argument[this]", "path-injection", "manual"]
       - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[this]", "path-injection", "ai-manual"]
+      - ["java.io", "File", True, "setExecutable", "", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "setLastModified", "", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "setReadable", "", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "setReadOnly", "", "", "Argument[this]", "path-injection", "manual"]
+      - ["java.io", "File", True, "setWritable", "", "", "Argument[this]", "path-injection", "manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "(FileDescriptor)", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileOutputStream", False, "FileOutputStream", "", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "file-content-store", "manual"]
       - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.io", "FileReader", True, "FileReader", "(FileDescriptor)", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.io", "FileReader", True, "FileReader", "(File,Charset)", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "FileReader", True, "FileReader", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileReader", True, "FileReader", "(String,Charset)", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "FileSystem", True, "createDirectory", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -76,13 +93,15 @@ extensions:
       - ["java.io", "File", True, "getCanonicalFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "getParent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
       - ["java.io", "File", True, "getParentFile", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "File", True, "listFiles", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "toURL", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
       - ["java.io", "FilterOutputStream", True, "FilterOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.io", "InputStream", True, "read", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[])", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "readAllBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -113,9 +132,13 @@ extensions:
       - ["java.io", "File", "isFile", "()", "summary", "manual"]
       - ["java.io", "File", "length", "()", "summary", "manual"]
       - ["java.io", "File", "isDirectory", "()", "summary", "manual"]
+      - ["java.io", "File", "listFiles", "", "summary", "df-manual"]
       - ["java.io", "File", "mkdirs", "()", "summary", "manual"]
       - ["java.io", "FileInputStream", "FileInputStream", "(File)", "summary", "manual"]
+      - ["java.io", "FileInputStream", "FileInputStream", "(FileDescriptor)", "summary", "df-manual"]
+      - ["java.io", "FileInputStream", "FileInputStream", "(String)", "summary", "df-manual"]
       - ["java.io", "InputStream", "close", "()", "summary", "manual"]
+      - ["java.io", "ObjectInput", "readObject", "()", "summary", "df-manual"] # this is a deserialization sink modeled in regular CodeQL
       - ["java.io", "OutputStream", "flush", "()", "summary", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
@@ -123,7 +146,10 @@ extensions:
       - ["java.io", "DataInput", "readLong", "()", "summary", "manual"]        # taint-numeric
       - ["java.io", "DataOutput", "writeInt", "(int)", "summary", "manual"]    # taint-numeric
       - ["java.io", "DataOutput", "writeLong", "(long)", "summary", "manual"]  # taint-numeric
-
       # sink neutrals
       - ["java.io", "File", "compareTo", "", "sink", "hq-manual"]
-      - ["java.io", "File", "exists", "()", "sink", "hq-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.io", "FileInputStream", True, "FileInputStream", "", "", "Argument[this]", "file", "manual"]
