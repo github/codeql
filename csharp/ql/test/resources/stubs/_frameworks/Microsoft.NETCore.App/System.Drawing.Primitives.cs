@@ -1,21 +1,18 @@
 // This file contains auto-generated code.
-// Generated from `System.Drawing.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
+// Generated from `System.Drawing.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Drawing
     {
         public struct Color : System.IEquatable<System.Drawing.Color>
         {
-            public static bool operator !=(System.Drawing.Color left, System.Drawing.Color right) => throw null;
-            public static bool operator ==(System.Drawing.Color left, System.Drawing.Color right) => throw null;
-            public System.Byte A { get => throw null; }
+            public byte A { get => throw null; }
             public static System.Drawing.Color AliceBlue { get => throw null; }
             public static System.Drawing.Color AntiqueWhite { get => throw null; }
             public static System.Drawing.Color Aqua { get => throw null; }
             public static System.Drawing.Color Aquamarine { get => throw null; }
             public static System.Drawing.Color Azure { get => throw null; }
-            public System.Byte B { get => throw null; }
+            public byte B { get => throw null; }
             public static System.Drawing.Color Beige { get => throw null; }
             public static System.Drawing.Color Bisque { get => throw null; }
             public static System.Drawing.Color Black { get => throw null; }
@@ -27,7 +24,6 @@ namespace System
             public static System.Drawing.Color CadetBlue { get => throw null; }
             public static System.Drawing.Color Chartreuse { get => throw null; }
             public static System.Drawing.Color Chocolate { get => throw null; }
-            // Stub generator skipped constructor 
             public static System.Drawing.Color Coral { get => throw null; }
             public static System.Drawing.Color CornflowerBlue { get => throw null; }
             public static System.Drawing.Color Cornsilk { get => throw null; }
@@ -54,7 +50,7 @@ namespace System
             public static System.Drawing.Color DeepSkyBlue { get => throw null; }
             public static System.Drawing.Color DimGray { get => throw null; }
             public static System.Drawing.Color DodgerBlue { get => throw null; }
-            public static System.Drawing.Color Empty;
+            public static readonly System.Drawing.Color Empty;
             public bool Equals(System.Drawing.Color other) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.Drawing.Color Firebrick { get => throw null; }
@@ -67,7 +63,7 @@ namespace System
             public static System.Drawing.Color FromKnownColor(System.Drawing.KnownColor color) => throw null;
             public static System.Drawing.Color FromName(string name) => throw null;
             public static System.Drawing.Color Fuchsia { get => throw null; }
-            public System.Byte G { get => throw null; }
+            public byte G { get => throw null; }
             public static System.Drawing.Color Gainsboro { get => throw null; }
             public float GetBrightness() => throw null;
             public override int GetHashCode() => throw null;
@@ -130,6 +126,8 @@ namespace System
             public static System.Drawing.Color OldLace { get => throw null; }
             public static System.Drawing.Color Olive { get => throw null; }
             public static System.Drawing.Color OliveDrab { get => throw null; }
+            public static bool operator ==(System.Drawing.Color left, System.Drawing.Color right) => throw null;
+            public static bool operator !=(System.Drawing.Color left, System.Drawing.Color right) => throw null;
             public static System.Drawing.Color Orange { get => throw null; }
             public static System.Drawing.Color OrangeRed { get => throw null; }
             public static System.Drawing.Color Orchid { get => throw null; }
@@ -144,7 +142,7 @@ namespace System
             public static System.Drawing.Color Plum { get => throw null; }
             public static System.Drawing.Color PowderBlue { get => throw null; }
             public static System.Drawing.Color Purple { get => throw null; }
-            public System.Byte R { get => throw null; }
+            public byte R { get => throw null; }
             public static System.Drawing.Color RebeccaPurple { get => throw null; }
             public static System.Drawing.Color Red { get => throw null; }
             public static System.Drawing.Color RosyBrown { get => throw null; }
@@ -167,8 +165,8 @@ namespace System
             public static System.Drawing.Color Thistle { get => throw null; }
             public int ToArgb() => throw null;
             public System.Drawing.KnownColor ToKnownColor() => throw null;
-            public override string ToString() => throw null;
             public static System.Drawing.Color Tomato { get => throw null; }
+            public override string ToString() => throw null;
             public static System.Drawing.Color Transparent { get => throw null; }
             public static System.Drawing.Color Turquoise { get => throw null; }
             public static System.Drawing.Color Violet { get => throw null; }
@@ -178,7 +176,6 @@ namespace System
             public static System.Drawing.Color Yellow { get => throw null; }
             public static System.Drawing.Color YellowGreen { get => throw null; }
         }
-
         public static class ColorTranslator
         {
             public static System.Drawing.Color FromHtml(string htmlColor) => throw null;
@@ -188,15 +185,37 @@ namespace System
             public static int ToOle(System.Drawing.Color c) => throw null;
             public static int ToWin32(System.Drawing.Color c) => throw null;
         }
-
-        public enum KnownColor : int
+        public enum KnownColor
         {
             ActiveBorder = 1,
             ActiveCaption = 2,
             ActiveCaptionText = 3,
+            AppWorkspace = 4,
+            Control = 5,
+            ControlDark = 6,
+            ControlDarkDark = 7,
+            ControlLight = 8,
+            ControlLightLight = 9,
+            ControlText = 10,
+            Desktop = 11,
+            GrayText = 12,
+            Highlight = 13,
+            HighlightText = 14,
+            HotTrack = 15,
+            InactiveBorder = 16,
+            InactiveCaption = 17,
+            InactiveCaptionText = 18,
+            Info = 19,
+            InfoText = 20,
+            Menu = 21,
+            MenuText = 22,
+            ScrollBar = 23,
+            Window = 24,
+            WindowFrame = 25,
+            WindowText = 26,
+            Transparent = 27,
             AliceBlue = 28,
             AntiqueWhite = 29,
-            AppWorkspace = 4,
             Aqua = 30,
             Aquamarine = 31,
             Azure = 32,
@@ -208,18 +227,9 @@ namespace System
             BlueViolet = 38,
             Brown = 39,
             BurlyWood = 40,
-            ButtonFace = 168,
-            ButtonHighlight = 169,
-            ButtonShadow = 170,
             CadetBlue = 41,
             Chartreuse = 42,
             Chocolate = 43,
-            Control = 5,
-            ControlDark = 6,
-            ControlDarkDark = 7,
-            ControlLight = 8,
-            ControlLightLight = 9,
-            ControlText = 10,
             Coral = 44,
             CornflowerBlue = 45,
             Cornsilk = 46,
@@ -244,7 +254,6 @@ namespace System
             DarkViolet = 65,
             DeepPink = 66,
             DeepSkyBlue = 67,
-            Desktop = 11,
             DimGray = 68,
             DodgerBlue = 69,
             Firebrick = 70,
@@ -255,24 +264,13 @@ namespace System
             GhostWhite = 75,
             Gold = 76,
             Goldenrod = 77,
-            GradientActiveCaption = 171,
-            GradientInactiveCaption = 172,
             Gray = 78,
-            GrayText = 12,
             Green = 79,
             GreenYellow = 80,
-            Highlight = 13,
-            HighlightText = 14,
             Honeydew = 81,
             HotPink = 82,
-            HotTrack = 15,
-            InactiveBorder = 16,
-            InactiveCaption = 17,
-            InactiveCaptionText = 18,
             IndianRed = 83,
             Indigo = 84,
-            Info = 19,
-            InfoText = 20,
             Ivory = 85,
             Khaki = 86,
             Lavender = 87,
@@ -306,10 +304,6 @@ namespace System
             MediumSpringGreen = 115,
             MediumTurquoise = 116,
             MediumVioletRed = 117,
-            Menu = 21,
-            MenuBar = 173,
-            MenuHighlight = 174,
-            MenuText = 22,
             MidnightBlue = 118,
             MintCream = 119,
             MistyRose = 120,
@@ -333,14 +327,12 @@ namespace System
             Plum = 138,
             PowderBlue = 139,
             Purple = 140,
-            RebeccaPurple = 175,
             Red = 141,
             RosyBrown = 142,
             RoyalBlue = 143,
             SaddleBrown = 144,
             Salmon = 145,
             SandyBrown = 146,
-            ScrollBar = 23,
             SeaGreen = 147,
             SeaShell = 148,
             Sienna = 149,
@@ -355,91 +347,90 @@ namespace System
             Teal = 158,
             Thistle = 159,
             Tomato = 160,
-            Transparent = 27,
             Turquoise = 161,
             Violet = 162,
             Wheat = 163,
             White = 164,
             WhiteSmoke = 165,
-            Window = 24,
-            WindowFrame = 25,
-            WindowText = 26,
             Yellow = 166,
             YellowGreen = 167,
+            ButtonFace = 168,
+            ButtonHighlight = 169,
+            ButtonShadow = 170,
+            GradientActiveCaption = 171,
+            GradientInactiveCaption = 172,
+            MenuBar = 173,
+            MenuHighlight = 174,
+            RebeccaPurple = 175,
         }
-
         public struct Point : System.IEquatable<System.Drawing.Point>
         {
-            public static bool operator !=(System.Drawing.Point left, System.Drawing.Point right) => throw null;
-            public static System.Drawing.Point operator +(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
-            public static System.Drawing.Point operator -(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
-            public static bool operator ==(System.Drawing.Point left, System.Drawing.Point right) => throw null;
             public static System.Drawing.Point Add(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
             public static System.Drawing.Point Ceiling(System.Drawing.PointF value) => throw null;
-            public static System.Drawing.Point Empty;
+            public Point(System.Drawing.Size sz) => throw null;
+            public Point(int dw) => throw null;
+            public Point(int x, int y) => throw null;
+            public static readonly System.Drawing.Point Empty;
             public bool Equals(System.Drawing.Point other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsEmpty { get => throw null; }
             public void Offset(System.Drawing.Point p) => throw null;
             public void Offset(int dx, int dy) => throw null;
-            // Stub generator skipped constructor 
-            public Point(System.Drawing.Size sz) => throw null;
-            public Point(int dw) => throw null;
-            public Point(int x, int y) => throw null;
+            public static System.Drawing.Point operator +(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
+            public static bool operator ==(System.Drawing.Point left, System.Drawing.Point right) => throw null;
+            public static explicit operator System.Drawing.Size(System.Drawing.Point p) => throw null;
+            public static implicit operator System.Drawing.PointF(System.Drawing.Point p) => throw null;
+            public static bool operator !=(System.Drawing.Point left, System.Drawing.Point right) => throw null;
+            public static System.Drawing.Point operator -(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
             public static System.Drawing.Point Round(System.Drawing.PointF value) => throw null;
             public static System.Drawing.Point Subtract(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
             public override string ToString() => throw null;
             public static System.Drawing.Point Truncate(System.Drawing.PointF value) => throw null;
-            public int X { get => throw null; set => throw null; }
-            public int Y { get => throw null; set => throw null; }
-            public static explicit operator System.Drawing.Size(System.Drawing.Point p) => throw null;
-            public static implicit operator System.Drawing.PointF(System.Drawing.Point p) => throw null;
+            public int X { get => throw null; set { } }
+            public int Y { get => throw null; set { } }
         }
-
         public struct PointF : System.IEquatable<System.Drawing.PointF>
         {
-            public static bool operator !=(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
-            public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
-            public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
-            public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
-            public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
-            public static bool operator ==(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
             public static System.Drawing.PointF Add(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
             public static System.Drawing.PointF Add(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
-            public static System.Drawing.PointF Empty;
+            public PointF(float x, float y) => throw null;
+            public PointF(System.Numerics.Vector2 vector) => throw null;
+            public static readonly System.Drawing.PointF Empty;
             public bool Equals(System.Drawing.PointF other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsEmpty { get => throw null; }
-            // Stub generator skipped constructor 
-            public PointF(System.Numerics.Vector2 vector) => throw null;
-            public PointF(float x, float y) => throw null;
+            public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
+            public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
+            public static bool operator ==(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
+            public static explicit operator System.Numerics.Vector2(System.Drawing.PointF point) => throw null;
+            public static explicit operator System.Drawing.PointF(System.Numerics.Vector2 vector) => throw null;
+            public static bool operator !=(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
+            public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
+            public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
             public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public override string ToString() => throw null;
             public System.Numerics.Vector2 ToVector2() => throw null;
-            public float X { get => throw null; set => throw null; }
-            public float Y { get => throw null; set => throw null; }
-            public static explicit operator System.Numerics.Vector2(System.Drawing.PointF point) => throw null;
-            public static explicit operator System.Drawing.PointF(System.Numerics.Vector2 vector) => throw null;
+            public float X { get => throw null; set { } }
+            public float Y { get => throw null; set { } }
         }
-
         public struct Rectangle : System.IEquatable<System.Drawing.Rectangle>
         {
-            public static bool operator !=(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
-            public static bool operator ==(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
             public int Bottom { get => throw null; }
             public static System.Drawing.Rectangle Ceiling(System.Drawing.RectangleF value) => throw null;
             public bool Contains(System.Drawing.Point pt) => throw null;
             public bool Contains(System.Drawing.Rectangle rect) => throw null;
             public bool Contains(int x, int y) => throw null;
-            public static System.Drawing.Rectangle Empty;
+            public Rectangle(System.Drawing.Point location, System.Drawing.Size size) => throw null;
+            public Rectangle(int x, int y, int width, int height) => throw null;
+            public static readonly System.Drawing.Rectangle Empty;
             public bool Equals(System.Drawing.Rectangle other) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.Drawing.Rectangle FromLTRB(int left, int top, int right, int bottom) => throw null;
             public override int GetHashCode() => throw null;
-            public int Height { get => throw null; set => throw null; }
+            public int Height { get => throw null; set { } }
             public static System.Drawing.Rectangle Inflate(System.Drawing.Rectangle rect, int x, int y) => throw null;
             public void Inflate(System.Drawing.Size size) => throw null;
             public void Inflate(int width, int height) => throw null;
@@ -448,38 +439,37 @@ namespace System
             public bool IntersectsWith(System.Drawing.Rectangle rect) => throw null;
             public bool IsEmpty { get => throw null; }
             public int Left { get => throw null; }
-            public System.Drawing.Point Location { get => throw null; set => throw null; }
+            public System.Drawing.Point Location { get => throw null; set { } }
             public void Offset(System.Drawing.Point pos) => throw null;
             public void Offset(int x, int y) => throw null;
-            // Stub generator skipped constructor 
-            public Rectangle(System.Drawing.Point location, System.Drawing.Size size) => throw null;
-            public Rectangle(int x, int y, int width, int height) => throw null;
+            public static bool operator ==(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
+            public static bool operator !=(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
             public int Right { get => throw null; }
             public static System.Drawing.Rectangle Round(System.Drawing.RectangleF value) => throw null;
-            public System.Drawing.Size Size { get => throw null; set => throw null; }
-            public override string ToString() => throw null;
+            public System.Drawing.Size Size { get => throw null; set { } }
             public int Top { get => throw null; }
+            public override string ToString() => throw null;
             public static System.Drawing.Rectangle Truncate(System.Drawing.RectangleF value) => throw null;
             public static System.Drawing.Rectangle Union(System.Drawing.Rectangle a, System.Drawing.Rectangle b) => throw null;
-            public int Width { get => throw null; set => throw null; }
-            public int X { get => throw null; set => throw null; }
-            public int Y { get => throw null; set => throw null; }
+            public int Width { get => throw null; set { } }
+            public int X { get => throw null; set { } }
+            public int Y { get => throw null; set { } }
         }
-
         public struct RectangleF : System.IEquatable<System.Drawing.RectangleF>
         {
-            public static bool operator !=(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
-            public static bool operator ==(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
             public float Bottom { get => throw null; }
             public bool Contains(System.Drawing.PointF pt) => throw null;
             public bool Contains(System.Drawing.RectangleF rect) => throw null;
             public bool Contains(float x, float y) => throw null;
-            public static System.Drawing.RectangleF Empty;
+            public RectangleF(System.Drawing.PointF location, System.Drawing.SizeF size) => throw null;
+            public RectangleF(float x, float y, float width, float height) => throw null;
+            public RectangleF(System.Numerics.Vector4 vector) => throw null;
+            public static readonly System.Drawing.RectangleF Empty;
             public bool Equals(System.Drawing.RectangleF other) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.Drawing.RectangleF FromLTRB(float left, float top, float right, float bottom) => throw null;
             public override int GetHashCode() => throw null;
-            public float Height { get => throw null; set => throw null; }
+            public float Height { get => throw null; set { } }
             public static System.Drawing.RectangleF Inflate(System.Drawing.RectangleF rect, float x, float y) => throw null;
             public void Inflate(System.Drawing.SizeF size) => throw null;
             public void Inflate(float x, float y) => throw null;
@@ -488,91 +478,84 @@ namespace System
             public bool IntersectsWith(System.Drawing.RectangleF rect) => throw null;
             public bool IsEmpty { get => throw null; }
             public float Left { get => throw null; }
-            public System.Drawing.PointF Location { get => throw null; set => throw null; }
+            public System.Drawing.PointF Location { get => throw null; set { } }
             public void Offset(System.Drawing.PointF pos) => throw null;
             public void Offset(float x, float y) => throw null;
-            // Stub generator skipped constructor 
-            public RectangleF(System.Drawing.PointF location, System.Drawing.SizeF size) => throw null;
-            public RectangleF(System.Numerics.Vector4 vector) => throw null;
-            public RectangleF(float x, float y, float width, float height) => throw null;
-            public float Right { get => throw null; }
-            public System.Drawing.SizeF Size { get => throw null; set => throw null; }
-            public override string ToString() => throw null;
-            public System.Numerics.Vector4 ToVector4() => throw null;
-            public float Top { get => throw null; }
-            public static System.Drawing.RectangleF Union(System.Drawing.RectangleF a, System.Drawing.RectangleF b) => throw null;
-            public float Width { get => throw null; set => throw null; }
-            public float X { get => throw null; set => throw null; }
-            public float Y { get => throw null; set => throw null; }
+            public static bool operator ==(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
             public static explicit operator System.Numerics.Vector4(System.Drawing.RectangleF rectangle) => throw null;
             public static explicit operator System.Drawing.RectangleF(System.Numerics.Vector4 vector) => throw null;
             public static implicit operator System.Drawing.RectangleF(System.Drawing.Rectangle r) => throw null;
+            public static bool operator !=(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
+            public float Right { get => throw null; }
+            public System.Drawing.SizeF Size { get => throw null; set { } }
+            public float Top { get => throw null; }
+            public override string ToString() => throw null;
+            public System.Numerics.Vector4 ToVector4() => throw null;
+            public static System.Drawing.RectangleF Union(System.Drawing.RectangleF a, System.Drawing.RectangleF b) => throw null;
+            public float Width { get => throw null; set { } }
+            public float X { get => throw null; set { } }
+            public float Y { get => throw null; set { } }
         }
-
         public struct Size : System.IEquatable<System.Drawing.Size>
         {
-            public static bool operator !=(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
-            public static System.Drawing.SizeF operator *(System.Drawing.Size left, float right) => throw null;
-            public static System.Drawing.Size operator *(System.Drawing.Size left, int right) => throw null;
-            public static System.Drawing.SizeF operator *(float left, System.Drawing.Size right) => throw null;
-            public static System.Drawing.Size operator *(int left, System.Drawing.Size right) => throw null;
-            public static System.Drawing.Size operator +(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
-            public static System.Drawing.Size operator -(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
-            public static System.Drawing.SizeF operator /(System.Drawing.Size left, float right) => throw null;
-            public static System.Drawing.Size operator /(System.Drawing.Size left, int right) => throw null;
-            public static bool operator ==(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public static System.Drawing.Size Add(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public static System.Drawing.Size Ceiling(System.Drawing.SizeF value) => throw null;
-            public static System.Drawing.Size Empty;
+            public Size(System.Drawing.Point pt) => throw null;
+            public Size(int width, int height) => throw null;
+            public static readonly System.Drawing.Size Empty;
             public bool Equals(System.Drawing.Size other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
-            public int Height { get => throw null; set => throw null; }
+            public int Height { get => throw null; set { } }
             public bool IsEmpty { get => throw null; }
+            public static System.Drawing.Size operator +(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
+            public static System.Drawing.Size operator /(System.Drawing.Size left, int right) => throw null;
+            public static System.Drawing.SizeF operator /(System.Drawing.Size left, float right) => throw null;
+            public static bool operator ==(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
+            public static explicit operator System.Drawing.Point(System.Drawing.Size size) => throw null;
+            public static implicit operator System.Drawing.SizeF(System.Drawing.Size p) => throw null;
+            public static bool operator !=(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
+            public static System.Drawing.Size operator *(System.Drawing.Size left, int right) => throw null;
+            public static System.Drawing.SizeF operator *(System.Drawing.Size left, float right) => throw null;
+            public static System.Drawing.Size operator *(int left, System.Drawing.Size right) => throw null;
+            public static System.Drawing.SizeF operator *(float left, System.Drawing.Size right) => throw null;
+            public static System.Drawing.Size operator -(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public static System.Drawing.Size Round(System.Drawing.SizeF value) => throw null;
-            // Stub generator skipped constructor 
-            public Size(System.Drawing.Point pt) => throw null;
-            public Size(int width, int height) => throw null;
             public static System.Drawing.Size Subtract(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public override string ToString() => throw null;
             public static System.Drawing.Size Truncate(System.Drawing.SizeF value) => throw null;
-            public int Width { get => throw null; set => throw null; }
-            public static explicit operator System.Drawing.Point(System.Drawing.Size size) => throw null;
-            public static implicit operator System.Drawing.SizeF(System.Drawing.Size p) => throw null;
+            public int Width { get => throw null; set { } }
         }
-
         public struct SizeF : System.IEquatable<System.Drawing.SizeF>
         {
-            public static bool operator !=(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
-            public static System.Drawing.SizeF operator *(System.Drawing.SizeF left, float right) => throw null;
-            public static System.Drawing.SizeF operator *(float left, System.Drawing.SizeF right) => throw null;
-            public static System.Drawing.SizeF operator +(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
-            public static System.Drawing.SizeF operator -(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
-            public static System.Drawing.SizeF operator /(System.Drawing.SizeF left, float right) => throw null;
-            public static bool operator ==(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public static System.Drawing.SizeF Add(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
-            public static System.Drawing.SizeF Empty;
+            public SizeF(System.Drawing.PointF pt) => throw null;
+            public SizeF(System.Drawing.SizeF size) => throw null;
+            public SizeF(float width, float height) => throw null;
+            public SizeF(System.Numerics.Vector2 vector) => throw null;
+            public static readonly System.Drawing.SizeF Empty;
             public bool Equals(System.Drawing.SizeF other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
-            public float Height { get => throw null; set => throw null; }
+            public float Height { get => throw null; set { } }
             public bool IsEmpty { get => throw null; }
-            // Stub generator skipped constructor 
-            public SizeF(System.Drawing.PointF pt) => throw null;
-            public SizeF(System.Drawing.SizeF size) => throw null;
-            public SizeF(System.Numerics.Vector2 vector) => throw null;
-            public SizeF(float width, float height) => throw null;
+            public static System.Drawing.SizeF operator +(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
+            public static System.Drawing.SizeF operator /(System.Drawing.SizeF left, float right) => throw null;
+            public static bool operator ==(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
+            public static explicit operator System.Numerics.Vector2(System.Drawing.SizeF size) => throw null;
+            public static explicit operator System.Drawing.SizeF(System.Numerics.Vector2 vector) => throw null;
+            public static explicit operator System.Drawing.PointF(System.Drawing.SizeF size) => throw null;
+            public static bool operator !=(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
+            public static System.Drawing.SizeF operator *(System.Drawing.SizeF left, float right) => throw null;
+            public static System.Drawing.SizeF operator *(float left, System.Drawing.SizeF right) => throw null;
+            public static System.Drawing.SizeF operator -(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public static System.Drawing.SizeF Subtract(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public System.Drawing.PointF ToPointF() => throw null;
             public System.Drawing.Size ToSize() => throw null;
             public override string ToString() => throw null;
             public System.Numerics.Vector2 ToVector2() => throw null;
-            public float Width { get => throw null; set => throw null; }
-            public static explicit operator System.Drawing.PointF(System.Drawing.SizeF size) => throw null;
-            public static explicit operator System.Numerics.Vector2(System.Drawing.SizeF size) => throw null;
-            public static explicit operator System.Drawing.SizeF(System.Numerics.Vector2 vector) => throw null;
+            public float Width { get => throw null; set { } }
         }
-
         public static class SystemColors
         {
             public static System.Drawing.Color ActiveBorder { get => throw null; }
@@ -609,6 +592,5 @@ namespace System
             public static System.Drawing.Color WindowFrame { get => throw null; }
             public static System.Drawing.Color WindowText { get => throw null; }
         }
-
     }
 }

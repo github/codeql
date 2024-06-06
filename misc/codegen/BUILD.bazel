@@ -1,5 +1,3 @@
-load("@codegen_deps//:requirements.bzl", "requirement")
-
 py_binary(
     name = "codegen",
     srcs = ["codegen.py"],

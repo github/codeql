@@ -24,11 +24,11 @@ private ControlFlowElement getANonExactScopeChild(ControlFlowScope scope) {
 
 pragma[noinline]
 private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowScope scope, boolean exactScope) {
-  result.getANode().getElement() = getANonExactScopeChild(scope) and
+  result.getANode().getAstNode() = getANonExactScopeChild(scope) and
   exactScope = false
   or
   scope.isExact() and
-  result.getANode().getElement() = scope and
+  result.getANode().getAstNode() = scope and
   exactScope = true
 }
 

@@ -12,3 +12,5 @@ uuidofOperators
 | uuidof.cpp:15:12:15:29 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
 | uuidof.cpp:17:12:17:22 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
 | uuidof.cpp:18:12:18:22 | __uuidof(0) | const _GUID | 00000000-0000-0000-0000-000000000000 |
+| uuidof.cpp:22:16:22:36 | __uuidof(Placeholder) | const _GUID |  |
+| uuidof.cpp:22:16:22:36 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |

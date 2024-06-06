@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Logging.TraceSource", "TraceSourceLoggerProvider", False, "TraceSourceLoggerProvider", "(System.Diagnostics.SourceSwitch,System.Diagnostics.TraceListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Logging.TraceSource", "TraceSourceLoggerProvider", False, "TraceSourceLoggerProvider", "(System.Diagnostics.SourceSwitch,System.Diagnostics.TraceListener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Logging.TraceSource", "TraceSourceLoggerProvider", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.TraceSource", "TraceSourceLoggerProvider", "TraceSourceLoggerProvider", "(System.Diagnostics.SourceSwitch)", "summary", "df-generated"]

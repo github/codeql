@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.common.jaxb", "JAXBUtils", True, "createFileCodeWriter", "", "", "Argument[0]", "path-injection", "manual"]

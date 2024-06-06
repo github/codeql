@@ -1,4 +1,6 @@
+| Base | 0 | primary_archetypes.swift:4:1:4:13 | P |
+| Base | 0 | primary_archetypes.swift:5:1:5:14 | P2 |
 | ParamWithProtocols | 0 | file://:0:0:0:0 | Equatable |
-| ParamWithProtocols | 1 | primary_archetypes.swift:3:1:3:13 | P |
+| ParamWithProtocols | 1 | primary_archetypes.swift:4:1:4:13 | P |
 | ParamWithSuperclassAndProtocols | 0 | file://:0:0:0:0 | Equatable |
-| ParamWithSuperclassAndProtocols | 1 | primary_archetypes.swift:3:1:3:13 | P |
+| ParamWithSuperclassAndProtocols | 1 | primary_archetypes.swift:4:1:4:13 | P |

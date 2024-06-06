@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.BaseSSA as BaseSsa
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 /** The class `android.content.Intent`. */
 class TypeIntent extends Class {
@@ -61,18 +62,6 @@ class AndroidServiceIntentMethod extends Method {
   AndroidServiceIntentMethod() {
     this.hasName(["onStart", "onStartCommand", "onBind", "onRebind", "onUnbind", "onTaskRemoved"]) and
     this.getDeclaringType() instanceof TypeService
-  }
-}
-
-/**
- * The method `Context.startActivity` or `startActivities`.
- *
- * DEPRECATED: Use `StartActivityMethod` instead.
- */
-deprecated class ContextStartActivityMethod extends Method {
-  ContextStartActivityMethod() {
-    (this.hasName("startActivity") or this.hasName("startActivities")) and
-    this.getDeclaringType() instanceof TypeContext
   }
 }
 
@@ -154,7 +143,7 @@ class AndroidBundle extends Class {
  */
 class ExplicitIntent extends Expr {
   ExplicitIntent() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeIntent and
       m.hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
@@ -237,8 +226,8 @@ private class NewIntent extends ClassInstanceExpr {
 }
 
 /** A call to a method that starts an Android component. */
-private class StartComponentMethodAccess extends MethodAccess {
-  StartComponentMethodAccess() {
+private class StartComponentMethodCall extends MethodCall {
+  StartComponentMethodCall() {
     this.getMethod().overrides*(any(StartActivityMethod m)) or
     this.getMethod().overrides*(any(StartServiceMethod m)) or
     this.getMethod().overrides*(any(SendBroadcastMethod m))
@@ -263,11 +252,11 @@ private class StartComponentMethodAccess extends MethodAccess {
 }
 
 /**
- * Holds if `src` reaches the intent argument `arg` of `StartComponentMethodAccess`
+ * Holds if `src` reaches the intent argument `arg` of `StartComponentMethodCall`
  * through intra-procedural steps.
  */
 private predicate reaches(Expr src, Argument arg) {
-  any(StartComponentMethodAccess ma).getIntentArg() = arg and
+  any(StartComponentMethodCall ma).getIntentArg() = arg and
   src = arg
   or
   exists(Expr mid, BaseSsa::BaseSsaVariable ssa, BaseSsa::BaseSsaUpdate upd |
@@ -298,7 +287,7 @@ private predicate reaches(Expr src, Argument arg) {
  */
 private class StartActivityIntentStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(StartComponentMethodAccess startActivity, MethodAccess getIntent |
+    exists(StartComponentMethodCall startActivity, MethodCall getIntent |
       startActivity.getMethod().overrides*(any(StartActivityMethod m)) and
       getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
       startActivity.targetsComponentType(getIntent.getReceiverType()) and
@@ -309,11 +298,11 @@ private class StartActivityIntentStep extends AdditionalValueStep {
 }
 
 /**
- * Holds if `targetType` is targeted by an existing `StartComponentMethodAccess` call
+ * Holds if `targetType` is targeted by an existing `StartComponentMethodCall` call
  * and it's identified by `id`.
  */
 private predicate isTargetableType(AndroidComponent targetType, string id) {
-  exists(StartComponentMethodAccess ma | ma.targetsComponentType(targetType)) and
+  exists(StartComponentMethodCall ma | ma.targetsComponentType(targetType)) and
   targetType.getQualifiedName() = id
 }
 
@@ -327,17 +316,15 @@ private class StartActivitiesSyntheticCallable extends SyntheticCallable {
     )
   }
 
-  override StartComponentMethodAccess getACall() {
+  override StartComponentMethodCall getACall() {
     result.getMethod().hasName("startActivities") and
     result.targetsComponentType(targetType)
   }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     exists(ActivityIntentSyntheticGlobal glob | glob.getTargetType() = targetType |
-      input = SummaryComponentStack::arrayElementOf(SummaryComponentStack::argument(0)) and
-      output = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(glob)) and
+      input = "Argument[0].ArrayElement" and
+      output = "SyntheticGlobal[" + glob + "]" and
       preservesValue = true
     )
   }
@@ -358,18 +345,16 @@ private class GetIntentSyntheticCallable extends SyntheticCallable {
     result.getEnclosingCallable().getDeclaringType() = targetType
   }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     exists(ActivityIntentSyntheticGlobal glob | glob.getTargetType() = targetType |
-      input = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(glob)) and
-      output = SummaryComponentStack::return() and
+      input = "SyntheticGlobal[" + glob + "]" and
+      output = "ReturnValue" and
       preservesValue = true
     )
   }
 }
 
-private class ActivityIntentSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+private class ActivityIntentSyntheticGlobal extends FlowSummaryImpl::Private::SyntheticGlobal {
   AndroidComponent targetType;
 
   ActivityIntentSyntheticGlobal() {
@@ -382,13 +367,6 @@ private class ActivityIntentSyntheticGlobal extends SummaryComponent::SyntheticG
   AndroidComponent getTargetType() { result = targetType }
 }
 
-private class RequiredComponentStackForStartActivities extends RequiredSummaryComponentStack {
-  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    head = SummaryComponent::arrayElement() and
-    tail = SummaryComponentStack::argument(0)
-  }
-}
-
 /**
  * A value-preserving step from the intent argument of a `sendBroadcast` call to
  * the intent parameter in the `onReceive` method of the receiver the
@@ -396,7 +374,7 @@ private class RequiredComponentStackForStartActivities extends RequiredSummaryCo
  */
 private class SendBroadcastReceiverIntentStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(StartComponentMethodAccess sendBroadcast, Method onReceive |
+    exists(StartComponentMethodCall sendBroadcast, Method onReceive |
       sendBroadcast.getMethod().overrides*(any(SendBroadcastMethod m)) and
       onReceive.overrides*(any(AndroidReceiveIntentMethod m)) and
       sendBroadcast.targetsComponentType(onReceive.getDeclaringType()) and
@@ -413,7 +391,7 @@ private class SendBroadcastReceiverIntentStep extends AdditionalValueStep {
  */
 private class StartServiceIntentStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(StartComponentMethodAccess startService, Method serviceIntent |
+    exists(StartComponentMethodCall startService, Method serviceIntent |
       startService.getMethod().overrides*(any(StartServiceMethod m)) and
       serviceIntent.overrides*(any(AndroidServiceIntentMethod m)) and
       startService.targetsComponentType(serviceIntent.getDeclaringType()) and

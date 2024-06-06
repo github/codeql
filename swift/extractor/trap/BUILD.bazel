@@ -23,7 +23,7 @@ genrule(
         "--schema=$(location //swift:schema)",
         "--script-name=codegen/codegen.py",
     ]),
-    exec_tools = [
+    tools = [
         "//misc/codegen",
         "//swift:schema",
     ],

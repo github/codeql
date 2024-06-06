@@ -14,12 +14,16 @@ on:
       - ".github/workflows/csv-coverage-metrics.yml"
       - ".github/actions/fetch-codeql/action.yml"
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   publish-java:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -47,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database

@@ -1,3 +1,3 @@
-| expressions.cs:385:14:385:26 | MainCreations | expressions.cs:387:23:387:48 | object creation of type Point | expressions.cs:340:18:340:22 | Point | expressions.cs:387:33:387:48 | { ..., ... } |
-| expressions.cs:385:14:385:26 | MainCreations | expressions.cs:390:22:390:49 | object creation of type Point | expressions.cs:340:18:340:22 | Point | expressions.cs:390:34:390:49 | { ..., ... } |
-| expressions.cs:385:14:385:26 | MainCreations | expressions.cs:391:22:391:49 | object creation of type Point | expressions.cs:340:18:340:22 | Point | expressions.cs:391:34:391:49 | { ..., ... } |
+| expressions.cs:386:14:386:26 | MainCreations | expressions.cs:388:23:388:48 | object creation of type Point | expressions.cs:341:18:341:22 | Point | expressions.cs:388:33:388:48 | { ..., ... } |
+| expressions.cs:386:14:386:26 | MainCreations | expressions.cs:391:22:391:49 | object creation of type Point | expressions.cs:341:18:341:22 | Point | expressions.cs:391:34:391:49 | { ..., ... } |
+| expressions.cs:386:14:386:26 | MainCreations | expressions.cs:392:22:392:49 | object creation of type Point | expressions.cs:341:18:341:22 | Point | expressions.cs:392:34:392:49 | { ..., ... } |

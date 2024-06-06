@@ -10,6 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.Sanitizers
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -31,13 +32,6 @@ module ServerSideRequestForgery {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "URL redirection" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   /** A source of remote user input, considered as a flow source for server side request forgery. */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
@@ -48,4 +42,8 @@ module ServerSideRequestForgery {
 
   /** A string interpolation with a fixed prefix, considered as a flow sanitizer. */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
+
+  private class ExternalRequestForgerySink extends Sink {
+    ExternalRequestForgerySink() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+  }
 }

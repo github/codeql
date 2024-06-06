@@ -39,7 +39,7 @@ c.kt:
 #    0|           0: [TypeAccess] ProcessBuilder
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
-#    0|           0: [MethodAccess] start(...)
+#    0|           0: [MethodCall] start(...)
 #    0|             -1: [VarAccess] param
 #    1|     2: [Constructor] C
 #    1|       5: [BlockStmt] { ... }
@@ -62,7 +62,7 @@ e.kt:
 #    0|       3: [TypeAccess] boolean
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
-#    0|           0: [MethodAccess] add(...)
+#    0|           0: [MethodCall] add(...)
 #    0|             -1: [ClassInstanceExpr] new ArrayList<Object>(...)
 #    0|               -3: [TypeAccess] ArrayList<Object>
 #    0|               0: [IntegerLiteral] 1
@@ -71,7 +71,7 @@ e.kt:
 #    0|       3: [TypeAccess] Object
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
-#    0|           0: [MethodAccess] put(...)
+#    0|           0: [MethodCall] put(...)
 #    0|             -1: [ClassInstanceExpr] new LinkedHashMap<Object,Object>(...)
 #    0|               -3: [TypeAccess] LinkedHashMap<Object,Object>
 #    0|               0: [IntegerLiteral] 1

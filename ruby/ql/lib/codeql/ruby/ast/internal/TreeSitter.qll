@@ -12,13 +12,13 @@ module Ruby {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { ruby_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { ruby_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { ruby_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { ruby_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { ruby_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { ruby_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1929,13 +1929,13 @@ module Erb {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { erb_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { erb_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { erb_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { erb_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { erb_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { erb_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }

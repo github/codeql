@@ -66,7 +66,7 @@ typeaccesses/TA.java:
 #   11|       3: [TypeAccess] void
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [ExprStmt] <Expr>;
-#   11|           0: [MethodAccess] toString(...)
+#   11|           0: [MethodCall] toString(...)
 #   11|             -1: [CastExpr] (...)...
 #   11|               0: [TypeAccess] ArrayList<TA>
 #   11|                 0: [TypeAccess] TA
@@ -82,7 +82,7 @@ typeaccesses/TA.java:
 #   13|       3: [TypeAccess] void
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ExprStmt] <Expr>;
-#   13|           0: [MethodAccess] method3(...)
+#   13|           0: [MethodCall] method3(...)
 #   13|             -1: [TypeAccess] TA
 #   14|     10: [Class,GenericType,ParameterizedType] Inner
 #-----|       -2: (Generic Parameters)

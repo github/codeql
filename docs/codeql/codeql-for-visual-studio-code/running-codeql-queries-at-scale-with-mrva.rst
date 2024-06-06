@@ -5,6 +5,8 @@
 Running CodeQL queries at scale with multi-repository variant analysis
 ======================================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 .. include:: ../reusables/beta-note-mrva.rst
 
 About multi-repository variant analysis
@@ -85,7 +87,6 @@ For each repository, you can see:
 - Visibility of the repository
 - Whether analysis is still running (black, moving circle) or finished (green checkmark)
 - Number of stars the repository has on GitHub
-- When the repository was last updated
 
 To see the results for a repository:
 

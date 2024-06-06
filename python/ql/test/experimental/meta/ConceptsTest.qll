@@ -255,52 +255,125 @@ module HttpServerRequestHandlerTest implements TestSig {
   }
 }
 
-class HttpServerHttpResponseTest extends InlineExpectationsTest {
-  File file;
+abstract class DedicatedResponseTest extends string {
+  bindingset[this]
+  DedicatedResponseTest() { any() }
 
-  HttpServerHttpResponseTest() {
-    file.getExtension() = "py" and
-    this = "HttpServerHttpResponseTest: " + file
-  }
+  string toString() { result = this }
 
-  override string getARelevantTag() { result in ["HttpResponse", "responseBody", "mimetype"] }
+  abstract predicate isDedicatedFile(File file);
+}
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+module HttpServerHttpResponseTest implements TestSig {
+  string getARelevantTag() { result in ["HttpResponse", "responseBody", "mimetype"] }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     // By adding `file` as a class field, and these two restrictions, it's possible to
     // say that we only want to check _some_ tags for certain files. This helped make
     // flask tests more readable since adding full annotations for HttpResponses in the
     // the tests for routing setup is both annoying and not very useful.
-    location.getFile() = file and
-    exists(file.getRelativePath()) and
-    // we need to do this step since we expect subclasses could override getARelevantTag
-    tag = this.getARelevantTag() and
-    (
-      exists(Http::Server::HttpResponse response |
-        location = response.getLocation() and
-        element = response.toString() and
-        value = "" and
-        tag = "HttpResponse"
-      )
-      or
-      exists(Http::Server::HttpResponse response |
-        location = response.getLocation() and
-        element = response.toString() and
-        value = prettyNodeForInlineTest(response.getBody()) and
-        tag = "responseBody"
-      )
-      or
-      exists(Http::Server::HttpResponse response |
-        location = response.getLocation() and
-        element = response.toString() and
-        // Ensure that an expectation value such as "mimetype=text/html; charset=utf-8" is parsed as a
-        // single expectation with tag mimetype, and not as two expectations with tags mimetype and
-        // charset.
+    exists(File file |
+      location.getFile() = file and
+      file.getExtension() = "py" and
+      exists(file.getRelativePath()) and
+      // we need to do this step since we expect subclasses could override getARelevantTag
+      tag = getARelevantTag() and
+      (
+        exists(Http::Server::HttpResponse response |
+          location = response.getLocation() and
+          element = response.toString() and
+          value = "" and
+          tag = "HttpResponse"
+        )
+        or
         (
-          if exists(response.getMimetype().indexOf(" "))
-          then value = "\"" + response.getMimetype() + "\""
-          else value = response.getMimetype()
+          not exists(DedicatedResponseTest d)
+          or
+          exists(DedicatedResponseTest d | d.isDedicatedFile(file))
         ) and
-        tag = "mimetype"
+        (
+          exists(Http::Server::HttpResponse response, DataFlow::Node body |
+            body = response.getBody() and
+            location = body.getLocation() and
+            element = body.toString() and
+            value = prettyNodeForInlineTest(body) and
+            tag = "responseBody"
+          )
+          or
+          exists(Http::Server::HttpResponse response |
+            location = response.getLocation() and
+            element = response.toString() and
+            // Ensure that an expectation value such as "mimetype=text/html; charset=utf-8" is parsed as a
+            // single expectation with tag mimetype, and not as two expectations with tags mimetype and
+            // charset.
+            (
+              if exists(response.getMimetype().indexOf(" "))
+              then value = "\"" + response.getMimetype() + "\""
+              else value = response.getMimetype()
+            ) and
+            tag = "mimetype"
+          )
+        )
+      )
+    )
+  }
+}
+
+module HttpResponseHeaderWriteTest implements TestSig {
+  string getARelevantTag() {
+    result =
+      [
+        "headerWriteNameUnsanitized", "headerWriteNameSanitized", "headerWriteValueUnsanitized",
+        "headerWriteValueSanitized", "headerWriteBulk"
+      ]
+  }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(Http::Server::ResponseHeaderWrite write, DataFlow::Node node |
+        location = node.getLocation() and
+        element = node.toString()
+      |
+        node = write.getNameArg() and
+        (
+          if write.nameAllowsNewline()
+          then tag = "headerWriteNameUnsanitized"
+          else tag = "headerWriteNameSanitized"
+        ) and
+        value = prettyNodeForInlineTest(node)
+        or
+        node = write.getValueArg() and
+        (
+          if write.valueAllowsNewline()
+          then tag = "headerWriteValueUnsanitized"
+          else tag = "headerWriteValueSanitized"
+        ) and
+        value = prettyNodeForInlineTest(node)
+      )
+      or
+      exists(Http::Server::ResponseHeaderBulkWrite write, DataFlow::Node node |
+        node = write.getBulkArg() and
+        location = node.getLocation() and
+        element = node.toString() and
+        (
+          tag = "headerWriteBulk" and
+          value = prettyNodeForInlineTest(node)
+          or
+          (
+            if write.nameAllowsNewline()
+            then tag = "headerWriteNameUnsanitized"
+            else tag = "headerWriteNameSanitized"
+          ) and
+          value = ""
+          or
+          (
+            if write.valueAllowsNewline()
+            then tag = "headerWriteValueUnsanitized"
+            else tag = "headerWriteValueSanitized"
+          ) and
+          value = ""
+        )
       )
     )
   }
@@ -545,8 +618,9 @@ import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest
     CodeExecutionTest>,
   MergeTests5<SqlConstructionTest, SqlExecutionTest, XPathConstructionTest, XPathExecutionTest,
     EscapingTest>,
-  MergeTests4<HttpServerRouteSetupTest, HttpServerRequestHandlerTest,
-    HttpServerHttpRedirectResponseTest, HttpServerCookieWriteTest>,
+  MergeTests5<HttpServerRouteSetupTest, HttpServerRequestHandlerTest, HttpServerHttpResponseTest,
+    HttpServerHttpRedirectResponseTest,
+    MergeTests<HttpServerCookieWriteTest, HttpResponseHeaderWriteTest>>,
   MergeTests5<FileSystemAccessTest, FileSystemWriteAccessTest, PathNormalizationTest,
     SafeAccessCheckTest, PublicKeyGenerationTest>,
   MergeTests5<CryptographicOperationTest, HttpClientRequestTest, CsrfProtectionSettingTest,

@@ -1547,3 +1547,21 @@ class BuiltInBitCast extends BuiltInOperation, @builtinbitcast {
 
   override string getAPrimaryQlClass() { result = "BuiltInBitCast" }
 }
+
+/**
+ * A C++ `__is_trivial` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a trivial type.
+ * ```
+ *  template<typename _Tp>
+ *    struct is_trivial
+ *    : public integral_constant<bool, __is_trivial(_Tp)>
+ *    {};
+ * ```
+ */
+class BuiltInIsTrivial extends BuiltInOperation, @istrivialexpr {
+  override string toString() { result = "__is_trivial" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInIsTrivial" }
+}

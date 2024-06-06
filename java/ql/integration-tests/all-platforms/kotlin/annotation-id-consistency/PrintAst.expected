@@ -10,10 +10,10 @@ User.java:
 #    3|           0: [TypeAccess] Ann2
 #    3|       5: [BlockStmt] { ... }
 #    4|         0: [ExprStmt] <Expr>;
-#    4|           0: [MethodAccess] x(...)
+#    4|           0: [MethodCall] x(...)
 #    4|             -1: [VarAccess] a1
 #    4|         1: [ExprStmt] <Expr>;
-#    4|           0: [MethodAccess] z(...)
+#    4|           0: [MethodCall] z(...)
 #    4|             -1: [VarAccess] a2
 #    4|         2: [ExprStmt] <Expr>;
 #    4|           0: [ClassInstanceExpr] new Annotated(...)
@@ -49,7 +49,7 @@ ktUser.kt:
 #    8|         3: [ExprStmt] <Expr>;
 #    8|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    8|             0: [TypeAccess] Unit
-#    8|             1: [MethodAccess] isJavaLetter(...)
+#    8|             1: [MethodCall] isJavaLetter(...)
 #    8|               -1: [TypeAccess] Character
 #    8|               0: [CharacterLiteral] a
 test.kt:
@@ -163,25 +163,25 @@ test.kt:
 #   23|               2: [IntegerLiteral] 2
 #   23|               3: [IntegerLiteral] 3
 #   17|       2: [Annotation] Ann1
-#    0|         1: [Annotation] Ann2
-#    0|           1: [StringLiteral] "Hello"
-#    0|           2: [TypeLiteral] String.class
-#    0|             0: [TypeAccess] String
-#    0|           3: [ArrayInit] {...}
-#    0|             1: [IntegerLiteral] 1
-#    0|             2: [IntegerLiteral] 2
-#    0|             3: [IntegerLiteral] 3
-#    0|           4: [ArrayInit] {...}
-#    0|             1: [Annotation] Ann3
-#    0|               1: [IntegerLiteral] 1
-#    0|             2: [Annotation] Ann3
-#    0|               1: [IntegerLiteral] 2
-#    0|           5: [ArrayInit] {...}
-#    0|             1: [TypeLiteral] String.class
-#    0|               0: [TypeAccess] String
-#    0|             2: [TypeLiteral] int.class
-#    0|               0: [TypeAccess] int
-#   17|         2: [IntegerLiteral] 1
+#   17|         1: [IntegerLiteral] 1
+#   17|         2: [Annotation] Ann2
+#   17|           1: [StringLiteral] "Hello"
+#   17|           2: [TypeLiteral] String.class
+#   17|             0: [TypeAccess] String
+#   17|           3: [ArrayInit] {...}
+#   17|             1: [IntegerLiteral] 1
+#   17|             2: [IntegerLiteral] 2
+#   17|             3: [IntegerLiteral] 3
+#   17|           4: [ArrayInit] {...}
+#   17|             1: [Annotation] Ann3
+#   17|               1: [IntegerLiteral] 1
+#   17|             2: [Annotation] Ann3
+#   17|               1: [IntegerLiteral] 2
+#   17|           5: [ArrayInit] {...}
+#   17|             1: [TypeLiteral] String.class
+#   17|               0: [TypeAccess] String
+#   17|             2: [TypeLiteral] int.class
+#   17|               0: [TypeAccess] int
 #   17|         3: [VarAccess] DayOfWeek.MONDAY
 #   17|           -1: [TypeAccess] DayOfWeek
 #   18|       3: [Annotation] GenericAnnotation
@@ -193,17 +193,17 @@ test.kt:
 #   18|           2: [TypeLiteral] String.class
 #   18|             0: [TypeAccess] String
 #   24|       4: [Annotation] AnnWithDefaults
-#    0|         1: [IntegerLiteral] 1
-#    0|         2: [StringLiteral] "hello"
-#    0|         3: [VarAccess] DayOfWeek.TUESDAY
-#    0|           -1: [TypeAccess] DayOfWeek
-#    0|         4: [ArrayInit] {...}
-#    0|           1: [Annotation] Ann3
-#    0|             1: [IntegerLiteral] 1
-#   25|     1: [Constructor] Annotated
+#   15|         1: [IntegerLiteral] 1
+#   15|         2: [StringLiteral] "hello"
+#   15|         3: [VarAccess] DayOfWeek.TUESDAY
+#   15|           -1: [TypeAccess] DayOfWeek
+#   15|         4: [ArrayInit] {...}
+#   15|           1: [Annotation] Ann3
+#   15|             1: [IntegerLiteral] 1
+#   17|     1: [Constructor] Annotated
 #   17|       5: [BlockStmt] { ... }
 #   17|         0: [SuperConstructorInvocationStmt] super(...)
-#   25|         1: [BlockStmt] { ... }
+#   17|         1: [BlockStmt] { ... }
 #   27|   9: [Class] AnnotatedUsedByKotlin
 #-----|     -3: (Annotations)
 #    0|       1: [Annotation] Container
@@ -228,25 +228,25 @@ test.kt:
 #   33|               2: [IntegerLiteral] 2
 #   33|               3: [IntegerLiteral] 3
 #   27|       2: [Annotation] Ann1
-#    0|         1: [Annotation] Ann2
-#    0|           1: [StringLiteral] "Hello"
-#    0|           2: [TypeLiteral] String.class
-#    0|             0: [TypeAccess] String
-#    0|           3: [ArrayInit] {...}
-#    0|             1: [IntegerLiteral] 1
-#    0|             2: [IntegerLiteral] 2
-#    0|             3: [IntegerLiteral] 3
-#    0|           4: [ArrayInit] {...}
-#    0|             1: [Annotation] Ann3
-#    0|               1: [IntegerLiteral] 1
-#    0|             2: [Annotation] Ann3
-#    0|               1: [IntegerLiteral] 2
-#    0|           5: [ArrayInit] {...}
-#    0|             1: [TypeLiteral] String.class
-#    0|               0: [TypeAccess] String
-#    0|             2: [TypeLiteral] int.class
-#    0|               0: [TypeAccess] int
-#   27|         2: [IntegerLiteral] 1
+#   27|         1: [IntegerLiteral] 1
+#   27|         2: [Annotation] Ann2
+#   27|           1: [StringLiteral] "Hello"
+#   27|           2: [TypeLiteral] String.class
+#   27|             0: [TypeAccess] String
+#   27|           3: [ArrayInit] {...}
+#   27|             1: [IntegerLiteral] 1
+#   27|             2: [IntegerLiteral] 2
+#   27|             3: [IntegerLiteral] 3
+#   27|           4: [ArrayInit] {...}
+#   27|             1: [Annotation] Ann3
+#   27|               1: [IntegerLiteral] 1
+#   27|             2: [Annotation] Ann3
+#   27|               1: [IntegerLiteral] 2
+#   27|           5: [ArrayInit] {...}
+#   27|             1: [TypeLiteral] String.class
+#   27|               0: [TypeAccess] String
+#   27|             2: [TypeLiteral] int.class
+#   27|               0: [TypeAccess] int
 #   27|         3: [VarAccess] DayOfWeek.MONDAY
 #   27|           -1: [TypeAccess] DayOfWeek
 #   28|       3: [Annotation] GenericAnnotation
@@ -258,44 +258,48 @@ test.kt:
 #   28|           2: [TypeLiteral] String.class
 #   28|             0: [TypeAccess] String
 #   34|       4: [Annotation] AnnWithDefaults
-#    0|         1: [IntegerLiteral] 1
-#    0|         2: [StringLiteral] "hello"
-#    0|         3: [VarAccess] DayOfWeek.TUESDAY
-#    0|           -1: [TypeAccess] DayOfWeek
-#    0|         4: [ArrayInit] {...}
-#    0|           1: [Annotation] Ann3
-#    0|             1: [IntegerLiteral] 1
-#   35|     1: [Constructor] AnnotatedUsedByKotlin
+#   15|         1: [IntegerLiteral] 1
+#   15|         2: [StringLiteral] "hello"
+#   15|         3: [VarAccess] DayOfWeek.TUESDAY
+#   15|           -1: [TypeAccess] DayOfWeek
+#   15|         4: [ArrayInit] {...}
+#   15|           1: [Annotation] Ann3
+#   15|             1: [IntegerLiteral] 1
+#   27|     1: [Constructor] AnnotatedUsedByKotlin
 #   27|       5: [BlockStmt] { ... }
 #   27|         0: [SuperConstructorInvocationStmt] super(...)
-#   35|         1: [BlockStmt] { ... }
+#   27|         1: [BlockStmt] { ... }
 #   37|   10: [Class] HasJavaDeprecatedAnnotationUsedByJava
 #-----|     -3: (Annotations)
 #   37|       1: [Annotation] Deprecated
-#   38|     1: [Constructor] HasJavaDeprecatedAnnotationUsedByJava
+#    0|         1: [StringLiteral] ""
+#    0|         2: [BooleanLiteral] false
+#   37|     1: [Constructor] HasJavaDeprecatedAnnotationUsedByJava
 #   37|       5: [BlockStmt] { ... }
 #   37|         0: [SuperConstructorInvocationStmt] super(...)
-#   38|         1: [BlockStmt] { ... }
+#   37|         1: [BlockStmt] { ... }
 #   40|   11: [Class] HasKotlinDeprecatedAnnotationUsedByJava
 #-----|     -3: (Annotations)
 #   40|       1: [Annotation] Deprecated
 #   40|         1: [StringLiteral] "Kotlin deprecation message 1"
-#   41|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByJava
+#   40|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByJava
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [SuperConstructorInvocationStmt] super(...)
-#   41|         1: [BlockStmt] { ... }
+#   40|         1: [BlockStmt] { ... }
 #   43|   12: [Class] HasJavaDeprecatedAnnotationUsedByKotlin
 #-----|     -3: (Annotations)
 #   43|       1: [Annotation] Deprecated
-#   44|     1: [Constructor] HasJavaDeprecatedAnnotationUsedByKotlin
+#    0|         1: [StringLiteral] ""
+#    0|         2: [BooleanLiteral] false
+#   43|     1: [Constructor] HasJavaDeprecatedAnnotationUsedByKotlin
 #   43|       5: [BlockStmt] { ... }
 #   43|         0: [SuperConstructorInvocationStmt] super(...)
-#   44|         1: [BlockStmt] { ... }
+#   43|         1: [BlockStmt] { ... }
 #   46|   13: [Class] HasKotlinDeprecatedAnnotationUsedByKotlin
 #-----|     -3: (Annotations)
 #   46|       1: [Annotation] Deprecated
 #   46|         1: [StringLiteral] "Kotlin deprecation message 2"
-#   47|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByKotlin
+#   46|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByKotlin
 #   46|       5: [BlockStmt] { ... }
 #   46|         0: [SuperConstructorInvocationStmt] super(...)
-#   47|         1: [BlockStmt] { ... }
+#   46|         1: [BlockStmt] { ... }

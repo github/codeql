@@ -1,4 +1,6 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import TestUtilities.InlineExpectationsTest
 import semmle.go.security.IncorrectIntegerConversionLib
 
@@ -7,15 +9,11 @@ module TestIncorrectIntegerConversion implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
-    exists(DataFlow::Node sink, DataFlow::Node sinkConverted |
-      any(ConversionWithoutBoundsCheckConfig config).hasFlowTo(sink) and
-      sinkConverted = sink.getASuccessor()
-    |
-      sinkConverted
-          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      element = sinkConverted.toString() and
-      value = "\"" + sinkConverted.toString() + "\""
+    exists(DataFlow::Node sink | Flow::flowTo(sink) |
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      element = sink.toString() and
+      value = "\"" + sink.toString() + "\""
     )
   }
 }

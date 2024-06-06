@@ -12,6 +12,8 @@
 | cases.rb:154:1:158:3 | case ... | CaseExpr |
 | cases.rb:160:1:160:14 | case ... | CaseExpr |
 | cases.rb:162:1:162:20 | case ... | CaseExpr |
+| cases.rb:164:1:167:3 | case ... | CaseExpr |
+| cases.rb:169:1:172:3 | case ... | CaseExpr |
 | conditionals.rb:10:1:12:3 | if ... | IfExpr |
 | conditionals.rb:15:1:19:3 | if ... | IfExpr |
 | conditionals.rb:22:1:30:3 | if ... | IfExpr |
@@ -27,9 +29,15 @@
 | conditionals.rb:61:1:64:3 | if ... | IfExpr |
 | conditionals.rb:67:1:70:3 | if ... | IfExpr |
 | loops.rb:9:1:12:3 | for ... in ... | ForExpr |
+| loops.rb:9:5:9:5 | if ... | IfExpr |
 | loops.rb:16:1:19:3 | for ... in ... | ForExpr |
+| loops.rb:16:5:16:5 | if ... | IfExpr |
 | loops.rb:22:1:25:3 | for ... in ... | ForExpr |
+| loops.rb:22:5:22:7 | if ... | IfExpr |
+| loops.rb:22:10:22:14 | if ... | IfExpr |
 | loops.rb:28:1:32:3 | for ... in ... | ForExpr |
+| loops.rb:28:6:28:8 | if ... | IfExpr |
+| loops.rb:28:11:28:15 | if ... | IfExpr |
 | loops.rb:35:1:39:3 | while ... | WhileExpr |
 | loops.rb:42:1:45:3 | while ... | WhileExpr |
 | loops.rb:48:1:48:19 | ... while ... | WhileModifierExpr |

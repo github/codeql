@@ -1,5 +1,5 @@
-failures
 testFailures
+failures
 debug_callableNotUnique
 pointsTo_found_typeTracker_notFound
 | code/class_attr_assign.py:10:9:10:27 | ControlFlowNode for Attribute() | my_func |
@@ -16,7 +16,6 @@ pointsTo_found_typeTracker_notFound
 | code/func_defined_outside_class.py:42:1:42:7 | ControlFlowNode for Attribute() | B._gen.func |
 | code/func_defined_outside_class.py:43:1:43:7 | ControlFlowNode for Attribute() | B._gen.func |
 | code/funky_regression.py:15:9:15:17 | ControlFlowNode for Attribute() | Wat.f2 |
-| code/tuple_function_return.py:15:1:15:4 | ControlFlowNode for f2() | func |
 | code/type_tracking_limitation.py:8:1:8:3 | ControlFlowNode for x() | my_func |
 typeTracker_found_pointsTo_notFound
 | code/callable_as_argument.py:29:5:29:12 | ControlFlowNode for Attribute() | test_class.InsideTestFunc.sm |
@@ -38,6 +37,10 @@ typeTracker_found_pointsTo_notFound
 | code/class_super.py:101:1:101:7 | ControlFlowNode for Attribute() | Z.foo |
 | code/class_super.py:108:1:108:8 | ControlFlowNode for Attribute() | Z.foo |
 | code/def_in_function.py:22:5:22:11 | ControlFlowNode for Attribute() | test.A.foo |
+| code/func_ref_in_content.py:32:1:32:4 | ControlFlowNode for f4() | func |
+| code/func_ref_in_content.py:46:1:46:4 | ControlFlowNode for f5() | func |
+| code/func_ref_in_content.py:48:1:48:15 | ControlFlowNode for Subscript() | func2 |
+| code/func_ref_in_content.py:50:1:50:19 | ControlFlowNode for Subscript() | func2 |
 | code/isinstance.py:9:13:9:22 | ControlFlowNode for Attribute() | A.foo |
 | code/isinstance.py:9:13:9:22 | ControlFlowNode for Attribute() | ASub.foo |
 | code/isinstance.py:14:13:14:22 | ControlFlowNode for Attribute() | A.foo |

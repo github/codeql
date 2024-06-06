@@ -61,11 +61,8 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
       f.getName().matches("%noReturnTracking%") and
       node = f.getAReturnedExpr().flow()
     )
-  }
-
-  override predicate isSanitizerEdge(DataFlow::Node src, DataFlow::Node snk) {
-    src = src and
-    snk.asExpr().(PropAccess).getPropertyName() = "notTracked"
+    or
+    node.asExpr().(PropAccess).getPropertyName() = "notTracked"
   }
 }
 
@@ -99,11 +96,8 @@ class GermanFlowConfig extends DataFlow::Configuration {
       f.getName().matches("%noReturnTracking%") and
       node = f.getAReturnedExpr().flow()
     )
-  }
-
-  override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node snk) {
-    src = src and
-    snk.asExpr().(PropAccess).getPropertyName() = "notTracked"
+    or
+    node.asExpr().(PropAccess).getPropertyName() = "notTracked"
   }
 }
 

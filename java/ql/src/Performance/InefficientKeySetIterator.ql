@@ -14,25 +14,25 @@ import java
 /** A local variable that is initialized using a key-set iterator. */
 class KeySetIterator extends LocalVariableDecl {
   KeySetIterator() {
-    exists(LocalVariableDeclExpr lvde, MethodAccess init |
+    exists(LocalVariableDeclExpr lvde, MethodCall init |
       lvde.getVariable() = this and
       lvde.getInit() = init and
       init.getMethod().hasName("iterator") and
-      init.getQualifier().(MethodAccess).getMethod().hasName("keySet")
+      init.getQualifier().(MethodCall).getMethod().hasName("keySet")
     )
   }
 
   LocalVariableDecl getBase() {
-    exists(LocalVariableDeclExpr lvde, MethodAccess init |
+    exists(LocalVariableDeclExpr lvde, MethodCall init |
       lvde.getVariable() = this and
       lvde.getInit() = init and
-      init.getQualifier().(MethodAccess).getQualifier().(VarAccess).getVariable() = result
+      init.getQualifier().(MethodCall).getQualifier().(VarAccess).getVariable() = result
     )
   }
 }
 
 predicate isKeyNext(Expr e, KeySetIterator it) {
-  exists(MethodAccess ma | ma = e |
+  exists(MethodCall ma | ma = e |
     ma.getMethod().hasName("next") and
     ma.getQualifier().(VarAccess).getVariable() = it
   )
@@ -56,7 +56,7 @@ class Key extends LocalVariableDecl {
   }
 }
 
-from MethodAccess ma, Method get
+from MethodCall ma, Method get
 where
   ma.getMethod() = get and
   get.hasName("get") and

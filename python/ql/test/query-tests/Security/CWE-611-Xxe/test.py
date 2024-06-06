@@ -1,5 +1,6 @@
 from flask import Flask, request
 import lxml.etree
+import markupsafe
 
 app = Flask(__name__)
 
@@ -28,3 +29,9 @@ def super_vuln_handler():
         huge_tree=True,
     )
     return lxml.etree.fromstring(xml_content, parser=parser).text
+
+@app.route("/sanitized-handler")
+def sanitized_handler():
+    xml_content = request.args['xml_content']
+    xml_content = markupsafe.escape(xml_content)
+    return lxml.etree.fromstring(xml_content).text

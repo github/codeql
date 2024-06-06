@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 import TestUtilities.InlineFlowTest
 
 module FlowConfig implements DataFlow::ConfigSig {

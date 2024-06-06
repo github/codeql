@@ -164,7 +164,7 @@ int main(int argc, char **argv) {
 	printf(i91);
 	printWrapper(i91);
 
-	// BAD: i10 value comes from argv
+	// BAD: i10 value comes from argv [NOT DETECTED]
 	int i10 = (int) argv[1];
 	printf((char *) i10);
 	printWrapper((char *) i10);

@@ -1,0 +1,56 @@
+edges
+| UnsafeYamlDeserialization.rb:10:5:10:13 | yaml_data | UnsafeYamlDeserialization.rb:11:25:11:33 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:10:17:10:22 | call to params | UnsafeYamlDeserialization.rb:10:17:10:28 | ...[...] | provenance |  |
+| UnsafeYamlDeserialization.rb:10:17:10:28 | ...[...] | UnsafeYamlDeserialization.rb:10:5:10:13 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:17:5:17:13 | yaml_data | UnsafeYamlDeserialization.rb:18:25:18:33 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:17:17:17:22 | call to params | UnsafeYamlDeserialization.rb:17:17:17:28 | ...[...] | provenance |  |
+| UnsafeYamlDeserialization.rb:17:17:17:28 | ...[...] | UnsafeYamlDeserialization.rb:17:5:17:13 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:33:32:33:40 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:34:37:34:45 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:35:32:35:40 | yaml_data | provenance |  |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:37:14:37:33 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:38:14:38:43 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:39:14:39:48 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | UnsafeYamlDeserialization.rb:49:14:49:32 | call to to_ruby | provenance | AdditionalTaintStep |
+| UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:32:17:32:28 | ...[...] | provenance |  |
+| UnsafeYamlDeserialization.rb:32:17:32:28 | ...[...] | UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | provenance |  |
+nodes
+| UnsafeYamlDeserialization.rb:10:5:10:13 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:10:17:10:22 | call to params | semmle.label | call to params |
+| UnsafeYamlDeserialization.rb:10:17:10:28 | ...[...] | semmle.label | ...[...] |
+| UnsafeYamlDeserialization.rb:11:25:11:33 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:17:5:17:13 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:17:17:17:22 | call to params | semmle.label | call to params |
+| UnsafeYamlDeserialization.rb:17:17:17:28 | ...[...] | semmle.label | ...[...] |
+| UnsafeYamlDeserialization.rb:18:25:18:33 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:32:5:32:13 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | semmle.label | call to params |
+| UnsafeYamlDeserialization.rb:32:17:32:28 | ...[...] | semmle.label | ...[...] |
+| UnsafeYamlDeserialization.rb:33:32:33:40 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:34:37:34:45 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:35:32:35:40 | yaml_data | semmle.label | yaml_data |
+| UnsafeYamlDeserialization.rb:37:14:37:33 | call to to_ruby | semmle.label | call to to_ruby |
+| UnsafeYamlDeserialization.rb:38:14:38:43 | call to to_ruby | semmle.label | call to to_ruby |
+| UnsafeYamlDeserialization.rb:39:14:39:48 | call to to_ruby | semmle.label | call to to_ruby |
+| UnsafeYamlDeserialization.rb:49:14:49:32 | call to to_ruby | semmle.label | call to to_ruby |
+| UnsafeYamlDeserialization.rb:61:24:61:34 | call to read | semmle.label | call to read |
+| UnsafeYamlDeserialization.rb:64:24:64:33 | call to gets | semmle.label | call to gets |
+| UnsafeYamlDeserialization.rb:67:24:67:32 | call to read | semmle.label | call to read |
+| UnsafeYamlDeserialization.rb:70:24:70:27 | call to gets | semmle.label | call to gets |
+| UnsafeYamlDeserialization.rb:73:24:73:32 | call to readlines | semmle.label | call to readlines |
+subpaths
+#select
+| UnsafeYamlDeserialization.rb:11:25:11:33 | yaml_data | UnsafeYamlDeserialization.rb:10:17:10:22 | call to params | UnsafeYamlDeserialization.rb:11:25:11:33 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:10:17:10:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:18:25:18:33 | yaml_data | UnsafeYamlDeserialization.rb:17:17:17:22 | call to params | UnsafeYamlDeserialization.rb:18:25:18:33 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:17:17:17:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:33:32:33:40 | yaml_data | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:33:32:33:40 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:34:37:34:45 | yaml_data | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:34:37:34:45 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:35:32:35:40 | yaml_data | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:35:32:35:40 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:37:14:37:33 | call to to_ruby | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:37:14:37:33 | call to to_ruby | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:38:14:38:43 | call to to_ruby | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:38:14:38:43 | call to to_ruby | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:39:14:39:48 | call to to_ruby | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:39:14:39:48 | call to to_ruby | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:49:14:49:32 | call to to_ruby | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | UnsafeYamlDeserialization.rb:49:14:49:32 | call to to_ruby | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:32:17:32:22 | call to params | user-provided value |
+| UnsafeYamlDeserialization.rb:61:24:61:34 | call to read | UnsafeYamlDeserialization.rb:61:24:61:34 | call to read | UnsafeYamlDeserialization.rb:61:24:61:34 | call to read | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:61:24:61:34 | call to read | value from stdin |
+| UnsafeYamlDeserialization.rb:64:24:64:33 | call to gets | UnsafeYamlDeserialization.rb:64:24:64:33 | call to gets | UnsafeYamlDeserialization.rb:64:24:64:33 | call to gets | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:64:24:64:33 | call to gets | value from stdin |
+| UnsafeYamlDeserialization.rb:67:24:67:32 | call to read | UnsafeYamlDeserialization.rb:67:24:67:32 | call to read | UnsafeYamlDeserialization.rb:67:24:67:32 | call to read | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:67:24:67:32 | call to read | value from stdin |
+| UnsafeYamlDeserialization.rb:70:24:70:27 | call to gets | UnsafeYamlDeserialization.rb:70:24:70:27 | call to gets | UnsafeYamlDeserialization.rb:70:24:70:27 | call to gets | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:70:24:70:27 | call to gets | value from stdin |
+| UnsafeYamlDeserialization.rb:73:24:73:32 | call to readlines | UnsafeYamlDeserialization.rb:73:24:73:32 | call to readlines | UnsafeYamlDeserialization.rb:73:24:73:32 | call to readlines | Unsafe deserialization depends on a $@. | UnsafeYamlDeserialization.rb:73:24:73:32 | call to readlines | value from stdin |

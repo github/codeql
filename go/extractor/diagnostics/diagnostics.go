@@ -129,15 +129,18 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	)
 }
 
+func plural(n int, singular, plural string) string {
+	if n == 1 {
+		return singular
+	} else {
+		return plural
+	}
+}
+
 const maxNumPkgPaths = 5
 
 func EmitCannotFindPackages(pkgPaths []string) {
 	numPkgPaths := len(pkgPaths)
-
-	ending := "s"
-	if numPkgPaths == 1 {
-		ending = ""
-	}
 
 	numPrinted := numPkgPaths
 	truncated := false
@@ -154,18 +157,22 @@ func EmitCannotFindPackages(pkgPaths []string) {
 	emitDiagnostic(
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
-		fmt.Sprintf("%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).", numPkgPaths, ending, secondLine),
+		fmt.Sprintf(
+			"%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+			numPkgPaths,
+			plural(len(pkgPaths), "", "s"),
+			secondLine),
 		severityWarning,
 		fullVisibility,
 		noLocation,
 	)
 }
 
-func EmitNewerGoVersionNeeded() {
+func EmitNewerGoVersionNeeded(installedVersion string, requiredVersion string) {
 	emitDiagnostic(
 		"go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
-		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		"Version `"+installedVersion+"` of Go is installed, but this is lower than `"+requiredVersion+"` required by your project's `go.mod`. [Install a newer version of Go before analyzing your project](https://github.com/actions/setup-go#basic).",
 		severityError,
 		fullVisibility,
 		noLocation,
@@ -193,6 +200,123 @@ func EmitRelativeImportPaths() {
 		noLocation,
 	)
 }
+
+// The following diagnostics are telemetry-only.
+
+func EmitBazelBuildFilesFound(bazelPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/bazel-build-file-found",
+		"Bazel BUILD files were found",
+		fmt.Sprintf(
+			"%d bazel BUILD %s found:\n\n`%s`",
+			len(bazelPaths),
+			plural(len(bazelPaths), "file was", "files were"),
+			strings.Join(bazelPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGopkgTomlFound() {
+	emitDiagnostic(
+		"go/autobuilder/gopkg-toml-found",
+		"A dep `Gopkg.toml` file was found",
+		"A dep `Gopkg.toml` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGlideYamlFound() {
+	emitDiagnostic(
+		"go/autobuilder/glide-yaml-found",
+		"A Glide `glide.yaml` file was found",
+		"A Glide `glide.yaml` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoWorkFound(goWorkPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/go-work-found",
+		"`go.work` file found",
+		fmt.Sprintf(
+			"%d `go.work` %s found:\n\n`%s`",
+			len(goWorkPaths),
+			plural(len(goWorkPaths), "file was", "files were"),
+			strings.Join(goWorkPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoFilesOutsideGoModules(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/go-files-outside-go-modules",
+		"Go files were found outside Go modules",
+		"Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`"+strings.Join(goModPaths, "`, `")+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitMultipleGoModFoundNested(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/multiple-go-mod-found-nested",
+		"Multiple `go.mod` files were found, all nested under one root `go.mod` file",
+		fmt.Sprintf(
+			"%d `go.mod` files were found:\n\n`%s`",
+			len(goModPaths),
+			strings.Join(goModPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitMultipleGoModFoundNotNested(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/multiple-go-mod-found-not-nested",
+		"Multiple `go.mod` files found, not all nested under one root `go.mod` file",
+		fmt.Sprintf(
+			"%d `go.mod` files were found:\n\n`%s`",
+			len(goModPaths),
+			strings.Join(goModPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitSingleRootGoModFound(goModPath string) {
+	emitDiagnostic(
+		"go/autobuilder/single-root-go-mod-found",
+		"A single `go.mod` file was found in the root",
+		"A single `go.mod` file was found.\n\n`"+goModPath+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitSingleNonRootGoModFound(goModPath string) {
+	emitDiagnostic(
+		"go/autobuilder/single-non-root-go-mod-found",
+		"A single, non-root `go.mod` file was found",
+		"A single, non-root `go.mod` file was found.\n\n`"+goModPath+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+// The following diagnostics are related to identifying the build environment.
 
 func EmitNoGoModAndNoGoEnv(msg string) {
 	emitDiagnostic(
@@ -356,5 +480,46 @@ func EmitGoModVersionSupportedLowerEqualGoEnv(msg string) {
 		severityNote,
 		telemetryOnly,
 		noLocation,
+	)
+}
+
+func EmitNewerSystemGoRequired(requiredVersion string) {
+	emitDiagnostic(
+		"go/autobuilder/newer-system-go-version-required",
+		"The Go version installed on the system is too old to support this project",
+		"At least Go version `"+requiredVersion+"` is required to build this project, but the version installed on the system is older. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		severityError,
+		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitExtractionFailedForProjects(path []string) {
+	emitDiagnostic(
+		"go/autobuilder/extraction-failed-for-project",
+		"Unable to extract some Go projects",
+		fmt.Sprintf(
+			"The following %d Go project%s could not be extracted successfully:\n\n`%s`\n",
+			len(path),
+			plural(len(path), "", "s"),
+			strings.Join(path, "`, `")),
+		severityWarning,
+		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitInvalidToolchainVersion(goModPath string, version string) {
+	emitDiagnostic(
+		"go/autobuilder/invalid-go-toolchain-version",
+		"Invalid Go toolchain version",
+		strings.Join([]string{
+			"As of Go 1.21, toolchain versions [must use the 1.N.P syntax](https://go.dev/doc/toolchain#version).",
+			fmt.Sprintf("`%s` in `%s` does not match this syntax and there is no additional `toolchain` directive, which may cause some `go` commands to fail.", version, goModPath),
+		},
+			"\n\n"),
+		severityWarning,
+		fullVisibility,
+		&locationStruct{File: goModPath},
 	)
 }

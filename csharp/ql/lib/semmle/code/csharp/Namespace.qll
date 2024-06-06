@@ -1,13 +1,13 @@
 /** Provides classes for namespaces. */
 
+private import semmle.code.csharp.commons.QualifiedName
 import Element
 import Type
-private import dotnet
 
 /**
  * A type container. Either a namespace (`Namespace`) or a type (`Type`).
  */
-class TypeContainer extends DotNet::NamedElement, Element, @type_container { }
+class TypeContainer extends Declaration, @type_container { }
 
 /**
  * A namespace, for example
@@ -18,16 +18,34 @@ class TypeContainer extends DotNet::NamedElement, Element, @type_container { }
  * }
  * ```
  */
-class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespace {
+class Namespace extends TypeContainer, Declaration, @namespace {
   override Namespace getParent() { result = this.getParentNamespace() }
 
-  override Namespace getParentNamespace() { parent_namespace(this, result) }
+  /**
+   * Gets the parent namespace, if any. For example the parent namespace of `System.IO`
+   * is `System`. The parent namespace of `System` is the global namespace.
+   */
+  Namespace getParentNamespace() { parent_namespace(this, result) }
 
-  override Namespace getAChildNamespace() { parent_namespace(result, this) }
+  /**
+   * Gets a child namespace, if any. For example `System.IO` is a child in
+   * the namespace `System`.
+   */
+  Namespace getAChildNamespace() { parent_namespace(result, this) }
 
   override TypeContainer getChild(int i) {
     i = 0 and
     parent_namespace(result, this)
+  }
+
+  /**
+   * Holds if this namespace has the qualified name `qualifier`.`name`.
+   *
+   * For example if the qualified name is `System.Collections.Generic`, then
+   * `qualifier`=`System.Collections` and `name`=`Generic`.
+   */
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    namespaceHasQualifiedName(this, qualifier, name)
   }
 
   /**
@@ -115,7 +133,28 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
 
   override Location getALocation() { result = this.getADeclaration().getALocation() }
 
-  override string toString() { result = DotNet::Namespace.super.toString() }
+  /** Gets a textual representation of this namespace. */
+  override string toString() { result = this.getFullName() }
+
+  /** Holds if this is the global namespace. */
+  final predicate isGlobalNamespace() { this.getName() = "" }
+
+  /** Gets the simple name of this namespace, for example `IO` in `System.IO`. */
+  final override string getName() { namespaces(this, result) }
+
+  final override string getUndecoratedName() { namespaces(this, result) }
+
+  override string getAPrimaryQlClass() { result = "Namespace" }
+
+  /**
+   * Get the fully qualified name of this namespace.
+   */
+  string getFullName() {
+    exists(string namespace, string name |
+      namespaceHasQualifiedName(this, namespace, name) and
+      result = getQualifiedName(namespace, name)
+    )
+  }
 }
 
 /**

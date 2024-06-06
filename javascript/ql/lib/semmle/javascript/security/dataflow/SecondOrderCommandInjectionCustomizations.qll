@@ -117,7 +117,6 @@ module SecondOrderCommandInjection {
     int cmdIndex;
     int argIndex;
 
-    pragma[assume_small_delta]
     IndirectCmdFunc() {
       exists(CommandExecutingCall call |
         this.getParameter(cmdIndex).flowsTo(call.getCommandArg()) and

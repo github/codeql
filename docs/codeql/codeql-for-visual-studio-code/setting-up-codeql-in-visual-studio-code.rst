@@ -5,6 +5,8 @@
 Setting up CodeQL in Visual Studio Code
 =================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 You can install and configure the CodeQL extension in Visual Studio Code.
 
 .. include:: ../reusables/license-note.rst
@@ -73,6 +75,8 @@ To use the starter workspace:
     * Use ``git submodule update --remote`` regularly to keep the submodules up to date.
 
 #. In VS Code, use the **File** > **Open Workspace** option to open the ``vscode-codeql-starter.code-workspace`` file from your checkout of the workspace repository.
+
+Remember to update the ``ql`` submodule in the starter workspace periodically to ensure that it remains compatible with newer versions of the VS Code extension and the CodeQL CLI.
 
 .. _existing-workspace:
 

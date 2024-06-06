@@ -1,0 +1,6 @@
+go 1.19
+
+use (
+	./subdir1
+	./subdir2
+)

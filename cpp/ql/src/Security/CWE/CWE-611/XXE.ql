@@ -35,7 +35,7 @@ module XxeConfig implements DataFlow::StateConfigSig {
   ) {
     // create additional flow steps for `XxeFlowStateTransformer`s
     state2 = node2.asIndirectExpr().(XxeFlowStateTransformer).transform(state1) and
-    DataFlow::simpleLocalFlowStep(node1, node2)
+    DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState flowstate) {
@@ -43,6 +43,8 @@ module XxeConfig implements DataFlow::StateConfigSig {
     // flowstate value.
     node.asIndirectExpr().(XxeFlowStateTransformer).transform(flowstate) != flowstate
   }
+
+  predicate neverSkip(DataFlow::Node node) { none() }
 }
 
 module XxeFlow = DataFlow::GlobalWithState<XxeConfig>;

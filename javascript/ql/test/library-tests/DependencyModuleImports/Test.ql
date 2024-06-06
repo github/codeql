@@ -1,5 +1,4 @@
 import javascript
-import semmle.javascript.dependencies.Dependencies
 import semmle.javascript.dependencies.SemVer
 
 class SampleVersionSink extends DataFlow::Node {

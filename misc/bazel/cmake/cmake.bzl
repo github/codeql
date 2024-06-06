@@ -22,7 +22,13 @@ CmakeInfo = provider(
 )
 
 def _cmake_name(label):
-    return ("%s_%s_%s" % (label.workspace_name, label.package, label.name)).replace("/", "_")
+    # strip away the bzlmod module version for now
+    workspace_name, _, _ = label.workspace_name.partition("~")
+    ret = ("%s_%s_%s" % (workspace_name, label.package, label.name)).replace("/", "_")
+    internal_transition_suffix = "_INTERNAL_TRANSITION"
+    if ret.endswith(internal_transition_suffix):
+        ret = ret[:-len(internal_transition_suffix)]
+    return ret
 
 def _cmake_file(file):
     if not file.is_source:
@@ -49,17 +55,25 @@ def _get_includes(includes):
     return [_cmake_path(i) for i in includes.to_list() if "/_virtual_includes/" not in i]
 
 def _cmake_aspect_impl(target, ctx):
-    if not ctx.rule.kind.startswith("cc_"):
+    if not ctx.rule.kind.startswith(("cc_", "_cc_add_features")):
         return [CmakeInfo(name = None, transitive_deps = depset())]
+
+    # TODO: remove cc_binary_add_features once we remove it from internal repo
+    if ctx.rule.kind in ("cc_binary_add_features", "_cc_add_features_binary", "_cc_add_features_test"):
+        dep = ctx.rule.attr.dep[0][CmakeInfo]
+        return [CmakeInfo(
+            name = None,
+            transitive_deps = depset([dep], transitive = [dep.transitive_deps]),
+        )]
 
     name = _cmake_name(ctx.label)
 
     is_macos = "darwin" in ctx.var["TARGET_CPU"]
 
-    is_binary = ctx.rule.kind == "cc_binary"
+    is_binary = ctx.rule.kind in ("cc_binary", "cc_test")
     force_cxx_compilation = "force_cxx_compilation" in ctx.rule.attr.features
     attr = ctx.rule.attr
-    srcs = attr.srcs + getattr(attr, "hdrs", []) + getattr(attr, "textual_hdrs", [])
+    srcs = getattr(attr, "srcs", []) + getattr(attr, "hdrs", []) + getattr(attr, "textual_hdrs", [])
     srcs = [f for src in srcs for f in src.files.to_list()]
     inputs = [f for f in srcs if not f.is_source or f.path.startswith("external/")]
     by_kind = {}
@@ -78,10 +92,10 @@ def _cmake_aspect_impl(target, ctx):
     cxx_compilation = force_cxx_compilation or any([not src.endswith(".c") for src in srcs])
 
     copts = ctx.fragments.cpp.copts + (ctx.fragments.cpp.cxxopts if cxx_compilation else ctx.fragments.cpp.conlyopts)
-    copts += [ctx.expand_make_variables("copts", o, {}) for o in ctx.rule.attr.copts]
+    copts += [ctx.expand_make_variables("copts", o, {}) for o in getattr(ctx.rule.attr, "copts", [])]
 
     linkopts = ctx.fragments.cpp.linkopts
-    linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in ctx.rule.attr.linkopts]
+    linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in getattr(ctx.rule.attr, "linkopts", [])]
 
     compilation_ctx = target[CcInfo].compilation_context
     system_includes = _get_includes(compilation_ctx.system_includes)
@@ -108,7 +122,6 @@ def _cmake_aspect_impl(target, ctx):
                 prefix,  # source
                 "${BAZEL_EXEC_ROOT}/%s/%s" % (ctx.var["BINDIR"], prefix),  # generated
             ]
-
     deps = [dep[CmakeInfo] for dep in deps if CmakeInfo in dep]
 
     # by the book this should be done with depsets, but so far the performance implication is negligible
@@ -146,7 +159,7 @@ def _cmake_aspect_impl(target, ctx):
 
 cmake_aspect = aspect(
     implementation = _cmake_aspect_impl,
-    attr_aspects = ["deps"],
+    attr_aspects = ["deps", "dep"],
     fragments = ["cpp"],
 )
 
@@ -156,10 +169,10 @@ def _map_cmake_info(info, is_windows):
         "add_%s(%s)" % (info.kind, args),
     ]
     if info.imported_libs:
-        commands += [
+        commands.append(
             "target_link_libraries(%s %s %s)" %
             (info.name, info.modifier or "PUBLIC", " ".join(info.imported_libs)),
-        ]
+        )
     if info.deps:
         libs = {}
         if info.modifier == "INTERFACE":
@@ -168,46 +181,46 @@ def _map_cmake_info(info, is_windows):
             for lib in info.deps:
                 libs.setdefault(lib.modifier, []).append(lib.name)
         for modifier, names in libs.items():
-            commands += [
+            commands.append(
                 "target_link_libraries(%s %s %s)" % (info.name, modifier or "PUBLIC", " ".join(names)),
-            ]
+            )
     if info.includes:
-        commands += [
+        commands.append(
             "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.includes)),
-        ]
+        )
     if info.system_includes:
-        commands += [
+        commands.append(
             "target_include_directories(%s SYSTEM %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.system_includes)),
-        ]
+        )
     if info.quote_includes:
         if is_windows:
-            commands += [
+            commands.append(
                 "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.quote_includes)),
-            ]
+            )
         else:
-            commands += [
+            commands.append(
                 "target_compile_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(["-iquote%s" % i for i in info.quote_includes])),
-            ]
+            )
     if info.copts and info.modifier != "INTERFACE":
-        commands += [
+        commands.append(
             "target_compile_options(%s PRIVATE %s)" % (info.name, " ".join(info.copts)),
-        ]
+        )
     if info.linkopts:
-        commands += [
+        commands.append(
             "target_link_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.linkopts)),
-        ]
+        )
     if info.force_cxx_compilation and any([f.endswith(".c") for f in info.srcs]):
-        commands += [
+        commands.append(
             "set_source_files_properties(%s PROPERTIES LANGUAGE CXX)" % " ".join([f for f in info.srcs if f.endswith(".c")]),
-        ]
+        )
     if info.defines:
-        commands += [
+        commands.append(
             "target_compile_definitions(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.defines)),
-        ]
+        )
     if info.local_defines:
-        commands += [
+        commands.append(
             "target_compile_definitions(%s %s %s)" % (info.name, info.modifier or "PRIVATE", " ".join(info.local_defines)),
-        ]
+        )
     return commands
 
 GeneratedCmakeFiles = provider(

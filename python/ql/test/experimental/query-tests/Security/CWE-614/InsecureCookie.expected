@@ -1,15 +1,9 @@
 | django_bad.py:6:5:7:52 | ControlFlowNode for Attribute() | Cookie is added without the 'httponly' flag properly set. |
 | django_bad.py:6:5:7:52 | ControlFlowNode for Attribute() | Cookie is added without the 'samesite' flag properly set. |
 | django_bad.py:6:5:7:52 | ControlFlowNode for Attribute() | Cookie is added without the 'secure' flag properly set. |
-| django_bad.py:13:5:13:26 | ControlFlowNode for Subscript | Cookie is added without the 'httponly' flag properly set. |
-| django_bad.py:13:5:13:26 | ControlFlowNode for Subscript | Cookie is added without the 'samesite' flag properly set. |
-| django_bad.py:13:5:13:26 | ControlFlowNode for Subscript | Cookie is added without the 'secure' flag properly set. |
 | django_bad.py:19:5:21:66 | ControlFlowNode for Attribute() | Cookie is added without the 'httponly' flag properly set. |
 | django_bad.py:19:5:21:66 | ControlFlowNode for Attribute() | Cookie is added without the 'samesite' flag properly set. |
 | django_bad.py:19:5:21:66 | ControlFlowNode for Attribute() | Cookie is added without the 'secure' flag properly set. |
-| django_bad.py:27:5:27:26 | ControlFlowNode for Subscript | Cookie is added without the 'httponly' flag properly set. |
-| django_bad.py:27:5:27:26 | ControlFlowNode for Subscript | Cookie is added without the 'samesite' flag properly set. |
-| django_bad.py:27:5:27:26 | ControlFlowNode for Subscript | Cookie is added without the 'secure' flag properly set. |
 | django_good.py:19:5:19:44 | ControlFlowNode for Attribute() | Cookie is added without the 'httponly' flag properly set. |
 | django_good.py:19:5:19:44 | ControlFlowNode for Attribute() | Cookie is added without the 'samesite' flag properly set. |
 | django_good.py:19:5:19:44 | ControlFlowNode for Attribute() | Cookie is added without the 'secure' flag properly set. |

@@ -691,7 +691,7 @@ module PointsToInternal {
         sub.getObject() = sys_modules_flow and
         pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
         sub.getIndex() = n and
-        n.getNode().(StrConst).getText() = name and
+        n.getNode().(StringLiteral).getText() = name and
         sub.(DefinitionNode).getValue() = mod and
         pointsTo(mod, _, m, _)
       )

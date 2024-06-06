@@ -6,6 +6,8 @@ private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
+private import TypeFlow
+private import semmle.code.cpp.ir.ValueNumbering
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
@@ -146,14 +148,6 @@ int countIndirectionsForCppType(LanguageType langType) {
   )
 }
 
-/**
- * A `CallInstruction` that calls an allocation function such
- * as `malloc` or `operator new`.
- */
-class AllocationInstruction extends CallInstruction {
-  AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
-}
-
 private predicate isIndirectionType(Type t) { t instanceof Indirection }
 
 private predicate hasUnspecifiedBaseType(Indirection t, Type base) {
@@ -235,7 +229,7 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName("operator*") and
+      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }
@@ -252,29 +246,11 @@ private module IteratorIndirections {
       baseType = super.getValueType()
     }
 
-    override predicate isAdditionalDereference(Instruction deref, Operand address) {
-      exists(CallInstruction call |
-        operandForFullyConvertedCall(getAUse(deref), call) and
-        this = call.getStaticCallTarget().getClassAndName("operator*") and
-        address = call.getThisArgumentOperand()
-      )
-    }
-
     override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
       exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
         this = call.getStaticCallTarget().getClassAndName("operator=") and
         address = call.getThisArgumentOperand() and
         certain = false
-      )
-    }
-
-    override predicate isAdditionalTaintStep(Node node1, Node node2) {
-      exists(CallInstruction call |
-        // Taint through `operator+=` and `operator-=` on iterators.
-        call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
-        node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
-        node1.(IndirectOperand).hasOperandAndIndirectionIndex(call.getArgumentOperand(0), _) and
-        node1.getType().getUnspecifiedType() = this
       )
     }
 
@@ -327,10 +303,20 @@ private module IteratorIndirections {
   }
 }
 
-predicate isDereference(Instruction deref, Operand address) {
-  any(Indirection ind).isAdditionalDereference(deref, address)
+/**
+ * Holds if `deref` is the result of loading the value at the address
+ * represented by `address`.
+ *
+ * If `additional = true` then the dereference comes from an `Indirection`
+ * class (such as a call to an iterator's `operator*`), and if
+ * `additional = false` the dereference is a `LoadInstruction`.
+ */
+predicate isDereference(Instruction deref, Operand address, boolean additional) {
+  any(Indirection ind).isAdditionalDereference(deref, address) and
+  additional = true
   or
-  deref.(LoadInstruction).getSourceAddressOperand() = address
+  deref.(LoadInstruction).getSourceAddressOperand() = address and
+  additional = false
 }
 
 predicate isWrite(Node0Impl value, Operand address, boolean certain) {
@@ -368,17 +354,25 @@ newtype TBaseSourceVariable =
   // Each IR variable gets its own source variable
   TBaseIRVariable(IRVariable var) or
   // Each allocation gets its own source variable
-  TBaseCallVariable(AllocationInstruction call)
+  TBaseCallVariable(CallInstruction call) { not call.getResultIRType() instanceof IRVoidType }
 
-abstract class BaseSourceVariable extends TBaseSourceVariable {
+abstract private class AbstractBaseSourceVariable extends TBaseSourceVariable {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
+  /** Gets the location of this variable. */
+  abstract Location getLocation();
+
   /** Gets the type of this base source variable. */
-  abstract DataFlowType getType();
+  final DataFlowType getType() { this.getLanguageType().hasUnspecifiedType(result, _) }
+
+  /** Gets the `CppType` of this base source variable. */
+  abstract CppType getLanguageType();
 }
 
-class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
+final class BaseSourceVariable = AbstractBaseSourceVariable;
+
+class BaseIRVariable extends AbstractBaseSourceVariable, TBaseIRVariable {
   IRVariable var;
 
   IRVariable getIRVariable() { result = var }
@@ -387,75 +381,61 @@ class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
 
   override string toString() { result = var.toString() }
 
-  override DataFlowType getType() { result = var.getType() }
+  override Location getLocation() { result = var.getLocation() }
+
+  override CppType getLanguageType() { result = var.getLanguageType() }
 }
 
-class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
-  AllocationInstruction call;
+class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
+  CallInstruction call;
 
   BaseCallVariable() { this = TBaseCallVariable(call) }
 
-  AllocationInstruction getCallInstruction() { result = call }
+  CallInstruction getCallInstruction() { result = call }
 
   override string toString() { result = call.toString() }
 
-  override DataFlowType getType() { result = call.getResultType() }
+  override Location getLocation() { result = call.getLocation() }
+
+  override CppType getLanguageType() { result = getResultLanguageType(call) }
 }
 
-/**
- * Holds if the value pointed to by `operand` can potentially be
- * modified be the caller.
- */
-predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
-  exists(CallInstruction call, int index, CppType type |
-    indirectionIndex = [1 .. countIndirectionsForCppType(type)] and
-    type = getLanguageType(operand) and
-    call.getArgumentOperand(index) = operand and
-    if index = -1
-    then
-      // A qualifier is "modifiable" if:
-      // 1. the member function is not const specified, or
-      // 2. the member function is `const` specified, but returns a pointer or reference
-      // type that is non-const.
-      //
-      // To see why this is necessary, consider the following function:
-      // ```
-      // struct C {
-      //   void* data_;
-      //   void* data() const { return data; }
-      // };
-      // ...
-      // C c;
-      // memcpy(c.data(), source, 16)
-      // ```
-      // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
-      // `C::data` has a const specifier. So we further place the restriction that the type returned
-      // by `call` should not be of the form `const T*` (for some deeply const type `T`).
-      if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
-      then
-        exists(PointerOrArrayOrReferenceType resultType |
-          resultType = call.getResultType() and
-          not resultType.isDeeplyConstBelow()
-        )
-      else any()
-    else
-      // An argument is modifiable if it's a non-const pointer or reference type.
-      isModifiableAt(type, indirectionIndex)
-  )
-}
+private module IsModifiableAtImpl {
+  pragma[nomagic]
+  private predicate isUnderlyingIndirectionType(Type t) {
+    t = any(Indirection ind).getUnderlyingType()
+  }
 
-/**
- * Holds if `t` is a pointer or reference type that supports at least `indirectionIndex` number
- * of indirections, and the `indirectionIndex` indirection cannot be modfiied by passing a
- * value of `t` to a function.
- */
-private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
-  indirectionIndex = [1 .. countIndirectionsForCppType(cppType)] and
-  (
-    exists(Type pointerType, Type base, Type t |
-      pointerType = t.getUnderlyingType() and
-      pointerType = any(Indirection ind).getUnderlyingType() and
-      cppType.hasType(t, _) and
+  /**
+   * Holds if the `indirectionIndex`'th dereference of a value of type
+   * `cppType` is a type that can be modified (either by modifying the value
+   * itself or one of its fields if it's a class type).
+   *
+   * For example, a value of type `const int* const` cannot be modified
+   * at any indirection index (because it's a constant pointer to constant
+   * data), and a value of type `int *const *` is modifiable at indirection index
+   * 2 only.
+   *
+   * A value of type `const S2* s2` where `s2` is
+   * ```cpp
+   * struct S { int x; }
+   * ```
+   * can be modified at indirection index 1. This is to ensure that we generate
+   * a `PostUpdateNode` for the argument corresponding to the `s2` parameter in
+   * an example such as:
+   * ```cpp
+   * void set_field(const S2* s2)
+   * {
+   *  s2->s->x = 42;
+   * }
+   * ```
+   */
+  bindingset[cppType, indirectionIndex]
+  pragma[inline_late]
+  private predicate impl(CppType cppType, int indirectionIndex) {
+    exists(Type pointerType, Type base |
+      isUnderlyingIndirectionType(pointerType) and
+      cppType.hasUnderlyingType(pointerType, false) and
       base = getTypeImpl(pointerType, indirectionIndex)
     |
       // The value cannot be modified if it has a const specifier,
@@ -465,28 +445,114 @@ private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
       // one of the members was modified.
       exists(base.stripType().(Cpp::Class).getAField())
     )
+  }
+
+  /**
+   * Holds if `cppType` is modifiable with an indirection index of at least 1.
+   *
+   * This predicate factored out into a separate predicate for two reasons:
+   * - This predicate needs to be recursive because, if a type is modifiable
+   * at indirection `i`, then it's also modifiable at indirection index `i+1`
+   * (because the pointer could be completely re-assigned at indirection `i`).
+   * - We special-case indirection index `0` so that pointer arguments that can
+   * be modified at some index always have a `PostUpdateNode` at indiretion
+   * index 0 even though the 0'th indirection can never be modified by a
+   * callee.
+   */
+  private predicate isModifiableAtImplAtLeast1(CppType cppType, int indirectionIndex) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(cppType)] and
+    (
+      impl(cppType, indirectionIndex)
+      or
+      // If the `indirectionIndex`'th dereference of a type can be modified
+      // then so can the  `indirectionIndex + 1`'th dereference.
+      isModifiableAtImplAtLeast1(cppType, indirectionIndex - 1)
+    )
+  }
+
+  /**
+   * Holds if `cppType` is modifiable at indirection index 0.
+   *
+   * In reality, the 0'th indirection of a pointer (i.e., the pointer itself)
+   * can never be modified by a callee, but it is sometimes useful to be able
+   * to specify the value of the pointer, as its coming out of a function, as
+   * a source of dataflow since the shared library's reverse-read mechanism
+   * then ensures that field-flow is accounted for.
+   */
+  private predicate isModifiableAtImplAt0(CppType cppType) { impl(cppType, 0) }
+
+  /**
+   * Holds if `t` is a pointer or reference type that supports at least
+   * `indirectionIndex` number of indirections, and the `indirectionIndex`
+   * indirection cannot be modfiied by passing a value of `t` to a function.
+   */
+  private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
+    isModifiableAtImplAtLeast1(cppType, indirectionIndex)
     or
-    // If the `indirectionIndex`'th dereference of a type can be modified
-    // then so can the  `indirectionIndex + 1`'th dereference.
-    isModifiableAtImpl(cppType, indirectionIndex - 1)
-  )
+    indirectionIndex = 0 and
+    isModifiableAtImplAt0(cppType)
+  }
+
+  /**
+   * Holds if `t` is a type with at least `indirectionIndex` number of
+   * indirections, and the `indirectionIndex` indirection can be modified by
+   * passing a value of type `t` to a function function.
+   */
+  bindingset[indirectionIndex]
+  predicate isModifiableAt(CppType cppType, int indirectionIndex) {
+    isModifiableAtImpl(cppType, indirectionIndex)
+    or
+    exists(PointerWrapper pw, Type t |
+      cppType.hasType(t, _) and
+      t.stripType() = pw and
+      not pw.pointsToConst()
+    )
+  }
+
+  /**
+   * Holds if the value pointed to by `operand` can potentially be
+   * modified be the caller.
+   */
+  predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
+    exists(CallInstruction call, int index, CppType type |
+      indirectionIndex = [0 .. countIndirectionsForCppType(type)] and
+      type = getLanguageType(operand) and
+      call.getArgumentOperand(index) = operand and
+      if index = -1
+      then
+        // A qualifier is "modifiable" if:
+        // 1. the member function is not const specified, or
+        // 2. the member function is `const` specified, but returns a pointer or reference
+        // type that is non-const.
+        //
+        // To see why this is necessary, consider the following function:
+        // ```
+        // struct C {
+        //   void* data_;
+        //   void* data() const { return data; }
+        // };
+        // ...
+        // C c;
+        // memcpy(c.data(), source, 16)
+        // ```
+        // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+        // `C::data` has a const specifier. So we further place the restriction that the type returned
+        // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+        if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
+        then
+          exists(PointerOrArrayOrReferenceType resultType |
+            resultType = call.getResultType() and
+            not resultType.isDeeplyConstBelow()
+          )
+        else any()
+      else
+        // An argument is modifiable if it's a non-const pointer or reference type.
+        isModifiableAt(type, indirectionIndex)
+    )
+  }
 }
 
-/**
- * Holds if `t` is a type with at least `indirectionIndex` number of indirections,
- * and the `indirectionIndex` indirection can be modified by passing a value of
- * type `t` to a function function.
- */
-bindingset[indirectionIndex]
-predicate isModifiableAt(CppType cppType, int indirectionIndex) {
-  isModifiableAtImpl(cppType, indirectionIndex)
-  or
-  exists(PointerWrapper pw, Type t |
-    cppType.hasType(t, _) and
-    t.stripType() = pw and
-    not pw.pointsToConst()
-  )
-}
+import IsModifiableAtImpl
 
 abstract class BaseSourceVariableInstruction extends Instruction {
   /** Gets the base source variable accessed by this instruction. */
@@ -499,238 +565,12 @@ private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
 }
 
-private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction
-{
+private class BaseCallInstruction extends BaseSourceVariableInstruction, CallInstruction {
   override BaseCallVariable getBaseSourceVariable() { result.getCallInstruction() = this }
 }
 
 cached
 private module Cached {
-  private import semmle.code.cpp.models.interfaces.Iterator as Interfaces
-  private import semmle.code.cpp.models.implementations.Iterator as Iterator
-  private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
-
-  /**
-   * Holds if `next` is a instruction with a memory result that potentially
-   * updates the memory produced by `prev`.
-   */
-  private predicate memorySucc(Instruction prev, Instruction next) {
-    prev = next.(ChiInstruction).getTotal()
-    or
-    // Phi inputs can be inexact.
-    prev = next.(PhiInstruction).getAnInputOperand().getAnyDef()
-    or
-    prev = next.(CopyInstruction).getSourceValue()
-    or
-    exists(ReadSideEffectInstruction read |
-      next = read.getPrimaryInstruction() and
-      isAdditionalConversionFlow(_, next) and
-      prev = read.getSideEffectOperand().getAnyDef()
-    )
-  }
-
-  /**
-   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
-   * that is used for a write operation that writes the value `value`. The `memory` instruction
-   * represents the memory that the IR's SSA analysis determined was read by the call to `operator*`.
-   *
-   * The `numberOfLoads` integer represents the number of dereferences this write corresponds to
-   * on the underlying container that produced the iterator.
-   */
-  private predicate isChiAfterIteratorDef(
-    Instruction memory, Operand iteratorDerefAddress, Node0Impl value, int numberOfLoads
-  ) {
-    exists(
-      BaseSourceVariableInstruction iteratorBase, ReadSideEffectInstruction read,
-      Operand iteratorAddress
-    |
-      numberOfLoads >= 0 and
-      isDef(_, value, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
-      isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
-      iteratorBase.getResultType() instanceof Interfaces::Iterator and
-      isDereference(iteratorAddress.getDef(), read.getArgumentDef().getAUse()) and
-      memory = read.getSideEffectOperand().getAnyDef()
-    )
-  }
-
-  private predicate isSource(Instruction instr, Operand iteratorAddress, int numberOfLoads) {
-    getAUse(instr) = iteratorAddress and
-    exists(BaseSourceVariableInstruction iteratorBase |
-      iteratorBase.getResultType() instanceof Interfaces::Iterator and
-      not iteratorBase.getResultType() instanceof Cpp::PointerType and
-      isUse(_, iteratorAddress, iteratorBase, numberOfLoads - 1, 0)
-    )
-  }
-
-  private predicate isSink(Instruction instr, CallInstruction call) {
-    getAUse(instr).(ArgumentOperand).getCall() = call and
-    // Only include operations that may modify the object that the iterator points to.
-    // The following is a non-exhaustive list of things that may modify the value of the
-    // iterator, but never the value of what the iterator points to.
-    // The more things we can exclude here, the faster the small dataflow-like analysis
-    // done by `convertsIntoArgument` will converge.
-    not exists(Function f | f = call.getStaticCallTarget() |
-      f instanceof Iterator::IteratorCrementOperator or
-      f instanceof Iterator::IteratorBinaryArithmeticOperator or
-      f instanceof Iterator::IteratorAssignArithmeticOperator or
-      f instanceof Iterator::IteratorCrementMemberOperator or
-      f instanceof Iterator::IteratorBinaryArithmeticMemberOperator or
-      f instanceof Iterator::IteratorAssignArithmeticMemberOperator or
-      f instanceof Iterator::IteratorAssignmentMemberOperator
-    )
-  }
-
-  private predicate convertsIntoArgumentFwd(Instruction instr) {
-    isSource(instr, _, _)
-    or
-    exists(Instruction prev | convertsIntoArgumentFwd(prev) |
-      conversionFlow(unique( | | getAUse(prev)), instr, false, _)
-    )
-  }
-
-  pragma[assume_small_delta]
-  private predicate convertsIntoArgumentRev(Instruction instr) {
-    convertsIntoArgumentFwd(instr) and
-    (
-      isSink(instr, _)
-      or
-      exists(Instruction next | convertsIntoArgumentRev(next) |
-        conversionFlow(unique( | | getAUse(instr)), next, false, _)
-      )
-    )
-  }
-
-  private predicate convertsIntoArgument(
-    Operand iteratorAddress, CallInstruction call, int numberOfLoads
-  ) {
-    exists(Instruction iteratorAddressDef |
-      isSource(iteratorAddressDef, iteratorAddress, numberOfLoads) and
-      isSink(iteratorAddressDef, call) and
-      convertsIntoArgumentRev(pragma[only_bind_into](iteratorAddressDef))
-    )
-  }
-
-  private predicate isChiAfterIteratorArgument(
-    Instruction memory, Operand iteratorAddress, int numberOfLoads
-  ) {
-    // Ideally, `iteratorAddress` would be an `ArgumentOperand`, but there might be
-    // various conversions applied to it before it becomes an argument.
-    // So we do a small amount of flow to find the call that the iterator is passed to.
-    exists(CallInstruction call | convertsIntoArgument(iteratorAddress, call, numberOfLoads) |
-      exists(ReadSideEffectInstruction read |
-        read.getPrimaryInstruction() = call and
-        read.getSideEffectOperand().getAnyDef() = memory
-      )
-      or
-      exists(LoadInstruction load |
-        iteratorAddress.getDef() = load and
-        memory = load.getSourceValueOperand().getAnyDef()
-      )
-    )
-  }
-
-  /**
-   * Holds if `iterator` is a `StoreInstruction` that stores the result of some function
-   * returning an iterator into an address computed started at `containerBase`.
-   *
-   * For example, given a declaration like `std::vector<int>::iterator it = v.begin()`,
-   * the `iterator` will be the `StoreInstruction` generated by the write to `it`, and
-   * `containerBase` will be the address of `v`.
-   */
-  private predicate isChiAfterBegin(
-    BaseSourceVariableInstruction containerBase, StoreInstruction iterator
-  ) {
-    exists(
-      CallInstruction getIterator, Iterator::GetIteratorFunction getIteratorFunction,
-      IO::FunctionInput input, int i
-    |
-      getIterator = iterator.getSourceValue() and
-      getIteratorFunction = getIterator.getStaticCallTarget() and
-      getIteratorFunction.getsIterator(input, _) and
-      isDef(_, any(Node0Impl n | n.asInstruction() = iterator), _, _, 1, 0) and
-      input.isParameterDerefOrQualifierObject(i) and
-      isUse(_, getIterator.getArgumentOperand(i), containerBase, 0, 0)
-    )
-  }
-
-  /**
-   * Holds if `iteratorAddress` is an address of an iterator that is used for
-   * a read operation. The `memory` instruction represents the memory that
-   * the IR's SSA analysis determined was read by the call to `operator*`.
-   *
-   * Finally, the `numberOfLoads` integer represents the number of dereferences
-   * this read corresponds to on the underlying container that produced the iterator.
-   */
-  private predicate isChiBeforeIteratorUse(
-    Operand iteratorAddress, Instruction memory, int numberOfLoads
-  ) {
-    exists(
-      BaseSourceVariableInstruction iteratorBase, LoadInstruction load,
-      ReadSideEffectInstruction read, Operand iteratorDerefAddress
-    |
-      numberOfLoads >= 0 and
-      isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
-      isUse(_, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
-      iteratorBase.getResultType() instanceof Interfaces::Iterator and
-      load.getSourceAddressOperand() = iteratorDerefAddress and
-      read.getPrimaryInstruction() = load.getSourceAddress() and
-      memory = read.getSideEffectOperand().getAnyDef()
-    )
-  }
-
-  /**
-   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
-   * that is used for a write operation that writes the value `value` to a container that
-   * created the iterator. `container` represents the base of the address of the container
-   * that was used to create the iterator.
-   */
-  cached
-  predicate isIteratorDef(
-    BaseSourceVariableInstruction container, Operand iteratorDerefAddress, Node0Impl value,
-    int numberOfLoads, int indirectionIndex
-  ) {
-    exists(Instruction memory, Instruction begin, int upper, int ind |
-      isChiAfterIteratorDef(memory, iteratorDerefAddress, value, numberOfLoads) and
-      memorySucc*(begin, memory) and
-      isChiAfterBegin(container, begin) and
-      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
-      ind = numberOfLoads + [1 .. upper] and
-      indirectionIndex = ind - (numberOfLoads + 1)
-    )
-  }
-
-  /**
-   * Holds if `iteratorAddress` is an address of an iterator that is used for a
-   * read operation to read a value from a container that created the iterator.
-   * `container` represents the base of the address of the container that was used
-   * to create the iterator.
-   */
-  cached
-  predicate isIteratorUse(
-    BaseSourceVariableInstruction container, Operand iteratorAddress, int numberOfLoads,
-    int indirectionIndex
-  ) {
-    // Direct use
-    exists(Instruction begin, Instruction memory, int upper, int ind |
-      isChiBeforeIteratorUse(iteratorAddress, memory, numberOfLoads) and
-      memorySucc*(begin, memory) and
-      isChiAfterBegin(container, begin) and
-      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
-      ind = numberOfLoads + [1 .. upper] and
-      indirectionIndex = ind - (numberOfLoads + 1)
-    )
-    or
-    // Use through function output
-    exists(Instruction memory, Instruction begin, int upper, int ind |
-      isChiAfterIteratorArgument(memory, iteratorAddress, numberOfLoads) and
-      memorySucc*(begin, memory) and
-      isChiAfterBegin(container, begin) and
-      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
-      ind = numberOfLoads + [1 .. upper] and
-      indirectionIndex = ind - (numberOfLoads - 1)
-    )
-  }
-
   /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
   private predicate isConversion(Operand op) {
     exists(Instruction def, Operand use |
@@ -785,11 +625,14 @@ private module Cached {
    * instead associated with the operand returned by this predicate.
    */
   cached
-  Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
+  predicate hasIRRepresentationOfIndirectOperand(
+    Operand operand, int indirectionIndex, Operand operandRepr, int indirectionIndexRepr
+  ) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(getLanguageType(operand))] and
     exists(Instruction load |
-      isDereference(load, operand) and
-      result = unique( | | getAUse(load)) and
-      isUseImpl(operand, _, indirectionIndex - 1)
+      isDereference(load, operand, false) and
+      operandRepr = unique( | | getAUse(load)) and
+      indirectionIndexRepr = indirectionIndex - 1
     )
   }
 
@@ -801,12 +644,15 @@ private module Cached {
    * instead associated with the instruction returned by this predicate.
    */
   cached
-  Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
+  predicate hasIRRepresentationOfIndirectInstruction(
+    Instruction instr, int indirectionIndex, Instruction instrRepr, int indirectionIndexRepr
+  ) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(getResultLanguageType(instr))] and
     exists(Instruction load, Operand address |
-      address.getDef() = instr and
-      isDereference(load, address) and
-      isUseImpl(address, _, indirectionIndex - 1) and
-      result = load
+      address = unique( | | getAUse(instr)) and
+      isDereference(load, address, false) and
+      instrRepr = load and
+      indirectionIndexRepr = indirectionIndex - 1
     )
   }
 
@@ -827,7 +673,7 @@ private module Cached {
     or
     exists(int ind0 |
       exists(Operand address |
-        isDereference(operand.getDef(), address) and
+        isDereference(operand.getDef(), address, _) and
         isUseImpl(address, base, ind0)
       )
       or
@@ -860,7 +706,7 @@ private module Cached {
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
       indirectionIndex = ind - (ind0 + lower) and
-      (if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1)
+      lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
     )
   }
 
@@ -868,11 +714,7 @@ private module Cached {
    * Holds if the address computed by `operand` is guaranteed to write
    * to a specific address.
    */
-  private predicate isCertainAddress(Operand operand) {
-    operand.getDef() instanceof VariableAddressInstruction
-    or
-    operand.getType() instanceof Cpp::ReferenceType
-  }
+  private predicate isCertainAddress(Operand operand) { isPointerToSingleObject(operand.getDef()) }
 
   /**
    * Holds if `address` is a use of an SSA variable rooted at `base`, and the
@@ -897,7 +739,7 @@ private module Cached {
     )
     or
     exists(Operand address, boolean certain0 |
-      isDereference(operand.getDef(), address) and
+      isDereference(operand.getDef(), address, _) and
       isDefImpl(address, base, ind - 1, certain0)
     |
       if isCertainAddress(operand) then certain = certain0 else certain = false

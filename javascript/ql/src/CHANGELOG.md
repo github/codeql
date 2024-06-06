@@ -1,3 +1,146 @@
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+### Minor Analysis Improvements
+
+* The JavaScript extractor will on longer report syntax errors related to "strict mode".
+  Files containing such errors are now being fully analyzed along with other sources files.
+  This improves our support for source files that technically break the "strict mode" rules,
+  but where a build steps transforms the code such that it ends up working at runtime.
+
+## 0.8.14
+
+### Minor Analysis Improvements
+
+* `API::Node#getInstance()` now includes instances of subclasses, include transitive subclasses.
+  The same changes applies to uses of the `Instance` token in data extensions.
+
+## 0.8.13
+
+### Query Metadata Changes
+
+* The `@precision` of the `js/unsafe-external-link` has been reduced to `low` to reflect the fact that modern browsers do not expose the opening window for such links. This mitigates the potential security risk of having a link with `target="_blank"`.
+
+### Minor Analysis Improvements
+
+* The call graph has been improved, leading to more alerts for data flow based queries.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
+## 0.8.9
+
+### Bug Fixes
+
+* The left operand of the `&&` operator no longer propagates data flow by default.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Added support for [doT](https://github.com/olado/doT) templates. 
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added django URLs to detected "safe" URL patterns in `js/unsafe-external-link`. 
+
+## 0.8.3
+
+### Query Metadata Changes
+
+* Lower the security severity of log-injection to medium.
+* Increase the security severity of XSS to high.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* Added modeling for importing `express-rate-limit` using a named import.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Added the `AmdModuleDefinition::Range` class, making it possible to define custom aliases for the AMD `define` function.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+### Bug Fixes
+
+* Fixed an extractor crash that could occur in projects containing TypeScript files larger than 10 MB.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* Files larger than 10 MB are no longer be extracted or analyzed.
+* Imports can now be resolved in more cases, where a non-constant string expression is passed to a `require()` call.
+
+### Bug Fixes
+
+* Fixed an extractor crash that would occur in rare cases when a TypeScript file contains a self-referential namespace alias.
+
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The `fs/promises` package is now recognised as an alias for `require('fs').promises`.
+* The `js/path-injection` query can now track taint through calls to `path.join()` with a spread argument, such as `path.join(baseDir, ...args)`.
+
+## 0.7.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("Zip Slip")" (`js/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
 ## 0.6.3
 
 ### Minor Analysis Improvements

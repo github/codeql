@@ -154,12 +154,6 @@ module Fastify {
 
     override DataFlow::SourceNode getServer() { result = server }
 
-    /**
-     * DEPRECATED: Use `getARouteHandlerNode` instead.
-     * Gets an argument that represents a route handler being registered.
-     */
-    deprecated DataFlow::Node getARouteHandlerExpr() { result = this.getARouteHandlerNode() }
-
     /**  Gets an argument that represents a route handler being registered. */
     DataFlow::Node getARouteHandlerNode() {
       if methodName = "route"

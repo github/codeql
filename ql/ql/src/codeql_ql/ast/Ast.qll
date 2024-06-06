@@ -889,6 +889,9 @@ class ModuleMember extends TModuleMember, AstNode {
 
   /** Holds if this member is declared as `final`. */
   predicate isFinal() { this.hasAnnotation("final") }
+
+  /** Holds if this member is declared as `deprecated`. */
+  predicate isDeprecated() { this.hasAnnotation("deprecated") }
 }
 
 private newtype TDeclarationKind =
@@ -2735,6 +2738,18 @@ module YAML {
           name.matches("codeql/%") and
           name = dep + "/all"
         )
+      )
+    }
+
+    /**
+     * Gets the language library file for this QLPack, if any. For example, the
+     * language library file for `codeql/cpp-all` is `cpp.qll`.
+     */
+    File getLanguageLib() {
+      exists(string name |
+        name = this.getExtractor() and
+        result.getParentContainer() = this.getFile().getParentContainer() and
+        result.getBaseName() = name + ".qll"
       )
     }
 

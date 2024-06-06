@@ -7,7 +7,7 @@ import csharp
 from Property p
 where
   p.hasName("X") and
-  p.getDeclaringType().hasQualifiedName("Properties", "Point") and
+  p.getDeclaringType().hasFullyQualifiedName("Properties", "Point") and
   p.isReadWrite() and
   p.isPublic() and
   exists(p.getGetter()) and

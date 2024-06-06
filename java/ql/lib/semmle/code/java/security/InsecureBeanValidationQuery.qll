@@ -19,7 +19,7 @@ private class ELMessageInterpolatorType extends RefType {
 /**
  * A method call that sets the application's default message interpolator.
  */
-class SetMessageInterpolatorCall extends MethodAccess {
+class SetMessageInterpolatorCall extends MethodCall {
   SetMessageInterpolatorCall() {
     exists(Method m, RefType t |
       this.getMethod() = m and
@@ -46,7 +46,7 @@ class SetMessageInterpolatorCall extends MethodAccess {
  * to the argument of a method that builds constraint error messages.
  */
 module BeanValidationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
 }

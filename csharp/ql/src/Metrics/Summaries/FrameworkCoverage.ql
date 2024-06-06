@@ -7,7 +7,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 from string namespaceAndType, int rows
 where

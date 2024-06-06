@@ -5,12 +5,23 @@ signature class AstNode {
 }
 
 signature class SingleLineComment {
+  /** Gets a textual representation of this element. */
   string toString();
 
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   );
 
+  /**
+   * Gets the text of this suppression comment.
+   */
   string getText();
 }
 
@@ -18,28 +29,12 @@ signature class SingleLineComment {
  * Constructs an alert suppression query.
  */
 module Make<AstNode Node, SingleLineComment Comment> {
+  final private class FinalCommnent = Comment;
+
   /**
    * An alert suppression comment.
    */
-  abstract class SuppressionComment instanceof Comment {
-    /**
-     * Gets the text of this suppression comment.
-     */
-    string getText() { result = super.getText() }
-
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
+  abstract class SuppressionComment extends FinalCommnent {
     /** Gets the suppression annotation in this comment. */
     abstract string getAnnotation();
 
@@ -53,9 +48,6 @@ module Make<AstNode Node, SingleLineComment Comment> {
 
     /** Gets the scope of this suppression. */
     SuppressionScope getScope() { this = result.getSuppressionComment() }
-
-    /** Gets a textual representation of this element. */
-    string toString() { result = super.toString() }
   }
 
   private class LgtmSuppressionComment extends SuppressionComment {

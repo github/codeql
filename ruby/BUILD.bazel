@@ -1,0 +1,56 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//ruby/ql/lib:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//ruby/ql/lib:dbscheme-stats",
+)
+
+codeql_pkg_files(
+    name = "dbscheme-group",
+    srcs = [
+        ":dbscheme",
+        ":dbscheme-stats",
+    ],
+    strip_prefix = None,
+)
+
+pkg_filegroup(
+    name = "db-files",
+    srcs = [
+        ":dbscheme-group",
+        "//ruby/downgrades",
+    ],
+)
+
+codeql_pkg_files(
+    name = "codeql-extractor-yml",
+    srcs = ["codeql-extractor.yml"],
+    strip_prefix = None,
+)
+
+codeql_pkg_files(
+    name = "extractor-arch",
+    exes = [
+        "//ruby/extractor",
+    ],
+    prefix = "tools/{CODEQL_PLATFORM}",
+)
+
+codeql_pack(
+    name = "ruby",
+    srcs = [
+        ":codeql-extractor-yml",
+        ":dbscheme-group",
+        ":extractor-arch",
+        "//ruby/downgrades",
+        "//ruby/tools",
+    ],
+)

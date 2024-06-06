@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.transform.sax", "SAXResult", True, "SAXResult", "(ContentHandler)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "getHandler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "getLexicalHandler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "setHandler", "(ContentHandler)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "setLexicalHandler", "(LexicalHandler)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "getXMLReader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "setInputSource", "(InputSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "setXMLReader", "(XMLReader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", "newTemplatesHandler", "()", "summary", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", "newTransformerHandler", "()", "summary", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", "newTransformerHandler", "(Source)", "summary", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", "newTransformerHandler", "(Templates)", "summary", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", "newXMLFilter", "(Source)", "summary", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", "newXMLFilter", "(Templates)", "summary", "df-generated"]

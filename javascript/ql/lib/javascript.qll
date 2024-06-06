@@ -134,6 +134,7 @@ import semmle.javascript.frameworks.TrustedTypes
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.Vuex
+import semmle.javascript.frameworks.Webix
 import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit

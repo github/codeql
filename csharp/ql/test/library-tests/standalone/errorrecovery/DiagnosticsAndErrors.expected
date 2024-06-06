@@ -1,4 +1,35 @@
 compilationMessages
+| errors.cs:6:1:6:22 | CS8019: Unnecessary using directive. |
+| errors.cs:6:7:6:21 | CS0246: The type or namespace name 'NoSuchAssembly1' could not be found (are you missing a using directive or an assembly reference?) |
+| errors.cs:7:1:7:41 | CS8019: Unnecessary using directive. |
+| errors.cs:7:14:7:28 | CS0246: The type or namespace name 'NoSuchAssembly2' could not be found (are you missing a using directive or an assembly reference?) |
+| errors.cs:16:9:16:17 | CS0246: The type or namespace name 'ErrorType' could not be found (are you missing a using directive or an assembly reference?) |
+| errors.cs:16:19:16:20 | CS0649: Field 'C1.f1' is never assigned to, and will always have its default value null |
+| errors.cs:25:18:25:17 | CS1002: ; expected |
+| errors.cs:30:3:30:3 | CS1022: Type or namespace definition, or end-of-file expected |
+| errors.cs:33:9:33:10 | CS0101: The namespace 'ErrorRecovery' already contains a definition for 'C1' |
+| errors.cs:50:12:50:13 | CS0169: The field 'C2.c1' is never used |
+| errors.cs:51:21:51:22 | CS1729: 'C2' does not contain a constructor that takes 1 arguments |
+| errors.cs:53:9:53:17 | CS0246: The type or namespace name 'ErrorType' could not be found (are you missing a using directive or an assembly reference?) |
+| errors.cs:53:21:53:29 | CS0246: The type or namespace name 'ErrorType' could not be found (are you missing a using directive or an assembly reference?) |
+| errors.cs:59:21:59:20 | CS1026: ) expected |
+| errors.cs:67:22:67:22 | CS0621: 'C3.M()': virtual or abstract members cannot be private |
+| errors.cs:72:22:72:22 | CS0621: 'C4.M(int, string, bool, bool)': virtual or abstract members cannot be private |
+| errors.cs:74:17:74:17 | CS0219: The variable 'x' is assigned but its value is never used |
+| errors.cs:75:17:75:17 | CS0128: A local variable or function named 'x' is already defined in this scope |
+| errors.cs:79:11:79:12 | CS0263: Partial declarations of 'C5' must not specify different base classes |
+| errors.cs:82:13:82:13 | CS0414: The field 'C5.F' is assigned but its value is never used |
+| errors.cs:83:23:83:23 | CS0547: 'C5.M': property or indexer cannot have void type |
+| errors.cs:83:23:83:23 | CS0548: 'C5.M': property or indexer must have at least one accessor |
+| errors.cs:83:23:83:23 | CS0621: 'C5.M': virtual or abstract members cannot be private |
+| errors.cs:86:11:86:12 | CS0101: The namespace 'ErrorRecovery' already contains a definition for 'C5' |
+| errors.cs:89:13:89:13 | CS0414: The field 'C5.F' is assigned but its value is never used |
+| errors.cs:90:22:90:22 | CS0547: 'C5.M': property or indexer cannot have void type |
+| errors.cs:90:22:90:22 | CS0548: 'C5.M': property or indexer must have at least one accessor |
+| errors.cs:90:22:90:22 | CS0621: 'C5.M': virtual or abstract members cannot be private |
+| errors.cs:91:45:91:45 | CS0103: The name 'x' does not exist in the current context |
+| errors.cs:92:45:92:45 | CS0103: The name 'y' does not exist in the current context |
+| file://:0:0:0:0 | CS5001: Program does not contain a static 'Main' method suitable for an entry point |
 extractorMessages
 | errors.cs:6:1:6:22 | Namespace not found |
 | errors.cs:22:31:22:32 | Failed to determine type |
@@ -6,8 +37,8 @@ extractorMessages
 | errors.cs:22:31:22:40 | Unable to resolve target for call. (Compilation error?) |
 | errors.cs:22:38:22:39 | Failed to determine type |
 | errors.cs:55:20:55:20 | Failed to determine type |
+| errors.cs:79:11:79:12 | Unable to resolve implicit constructor initializer call |
 | errors.cs:91:45:91:45 | Failed to determine type |
 | errors.cs:91:45:91:45 | Failed to resolve name |
 | errors.cs:92:45:92:45 | Failed to determine type |
 | errors.cs:92:45:92:45 | Failed to resolve name |
-| file://:0:0:0:0 | Extracting default argument value 'object RecordNumber = default' instead of 'object RecordNumber = -1'. The latter is not supported in C#. |

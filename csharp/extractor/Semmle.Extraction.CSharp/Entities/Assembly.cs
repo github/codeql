@@ -1,6 +1,5 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp;
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -10,19 +9,20 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private readonly string assemblyPath;
         private readonly IAssemblySymbol assembly;
+        private readonly bool isOutputAssembly;
 
         private Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init)
         {
-            if (init is null)
+            isOutputAssembly = init is null;
+            if (isOutputAssembly)
             {
-                // This is the output assembly
-                assemblyPath = ((TracingExtractor)cx.Extractor).OutputPath;
+                assemblyPath = cx.Extractor.OutputPath;
                 assembly = cx.Compilation.Assembly;
             }
             else
             {
-                assembly = init.MetadataModule!.ContainingAssembly;
+                assembly = init!.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
                 var idString = identity.Name + " " + identity.Version;
                 assemblyPath = cx.Extractor.GetAssemblyFile(idString);
@@ -33,8 +33,13 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (assemblyPath is not null)
             {
-                trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString() ?? "",
-                    assembly.Identity.Name, assembly.Identity.Version.ToString());
+                var isBuildlessOutputAssembly = isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone);
+                var identifier = isBuildlessOutputAssembly
+                    ? ""
+                    : assembly.ToString() ?? "";
+                var name = isBuildlessOutputAssembly ? "" : assembly.Identity.Name;
+                var version = isBuildlessOutputAssembly ? "" : assembly.Identity.Version.ToString();
+                trapFile.assemblies(this, File.Create(Context, assemblyPath), identifier, name, version);
             }
         }
 
@@ -64,15 +69,21 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Assembly CreateOutputAssembly(Context cx)
         {
-            if (cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
-                throw new InternalError("Attempting to create the output assembly in standalone extraction mode");
             return AssemblyConstructorFactory.Instance.CreateEntity(cx, outputAssemblyCacheKey, null);
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.Write(assembly.ToString());
-            if (!(assemblyPath is null))
+            if (isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
+            {
+                trapFile.Write("buildlessOutputAssembly");
+            }
+            else
+            {
+                trapFile.Write(assembly.ToString());
+            }
+
+            if (assemblyPath is not null)
             {
                 trapFile.Write("#file:///");
                 trapFile.Write(assemblyPath.Replace("\\", "/"));

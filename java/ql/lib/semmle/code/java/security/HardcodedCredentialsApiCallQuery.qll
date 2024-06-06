@@ -24,7 +24,7 @@ deprecated class HardcodedCredentialApiCallConfiguration extends DataFlow::Confi
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.asExpr().getType() instanceof TypeString and
     (
-      exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
+      exists(MethodCall ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
         node2.asExpr() = ma and
         ma.getQualifier() = node1.asExpr()
       )
@@ -32,7 +32,7 @@ deprecated class HardcodedCredentialApiCallConfiguration extends DataFlow::Confi
       // These base64 routines are usually taint propagators, and this is not a general
       // TaintTracking::Configuration, so we must specifically include them here
       // as a common transform applied to a constant before passing to a remote API.
-      exists(MethodAccess ma |
+      exists(MethodCall ma |
         ma.getMethod()
             .hasQualifiedName([
                 "java.util", "cn.hutool.core.codec", "org.apache.shiro.codec",
@@ -51,7 +51,7 @@ deprecated class HardcodedCredentialApiCallConfiguration extends DataFlow::Confi
   }
 
   override predicate isBarrier(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod() instanceof MethodSystemGetenv
+    n.asExpr().(MethodCall).getMethod() instanceof MethodSystemGetenv
   }
 }
 
@@ -69,7 +69,7 @@ module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.asExpr().getType() instanceof TypeString and
     (
-      exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
+      exists(MethodCall ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
         node2.asExpr() = ma and
         ma.getQualifier() = node1.asExpr()
       )
@@ -77,7 +77,7 @@ module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
       // These base64 routines are usually taint propagators, and this is not a general
       // TaintTracking::Configuration, so we must specifically include them here
       // as a common transform applied to a constant before passing to a remote API.
-      exists(MethodAccess ma |
+      exists(MethodCall ma |
         ma.getMethod()
             .hasQualifiedName([
                 "java.util", "cn.hutool.core.codec", "org.apache.shiro.codec",
@@ -96,7 +96,7 @@ module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod() instanceof MethodSystemGetenv
+    n.asExpr().(MethodCall).getMethod() instanceof MethodSystemGetenv
   }
 }
 

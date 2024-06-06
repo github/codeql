@@ -1,9 +1,9 @@
 .. _abstract-syntax-tree-classes-for-working-with-java-programs:
 
-Abstract syntax tree classes for working with Java programs
-===========================================================
+Abstract syntax tree classes for working with Java and Kotlin programs
+======================================================================
 
-CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
+CodeQL has a large selection of classes for representing the abstract syntax tree of Java and Kotlin programs.
 
 .. include:: ../reusables/abstract-syntax-tree.rst
 

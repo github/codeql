@@ -48,72 +48,72 @@ int main(int argc, char **argv) {
   printf(choose_message(argc - 1), argc - 1); // GOOD
   printf(messages[1]); // GOOD
   printf(message); // GOOD
-  printf(make_message(argc - 1)); // BAD
+  printf(make_message(argc - 1)); // BAD [NOT DETECTED]
   printf("Hello, World\n"); // GOOD
   printf(_("Hello, World\n")); // GOOD
   {
     char hello[] = "hello, World\n";
     hello[0] = 'H';
-    printf(hello); // BAD
+    printf(hello); // GOOD
     printf(_(hello)); // GOOD
     printf(gettext(hello)); // GOOD
-    printf(const_wash(hello)); // BAD
-    printf((hello + 1) + 1); // BAD
-    printf(+hello); // BAD
-    printf(*&hello); // BAD
-    printf(&*hello); // BAD
-    printf((char*)(void*)+(hello+1) + 1); // BAD
+    printf(const_wash(hello)); // GOOD
+    printf((hello + 1) + 1); // GOOD
+    printf(+hello); // GOOD
+    printf(*&hello); // GOOD
+    printf(&*hello); // GOOD
+    printf((char*)(void*)+(hello+1) + 1); // GOOD
   }
-  printf(("Hello, World\n" + 1) + 1); // BAD
+  printf(("Hello, World\n" + 1) + 1); // GOOD
   {
     const char *hello = "Hello, World\n";
-    printf(hello + 1); // BAD
+    printf(hello + 1); // GOOD
     printf(hello); // GOOD
   }
   {
     const char *hello = "Hello, World\n";
     hello += 1;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but using "x = x + 1" syntax
     const char *hello = "Hello, World\n";
     hello = hello + 1;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but using "x++" syntax
     const char *hello = "Hello, World\n";
     hello++;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but using "++x" as subexpression
     const char *hello = "Hello, World\n";
-    printf(++hello); // BAD
+    printf(++hello); // GOOD
   }
   {
     // Same as above block but through a pointer
     const char *hello = "Hello, World\n";
     const char **p = &hello;
     (*p)++;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but through a C++ reference
     const char *hello = "Hello, World\n";
     const char *&p = hello;
     p++;
-    printf(hello); // BAD [NOT DETECTED]
+    printf(hello); // GOOD
   }
   if (gettext_debug) {
-    printf(new char[100]); // BAD
+    printf(new char[100]); // BAD [FALSE NEGATIVE: uninitialized value not considered a source]
   }
   {
     const char *hello = "Hello, World\n";
-    const char *const *p = &hello; // harmless reference to const pointer
-    printf(hello); // GOOD [FALSE POSITIVE]
-    hello++; // modification comes after use and so does no harm
+    const char *const *p = &hello; 
+    printf(hello); // GOOD
+    hello++; 
   }
   printf(argc > 2 ? "More than one\n" : _("Only one\n")); // GOOD
 
@@ -154,5 +154,116 @@ void print_ith_message() {
 
 void fmt_via_strcpy(char *data) {
     strcpy(data, "some string");
-    printf(data); // BAD
+    printf(data); // GOOD
+}
+
+void fmt_with_assignment() {
+  const char *x, *y;
+
+  x = y = "a";
+  printf(y); // GOOD
+}
+
+void fmt_via_strcpy_bad(char *data) {
+    char res[100]; 
+    strcpy(res, data);
+    printf(res); // BAD
+}
+
+
+int wprintf(const wchar_t *format,...);
+typedef wchar_t *STRSAFE_LPWSTR;
+typedef const wchar_t *STRSAFE_LPCWSTR;
+typedef unsigned int size_t;
+
+void StringCchPrintfW(
+  STRSAFE_LPWSTR  pszDest,
+  size_t          cchDest,
+  STRSAFE_LPCWSTR pszFormat,
+   ...             
+);
+
+void wchar_t_test_good(){
+  wchar_t wstr[100];
+  StringCchPrintfW(wstr, 100, L"STRING"); // GOOD
+
+  wprintf(wstr); // GOOD 
+}
+
+void wchar_t_test_bad(wchar_t* str){
+  wchar_t wstr[100];
+  StringCchPrintfW(wstr, 100, str); // BAD
+
+  wprintf(wstr); // BAD
+}
+
+char* get_string();
+
+void pointer_arithmetic_test_on_bad_string(){
+   {
+    const char *hello = get_string();
+    printf(hello + 1); // BAD
+    printf(hello); // BAD
+  }
+  {
+    const char *hello = get_string();
+    hello += 1;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but using "x = x + 1" syntax
+    const char *hello = get_string();
+    hello = hello + 1;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but using "x++" syntax
+    const char *hello = get_string();
+    hello++;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but using "++x" as subexpression
+    const char *hello = get_string();
+    printf(++hello); // BAD
+  }
+  {
+    // Same as above block but through a pointer
+    const char *hello = get_string();
+    const char **p = &hello;
+    (*p)++;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but through a C++ reference
+    const char *hello = get_string();
+    const char *&p = hello;
+    p++;
+    printf(hello); // BAD
+  }
+  {
+    const char *hello = get_string();
+    const char *const *p = &hello; 
+    printf(hello); // BAD
+  }
+}
+
+struct struct1 {
+  char *non_const;
+  const char* const_member = "TEST";
+  char * const_member2 = "TEST";
+  struct struct2{
+    char *nested_non_const;
+    const char* nested_const_member = "TEST";
+    char * nested_const_member2 = "TEST";
+  } nested;
+};
+
+int test_uncalled_func_with_struct_param(struct struct1 *s) {
+  printf(s->non_const); // BAD [FALSE NEGATIVE]
+  printf(s->const_member); // GOOD
+  printf(s->const_member2); // GOOD
+  printf(s->nested.nested_non_const); // BAD [FALSE NEGATIVE]
+  printf(s->nested.nested_const_member); // GOOD
+  printf(s->nested.nested_const_member2); // GOOD
 }

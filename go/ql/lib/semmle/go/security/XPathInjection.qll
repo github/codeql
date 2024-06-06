@@ -14,9 +14,11 @@ module XPathInjection {
   import XPathInjectionCustomizations::XPathInjection
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about untrusted user input used in an XPath expression.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "XPathInjection" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -27,9 +29,19 @@ module XPathInjection {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
   }
+
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  /**
+   * Tracks taint flow for reasoning about untrusted user input used in an
+   * XPath expression.
+   */
+  module Flow = TaintTracking::Global<Config>;
 }

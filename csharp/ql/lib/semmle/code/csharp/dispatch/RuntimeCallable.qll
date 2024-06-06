@@ -5,14 +5,12 @@
  */
 
 import csharp
-private import cil
-private import dotnet
 
 /**
  * A run-time callable. That is, a callable that is neither abstract
  * nor defined in an interface.
  */
-class RuntimeCallable extends DotNet::Callable {
+class RuntimeCallable extends Callable {
   RuntimeCallable() {
     not this.(Modifiable).isAbstract() and
     (
@@ -23,15 +21,7 @@ class RuntimeCallable extends DotNet::Callable {
 }
 
 /** A run-time method. */
-class RuntimeMethod extends RuntimeCallable {
-  RuntimeMethod() {
-    this instanceof Method or
-    this instanceof CIL::Method
-  }
-
-  /** Holds if the method is `static`. */
-  predicate isStatic() { this.(Method).isStatic() or this.(CIL::Method).isStatic() }
-}
+class RuntimeMethod extends RuntimeCallable, Method { }
 
 /** A run-time instance method. */
 class RuntimeInstanceMethod extends RuntimeMethod {

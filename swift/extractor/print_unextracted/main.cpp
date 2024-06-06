@@ -13,9 +13,9 @@ using namespace codeql;
 int main() {
   std::map<const char*, std::vector<const char*>> unextracted;
 
-#define CHECK_CLASS(KIND, CLASS, PARENT)                                                \
-  if (KIND##Translator::getPolicyFor##CLASS##KIND() == TranslatorPolicy::emitUnknown) { \
-    unextracted[#KIND].push_back(#CLASS #KIND);                                         \
+#define CHECK_CLASS(KIND, CLASS, PARENT)                                                          \
+  if constexpr (KIND##Translator::getPolicyFor##CLASS##KIND() == TranslatorPolicy::emitUnknown) { \
+    unextracted[#KIND].push_back(#CLASS #KIND);                                                   \
   }
 
 #define DECL(CLASS, PARENT) CHECK_CLASS(Decl, CLASS, PARENT)

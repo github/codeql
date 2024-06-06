@@ -1,0 +1,12 @@
+| delegates.cs:72:13:72:20 | delegate call | delegates.cs:72:13:72:15 | access to local variable cd1 |
+| delegates.cs:74:13:74:23 | delegate call | delegates.cs:74:13:74:15 | access to local variable cd7 |
+| delegates.cs:79:22:79:26 | delegate call | delegates.cs:79:22:79:23 | access to local variable pi |
+| delegates.cs:79:30:79:35 | delegate call | delegates.cs:79:30:79:31 | access to local variable ps |
+| delegates.cs:95:13:95:25 | delegate call | delegates.cs:95:13:95:22 | access to field Field |
+| delegates.cs:96:13:96:28 | delegate call | delegates.cs:96:13:96:25 | access to property Property |
+| delegates.cs:97:13:97:20 | delegate call | delegates.cs:97:13:97:17 | access to field Field |
+| delegates.cs:98:13:98:23 | delegate call | delegates.cs:98:13:98:20 | access to property Property |
+| delegates.cs:99:13:99:28 | function pointer call | delegates.cs:99:13:99:25 | access to field FieldPtr |
+| delegates.cs:100:13:100:31 | function pointer call | delegates.cs:100:13:100:28 | access to property PropertyPtr |
+| delegates.cs:101:13:101:23 | function pointer call | delegates.cs:101:13:101:20 | access to field FieldPtr |
+| delegates.cs:102:13:102:26 | function pointer call | delegates.cs:102:13:102:23 | access to property PropertyPtr |

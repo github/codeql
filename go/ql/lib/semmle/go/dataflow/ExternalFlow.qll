@@ -1,7 +1,7 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with MaD flow models specified
+ * Provides classes and predicates for dealing with flow models specified
  * in data extensions and CSV format.
  *
  * The CSV specification has the following columns:
@@ -11,6 +11,9 @@
  *   `package; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Neutrals:
+ *   `package; type; name; signature; kind; provenance`
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -27,24 +30,22 @@
  *    "Argument[n]", or "Argument[n1..n2]":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
  *      in the given range. The range is inclusive at both ends.
  *
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", , "ReturnValue", "ReturnValue[n]", or
  *    "ReturnValue[n1..n2]":
- *    - "": Selects a read of a selected field, or a selected parameter.
+ *    - "": Selects a read of a selected field.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
  *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
- *      "Parameter" is also allowed in case the selected element is already a
- *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
- *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *      numbered parameter (zero-indexed, and `receiver` specifies the receiver).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the first value being returned by the selected
@@ -74,64 +75,34 @@
  */
 
 private import go
-private import ExternalFlowExtensions as Extensions
+import internal.ExternalFlowExtensions
+private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImpl
+private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
-private import internal.AccessPathSyntax
-private import FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
 
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import semmle.go.frameworks.Stdlib
+private predicate relevantPackage(string package) {
+  sourceModel(package, _, _, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _, _, _)
 }
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel = Extensions::sourceModel/9;
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel = Extensions::sinkModel/9;
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel = Extensions::summaryModel/10;
-
-/** Holds if `package` have MaD framework coverage. */
-private predicate packageHasMaDCoverage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _)
+private predicate packageLink(string shortpkg, string longpkg) {
+  relevantPackage(shortpkg) and
+  relevantPackage(longpkg) and
+  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
 }
 
-/**
- * Holds if `package` and `subpkg` have MaD framework coverage and `subpkg`
- * is a subpackage of `package`.
- */
-private predicate packageHasASubpackage(string package, string subpkg) {
-  packageHasMaDCoverage(package) and
-  packageHasMaDCoverage(subpkg) and
-  subpkg.prefix(subpkg.indexOf(".")) = package
-}
-
-/**
- * Holds if `package` has MaD framework coverage and it is not a subpackage of
- * any other package with MaD framework coverage.
- */
 private predicate canonicalPackage(string package) {
-  packageHasMaDCoverage(package) and not packageHasASubpackage(_, package)
+  relevantPackage(package) and not packageLink(_, package)
 }
 
-/**
- * Holds if `package` and `subpkg` have MaD framework coverage, `subpkg` is a
- * subpackage of `package` (or they are the same), and `package` is not a
- * subpackage of any other package with MaD framework coverage.
- */
-private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
+private predicate canonicalPkgLink(string package, string subpkg) {
   canonicalPackage(package) and
-  (subpkg = package or packageHasASubpackage(package, subpkg))
+  (subpkg = package or packageLink(package, subpkg))
 }
 
 /**
@@ -140,73 +111,100 @@ private predicate canonicalPackageHasASubpackage(string package, string subpkg) 
  * which have MaD framework coverage (including `package` itself).
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPackageHasASubpackage(package, subpkg)) and
+  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
   (
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string output, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance)
+        canonicalPkgLink(package, subpkg) and
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance, _)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance)
+        canonicalPkgLink(package, subpkg) and
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance, _)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input, string output, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance)
+        canonicalPkgLink(package, subpkg) and
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance,
+          _)
       )
   )
 }
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
+  private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+
+  private predicate getRelevantAccessPath(string path) {
+    summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
+    summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
+    sinkModel(_, _, _, _, _, _, path, _, _, _) or
+    sourceModel(_, _, _, _, _, _, path, _, _, _)
+  }
+
+  private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
+
+  class AccessPath = MkAccessPath::AccessPath;
+
+  class AccessPathToken = MkAccessPath::AccessPathToken;
+
   private string getInvalidModelInput() {
-    exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
+    exists(string pred, AccessPath input, AccessPathToken part |
+      sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
         not part = "" and
-        not parseArg(part, _)
+        not (part = "Argument" and pred = "sink") and
+        not parseArg(part, _) and
+        not part.getName() = "Field"
         or
-        part = input.getToken(_) and
+        part = input.getToken(0) and
         parseParam(part, _)
+        or
+        invalidIndexComponent(input, part)
       ) and
       result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
   }
 
   private string getInvalidModelOutput() {
-    exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
+    exists(string pred, AccessPath output, AccessPathToken part |
+      sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
-      invalidSpecComponent(output, part) and
-      not part = "" and
-      not (part = "Parameter" and pred = "source") and
+      (
+        invalidSpecComponent(output, part) and
+        not part = "" and
+        not (part = ["Argument", "Parameter"] and pred = "source") and
+        not part.getName() = "Field"
+        or
+        invalidIndexComponent(output, part)
+      ) and
       result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
   }
 
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
-    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
@@ -216,11 +214,16 @@ module ModelValidation {
       string pred, string package, string type, string name, string signature, string ext,
       string provenance
     |
-      sourceModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "source"
+      sourceModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
-      sinkModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
+      sinkModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
       or
-      summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and pred = "summary"
+      summaryModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "summary"
+      or
+      neutralModel(package, type, name, signature, _, provenance) and
+      ext = "" and
+      pred = "neutral"
     |
       not package.replaceAll("$ANYVERSION", "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
@@ -256,30 +259,14 @@ pragma[nomagic]
 private predicate elementSpec(
   string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(package, type, subtypes, name, signature, ext, _, _, _) or
-  sinkModel(package, type, subtypes, name, signature, ext, _, _, _) or
-  summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _)
-}
-
-private string paramsStringPart(Function f, int i) {
-  i = -1 and result = "("
+  sourceModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  exists(int n, string p | f.getParameterType(n).toString() = p |
-    i = 2 * n and result = p
-    or
-    i = 2 * n - 1 and result = "," and n != 0
-  )
+  sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  i = 2 * f.getNumParameter() and result = ")"
+  summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
-
-/**
- * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
- *
- * Returns the empty string if the callable has no parameters.
- * Parameter types are represented by their type erasure.
- */
-string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
 
 bindingset[p]
 private string interpretPackage(string p) {
@@ -288,10 +275,13 @@ private string interpretPackage(string p) {
     then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
     else result = package(p, "")
   )
+  or
+  p = "" and result = ""
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
-SourceOrSinkElement interpretElement(
+cached
+SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   string pkg, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(pkg, type, subtypes, name, signature, ext) and
@@ -311,21 +301,16 @@ SourceOrSinkElement interpretElement(
   )
 }
 
-/** Holds if there is an external specification for `f`. */
-predicate hasExternalSpecification(Function f) {
-  f = any(SummarizedCallable sc).asFunction()
-  or
-  exists(SourceOrSinkElement e | f = e.asEntity() |
-    sourceElement(e, _, _, _) or sinkElement(e, _, _, _)
-  )
-}
-
 private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {
-  exists(string fieldRegex, string package, string className, string fieldName |
-    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
-    package = c.regexpCapture(fieldRegex, 1) and
-    className = c.regexpCapture(fieldRegex, 2) and
-    fieldName = c.regexpCapture(fieldRegex, 3) and
+  exists(
+    string fieldRegex, string qualifiedName, string package, string className, string fieldName
+  |
+    c.getName() = "Field" and
+    qualifiedName = c.getAnArgument() and
+    fieldRegex = "^(.*)\\.([^.]+)\\.([^.]+)$" and
+    package = qualifiedName.regexpCapture(fieldRegex, 1) and
+    className = qualifiedName.regexpCapture(fieldRegex, 2) and
+    fieldName = qualifiedName.regexpCapture(fieldRegex, 3) and
     f.getField().hasQualifiedName(package, className, fieldName)
   )
 }
@@ -342,11 +327,12 @@ class SyntheticField extends string {
 }
 
 private predicate parseSynthField(AccessPathToken c, string f) {
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.getName() = "SyntheticField" and
+  f = c.getAnArgument()
 }
 
 /** Holds if the specification component parses as a `Content`. */
-predicate parseContent(string component, DataFlow::Content content) {
+predicate parseContent(AccessPathToken component, DataFlow::Content content) {
   parseField(component, content)
   or
   parseSynthField(component, content.(DataFlow::SyntheticFieldContent).getField())
@@ -369,8 +355,10 @@ private module Cached {
    * model.
    */
   cached
-  predicate sourceNode(DataFlow::Node node, string kind) {
-    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+  predicate sourceNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind, model) and n.asNode() = node
+    )
   }
 
   /**
@@ -378,9 +366,79 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(DataFlow::Node node, string kind) {
-    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+  predicate sinkNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSinkNode(n, kind, model) and n.asNode() = node
+    )
   }
 }
 
 import Cached
+
+/**
+ * Holds if `node` is specified as a source with the given kind in a MaD flow
+ * model.
+ */
+predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a sink with the given kind in a MaD flow
+ * model.
+ */
+predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends SummarizedCallable {
+  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
+
+  private predicate relevantSummaryElementManual(
+    string input, string output, string kind, string model
+  ) {
+    exists(Provenance provenance |
+      summaryElement(this, input, output, kind, provenance, model) and
+      provenance.isManual()
+    )
+  }
+
+  private predicate relevantSummaryElementGenerated(
+    string input, string output, string kind, string model
+  ) {
+    exists(Provenance provenance |
+      summaryElement(this, input, output, kind, provenance, model) and
+      provenance.isGenerated()
+    ) and
+    not exists(Provenance provenance |
+      neutralElement(this, "summary", provenance) and
+      provenance.isManual()
+    )
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    exists(string kind |
+      this.relevantSummaryElementManual(input, output, kind, model)
+      or
+      not this.relevantSummaryElementManual(_, _, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind, model)
+    |
+      if kind = "value" then preservesValue = true else preservesValue = false
+    )
+  }
+
+  override predicate hasProvenance(Provenance provenance) {
+    summaryElement(this, _, _, _, provenance, _)
+  }
+}
+
+// adapter class for converting Mad neutrals to `NeutralCallable`s
+private class NeutralCallableAdapter extends NeutralCallable {
+  string kind;
+  string provenance_;
+
+  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
+
+  override string getKind() { result = kind }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+}

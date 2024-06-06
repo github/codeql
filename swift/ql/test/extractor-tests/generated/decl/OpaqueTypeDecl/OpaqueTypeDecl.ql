@@ -4,8 +4,8 @@ import TestUtils
 
 from
   OpaqueTypeDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
-  Type getInterfaceType, string getName, int getNumberOfBaseTypes, ValueDecl getNamingDeclaration,
-  int getNumberOfOpaqueGenericParams
+  Type getInterfaceType, string getName, int getNumberOfInheritedTypes,
+  ValueDecl getNamingDeclaration, int getNumberOfOpaqueGenericParams
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,10 +14,10 @@ where
   getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
-  getNumberOfBaseTypes = x.getNumberOfBaseTypes() and
+  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
   getNamingDeclaration = x.getNamingDeclaration() and
   getNumberOfOpaqueGenericParams = x.getNumberOfOpaqueGenericParams()
 select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
   "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
-  getName, "getNumberOfBaseTypes:", getNumberOfBaseTypes, "getNamingDeclaration:",
+  getName, "getNumberOfInheritedTypes:", getNumberOfInheritedTypes, "getNamingDeclaration:",
   getNamingDeclaration, "getNumberOfOpaqueGenericParams:", getNumberOfOpaqueGenericParams
