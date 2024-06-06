@@ -5,10 +5,10 @@ extensions:
       pack: codeql/cpp-all
       extensible: sourceModel
     data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
-      - ["boost::asio", "", False, "read", "", "", "Argument[1*]", "remote", "manual"]
+      - ["boost::asio", "", False, "read", "", "", "Argument[*1]", "remote", "manual"]
       - ["boost::asio", "", False, "read_at", "", "", "Argument[*2]", "remote", "manual"]
       - ["boost::asio", "", False, "read_until", "", "", "Argument[*1]", "remote", "manual"]
-      - ["boost::asio", "", False, "async_read", "", "", "Argument[1*]", "remote", "manual"]
+      - ["boost::asio", "", False, "async_read", "", "", "Argument[*1]", "remote", "manual"]
       - ["boost::asio", "", False, "async_read_at", "", "", "Argument[*2]", "remote", "manual"]
       - ["boost::asio", "", False, "async_read_until", "", "", "Argument[*1]", "remote", "manual"]
   - addsTo:
