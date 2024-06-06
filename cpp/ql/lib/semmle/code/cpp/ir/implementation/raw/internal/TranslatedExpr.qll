@@ -3208,9 +3208,13 @@ class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
 
   final override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
 
+  private TranslatedElement getRankedChild(int rnk) {
+    result = rank[rnk + 1](int id, TranslatedElement te | te = this.getChild(id) | te order by id)
+  }
+
   final override Instruction getFirstInstruction(EdgeKind kind) {
-    if exists(this.getChild(0))
-    then result = this.getChild(0).getFirstInstruction(kind)
+    if exists(this.getRankedChild(0))
+    then result = this.getRankedChild(0).getFirstInstruction(kind)
     else (
       kind instanceof GotoEdge and result = this.getInstruction(OnlyInstructionTag())
     )
@@ -3230,11 +3234,11 @@ class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
-    exists(int id | child = this.getChild(id) |
-      result = this.getChild(id + 1).getFirstInstruction(kind)
+    exists(int id | child = this.getRankedChild(id) |
+      result = this.getRankedChild(id + 1).getFirstInstruction(kind)
       or
       kind instanceof GotoEdge and
-      not exists(this.getChild(id + 1)) and
+      not exists(this.getRankedChild(id + 1)) and
       result = this.getInstruction(OnlyInstructionTag())
     )
   }
@@ -3249,7 +3253,7 @@ class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
     tag = OnlyInstructionTag() and
     exists(int index |
       operandTag = positionalArgumentOperand(index) and
-      result = this.getChild(index).(TranslatedExpr).getResult()
+      result = this.getRankedChild(index).(TranslatedExpr).getResult()
     )
   }
 
