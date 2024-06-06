@@ -132,5 +132,10 @@ func (ver semVer) MajorMinor() SemVer {
 }
 
 func (ver semVer) StandardSemVer() string {
-	return string(ver)[1:]
+	// Drop the 'v' prefix from the version string.
+	result := string(ver)[1:]
+
+	// Correct the pre-release identifier for use with `setup-go`, if one is present.
+	// This still remains a standard semantic version.
+	return strings.Replace(result, "-rc", "-rc.", 1)
 }
