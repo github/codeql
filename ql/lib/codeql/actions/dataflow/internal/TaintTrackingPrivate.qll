@@ -14,12 +14,16 @@ private import codeql.actions.Ast
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
+// predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+//   any(AdditionalTaintStep s).step(nodeFrom, nodeTo)
+// }
 /**
  * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
  * in all global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  any(AdditionalTaintStep s).step(nodeFrom, nodeTo)
+cached
+predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+  any(AdditionalTaintStep s).step(nodeFrom, nodeTo) and model = ""
 }
 
 /**

@@ -4,8 +4,9 @@
  */
 
 private import codeql.dataflow.DataFlow
+private import codeql.Locations
 
-module ActionsDataFlow implements InputSig {
+module ActionsDataFlow implements InputSig<Location> {
   import DataFlowPrivate as Private
   import DataFlowPublic
   import Private

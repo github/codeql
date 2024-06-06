@@ -1,3 +1,4 @@
+private import codeql.util.Unit
 private import codeql.dataflow.DataFlow
 private import codeql.actions.Ast
 private import codeql.actions.Cfg as Cfg
@@ -7,6 +8,8 @@ private import DataFlowPublic
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.dataflow.FlowSteps
 private import codeql.actions.dataflow.FlowSources
+
+class DataFlowSecondLevelScope = Unit;
 
 cached
 newtype TNode = TExprNode(DataFlowExpr e)
@@ -78,6 +81,9 @@ class DataFlowCall instanceof Cfg::Node {
   string getName() { result = super.getAstNode().(Uses).getCallee() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getScope() }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() { none() }
 }
 
 /**
@@ -104,6 +110,9 @@ class DataFlowCallable instanceof Cfg::CfgScope {
                     .indexOf(["/action.yml", "/action.yaml"]))
       else none()
   }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() { none() }
 }
 
 newtype TReturnKind = TNormalReturn()
@@ -157,6 +166,19 @@ newtype TContent =
   }
 
 predicate forceHighPrecision(Content c) { c instanceof FieldContent }
+
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
+/**
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
+ */
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 class ContentApprox = ContentSet;
 
@@ -287,9 +309,13 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * a simple local flow step that should always preserve the call context (same callable)
+ * This is the local flow predicate that is used as a building block in global
+ * data flow.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFrom, nodeTo) }
+cached
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  localFlowStep(nodeFrom, nodeTo) and model = ""
+}
 
 /**
  * Holds if data can flow from `node1` to `node2` through a non-local step
@@ -367,11 +393,6 @@ predicate clearsContent(Node n, ContentSet c) { none() }
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
- */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
-
-/**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
  *
@@ -400,3 +421,7 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * This compression is normally done to not show SSA steps, casts, etc.
  */
 predicate neverSkipInPathGraph(Node node) { any() }
+
+predicate knownSourceModel(Node source, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
