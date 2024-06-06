@@ -96,11 +96,11 @@ The first five values identify the callable (in this case a free function) to be
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``read_until``.
 
 The sixth value should be left empty and is out of scope for this documentation.
-The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
+The remaining values are used to define the output specification, the ``kind``, and the ``provenance`` (origin) of the source.
 
-- The seventh value ``"Argument[*1]"`` is the ``access path``, which means that the sink is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
+- The seventh value ``"Argument[*1]"`` is the output specification, which means in this case that the sink is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
 - The eighth value ``"remote"`` is the kind of the source. The source kind is used to define the threat model where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. For more information, see ":ref:`Threat models <threat-models-cpp>`."
-- The ninth value ``"manual"`` is the provenance of the source, which is used to identify the origin of the source.
+- The ninth value ``"manual"`` is the provenance of the source, which is used to identify the origin of the source model.
 
 Example: Taint sink in the ``boost::asio`` namespace
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,11 +132,11 @@ The first five values identify the callable (in this case a free function) to be
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``write``.
 
 The sixth value should be left empty and is out of scope for this documentation.
-The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the sink.
+The remaining values are used to define the output specification, the ``kind``, and the ``provenance`` (origin) of the sink.
 
-- The seventh value ``"Argument[*1]"`` is the ``access path``, which means that the sink is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
+- The seventh value ``"Argument[*1]"`` is the output specification, which means in this case that the sink is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
 - The eighth value ``"remote-sink"`` is the kind of the sink. The sink kind is used to define the queries where the sink is in scope.
-- The ninth value ``"manual"`` is the provenance of the sink, which is used to identify the origin of the sink.
+- The ninth value ``"manual"`` is the provenance of the sink, which is used to identify the origin of the sink model.
 
 Example: Add flow through the ``boost::asio::buffer`` method
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,12 +169,12 @@ The first five values identify the callable (in this case free function) to be m
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``buffer``.
 
 The sixth value should be left empty and is out of scope for this documentation.
-The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
+The remaining values are used to define the input and output specifications, the ``kind``, and the ``provenance`` (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). ``Argument[*0]`` is the access path to the first indirection (or pointed-to value, ``*``) of the first argument (``Argument[0]``) passed to the function.
-- The eighth value ``"ReturnValue"`` is the access path to the output (where data flows to), in this case the return value.
+- The seventh value is the input specification (where data flows from). ``Argument[*0]`` specifies the first indirection (or pointed-to value, ``*``) of the first argument (``Argument[0]``) passed to the function.
+- The eighth value ``"ReturnValue"`` is the output specification (where data flows to), in this case the return value.
 - The ninth value ``"taint"`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
-- The tenth value ``"manual"`` is the provenance of the summary, which is used to identify the origin of the summary.
+- The tenth value ``"manual"`` is the provenance of the summary, which is used to identify the origin of the summary model.
 
 .. _threat-models-cpp:
 
