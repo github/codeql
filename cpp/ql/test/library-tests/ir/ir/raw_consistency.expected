@@ -21,6 +21,7 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1535:8:1535:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1535:8:1535:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:2556:43:2556:44 | Arg(1) | Operand 'Arg(1)' is not dominated by its definition in function '$@'. | ir.cpp:2555:6:2555:20 | void builtin_bitcast(unsigned long) | void builtin_bitcast(unsigned long) |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:39:15:39:15 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |
