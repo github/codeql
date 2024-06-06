@@ -15,11 +15,11 @@ module Buildless<BuildlessASTSig AST> {
   {
   }
 
-  class SourceNamespace extends SourceScope
+  class SourceNamespace extends SourceScope, SourceDeclaration
   {
     SourceNamespace() { AST::namespace(this) }
 
-    string getName() { AST::namespaceName(this, result) }
+    override string getName() { AST::namespaceName(this, result) }
 
     override string toString() { result = "namespace " + this.getName() }
 
@@ -31,13 +31,14 @@ module Buildless<BuildlessASTSig AST> {
   // Any syntax node that is a declaration
   abstract class SourceDeclaration extends SourceElement
   {
+    abstract string getName();
   }
 
   // A syntax node that declares or defines a function
   class SourceFunction extends SourceDeclaration {
     SourceFunction() { AST::function(this) }
 
-    string getName() { AST::functionName(this, result) }
+    override string getName() { AST::functionName(this, result) }
 
     override string toString() { result = this.getName() }
 
@@ -52,7 +53,7 @@ module Buildless<BuildlessASTSig AST> {
   class SourceVariableDeclaration extends SourceDeclaration {
     SourceVariableDeclaration() { AST::variableDeclaration(this) }
 
-    string getName() { AST::variableName(this, result) }
+    override string getName() { AST::variableName(this, result) }
 
     override string toString() { result = this.getName() }
 
@@ -130,9 +131,11 @@ module Buildless<BuildlessASTSig AST> {
   {
     SourceTypeDefinition() { AST::classOrStructDefinition(this) }
 
-    string getName() { AST::typename(this, result) }
+    override string getName() { AST::typename(this, result) }
 
     override string toString() { result = this.getName() }
+
+    SourceElement getAMember() { AST::classMember(this, _, result) }
   }
 
   // A node that contains a type of some kind

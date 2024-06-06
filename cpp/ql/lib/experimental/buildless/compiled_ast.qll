@@ -27,8 +27,7 @@ module CompiledAST implements BuildlessASTSig {
         type = reachableType(decl.getType())
       )
     } or
-    TNamespaceDeclaration(SourceLocation loc) {
-      exists(NamespaceDeclarationEntry ns | ns.getLocation() = loc)
+    TNamespaceDeclaration(NamespaceDeclarationEntry ns) { any()
     }
 
   class Node extends TNode {
@@ -40,7 +39,7 @@ module CompiledAST implements BuildlessASTSig {
       this = TExpression(result) or
       this = TFunctionCallName(result) or
       this = TDeclarationType(result, _) or
-      this = TNamespaceDeclaration(result)
+      result = this.getNamespaceDeclaration().getLocation()
     }
 
     Stmt getStmt() { this = TStatement(result.getLocation()) }
@@ -53,7 +52,7 @@ module CompiledAST implements BuildlessASTSig {
     }
 
     NamespaceDeclarationEntry getNamespaceDeclaration() {
-      this = TNamespaceDeclaration(result.getLocation())
+      this = TNamespaceDeclaration(result)
     }
 
     Type getType() { this = TDeclarationType(_, result) }
@@ -156,7 +155,12 @@ module CompiledAST implements BuildlessASTSig {
     node.getDeclaration().getDeclaration() instanceof Class
   }
 
-  predicate classMember(Node classOrStruct, int child, Node member) { none() }
+  predicate classMember(Node classOrStruct, int child, Node member) {
+    classOrStruct.getDeclaration().getDeclaration().(Class).getAMember() =
+      member.getDeclaration().getDeclaration() and
+    child = 0 and
+    classOrStruct.getLocation().getFile() = member.getLocation().getFile()  // TODO: Disambiguate
+  }
 
   // Templates
   predicate templateParameter(Node node, int i, Node parameter) { none() }
@@ -245,8 +249,12 @@ module CompiledAST implements BuildlessASTSig {
   }
 
   predicate namespaceMember(Node ns, Node member) {
-    member.getDeclaration().getDeclaration() = ns.getNamespaceDeclaration().getNamespace().getADeclaration() and
+    (
+    member.getDeclaration().getDeclaration() =
+      ns.getNamespaceDeclaration().getNamespace().getADeclaration() 
+    or
+    ns.getNamespaceDeclaration().getNamespace().getAChildNamespace() = member.getNamespaceDeclaration().getNamespace()
+    ) and
     ns.getLocation().getFile() = member.getLocation().getFile()
-    // !! No restriction on file!!
   }
 }
