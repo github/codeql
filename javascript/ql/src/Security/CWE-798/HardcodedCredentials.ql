@@ -23,6 +23,11 @@ predicate looksLikeATemplate(string s) { s.regexpMatch(".*((\\{\\{.*\\}\\})|(<.*
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string value
 where
   cfg.hasFlowPath(source, sink) and
+  not sink.getNode()
+      .getFile()
+      .getAbsolutePath()
+      .toLowerCase()
+      .matches(["%stest%s", "%sdemo%s", "%sexample%s", "%ssample%s"]) and
   // use source value in message if it's available
   if source.getNode().asExpr() instanceof ConstantString
   then
