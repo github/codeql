@@ -7,8 +7,10 @@ module BuildlessTypes<BuildlessASTSig AST> {
     TBuiltinType(string name) { name = ["int", "char"] }
     or
     TUserType(string fqn) { exists(A::SourceTypeDefinition d | d.getName() = fqn) }
-    // or
-    // TPointerType(Type type) { exists(A::SourcePointerType
+    //or
+    //TPointerType(Type type) { exists(A::SourcePointer p | p.getType() = type) }
+    //or
+    //TConstType(Type type) { exists(A::SourceConst c | c.getType() = type) }
 
   class Type extends TType {
     string toString() { result = this.getName() }

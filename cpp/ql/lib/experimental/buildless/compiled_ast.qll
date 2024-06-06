@@ -6,6 +6,13 @@ module CompiledAST implements BuildlessASTSig {
     SourceLocation() { not this.hasLocationInfo(_, 0, 0, 0, 0) }
   }
 
+  private Type reachableType(Type type) {
+    result = type or
+    result = reachableType(type).stripTopLevelSpecifiers() or
+    result = reachableType(type).(PointerType).getBaseType() or
+    result = reachableType(type).(ReferenceType).getBaseType()
+  }
+
   private newtype TNode =
     // TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
     TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) } or
@@ -13,12 +20,11 @@ module CompiledAST implements BuildlessASTSig {
     TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) } or
     TFunctionCallName(SourceLocation loc) { exists(FunctionCall c | c.getLocation() = loc) } or
     TDeclarationType(SourceLocation loc, Type type) {
-      exists(DeclarationEntry decl | decl.getLocation() = loc |
-        type = decl.getType()
-        or
-        type = decl.getType().stripTopLevelSpecifiers*()
-        or
-        decl.getType().(ReferenceType).getUnderlyingType() = type
+      // TODO: Avoid template instantiation here
+      exists(DeclarationEntry decl |
+        decl.getLocation() = loc and not decl.isFromTemplateInstantiation(_)
+      |
+        type = reachableType(decl.getType())
       )
     }
 
@@ -111,9 +117,19 @@ module CompiledAST implements BuildlessASTSig {
 
   // etc
   // Types
-  predicate ptrType(Node type, Node element) { none() }
+  predicate ptrType(Node node, Node element) {
+    exists(PointerType type, Location loc |
+      node = TDeclarationType(loc, type) and
+      element = TDeclarationType(loc, type.getBaseType())
+    )
+  }
 
-  predicate refType(Node type, Node element) { none() }
+  predicate refType(Node node, Node element) {
+    exists(ReferenceType type, Location loc |
+      node = TDeclarationType(loc, type) and
+      element = TDeclarationType(loc, type.getBaseType())
+    )
+  }
 
   predicate rvalueRefType(Node type, Node element) { none() }
 

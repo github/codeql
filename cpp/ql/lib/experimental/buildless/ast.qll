@@ -128,6 +128,10 @@ module Buildless<BuildlessASTSig AST> {
 
   class SourcePointer extends SourceType
   {
+    SourceType pointee;
+    SourcePointer() { AST::ptrType(this, pointee) }
+
+    SourceType getType() { result = pointee }
   }
 
   class SourceConst extends SourceType
@@ -140,6 +144,9 @@ module Buildless<BuildlessASTSig AST> {
 
   class SourceReference extends SourceType
   {
+    SourceType type;
+    SourceReference() { AST::refType(this, type) }
+    SourceType getType() { result = type }
   }
 }
 
