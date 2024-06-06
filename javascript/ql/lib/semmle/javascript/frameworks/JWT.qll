@@ -40,7 +40,7 @@ private module JsonWebToken {
   }
 
   /**
-   * The secret Or PrivateKey for a JWT as a `CredentialsNode`.
+   * The secret or PrivateKey for a JWT as a `CredentialsNode`.
    */
   private class JwtKey extends CredentialsNode {
     JwtKey() {
