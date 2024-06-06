@@ -776,7 +776,9 @@ private predicate unary_compares_eq(
   Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
 ) {
   /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-  exists(AbstractValue v | unary_simple_comparison_eq(test, op, k, inNonZeroCase, v) |
+  exists(AbstractValue v |
+    unary_simple_comparison_eq(test, k, inNonZeroCase, v) and op.getDef() = test
+  |
     areEqual = true and value = v
     or
     areEqual = false and value = v.getDualValue()
@@ -844,11 +846,10 @@ private predicate relevantUnaryComparison(Instruction test) {
  * Rearrange various simple comparisons into `op == k` form.
  */
 private predicate unary_simple_comparison_eq(
-  Instruction test, Operand op, int k, boolean inNonZeroCase, AbstractValue value
+  Instruction test, int k, boolean inNonZeroCase, AbstractValue value
 ) {
   exists(SwitchInstruction switch, CaseEdge case |
     test = switch.getExpression() and
-    op.getDef() = test and
     case = value.(MatchValue).getCase() and
     exists(switch.getSuccessor(case)) and
     case.getValue().toInt() = k and
@@ -913,7 +914,8 @@ private predicate compares_lt(
 
 /** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
 private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt, AbstractValue value) {
-  simple_comparison_lt(test, op, k, isLt, value)
+  unary_simple_comparison_lt(test, k, isLt, value) and
+  op.getDef() = test
   or
   complex_lt(test, op, k, isLt, value)
   or
@@ -960,12 +962,11 @@ private predicate simple_comparison_lt(CompareInstruction cmp, Operand left, Ope
 }
 
 /** Rearrange various simple comparisons into `op < k` form. */
-private predicate simple_comparison_lt(
-  Instruction test, Operand op, int k, boolean isLt, AbstractValue value
+private predicate unary_simple_comparison_lt(
+  Instruction test, int k, boolean isLt, AbstractValue value
 ) {
   exists(SwitchInstruction switch, CaseEdge case |
     test = switch.getExpression() and
-    op.getDef() = test and
     case = value.(MatchValue).getCase() and
     exists(switch.getSuccessor(case)) and
     case.getMaxValue() > case.getMinValue()
