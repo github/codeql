@@ -1,6 +1,5 @@
 import TestUtilities.dataflow.FlowTestCommon
 import cpp
-import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.security.FlowSources
 
 module IRTest {
