@@ -364,7 +364,7 @@ def codeql_pack(
             internal("script"),
         ] + ([
             internal("zip-manifest"),
-            Label("//misc/bazel/internal/ripunzip"),
+            Label("//misc/ripunzip"),
         ] if zips else []),
         deps = ["@rules_python//python/runfiles"],
         args = [
@@ -373,7 +373,7 @@ def codeql_pack(
             "--destdir",
             install_dest,
         ] + ([
-            "--ripunzip=$(rlocationpath %s)" % Label("//misc/bazel/internal/ripunzip"),
+            "--ripunzip=$(rlocationpath %s)" % Label("//misc/ripunzip"),
             "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
         ] if zips else []),
         visibility = visibility,
