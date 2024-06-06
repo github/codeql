@@ -1,5 +1,5 @@
 {
-  "checksum": "bf577b30a6fa1893707e2384a92d21f3d271344127cb80069a477cb5308a6c64",
+  "checksum": "9b4e4c823f2ac8fc5ff611f62a7a59b78c01f1691b0644ccb9e49e8d6a359aa3",
   "crates": {
     "adler 1.0.2": {
       "name": "adler",
@@ -4829,7 +4829,7 @@
         "Git": {
           "remote": "https://github.com/tree-sitter/tree-sitter-ruby.git",
           "commitish": {
-            "Rev": "b41dc0f4c8e040905fcbb5d93bab667541c08ec7"
+            "Rev": "dc2d7d6b50f9975bc3c35bbec0ba11b2617b736b"
           }
         }
       },
