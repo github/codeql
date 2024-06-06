@@ -3208,6 +3208,13 @@ class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
 
   final override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
 
+  /**
+   * Gets the rnk'th (0-indexed) child for which a `TranslatedElement` exists.
+   *
+   * We use this predicate to filter out `TypeName` expressions that sometimes
+   * occur in builtin operations since the IR doesn't have an instruction to
+   * represent a reference to a type.
+   */
   private TranslatedElement getRankedChild(int rnk) {
     result = rank[rnk + 1](int id, TranslatedElement te | te = this.getChild(id) | te order by id)
   }
