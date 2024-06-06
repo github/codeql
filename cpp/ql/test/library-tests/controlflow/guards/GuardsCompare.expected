@@ -44,6 +44,8 @@
 | 34 | j >= 10+0 when ... < ... is false |
 | 42 | 10 < j+1 when ... < ... is false |
 | 42 | 10 >= j+1 when ... < ... is true |
+| 42 | call to getABool != 0 when call to getABool is true |
+| 42 | call to getABool == 0 when call to getABool is false |
 | 42 | j < 10 when ... < ... is true |
 | 42 | j < 10+0 when ... < ... is true |
 | 42 | j >= 10 when ... < ... is false |
@@ -149,6 +151,13 @@
 | 111 | 0.0 == i+0 when ... != ... is false |
 | 111 | i != 0.0+0 when ... != ... is true |
 | 111 | i == 0.0+0 when ... != ... is false |
+| 122 | b != 0 when b is true |
+| 122 | b == 0 when b is false |
+| 125 | ! ... != 0 when ! ... is true |
+| 125 | ! ... == 0 when ! ... is false |
+| 125 | call to safe != 0 when ! ... is false |
+| 125 | call to safe != 0 when call to safe is true |
+| 125 | call to safe == 0 when call to safe is false |
 | 126 | 1 != 0 when 1 is true |
 | 126 | 1 != 0 when ... && ... is true |
 | 126 | 1 == 0 when 1 is false |
