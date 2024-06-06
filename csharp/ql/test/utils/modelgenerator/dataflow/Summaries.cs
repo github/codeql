@@ -576,3 +576,16 @@ public class Inheritance
     }
 }
 
+public class MemberFlow
+{
+    public class C
+    {
+        public string Prop { get; set; }
+    }
+
+    // SPURIOUS-neutral=Models;MemberFlow;M1;(Models.MemberFlow+C);summary;df-generated
+    public string M1(C p)
+    {
+        return p.Prop;
+    }
+}
