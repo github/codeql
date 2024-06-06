@@ -16,6 +16,8 @@ module NetHttp {
           ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
       )
     }
+
+    override string getSourceType() { result = "HTTP request" }
   }
 
   /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */

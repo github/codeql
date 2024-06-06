@@ -37,6 +37,8 @@ module GoKit {
 
     private class EndpointRequest extends RemoteFlowSource::Range {
       EndpointRequest() { this = DataFlow::parameterNode(getAnEndpointFunction().getParameter(1)) }
+
+      override string getSourceType() { result = "Go Kit endpoint request" }
     }
   }
 }

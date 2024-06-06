@@ -100,6 +100,8 @@ private module CleverGo {
         this = v.getARead()
       )
     }
+
+    override string getSourceType() { result = "Clever Go" }
   }
 
   /**

@@ -14,6 +14,8 @@ private class LambdaInput extends RemoteFlowSource::Range {
       not p instanceof ReceiverVariable
     )
   }
+
+  override string getSourceType() { result = "AWS Lambda Input" }
 }
 
 private class HandlerFunction extends FuncDef {

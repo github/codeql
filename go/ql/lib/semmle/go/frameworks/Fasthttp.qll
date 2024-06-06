@@ -271,6 +271,8 @@ module Fasthttp {
           this = m.getACall().getResult(0)
         )
       }
+
+      override string getSourceType() { result = "a component of a URI" }
     }
   }
 
@@ -296,6 +298,8 @@ module Fasthttp {
           this = m.getACall().getResult(0)
         )
       }
+
+      override string getSourceType() { result = "URL Parameters" }
     }
   }
 
@@ -421,6 +425,8 @@ module Fasthttp {
           this = m.getACall().getArgument(0)
         )
       }
+
+      override string getSourceType() { result = "HTTP request" }
     }
 
     /**
@@ -499,6 +505,8 @@ module Fasthttp {
           this = m.getACall().getResult(0)
         )
       }
+
+      override string getSourceType() { result = "HTTP header" }
     }
   }
 
@@ -529,6 +537,8 @@ module Fasthttp {
           this = m.getACall().getResult(0)
         )
       }
+
+      override string getSourceType() { result = "HTTP request header" }
     }
   }
 }

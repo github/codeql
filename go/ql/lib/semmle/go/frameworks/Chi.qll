@@ -15,6 +15,8 @@ private module Chi {
     UserControlledFunction() {
       this.getTarget().hasQualifiedName(packagePath(), ["URLParam", "URLParamFromCtx"])
     }
+
+    override string getSourceType() { result = "URL parameter" }
   }
 
   /**
@@ -26,5 +28,7 @@ private module Chi {
     UserControlledRequestMethod() {
       this.getTarget().hasQualifiedName(packagePath(), "Context", "URLParam")
     }
+
+    override string getSourceType() { result = "URL parameter" }
   }
 }

@@ -29,6 +29,8 @@ private module GoRestfulHttp {
    */
   private class GoRestfulSource extends RemoteFlowSource::Range {
     GoRestfulSource() { this = any(GoRestfulSourceMethod g).getACall() }
+
+    override string getSourceType() { result = "HTTP request" }
   }
 
   /**
@@ -42,5 +44,7 @@ private module GoRestfulHttp {
         this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
+
+    override string getSourceType() { result = "HTTP request body" }
   }
 }

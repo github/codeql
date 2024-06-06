@@ -386,5 +386,7 @@ private module Fiber {
         fields = "Message"
       )
     }
+
+    override string getSourceType() { result = "HTTP request" }
   }
 }

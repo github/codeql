@@ -13,5 +13,7 @@ module Mux {
     RequestVars() {
       this.getTarget().hasQualifiedName(package("github.com/gorilla/mux", ""), "Vars")
     }
+
+    override string getSourceType() { result = "Mux request variable" }
   }
 }

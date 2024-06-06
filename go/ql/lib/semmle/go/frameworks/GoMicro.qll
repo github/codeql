@@ -150,5 +150,7 @@ module GoMicro {
         this.getType().(PointerType).getBaseType() instanceof ProtocMessageType
       )
     }
+
+    override string getSourceType() { result = "service handler request" }
   }
 }
