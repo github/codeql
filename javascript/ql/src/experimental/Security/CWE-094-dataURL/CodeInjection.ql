@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 9.3
  * @precision high
- * @id js/code-injection
+ * @id js/code-injection-dynamic-import
  * @tags security
  *       external/cwe/cwe-094
  *       external/cwe/cwe-095
