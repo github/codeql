@@ -2,15 +2,15 @@
 lockVersion: 1.0.0
 dependencies:
   codeql/controlflow:
-    version: 0.1.8
+    version: 1.0.0
   codeql/dataflow:
-    version: 0.1.8
+    version: 1.0.0
   codeql/ssa:
-    version: 0.2.8
+    version: 1.0.0
   codeql/typetracking:
-    version: 0.2.8
+    version: 1.0.0
   codeql/util:
-    version: 0.2.8
+    version: 1.0.0
   codeql/yaml:
-    version: 0.1.5
+    version: 1.0.0
 compiled: false
