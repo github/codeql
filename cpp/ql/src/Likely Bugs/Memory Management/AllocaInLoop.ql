@@ -209,6 +209,7 @@ class LoopWithAlloca extends Stmt {
       DataFlow::localFlow(result, DataFlow::exprNode(va)) and
       // Phi nodes will be preceded by nodes that represent actual definitions
       not result instanceof DataFlow::SsaPhiNode and
+      not result instanceof DataFlow::SsaPhiInputNode and
       // A source is outside the loop if it's not inside the loop
       not exists(Expr e | e = getExpr(result) | this = getAnEnclosingLoopOfExpr(e))
     )
