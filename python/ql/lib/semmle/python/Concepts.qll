@@ -1246,9 +1246,7 @@ module Http {
         )
       }
 
-      override DataFlow::Node getNameArg() {
-        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
-      }
+      override DataFlow::Node getNameArg() { none() }
 
       override DataFlow::Node getHeaderArg() {
         result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
