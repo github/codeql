@@ -2552,4 +2552,8 @@ void constexpr_inconsistency(bool b) {
     ;
 }
 
+void builtin_bitcast(unsigned long ul) {
+    double d = __builtin_bit_cast(double, ul);
+}
+
 // semmle-extractor-options: -std=c++20 --clang

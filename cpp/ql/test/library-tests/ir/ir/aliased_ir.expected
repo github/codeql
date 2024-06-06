@@ -18351,6 +18351,24 @@ ir.cpp:
 # 2550|   Block 2
 # 2550|     v2550_10(void) = Unreached : 
 
+# 2555| void builtin_bitcast(unsigned long)
+# 2555|   Block 0
+# 2555|     v2555_1(void)                 = EnterFunction               : 
+# 2555|     m2555_2(unknown)              = AliasedDefinition           : 
+# 2555|     m2555_3(unknown)              = InitializeNonLocal          : 
+# 2555|     m2555_4(unknown)              = Chi                         : total:m2555_2, partial:m2555_3
+# 2555|     r2555_5(glval<unsigned long>) = VariableAddress[ul]         : 
+# 2555|     m2555_6(unsigned long)        = InitializeParameter[ul]     : &:r2555_5
+# 2556|     r2556_1(glval<double>)        = VariableAddress[d]          : 
+# 2556|     r2556_2(glval<unsigned long>) = VariableAddress[ul]         : 
+# 2556|     r2556_3(unsigned long)        = Load[ul]                    : &:r2556_2, m2555_6
+# 2556|     r2556_4(double)               = BuiltIn[__builtin_bit_cast] : 0:r2556_3
+# 2556|     m2556_5(double)               = Store[d]                    : &:r2556_1, r2556_4
+# 2557|     v2557_1(void)                 = NoOp                        : 
+# 2555|     v2555_7(void)                 = ReturnVoid                  : 
+# 2555|     v2555_8(void)                 = AliasedUse                  : m2555_3
+# 2555|     v2555_9(void)                 = ExitFunction                : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
