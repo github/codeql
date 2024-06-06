@@ -112,3 +112,17 @@ void int_float_comparison(int i) {
     use(i);
   }
 }
+
+int source();
+bool safe(int);
+
+void test(bool b)
+{
+    int x;
+    if (b)
+    {
+        x = source();
+        if (!safe(x)) return;
+    }
+    use(x);
+}
