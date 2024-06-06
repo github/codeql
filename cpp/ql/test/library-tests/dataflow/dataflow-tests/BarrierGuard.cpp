@@ -83,5 +83,46 @@ void test_guard_and_reassign() {
   if(!guarded(x)) {
     x = 0;
   }
+  sink(x); // $ SPURIOUS: ast,ir
+}
+
+void test_phi_read_guard(bool b) {
+  int x = source();
+
+  if(b) {
+    if(!guarded(x))
+      return;
+  }
+  else {
+    if(!guarded(x))
+      return;
+  }
+  
+  sink(x); // $ SPURIOUS: ast,ir
+}
+
+bool unsafe(int);
+
+void test_guard_and_reassign_2() {
+  int x = source();
+
+  if(unsafe(x)) {
+    x = 0;
+  }
+  sink(x); // $ SPURIOUS: ast
+}
+
+void test_phi_read_guard_2(bool b) {
+  int x = source();
+
+  if(b) {
+    if(unsafe(x))
+      return;
+  }
+  else {
+    if(unsafe(x))
+      return;
+  }
+  
   sink(x); // $ SPURIOUS: ast
 }
