@@ -114,6 +114,13 @@ predicate conversionFlow(
       instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
       or
       instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+      or
+      exists(BuiltInInstruction builtIn |
+        builtIn = instrTo and
+        // __builtin_bit_cast
+        builtIn.getBuiltInOperation() instanceof BuiltInBitCast and
+        opFrom = builtIn.getAnOperand()
+      )
     )
     or
     additional = true and
