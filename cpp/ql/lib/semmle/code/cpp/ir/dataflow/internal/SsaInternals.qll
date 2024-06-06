@@ -870,7 +870,6 @@ private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
  * Holds if there is use-use flow from `pun`'s pre-update node to `n`.
  */
 private predicate postUpdateNodeToFirstUse(PostUpdateNode pun, Node n) {
-  // The reason for this predicate is a bit annoying:
   // We cannot mark a `PointerArithmeticInstruction` that computes an offset
   // based on some SSA
   // variable `x` as a use of `x` since this creates taint-flow in the
