@@ -856,11 +856,15 @@ private predicate unary_simple_comparison_eq(
     inNonZeroCase = false
   )
   or
-  // There's no implicit CompareInstruction in files compiled as C since C
-  // doesn't have implicit boolean conversions. So instead we check whether
-  // there's a branch on a value of pointer or integer type.
-  relevantUnaryComparison(test) and
-  op.getDef() = test and
+  not test.isGLValue() and
+  not simple_comparison_eq(test, _, _, _, _) and
+  not simple_comparison_lt(test, _, _, _) and
+  not test = any(SwitchInstruction switch).getExpression() and
+  (
+    test.getResultIRType() instanceof IRAddressType or
+    test.getResultIRType() instanceof IRIntegerType or
+    test.getResultIRType() instanceof IRBooleanType
+  ) and
   (
     k = 1 and
     value.(BooleanValue).getValue() = true and
