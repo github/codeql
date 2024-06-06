@@ -667,7 +667,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 /**
  * INTERNAL: Do not use.
  *
- * A note that is used as an input to a phi node.
+ * A node that is used as an input to a phi node.
  *
  * This class exists to allow more powerful barrier guards. Consider this
  * example:
@@ -684,9 +684,9 @@ class SsaPhiNode extends Node, TSsaPhiNode {
  * At the phi node for `x` it is neither the case that `x` is dominated by
  * `safe(x)`, or is the case that the phi is dominated by a clearing of `x`.
  *
- * However, by inserting an "phi input" nodes as the last entry in the basic
- * block that defines the inputs to the phi we can conclude that each of those
- * inputs are safe to pass to `sink`.
+ * By inserting a "phi input" node as the last entry in the basic block that
+ * defines the inputs to the phi we can conclude that each of those inputs are
+ * safe to pass to `sink`.
  */
 class SsaPhiInputNode extends Node, TSsaPhiInputNode {
   Ssa::PhiNode phi;
