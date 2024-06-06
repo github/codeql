@@ -11,6 +11,23 @@ module Buildless<BuildlessASTSig AST> {
     string toString() { result = "element" }
   }
 
+  abstract class SourceScope extends SourceElement
+  {
+  }
+
+  class SourceNamespace extends SourceScope
+  {
+    SourceNamespace() { AST::namespace(this) }
+
+    string getName() { AST::namespaceName(this, result) }
+
+    override string toString() { result = "namespace " + this.getName() }
+
+    SourceElement getAChild() {
+      AST::namespaceMember(this, result)
+    }
+  }
+
   // Any syntax node that is a declaration
   abstract class SourceDeclaration extends SourceElement
   {

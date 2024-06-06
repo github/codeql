@@ -26,6 +26,9 @@ module CompiledAST implements BuildlessASTSig {
       |
         type = reachableType(decl.getType())
       )
+    } or
+    TNamespaceDeclaration(SourceLocation loc) {
+      exists(NamespaceDeclarationEntry ns | ns.getLocation() = loc)
     }
 
   class Node extends TNode {
@@ -36,7 +39,8 @@ module CompiledAST implements BuildlessASTSig {
       this = TDeclaration(result) or
       this = TExpression(result) or
       this = TFunctionCallName(result) or
-      this = TDeclarationType(result, _)
+      this = TDeclarationType(result, _) or
+      this = TNamespaceDeclaration(result)
     }
 
     Stmt getStmt() { this = TStatement(result.getLocation()) }
@@ -46,6 +50,10 @@ module CompiledAST implements BuildlessASTSig {
     DeclarationEntry getDeclaration() {
       this = TDeclaration(result.getLocation())
       /* or this = TDeclarationType(result.getLocation(), _) */
+    }
+
+    NamespaceDeclarationEntry getNamespaceDeclaration() {
+      this = TNamespaceDeclaration(result.getLocation())
     }
 
     Type getType() { this = TDeclarationType(_, result) }
@@ -228,5 +236,17 @@ module CompiledAST implements BuildlessASTSig {
       element = TDeclarationType(loc, type.getBaseType()) and
       type.isConst()
     )
+  }
+
+  predicate namespace(Node ns) { exists(ns.getNamespaceDeclaration()) }
+
+  predicate namespaceName(Node ns, string name) {
+    ns.getNamespaceDeclaration().getNamespace().getName() = name
+  }
+
+  predicate namespaceMember(Node ns, Node member) {
+    member.getDeclaration().getDeclaration() = ns.getNamespaceDeclaration().getNamespace().getADeclaration() and
+    ns.getLocation().getFile() = member.getLocation().getFile()
+    // !! No restriction on file!!
   }
 }

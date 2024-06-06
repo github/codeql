@@ -12,6 +12,11 @@ signature module BuildlessASTSig
     predicate userInclude(Node include, string path);
     predicate systemInclude(Node include, string path);
 
+    // Namespaces
+    predicate namespace(Node ns);
+    predicate namespaceName(Node ns, string name);
+    predicate namespaceMember(Node ns, Node member);
+
     // Functions
     predicate function(Node fn);
     predicate functionBody(Node fn, Node body);

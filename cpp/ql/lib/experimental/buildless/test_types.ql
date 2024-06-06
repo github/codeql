@@ -12,5 +12,10 @@ query predicate constRefs(TestAST::SourceType t, TestAST::SourceConst c, TestAST
     t = c.getType()
 }
 
+query predicate usertypes(TestAST::SourceNamespace ns, TestAST::SourceTypeDefinition td)
+{
+    td = ns.getAChild()
+}
+
 from TestTypes::Type t
 select t

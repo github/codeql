@@ -1,4 +1,13 @@
 Next:
+- [x] Namespaces
+- [ ] Parent scopes - where are things declared
+    Parent class
+    Parent namespace
+    Parent function (for variable declarations and parameters)
+    Parent block (for blocks and statements)
+
+
+
 - [ ] Return type nodes
 - [ ] Construction of types
 - [ ] Construction of functions
