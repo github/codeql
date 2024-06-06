@@ -2681,9 +2681,9 @@ class ContentSet instanceof Content {
 
 pragma[nomagic]
 private predicate guardControlsPhiInput(
-  IRGuardCondition g, boolean branch, Ssa::Definition def, IRBlock input, Ssa::PhiInputNodeExt phi
+  IRGuardCondition g, boolean branch, Ssa::Definition def, IRBlock input, Ssa::PhiNode phi
 ) {
-  phi.hasInputFromBlock(def, input) and
+  phi.hasInputFromBlock(def, _, _, _, input) and
   (
     g.controls(input, branch)
     or
@@ -2752,12 +2752,11 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
     or
     exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input,
-      Ssa::PhiInputNodeExt phi
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
     |
       guardChecks(g, def.getARead().asOperand().getDef().getConvertedResultExpression(), branch) and
       guardControlsPhiInput(g, branch, def, input, phi) and
-      result = TSsaPhiInputNode(phi.getPhi(), input)
+      result = TSsaPhiInputNode(phi, input)
     )
   }
 
@@ -2839,14 +2838,13 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
     or
     exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input,
-      Ssa::PhiInputNodeExt phi
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
     |
       guardChecks(g,
         def.getARead().asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
         branch) and
       guardControlsPhiInput(g, branch, def, input, phi) and
-      result = TSsaPhiInputNode(phi.getPhi(), input)
+      result = TSsaPhiInputNode(phi, input)
     )
   }
 }
@@ -2881,12 +2879,11 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
     )
     or
     exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input,
-      Ssa::PhiInputNodeExt phi
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
     |
       instructionGuardChecks(g, def.getARead().asOperand().getDef(), branch) and
       guardControlsPhiInput(g, branch, def, input, phi) and
-      result = TSsaPhiInputNode(phi.getPhi(), input)
+      result = TSsaPhiInputNode(phi, input)
     )
   }
 }

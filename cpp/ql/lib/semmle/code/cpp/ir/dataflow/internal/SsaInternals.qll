@@ -1216,23 +1216,6 @@ class Phi extends TPhi, SsaDef {
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 /**
- * An static single assignment (SSA) definition that is used as an input to a
- * phi or phi-read node.
- */
-class PhiInputNodeExt extends SsaImpl::DefinitionExt {
-  PhiNode phi;
-
-  PhiInputNodeExt() { this = SsaCached::phiHasInputFromBlockExt(phi, _) }
-
-  /** Gets the phi or phi-read node that receives this node as input. */
-  PhiNode getPhi() { result = phi }
-
-  predicate hasInputFromBlock(DefinitionExt def, IRBlock input) {
-    SsaCached::lastRefRedefExt(def, _, _, _, input, this)
-  }
-}
-
-/**
  * An static single assignment (SSA) phi node.
  *
  * This is either a normal phi node or a phi-read node.
