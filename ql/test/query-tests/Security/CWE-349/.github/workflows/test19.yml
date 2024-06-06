@@ -1,0 +1,42 @@
+name: Close Translation Pull Requests
+
+on:
+  pull_request_target:
+    branches: [ master, main, dev ]
+
+jobs:
+
+  close-translation-prs:
+
+    name: Close Translation Pull Requests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get changed files
+        id: modified_files
+        uses: trilom/file-changes-action@v1.2.4
+        with:
+          output: ","
+
+      - name: Check the PR for translations
+        id: check
+        run: |
+          shopt -s nocasematch
+          if [[ "${{ steps.modified_files.outputs.files_modified }}" == *"en_gb/strings.po"* ]]; then
+            echo "Found modified en_gb, likely a valid PR"
+            unset CLOSE
+          elif [[ "${{ steps.modified_files.outputs.files_modified }}" == *"strings.po"* ]]; then
+            echo "Found modified strings.po, unwanted."
+            CLOSE="true"
+          elif [[ "${{ steps.modified_files.outputs.files_added }}" == *"strings.po"* ]]; then
+            echo "Found added strings.po, unwanted."
+            CLOSE="true"
+          elif [[ "${{ steps.modified_files.outputs.files_removed }}" == *"strings.po"* ]]; then
+            echo "Found removed strings.po, unwanted."
+            CLOSE="true"
+          else
+            echo "No strings.po were modified or added, not a translation."
+            unset CLOSE
+          fi
+          echo ::set-output name=close::${CLOSE}
+

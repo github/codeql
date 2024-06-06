@@ -1,7 +1,20 @@
 edges
+| .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:25:18:25:67 | steps.modified_files.outputs.files_modified | provenance |  |
+| .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:28:20:28:69 | steps.modified_files.outputs.files_modified | provenance |  |
+| .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:31:20:31:66 | steps.modified_files.outputs.files_added | provenance |  |
+| .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:34:20:34:68 | steps.modified_files.outputs.files_removed | provenance |  |
 nodes
 | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/test10.yml:11:17:11:48 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | semmle.label | Uses Step: modified_files |
+| .github/workflows/test19.yml:25:18:25:67 | steps.modified_files.outputs.files_modified | semmle.label | steps.modified_files.outputs.files_modified |
+| .github/workflows/test19.yml:28:20:28:69 | steps.modified_files.outputs.files_modified | semmle.label | steps.modified_files.outputs.files_modified |
+| .github/workflows/test19.yml:31:20:31:66 | steps.modified_files.outputs.files_added | semmle.label | steps.modified_files.outputs.files_added |
+| .github/workflows/test19.yml:34:20:34:68 | steps.modified_files.outputs.files_removed | semmle.label | steps.modified_files.outputs.files_removed |
 subpaths
 #select
 | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/test9.yml:11:17:11:48 | github.event.comment.body | ${{ github.event.comment.body }} |
+| .github/workflows/test19.yml:25:18:25:67 | steps.modified_files.outputs.files_modified | .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:25:18:25:67 | steps.modified_files.outputs.files_modified | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/test19.yml:25:18:25:67 | steps.modified_files.outputs.files_modified | ${{ steps.modified_files.outputs.files_modified }} |
+| .github/workflows/test19.yml:28:20:28:69 | steps.modified_files.outputs.files_modified | .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:28:20:28:69 | steps.modified_files.outputs.files_modified | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/test19.yml:28:20:28:69 | steps.modified_files.outputs.files_modified | ${{ steps.modified_files.outputs.files_modified }} |
+| .github/workflows/test19.yml:31:20:31:66 | steps.modified_files.outputs.files_added | .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:31:20:31:66 | steps.modified_files.outputs.files_added | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/test19.yml:31:20:31:66 | steps.modified_files.outputs.files_added | ${{ steps.modified_files.outputs.files_added }} |
+| .github/workflows/test19.yml:34:20:34:68 | steps.modified_files.outputs.files_removed | .github/workflows/test19.yml:15:9:21:6 | Uses Step: modified_files | .github/workflows/test19.yml:34:20:34:68 | steps.modified_files.outputs.files_removed | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/test19.yml:34:20:34:68 | steps.modified_files.outputs.files_removed | ${{ steps.modified_files.outputs.files_removed }} |
