@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @security-severity 9.3
+ * @security-severity 7.5
  * @id actions/cache-poisoning/code-injection
  * @tags actions
  *       security
