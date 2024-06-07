@@ -21,15 +21,3 @@ app.get('/jwtDecode', (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
-
-function aJWT() {
-    return "A JWT provided by user"
-}
-
-(function () {
-    const UserToken = aJwt()
-
-    // jwt-decode
-    // no signature verification
-    jwt_decode(UserToken) // NOT OK
-})();

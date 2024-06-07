@@ -14,24 +14,27 @@ import javascript
 import DataFlow::PathGraph
 import JWT
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "jsonwebtoken without any signature verification" }
+class ConfigurationUnverifiedDecode extends TaintTracking::Configuration {
+  ConfigurationUnverifiedDecode() { this = "jsonwebtoken without any signature verification" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = unverifiedDecode()
-    or
-    sink = verifiedDecode()
-  }
+  override predicate isSink(DataFlow::Node sink) { sink = unverifiedDecode() }
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+class ConfigurationVerifiedDecode extends TaintTracking::Configuration {
+  ConfigurationVerifiedDecode() { this = "jsonwebtoken with signature verification" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink = verifiedDecode() }
+}
+
+from ConfigurationUnverifiedDecode cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where
   cfg.hasFlowPath(source, sink) and
-  sink.getNode() = unverifiedDecode() and
-  not exists(Configuration cfg2 |
-    cfg2.hasFlowPath(source, any(DataFlow::SinkPathNode n | n.getNode() = verifiedDecode()))
+  not exists(ConfigurationVerifiedDecode cfg2 |
+    cfg2.hasFlowPath(any(DataFlow::PathNode p | p.getNode() = source.getNode()), _)
   )
 select source.getNode(), source, sink, "Decoding JWT $@.", sink.getNode(),
   "without signature verification"

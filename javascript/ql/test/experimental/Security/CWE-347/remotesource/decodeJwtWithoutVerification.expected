@@ -17,6 +17,9 @@ nodes
 | JsonWebToken.js:31:28:31:36 | UserToken |
 | JsonWebToken.js:31:28:31:36 | UserToken |
 | JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization |
 | JsonWebToken.js:38:28:38:36 | UserToken |
@@ -24,6 +27,9 @@ nodes
 | JsonWebToken.js:39:28:39:36 | UserToken |
 | JsonWebToken.js:39:28:39:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken |
+| JsonWebToken.js:43:11:43:47 | UserToken |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization |
 | JsonWebToken.js:46:28:46:36 | UserToken |
@@ -41,6 +47,9 @@ nodes
 | jose.js:23:26:23:34 | UserToken |
 | jose.js:23:26:23:34 | UserToken |
 | jose.js:27:11:27:47 | UserToken |
+| jose.js:27:11:27:47 | UserToken |
+| jose.js:27:23:27:47 | req.hea ... ization |
+| jose.js:27:23:27:47 | req.hea ... ization |
 | jose.js:27:23:27:47 | req.hea ... ization |
 | jose.js:27:23:27:47 | req.hea ... ization |
 | jose.js:29:20:29:28 | UserToken |
@@ -65,6 +74,9 @@ nodes
 | jwtSimple.js:24:23:24:31 | UserToken |
 | jwtSimple.js:24:23:24:31 | UserToken |
 | jwtSimple.js:28:11:28:47 | UserToken |
+| jwtSimple.js:28:11:28:47 | UserToken |
+| jwtSimple.js:28:23:28:47 | req.hea ... ization |
+| jwtSimple.js:28:23:28:47 | req.hea ... ization |
 | jwtSimple.js:28:23:28:47 | req.hea ... ization |
 | jwtSimple.js:28:23:28:47 | req.hea ... ization |
 | jwtSimple.js:31:23:31:31 | UserToken |
@@ -92,10 +104,14 @@ edges
 | JsonWebToken.js:35:11:35:47 | UserToken | JsonWebToken.js:39:28:39:36 | UserToken |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
 | JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
+| JsonWebToken.js:35:23:35:47 | req.hea ... ization | JsonWebToken.js:35:11:35:47 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:46:28:46:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:46:28:46:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:47:28:47:36 | UserToken |
 | JsonWebToken.js:43:11:43:47 | UserToken | JsonWebToken.js:47:28:47:36 | UserToken |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
+| JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
 | JsonWebToken.js:43:23:43:47 | req.hea ... ization | JsonWebToken.js:43:11:43:47 | UserToken |
 | jose.js:14:11:14:47 | UserToken | jose.js:16:20:16:28 | UserToken |
@@ -110,6 +126,8 @@ edges
 | jose.js:27:11:27:47 | UserToken | jose.js:29:20:29:28 | UserToken |
 | jose.js:27:11:27:47 | UserToken | jose.js:30:26:30:34 | UserToken |
 | jose.js:27:11:27:47 | UserToken | jose.js:30:26:30:34 | UserToken |
+| jose.js:27:23:27:47 | req.hea ... ization | jose.js:27:11:27:47 | UserToken |
+| jose.js:27:23:27:47 | req.hea ... ization | jose.js:27:11:27:47 | UserToken |
 | jose.js:27:23:27:47 | req.hea ... ization | jose.js:27:11:27:47 | UserToken |
 | jose.js:27:23:27:47 | req.hea ... ization | jose.js:27:11:27:47 | UserToken |
 | jwtDecode.js:14:11:14:47 | UserToken | jwtDecode.js:18:16:18:24 | UserToken |
@@ -130,6 +148,8 @@ edges
 | jwtSimple.js:28:11:28:47 | UserToken | jwtSimple.js:31:23:31:31 | UserToken |
 | jwtSimple.js:28:11:28:47 | UserToken | jwtSimple.js:32:23:32:31 | UserToken |
 | jwtSimple.js:28:11:28:47 | UserToken | jwtSimple.js:32:23:32:31 | UserToken |
+| jwtSimple.js:28:23:28:47 | req.hea ... ization | jwtSimple.js:28:11:28:47 | UserToken |
+| jwtSimple.js:28:23:28:47 | req.hea ... ization | jwtSimple.js:28:11:28:47 | UserToken |
 | jwtSimple.js:28:23:28:47 | req.hea ... ization | jwtSimple.js:28:11:28:47 | UserToken |
 | jwtSimple.js:28:23:28:47 | req.hea ... ization | jwtSimple.js:28:11:28:47 | UserToken |
 #select
