@@ -37,8 +37,6 @@ public class SpringIoPathInjection {
     new FileSystemResource(
         FileSystems.getFileSystem(URI.create("file:///")), path); // $ PathInjection
 
-    ResourceUtils.getFile(path); // summaryModel
-    ResourceUtils.getFile(path); // summaryModel
     FileSystemUtils.copyRecursively(filePath, filePath.resolve("/newPath")); // $ PathInjection
     FileSystemUtils.copyRecursively(pathFile, pathFile); // $ PathInjection
     FileSystemUtils.deleteRecursively(pathFile); // $ PathInjection
