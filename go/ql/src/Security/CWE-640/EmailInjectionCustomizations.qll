@@ -17,12 +17,12 @@ module EmailInjection {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowSourceAsSource = RemoteFlowSourceAsSource;
+  deprecated class UntrustedFlowSourceAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for email injection. */
-  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
   /**
    * A data-flow node that becomes part of an email considered as a taint sink for email injection.
