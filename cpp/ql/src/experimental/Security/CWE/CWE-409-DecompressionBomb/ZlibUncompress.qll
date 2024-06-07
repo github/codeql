@@ -17,5 +17,5 @@ class BytefVar extends VariableAccess {
  * The `uncompress`/`uncompress2` function is used in Flow sink
  */
 class UncompressFunction extends Function {
-  UncompressFunction() { hasGlobalName(["uncompress", "uncompress2"]) }
+  UncompressFunction() { this.hasGlobalName(["uncompress", "uncompress2"]) }
 }
