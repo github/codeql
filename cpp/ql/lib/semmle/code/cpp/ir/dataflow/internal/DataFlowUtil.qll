@@ -46,6 +46,7 @@ private newtype TIRDataFlowNode =
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
   TSsaPhiNode(Ssa::PhiNode phi) or
+  TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
   TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
     Ssa::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
   } or
@@ -656,6 +657,30 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 /**
  * INTERNAL: do not use.
  *
+ * Dataflow nodes necessary for iterator flow
+ */
+class SsaIteratorNode extends Node, TSsaIteratorNode {
+  IteratorFlow::IteratorFlowNode node;
+
+  SsaIteratorNode() { this = TSsaIteratorNode(node) }
+
+  /** Gets the phi node associated with this node. */
+  IteratorFlow::IteratorFlowNode getIteratorFlowNode() { result = node }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = node.getFunction() }
+
+  override DataFlowType getType() { result = node.getType() }
+
+  final override Location getLocationImpl() { result = node.getLocation() }
+
+  override string toStringImpl() { result = node.toString() }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
  * A node representing a value after leaving a function.
  */
 class SideEffectOperandNode extends Node instanceof IndirectOperand {
@@ -1190,11 +1215,11 @@ class UninitializedNode extends Node {
   LocalVariable v;
 
   UninitializedNode() {
-    exists(Ssa::Def def |
+    exists(Ssa::Def def, Ssa::SourceVariable sv |
       def.getIndirectionIndex() = 0 and
       def.getValue().asInstruction() instanceof UninitializedInstruction and
-      Ssa::nodeToDefOrUse(this, def, _) and
-      v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
+      Ssa::defToNode(this, def, sv, _, _, _) and
+      v = sv.getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
     )
   }
 
@@ -2150,6 +2175,8 @@ private module Cached {
       or
       // Def-use/Use-use flow
       Ssa::ssaFlow(nodeFrom, nodeTo)
+      or
+      IteratorFlow::localFlowStep(nodeFrom, nodeTo)
       or
       // Operand -> Instruction flow
       simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())

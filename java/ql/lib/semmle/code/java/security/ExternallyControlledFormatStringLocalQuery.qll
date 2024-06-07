@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.StringFormat
 
 /** A taint-tracking configuration to reason about externally-controlled format strings from local sources. */
-module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSig {
+deprecated module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {
@@ -18,7 +18,9 @@ module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSi
 }
 
 /**
+ * DEPRECATED: Use `ExternallyControlledFormatStringFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for externally-controlled format strings from local sources.
  */
-module ExternallyControlledFormatStringLocalFlow =
+deprecated module ExternallyControlledFormatStringLocalFlow =
   TaintTracking::Global<ExternallyControlledFormatStringLocalConfig>;

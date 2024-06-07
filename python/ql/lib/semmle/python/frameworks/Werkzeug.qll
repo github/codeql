@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.Concepts
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides models for the `Werkzeug` PyPI package.
@@ -144,6 +145,18 @@ module Werkzeug {
    * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.
    */
   module Headers {
+    /** Gets a reference to the `werkzeug.datastructures.Headers` class. */
+    API::Node classRef() {
+      result = API::moduleImport("werkzeug").getMember("datastructures").getMember("Headers")
+      or
+      result = ModelOutput::getATypeNode("werkzeug.datastructures.Headers~Subclass").getASubclass*()
+    }
+
+    /** A direct instantiation of `werkzeug.datastructures.Headers`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
     /**
      * A source of instances of `werkzeug.datastructures.Headers`, extend this class to model new instances.
      *
@@ -181,6 +194,61 @@ module Werkzeug {
       }
 
       override string getAsyncMethodName() { none() }
+    }
+
+    /** A call to a method that writes to a header, assumed to be a response header. */
+    private class HeaderWriteCall extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      HeaderWriteCall() {
+        this.calls(instance(), ["add", "add_header", "set", "setdefault", "__setitem__"])
+      }
+
+      override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+      override DataFlow::Node getValueArg() { result = this.getArg(1) }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /** A dict-like write to a header, assumed to be a response header. */
+    private class HeaderWriteSubscript extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::Node
+    {
+      DataFlow::Node name;
+      DataFlow::Node value;
+
+      HeaderWriteSubscript() {
+        exists(SubscriptNode subscript |
+          this.asCfgNode() = subscript and
+          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          name.asCfgNode() = subscript.getIndex() and
+          subscript.getObject() = instance().asCfgNode()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result = name }
+
+      override DataFlow::Node getValueArg() { result = value }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /** A call to `Headers.extend`, assumed to be a response header. */
+    private class HeaderExtendCall extends Http::Server::ResponseHeaderBulkWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      HeaderExtendCall() { this.calls(instance(), "extend") }
+
+      override DataFlow::Node getBulkArg() { result = this.getArg(0) }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
     }
   }
 

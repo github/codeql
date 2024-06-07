@@ -1,3 +1,10 @@
+## 0.11.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `ODASA_JAVA_LAYOUT`, `ODASA_TOOLS` and `ODASA_HOME` legacy environment variables.
+* The Java extractor no longer supports the `ODASA_BUILD_ERROR_DIR` legacy environment variable.
+
 ## 0.10.0
 
 ### Breaking Changes

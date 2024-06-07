@@ -26,6 +26,8 @@
 | test.cpp:128:15:128:16 | v4 |
 | test.cpp:185:10:185:12 | cpy |
 | test.cpp:199:10:199:12 | cpy |
+| test.cpp:208:7:208:7 | a |
+| test.cpp:214:7:214:7 | a |
 | test_free.cpp:11:10:11:10 | a |
 | test_free.cpp:14:10:14:10 | a |
 | test_free.cpp:16:10:16:10 | a |

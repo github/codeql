@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     "json.net"
         ///   }
         /// </summary>
-        private void AddPackageDependencies(JObject json)
+        private void AddPackageDependencies(JObject json, string jsonPath)
         {
             // If there is more than one framework we need to pick just one.
             // To ensure stability we pick one based on the lexicographic order of
@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                logger.LogDebug("No references found in the targets section in the assets file.");
+                logger.LogDebug($"No references found in the targets section in '{jsonPath}'");
                 return;
             }
 
@@ -154,7 +154,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     "microsoft.netcore.app.ref"
         ///   }
         /// </summary>
-        private void AddFrameworkDependencies(JObject json)
+        private void AddFrameworkDependencies(JObject json, string jsonPath)
         {
 
             var frameworks = json
@@ -163,7 +163,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (frameworks is null)
             {
-                logger.LogDebug("No framework section in assets.json.");
+                logger.LogDebug($"No framework section in '{jsonPath}'.");
                 return;
             }
 
@@ -177,7 +177,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                logger.LogDebug("No framework references in assets.json.");
+                logger.LogDebug($"No framework references in '{jsonPath}'.");
                 return;
             }
 
@@ -196,8 +196,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 var obj = JObject.Parse(json);
-                AddPackageDependencies(obj);
-                AddFrameworkDependencies(obj);
+                AddPackageDependencies(obj, json);
+                AddFrameworkDependencies(obj, json);
                 return true;
             }
             catch (Exception e)

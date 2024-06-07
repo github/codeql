@@ -319,6 +319,66 @@ module HttpServerHttpResponseTest implements TestSig {
   }
 }
 
+module HttpResponseHeaderWriteTest implements TestSig {
+  string getARelevantTag() {
+    result =
+      [
+        "headerWriteNameUnsanitized", "headerWriteNameSanitized", "headerWriteValueUnsanitized",
+        "headerWriteValueSanitized", "headerWriteBulk"
+      ]
+  }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(Http::Server::ResponseHeaderWrite write, DataFlow::Node node |
+        location = node.getLocation() and
+        element = node.toString()
+      |
+        node = write.getNameArg() and
+        (
+          if write.nameAllowsNewline()
+          then tag = "headerWriteNameUnsanitized"
+          else tag = "headerWriteNameSanitized"
+        ) and
+        value = prettyNodeForInlineTest(node)
+        or
+        node = write.getValueArg() and
+        (
+          if write.valueAllowsNewline()
+          then tag = "headerWriteValueUnsanitized"
+          else tag = "headerWriteValueSanitized"
+        ) and
+        value = prettyNodeForInlineTest(node)
+      )
+      or
+      exists(Http::Server::ResponseHeaderBulkWrite write, DataFlow::Node node |
+        node = write.getBulkArg() and
+        location = node.getLocation() and
+        element = node.toString() and
+        (
+          tag = "headerWriteBulk" and
+          value = prettyNodeForInlineTest(node)
+          or
+          (
+            if write.nameAllowsNewline()
+            then tag = "headerWriteNameUnsanitized"
+            else tag = "headerWriteNameSanitized"
+          ) and
+          value = ""
+          or
+          (
+            if write.valueAllowsNewline()
+            then tag = "headerWriteValueUnsanitized"
+            else tag = "headerWriteValueSanitized"
+          ) and
+          value = ""
+        )
+      )
+    )
+  }
+}
+
 module HttpServerHttpRedirectResponseTest implements TestSig {
   string getARelevantTag() { result in ["HttpRedirectResponse", "redirectLocation"] }
 
@@ -559,7 +619,8 @@ import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest
   MergeTests5<SqlConstructionTest, SqlExecutionTest, XPathConstructionTest, XPathExecutionTest,
     EscapingTest>,
   MergeTests5<HttpServerRouteSetupTest, HttpServerRequestHandlerTest, HttpServerHttpResponseTest,
-    HttpServerHttpRedirectResponseTest, HttpServerCookieWriteTest>,
+    HttpServerHttpRedirectResponseTest,
+    MergeTests<HttpServerCookieWriteTest, HttpResponseHeaderWriteTest>>,
   MergeTests5<FileSystemAccessTest, FileSystemWriteAccessTest, PathNormalizationTest,
     SafeAccessCheckTest, PublicKeyGenerationTest>,
   MergeTests5<CryptographicOperationTest, HttpClientRequestTest, CsrfProtectionSettingTest,

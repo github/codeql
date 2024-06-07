@@ -1665,3 +1665,311 @@ class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
 
 /** Gets the second-level scope containing the node `n`, if any. */
 DataFlowSecondLevelScope getSecondLevelScope(Node n) { result.getANode() = n }
+
+/**
+ * Module that defines flow through iterators.
+ * For example,
+ * ```cpp
+ * auto it = v.begin();
+ * *it = source();
+ * ...
+ * sink(v[0]);
+ * ```
+ */
+module IteratorFlow {
+  private import codeql.ssa.Ssa as SsaImpl
+  private import semmle.code.cpp.models.interfaces.Iterator as Interface
+  private import semmle.code.cpp.models.implementations.Iterator as Impl
+
+  /**
+   * A variable of some type that can produce an iterator.
+   */
+  class SourceVariable extends Ssa::SourceVariable {
+    SourceVariable() {
+      exists(Interface::GetIteratorFunction gets, Cpp::FunctionInput input, int i |
+        input.isParameterDerefOrQualifierObject(i) and
+        gets.getsIterator(input, _)
+      |
+        this.getType().stripType() = gets.getParameter(i).getType().stripType()
+        or
+        i = -1 and
+        this.getType().stripType() = gets.getDeclaringType()
+      )
+    }
+  }
+
+  private module SsaInput implements SsaImpl::InputSig<Location> {
+    import Ssa::InputSigCommon
+
+    class SourceVariable = IteratorFlow::SourceVariable;
+
+    /** A call to function that dereferences an iterator. */
+    private class IteratorPointerDereferenceCall extends CallInstruction {
+      IteratorPointerDereferenceCall() {
+        this.getStaticCallTarget() instanceof Impl::IteratorPointerDereferenceOperator
+      }
+    }
+
+    /** A call to a function that obtains an iterator. */
+    private class GetsIteratorCall extends CallInstruction {
+      GetsIteratorCall() { this.getStaticCallTarget() instanceof Impl::GetIteratorFunction }
+    }
+
+    /** A call to `operator++` or `operator--` on an iterator. */
+    private class IteratorCrementCall extends CallInstruction {
+      IteratorCrementCall() { this.getStaticCallTarget() instanceof Impl::IteratorCrementOperator }
+    }
+
+    /**
+     * Gets an ultimate definition of `def`.
+     *
+     * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
+     * traverses back through iterator increment and decrement operations.
+     */
+    private Ssa::Def getAnUltimateDefinition(Ssa::Def def) {
+      result = def.getAnUltimateDefinition()
+      or
+      exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
+        crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
+        sv = def.getSourceVariable() and
+        bb.getInstruction(i) = crementCall and
+        Ssa::ssaDefReachesRead(sv, result.asDef(), bb, i)
+      )
+    }
+
+    /**
+     * Holds if `write` is an instruction that writes to address `address`
+     */
+    private predicate isIteratorWrite(Instruction write, Operand address) {
+      exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
+        writeDef.hasIndexInBlock(bb, i, _) and
+        bb.getInstruction(i) = write and
+        address = writeDef.getAddressOperand()
+      )
+    }
+
+    /**
+     * Holds if `writeToDeref` is a write to an iterator that was obtained
+     * by `beginCall`. That is, the following instruction sequence holds:
+     * ```cpp
+     * it = container.begin(); // or a similar iterator-obtaining function call
+     * ...
+     * *it = value;
+     * ```
+     */
+    private predicate isIteratorStoreInstruction(
+      GetsIteratorCall beginCall, Instruction writeToDeref
+    ) {
+      exists(
+        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Def def,
+        IteratorPointerDereferenceCall starCall, Ssa::Def ultimate, Operand address
+      |
+        isIteratorWrite(writeToDeref, address) and
+        operandForFullyConvertedCall(address, starCall) and
+        bbStar.getInstruction(iStar) = starCall and
+        Ssa::ssaDefReachesRead(_, def.asDef(), bbStar, iStar) and
+        ultimate = getAnUltimateDefinition*(def) and
+        beginStore = ultimate.getValue().asInstruction() and
+        operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
+      )
+    }
+
+    /**
+     * Holds if `(bb, i)` contains a write to an iterator that may have been obtained
+     * by calling `begin` (or related functions) on the variable `v`.
+     */
+    predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+      certain = false and
+      exists(GetsIteratorCall beginCall, Instruction writeToDeref, IRBlock bbQual, int iQual |
+        isIteratorStoreInstruction(beginCall, writeToDeref) and
+        bb.getInstruction(i) = writeToDeref and
+        bbQual.getInstruction(iQual) = beginCall and
+        Ssa::variableRead(bbQual, iQual, v, _)
+      )
+    }
+
+    /** Holds if `(bb, i)` reads the container variable `v`. */
+    predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+      Ssa::variableRead(bb, i, v, certain)
+    }
+  }
+
+  private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
+
+  cached
+  private newtype TSsaDef =
+    TDef(IteratorSsa::DefinitionExt def) or
+    TPhi(PhiNode phi)
+
+  abstract private class SsaDef extends TSsaDef {
+    /** Gets a textual representation of this element. */
+    string toString() { none() }
+
+    /** Gets the underlying non-phi definition or use. */
+    IteratorSsa::DefinitionExt asDef() { none() }
+
+    /** Gets the underlying phi node. */
+    PhiNode asPhi() { none() }
+
+    /** Gets the location of this element. */
+    abstract Location getLocation();
+  }
+
+  private class Def extends TDef, SsaDef {
+    IteratorSsa::DefinitionExt def;
+
+    Def() { this = TDef(def) }
+
+    final override IteratorSsa::DefinitionExt asDef() { result = def }
+
+    final override Location getLocation() { result = this.getImpl().getLocation() }
+
+    /** Gets the variable written to by this definition. */
+    final SourceVariable getSourceVariable() { result = def.getSourceVariable() }
+
+    override string toString() { result = def.toString() }
+
+    /**
+     * Holds if this definition (or use) has index `index` in block `block`,
+     * and is a definition (or use) of the variable `sv`.
+     */
+    predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+      def.definesAt(sv, block, index, _)
+    }
+
+    private Ssa::DefImpl getImpl() {
+      exists(IRBlock bb, int i |
+        this.hasIndexInBlock(bb, i, _) and
+        result.hasIndexInBlock(bb, i)
+      )
+    }
+
+    /** Gets the value written by this definition (i.e., the "right-hand side"). */
+    Node0Impl getValue() { result = this.getImpl().getValue() }
+
+    /** Gets the indirection index of this definition. */
+    int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
+  }
+
+  private class Phi extends TPhi, SsaDef {
+    PhiNode phi;
+
+    Phi() { this = TPhi(phi) }
+
+    final override PhiNode asPhi() { result = phi }
+
+    final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
+
+    override string toString() { result = phi.toString() }
+
+    SsaIteratorNode getNode() { result.getIteratorFlowNode() = phi }
+  }
+
+  private class PhiNode extends IteratorSsa::DefinitionExt {
+    PhiNode() {
+      this instanceof IteratorSsa::PhiNode or
+      this instanceof IteratorSsa::PhiReadNode
+    }
+
+    SsaIteratorNode getNode() { result.getIteratorFlowNode() = this }
+  }
+
+  cached
+  private module IteratorSsaCached {
+    cached
+    predicate adjacentDefRead(IRBlock bb1, int i1, SourceVariable sv, IRBlock bb2, int i2) {
+      IteratorSsa::adjacentDefReadExt(_, sv, bb1, i1, bb2, i2)
+      or
+      exists(PhiNode phi |
+        IteratorSsa::lastRefRedefExt(_, sv, bb1, i1, phi) and
+        phi.definesAt(sv, bb2, i2, _)
+      )
+    }
+
+    cached
+    Node getAPriorDefinition(IteratorSsa::DefinitionExt next) {
+      exists(IRBlock bb, int i, SourceVariable sv, IteratorSsa::DefinitionExt def |
+        IteratorSsa::lastRefRedefExt(pragma[only_bind_into](def), pragma[only_bind_into](sv),
+          pragma[only_bind_into](bb), pragma[only_bind_into](i), next) and
+        nodeToDefOrUse(result, sv, bb, i, _)
+      )
+    }
+  }
+
+  /** The set of nodes necessary for iterator flow. */
+  class IteratorFlowNode instanceof PhiNode {
+    /** Gets a textual representation of this node. */
+    string toString() { result = super.toString() }
+
+    /** Gets the type of this node. */
+    DataFlowType getType() {
+      exists(Ssa::SourceVariable sv |
+        super.definesAt(sv, _, _, _) and
+        result = sv.getType()
+      )
+    }
+
+    /** Gets the `Declaration` that contains this block. */
+    Declaration getFunction() { result = super.getBasicBlock().getEnclosingFunction() }
+
+    /** Gets the locatino of this node. */
+    Location getLocation() { result = super.getBasicBlock().getLocation() }
+  }
+
+  private import IteratorSsaCached
+
+  private predicate defToNode(Node node, Def def, boolean uncertain) {
+    (
+      nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
+      or
+      nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
+    ) and
+    uncertain = false
+  }
+
+  private predicate nodeToDefOrUse(
+    Node node, SourceVariable sv, IRBlock bb, int i, boolean uncertain
+  ) {
+    exists(Def def |
+      def.hasIndexInBlock(bb, i, sv) and
+      defToNode(node, def, uncertain)
+    )
+    or
+    useToNode(bb, i, sv, node) and
+    uncertain = false
+  }
+
+  private predicate useToNode(IRBlock bb, int i, SourceVariable sv, Node nodeTo) {
+    exists(PhiNode phi |
+      phi.definesAt(sv, bb, i, _) and
+      nodeTo = phi.getNode()
+    )
+    or
+    exists(Ssa::UseImpl use |
+      use.hasIndexInBlock(bb, i, sv) and
+      nodeTo = use.getNode()
+    )
+  }
+
+  /**
+   * Holds if `nodeFrom` flows to `nodeTo` in a single step.
+   */
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(
+      Node nFrom, SourceVariable sv, IRBlock bb1, int i1, IRBlock bb2, int i2, boolean uncertain
+    |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      nodeToDefOrUse(nFrom, sv, bb1, i1, uncertain) and
+      useToNode(bb2, i2, sv, nodeTo)
+    |
+      if uncertain = true
+      then
+        nodeFrom =
+          [
+            nFrom,
+            getAPriorDefinition(any(IteratorSsa::DefinitionExt next | next.definesAt(sv, bb1, i1, _)))
+          ]
+      else nFrom = nodeFrom
+    )
+  }
+}

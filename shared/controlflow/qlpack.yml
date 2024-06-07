@@ -1,5 +1,5 @@
 name: codeql/controlflow
-version: 0.1.15
+version: 0.1.17-dev
 groups: shared
 library: true
 dependencies:

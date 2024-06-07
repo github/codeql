@@ -23,6 +23,7 @@ import (
 	"github.com/github/codeql-go/extractor/dbscheme"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
+	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/trap"
 	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/tools/go/packages"
@@ -115,14 +116,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	log.Println("Done extracting universe scope.")
 
 	// a map of package path to source directory and module root directory
-	pkgInfos := make(map[string]util.PkgInfo)
+	pkgInfos := make(map[string]toolchain.PkgInfo)
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
 	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "false" {
 		log.Printf("Running go list to resolve package and module directories.")
 		// get all packages information
-		pkgInfos, err = util.GetPkgsInfo(patterns, true, modFlags...)
+		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, modFlags...)
 		if err != nil {
 			log.Fatalf("Error getting dependency package or module directories: %v.", err)
 		}
@@ -136,7 +137,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
-			pkgInfos[pkg.PkgPath] = util.GetPkgInfo(pkg.PkgPath, modFlags...)
+			pkgInfos[pkg.PkgPath] = toolchain.GetPkgInfo(pkg.PkgPath, modFlags...)
 		}
 
 		log.Printf("Extracting types for package %s.", pkg.PkgPath)
