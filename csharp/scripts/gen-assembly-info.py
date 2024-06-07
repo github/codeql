@@ -21,7 +21,14 @@ output_file = pathlib.Path(opts.output)
 output_file_contents = f"""
 using System.Reflection;
 
-[assembly: XX("{opts.name}")]
-[assembly: YY("ZZ")]
+[assembly: AssemblyTitle("{opts.name}")]
+[assembly: AssemblyProduct("CodeQL")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyCompany("GitHub")]
+[assembly: AssemblyCopyright("Copyright © 2024 GitHub")]
+
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName = ".NET 8.0")]
+
 """
 output_file.write_text(output_file_contents)
