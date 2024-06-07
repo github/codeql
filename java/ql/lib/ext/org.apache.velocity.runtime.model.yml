@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.velocity.runtime", "RuntimeServices", True, "evaluate", "", "", "Argument[3]", "ssti", "manual"]
-      - ["org.apache.velocity.runtime", "RuntimeServices", True, "parse", "", "", "Argument[0]", "ssti", "manual"]
-      - ["org.apache.velocity.runtime", "RuntimeSingleton", True, "parse", "", "", "Argument[0]", "ssti", "manual"]
+      - ["org.apache.velocity.runtime", "RuntimeServices", True, "evaluate", "", "", "Argument[3]", "template-injection", "manual"]
+      - ["org.apache.velocity.runtime", "RuntimeServices", True, "parse", "", "", "Argument[0]", "template-injection", "manual"]
+      - ["org.apache.velocity.runtime", "RuntimeSingleton", True, "parse", "", "", "Argument[0]", "template-injection", "manual"]

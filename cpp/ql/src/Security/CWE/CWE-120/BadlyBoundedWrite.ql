@@ -24,7 +24,7 @@ import semmle.code.cpp.security.BufferWrite
 from BufferWrite bw, int destSize
 where
   bw.hasExplicitLimit() and // has an explicit size limit
-  destSize = getBufferSize(bw.getDest(), _) and
+  destSize = max(getBufferSize(bw.getDest(), _)) and
   bw.getExplicitLimit() > destSize // but it's larger than the destination
 select bw,
   "This '" + bw.getBWDesc() + "' operation is limited to " + bw.getExplicitLimit() +

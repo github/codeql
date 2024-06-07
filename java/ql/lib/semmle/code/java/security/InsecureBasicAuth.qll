@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.HttpsUrls
+private import semmle.code.java.dataflow.FlowSinks
 
 /**
  * A source that represents HTTP URLs.
@@ -20,12 +21,12 @@ private class DefaultInsecureBasicAuthSource extends InsecureBasicAuthSource {
  * A sink that represents a method that sets Basic Authentication.
  * Extend this class to add your own Insecure Basic Authentication sinks.
  */
-abstract class InsecureBasicAuthSink extends DataFlow::Node { }
+abstract class InsecureBasicAuthSink extends ApiSinkNode { }
 
 /** A default sink representing methods that set an Authorization header. */
 private class DefaultInsecureBasicAuthSink extends InsecureBasicAuthSink {
   DefaultInsecureBasicAuthSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("addHeader") or
       ma.getMethod().hasName("setHeader") or
       ma.getMethod().hasName("setRequestProperty")

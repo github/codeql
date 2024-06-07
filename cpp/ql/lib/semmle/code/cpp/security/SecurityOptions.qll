@@ -23,7 +23,7 @@ class CustomSecurityOptions extends SecurityOptions {
     none() // rules to match custom functions replace this line
   }
 
-  override predicate userInputArgument(FunctionCall functionCall, int arg) {
+  deprecated override predicate userInputArgument(FunctionCall functionCall, int arg) {
     SecurityOptions.super.userInputArgument(functionCall, arg)
     or
     exists(string fname |
@@ -36,7 +36,7 @@ class CustomSecurityOptions extends SecurityOptions {
     )
   }
 
-  override predicate userInputReturned(FunctionCall functionCall) {
+  deprecated override predicate userInputReturned(FunctionCall functionCall) {
     SecurityOptions.super.userInputReturned(functionCall)
     or
     exists(string fname |

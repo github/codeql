@@ -18,12 +18,10 @@ module CleartextTransmissionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof CleartextTransmissionSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof CleartextTransmissionSanitizer
-  }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof CleartextTransmissionBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(CleartextTransmissionAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(CleartextTransmissionAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
   predicate isBarrierIn(DataFlow::Node node) {

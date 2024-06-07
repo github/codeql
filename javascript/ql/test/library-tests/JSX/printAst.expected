@@ -3,10 +3,14 @@ nodes
 | file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
 | file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
 | file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
 | file://:0:0:0:0 | (Body) | semmle.label | (Body) |
 | file://:0:0:0:0 | (Body) | semmle.label | (Body) |
 | file://:0:0:0:0 | (Body) | semmle.label | (Body) |
 | file://:0:0:0:0 | (Body) | semmle.label | (Body) |
+| file://:0:0:0:0 | (Body) | semmle.label | (Body) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | tst.js:1:1:1:32 | [DeclStmt] var href = ... | semmle.label | [DeclStmt] var href = ... |
 | tst.js:1:1:1:32 | [DeclStmt] var href = ... | semmle.order | 1 |
 | tst.js:1:5:1:8 | [VarDecl] href | semmle.label | [VarDecl] href |
@@ -119,6 +123,42 @@ nodes
 | tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | semmle.label | [JsxElement] <Foo/> |
 | tstest.tsx:7:34:7:36 | [VarRef] Foo | semmle.label | [VarRef] Foo |
 | tstest.tsx:7:40:7:49 | [Literal] more text  | semmle.label | [Literal] more text  |
+| tstest.tsx:10:1:10:30 | [DeclStmt] const x = ... | semmle.label | [DeclStmt] const x = ... |
+| tstest.tsx:10:1:10:30 | [DeclStmt] const x = ... | semmle.order | 15 |
+| tstest.tsx:10:7:10:7 | [VarDecl] x | semmle.label | [VarDecl] x |
+| tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | semmle.label | [VariableDeclarator] x = <Ba ... llo" /> |
+| tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | semmle.label | [JsxElement] <Bar a:b="hello" /> |
+| tstest.tsx:10:12:10:14 | [VarRef] Bar | semmle.label | [VarRef] Bar |
+| tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | semmle.label | [JsxAttribute] a:b="hello" |
+| tstest.tsx:10:18:10:18 | [Label] b | semmle.label | [Label] b |
+| tstest.tsx:10:20:10:26 | [Literal] "hello" | semmle.label | [Literal] "hello" |
+| tstest.tsx:11:1:11:32 | [DeclStmt] const y = ... | semmle.label | [DeclStmt] const y = ... |
+| tstest.tsx:11:1:11:32 | [DeclStmt] const y = ... | semmle.order | 16 |
+| tstest.tsx:11:7:11:7 | [VarDecl] y | semmle.label | [VarDecl] y |
+| tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | semmle.label | [VariableDeclarator] y = <Ba ... llo" /> |
+| tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | semmle.label | [JsxElement] <Bar a ... llo" /> |
+| tstest.tsx:11:12:11:14 | [VarRef] Bar | semmle.label | [VarRef] Bar |
+| tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | semmle.label | [JsxAttribute] a : b="hello" |
+| tstest.tsx:11:20:11:20 | [Label] b | semmle.label | [Label] b |
+| tstest.tsx:11:22:11:28 | [Literal] "hello" | semmle.label | [Literal] "hello" |
+| tstest.tsx:13:1:15:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } |
+| tstest.tsx:13:1:15:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } | semmle.order | 17 |
+| tstest.tsx:13:11:13:18 | [Identifier] BarProps | semmle.label | [Identifier] BarProps |
+| tstest.tsx:14:5:14:9 | [Literal] "a:b" | semmle.label | [Literal] "a:b" |
+| tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | semmle.label | [FieldDeclaration] "a:b": string; |
+| tstest.tsx:14:12:14:17 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | semmle.label | [FunctionDeclStmt] functio ... div>; } |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | semmle.order | 18 |
+| tstest.tsx:17:10:17:12 | [VarDecl] Bar | semmle.label | [VarDecl] Bar |
+| tstest.tsx:17:14:17:18 | [SimpleParameter] props | semmle.label | [SimpleParameter] props |
+| tstest.tsx:17:21:17:28 | [LocalTypeAccess] BarProps | semmle.label | [LocalTypeAccess] BarProps |
+| tstest.tsx:17:31:19:1 | [BlockStmt] { r ... div>; } | semmle.label | [BlockStmt] { r ... div>; } |
+| tstest.tsx:18:5:18:37 | [ReturnStmt] return ... </div>; | semmle.label | [ReturnStmt] return ... </div>; |
+| tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | semmle.label | [JsxElement] <div>{p ... }</div> |
+| tstest.tsx:18:13:18:15 | [Label] div | semmle.label | [Label] div |
+| tstest.tsx:18:18:18:22 | [VarRef] props | semmle.label | [VarRef] props |
+| tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | semmle.label | [IndexExpr] props["a:b"] |
+| tstest.tsx:18:24:18:28 | [Literal] "a:b" | semmle.label | [Literal] "a:b" |
 edges
 | file://:0:0:0:0 | (Attributes) | tst.js:3:4:3:14 | [JsxAttribute] href={href} | semmle.label | 0 |
 | file://:0:0:0:0 | (Attributes) | tst.js:3:4:3:14 | [JsxAttribute] href={href} | semmle.order | 0 |
@@ -136,6 +176,10 @@ edges
 | file://:0:0:0:0 | (Attributes) | tstest.tsx:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.order | 2 |
 | file://:0:0:0:0 | (Attributes) | tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.label | 0 |
 | file://:0:0:0:0 | (Attributes) | tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | semmle.order | 0 |
 | file://:0:0:0:0 | (Body) | tst.js:3:47:3:54 | [Literal] Link to  | semmle.label | 0 |
 | file://:0:0:0:0 | (Body) | tst.js:3:47:3:54 | [Literal] Link to  | semmle.order | 0 |
 | file://:0:0:0:0 | (Body) | tst.js:3:56:3:59 | [VarRef] href | semmle.label | 1 |
@@ -164,6 +208,10 @@ edges
 | file://:0:0:0:0 | (Body) | tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | semmle.order | 1 |
 | file://:0:0:0:0 | (Body) | tstest.tsx:7:40:7:49 | [Literal] more text  | semmle.label | 2 |
 | file://:0:0:0:0 | (Body) | tstest.tsx:7:40:7:49 | [Literal] more text  | semmle.order | 2 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | semmle.label | 0 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tstest.tsx:17:14:17:18 | [SimpleParameter] props | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tstest.tsx:17:14:17:18 | [SimpleParameter] props | semmle.order | 0 |
 | tst.js:1:1:1:32 | [DeclStmt] var href = ... | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | 1 |
 | tst.js:1:1:1:32 | [DeclStmt] var href = ... | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.order | 1 |
 | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:5:1:8 | [VarDecl] href | semmle.label | 1 |
@@ -304,5 +352,61 @@ edges
 | tstest.tsx:7:16:7:52 | [JsxFragment] <> frag ... ext </> | file://:0:0:0:0 | (Body) | semmle.order | 1 |
 | tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | tstest.tsx:7:34:7:36 | [VarRef] Foo | semmle.label | 0 |
 | tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | tstest.tsx:7:34:7:36 | [VarRef] Foo | semmle.order | 0 |
+| tstest.tsx:10:1:10:30 | [DeclStmt] const x = ... | tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | semmle.label | 1 |
+| tstest.tsx:10:1:10:30 | [DeclStmt] const x = ... | tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | semmle.order | 1 |
+| tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | tstest.tsx:10:7:10:7 | [VarDecl] x | semmle.label | 1 |
+| tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | tstest.tsx:10:7:10:7 | [VarDecl] x | semmle.order | 1 |
+| tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | semmle.label | 2 |
+| tstest.tsx:10:7:10:29 | [VariableDeclarator] x = <Ba ... llo" /> | tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | semmle.order | 2 |
+| tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | file://:0:0:0:0 | (Attributes) | semmle.label | 2 |
+| tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | file://:0:0:0:0 | (Attributes) | semmle.order | 2 |
+| tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | tstest.tsx:10:12:10:14 | [VarRef] Bar | semmle.label | 0 |
+| tstest.tsx:10:11:10:29 | [JsxElement] <Bar a:b="hello" /> | tstest.tsx:10:12:10:14 | [VarRef] Bar | semmle.order | 0 |
+| tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | tstest.tsx:10:18:10:18 | [Label] b | semmle.label | 1 |
+| tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | tstest.tsx:10:18:10:18 | [Label] b | semmle.order | 1 |
+| tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | tstest.tsx:10:20:10:26 | [Literal] "hello" | semmle.label | 2 |
+| tstest.tsx:10:16:10:26 | [JsxAttribute] a:b="hello" | tstest.tsx:10:20:10:26 | [Literal] "hello" | semmle.order | 2 |
+| tstest.tsx:11:1:11:32 | [DeclStmt] const y = ... | tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | semmle.label | 1 |
+| tstest.tsx:11:1:11:32 | [DeclStmt] const y = ... | tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | semmle.order | 1 |
+| tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | tstest.tsx:11:7:11:7 | [VarDecl] y | semmle.label | 1 |
+| tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | tstest.tsx:11:7:11:7 | [VarDecl] y | semmle.order | 1 |
+| tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | semmle.label | 2 |
+| tstest.tsx:11:7:11:31 | [VariableDeclarator] y = <Ba ... llo" /> | tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | semmle.order | 2 |
+| tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | file://:0:0:0:0 | (Attributes) | semmle.label | 2 |
+| tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | file://:0:0:0:0 | (Attributes) | semmle.order | 2 |
+| tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | tstest.tsx:11:12:11:14 | [VarRef] Bar | semmle.label | 0 |
+| tstest.tsx:11:11:11:31 | [JsxElement] <Bar a ... llo" /> | tstest.tsx:11:12:11:14 | [VarRef] Bar | semmle.order | 0 |
+| tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | tstest.tsx:11:20:11:20 | [Label] b | semmle.label | 1 |
+| tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | tstest.tsx:11:20:11:20 | [Label] b | semmle.order | 1 |
+| tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | tstest.tsx:11:22:11:28 | [Literal] "hello" | semmle.label | 2 |
+| tstest.tsx:11:16:11:28 | [JsxAttribute] a : b="hello" | tstest.tsx:11:22:11:28 | [Literal] "hello" | semmle.order | 2 |
+| tstest.tsx:13:1:15:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } | tstest.tsx:13:11:13:18 | [Identifier] BarProps | semmle.label | 1 |
+| tstest.tsx:13:1:15:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } | tstest.tsx:13:11:13:18 | [Identifier] BarProps | semmle.order | 1 |
+| tstest.tsx:13:1:15:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } | tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | semmle.label | 2 |
+| tstest.tsx:13:1:15:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ring; } | tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | semmle.order | 2 |
+| tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | tstest.tsx:14:5:14:9 | [Literal] "a:b" | semmle.label | 1 |
+| tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | tstest.tsx:14:5:14:9 | [Literal] "a:b" | semmle.order | 1 |
+| tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | tstest.tsx:14:12:14:17 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tstest.tsx:14:5:14:18 | [FieldDeclaration] "a:b": string; | tstest.tsx:14:12:14:17 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | tstest.tsx:17:10:17:12 | [VarDecl] Bar | semmle.label | 0 |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | tstest.tsx:17:10:17:12 | [VarDecl] Bar | semmle.order | 0 |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | tstest.tsx:17:31:19:1 | [BlockStmt] { r ... div>; } | semmle.label | 5 |
+| tstest.tsx:17:1:19:1 | [FunctionDeclStmt] functio ... div>; } | tstest.tsx:17:31:19:1 | [BlockStmt] { r ... div>; } | semmle.order | 5 |
+| tstest.tsx:17:14:17:18 | [SimpleParameter] props | tstest.tsx:17:21:17:28 | [LocalTypeAccess] BarProps | semmle.label | -2 |
+| tstest.tsx:17:14:17:18 | [SimpleParameter] props | tstest.tsx:17:21:17:28 | [LocalTypeAccess] BarProps | semmle.order | -2 |
+| tstest.tsx:17:31:19:1 | [BlockStmt] { r ... div>; } | tstest.tsx:18:5:18:37 | [ReturnStmt] return ... </div>; | semmle.label | 1 |
+| tstest.tsx:17:31:19:1 | [BlockStmt] { r ... div>; } | tstest.tsx:18:5:18:37 | [ReturnStmt] return ... </div>; | semmle.order | 1 |
+| tstest.tsx:18:5:18:37 | [ReturnStmt] return ... </div>; | tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | semmle.label | 1 |
+| tstest.tsx:18:5:18:37 | [ReturnStmt] return ... </div>; | tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | semmle.order | 1 |
+| tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | file://:0:0:0:0 | (Body) | semmle.label | 1 |
+| tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | file://:0:0:0:0 | (Body) | semmle.order | 1 |
+| tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | tstest.tsx:18:13:18:15 | [Label] div | semmle.label | 0 |
+| tstest.tsx:18:12:18:36 | [JsxElement] <div>{p ... }</div> | tstest.tsx:18:13:18:15 | [Label] div | semmle.order | 0 |
+| tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | tstest.tsx:18:18:18:22 | [VarRef] props | semmle.label | 1 |
+| tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | tstest.tsx:18:18:18:22 | [VarRef] props | semmle.order | 1 |
+| tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | tstest.tsx:18:24:18:28 | [Literal] "a:b" | semmle.label | 2 |
+| tstest.tsx:18:18:18:29 | [IndexExpr] props["a:b"] | tstest.tsx:18:24:18:28 | [Literal] "a:b" | semmle.order | 2 |
 graphProperties
 | semmle.graphKind | tree |

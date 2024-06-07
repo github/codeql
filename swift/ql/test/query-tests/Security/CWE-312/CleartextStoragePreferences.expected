@@ -1,52 +1,63 @@
 edges
-| testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x :  | testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x |
-| testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() :  | testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y |
-| testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd :  | testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x |
-| testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd :  | testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y |
-| testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd :  | testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z |
-| testUserDefaults.swift:41:24:41:24 | x :  | testUserDefaults.swift:42:28:42:28 | x |
-| testUserDefaults.swift:44:10:44:22 | call to getPassword() :  | testUserDefaults.swift:45:28:45:28 | y |
-| testUserDefaults.swift:55:10:55:10 | passwd :  | testUserDefaults.swift:59:28:59:28 | x |
-| testUserDefaults.swift:56:10:56:10 | passwd :  | testUserDefaults.swift:60:28:60:28 | y |
-| testUserDefaults.swift:57:10:57:10 | passwd :  | testUserDefaults.swift:61:28:61:28 | z |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
+| testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x | testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | provenance |  |
+| testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() | testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | provenance |  |
+| testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd | testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | provenance |  |
+| testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd | testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y | provenance |  |
+| testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd | testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z | provenance |  |
+| testUserDefaults.swift:41:24:41:24 | x | testUserDefaults.swift:42:28:42:28 | x | provenance |  |
+| testUserDefaults.swift:44:10:44:22 | call to getPassword() | testUserDefaults.swift:45:28:45:28 | y | provenance |  |
+| testUserDefaults.swift:55:10:55:10 | passwd | testUserDefaults.swift:59:28:59:28 | x | provenance |  |
+| testUserDefaults.swift:56:10:56:10 | passwd | testUserDefaults.swift:60:28:60:28 | y | provenance |  |
+| testUserDefaults.swift:57:10:57:10 | passwd | testUserDefaults.swift:61:28:61:28 | z | provenance |  |
+| testUserDefaults.swift:74:7:74:7 | self | file://:0:0:0:0 | self | provenance |  |
+| testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:74:7:74:7 | self | provenance |  |
+| testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:82:28:82:40 | .value | provenance | Config |
 nodes
+| file://:0:0:0:0 | .value | semmle.label | .value |
+| file://:0:0:0:0 | self | semmle.label | self |
 | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | semmle.label | password |
-| testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x :  | semmle.label | x :  |
+| testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x | semmle.label | x |
 | testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | semmle.label | x |
-| testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() :  | semmle.label | call to getPassword() :  |
+| testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() | semmle.label | call to getPassword() |
 | testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | semmle.label | y |
 | testNSUbiquitousKeyValueStore.swift:49:40:49:42 | .password | semmle.label | .password |
-| testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd :  | semmle.label | passwd :  |
-| testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd :  | semmle.label | passwd :  |
-| testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd :  | semmle.label | passwd :  |
+| testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd | semmle.label | passwd |
+| testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd | semmle.label | passwd |
+| testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd | semmle.label | passwd |
 | testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | semmle.label | x |
 | testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y | semmle.label | y |
 | testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z | semmle.label | z |
 | testUserDefaults.swift:28:15:28:15 | password | semmle.label | password |
-| testUserDefaults.swift:41:24:41:24 | x :  | semmle.label | x :  |
+| testUserDefaults.swift:41:24:41:24 | x | semmle.label | x |
 | testUserDefaults.swift:42:28:42:28 | x | semmle.label | x |
-| testUserDefaults.swift:44:10:44:22 | call to getPassword() :  | semmle.label | call to getPassword() :  |
+| testUserDefaults.swift:44:10:44:22 | call to getPassword() | semmle.label | call to getPassword() |
 | testUserDefaults.swift:45:28:45:28 | y | semmle.label | y |
 | testUserDefaults.swift:49:28:49:30 | .password | semmle.label | .password |
-| testUserDefaults.swift:55:10:55:10 | passwd :  | semmle.label | passwd :  |
-| testUserDefaults.swift:56:10:56:10 | passwd :  | semmle.label | passwd :  |
-| testUserDefaults.swift:57:10:57:10 | passwd :  | semmle.label | passwd :  |
+| testUserDefaults.swift:55:10:55:10 | passwd | semmle.label | passwd |
+| testUserDefaults.swift:56:10:56:10 | passwd | semmle.label | passwd |
+| testUserDefaults.swift:57:10:57:10 | passwd | semmle.label | passwd |
 | testUserDefaults.swift:59:28:59:28 | x | semmle.label | x |
 | testUserDefaults.swift:60:28:60:28 | y | semmle.label | y |
 | testUserDefaults.swift:61:28:61:28 | z | semmle.label | z |
+| testUserDefaults.swift:74:7:74:7 | self | semmle.label | self |
+| testUserDefaults.swift:82:28:82:31 | .password | semmle.label | .password |
+| testUserDefaults.swift:82:28:82:40 | .value | semmle.label | .value |
 subpaths
+| testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:74:7:74:7 | self | file://:0:0:0:0 | .value | testUserDefaults.swift:82:28:82:40 | .value |
 #select
 | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | This operation stores 'password' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | password |
-| testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x :  | testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | This operation stores 'x' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x :  | x |
-| testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() :  | testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | This operation stores 'y' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() :  | call to getPassword() |
+| testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x | testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | This operation stores 'x' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x | x |
+| testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() | testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | This operation stores 'y' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() | call to getPassword() |
 | testNSUbiquitousKeyValueStore.swift:49:40:49:42 | .password | testNSUbiquitousKeyValueStore.swift:49:40:49:42 | .password | testNSUbiquitousKeyValueStore.swift:49:40:49:42 | .password | This operation stores '.password' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:49:40:49:42 | .password | .password |
-| testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd :  | testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | This operation stores 'x' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd :  | passwd |
-| testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y | testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd :  | testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y | This operation stores 'y' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd :  | passwd |
-| testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z | testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd :  | testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z | This operation stores 'z' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd :  | passwd |
+| testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd | testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | This operation stores 'x' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd | passwd |
+| testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y | testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd | testNSUbiquitousKeyValueStore.swift:60:40:60:40 | y | This operation stores 'y' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:56:10:56:10 | passwd | passwd |
+| testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z | testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd | testNSUbiquitousKeyValueStore.swift:61:40:61:40 | z | This operation stores 'z' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:57:10:57:10 | passwd | passwd |
 | testUserDefaults.swift:28:15:28:15 | password | testUserDefaults.swift:28:15:28:15 | password | testUserDefaults.swift:28:15:28:15 | password | This operation stores 'password' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:28:15:28:15 | password | password |
-| testUserDefaults.swift:42:28:42:28 | x | testUserDefaults.swift:41:24:41:24 | x :  | testUserDefaults.swift:42:28:42:28 | x | This operation stores 'x' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:41:24:41:24 | x :  | x |
-| testUserDefaults.swift:45:28:45:28 | y | testUserDefaults.swift:44:10:44:22 | call to getPassword() :  | testUserDefaults.swift:45:28:45:28 | y | This operation stores 'y' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:44:10:44:22 | call to getPassword() :  | call to getPassword() |
+| testUserDefaults.swift:42:28:42:28 | x | testUserDefaults.swift:41:24:41:24 | x | testUserDefaults.swift:42:28:42:28 | x | This operation stores 'x' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:41:24:41:24 | x | x |
+| testUserDefaults.swift:45:28:45:28 | y | testUserDefaults.swift:44:10:44:22 | call to getPassword() | testUserDefaults.swift:45:28:45:28 | y | This operation stores 'y' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:44:10:44:22 | call to getPassword() | call to getPassword() |
 | testUserDefaults.swift:49:28:49:30 | .password | testUserDefaults.swift:49:28:49:30 | .password | testUserDefaults.swift:49:28:49:30 | .password | This operation stores '.password' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:49:28:49:30 | .password | .password |
-| testUserDefaults.swift:59:28:59:28 | x | testUserDefaults.swift:55:10:55:10 | passwd :  | testUserDefaults.swift:59:28:59:28 | x | This operation stores 'x' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:55:10:55:10 | passwd :  | passwd |
-| testUserDefaults.swift:60:28:60:28 | y | testUserDefaults.swift:56:10:56:10 | passwd :  | testUserDefaults.swift:60:28:60:28 | y | This operation stores 'y' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:56:10:56:10 | passwd :  | passwd |
-| testUserDefaults.swift:61:28:61:28 | z | testUserDefaults.swift:57:10:57:10 | passwd :  | testUserDefaults.swift:61:28:61:28 | z | This operation stores 'z' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:57:10:57:10 | passwd :  | passwd |
+| testUserDefaults.swift:59:28:59:28 | x | testUserDefaults.swift:55:10:55:10 | passwd | testUserDefaults.swift:59:28:59:28 | x | This operation stores 'x' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:55:10:55:10 | passwd | passwd |
+| testUserDefaults.swift:60:28:60:28 | y | testUserDefaults.swift:56:10:56:10 | passwd | testUserDefaults.swift:60:28:60:28 | y | This operation stores 'y' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:56:10:56:10 | passwd | passwd |
+| testUserDefaults.swift:61:28:61:28 | z | testUserDefaults.swift:57:10:57:10 | passwd | testUserDefaults.swift:61:28:61:28 | z | This operation stores 'z' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:57:10:57:10 | passwd | passwd |
+| testUserDefaults.swift:82:28:82:40 | .value | testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:82:28:82:40 | .value | This operation stores '.value' in the user defaults database. It may contain unencrypted sensitive data from $@. | testUserDefaults.swift:82:28:82:31 | .password | .password |

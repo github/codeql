@@ -145,9 +145,6 @@ module UnsafeHtmlConstruction {
     override string describe() { result = "HTML construction" }
   }
 
-  /** DEPRECATED: Alias for HtmlConcatenationSink */
-  deprecated class HTMLConcatenationSink = HtmlConcatenationSink;
-
   /**
    * A string parsed as XML, which is later used in an XSS sink.
    */
@@ -161,9 +158,6 @@ module UnsafeHtmlConstruction {
 
     override string describe() { result = "XML parsing" }
   }
-
-  /** DEPRECATED: Alias for XmlParsedSink */
-  deprecated class XMLParsedSink = XmlParsedSink;
 
   /**
    * A string rendered as markdown, where the rendering preserves HTML.

@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace Semmle.Extraction
 {
     public abstract class LabelledEntity : Entity

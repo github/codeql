@@ -20,7 +20,7 @@ predicate oversized(LocalVariableDeclStmt s) {
   )
 }
 
-from ForeachStmt fes, LocalVariableDeclStmt s
+from ForeachStmtGenericEnumerable fes, LocalVariableDeclStmt s
 where
   missedSelectOpportunity(fes, s) and
   not oversized(s)

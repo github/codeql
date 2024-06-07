@@ -285,15 +285,25 @@ private string stubQualifier(RefType t) {
     else result = ""
 }
 
+pragma[nomagic]
+private predicate needsPackageNameHelper(RefType t, GeneratedTopLevel top, string name) {
+  t.getSourceDeclaration() =
+    pragma[only_bind_out]([getAReferencedType(top), top].getSourceDeclaration()) and
+  name = t.getName()
+}
+
+pragma[nomagic]
+private predicate describesMultipleTypes(GeneratedTopLevel top, string name) {
+  2 <= strictcount(RefType t | needsPackageNameHelper(t, top, name))
+}
+
 /**
  * Holds if `t` may clash with another type of the same name, so should be referred to using the fully qualified name
  */
 private predicate needsPackageName(RefType t) {
-  exists(GeneratedTopLevel top, RefType other |
-    t.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
-    other.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
-    t.getName() = other.getName() and
-    t != other
+  exists(GeneratedTopLevel top, string name |
+    needsPackageNameHelper(t, top, name) and
+    describesMultipleTypes(top, name)
   )
 }
 

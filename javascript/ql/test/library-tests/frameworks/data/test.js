@@ -232,3 +232,49 @@ function typeVars() {
   testlib.typevar.left.x.getThis().getThis().right.mySink(source()); // NOT OK
   testlib.typevar.left.x.right.getThis().getThis().mySink(source()); // NOT OK
 }
+
+function fuzzy() {
+  testlib.fuzzyCall(source()); // NOT OK
+  testlib.foo.fuzzyCall(source()); // NOT OK
+  testlib.foo().fuzzyCall(source()); // NOT OK
+  new testlib.Blah().foo.bar(async p => {
+    p.fuzzyCall(source()); // NOT OK
+    p.otherCall(source()); // OK
+    p.fuzzyCall().laterMethod(source()); // OK
+    (await p.promise).fuzzyCall(source()); // NOT OK
+  });
+
+  const wrapped = _.partial(testlib.foo, [123]);
+  wrapped().fuzzyCall(source()); // NOT OK [INCONSISTENCY] - API graphs do not currently propagate return values through partial invocation
+  wrapped(p => p.fuzzyCall(source())); // NOT OK
+
+  const wrappedSink = _.partial(testlib.fuzzyCall);
+  wrappedSink(source()); // NOT OK
+
+  _.partial(testlib.fuzzyCall, source()); // NOT OK
+
+  fuzzyCall(source()); // OK - does not come from 'testlib'
+  require('blah').fuzzyCall(source()); // OK - does not come from 'testlib'
+}
+
+class MySubclass extends testlib.BaseClass {
+  foo() {
+    sink(this.baseclassSource()); // NOT OK
+  }
+}
+sink(new MySubclass().baseclassSource()); // NOT OK
+
+class MySubclass2 extends MySubclass {
+  foo2() {
+    sink(this.baseclassSource()); // NOT OK
+  }
+}
+sink(new MySubclass2().baseclassSource()); // NOT OK
+
+sink(testlib.parenthesizedPackageName()); // NOT OK
+
+function dangerConstant() {
+  sink("danger-constant".danger); // NOT OK
+  sink("danger-constant".safe); // OK
+  sink("danger-constant"); // OK
+}

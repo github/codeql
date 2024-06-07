@@ -103,7 +103,11 @@ class Entity extends @object {
    */
   pragma[nomagic]
   predicate hasQualifiedName(string pkg, string name) {
-    pkg = this.getPackage().getPath() and
+    (
+      pkg = this.getPackage().getPath()
+      or
+      not exists(this.getPackage()) and pkg = ""
+    ) and
     name = this.getName()
   }
 
@@ -119,7 +123,14 @@ class Entity extends @object {
    */
   Scope getScope() { objectscopes(this, result) }
 
-  /** Gets the declaring identifier for this entity. */
+  /**
+   * Gets the declaring identifier for this entity, if any.
+   *
+   * Note that type switch statements which declare a new variable in the guard
+   * actually have a new variable (of the right type) implicitly declared at
+   * the beginning of each case clause, and these do not have a syntactic
+   * declaration.
+   */
   Ident getDeclaration() { result.declares(this) }
 
   /** Gets a reference to this entity. */
@@ -130,6 +141,15 @@ class Entity extends @object {
 
   /** Gets a textual representation of this entity. */
   string toString() { result = this.getName() }
+
+  private predicate hasRealLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // take the location of the declaration if there is one
+    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable())
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -142,15 +162,16 @@ class Entity extends @object {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     // take the location of the declaration if there is one
-    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    or
-    // otherwise fall back on dummy location
-    not exists(this.getDeclaration()) and
-    filepath = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
+    if this.hasRealLocationInfo(_, _, _, _, _)
+    then this.hasRealLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    else (
+      // otherwise fall back on dummy location
+      filepath = "" and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
+    )
   }
 }
 
@@ -678,6 +699,8 @@ private predicate builtinFunction(
   or
   name = "cap" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
+  name = "clear" and pure = false and mayPanic = false and mustPanic = false and variadic = false
+  or
   name = "close" and pure = false and mayPanic = true and mustPanic = false and variadic = false
   or
   name = "complex" and pure = true and mayPanic = true and mustPanic = false and variadic = false
@@ -691,6 +714,10 @@ private predicate builtinFunction(
   name = "len" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
   name = "make" and pure = true and mayPanic = true and mustPanic = false and variadic = true
+  or
+  name = "max" and pure = true and mayPanic = false and mustPanic = false and variadic = true
+  or
+  name = "min" and pure = true and mayPanic = false and mustPanic = false and variadic = true
   or
   name = "new" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
@@ -795,6 +822,9 @@ module Builtin {
   /** Gets the built-in function `cap`. */
   BuiltinFunction cap() { result.getName() = "cap" }
 
+  /** Gets the built-in function `clear`. */
+  BuiltinFunction clear() { result.getName() = "clear" }
+
   /** Gets the built-in function `close`. */
   BuiltinFunction close() { result.getName() = "close" }
 
@@ -815,6 +845,12 @@ module Builtin {
 
   /** Gets the built-in function `make`. */
   BuiltinFunction make() { result.getName() = "make" }
+
+  /** Gets the built-in function `max`. */
+  BuiltinFunction max_() { result.getName() = "max" }
+
+  /** Gets the built-in function `min`. */
+  BuiltinFunction min_() { result.getName() = "min" }
 
   /** Gets the built-in function `new`. */
   BuiltinFunction new() { result.getName() = "new" }

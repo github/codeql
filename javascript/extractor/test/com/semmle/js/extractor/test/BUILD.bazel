@@ -1,0 +1,24 @@
+java_test(
+    name = "test",
+    srcs = glob(["**/*.java"]),
+    data = [
+        "//javascript/extractor/lib/typescript",
+        "//javascript/extractor/parser-tests",
+        "//javascript/extractor/tests",
+        "@nodejs//:node_bin",
+    ],
+    env = {
+        "NODE_BIN": "$(rlocationpath @nodejs//:node_bin)",
+        "TS_WRAPPER_ZIP": "$(rlocationpath //javascript/extractor/lib/typescript)",
+    },
+    test_class = "com.semmle.js.extractor.test.AllTests",
+    # To use `replaceExpectedOutput` you need to uncomment the following line
+    # (to be allowed to override the .trap files on disk)
+    # tags = ["no-sandbox"],
+    deps = [
+        "//javascript/extractor",
+        "//javascript/extractor:deps",
+        "@bazel_tools//tools/java/runfiles",
+        "@semmle_code//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
+    ],
+)

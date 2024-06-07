@@ -5,6 +5,7 @@
 private import go
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.util.Unit
+private import DataFlowPrivate as DataFlowPrivate
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -27,7 +28,7 @@ predicate localExprTaint(Expr src, Expr sink) {
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink) or
+  localAdditionalTaintStep(src, sink, _) or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
@@ -46,7 +47,7 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(Type containerType |
     node instanceof DataFlow::ArgumentNode and
     getElementType*(node.getType()) = containerType
@@ -85,17 +86,24 @@ class AdditionalTaintStep extends Unit {
  * Holds if the additional step from `pred` to `succ` should be included in all
  * global taint flow configurations.
  */
-predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  referenceStep(pred, succ) or
-  elementWriteStep(pred, succ) or
-  fieldReadStep(pred, succ) or
-  elementStep(pred, succ) or
-  tupleStep(pred, succ) or
-  stringConcatStep(pred, succ) or
-  sliceStep(pred, succ) or
-  any(FunctionModel fm).taintStep(pred, succ) or
-  any(AdditionalTaintStep a).step(pred, succ) or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false)
+predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
+  (
+    referenceStep(pred, succ) or
+    elementWriteStep(pred, succ) or
+    fieldReadStep(pred, succ) or
+    elementStep(pred, succ) or
+    tupleStep(pred, succ) or
+    stringConcatStep(pred, succ) or
+    sliceStep(pred, succ)
+  ) and
+  model = ""
+  or
+  any(FunctionModel fm).taintStep(pred, succ) and model = "FunctionModel"
+  or
+  any(AdditionalTaintStep a).step(pred, succ) and model = "AdditionalTaintStep"
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
 }
 
 /**
@@ -132,6 +140,10 @@ predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+    succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
 /** Holds if taint flows from `pred` to `succ` via a field read. */
@@ -202,11 +214,11 @@ abstract class FunctionModel extends Function {
 }
 
 /**
- * Holds if the additional step from `src` to `sink` should be included in all
+ * Holds if the additional step from `node1` to `node2` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink)
+predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
+  localAdditionalTaintStep(node1, node2, model)
 }
 
 /**
@@ -219,13 +231,6 @@ abstract class DefaultTaintSanitizer extends DataFlow::Node { }
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }
-
-/**
- * DEPRECATED: Use `DefaultTaintSanitizer` instead.
- *
- * A sanitizer guard in all global taint flow configurations but not in local taint.
- */
-abstract deprecated class DefaultTaintSanitizerGuard extends DataFlow::BarrierGuard { }
 
 private predicate equalityTestGuard(DataFlow::Node g, Expr e, boolean outcome) {
   exists(DataFlow::EqualityTestNode eq, DataFlow::Node nonConstNode |
@@ -404,5 +409,21 @@ private predicate listOfConstantsComparisonSanitizerGuard(DataFlow::Node g, Expr
 class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
   ListOfConstantsComparisonSanitizerGuard() {
     this = DataFlow::BarrierGuard<listOfConstantsComparisonSanitizerGuard/3>::getABarrierNode()
+  }
+}
+
+/**
+ * The `clear` built-in function deletes or zeroes out all elements of a map or slice
+ * and therefore acts as a general sanitizer for taint flow to any uses dominated by it.
+ */
+private class ClearSanitizer extends DefaultTaintSanitizer {
+  ClearSanitizer() {
+    exists(SsaWithFields var, DataFlow::CallNode call, DataFlow::Node arg | this = var.getAUse() |
+      call = Builtin::clear().getACall() and
+      arg = call.getAnArgument() and
+      arg = var.getAUse() and
+      arg != this and
+      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+    )
   }
 }

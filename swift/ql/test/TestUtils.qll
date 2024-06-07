@@ -1,11 +1,22 @@
 private import codeql.swift.elements
 private import codeql.swift.generated.ParentChild
+// Internal classes are not imported by the tests:
+import codeql.swift.elements.expr.InitializerRefCallExpr
+import codeql.swift.elements.expr.DotSyntaxCallExpr
 
 cached
 predicate toBeTested(Element e) {
   e instanceof File
   or
   e instanceof ParameterizedProtocolType
+  or
+  e instanceof PackType
+  or
+  e instanceof PackElementType
+  or
+  e instanceof PackArchetypeType
+  or
+  e instanceof MacroRole
   or
   exists(ModuleDecl m |
     m = e and

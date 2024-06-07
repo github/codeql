@@ -19,10 +19,10 @@ import semmle.code.cpp.controlflow.IRGuards
  */
 class SslGetPeerCertificateCall extends FunctionCall {
   SslGetPeerCertificateCall() {
-    getTarget().getName() = "SSL_get_peer_certificate" // SSL_get_peer_certificate(ssl)
+    this.getTarget().getName() = "SSL_get_peer_certificate" // SSL_get_peer_certificate(ssl)
   }
 
-  Expr getSslArgument() { result = getArgument(0) }
+  Expr getSslArgument() { result = this.getArgument(0) }
 }
 
 /**
@@ -30,10 +30,10 @@ class SslGetPeerCertificateCall extends FunctionCall {
  */
 class SslGetVerifyResultCall extends FunctionCall {
   SslGetVerifyResultCall() {
-    getTarget().getName() = "SSL_get_verify_result" // SSL_get_peer_certificate(ssl)
+    this.getTarget().getName() = "SSL_get_verify_result" // SSL_get_peer_certificate(ssl)
   }
 
-  Expr getSslArgument() { result = getArgument(0) }
+  Expr getSslArgument() { result = this.getArgument(0) }
 }
 
 /**

@@ -1,7 +1,7 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Kinds;
 using System;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.CAST,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(value));
 
             var ret = new Expression(info);

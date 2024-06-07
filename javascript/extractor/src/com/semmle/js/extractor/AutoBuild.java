@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -152,12 +153,13 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
  *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
- *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb").
+ *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb", ".html.dot", ".jsp").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
  *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
+ *   <li>JSON files whose base name is ".xsaccess".
  *   <li>All extension-less files.
  * </ul>
  *
@@ -221,6 +223,7 @@ public class AutoBuild {
   private boolean installDependencies = false;
   private final VirtualSourceRoot virtualSourceRoot;
   private ExtractorState state;
+  private final long maximumFileSizeInMegabytes;
 
   /** The default timeout when installing dependencies, in milliseconds. */
   public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
@@ -235,6 +238,7 @@ public class AutoBuild {
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
     this.virtualSourceRoot = makeVirtualSourceRoot();
+    this.maximumFileSizeInMegabytes = EnvironmentVariables.getMegabyteCountFromPrefixedEnv("MAX_FILE_SIZE", 10);
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
@@ -390,9 +394,10 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, tsconfig.json files, and
-    // codeql-javascript-*.json files
+    // include .eslintrc files, .xsaccess files, package.json files, 
+    // tsconfig.json files, and codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
+    patterns.add("**/.xsaccess");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
@@ -445,8 +450,8 @@ public class AutoBuild {
   }
 
   /**
-   * Returns whether the autobuilder has seen code. 
-   * This is overridden in tests. 
+   * Returns whether the autobuilder has seen code.
+   * This is overridden in tests.
    */
   protected boolean hasSeenCode() {
     return seenCode;
@@ -732,6 +737,7 @@ public class AutoBuild {
          .collect(Collectors.toList());
 
     filesToExtract = filesToExtract.stream()
+        .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
@@ -740,12 +746,12 @@ public class AutoBuild {
       dependencyInstallationResult = this.preparePackagesAndDependencies(filesToExtract);
     }
     Set<Path> extractedFiles = new LinkedHashSet<>();
-    
+
     // Extract HTML files as they may contain TypeScript
     CompletableFuture<?> htmlFuture = extractFiles(
         filesToExtract, extractedFiles, extractors,
         f -> extractors.fileType(f) == FileType.HTML);
-    
+
     htmlFuture.join(); // Wait for HTML extraction to be finished.
 
     // extract TypeScript projects and files
@@ -889,10 +895,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           // For named packages, find the main file.
           String name = packageJson.getName();
           if (name != null) {
-            Path entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
-            if (entryPoint == null) {
-              // Try a TypeScript-recognized JS extension instead
-              entryPoint = guessPackageMainFile(path, packageJson, Arrays.asList(".js", ".jsx"));
+            Path entryPoint = null; 
+            try {
+              entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
+              if (entryPoint == null) {
+                // Try a TypeScript-recognized JS extension instead
+                entryPoint = guessPackageMainFile(path, packageJson, Arrays.asList(".js", ".jsx"));
+              }
+            } catch (InvalidPathException ignore) {
+              // can happen if the `main:` field is invalid. E.g. on Windows a path like `dist/*.js` will crash.
             }
             if (entryPoint != null) {
               System.out.println(relativePath + ": Main file set to " + sourceRoot.relativize(entryPoint));
@@ -1002,6 +1013,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     return config;
   }
 
+  private boolean isFileTooLarge(Path f) {
+    long fileSize = f.toFile().length();
+    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
+      warn("Skipping " + f + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
+      return true;
+    }
+    return false;
+  }
+
   private Set<Path> extractTypeScript(
       Set<Path> files,
       Set<Path> extractedFiles,
@@ -1043,9 +1063,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             // compiler can parse them for us.
             continue;
           }
-          if (!extractedFiles.contains(sourcePath)) {
-            typeScriptFiles.add(sourcePath);
+          if (extractedFiles.contains(sourcePath)) {
+            continue;
           }
+          typeScriptFiles.add(sourcePath);
         }
         typeScriptFiles.sort(PATH_ORDERING);
         extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
@@ -1237,19 +1258,29 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<ParseError> errors = loc == null ? Collections.emptyList() : loc.getParseErrors();
       for (ParseError err : errors) {
         String msg = "A parse error occurred: " + StringUtil.quoteWithBackticks(err.getMessage().trim())
-            + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
-        // file, relative to the source root
-        DiagnosticLocation.Builder builder = DiagnosticLocation.builder();
+            + ".";
+
+        Optional<DiagnosticLocation> diagLoc = Optional.empty();
         if (file.startsWith(LGTM_SRC)) {
-          builder = builder.setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString());
-        }
-        DiagnosticLocation diagLoc = builder
+          diagLoc = DiagnosticLocation.builder()
+            .setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString()) // file, relative to the source root
             .setStartLine(err.getPosition().getLine())
             .setStartColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
             .setEndLine(err.getPosition().getLine())
             .setEndColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
-            .build();
-        writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc);
+            .build()
+            .getOk();
+    }
+    if (diagLoc.isPresent()) {
+      msg += " Check the syntax of the file. If the file is invalid, correct the error or "
+          + "[exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-"
+          + "your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc.get());
+    } else {
+      msg += " The affected file is not located within the code being analyzed."
+          + (Env.systemEnv().isActions() ? " Please see the workflow run logs for more information." : "");
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR);
+    }
       }
       logEndProcess(start, "Done extracting " + file);
     } catch (OutOfMemoryError oom) {

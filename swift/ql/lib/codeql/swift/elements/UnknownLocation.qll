@@ -6,7 +6,7 @@ private import codeql.swift.elements.File
  * A `Location` that is given to something that is not associated with any position in the source code.
  */
 class UnknownLocation extends Generated::UnknownLocation {
-  override File getImmediateFile() { result instanceof UnknownFile }
+  override File getFile() { result instanceof UnknownFile }
 
   override int getStartLine() { result = 0 }
 

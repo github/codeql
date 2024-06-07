@@ -33,10 +33,8 @@ DataFlow::Node shouldNotBeTainted() {
 // this module allows the configuration to be imported in other `.ql` files without the
 // top level query predicates of this file coming into scope.
 module Conf {
-  class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
-    TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module TestTaintTrackingConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asCfgNode().(NameNode).getId() in [
           "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
         ]
@@ -50,7 +48,7 @@ module Conf {
       source instanceof RemoteFlowSource
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       sink = shouldBeTainted()
       or
       sink = shouldNotBeTainted()
@@ -60,49 +58,53 @@ module Conf {
 
 import Conf
 
-class InlineTaintTest extends InlineExpectationsTest {
-  InlineTaintTest() { this = "InlineTaintTest" }
+module MakeInlineTaintTest<DataFlow::ConfigSig Config> {
+  private module Flow = TaintTracking::Global<Config>;
 
-  override string getARelevantTag() { result = "tainted" }
+  private module InlineTaintTest implements TestSig {
+    string getARelevantTag() { result = "tainted" }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(DataFlow::Node sink |
-      any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
-      location = sink.getLocation() and
-      element = prettyExpr(sink.asExpr()) and
-      value = "" and
-      tag = "tainted"
+    predicate hasActualResult(Location location, string element, string tag, string value) {
+      exists(location.getFile().getRelativePath()) and
+      exists(DataFlow::Node sink |
+        Flow::flowTo(sink) and
+        location = sink.getLocation() and
+        element = prettyExpr(sink.asExpr()) and
+        value = "" and
+        tag = "tainted"
+      )
+    }
+  }
+
+  import MakeTest<InlineTaintTest>
+
+  query predicate argumentToEnsureNotTaintedNotMarkedAsSpurious(
+    Location location, string error, string element
+  ) {
+    error = "ERROR, you should add `SPURIOUS:` to this annotation" and
+    location = shouldNotBeTainted().getLocation() and
+    InlineTaintTest::hasActualResult(location, element, "tainted", _) and
+    exists(GoodTestExpectation good, ActualTestResult actualResult |
+      good.matchesActualResult(actualResult) and
+      actualResult.getLocation() = location and
+      actualResult.toString() = element
     )
   }
-}
 
-query predicate argumentToEnsureNotTaintedNotMarkedAsSpurious(
-  Location location, string error, string element
-) {
-  error = "ERROR, you should add `SPURIOUS:` to this annotation" and
-  location = shouldNotBeTainted().getLocation() and
-  any(InlineTaintTest test).hasActualResult(location, element, "tainted", _) and
-  exists(GoodExpectation good, ActualResult actualResult |
-    good.matchesActualResult(actualResult) and
-    actualResult.getLocation() = location and
-    actualResult.toString() = element
-  )
-}
-
-query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(
-  Location location, string error, string element
-) {
-  error = "ERROR, you should add `# $ MISSING: tainted` annotation" and
-  exists(DataFlow::Node sink |
-    sink = shouldBeTainted() and
-    element = prettyExpr(sink.asExpr()) and
-    not any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
-    location = sink.getLocation() and
-    not exists(FalseNegativeExpectation missingResult |
-      missingResult.getTag() = "tainted" and
-      missingResult.getLocation().getFile() = location.getFile() and
-      missingResult.getLocation().getStartLine() = location.getStartLine()
+  query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(
+    Location location, string error, string element
+  ) {
+    error = "ERROR, you should add `# $ MISSING: tainted` annotation" and
+    exists(DataFlow::Node sink |
+      sink = shouldBeTainted() and
+      element = prettyExpr(sink.asExpr()) and
+      not Flow::flowTo(sink) and
+      location = sink.getLocation() and
+      not exists(FalseNegativeTestExpectation missingResult |
+        missingResult.getTag() = "tainted" and
+        missingResult.getLocation().getFile() = location.getFile() and
+        missingResult.getLocation().getStartLine() = location.getStartLine()
+      )
     )
-  )
+  }
 }

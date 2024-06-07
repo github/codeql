@@ -20,6 +20,11 @@ namespace Semmle.Extraction.CSharp
         void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action);
 
         /// <summary>
+        /// Callback that processing of a particular item has been started.
+        /// </summary>
+        void Started(int item, int total, string source);
+
+        /// <summary>
         /// A "using namespace" directive was seen but the given
         /// namespace could not be found.
         /// Only called once for each @namespace.

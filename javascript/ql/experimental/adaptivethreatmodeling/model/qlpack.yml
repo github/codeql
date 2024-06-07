@@ -1,8 +1,0 @@
-name: codeql/javascript-experimental-atm-model
-description: Machine learning model supporting the experimental ML-powered queries
-version: 0.3.1
-groups:
-    - javascript
-    - experimental
-mlModels:
-    - "resources/*.codeqlmodel"

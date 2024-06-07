@@ -1,6 +1,11 @@
 | ..()(..) | RoutineType |  |  |  |  |
 | ..(*)(..) | FunctionPointerType |  | ..()(..) |  |  |
 | _Complex _Float16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex _Float32 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex _Float32x | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex _Float64 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex _Float64x | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex _Float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex __float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex float | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
@@ -14,66 +19,67 @@
 | _Float64 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float64x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float128 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float128x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Imaginary double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
 | _Imaginary float | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
 | _Imaginary long double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
+| __bf16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | __float128 | Float128Type |  |  |  |  |
+| __fp16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | __int128 | Int128Type |  |  |  |  |
 | __va_list_tag | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
-| __va_list_tag & | LValueReferenceType |  | __va_list_tag |  |  |
-| __va_list_tag && | RValueReferenceType |  | __va_list_tag |  |  |
+| __va_list_tag & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | __va_list_tag |  |  |
+| __va_list_tag && | PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | __va_list_tag |  |  |
 | address | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
-| address & | LValueReferenceType |  | address |  |  |
-| address && | RValueReferenceType |  | address |  |  |
+| address & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | address |  |  |
+| address && | PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | address |  |  |
 | auto | AutoType |  |  |  |  |
 | bool | BoolType |  |  |  |  |
 | char | MicrosoftInt8Type, PlainCharType |  |  |  |  |
 | char8_t | Char8Type |  |  |  |  |
 | char16_t | Char16Type |  |  |  |  |
 | char32_t | Char32Type |  |  |  |  |
-| char * | CharPointerType, IteratorByPointer |  | char |  |  |
-| char *[3] | ArrayType | char * | char * |  |  |
-| char *[32] | ArrayType | char * | char * |  |  |
-| char *[] | ArrayType | char * | char * |  |  |
-| char[2] | ArrayType | char | char |  |  |
-| char[3] | ArrayType | char | char |  |  |
-| char[5] | ArrayType | char | char |  |  |
-| char[6] | ArrayType | char | char |  |  |
-| char[8] | ArrayType | char | char |  |  |
-| char[9] | ArrayType | char | char |  |  |
-| char[10] | ArrayType | char | char |  |  |
-| char[53] | ArrayType | char | char |  |  |
-| char[] | ArrayType | char | char |  |  |
+| char * | CharPointerType, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | char |  |  |
+| char *[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
+| char *[32] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
+| char *[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
+| char[2] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[5] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[6] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[8] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[9] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[10] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[53] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
 | const __va_list_tag | SpecifiedType |  | __va_list_tag |  |  |
-| const __va_list_tag & | LValueReferenceType |  | const __va_list_tag |  |  |
+| const __va_list_tag & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | const __va_list_tag |  |  |
 | const address | SpecifiedType |  | address |  |  |
-| const address & | LValueReferenceType |  | const address |  |  |
+| const address & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | const address |  |  |
 | const char | SpecifiedType |  | char |  |  |
-| const char * | IteratorByPointer, PointerType |  | const char |  |  |
-| const char *[3] | ArrayType | const char * | const char * |  |  |
-| const char *[] | ArrayType | const char * | const char * |  |  |
-| const char[5] | ArrayType | const char | const char |  |  |
-| const char[6] | ArrayType | const char | const char |  |  |
-| const char[8] | ArrayType | const char | const char |  |  |
-| const char[9] | ArrayType | const char | const char |  |  |
-| const char[10] | ArrayType | const char | const char |  |  |
-| const char[53] | ArrayType | const char | const char |  |  |
+| const char * | IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, PointerType |  | const char |  |  |
+| const char *[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char * | const char * |  |  |
+| const char *[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char * | const char * |  |  |
+| const char[5] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[6] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[8] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[9] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[10] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[53] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
 | const double | SpecifiedType |  | double |  |  |
 | const int | SpecifiedType |  | int |  |  |
 | decltype(nullptr) | NullPointerType |  |  |  |  |
 | double | DoubleType |  |  |  |  |
 | error | ErroneousType |  |  |  |  |
 | float | FloatType |  |  |  |  |
-| float[3] | ArrayType | float | float |  |  |
+| float[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | float | float |  |  |
 | int | IntType, MicrosoftInt32Type |  |  |  |  |
-| int * | IntPointerType, IteratorByPointer |  | int |  |  |
-| int[4] | ArrayType | int | int |  |  |
-| int[8] | ArrayType | int | int |  |  |
-| int[10] | ArrayType | int | int |  |  |
-| int[10][20] | ArrayType | int[20] | int[20] |  |  |
-| int[20] | ArrayType | int | int |  |  |
-| int[] | ArrayType | int | int |  |  |
+| int * | IntPointerType, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | int |  |  |
+| int[4] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[8] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[10] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[10][20] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int[20] | int[20] |  |  |
+| int[20] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
 | long | LongType |  |  |  |  |
 | long double | LongDoubleType |  |  |  |  |
 | long long | LongLongType, MicrosoftInt64Type |  |  |  |  |
@@ -84,6 +90,7 @@
 | signed long | LongType |  |  |  |  |
 | signed long long | LongLongType |  |  |  |  |
 | signed short | ShortType |  |  |  |  |
+| std::float16_t | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | unknown | UnknownType |  |  |  |  |
 | unsigned __int128 | Int128Type |  |  |  | unsigned integral |
 | unsigned char | UnsignedCharType |  |  |  | unsigned integral |
@@ -92,5 +99,5 @@
 | unsigned long long | LongLongType |  |  |  | unsigned integral |
 | unsigned short | ShortType |  |  |  | unsigned integral |
 | void | VoidType |  |  |  |  |
-| void * | IteratorByPointer, VoidPointerType |  | void |  |  |
+| void * | IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, VoidPointerType |  | void |  |  |
 | wchar_t | Wchar_t, WideCharType |  |  |  |  |

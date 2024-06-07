@@ -1,7 +1,7 @@
 import cpp
 
 class ExprStmt_ extends ExprStmt {
-  override string toString() { result = "ExprStmt: " + getExpr().toString() }
+  override string toString() { result = "ExprStmt: " + this.getExpr().toString() }
 }
 
 from Loop l, string s, Element e

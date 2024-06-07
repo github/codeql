@@ -106,10 +106,10 @@ private predicate isBrowserifyDependencyMap(ObjectExpr deps) {
  * or their name must contain the substring "webpack_require"
  * or "webpack_module_template_argument".
  */
-private predicate isWebpackModule(FunctionExpr m) {
+private predicate isWebpackModule(Function m) {
   forex(Parameter parm | parm = m.getAParameter() |
     exists(string name | name = parm.getName() |
-      name.regexpMatch("module|exports|.*webpack_require.*|.*webpack_module_template_argument.*")
+      name.regexpMatch("module|exports|.*webpack_require.*|.*webpack_module_template_argument.*|.*unused_webpack_module.*")
     )
   )
 }
@@ -162,6 +162,23 @@ predicate isWebpackBundle(ArrayExpr ae) {
 }
 
 /**
+ * Holds if `object` looks like a Webpack bundle of form:
+ * ```javascript
+ * var __webpack_modules__ = ({
+ *   "file1": ((module, __webpack__exports__, __webpack_require__) => ...)
+ *   ...
+ * })
+ * ```
+ */
+predicate isWebpackNamedBundle(ObjectExpr object) {
+  isWebpackModule(object.getAProperty().getInit().getUnderlyingValue()) and
+  exists(VarDef def |
+    def.getSource().(Expr).getUnderlyingValue() = object and
+    def.getTarget().(VarRef).getName() = "__webpack_modules__"
+  )
+}
+
+/**
  * Holds if `tl` is a collection of concatenated files by [atpackager](https://github.com/ariatemplates/atpackager).
  */
 predicate isMultiPartBundle(TopLevel tl) {
@@ -177,7 +194,7 @@ predicate isMultiPartBundle(TopLevel tl) {
  * A comment that starts with '!'. Minifiers avoid removing such comments.
  */
 class ExclamationPointComment extends Comment {
-  ExclamationPointComment() { getLine(0).matches("!%") }
+  ExclamationPointComment() { this.getLine(0).matches("!%") }
 }
 
 /**
@@ -225,7 +242,9 @@ predicate isMultiLicenseBundle(TopLevel tl) {
 /**
  * Holds if this is a bundle with a "bundle" directive.
  */
-predicate isDirectiveBundle(TopLevel tl) { exists(BundleDirective d | d.getTopLevel() = tl) }
+predicate isDirectiveBundle(TopLevel tl) {
+  exists(Directive::BundleDirective d | d.getTopLevel() = tl)
+}
 
 /**
  * Holds if toplevel `tl` contains code that looks like the output of a module bundler.
@@ -233,7 +252,8 @@ predicate isDirectiveBundle(TopLevel tl) { exists(BundleDirective d | d.getTopLe
 predicate isBundle(TopLevel tl) {
   exists(Expr e | e.getTopLevel() = tl |
     isBrowserifyBundle(e) or
-    isWebpackBundle(e)
+    isWebpackBundle(e) or
+    isWebpackNamedBundle(e)
   )
   or
   isMultiPartBundle(tl)

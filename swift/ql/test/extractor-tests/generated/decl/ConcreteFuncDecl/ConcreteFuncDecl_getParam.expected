@@ -1,6 +1,0 @@
-| functions.swift:5:1:7:1 | bar(_:d:) | 0 | functions.swift:5:10:5:15 | x |
-| functions.swift:5:1:7:1 | bar(_:d:) | 1 | functions.swift:5:20:5:25 | y |
-| functions.swift:10:5:10:28 | noBody(x:) | 0 | functions.swift:10:17:10:20 | x |
-| functions.swift:13:1:15:1 | variadic(_:) | 0 | functions.swift:13:15:13:23 | ints |
-| functions.swift:17:1:19:1 | generic(x:y:) | 0 | functions.swift:17:20:17:23 | x |
-| functions.swift:17:1:19:1 | generic(x:y:) | 1 | functions.swift:17:26:17:29 | y |

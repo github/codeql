@@ -26,7 +26,7 @@ Basic query structure
 .. code-block:: ql
 
     /**
-     * 
+     *
      * Query metadata
      *
      */
@@ -39,18 +39,18 @@ Basic query structure
     where /* ... logical formula ... */
     select /* ... expressions ... */
 
-The following sections describe the information that is typically included in a query file for alerts. Path queries are discussed in more detail in ":doc:`Creating path queries <creating-path-queries>`." 
+The following sections describe the information that is typically included in a query file for alerts. Path queries are discussed in more detail in ":doc:`Creating path queries <creating-path-queries>`."
 
 Query metadata
 ==============
 
 Query metadata is used to identify your custom queries when they are added to the GitHub repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see ":doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`." The exact metadata requirement depends on how you are going to run your query:
 
-- If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__. 
+- If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__.
 - If you are analyzing a database using the `CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__, your query metadata must contain ``@kind``.
-- If you are running a query with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see ":ref:`Analyzing your projects <analyzing-your-projects>`" in the CodeQL for VS Code help.
+- If you are running a query with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Running CodeQL queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries>`__ in the GitHub documentation.
 
-.. pull-quote:: 
+.. pull-quote::
 
     Note
 
@@ -66,15 +66,15 @@ Query metadata is used to identify your custom queries when they are added to th
 Import statements
 =================
 
-Each query generally contains one or more ``import`` statements, which define the :ref:`libraries <library-modules>` or :ref:`modules <modules>` to import into the query. Libraries and modules provide a way of grouping together related :ref:`types <types>`, :ref:`predicates <predicates>`, and other modules. The contents of each library or module that you import can then be accessed by the query. 
-Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.   
+Each query generally contains one or more ``import`` statements, which define the :ref:`libraries <library-modules>` or :ref:`modules <modules>` to import into the query. Libraries and modules provide a way of grouping together related :ref:`types <types>`, :ref:`predicates <predicates>`, and other modules. The contents of each library or module that you import can then be accessed by the query.
+Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.
 
 When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying. For more information about importing the standard CodeQL libraries, see the CodeQL library guides:
 
 - :ref:`CodeQL library guide for C and C++ <codeql-library-for-cpp>`
 - :ref:`CodeQL library guide for C# <codeql-library-for-csharp>`
 - :ref:`CodeQL library guide for Go <codeql-library-for-go>`
-- :ref:`CodeQL library guide for Java <codeql-library-for-java>`
+- :ref:`CodeQL library guide for Java and Kotlin <codeql-library-for-java>`
 - :ref:`CodeQL library guide for JavaScript <codeql-library-for-javascript>`
 - :ref:`CodeQL library guide for Python <codeql-library-for-python>`
 - :ref:`CodeQL library guide for Ruby <codeql-library-for-ruby>`
@@ -87,33 +87,33 @@ You can explore the contents of all the standard libraries in the `CodeQL librar
 Optional CodeQL classes and predicates
 --------------------------------------
 
-You can customize your analysis by defining your own predicates and classes in the query. For further information, see :ref:`Defining a predicate <defining-a-predicate>` and :ref:`Defining a class <defining-a-class>`. 
+You can customize your analysis by defining your own predicates and classes in the query. For further information, see :ref:`Defining a predicate <defining-a-predicate>` and :ref:`Defining a class <defining-a-class>`.
 
 From clause
 ===========
 
-The ``from`` clause declares the variables that are used in the query. Each declaration must be of the form ``<type> <variable name>``. 
+The ``from`` clause declares the variables that are used in the query. Each declaration must be of the form ``<type> <variable name>``.
 For more information on the available :ref:`types <types>`, and to learn how to define your own types using :ref:`classes <classes>`, see the :ref:`QL language reference <ql-language-reference>`.
 
 Where clause
 ============
 
-The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses :ref:`aggregations <aggregations>`, :ref:`predicates <predicates>`, and logical :ref:`formulas <formulas>` to limit the variables of interest to a smaller set, which meet the defined conditions. 
+The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses :ref:`aggregations <aggregations>`, :ref:`predicates <predicates>`, and logical :ref:`formulas <formulas>` to limit the variables of interest to a smaller set, which meet the defined conditions.
 The CodeQL libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
 
 Select clause
 =============
 
-The ``select`` clause specifies the results to display for the variables that meet the conditions defined in the ``where`` clause. The valid structure for the select clause is defined by the ``@kind`` property specified in the metadata. 
+The ``select`` clause specifies the results to display for the variables that meet the conditions defined in the ``where`` clause. The valid structure for the select clause is defined by the ``@kind`` property specified in the metadata.
 
 Select clauses for alert queries (``@kind problem``) consist of two 'columns', with the following structure::
 
     select element, string
 
 - ``element``: a code element that is identified by the query, which defines where the alert is displayed.
-- ``string``: a message, which can also include links and placeholders, explaining why the alert was generated. 
+- ``string``: a message, which can also include links and placeholders, explaining why the alert was generated.
 
-You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <defining-the-results-of-a-query>`." 
+You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <defining-the-results-of-a-query>`."
 
 Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
@@ -140,4 +140,4 @@ Query contributions to the open source GitHub repository may also have an accomp
 Query help files
 ****************
 
-When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md>`__ on GitHub, and the ":doc:`Query help files <query-help-files>`." 
+When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md>`__ on GitHub, and the ":doc:`Query help files <query-help-files>`."

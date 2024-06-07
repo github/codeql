@@ -10,22 +10,22 @@ import semmle.code.java.Reflection
  * The Selenium `PageFactory` class used to create page objects
  */
 class SeleniumPageFactory extends Class {
-  SeleniumPageFactory() { hasQualifiedName("org.openqa.selenium.support", "PageFactory") }
+  SeleniumPageFactory() { this.hasQualifiedName("org.openqa.selenium.support", "PageFactory") }
 }
 
 /**
  * A call to the Selenium `PageFactory.initElements` method, to construct a page object.
  */
-class SeleniumInitElementsAccess extends MethodAccess {
+class SeleniumInitElementsAccess extends MethodCall {
   SeleniumInitElementsAccess() {
-    getMethod().getDeclaringType() instanceof SeleniumPageFactory and
-    getMethod().hasName("initElements")
+    this.getMethod().getDeclaringType() instanceof SeleniumPageFactory and
+    this.getMethod().hasName("initElements")
   }
 
   /**
    * Gets the class that is initialized by this call..
    */
-  Class getInitClass() { result = inferClassParameterType(getArgument(1)) }
+  Class getInitClass() { result = inferClassParameterType(this.getArgument(1)) }
 }
 
 /**

@@ -13,7 +13,7 @@ module CompressLzw {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer, order Order, litWidth int) io.WriteCloser
-      hasQualifiedName("compress/lzw", "NewWriter") and
+      this.hasQualifiedName("compress/lzw", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 

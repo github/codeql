@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.thymeleaf", "ITemplateEngine", True, "process", "", "", "Argument[0]", "ssti", "manual"]
-      - ["org.thymeleaf", "ITemplateEngine", True, "processThrottled", "", "", "Argument[0]", "ssti", "manual"]
+      - ["org.thymeleaf", "ITemplateEngine", True, "process", "", "", "Argument[0]", "template-injection", "manual"]
+      - ["org.thymeleaf", "ITemplateEngine", True, "processThrottled", "", "", "Argument[0]", "template-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

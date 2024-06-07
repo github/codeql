@@ -1,4 +1,2 @@
 | A.cs:14:16:14:19 | Item | A.cs:14:31:14:31 | access to parameter i |
 | A.cs:14:16:14:19 | Item | B.cs:12:31:12:40 | throw ... |
-| B.cs:12:16:12:19 | Item | A.cs:14:31:14:31 | access to parameter i |
-| B.cs:12:16:12:19 | Item | B.cs:12:31:12:40 | throw ... |

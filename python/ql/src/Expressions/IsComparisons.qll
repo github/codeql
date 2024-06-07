@@ -49,7 +49,7 @@ predicate simple_constant(ControlFlowNode f) {
 }
 
 private predicate cpython_interned_value(Expr e) {
-  exists(string text | text = e.(StrConst).getText() |
+  exists(string text | text = e.(StringLiteral).getText() |
     text.length() = 0
     or
     text.length() = 1 and text.regexpMatch("[U+0000-U+00ff]")
@@ -70,7 +70,7 @@ private predicate universally_interned_value(Expr e) {
   or
   exists(Tuple t | t = e and not exists(t.getAnElt()))
   or
-  e.(StrConst).getText() = ""
+  e.(StringLiteral).getText() = ""
 }
 
 /** Holds if the expression `e` points to an interned constant in CPython. */

@@ -17,14 +17,14 @@ public class SAXSourceTests {
     SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream()));
     JAXBContext jc = JAXBContext.newInstance(Object.class);
     Unmarshaller um = jc.createUnmarshaller();
-    um.unmarshal(source); // BAD
+    um.unmarshal(source); // $ hasTaintFlow
   }
 
   public void explicitlySafeSource1(Socket sock) throws Exception {
     XMLReader reader = XMLReaderFactory.createXMLReader();
     reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
     reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+    reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream())); // GOOD
   }
 

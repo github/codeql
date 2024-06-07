@@ -4,12 +4,15 @@
 
 import csharp
 private import DataFlow
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
-private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Public
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.csharp.security.dataflow.flowsources.Stored as Stored
 
 /**
  * Definitions relating to the `System.ComponentModel.DataAnnotations`
@@ -20,7 +23,8 @@ module DataAnnotations {
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this.getType()
-          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema", "NotMappedAttribute")
+          .hasFullyQualifiedName("System.ComponentModel.DataAnnotations.Schema",
+            "NotMappedAttribute")
     }
   }
 }
@@ -41,10 +45,12 @@ module EntityFramework {
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
-  class StoredFlowSource extends DataFlow::Node {
+  class StoredFlowSource extends Stored::DatabaseInputSource {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }
+
+    override string getSourceType() { result = "ORM mapped property" }
   }
 
   private class EFClass extends Class {
@@ -66,9 +72,9 @@ module EntityFramework {
     Method getAnUpdateMethod() { result = this.getAMethod("Update") }
   }
 
-  /** The class `Microsoft.EntityFrameworkCore.DbSet<>` or `System.Data.Entity.DbSet<>`. */
+  /** The class ``Microsoft.EntityFrameworkCore.DbSet`1`` or ``System.Data.Entity.DbSet`1``. */
   class DbSet extends EFClass, UnboundGenericClass {
-    DbSet() { this.getName() = "DbSet<>" }
+    DbSet() { this.getName() = "DbSet`1" }
 
     /** Gets a method that adds or updates entities in a DB set. */
     Method getAnAddOrUpdateMethod(boolean range) {
@@ -83,39 +89,30 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable {
+  abstract class EFSummarizedCallable extends SummarizedCallableImpl {
     bindingset[this]
     EFSummarizedCallable() { any() }
+
+    override predicate hasProvenance(Provenance provenance) { provenance = "manual" }
   }
 
-  private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      head = SummaryComponent::element() and
-      tail = SummaryComponentStack::argument([-1, 0])
-    }
-  }
-
-  private class DbSetAddOrUpdate extends EFSummarizedCallable {
-    private boolean range;
-
-    DbSetAddOrUpdate() { this = any(DbSet c).getAnAddOrUpdateMethod(range) }
-
+  // see `SummarizedCallableImpl` qldoc
+  private class EFSummarizedCallableAdapter extends SummarizedCallable instanceof EFSummarizedCallable
+  {
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      string input, string output, boolean preservesValue, string model
     ) {
-      (
-        if range = true
-        then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
-        else input = SummaryComponentStack::argument(0)
-      ) and
-      output = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
-      preservesValue = true
+      none()
+    }
+
+    override predicate hasProvenance(Provenance provenance) {
+      EFSummarizedCallable.super.hasProvenance(provenance)
     }
   }
 
-  /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
+  /** The class ``Microsoft.EntityFrameworkCore.DbQuery`1`` or ``System.Data.Entity.DbQuery`1``. */
   class DbQuery extends EFClass, UnboundGenericClass {
-    DbQuery() { this.hasName("DbQuery<>") }
+    DbQuery() { this.hasName("DbQuery`1") }
   }
 
   /** A generic type or method that takes a mapped type as its type argument. */
@@ -158,7 +155,9 @@ module EntityFramework {
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
-    RawSqlStringStruct() { this.hasQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString") }
+    RawSqlStringStruct() {
+      this.hasFullyQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString")
+    }
 
     /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {
@@ -177,11 +176,13 @@ module EntityFramework {
     }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
-      preservesValue = false
+      preservesValue = false and
+      model = "RawSqlStringConstructorSummarizedCallable"
     }
   }
 
@@ -191,11 +192,13 @@ module EntityFramework {
     }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
-      preservesValue = false
+      preservesValue = false and
+      model = "RawSqlStringConversionSummarizedCallable"
     }
   }
 
@@ -261,7 +264,7 @@ module EntityFramework {
      * }
      * ```
      */
-    private Property getADbSetProperty(Class elementType) {
+    Property getADbSetProperty(Class elementType) {
       exists(ConstructedClass c |
         result.getType() = c and
         c.getUnboundDeclaration() instanceof DbSet and
@@ -376,20 +379,99 @@ module EntityFramework {
 
     /** Holds if component stack `head :: tail` is required for the output specification. */
     predicate requiresComponentStackOut(
-      Content head, Type headType, SummaryComponentStack tail, int dist
+      Content head, Type headType, SummaryComponentStack tail, int dist,
+      DbContextClassSetProperty dbSetProp
     ) {
-      exists(Property dbSetProp, PropertyContent c1 |
+      exists(PropertyContent c1 |
         dbSetProp = this.getADbSetProperty(headType) and
         this.stepRev(c1, _, head, headType, 0) and
         c1.getProperty() = dbSetProp and
-        tail = SummaryComponentStack::jump(dbSetProp.getGetter()) and
+        tail = SummaryComponentStack::return() and
         dist = 0
       )
       or
       exists(Content tailHead, SummaryComponentStack tailTail, Type tailType |
-        this.requiresComponentStackOut(tailHead, tailType, tailTail, dist - 1) and
+        this.requiresComponentStackOut(tailHead, tailType, tailTail, dist - 1, dbSetProp) and
         tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
         this.stepRev(tailHead, tailType, head, headType, dist)
+      )
+    }
+
+    /**
+     * Holds if `input` is a valid summary component stack for property `mapped` for this.
+     */
+    pragma[noinline]
+    predicate input(SummaryComponentStack input, Property mapped) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        this.requiresComponentStackIn(head, _, tail, _) and
+        head.getProperty() = mapped and
+        mapped = this.getAColumnProperty(_) and
+        input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
+    }
+
+    /**
+     * Holds if `output` is a valid summary component stack for the getter of `dbSet`
+     * for property `mapped` for this.
+     */
+    pragma[noinline]
+    private predicate output(
+      SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
+    ) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        this.requiresComponentStackOut(head, _, tail, _, dbSet) and
+        head.getProperty() = mapped and
+        mapped = this.getAColumnProperty(_) and
+        output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
+    }
+
+    /**
+     * Gets the synthetic name for the getter of `dbSet` for property `mapped` for this,
+     * where `output` is a valid summary component stack for the getter of `dbSet`
+     * for the property `mapped`.
+     */
+    pragma[nomagic]
+    string getSyntheticName(
+      SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
+    ) {
+      this = dbSet.getDbContextClass() and
+      this.output(output, mapped, dbSet) and
+      exists(string qualifier, string type, string name |
+        mapped.hasFullyQualifiedName(qualifier, type, name) and
+        result = getQualifiedName(qualifier, type, name)
+      )
+    }
+
+    pragma[nomagic]
+    string getSyntheticNameProj(Property mapped) { result = this.getSyntheticName(_, mapped, _) }
+  }
+
+  private class DbContextClassSetProperty extends Property {
+    private DbContextClass c;
+
+    DbContextClassSetProperty() { this = c.getADbSetProperty(_) }
+
+    /**
+     * Gets the context class where this is a DbSet property.
+     */
+    DbContextClass getDbContextClass() { result = c }
+  }
+
+  private class DbContextClassSetPropertySynthetic extends EFSummarizedCallable {
+    private DbContextClassSetProperty p;
+
+    DbContextClassSetPropertySynthetic() { this = p.getGetter() }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
+    ) {
+      exists(string name, DbContextClass c |
+        preservesValue = true and
+        name = c.getSyntheticName(output, _, p) and
+        input = SummaryComponentStack::syntheticGlobal(name) and
+        model = "DbContextClassSetPropertySynthetic"
       )
     }
   }
@@ -399,35 +481,25 @@ module EntityFramework {
 
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
-    pragma[noinline]
-    private predicate input(SummaryComponentStack input, Property mapped) {
-      exists(PropertyContent head, SummaryComponentStack tail |
-        c.requiresComponentStackIn(head, _, tail, _) and
-        head.getProperty() = mapped and
-        mapped = c.getAColumnProperty(_) and
-        input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
-      )
-    }
-
-    pragma[noinline]
-    private predicate output(SummaryComponentStack output, Property mapped) {
-      exists(PropertyContent head, SummaryComponentStack tail |
-        c.requiresComponentStackOut(head, _, tail, _) and
-        head.getProperty() = mapped and
-        mapped = c.getAColumnProperty(_) and
-        output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
-      )
-    }
-
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
-      exists(Property mapped |
+      exists(string name, Property mapped |
         preservesValue = true and
-        this.input(input, mapped) and
-        this.output(output, mapped)
+        c.input(input, mapped) and
+        name = c.getSyntheticNameProj(mapped) and
+        output = SummaryComponentStack::syntheticGlobal(name) and
+        model = "DbContextSaveChanges"
       )
     }
+  }
+
+  /**
+   * Add all possible synthetic global names.
+   */
+  private class EFSummarizedCallableSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticNameProj(_) }
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack
@@ -436,7 +508,7 @@ module EntityFramework {
       exists(Content c | head = SummaryComponent::content(c) |
         any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
         or
-        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _)
+        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _, _)
       )
     }
   }

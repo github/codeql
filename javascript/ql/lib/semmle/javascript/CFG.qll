@@ -288,10 +288,10 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
   /** Holds if this is a node with more than one successor. */
-  predicate isBranch() { strictcount(getASuccessor()) > 1 }
+  predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
   /** Holds if this is a node with more than one predecessor. */
-  predicate isJoin() { strictcount(getAPredecessor()) > 1 }
+  predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
 
   /**
    * Holds if this is a start node, that is, the CFG node where execution of a
@@ -304,14 +304,14 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
    * of that toplevel or function terminates.
    */
   predicate isAFinalNodeOfContainer(StmtContainer container) {
-    getASuccessor().(SyntheticControlFlowNode).isAFinalNodeOfContainer(container)
+    this.getASuccessor().(SyntheticControlFlowNode).isAFinalNodeOfContainer(container)
   }
 
   /**
    * Holds if this is a final node, that is, a CFG node where execution of a
    * toplevel or function terminates.
    */
-  final predicate isAFinalNode() { isAFinalNodeOfContainer(_) }
+  final predicate isAFinalNode() { this.isAFinalNodeOfContainer(_) }
 
   /**
    * Holds if this node is unreachable, that is, it has no predecessors in the CFG.
@@ -327,7 +327,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
    * `s1` is unreachable, but `s2` is not.
    */
   predicate isUnreachable() {
-    forall(ControlFlowNode pred | pred = getAPredecessor() |
+    forall(ControlFlowNode pred | pred = this.getAPredecessor() |
       pred.(SyntheticControlFlowNode).isUnreachable()
     )
     // note the override in ControlFlowEntryNode below
@@ -348,7 +348,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
     else
       if this instanceof @decorator_list
       then result = "parameter decorators of " + this.(AstNode).getParent().(Function).describe()
-      else result = toString()
+      else result = this.toString()
   }
 }
 
@@ -356,15 +356,15 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
  * A synthetic CFG node that does not correspond to a statement or expression;
  * examples include guard nodes and entry/exit nodes.
  */
-class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode {
-  override Location getLocation() { hasLocation(this, result) }
-}
+class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode { }
 
 /** A synthetic CFG node marking the entry point of a function or toplevel script. */
 class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {
   override predicate isUnreachable() { none() }
 
-  override string toString() { result = "entry node of " + getContainer().toString() }
+  override string toString() {
+    result = "entry node of " + pragma[only_bind_out](this.getContainer()).toString()
+  }
 }
 
 /** A synthetic CFG node marking the exit of a function or toplevel script. */
@@ -373,7 +373,9 @@ class ControlFlowExitNode extends SyntheticControlFlowNode, @exit_node {
     exit_cfg_node(this, container)
   }
 
-  override string toString() { result = "exit node of " + getContainer().toString() }
+  override string toString() {
+    result = "exit node of " + pragma[only_bind_out](this.getContainer()).toString()
+  }
 }
 
 /**
@@ -407,7 +409,7 @@ class ConditionGuardNode extends GuardControlFlowNode, @condition_guard {
     guard_node(this, 1, _) and result = true
   }
 
-  override string toString() { result = "guard: " + getTest() + " is " + getOutcome() }
+  override string toString() { result = "guard: " + this.getTest() + " is " + this.getOutcome() }
 }
 
 /**

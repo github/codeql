@@ -1,9 +1,9 @@
 .. _codeql-for-javascript:
 
-CodeQL for JavaScript
-=====================
+CodeQL for JavaScript and TypeScript
+====================================
 
-Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript codebases.
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript and TypeScript codebases.
 
 .. toctree::
    :hidden:
@@ -17,8 +17,9 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    using-type-tracking-for-api-modeling
    abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs
    data-flow-cheat-sheet-for-javascript
+   customizing-library-models-for-javascript
 
--  :doc:`Basic query for JavaScript code <basic-query-for-javascript-code>`: Learn to write and run a simple CodeQL query.
+-  :doc:`Basic query for JavaScript and TypeScript code <basic-query-for-javascript-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for JavaScript <codeql-library-for-javascript>`: When you're analyzing a JavaScript program, you can make use of the large collection of classes in the CodeQL library for JavaScript.
 
@@ -33,3 +34,5 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Abstract syntax tree classes for working with JavaScript and TypeScript programs <abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of JavaScript and TypeScript programs.
 
 -  :doc:`Data flow cheat sheet for JavaScript <data-flow-cheat-sheet-for-javascript>`: This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
+
+- :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.

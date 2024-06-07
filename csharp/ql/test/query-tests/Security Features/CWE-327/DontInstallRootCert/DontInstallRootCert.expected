@@ -1,12 +1,18 @@
 edges
-| Test.cs:15:31:15:59 | object creation of type X509Store : X509Store | Test.cs:18:13:18:17 | access to local variable store |
-| Test.cs:25:31:25:86 | object creation of type X509Store : X509Store | Test.cs:28:13:28:17 | access to local variable store |
-| Test.cs:70:31:70:86 | object creation of type X509Store : X509Store | Test.cs:73:13:73:17 | access to local variable store |
+| Test.cs:15:23:15:27 | access to local variable store : X509Store | Test.cs:18:13:18:17 | access to local variable store | provenance |  |
+| Test.cs:15:31:15:59 | object creation of type X509Store : X509Store | Test.cs:15:23:15:27 | access to local variable store : X509Store | provenance |  |
+| Test.cs:25:23:25:27 | access to local variable store : X509Store | Test.cs:28:13:28:17 | access to local variable store | provenance |  |
+| Test.cs:25:31:25:86 | object creation of type X509Store : X509Store | Test.cs:25:23:25:27 | access to local variable store : X509Store | provenance |  |
+| Test.cs:70:23:70:27 | access to local variable store : X509Store | Test.cs:73:13:73:17 | access to local variable store | provenance |  |
+| Test.cs:70:31:70:86 | object creation of type X509Store : X509Store | Test.cs:70:23:70:27 | access to local variable store : X509Store | provenance |  |
 nodes
+| Test.cs:15:23:15:27 | access to local variable store : X509Store | semmle.label | access to local variable store : X509Store |
 | Test.cs:15:31:15:59 | object creation of type X509Store : X509Store | semmle.label | object creation of type X509Store : X509Store |
 | Test.cs:18:13:18:17 | access to local variable store | semmle.label | access to local variable store |
+| Test.cs:25:23:25:27 | access to local variable store : X509Store | semmle.label | access to local variable store : X509Store |
 | Test.cs:25:31:25:86 | object creation of type X509Store : X509Store | semmle.label | object creation of type X509Store : X509Store |
 | Test.cs:28:13:28:17 | access to local variable store | semmle.label | access to local variable store |
+| Test.cs:70:23:70:27 | access to local variable store : X509Store | semmle.label | access to local variable store : X509Store |
 | Test.cs:70:31:70:86 | object creation of type X509Store : X509Store | semmle.label | object creation of type X509Store : X509Store |
 | Test.cs:73:13:73:17 | access to local variable store | semmle.label | access to local variable store |
 subpaths

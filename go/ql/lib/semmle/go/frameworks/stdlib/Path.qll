@@ -13,7 +13,7 @@ module Path {
 
     FunctionModels() {
       // signature: func Join(elem ...string) string
-      hasQualifiedName("path", "Join") and
+      this.hasQualifiedName("path", "Join") and
       (inp.isParameter(_) and outp.isResult())
     }
 

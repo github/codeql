@@ -12,7 +12,4 @@ public class StringBuffer extends AbstractStringBuilder implements Serializable
     public StringBuffer append(char p0){ return null; } // manual summary
 
     public StringBuffer append(CharSequence s, int start, int end) { return null; }
-
-    public void setCharAt(int p0, char p1){}
-    public void setLength(int p0){}
 }

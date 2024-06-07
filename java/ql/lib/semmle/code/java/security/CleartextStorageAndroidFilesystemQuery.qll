@@ -5,9 +5,11 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.CleartextStorageQuery
 import semmle.code.xml.AndroidManifest
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink {
   AndroidFilesystemCleartextStorageSink() {
@@ -20,7 +22,7 @@ private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink
 /** A call to a method or constructor that may write to files to the local filesystem. */
 class LocalFileOpenCall extends Storable {
   LocalFileOpenCall() {
-    this = any(DataFlow::Node sink | sinkNode(sink, "create-file")).asExpr().(Argument).getCall()
+    this = any(DataFlow::Node sink | sinkNode(sink, "path-injection")).asExpr().(Argument).getCall()
   }
 
   override Expr getAnInput() {
@@ -40,7 +42,7 @@ class LocalFileOpenCall extends Storable {
 
 /** Holds if `input` is written into `file`. */
 private predicate filesystemInput(DataFlow::Node file, Argument input) {
-  exists(DataFlow::Node write | sinkNode(write, "write-file") |
+  exists(DataFlow::Node write | sinkNode(write, "file-content-store") |
     input = write.asExpr() or
     isVarargs(input, write)
   ) and
@@ -79,13 +81,27 @@ private class CloseFileMethod extends Method {
   }
 }
 
-private module FilesystemFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof LocalFileOpenCall }
+/**
+ * A local file open call source node.
+ */
+private class LocalFileOpenCallSource extends ApiSourceNode {
+  LocalFileOpenCallSource() { this.asExpr() instanceof LocalFileOpenCall }
+}
 
-  predicate isSink(DataFlow::Node sink) {
-    filesystemInput(sink, _) or
-    closesFile(sink, _)
+/**
+ * A local file sink node.
+ */
+private class LocalFileSink extends ApiSinkNode {
+  LocalFileSink() {
+    filesystemInput(this, _) or
+    closesFile(this, _)
   }
+}
+
+private module FilesystemFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof LocalFileOpenCallSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof LocalFileSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Add nested Writer constructors as extra data flow steps

@@ -5,7 +5,7 @@ getTarget
 | Bar.qll:30:12:30:32 | MemberCall | Bar.qll:19:7:19:18 | ClassPredicate getParameter |
 | Baz.qll:8:18:8:44 | MemberCall | Baz.qll:4:10:4:24 | ClassPredicate getImportedPath |
 | Foo.qll:5:26:5:30 | PredicateCall | Foo.qll:3:11:3:13 | ClasslessPredicate foo |
-| Foo.qll:10:21:10:25 | PredicateCall | Foo.qll:8:13:8:15 | ClassPredicate bar |
+| Foo.qll:10:21:10:30 | MemberCall | Foo.qll:8:13:8:15 | ClassPredicate bar |
 | Foo.qll:14:34:14:44 | MemberCall | Foo.qll:10:13:10:15 | ClassPredicate baz |
 | Foo.qll:17:27:17:42 | MemberCall | Foo.qll:8:13:8:15 | ClassPredicate bar |
 | Foo.qll:29:5:29:16 | PredicateCall | Foo.qll:20:13:20:20 | ClasslessPredicate myThing2 |

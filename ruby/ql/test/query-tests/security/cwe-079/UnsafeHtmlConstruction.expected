@@ -1,16 +1,20 @@
 edges
-| lib/unsafeHtml.rb:2:31:2:34 | name :  | lib/unsafeHtml.rb:3:10:3:16 | #{...} |
-| lib/unsafeHtml.rb:9:27:9:30 | name :  | lib/unsafeHtml.rb:11:13:11:19 | #{...} |
-| lib/unsafeHtml.rb:16:19:16:22 | name :  | lib/unsafeHtml.rb:17:28:17:31 | name |
+| lib/unsafeHtml.rb:2:31:2:34 | name | lib/unsafeHtml.rb:3:10:3:16 | #{...} | provenance |  |
+| lib/unsafeHtml.rb:9:27:9:30 | name | lib/unsafeHtml.rb:11:13:11:19 | #{...} | provenance |  |
+| lib/unsafeHtml.rb:16:19:16:22 | name | lib/unsafeHtml.rb:17:28:17:31 | name | provenance |  |
+| lib/unsafeHtml.rb:23:32:23:35 | name | lib/unsafeHtml.rb:24:10:24:16 | #{...} | provenance |  |
 nodes
-| lib/unsafeHtml.rb:2:31:2:34 | name :  | semmle.label | name :  |
+| lib/unsafeHtml.rb:2:31:2:34 | name | semmle.label | name |
 | lib/unsafeHtml.rb:3:10:3:16 | #{...} | semmle.label | #{...} |
-| lib/unsafeHtml.rb:9:27:9:30 | name :  | semmle.label | name :  |
+| lib/unsafeHtml.rb:9:27:9:30 | name | semmle.label | name |
 | lib/unsafeHtml.rb:11:13:11:19 | #{...} | semmle.label | #{...} |
-| lib/unsafeHtml.rb:16:19:16:22 | name :  | semmle.label | name :  |
+| lib/unsafeHtml.rb:16:19:16:22 | name | semmle.label | name |
 | lib/unsafeHtml.rb:17:28:17:31 | name | semmle.label | name |
+| lib/unsafeHtml.rb:23:32:23:35 | name | semmle.label | name |
+| lib/unsafeHtml.rb:24:10:24:16 | #{...} | semmle.label | #{...} |
 subpaths
 #select
-| lib/unsafeHtml.rb:3:10:3:16 | #{...} | lib/unsafeHtml.rb:2:31:2:34 | name :  | lib/unsafeHtml.rb:3:10:3:16 | #{...} | This string interpolation which depends on $@ might later allow $@. | lib/unsafeHtml.rb:2:31:2:34 | name | library input | lib/unsafeHtml.rb:3:5:3:22 | "<h2>#{...}</h2>" | cross-site scripting |
-| lib/unsafeHtml.rb:11:13:11:19 | #{...} | lib/unsafeHtml.rb:9:27:9:30 | name :  | lib/unsafeHtml.rb:11:13:11:19 | #{...} | This string interpolation which depends on $@ might later allow $@. | lib/unsafeHtml.rb:9:27:9:30 | name | library input | lib/unsafeHtml.rb:13:5:13:5 | h | cross-site scripting |
-| lib/unsafeHtml.rb:17:28:17:31 | name | lib/unsafeHtml.rb:16:19:16:22 | name :  | lib/unsafeHtml.rb:17:28:17:31 | name | This string format which depends on $@ might later allow $@. | lib/unsafeHtml.rb:16:19:16:22 | name | library input | lib/unsafeHtml.rb:17:5:17:32 | call to sprintf | cross-site scripting |
+| lib/unsafeHtml.rb:3:10:3:16 | #{...} | lib/unsafeHtml.rb:2:31:2:34 | name | lib/unsafeHtml.rb:3:10:3:16 | #{...} | This string interpolation which depends on $@ might later allow $@. | lib/unsafeHtml.rb:2:31:2:34 | name | library input | lib/unsafeHtml.rb:3:5:3:22 | "<h2>#{...}</h2>" | cross-site scripting |
+| lib/unsafeHtml.rb:11:13:11:19 | #{...} | lib/unsafeHtml.rb:9:27:9:30 | name | lib/unsafeHtml.rb:11:13:11:19 | #{...} | This string interpolation which depends on $@ might later allow $@. | lib/unsafeHtml.rb:9:27:9:30 | name | library input | lib/unsafeHtml.rb:13:5:13:5 | h | cross-site scripting |
+| lib/unsafeHtml.rb:17:28:17:31 | name | lib/unsafeHtml.rb:16:19:16:22 | name | lib/unsafeHtml.rb:17:28:17:31 | name | This string format which depends on $@ might later allow $@. | lib/unsafeHtml.rb:16:19:16:22 | name | library input | lib/unsafeHtml.rb:17:5:17:32 | call to sprintf | cross-site scripting |
+| lib/unsafeHtml.rb:24:10:24:16 | #{...} | lib/unsafeHtml.rb:23:32:23:35 | name | lib/unsafeHtml.rb:24:10:24:16 | #{...} | This string interpolation which depends on $@ might later allow $@. | lib/unsafeHtml.rb:23:32:23:35 | name | library input | lib/unsafeHtml.rb:24:5:24:22 | "<h2>#{...}</h2>" | cross-site scripting |

@@ -4,7 +4,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 
@@ -16,7 +17,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for untrusted user input used to construct regular expressions.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for untrusted user input used to construct regular expressions.
@@ -54,8 +55,15 @@ private module RegexInjectionConfig implements DataFlow::ConfigSig {
  */
 module RegexInjection = TaintTracking::Global<RegexInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * A `pattern` argument to a construction of a `Regex`.

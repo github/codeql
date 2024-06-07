@@ -1,12 +1,26 @@
+| E | Ordered |
+| E | comparable |
+| E | interface { } |
+| E1 | interface { } |
+| E2 | interface { } |
 | Edge | EdgeConstraint |
 | Edge | interface { } |
+| F | floaty |
 | K | comparable |
 | Node | NodeConstraint |
 | Node | interface { } |
 | S | interface { } |
+| S | interface { ~[]E } |
+| S1 | interface { ~[]E1 } |
+| S2 | interface { ~[]E2 } |
 | SF2 | interface { } |
 | SG2 | interface { } |
+| T | Ordered |
+| T | comparable |
+| T | interface { string \| []uint8 } |
 | T | interface { } |
+| T1 | interface { } |
+| T2 | interface { } |
 | TF1 | interface { } |
 | TF2 | interface { } |
 | TG1 | interface { } |

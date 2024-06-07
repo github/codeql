@@ -5,9 +5,6 @@ import java
  */
 predicate isStrutsXmlIncluded() { exists(StrutsXmlFile strutsXml) }
 
-/** DEPRECATED: Alias for isStrutsXmlIncluded */
-deprecated predicate isStrutsXMLIncluded = isStrutsXmlIncluded/0;
-
 /**
  * A struts 2 configuration file.
  */
@@ -51,9 +48,6 @@ abstract class StrutsXmlFile extends XmlFile {
   }
 }
 
-/** DEPRECATED: Alias for StrutsXmlFile */
-deprecated class StrutsXMLFile = StrutsXmlFile;
-
 /**
  * A Struts 2 "root" configuration XML file directly read by struts.
  *
@@ -66,18 +60,12 @@ class StrutsRootXmlFile extends StrutsXmlFile {
   }
 }
 
-/** DEPRECATED: Alias for StrutsRootXmlFile */
-deprecated class StrutsRootXMLFile = StrutsRootXmlFile;
-
 /**
  * A Struts 2 configuration XML file included, directly or indirectly, by a root Struts configuration.
  */
 class StrutsIncludedXmlFile extends StrutsXmlFile {
   StrutsIncludedXmlFile() { exists(StrutsXmlInclude include | this = include.getIncludedFile()) }
 }
-
-/** DEPRECATED: Alias for StrutsIncludedXmlFile */
-deprecated class StrutsIncludedXMLFile = StrutsIncludedXmlFile;
 
 /**
  * A Folder which has one or more Struts 2 root configurations.
@@ -116,9 +104,6 @@ class StrutsXmlElement extends XmlElement {
   string getValue() { result = this.allCharactersString().trim() }
 }
 
-/** DEPRECATED: Alias for StrutsXmlElement */
-deprecated class StrutsXMLElement = StrutsXmlElement;
-
 /**
  * A `<include>` element within a `struts.xml` file.
  *
@@ -140,9 +125,6 @@ class StrutsXmlInclude extends StrutsXmlElement {
     )
   }
 }
-
-/** DEPRECATED: Alias for StrutsXmlInclude */
-deprecated class StrutsXMLInclude = StrutsXmlInclude;
 
 /**
  * Escape a string for use as the matcher in a string.match(..) call.
@@ -192,9 +174,6 @@ class StrutsXmlAction extends StrutsXmlElement {
   }
 }
 
-/** DEPRECATED: Alias for StrutsXmlAction */
-deprecated class StrutsXMLAction = StrutsXmlAction;
-
 /**
  * A `<constant>` property, representing a configuration parameter to struts.
  */
@@ -205,6 +184,3 @@ class StrutsXmlConstant extends StrutsXmlElement {
 
   string getConstantValue() { result = this.getAttribute("value").getValue() }
 }
-
-/** DEPRECATED: Alias for StrutsXmlConstant */
-deprecated class StrutsXMLConstant = StrutsXmlConstant;

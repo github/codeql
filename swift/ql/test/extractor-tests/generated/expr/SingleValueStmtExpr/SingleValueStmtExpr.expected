@@ -1,0 +1,2 @@
+| test.swift:2:3:7:3 | SingleValueStmtExpr | hasType: | yes | getStmt: | test.swift:2:3:7:3 | switch x { ... } |
+| test.swift:11:3:11:30 | SingleValueStmtExpr | hasType: | yes | getStmt: | test.swift:11:3:11:30 | if ... then { ... } else { ... } |

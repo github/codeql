@@ -3,12 +3,14 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Net.Http", "StringContent", False, "StringContent", "", "", "Argument[0]", "xss", "manual"]
+      - ["System.Net.Http", "StringContent", False, "StringContent", "", "", "Argument[0]", "js-injection", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Net.Http", "HttpRequestOptions", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
-      - ["System.Net.Http", "HttpRequestOptions", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "value", "manual"]
+      - ["System.Net.Http", "HttpRequestMessage", False, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.Net.Http", "HttpRequestMessage", False, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.String)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["System.Net.Http", "HttpRequestOptions", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+      - ["System.Net.Http", "HttpRequestOptions", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
       - ["System.Net.Http", "MultipartContent", False, "Add", "(System.Net.Http.HttpContent)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Net.Http", "MultipartFormDataContent", False, "Add", "(System.Net.Http.HttpContent)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]

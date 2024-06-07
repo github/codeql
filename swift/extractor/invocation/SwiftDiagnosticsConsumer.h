@@ -2,7 +2,7 @@
 
 #include <swift/AST/DiagnosticConsumer.h>
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/logging/SwiftLogging.h"
 
 namespace codeql {
 

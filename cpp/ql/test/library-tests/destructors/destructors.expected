@@ -1,0 +1,22 @@
+exprDestructors
+stmtDestructors
+| destructors2.cpp:24:13:24:19 | return ... | 0 | destructors2.cpp:27:5:27:5 | call to ~Class2 | destructors2.cpp:27:5:27:5 | c |
+| destructors2.cpp:27:5:27:5 | return ... | 0 | destructors2.cpp:27:5:27:5 | call to ~Inner | destructors2.cpp:27:5:27:5 | inner |
+| destructors2.cpp:27:5:27:5 | return ... | 1 | destructors2.cpp:27:5:27:5 | call to ~Class2 | destructors2.cpp:27:5:27:5 | c |
+| destructors.cpp:10:5:26:5 | { ... } | 0 | destructors.cpp:26:5:26:5 | call to ~C | destructors.cpp:26:5:26:5 | c21 |
+| destructors.cpp:10:5:26:5 | { ... } | 1 | destructors.cpp:26:5:26:5 | call to ~C | destructors.cpp:26:5:26:5 | c20 |
+| destructors.cpp:12:9:14:9 | { ... } | 0 | destructors.cpp:14:9:14:9 | call to ~C | destructors.cpp:14:9:14:9 | c30 |
+| destructors.cpp:15:9:21:9 | { ... } | 0 | destructors.cpp:21:9:21:9 | call to ~C | destructors.cpp:21:9:21:9 | c33 |
+| destructors.cpp:15:9:21:9 | { ... } | 1 | destructors.cpp:21:9:21:9 | call to ~C | destructors.cpp:21:9:21:9 | c32 |
+| destructors.cpp:15:9:21:9 | { ... } | 2 | destructors.cpp:21:9:21:9 | call to ~C | destructors.cpp:21:9:21:9 | c31 |
+| destructors.cpp:17:21:17:29 | goto ... | 0 | destructors.cpp:21:9:21:9 | call to ~C | destructors.cpp:21:9:21:9 | c31 |
+| destructors.cpp:17:21:17:29 | goto ... | 1 | destructors.cpp:26:5:26:5 | call to ~C | destructors.cpp:26:5:26:5 | c20 |
+| destructors.cpp:19:21:19:27 | return ... | 0 | destructors.cpp:21:9:21:9 | call to ~C | destructors.cpp:21:9:21:9 | c32 |
+| destructors.cpp:19:21:19:27 | return ... | 1 | destructors.cpp:21:9:21:9 | call to ~C | destructors.cpp:21:9:21:9 | c31 |
+| destructors.cpp:19:21:19:27 | return ... | 2 | destructors.cpp:26:5:26:5 | call to ~C | destructors.cpp:26:5:26:5 | c20 |
+| destructors.cpp:19:21:19:27 | return ... | 3 | destructors.cpp:35:1:35:1 | call to ~C | destructors.cpp:35:1:35:1 | c10 |
+| destructors.cpp:22:9:24:9 | { ... } | 0 | destructors.cpp:24:9:24:9 | call to ~C | destructors.cpp:24:9:24:9 | c34 |
+| destructors.cpp:27:5:29:5 | { ... } | 0 | destructors.cpp:29:5:29:5 | call to ~C | destructors.cpp:29:5:29:5 | c22 |
+| destructors.cpp:30:5:33:5 | { ... } | 0 | destructors.cpp:33:5:33:5 | call to ~C | destructors.cpp:33:5:33:5 | c23 |
+| destructors.cpp:35:1:35:1 | return ... | 0 | destructors.cpp:35:1:35:1 | call to ~C | destructors.cpp:35:1:35:1 | c11 |
+| destructors.cpp:35:1:35:1 | return ... | 1 | destructors.cpp:35:1:35:1 | call to ~C | destructors.cpp:35:1:35:1 | c10 |

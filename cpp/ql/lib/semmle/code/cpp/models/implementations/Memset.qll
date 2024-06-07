@@ -9,18 +9,31 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-/**
- * The standard function `memset` and its assorted variants
- */
-private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction,
+private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, AliasFunction,
   SideEffectFunction
 {
-  MemsetFunction() {
+  MemsetFunctionModel() {
     this.hasGlobalOrStdOrBslName("memset")
     or
     this.hasGlobalOrStdName("wmemset")
     or
-    this.hasGlobalName([bzero(), "__builtin_memset", "__builtin_memset_chk"])
+    this.hasGlobalName([
+        bzero(), "__builtin_memset", "__builtin_memset_chk", "RtlZeroMemory", "RtlSecureZeroMemory"
+      ])
+  }
+
+  /**
+   * Gets the index of the parameter that specifies the fill character to insert, if any.
+   */
+  private int getFillCharParameterIndex() {
+    (
+      this.hasGlobalOrStdOrBslName("memset")
+      or
+      this.hasGlobalOrStdName("wmemset")
+      or
+      this.hasGlobalName(["__builtin_memset", "__builtin_memset_chk"])
+    ) and
+    result = 1
   }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
@@ -28,6 +41,9 @@ private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameter(this.getFillCharParameterIndex()) and
+    (output.isParameterDeref(0) or output.isReturnValueDeref())
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
@@ -60,3 +76,8 @@ private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
 }
 
 private string bzero() { result = ["bzero", "explicit_bzero"] }
+
+/**
+ * The standard function `memset` and its assorted variants
+ */
+class MemsetFunction extends Function instanceof MemsetFunctionModel { }

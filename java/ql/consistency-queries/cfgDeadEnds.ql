@@ -44,7 +44,7 @@ predicate shouldBeDeadEnd(ControlFlowNode n) {
   or
   n instanceof WildcardTypeAccess // TODO
   or
-  n instanceof MethodAccess // TODO
+  n instanceof MethodCall // TODO
   or
   n instanceof Method
   or

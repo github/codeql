@@ -65,10 +65,12 @@ private class SetCookieSink extends DataFlow::Node {
 }
 
 /**
+ * DEPRECATED: Use `NameToNetHttpCookieTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from sensitive names to
  * `net/http.SetCookie`.
  */
-class NameToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class NameToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   NameToNetHttpCookieTrackingConfiguration() { this = "NameToNetHttpCookieTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
@@ -84,11 +86,30 @@ class NameToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
   }
 }
 
+private module NameToNetHttpCookieTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StructLit sl |
+      sl.getType() instanceof NetHttpCookieType and
+      getValueForFieldWrite(sl, "Name") = pred and
+      sl = succ.asExpr()
+    )
+  }
+}
+
+/** Tracks taint flow from sensitive names to `net/http.SetCookie`. */
+module NameToNetHttpCookieTrackingFlow = TaintTracking::Global<NameToNetHttpCookieTrackingConfig>;
+
 /**
+ * DEPRECATED: Use `BoolToNetHttpCookieTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from `bool` assigned to
  * `HttpOnly` that flows into `net/http.SetCookie`.
  */
-class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   BoolToNetHttpCookieTrackingConfiguration() { this = "BoolToNetHttpCookieTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -106,11 +127,35 @@ class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
   }
 }
 
+private module BoolToNetHttpCookieTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.getType().getUnderlyingType() instanceof BoolType
+  }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StructLit sl |
+      sl.getType() instanceof NetHttpCookieType and
+      getValueForFieldWrite(sl, "HttpOnly") = pred and
+      sl = succ.asExpr()
+    )
+  }
+}
+
 /**
+ * Tracks taint flow from a `bool` assigned to `HttpOnly` to
+ * `net/http.SetCookie`.
+ */
+module BoolToNetHttpCookieTrackingFlow = TaintTracking::Global<BoolToNetHttpCookieTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `BoolToGinSetCookieTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from `HttpOnly` set to
  * `false` to `gin-gonic/gin.Context.SetCookie`.
  */
-class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
+deprecated class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
   BoolToGinSetCookieTrackingConfiguration() { this = "BoolToGinSetCookieTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source.getBoolValue() = false }
@@ -127,11 +172,34 @@ class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
   }
 }
 
+private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.getBoolValue() = false }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(DataFlow::MethodCallNode mcn |
+      mcn.getTarget() instanceof GinContextSetCookieMethod and
+      mcn.getArgument(6) = sink and
+      exists(DataFlow::Node nameArg |
+        NameToGinSetCookieTrackingFlow::flowTo(nameArg) and
+        mcn.getArgument(0) = nameArg
+      )
+    )
+  }
+}
+
 /**
+ * Tracks data flow from `HttpOnly` set to `false` to
+ * `gin-gonic/gin.Context.SetCookie`.
+ */
+module BoolToGinSetCookieTrackingFlow = DataFlow::Global<BoolToGinSetCookieTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `NameToGinSetCookieTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from sensitive names to
  * `gin-gonic/gin.Context.SetCookie`.
  */
-private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configuration {
+deprecated private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configuration {
   NameToGinSetCookieTrackingConfiguration() { this = "NameToGinSetCookieTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
@@ -143,6 +211,22 @@ private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configu
     )
   }
 }
+
+private module NameToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(DataFlow::MethodCallNode mcn |
+      mcn.getTarget() instanceof GinContextSetCookieMethod and
+      mcn.getArgument(0) = sink
+    )
+  }
+}
+
+/**
+ * Tracks taint flow from sensitive names to `gin-gonic/gin.Context.SetCookie`.
+ */
+private module NameToGinSetCookieTrackingFlow = DataFlow::Global<NameToGinSetCookieTrackingConfig>;
 
 /**
  * The receiver of `gorilla/sessions.Session.Save` call.
@@ -168,10 +252,12 @@ private class GorillaStoreSaveSink extends DataFlow::Node {
 }
 
 /**
+ * DEPRECATED: Use `GorillaCookieStoreSaveTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from gorilla cookie store
  * creation to `gorilla/sessions.Session.Save`.
  */
-class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
+deprecated class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
   GorillaCookieStoreSaveTrackingConfiguration() {
     this = "GorillaCookieStoreSaveTrackingConfiguration"
   }
@@ -198,11 +284,42 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
   }
 }
 
+private module GorillaCookieStoreSaveTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source
+        .(DataFlow::CallNode)
+        .getTarget()
+        .hasQualifiedName(package("github.com/gorilla/sessions", ""), "NewCookieStore")
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof GorillaSessionSaveSink or
+    sink instanceof GorillaStoreSaveSink
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::MethodCallNode cn |
+      cn.getTarget()
+          .hasQualifiedName(package("github.com/gorilla/sessions", ""), "CookieStore", "Get") and
+      pred = cn.getReceiver() and
+      succ = cn.getResult(0)
+    )
+  }
+}
+
 /**
+ * Tracks data flow from gorilla cookie store creation to
+ * `gorilla/sessions.Session.Save`.
+ */
+module GorillaCookieStoreSaveTrackingFlow = DataFlow::Global<GorillaCookieStoreSaveTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `GorillaSessionOptionsTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from session options to
  * `gorilla/sessions.Session.Save`.
  */
-class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
   GorillaSessionOptionsTrackingConfiguration() {
     this = "GorillaSessionOptionsTrackingConfiguration"
   }
@@ -224,11 +341,39 @@ class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configur
   }
 }
 
+private module GorillaSessionOptionsTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(StructLit sl |
+      sl.getType().hasQualifiedName(package("github.com/gorilla/sessions", ""), "Options") and
+      source.asExpr() = sl
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
+      w.writesField(base, f, pred) and
+      succ = base
+    )
+  }
+}
+
 /**
+ * Tracks taint flow from session options to
+ * `gorilla/sessions.Session.Save`.
+ */
+module GorillaSessionOptionsTrackingFlow =
+  TaintTracking::Global<GorillaSessionOptionsTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `BoolToGorillaSessionOptionsTrackingFlow` instead.
+ *
  * A taint-tracking configuration for tracking flow from a `bool` assigned to
  * `HttpOnly` to `gorilla/sessions.Session.Save`.
  */
-class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration
+{
   BoolToGorillaSessionOptionsTrackingConfiguration() {
     this = "BoolToGorillaSessionOptionsTrackingConfiguration"
   }
@@ -251,3 +396,30 @@ class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Co
     )
   }
 }
+
+private module BoolToGorillaSessionOptionsTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.getType().getUnderlyingType() instanceof BoolType
+  }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StructLit sl |
+      getValueForFieldWrite(sl, "HttpOnly") = pred and
+      sl = succ.asExpr()
+    )
+    or
+    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
+      w.writesField(base, f, pred) and
+      succ = base
+    )
+  }
+}
+
+/**
+ * Tracks taint flow from a `bool` assigned to `HttpOnly` to
+ * `gorilla/sessions.Session.Save`.
+ */
+module BoolToGorillaSessionOptionsTrackingFlow =
+  TaintTracking::Global<BoolToGorillaSessionOptionsTrackingConfig>;

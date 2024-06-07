@@ -17,21 +17,10 @@ module NoSql {
   }
 }
 
-/** DEPRECATED: Alias for NoSql */
-deprecated module NoSQL = NoSql;
-
 /**
  * Provides classes modeling the `mongodb` and `mongoose` libraries.
  */
 private module MongoDB {
-  private class OldMongoDbAdapter extends ModelInput::TypeModelCsv {
-    override predicate row(string row) {
-      // In Mongo version 2.x, a client and a database handle were the same concept, but in 3.x
-      // they were separated. To handle everything with a single model, we treat them as the same here.
-      row = "mongodb.Db;mongodb.MongoClient;"
-    }
-  }
-
   /**
    * An expression that is interpreted as a MongoDB query.
    */
@@ -169,24 +158,6 @@ private module Mongoose {
     }
 
     override DataFlow::Node getAQueryArgument() { none() }
-  }
-}
-
-/**
- * Provides classes modeling the MarsDB library.
- */
-private module MarsDB {
-  // 'marsdb' has no typings and is archived.
-  // We just model is as a variant of 'mongoose'.
-  private class MongooseExtension extends ModelInput::TypeModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "mongoose.Query;marsdb;Member[Collection].Instance",
-          "mongoose.Model;marsdb;Member[Collection].Instance",
-          "mongoose.Query;mongoose.Query;Member[sortFunc].ReturnValue",
-        ]
-    }
   }
 }
 

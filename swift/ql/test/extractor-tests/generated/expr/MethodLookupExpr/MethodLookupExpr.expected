@@ -9,8 +9,7 @@
 | method_lookups.swift:33:3:33:5 | .bar() | hasType: | yes | getBase: | method_lookups.swift:33:3:33:3 | X.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:33:5:33:5 | bar() |
 | method_lookups.swift:34:3:34:3 | X.init() | hasType: | yes | getBase: | method_lookups.swift:34:3:34:3 | X.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:34:3:34:3 | X.init() |
 | method_lookups.swift:34:3:34:7 | .baz(_:) | hasType: | yes | getBase: | method_lookups.swift:34:3:34:5 | call to X.init() | hasMember: | yes | getMethodRef: | method_lookups.swift:34:7:34:7 | baz(_:) |
-| method_lookups.swift:36:11:36:13 | (no string representation) | hasType: | yes | getBase: | method_lookups.swift:36:11:36:11 | X.Type | hasMember: | no | getMethodRef: | method_lookups.swift:36:13:36:13 | { ... } |
-| method_lookups.swift:36:13:36:13 | .bar() | hasType: | yes | getBase: | file://:0:0:0:0 | self | hasMember: | yes | getMethodRef: | method_lookups.swift:36:13:36:13 | bar() |
+| method_lookups.swift:36:11:36:13 | .bar() | hasType: | yes | getBase: | method_lookups.swift:36:11:36:11 | X.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:36:13:36:13 | bar() |
 | method_lookups.swift:37:11:37:11 | X.init() | hasType: | yes | getBase: | method_lookups.swift:37:11:37:11 | X.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:37:11:37:11 | X.init() |
 | method_lookups.swift:37:11:37:15 | (no string representation) | hasType: | yes | getBase: | method_lookups.swift:37:11:37:13 | call to X.init() | hasMember: | no | getMethodRef: | method_lookups.swift:37:15:37:15 | { ... } |
 | method_lookups.swift:37:15:37:15 | .baz(_:) | hasType: | yes | getBase: | file://:0:0:0:0 | self | hasMember: | yes | getMethodRef: | method_lookups.swift:37:15:37:15 | baz(_:) |
@@ -18,15 +17,13 @@
 | method_lookups.swift:41:3:41:5 | .foo(_:_:) | hasType: | yes | getBase: | method_lookups.swift:41:3:41:3 | Y.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:41:5:41:5 | foo(_:_:) |
 | method_lookups.swift:42:9:42:9 | Y.init() | hasType: | yes | getBase: | method_lookups.swift:42:9:42:9 | Y.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:42:9:42:9 | Y.init() |
 | method_lookups.swift:42:9:42:13 | .baz(_:) | hasType: | yes | getBase: | method_lookups.swift:42:9:42:11 | call to Y.init() | hasMember: | yes | getMethodRef: | method_lookups.swift:42:13:42:13 | baz(_:) |
-| method_lookups.swift:44:11:44:13 | (no string representation) | hasType: | yes | getBase: | method_lookups.swift:44:11:44:11 | Y.Type | hasMember: | no | getMethodRef: | method_lookups.swift:44:13:44:13 | { ... } |
-| method_lookups.swift:44:13:44:13 | .foo(_:_:) | hasType: | yes | getBase: | file://:0:0:0:0 | self | hasMember: | yes | getMethodRef: | method_lookups.swift:44:13:44:13 | foo(_:_:) |
+| method_lookups.swift:44:11:44:13 | .foo(_:_:) | hasType: | yes | getBase: | method_lookups.swift:44:11:44:11 | Y.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:44:13:44:13 | foo(_:_:) |
 | method_lookups.swift:47:1:47:1 | Task<Success, Never>.init(priority:operation:) | hasType: | yes | getBase: | method_lookups.swift:47:1:47:1 | Task<(), Never>.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:47:1:47:1 | Task<Success, Never>.init(priority:operation:) |
 | method_lookups.swift:48:9:48:11 | .foo(_:_:) | hasType: | yes | getBase: | method_lookups.swift:48:9:48:9 | Z.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:48:11:48:11 | foo(_:_:) |
 | method_lookups.swift:49:9:49:11 | .bar() | hasType: | yes | getBase: | method_lookups.swift:49:9:49:9 | Z.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:49:11:49:11 | bar() |
 | method_lookups.swift:50:9:50:9 | Z.init() | hasType: | yes | getBase: | method_lookups.swift:50:9:50:9 | Z.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:50:9:50:9 | Z.init() |
 | method_lookups.swift:50:9:50:13 | .baz(_:) | hasType: | yes | getBase: | method_lookups.swift:50:9:50:11 | call to Z.init() | hasMember: | yes | getMethodRef: | method_lookups.swift:50:13:50:13 | baz(_:) |
-| method_lookups.swift:52:11:52:13 | (no string representation) | hasType: | yes | getBase: | method_lookups.swift:52:11:52:11 | Z.Type | hasMember: | no | getMethodRef: | method_lookups.swift:52:13:52:13 | { ... } |
-| method_lookups.swift:52:13:52:13 | .bar() | hasType: | yes | getBase: | file://:0:0:0:0 | self | hasMember: | yes | getMethodRef: | method_lookups.swift:52:13:52:13 | bar() |
+| method_lookups.swift:52:11:52:13 | .bar() | hasType: | yes | getBase: | method_lookups.swift:52:11:52:11 | Z.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:52:13:52:13 | bar() |
 | method_lookups.swift:53:11:53:23 | (no string representation) | hasType: | yes | getBase: | method_lookups.swift:53:18:53:20 | call to Z.init() | hasMember: | no | getMethodRef: | method_lookups.swift:53:23:53:23 | { ... } |
 | method_lookups.swift:53:18:53:18 | Z.init() | hasType: | yes | getBase: | method_lookups.swift:53:18:53:18 | Z.Type | hasMember: | yes | getMethodRef: | method_lookups.swift:53:18:53:18 | Z.init() |
 | method_lookups.swift:53:23:53:23 | .baz(_:) | hasType: | yes | getBase: | file://:0:0:0:0 | self | hasMember: | yes | getMethodRef: | method_lookups.swift:53:23:53:23 | baz(_:) |

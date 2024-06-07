@@ -1,5 +1,0 @@
-| file://:0:0:0:0 | ... .combine(_:) | UnresolvedDotExpr |
-| file://:0:0:0:0 | ... .combine(_:) | UnresolvedDotExpr |
-| file://:0:0:0:0 | ... .combine(_:) | UnresolvedDotExpr |
-| file://:0:0:0:0 | ... .combine(_:) | UnresolvedDotExpr |
-| patterns.swift:16:12:16:12 | OverloadedDeclRefExpr | OverloadedDeclRefExpr |

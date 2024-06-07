@@ -1,34 +1,34 @@
-MyModule #$ use=getMember("MyModule")
-print MyModule.foo #$ use=getMember("MyModule").getMethod("foo").getReturn()
-Kernel.print(e) #$ use=getMember("Kernel").getMethod("print").getReturn() def=getMember("Kernel").getMethod("print").getParameter(0)
-Object::Kernel #$ use=getMember("Kernel")
-Object::Kernel.print(e)  #$ use=getMember("Kernel").getMethod("print").getReturn()
+MyModule #$ source=Member[MyModule]
+print MyModule.foo #$ source=Member[MyModule].Method[foo].ReturnValue
+Kernel.print(e) #$ source=Member[Kernel].Method[print].ReturnValue sink=Member[Kernel].Method[print].Argument[0]
+Object::Kernel #$ source=Member[Kernel]
+Object::Kernel.print(e)  #$ source=Member[Kernel].Method[print].ReturnValue
 begin
-    print MyModule.bar #$ use=getMember("MyModule").getMethod("bar").getReturn()
-    raise AttributeError #$ use=getMember("AttributeError")
-rescue AttributeError => e #$ use=getMember("AttributeError")
-    Kernel.print(e)  #$ use=getMember("Kernel").getMethod("print").getReturn()
+    print MyModule.bar #$ source=Member[MyModule].Method[bar].ReturnValue
+    raise AttributeError #$ source=Member[AttributeError]
+rescue AttributeError => e #$ source=Member[AttributeError]
+    Kernel.print(e)  #$ source=Member[Kernel].Method[print].ReturnValue
 end
-Unknown.new.run #$ use=getMember("Unknown").getMethod("new").getReturn().getMethod("run").getReturn()
-Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
+Unknown.new.run #$ source=Member[Unknown].Method[new].ReturnValue.Method[run].ReturnValue
+Foo::Bar::Baz #$ source=Member[Foo].Member[Bar].Member[Baz]
 
-Const = [1, 2, 3] #$ use=getMember("Array").getMethod("[]").getReturn()
-Const.each do |c| #$ use=getMember("Const")
-    puts c #$ use=getMember("Const").getMethod("each").getBlock().getParameter(0) use=getMember("Const").getContent(element)
-end #$ use=getMember("Const").getMethod("each").getReturn() def=getMember("Const").getMethod("each").getBlock()
+Const = [1, 2, 3] #$ source=Member[Array].MethodBracket.ReturnValue
+Const.each do |c| #$ source=Member[Const]
+    puts c #$ reachableFromSource=Member[Const].Method[each].Argument[block].Parameter[0] reachableFromSource=Member[Const].Element[any]
+end #$ source=Member[Const].Method[each].ReturnValue sink=Member[Const].Method[each].Argument[block]
 
-foo = Foo #$ use=getMember("Foo")
-foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
+foo = Foo #$ source=Member[Foo]
+foo::Bar::Baz #$ source=Member[Foo].Member[Bar].Member[Baz]
 
-FooAlias = Foo #$ use=getMember("Foo")
-FooAlias::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
+FooAlias = Foo #$ source=Member[Foo]
+FooAlias::Bar::Baz #$ source=Member[Foo].Member[Bar].Member[Baz] source=Member[FooAlias].Member[Bar].Member[Baz]
 
 module Outer
     module Inner
     end
 end
 
-Outer::Inner.foo #$ use=getMember("Outer").getMember("Inner").getMethod("foo").getReturn()
+Outer::Inner.foo #$ source=Member[Outer].Member[Inner].Method[foo].ReturnValue
 
 module M1
     class C1
@@ -40,36 +40,36 @@ module M1
     end
 end
 
-class C2 < M1::C1 #$ use=getMember("M1").getMember("C1")
+class C2 < M1::C1 #$ source=Member[M1].Member[C1]
 end
 
 module M2
-    class C3 < M1::C1 #$ use=getMember("M1").getMember("C1")
+    class C3 < M1::C1 #$ source=Member[M1].Member[C1]
     end
 
-    class C4 < C2 #$ use=getMember("C2")
+    class C4 < C2 #$ source=Member[C2]
     end
 end
 
-C2 #$ use=getMember("C2") use=getMember("M1").getMember("C1").getASubclass()
-M2::C3 #$ use=getMember("M2").getMember("C3") use=getMember("M1").getMember("C1").getASubclass()
-M2::C4 #$ use=getMember("M2").getMember("C4") use=getMember("C2").getASubclass() use=getMember("M1").getMember("C1").getASubclass().getASubclass()
+C2 #$ source=Member[C2] reachableFromSource=Member[M1].Member[C1]
+M2::C3 #$ source=Member[M2].Member[C3] reachableFromSource=Member[M1].Member[C1]
+M2::C4 #$ source=Member[M2].Member[C4] reachableFromSource=Member[C2] reachableFromSource=Member[M1].Member[C1]
 
-M1::C1.m #$ use=getMember("M1").getMember("C1").getMethod("m").getReturn()
-M2::C3.m #$ use=getMember("M2").getMember("C3").getMethod("m").getReturn() use=getMember("M1").getMember("C1").getASubclass().getMethod("m").getReturn()
+M1::C1.m #$ source=Member[M1].Member[C1].Method[m].ReturnValue
+M2::C3.m #$ source=Member[M2].Member[C3].Method[m].ReturnValue source=Member[M1].Member[C1].Method[m].ReturnValue
 
-M1::C1.new.m #$ use=getMember("M1").getMember("C1").getMethod("new").getReturn().getMethod("m").getReturn()
-M2::C3.new.m #$ use=getMember("M2").getMember("C3").getMethod("new").getReturn().getMethod("m").getReturn()
+M1::C1.new.m #$ source=Member[M1].Member[C1].Method[new].ReturnValue.Method[m].ReturnValue
+M2::C3.new.m #$ source=Member[M2].Member[C3].Method[new].ReturnValue.Method[m].ReturnValue
 
-Foo.foo(a,b:c) #$ use=getMember("Foo").getMethod("foo").getReturn() def=getMember("Foo").getMethod("foo").getParameter(0) def=getMember("Foo").getMethod("foo").getKeywordParameter("b")
+Foo.foo(a,b:c) #$ source=Member[Foo].Method[foo].ReturnValue sink=Member[Foo].Method[foo].Argument[0] sink=Member[Foo].Method[foo].Argument[b:]
 
 def userDefinedFunction(x, y)
     x.noApiGraph(y)
-    x.customEntryPointCall(y) #$ call=entryPoint("CustomEntryPointCall") use=entryPoint("CustomEntryPointCall").getReturn() rhs=entryPoint("CustomEntryPointCall").getParameter(0)
-    x.customEntryPointUse(y) #$ use=entryPoint("CustomEntryPointUse")
+    x.customEntryPointCall(y) #$ call=EntryPoint[CustomEntryPointCall] source=EntryPoint[CustomEntryPointCall].ReturnValue sink=EntryPoint[CustomEntryPointCall].Parameter[0]
+    x.customEntryPointUse(y) #$ source=EntryPoint[CustomEntryPointUse]
 end
 
-array = [A::B::C] #$ use=getMember("Array").getMethod("[]").getReturn()
-array[0].m #$ use=getMember("A").getMember("B").getMember("C").getMethod("m").getReturn()
+array = [A::B::C] #$ source=Member[Array].MethodBracket.ReturnValue
+array[0].m #$ source=Member[A].Member[B].Member[C].Method[m].ReturnValue source=Member[Array].MethodBracket.ReturnValue.Element[0].Method[m].ReturnValue
 
-A::B::C[0] #$ use=getMember("A").getMember("B").getMember("C").getContent(element_0)
+A::B::C[0] #$ source=Member[A].Member[B].Member[C].Element[0]

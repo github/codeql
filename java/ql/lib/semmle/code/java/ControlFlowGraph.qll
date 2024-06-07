@@ -43,7 +43,7 @@
  *
  * An important goal of the CFG is to get the order of side-effects correct.
  * Most expressions can have side-effects and must therefore be modeled in the
- * CFG in AST post-order. For example, a `MethodAccess` evaluates its arguments
+ * CFG in AST post-order. For example, a `MethodCall` evaluates its arguments
  * before the call. Most statements don't have side-effects, but merely affect
  * the control-flow and some could therefore be excluded from the CFG. However,
  * as a design choice, all statements are included in the CFG and generally
@@ -82,6 +82,7 @@
 import java
 private import Completion
 private import controlflow.internal.Preconditions
+private import controlflow.internal.SwitchCases
 
 /** A node in the expression-level control-flow graph. */
 class ControlFlowNode extends Top, @exprparent {
@@ -190,7 +191,7 @@ private module ControlFlowGraphImpl {
   /**
    * Bind `t` to an unchecked exception that may occur in a precondition check.
    */
-  private predicate uncheckedExceptionFromMethod(MethodAccess ma, ThrowableType t) {
+  private predicate uncheckedExceptionFromMethod(MethodCall ma, ThrowableType t) {
     conditionCheckArgument(ma, _, _) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
   }
@@ -317,6 +318,8 @@ private module ControlFlowGraphImpl {
       whenexpr.getBranch(_).getAResult() = b
     )
     or
+    b = any(PatternCase pc).getGuard()
+    or
     inBooleanContext(b.(ExprStmt).getExpr())
     or
     inBooleanContext(b.(StmtExpr).getStmt())
@@ -349,8 +352,8 @@ private module ControlFlowGraphImpl {
       forall(Parameter p | p = this.getAParameter() | exists(p.getAnAccess()))
     }
 
-    /** Gets a `MethodAccess` that calls this method. */
-    MethodAccess getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
+    /** Gets a `MethodCall` that calls this method. */
+    MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
   }
 
   /** Holds if a call to `m` indicates that `m` is expected to return. */
@@ -365,7 +368,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a non-overridable method that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Method nonReturningMethod() {
     result instanceof MethodExit
     or
@@ -382,7 +384,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a virtual method that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private EffectivelyNonVirtualMethod likelyNonReturningMethod() {
     result.getReturnType() instanceof VoidType and
     not exists(ReturnStmt ret | ret.getEnclosingCallable() = result) and
@@ -392,9 +393,9 @@ private module ControlFlowGraphImpl {
   }
 
   /**
-   * Gets a `MethodAccess` that always throws an exception or calls `exit`.
+   * Gets a `MethodCall` that always throws an exception or calls `exit`.
    */
-  private MethodAccess nonReturningMethodAccess() {
+  private MethodCall nonReturningMethodCall() {
     result.getMethod().getSourceDeclaration() = nonReturningMethod() or
     result = likelyNonReturningMethod().getAnAccess()
   }
@@ -402,7 +403,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a statement that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Stmt nonReturningStmt() {
     result instanceof ThrowStmt
     or
@@ -424,9 +424,8 @@ private module ControlFlowGraphImpl {
   /**
    * Gets an expression that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Expr nonReturningExpr() {
-    result = nonReturningMethodAccess()
+    result = nonReturningMethodCall()
     or
     result.(StmtExpr).getStmt() = nonReturningStmt()
     or
@@ -436,6 +435,73 @@ private module ControlFlowGraphImpl {
         whenbranch.getRhs() = nonReturningStmt()
       )
     )
+  }
+
+  // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
+  bindingset[switch, i]
+  pragma[inline_late]
+  private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) {
+    c.isNthCaseOf(switch, i)
+  }
+
+  /**
+   * Gets a `SwitchCase` that may be `pred`'s direct successor, where `pred` is declared in block `switch`.
+   *
+   * This means any switch case that comes after `pred` up to the next pattern case, if any, except for `case null`.
+   *
+   * Because we know the switch block contains at least one pattern, we know by https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11
+   * that any default case comes after the last pattern case.
+   */
+  private SwitchCase getASuccessorSwitchCase(PatternCase pred, SwitchBlock switch) {
+    // Note we do include `case null, default` (as well as plain old `default`) here.
+    not result.(ConstCase).getValue(_) instanceof NullLiteral and
+    exists(int maxCaseIndex |
+      switch = pred.getParent() and
+      if exists(getNextPatternCase(pred))
+      then maxCaseIndex = getNextPatternCase(pred).getCaseIndex()
+      else maxCaseIndex = lastCaseIndex(switch)
+    |
+      isNthCaseOf(switch, result, [pred.getCaseIndex() + 1 .. maxCaseIndex])
+    )
+  }
+
+  /**
+   * Gets a `SwitchCase` that may occur first in `switch`.
+   *
+   * If the block contains at least one PatternCase, this is any case up to and including that case, or
+   * the case handling the null literal if any.
+   *
+   * Otherwise it is any case in the switch block.
+   */
+  private SwitchCase getAFirstSwitchCase(SwitchBlock switch) {
+    result.getParent() = switch and
+    (
+      result.(ConstCase).getValue(_) instanceof NullLiteral
+      or
+      result instanceof NullDefaultCase
+      or
+      not exists(getFirstPatternCase(switch))
+      or
+      result.getIndex() <= getFirstPatternCase(switch).getIndex()
+    )
+  }
+
+  private Stmt getSwitchStatement(SwitchBlock switch, int i) { result.isNthChildOf(switch, i) }
+
+  /**
+   * Holds if `last` is the last node in any of pattern case `pc`'s succeeding bind-and-test operations,
+   * immediately before either falling through to execute successor statements or execute a rule body
+   * if present. `completion` is the completion kind of the last operation.
+   */
+  private predicate lastPatternCaseMatchingOp(
+    PatternCase pc, ControlFlowNode last, Completion completion
+  ) {
+    last(pc.getAPattern(), last, completion) and
+    completion = NormalCompletion() and
+    not exists(pc.getGuard())
+    or
+    last(pc.getGuard(), last, completion) and
+    completion = BooleanCompletion(true, _)
   }
 
   /**
@@ -470,16 +536,17 @@ private module ControlFlowGraphImpl {
       or
       this instanceof NotInstanceOfExpr
       or
-      this instanceof LocalVariableDeclExpr and
-      not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
+      this instanceof LocalVariableDeclExpr
       or
       this instanceof StringTemplateExpr
       or
       this instanceof ClassExpr
       or
-      this instanceof RValue
+      this instanceof VarRead
       or
       this instanceof Call // includes both expressions and statements
+      or
+      this instanceof ErrorExpr
       or
       this instanceof ReturnStmt
       or
@@ -495,7 +562,11 @@ private module ControlFlowGraphImpl {
       or
       this.(BlockStmt).getNumStmt() = 0
       or
-      this instanceof SwitchCase and not this.(SwitchCase).isRule()
+      this instanceof SwitchCase and
+      not this.(SwitchCase).isRule() and
+      not this instanceof PatternCase
+      or
+      this instanceof RecordPatternExpr
       or
       this instanceof EmptyStmt
       or
@@ -556,7 +627,7 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(LocalVariableDeclExpr).getInit()
       or
-      index = 0 and result = this.(RValue).getQualifier() and not result instanceof TypeAccess
+      index = 0 and result = this.(VarRead).getQualifier() and not result instanceof TypeAccess
       or
       exists(Call e | e = this |
         index = -1 and result = e.getQualifier() and not result instanceof TypeAccess
@@ -573,6 +644,8 @@ private module ControlFlowGraphImpl {
       index = 0 and result = this.(ThrowStmt).getExpr()
       or
       index = 0 and result = this.(AssertStmt).getExpr()
+      or
+      result = this.(RecordPatternExpr).getSubPattern(index)
     }
 
     /** Gets the first child node, if any. */
@@ -590,7 +663,7 @@ private module ControlFlowGraphImpl {
       not this instanceof BooleanLiteral and
       not this instanceof ReturnStmt and
       not this instanceof ThrowStmt and
-      not this = nonReturningMethodAccess()
+      not this = nonReturningMethodCall()
     }
   }
 
@@ -703,6 +776,18 @@ private module ControlFlowGraphImpl {
     last(try.getFinally(), last, NormalCompletion())
   }
 
+  private predicate isNextNormalSwitchStmt(SwitchBlock switch, Stmt pred, Stmt succ) {
+    exists(int i, Stmt immediateSucc |
+      getSwitchStatement(switch, i) = pred and
+      getSwitchStatement(switch, i + 1) = immediateSucc and
+      (
+        if immediateSucc instanceof PatternCase
+        then isNextNormalSwitchStmt(switch, immediateSucc, succ)
+        else succ = immediateSucc
+      )
+    )
+  }
+
   /**
    * Bind `last` to a cfg node nested inside `n` (or, indeed, `n` itself) such
    * that `last` may be the last node during an execution of `n` and finish
@@ -713,7 +798,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate last(ControlFlowNode n, ControlFlowNode last, Completion completion) {
     // Exceptions are propagated from any sub-expression.
-    // As are any break, continue, or return completions.
+    // As are any break, yield, continue, or return completions.
     exists(Expr e | e.getParent() = n |
       last(e, last, completion) and not completion instanceof NormalOrBooleanCompletion
     )
@@ -728,7 +813,10 @@ private module ControlFlowGraphImpl {
     or
     last(n, last, BooleanCompletion(_, _)) and
     not inBooleanContext(n) and
-    completion = NormalCompletion()
+    completion = NormalCompletion() and
+    // PatternCase has both a boolean-true completion (guard success) and a normal one
+    // (variable declaration completion, when no guard is present).
+    not n instanceof PatternCase
     or
     // Logic expressions and conditional expressions are executed in AST pre-order to facilitate
     // proper short-circuit representation. All other expressions are executed in post-order.
@@ -767,7 +855,7 @@ private module ControlFlowGraphImpl {
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
       last = n and completion = basicBooleanCompletion(false)
       or
-      last = ioe.getLocalVariableDeclExpr() and completion = basicBooleanCompletion(true)
+      last(ioe.getPattern(), last, NormalCompletion()) and completion = basicBooleanCompletion(true)
     )
     or
     // The last node of a node executed in post-order is the node itself.
@@ -849,14 +937,25 @@ private module ControlFlowGraphImpl {
       // any other abnormal completion is propagated
       last(switch.getAStmt(), last, completion) and
       completion != anonymousBreakCompletion() and
-      completion != NormalCompletion()
+      not completion instanceof NormalOrBooleanCompletion
       or
-      // if the last case completes normally, then so does the switch
-      last(switch.getStmt(strictcount(switch.getAStmt()) - 1), last, NormalCompletion()) and
-      completion = NormalCompletion()
+      // if a statement without a non-pattern-case successor completes normally (or for a pattern case
+      // the guard succeeds) then the switch completes normally.
+      exists(Stmt lastNormalStmt, Completion stmtCompletion |
+        lastNormalStmt = getSwitchStatement(switch, _) and
+        not isNextNormalSwitchStmt(switch, lastNormalStmt, _) and
+        last(lastNormalStmt, last, stmtCompletion) and
+        (stmtCompletion = NormalCompletion() or stmtCompletion = BooleanCompletion(true, _)) and
+        completion = NormalCompletion()
+      )
       or
       // if no default case exists, then normal completion of the expression may terminate the switch
+      // Note this can't happen if there are pattern cases or a null literal, as
+      // https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11.2 requires that such
+      // an enhanced switch block is exhaustive.
       not exists(switch.getDefaultCase()) and
+      not exists(switch.getAPatternCase()) and
+      not switch.hasNullCase() and
       last(switch.getExpr(), last, completion) and
       completion = NormalCompletion()
     )
@@ -869,18 +968,42 @@ private module ControlFlowGraphImpl {
       // any other abnormal completion is propagated
       last(switch.getAStmt(), last, completion) and
       not completion instanceof YieldCompletion and
-      completion != NormalCompletion()
+      not completion instanceof NormalOrBooleanCompletion
     )
     or
-    // the last node in a case rule is the last node in the right-hand side
-    last(n.(SwitchCase).getRuleStatement(), last, completion)
-    or
-    // ...and if the rhs is an expression we wrap the completion as a yield
-    exists(Completion caseCompletion |
-      last(n.(SwitchCase).getRuleExpression(), last, caseCompletion) and
+    // If a case rule right-hand-side completes then the switch breaks or yields, depending
+    // on whether this is a switch expression or statement. If it completes abruptly then the
+    // switch completes the same way.
+    exists(Completion caseCompletion, SwitchCase case |
+      case = n and
+      (
+        last(case.getRuleStatement(), last, caseCompletion)
+        or
+        last(case.getRuleExpression(), last, caseCompletion)
+      )
+    |
       if caseCompletion instanceof NormalOrBooleanCompletion
-      then completion = YieldCompletion(caseCompletion)
+      then
+        case.getParent() instanceof SwitchStmt and completion = anonymousBreakCompletion()
+        or
+        case.getParent() instanceof SwitchExpr and completion = YieldCompletion(caseCompletion)
       else completion = caseCompletion
+    )
+    or
+    // A pattern case statement can complete:
+    // * On failure of its final type test (boolean false)
+    // * On failure of its guard test if any (boolean false)
+    // * On completion of one of its pattern variable declarations, if it is not a rule and has no guard (normal completion)
+    // * On success of its guard test, if it is not a rule (boolean true)
+    // (the latter two cases are accounted for by lastPatternCaseMatchingOp)
+    exists(PatternCase pc | n = pc |
+      last = pc and completion = basicBooleanCompletion(false)
+      or
+      last(pc.getGuard(), last, completion) and
+      completion = BooleanCompletion(false, _)
+      or
+      not pc.isRule() and
+      lastPatternCaseMatchingOp(pc, last, completion)
     )
     or
     // the last statement of a synchronized statement is the last statement of its body
@@ -1031,7 +1154,7 @@ private module ControlFlowGraphImpl {
       last(ioe.getExpr(), n, completion) and completion = NormalCompletion() and result = ioe
       or
       n = ioe and
-      result = ioe.getLocalVariableDeclExpr() and
+      result = first(ioe.getPattern()) and
       completion = basicBooleanCompletion(true)
     )
     or
@@ -1192,39 +1315,74 @@ private module ControlFlowGraphImpl {
       last(cc.getVariable(), n, completion) and result = first(cc.getBlock())
     )
     or
-    // Switch statements
-    exists(SwitchStmt switch | completion = NormalCompletion() |
-      // From the entry point control is transferred first to the expression...
-      n = switch and result = first(switch.getExpr())
-      or
-      // ...and then to one of the cases.
-      last(switch.getExpr(), n, completion) and result = first(switch.getACase())
+    // Switch statements and expressions
+    exists(SwitchBlock switch |
+      exists(Expr switchExpr |
+        switchExpr = switch.(SwitchStmt).getExpr() or switchExpr = switch.(SwitchExpr).getExpr()
+      |
+        // From the entry point control is transferred first to the expression...
+        n = switch and result = first(switchExpr) and completion = NormalCompletion()
+        or
+        // ...and then to any case up to and including the first pattern case, if any.
+        last(switchExpr, n, completion) and
+        result = first(getAFirstSwitchCase(switch)) and
+        completion = NormalCompletion()
+      )
       or
       // Statements within a switch body execute sequentially.
-      exists(int i |
-        last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
+      // Note this includes non-rule case statements and the successful pattern match successor
+      // of a non-rule pattern case statement. Rule case statements do not complete normally
+      // (they always break or yield).
+      // Exception: falling through into a pattern case statement (which necessarily does not
+      // declare any named variables) must skip one or more such statements, otherwise we would
+      // incorrectly apply their type test and/or guard.
+      exists(Stmt pred, Stmt succ |
+        isNextNormalSwitchStmt(switch, pred, succ) and
+        last(pred, n, completion) and
+        result = first(succ) and
+        (completion = NormalCompletion() or completion = BooleanCompletion(true, _))
+      )
+      or
+      // A pattern case that completes boolean false (type test or guard failure) continues to consider other cases:
+      exists(PatternCase case | completion = BooleanCompletion(false, _) |
+        last(case, n, completion) and result = getASuccessorSwitchCase(case, switch)
       )
     )
     or
-    // Switch expressions
-    exists(SwitchExpr switch | completion = NormalCompletion() |
-      // From the entry point control is transferred first to the expression...
-      n = switch and result = first(switch.getExpr())
+    // Pattern cases have internal edges:
+    // * Type test success -true-> one of the possible sets of variable declarations
+    //     n.b. for unnamed patterns (e.g. case A _, B _) this means that *one* of the
+    //          type tests has succeeded. There aren't enough nodes in the AST to describe
+    //          a sequential test in detail, so CFG consumers have to watch out for this case.
+    // * Variable declarations -normal-> guard evaluation
+    // * Variable declarations -normal-> rule execution (when there is no guard)
+    // * Guard success -true-> rule execution
+    exists(PatternCase pc |
+      n = pc and
+      completion = basicBooleanCompletion(true) and
+      result = first(pc.getAPattern())
       or
-      // ...and then to one of the cases.
-      last(switch.getExpr(), n, completion) and result = first(switch.getACase())
+      last(pc.getAPattern(), n, completion) and
+      completion = NormalCompletion() and
+      result = first(pc.getGuard())
       or
-      // Statements within a switch body execute sequentially.
-      exists(int i |
-        last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
+      lastPatternCaseMatchingOp(pc, n, completion) and
+      (
+        result = first(pc.getRuleExpression())
+        or
+        result = first(pc.getRuleStatement())
       )
     )
     or
-    // No edges in a non-rule SwitchCase - the constant expression in a ConstCase isn't included in the CFG.
-    exists(SwitchCase case | completion = NormalCompletion() |
-      n = case and result = first(case.getRuleExpression())
-      or
-      n = case and result = first(case.getRuleStatement())
+    // Non-pattern cases have an internal edge leading to their rule body if any when the case matches.
+    exists(SwitchCase case | n = case |
+      not case instanceof PatternCase and
+      completion = NormalCompletion() and
+      (
+        result = first(case.getRuleExpression())
+        or
+        result = first(case.getRuleStatement())
+      )
     )
     or
     // Yield
@@ -1361,5 +1519,5 @@ class ConditionNode extends ControlFlowNode {
   ControlFlowNode getAFalseSuccessor() { result = this.getABranchSuccessor(false) }
 
   /** Gets the condition of this `ConditionNode`. This is equal to the node itself. */
-  Expr getCondition() { result = this }
+  ExprParent getCondition() { result = this }
 }

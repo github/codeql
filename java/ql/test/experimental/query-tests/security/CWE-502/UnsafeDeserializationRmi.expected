@@ -1,5 +1,5 @@
 edges
-| UnsafeDeserializationRmi.java:17:68:17:95 | new UnsafeRemoteObjectImpl(...) : UnsafeRemoteObjectImpl | UnsafeDeserializationRmi.java:17:35:17:96 | exportObject(...) |
+| UnsafeDeserializationRmi.java:17:68:17:95 | new UnsafeRemoteObjectImpl(...) : UnsafeRemoteObjectImpl | UnsafeDeserializationRmi.java:17:35:17:96 | exportObject(...) | provenance | Config |
 nodes
 | UnsafeDeserializationRmi.java:15:33:15:60 | new UnsafeRemoteObjectImpl(...) | semmle.label | new UnsafeRemoteObjectImpl(...) |
 | UnsafeDeserializationRmi.java:16:35:16:62 | new UnsafeRemoteObjectImpl(...) | semmle.label | new UnsafeRemoteObjectImpl(...) |

@@ -11,7 +11,7 @@ import LanguageFeatures.UnusedIndexVariable
  */
 class UnusedLocal extends LocalVariable {
   UnusedLocal() {
-    not exists(getAnAccess()) and
+    not exists(this.getAnAccess()) and
     not exists(Parameter p | this = p.getAVariable()) and
     not exists(FunctionExpr fe | this = fe.getVariable()) and
     not exists(ClassExpr ce | this = ce.getVariable()) and
@@ -20,6 +20,6 @@ class UnusedLocal extends LocalVariable {
     // avoid double reporting
     not unusedIndexVariable(_, this, _) and
     // common convention: variables with leading underscore are intentionally unused
-    getName().charAt(0) != "_"
+    this.getName().charAt(0) != "_"
   }
 }

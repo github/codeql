@@ -309,7 +309,7 @@ private predicate mayHaveThrowCompletion(ControlFlowElement n) {
   isThrowingType(n.asAstNode().(ApplyExpr).getFunction().getType())
   or
   // Getters are the only accessor declarators that may throw.
-  exists(AccessorDecl accessor | isThrowingType(accessor.getInterfaceType()) |
+  exists(Accessor accessor | isThrowingType(accessor.getInterfaceType()) |
     isPropertyGetterElement(n, accessor, _)
   )
 }

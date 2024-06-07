@@ -33,7 +33,7 @@ def _get_table(match):
         name=match["table"],
         columns=[_get_column(f) for f in _Re.field.finditer(match["tablebody"])],
         keyset=keyset,
-        dir=pathlib.PosixPath(match["tabledir"]) if match["tabledir"] else None,
+        dir=pathlib.PurePosixPath(match["tabledir"]) if match["tabledir"] else None,
     )
 
 

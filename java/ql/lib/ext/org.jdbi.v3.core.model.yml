@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String,String,String)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.jdbi.v3.core", "Jdbi", False, "open", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.jdbi.v3.core", "Jdbi", False, "open", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.jdbi.v3.core", "Jdbi", False, "open", "(String,String,String)", "", "Argument[0]", "jdbc-url", "manual"]
+      - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String,Properties)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String,String,String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.jdbi.v3.core", "Jdbi", False, "open", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.jdbi.v3.core", "Jdbi", False, "open", "(String,Properties)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.jdbi.v3.core", "Jdbi", False, "open", "(String,String,String)", "", "Argument[0]", "request-forgery", "manual"]

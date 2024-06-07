@@ -26,14 +26,14 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /**
-   * Gets this node's underlying expression, if any.
+   * Gets the expression that corresponds to this node, if any.
    */
   Expr asExpr() { none() }
 
@@ -43,7 +43,7 @@ class Node extends TNode {
   Pattern asPattern() { none() }
 
   /**
-   * Gets this data flow node's corresponding control flow node.
+   * Gets the control flow node that corresponds to this data flow node.
    */
   ControlFlowNode getCfgNode() { none() }
 
@@ -51,6 +51,11 @@ class Node extends TNode {
    * Gets this node's underlying SSA definition, if any.
    */
   Ssa::Definition asDefinition() { none() }
+
+  /**
+   * Gets the parameter that corresponds to this node, if any.
+   */
+  ParamDecl asParameter() { none() }
 }
 
 /**
@@ -96,7 +101,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
     result = this.(ParameterNodeImpl).getEnclosingCallable()
   }
 
-  ParamDecl getParameter() { result = this.(ParameterNodeImpl).getParameter() }
+  override ParamDecl asParameter() { result = this.(ParameterNodeImpl).getParameter() }
 }
 
 /**
@@ -109,9 +114,7 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   override Ssa::Definition asDefinition() { result = def }
 }
 
-class InoutReturnNode extends Node instanceof InoutReturnNodeImpl {
-  ParamDecl getParameter() { result = super.getParameter() }
-}
+class InoutReturnNode extends Node instanceof InoutReturnNodeImpl { }
 
 /**
  * A node associated with an object after an operation that might have
@@ -129,13 +132,31 @@ class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
 
-/** Gets a node corresponding to expression `e`. */
+/**
+ * A synthesized data flow node representing a closure object that tracks
+ * captured variables.
+ */
+class CaptureNode extends Node, TCaptureNode {
+  private CaptureFlow::SynthesizedCaptureNode cn;
+
+  CaptureNode() { this = TCaptureNode(cn) }
+
+  /**
+   * Gets the underlying synthesized capture node that is created by the
+   * variable capture library.
+   */
+  CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+}
+
+/**
+ * Gets a node corresponding to expression `e`.
+ */
 ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
+ParameterNode parameterNode(ParamDecl p) { result.asParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -200,9 +221,49 @@ module Content {
     /** Gets the declaration of the enum parameter. */
     ParamDecl getParam() { result = p }
 
-    override string toString() {
+    /**
+     * Gets a string describing this enum content, of the form: `EnumElementName:N` where `EnumElementName`
+     * is the name of the enum element declaration within the enum, and `N` is the 0-based index of the
+     * parameter that this content is for. For example in the following code there is only one `EnumContent`
+     * and it's signature is `myValue:0`:
+     * ```
+     * enum MyEnum {
+     *   case myValue(Int)
+     * }
+     * ```
+     */
+    string getSignature() {
       exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
     }
+
+    override string toString() { result = this.getSignature() }
+  }
+
+  /**
+   * An element of a collection. This is a broad class including:
+   *  - elements of collections, such as `Set<Element>`.
+   *  - elements of buffers, such as `UnsafeBufferPointer<Element>`.
+   *  - the pointee of a pointer, such as `UnsafePointer<Pointee>`.
+   */
+  class CollectionContent extends Content, TCollectionContent {
+    override string toString() { result = "Collection element" }
+  }
+
+  /**
+   * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
+   */
+  deprecated class ArrayContent = CollectionContent;
+
+  /** A captured variable. */
+  class CapturedVariableContent extends Content, TCapturedVariableContent {
+    CapturedVariable v;
+
+    CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+    /** Gets the underlying captured variable. */
+    CapturedVariable getVariable() { result = v }
+
+    override string toString() { result = v.toString() }
   }
 }
 
@@ -229,13 +290,4 @@ class ContentSet extends TContentSet {
 
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() { this.isSingleton(result) }
-}
-
-/**
- * DEPRECATED: Do not use.
- */
-abstract deprecated class BarrierGuard extends DataFlowExpr {
-  BarrierGuard() { none() }
-
-  final Node getAGuardedNode() { none() }
 }

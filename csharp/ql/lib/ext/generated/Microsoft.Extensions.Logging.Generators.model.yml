@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ArgumentHasNoCorrespondingTemplate", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_GeneratingForMax6Arguments", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_InconsistentTemplateCasing", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_InvalidLoggingMethodName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_InvalidLoggingMethodParameterName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_InvalidLoggingMethodParameterOut", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_LoggingMethodHasBody", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_LoggingMethodIsGeneric", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_LoggingMethodMustBePartial", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_LoggingMethodMustReturnVoid", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_LoggingMethodShouldBeStatic", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_LoggingUnsupportedLanguageVersion", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MalformedFormatStrings", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MissingLogLevel", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MissingLoggerArgument", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MissingLoggerField", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MissingRequiredType", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MultipleLoggerFields", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_RedundantQualifierInMessage", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntMentionExceptionInMessage", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntMentionLogLevelInMessage", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntMentionLoggerInMessage", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntReuseEventIds", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntReuseEventNames", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_TemplateHasNoCorrespondingArgument", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "LoggerMessageGenerator", "Execute", "(Microsoft.CodeAnalysis.GeneratorExecutionContext)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "LoggerMessageGenerator", "Initialize", "(Microsoft.CodeAnalysis.GeneratorInitializationContext)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "LoggerMessageGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]

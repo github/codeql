@@ -15,7 +15,7 @@ import semmle.code.csharp.commons.Assertions
 
 private predicate propertyOverrides(Property p, string qualifier, string baseClass, string property) {
   exists(Property p2 |
-    p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(qualifier, baseClass) and
+    p2.getUnboundDeclaration().getDeclaringType().hasFullyQualifiedName(qualifier, baseClass) and
     p2.hasName(property)
   |
     p.overridesOrImplementsOrEquals(p2)
@@ -24,8 +24,8 @@ private predicate propertyOverrides(Property p, string qualifier, string baseCla
 
 private predicate containerSizeAccess(PropertyAccess pa, string containerKind) {
   (
-    propertyOverrides(pa.getTarget(), "System.Collections.Generic", "ICollection<>", "Count") or
-    propertyOverrides(pa.getTarget(), "System.Collections.Generic", "IReadOnlyCollection<>", "Count") or
+    propertyOverrides(pa.getTarget(), "System.Collections.Generic", "ICollection`1", "Count") or
+    propertyOverrides(pa.getTarget(), "System.Collections.Generic", "IReadOnlyCollection`1", "Count") or
     propertyOverrides(pa.getTarget(), "System.Collections", "ICollection", "Count")
   ) and
   containerKind = "a collection"
@@ -38,7 +38,7 @@ private predicate containerSizeAccess(PropertyAccess pa, string containerKind) {
 }
 
 class ZeroLiteral extends Expr {
-  ZeroLiteral() { getValue() = "0" }
+  ZeroLiteral() { this.getValue() = "0" }
 }
 
 /**

@@ -1,7 +1,7 @@
 | Members.cs:3:26:3:37 | EventHandler | Types.EventHandler |
 | Members.cs:6:11:6:15 | Class | Types.Class |
 | Members.cs:9:15:9:25 | NestedClass | Types.Class.NestedClass |
-| Members.cs:12:20:12:28 | Method<> | System.String Types.Class.NestedClass.Method`1(!0) |
+| Members.cs:12:20:12:28 | Method`1 | System.String Types.Class.NestedClass.Method`1(!0) |
 | Members.cs:12:27:12:27 | T | !0 |
 | Members.cs:14:34:14:36 | get_Item | System.String Types.Class.NestedClass.get_Item(System.Int32) |
 | Members.cs:14:55:14:57 | set_Item | System.Void Types.Class.NestedClass.set_Item(System.Int32,System.String) |
@@ -18,7 +18,7 @@
 | Members.cs:32:28:32:32 | remove_Event | System.Void Types.Class.remove_Event(Types.EventHandler) |
 | Members.cs:35:20:35:25 | Class2 | Types.Class2 |
 | Members.cs:37:23:37:34 | NestedClass2 | Types.Class2.NestedClass2 |
-| Members.cs:39:28:39:36 | Method<> | System.String Types.Class2.NestedClass2.Method`1(!0) |
+| Members.cs:39:28:39:36 | Method`1 | System.String Types.Class2.NestedClass2.Method`1(!0) |
 | Members.cs:39:35:39:35 | T | !0 |
 | Members.cs:40:42:40:44 | get_Item | System.String Types.Class2.NestedClass2.get_Item(System.Int32) |
 | Members.cs:40:63:40:65 | set_Item | System.Void Types.Class2.NestedClass2.set_Item(System.Int32,System.String) |

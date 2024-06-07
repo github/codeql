@@ -45,7 +45,9 @@ class IRFunction extends IRFunctionBase {
    * Gets the block containing the entry point of this function.
    */
   pragma[noinline]
-  final IRBlock getEntryBlock() { result.getFirstInstruction() = getEnterFunctionInstruction() }
+  final IRBlock getEntryBlock() {
+    result.getFirstInstruction() = this.getEnterFunctionInstruction()
+  }
 
   /**
    * Gets all instructions in this function.

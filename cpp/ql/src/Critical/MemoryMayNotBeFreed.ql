@@ -144,7 +144,7 @@ class AllocReachability extends StackVariableReachabilityExt {
   override predicate isBarrier(
     ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, StackVariable v
   ) {
-    isSource(source, v) and
+    this.isSource(source, v) and
     next = node.getASuccessor() and
     // the memory (stored in any variable `v0`) allocated at `source` is freed or
     // assigned to a global at node, or NULL checked on the edge node -> next.

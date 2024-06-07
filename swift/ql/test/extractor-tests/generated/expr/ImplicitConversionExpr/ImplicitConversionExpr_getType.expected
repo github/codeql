@@ -1,5 +1,5 @@
 | implicit_conversions.swift:2:3:2:3 | (UnsafePointer<CChar>) ... | UnsafePointer<CChar> |
 | implicit_conversions.swift:4:16:4:16 | (Int?) ... | Int? |
-| implicit_conversions.swift:5:25:5:25 | (Equatable) ... | Equatable |
-| implicit_conversions.swift:12:3:12:5 | ((() -> Void)?) ... | (() -> Void)? |
+| implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | any Equatable |
+| implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | @lvalue (() -> Void)? |
 | implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | (() -> Void)? |

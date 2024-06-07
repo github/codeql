@@ -1,0 +1,7 @@
+<script src="path/to/webix.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    addEventListener("message", (event) => {
+        webix.extend({}, JSON.parse(event.data)); // NOT OK
+        webix.copy({}, JSON.parse(event.data)); // NOT OK
+    });
+</script>

@@ -1,26 +1,23 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Session, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
-
+// Generated from `Microsoft.AspNetCore.Session, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
         namespace Builder
         {
-            public static class SessionMiddlewareExtensions
+            public static partial class SessionMiddlewareExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseSession(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseSession(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Builder.SessionOptions options) => throw null;
             }
-
             public class SessionOptions
             {
-                public Microsoft.AspNetCore.Http.CookieBuilder Cookie { get => throw null; set => throw null; }
-                public System.TimeSpan IOTimeout { get => throw null; set => throw null; }
-                public System.TimeSpan IdleTimeout { get => throw null; set => throw null; }
+                public Microsoft.AspNetCore.Http.CookieBuilder Cookie { get => throw null; set { } }
                 public SessionOptions() => throw null;
+                public System.TimeSpan IdleTimeout { get => throw null; set { } }
+                public System.TimeSpan IOTimeout { get => throw null; set { } }
             }
-
         }
         namespace Session
         {
@@ -34,51 +31,44 @@ namespace Microsoft
                 public System.Collections.Generic.IEnumerable<string> Keys { get => throw null; }
                 public System.Threading.Tasks.Task LoadAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public void Remove(string key) => throw null;
-                public void Set(string key, System.Byte[] value) => throw null;
-                public bool TryGetValue(string key, out System.Byte[] value) => throw null;
+                public void Set(string key, byte[] value) => throw null;
+                public bool TryGetValue(string key, out byte[] value) => throw null;
             }
-
             public class DistributedSessionStore : Microsoft.AspNetCore.Session.ISessionStore
             {
                 public Microsoft.AspNetCore.Http.ISession Create(string sessionKey, System.TimeSpan idleTimeout, System.TimeSpan ioTimeout, System.Func<bool> tryEstablishSession, bool isNewSessionKey) => throw null;
                 public DistributedSessionStore(Microsoft.Extensions.Caching.Distributed.IDistributedCache cache, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
             }
-
             public interface ISessionStore
             {
                 Microsoft.AspNetCore.Http.ISession Create(string sessionKey, System.TimeSpan idleTimeout, System.TimeSpan ioTimeout, System.Func<bool> tryEstablishSession, bool isNewSessionKey);
             }
-
             public static class SessionDefaults
             {
-                public static string CookieName;
-                public static string CookiePath;
+                public static readonly string CookieName;
+                public static readonly string CookiePath;
             }
-
             public class SessionFeature : Microsoft.AspNetCore.Http.Features.ISessionFeature
             {
-                public Microsoft.AspNetCore.Http.ISession Session { get => throw null; set => throw null; }
                 public SessionFeature() => throw null;
+                public Microsoft.AspNetCore.Http.ISession Session { get => throw null; set { } }
             }
-
             public class SessionMiddleware
             {
-                public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                 public SessionMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.DataProtection.IDataProtectionProvider dataProtectionProvider, Microsoft.AspNetCore.Session.ISessionStore sessionStore, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> options) => throw null;
+                public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
             }
-
         }
     }
     namespace Extensions
     {
         namespace DependencyInjection
         {
-            public static class SessionServiceCollectionExtensions
+            public static partial class SessionServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSession(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSession(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.SessionOptions> configure) => throw null;
             }
-
         }
     }
 }

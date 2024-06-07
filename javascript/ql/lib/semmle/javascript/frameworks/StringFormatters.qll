@@ -87,11 +87,11 @@ private class LibraryFormatter extends PrintfStyleCall {
     )
   }
 
-  override DataFlow::Node getFormatString() { result = getArgument(formatIndex) }
+  override DataFlow::Node getFormatString() { result = this.getArgument(formatIndex) }
 
   override DataFlow::Node getFormatArgument(int i) {
     i >= 0 and
-    result = getArgument(formatIndex + 1 + i)
+    result = this.getArgument(formatIndex + 1 + i)
   }
 
   override predicate returnsFormatted() { returns = true }

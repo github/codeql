@@ -27,10 +27,8 @@
 
 private import javascript
 import AbstractValues
-import AbstractProperties
 private import InferredTypes
 private import Refinements
-private import internal.AbstractValuesImpl
 import internal.BasicExprTypeInference
 import internal.InterModuleTypeInference
 import internal.InterProceduralTypeInference
@@ -45,7 +43,7 @@ class AnalyzedNode extends DataFlow::Node {
    * Gets another data flow node whose value flows into this node in one local step
    * (that is, not involving global variables).
    */
-  AnalyzedNode localFlowPred() { result = getAPredecessor() }
+  AnalyzedNode localFlowPred() { result = this.getAPredecessor() }
 
   /**
    * Gets an abstract value that this node may evaluate to at runtime.
@@ -57,7 +55,7 @@ class AnalyzedNode extends DataFlow::Node {
    * instances is also performed.
    */
   cached
-  AbstractValue getAValue() { result = getALocalValue() }
+  AbstractValue getAValue() { result = this.getALocalValue() }
 
   /**
    * INTERNAL: Do not use.
@@ -76,31 +74,31 @@ class AnalyzedNode extends DataFlow::Node {
     // feed back the results from the (value) flow analysis into
     // the control flow analysis, so all flow predecessors are
     // considered as sources
-    result = localFlowPred().getALocalValue()
+    result = this.localFlowPred().getALocalValue()
     or
     // model flow that isn't captured by the data flow graph
     exists(DataFlow::Incompleteness cause |
-      isIncomplete(cause) and result = TIndefiniteAbstractValue(cause)
+      this.isIncomplete(cause) and result = TIndefiniteAbstractValue(cause)
     )
   }
 
   /** Gets a type inferred for this node. */
   cached
-  InferredType getAType() { result = getAValue().getType() }
+  InferredType getAType() { result = this.getAValue().getType() }
 
   /**
    * Gets a primitive type to which the value of this node can be coerced.
    */
-  PrimitiveType getAPrimitiveType() { result = getAValue().toPrimitive().getType() }
+  PrimitiveType getAPrimitiveType() { result = this.getAValue().toPrimitive().getType() }
 
   /** Gets a Boolean value that this node evaluates to. */
-  boolean getABooleanValue() { result = getAValue().getBooleanValue() }
+  boolean getABooleanValue() { result = this.getAValue().getBooleanValue() }
 
   /** Gets the unique Boolean value that this node evaluates to, if any. */
-  boolean getTheBooleanValue() { forex(boolean bv | bv = getABooleanValue() | result = bv) }
+  boolean getTheBooleanValue() { forex(boolean bv | bv = this.getABooleanValue() | result = bv) }
 
   /** Gets the unique type inferred for this node, if any. */
-  InferredType getTheType() { result = unique(InferredType t | t = getAType()) }
+  InferredType getTheType() { result = unique(InferredType t | t = this.getAType()) }
 
   /**
    * Gets a pretty-printed representation of all types inferred for this node
@@ -110,19 +108,19 @@ class AnalyzedNode extends DataFlow::Node {
    * particular addition) may have more than one inferred type.
    */
   string ppTypes() {
-    exists(int n | n = getNumTypes() |
+    exists(int n | n = this.getNumTypes() |
       // inferred no types
       n = 0 and result = ""
       or
       // inferred a single type
-      n = 1 and result = getAType().toString()
+      n = 1 and result = this.getAType().toString()
       or
       // inferred all types
       n = count(InferredType it) and result = ppAllTypeTags()
       or
       // the general case: more than one type, but not all types
       // first pretty-print as a comma separated list, then replace last comma by "or"
-      result = (getType(1) + ", " + ppTypes(2)).regexpReplaceAll(", ([^,]++)$", " or $1")
+      result = (this.getType(1) + ", " + this.ppTypes(2)).regexpReplaceAll(", ([^,]++)$", " or $1")
     )
   }
 
@@ -133,12 +131,12 @@ class AnalyzedNode extends DataFlow::Node {
    * and one less than the total number of types.
    */
   private string getType(int i) {
-    getNumTypes() in [2 .. count(InferredType it) - 1] and
-    result = rank[i](InferredType tp | tp = getAType() | tp.toString())
+    this.getNumTypes() in [2 .. count(InferredType it) - 1] and
+    result = rank[i](InferredType tp | tp = this.getAType() | tp.toString())
   }
 
   /** Gets the number of types inferred for this node. */
-  private int getNumTypes() { result = count(getAType()) }
+  private int getNumTypes() { result = count(this.getAType()) }
 
   /**
    * Gets a pretty-printed comma-separated list of all types inferred for this node,
@@ -147,15 +145,15 @@ class AnalyzedNode extends DataFlow::Node {
    * the all-types case are handled specially above.
    */
   private string ppTypes(int i) {
-    exists(int n | n = getNumTypes() and n in [2 .. count(InferredType it) - 1] |
-      i = n and result = getType(i)
+    exists(int n | n = this.getNumTypes() and n in [2 .. count(InferredType it) - 1] |
+      i = n and result = this.getType(i)
       or
-      i in [2 .. n - 1] and result = getType(i) + ", " + ppTypes(i + 1)
+      i in [2 .. n - 1] and result = this.getType(i) + ", " + this.ppTypes(i + 1)
     )
   }
 
   /** Holds if the flow analysis can infer at least one abstract value for this node. */
-  predicate hasFlow() { exists(getAValue()) }
+  predicate hasFlow() { exists(this.getAValue()) }
 
   /**
    * INTERNAL. Use `isIncomplete()` instead.
@@ -194,7 +192,7 @@ class AnalyzedModule extends TopLevel instanceof Module {
    * property.
    */
   AbstractProperty getExportsProperty() {
-    result.getBase() = getModuleObject() and
+    result.getBase() = this.getModuleObject() and
     result.getPropertyName() = "exports"
   }
 
@@ -202,14 +200,14 @@ class AnalyzedModule extends TopLevel instanceof Module {
    * Gets an abstract value inferred for this module's `module.exports`
    * property.
    */
-  AbstractValue getAnExportsValue() { result = getExportsProperty().getAValue() }
+  AbstractValue getAnExportsValue() { result = this.getExportsProperty().getAValue() }
 
   /**
    * Gets an abstract value representing a value exported by this module
    * under the given `name`.
    */
   AbstractValue getAnExportedValue(string name) {
-    exists(AbstractValue exports | exports = getAnExportsValue() |
+    exists(AbstractValue exports | exports = this.getAnExportsValue() |
       // CommonJS modules export `module.exports` as their `default`
       // export in an ES2015 setting
       not this instanceof ES2015Module and
@@ -243,7 +241,7 @@ class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
     // implicit return value
     (
       // either because execution of the function may terminate normally
-      mayReturnImplicitly()
+      this.mayReturnImplicitly()
       or
       // or because there is a bare `return;` statement
       exists(ReturnStmt ret | ret = astNode.getAReturnStmt() | not exists(ret.getExpr()))

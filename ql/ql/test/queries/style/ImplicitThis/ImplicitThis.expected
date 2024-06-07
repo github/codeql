@@ -1,1 +1,2 @@
+| Bad2.qll:8:41:8:48 | PredicateCall | Use of implicit `this`. |
 | Bad.qll:10:41:10:48 | PredicateCall | Use of implicit `this`. |

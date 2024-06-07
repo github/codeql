@@ -363,19 +363,3 @@ class ReferencePattern extends CasePattern, TReferencePattern {
     pred = "getExpr" and result = this.getExpr()
   }
 }
-
-/**
- * DEPRECATED: Use `ReferencePattern` instead.
- *
- * A variable reference in a pattern, i.e. `^x` in the following example:
- * ```rb
- * x = 10
- * case expr
- *   in ^x then puts "ok"
- * end
- * ```
- */
-deprecated class VariableReferencePattern extends ReferencePattern, TVariableReferencePattern {
-  /** Gets the variable access corresponding to this variable reference pattern. */
-  final VariableReadAccess getVariableAccess() { result = this.getExpr() }
-}

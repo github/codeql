@@ -11,13 +11,6 @@ private import internal.TreeSitter
  * This is the root QL class for all expressions.
  */
 class Expr extends Stmt, TExpr {
-  /**
-   * DEPRECATED: Use `getConstantValue` instead.
-   *
-   * Gets the textual (constant) value of this expression, if any.
-   */
-  deprecated string getValueText() { result = this.getConstantValue().toString() }
-
   /** Gets the constant value of this expression, if any. */
   ConstantValue getConstantValue() { result = getConstantValueExpr(this) }
 }

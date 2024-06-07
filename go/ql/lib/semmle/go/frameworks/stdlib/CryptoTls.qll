@@ -13,11 +13,11 @@ module CryptoTls {
 
     FunctionModels() {
       // signature: func Client(conn net.Conn, config *Config) *Conn
-      hasQualifiedName("crypto/tls", "Client") and
+      this.hasQualifiedName("crypto/tls", "Client") and
       (inp.isResult() and outp.isParameter(0))
       or
       // signature: func Server(conn net.Conn, config *Config) *Conn
-      hasQualifiedName("crypto/tls", "Server") and
+      this.hasQualifiedName("crypto/tls", "Server") and
       (inp.isResult() and outp.isParameter(0))
     }
 

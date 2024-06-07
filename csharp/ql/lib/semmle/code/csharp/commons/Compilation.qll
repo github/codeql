@@ -13,25 +13,43 @@ class Compilation extends @compilation {
   Assembly getOutputAssembly() { compilation_assembly(this, result) }
 
   /** Gets the folder in which this compilation was run. */
-  Folder getFolder() { result.getAbsolutePath() = getDirectoryString() }
+  Folder getFolder() { result.getAbsolutePath() = this.getDirectoryString() }
 
   /** Gets the `i`th command line argument. */
   string getArgument(int i) { compilation_args(this, i, result) }
 
   /** Gets the arguments as a concatenated string. */
-  string getArguments() { result = concat(int i | exists(getArgument(i)) | getArgument(i), " ") }
+  string getArguments() {
+    result = concat(int i | exists(this.getArgument(i)) | this.getArgument(i), " ")
+  }
+
+  /**
+   * Gets the `i`th expanded command line argument. This is similar to
+   * `getArgument`, but for a `@someFile.rsp` argument, it includes the arguments
+   * from that file, rather than just taking the argument literally.
+   */
+  string getExpandedArgument(int i) { compilation_expanded_args(this, i, result) }
+
+  /**
+   * Gets the expanded arguments as a concatenated string. This is similar to
+   * `getArguments`, but for a `@someFile.rsp` argument, it includes the arguments
+   * from that file, rather than just taking the argument literally.
+   */
+  string getExpandedArguments() {
+    result = concat(int i | exists(this.getExpandedArgument(i)) | this.getExpandedArgument(i), " ")
+  }
 
   /** Gets the 'i'th source file in this compilation. */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, result) }
 
   /** Gets a source file compiled in this compilation. */
-  File getAFileCompiled() { result = getFileCompiled(_) }
+  File getAFileCompiled() { result = this.getFileCompiled(_) }
 
   /** Gets the `i`th reference in this compilation. */
   File getReference(int i) { compilation_referencing_files(this, i, result) }
 
   /** Gets a reference in this compilation. */
-  File getAReference() { result = getReference(_) }
+  File getAReference() { result = this.getReference(_) }
 
   /** Gets a diagnostic associated with this compilation. */
   Diagnostic getADiagnostic() { result.getCompilation() = this }
@@ -40,29 +58,34 @@ class Compilation extends @compilation {
   float getMetric(int metric) { compilation_time(this, -1, metric, result) }
 
   /** Gets the CPU time of the compilation. */
-  float getFrontendCpuSeconds() { result = getMetric(0) }
+  float getFrontendCpuSeconds() { result = this.getMetric(0) }
 
   /** Gets the elapsed time of the compilation. */
-  float getFrontendElapsedSeconds() { result = getMetric(1) }
+  float getFrontendElapsedSeconds() { result = this.getMetric(1) }
 
   /** Gets the CPU time of the extraction. */
-  float getExtractorCpuSeconds() { result = getMetric(2) }
+  float getExtractorCpuSeconds() { result = this.getMetric(2) }
 
   /** Gets the elapsed time of the extraction. */
-  float getExtractorElapsedSeconds() { result = getMetric(3) }
+  float getExtractorElapsedSeconds() { result = this.getMetric(3) }
 
   /** Gets the user CPU time of the compilation. */
-  float getFrontendUserCpuSeconds() { result = getMetric(4) }
+  float getFrontendUserCpuSeconds() { result = this.getMetric(4) }
 
   /** Gets the user CPU time of the extraction. */
-  float getExtractorUserCpuSeconds() { result = getMetric(5) }
+  float getExtractorUserCpuSeconds() { result = this.getMetric(5) }
 
   /** Gets the peak working set of the extractor process in MB. */
-  float getPeakWorkingSetMB() { result = getMetric(6) }
+  float getPeakWorkingSetMB() { result = this.getMetric(6) }
 
   /** Gets the CPU seconds for the entire extractor process. */
   float getCpuSeconds() { compilation_finished(this, result, _) }
 
   /** Gets the elapsed seconds for the entire extractor process. */
   float getElapsedSeconds() { compilation_finished(this, _, result) }
+
+  /**
+   * Gets the piece of compilation information with the given key, if any.
+   */
+  string getInfo(string key) { compilation_info(this, key, result) }
 }

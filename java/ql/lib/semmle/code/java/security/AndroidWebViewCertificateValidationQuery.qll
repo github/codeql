@@ -15,7 +15,7 @@ class OnReceivedSslErrorMethod extends Method {
 }
 
 /** A call to `SslErrorHandler.proceed` */
-private class SslProceedCall extends MethodAccess {
+private class SslProceedCall extends MethodCall {
   SslProceedCall() {
     this.getMethod().hasQualifiedName("android.webkit", "SslErrorHandler", "proceed")
   }

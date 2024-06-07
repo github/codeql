@@ -1,0 +1,49 @@
+edges
+| LibxmlInjection.rb:5:5:5:8 | name | LibxmlInjection.rb:21:31:21:41 | "//#{...}" | provenance | AdditionalTaintStep |
+| LibxmlInjection.rb:5:5:5:8 | name | LibxmlInjection.rb:27:25:27:35 | "//#{...}" | provenance | AdditionalTaintStep |
+| LibxmlInjection.rb:5:12:5:17 | call to params | LibxmlInjection.rb:5:12:5:29 | ...[...] | provenance |  |
+| LibxmlInjection.rb:5:12:5:29 | ...[...] | LibxmlInjection.rb:5:5:5:8 | name | provenance |  |
+| NokogiriInjection.rb:5:5:5:8 | name | NokogiriInjection.rb:21:23:21:33 | "//#{...}" | provenance | AdditionalTaintStep |
+| NokogiriInjection.rb:5:5:5:8 | name | NokogiriInjection.rb:27:26:27:36 | "//#{...}" | provenance | AdditionalTaintStep |
+| NokogiriInjection.rb:5:5:5:8 | name | NokogiriInjection.rb:33:29:33:39 | "//#{...}" | provenance | AdditionalTaintStep |
+| NokogiriInjection.rb:5:5:5:8 | name | NokogiriInjection.rb:41:15:41:25 | "//#{...}" | provenance | AdditionalTaintStep |
+| NokogiriInjection.rb:5:5:5:8 | name | NokogiriInjection.rb:51:16:51:26 | "//#{...}" | provenance | AdditionalTaintStep |
+| NokogiriInjection.rb:5:12:5:17 | call to params | NokogiriInjection.rb:5:12:5:29 | ...[...] | provenance |  |
+| NokogiriInjection.rb:5:12:5:29 | ...[...] | NokogiriInjection.rb:5:5:5:8 | name | provenance |  |
+| RexmlInjection.rb:5:5:5:8 | name | RexmlInjection.rb:21:40:21:50 | "//#{...}" | provenance | AdditionalTaintStep |
+| RexmlInjection.rb:5:5:5:8 | name | RexmlInjection.rb:27:40:27:50 | "//#{...}" | provenance | AdditionalTaintStep |
+| RexmlInjection.rb:5:5:5:8 | name | RexmlInjection.rb:35:28:35:38 | "//#{...}" | provenance | AdditionalTaintStep |
+| RexmlInjection.rb:5:12:5:17 | call to params | RexmlInjection.rb:5:12:5:29 | ...[...] | provenance |  |
+| RexmlInjection.rb:5:12:5:29 | ...[...] | RexmlInjection.rb:5:5:5:8 | name | provenance |  |
+nodes
+| LibxmlInjection.rb:5:5:5:8 | name | semmle.label | name |
+| LibxmlInjection.rb:5:12:5:17 | call to params | semmle.label | call to params |
+| LibxmlInjection.rb:5:12:5:29 | ...[...] | semmle.label | ...[...] |
+| LibxmlInjection.rb:21:31:21:41 | "//#{...}" | semmle.label | "//#{...}" |
+| LibxmlInjection.rb:27:25:27:35 | "//#{...}" | semmle.label | "//#{...}" |
+| NokogiriInjection.rb:5:5:5:8 | name | semmle.label | name |
+| NokogiriInjection.rb:5:12:5:17 | call to params | semmle.label | call to params |
+| NokogiriInjection.rb:5:12:5:29 | ...[...] | semmle.label | ...[...] |
+| NokogiriInjection.rb:21:23:21:33 | "//#{...}" | semmle.label | "//#{...}" |
+| NokogiriInjection.rb:27:26:27:36 | "//#{...}" | semmle.label | "//#{...}" |
+| NokogiriInjection.rb:33:29:33:39 | "//#{...}" | semmle.label | "//#{...}" |
+| NokogiriInjection.rb:41:15:41:25 | "//#{...}" | semmle.label | "//#{...}" |
+| NokogiriInjection.rb:51:16:51:26 | "//#{...}" | semmle.label | "//#{...}" |
+| RexmlInjection.rb:5:5:5:8 | name | semmle.label | name |
+| RexmlInjection.rb:5:12:5:17 | call to params | semmle.label | call to params |
+| RexmlInjection.rb:5:12:5:29 | ...[...] | semmle.label | ...[...] |
+| RexmlInjection.rb:21:40:21:50 | "//#{...}" | semmle.label | "//#{...}" |
+| RexmlInjection.rb:27:40:27:50 | "//#{...}" | semmle.label | "//#{...}" |
+| RexmlInjection.rb:35:28:35:38 | "//#{...}" | semmle.label | "//#{...}" |
+subpaths
+#select
+| LibxmlInjection.rb:21:31:21:41 | "//#{...}" | LibxmlInjection.rb:5:12:5:17 | call to params | LibxmlInjection.rb:21:31:21:41 | "//#{...}" | XPath expression depends on a $@. | LibxmlInjection.rb:5:12:5:17 | call to params | user-provided value |
+| LibxmlInjection.rb:27:25:27:35 | "//#{...}" | LibxmlInjection.rb:5:12:5:17 | call to params | LibxmlInjection.rb:27:25:27:35 | "//#{...}" | XPath expression depends on a $@. | LibxmlInjection.rb:5:12:5:17 | call to params | user-provided value |
+| NokogiriInjection.rb:21:23:21:33 | "//#{...}" | NokogiriInjection.rb:5:12:5:17 | call to params | NokogiriInjection.rb:21:23:21:33 | "//#{...}" | XPath expression depends on a $@. | NokogiriInjection.rb:5:12:5:17 | call to params | user-provided value |
+| NokogiriInjection.rb:27:26:27:36 | "//#{...}" | NokogiriInjection.rb:5:12:5:17 | call to params | NokogiriInjection.rb:27:26:27:36 | "//#{...}" | XPath expression depends on a $@. | NokogiriInjection.rb:5:12:5:17 | call to params | user-provided value |
+| NokogiriInjection.rb:33:29:33:39 | "//#{...}" | NokogiriInjection.rb:5:12:5:17 | call to params | NokogiriInjection.rb:33:29:33:39 | "//#{...}" | XPath expression depends on a $@. | NokogiriInjection.rb:5:12:5:17 | call to params | user-provided value |
+| NokogiriInjection.rb:41:15:41:25 | "//#{...}" | NokogiriInjection.rb:5:12:5:17 | call to params | NokogiriInjection.rb:41:15:41:25 | "//#{...}" | XPath expression depends on a $@. | NokogiriInjection.rb:5:12:5:17 | call to params | user-provided value |
+| NokogiriInjection.rb:51:16:51:26 | "//#{...}" | NokogiriInjection.rb:5:12:5:17 | call to params | NokogiriInjection.rb:51:16:51:26 | "//#{...}" | XPath expression depends on a $@. | NokogiriInjection.rb:5:12:5:17 | call to params | user-provided value |
+| RexmlInjection.rb:21:40:21:50 | "//#{...}" | RexmlInjection.rb:5:12:5:17 | call to params | RexmlInjection.rb:21:40:21:50 | "//#{...}" | XPath expression depends on a $@. | RexmlInjection.rb:5:12:5:17 | call to params | user-provided value |
+| RexmlInjection.rb:27:40:27:50 | "//#{...}" | RexmlInjection.rb:5:12:5:17 | call to params | RexmlInjection.rb:27:40:27:50 | "//#{...}" | XPath expression depends on a $@. | RexmlInjection.rb:5:12:5:17 | call to params | user-provided value |
+| RexmlInjection.rb:35:28:35:38 | "//#{...}" | RexmlInjection.rb:5:12:5:17 | call to params | RexmlInjection.rb:35:28:35:38 | "//#{...}" | XPath expression depends on a $@. | RexmlInjection.rb:5:12:5:17 | call to params | user-provided value |

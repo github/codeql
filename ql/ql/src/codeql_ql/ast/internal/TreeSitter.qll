@@ -12,13 +12,13 @@ module QL {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { ql_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { ql_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { ql_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { ql_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { ql_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { ql_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1282,13 +1282,13 @@ module Dbscheme {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { dbscheme_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { dbscheme_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { dbscheme_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { dbscheme_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { dbscheme_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { dbscheme_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1611,139 +1611,6 @@ module Dbscheme {
   }
 }
 
-module Yaml {
-  /** The base class for all AST nodes */
-  class AstNode extends @yaml_ast_node {
-    /** Gets a string representation of this element. */
-    string toString() { result = this.getAPrimaryQlClass() }
-
-    /** Gets the location of this element. */
-    final L::Location getLocation() { yaml_ast_node_info(this, _, _, result) }
-
-    /** Gets the parent of this element. */
-    final AstNode getParent() { yaml_ast_node_info(this, result, _, _) }
-
-    /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { yaml_ast_node_info(this, _, result, _) }
-
-    /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
-
-    /** Gets the name of the primary QL class for this element. */
-    string getAPrimaryQlClass() { result = "???" }
-
-    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
-    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
-  }
-
-  /** A token. */
-  class Token extends @yaml_token, AstNode {
-    /** Gets the value of this token. */
-    final string getValue() { yaml_tokeninfo(this, _, result) }
-
-    /** Gets a string representation of this element. */
-    final override string toString() { result = this.getValue() }
-
-    /** Gets the name of the primary QL class for this element. */
-    override string getAPrimaryQlClass() { result = "Token" }
-  }
-
-  /** A reserved word. */
-  class ReservedWord extends @yaml_reserved_word, Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "ReservedWord" }
-  }
-
-  /** A class representing `comment` nodes. */
-  class Comment extends @yaml_comment, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Comment" }
-
-    /** Gets the child of this node. */
-    final Value getChild() { yaml_comment_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { yaml_comment_def(this, result) }
-  }
-
-  /** A class representing `entry` nodes. */
-  class Entry extends @yaml_entry, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Entry" }
-
-    /** Gets the child of this node. */
-    final AstNode getChild() { yaml_entry_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { yaml_entry_def(this, result) }
-  }
-
-  /** A class representing `key` nodes. */
-  class Key extends @yaml_key__, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Key" }
-
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { yaml_key_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { yaml_key_child(this, _, result) }
-  }
-
-  /** A class representing `keyvaluepair` nodes. */
-  class Keyvaluepair extends @yaml_keyvaluepair, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Keyvaluepair" }
-
-    /** Gets the node corresponding to the field `key`. */
-    final Key getKey() { yaml_keyvaluepair_def(this, result, _) }
-
-    /** Gets the node corresponding to the field `value`. */
-    final Value getValue() { yaml_keyvaluepair_def(this, _, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      yaml_keyvaluepair_def(this, result, _) or yaml_keyvaluepair_def(this, _, result)
-    }
-  }
-
-  /** A class representing `listitem` nodes. */
-  class Listitem extends @yaml_listitem, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Listitem" }
-
-    /** Gets the child of this node. */
-    final Value getChild() { yaml_listitem_def(this, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { yaml_listitem_def(this, result) }
-  }
-
-  /** A class representing `simpleId` tokens. */
-  class SimpleId extends @yaml_token_simple_id, Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "SimpleId" }
-  }
-
-  /** A class representing `value` tokens. */
-  class Value extends @yaml_token_value, Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Value" }
-  }
-
-  /** A class representing `yaml` nodes. */
-  class Yaml extends @yaml_yaml, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Yaml" }
-
-    /** Gets the `i`th child of this node. */
-    final Entry getChild(int i) { yaml_yaml_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { yaml_yaml_child(this, _, result) }
-  }
-}
-
 module Blame {
   /** The base class for all AST nodes */
   class AstNode extends @blame_ast_node {
@@ -1751,13 +1618,13 @@ module Blame {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { blame_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { blame_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { blame_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { blame_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { blame_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { blame_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1864,13 +1731,13 @@ module JSON {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { json_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { json_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { json_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { json_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { json_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { json_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1900,13 +1767,15 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
 
+  class UnderscoreValue extends @json_underscore_value, AstNode { }
+
   /** A class representing `array` nodes. */
   class Array extends @json_array, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Array" }
 
     /** Gets the `i`th child of this node. */
-    final Value getChild(int i) { json_array_child(this, i, result) }
+    final UnderscoreValue getChild(int i) { json_array_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { json_array_child(this, _, result) }
@@ -1924,10 +1793,16 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Document" }
 
     /** Gets the `i`th child of this node. */
-    final Value getChild(int i) { json_document_child(this, i, result) }
+    final UnderscoreValue getChild(int i) { json_document_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { json_document_child(this, _, result) }
+  }
+
+  /** A class representing `escape_sequence` tokens. */
+  class EscapeSequence extends @json_token_escape_sequence, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "EscapeSequence" }
   }
 
   /** A class representing `false` tokens. */
@@ -1966,10 +1841,10 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Pair" }
 
     /** Gets the node corresponding to the field `key`. */
-    final AstNode getKey() { json_pair_def(this, result, _) }
+    final String getKey() { json_pair_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final Value getValue() { json_pair_def(this, _, result) }
+    final UnderscoreValue getValue() { json_pair_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -1982,11 +1857,11 @@ module JSON {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "String" }
 
-    /** Gets the child of this node. */
-    final StringContent getChild() { json_string_child(this, result) }
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { json_string_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_string_child(this, result) }
+    final override AstNode getAFieldOrChild() { json_string_child(this, _, result) }
   }
 
   /** A class representing `string_content` tokens. */
@@ -2000,6 +1875,4 @@ module JSON {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "True" }
   }
-
-  class Value extends @json_value, AstNode { }
 }

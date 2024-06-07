@@ -728,8 +728,8 @@
          ]
       },
       {
-         "Name": "UntrustedFlowSources",
-         "Kind": "UntrustedFlowSource",
+         "Name": "RemoteFlowSources",
+         "Kind": "RemoteFlowSource",
          "Methods": [
             {
                "Name": "{source:[](Param|Result|Fields|Type)} \u003c- $source",

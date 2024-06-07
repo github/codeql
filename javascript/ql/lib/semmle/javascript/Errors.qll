@@ -4,12 +4,10 @@ import javascript
 
 /** An error encountered during extraction. */
 abstract class Error extends Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the message associated with this error. */
   abstract string getMessage();
 
-  override string toString() { result = getMessage() }
+  override string toString() { result = this.getMessage() }
 
   /** Holds if this error prevented the file from being extracted. */
   predicate isFatal() { any() }
@@ -25,5 +23,5 @@ class JSParseError extends @js_parse_error, Error {
   /** Gets the source text of the line this error occurs on. */
   string getLine() { js_parse_errors(this, _, _, result) }
 
-  override predicate isFatal() { not getTopLevel() instanceof Angular2::TemplateTopLevel }
+  override predicate isFatal() { not this.getTopLevel() instanceof Angular2::TemplateTopLevel }
 }

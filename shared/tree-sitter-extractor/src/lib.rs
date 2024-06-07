@@ -1,3 +1,4 @@
+pub mod autobuilder;
 pub mod diagnostics;
 pub mod extractor;
 pub mod file_paths;

@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.zaxxer.hikari", "HikariConfig", False, "HikariConfig", "(Properties)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["com.zaxxer.hikari", "HikariConfig", False, "setJdbcUrl", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
+      - ["com.zaxxer.hikari", "HikariConfig", False, "HikariConfig", "(Properties)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["com.zaxxer.hikari", "HikariConfig", False, "setJdbcUrl", "(String)", "", "Argument[0]", "request-forgery", "manual"]

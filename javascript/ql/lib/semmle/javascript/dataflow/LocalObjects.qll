@@ -63,7 +63,7 @@ class LocalObject extends DataFlow::SourceNode {
   LocalObject() {
     // pragmatic limitation: object literals only
     this instanceof DataFlow::ObjectLiteralNode and
-    not flowsTo(getAnEscape()) and
+    not this.flowsTo(getAnEscape()) and
     not exposedAsReceiver(this)
   }
 
@@ -72,16 +72,16 @@ class LocalObject extends DataFlow::SourceNode {
     // the property is defined in the initializer,
     any(DataFlow::PropWrite write).writes(this, name, _) and
     // and it is never deleted
-    not hasDeleteWithName(name) and
+    not this.hasDeleteWithName(name) and
     // and there is no deleted property with computed name
-    not hasDeleteWithComputedProperty()
+    not this.hasDeleteWithComputedProperty()
   }
 
   pragma[noinline]
   private predicate hasDeleteWithName(string name) {
     exists(DeleteExpr del, DataFlow::PropRef ref |
       del.getOperand().flow() = ref and
-      flowsTo(ref.getBase()) and
+      this.flowsTo(ref.getBase()) and
       ref.getPropertyName() = name
     )
   }
@@ -90,7 +90,7 @@ class LocalObject extends DataFlow::SourceNode {
   private predicate hasDeleteWithComputedProperty() {
     exists(DeleteExpr del, DataFlow::PropRef ref |
       del.getOperand().flow() = ref and
-      flowsTo(ref.getBase()) and
+      this.flowsTo(ref.getBase()) and
       not exists(ref.getPropertyName())
     )
   }

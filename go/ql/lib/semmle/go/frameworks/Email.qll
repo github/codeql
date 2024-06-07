@@ -56,13 +56,13 @@ module EmailData {
       // func NewV3MailInit(from *Email, subject string, to *Email, content ...*Content) *SGMailV3
       exists(Function newv3MailInit |
         newv3MailInit.hasQualifiedName(sendgridMail(), "NewV3MailInit") and
-        this = newv3MailInit.getACall().getArgument(any(int i | i = 1 or i >= 3))
+        this = newv3MailInit.getACall().getSyntacticArgument(any(int i | i = 1 or i >= 3))
       )
       or
       // func (s *SGMailV3) AddContent(c ...*Content) *SGMailV3
       exists(Method addContent |
         addContent.hasQualifiedName(sendgridMail(), "SGMailV3", "AddContent") and
-        this = addContent.getACall().getAnArgument()
+        this = addContent.getACall().getASyntacticArgument()
       )
     }
   }

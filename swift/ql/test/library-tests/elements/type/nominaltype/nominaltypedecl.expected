@@ -1,11 +1,15 @@
-| nominaltype.swift:35:6:35:6 | a | A |  |
-| nominaltype.swift:36:6:36:6 | a_alias | A_alias | getAliasedType:A |
-| nominaltype.swift:37:6:37:6 | a_optional_alias | A_optional_alias | getAliasedType:A? |
-| nominaltype.swift:38:6:38:6 | b1 | B1 | getABaseType:A |
-| nominaltype.swift:39:6:39:6 | b2 | B2 | getABaseType:A_alias |
-| nominaltype.swift:40:6:40:6 | b1_alias | B1_alias | getAliasedType:B1 |
-| nominaltype.swift:41:6:41:6 | b2_alias | B2_alias | getAliasedType:B2 |
-| nominaltype.swift:44:6:44:6 | c1 | C1 | getABaseType:P |
-| nominaltype.swift:45:6:45:6 | c2 | C2 | getABaseType:P_alias |
-| nominaltype.swift:46:6:46:6 | c1_alias | C1_alias | getAliasedType:C1 |
-| nominaltype.swift:47:6:47:6 | c2_alias | C2_alias | getAliasedType:C2 |
+| nominaltype.swift:84:6:84:6 | i | Int | getABaseType:CVarArg, getABaseType:CodingKeyRepresentable, getABaseType:CustomReflectable, getABaseType:Decodable, getABaseType:Encodable, getABaseType:Equatable, getABaseType:FixedWidthInteger, getABaseType:Hashable, getABaseType:MirrorPath, getABaseType:SIMDScalar, getABaseType:Sendable, getABaseType:SignedInteger, getABaseType:_CustomPlaygroundQuickLookable, getABaseType:_ExpressibleByBuiltinIntegerLiteral, getABaseType:_HasCustomAnyHashableRepresentation, getABaseTypeDecl:CVarArg, getABaseTypeDecl:CodingKeyRepresentable, getABaseTypeDecl:CustomReflectable, getABaseTypeDecl:Decodable, getABaseTypeDecl:Encodable, getABaseTypeDecl:Equatable, getABaseTypeDecl:FixedWidthInteger, getABaseTypeDecl:Hashable, getABaseTypeDecl:MirrorPath, getABaseTypeDecl:SIMDScalar, getABaseTypeDecl:Sendable, getABaseTypeDecl:SignedInteger, getABaseTypeDecl:_CustomPlaygroundQuickLookable, getABaseTypeDecl:_ExpressibleByBuiltinIntegerLiteral, getABaseTypeDecl:_HasCustomAnyHashableRepresentation, getFullName:Int, getName:Int |
+| nominaltype.swift:86:6:86:6 | a | A | getFullName:A, getName:A |
+| nominaltype.swift:87:6:87:6 | a_alias | A_alias | getAliasedType:A, getFullName:A_alias, getName:A_alias |
+| nominaltype.swift:88:6:88:6 | a_optional_alias | A_optional_alias | getAliasedType:A?, getFullName:A_optional_alias, getName:A_optional_alias |
+| nominaltype.swift:89:6:89:6 | b1 | B1 | getABaseType:A, getABaseTypeDecl:A, getFullName:B1, getName:B1 |
+| nominaltype.swift:90:6:90:6 | b2 | B2 | getABaseType:A, getABaseTypeDecl:A, getFullName:B2, getName:B2 |
+| nominaltype.swift:91:6:91:6 | b1_alias | B1_alias | getAliasedType:B1, getFullName:B1_alias, getName:B1_alias |
+| nominaltype.swift:92:6:92:6 | b2_alias | B2_alias | getAliasedType:B2, getFullName:B2_alias, getName:B2_alias |
+| nominaltype.swift:95:6:95:6 | c1 | C1 | getABaseType:P, getABaseTypeDecl:P, getFullName:C1, getName:C1 |
+| nominaltype.swift:96:6:96:6 | c2 | C2 | getABaseType:P, getABaseTypeDecl:P, getFullName:C2, getName:C2 |
+| nominaltype.swift:97:6:97:6 | o | Outer | getFullName:Outer, getName:Outer |
+| nominaltype.swift:98:6:98:6 | oi | Inner | getFullName:Outer.Inner, getName:Inner |
+| nominaltype.swift:99:6:99:6 | oia | InnerAlias | getAliasedType:A, getFullName:Outer.Inner.InnerAlias, getName:InnerAlias |
+| nominaltype.swift:102:6:102:6 | d1 | D1 | getABaseType:P3, getABaseTypeDecl:P3, getFullName:D1, getName:D1 |
+| nominaltype.swift:103:6:103:6 | d2 | D2 | getABaseType:P4, getABaseTypeDecl:P4, getFullName:D2, getName:D2 |

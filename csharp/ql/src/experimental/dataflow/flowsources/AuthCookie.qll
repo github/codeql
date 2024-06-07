@@ -159,7 +159,7 @@ deprecated class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrac
 /**
  * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
  */
-abstract private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
+abstract deprecated private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
   bindingset[this]
   OnAppendCookieTrackingConfig() { any() }
 
@@ -191,7 +191,7 @@ abstract private class OnAppendCookieTrackingConfig extends DataFlow::Configurat
   override predicate isSink(DataFlow::Node sink) {
     exists(PropertyWrite pw, Assignment a |
       pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
-      pw.getProperty().getName() = propertyName() and
+      pw.getProperty().getName() = this.propertyName() and
       a.getLValue() = pw and
       exists(Expr val |
         DataFlow::localExprFlow(val, a.getRValue()) and

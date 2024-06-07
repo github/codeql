@@ -1,16 +1,24 @@
 edges
-| pam_test.py:0:0:0:0 | ModuleVariableNode for pam_test.request | pam_test.py:71:16:71:22 | ControlFlowNode for request |
-| pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:4:26:4:32 | GSSA Variable request |
-| pam_test.py:4:26:4:32 | GSSA Variable request | pam_test.py:0:0:0:0 | ModuleVariableNode for pam_test.request |
-| pam_test.py:71:16:71:22 | ControlFlowNode for request | pam_test.py:71:16:71:27 | ControlFlowNode for Attribute |
-| pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() |
+| pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:4:26:4:32 | ControlFlowNode for request | provenance |  |
+| pam_test.py:4:26:4:32 | ControlFlowNode for request | pam_test.py:71:16:71:22 | ControlFlowNode for request | provenance |  |
+| pam_test.py:71:5:71:12 | ControlFlowNode for username | pam_test.py:74:33:74:40 | ControlFlowNode for username | provenance |  |
+| pam_test.py:71:16:71:22 | ControlFlowNode for request | pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | pam_test.py:71:16:71:47 | ControlFlowNode for Attribute() | provenance | dict.get |
+| pam_test.py:71:16:71:47 | ControlFlowNode for Attribute() | pam_test.py:71:5:71:12 | ControlFlowNode for username | provenance |  |
+| pam_test.py:74:33:74:40 | ControlFlowNode for username | pam_test.py:74:62:74:67 | ControlFlowNode for handle | provenance | Config |
+| pam_test.py:74:62:74:67 | ControlFlowNode for handle | pam_test.py:76:31:76:36 | ControlFlowNode for handle | provenance |  |
+| pam_test.py:76:31:76:36 | ControlFlowNode for handle | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | provenance | Config |
 nodes
-| pam_test.py:0:0:0:0 | ModuleVariableNode for pam_test.request | semmle.label | ModuleVariableNode for pam_test.request |
 | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| pam_test.py:4:26:4:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| pam_test.py:4:26:4:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pam_test.py:71:5:71:12 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
 | pam_test.py:71:16:71:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| pam_test.py:71:16:71:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pam_test.py:74:33:74:40 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| pam_test.py:74:62:74:67 | ControlFlowNode for handle | semmle.label | ControlFlowNode for handle |
 | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | semmle.label | ControlFlowNode for pam_authenticate() |
+| pam_test.py:76:31:76:36 | ControlFlowNode for handle | semmle.label | ControlFlowNode for handle |
 subpaths
 #select
 | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | This PAM authentication depends on a $@, and 'pam_acct_mgmt' is not called afterwards. | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |

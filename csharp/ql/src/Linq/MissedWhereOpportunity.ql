@@ -12,7 +12,7 @@
 import csharp
 import Linq.Helpers
 
-from ForeachStmt fes, IfStmt is
+from ForeachStmtGenericEnumerable fes, IfStmt is
 where
   missedWhereOpportunity(fes, is) and
   not missedAllOpportunity(fes)

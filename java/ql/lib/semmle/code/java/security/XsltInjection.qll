@@ -12,7 +12,7 @@ abstract class XsltInjectionSink extends DataFlow::Node { }
 
 /** A default sink representing methods susceptible to XSLT Injection attacks. */
 private class DefaultXsltInjectionSink extends XsltInjectionSink {
-  DefaultXsltInjectionSink() { sinkNode(this, "xslt") }
+  DefaultXsltInjectionSink() { sinkNode(this, "xslt-injection") }
 }
 
 /**
@@ -109,7 +109,7 @@ private predicate domSourceStep(DataFlow::Node n1, DataFlow::Node n2) {
  * i.e. `tainted.newTransformer()`.
  */
 private predicate newTransformerFromTemplatesStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TypeTemplates and
@@ -124,7 +124,7 @@ private predicate newTransformerFromTemplatesStep(DataFlow::Node n1, DataFlow::N
  * `XsltCompiler.loadLibraryPackage(tainted)`.
  */
 private predicate xsltCompilerStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     n1.asExpr() = ma.getArgument(0) and
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TypeXsltCompiler and
@@ -138,7 +138,7 @@ private predicate xsltCompilerStep(DataFlow::Node n1, DataFlow::Node n2) {
  * `XsltExecutable.load30()`.
  */
 private predicate xsltExecutableStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TypeXsltExecutable and
@@ -151,7 +151,7 @@ private predicate xsltExecutableStep(DataFlow::Node n1, DataFlow::Node n2) {
  * `XsltExecutable`, i.e. `XsltPackage.link()`.
  */
 private predicate xsltPackageStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TypeXsltPackage and
@@ -191,7 +191,7 @@ private class TypeXsltPackage extends Class {
 
 // XmlParsers classes
 /** A call to `DocumentBuilder.parse`. */
-private class DocumentBuilderParse extends MethodAccess {
+private class DocumentBuilderParse extends MethodCall {
   DocumentBuilderParse() {
     exists(Method m |
       this.getMethod() = m and
@@ -207,7 +207,7 @@ private class DocumentBuilder extends RefType {
 }
 
 /** A call to `XMLInputFactory.createXMLStreamReader`. */
-private class XmlInputFactoryStreamReader extends MethodAccess {
+private class XmlInputFactoryStreamReader extends MethodCall {
   XmlInputFactoryStreamReader() {
     exists(Method m |
       this.getMethod() = m and
@@ -218,7 +218,7 @@ private class XmlInputFactoryStreamReader extends MethodAccess {
 }
 
 /** A call to `XMLInputFactory.createEventReader`. */
-private class XmlInputFactoryEventReader extends MethodAccess {
+private class XmlInputFactoryEventReader extends MethodCall {
   XmlInputFactoryEventReader() {
     exists(Method m |
       this.getMethod() = m and

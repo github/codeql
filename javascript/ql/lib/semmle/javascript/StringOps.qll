@@ -67,7 +67,6 @@ module StringOps {
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
       }
 
-      pragma[assume_small_delta]
       override DataFlow::Node getBaseString() {
         exists(int arg |
           inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
@@ -75,7 +74,6 @@ module StringOps {
         )
       }
 
-      pragma[assume_small_delta]
       override DataFlow::Node getSubstring() {
         exists(int arg |
           inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
@@ -294,7 +292,6 @@ module StringOps {
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
       }
 
-      pragma[assume_small_delta]
       override DataFlow::Node getBaseString() {
         exists(int arg |
           inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
@@ -302,7 +299,6 @@ module StringOps {
         )
       }
 
-      pragma[assume_small_delta]
       override DataFlow::Node getSubstring() {
         exists(int arg |
           inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and

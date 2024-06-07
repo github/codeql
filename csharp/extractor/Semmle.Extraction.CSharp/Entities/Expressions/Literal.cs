@@ -1,8 +1,8 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Kinds;
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System.IO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 kind,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(value));
 
             return new Expression(info);
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.NULL_LITERAL,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(null));
 
             return new Expression(info);

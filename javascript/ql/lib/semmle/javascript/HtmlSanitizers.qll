@@ -65,11 +65,11 @@ private class DefaultHtmlSanitizerCall extends HtmlSanitizerCall {
     this = htmlSanitizerFunction().getACall()
     or
     // Match home-made sanitizers by name.
-    exists(string calleeName | calleeName = getCalleeName() |
+    exists(string calleeName | calleeName = this.getCalleeName() |
       calleeName.regexpMatch("(?i).*html.*") and
       calleeName.regexpMatch("(?i).*(?<!un)(saniti[sz]|escape|strip).*")
     )
   }
 
-  override DataFlow::Node getInput() { result = getArgument(0) }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 }

@@ -1,4 +1,6 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import TestUtilities.InlineExpectationsTest
 
 predicate isYamlFunction(Function f) {
@@ -11,32 +13,29 @@ DataFlow::CallNode getAYamlCall() {
   isYamlFunction(result.getACalleeIncludingExternals().asFunction())
 }
 
-class TaintTransitsFunctionConfig extends TaintTracking::Configuration {
-  TaintTransitsFunctionConfig() { this = "TaintTransitsFunctionConfig" }
-
-  predicate isSourceSinkPair(DataFlow::Node inNode, DataFlow::Node outNode) {
-    exists(DataFlow::CallNode cn | cn = getAYamlCall() |
-      inNode = [cn.getAnArgument(), cn.getReceiver()] and
-      (
-        outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() =
-          [cn.getAnArgument(), cn.getReceiver()]
-        or
-        outNode = cn.getAResult()
-      )
+predicate isSourceSinkPair(DataFlow::Node inNode, DataFlow::Node outNode) {
+  exists(DataFlow::CallNode cn | cn = getAYamlCall() |
+    inNode = [cn.getAnArgument(), cn.getReceiver()] and
+    (
+      outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() = [cn.getAnArgument(), cn.getReceiver()]
+      or
+      outNode = cn.getAResult()
     )
-  }
-
-  override predicate isSource(DataFlow::Node n) { isSourceSinkPair(n, _) }
-
-  override predicate isSink(DataFlow::Node n) { isSourceSinkPair(_, n) }
+  )
 }
 
-class TaintFunctionModelTest extends InlineExpectationsTest {
-  TaintFunctionModelTest() { this = "TaintFunctionModelTest" }
+module TaintTransitsFunctionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { isSourceSinkPair(n, _) }
 
-  override string getARelevantTag() { result = "ttfnmodelstep" }
+  predicate isSink(DataFlow::Node n) { isSourceSinkPair(_, n) }
+}
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+module TaintTransitsFunctionFlow = TaintTracking::Global<TaintTransitsFunctionConfig>;
+
+module TaintFunctionModelTest implements TestSig {
+  string getARelevantTag() { result = "ttfnmodelstep" }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "ttfnmodelstep" and
     (
       exists(TaintTracking::FunctionModel model, DataFlow::CallNode call | call = model.getACall() |
@@ -46,9 +45,9 @@ class TaintFunctionModelTest extends InlineExpectationsTest {
         value = "\"" + model.getAnInputNode(call) + " -> " + model.getAnOutputNode(call) + "\""
       )
       or
-      exists(TaintTransitsFunctionConfig config, DataFlow::Node arg, DataFlow::Node output |
-        config.hasFlow(arg, output) and
-        config.isSourceSinkPair(arg, output) and
+      exists(DataFlow::Node arg, DataFlow::Node output |
+        TaintTransitsFunctionFlow::flow(arg, output) and
+        isSourceSinkPair(arg, output) and
         arg.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
           location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
         element = arg.toString() and
@@ -58,12 +57,10 @@ class TaintFunctionModelTest extends InlineExpectationsTest {
   }
 }
 
-class MarshalerTest extends InlineExpectationsTest {
-  MarshalerTest() { this = "MarshalerTest" }
+module MarshalerTest implements TestSig {
+  string getARelevantTag() { result = "marshaler" }
 
-  override string getARelevantTag() { result = "marshaler" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "marshaler" and
     exists(MarshalingFunction m, DataFlow::CallNode call | call = m.getACall() |
       call.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -76,12 +73,10 @@ class MarshalerTest extends InlineExpectationsTest {
   }
 }
 
-class UnmarshalerTest extends InlineExpectationsTest {
-  UnmarshalerTest() { this = "UnmarshalerTest" }
+module UnmarshalerTest implements TestSig {
+  string getARelevantTag() { result = "unmarshaler" }
 
-  override string getARelevantTag() { result = "unmarshaler" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "unmarshaler" and
     exists(UnmarshalingFunction m, DataFlow::CallNode call | call = m.getACall() |
       call.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -93,3 +88,5 @@ class UnmarshalerTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests3<TaintFunctionModelTest, MarshalerTest, UnmarshalerTest>>

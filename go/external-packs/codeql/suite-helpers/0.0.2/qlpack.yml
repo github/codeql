@@ -1,3 +1,4 @@
 name: codeql/suite-helpers
 version: 0.0.2
 library: true
+warnOnImplicitThis: true

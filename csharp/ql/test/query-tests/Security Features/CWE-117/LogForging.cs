@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Web;
+using Microsoft.Extensions.Logging;
 
 class ILogger
 {
@@ -20,10 +21,16 @@ public class LogForgingHandler : IHttpHandler
         logger.Warn(username + " logged in");
         // GOOD: New-lines removed
         logger.Warn(username.Replace(Environment.NewLine, "") + " logged in");
+        // GOOD: New-lines removed
+        logger.Warn(username.Replace(Environment.NewLine, "", StringComparison.InvariantCultureIgnoreCase) + " logged in");
         // GOOD: Html encoded
         logger.Warn(WebUtility.HtmlEncode(username) + " logged in");
         // BAD: Logged as-is to TraceSource
         new TraceSource("Test").TraceInformation(username + " logged in");
+
+        Microsoft.Extensions.Logging.ILogger logger2 = null;
+        // BAD: Logged as-is
+        logger2.LogError(username);
     }
 
     public bool IsReusable

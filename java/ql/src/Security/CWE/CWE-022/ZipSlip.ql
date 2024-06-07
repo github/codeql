@@ -1,8 +1,8 @@
 /**
- * @name Arbitrary file write during archive extraction ("Zip Slip")
- * @description Extracting files from a malicious archive without validating that the
- *              destination file path is within the destination directory can cause files outside
- *              the destination directory to be overwritten.
+ * @name Arbitrary file access during archive extraction ("Zip Slip")
+ * @description Extracting files from a malicious ZIP file, or similar type of archive, without
+ *              validating that the destination file path is within the destination directory
+ *              can allow an attacker to unexpectedly gain access to resources.
  * @kind path-problem
  * @id java/zipslip
  * @problem.severity error

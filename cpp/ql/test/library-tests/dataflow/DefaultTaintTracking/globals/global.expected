@@ -1,2 +1,0 @@
-WARNING: Predicate taintedIncludingGlobalVars has been deprecated and may be removed in future (global.ql:8,3-47)
-WARNING: Predicate taintedIncludingGlobalVars has been deprecated and may be removed in future (global.ql:12,3-53)

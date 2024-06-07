@@ -1,7 +1,7 @@
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.CSharp.Entities;
-using System;
 
 namespace Semmle.Extraction.CSharp.Populators
 {

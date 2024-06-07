@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/beego/beego` package.
  */
 
@@ -9,7 +9,7 @@ private import semmle.go.security.SafeUrlFlowCustomizations
 
 // Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the [Beego](https://github.com/beego/beego) package.
  */
 module Beego {
@@ -50,7 +50,7 @@ module Beego {
   /**
    * `BeegoInput` sources of untrusted data.
    */
-  private class BeegoInputSource extends UntrustedFlowSource::Range {
+  private class BeegoInputSource extends RemoteFlowSource::Range {
     string methodName;
 
     BeegoInputSource() {
@@ -81,7 +81,7 @@ module Beego {
   /**
    * `beego.Controller` sources of untrusted data.
    */
-  private class BeegoControllerSource extends UntrustedFlowSource::Range {
+  private class BeegoControllerSource extends RemoteFlowSource::Range {
     BeegoControllerSource() {
       exists(string methodName, FunctionOutput output |
         methodName = "ParseForm" and
@@ -105,7 +105,7 @@ module Beego {
   /**
    * `BeegoInputRequestBody` sources of untrusted data.
    */
-  private class BeegoInputRequestBodySource extends UntrustedFlowSource::Range {
+  private class BeegoInputRequestBodySource extends RemoteFlowSource::Range {
     BeegoInputRequestBodySource() {
       exists(DataFlow::FieldReadNode frn | this = frn |
         frn.getField().hasQualifiedName(contextPackagePath(), "BeegoInput", "RequestBody")
@@ -116,7 +116,7 @@ module Beego {
   /**
    * `beego/context.Context` sources of untrusted data.
    */
-  private class BeegoContextSource extends UntrustedFlowSource::Range {
+  private class BeegoContextSource extends RemoteFlowSource::Range {
     BeegoContextSource() {
       exists(Method m | m.hasQualifiedName(contextPackagePath(), "Context", "GetCookie") |
         this = m.getACall().getResult()
@@ -253,7 +253,7 @@ module Beego {
       this.getTarget().hasQualifiedName([packagePath(), logsPackagePath()], getALogFunctionName())
     }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class BeegoLoggerMethods extends LoggerCall::Range, DataFlow::MethodCallNode {
@@ -261,13 +261,13 @@ module Beego {
       this.getTarget().hasQualifiedName(logsPackagePath(), "BeeLogger", getALogFunctionName())
     }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class UtilLoggers extends LoggerCall::Range, DataFlow::CallNode {
     UtilLoggers() { this.getTarget().hasQualifiedName(utilsPackagePath(), "Display") }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
@@ -278,21 +278,31 @@ module Beego {
     }
   }
 
+  /**
+   * The File system access sinks
+   */
   private class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
+    int pathArg;
+
     FsOperations() {
-      this.getTarget().hasQualifiedName(packagePath(), "Walk")
+      this.getTarget().hasQualifiedName(packagePath(), "Walk") and pathArg = 1
       or
       exists(Method m | this = m.getACall() |
-        m.hasQualifiedName(packagePath(), "FileSystem", "Open") or
-        m.hasQualifiedName(packagePath(), "Controller", "SaveToFile")
+        m.hasQualifiedName(packagePath(), "FileSystem", "Open") and pathArg = 0
+        or
+        m.hasQualifiedName(packagePath(), "Controller", "SaveToFile") and pathArg = 1
+        or
+        m.hasQualifiedName(contextPackagePath(), "BeegoOutput", "Download") and
+        pathArg = 0
+        or
+        // SaveToFileWithBuffer only available in v2
+        m.hasQualifiedName("github.com/beego/beego/v2/server/web", "Controller",
+          "SaveToFileWithBuffer") and
+        pathArg = 1
       )
     }
 
-    override DataFlow::Node getAPathArgument() {
-      this.getTarget().getName() = ["Walk", "SaveToFile"] and result = this.getArgument(1)
-      or
-      this.getTarget().getName() = "Open" and result = this.getArgument(0)
-    }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
   }
 
   private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {

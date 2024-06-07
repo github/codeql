@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.JexlInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-class JexlInjectionTest extends InlineExpectationsTest {
-  JexlInjectionTest() { this = "HasJexlInjectionTest" }
+module JexlInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasJexlInjection" }
 
-  override string getARelevantTag() { result = "hasJexlInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasJexlInjection" and
     exists(DataFlow::Node sink | JexlInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class JexlInjectionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<JexlInjectionTest>

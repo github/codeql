@@ -29,9 +29,6 @@ class TypeUnboundIdLdapConnection extends Class {
   }
 }
 
-/** DEPRECATED: Alias for TypeUnboundIdLdapConnection */
-deprecated class TypeUnboundIdLDAPConnection = TypeUnboundIdLdapConnection;
-
 /*--- Methods ---*/
 /** A method with the name `setBaseDN` declared in `com.unboundid.ldap.sdk.SearchRequest`. */
 class MethodUnboundIdSearchRequestSetBaseDN extends Method {
@@ -65,9 +62,6 @@ class MethodUnboundIdFilterCreateAndFilter extends Method {
   }
 }
 
-/** DEPRECATED: Alias for MethodUnboundIdFilterCreateAndFilter */
-deprecated class MethodUnboundIdFilterCreateANDFilter = MethodUnboundIdFilterCreateAndFilter;
-
 /** A method with the name `createORFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateORFilter extends Method {
   MethodUnboundIdFilterCreateORFilter() {
@@ -75,9 +69,6 @@ class MethodUnboundIdFilterCreateORFilter extends Method {
     this.hasName("createORFilter")
   }
 }
-
-/** DEPRECATED: Alias for MethodUnboundIdFilterCreateNOTFilter */
-deprecated class MethodUnboundIdFilterCreateNOTFilter = MethodUnboundIdFilterCreateNotFilter;
 
 /** A method with the name `createNOTFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateNotFilter extends Method {
@@ -103,9 +94,6 @@ class MethodUnboundIdLdapConnectionSearch extends Method {
   }
 }
 
-/** DEPRECATED: Alias for MethodUnboundIdLdapConnectionSearch */
-deprecated class MethodUnboundIdLDAPConnectionSearch = MethodUnboundIdLdapConnectionSearch;
-
 /** A method with the name `asyncSearch` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
 class MethodUnboundIdLdapConnectionAsyncSearch extends Method {
   MethodUnboundIdLdapConnectionAsyncSearch() {
@@ -114,10 +102,6 @@ class MethodUnboundIdLdapConnectionAsyncSearch extends Method {
   }
 }
 
-/** DEPRECATED: Alias for MethodUnboundIdLdapConnectionAsyncSearch */
-deprecated class MethodUnboundIdLDAPConnectionAsyncSearch =
-  MethodUnboundIdLdapConnectionAsyncSearch;
-
 /** A method with the name `searchForEntry` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
 class MethodUnboundIdLdapConnectionSearchForEntry extends Method {
   MethodUnboundIdLdapConnectionSearchForEntry() {
@@ -125,7 +109,3 @@ class MethodUnboundIdLdapConnectionSearchForEntry extends Method {
     this.hasName("searchForEntry")
   }
 }
-
-/** DEPRECATED: Alias for MethodUnboundIdLdapConnectionSearchForEntry */
-deprecated class MethodUnboundIdLDAPConnectionSearchForEntry =
-  MethodUnboundIdLdapConnectionSearchForEntry;

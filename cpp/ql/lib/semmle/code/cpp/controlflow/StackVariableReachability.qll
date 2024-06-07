@@ -25,7 +25,7 @@ import cpp
  */
 abstract class StackVariableReachability extends string {
   bindingset[this]
-  StackVariableReachability() { length() >= 0 }
+  StackVariableReachability() { this.length() >= 0 }
 
   /** Holds if `node` is a source for the reachability analysis using variable `v`. */
   abstract predicate isSource(ControlFlowNode node, StackVariable v);
@@ -227,7 +227,7 @@ predicate bbSuccessorEntryReachesLoopInvariant(
  */
 abstract class StackVariableReachabilityWithReassignment extends StackVariableReachability {
   bindingset[this]
-  StackVariableReachabilityWithReassignment() { length() >= 0 }
+  StackVariableReachabilityWithReassignment() { this.length() >= 0 }
 
   /** Override this predicate rather than `isSource` (`isSource` is used internally). */
   abstract predicate isSourceActual(ControlFlowNode node, StackVariable v);
@@ -330,7 +330,7 @@ abstract class StackVariableReachabilityWithReassignment extends StackVariableRe
  */
 abstract class StackVariableReachabilityExt extends string {
   bindingset[this]
-  StackVariableReachabilityExt() { length() >= 0 }
+  StackVariableReachabilityExt() { this.length() >= 0 }
 
   /** `node` is a source for the reachability analysis using variable `v`. */
   abstract predicate isSource(ControlFlowNode node, StackVariable v);

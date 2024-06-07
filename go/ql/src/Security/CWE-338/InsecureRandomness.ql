@@ -11,21 +11,21 @@
  */
 
 import go
-import semmle.go.security.InsecureRandomness::InsecureRandomness
-import DataFlow::PathGraph
+import semmle.go.security.InsecureRandomness
+import InsecureRandomness::Flow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string kind
+from InsecureRandomness::Flow::PathNode source, InsecureRandomness::Flow::PathNode sink, string kind
 where
-  cfg.hasFlowPath(source, sink) and
-  cfg.isSinkWithKind(sink.getNode(), kind) and
+  InsecureRandomness::Flow::flowPath(source, sink) and
+  InsecureRandomness::isSinkWithKind(sink.getNode(), kind) and
   (
     kind != "A password-related function"
     or
     sink =
-      min(DataFlow::PathNode sink2, int line |
-        cfg.hasFlowPath(_, sink2) and
+      min(InsecureRandomness::Flow::PathNode sink2, int line |
+        InsecureRandomness::Flow::flowPath(_, sink2) and
         sink2.getNode().getRoot() = sink.getNode().getRoot() and
-        sink2.hasLocationInfo(_, line, _, _, _)
+        line = sink2.getLocation().getStartLine()
       |
         sink2 order by line
       )

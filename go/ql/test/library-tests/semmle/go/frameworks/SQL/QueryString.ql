@@ -1,12 +1,12 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import TestUtilities.InlineExpectationsTest
 
-class SqlTest extends InlineExpectationsTest {
-  SqlTest() { this = "SQLTest" }
+module SqlTest implements TestSig {
+  string getARelevantTag() { result = "query" }
 
-  override string getARelevantTag() { result = "query" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "query" and
     exists(SQL::Query q, SQL::QueryString qs | qs = q.getAQueryString() |
       q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -17,12 +17,10 @@ class SqlTest extends InlineExpectationsTest {
   }
 }
 
-class QueryString extends InlineExpectationsTest {
-  QueryString() { this = "QueryString no Query" }
+module QueryString implements TestSig {
+  string getARelevantTag() { result = "querystring" }
 
-  override string getARelevantTag() { result = "querystring" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "querystring" and
     element = "" and
     exists(SQL::QueryString qs | not exists(SQL::Query q | qs = q.getAQueryString()) |
@@ -33,30 +31,30 @@ class QueryString extends InlineExpectationsTest {
   }
 }
 
-class Config extends TaintTracking::Configuration {
-  Config() { this = "pg-orm config" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLit }
 
-  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLit }
-
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     n = any(DataFlow::CallNode cn | cn.getTarget().getName() = "sink").getAnArgument()
   }
 }
 
-class TaintFlow extends InlineExpectationsTest {
-  TaintFlow() { this = "pg-orm flow" }
+module Flow = TaintTracking::Global<Config>;
 
-  override string getARelevantTag() { result = "flowfrom" }
+module TaintFlow implements TestSig {
+  string getARelevantTag() { result = "flowfrom" }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flowfrom" and
     element = "" and
-    exists(Config c, DataFlow::Node fromNode, DataFlow::Node toNode |
+    exists(DataFlow::Node fromNode, DataFlow::Node toNode |
       toNode
           .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
             location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      c.hasFlow(fromNode, toNode) and
+      Flow::flow(fromNode, toNode) and
       value = fromNode.asExpr().(StringLit).getValue()
     )
   }
 }
+
+import MakeTest<MergeTests3<SqlTest, QueryString, TaintFlow>>

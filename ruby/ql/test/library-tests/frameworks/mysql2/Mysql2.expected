@@ -1,0 +1,5 @@
+| Mysql2.rb:10:16:10:48 | call to query | Mysql2.rb:10:27:10:47 | "SELECT * FROM users" |
+| Mysql2.rb:13:16:13:73 | call to query | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." |
+| Mysql2.rb:17:16:17:76 | call to query | Mysql2.rb:17:27:17:75 | "SELECT * FROM users WHERE use..." |
+| Mysql2.rb:21:16:21:57 | call to execute | Mysql2.rb:20:31:20:82 | "SELECT * FROM users WHERE id ..." |
+| Mysql2.rb:25:16:25:60 | call to execute | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." |

@@ -54,6 +54,7 @@ class Pattern extends Generated::Pattern {
    * For example, in `switch .some(e) { case let .some(p): ... }`, the pattern `p`
    * is matched against the expression `e`.
    */
+  pragma[nomagic]
   Expr getMatchingExpr() {
     result = this.getImmediateMatchingExpr()
     or

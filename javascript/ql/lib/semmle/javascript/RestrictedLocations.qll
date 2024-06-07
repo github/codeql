@@ -20,13 +20,13 @@ class FirstLineOf extends Locatable {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(int xl, int xc |
-      getLocation().hasLocationInfo(filepath, startline, startcolumn, xl, xc) and
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, xl, xc) and
       startline = endline and
       if xl = startline
       then endcolumn = xc
       else
         endcolumn =
-          max(int c | any(Location l).hasLocationInfo(filepath, startline, _, startline, c))
+          max(int c | any(DbLocation l).hasLocationInfo(filepath, startline, _, startline, c))
     )
   }
 }
@@ -49,7 +49,7 @@ class LastLineOf extends Locatable {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(int xl, int xc |
-      getLocation().hasLocationInfo(filepath, xl, xc, endline, endcolumn) and
+      this.getLocation().hasLocationInfo(filepath, xl, xc, endline, endcolumn) and
       startline = endline and
       if xl = endline then startcolumn = xc else startcolumn = 1
     )

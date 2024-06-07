@@ -3,6 +3,7 @@ private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.TypeFlow
+private import semmle.code.java.dataflow.FlowSteps
 private import DataFlowPrivate
 private import DataFlowUtil
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -54,13 +55,10 @@ private module Cached {
         fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
       )
     } or
-    TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-      FlowSummaryImpl::Private::summaryNodeRange(c, state)
-    } or
-    TSummaryParameterNode(SummarizedCallable c, int pos) {
-      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-    } or
-    TFieldValueNode(Field f)
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TFieldValueNode(Field f) or
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn) or
+    TAdditionalNode(Expr e, string id) { any(AdditionalDataFlowNode adfn).nodeAt(e, id) }
 
   cached
   newtype TContent =
@@ -69,6 +67,7 @@ private module Cached {
     TCollectionContent() or
     TMapKeyContent() or
     TMapValueContent() or
+    TCapturedVariableContent(CapturedVariable v) or
     TSyntheticFieldContent(SyntheticField s)
 
   cached
@@ -78,13 +77,14 @@ private module Cached {
     TCollectionContentApprox() or
     TMapKeyContentApprox() or
     TMapValueContentApprox() or
+    TCapturedVariableContentApprox(CapturedVariable v) or
     TSyntheticFieldApproxContent()
 }
 
 import Cached
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
-  call instanceof MethodAccess and
+  call instanceof MethodCall and
   instarg = call.getQualifier() and
   not call.getCallee().isStatic()
 }
@@ -132,9 +132,11 @@ module Public {
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
       or
-      result = this.(SummaryParameterNode).getTypeImpl()
+      result = this.(CaptureNode).getTypeImpl()
       or
       result = this.(FieldValueNode).getField().getType()
+      or
+      result instanceof TypeObject and this instanceof AdditionalNode
     }
 
     /** Gets the callable in which this node occurs. */
@@ -161,7 +163,7 @@ module Public {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -337,6 +339,21 @@ module Public {
     /** Holds if this is an access to an object's own instance. */
     predicate isOwnInstanceAccess() { this.getInstanceAccess().isOwnInstanceAccess() }
   }
+
+  /** A node introduced by an extension of `AdditionalDataFlowNode`. */
+  class AdditionalNode extends Node, TAdditionalNode {
+    Expr e_;
+    string id_;
+
+    AdditionalNode() { this = TAdditionalNode(e_, id_) }
+
+    override string toString() { result = e_.toString() + " (" + id_ + ")" }
+
+    override Location getLocation() { result = e_.getLocation() }
+
+    /** Holds if this node was introduced by `AdditionalDataFlowNode.nodeAt(e, id)`. */
+    predicate nodeAt(Expr e, string id) { e = e_ and id = id_ }
+  }
 }
 
 private import Public
@@ -378,9 +395,10 @@ module Private {
     result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
-    n = TSummaryInternalNode(result.asSummarizedCallable(), _) or
-    n = TSummaryParameterNode(result.asSummarizedCallable(), _) or
-    result.asFieldScope() = n.(FieldValueNode).getField()
+    result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
+    result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
+    result.asFieldScope() = n.(FieldValueNode).getField() or
+    result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
@@ -407,7 +425,7 @@ module Private {
       or
       this = getInstanceArgument(_)
       or
-      this.(SummaryNode).isArgumentOf(_, _)
+      this.(FlowSummaryNode).isArgumentOf(_, _)
     }
 
     /**
@@ -424,7 +442,7 @@ module Private {
       or
       pos = -1 and this = getInstanceArgument(call.asCall())
       or
-      this.(SummaryNode).isArgumentOf(call, pos)
+      this.(FlowSummaryNode).isArgumentOf(call, pos)
     }
 
     /** Gets the call in which this node is an argument. */
@@ -435,7 +453,7 @@ module Private {
   class ReturnNode extends Node {
     ReturnNode() {
       exists(ReturnStmt ret | this.asExpr() = ret.getResult()) or
-      this.(SummaryNode).isReturn()
+      this.(FlowSummaryNode).isReturn()
     }
 
     /** Gets the kind of this returned value. */
@@ -445,63 +463,81 @@ module Private {
   /** A data flow node that represents the output of a call. */
   class OutNode extends Node {
     OutNode() {
-      this.asExpr() instanceof MethodAccess
+      this.asExpr() instanceof MethodCall
       or
-      this.(SummaryNode).isOut(_)
+      this.(FlowSummaryNode).isOut(_)
     }
 
     /** Gets the underlying call. */
     DataFlowCall getCall() {
       result.asCall() = this.asExpr()
       or
-      this.(SummaryNode).isOut(result)
+      this.(FlowSummaryNode).isOut(result)
     }
   }
 
   /**
    * A data-flow node used to model flow summaries.
    */
-  class SummaryNode extends Node, TSummaryInternalNode {
-    private SummarizedCallable c;
-    private FlowSummaryImpl::Private::SummaryNodeState state;
+  class FlowSummaryNode extends Node, TFlowSummaryNode {
+    FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-    SummaryNode() { this = TSummaryInternalNode(c, state) }
+    SummarizedCallable getSummarizedCallable() {
+      result = this.getSummaryNode().getSummarizedCallable()
+    }
 
-    override Location getLocation() { result = c.getLocation() }
+    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
 
-    override string toString() { result = "[summary] " + state + " in " + c }
+    override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
-    predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+    predicate isArgumentOf(SummaryCall call, int i) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call.getReceiver(), this.getSummaryNode(), i)
     }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
+    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), _) }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
+    predicate isOut(SummaryCall call) {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), _)
+    }
   }
 
-  SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    result = TSummaryInternalNode(c, state)
-  }
-
-  class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
-    private SummarizedCallable sc;
-    private int pos_;
-
-    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
-
-    override Location getLocation() { result = sc.getLocation() }
-
-    override string toString() { result = "[summary param] " + pos_ + " in " + sc }
-
-    override predicate isParameterOf(DataFlowCallable c, int pos) {
-      c.asSummarizedCallable() = sc and pos = pos_
+  class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
     }
 
-    Type getTypeImpl() { result = sc.getParameterType(pos_) }
+    private int getPosition() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    }
+
+    override predicate isParameterOf(DataFlowCallable c, int pos) {
+      c.asSummarizedCallable() = this.getSummarizedCallable() and pos = this.getPosition()
+    }
+  }
+
+  /**
+   * A synthesized data flow node representing a closure object that tracks
+   * captured variables.
+   */
+  class CaptureNode extends Node, TCaptureNode {
+    private CaptureFlow::SynthesizedCaptureNode cn;
+
+    CaptureNode() { this = TCaptureNode(cn) }
+
+    CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+
+    override Location getLocation() { result = cn.getLocation() }
+
+    override string toString() { result = cn.toString() }
+
+    Type getTypeImpl() {
+      exists(Variable v | cn.isVariableAccess(v) and result = v.getType())
+      or
+      cn.isInstanceAccess() and result = cn.getEnclosingCallable().getDeclaringType()
+    }
   }
 }
 
@@ -523,10 +559,23 @@ private class MallocNode extends Node, TMallocNode {
   ClassInstanceExpr getClassInstanceExpr() { result = cie }
 }
 
-private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
-  private Node pre;
+private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
+
+  override Node getPreUpdateNode() { result = pre }
+}
+
+private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
+  private CaptureNode pre;
+
+  CapturePostUpdateNode() {
+    CaptureFlow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+      pre.getSynthesizedCaptureNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }

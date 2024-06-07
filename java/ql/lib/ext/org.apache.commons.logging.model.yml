@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.commons.logging", "Log", True, "debug", "", "", "Argument[0]", "logging", "manual"]
-      - ["org.apache.commons.logging", "Log", True, "error", "", "", "Argument[0]", "logging", "manual"]
-      - ["org.apache.commons.logging", "Log", True, "fatal", "", "", "Argument[0]", "logging", "manual"]
-      - ["org.apache.commons.logging", "Log", True, "info", "", "", "Argument[0]", "logging", "manual"]
-      - ["org.apache.commons.logging", "Log", True, "trace", "", "", "Argument[0]", "logging", "manual"]
-      - ["org.apache.commons.logging", "Log", True, "warn", "", "", "Argument[0]", "logging", "manual"]
+      - ["org.apache.commons.logging", "Log", True, "debug", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.commons.logging", "Log", True, "error", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.commons.logging", "Log", True, "fatal", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.commons.logging", "Log", True, "info", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.commons.logging", "Log", True, "trace", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.commons.logging", "Log", True, "warn", "", "", "Argument[0]", "log-injection", "manual"]

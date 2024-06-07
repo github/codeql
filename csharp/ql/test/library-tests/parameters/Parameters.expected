@@ -1,35 +1,61 @@
 noDefaultValue
-| Parameters.cs:3:17:3:18 | M1 | Parameters.cs:3:24:3:24 | a | 0 |
-| Parameters.cs:3:17:3:18 | M1 | Parameters.cs:3:34:3:34 | b | 1 |
-| Parameters.cs:3:17:3:18 | M1 | Parameters.cs:3:44:3:44 | c | 2 |
-| Parameters.cs:4:17:4:18 | M2 | Parameters.cs:4:24:4:24 | a | 0 |
-| Parameters.cs:8:17:8:18 | M6 | Parameters.cs:8:29:8:30 | s1 | 0 |
-| Parameters.cs:9:17:9:18 | M7 | Parameters.cs:9:27:9:28 | e1 | 0 |
+| LambdaParameters.cs:9:18:9:44 | (...) => ... | LambdaParameters.cs:9:23:9:23 | x | 0 |
+| LambdaParameters.cs:11:18:11:59 | (...) => ... | LambdaParameters.cs:11:23:11:23 | x | 0 |
+| Parameters.cs:7:17:7:18 | M1 | Parameters.cs:7:24:7:24 | a | 0 |
+| Parameters.cs:7:17:7:18 | M1 | Parameters.cs:7:34:7:34 | b | 1 |
+| Parameters.cs:7:17:7:18 | M1 | Parameters.cs:7:44:7:44 | c | 2 |
+| Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:24:8:24 | a | 0 |
+| Parameters.cs:12:17:12:18 | M6 | Parameters.cs:12:29:12:30 | s1 | 0 |
+| Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:27:13:28 | e1 | 0 |
+| Parameters.cs:36:32:36:39 | implicit conversion | Parameters.cs:36:54:36:54 | i | 0 |
+| Parameters.cs:37:32:37:39 | implicit conversion | Parameters.cs:37:57:37:57 | s | 0 |
 | Parameters.dll:0:0:0:0 | M1 | Parameters.dll:0:0:0:0 | a | 0 |
 | Parameters.dll:0:0:0:0 | M1 | Parameters.dll:0:0:0:0 | b | 1 |
 | Parameters.dll:0:0:0:0 | M1 | Parameters.dll:0:0:0:0 | c | 2 |
 | Parameters.dll:0:0:0:0 | M2 | Parameters.dll:0:0:0:0 | a | 0 |
 | Parameters.dll:0:0:0:0 | M6 | Parameters.dll:0:0:0:0 | s1 | 0 |
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e1 | 0 |
+| Parameters.dll:0:0:0:0 | implicit conversion | Parameters.dll:0:0:0:0 | i | 0 |
+| Parameters.dll:0:0:0:0 | implicit conversion | Parameters.dll:0:0:0:0 | s | 0 |
 withDefaultValue
-| Parameters.cs:4:17:4:18 | M2 | Parameters.cs:4:34:4:34 | b | 1 | Parameters.cs:4:38:4:41 | null | null |
-| Parameters.cs:4:17:4:18 | M2 | Parameters.cs:4:51:4:51 | c | 2 | Parameters.cs:4:55:4:70 | "default string" | default string |
-| Parameters.cs:5:17:5:18 | M3 | Parameters.cs:5:24:5:24 | a | 0 | Parameters.cs:5:28:5:28 | 1 | 1 |
-| Parameters.cs:5:17:5:18 | M3 | Parameters.cs:5:38:5:38 | b | 1 | Parameters.cs:5:42:5:45 | null | null |
-| Parameters.cs:5:17:5:18 | M3 | Parameters.cs:5:55:5:55 | c | 2 | Parameters.cs:5:59:5:64 | "null" | null |
-| Parameters.cs:6:17:6:18 | M4 | Parameters.cs:6:24:6:24 | a | 0 | Parameters.cs:6:28:6:34 | (...) ... | 0 |
-| Parameters.cs:6:17:6:18 | M4 | Parameters.cs:6:44:6:44 | b | 1 | Parameters.cs:6:48:6:54 | default | null |
-| Parameters.cs:7:17:7:18 | M5 | Parameters.cs:7:24:7:24 | a | 0 | Parameters.cs:7:28:7:36 | object creation of type Int32 | 0 |
-| Parameters.cs:7:17:7:18 | M5 | Parameters.cs:7:46:7:46 | b | 1 | Parameters.cs:7:50:7:56 | default | null |
-| Parameters.cs:8:17:8:18 | M6 | Parameters.cs:8:42:8:43 | s2 | 1 | Parameters.cs:8:47:8:63 | default(...) | - |
-| Parameters.cs:8:17:8:18 | M6 | Parameters.cs:8:75:8:76 | s3 | 2 | Parameters.cs:8:80:8:93 | object creation of type MyStruct | - |
-| Parameters.cs:9:17:9:18 | M7 | Parameters.cs:9:38:9:39 | e2 | 1 | Parameters.cs:9:43:9:57 | default(...) | 0 |
-| Parameters.cs:9:17:9:18 | M7 | Parameters.cs:9:67:9:68 | e3 | 2 | Parameters.cs:9:72:9:83 | object creation of type MyEnum | 0 |
-| Parameters.cs:9:17:9:18 | M7 | Parameters.cs:9:93:9:94 | e4 | 3 | Parameters.cs:9:98:9:105 | access to constant A | 1 |
-| Parameters.cs:9:17:9:18 | M7 | Parameters.cs:9:115:9:116 | e5 | 4 | Parameters.cs:9:120:9:128 | (...) ... | 5 |
-| Parameters.cs:11:17:11:21 | M8<> | Parameters.cs:11:25:11:25 | t | 0 | Parameters.cs:11:29:11:35 | (...) ... | - |
-| Parameters.cs:12:17:12:21 | M9<> | Parameters.cs:12:25:12:25 | t | 0 | Parameters.cs:12:29:12:35 | (...) ... | - |
-| Parameters.cs:13:17:13:22 | M10<> | Parameters.cs:13:26:13:26 | t | 0 | Parameters.cs:13:30:13:36 | (...) ... | null |
+| LambdaParameters.cs:9:18:9:44 | (...) => ... | LambdaParameters.cs:9:30:9:30 | y | 1 | LambdaParameters.cs:9:34:9:34 | 1 | 1 |
+| LambdaParameters.cs:10:18:10:43 | (...) => ... | LambdaParameters.cs:10:27:10:27 | o | 0 | LambdaParameters.cs:10:31:10:37 | default | null |
+| LambdaParameters.cs:11:18:11:59 | (...) => ... | LambdaParameters.cs:11:30:11:30 | y | 1 | LambdaParameters.cs:11:34:11:34 | 1 | 1 |
+| LambdaParameters.cs:11:18:11:59 | (...) => ... | LambdaParameters.cs:11:41:11:41 | z | 2 | LambdaParameters.cs:11:45:11:45 | 2 | 2 |
+| LambdaParameters.cs:12:18:12:66 | (...) => ... | LambdaParameters.cs:12:60:12:60 | x | 0 | LambdaParameters.cs:12:19:12:60 | 7 | 7 |
+| LambdaParameters.cs:13:18:13:68 | (...) => ... | LambdaParameters.cs:13:62:13:62 | x | 0 | LambdaParameters.cs:13:19:13:62 | object creation of type DateTime | - |
+| Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:34:8:34 | b | 1 | Parameters.cs:8:38:8:41 | null | null |
+| Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:51:8:51 | c | 2 | Parameters.cs:8:55:8:70 | "default string" | default string |
+| Parameters.cs:9:17:9:18 | M3 | Parameters.cs:9:24:9:24 | a | 0 | Parameters.cs:9:28:9:28 | 1 | 1 |
+| Parameters.cs:9:17:9:18 | M3 | Parameters.cs:9:38:9:38 | b | 1 | Parameters.cs:9:42:9:45 | null | null |
+| Parameters.cs:9:17:9:18 | M3 | Parameters.cs:9:55:9:55 | c | 2 | Parameters.cs:9:59:9:64 | "null" | null |
+| Parameters.cs:10:17:10:18 | M4 | Parameters.cs:10:24:10:24 | a | 0 | Parameters.cs:10:28:10:34 | (...) ... | 0 |
+| Parameters.cs:10:17:10:18 | M4 | Parameters.cs:10:44:10:44 | b | 1 | Parameters.cs:10:48:10:54 | default | null |
+| Parameters.cs:11:17:11:18 | M5 | Parameters.cs:11:24:11:24 | a | 0 | Parameters.cs:11:28:11:36 | object creation of type Int32 | 0 |
+| Parameters.cs:11:17:11:18 | M5 | Parameters.cs:11:46:11:46 | b | 1 | Parameters.cs:11:50:11:56 | default | null |
+| Parameters.cs:12:17:12:18 | M6 | Parameters.cs:12:42:12:43 | s2 | 1 | Parameters.cs:12:47:12:63 | default(...) | - |
+| Parameters.cs:12:17:12:18 | M6 | Parameters.cs:12:75:12:76 | s3 | 2 | Parameters.cs:12:80:12:93 | object creation of type MyStruct | - |
+| Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:38:13:39 | e2 | 1 | Parameters.cs:13:43:13:57 | default(...) | 0 |
+| Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:67:13:68 | e3 | 2 | Parameters.cs:13:72:13:83 | object creation of type MyEnum | 0 |
+| Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:93:13:94 | e4 | 3 | Parameters.cs:13:98:13:105 | access to constant A | 1 |
+| Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:115:13:116 | e5 | 4 | Parameters.cs:13:120:13:128 | (...) ... | 5 |
+| Parameters.cs:15:17:15:21 | M8`1 | Parameters.cs:15:25:15:25 | t | 0 | Parameters.cs:15:29:15:35 | (...) ... | - |
+| Parameters.cs:16:17:16:21 | M9`1 | Parameters.cs:16:25:16:25 | t | 0 | Parameters.cs:16:29:16:35 | (...) ... | - |
+| Parameters.cs:17:17:17:22 | M10`1 | Parameters.cs:17:26:17:26 | t | 0 | Parameters.cs:17:30:17:36 | (...) ... | null |
+| Parameters.cs:19:17:19:19 | M11 | Parameters.cs:19:25:19:28 | arg1 | 0 | Parameters.cs:19:32:19:32 | 3 | 3 |
+| Parameters.cs:20:17:20:19 | M12 | Parameters.cs:20:30:20:33 | arg2 | 0 | Parameters.cs:20:37:20:43 | (...) ... | - |
+| Parameters.cs:21:17:21:19 | M13 | Parameters.cs:21:31:21:34 | arg3 | 0 | Parameters.cs:21:38:21:41 | null | null |
+| Parameters.cs:22:17:22:19 | M14 | Parameters.cs:22:64:22:67 | arg4 | 0 | Parameters.cs:22:21:22:67 | object creation of type DateTime | - |
+| Parameters.cs:23:17:23:19 | M15 | Parameters.cs:23:68:23:71 | arg5 | 0 | Parameters.cs:23:21:23:71 | object creation of type DateTime | - |
+| Parameters.cs:24:17:24:19 | M16 | Parameters.cs:24:64:24:67 | arg6 | 0 | Parameters.cs:24:21:24:67 | 6 | 6 |
+| Parameters.cs:25:17:25:19 | M17 | Parameters.cs:25:68:25:71 | arg7 | 0 | Parameters.cs:25:21:25:71 | default | null |
+| Parameters.cs:26:17:26:19 | M18 | Parameters.cs:26:63:26:66 | arg8 | 0 | Parameters.cs:26:21:26:66 | 3 | 3 |
+| Parameters.cs:27:17:27:19 | M19 | Parameters.cs:27:74:27:77 | arg9 | 0 | Parameters.cs:27:21:27:77 | 10.3 | 10.3 |
+| Parameters.cs:28:17:28:19 | M20 | Parameters.cs:28:67:28:71 | arg10 | 0 | Parameters.cs:28:21:28:71 | call to operator implicit conversion | - |
+| Parameters.cs:29:17:29:19 | M21 | Parameters.cs:29:76:29:80 | arg10 | 0 | Parameters.cs:29:21:29:80 | call to operator implicit conversion | - |
+| Parameters.cs:30:17:30:19 | M22 | Parameters.cs:30:27:30:31 | arg11 | 0 | Parameters.cs:30:35:30:35 | (...) ... | 0 |
+| Parameters.cs:31:17:31:19 | M23 | Parameters.cs:31:26:31:30 | arg12 | 0 | Parameters.cs:31:34:31:34 | (...) ... | 0 |
+| Parameters.cs:32:17:32:19 | M24 | Parameters.cs:32:65:32:69 | arg13 | 0 | Parameters.cs:32:21:32:69 | (...) ... | 7 |
 | Parameters.dll:0:0:0:0 | M2 | Parameters.dll:0:0:0:0 | b | 1 | Parameters.dll:0:0:0:0 | default | null |
 | Parameters.dll:0:0:0:0 | M2 | Parameters.dll:0:0:0:0 | c | 2 | Parameters.dll:0:0:0:0 | "default string" | default string |
 | Parameters.dll:0:0:0:0 | M3 | Parameters.dll:0:0:0:0 | a | 0 | Parameters.dll:0:0:0:0 | 1 | 1 |
@@ -45,6 +71,31 @@ withDefaultValue
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e3 | 2 | Parameters.dll:0:0:0:0 | (...) ... | 0 |
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e4 | 3 | Parameters.dll:0:0:0:0 | (...) ... | 1 |
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e5 | 4 | Parameters.dll:0:0:0:0 | (...) ... | 5 |
-| Parameters.dll:0:0:0:0 | M8<> | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
-| Parameters.dll:0:0:0:0 | M9<> | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
-| Parameters.dll:0:0:0:0 | M10<> | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | null |
+| Parameters.dll:0:0:0:0 | M8`1 | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
+| Parameters.dll:0:0:0:0 | M9`1 | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
+| Parameters.dll:0:0:0:0 | M10`1 | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | null |
+| Parameters.dll:0:0:0:0 | M11 | Parameters.dll:0:0:0:0 | arg1 | 0 | Parameters.dll:0:0:0:0 | 3 | 3 |
+| Parameters.dll:0:0:0:0 | M12 | Parameters.dll:0:0:0:0 | arg2 | 0 | Parameters.dll:0:0:0:0 | default | - |
+| Parameters.dll:0:0:0:0 | M13 | Parameters.dll:0:0:0:0 | arg3 | 0 | Parameters.dll:0:0:0:0 | default | - |
+| Parameters.dll:0:0:0:0 | M14 | Parameters.dll:0:0:0:0 | arg4 | 0 | Parameters.dll:0:0:0:0 | object creation of type DateTime | - |
+| Parameters.dll:0:0:0:0 | M15 | Parameters.dll:0:0:0:0 | arg5 | 0 | Parameters.dll:0:0:0:0 | object creation of type DateTime | - |
+| Parameters.dll:0:0:0:0 | M16 | Parameters.dll:0:0:0:0 | arg6 | 0 | Parameters.dll:0:0:0:0 | 6 | 6 |
+| Parameters.dll:0:0:0:0 | M17 | Parameters.dll:0:0:0:0 | arg7 | 0 | Parameters.dll:0:0:0:0 | default | null |
+| Parameters.dll:0:0:0:0 | M18 | Parameters.dll:0:0:0:0 | arg8 | 0 | Parameters.dll:0:0:0:0 | 3 | 3 |
+| Parameters.dll:0:0:0:0 | M19 | Parameters.dll:0:0:0:0 | arg9 | 0 | Parameters.dll:0:0:0:0 | 10.3 | 10.3 |
+| Parameters.dll:0:0:0:0 | M20 | Parameters.dll:0:0:0:0 | arg10 | 0 | Parameters.dll:0:0:0:0 | call to operator implicit conversion | - |
+| Parameters.dll:0:0:0:0 | M21 | Parameters.dll:0:0:0:0 | arg10 | 0 | Parameters.dll:0:0:0:0 | call to operator implicit conversion | - |
+| Parameters.dll:0:0:0:0 | M22 | Parameters.dll:0:0:0:0 | arg11 | 0 | Parameters.dll:0:0:0:0 | (...) ... | 0 |
+| Parameters.dll:0:0:0:0 | M23 | Parameters.dll:0:0:0:0 | arg12 | 0 | Parameters.dll:0:0:0:0 | (...) ... | 0 |
+| Parameters.dll:0:0:0:0 | M24 | Parameters.dll:0:0:0:0 | arg13 | 0 | Parameters.dll:0:0:0:0 | (...) ... | 7 |
+dateTimeDefaults
+| LambdaParameters.cs:13:18:13:68 | (...) => ... | LambdaParameters.cs:13:62:13:62 | x | LambdaParameters.cs:13:19:13:62 | object creation of type DateTime | DateTime(long) | 14 |
+| Parameters.cs:22:17:22:19 | M14 | Parameters.cs:22:64:22:67 | arg4 | Parameters.cs:22:21:22:67 | object creation of type DateTime | DateTime(long) | 14 |
+| Parameters.cs:23:17:23:19 | M15 | Parameters.cs:23:68:23:71 | arg5 | Parameters.cs:23:21:23:71 | object creation of type DateTime | DateTime(long) | 10001 |
+| Parameters.dll:0:0:0:0 | M14 | Parameters.dll:0:0:0:0 | arg4 | Parameters.dll:0:0:0:0 | object creation of type DateTime | DateTime(long) | 14 |
+| Parameters.dll:0:0:0:0 | M15 | Parameters.dll:0:0:0:0 | arg5 | Parameters.dll:0:0:0:0 | object creation of type DateTime | DateTime(long) | 10001 |
+implicitConversionDefaults
+| Parameters.cs:28:17:28:19 | M20 | Parameters.cs:28:67:28:71 | arg10 | Parameters.cs:28:21:28:71 | call to operator implicit conversion | Parameters.cs:28:21:28:71 | 7 | Int32 | 7 |
+| Parameters.cs:29:17:29:19 | M21 | Parameters.cs:29:76:29:80 | arg10 | Parameters.cs:29:21:29:80 | call to operator implicit conversion | Parameters.cs:29:21:29:80 | "mystring" | String | mystring |
+| Parameters.dll:0:0:0:0 | M20 | Parameters.dll:0:0:0:0 | arg10 | Parameters.dll:0:0:0:0 | call to operator implicit conversion | Parameters.dll:0:0:0:0 | 7 | Int32 | 7 |
+| Parameters.dll:0:0:0:0 | M21 | Parameters.dll:0:0:0:0 | arg10 | Parameters.dll:0:0:0:0 | call to operator implicit conversion | Parameters.dll:0:0:0:0 | "mystring" | String | mystring |

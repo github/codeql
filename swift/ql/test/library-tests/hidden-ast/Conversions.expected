@@ -1,0 +1,3 @@
+| chained_conversion.swift:2:12:2:14 | (Int) ... | LoadExpr | chained_conversion.swift:2:12:2:14 | .self | DotSelfExpr |
+| chained_conversion.swift:2:12:2:14 | (Int?) ... | InjectIntoOptionalExpr | chained_conversion.swift:2:12:2:14 | (Int) ... | LoadExpr |
+| chained_conversion.swift:2:12:2:14 | .self | DotSelfExpr | chained_conversion.swift:2:12:2:12 | x | DeclRefExpr |

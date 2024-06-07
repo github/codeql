@@ -1,26 +1,95 @@
-| A.java:14:14:14:16 | "A" | A.java:14:14:14:16 | "A" |
-| A.java:14:14:14:16 | "A" | A.java:15:16:15:22 | get(...) |
-| A.java:14:14:14:16 | "A" | A.java:18:8:18:15 | p |
-| A.java:14:14:14:16 | "A" | A.java:32:26:32:26 | p |
-| A.java:21:11:21:13 | "B" | A.java:15:16:15:22 | get(...) |
-| A.java:21:11:21:13 | "B" | A.java:21:7:21:13 | ...=... |
-| A.java:21:11:21:13 | "B" | A.java:21:11:21:13 | "B" |
-| A.java:21:11:21:13 | "B" | A.java:33:26:33:26 | s |
-| A.java:23:11:23:13 | "C" | A.java:15:16:15:22 | get(...) |
-| A.java:23:11:23:13 | "C" | A.java:23:7:23:13 | ...=... |
-| A.java:23:11:23:13 | "C" | A.java:23:11:23:13 | "C" |
-| A.java:23:11:23:13 | "C" | A.java:33:26:33:26 | s |
-| A.java:25:22:25:24 | "D" | A.java:4:9:4:16 | e |
-| A.java:25:22:25:24 | "D" | A.java:4:21:4:28 | ...=... |
-| A.java:25:22:25:24 | "D" | A.java:4:28:4:28 | e |
-| A.java:25:22:25:24 | "D" | A.java:6:31:6:34 | elem |
-| A.java:25:22:25:24 | "D" | A.java:15:16:15:22 | get(...) |
-| A.java:25:22:25:24 | "D" | A.java:25:22:25:24 | "D" |
-| A.java:25:22:25:24 | "D" | A.java:34:26:34:37 | getElem(...) |
-| A.java:27:16:27:18 | "E" | A.java:5:18:5:25 | e |
-| A.java:27:16:27:18 | "E" | A.java:5:30:5:37 | ...=... |
-| A.java:27:16:27:18 | "E" | A.java:5:37:5:37 | e |
-| A.java:27:16:27:18 | "E" | A.java:6:31:6:34 | elem |
-| A.java:27:16:27:18 | "E" | A.java:15:16:15:22 | get(...) |
-| A.java:27:16:27:18 | "E" | A.java:27:16:27:18 | "E" |
-| A.java:27:16:27:18 | "E" | A.java:35:26:35:37 | getElem(...) |
+| A.java:14:14:14:16 | "A" : String | A.java:14:11:14:20 | f2(...) : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:15:16:15:16 | a : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:15:16:15:22 | get(...) : String |
+| A.java:14:14:14:16 | "A" : String | A.java:18:8:18:15 | p : String |
+| A.java:14:14:14:16 | "A" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:28:11:38:5 | p : String |
+| A.java:14:14:14:16 | "A" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:31:17:31:17 | this : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:32:26:32:26 | p : String |
+| A.java:14:14:14:16 | "A" : String | A.java:32:26:32:26 | this : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:33:26:33:26 | this : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:34:26:34:27 | this : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:35:26:35:27 | this : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:39:12:39:12 | a : new A(...) { ... } [p] |
+| A.java:14:14:14:16 | "A" : String | A.java:39:12:39:12 | p : String |
+| A.java:21:11:21:13 | "B" : String | A.java:14:11:14:20 | f2(...) : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:15:16:15:16 | a : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:15:16:15:22 | get(...) : String |
+| A.java:21:11:21:13 | "B" : String | A.java:21:7:21:13 | ...=... : String |
+| A.java:21:11:21:13 | "B" : String | A.java:25:5:25:26 | phi(String s) : String |
+| A.java:21:11:21:13 | "B" : String | A.java:28:11:38:5 | String s : String |
+| A.java:21:11:21:13 | "B" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:31:17:31:17 | this : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:32:26:32:26 | this : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:33:26:33:26 | s : String |
+| A.java:21:11:21:13 | "B" : String | A.java:33:26:33:26 | this : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:34:26:34:27 | this : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:35:26:35:27 | this : new A(...) { ... } [String s] |
+| A.java:21:11:21:13 | "B" : String | A.java:39:12:39:12 | String s : String |
+| A.java:21:11:21:13 | "B" : String | A.java:39:12:39:12 | a : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:14:11:14:20 | f2(...) : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:15:16:15:16 | a : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:15:16:15:22 | get(...) : String |
+| A.java:23:11:23:13 | "C" : String | A.java:23:7:23:13 | ...=... : String |
+| A.java:23:11:23:13 | "C" : String | A.java:25:5:25:26 | phi(String s) : String |
+| A.java:23:11:23:13 | "C" : String | A.java:28:11:38:5 | String s : String |
+| A.java:23:11:23:13 | "C" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:31:17:31:17 | this : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:32:26:32:26 | this : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:33:26:33:26 | s : String |
+| A.java:23:11:23:13 | "C" : String | A.java:33:26:33:26 | this : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:34:26:34:27 | this : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:35:26:35:27 | this : new A(...) { ... } [String s] |
+| A.java:23:11:23:13 | "C" : String | A.java:39:12:39:12 | String s : String |
+| A.java:23:11:23:13 | "C" : String | A.java:39:12:39:12 | a : new A(...) { ... } [String s] |
+| A.java:25:22:25:24 | "D" : String | A.java:4:5:4:7 | parameter this [Return] : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:4:9:4:16 | e : String |
+| A.java:25:22:25:24 | "D" : String | A.java:4:21:4:24 | this <.field> [post update] : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:4:21:4:28 | ...=... : String |
+| A.java:25:22:25:24 | "D" : String | A.java:4:28:4:28 | e : String |
+| A.java:25:22:25:24 | "D" : String | A.java:6:12:6:18 | parameter this : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:6:31:6:34 | elem : String |
+| A.java:25:22:25:24 | "D" : String | A.java:6:31:6:34 | this <.field> : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:14:11:14:20 | f2(...) : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:15:16:15:16 | a : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:15:16:15:22 | get(...) : String |
+| A.java:25:22:25:24 | "D" : String | A.java:25:14:25:25 | new Box(...) : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:28:11:38:5 | Box b1 : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:31:17:31:17 | this : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:32:26:32:26 | this : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:33:26:33:26 | this : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:34:26:34:27 | b1 : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:34:26:34:27 | this : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:34:26:34:37 | getElem(...) : String |
+| A.java:25:22:25:24 | "D" : String | A.java:35:26:35:27 | this : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:25:22:25:24 | "D" : String | A.java:39:12:39:12 | Box b1 : Box [elem] |
+| A.java:25:22:25:24 | "D" : String | A.java:39:12:39:12 | a : new A(...) { ... } [Box b1, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:5:10:5:16 | parameter this [Return] : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:5:18:5:25 | e : String |
+| A.java:27:16:27:18 | "E" : String | A.java:5:30:5:33 | this <.field> [post update] : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:5:30:5:37 | ...=... : String |
+| A.java:27:16:27:18 | "E" : String | A.java:5:37:5:37 | e : String |
+| A.java:27:16:27:18 | "E" : String | A.java:6:12:6:18 | parameter this : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:6:31:6:34 | elem : String |
+| A.java:27:16:27:18 | "E" : String | A.java:6:31:6:34 | this <.field> : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:14:11:14:20 | f2(...) : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:15:16:15:16 | a : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:15:16:15:22 | get(...) : String |
+| A.java:27:16:27:18 | "E" : String | A.java:27:5:27:6 | b2 [post update] : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:28:11:38:5 | Box b2 : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:31:17:31:17 | this : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:32:26:32:26 | this : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:33:26:33:26 | this : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:34:26:34:27 | this : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:35:26:35:27 | b2 : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:35:26:35:27 | this : new A(...) { ... } [Box b2, ... (2)] |
+| A.java:27:16:27:18 | "E" : String | A.java:35:26:35:37 | getElem(...) : String |
+| A.java:27:16:27:18 | "E" : String | A.java:39:12:39:12 | Box b2 : Box [elem] |
+| A.java:27:16:27:18 | "E" : String | A.java:39:12:39:12 | a : new A(...) { ... } [Box b2, ... (2)] |

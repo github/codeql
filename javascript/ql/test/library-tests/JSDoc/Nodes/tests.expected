@@ -1,3 +1,421 @@
+test_JSDoc
+| tst.js:5:1:5:13 | /** @const */ |  | tst.js:5:1:5:13 | /** @const */ |
+| tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | My namespace's favorite kind of beer. | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:14:1:14:13 | /** @const */ |  | tst.js:14:1:14:13 | /** @const */ |
+| tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ | A rectangle. | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ |
+| tst.js:23:1:23:24 | /** @de ... ean} */ |  | tst.js:23:1:23:24 | /** @de ... ean} */ |
+| tst.js:26:1:26:24 | /** @de ... ean} */ |  | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | Determines whether a node is a field. | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
+| tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ |  | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ |
+| tst.js:48:12:48:23 | /** @dict */ |  | tst.js:48:12:48:23 | /** @dict */ |
+| tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ | Enum for tri-state values. | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:61:1:61:14 | /** @export */ |  | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | Immutable empty node list. | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | A class that cannot be extended. | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
+| tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ | A method that cannot be overridden. | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ | A shape. | tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ |
+| tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ |  | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ |
+| tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |  | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | A polygon. | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ |
+| tst.js:117:9:117:40 | /** @le ... ype} */ |  | tst.js:117:9:117:40 | /** @le ... ype} */ |
+| tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ |  | tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ |
+| tst.js:128:1:128:21 | /** @no ... ects */ |  | tst.js:128:1:128:21 | /** @no ... ects */ |
+| tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | Returns the window object the foreign document resides in. | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | Queries a Baz for items. | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:149:14:149:26 | /** number */ | number | tst.js:149:14:149:26 | /** number */ |
+| tst.js:149:31:149:43 | /** number */ | number | tst.js:149:31:149:43 | /** number */ |
+| tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | Handlers that are listening to this logger. | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | Sets the component's root element to the given element.\nConsidered protected and final. | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ | Returns the ID of the last item. | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:177:10:177:22 | /** number */ | number | tst.js:177:10:177:22 | /** number */ |
+| tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ |  | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ |
+| tst.js:192:12:192:25 | /** @struct */ |  | tst.js:192:12:192:25 | /** @struct */ |
+| tst.js:196:9:200:11 | /**\\n    ...      */ | Returns the roster widget element. | tst.js:196:9:200:11 | /**\\n    ...      */ |
+| tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |  | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ | The message hex ID. | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:216:1:216:33 | /** @ty ... er)} */ |  | tst.js:216:1:216:33 | /** @ty ... er)} */ |
+| tst.js:219:1:219:55 | /** @pa ... ing. */ |  | tst.js:219:1:219:55 | /** @pa ... ing. */ |
+| tst.js:223:1:223:40 | /** @ty ... ct}} */ |  | tst.js:223:1:223:40 | /** @ty ... ct}} */ |
+| tst.js:226:1:226:22 | /** @ty ... er?} */ |  | tst.js:226:1:226:22 | /** @ty ... er?} */ |
+| tst.js:229:1:229:22 | /** @ty ... ect} */ |  | tst.js:229:1:229:22 | /** @ty ... ect} */ |
+| tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |  | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |
+| tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |  | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
+| tst.js:252:1:252:18 | /** @return {T} */ |  | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:255:1:255:19 | /** @param {T} t */ |  | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:258:1:258:28 | /** @ty ... ng>} */ |  | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
+| tst.js:259:11:259:38 | /** @ty ... ng>} */ |  | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
+| tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |  | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
+| tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |  | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
+| tst.js:275:1:275:37 | /** @ty ... er>} */ |  | tst.js:275:1:275:37 | /** @ty ... er>} */ |
+| tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |  | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |
+| tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |  | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |
+| tst.js:288:1:288:22 | /** @ty ... <X>} */ |  | tst.js:288:1:288:22 | /** @ty ... <X>} */ |
+| tst.js:289:1:289:22 | /** @ty ... <Y>} */ |  | tst.js:289:1:289:22 | /** @ty ... <Y>} */ |
+| tst.js:294:1:294:28 | /** @pa ... fooY */ |  | tst.js:294:1:294:28 | /** @pa ... fooY */ |
+| tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |  | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |
+| tst.js:306:1:306:19 | /** @param {T} t */ |  | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |  | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |
+| tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |  | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |
+| tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |  | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |
+| tst.js:328:1:328:18 | /** @return {T} */ |  | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |  | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
+| tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |  | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
+| tst.js:345:1:345:21 | /** @ty ... ing} */ |  | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:346:1:346:21 | /** @ty ... ber} */ |  | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:347:1:347:21 | /** @ty ... ber} */ |  | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:349:1:349:31 | /** @ty ... ned} */ |  | tst.js:349:1:349:31 | /** @ty ... ned} */ |
+| tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ |  | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ |
+| tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ |  | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ |
+| tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |  | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |
+| tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |  | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
+| tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |  | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
+| tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |  | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
+| tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |  | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |
+test_JSDocTag
+| tst.js:5:5:5:10 | @const | const | tst.js:5:1:5:13 | /** @const */ | 0 | (none) | (none) | (none) |
+| tst.js:9:4:9:9 | @const | const | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:10:4:10:8 | @type | type | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | 1 | (none) | (none) | string |
+| tst.js:14:5:14:10 | @const | const | tst.js:14:1:14:13 | /** @const */ | 0 | (none) | (none) | (none) |
+| tst.js:18:4:18:15 | @constructor | constructor | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:23:5:23:11 | @define | define | tst.js:23:1:23:24 | /** @de ... ean} */ | 0 | (none) | (none) | boolean |
+| tst.js:26:5:26:11 | @define | define | tst.js:26:1:26:24 | /** @de ... ean} */ | 0 | (none) | (none) | boolean |
+| tst.js:31:4:31:10 | @return | return | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | 0 | True if the contents of\nthe element are editable, but the element\nitself is not.\n | (none) | boolean |
+| tst.js:34:4:34:14 | @deprecated | deprecated | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | 1 | Use isField(). | (none) | (none) |
+| tst.js:40:4:40:15 | @constructor | constructor | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:41:4:41:8 | @dict | dict | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:48:16:48:20 | @dict | dict | tst.js:48:12:48:23 | /** @dict */ | 0 | (none) | (none) | (none) |
+| tst.js:53:4:53:8 | @enum | enum | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ | 0 | (none) | (none) | number |
+| tst.js:61:5:61:11 | @export | export | tst.js:61:1:61:14 | /** @export */ | 0 | (none) | (none) | (none) |
+| tst.js:67:4:67:15 | @constructor | constructor | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:68:4:68:11 | @extends | extends | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | 1 | (none) | (none) | goog.ds.BasicNodeList |
+| tst.js:75:4:75:9 | @final | final | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:76:4:76:15 | @constructor | constructor | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:82:4:82:9 | @final | final | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:88:4:88:13 | @interface | interface | tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:94:4:94:15 | @constructor | constructor | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:95:4:95:14 | @implements | implements | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ | 1 | (none) | (none) | Shape |
+| tst.js:102:4:102:12 | @override | override | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ | 0 | (none) | (none) | (none) |
+| tst.js:103:4:103:14 | @inheritDoc | inheritDoc | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ | 1 | (none) | (none) | (none) |
+| tst.js:109:4:109:13 | @interface | interface | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:110:4:110:11 | @extends | extends | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | 1 | (none) | (none) | Shape |
+| tst.js:117:13:117:18 | @lends | lends | tst.js:117:9:117:40 | /** @le ... ype} */ | 0 | {Button.prototype} | (none) | (none) |
+| tst.js:122:4:122:12 | @preserve | preserve | tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ | 0 | Copyright 2009 SomeThirdParty.\nHere is the full license text and copyright\nnotice for this file. Note that the notice can span several\nlines and is only terminated by the closing star and slash: | (none) | (none) |
+| tst.js:128:5:128:18 | @nosideeffects | nosideeffects | tst.js:128:1:128:21 | /** @no ... ects */ | 0 | (none) | (none) | (none) |
+| tst.js:134:4:134:10 | @return | return | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | 0 | The window object of the peer.\n | (none) | Object |
+| tst.js:135:4:135:11 | @package | package | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:142:4:142:9 | @param | param | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | 0 | Subgroup id to query.\n | groupNum | number |
+| tst.js:143:4:143:9 | @param | param | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | 1 | An itemName,\nor itemId, or null to search everything. | term | (string\|number\|null) |
+| tst.js:155:4:155:8 | @type | type | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | 0 | (none) | (none) | Array.<Function> |
+| tst.js:156:4:156:11 | @private | private | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:163:4:163:9 | @param | param | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | 0 | Root element for the component.\n | element | Element |
+| tst.js:164:4:164:13 | @protected | protected | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:171:4:171:10 | @return | return | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ | 0 | The hex ID. | (none) | string |
+| tst.js:180:4:180:15 | @constructor | constructor | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:181:4:181:10 | @struct | struct | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:192:16:192:22 | @struct | struct | tst.js:192:12:192:25 | /** @struct */ | 0 | (none) | (none) | (none) |
+| tst.js:198:12:198:16 | @this | this | tst.js:196:9:200:11 | /**\\n    ...      */ | 0 | (none) | (none) | (none) |
+| tst.js:199:12:199:18 | @return | return | tst.js:196:9:200:11 | /**\\n    ...      */ | 1 | (none) | (none) | Element |
+| tst.js:206:4:206:10 | @throws | throws | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ | 0 | (none) | (none) | DOMException |
+| tst.js:212:4:212:8 | @type | type | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ | 0 | (none) | (none) | string |
+| tst.js:216:5:216:12 | @typedef | typedef | tst.js:216:1:216:33 | /** @ty ... er)} */ | 0 | (none) | (none) | (string\|number) |
+| tst.js:219:5:219:10 | @param | param | tst.js:219:1:219:55 | /** @pa ... ing. */ | 0 | A number or a string. | x | goog.NumberLike |
+| tst.js:223:5:223:9 | @type | type | tst.js:223:1:223:40 | /** @ty ... ct}} */ | 0 | (none) | (none) | {myNum: number, myObject} |
+| tst.js:226:5:226:9 | @type | type | tst.js:226:1:226:22 | /** @ty ... er?} */ | 0 | (none) | (none) | number? |
+| tst.js:229:5:229:9 | @type | type | tst.js:229:1:229:22 | /** @ty ... ect} */ | 0 | (none) | (none) | !Object |
+| tst.js:233:4:233:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 0 | (none) | p1 | function (string, boolean) |
+| tst.js:234:4:234:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 1 | (none) | p2 | function (): number |
+| tst.js:235:4:235:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 2 | (none) | p3 | function (this: goog.ui.Menu, string) |
+| tst.js:236:4:236:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 3 | (none) | p4 | function (new: goog.ui.Menu, string) |
+| tst.js:237:4:237:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 4 | (none) | p5 | function (string, ...[number]): number |
+| tst.js:238:4:238:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 5 | p6\n | var_args | ...number |
+| tst.js:239:4:239:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 6 | p7\n | opt_argument | number= |
+| tst.js:240:4:240:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 7 | (none) | p8 | function (?string=, number=) |
+| tst.js:241:4:241:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 8 | (none) | p9 | * |
+| tst.js:242:4:242:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 9 | (none) | p10 | ? |
+| tst.js:247:4:247:15 | @constructor | constructor | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:248:4:248:12 | @template | template | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ | 1 | T | (none) | (none) |
+| tst.js:252:5:252:11 | @return | return | tst.js:252:1:252:18 | /** @return {T} */ | 0 | (none) | (none) | T |
+| tst.js:255:5:255:10 | @param | param | tst.js:255:1:255:19 | /** @param {T} t */ | 0 | (none) | t | T |
+| tst.js:258:5:258:9 | @type | type | tst.js:258:1:258:28 | /** @ty ... ng>} */ | 0 | (none) | (none) | !Foo.<string> |
+| tst.js:259:15:259:19 | @type | type | tst.js:259:11:259:38 | /** @ty ... ng>} */ | 0 | (none) | (none) | !Foo.<string> |
+| tst.js:262:4:262:9 | @param | param | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | 0 | (none) | t | T |
+| tst.js:263:4:263:15 | @constructor | constructor | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:264:4:264:12 | @template | template | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | 2 | T | (none) | (none) |
+| tst.js:270:4:270:15 | @constructor | constructor | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:271:4:271:12 | @template | template | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ | 1 | Key, Val | (none) | (none) |
+| tst.js:275:5:275:9 | @type | type | tst.js:275:1:275:37 | /** @ty ... er>} */ | 0 | (none) | (none) | MyMap.<string, number> |
+| tst.js:278:4:278:15 | @constructor | constructor | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:283:4:283:11 | @extends | extends | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | X |
+| tst.js:284:4:284:15 | @constructor | constructor | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ | 1 | (none) | (none) | (none) |
+| tst.js:288:5:288:9 | @type | type | tst.js:288:1:288:22 | /** @ty ... <X>} */ | 0 | (none) | (none) | Foo.<X> |
+| tst.js:289:5:289:9 | @type | type | tst.js:289:1:289:22 | /** @ty ... <Y>} */ | 0 | (none) | (none) | Foo.<Y> |
+| tst.js:294:5:294:10 | @param | param | tst.js:294:1:294:28 | /** @pa ... fooY */ | 0 | (none) | fooY | Foo.<Y> |
+| tst.js:301:4:301:15 | @constructor | constructor | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:302:4:302:12 | @template | template | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ | 1 | T | (none) | (none) |
+| tst.js:306:5:306:10 | @param | param | tst.js:306:1:306:19 | /** @param {T} t */ | 0 | (none) | t | T |
+| tst.js:310:4:310:15 | @constructor | constructor | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:311:4:311:11 | @extends | extends | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ | 1 | (none) | (none) | A.<string> |
+| tst.js:316:4:316:15 | @constructor | constructor | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:317:4:317:12 | @template | template | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | 1 | U\n | (none) | (none) |
+| tst.js:318:4:318:11 | @extends | extends | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | 2 | (none) | (none) | A.<U> |
+| tst.js:323:4:323:13 | @interface | interface | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:324:4:324:12 | @template | template | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ | 1 | T | (none) | (none) |
+| tst.js:328:5:328:11 | @return | return | tst.js:328:1:328:18 | /** @return {T} */ | 0 | (none) | (none) | T |
+| tst.js:332:4:332:15 | @constructor | constructor | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | 0 | (none) | (none) | (none) |
+| tst.js:333:4:333:14 | @implements | implements | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | 1 | (none) | (none) | Foo.<string> |
+| tst.js:334:4:334:14 | @implements | implements | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | 2 | (none) | (none) | Foo.<number> |
+| tst.js:339:4:339:9 | @param | param | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | 0 | (none) | a | T |
+| tst.js:340:4:340:10 | @return | return | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | 1 | (none) | (none) | T |
+| tst.js:341:4:341:12 | @template | template | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | 2 | T | (none) | (none) |
+| tst.js:345:5:345:9 | @type | type | tst.js:345:1:345:21 | /** @ty ... ing} */ | 0 | (none) | (none) | string |
+| tst.js:346:5:346:9 | @type | type | tst.js:346:1:346:21 | /** @ty ... ber} */ | 0 | (none) | (none) | number |
+| tst.js:347:5:347:9 | @type | type | tst.js:347:1:347:21 | /** @ty ... ber} */ | 0 | (none) | (none) | number |
+| tst.js:349:5:349:9 | @type | type | tst.js:349:1:349:31 | /** @ty ... ned} */ | 0 | (none) | (none) | (string\|undefined) |
+| tst.js:352:4:352:9 | @param | param | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ | 0 | [int] an integer | (none) | (none) |
+| tst.js:357:4:357:9 | @param | param | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | 0 | the array to sort\n | array | Array.<number> |
+| tst.js:358:4:358:9 | @param | param | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | 1 | the comparator function | fn | function (x: !number, y: !number): number |
+| tst.js:364:6:364:11 | @param | param | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T1 |
+| tst.js:369:6:369:11 | @param | param | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T2 |
+| tst.js:376:6:376:11 | @param | param | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T3 |
+| tst.js:381:6:381:11 | @param | param | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T4 |
+| tst.js:387:4:387:9 | @param | param | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ | 0 | (none) | x | Array.<number> |
+test_next_token
+| tst.js:1:1:1:117 | // Test ... mpiler, | tst.js:5:15:5:17 | var |
+| tst.js:2:1:2:118 | // whic ... se 2.0; | tst.js:5:15:5:17 | var |
+| tst.js:3:1:3:20 | // see file COPYING. | tst.js:5:15:5:17 | var |
+| tst.js:5:1:5:13 | /** @const */ | tst.js:5:15:5:17 | var |
+| tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | tst.js:12:1:12:11 | mynamespace |
+| tst.js:14:1:14:13 | /** @const */ | tst.js:14:15:14:21 | MyClass |
+| tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ | tst.js:20:1:20:8 | function |
+| tst.js:23:1:23:24 | /** @de ... ean} */ | tst.js:24:1:24:3 | var |
+| tst.js:26:1:26:24 | /** @de ... ean} */ | tst.js:27:1:27:4 | goog |
+| tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | tst.js:36:1:36:11 | BN_EditUtil |
+| tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ | tst.js:43:1:43:8 | function |
+| tst.js:46:16:46:25 | // warning | tst.js:48:1:48:3 | var |
+| tst.js:48:12:48:23 | /** @dict */ | tst.js:48:25:48:25 | { |
+| tst.js:49:16:49:25 | // warning | tst.js:55:1:55:7 | project |
+| tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ | tst.js:55:1:55:7 | project |
+| tst.js:61:1:61:14 | /** @export */ | tst.js:62:1:62:3 | foo |
+| tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | tst.js:70:1:70:4 | goog |
+| tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | tst.js:78:1:78:5 | sloth |
+| tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ | tst.js:84:1:84:5 | sloth |
+| tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ | tst.js:90:1:90:8 | function |
+| tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ | tst.js:97:1:97:8 | function |
+| tst.js:101:1:103:17 | /**\\n *  ... tDoc */ | tst.js:104:1:104:7 | project |
+| tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | tst.js:112:1:112:8 | function |
+| tst.js:117:9:117:40 | /** @le ... ype} */ | tst.js:117:42:117:42 | ( |
+| tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ | tst.js:129:1:129:8 | function |
+| tst.js:128:1:128:21 | /** @no ... ects */ | tst.js:129:1:129:8 | function |
+| tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | tst.js:137:1:137:4 | goog |
+| tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | tst.js:146:1:146:4 | goog |
+| tst.js:149:14:149:26 | /** number */ | tst.js:149:28:149:28 | a |
+| tst.js:149:31:149:43 | /** number */ | tst.js:149:45:149:45 | b |
+| tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | tst.js:158:1:158:4 | this |
+| tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | tst.js:166:1:166:4 | goog |
+| tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ | tst.js:173:1:173:4 | goog |
+| tst.js:177:10:177:22 | /** number */ | tst.js:177:24:177:26 | foo |
+| tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ | tst.js:183:1:183:8 | function |
+| tst.js:187:24:187:28 | // OK | tst.js:188:1:188:4 | obj1 |
+| tst.js:188:21:188:25 | // OK | tst.js:189:1:189:4 | obj1 |
+| tst.js:189:22:189:31 | // warning | tst.js:190:1:190:4 | obj1 |
+| tst.js:190:14:190:23 | // warning | tst.js:192:1:192:3 | var |
+| tst.js:192:12:192:25 | /** @struct */ | tst.js:192:27:192:27 | { |
+| tst.js:193:19:193:28 | // warning | tst.js:195:1:195:4 | chat |
+| tst.js:196:9:200:11 | /**\\n    ...      */ | tst.js:201:9:201:16 | function |
+| tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ | tst.js:208:1:208:19 | DOMApplicationCache |
+| tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ | tst.js:214:1:214:3 | var |
+| tst.js:216:1:216:33 | /** @ty ... er)} */ | tst.js:217:1:217:4 | goog |
+| tst.js:219:1:219:55 | /** @pa ... ing. */ | tst.js:220:1:220:4 | goog |
+| tst.js:223:1:223:40 | /** @ty ... ct}} */ | tst.js:224:1:224:3 | var |
+| tst.js:226:1:226:22 | /** @ty ... er?} */ | tst.js:227:1:227:3 | var |
+| tst.js:229:1:229:22 | /** @ty ... ect} */ | tst.js:230:1:230:3 | var |
+| tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | tst.js:244:1:244:3 | var |
+| tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ | tst.js:250:1:250:3 | var |
+| tst.js:252:1:252:18 | /** @return {T} */ | tst.js:253:1:253:3 | Foo |
+| tst.js:255:1:255:19 | /** @param {T} t */ | tst.js:256:1:256:3 | Foo |
+| tst.js:258:1:258:28 | /** @ty ... ng>} */ | tst.js:258:30:258:32 | var |
+| tst.js:259:11:259:38 | /** @ty ... ng>} */ | tst.js:259:40:259:40 | ( |
+| tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | tst.js:266:1:266:3 | Bar |
+| tst.js:267:29:267:52 | // bar  ... string> | tst.js:273:1:273:3 | var |
+| tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ | tst.js:273:1:273:3 | var |
+| tst.js:275:1:275:37 | /** @ty ... er>} */ | tst.js:275:39:275:41 | var |
+| tst.js:275:48:275:77 | // Key  ... number. | tst.js:280:1:280:1 | X |
+| tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ | tst.js:280:1:280:1 | X |
+| tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ | tst.js:286:1:286:1 | Y |
+| tst.js:288:1:288:22 | /** @ty ... <X>} */ | tst.js:288:24:288:26 | var |
+| tst.js:289:1:289:22 | /** @ty ... <Y>} */ | tst.js:289:24:289:26 | var |
+| tst.js:291:14:291:21 | // Error | tst.js:292:1:292:4 | fooY |
+| tst.js:292:14:292:21 | // Error | tst.js:295:1:295:9 | takesFooY |
+| tst.js:294:1:294:28 | /** @pa ... fooY */ | tst.js:295:1:295:9 | takesFooY |
+| tst.js:297:18:297:23 | // OK. | tst.js:298:1:298:9 | takesFooY |
+| tst.js:298:18:298:25 | // Error | tst.js:304:1:304:1 | A |
+| tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ | tst.js:304:1:304:1 | A |
+| tst.js:306:1:306:19 | /** @param {T} t */ | tst.js:307:1:307:1 | A |
+| tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ | tst.js:313:1:313:1 | B |
+| tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | tst.js:320:1:320:1 | C |
+| tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ | tst.js:326:1:326:3 | Foo |
+| tst.js:328:1:328:18 | /** @return {T} */ | tst.js:329:1:329:3 | Foo |
+| tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | tst.js:336:1:336:7 | FooImpl |
+| tst.js:336:27:336:72 | // Erro ... e twice | tst.js:343:1:343:8 | identity |
+| tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | tst.js:343:1:343:8 | identity |
+| tst.js:345:1:345:21 | /** @ty ... ing} */ | tst.js:345:23:345:25 | var |
+| tst.js:345:72:345:76 | // OK | tst.js:346:23:346:25 | var |
+| tst.js:346:1:346:21 | /** @ty ... ber} */ | tst.js:346:23:346:25 | var |
+| tst.js:346:60:346:64 | // OK | tst.js:347:23:347:25 | var |
+| tst.js:347:1:347:21 | /** @ty ... ber} */ | tst.js:347:23:347:25 | var |
+| tst.js:347:62:347:77 | // Type mismatch | tst.js:349:33:349:35 | var |
+| tst.js:349:1:349:31 | /** @ty ... ned} */ | tst.js:349:33:349:35 | var |
+| tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ | tst.js:354:1:354:8 | function |
+| tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | tst.js:360:1:360:8 | function |
+| tst.js:363:3:365:5 | /**\\n    ... p\\n   */ | tst.js:366:3:366:15 | classicMethod |
+| tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | tst.js:371:3:371:13 | fancyMethod |
+| tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | tst.js:378:3:378:13 | constructor |
+| tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | tst.js:383:3:383:13 | classMethod |
+| tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ | tst.js:390:1:390:8 | function |
+test_JSDocTypeExpr
+| tst.js:10:11:10:16 | string | tst.js:10:4:10:8 | @type | 0 |
+| tst.js:23:14:23:20 | boolean | tst.js:23:5:23:11 | @define | 0 |
+| tst.js:26:14:26:20 | boolean | tst.js:26:5:26:11 | @define | 0 |
+| tst.js:31:13:31:19 | boolean | tst.js:31:4:31:10 | @return | 0 |
+| tst.js:53:11:53:16 | number | tst.js:53:4:53:8 | @enum | 0 |
+| tst.js:68:14:68:34 | goog.ds.BasicNodeList | tst.js:68:4:68:11 | @extends | 0 |
+| tst.js:95:17:95:21 | Shape | tst.js:95:4:95:14 | @implements | 0 |
+| tst.js:110:14:110:18 | Shape | tst.js:110:4:110:11 | @extends | 0 |
+| tst.js:134:13:134:18 | Object | tst.js:134:4:134:10 | @return | 0 |
+| tst.js:142:12:142:17 | number | tst.js:142:4:142:9 | @param | 0 |
+| tst.js:143:12:143:17 | string | tst.js:143:12:143:29 | (string\|number\|null) | 0 |
+| tst.js:143:12:143:29 | (string\|number\|null) | tst.js:143:4:143:9 | @param | 0 |
+| tst.js:143:19:143:24 | number | tst.js:143:12:143:29 | (string\|number\|null) | 1 |
+| tst.js:143:26:143:29 | null | tst.js:143:12:143:29 | (string\|number\|null) | 2 |
+| tst.js:155:11:155:18 | Function | tst.js:155:11:155:20 | Array.<Function> | 0 |
+| tst.js:155:11:155:20 | Array | tst.js:155:11:155:20 | Array.<Function> | -1 |
+| tst.js:155:11:155:20 | Array.<Function> | tst.js:155:4:155:8 | @type | 0 |
+| tst.js:163:12:163:18 | Element | tst.js:163:4:163:9 | @param | 0 |
+| tst.js:171:13:171:18 | string | tst.js:171:4:171:10 | @return | 0 |
+| tst.js:199:21:199:27 | Element | tst.js:199:12:199:18 | @return | 0 |
+| tst.js:206:13:206:24 | DOMException | tst.js:206:4:206:10 | @throws | 0 |
+| tst.js:212:11:212:16 | string | tst.js:212:4:212:8 | @type | 0 |
+| tst.js:216:15:216:29 | (string\|number) | tst.js:216:5:216:12 | @typedef | 0 |
+| tst.js:216:16:216:21 | string | tst.js:216:15:216:29 | (string\|number) | 0 |
+| tst.js:216:23:216:28 | number | tst.js:216:15:216:29 | (string\|number) | 1 |
+| tst.js:219:13:219:27 | goog.NumberLike | tst.js:219:5:219:10 | @param | 0 |
+| tst.js:223:12:223:36 | {myNum: number, myObject} | tst.js:223:5:223:9 | @type | 0 |
+| tst.js:223:20:223:25 | number | tst.js:223:12:223:36 | {myNum: number, myObject} | 0 |
+| tst.js:226:12:226:17 | number | tst.js:226:12:226:18 | number? | 0 |
+| tst.js:226:12:226:18 | number? | tst.js:226:5:226:9 | @type | 0 |
+| tst.js:229:12:229:18 | !Object | tst.js:229:5:229:9 | @type | 0 |
+| tst.js:229:13:229:18 | Object | tst.js:229:12:229:18 | !Object | 0 |
+| tst.js:233:12:233:36 | function (string, boolean) | tst.js:233:4:233:9 | @param | 0 |
+| tst.js:233:21:233:26 | string | tst.js:233:12:233:36 | function (string, boolean) | 0 |
+| tst.js:233:29:233:35 | boolean | tst.js:233:12:233:36 | function (string, boolean) | 1 |
+| tst.js:234:12:234:29 | function (): number | tst.js:234:4:234:9 | @param | 0 |
+| tst.js:234:24:234:29 | number | tst.js:234:12:234:29 | function (): number | -1 |
+| tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | tst.js:235:4:235:9 | @param | 0 |
+| tst.js:235:26:235:37 | goog.ui.Menu | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | -2 |
+| tst.js:235:40:235:45 | string | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | 0 |
+| tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | tst.js:236:4:236:9 | @param | 0 |
+| tst.js:236:25:236:36 | goog.ui.Menu | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | -2 |
+| tst.js:236:39:236:44 | string | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | 0 |
+| tst.js:237:12:237:48 | function (string, ...[number]): number | tst.js:237:4:237:9 | @param | 0 |
+| tst.js:237:21:237:26 | string | tst.js:237:12:237:48 | function (string, ...[number]): number | 0 |
+| tst.js:237:32:237:39 | ...[number] | tst.js:237:12:237:48 | function (string, ...[number]): number | 1 |
+| tst.js:237:32:237:39 | [number] | tst.js:237:32:237:39 | ...[number] | 0 |
+| tst.js:237:33:237:38 | number | tst.js:237:32:237:39 | [number] | 0 |
+| tst.js:237:43:237:48 | number | tst.js:237:12:237:48 | function (string, ...[number]): number | -1 |
+| tst.js:238:12:238:20 | ...number | tst.js:238:4:238:9 | @param | 0 |
+| tst.js:238:15:238:20 | number | tst.js:238:12:238:20 | ...number | 0 |
+| tst.js:239:12:239:17 | number | tst.js:239:12:239:18 | number= | 0 |
+| tst.js:239:12:239:18 | number= | tst.js:239:4:239:9 | @param | 0 |
+| tst.js:240:12:240:38 | function (?string=, number=) | tst.js:240:4:240:9 | @param | 0 |
+| tst.js:240:21:240:27 | ?string | tst.js:240:21:240:28 | ?string= | 0 |
+| tst.js:240:21:240:28 | ?string= | tst.js:240:12:240:38 | function (?string=, number=) | 0 |
+| tst.js:240:22:240:27 | string | tst.js:240:21:240:27 | ?string | 0 |
+| tst.js:240:31:240:36 | number | tst.js:240:31:240:37 | number= | 0 |
+| tst.js:240:31:240:37 | number= | tst.js:240:12:240:38 | function (?string=, number=) | 1 |
+| tst.js:241:12:241:12 | * | tst.js:241:4:241:9 | @param | 0 |
+| tst.js:242:12:242:12 | ? | tst.js:242:4:242:9 | @param | 0 |
+| tst.js:252:14:252:14 | T | tst.js:252:5:252:11 | @return | 0 |
+| tst.js:255:13:255:13 | T | tst.js:255:5:255:10 | @param | 0 |
+| tst.js:258:12:258:24 | !Foo.<string> | tst.js:258:5:258:9 | @type | 0 |
+| tst.js:258:13:258:15 | Foo | tst.js:258:13:258:24 | Foo.<string> | -1 |
+| tst.js:258:13:258:24 | Foo.<string> | tst.js:258:12:258:24 | !Foo.<string> | 0 |
+| tst.js:258:18:258:23 | string | tst.js:258:13:258:24 | Foo.<string> | 0 |
+| tst.js:259:22:259:34 | !Foo.<string> | tst.js:259:15:259:19 | @type | 0 |
+| tst.js:259:23:259:25 | Foo | tst.js:259:23:259:34 | Foo.<string> | -1 |
+| tst.js:259:23:259:34 | Foo.<string> | tst.js:259:22:259:34 | !Foo.<string> | 0 |
+| tst.js:259:28:259:33 | string | tst.js:259:23:259:34 | Foo.<string> | 0 |
+| tst.js:262:12:262:12 | T | tst.js:262:4:262:9 | @param | 0 |
+| tst.js:275:12:275:16 | MyMap | tst.js:275:12:275:33 | MyMap.<string, number> | -1 |
+| tst.js:275:12:275:33 | MyMap.<string, number> | tst.js:275:5:275:9 | @type | 0 |
+| tst.js:275:19:275:24 | string | tst.js:275:12:275:33 | MyMap.<string, number> | 0 |
+| tst.js:275:27:275:32 | number | tst.js:275:12:275:33 | MyMap.<string, number> | 1 |
+| tst.js:283:14:283:14 | X | tst.js:283:4:283:11 | @extends | 0 |
+| tst.js:288:12:288:14 | Foo | tst.js:288:12:288:18 | Foo.<X> | -1 |
+| tst.js:288:12:288:18 | Foo.<X> | tst.js:288:5:288:9 | @type | 0 |
+| tst.js:288:17:288:17 | X | tst.js:288:12:288:18 | Foo.<X> | 0 |
+| tst.js:289:12:289:14 | Foo | tst.js:289:12:289:18 | Foo.<Y> | -1 |
+| tst.js:289:12:289:18 | Foo.<Y> | tst.js:289:5:289:9 | @type | 0 |
+| tst.js:289:17:289:17 | Y | tst.js:289:12:289:18 | Foo.<Y> | 0 |
+| tst.js:294:13:294:15 | Foo | tst.js:294:13:294:19 | Foo.<Y> | -1 |
+| tst.js:294:13:294:19 | Foo.<Y> | tst.js:294:5:294:10 | @param | 0 |
+| tst.js:294:18:294:18 | Y | tst.js:294:13:294:19 | Foo.<Y> | 0 |
+| tst.js:306:13:306:13 | T | tst.js:306:5:306:10 | @param | 0 |
+| tst.js:311:14:311:14 | A | tst.js:311:14:311:23 | A.<string> | -1 |
+| tst.js:311:14:311:23 | A.<string> | tst.js:311:4:311:11 | @extends | 0 |
+| tst.js:311:17:311:22 | string | tst.js:311:14:311:23 | A.<string> | 0 |
+| tst.js:318:14:318:14 | A | tst.js:318:14:318:18 | A.<U> | -1 |
+| tst.js:318:14:318:18 | A.<U> | tst.js:318:4:318:11 | @extends | 0 |
+| tst.js:318:17:318:17 | U | tst.js:318:14:318:18 | A.<U> | 0 |
+| tst.js:328:14:328:14 | T | tst.js:328:5:328:11 | @return | 0 |
+| tst.js:333:17:333:19 | Foo | tst.js:333:17:333:28 | Foo.<string> | -1 |
+| tst.js:333:17:333:28 | Foo.<string> | tst.js:333:4:333:14 | @implements | 0 |
+| tst.js:333:22:333:27 | string | tst.js:333:17:333:28 | Foo.<string> | 0 |
+| tst.js:334:17:334:19 | Foo | tst.js:334:17:334:28 | Foo.<number> | -1 |
+| tst.js:334:17:334:28 | Foo.<number> | tst.js:334:4:334:14 | @implements | 0 |
+| tst.js:334:22:334:27 | number | tst.js:334:17:334:28 | Foo.<number> | 0 |
+| tst.js:339:12:339:12 | T | tst.js:339:4:339:9 | @param | 0 |
+| tst.js:340:13:340:13 | T | tst.js:340:4:340:10 | @return | 0 |
+| tst.js:345:12:345:17 | string | tst.js:345:5:345:9 | @type | 0 |
+| tst.js:346:12:346:17 | number | tst.js:346:5:346:9 | @type | 0 |
+| tst.js:347:12:347:17 | number | tst.js:347:5:347:9 | @type | 0 |
+| tst.js:349:12:349:17 | string | tst.js:349:12:349:27 | (string\|undefined) | 0 |
+| tst.js:349:12:349:27 | (string\|undefined) | tst.js:349:5:349:9 | @type | 0 |
+| tst.js:349:19:349:27 | undefined | tst.js:349:12:349:27 | (string\|undefined) | 1 |
+| tst.js:357:12:357:16 | Array | tst.js:357:12:357:25 | Array.<number> | -1 |
+| tst.js:357:12:357:25 | Array.<number> | tst.js:357:4:357:9 | @param | 0 |
+| tst.js:357:19:357:24 | number | tst.js:357:12:357:25 | Array.<number> | 0 |
+| tst.js:358:12:358:48 | function (x: !number, y: !number): number | tst.js:358:4:358:9 | @param | 0 |
+| tst.js:358:23:358:29 | !number | tst.js:358:12:358:48 | function (x: !number, y: !number): number | 0 |
+| tst.js:358:24:358:29 | number | tst.js:358:23:358:29 | !number | 0 |
+| tst.js:358:34:358:40 | !number | tst.js:358:12:358:48 | function (x: !number, y: !number): number | 1 |
+| tst.js:358:35:358:40 | number | tst.js:358:34:358:40 | !number | 0 |
+| tst.js:358:43:358:48 | number | tst.js:358:12:358:48 | function (x: !number, y: !number): number | -1 |
+| tst.js:364:14:364:15 | T1 | tst.js:364:6:364:11 | @param | 0 |
+| tst.js:369:14:369:15 | T2 | tst.js:369:6:369:11 | @param | 0 |
+| tst.js:376:14:376:15 | T3 | tst.js:376:6:376:11 | @param | 0 |
+| tst.js:381:14:381:15 | T4 | tst.js:381:6:381:11 | @param | 0 |
+| tst.js:387:12:387:16 | Array | tst.js:387:12:388:13 | Array.<number> | -1 |
+| tst.js:387:12:388:13 | Array.<number> | tst.js:387:4:387:9 | @param | 0 |
+| tst.js:388:7:388:12 | number | tst.js:387:12:388:13 | Array.<number> | 0 |
+test_getParameterTag
+| tst.js:146:37:146:44 | groupNum | groupNum | tst.js:142:4:142:9 | @param | groupNum | tst.js:142:12:142:17 | number |
+| tst.js:146:47:146:50 | term | term | tst.js:143:4:143:9 | @param | term | tst.js:143:12:143:29 | (string\|number\|null) |
+| tst.js:166:59:166:65 | element | element | tst.js:163:4:163:9 | @param | element | tst.js:163:12:163:18 | Element |
+| tst.js:220:28:220:28 | x | x | tst.js:219:5:219:10 | @param | x | tst.js:219:13:219:27 | goog.NumberLike |
+| tst.js:256:30:256:30 | t | t | tst.js:255:5:255:10 | @param | t | tst.js:255:13:255:13 | T |
+| tst.js:266:16:266:16 | t | t | tst.js:262:4:262:9 | @param | t | tst.js:262:12:262:12 | T |
+| tst.js:295:22:295:25 | fooY | fooY | tst.js:294:5:294:10 | @param | fooY | tst.js:294:13:294:19 | Foo.<Y> |
+| tst.js:307:31:307:31 | t | t | tst.js:306:5:306:10 | @param | t | tst.js:306:13:306:13 | T |
+| tst.js:343:21:343:21 | a | a | tst.js:339:4:339:9 | @param | a | tst.js:339:12:339:12 | T |
+| tst.js:360:15:360:19 | array | array | tst.js:357:4:357:9 | @param | array | tst.js:357:12:357:25 | Array.<number> |
+| tst.js:360:22:360:23 | fn | fn | tst.js:358:4:358:9 | @param | fn | tst.js:358:12:358:48 | function (x: !number, y: !number): number |
+| tst.js:366:27:366:27 | p | p | tst.js:364:6:364:11 | @param | p | tst.js:364:14:364:15 | T1 |
+| tst.js:371:15:371:15 | p | p | tst.js:369:6:369:11 | @param | p | tst.js:369:14:369:15 | T2 |
+| tst.js:378:15:378:15 | p | p | tst.js:376:6:376:11 | @param | p | tst.js:376:14:376:15 | T3 |
+| tst.js:383:15:383:15 | p | p | tst.js:381:6:381:11 | @param | p | tst.js:381:14:381:15 | T4 |
+| tst.js:390:20:390:20 | x | x | tst.js:387:4:387:9 | @param | x | tst.js:387:12:388:13 | Array.<number> |
+test_JSDocArrayTypeExpr
+| tst.js:237:32:237:39 | [number] | 0 | tst.js:237:33:237:38 | number |
 test_JSDocUnionTypeExpr
 | tst.js:143:12:143:29 | (string\|number\|null) | tst.js:143:12:143:17 | string |
 | tst.js:143:12:143:29 | (string\|number\|null) | tst.js:143:19:143:24 | number |
@@ -6,14 +424,58 @@ test_JSDocUnionTypeExpr
 | tst.js:216:15:216:29 | (string\|number) | tst.js:216:23:216:28 | number |
 | tst.js:349:12:349:27 | (string\|undefined) | tst.js:349:12:349:17 | string |
 | tst.js:349:12:349:27 | (string\|undefined) | tst.js:349:19:349:27 | undefined |
-test_JSDocArrayTypeExpr
-| tst.js:237:32:237:39 | [number] | 0 | tst.js:237:33:237:38 | number |
-test_Parameter_getDocumentation
-| tst.js:149:28:149:28 | a | tst.js:149:14:149:26 | /** number */ |
-| tst.js:149:45:149:45 | b | tst.js:149:31:149:43 | /** number */ |
+test_JSDocRecordTypeExpr
+| tst.js:223:12:223:36 | {myNum: number, myObject} | myNum | number |
+| tst.js:223:12:223:36 | {myNum: number, myObject} | myObject | (none) |
+test_JSDocAppliedTypeExpr
+| tst.js:155:11:155:20 | Array.<Function> | tst.js:155:11:155:20 | Array | 0 | tst.js:155:11:155:18 | Function |
+| tst.js:258:13:258:24 | Foo.<string> | tst.js:258:13:258:15 | Foo | 0 | tst.js:258:18:258:23 | string |
+| tst.js:259:23:259:34 | Foo.<string> | tst.js:259:23:259:25 | Foo | 0 | tst.js:259:28:259:33 | string |
+| tst.js:275:12:275:33 | MyMap.<string, number> | tst.js:275:12:275:16 | MyMap | 0 | tst.js:275:19:275:24 | string |
+| tst.js:275:12:275:33 | MyMap.<string, number> | tst.js:275:12:275:16 | MyMap | 1 | tst.js:275:27:275:32 | number |
+| tst.js:288:12:288:18 | Foo.<X> | tst.js:288:12:288:14 | Foo | 0 | tst.js:288:17:288:17 | X |
+| tst.js:289:12:289:18 | Foo.<Y> | tst.js:289:12:289:14 | Foo | 0 | tst.js:289:17:289:17 | Y |
+| tst.js:294:13:294:19 | Foo.<Y> | tst.js:294:13:294:15 | Foo | 0 | tst.js:294:18:294:18 | Y |
+| tst.js:311:14:311:23 | A.<string> | tst.js:311:14:311:14 | A | 0 | tst.js:311:17:311:22 | string |
+| tst.js:318:14:318:18 | A.<U> | tst.js:318:14:318:14 | A | 0 | tst.js:318:17:318:17 | U |
+| tst.js:333:17:333:28 | Foo.<string> | tst.js:333:17:333:19 | Foo | 0 | tst.js:333:22:333:27 | string |
+| tst.js:334:17:334:28 | Foo.<number> | tst.js:334:17:334:19 | Foo | 0 | tst.js:334:22:334:27 | number |
+| tst.js:357:12:357:25 | Array.<number> | tst.js:357:12:357:16 | Array | 0 | tst.js:357:19:357:24 | number |
+| tst.js:387:12:388:13 | Array.<number> | tst.js:387:12:387:16 | Array | 0 | tst.js:388:7:388:12 | number |
+test_JSDocFunctionTypeExpr
+| tst.js:233:12:233:36 | function (string, boolean) | (none) | (none) | 0 | tst.js:233:21:233:26 | string | no |
+| tst.js:233:12:233:36 | function (string, boolean) | (none) | (none) | 1 | tst.js:233:29:233:35 | boolean | no |
+| tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | (none) | goog.ui.Menu | 0 | tst.js:235:40:235:45 | string | no |
+| tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | (none) | goog.ui.Menu | 0 | tst.js:236:39:236:44 | string | yes |
+| tst.js:237:12:237:48 | function (string, ...[number]): number | number | (none) | 0 | tst.js:237:21:237:26 | string | no |
+| tst.js:237:12:237:48 | function (string, ...[number]): number | number | (none) | 1 | tst.js:237:32:237:39 | ...[number] | no |
+| tst.js:240:12:240:38 | function (?string=, number=) | (none) | (none) | 0 | tst.js:240:21:240:28 | ?string= | no |
+| tst.js:240:12:240:38 | function (?string=, number=) | (none) | (none) | 1 | tst.js:240:31:240:37 | number= | no |
+| tst.js:358:12:358:48 | function (x: !number, y: !number): number | number | (none) | 0 | tst.js:358:23:358:29 | !number | no |
+| tst.js:358:12:358:48 | function (x: !number, y: !number): number | number | (none) | 1 | tst.js:358:34:358:40 | !number | no |
+test_JSDocNullableTypeExpr
+| tst.js:226:12:226:18 | number? | tst.js:226:12:226:17 | number | postfix |
+| tst.js:240:21:240:27 | ?string | tst.js:240:22:240:27 | string | prefix |
+test_JSDocNonNullableTypeExpr
+| tst.js:229:12:229:18 | !Object | tst.js:229:13:229:18 | Object | prefix |
+| tst.js:258:12:258:24 | !Foo.<string> | tst.js:258:13:258:24 | Foo.<string> | prefix |
+| tst.js:259:22:259:34 | !Foo.<string> | tst.js:259:23:259:34 | Foo.<string> | prefix |
+| tst.js:358:23:358:29 | !number | tst.js:358:24:358:29 | number | prefix |
+| tst.js:358:34:358:40 | !number | tst.js:358:35:358:40 | number | prefix |
+test_ParExpr_getDocumentation
+| tst.js:117:42:119:10 | ({\\n     ...      }) | tst.js:117:9:117:40 | /** @le ... ype} */ |
+| tst.js:259:40:259:50 | (new Foo()) | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
 test_JSDocRestParameterTypeExpr
 | tst.js:237:32:237:39 | ...[number] | tst.js:237:32:237:39 | [number] |
 | tst.js:238:12:238:20 | ...number | tst.js:238:15:238:20 | number |
+test_Parameter_getDocumentation
+| tst.js:149:28:149:28 | a | tst.js:149:14:149:26 | /** number */ |
+| tst.js:149:45:149:45 | b | tst.js:149:31:149:43 | /** number */ |
+test_ObjectExpr_getDocumentation
+| tst.js:48:25:48:36 | { 'x': 321 } | tst.js:48:12:48:23 | /** @dict */ |
+| tst.js:55:20:59:1 | {\\n  TRU ... BE: 0\\n} | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:117:43:119:9 | {\\n      ...       } | tst.js:117:9:117:40 | /** @le ... ype} */ |
+| tst.js:192:27:192:36 | { x: 321 } | tst.js:192:12:192:25 | /** @struct */ |
 test_AssignExpr_getDocumentation
 | tst.js:12:1:12:29 | mynames ... 'stout' | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
 | tst.js:14:15:14:39 | MyClass ... 'stout' | tst.js:14:1:14:13 | /** @const */ |
@@ -46,6 +508,10 @@ test_AssignExpr_getDocumentation
 | tst.js:329:1:329:33 | Foo.pro ... on() {} | tst.js:328:1:328:18 | /** @return {T} */ |
 | tst.js:336:1:336:24 | FooImpl ... n() { } | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
 | tst.js:343:1:343:36 | identit ... rn a; } | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
+test_JSDocOptionalParameterTypeExpr
+| tst.js:239:12:239:18 | number= | tst.js:239:12:239:17 | number |
+| tst.js:240:21:240:28 | ?string= | tst.js:240:21:240:27 | ?string |
+| tst.js:240:31:240:37 | number= | tst.js:240:31:240:36 | number |
 test_Function_getDocumentation
 | tst.js:20:1:21:1 | functio ... t() {\\n} | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ |
 | tst.js:36:34:37:1 | function(node) {\\n} | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
@@ -293,469 +759,3 @@ test_OtherExpr_getDocumentation
 | tst.js:371:3:371:13 | fancyMethod | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
 | tst.js:378:3:378:13 | constructor | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
 | tst.js:383:3:383:13 | classMethod | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
-test_JSDocRecordTypeExpr
-| tst.js:223:12:223:36 | {myNum: number, myObject} | myNum | number |
-| tst.js:223:12:223:36 | {myNum: number, myObject} | myObject | (none) |
-test_JSDoc
-| tst.js:5:1:5:13 | /** @const */ |  | tst.js:5:1:5:13 | /** @const */ |
-| tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | My namespace's favorite kind of beer. | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
-| tst.js:14:1:14:13 | /** @const */ |  | tst.js:14:1:14:13 | /** @const */ |
-| tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ | A rectangle. | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ |
-| tst.js:23:1:23:24 | /** @de ... ean} */ |  | tst.js:23:1:23:24 | /** @de ... ean} */ |
-| tst.js:26:1:26:24 | /** @de ... ean} */ |  | tst.js:26:1:26:24 | /** @de ... ean} */ |
-| tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | Determines whether a node is a field. | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
-| tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ |  | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ |
-| tst.js:48:12:48:23 | /** @dict */ |  | tst.js:48:12:48:23 | /** @dict */ |
-| tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ | Enum for tri-state values. | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
-| tst.js:61:1:61:14 | /** @export */ |  | tst.js:61:1:61:14 | /** @export */ |
-| tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | Immutable empty node list. | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
-| tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | A class that cannot be extended. | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
-| tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ | A method that cannot be overridden. | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
-| tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ | A shape. | tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ |
-| tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ |  | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ |
-| tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |  | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
-| tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | A polygon. | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ |
-| tst.js:117:9:117:40 | /** @le ... ype} */ |  | tst.js:117:9:117:40 | /** @le ... ype} */ |
-| tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ |  | tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ |
-| tst.js:128:1:128:21 | /** @no ... ects */ |  | tst.js:128:1:128:21 | /** @no ... ects */ |
-| tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | Returns the window object the foreign document resides in. | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
-| tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | Queries a Baz for items. | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
-| tst.js:149:14:149:26 | /** number */ | number | tst.js:149:14:149:26 | /** number */ |
-| tst.js:149:31:149:43 | /** number */ | number | tst.js:149:31:149:43 | /** number */ |
-| tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | Handlers that are listening to this logger. | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
-| tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | Sets the component's root element to the given element.\nConsidered protected and final. | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
-| tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ | Returns the ID of the last item. | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
-| tst.js:177:10:177:22 | /** number */ | number | tst.js:177:10:177:22 | /** number */ |
-| tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ |  | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ |
-| tst.js:192:12:192:25 | /** @struct */ |  | tst.js:192:12:192:25 | /** @struct */ |
-| tst.js:196:9:200:11 | /**\\n    ...      */ | Returns the roster widget element. | tst.js:196:9:200:11 | /**\\n    ...      */ |
-| tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |  | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
-| tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ | The message hex ID. | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
-| tst.js:216:1:216:33 | /** @ty ... er)} */ |  | tst.js:216:1:216:33 | /** @ty ... er)} */ |
-| tst.js:219:1:219:55 | /** @pa ... ing. */ |  | tst.js:219:1:219:55 | /** @pa ... ing. */ |
-| tst.js:223:1:223:40 | /** @ty ... ct}} */ |  | tst.js:223:1:223:40 | /** @ty ... ct}} */ |
-| tst.js:226:1:226:22 | /** @ty ... er?} */ |  | tst.js:226:1:226:22 | /** @ty ... er?} */ |
-| tst.js:229:1:229:22 | /** @ty ... ect} */ |  | tst.js:229:1:229:22 | /** @ty ... ect} */ |
-| tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |  | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |
-| tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |  | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
-| tst.js:252:1:252:18 | /** @return {T} */ |  | tst.js:252:1:252:18 | /** @return {T} */ |
-| tst.js:255:1:255:19 | /** @param {T} t */ |  | tst.js:255:1:255:19 | /** @param {T} t */ |
-| tst.js:258:1:258:28 | /** @ty ... ng>} */ |  | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
-| tst.js:259:11:259:38 | /** @ty ... ng>} */ |  | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
-| tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |  | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
-| tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |  | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
-| tst.js:275:1:275:37 | /** @ty ... er>} */ |  | tst.js:275:1:275:37 | /** @ty ... er>} */ |
-| tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |  | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |
-| tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |  | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |
-| tst.js:288:1:288:22 | /** @ty ... <X>} */ |  | tst.js:288:1:288:22 | /** @ty ... <X>} */ |
-| tst.js:289:1:289:22 | /** @ty ... <Y>} */ |  | tst.js:289:1:289:22 | /** @ty ... <Y>} */ |
-| tst.js:294:1:294:28 | /** @pa ... fooY */ |  | tst.js:294:1:294:28 | /** @pa ... fooY */ |
-| tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |  | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |
-| tst.js:306:1:306:19 | /** @param {T} t */ |  | tst.js:306:1:306:19 | /** @param {T} t */ |
-| tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |  | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |
-| tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |  | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |
-| tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |  | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |
-| tst.js:328:1:328:18 | /** @return {T} */ |  | tst.js:328:1:328:18 | /** @return {T} */ |
-| tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |  | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
-| tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |  | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
-| tst.js:345:1:345:21 | /** @ty ... ing} */ |  | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:346:1:346:21 | /** @ty ... ber} */ |  | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:347:1:347:21 | /** @ty ... ber} */ |  | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:349:1:349:31 | /** @ty ... ned} */ |  | tst.js:349:1:349:31 | /** @ty ... ned} */ |
-| tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ |  | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ |
-| tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ |  | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ |
-| tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |  | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |
-| tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |  | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
-| tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |  | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
-| tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |  | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
-| tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |  | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |
-test_JSDocTag
-| tst.js:5:5:5:10 | @const | const | tst.js:5:1:5:13 | /** @const */ | 0 | (none) | (none) | (none) |
-| tst.js:9:4:9:9 | @const | const | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:10:4:10:8 | @type | type | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | 1 | (none) | (none) | string |
-| tst.js:14:5:14:10 | @const | const | tst.js:14:1:14:13 | /** @const */ | 0 | (none) | (none) | (none) |
-| tst.js:18:4:18:15 | @constructor | constructor | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:23:5:23:11 | @define | define | tst.js:23:1:23:24 | /** @de ... ean} */ | 0 | (none) | (none) | boolean |
-| tst.js:26:5:26:11 | @define | define | tst.js:26:1:26:24 | /** @de ... ean} */ | 0 | (none) | (none) | boolean |
-| tst.js:31:4:31:10 | @return | return | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | 0 | True if the contents of\nthe element are editable, but the element\nitself is not.\n | (none) | boolean |
-| tst.js:34:4:34:14 | @deprecated | deprecated | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | 1 | Use isField(). | (none) | (none) |
-| tst.js:40:4:40:15 | @constructor | constructor | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:41:4:41:8 | @dict | dict | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:48:16:48:20 | @dict | dict | tst.js:48:12:48:23 | /** @dict */ | 0 | (none) | (none) | (none) |
-| tst.js:53:4:53:8 | @enum | enum | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ | 0 | (none) | (none) | number |
-| tst.js:61:5:61:11 | @export | export | tst.js:61:1:61:14 | /** @export */ | 0 | (none) | (none) | (none) |
-| tst.js:67:4:67:15 | @constructor | constructor | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:68:4:68:11 | @extends | extends | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | 1 | (none) | (none) | goog.ds.BasicNodeList |
-| tst.js:75:4:75:9 | @final | final | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:76:4:76:15 | @constructor | constructor | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:82:4:82:9 | @final | final | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:88:4:88:13 | @interface | interface | tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:94:4:94:15 | @constructor | constructor | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:95:4:95:14 | @implements | implements | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ | 1 | (none) | (none) | Shape |
-| tst.js:102:4:102:12 | @override | override | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ | 0 | (none) | (none) | (none) |
-| tst.js:103:4:103:14 | @inheritDoc | inheritDoc | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ | 1 | (none) | (none) | (none) |
-| tst.js:109:4:109:13 | @interface | interface | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:110:4:110:11 | @extends | extends | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | 1 | (none) | (none) | Shape |
-| tst.js:117:13:117:18 | @lends | lends | tst.js:117:9:117:40 | /** @le ... ype} */ | 0 | {Button.prototype} | (none) | (none) |
-| tst.js:122:4:122:12 | @preserve | preserve | tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ | 0 | Copyright 2009 SomeThirdParty.\nHere is the full license text and copyright\nnotice for this file. Note that the notice can span several\nlines and is only terminated by the closing star and slash: | (none) | (none) |
-| tst.js:128:5:128:18 | @nosideeffects | nosideeffects | tst.js:128:1:128:21 | /** @no ... ects */ | 0 | (none) | (none) | (none) |
-| tst.js:134:4:134:10 | @return | return | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | 0 | The window object of the peer.\n | (none) | Object |
-| tst.js:135:4:135:11 | @package | package | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:142:4:142:9 | @param | param | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | 0 | Subgroup id to query.\n | groupNum | number |
-| tst.js:143:4:143:9 | @param | param | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | 1 | An itemName,\nor itemId, or null to search everything. | term | (string\|number\|null) |
-| tst.js:155:4:155:8 | @type | type | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | 0 | (none) | (none) | Array.<Function> |
-| tst.js:156:4:156:11 | @private | private | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:163:4:163:9 | @param | param | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | 0 | Root element for the component.\n | element | Element |
-| tst.js:164:4:164:13 | @protected | protected | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:171:4:171:10 | @return | return | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ | 0 | The hex ID. | (none) | string |
-| tst.js:180:4:180:15 | @constructor | constructor | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:181:4:181:10 | @struct | struct | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:192:16:192:22 | @struct | struct | tst.js:192:12:192:25 | /** @struct */ | 0 | (none) | (none) | (none) |
-| tst.js:198:12:198:16 | @this | this | tst.js:196:9:200:11 | /**\\n    ...      */ | 0 | (none) | (none) | (none) |
-| tst.js:199:12:199:18 | @return | return | tst.js:196:9:200:11 | /**\\n    ...      */ | 1 | (none) | (none) | Element |
-| tst.js:206:4:206:10 | @throws | throws | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ | 0 | (none) | (none) | DOMException |
-| tst.js:212:4:212:8 | @type | type | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ | 0 | (none) | (none) | string |
-| tst.js:216:5:216:12 | @typedef | typedef | tst.js:216:1:216:33 | /** @ty ... er)} */ | 0 | (none) | (none) | (string\|number) |
-| tst.js:219:5:219:10 | @param | param | tst.js:219:1:219:55 | /** @pa ... ing. */ | 0 | A number or a string. | x | goog.NumberLike |
-| tst.js:223:5:223:9 | @type | type | tst.js:223:1:223:40 | /** @ty ... ct}} */ | 0 | (none) | (none) | {myNum: number, myObject} |
-| tst.js:226:5:226:9 | @type | type | tst.js:226:1:226:22 | /** @ty ... er?} */ | 0 | (none) | (none) | number? |
-| tst.js:229:5:229:9 | @type | type | tst.js:229:1:229:22 | /** @ty ... ect} */ | 0 | (none) | (none) | !Object |
-| tst.js:233:4:233:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 0 | (none) | p1 | function (string, boolean) |
-| tst.js:234:4:234:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 1 | (none) | p2 | function (): number |
-| tst.js:235:4:235:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 2 | (none) | p3 | function (this: goog.ui.Menu, string) |
-| tst.js:236:4:236:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 3 | (none) | p4 | function (new: goog.ui.Menu, string) |
-| tst.js:237:4:237:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 4 | (none) | p5 | function (string, ...[number]): number |
-| tst.js:238:4:238:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 5 | p6\n | var_args | ...number |
-| tst.js:239:4:239:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 6 | p7\n | opt_argument | number= |
-| tst.js:240:4:240:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 7 | (none) | p8 | function (?string=, number=) |
-| tst.js:241:4:241:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 8 | (none) | p9 | * |
-| tst.js:242:4:242:9 | @param | param | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | 9 | (none) | p10 | ? |
-| tst.js:247:4:247:15 | @constructor | constructor | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:248:4:248:12 | @template | template | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ | 1 | T | (none) | (none) |
-| tst.js:252:5:252:11 | @return | return | tst.js:252:1:252:18 | /** @return {T} */ | 0 | (none) | (none) | T |
-| tst.js:255:5:255:10 | @param | param | tst.js:255:1:255:19 | /** @param {T} t */ | 0 | (none) | t | T |
-| tst.js:258:5:258:9 | @type | type | tst.js:258:1:258:28 | /** @ty ... ng>} */ | 0 | (none) | (none) | !Foo.<string> |
-| tst.js:259:15:259:19 | @type | type | tst.js:259:11:259:38 | /** @ty ... ng>} */ | 0 | (none) | (none) | !Foo.<string> |
-| tst.js:262:4:262:9 | @param | param | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | 0 | (none) | t | T |
-| tst.js:263:4:263:15 | @constructor | constructor | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:264:4:264:12 | @template | template | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | 2 | T | (none) | (none) |
-| tst.js:270:4:270:15 | @constructor | constructor | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:271:4:271:12 | @template | template | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ | 1 | Key, Val | (none) | (none) |
-| tst.js:275:5:275:9 | @type | type | tst.js:275:1:275:37 | /** @ty ... er>} */ | 0 | (none) | (none) | MyMap.<string, number> |
-| tst.js:278:4:278:15 | @constructor | constructor | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:283:4:283:11 | @extends | extends | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ | 0 | (none) | (none) | X |
-| tst.js:284:4:284:15 | @constructor | constructor | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ | 1 | (none) | (none) | (none) |
-| tst.js:288:5:288:9 | @type | type | tst.js:288:1:288:22 | /** @ty ... <X>} */ | 0 | (none) | (none) | Foo.<X> |
-| tst.js:289:5:289:9 | @type | type | tst.js:289:1:289:22 | /** @ty ... <Y>} */ | 0 | (none) | (none) | Foo.<Y> |
-| tst.js:294:5:294:10 | @param | param | tst.js:294:1:294:28 | /** @pa ... fooY */ | 0 | (none) | fooY | Foo.<Y> |
-| tst.js:301:4:301:15 | @constructor | constructor | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:302:4:302:12 | @template | template | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ | 1 | T | (none) | (none) |
-| tst.js:306:5:306:10 | @param | param | tst.js:306:1:306:19 | /** @param {T} t */ | 0 | (none) | t | T |
-| tst.js:310:4:310:15 | @constructor | constructor | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:311:4:311:11 | @extends | extends | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ | 1 | (none) | (none) | A.<string> |
-| tst.js:316:4:316:15 | @constructor | constructor | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:317:4:317:12 | @template | template | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | 1 | U\n | (none) | (none) |
-| tst.js:318:4:318:11 | @extends | extends | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | 2 | (none) | (none) | A.<U> |
-| tst.js:323:4:323:13 | @interface | interface | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:324:4:324:12 | @template | template | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ | 1 | T | (none) | (none) |
-| tst.js:328:5:328:11 | @return | return | tst.js:328:1:328:18 | /** @return {T} */ | 0 | (none) | (none) | T |
-| tst.js:332:4:332:15 | @constructor | constructor | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | 0 | (none) | (none) | (none) |
-| tst.js:333:4:333:14 | @implements | implements | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | 1 | (none) | (none) | Foo.<string> |
-| tst.js:334:4:334:14 | @implements | implements | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | 2 | (none) | (none) | Foo.<number> |
-| tst.js:339:4:339:9 | @param | param | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | 0 | (none) | a | T |
-| tst.js:340:4:340:10 | @return | return | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | 1 | (none) | (none) | T |
-| tst.js:341:4:341:12 | @template | template | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | 2 | T | (none) | (none) |
-| tst.js:345:5:345:9 | @type | type | tst.js:345:1:345:21 | /** @ty ... ing} */ | 0 | (none) | (none) | string |
-| tst.js:346:5:346:9 | @type | type | tst.js:346:1:346:21 | /** @ty ... ber} */ | 0 | (none) | (none) | number |
-| tst.js:347:5:347:9 | @type | type | tst.js:347:1:347:21 | /** @ty ... ber} */ | 0 | (none) | (none) | number |
-| tst.js:349:5:349:9 | @type | type | tst.js:349:1:349:31 | /** @ty ... ned} */ | 0 | (none) | (none) | (string\|undefined) |
-| tst.js:352:4:352:9 | @param | param | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ | 0 | [int] an integer | (none) | (none) |
-| tst.js:357:4:357:9 | @param | param | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | 0 | the array to sort\n | array | Array.<number> |
-| tst.js:358:4:358:9 | @param | param | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | 1 | the comparator function | fn | function (x: !number, y: !number): number |
-| tst.js:364:6:364:11 | @param | param | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T1 |
-| tst.js:369:6:369:11 | @param | param | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T2 |
-| tst.js:376:6:376:11 | @param | param | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T3 |
-| tst.js:381:6:381:11 | @param | param | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T4 |
-| tst.js:387:4:387:9 | @param | param | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ | 0 | (none) | x | Array.<number> |
-test_ObjectExpr_getDocumentation
-| tst.js:48:25:48:36 | { 'x': 321 } | tst.js:48:12:48:23 | /** @dict */ |
-| tst.js:55:20:59:1 | {\\n  TRU ... BE: 0\\n} | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
-| tst.js:117:43:119:9 | {\\n      ...       } | tst.js:117:9:117:40 | /** @le ... ype} */ |
-| tst.js:192:27:192:36 | { x: 321 } | tst.js:192:12:192:25 | /** @struct */ |
-test_JSDocFunctionTypeExpr
-| tst.js:233:12:233:36 | function (string, boolean) | (none) | (none) | 0 | tst.js:233:21:233:26 | string | no |
-| tst.js:233:12:233:36 | function (string, boolean) | (none) | (none) | 1 | tst.js:233:29:233:35 | boolean | no |
-| tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | (none) | goog.ui.Menu | 0 | tst.js:235:40:235:45 | string | no |
-| tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | (none) | goog.ui.Menu | 0 | tst.js:236:39:236:44 | string | yes |
-| tst.js:237:12:237:48 | function (string, ...[number]): number | number | (none) | 0 | tst.js:237:21:237:26 | string | no |
-| tst.js:237:12:237:48 | function (string, ...[number]): number | number | (none) | 1 | tst.js:237:32:237:39 | ...[number] | no |
-| tst.js:240:12:240:38 | function (?string=, number=) | (none) | (none) | 0 | tst.js:240:21:240:28 | ?string= | no |
-| tst.js:240:12:240:38 | function (?string=, number=) | (none) | (none) | 1 | tst.js:240:31:240:37 | number= | no |
-| tst.js:358:12:358:48 | function (x: !number, y: !number): number | number | (none) | 0 | tst.js:358:23:358:29 | !number | no |
-| tst.js:358:12:358:48 | function (x: !number, y: !number): number | number | (none) | 1 | tst.js:358:34:358:40 | !number | no |
-test_JSDocNullableTypeExpr
-| tst.js:226:12:226:18 | number? | tst.js:226:12:226:17 | number | postfix |
-| tst.js:240:21:240:27 | ?string | tst.js:240:22:240:27 | string | prefix |
-test_next_token
-| tst.js:1:1:1:117 | // Test ... mpiler, | tst.js:5:15:5:17 | var |
-| tst.js:2:1:2:118 | // whic ... se 2.0; | tst.js:5:15:5:17 | var |
-| tst.js:3:1:3:20 | // see file COPYING. | tst.js:5:15:5:17 | var |
-| tst.js:5:1:5:13 | /** @const */ | tst.js:5:15:5:17 | var |
-| tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | tst.js:12:1:12:11 | mynamespace |
-| tst.js:14:1:14:13 | /** @const */ | tst.js:14:15:14:21 | MyClass |
-| tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ | tst.js:20:1:20:8 | function |
-| tst.js:23:1:23:24 | /** @de ... ean} */ | tst.js:24:1:24:3 | var |
-| tst.js:26:1:26:24 | /** @de ... ean} */ | tst.js:27:1:27:4 | goog |
-| tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ | tst.js:36:1:36:11 | BN_EditUtil |
-| tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ | tst.js:43:1:43:8 | function |
-| tst.js:46:16:46:25 | // warning | tst.js:48:1:48:3 | var |
-| tst.js:48:12:48:23 | /** @dict */ | tst.js:48:25:48:25 | { |
-| tst.js:49:16:49:25 | // warning | tst.js:55:1:55:7 | project |
-| tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ | tst.js:55:1:55:7 | project |
-| tst.js:61:1:61:14 | /** @export */ | tst.js:62:1:62:3 | foo |
-| tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ | tst.js:70:1:70:4 | goog |
-| tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ | tst.js:78:1:78:5 | sloth |
-| tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ | tst.js:84:1:84:5 | sloth |
-| tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ | tst.js:90:1:90:8 | function |
-| tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ | tst.js:97:1:97:8 | function |
-| tst.js:101:1:103:17 | /**\\n *  ... tDoc */ | tst.js:104:1:104:7 | project |
-| tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ | tst.js:112:1:112:8 | function |
-| tst.js:117:9:117:40 | /** @le ... ype} */ | tst.js:117:42:117:42 | ( |
-| tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ | tst.js:129:1:129:8 | function |
-| tst.js:128:1:128:21 | /** @no ... ects */ | tst.js:129:1:129:8 | function |
-| tst.js:131:1:136:3 | /**\\n *  ... age\\n */ | tst.js:137:1:137:4 | goog |
-| tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ | tst.js:146:1:146:4 | goog |
-| tst.js:149:14:149:26 | /** number */ | tst.js:149:28:149:28 | a |
-| tst.js:149:31:149:43 | /** number */ | tst.js:149:45:149:45 | b |
-| tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ | tst.js:158:1:158:4 | this |
-| tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ | tst.js:166:1:166:4 | goog |
-| tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ | tst.js:173:1:173:4 | goog |
-| tst.js:177:10:177:22 | /** number */ | tst.js:177:24:177:26 | foo |
-| tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ | tst.js:183:1:183:8 | function |
-| tst.js:187:24:187:28 | // OK | tst.js:188:1:188:4 | obj1 |
-| tst.js:188:21:188:25 | // OK | tst.js:189:1:189:4 | obj1 |
-| tst.js:189:22:189:31 | // warning | tst.js:190:1:190:4 | obj1 |
-| tst.js:190:14:190:23 | // warning | tst.js:192:1:192:3 | var |
-| tst.js:192:12:192:25 | /** @struct */ | tst.js:192:27:192:27 | { |
-| tst.js:193:19:193:28 | // warning | tst.js:195:1:195:4 | chat |
-| tst.js:196:9:200:11 | /**\\n    ...      */ | tst.js:201:9:201:16 | function |
-| tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ | tst.js:208:1:208:19 | DOMApplicationCache |
-| tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ | tst.js:214:1:214:3 | var |
-| tst.js:216:1:216:33 | /** @ty ... er)} */ | tst.js:217:1:217:4 | goog |
-| tst.js:219:1:219:55 | /** @pa ... ing. */ | tst.js:220:1:220:4 | goog |
-| tst.js:223:1:223:40 | /** @ty ... ct}} */ | tst.js:224:1:224:3 | var |
-| tst.js:226:1:226:22 | /** @ty ... er?} */ | tst.js:227:1:227:3 | var |
-| tst.js:229:1:229:22 | /** @ty ... ect} */ | tst.js:230:1:230:3 | var |
-| tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ | tst.js:244:1:244:3 | var |
-| tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ | tst.js:250:1:250:3 | var |
-| tst.js:252:1:252:18 | /** @return {T} */ | tst.js:253:1:253:3 | Foo |
-| tst.js:255:1:255:19 | /** @param {T} t */ | tst.js:256:1:256:3 | Foo |
-| tst.js:258:1:258:28 | /** @ty ... ng>} */ | tst.js:258:30:258:32 | var |
-| tst.js:259:11:259:38 | /** @ty ... ng>} */ | tst.js:259:40:259:40 | ( |
-| tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ | tst.js:266:1:266:3 | Bar |
-| tst.js:267:29:267:52 | // bar  ... string> | tst.js:273:1:273:3 | var |
-| tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ | tst.js:273:1:273:3 | var |
-| tst.js:275:1:275:37 | /** @ty ... er>} */ | tst.js:275:39:275:41 | var |
-| tst.js:275:48:275:77 | // Key  ... number. | tst.js:280:1:280:1 | X |
-| tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ | tst.js:280:1:280:1 | X |
-| tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ | tst.js:286:1:286:1 | Y |
-| tst.js:288:1:288:22 | /** @ty ... <X>} */ | tst.js:288:24:288:26 | var |
-| tst.js:289:1:289:22 | /** @ty ... <Y>} */ | tst.js:289:24:289:26 | var |
-| tst.js:291:14:291:21 | // Error | tst.js:292:1:292:4 | fooY |
-| tst.js:292:14:292:21 | // Error | tst.js:295:1:295:9 | takesFooY |
-| tst.js:294:1:294:28 | /** @pa ... fooY */ | tst.js:295:1:295:9 | takesFooY |
-| tst.js:297:18:297:23 | // OK. | tst.js:298:1:298:9 | takesFooY |
-| tst.js:298:18:298:25 | // Error | tst.js:304:1:304:1 | A |
-| tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ | tst.js:304:1:304:1 | A |
-| tst.js:306:1:306:19 | /** @param {T} t */ | tst.js:307:1:307:1 | A |
-| tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ | tst.js:313:1:313:1 | B |
-| tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ | tst.js:320:1:320:1 | C |
-| tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ | tst.js:326:1:326:3 | Foo |
-| tst.js:328:1:328:18 | /** @return {T} */ | tst.js:329:1:329:3 | Foo |
-| tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ | tst.js:336:1:336:7 | FooImpl |
-| tst.js:336:27:336:72 | // Erro ... e twice | tst.js:343:1:343:8 | identity |
-| tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ | tst.js:343:1:343:8 | identity |
-| tst.js:345:1:345:21 | /** @ty ... ing} */ | tst.js:345:23:345:25 | var |
-| tst.js:345:72:345:76 | // OK | tst.js:346:23:346:25 | var |
-| tst.js:346:1:346:21 | /** @ty ... ber} */ | tst.js:346:23:346:25 | var |
-| tst.js:346:60:346:64 | // OK | tst.js:347:23:347:25 | var |
-| tst.js:347:1:347:21 | /** @ty ... ber} */ | tst.js:347:23:347:25 | var |
-| tst.js:347:62:347:77 | // Type mismatch | tst.js:349:33:349:35 | var |
-| tst.js:349:1:349:31 | /** @ty ... ned} */ | tst.js:349:33:349:35 | var |
-| tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ | tst.js:354:1:354:8 | function |
-| tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | tst.js:360:1:360:8 | function |
-| tst.js:363:3:365:5 | /**\\n    ... p\\n   */ | tst.js:366:3:366:15 | classicMethod |
-| tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | tst.js:371:3:371:13 | fancyMethod |
-| tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | tst.js:378:3:378:13 | constructor |
-| tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | tst.js:383:3:383:13 | classMethod |
-| tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ | tst.js:390:1:390:8 | function |
-test_JSDocTypeExpr
-| tst.js:10:11:10:16 | string | tst.js:10:4:10:8 | @type | 0 |
-| tst.js:23:14:23:20 | boolean | tst.js:23:5:23:11 | @define | 0 |
-| tst.js:26:14:26:20 | boolean | tst.js:26:5:26:11 | @define | 0 |
-| tst.js:31:13:31:19 | boolean | tst.js:31:4:31:10 | @return | 0 |
-| tst.js:53:11:53:16 | number | tst.js:53:4:53:8 | @enum | 0 |
-| tst.js:68:14:68:34 | goog.ds.BasicNodeList | tst.js:68:4:68:11 | @extends | 0 |
-| tst.js:95:17:95:21 | Shape | tst.js:95:4:95:14 | @implements | 0 |
-| tst.js:110:14:110:18 | Shape | tst.js:110:4:110:11 | @extends | 0 |
-| tst.js:134:13:134:18 | Object | tst.js:134:4:134:10 | @return | 0 |
-| tst.js:142:12:142:17 | number | tst.js:142:4:142:9 | @param | 0 |
-| tst.js:143:12:143:17 | string | tst.js:143:12:143:29 | (string\|number\|null) | 0 |
-| tst.js:143:12:143:29 | (string\|number\|null) | tst.js:143:4:143:9 | @param | 0 |
-| tst.js:143:19:143:24 | number | tst.js:143:12:143:29 | (string\|number\|null) | 1 |
-| tst.js:143:26:143:29 | null | tst.js:143:12:143:29 | (string\|number\|null) | 2 |
-| tst.js:155:11:155:18 | Function | tst.js:155:11:155:20 | Array.<Function> | 0 |
-| tst.js:155:11:155:20 | Array | tst.js:155:11:155:20 | Array.<Function> | -1 |
-| tst.js:155:11:155:20 | Array.<Function> | tst.js:155:4:155:8 | @type | 0 |
-| tst.js:163:12:163:18 | Element | tst.js:163:4:163:9 | @param | 0 |
-| tst.js:171:13:171:18 | string | tst.js:171:4:171:10 | @return | 0 |
-| tst.js:199:21:199:27 | Element | tst.js:199:12:199:18 | @return | 0 |
-| tst.js:206:13:206:24 | DOMException | tst.js:206:4:206:10 | @throws | 0 |
-| tst.js:212:11:212:16 | string | tst.js:212:4:212:8 | @type | 0 |
-| tst.js:216:15:216:29 | (string\|number) | tst.js:216:5:216:12 | @typedef | 0 |
-| tst.js:216:16:216:21 | string | tst.js:216:15:216:29 | (string\|number) | 0 |
-| tst.js:216:23:216:28 | number | tst.js:216:15:216:29 | (string\|number) | 1 |
-| tst.js:219:13:219:27 | goog.NumberLike | tst.js:219:5:219:10 | @param | 0 |
-| tst.js:223:12:223:36 | {myNum: number, myObject} | tst.js:223:5:223:9 | @type | 0 |
-| tst.js:223:20:223:25 | number | tst.js:223:12:223:36 | {myNum: number, myObject} | 0 |
-| tst.js:226:12:226:17 | number | tst.js:226:12:226:18 | number? | 0 |
-| tst.js:226:12:226:18 | number? | tst.js:226:5:226:9 | @type | 0 |
-| tst.js:229:12:229:18 | !Object | tst.js:229:5:229:9 | @type | 0 |
-| tst.js:229:13:229:18 | Object | tst.js:229:12:229:18 | !Object | 0 |
-| tst.js:233:12:233:36 | function (string, boolean) | tst.js:233:4:233:9 | @param | 0 |
-| tst.js:233:21:233:26 | string | tst.js:233:12:233:36 | function (string, boolean) | 0 |
-| tst.js:233:29:233:35 | boolean | tst.js:233:12:233:36 | function (string, boolean) | 1 |
-| tst.js:234:12:234:29 | function (): number | tst.js:234:4:234:9 | @param | 0 |
-| tst.js:234:24:234:29 | number | tst.js:234:12:234:29 | function (): number | -1 |
-| tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | tst.js:235:4:235:9 | @param | 0 |
-| tst.js:235:26:235:37 | goog.ui.Menu | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | -2 |
-| tst.js:235:40:235:45 | string | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | 0 |
-| tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | tst.js:236:4:236:9 | @param | 0 |
-| tst.js:236:25:236:36 | goog.ui.Menu | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | -2 |
-| tst.js:236:39:236:44 | string | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | 0 |
-| tst.js:237:12:237:48 | function (string, ...[number]): number | tst.js:237:4:237:9 | @param | 0 |
-| tst.js:237:21:237:26 | string | tst.js:237:12:237:48 | function (string, ...[number]): number | 0 |
-| tst.js:237:32:237:39 | ...[number] | tst.js:237:12:237:48 | function (string, ...[number]): number | 1 |
-| tst.js:237:32:237:39 | [number] | tst.js:237:32:237:39 | ...[number] | 0 |
-| tst.js:237:33:237:38 | number | tst.js:237:32:237:39 | [number] | 0 |
-| tst.js:237:43:237:48 | number | tst.js:237:12:237:48 | function (string, ...[number]): number | -1 |
-| tst.js:238:12:238:20 | ...number | tst.js:238:4:238:9 | @param | 0 |
-| tst.js:238:15:238:20 | number | tst.js:238:12:238:20 | ...number | 0 |
-| tst.js:239:12:239:17 | number | tst.js:239:12:239:18 | number= | 0 |
-| tst.js:239:12:239:18 | number= | tst.js:239:4:239:9 | @param | 0 |
-| tst.js:240:12:240:38 | function (?string=, number=) | tst.js:240:4:240:9 | @param | 0 |
-| tst.js:240:21:240:27 | ?string | tst.js:240:21:240:28 | ?string= | 0 |
-| tst.js:240:21:240:28 | ?string= | tst.js:240:12:240:38 | function (?string=, number=) | 0 |
-| tst.js:240:22:240:27 | string | tst.js:240:21:240:27 | ?string | 0 |
-| tst.js:240:31:240:36 | number | tst.js:240:31:240:37 | number= | 0 |
-| tst.js:240:31:240:37 | number= | tst.js:240:12:240:38 | function (?string=, number=) | 1 |
-| tst.js:241:12:241:12 | * | tst.js:241:4:241:9 | @param | 0 |
-| tst.js:242:12:242:12 | ? | tst.js:242:4:242:9 | @param | 0 |
-| tst.js:252:14:252:14 | T | tst.js:252:5:252:11 | @return | 0 |
-| tst.js:255:13:255:13 | T | tst.js:255:5:255:10 | @param | 0 |
-| tst.js:258:12:258:24 | !Foo.<string> | tst.js:258:5:258:9 | @type | 0 |
-| tst.js:258:13:258:15 | Foo | tst.js:258:13:258:24 | Foo.<string> | -1 |
-| tst.js:258:13:258:24 | Foo.<string> | tst.js:258:12:258:24 | !Foo.<string> | 0 |
-| tst.js:258:18:258:23 | string | tst.js:258:13:258:24 | Foo.<string> | 0 |
-| tst.js:259:22:259:34 | !Foo.<string> | tst.js:259:15:259:19 | @type | 0 |
-| tst.js:259:23:259:25 | Foo | tst.js:259:23:259:34 | Foo.<string> | -1 |
-| tst.js:259:23:259:34 | Foo.<string> | tst.js:259:22:259:34 | !Foo.<string> | 0 |
-| tst.js:259:28:259:33 | string | tst.js:259:23:259:34 | Foo.<string> | 0 |
-| tst.js:262:12:262:12 | T | tst.js:262:4:262:9 | @param | 0 |
-| tst.js:275:12:275:16 | MyMap | tst.js:275:12:275:33 | MyMap.<string, number> | -1 |
-| tst.js:275:12:275:33 | MyMap.<string, number> | tst.js:275:5:275:9 | @type | 0 |
-| tst.js:275:19:275:24 | string | tst.js:275:12:275:33 | MyMap.<string, number> | 0 |
-| tst.js:275:27:275:32 | number | tst.js:275:12:275:33 | MyMap.<string, number> | 1 |
-| tst.js:283:14:283:14 | X | tst.js:283:4:283:11 | @extends | 0 |
-| tst.js:288:12:288:14 | Foo | tst.js:288:12:288:18 | Foo.<X> | -1 |
-| tst.js:288:12:288:18 | Foo.<X> | tst.js:288:5:288:9 | @type | 0 |
-| tst.js:288:17:288:17 | X | tst.js:288:12:288:18 | Foo.<X> | 0 |
-| tst.js:289:12:289:14 | Foo | tst.js:289:12:289:18 | Foo.<Y> | -1 |
-| tst.js:289:12:289:18 | Foo.<Y> | tst.js:289:5:289:9 | @type | 0 |
-| tst.js:289:17:289:17 | Y | tst.js:289:12:289:18 | Foo.<Y> | 0 |
-| tst.js:294:13:294:15 | Foo | tst.js:294:13:294:19 | Foo.<Y> | -1 |
-| tst.js:294:13:294:19 | Foo.<Y> | tst.js:294:5:294:10 | @param | 0 |
-| tst.js:294:18:294:18 | Y | tst.js:294:13:294:19 | Foo.<Y> | 0 |
-| tst.js:306:13:306:13 | T | tst.js:306:5:306:10 | @param | 0 |
-| tst.js:311:14:311:14 | A | tst.js:311:14:311:23 | A.<string> | -1 |
-| tst.js:311:14:311:23 | A.<string> | tst.js:311:4:311:11 | @extends | 0 |
-| tst.js:311:17:311:22 | string | tst.js:311:14:311:23 | A.<string> | 0 |
-| tst.js:318:14:318:14 | A | tst.js:318:14:318:18 | A.<U> | -1 |
-| tst.js:318:14:318:18 | A.<U> | tst.js:318:4:318:11 | @extends | 0 |
-| tst.js:318:17:318:17 | U | tst.js:318:14:318:18 | A.<U> | 0 |
-| tst.js:328:14:328:14 | T | tst.js:328:5:328:11 | @return | 0 |
-| tst.js:333:17:333:19 | Foo | tst.js:333:17:333:28 | Foo.<string> | -1 |
-| tst.js:333:17:333:28 | Foo.<string> | tst.js:333:4:333:14 | @implements | 0 |
-| tst.js:333:22:333:27 | string | tst.js:333:17:333:28 | Foo.<string> | 0 |
-| tst.js:334:17:334:19 | Foo | tst.js:334:17:334:28 | Foo.<number> | -1 |
-| tst.js:334:17:334:28 | Foo.<number> | tst.js:334:4:334:14 | @implements | 0 |
-| tst.js:334:22:334:27 | number | tst.js:334:17:334:28 | Foo.<number> | 0 |
-| tst.js:339:12:339:12 | T | tst.js:339:4:339:9 | @param | 0 |
-| tst.js:340:13:340:13 | T | tst.js:340:4:340:10 | @return | 0 |
-| tst.js:345:12:345:17 | string | tst.js:345:5:345:9 | @type | 0 |
-| tst.js:346:12:346:17 | number | tst.js:346:5:346:9 | @type | 0 |
-| tst.js:347:12:347:17 | number | tst.js:347:5:347:9 | @type | 0 |
-| tst.js:349:12:349:17 | string | tst.js:349:12:349:27 | (string\|undefined) | 0 |
-| tst.js:349:12:349:27 | (string\|undefined) | tst.js:349:5:349:9 | @type | 0 |
-| tst.js:349:19:349:27 | undefined | tst.js:349:12:349:27 | (string\|undefined) | 1 |
-| tst.js:357:12:357:16 | Array | tst.js:357:12:357:25 | Array.<number> | -1 |
-| tst.js:357:12:357:25 | Array.<number> | tst.js:357:4:357:9 | @param | 0 |
-| tst.js:357:19:357:24 | number | tst.js:357:12:357:25 | Array.<number> | 0 |
-| tst.js:358:12:358:48 | function (x: !number, y: !number): number | tst.js:358:4:358:9 | @param | 0 |
-| tst.js:358:23:358:29 | !number | tst.js:358:12:358:48 | function (x: !number, y: !number): number | 0 |
-| tst.js:358:24:358:29 | number | tst.js:358:23:358:29 | !number | 0 |
-| tst.js:358:34:358:40 | !number | tst.js:358:12:358:48 | function (x: !number, y: !number): number | 1 |
-| tst.js:358:35:358:40 | number | tst.js:358:34:358:40 | !number | 0 |
-| tst.js:358:43:358:48 | number | tst.js:358:12:358:48 | function (x: !number, y: !number): number | -1 |
-| tst.js:364:14:364:15 | T1 | tst.js:364:6:364:11 | @param | 0 |
-| tst.js:369:14:369:15 | T2 | tst.js:369:6:369:11 | @param | 0 |
-| tst.js:376:14:376:15 | T3 | tst.js:376:6:376:11 | @param | 0 |
-| tst.js:381:14:381:15 | T4 | tst.js:381:6:381:11 | @param | 0 |
-| tst.js:387:12:387:16 | Array | tst.js:387:12:388:13 | Array.<number> | -1 |
-| tst.js:387:12:388:13 | Array.<number> | tst.js:387:4:387:9 | @param | 0 |
-| tst.js:388:7:388:12 | number | tst.js:387:12:388:13 | Array.<number> | 0 |
-test_JSDocOptionalParameterTypeExpr
-| tst.js:239:12:239:18 | number= | tst.js:239:12:239:17 | number |
-| tst.js:240:21:240:28 | ?string= | tst.js:240:21:240:27 | ?string |
-| tst.js:240:31:240:37 | number= | tst.js:240:31:240:36 | number |
-test_getParameterTag
-| tst.js:146:37:146:44 | groupNum | groupNum | tst.js:142:4:142:9 | @param | groupNum | tst.js:142:12:142:17 | number |
-| tst.js:146:47:146:50 | term | term | tst.js:143:4:143:9 | @param | term | tst.js:143:12:143:29 | (string\|number\|null) |
-| tst.js:166:59:166:65 | element | element | tst.js:163:4:163:9 | @param | element | tst.js:163:12:163:18 | Element |
-| tst.js:220:28:220:28 | x | x | tst.js:219:5:219:10 | @param | x | tst.js:219:13:219:27 | goog.NumberLike |
-| tst.js:256:30:256:30 | t | t | tst.js:255:5:255:10 | @param | t | tst.js:255:13:255:13 | T |
-| tst.js:266:16:266:16 | t | t | tst.js:262:4:262:9 | @param | t | tst.js:262:12:262:12 | T |
-| tst.js:295:22:295:25 | fooY | fooY | tst.js:294:5:294:10 | @param | fooY | tst.js:294:13:294:19 | Foo.<Y> |
-| tst.js:307:31:307:31 | t | t | tst.js:306:5:306:10 | @param | t | tst.js:306:13:306:13 | T |
-| tst.js:343:21:343:21 | a | a | tst.js:339:4:339:9 | @param | a | tst.js:339:12:339:12 | T |
-| tst.js:360:15:360:19 | array | array | tst.js:357:4:357:9 | @param | array | tst.js:357:12:357:25 | Array.<number> |
-| tst.js:360:22:360:23 | fn | fn | tst.js:358:4:358:9 | @param | fn | tst.js:358:12:358:48 | function (x: !number, y: !number): number |
-| tst.js:366:27:366:27 | p | p | tst.js:364:6:364:11 | @param | p | tst.js:364:14:364:15 | T1 |
-| tst.js:371:15:371:15 | p | p | tst.js:369:6:369:11 | @param | p | tst.js:369:14:369:15 | T2 |
-| tst.js:378:15:378:15 | p | p | tst.js:376:6:376:11 | @param | p | tst.js:376:14:376:15 | T3 |
-| tst.js:383:15:383:15 | p | p | tst.js:381:6:381:11 | @param | p | tst.js:381:14:381:15 | T4 |
-| tst.js:390:20:390:20 | x | x | tst.js:387:4:387:9 | @param | x | tst.js:387:12:388:13 | Array.<number> |
-test_JSDocAppliedTypeExpr
-| tst.js:155:11:155:20 | Array.<Function> | tst.js:155:11:155:20 | Array | 0 | tst.js:155:11:155:18 | Function |
-| tst.js:258:13:258:24 | Foo.<string> | tst.js:258:13:258:15 | Foo | 0 | tst.js:258:18:258:23 | string |
-| tst.js:259:23:259:34 | Foo.<string> | tst.js:259:23:259:25 | Foo | 0 | tst.js:259:28:259:33 | string |
-| tst.js:275:12:275:33 | MyMap.<string, number> | tst.js:275:12:275:16 | MyMap | 0 | tst.js:275:19:275:24 | string |
-| tst.js:275:12:275:33 | MyMap.<string, number> | tst.js:275:12:275:16 | MyMap | 1 | tst.js:275:27:275:32 | number |
-| tst.js:288:12:288:18 | Foo.<X> | tst.js:288:12:288:14 | Foo | 0 | tst.js:288:17:288:17 | X |
-| tst.js:289:12:289:18 | Foo.<Y> | tst.js:289:12:289:14 | Foo | 0 | tst.js:289:17:289:17 | Y |
-| tst.js:294:13:294:19 | Foo.<Y> | tst.js:294:13:294:15 | Foo | 0 | tst.js:294:18:294:18 | Y |
-| tst.js:311:14:311:23 | A.<string> | tst.js:311:14:311:14 | A | 0 | tst.js:311:17:311:22 | string |
-| tst.js:318:14:318:18 | A.<U> | tst.js:318:14:318:14 | A | 0 | tst.js:318:17:318:17 | U |
-| tst.js:333:17:333:28 | Foo.<string> | tst.js:333:17:333:19 | Foo | 0 | tst.js:333:22:333:27 | string |
-| tst.js:334:17:334:28 | Foo.<number> | tst.js:334:17:334:19 | Foo | 0 | tst.js:334:22:334:27 | number |
-| tst.js:357:12:357:25 | Array.<number> | tst.js:357:12:357:16 | Array | 0 | tst.js:357:19:357:24 | number |
-| tst.js:387:12:388:13 | Array.<number> | tst.js:387:12:387:16 | Array | 0 | tst.js:388:7:388:12 | number |
-test_JSDocNonNullableTypeExpr
-| tst.js:229:12:229:18 | !Object | tst.js:229:13:229:18 | Object | prefix |
-| tst.js:258:12:258:24 | !Foo.<string> | tst.js:258:13:258:24 | Foo.<string> | prefix |
-| tst.js:259:22:259:34 | !Foo.<string> | tst.js:259:23:259:34 | Foo.<string> | prefix |
-| tst.js:358:23:358:29 | !number | tst.js:358:24:358:29 | number | prefix |
-| tst.js:358:34:358:40 | !number | tst.js:358:35:358:40 | number | prefix |
-test_ParExpr_getDocumentation
-| tst.js:117:42:119:10 | ({\\n     ...      }) | tst.js:117:9:117:40 | /** @le ... ype} */ |
-| tst.js:259:40:259:50 | (new Foo()) | tst.js:259:11:259:38 | /** @ty ... ng>} */ |

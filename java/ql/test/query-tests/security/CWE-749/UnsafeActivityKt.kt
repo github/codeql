@@ -9,12 +9,19 @@ import android.webkit.WebViewClient
 class UnsafeActivityKt : Activity() {
     override fun onCreate(savedInstanceState : Bundle) {
 
+		val src : String = intent.extras.getString("url")
+
 		val wv = findViewById<WebView>(-1)
 		// Implicit not-nulls happening here
 		wv.settings.setJavaScriptEnabled(true)
 		wv.settings.setAllowFileAccessFromFileURLs(true)
 
-		val thisUrl : String = intent.extras.getString("url")
-		wv.loadUrl(thisUrl) // $ hasUnsafeAndroidAccess
+		wv.loadUrl(src) // $ hasUnsafeAndroidAccess
+
+		val wv2 = findViewById<WebView>(-1)
+		wv2.apply {
+			settings.setJavaScriptEnabled(true)
+		}
+		wv2.loadUrl(src) // $ hasUnsafeAndroidAccess
     }
 }

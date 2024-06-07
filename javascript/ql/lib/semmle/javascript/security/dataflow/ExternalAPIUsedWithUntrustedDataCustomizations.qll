@@ -64,9 +64,6 @@ module ExternalApiUsedWithUntrustedData {
     SafeExternalApiPackage() { exists(API::moduleImport(this)) }
   }
 
-  /** DEPRECATED: Alias for SafeExternalApiPackage */
-  deprecated class SafeExternalAPIPackage = SafeExternalApiPackage;
-
   private class DefaultSafeExternalApiPackage extends SafeExternalApiPackage {
     DefaultSafeExternalApiPackage() {
       // Promise libraries are safe and generate too much noise if included
@@ -82,9 +79,6 @@ module ExternalApiUsedWithUntrustedData {
    * A function that is considered a "safe" external API from a security perspective.
    */
   abstract class SafeExternalApiFunction extends API::Node { }
-
-  /** DEPRECATED: Alias for SafeExternalApiFunction */
-  deprecated class SafeExternalAPIFunction = SafeExternalApiFunction;
 
   /** Holds if data read from a use of `f` may originate from an imported package. */
   private predicate mayComeFromLibrary(API::Node f) {
@@ -371,6 +365,3 @@ module ExternalApiUsedWithUntrustedData {
     }
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

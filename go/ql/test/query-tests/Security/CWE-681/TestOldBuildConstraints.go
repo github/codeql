@@ -24,7 +24,7 @@ func oldTestIntSink64() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed)
+		_ = int(parsed) // $ hasValueFlow="parsed"
 		_ = uint(parsed)
 	}
 }

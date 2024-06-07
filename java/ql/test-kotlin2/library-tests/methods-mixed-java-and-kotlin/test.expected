@@ -1,0 +1,6 @@
+| A.class:0:0:0:0 | foo | j.A<String>.foo | foo(java.lang.String) | A.java:4:10:4:12 | foo | j.A.foo |
+| A.java:4:10:4:12 | foo | j.A.foo | foo(java.lang.Object) | A.java:4:10:4:12 | foo | j.A.foo |
+| B.java:4:17:4:19 | foo | j.B.foo | foo(java.lang.String) | B.java:4:17:4:19 | foo | j.B.foo |
+| W.kt:4:5:4:17 | foo | k.A.foo | foo(java.lang.Object) | W.kt:4:5:4:17 | foo | k.A.foo |
+| W.kt:8:5:8:34 | foo | k.B.foo | foo(java.lang.String) | W.kt:8:5:8:34 | foo | k.B.foo |
+| file:///!unknown-binary-location/k/A.class:0:0:0:0 | foo | k.A<String>.foo | foo(java.lang.String) | W.kt:4:5:4:17 | foo | k.A.foo |

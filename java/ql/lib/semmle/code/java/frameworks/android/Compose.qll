@@ -8,7 +8,7 @@ import java
  * A call to a live literal method.
  * This always returns a constant expression and can be considered as such.
  */
-class LiveLiteral extends MethodAccess {
+class LiveLiteral extends MethodCall {
   LiveLiteral() {
     this.getMethod() instanceof LiveLiteralMethod and
     not this.getEnclosingCallable() instanceof LiveLiteralMethod
@@ -25,7 +25,7 @@ class LiveLiteral extends MethodAccess {
    * This predicate gets the constant value held by the private field.
    */
   CompileTimeConstantExpr getValue() {
-    exists(MethodAccess getterCall, VarAccess va |
+    exists(MethodCall getterCall, VarAccess va |
       methodReturns(this.getMethod(), getterCall) and
       methodReturns(getterCall.getMethod(), va) and
       result = va.getVariable().getInitializer()

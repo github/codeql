@@ -1,6 +1,20 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getLookupPathForRequest", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getOriginatingQueryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getOriginatingRequestUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getPathWithinApplication", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getPathWithinServletMapping", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getRequestUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getResolvedLookupPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "getServletPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.util", "UrlPathHelper", False, "resolveAndCacheLookupPath", "", "", "ReturnValue", "remote", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["org.springframework.web.util", "AbstractUriTemplateHandler", True, "getBaseUrl", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -76,7 +90,7 @@ extensions:
       - ["org.springframework.web.util", "UriComponents", False, "encode", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "expand", "(Map)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "expand", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UriComponents", False, "expand", "(UriTemplateVariables)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.util", "UriComponents", False, "expand", "(UriComponents$UriTemplateVariables)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "getFragment", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "getHost", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -147,15 +161,7 @@ extensions:
       - ["org.springframework.web.util", "UrlPathHelper", False, "decodeRequestString", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UrlPathHelper", False, "getContextPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UrlPathHelper", False, "getOriginatingContextPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getOriginatingQueryString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getOriginatingRequestUri", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getPathWithinApplication", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getPathWithinServletMapping", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getRequestUri", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getResolvedLookupPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "getServletPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UrlPathHelper", False, "removeSemicolonContent", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UrlPathHelper", False, "resolveAndCacheLookupPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "WebUtils", False, "findParameterValue", "(Map,String)", "", "Argument[0].MapValue", "ReturnValue", "value", "manual"]
       - ["org.springframework.web.util", "WebUtils", False, "findParameterValue", "(ServletRequest,String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "WebUtils", False, "getCookie", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

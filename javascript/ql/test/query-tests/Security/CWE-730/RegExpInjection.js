@@ -42,12 +42,12 @@ app.get('/findKey', function(req, res) {
   if (maybeString.match(input)) {} // NOT OK
   if (notString.match(input)) {} // OK
 
-  defString.search(input); // NOT OK
-  likelyString.search(input); // NOT OK
-  maybeString.search(input); // NOT OK
-  notString.search(input); // OK
+  if (defString.search(input) > -1) {} // NOT OK
+  if (likelyString.search(input) > -1) {} // NOT OK
+  if (maybeString.search(input) > -1) {} // NOT OK
+  if (notString.search(input) > -1) {} // OK
 
-  URI(`${protocol}://${host}${path}`).search(input); // OK, but still flagged [INCONSISTENCY]
+  URI(`${protocol}://${host}${path}`).search(input); // OK
   URI(`${protocol}://${host}${path}`).search(input).href(); // OK
   unknown.search(input).unknown; // OK
 
@@ -62,7 +62,7 @@ app.get('/findKey', function(req, res) {
   Search.search(input); // OK!
 
   new RegExp(input); // NOT OK
-  
+
   var sanitized = input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
   new RegExp(sanitized); // OK
 });

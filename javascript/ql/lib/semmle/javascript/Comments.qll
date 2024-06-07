@@ -15,8 +15,6 @@ import javascript
  * </pre>
  */
 class Comment extends @comment, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the toplevel element this comment belongs to. */
   TopLevel getTopLevel() { comments(this, _, result, _, _) }
 
@@ -24,18 +22,18 @@ class Comment extends @comment, Locatable {
   string getText() { comments(this, _, _, result, _) }
 
   /** Gets the `i`th line of comment text. */
-  string getLine(int i) { result = getText().splitAt("\n", i) }
+  string getLine(int i) { result = this.getText().splitAt("\n", i) }
 
   /** Gets the next token after this comment. */
   Token getNextToken() { next_token(this, result) }
 
-  override int getNumLines() { result = count(getLine(_)) }
+  override int getNumLines() { result = count(this.getLine(_)) }
 
   override string toString() { comments(this, _, _, _, result) }
 
   /** Holds if this comment spans lines `start` to `end` (inclusive) in file `f`. */
   predicate onLines(File f, int start, int end) {
-    exists(Location loc | loc = getLocation() |
+    exists(Location loc | loc = this.getLocation() |
       f = loc.getFile() and
       start = loc.getStartLine() and
       end = loc.getEndLine()

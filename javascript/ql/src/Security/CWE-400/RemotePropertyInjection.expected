@@ -1,1 +1,0 @@
-| examples/RemotePropertyInjection.js:8:8:8:11 | prop | A $@ is used as a property name to write to. | examples/RemotePropertyInjection.js:7:13:7:36 | req.que ... trolled | user-provided value |

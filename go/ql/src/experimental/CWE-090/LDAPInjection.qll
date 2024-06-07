@@ -1,5 +1,4 @@
 import go
-import DataFlow::PathGraph
 
 /**
  * A sanitizer function that prevents LDAP injection attacks.
@@ -97,15 +96,31 @@ private class LdapClientDNSink extends LdapSink {
 }
 
 /**
- * A taint-tracking configuration for reasoning about when an `UntrustedFlowSource`
+ * DEPRECATED: Use `LdapInjectionFlow` instead.
+ *
+ * A taint-tracking configuration for reasoning about when a `RemoteFlowSource`
  * flows into an argument or field that is vulnerable to LDAP injection.
  */
-class LdapInjectionConfiguration extends TaintTracking::Configuration {
+deprecated class LdapInjectionConfiguration extends TaintTracking::Configuration {
   LdapInjectionConfiguration() { this = "Ldap injection" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof LdapSanitizer }
 }
+
+private module LdapInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof LdapSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof LdapSanitizer }
+}
+
+/**
+ * Tracks taint flow for reasoning about when a `RemoteFlowSource` flows
+ * into an argument or field that is vulnerable to LDAP injection.
+ */
+module LdapInjectionFlow = TaintTracking::Global<LdapInjectionConfig>;

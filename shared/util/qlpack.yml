@@ -1,5 +1,6 @@
 name: codeql/util
-version: 0.0.9-dev
+version: 1.0.1-dev
 groups: shared
 library: true
-dependencies:
+dependencies: null
+warnOnImplicitThis: true

@@ -81,18 +81,28 @@ module SQL {
                   "github.com/lann/squirrel"
                 ], "")
           |
-            // first argument to `squirrel.Expr`
-            fn.hasQualifiedName(sq, "Expr")
+            fn.hasQualifiedName(sq, ["Delete", "Expr", "Insert", "Select", "Update"])
             or
-            // first argument to the `Prefix`, `Suffix` or `Where` method of one of the `*Builder` classes
-            exists(string builder | builder.matches("%Builder") |
-              fn.(Method).hasQualifiedName(sq, builder, "Prefix") or
-              fn.(Method).hasQualifiedName(sq, builder, "Suffix") or
-              fn.(Method).hasQualifiedName(sq, builder, "Where")
+            exists(Method m, string builder | m = fn |
+              builder = ["DeleteBuilder", "InsertBuilder", "SelectBuilder", "UpdateBuilder"] and
+              m.hasQualifiedName(sq, builder,
+                ["Columns", "From", "Options", "OrderBy", "Prefix", "Suffix", "Where"])
+              or
+              builder = "InsertBuilder" and
+              m.hasQualifiedName(sq, builder, ["Replace", "Into"])
+              or
+              builder = "SelectBuilder" and
+              m.hasQualifiedName(sq, builder,
+                ["CrossJoin", "GroupBy", "InnerJoin", "LeftJoin", "RightJoin"])
+              or
+              builder = "UpdateBuilder" and
+              m.hasQualifiedName(sq, builder, ["Set", "Table"])
             )
           ) and
-          this = fn.getACall().getArgument(0) and
-          this.getType().getUnderlyingType() instanceof StringType
+          this = fn.getACall().getArgument(0)
+        |
+          this.getType().getUnderlyingType() instanceof StringType or
+          this.getType().getUnderlyingType().(SliceType).getElementType() instanceof StringType
         )
       }
     }
@@ -145,9 +155,25 @@ module SQL {
           f.hasQualifiedName(gopgorm(), "Q") and
           arg = 0
           or
-          exists(string tp, string m | f.(Method).hasQualifiedName(gopgorm(), tp, m) |
+          exists(string tp, string m | f.(Method).hasQualifiedName([gopgorm(), gopg()], tp, m) |
+            tp = ["DB", "Conn"] and
+            m = ["QueryContext", "QueryOneContext"] and
+            arg = 2
+            or
+            tp = ["DB", "Conn"] and
+            m = ["ExecContext", "ExecOneContext", "Query", "QueryOne"] and
+            arg = 1
+            or
+            tp = ["DB", "Conn"] and
+            m = ["Exec", "ExecOne", "Prepare"] and
+            arg = 0
+            or
             tp = "Query" and
-            m = ["ColumnExpr", "For", "Having", "Where", "WhereIn", "WhereInMulti", "WhereOr"] and
+            m =
+              [
+                "ColumnExpr", "For", "GroupExpr", "Having", "Join", "OrderExpr", "TableExpr",
+                "Where", "WhereIn", "WhereInMulti", "WhereOr"
+              ] and
             arg = 0
             or
             tp = "Query" and
@@ -225,7 +251,7 @@ module SQL {
     GormSink() {
       exists(Method meth, string package, string name |
         meth.hasQualifiedName(package, "DB", name) and
-        this = meth.getACall().getArgument(0) and
+        this = meth.getACall().getSyntacticArgument(0) and
         package = Gorm::packagePath() and
         name in [
             "Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins",
@@ -272,7 +298,7 @@ module Xorm {
     XormSink() {
       exists(Method meth, string type, string name, int n |
         meth.hasQualifiedName(Xorm::packagePath(), type, name) and
-        this = meth.getACall().getArgument(n) and
+        this = meth.getACall().getSyntacticArgument(n) and
         type = ["Engine", "Session"]
       |
         name =
@@ -285,6 +311,50 @@ module Xorm {
         name = ["SumInt", "Sum", "Sums", "SumsInt"] and n = 1
         or
         name = "Join" and n = [0, 1, 2]
+      )
+    }
+  }
+}
+
+/**
+ * Provides classes for working with the [Bun](https://bun.uptrace.dev/) package.
+ */
+module Bun {
+  /** Gets the package name for Bun package. */
+  private string packagePath() { result = package("github.com/uptrace/bun", "") }
+
+  /** A model for sinks of Bun. */
+  private class BunSink extends SQL::QueryString::Range {
+    BunSink() {
+      exists(Function f, string m, int arg | this = f.getACall().getArgument(arg) |
+        f.hasQualifiedName(packagePath(), m) and
+        m = "NewRawQuery" and
+        arg = 1
+      )
+      or
+      exists(Method f, string tp, string m, int arg | this = f.getACall().getArgument(arg) |
+        f.hasQualifiedName(packagePath(), tp, m) and
+        (
+          tp = ["DB", "Conn"] and
+          m = ["ExecContext", "PrepareContext", "QueryContext", "QueryRowContext"] and
+          arg = 1
+          or
+          tp = ["DB", "Conn"] and
+          m = ["Exec", "NewRaw", "Prepare", "Query", "QueryRow", "Raw"] and
+          arg = 0
+          or
+          tp.matches("%Query") and
+          m =
+            [
+              "ColumnExpr", "DistinctOn", "For", "GroupExpr", "Having", "ModelTableExpr",
+              "OrderExpr", "TableExpr", "Where", "WhereOr"
+            ] and
+          arg = 0
+          or
+          tp = "RawQuery" and
+          m = "NewRaw" and
+          arg = 0
+        )
       )
     }
   }

@@ -22,5 +22,11 @@ package io.jsonwebtoken;
  * @since 0.1
  */
 public interface JwsHeader<T extends JwsHeader<T>> extends Header<T> {
+    String getAlgorithm();
 
+    void setAlgorithm(String algorithm);
+
+    String getKeyId();
+
+    void setKeyId(String keyId);
 }

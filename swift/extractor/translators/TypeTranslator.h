@@ -2,11 +2,12 @@
 
 #include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/type/TrapClasses.h"
-#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace codeql {
 class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
  public:
+  static constexpr std::string_view name = "type";
+
   using TypeTranslatorBase<TypeTranslator>::TypeTranslatorBase;
   using TypeTranslatorBase<TypeTranslator>::translateAndEmit;
 
@@ -76,6 +77,12 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::UnresolvedType translateUnresolvedType(const swift::UnresolvedType& type);
   codeql::ParameterizedProtocolType translateParameterizedProtocolType(
       const swift::ParameterizedProtocolType& type);
+  codeql::PackArchetypeType translatePackArchetypeType(const swift::PackArchetypeType& type);
+  codeql::ElementArchetypeType translateElementArchetypeType(
+      const swift::ElementArchetypeType& type);
+  codeql::PackType translatePackType(const swift::PackType& type);
+  codeql::PackElementType translatePackElementType(const swift::PackElementType& type);
+  codeql::PackExpansionType translatePackExpansionType(const swift::PackExpansionType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
@@ -89,22 +96,11 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   void fillAnyGenericType(const swift::AnyGenericType& type, codeql::AnyGenericType& entry);
 
   template <typename T>
-  auto createMangledTypeEntry(const T& type) {
-    auto mangledName = mangler.mangleType(type);
-    if (mangledName) {
-      return dispatcher.createEntry(type, mangledName.value());
-    }
-    return dispatcher.createEntry(type);
-  }
-
-  template <typename T>
   auto createTypeEntry(const T& type) {
-    auto entry = createMangledTypeEntry(type);
+    auto entry = dispatcher.createEntry(type);
     fillType(type, entry);
     return entry;
   }
-
-  SwiftMangler mangler;
 };
 
 }  // namespace codeql

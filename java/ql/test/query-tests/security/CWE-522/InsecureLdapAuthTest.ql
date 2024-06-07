@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.InsecureLdapAuthQuery
 import TestUtilities.InlineExpectationsTest
 
-class InsecureLdapAuthenticationTest extends InlineExpectationsTest {
-  InsecureLdapAuthenticationTest() { this = "InsecureLdapAuthentication" }
+module InsecureLdapAuthenticationTest implements TestSig {
+  string getARelevantTag() { result = "hasInsecureLdapAuth" }
 
-  override string getARelevantTag() { result = "hasInsecureLdapAuth" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsecureLdapAuth" and
     exists(DataFlow::Node sink | InsecureLdapUrlFlow::flowTo(sink) |
       BasicAuthFlow::flowTo(sink) and
@@ -18,3 +16,5 @@ class InsecureLdapAuthenticationTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<InsecureLdapAuthenticationTest>

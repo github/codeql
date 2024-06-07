@@ -8,7 +8,7 @@ import semmle.code.java.frameworks.android.Intent
 
 /** A sink representing methods creating a file in Android. */
 class AndroidFileSink extends DataFlow::Node {
-  AndroidFileSink() { sinkNode(this, "create-file") }
+  AndroidFileSink() { sinkNode(this, "path-injection") }
 }
 
 /**

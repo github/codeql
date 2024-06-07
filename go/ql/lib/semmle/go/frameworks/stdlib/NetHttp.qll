@@ -3,15 +3,13 @@
  */
 
 import go
-private import semmle.go.dataflow.FlowSummary
 private import semmle.go.dataflow.internal.DataFlowPrivate
+private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode
-  {
+  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
         fieldName =
@@ -125,16 +123,26 @@ module NetHttp {
   private DataFlow::Node getSummaryInputOrOutputNode(
     DataFlow::CallNode call, SummaryComponentStack stack
   ) {
-    exists(int n |
-      stack = SummaryComponentStack::argument(n) and
-      result = call.getArgument(n)
+    exists(int n | result = call.getSyntacticArgument(n) |
+      if result = call.getImplicitVarargsArgument(_)
+      then
+        exists(
+          int lastParamIndex, SummaryComponentStack varArgsSliceArgument,
+          SummaryComponent arrayContentSC, DataFlow::ArrayContent arrayContent
+        |
+          lastParamIndex = call.getCall().getCalleeType().getNumParameter() - 1 and
+          varArgsSliceArgument = SummaryComponentStack::argument(lastParamIndex) and
+          arrayContentSC = SummaryComponent::content(arrayContent) and
+          stack = SummaryComponentStack::push(arrayContentSC, varArgsSliceArgument)
+        )
+      else stack = SummaryComponentStack::argument(n)
     )
     or
     stack = SummaryComponentStack::argument(-1) and
     result = call.getReceiver()
   }
 
-  private class ResponseBody extends Http::ResponseBody::Range, DataFlow::ArgumentNode {
+  private class ResponseBody extends Http::ResponseBody::Range {
     DataFlow::Node responseWriter;
 
     ResponseBody() {
@@ -148,15 +156,18 @@ module NetHttp {
       exists(TaintTracking::FunctionModel model |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        this = model.getACall().getASyntacticArgument() and
         model.taintStep(this, responseWriter) and
         responseWriter.getType().implements("net/http", "ResponseWriter")
       )
       or
       exists(
-        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummarizedCallableImpl callable, DataFlow::CallNode call, SummaryComponentStack input,
         SummaryComponentStack output
       |
-        callable = call.getACalleeIncludingExternals() and callable.propagatesFlow(input, output, _)
+        this = call.getASyntacticArgument() and
+        callable = call.getACalleeIncludingExternals() and
+        callable.propagatesFlow(input, output, _, _)
       |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
@@ -284,5 +295,19 @@ module NetHttp {
     }
 
     override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
+  }
+
+  /**
+   * The File system access sinks
+   */
+  class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+    HttpServeFile() {
+      exists(Function f |
+        f.hasQualifiedName("net/http", "ServeFile") and
+        this = f.getACall()
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
   }
 }

@@ -33,13 +33,13 @@ predicate compareToMethod(Method m, Type paramType) {
   paramType = m.getAParameter().getType()
 }
 
-from Method m, RefType declaringType, Type actualParamType
+from Method m, RefType declaringType, Type actualParamType, string paramTypeName
 where
   m.isSourceDeclaration() and
   declaringType = m.getDeclaringType() and
   compareToMethod(m, actualParamType) and
-  not implementsIComparable(declaringType, actualParamType)
+  not implementsIComparable(declaringType, actualParamType) and
+  paramTypeName = actualParamType.getName()
 select m,
-  "The parameter of this 'CompareTo' method is of type $@, but $@ does not implement 'IComparable<$@>'.",
-  actualParamType, actualParamType.getName(), declaringType, declaringType.getName(),
-  actualParamType, actualParamType.getName()
+  "The parameter of this 'CompareTo' method is of type '" + paramTypeName +
+    "', but the declaring type does not implement 'IComparable<" + paramTypeName + ">'."

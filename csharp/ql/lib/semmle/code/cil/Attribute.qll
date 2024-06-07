@@ -4,7 +4,7 @@ private import CIL
 private import semmle.code.csharp.Location as CS
 
 /** An attribute to a declaration, such as a method, field, type or parameter. */
-class Attribute extends Element, @cil_attribute {
+deprecated class Attribute extends Element, @cil_attribute {
   /** Gets the declaration this attribute is attached to. */
   Declaration getDeclaration() { cil_attribute(this, result, _) }
 
@@ -12,9 +12,9 @@ class Attribute extends Element, @cil_attribute {
   Method getConstructor() { cil_attribute(this, _, result) }
 
   /** Gets the type of this attribute. */
-  Type getType() { result = getConstructor().getDeclaringType() }
+  Type getType() { result = this.getConstructor().getDeclaringType() }
 
-  override string toString() { result = "[" + getType().getName() + "(...)]" }
+  override string toString() { result = "[" + this.getType().getName() + "(...)]" }
 
   /** Gets the value of the `i`th argument of this attribute. */
   string getArgument(int i) { cil_attribute_positional_argument(this, i, result) }
@@ -23,13 +23,13 @@ class Attribute extends Element, @cil_attribute {
   string getNamedArgument(string name) { cil_attribute_named_argument(this, name, result) }
 
   /** Gets an argument of this attribute, if any. */
-  string getAnArgument() { result = getArgument(_) or result = getNamedArgument(_) }
+  string getAnArgument() { result = this.getArgument(_) or result = this.getNamedArgument(_) }
 
-  override CS::Location getLocation() { result = getDeclaration().getLocation() }
+  override CS::Location getLocation() { result = this.getDeclaration().getLocation() }
 }
 
 /** A generic attribute to a declaration. */
-class GenericAttribute extends Attribute {
+deprecated class GenericAttribute extends Attribute {
   private ConstructedType type;
 
   GenericAttribute() { type = this.getType() }

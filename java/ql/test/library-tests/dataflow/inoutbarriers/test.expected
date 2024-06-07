@@ -1,5 +1,9 @@
-| A.java:9:16:9:19 | fsrc | A.java:13:10:13:10 | s | nobarrier, sinkbarrier |
-| A.java:9:16:9:19 | fsrc | A.java:15:10:15:10 | s | nobarrier |
-| A.java:10:10:10:13 | fsrc | A.java:10:10:10:13 | fsrc | both, nobarrier, sinkbarrier, srcbarrier |
-| A.java:12:9:12:14 | src(...) | A.java:13:10:13:10 | s | both, nobarrier, sinkbarrier, srcbarrier |
-| A.java:12:9:12:14 | src(...) | A.java:15:10:15:10 | s | nobarrier, srcbarrier |
+inconsistentFlow
+#select
+| A.java:16:16:16:19 | fsrc | A.java:20:10:20:10 | s | nobarrier, sinkbarrier |
+| A.java:16:16:16:19 | fsrc | A.java:22:10:22:10 | s | nobarrier |
+| A.java:17:10:17:13 | fsrc | A.java:17:10:17:13 | fsrc | both, nobarrier, sinkbarrier, srcbarrier |
+| A.java:19:9:19:14 | src(...) | A.java:20:10:20:10 | s | both, nobarrier, sinkbarrier, srcbarrier |
+| A.java:19:9:19:14 | src(...) | A.java:22:10:22:10 | s | nobarrier, srcbarrier |
+| A.java:24:9:24:12 | fsrc | A.java:11:17:11:17 | s | both, nobarrier, sinkbarrier, srcbarrier |
+| A.java:24:9:24:12 | fsrc | A.java:26:10:26:10 | s | nobarrier, srcbarrier |

@@ -102,7 +102,8 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
+def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class],
+                    prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
@@ -110,7 +111,10 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
         is_unordered=prop.is_unordered,
-        description=prop.description
+        description=prop.description,
+        synth=bool(cls.synth) or prop.synth,
+        type_is_hideable=lookup[prop.type].hideable if prop.type in lookup else False,
+        internal="ql_internal" in prop.pragmas,
     )
     if prop.is_single:
         args.update(
@@ -147,12 +151,12 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class) -> ql.Class:
-    pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
+def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
+    pragmas = {k: True for k in cls.pragmas if k.startswith("qltest")}
     prev_child = ""
     properties = []
     for p in cls.properties:
-        prop = get_ql_property(cls, p, prev_child)
+        prop = get_ql_property(cls, p, lookup, prev_child)
         if prop.is_child:
             prev_child = prop.singular
         properties.append(prop)
@@ -162,8 +166,9 @@ def get_ql_class(cls: schema.Class) -> ql.Class:
         final=not cls.derived,
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
-        ipa=bool(cls.ipa),
         doc=cls.doc,
+        hideable=cls.hideable,
+        internal="ql_internal" in cls.pragmas,
         **pragmas,
     )
 
@@ -177,26 +182,26 @@ def _to_db_type(x: str) -> str:
 _final_db_class_lookup = {}
 
 
-def get_ql_ipa_class_db(name: str) -> ql.Synth.FinalClassDb:
+def get_ql_synth_class_db(name: str) -> ql.Synth.FinalClassDb:
     return _final_db_class_lookup.setdefault(name, ql.Synth.FinalClassDb(name=name,
                                                                          params=[
                                                                              ql.Synth.Param("id", _to_db_type(name))]))
 
 
-def get_ql_ipa_class(cls: schema.Class):
+def get_ql_synth_class(cls: schema.Class):
     if cls.derived:
         return ql.Synth.NonFinalClass(name=cls.name, derived=sorted(cls.derived),
                                       root=not cls.bases)
-    if cls.ipa and cls.ipa.from_class is not None:
-        source = cls.ipa.from_class
-        get_ql_ipa_class_db(source).subtract_type(cls.name)
-        return ql.Synth.FinalClassDerivedIpa(name=cls.name,
-                                             params=[ql.Synth.Param("id", _to_db_type(source))])
-    if cls.ipa and cls.ipa.on_arguments is not None:
-        return ql.Synth.FinalClassFreshIpa(name=cls.name,
-                                           params=[ql.Synth.Param(k, _to_db_type(v))
-                                                   for k, v in cls.ipa.on_arguments.items()])
-    return get_ql_ipa_class_db(cls.name)
+    if cls.synth and cls.synth.from_class is not None:
+        source = cls.synth.from_class
+        get_ql_synth_class_db(source).subtract_type(cls.name)
+        return ql.Synth.FinalClassDerivedSynth(name=cls.name,
+                                               params=[ql.Synth.Param("id", _to_db_type(source))])
+    if cls.synth and cls.synth.on_arguments is not None:
+        return ql.Synth.FinalClassFreshSynth(name=cls.name,
+                                             params=[ql.Synth.Param(k, _to_db_type(v))
+                                                     for k, v in cls.synth.on_arguments.items()])
+    return get_ql_synth_class_db(cls.name)
 
 
 def get_import(file: pathlib.Path, root_dir: pathlib.Path):
@@ -254,7 +259,7 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
     for c, p in _get_all_properties(cls, lookup):
         if not ("qltest_skip" in c.pragmas or "qltest_skip" in p.pragmas):
             # TODO here operations are duplicated, but should be better if we split ql and qltest generation
-            p = get_ql_property(c, p)
+            p = get_ql_property(c, p, lookup)
             yield ql.PropertyForTest(p.getter, is_total=p.is_single or p.is_predicate,
                                      type=p.type if not p.is_predicate else None, is_indexed=p.is_indexed)
             if p.is_repeated and not p.is_optional:
@@ -289,26 +294,53 @@ def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class
 
 
 def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str) -> ql.Stub:
-    if isinstance(cls.ipa, schema.IpaInfo):
-        if cls.ipa.from_class is not None:
+    if isinstance(cls.synth, schema.SynthInfo):
+        if cls.synth.from_class is not None:
             accessors = [
-                ql.IpaUnderlyingAccessor(
+                ql.SynthUnderlyingAccessor(
                     argument="Entity",
-                    type=_to_db_type(cls.ipa.from_class),
+                    type=_to_db_type(cls.synth.from_class),
                     constructorparams=["result"]
                 )
             ]
-        elif cls.ipa.on_arguments is not None:
+        elif cls.synth.on_arguments is not None:
             accessors = [
-                ql.IpaUnderlyingAccessor(
+                ql.SynthUnderlyingAccessor(
                     argument=inflection.camelize(arg),
                     type=_to_db_type(type),
-                    constructorparams=["result" if a == arg else "_" for a in cls.ipa.on_arguments]
-                ) for arg, type in cls.ipa.on_arguments.items()
+                    constructorparams=["result" if a == arg else "_" for a in cls.synth.on_arguments]
+                ) for arg, type in cls.synth.on_arguments.items()
             ]
     else:
         accessors = []
-    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix, ipa_accessors=accessors)
+    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
+                   doc=cls.doc, synth_accessors=accessors,
+                   internal="ql_internal" in cls.pragmas)
+
+
+_stub_qldoc_header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
+
+_class_qldoc_re = re.compile(
+    rf"(?P<qldoc>(?:{re.escape(_stub_qldoc_header)})?/\*\*.*?\*/\s*|^\s*)(?:class\s+(?P<class>\w+))?",
+    re.MULTILINE | re.DOTALL)
+
+
+def _patch_class_qldoc(cls: str, qldoc: str, stub_file: pathlib.Path):
+    """ Replace or insert `qldoc` as the QLdoc of class `cls` in `stub_file` """
+    if not qldoc or not stub_file.exists():
+        return
+    qldoc = "\n".join(l.rstrip() for l in qldoc.splitlines())
+    with open(stub_file) as input:
+        contents = input.read()
+    for match in _class_qldoc_re.finditer(contents):
+        if match["class"] == cls:
+            qldoc_start, qldoc_end = match.span("qldoc")
+            contents = f"{contents[:qldoc_start]}{_stub_qldoc_header}{qldoc}\n{contents[qldoc_end:]}"
+            tmp = stub_file.with_suffix(f"{stub_file.suffix}.bkp")
+            with open(tmp, "w") as out:
+                out.write(contents)
+            tmp.rename(stub_file)
+            return
 
 
 def generate(opts, renderer):
@@ -329,7 +361,7 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    classes = {name: get_ql_class(cls) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))
@@ -342,7 +374,7 @@ def generate(opts, renderer):
     with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
                          force=opts.force) as renderer:
 
-        db_classes = [cls for cls in classes.values() if not cls.ipa]
+        db_classes = [cls for name, cls in classes.items() if not data.classes[name].synth]
         renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
@@ -358,12 +390,16 @@ def generate(opts, renderer):
         for c in data.classes.values():
             path = _get_path(c)
             stub_file = stub_out / path
+            base_import = get_import(out / path, opts.root_dir)
+            stub = _get_stub(c, base_import, generated_import_prefix)
             if not renderer.is_customized_stub(stub_file):
-                base_import = get_import(out / path, opts.root_dir)
-                renderer.render(_get_stub(c, base_import, generated_import_prefix), stub_file)
+                renderer.render(stub, stub_file)
+            else:
+                qldoc = renderer.render_str(stub, template='ql_stub_class_qldoc')
+                _patch_class_qldoc(c.name, qldoc, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].internal]),
                         include_file)
 
         elements_module = get_import(include_file, opts.root_dir)
@@ -371,7 +407,7 @@ def generate(opts, renderer):
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                imports=[elements_module] + [i for name, i in imports.items() if classes[name].ql_internal],
+                imports=[elements_module] + [i for name, i in imports.items() if classes[name].internal],
             ),
             out / 'ParentChild.qll')
 
@@ -379,7 +415,8 @@ def generate(opts, renderer):
             for c in data.classes.values():
                 if _should_skip_qltest(c, data.classes):
                     continue
-                test_dir = test_out / c.group / c.name
+                test_with = data.classes[c.test_with] if c.test_with else c
+                test_dir = test_out / test_with.group / test_with.name
                 test_dir.mkdir(parents=True, exist_ok=True)
                 if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):
                     log.warning(f"no test source in {test_dir.relative_to(test_out)}")
@@ -399,32 +436,32 @@ def generate(opts, renderer):
                                                       elements_module=elements_module,
                                                       property=p), test_dir / f"{c.name}_{p.getter}.ql")
 
-        final_ipa_types = []
-        non_final_ipa_types = []
+        final_synth_types = []
+        non_final_synth_types = []
         constructor_imports = []
-        ipa_constructor_imports = []
+        synth_constructor_imports = []
         stubs = {}
         for cls in sorted(data.classes.values(), key=lambda cls: (cls.group, cls.name)):
-            ipa_type = get_ql_ipa_class(cls)
-            if ipa_type.is_final:
-                final_ipa_types.append(ipa_type)
-                if ipa_type.has_params:
+            synth_type = get_ql_synth_class(cls)
+            if synth_type.is_final:
+                final_synth_types.append(synth_type)
+                if synth_type.has_params:
                     stub_file = stub_out / cls.group / f"{cls.name}Constructor.qll"
                     if not renderer.is_customized_stub(stub_file):
-                        # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
-                        stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type, import_prefix=generated_import_prefix)
+                        # stub rendering must be postponed as we might not have yet all subtracted synth types in `synth_type`
+                        stubs[stub_file] = ql.Synth.ConstructorStub(synth_type, import_prefix=generated_import_prefix)
                     constructor_import = get_import(stub_file, opts.root_dir)
                     constructor_imports.append(constructor_import)
-                    if ipa_type.is_ipa:
-                        ipa_constructor_imports.append(constructor_import)
+                    if synth_type.is_synth:
+                        synth_constructor_imports.append(constructor_import)
             else:
-                non_final_ipa_types.append(ipa_type)
+                non_final_synth_types.append(synth_type)
 
         for stub_file, data in stubs.items():
             renderer.render(data, stub_file)
         renderer.render(ql.Synth.Types(root.name, generated_import_prefix,
-                        final_ipa_types, non_final_ipa_types), out / "Synth.qll")
+                                       final_synth_types, non_final_synth_types), out / "Synth.qll")
         renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
-        renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")
+        renderer.render(ql.ImportList(synth_constructor_imports), out / "PureSynthConstructors.qll")
         if opts.ql_format:
             format(opts.codeql_binary, renderer.written)

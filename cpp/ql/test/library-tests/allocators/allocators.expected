@@ -34,11 +34,11 @@ newArrayExprDeallocators
 | allocators.cpp:108:3:108:19 | new[] | FailedInit | void FailedInit::operator delete[](void*, size_t) | 1 | 1 | sized  |
 | allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned | void FailedInitOveraligned::operator delete[](void*, std::align_val_t, float) | 128 | 128 |  aligned |
 deleteExprs
-| allocators.cpp:59:3:59:35 | delete | int | void operator delete(void*, unsigned long) | 4 | 4 | sized  |
-| allocators.cpp:60:3:60:38 | delete | String | void operator delete(void*, unsigned long) | 8 | 8 | sized  |
-| allocators.cpp:61:3:61:44 | delete | SizedDealloc | void SizedDealloc::operator delete(void*, size_t) | 32 | 1 | sized  |
-| allocators.cpp:62:3:62:43 | delete | Overaligned | void operator delete(void*, unsigned long, std::align_val_t) | 256 | 128 | sized aligned |
-| allocators.cpp:64:3:64:44 | delete | const String | void operator delete(void*, unsigned long) | 8 | 8 | sized  |
+| allocators.cpp:59:3:59:35 | delete | int | void operator delete(void*, unsigned long) | 4 | 4 | sized  | false |
+| allocators.cpp:60:3:60:38 | delete | String | void operator delete(void*, unsigned long) | 8 | 8 | sized  | false |
+| allocators.cpp:61:3:61:44 | delete | SizedDealloc | void SizedDealloc::operator delete(void*, size_t) | 32 | 1 | sized  | true |
+| allocators.cpp:62:3:62:43 | delete | Overaligned | void operator delete(void*, unsigned long, std::align_val_t) | 256 | 128 | sized aligned | false |
+| allocators.cpp:64:3:64:44 | delete | const String | void operator delete(void*, unsigned long) | 8 | 8 | sized  | false |
 deleteArrayExprs
 | allocators.cpp:78:3:78:37 | delete[] | int | void operator delete[](void*, unsigned long) | 4 | 4 | sized  |
 | allocators.cpp:79:3:79:40 | delete[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized  |

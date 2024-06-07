@@ -10,7 +10,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.dataflow.ProductFlow
+import semmle.code.cpp.ir.dataflow.internal.ProductFlow
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.Bound

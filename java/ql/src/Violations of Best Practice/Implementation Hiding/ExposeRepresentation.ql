@@ -71,7 +71,7 @@ predicate mayWriteToArray(Expr modified) {
   or
   // return __array__;    ...  method()[1] = 0
   exists(ReturnStmt rs | modified = rs.getResult() and relevantType(modified.getType()) |
-    exists(Callable enclosing, MethodAccess ma |
+    exists(Callable enclosing, MethodCall ma |
       enclosing = rs.getEnclosingCallable() and ma.getMethod().getSourceDeclaration() = enclosing
     |
       mayWriteToArray(ma)
@@ -84,7 +84,7 @@ predicate writesToArray(Expr array) {
   (
     exists(Assignment a, ArrayAccess access | a.getDest() = access | access.getArray() = array)
     or
-    exists(MethodAccess ma | ma.getQualifier() = array | modifyMethod(ma.getMethod()))
+    exists(MethodCall ma | ma.getQualifier() = array | modifyMethod(ma.getMethod()))
   )
 }
 
@@ -99,7 +99,7 @@ VarAccess varPassedInto(Callable c, int i) {
 
 predicate exposesByReturn(Callable c, Field f, Expr why, string whyText) {
   returnsArray(c, f) and
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod().getSourceDeclaration() = c and ma.getCompilationUnit() != c.getCompilationUnit()
   |
     mayWriteToArray(ma) and
@@ -128,4 +128,4 @@ where
   not exists(Property p | p.getBackingField() = f)
 select c,
   c.getName() + " exposes the internal representation stored in field " + f.getName() +
-    ". The value may be modified $@.", why.getLocation(), whyText
+    ". The value may be modified $@.", why, whyText

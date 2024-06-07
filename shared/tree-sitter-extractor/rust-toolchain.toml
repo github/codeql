@@ -1,0 +1,7 @@
+# This file specifies the Rust version used to develop and test the shared
+# extractor. It is set to the lowest version of Rust we want to support.
+
+[toolchain]
+channel = "1.74"
+profile = "minimal"
+components = [ "clippy", "rustfmt" ]

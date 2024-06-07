@@ -32,23 +32,18 @@ private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
 {
   WKScriptMessageBodyInheritsTaint() {
     exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl() instanceof WKScriptMessageDecl and
+      f.getEnclosingDecl().asNominalTypeDecl() instanceof WKScriptMessageDecl and
       f.getName() = "body"
     )
   }
 }
 
 /**
- * A type or extension delcaration that adopts the protocol `WKNavigationDelegate`.
+ * A type or extension declaration that adopts the protocol `WKNavigationDelegate`.
  */
 private class AdoptsWkNavigationDelegate extends Decl {
   AdoptsWkNavigationDelegate() {
-    exists(ProtocolDecl delegate |
-      this.(ExtensionDecl).getAProtocol().getABaseTypeDecl*() = delegate or
-      this.(NominalTypeDecl).getABaseTypeDecl*() = delegate
-    |
-      delegate.getName() = "WKNavigationDelegate"
-    )
+    this.asNominalTypeDecl().getABaseTypeDecl*().(ProtocolDecl).getName() = "WKNavigationDelegate"
   }
 }
 
@@ -57,7 +52,7 @@ private class AdoptsWkNavigationDelegate extends Decl {
  */
 private class WKNavigationDelegateSource extends RemoteFlowSource {
   WKNavigationDelegateSource() {
-    exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
+    exists(ParamDecl p, Function f, AdoptsWkNavigationDelegate t |
       t.getAMember() = f and
       f.getName() =
         [
@@ -66,7 +61,7 @@ private class WKNavigationDelegateSource extends RemoteFlowSource {
         ] and
       p.getDeclaringFunction() = f and
       p.getIndex() = 1 and
-      this.(DataFlow::ParameterNode).getParameter() = p
+      this.asParameter() = p
     )
   }
 
@@ -74,19 +69,15 @@ private class WKNavigationDelegateSource extends RemoteFlowSource {
 }
 
 /**
- * A taint step implying that, if a `WKNavigationAction` is tainted, its `request` field is also tainted.
+ * A content implying that, if a `WKNavigationAction` is tainted, its
+ * `request` field is also tainted.
  */
-private class WKNavigationActionTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MemberRefExpr e, Expr self, VarDecl member |
-      self.getType().getName() = "WKNavigationAction" and
-      member.getName() = "request"
-    |
-      e.getBase() = self and
-      e.getMember() = member and
-      n1.asExpr() = self and
-      n2.asExpr() = e
-    )
+private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent
+{
+  UrlRequestFieldsInheritTaint() {
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "WKNavigationAction" and
+    this.getField().getName() = "request"
   }
 }
 
@@ -138,7 +129,6 @@ private class JsValueSummaries extends SummaryModelCsv {
         ";JSValue;true;toRange();;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;toRect();;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;toSize();;;Argument[-1];ReturnValue;taint",
-        // TODO: These models could use content flow to be more precise
         ";JSValue;true;atIndex(_:);;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;defineProperty(_:descriptor:);;;Argument[1];Argument[-1];taint",
         ";JSValue;true;forProperty(_:);;;Argument[-1];ReturnValue;taint",
@@ -170,17 +160,17 @@ private class JsExportedType extends ClassOrStructDecl {
  */
 private class JsExportedSource extends RemoteFlowSource {
   JsExportedSource() {
-    exists(MethodDecl adopter, MethodDecl base |
-      base.getEnclosingDecl() instanceof JsExportedProto and
-      adopter.getEnclosingDecl() instanceof JsExportedType
+    exists(Method adopter, Method base |
+      base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
-      this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
+      this.asParameter().getDeclaringFunction() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
     or
     exists(FieldDecl adopter, FieldDecl base |
-      base.getEnclosingDecl() instanceof JsExportedProto and
-      adopter.getEnclosingDecl() instanceof JsExportedType
+      base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
       this.asExpr().(MemberRefExpr).getMember() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
@@ -209,10 +199,5 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
 private class WKUserScriptInheritsTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  WKUserScriptInheritsTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().(ClassOrStructDecl).getName() = "WKUserScript" and
-      f.getName() = "source"
-    )
-  }
+  WKUserScriptInheritsTaint() { this.getField().hasQualifiedName("WKUserScript", "source") }
 }

@@ -18,12 +18,10 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof CleartextStorageDatabaseSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof CleartextStorageDatabaseSanitizer
-  }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof CleartextStorageDatabaseBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(CleartextStorageDatabaseAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(CleartextStorageDatabaseAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
   predicate isBarrierIn(DataFlow::Node node) {
@@ -36,11 +34,19 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
     exists(NominalTypeDecl d, Decl cx |
-      d.getType().getABaseType*().getUnderlyingType().getName() =
-        ["NSManagedObject", "RealmSwiftObject"] and
+      (
+        d.getType().getUnderlyingType().getABaseType*().getName() = "NSManagedObject" or
+        d.getType() instanceof RealmSwiftObjectType
+      ) and
       cx.asNominalTypeDecl() = d and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
+    or
+    // flow out from dictionary tuple values at the sink (this is essential
+    // for some of the SQLite.swift models).
+    isSink(node) and
+    node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
+    c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
   }
 }
 

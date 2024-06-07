@@ -10,11 +10,16 @@ on:
       - main
       - 'rc/*'
 
+permissions:
+  contents: read
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check synchronized files
         run: python config/sync-files.py
+      - name: Check dbscheme fragments
+        run: python config/sync-dbscheme-fragments.py
 

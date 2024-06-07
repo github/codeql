@@ -1,0 +1,39 @@
+# github.com/go-pg/pg/v10 v10.11.0
+## explicit
+github.com/go-pg/pg/v10
+# github.com/go-pg/zerochecker v0.2.0
+## explicit
+github.com/go-pg/zerochecker
+# github.com/jinzhu/inflection v1.0.0
+## explicit
+github.com/jinzhu/inflection
+# github.com/kr/text v0.2.0
+## explicit
+github.com/kr/text
+# github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc
+## explicit
+github.com/tmthrgd/go-hex
+# github.com/vmihailenco/bufpool v0.1.11
+## explicit
+github.com/vmihailenco/bufpool
+# github.com/vmihailenco/msgpack/v5 v5.3.4
+## explicit
+github.com/vmihailenco/msgpack/v5
+# github.com/vmihailenco/tagparser v0.1.2
+## explicit
+github.com/vmihailenco/tagparser
+# github.com/vmihailenco/tagparser/v2 v2.0.0
+## explicit
+github.com/vmihailenco/tagparser/v2
+# golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+## explicit
+golang.org/x/crypto
+# golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7
+## explicit
+golang.org/x/sys
+# golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+## explicit
+golang.org/x/xerrors
+# mellium.im/sasl v0.3.1
+## explicit
+mellium.im/sasl

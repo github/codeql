@@ -13,7 +13,7 @@ module EncodingGob {
 
     FunctionModels() {
       // signature: func NewEncoder(w io.Writer) *Encoder
-      hasQualifiedName("encoding/gob", "NewEncoder") and
+      this.hasQualifiedName("encoding/gob", "NewEncoder") and
       (inp.isResult() and outp.isParameter(0))
     }
 

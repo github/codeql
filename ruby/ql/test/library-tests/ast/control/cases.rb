@@ -160,3 +160,13 @@ end
 expr in [1, 2]
 
 expr => {x: v, y: 1}
+
+case 
+  foo
+when 1 then 2
+end
+
+case
+  foo
+in 3 then "three"
+end

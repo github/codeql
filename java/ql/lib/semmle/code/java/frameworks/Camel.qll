@@ -17,9 +17,6 @@ class CamelToUri extends string {
   }
 }
 
-/** DEPRECATED: Alias for CamelToUri */
-deprecated class CamelToURI = CamelToUri;
-
 /**
  * A string describing a URI specified in an Apache Camel "to" declaration that maps to a
  * SpringBean.
@@ -27,8 +24,8 @@ deprecated class CamelToURI = CamelToUri;
 class CamelToBeanUri extends CamelToUri {
   CamelToBeanUri() {
     // A `<to>` element references a bean if the URI starts with "bean:", or there is no scheme.
-    matches("bean:%") or
-    not exists(indexOf(":"))
+    this.matches("bean:%") or
+    not exists(this.indexOf(":"))
   }
 
   /**
@@ -38,13 +35,13 @@ class CamelToBeanUri extends CamelToUri {
    * parameter parts are optional.
    */
   string getBeanIdentifier() {
-    if not exists(indexOf(":"))
+    if not exists(this.indexOf(":"))
     then result = this
     else
-      exists(int start | start = indexOf(":", 0, 0) + 1 |
-        if not exists(indexOf("?"))
-        then result = suffix(start)
-        else result = substring(start, indexOf("?", 0, 0))
+      exists(int start | start = this.indexOf(":", 0, 0) + 1 |
+        if not exists(this.indexOf("?"))
+        then result = this.suffix(start)
+        else result = this.substring(start, this.indexOf("?", 0, 0))
       )
   }
 
@@ -53,9 +50,6 @@ class CamelToBeanUri extends CamelToUri {
    */
   SpringBean getRefBean() { result.getBeanIdentifier() = this.getBeanIdentifier() }
 }
-
-/** DEPRECATED: Alias for CamelToBeanUri */
-deprecated class CamelToBeanURI = CamelToBeanUri;
 
 /**
  * A Class whose methods may be called in response to an Apache Camel message.

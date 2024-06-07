@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["github.com/labstack/echo", "Context", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["github.com/labstack/echo", "Context", True, "Set", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Set", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"]
