@@ -14,7 +14,7 @@ import DsnInjectionCustomizations
 import DsnInjectionFlow::PathGraph
 
 /** A remote flow source taken as a source for the `DsnInjection` taint-flow configuration. */
-private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
+private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
 from DsnInjectionFlow::PathNode source, DsnInjectionFlow::PathNode sink
 where DsnInjectionFlow::flowPath(source, sink)
