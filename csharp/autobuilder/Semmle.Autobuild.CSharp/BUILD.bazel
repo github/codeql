@@ -7,7 +7,6 @@ codeql_csharp_binary(
     name = "Semmle.Autobuild.CSharp",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
     ]),
     visibility = ["//csharp:__subpackages__"],
     deps = [
