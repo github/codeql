@@ -923,12 +923,68 @@ private predicate unary_simple_comparison_eq(
   )
 }
 
+/** A call to the builtin operation `__builtin_expect`. */
+private class BuiltinExpectCallInstruction extends CallInstruction {
+  BuiltinExpectCallInstruction() { this.getStaticCallTarget().hasName("__builtin_expect") }
+}
+
+/**
+ * Holds if `left == right + k` is `areEqual` if `cmp` evaluates to `value`,
+ * and `cmp` is nested inside a call to `__builtin_expect`.
+ */
+private predicate builtin_expect_eq(
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+) {
+  exists(
+    BuiltinExpectCallInstruction call, ConvertInstruction arg, Instruction const,
+    AbstractValue innerValue
+  |
+    int_value(const) = 0 and
+    cmp.hasOperands(call.getAUse(), const.getAUse()) and
+    arg = call.getArgument(0) and
+    compares_eq(arg.getUnary(), left, right, k, areEqual, innerValue)
+  |
+    cmp instanceof CompareNEInstruction and
+    value = innerValue
+    or
+    cmp instanceof CompareEQInstruction and
+    value.getDualValue() = innerValue
+  )
+}
+
 private predicate complex_eq(
   CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   sub_eq(cmp, left, right, k, areEqual, value)
   or
   add_eq(cmp, left, right, k, areEqual, value)
+  or
+  builtin_expect_eq(cmp, left, right, k, areEqual, value)
+}
+
+/**
+ * Holds if `op == k` is `areEqual` if `cmp` evaluates to `value`, and
+ * `cmp` is nested inside a call to `__builtin_expect`.
+ */
+private predicate unary_builtin_expect_eq(
+  CompareInstruction cmp, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
+  AbstractValue value
+) {
+  exists(
+    BuiltinExpectCallInstruction call, ConvertInstruction arg, Instruction const,
+    AbstractValue innerValue
+  |
+    int_value(const) = 0 and
+    cmp.hasOperands(call.getAUse(), const.getAUse()) and
+    arg = call.getArgument(0) and
+    unary_compares_eq(arg.getUnary(), op, k, areEqual, inNonZeroCase, innerValue)
+  |
+    cmp instanceof CompareNEInstruction and
+    value = innerValue
+    or
+    cmp instanceof CompareEQInstruction and
+    value.getDualValue() = innerValue
+  )
 }
 
 private predicate unary_complex_eq(
@@ -937,6 +993,8 @@ private predicate unary_complex_eq(
   unary_sub_eq(test, op, k, areEqual, inNonZeroCase, value)
   or
   unary_add_eq(test, op, k, areEqual, inNonZeroCase, value)
+  or
+  unary_builtin_expect_eq(test, op, k, areEqual, inNonZeroCase, value)
 }
 
 /*
