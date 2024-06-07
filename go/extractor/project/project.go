@@ -68,6 +68,8 @@ type GoWorkspace struct {
 	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
 	ModMode       ModMode                 // A value indicating which module mode to use for this workspace
 	Extracted     bool                    // A value indicating whether this workspace was extracted successfully
+
+	ShouldInstallDependencies bool // A value indicating whether dependencies should be installed for this module
 }
 
 // Represents a nullable version string.
