@@ -20,15 +20,8 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    NodeJSLib::process()
-        .getAPropertyRead("env")
-        .asExpr()
-        .getParent()
-        .(IndexExpr)
-        .getAChildExpr()
-        .(VarRef) = sink.asExpr()
-    or
-    sink = API::moduleImport("process").getMember("env").getAMember().asSink()
+    sink = keyOfEnv() or
+    sink = valueOfEnv()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -45,20 +38,32 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
+DataFlow::Node keyOfEnv() {
+  result =
+    NodeJSLib::process().getAPropertyRead("env").getAPropertyWrite().getPropertyNameExpr().flow()
+}
+
+DataFlow::Node valueOfEnv() {
+  result = API::moduleImport("process").getMember("env").getAMember().asSink()
+}
+
+private predicate readToProcessEnv(DataFlow::Node envKey, DataFlow::Node envValue) {
+  exists(DataFlow::PropWrite env |
+    env = NodeJSLib::process().getAPropertyRead("env").getAPropertyWrite()
+  |
+    envKey = env.getPropertyNameExpr().flow() and
+    envValue = env.getRhs()
+  )
+}
+
 from
-  Configuration cfg, Configuration cfg2, DataFlow::PathNode source, DataFlow::PathNode sink1,
-  DataFlow::PathNode sink2
+  Configuration cfgForValue, Configuration cfgForKey, DataFlow::PathNode source,
+  DataFlow::PathNode envKey, DataFlow::PathNode envValue
 where
-  cfg.hasFlowPath(source, sink1) and
-  sink1.getNode() = API::moduleImport("process").getMember("env").getAMember().asSink() and
-  cfg2.hasFlowPath(source, sink2) and
-  sink2.getNode().asExpr() =
-    NodeJSLib::process()
-        .getAPropertyRead("env")
-        .asExpr()
-        .getParent()
-        .(IndexExpr)
-        .getAChildExpr()
-        .(VarRef)
-select sink1.getNode(), source, sink1, "arbitrary environment variable assignment from this $@.",
+  cfgForValue.hasFlowPath(source, envKey) and
+  envKey.getNode() = keyOfEnv() and
+  cfgForKey.hasFlowPath(source, envValue) and
+  envValue.getNode() = valueOfEnv() and
+  readToProcessEnv(envKey.getNode(), envValue.getNode())
+select envKey.getNode(), source, envKey, "arbitrary environment variable assignment from this $@.",
   source.getNode(), "user controllable source"
