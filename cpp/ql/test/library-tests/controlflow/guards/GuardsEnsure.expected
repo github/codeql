@@ -159,6 +159,18 @@ binary
 | test.cpp:105:6:105:14 | ... != ... | test.cpp:105:11:105:14 | 0.0 | != | test.cpp:105:6:105:6 | f | 0 | 105 | 106 |
 | test.cpp:111:6:111:14 | ... != ... | test.cpp:111:6:111:6 | i | != | test.cpp:111:11:111:14 | 0.0 | 0 | 111 | 112 |
 | test.cpp:111:6:111:14 | ... != ... | test.cpp:111:11:111:14 | 0.0 | != | test.cpp:111:6:111:6 | i | 0 | 111 | 112 |
+| test.cpp:131:6:131:21 | call to __builtin_expect | test.cpp:131:23:131:23 | a | == | test.cpp:131:28:131:28 | b | 42 | 131 | 132 |
+| test.cpp:131:6:131:21 | call to __builtin_expect | test.cpp:131:23:131:23 | a | == | test.cpp:131:28:131:33 | ... + ... | 0 | 131 | 132 |
+| test.cpp:131:6:131:21 | call to __builtin_expect | test.cpp:131:28:131:28 | b | == | test.cpp:131:23:131:23 | a | -42 | 131 | 132 |
+| test.cpp:131:6:131:21 | call to __builtin_expect | test.cpp:131:28:131:33 | ... + ... | == | test.cpp:131:23:131:23 | a | 0 | 131 | 132 |
+| test.cpp:135:6:135:21 | call to __builtin_expect | test.cpp:135:23:135:23 | a | != | test.cpp:135:28:135:28 | b | 42 | 135 | 136 |
+| test.cpp:135:6:135:21 | call to __builtin_expect | test.cpp:135:23:135:23 | a | != | test.cpp:135:28:135:33 | ... + ... | 0 | 135 | 136 |
+| test.cpp:135:6:135:21 | call to __builtin_expect | test.cpp:135:28:135:28 | b | != | test.cpp:135:23:135:23 | a | -42 | 135 | 136 |
+| test.cpp:135:6:135:21 | call to __builtin_expect | test.cpp:135:28:135:33 | ... + ... | != | test.cpp:135:23:135:23 | a | 0 | 135 | 136 |
+| test.cpp:141:6:141:21 | call to __builtin_expect | test.cpp:141:23:141:23 | a | == | test.cpp:141:28:141:29 | 42 | 0 | 141 | 142 |
+| test.cpp:141:6:141:21 | call to __builtin_expect | test.cpp:141:28:141:29 | 42 | == | test.cpp:141:23:141:23 | a | 0 | 141 | 142 |
+| test.cpp:145:6:145:21 | call to __builtin_expect | test.cpp:145:23:145:23 | a | != | test.cpp:145:28:145:29 | 42 | 0 | 145 | 146 |
+| test.cpp:145:6:145:21 | call to __builtin_expect | test.cpp:145:28:145:29 | 42 | != | test.cpp:145:23:145:23 | a | 0 | 145 | 146 |
 unary
 | test.c:7:9:7:13 | ... > ... | test.c:7:9:7:9 | x | < | 1 | 10 | 11 |
 | test.c:7:9:7:13 | ... > ... | test.c:7:9:7:9 | x | >= | 1 | 7 | 9 |
@@ -273,4 +285,6 @@ unary
 | test.cpp:131:6:131:21 | call to __builtin_expect | test.cpp:131:6:131:21 | call to __builtin_expect | != | 0 | 131 | 132 |
 | test.cpp:135:6:135:21 | call to __builtin_expect | test.cpp:135:6:135:21 | call to __builtin_expect | != | 0 | 135 | 136 |
 | test.cpp:141:6:141:21 | call to __builtin_expect | test.cpp:141:6:141:21 | call to __builtin_expect | != | 0 | 141 | 142 |
+| test.cpp:141:6:141:21 | call to __builtin_expect | test.cpp:141:23:141:23 | a | == | 42 | 141 | 142 |
 | test.cpp:145:6:145:21 | call to __builtin_expect | test.cpp:145:6:145:21 | call to __builtin_expect | != | 0 | 145 | 146 |
+| test.cpp:145:6:145:21 | call to __builtin_expect | test.cpp:145:23:145:23 | a | != | 42 | 145 | 146 |
