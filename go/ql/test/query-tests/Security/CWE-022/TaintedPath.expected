@@ -1,5 +1,5 @@
 models
-| 1 | Summary: net/url; URL; true; Query; ; ; Argument[-1]; ReturnValue; taint; manual |
+| 1 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 2 | Summary: path; ; false; Clean; ; ; Argument[0]; ReturnValue; taint; manual |
 edges
 | TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:14:18:14:30 | call to Query | provenance | MaD:1 |
