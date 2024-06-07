@@ -111,4 +111,13 @@ namespace TestAdditionalCallTargets {
 
 }
 
+void post_update_to_phi_input(bool b)
+{
+  A a;
+  if(b) {
+    a.i = user_input();
+  }
+  sink(a.i); // $ ast,ir
+}
+
 } // namespace Simple

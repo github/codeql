@@ -78,6 +78,7 @@ private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
+private import internal.ExternalFlowExtensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
 
@@ -138,6 +139,9 @@ predicate sourceModel(
     row.splitAt(";", 7) = kind
   ) and
   provenance = "manual"
+  or
+  Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance,
+    _)
 }
 
 /** Holds if a sink model exists for the given parameters. */
@@ -158,6 +162,8 @@ predicate sinkModel(
     row.splitAt(";", 7) = kind
   ) and
   provenance = "manual"
+  or
+  Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, _)
 }
 
 /** Holds if a summary model exists for the given parameters. */
@@ -179,6 +185,9 @@ predicate summaryModel(
     row.splitAt(";", 8) = kind
   ) and
   provenance = "manual"
+  or
+  Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+    provenance, _)
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -203,8 +212,10 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -321,10 +332,10 @@ module CsvValidation {
       or
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
     |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      not namespace.regexpMatch("[a-zA-Z0-9_\\.:]*") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]*") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
       not name.regexpMatch("[a-zA-Z0-9_<>,]*") and

@@ -1,3 +1,6 @@
+#select
+| src/main/java/com/example/App.java:0:0:0:0 | App |
+| src/test/java/com/example/AppTest.java:0:0:0:0 | AppTest |
 xmlFiles
 | pom.xml:0:0:0:0 | pom.xml |
 | src/main/resources/page.xml:0:0:0:0 | src/main/resources/page.xml |
@@ -10,6 +13,3 @@ propertiesFiles
 | target/maven-archiver/pom.properties:0:0:0:0 | target/maven-archiver/pom.properties |
 | test-db/log/ext/javac-1.properties:0:0:0:0 | test-db/log/ext/javac-1.properties |
 | test-db/log/ext/javac.properties:0:0:0:0 | test-db/log/ext/javac.properties |
-#select
-| src/main/java/com/example/App.java:0:0:0:0 | App |
-| src/test/java/com/example/AppTest.java:0:0:0:0 | AppTest |

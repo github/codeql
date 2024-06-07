@@ -5,10 +5,11 @@ extensions:
     data:
       - ["github.com/nonexistent/test", "T", False, "StepArgRes", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/nonexistent/test", "T", False, "StepArgRes1", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
-      - ["github.com/nonexistent/test", "T", False, "StepArgArg", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["github.com/nonexistent/test", "T", False, "StepArgQual", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["github.com/nonexistent/test", "T", False, "StepQualRes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["github.com/nonexistent/test", "T", False, "StepQualArg", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgArg", "", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgArgIgnored", "", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgQual", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepQualRes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepQualArg", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["github.com/nonexistent/test", "", False, "StepArgResNoQual", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/nonexistent/test", "", False, "StepArgResArrayContent", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"]
       - ["github.com/nonexistent/test", "", False, "StepArgArrayContentRes", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
@@ -21,17 +22,20 @@ extensions:
       - ["github.com/nonexistent/test", "", False, "GetElement", "", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "", False, "GetMapKey", "", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"]
       - ["github.com/nonexistent/test", "", False, "SetElement", "", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
-      - ["github.com/nonexistent/test", "C", False, "Get", "", "", "Argument[-1].Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
-      - ["github.com/nonexistent/test", "C", False, "GetThroughPointer", "", "", "Argument[-1].Dereference.Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
-      - ["github.com/nonexistent/test", "C", False, "Set", "", "", "Argument[0]", "Argument[-1].Field[github.com/nonexistent/test.C.F]", "value", "manual"]
-      - ["github.com/nonexistent/test", "C", False, "SetThroughPointer", "", "", "Argument[0]", "Argument[-1].Dereference.Field[github.com/nonexistent/test.C.F]", "value", "manual"]
-
+      - ["github.com/nonexistent/test", "C", False, "Get", "", "", "Argument[receiver].Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "C", False, "GetThroughPointer", "", "", "Argument[receiver].Dereference.Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "C", False, "Set", "", "", "Argument[0]", "Argument[receiver].Field[github.com/nonexistent/test.C.F]", "value", "manual"]
+      - ["github.com/nonexistent/test", "C", False, "SetThroughPointer", "", "", "Argument[0]", "Argument[receiver].Dereference.Field[github.com/nonexistent/test.C.F]", "value", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: neutralModel
+    data:
+      - ["github.com/nonexistent/test", "T", "StepArgArgIgnored", "", "summary", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sourceModel
     data:
       - ["github.com/nonexistent/test", "A", False, "Src1", "", "", "ReturnValue", "qltest", "manual"]
-
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel

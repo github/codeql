@@ -6,7 +6,9 @@ extensions:
     data:
       - ["System.IO.Packaging", "PackUriHelper", False, "Create", "(System.Uri)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackUriHelper", False, "Create", "(System.Uri,System.Uri)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Packaging", "PackUriHelper", False, "Create", "(System.Uri,System.Uri)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackUriHelper", False, "Create", "(System.Uri,System.Uri,System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Packaging", "PackUriHelper", False, "Create", "(System.Uri,System.Uri,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackUriHelper", False, "Create", "(System.Uri,System.Uri,System.String)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackUriHelper", False, "GetPackageUri", "(System.Uri)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackUriHelper", False, "GetPartUri", "(System.Uri)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -30,6 +32,8 @@ extensions:
       - ["System.IO.Packaging", "Package", False, "Open", "(System.IO.Stream)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "Package", False, "Open", "(System.IO.Stream,System.IO.FileMode)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "Package", False, "Open", "(System.IO.Stream,System.IO.FileMode,System.IO.FileAccess)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Packaging", "Package", True, "CreatePartCore", "(System.Uri,System.String,System.IO.Packaging.CompressionOption)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Packaging", "Package", True, "CreatePartCore", "(System.Uri,System.String,System.IO.Packaging.CompressionOption)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", False, "CreateRelationship", "(System.Uri,System.IO.Packaging.TargetMode,System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", False, "CreateRelationship", "(System.Uri,System.IO.Packaging.TargetMode,System.String)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", False, "CreateRelationship", "(System.Uri,System.IO.Packaging.TargetMode,System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -48,6 +52,7 @@ extensions:
       - ["System.IO.Packaging", "PackagePart", False, "get_ContentType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", False, "get_Package", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", False, "get_Uri", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Packaging", "PackagePart", True, "GetStreamCore", "(System.IO.FileMode,System.IO.FileAccess)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackageRelationship", False, "get_Id", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackageRelationship", False, "get_Package", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackageRelationship", False, "get_RelationshipType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -59,9 +64,6 @@ extensions:
       - ["System.IO.Packaging", "PackageRelationshipSelector", False, "Select", "(System.IO.Packaging.Package)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackageRelationshipSelector", False, "get_SelectionCriteria", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Packaging", "PackageRelationshipSelector", False, "get_SourceUri", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Packaging", "ZipPackage", False, "CreatePartCore", "(System.Uri,System.String,System.IO.Packaging.CompressionOption)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Packaging", "ZipPackage", False, "CreatePartCore", "(System.Uri,System.String,System.IO.Packaging.CompressionOption)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Packaging", "ZipPackagePart", False, "GetStreamCore", "(System.IO.FileMode,System.IO.FileAccess)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -75,7 +77,6 @@ extensions:
       - ["System.IO.Packaging", "PackUriHelper", "IsRelationshipPartUri", "(System.Uri)", "summary", "df-generated"]
       - ["System.IO.Packaging", "PackUriHelper", "ResolvePartUri", "(System.Uri,System.Uri)", "summary", "df-generated"]
       - ["System.IO.Packaging", "Package", "Close", "()", "summary", "df-generated"]
-      - ["System.IO.Packaging", "Package", "CreatePartCore", "(System.Uri,System.String,System.IO.Packaging.CompressionOption)", "summary", "df-generated"]
       - ["System.IO.Packaging", "Package", "DeletePart", "(System.Uri)", "summary", "df-generated"]
       - ["System.IO.Packaging", "Package", "DeletePartCore", "(System.Uri)", "summary", "df-generated"]
       - ["System.IO.Packaging", "Package", "DeleteRelationship", "(System.String)", "summary", "df-generated"]
@@ -98,7 +99,6 @@ extensions:
       - ["System.IO.Packaging", "PackagePart", "DeleteRelationship", "(System.String)", "summary", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", "GetContentTypeCore", "()", "summary", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", "GetRelationship", "(System.String)", "summary", "df-generated"]
-      - ["System.IO.Packaging", "PackagePart", "GetStreamCore", "(System.IO.FileMode,System.IO.FileAccess)", "summary", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", "PackagePart", "(System.IO.Packaging.Package,System.Uri)", "summary", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", "PackagePart", "(System.IO.Packaging.Package,System.Uri,System.String)", "summary", "df-generated"]
       - ["System.IO.Packaging", "PackagePart", "RelationshipExists", "(System.String)", "summary", "df-generated"]

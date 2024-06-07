@@ -73,16 +73,6 @@ namespace Semmle.Autobuild.Shared
         /// A logger.
         /// </summary>
         ILogger Logger { get; }
-
-        /// <summary>
-        /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
-        /// </summary>
-        string? CodeQLExtractorLangRoot { get; }
-
-        /// <summary>
-        /// Value of CODEQL_PLATFORM environment variable.
-        /// </summary>
-        string? CodeQlPlatform { get; }
     }
 
     /// <summary>
@@ -196,9 +186,6 @@ namespace Semmle.Autobuild.Shared
                 ret = FindFiles(this.Options.Language.ProjectExtension, f => new Project<TAutobuildOptions>(this, f))?.ToList();
                 return ret ?? new List<IProjectOrSolution>();
             });
-
-            CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable(EnvVars.Root(this.Options.Language));
-            CodeQlPlatform = Actions.GetEnvironmentVariable(EnvVars.Platform);
 
             TrapDir = RequireEnvironmentVariable(EnvVars.TrapDir(this.Options.Language));
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
@@ -364,15 +351,5 @@ namespace Semmle.Autobuild.Shared
                 diagnostics.Dispose();
             }
         }
-
-        /// <summary>
-        /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
-        /// </summary>
-        public string? CodeQLExtractorLangRoot { get; }
-
-        /// <summary>
-        /// Value of CODEQL_PLATFORM environment variable.
-        /// </summary>
-        public string? CodeQlPlatform { get; }
     }
 }

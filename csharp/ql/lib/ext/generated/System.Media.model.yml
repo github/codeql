@@ -4,7 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Media", "SoundPlayer", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Media", "SoundPlayer", "Load", "()", "summary", "df-generated"]
       - ["System.Media", "SoundPlayer", "LoadAsync", "()", "summary", "df-generated"]
       - ["System.Media", "SoundPlayer", "OnLoadCompleted", "(System.ComponentModel.AsyncCompletedEventArgs)", "summary", "df-generated"]

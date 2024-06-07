@@ -4,8 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Reflection.Context", "CustomReflectionContext", False, "MapAssembly", "(System.Reflection.Assembly)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Reflection.Context", "CustomReflectionContext", False, "MapType", "(System.Reflection.TypeInfo)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.Context", "CustomReflectionContext", True, "GetCustomAttributes", "(System.Reflection.MemberInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.Context", "CustomReflectionContext", True, "GetCustomAttributes", "(System.Reflection.ParameterInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
   - addsTo:
