@@ -556,9 +556,9 @@ private predicate interpretNeutral(UnboundCallable c, string kind, string proven
 private class SummarizedCallableAdapter extends SummarizedCallable {
   SummarizedCallableAdapter() {
     exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
-      not this.hasBody()
+      not this.fromSource()
       or
-      this.hasBody() and provenance.isManual()
+      this.fromSource() and provenance.isManual()
     )
   }
 

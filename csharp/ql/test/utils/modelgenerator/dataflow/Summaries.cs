@@ -575,3 +575,4 @@ public class Inheritance
         public override string Prop { get { return tainted; } }
     }
 }
+
