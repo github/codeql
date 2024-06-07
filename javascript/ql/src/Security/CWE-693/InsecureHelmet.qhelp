@@ -23,12 +23,12 @@
         </p>
 
         <pre>
-        extensions:
-          - addsTo:
-              pack: codeql/javascript-all
-              extensible: requiredHelmetSecuritySetting
-            data:
-              - name: "frameguard"
+extensions:
+- addsTo:
+    pack: codeql/javascript-all
+    extensible: requiredHelmetSecuritySetting
+data:
+    - name: "frameguard"
         </pre>
 
         <p>
@@ -52,11 +52,11 @@
         </p>
 
         <pre>
-            const helmet = require('helmet');
-            app.use(helmet({
-                frameguard: false,
-                contentSecurityPolicy: false
-            }));
+const helmet = require('helmet');
+app.use(helmet({
+    frameguard: false,
+    contentSecurityPolicy: false
+}));
         </pre>
 
         <p>
@@ -64,7 +64,7 @@
         </p>
 
         <pre>
-            app.use(helmet());
+app.use(helmet());
         </pre>
 
         <p>
@@ -72,16 +72,16 @@
         </p>
 
         <pre>
-            app.use(
-                helmet({
-                    contentSecurityPolicy: {
-                        directives: {
-                            "script-src": ["'self'", "example.com"],
-                            "style-src": null,
-                        },
-                    },
-                })
-            );
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                "script-src": ["'self'", "example.com"],
+                "style-src": null,
+            },
+        },
+    })
+);
         </pre>
 
     </example>
