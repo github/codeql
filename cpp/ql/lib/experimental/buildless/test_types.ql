@@ -28,5 +28,7 @@ query predicate usertypes(TestAST::SourceNamespace ns, TestAST::SourceTypeDefini
     td = ns.getAChild()
 }
 
+// Let's try to resolve the type of a local variable
+
 from TestTypes::Type t
 select t

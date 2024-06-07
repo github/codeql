@@ -9,6 +9,12 @@ module Buildless<BuildlessASTSig AST> {
     Location getLocation() { AST::nodeLocation(this, result) }
 
     string toString() { result = "element" }
+
+    SourceElement getParent() { AST::edge(result, _, this) }
+
+    SourceElement getChild(int i) { AST::edge(this, i, result) }
+
+    SourceElement getAChild() { result = this.getChild(_) }
   }
 
   abstract class SourceScope extends SourceElement
@@ -22,10 +28,6 @@ module Buildless<BuildlessASTSig AST> {
     override string getName() { AST::namespaceName(this, result) }
 
     override string toString() { result = "namespace " + this.getName() }
-
-    SourceElement getAChild() {
-      AST::namespaceMember(this, result)
-    }
   }
 
   // Any syntax node that is a declaration
@@ -78,8 +80,6 @@ module Buildless<BuildlessASTSig AST> {
     BlockStmt() { AST::blockStmt(this) }
 
     override string toString() { result = "{ ... }" }
-
-    Stmt getChild(int i) { AST::blockMember(this, i, result) }
   }
 
   class Expr extends SourceElement

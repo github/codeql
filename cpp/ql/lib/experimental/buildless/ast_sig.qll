@@ -8,6 +8,9 @@ signature module BuildlessASTSig
     class Node;
     predicate nodeLocation(Node node, Location location);
 
+    // Parent/child relationship between AST nodes
+    predicate edge(Node parent, int index, Node child);
+
     // Include graph
     predicate userInclude(Node include, string path);
     predicate systemInclude(Node include, string path);

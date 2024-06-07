@@ -19,14 +19,12 @@ module BuildlessIdentifiers<BuildlessASTSig A> {
 
   // What are the identifiers in scope at a given point in the program?
   // Give a potential object that the identifier refers to
-  predicate identifiers(AST::SourceScope scope, string name, AST::SourceDeclaration decl) {
-    scope.(AST::SourceDeclaration).getName() = name and decl = scope
+  AST::SourceDeclaration nameLookup(AST::SourceScope scope) {
+    result = scope
     or
-    decl = scope.(AST::SourceNamespace).getAChild() and
-    name = decl.getName()
+    result = scope.(AST::SourceNamespace).getAChild()
     or
-    decl = scope.(AST::SourceTypeDefinition).getAMember() and
-    name = decl.getName()
+    result = scope.(AST::SourceTypeDefinition).getAMember()
   }
 }
 

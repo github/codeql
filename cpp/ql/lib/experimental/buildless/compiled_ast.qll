@@ -27,8 +27,7 @@ module CompiledAST implements BuildlessASTSig {
         type = reachableType(decl.getType())
       )
     } or
-    TNamespaceDeclaration(NamespaceDeclarationEntry ns) { any()
-    }
+    TNamespaceDeclaration(NamespaceDeclarationEntry ns) { any() }
 
   class Node extends TNode {
     string toString() { result = "node" }
@@ -51,9 +50,7 @@ module CompiledAST implements BuildlessASTSig {
       /* or this = TDeclarationType(result.getLocation(), _) */
     }
 
-    NamespaceDeclarationEntry getNamespaceDeclaration() {
-      this = TNamespaceDeclaration(result)
-    }
+    NamespaceDeclarationEntry getNamespaceDeclaration() { this = TNamespaceDeclaration(result) }
 
     Type getType() { this = TDeclarationType(_, result) }
 
@@ -159,7 +156,7 @@ module CompiledAST implements BuildlessASTSig {
     classOrStruct.getDeclaration().getDeclaration().(Class).getAMember() =
       member.getDeclaration().getDeclaration() and
     child = 0 and
-    classOrStruct.getLocation().getFile() = member.getLocation().getFile()  // TODO: Disambiguate
+    classOrStruct.getLocation().getFile() = member.getLocation().getFile() // TODO: Disambiguate
   }
 
   // Templates
@@ -250,11 +247,20 @@ module CompiledAST implements BuildlessASTSig {
 
   predicate namespaceMember(Node ns, Node member) {
     (
-    member.getDeclaration().getDeclaration() =
-      ns.getNamespaceDeclaration().getNamespace().getADeclaration() 
-    or
-    ns.getNamespaceDeclaration().getNamespace().getAChildNamespace() = member.getNamespaceDeclaration().getNamespace()
+      member.getDeclaration().getDeclaration() =
+        ns.getNamespaceDeclaration().getNamespace().getADeclaration()
+      or
+      ns.getNamespaceDeclaration().getNamespace().getAChildNamespace() =
+        member.getNamespaceDeclaration().getNamespace()
     ) and
     ns.getLocation().getFile() = member.getLocation().getFile()
+  }
+
+  predicate edge(Node parent, int index, Node child) {
+    namespaceMember(parent, child) and index = 0
+    or
+    classMember(parent, index, child)
+    or
+    blockMember(parent, index, child)
   }
 }

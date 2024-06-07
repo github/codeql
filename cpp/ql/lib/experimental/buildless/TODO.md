@@ -1,5 +1,9 @@
 Next:
 - [x] Namespaces
+
+- Resolve the type of a local variable
+
+
 - [ ] Parent scopes - where are things declared
     Parent class
     Parent namespace
