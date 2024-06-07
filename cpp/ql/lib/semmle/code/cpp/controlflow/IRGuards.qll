@@ -824,25 +824,6 @@ private predicate simple_comparison_eq(
 }
 
 /**
- * Holds if `test` is an instruction that is part of test that eventually is
- * used in a conditional branch.
- */
-private predicate relevantUnaryComparison(Instruction test) {
-  not test instanceof CompareInstruction and
-  exists(IRType type, ConditionalBranchInstruction branch |
-    type instanceof IRAddressType or type instanceof IRIntegerType
-  |
-    type = test.getResultIRType() and
-    branch.getCondition() = test
-  )
-  or
-  exists(LogicalNotInstruction logicalNot |
-    relevantUnaryComparison(logicalNot) and
-    test = logicalNot.getUnary()
-  )
-}
-
-/**
  * Rearrange various simple comparisons into `op == k` form.
  */
 private predicate unary_simple_comparison_eq(
