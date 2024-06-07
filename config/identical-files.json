@@ -364,5 +364,9 @@
   "Python model summaries test extension": [
     "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
     "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
+  ],
+  "shared tree-sitter extractor cargo.toml": [
+    "shared/tree-sitter-extractor/Cargo.toml",
+    "ruby/extractor/codeql-extractor-fake-crate/Cargo.toml"
   ]
 }

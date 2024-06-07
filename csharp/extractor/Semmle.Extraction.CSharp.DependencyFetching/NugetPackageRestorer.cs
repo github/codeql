@@ -98,12 +98,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"Checking NuGet feed responsiveness: {checkNugetFeedResponsiveness}");
             compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", checkNugetFeedResponsiveness ? "1" : "0"));
 
+            HashSet<string>? explicitFeeds = null;
+
             try
             {
-                if (checkNugetFeedResponsiveness && !CheckFeeds())
+                if (checkNugetFeedResponsiveness && !CheckFeeds(out explicitFeeds))
                 {
                     // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds();
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds(explicitFeeds);
                     return unresponsiveMissingPackageLocation is null
                         ? []
                         : [unresponsiveMissingPackageLocation];
@@ -163,7 +165,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             LogAllUnusedPackages(dependencies);
 
             var missingPackageLocation = checkNugetFeedResponsiveness
-                ? DownloadMissingPackagesFromSpecificFeeds()
+                ? DownloadMissingPackagesFromSpecificFeeds(explicitFeeds)
                 : DownloadMissingPackages();
 
             if (missingPackageLocation is not null)
@@ -173,13 +175,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return assemblyLookupLocations;
         }
 
-        private List<string> GetReachableFallbackNugetFeeds()
+        private List<string> GetReachableFallbackNugetFeeds(HashSet<string>? feedsFromNugetConfigs)
         {
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
             if (fallbackFeeds.Count == 0)
             {
                 fallbackFeeds.Add(PublicNugetOrgFeed);
-                logger.LogInfo($"No fallback Nuget feeds specified. Using default feed: {PublicNugetOrgFeed}");
+                logger.LogInfo($"No fallback Nuget feeds specified. Adding default feed: {PublicNugetOrgFeed}");
+
+                var shouldAddNugetConfigFeeds = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.AddNugetConfigFeedsToFallback);
+                logger.LogInfo($"Adding feeds from nuget.config to fallback restore: {shouldAddNugetConfigFeeds}");
+
+                if (shouldAddNugetConfigFeeds && feedsFromNugetConfigs?.Count > 0)
+                {
+                    // There are some feeds in `feedsFromNugetConfigs` that have already been checked for reachability, we could skip those.
+                    // But we might use different responsiveness testing settings when we try them in the fallback logic, so checking them again is safer.
+                    fallbackFeeds.UnionWith(feedsFromNugetConfigs);
+                    logger.LogInfo($"Using Nuget feeds from nuget.config files as fallback feeds: {string.Join(", ", feedsFromNugetConfigs.OrderBy(f => f))}");
+                }
             }
 
             logger.LogInfo($"Checking fallback Nuget feed reachability on feeds: {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
@@ -193,6 +206,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Reachable fallback Nuget feeds: {string.Join(", ", reachableFallbackFeeds.OrderBy(f => f))}");
             }
+
+            compilationInfoContainer.CompilationInfos.Add(("Reachable fallback Nuget feed count", reachableFallbackFeeds.Count.ToString()));
 
             return reachableFallbackFeeds;
         }
@@ -272,9 +287,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds()
+        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(HashSet<string>? feedsFromNugetConfigs)
         {
-            var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
+            var reachableFallbackFeeds = GetReachableFallbackNugetFeeds(feedsFromNugetConfigs);
             if (reachableFallbackFeeds.Count > 0)
             {
                 return DownloadMissingPackages(fallbackNugetFeeds: reachableFallbackFeeds);
@@ -623,10 +638,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return (timeoutMilliSeconds, tryCount);
         }
 
-        private bool CheckFeeds()
+        private bool CheckFeeds(out HashSet<string> explicitFeeds)
         {
             logger.LogInfo("Checking Nuget feeds...");
-            var (explicitFeeds, allFeeds) = GetAllFeeds();
+            (explicitFeeds, var allFeeds) = GetAllFeeds();
 
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
                 .ToHashSet() ?? [];

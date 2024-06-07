@@ -1,5 +1,5 @@
 edges
-| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
 | testAlamofire.swift:150:45:150:45 | password | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | provenance |  |
 | testAlamofire.swift:152:51:152:51 | password | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | provenance |  |
 | testAlamofire.swift:154:38:154:38 | email | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | provenance |  |
@@ -13,7 +13,7 @@ edges
 | testSend.swift:60:17:60:17 | password | testSend.swift:60:13:60:25 | call to pad(_:) | provenance |  |
 | testSend.swift:86:7:86:7 | self | file://:0:0:0:0 | self | provenance |  |
 | testSend.swift:94:27:94:30 | .password | testSend.swift:86:7:86:7 | self | provenance |  |
-| testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value | provenance |  |
+| testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value | provenance | Config |
 | testURL.swift:39:50:39:50 | passwd | testURL.swift:39:18:39:50 | ... .+(_:_:) ... | provenance |  |
 | testURL.swift:41:51:41:51 | account_no | testURL.swift:41:18:41:51 | ... .+(_:_:) ... | provenance |  |
 | testURL.swift:42:51:42:51 | credit_card_no | testURL.swift:42:18:42:51 | ... .+(_:_:) ... | provenance |  |

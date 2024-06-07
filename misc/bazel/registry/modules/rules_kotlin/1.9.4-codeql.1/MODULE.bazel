@@ -1,0 +1,31 @@
+module(
+    name = "rules_kotlin",
+    version = "1.9.4-codeql.1",
+    repo_name = "rules_kotlin",
+)
+
+bazel_dep(name = "platforms", version = "0.0.6")
+bazel_dep(name = "bazel_skylib", version = "1.4.2")
+bazel_dep(name = "rules_java", version = "7.2.0")
+bazel_dep(name = "rules_python", version = "0.23.1")
+bazel_dep(name = "rules_cc", version = "0.0.8")
+
+rules_kotlin_extensions = use_extension(
+    "//src/main/starlark/core/repositories:bzlmod_setup.bzl",
+    "rules_kotlin_extensions",
+)
+use_repo(
+    rules_kotlin_extensions,
+    "com_github_google_ksp",
+    "com_github_jetbrains_kotlin",
+    "com_github_pinterest_ktlint",
+    "rules_android",
+)
+
+register_toolchains("//kotlin/internal:default_toolchain")
+
+# TODO(bencodes) We should be able to remove this once rules_android has rolled out official Bzlmod support
+remote_android_extensions = use_extension("@bazel_tools//tools/android:android_extensions.bzl", "remote_android_tools_extensions")
+use_repo(remote_android_extensions, "android_gmaven_r8", "android_tools")
+
+bazel_dep(name = "rules_proto", version = "5.3.0-21.7")

@@ -22,9 +22,21 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
+bazel_dep(name = "rules_kotlin", version = "1.9.4-codeql.1")
 bazel_dep(name = "gazelle", version = "0.36.0")
+bazel_dep(name = "rules_dotnet", version = "0.15.1")
+bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+
+dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
+dotnet.toolchain(dotnet_version = "8.0.101")
+use_repo(dotnet, "dotnet_toolchains")
+
+register_toolchains("@dotnet_toolchains//:all")
+
+csharp_main_extension = use_extension("//csharp:paket.main_extension.bzl", "main_extension")
+use_repo(csharp_main_extension, "paket.main")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
@@ -54,8 +66,83 @@ node.toolchain(
 )
 use_repo(node, "nodejs", "nodejs_toolchains")
 
+kotlin_extractor_deps = use_extension("//java/kotlin-extractor:deps.bzl", "kotlin_extractor_deps")
+
+# following list can be kept in sync by running `bazel mod tidy` in `codeql`
+use_repo(
+    kotlin_extractor_deps,
+    "codeql_kotlin_defaults",
+    "codeql_kotlin_embeddable",
+    "kotlin-compiler-1.5.0",
+    "kotlin-compiler-1.5.10",
+    "kotlin-compiler-1.5.20",
+    "kotlin-compiler-1.5.30",
+    "kotlin-compiler-1.6.0",
+    "kotlin-compiler-1.6.20",
+    "kotlin-compiler-1.7.0",
+    "kotlin-compiler-1.7.20",
+    "kotlin-compiler-1.8.0",
+    "kotlin-compiler-1.9.0-Beta",
+    "kotlin-compiler-1.9.20-Beta",
+    "kotlin-compiler-2.0.0-RC1",
+    "kotlin-compiler-embeddable-1.5.0",
+    "kotlin-compiler-embeddable-1.5.10",
+    "kotlin-compiler-embeddable-1.5.20",
+    "kotlin-compiler-embeddable-1.5.30",
+    "kotlin-compiler-embeddable-1.6.0",
+    "kotlin-compiler-embeddable-1.6.20",
+    "kotlin-compiler-embeddable-1.7.0",
+    "kotlin-compiler-embeddable-1.7.20",
+    "kotlin-compiler-embeddable-1.8.0",
+    "kotlin-compiler-embeddable-1.9.0-Beta",
+    "kotlin-compiler-embeddable-1.9.20-Beta",
+    "kotlin-compiler-embeddable-2.0.0-RC1",
+    "kotlin-stdlib-1.5.0",
+    "kotlin-stdlib-1.5.10",
+    "kotlin-stdlib-1.5.20",
+    "kotlin-stdlib-1.5.30",
+    "kotlin-stdlib-1.6.0",
+    "kotlin-stdlib-1.6.20",
+    "kotlin-stdlib-1.7.0",
+    "kotlin-stdlib-1.7.20",
+    "kotlin-stdlib-1.8.0",
+    "kotlin-stdlib-1.9.0-Beta",
+    "kotlin-stdlib-1.9.20-Beta",
+    "kotlin-stdlib-2.0.0-RC1",
+)
+
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.2")
+
+lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
+
+lfs_files(
+    name = "ripunzip-linux",
+    srcs = ["//misc/ripunzip:ripunzip-linux"],
+    executable = True,
+)
+
+lfs_files(
+    name = "ripunzip-windows",
+    srcs = ["//misc/ripunzip:ripunzip-windows.exe"],
+    executable = True,
+)
+
+lfs_files(
+    name = "ripunzip-macos",
+    srcs = ["//misc/ripunzip:ripunzip-macos"],
+    executable = True,
+)
+
+lfs_files(
+    name = "swift-resource-dir-linux",
+    srcs = ["//swift/third_party/resource-dir:resource-dir-linux.zip"],
+)
+
+lfs_files(
+    name = "swift-resource-dir-macos",
+    srcs = ["//swift/third_party/resource-dir:resource-dir-macos.zip"],
+)
 
 register_toolchains(
     "@nodejs_toolchains//:all",

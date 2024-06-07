@@ -588,7 +588,13 @@ private module Cached {
       n in [-1 .. 10] and
       splatPos = unique(int i | splatArgumentAt(c, i) and i > 0)
     } or
-    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
+    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+    TForbiddenRecursionGuard() {
+      none() and
+      // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+      // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+    }
 
   class TSelfParameterNode = TSelfMethodParameterNode or TSelfToplevelParameterNode;
 
@@ -2170,10 +2176,18 @@ class DataFlowExpr = CfgNodes::ExprCfgNode;
  */
 predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 newtype LambdaCallKind =
   TYieldCallKind() or

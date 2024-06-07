@@ -12,6 +12,10 @@ astFlow
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:62:14:62:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| BarrierGuard.cpp:81:11:81:16 | call to source | BarrierGuard.cpp:86:8:86:8 | x |
+| BarrierGuard.cpp:90:11:90:16 | call to source | BarrierGuard.cpp:101:8:101:8 | x |
+| BarrierGuard.cpp:107:11:107:16 | call to source | BarrierGuard.cpp:112:8:112:8 | x |
+| BarrierGuard.cpp:116:11:116:16 | call to source | BarrierGuard.cpp:127:8:127:8 | x |
 | acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:22:8:22:20 | & ... |
@@ -141,6 +145,8 @@ irFlow
 | BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:55:13:55:13 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| BarrierGuard.cpp:81:11:81:16 | call to source | BarrierGuard.cpp:86:8:86:8 | x |
+| BarrierGuard.cpp:90:11:90:16 | call to source | BarrierGuard.cpp:101:8:101:8 | x |
 | acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:23:17:23:29 | *& ... |
@@ -153,6 +159,7 @@ irFlow
 | clang.cpp:50:25:50:30 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:50:35:50:40 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:51:19:51:24 | call to source | clang.cpp:53:17:53:26 | *stackArray |
+| clang.cpp:57:21:57:28 | call to source | clang.cpp:59:8:59:8 | d |
 | dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:35:16:35:25 | call to notSource1 |
 | dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:43:15:43:24 | call to notSource1 |
 | dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:36:16:36:25 | call to notSource2 |
