@@ -26,8 +26,9 @@ class HelmetProperty extends Property {
 
   predicate isImportantSecuritySetting() {
     this.getName() in ["frameguard", "contentSecurityPolicy"]
+    or
     // read from data extensions to allow enforcing other settings
-    or requiredHelmetSecuritySetting(this.getName())
+    requiredHelmetSecuritySetting(this.getName())
   }
 }
 
@@ -35,17 +36,17 @@ class HelmetProperty extends Property {
  * Extend the required Helmet security settings using data extensions.
  * Docs: https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/
  * For example:
-
-extensions:
-  - addsTo:
-      pack: codeql/javascript-all
-      extensible: requiredHelmetSecuritySetting
-    data:
-      - name: "frameguard"
-
- * Note: `frameguard` is an example: the query already enforces this setting, so it is not necessary to add it to the data extension. 
-
+ *
+ * extensions:
+ *  - addsTo:
+ *      pack: codeql/javascript-all
+ *      extensible: requiredHelmetSecuritySetting
+ *    data:
+ *      - name: "frameguard"
+ *
+ * Note: `frameguard` is an example: the query already enforces this setting, so it is not necessary to add it to the data extension.
  */
+
 extensible predicate requiredHelmetSecuritySetting(string name);
 
 from HelmetProperty helmetSetting, ExpressLibraries::HelmetRouteHandler helmet
