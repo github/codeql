@@ -1,10 +1,13 @@
+models
+| 1 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 2 | Summary: path; ; false; Clean; ; ; Argument[0]; ReturnValue; taint; manual |
 edges
-| TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:14:18:14:30 | call to Query | provenance | MaD:735 |
+| TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:14:18:14:30 | call to Query | provenance | MaD:1 |
 | TaintedPath.go:14:18:14:30 | call to Query | TaintedPath.go:17:29:17:40 | tainted_path | provenance |  |
 | TaintedPath.go:14:18:14:30 | call to Query | TaintedPath.go:21:57:21:68 | tainted_path | provenance |  |
 | TaintedPath.go:14:18:14:30 | call to Query | TaintedPath.go:68:39:68:56 | ...+... | provenance |  |
 | TaintedPath.go:21:57:21:68 | tainted_path | TaintedPath.go:21:28:21:69 | call to Join | provenance | FunctionModel |
-| TaintedPath.go:68:39:68:56 | ...+... | TaintedPath.go:68:28:68:57 | call to Clean | provenance | MaD:761 |
+| TaintedPath.go:68:39:68:56 | ...+... | TaintedPath.go:68:28:68:57 | call to Clean | provenance | MaD:2 |
 nodes
 | TaintedPath.go:14:18:14:22 | selection of URL | semmle.label | selection of URL |
 | TaintedPath.go:14:18:14:30 | call to Query | semmle.label | call to Query |

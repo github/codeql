@@ -84,6 +84,44 @@ private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
 
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    model =
+      "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    model =
+      "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) and
+    model =
+      "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
+  )
+}
+
 private predicate relevantPackage(string package) {
   sourceModel(package, _, _, _, _, _, _, _, _, _) or
   sinkModel(package, _, _, _, _, _, _, _, _, _) or
