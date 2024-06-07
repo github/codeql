@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.fusesource.leveldbjni", "JniDBFactory", True, "open", "(File,Options)", "", "Argument[0]", "path-injection", "ai-manual"]

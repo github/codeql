@@ -282,10 +282,10 @@ class HashCons extends HCBase {
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = exampleExpr().toString() }
+  string toString() { result = this.exampleExpr().toString() }
 
   /** Gets the primary location of this element. */
-  Location getLocation() { result = exampleExpr().getLocation() }
+  Location getLocation() { result = this.exampleExpr().getLocation() }
 }
 
 /**
@@ -372,7 +372,8 @@ private predicate analyzablePointerFieldAccess(PointerFieldAccess access) {
 private predicate mk_PointerFieldAccess(HashCons qualifier, Field target, PointerFieldAccess access) {
   analyzablePointerFieldAccess(access) and
   target = access.getTarget() and
-  qualifier = hashCons(access.getQualifier().getFullyConverted())
+  qualifier = hashCons(access.getQualifier().getFullyConverted()) and
+  not access instanceof ImplicitThisFieldAccess
 }
 
 private predicate analyzableImplicitThisFieldAccess(ImplicitThisFieldAccess access) {

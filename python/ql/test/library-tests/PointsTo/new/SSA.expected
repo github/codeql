@@ -336,8 +336,8 @@
 | g_class_init.py:34 | __init___0 = FunctionExpr | Function __init__ | builtin-class function |
 | g_class_init.py:34 | self_0 = ParameterDefinition | self | class D |
 | g_class_init.py:35 | D_2 = ArgumentRefinement(D_1) | class D | builtin-class type |
-| g_class_init.py:42 | V2_0 = Str | 'v2' | builtin-class str |
-| g_class_init.py:43 | V3_0 = Str | 'v3' | builtin-class str |
+| g_class_init.py:42 | V2_0 = StringLiteral | 'v2' | builtin-class str |
+| g_class_init.py:43 | V3_0 = StringLiteral | 'v3' | builtin-class str |
 | g_class_init.py:45 | E_0 = ClassExpr | class E | builtin-class type |
 | g_class_init.py:46 | V2_1 = ScopeEntryDefinition | 'v2' | builtin-class str |
 | g_class_init.py:46 | V3_1 = ScopeEntryDefinition | 'v3' | builtin-class str |

@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update:
     name: Update framework coverage report
@@ -17,7 +21,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: ql
           fetch-depth: 0

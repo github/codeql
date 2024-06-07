@@ -13,7 +13,7 @@ module Os {
     int pathidx;
 
     OsFileSystemAccess() {
-      exists(string fn | getTarget().hasQualifiedName("os", fn) |
+      exists(string fn | this.getTarget().hasQualifiedName("os", fn) |
         fn = "Chdir" and pathidx = 0
         or
         fn = "Chmod" and pathidx = 0
@@ -68,12 +68,12 @@ module Os {
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(pathidx) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathidx) }
   }
 
   /** The `os.Exit` function, which ends the process. */
   private class Exit extends Function {
-    Exit() { hasQualifiedName("os", "Exit") }
+    Exit() { this.hasQualifiedName("os", "Exit") }
 
     override predicate mayReturnNormally() { none() }
   }
@@ -85,7 +85,7 @@ module Os {
 
     FunctionModels() {
       // signature: func Pipe() (r *File, w *File, err error)
-      hasQualifiedName("os", "Pipe") and
+      this.hasQualifiedName("os", "Pipe") and
       (inp.isResult(1) and outp.isResult(0))
     }
 
@@ -100,7 +100,7 @@ module Os {
 
     MethodModels() {
       // signature: func (*File) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("os", "File", "SyscallConn") and
+      this.hasQualifiedName("os", "File", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
     }
 

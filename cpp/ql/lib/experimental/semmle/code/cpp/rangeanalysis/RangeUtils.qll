@@ -109,8 +109,8 @@ private predicate safeCast(IRIntegerType fromtyp, IRIntegerType totyp) {
  */
 class PtrToPtrCastInstruction extends ConvertInstruction {
   PtrToPtrCastInstruction() {
-    getResultIRType() instanceof IRAddressType and
-    getUnary().getResultIRType() instanceof IRAddressType
+    this.getResultIRType() instanceof IRAddressType and
+    this.getUnary().getResultIRType() instanceof IRAddressType
   }
 }
 
@@ -119,7 +119,7 @@ class PtrToPtrCastInstruction extends ConvertInstruction {
  * that cannot overflow or underflow.
  */
 class SafeIntCastInstruction extends ConvertInstruction {
-  SafeIntCastInstruction() { safeCast(getUnary().getResultIRType(), getResultIRType()) }
+  SafeIntCastInstruction() { safeCast(this.getUnary().getResultIRType(), this.getResultIRType()) }
 }
 
 /**

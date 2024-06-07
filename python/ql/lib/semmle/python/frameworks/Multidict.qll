@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -28,6 +29,8 @@ module Multidict {
     /** Gets a reference to a `MultiDictProxy` class. */
     API::Node classRef() {
       result = API::moduleImport("multidict").getMember(["MultiDictProxy", "CIMultiDictProxy"])
+      or
+      result = ModelOutput::getATypeNode("multidict.MultiDictProxy~Subclass").getASubclass*()
     }
 
     /**

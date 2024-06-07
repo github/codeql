@@ -1,1 +1,0 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/servlet-api-2.4/:${testdir}/../../../../stubs/springframework-5.3.8/:${testdir}/../../../../stubs/dom4j-2.1.1:${testdir}/../../../../stubs/apache-commons-digester3-3.2:${testdir}/../../../../stubs/jaxen-1.2.0/:${testdir}/../../../../stubs/rundeck-api-java-client-13.2

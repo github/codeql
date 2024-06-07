@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.hibernate", "Session", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.hibernate", "Session", True, "createSQLQuery", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.hibernate", "SharedSessionContract", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.hibernate", "SharedSessionContract", True, "createSQLQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "Session", True, "createQuery", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.hibernate", "Session", True, "createSQLQuery", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.hibernate", "SharedSessionContract", True, "createQuery", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.hibernate", "SharedSessionContract", True, "createSQLQuery", "", "", "Argument[0]", "sql-injection", "manual"]

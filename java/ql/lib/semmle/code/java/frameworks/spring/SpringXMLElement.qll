@@ -37,6 +37,3 @@ class SpringXmlElement extends XmlElement {
 
   string getContentString() { result = this.allCharactersString() }
 }
-
-/** DEPRECATED: Alias for SpringXmlElement */
-deprecated class SpringXMLElement = SpringXmlElement;

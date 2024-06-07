@@ -1,7 +1,9 @@
 private import codeql.swift.generated.expr.RegexLiteralExpr
 
+// the following QLdoc is generated: if you need to edit it, do it in the schema file
+/**
+ * A regular expression literal which is checked at compile time, for example `/a(a|b)*b/`.
+ */
 class RegexLiteralExpr extends Generated::RegexLiteralExpr {
-  override string toString() {
-    result = "..." // TODO: We can improve this once we extract the regex
-  }
+  override string toString() { result = this.getPattern() }
 }

@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.arithmetic.Overflow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.controlflow.Guards
 
@@ -60,4 +61,35 @@ private class ApacheFileUploadProgressUpdateStep extends AdditionalValueStep {
       succ.(DataFlow::InstanceParameterNode).getEnclosingCallable() = m
     )
   }
+}
+
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to the `ThreadResourceAbuseConfig`.
+ */
+class ThreadResourceAbuseAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for the `ThreadResourceAbuseConfig` configuration.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/** A set of additional taint steps to consider when taint tracking thread resource abuse related data flows. */
+private class DefaultThreadResourceAbuseAdditionalTaintStep extends ThreadResourceAbuseAdditionalTaintStep
+{
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    threadResourceAbuseArithmeticTaintStep(node1, node2)
+  }
+}
+
+/**
+ * Holds if the step `node1` -> `node2` is an additional taint-step that performs an addition, multiplication,
+ * subtraction, or division.
+ */
+private predicate threadResourceAbuseArithmeticTaintStep(
+  DataFlow::Node fromNode, DataFlow::Node toNode
+) {
+  toNode.asExpr().(ArithExpr).getAnOperand() = fromNode.asExpr()
 }

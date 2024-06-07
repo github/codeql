@@ -6,10 +6,10 @@ import Declaration
  * A generic declaration. Either an unbound generic (`UnboundGeneric`) or a
  * constructed generic (`ConstructedGeneric`).
  */
-abstract class Generic extends Declaration, @dotnet_generic { }
+abstract deprecated class Generic extends Declaration, @dotnet_generic { }
 
 /** An unbound generic. */
-abstract class UnboundGeneric extends Generic {
+abstract deprecated class UnboundGeneric extends Generic {
   /** Gets the `i`th type parameter, if any. */
   abstract TypeParameter getTypeParameter(int i);
 
@@ -27,7 +27,7 @@ abstract class UnboundGeneric extends Generic {
 }
 
 /** A constructed generic. */
-abstract class ConstructedGeneric extends Generic {
+abstract deprecated class ConstructedGeneric extends Generic {
   /** Gets the `i`th type argument, if any. */
   abstract Type getTypeArgument(int i);
 
@@ -41,7 +41,7 @@ abstract class ConstructedGeneric extends Generic {
   UnboundGeneric getUnboundGeneric() { none() }
 
   /** Gets the total number of type arguments. */
-  int getNumberOfTypeArguments() { result = count(int i | exists(this.getTypeArgument(i))) }
+  final int getNumberOfTypeArguments() { result = count(int i | exists(this.getTypeArgument(i))) }
 }
 
 /**
@@ -49,20 +49,20 @@ abstract class ConstructedGeneric extends Generic {
  *
  * Constructs the label suffix for a generic method or type.
  */
-string getGenericsLabel(Generic g) {
+deprecated string getGenericsLabel(Generic g) {
   result = "`" + g.(UnboundGeneric).getNumberOfTypeParameters()
   or
   result = "<" + typeArgs(g) + ">"
 }
 
 pragma[noinline]
-private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
+deprecated private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
   result = generic.getTypeArgument(p).getLabel()
 }
 
 language[monotonicAggregates]
 pragma[nomagic]
-private string typeArgs(ConstructedGeneric generic) {
+deprecated private string typeArgs(ConstructedGeneric generic) {
   result =
     concat(int p |
       p in [0 .. generic.getNumberOfTypeArguments() - 1]

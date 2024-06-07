@@ -19,19 +19,19 @@ import java
  */
 class ArrayCast extends CastExpr {
   ArrayCast() {
-    getExpr() instanceof ArrayCreationExpr and
-    getType() instanceof Array
+    this.getExpr() instanceof ArrayCreationExpr and
+    this.getType() instanceof Array
   }
 
   /** The type of the operand expression of this cast. */
-  Array getSourceType() { result = getExpr().getType() }
+  Array getSourceType() { result = this.getExpr().getType() }
 
   /** The result type of this cast. */
-  Array getTargetType() { result = getType() }
+  Array getTargetType() { result = this.getType() }
 
-  Type getSourceComponentType() { result = getSourceType().getComponentType() }
+  Type getSourceComponentType() { result = this.getSourceType().getComponentType() }
 
-  Type getTargetComponentType() { result = getTargetType().getComponentType() }
+  Type getTargetComponentType() { result = this.getTargetType().getComponentType() }
 }
 
 predicate uncheckedCastType(RefType t) {

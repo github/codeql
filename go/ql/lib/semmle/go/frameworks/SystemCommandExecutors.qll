@@ -14,11 +14,12 @@ private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFl
 
   ShellOrSudoExecution() {
     this instanceof SystemCommandExecution and
-    shellCommand = this.getAnArgument().getAPredecessor*() and
-    not hasSafeSubcommand(shellCommand.getStringValue(), this.getAnArgument().getStringValue())
+    shellCommand = this.getASyntacticArgument().getAPredecessor*() and
+    not hasSafeSubcommand(shellCommand.getStringValue(),
+      this.getASyntacticArgument().getStringValue())
   }
 
-  override DataFlow::Node getCommandName() { result = this.getAnArgument() }
+  override DataFlow::Node getCommandName() { result = this.getASyntacticArgument() }
 
   override predicate doubleDashIsSanitizing() {
     shellCommand.getStringValue().matches("%" + ["git", "rsync"])
@@ -49,7 +50,7 @@ private class SystemCommandExecutors extends SystemCommandExecution::Range, Data
     )
   }
 
-  override DataFlow::Node getCommandName() { result = this.getArgument(cmdArg) }
+  override DataFlow::Node getCommandName() { result = this.getSyntacticArgument(cmdArg) }
 }
 
 /**
@@ -76,7 +77,7 @@ private class GoShCommandExecution extends SystemCommandExecution::Range, DataFl
     )
   }
 
-  override DataFlow::Node getCommandName() { result = this.getArgument(0) }
+  override DataFlow::Node getCommandName() { result = this.getSyntacticArgument(0) }
 }
 
 /**
@@ -102,7 +103,7 @@ module CryptoSsh {
       )
     }
 
-    override DataFlow::Node getCommandName() { result = this.getArgument(0) }
+    override DataFlow::Node getCommandName() { result = this.getSyntacticArgument(0) }
   }
 }
 

@@ -23,9 +23,8 @@ private module Internal {
   newtype TOperand =
     // RAW
     TRegisterOperand(TRawInstruction useInstr, RegisterOperandTag tag, TRawInstruction defInstr) {
-      defInstr = RawConstruction::getRegisterOperandDefinition(useInstr, tag) and
-      not RawConstruction::isInCycle(useInstr) and
-      strictcount(RawConstruction::getRegisterOperandDefinition(useInstr, tag)) = 1
+      defInstr = unique( | | RawConstruction::getRegisterOperandDefinition(useInstr, tag)) and
+      not RawConstruction::isInCycle(useInstr)
     } or
     // Placeholder for Phi and Chi operands in stages that don't have the corresponding instructions
     TNoOperand() { none() } or
@@ -74,19 +73,11 @@ private module Shared {
 
   class TNonSsaMemoryOperand = Internal::TNonSsaMemoryOperand;
 
-  /** DEPRECATED: Alias for TNonSsaMemoryOperand */
-  deprecated class TNonSSAMemoryOperand = TNonSsaMemoryOperand;
-
   /**
    * Returns the non-Phi memory operand with the specified parameters.
    */
   TNonSsaMemoryOperand nonSsaMemoryOperand(TRawInstruction useInstr, MemoryOperandTag tag) {
     result = Internal::TNonSsaMemoryOperand(useInstr, tag)
-  }
-
-  /** DEPRECATED: Alias for nonSsaMemoryOperand */
-  deprecated TNonSSAMemoryOperand nonSSAMemoryOperand(TRawInstruction useInstr, MemoryOperandTag tag) {
-    result = nonSsaMemoryOperand(useInstr, tag)
   }
 }
 
@@ -167,9 +158,6 @@ module UnaliasedSsaOperands {
   TChiOperand chiOperand(Unaliased::Instruction useInstr, ChiOperandTag tag) { none() }
 }
 
-/** DEPRECATED: Alias for UnaliasedSsaOperands */
-deprecated module UnaliasedSSAOperands = UnaliasedSsaOperands;
-
 /**
  * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
  * aliased SSA stage.
@@ -217,6 +205,3 @@ module AliasedSsaOperands {
     result = Internal::TAliasedChiOperand(useInstr, tag)
   }
 }
-
-/** DEPRECATED: Alias for AliasedSsaOperands */
-deprecated module AliasedSSAOperands = AliasedSsaOperands;

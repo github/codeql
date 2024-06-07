@@ -13,7 +13,7 @@ module ArchiveZip {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("archive/zip", "NewWriter") and
+      this.hasQualifiedName("archive/zip", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 
@@ -28,15 +28,15 @@ module ArchiveZip {
 
     MethodModels() {
       // signature: func (*Writer) Create(name string) (io.Writer, error)
-      hasQualifiedName("archive/zip", "Writer", "Create") and
+      this.hasQualifiedName("archive/zip", "Writer", "Create") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
-      hasQualifiedName("archive/zip", "Writer", "CreateRaw") and
+      this.hasQualifiedName("archive/zip", "Writer", "CreateRaw") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
-      hasQualifiedName("archive/zip", "Writer", "CreateHeader") and
+      this.hasQualifiedName("archive/zip", "Writer", "CreateHeader") and
       (inp.isResult(0) and outp.isReceiver())
     }
 

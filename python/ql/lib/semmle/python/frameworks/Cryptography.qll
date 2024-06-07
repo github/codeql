@@ -209,17 +209,17 @@ private module CryptographyModel {
     class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
       DataFlow::MethodCallNode
     {
+      API::CallNode init;
       string algorithmName;
       string modeName;
 
       CryptographyGenericCipherOperation() {
-        this =
-          cipherInstance(algorithmName, modeName)
-              .getMember(["decryptor", "encryptor"])
-              .getReturn()
-              .getMember(["update", "update_into"])
-              .getACall()
+        init =
+          cipherInstance(algorithmName, modeName).getMember(["decryptor", "encryptor"]).getACall() and
+        this = init.getReturn().getMember(["update", "update_into"]).getACall()
       }
+
+      override DataFlow::Node getInitialization() { result = init }
 
       override Cryptography::CryptographicAlgorithm getAlgorithm() {
         result.matchesName(algorithmName)
@@ -247,19 +247,17 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
-    private API::Node hashInstance(string algorithmName) {
-      exists(API::CallNode call | result = call.getReturn() |
-        call =
-          API::moduleImport("cryptography")
-              .getMember("hazmat")
-              .getMember("primitives")
-              .getMember("hashes")
-              .getMember("Hash")
-              .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
-            call.getArg(0), call.getArgByName("algorithm")
-          ]
-      )
+    private API::CallNode hashInstance(string algorithmName) {
+      result =
+        API::moduleImport("cryptography")
+            .getMember("hazmat")
+            .getMember("primitives")
+            .getMember("hashes")
+            .getMember("Hash")
+            .getACall() and
+      algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
+          result.getArg(0), result.getArgByName("algorithm")
+        ]
     }
 
     /**
@@ -268,11 +266,15 @@ private module CryptographyModel {
     class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range,
       DataFlow::MethodCallNode
     {
+      API::CallNode init;
       string algorithmName;
 
       CryptographyGenericHashOperation() {
-        this = hashInstance(algorithmName).getMember("update").getACall()
+        init = hashInstance(algorithmName) and
+        this = init.getReturn().getMember("update").getACall()
       }
+
+      override DataFlow::Node getInitialization() { result = init }
 
       override Cryptography::CryptographicAlgorithm getAlgorithm() {
         result.matchesName(algorithmName)

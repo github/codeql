@@ -104,9 +104,9 @@ private class AnalyzedNamespaceDeclaration extends DataFlow::AnalyzedValueNode {
   override NamespaceDeclaration astNode;
 
   override AbstractValue getALocalValue() {
-    result = TAbstractOtherObject() and getPreviousValue().getBooleanValue() = false
+    result = TAbstractOtherObject() and this.getPreviousValue().getBooleanValue() = false
     or
-    result = getPreviousValue() and result.getBooleanValue() = true
+    result = this.getPreviousValue() and result.getBooleanValue() = true
   }
 
   AbstractValue getPreviousValue() {
@@ -161,7 +161,7 @@ private class AnalyzedSuperCall extends DataFlow::AnalyzedValueNode {
 
   override AbstractValue getALocalValue() {
     exists(MethodDefinition md, DataFlow::AnalyzedNode sup, AbstractValue supVal |
-      md.getBody() = asExpr().getEnclosingFunction() and
+      md.getBody() = this.asExpr().getEnclosingFunction() and
       sup = md.getDeclaringClass().getSuperClass().analyze() and
       supVal = sup.getALocalValue()
     |
@@ -183,7 +183,7 @@ private class AnalyzedNewExpr extends DataFlow::AnalyzedValueNode {
   override NewExpr astNode;
 
   override AbstractValue getALocalValue() {
-    isIndefinite() and
+    this.isIndefinite() and
     (
       result = TIndefiniteFunctionOrClass("call") or
       result = TIndefiniteObject("call")
@@ -235,6 +235,26 @@ private class AnalyzedBinaryExpr extends DataFlow::AnalyzedValueNode {
     // most binary expressions are arithmetic expressions;
     // the logical ones have overriding definitions below
     result = abstractValueOfType(TTNumber())
+  }
+}
+
+pragma[nomagic]
+private predicate falsyValue(AbstractValue value) { value.getBooleanValue() = false }
+
+/**
+ * Flow analysis for `&&` operators.
+ */
+private class AnalyzedLogicalAndExpr extends DataFlow::AnalyzedValueNode {
+  override LogicalAndExpr astNode;
+
+  pragma[nomagic]
+  private AnalyzedValueNode leftOperand() { result = astNode.getLeftOperand().analyze() }
+
+  override AbstractValue getALocalValue() {
+    result = super.getALocalValue()
+    or
+    result = this.leftOperand().getALocalValue() and
+    falsyValue(result)
   }
 }
 

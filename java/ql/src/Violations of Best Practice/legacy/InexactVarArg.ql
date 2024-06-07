@@ -13,7 +13,7 @@
 import java
 
 predicate varArgsMethod(Method method, Array varargsType, int arity) {
-  exists(MethodAccess access |
+  exists(MethodCall access |
     access.getMethod() = method and
     arity = method.getNumberOfParameters() and
     not access.getNumArgument() = arity and
@@ -36,7 +36,7 @@ predicate equivalent(Array declared, Array used) {
   declared.getDimension() = used.getDimension()
 }
 
-from Method target, MethodAccess access, Array declaredType, Array usedType, int params
+from Method target, MethodCall access, Array declaredType, Array usedType, int params
 where
   varArgsMethod(target, declaredType, params) and
   target = access.getMethod() and

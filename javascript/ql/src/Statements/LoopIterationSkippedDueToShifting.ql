@@ -21,11 +21,11 @@ class ArrayShiftingCall extends DataFlow::MethodCallNode {
   string name;
 
   ArrayShiftingCall() {
-    name = getMethodName() and
+    name = this.getMethodName() and
     (name = "splice" or name = "shift" or name = "unshift")
   }
 
-  DataFlow::SourceNode getArray() { result = getReceiver().getALocalSource() }
+  DataFlow::SourceNode getArray() { result = this.getReceiver().getALocalSource() }
 }
 
 /**
@@ -37,13 +37,13 @@ class SpliceCall extends ArrayShiftingCall {
   /**
    * Gets the index from which elements are removed and possibly new elemenst are inserted.
    */
-  DataFlow::Node getIndex() { result = getArgument(0) }
+  DataFlow::Node getIndex() { result = this.getArgument(0) }
 
   /**
    * Gets the number of removed elements.
    */
   int getNumRemovedElements() {
-    result = getArgument(1).asExpr().getIntValue() and
+    result = this.getArgument(1).asExpr().getIntValue() and
     result >= 0
   }
 
@@ -51,7 +51,7 @@ class SpliceCall extends ArrayShiftingCall {
    * Gets the number of inserted elements.
    */
   int getNumInsertedElements() {
-    result = getNumArgument() - 2 and
+    result = this.getNumArgument() - 2 and
     result >= 0
   }
 }
@@ -64,11 +64,11 @@ class ArrayIterationLoop extends ForStmt {
   LocalVariable indexVariable;
 
   ArrayIterationLoop() {
-    exists(RelationalComparison compare | compare = getTest() |
+    exists(RelationalComparison compare | compare = this.getTest() |
       compare.getLesserOperand() = indexVariable.getAnAccess() and
       compare.getGreaterOperand() = array.getAPropertyRead("length").asExpr()
     ) and
-    getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess()
+    this.getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess()
   }
 
   /**
@@ -80,7 +80,7 @@ class ArrayIterationLoop extends ForStmt {
    * Gets the loop entry point.
    */
   ReachableBasicBlock getLoopEntry() {
-    result = getTest().getFirstControlFlowNode().getBasicBlock()
+    result = this.getTest().getFirstControlFlowNode().getBasicBlock()
   }
 
   /**
@@ -94,8 +94,8 @@ class ArrayIterationLoop extends ForStmt {
    * The `splice` call is not guaranteed to be inside the loop body.
    */
   SpliceCall getACandidateSpliceCall() {
-    result = getAnArrayShiftingCall() and
-    result.getIndex().asExpr() = getIndexVariable().getAnAccess() and
+    result = this.getAnArrayShiftingCall() and
+    result.getIndex().asExpr() = this.getIndexVariable().getAnAccess() and
     result.getNumRemovedElements() > result.getNumInsertedElements()
   }
 
@@ -104,26 +104,26 @@ class ArrayIterationLoop extends ForStmt {
    * relationship between the array and the index variable.
    */
   predicate hasIndexingManipulation(ControlFlowNode cfg) {
-    cfg.(VarDef).getAVariable() = getIndexVariable() or
-    cfg = getAnArrayShiftingCall().asExpr()
+    cfg.(VarDef).getAVariable() = this.getIndexVariable() or
+    cfg = this.getAnArrayShiftingCall().asExpr()
   }
 
   /**
    * Holds if there is a `loop entry -> cfg` path that does not involve index manipulation or a successful index equality check.
    */
   predicate hasPathTo(ControlFlowNode cfg) {
-    exists(getACandidateSpliceCall()) and // restrict size of predicate
-    cfg = getLoopEntry().getFirstNode()
+    exists(this.getACandidateSpliceCall()) and // restrict size of predicate
+    cfg = this.getLoopEntry().getFirstNode()
     or
-    hasPathTo(cfg.getAPredecessor()) and
-    getLoopEntry().dominates(cfg.getBasicBlock()) and
-    not hasIndexingManipulation(cfg) and
+    this.hasPathTo(cfg.getAPredecessor()) and
+    this.getLoopEntry().dominates(cfg.getBasicBlock()) and
+    not this.hasIndexingManipulation(cfg) and
     // Ignore splice calls guarded by an index equality check.
     // This indicates that the index of an element is the basis for removal, not its value,
     // which means it may be okay to skip over elements.
     not exists(ConditionGuardNode guard, EqualityTest test | cfg = guard |
       test = guard.getTest() and
-      test.getAnOperand() = getIndexVariable().getAnAccess() and
+      test.getAnOperand() = this.getIndexVariable().getAnAccess() and
       guard.getOutcome() = test.getPolarity()
     ) and
     // Block flow after inspecting an array element other than that at the current index.
@@ -131,7 +131,7 @@ class ArrayIterationLoop extends ForStmt {
     // element has already been "looked at" and so it doesn't matter if we skip it.
     not exists(IndexExpr index | cfg = index |
       array.flowsToExpr(index.getBase()) and
-      not index.getIndex() = getIndexVariable().getAnAccess()
+      not index.getIndex() = this.getIndexVariable().getAnAccess()
     )
   }
 
@@ -140,13 +140,13 @@ class ArrayIterationLoop extends ForStmt {
    * other than the `splice` call.
    */
   predicate hasPathThrough(SpliceCall splice, ControlFlowNode cfg) {
-    splice = getACandidateSpliceCall() and
+    splice = this.getACandidateSpliceCall() and
     cfg = splice.asExpr() and
-    hasPathTo(cfg.getAPredecessor())
+    this.hasPathTo(cfg.getAPredecessor())
     or
-    hasPathThrough(splice, cfg.getAPredecessor()) and
-    getLoopEntry().dominates(cfg.getBasicBlock()) and
-    not hasIndexingManipulation(cfg)
+    this.hasPathThrough(splice, cfg.getAPredecessor()) and
+    this.getLoopEntry().dominates(cfg.getBasicBlock()) and
+    not this.hasIndexingManipulation(cfg)
   }
 }
 

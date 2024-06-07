@@ -13,7 +13,7 @@ module TextTabwriter {
 
     FunctionModels() {
       // signature: func NewWriter(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
-      hasQualifiedName("text/tabwriter", "NewWriter") and
+      this.hasQualifiedName("text/tabwriter", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 
@@ -28,7 +28,7 @@ module TextTabwriter {
 
     MethodModels() {
       // signature: func (*Writer) Init(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
-      hasQualifiedName("text/tabwriter", "Writer", "Init") and
+      this.hasQualifiedName("text/tabwriter", "Writer", "Init") and
       (
         inp.isResult() and
         outp.isParameter(0)

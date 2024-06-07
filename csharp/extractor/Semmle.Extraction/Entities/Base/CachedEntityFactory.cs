@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis;
-
 namespace Semmle.Extraction
 {
     /// <summary>

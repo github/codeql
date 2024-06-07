@@ -39,7 +39,7 @@ class FunctionInput extends TFunctionInput {
   predicate isResult(int i) { none() }
 
   /** Gets the data-flow node corresponding to this input for the call `c`. */
-  final DataFlow::Node getNode(DataFlow::CallNode c) { result = getEntryNode(c) }
+  final DataFlow::Node getNode(DataFlow::CallNode c) { result = this.getEntryNode(c) }
 
   /** Gets the data-flow node through which data is passed into this input for the call `c`. */
   abstract DataFlow::Node getEntryNode(DataFlow::CallNode c);
@@ -74,7 +74,9 @@ private class ParameterInput extends FunctionInput, TInParameter {
 
   override predicate isParameter(int i) { i = index }
 
-  override DataFlow::Node getEntryNode(DataFlow::CallNode c) { result = c.getArgument(index) }
+  override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
+    result = c.getSyntacticArgument(index)
+  }
 
   override DataFlow::Node getExitNode(FuncDef f) {
     result = DataFlow::parameterNode(f.getParameter(index))
@@ -116,7 +118,7 @@ private class ResultInput extends FunctionInput, TInResult {
   override predicate isResult() { index = -1 }
 
   override predicate isResult(int i) {
-    i = 0 and isResult()
+    i = 0 and this.isResult()
     or
     i = index and i >= 0
   }
@@ -180,7 +182,7 @@ class FunctionOutput extends TFunctionOutput {
   predicate isParameter(int i) { none() }
 
   /** Gets the data-flow node corresponding to this output for the call `c`. */
-  final DataFlow::Node getNode(DataFlow::CallNode c) { result = getExitNode(c) }
+  final DataFlow::Node getNode(DataFlow::CallNode c) { result = this.getExitNode(c) }
 
   /** Gets the data-flow node through which data is passed into this output for the function `f`. */
   abstract DataFlow::Node getEntryNode(FuncDef f);
@@ -216,7 +218,7 @@ private class OutResult extends FunctionOutput, TOutResult {
   override predicate isResult() { index = -1 }
 
   override predicate isResult(int i) {
-    i = 0 and isResult()
+    i = 0 and this.isResult()
     or
     i = index and i >= 0
   }
@@ -280,7 +282,7 @@ private class OutReceiver extends FunctionOutput, TOutReceiver {
 /**
  * A parameter of a function, viewed as an output.
  *
- * Note that slices passed to varargs parameters using `...` are not included, since in this
+ * Note that slices passed to variadic parameters using `...` are not included, since in this
  * case it is ambiguous whether the output should be the slice itself or one of its elements.
  */
 private class OutParameter extends FunctionOutput, TOutParameter {
@@ -298,9 +300,12 @@ private class OutParameter extends FunctionOutput, TOutParameter {
 
   override DataFlow::Node getExitNode(DataFlow::CallNode c) {
     exists(DataFlow::Node arg |
-      arg = getArgument(c, index) and
-      // exclude slices passed to varargs parameters using `...` calls
+      arg = c.getSyntacticArgument(index) and
+      // exclude slices followed by `...` passed to variadic parameters
       not (c.hasEllipsis() and index = c.getNumArgument() - 1)
+      or
+      arg = c.(DataFlow::MethodCallNode).getReceiver() and
+      index = -1
     |
       result.(DataFlow::PostUpdateNode).getPreUpdateNode() = arg
     )

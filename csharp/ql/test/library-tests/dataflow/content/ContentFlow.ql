@@ -1,23 +1,23 @@
 import csharp
-import semmle.code.csharp.dataflow.internal.ContentDataFlow
+import semmle.code.csharp.dataflow.internal.ContentDataFlow as ContentDataFlow
 
-class Conf extends ContentDataFlow::Configuration {
-  Conf() { this = "ContentFlowConf" }
+module ContentConfig implements ContentDataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasUndecoratedName("Sink") and
       mc.getAnArgument() = sink.asExpr()
     )
   }
 
-  override int accessPathLimit() { result = 2 }
+  int accessPathLimit() { result = 2 }
 }
 
+module ContentFlow = ContentDataFlow::Global<ContentConfig>;
+
 from
-  Conf conf, ContentDataFlow::Node source, ContentDataFlow::AccessPath sourceAp,
-  ContentDataFlow::Node sink, ContentDataFlow::AccessPath sinkAp, boolean preservesValue
-where conf.hasFlow(source, sourceAp, sink, sinkAp, preservesValue)
+  DataFlow::Node source, ContentFlow::AccessPath sourceAp, DataFlow::Node sink,
+  ContentFlow::AccessPath sinkAp, boolean preservesValue
+where ContentFlow::flow(source, sourceAp, sink, sinkAp, preservesValue)
 select source, sourceAp, sink, sinkAp, preservesValue

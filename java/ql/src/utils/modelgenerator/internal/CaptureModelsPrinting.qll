@@ -25,8 +25,11 @@ module PrintingImpl<PrintingSig Printing> {
         + Printing::getProvenance()
   }
 
-  string asNeutralModel(Printing::Api api) {
-    result = asPartialNeutralModel(api) + Printing::getProvenance()
+  string asNeutralSummaryModel(Printing::Api api) {
+    result =
+      asPartialNeutralModel(api) //
+        + "summary" + ";" //
+        + Printing::getProvenance()
   }
 
   /**

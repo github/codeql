@@ -1,6 +1,0 @@
-| 0 | Negative |
-| 1 | XssSink |
-| 2 | NosqlInjectionSink |
-| 3 | SqlInjectionSink |
-| 4 | TaintedPathSink |
-| 5 | ShellCommandInjectionFromEnvironmentSink |

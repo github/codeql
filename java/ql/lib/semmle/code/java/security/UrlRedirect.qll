@@ -2,28 +2,33 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.ApacheHttp
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.frameworks.JaxWS
+private import semmle.code.java.security.RequestForgery
 
 /** A URL redirection sink. */
-abstract class UrlRedirectSink extends DataFlow::Node { }
+abstract class UrlRedirectSink extends ApiSinkNode { }
+
+/** A URL redirection sanitizer. */
+abstract class UrlRedirectSanitizer extends DataFlow::Node { }
 
 /** A default sink represeting methods susceptible to URL redirection attacks. */
 private class DefaultUrlRedirectSink extends UrlRedirectSink {
-  DefaultUrlRedirectSink() { sinkNode(this, "url-redirect") }
+  DefaultUrlRedirectSink() { sinkNode(this, "url-redirection") }
 }
 
 /** A Servlet URL redirection sink. */
 private class ServletUrlRedirectSink extends UrlRedirectSink {
   ServletUrlRedirectSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof HttpServletResponseSendRedirectMethod and
       this.asExpr() = ma.getArgument(0)
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof ResponseSetHeaderMethod or
       ma.getMethod() instanceof ResponseAddHeaderMethod
     |
@@ -42,3 +47,6 @@ private class ApacheUrlRedirectSink extends UrlRedirectSink {
     )
   }
 }
+
+private class DefaultUrlRedirectSanitizer extends UrlRedirectSanitizer instanceof RequestForgerySanitizer
+{ }

@@ -1,0 +1,175 @@
+edges
+| test.cpp:16:11:16:21 | **mk_string_t [string] | test.cpp:39:21:39:31 | *call to mk_string_t [string] | provenance |  |
+| test.cpp:18:5:18:7 | *str [post update] [string] | test.cpp:19:5:19:7 | *str [string] | provenance |  |
+| test.cpp:18:5:18:30 | ... = ... | test.cpp:18:5:18:7 | *str [post update] [string] | provenance |  |
+| test.cpp:18:19:18:24 | call to malloc | test.cpp:18:5:18:30 | ... = ... | provenance |  |
+| test.cpp:19:5:19:7 | *str [string] | test.cpp:20:12:20:14 | *str [string] | provenance |  |
+| test.cpp:20:12:20:14 | *str [string] | test.cpp:16:11:16:21 | **mk_string_t [string] | provenance |  |
+| test.cpp:39:21:39:31 | *call to mk_string_t [string] | test.cpp:39:21:39:31 | *call to mk_string_t [string] | provenance |  |
+| test.cpp:39:21:39:31 | *call to mk_string_t [string] | test.cpp:42:13:42:15 | *str [string] | provenance |  |
+| test.cpp:39:21:39:31 | *call to mk_string_t [string] | test.cpp:72:17:72:19 | *str [string] | provenance |  |
+| test.cpp:39:21:39:31 | *call to mk_string_t [string] | test.cpp:80:17:80:19 | *str [string] | provenance |  |
+| test.cpp:42:13:42:15 | *str [string] | test.cpp:42:18:42:23 | string | provenance |  |
+| test.cpp:72:17:72:19 | *str [string] | test.cpp:72:22:72:27 | string | provenance |  |
+| test.cpp:80:17:80:19 | *str [string] | test.cpp:80:22:80:27 | string | provenance |  |
+| test.cpp:88:11:88:30 | **mk_string_t_plus_one [string] | test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | provenance |  |
+| test.cpp:90:5:90:7 | *str [post update] [string] | test.cpp:91:5:91:7 | *str [string] | provenance |  |
+| test.cpp:90:5:90:34 | ... = ... | test.cpp:90:5:90:7 | *str [post update] [string] | provenance |  |
+| test.cpp:90:19:90:24 | call to malloc | test.cpp:90:5:90:34 | ... = ... | provenance |  |
+| test.cpp:91:5:91:7 | *str [string] | test.cpp:92:12:92:14 | *str [string] | provenance |  |
+| test.cpp:92:12:92:14 | *str [string] | test.cpp:88:11:88:30 | **mk_string_t_plus_one [string] | provenance |  |
+| test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | provenance |  |
+| test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | test.cpp:99:13:99:15 | *str [string] | provenance |  |
+| test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | test.cpp:129:17:129:19 | *str [string] | provenance |  |
+| test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | test.cpp:137:17:137:19 | *str [string] | provenance |  |
+| test.cpp:99:13:99:15 | *str [string] | test.cpp:99:18:99:23 | string | provenance |  |
+| test.cpp:129:17:129:19 | *str [string] | test.cpp:129:22:129:27 | string | provenance |  |
+| test.cpp:137:17:137:19 | *str [string] | test.cpp:137:22:137:27 | string | provenance |  |
+| test.cpp:147:5:147:7 | *str [post update] [string] | test.cpp:148:5:148:7 | *str [string] | provenance |  |
+| test.cpp:147:5:147:34 | ... = ... | test.cpp:147:5:147:7 | *str [post update] [string] | provenance |  |
+| test.cpp:147:19:147:24 | call to malloc | test.cpp:147:5:147:34 | ... = ... | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:152:13:152:15 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:154:13:154:15 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:156:13:156:15 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:175:17:175:19 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:187:17:187:19 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:195:17:195:19 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:199:17:199:19 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:203:17:203:19 | *str [string] | provenance |  |
+| test.cpp:148:5:148:7 | *str [string] | test.cpp:207:17:207:19 | *str [string] | provenance |  |
+| test.cpp:152:13:152:15 | *str [string] | test.cpp:152:18:152:23 | string | provenance |  |
+| test.cpp:154:13:154:15 | *str [string] | test.cpp:154:18:154:23 | string | provenance |  |
+| test.cpp:156:13:156:15 | *str [string] | test.cpp:156:18:156:23 | string | provenance |  |
+| test.cpp:175:17:175:19 | *str [string] | test.cpp:175:22:175:27 | string | provenance |  |
+| test.cpp:187:17:187:19 | *str [string] | test.cpp:187:22:187:27 | string | provenance |  |
+| test.cpp:195:17:195:19 | *str [string] | test.cpp:195:22:195:27 | string | provenance |  |
+| test.cpp:199:17:199:19 | *str [string] | test.cpp:199:22:199:27 | string | provenance |  |
+| test.cpp:203:17:203:19 | *str [string] | test.cpp:203:22:203:27 | string | provenance |  |
+| test.cpp:207:17:207:19 | *str [string] | test.cpp:207:22:207:27 | string | provenance |  |
+| test.cpp:214:24:214:24 | p | test.cpp:216:10:216:10 | p | provenance |  |
+| test.cpp:220:27:220:54 | call to malloc | test.cpp:220:27:220:54 | call to malloc | provenance |  |
+| test.cpp:220:27:220:54 | call to malloc | test.cpp:222:15:222:20 | buffer | provenance |  |
+| test.cpp:222:15:222:20 | buffer | test.cpp:214:24:214:24 | p | provenance |  |
+| test.cpp:228:27:228:54 | call to malloc | test.cpp:228:27:228:54 | call to malloc | provenance |  |
+| test.cpp:228:27:228:54 | call to malloc | test.cpp:232:10:232:15 | buffer | provenance |  |
+| test.cpp:235:40:235:45 | buffer | test.cpp:236:5:236:26 | ... = ... | provenance |  |
+| test.cpp:236:5:236:9 | *p_str [post update] [string] | test.cpp:235:27:235:31 | *p_str [Return] [string] | provenance |  |
+| test.cpp:236:5:236:9 | *p_str [post update] [string] | test.cpp:235:27:235:31 | *p_str [string] | provenance |  |
+| test.cpp:236:5:236:26 | ... = ... | test.cpp:236:5:236:9 | *p_str [post update] [string] | provenance |  |
+| test.cpp:241:20:241:38 | call to malloc | test.cpp:241:20:241:38 | call to malloc | provenance |  |
+| test.cpp:241:20:241:38 | call to malloc | test.cpp:242:22:242:27 | buffer | provenance |  |
+| test.cpp:242:16:242:19 | set_string output argument [string] | test.cpp:243:12:243:14 | *str [string] | provenance |  |
+| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | provenance |  |
+| test.cpp:242:22:242:27 | buffer | test.cpp:242:16:242:19 | set_string output argument [string] | provenance |  |
+| test.cpp:243:12:243:14 | *str [string] | test.cpp:243:12:243:21 | string | provenance |  |
+| test.cpp:249:14:249:33 | call to my_alloc | test.cpp:249:14:249:33 | call to my_alloc | provenance |  |
+| test.cpp:249:14:249:33 | call to my_alloc | test.cpp:250:12:250:12 | p | provenance |  |
+| test.cpp:256:5:256:25 | ... = ... | test.cpp:257:12:257:12 | p | provenance |  |
+| test.cpp:256:9:256:25 | call to malloc | test.cpp:256:5:256:25 | ... = ... | provenance |  |
+| test.cpp:262:15:262:30 | call to malloc | test.cpp:262:15:262:30 | call to malloc | provenance |  |
+| test.cpp:262:15:262:30 | call to malloc | test.cpp:266:12:266:12 | p | provenance |  |
+| test.cpp:264:9:264:30 | ... = ... | test.cpp:266:12:266:12 | p | provenance |  |
+| test.cpp:264:13:264:30 | call to malloc | test.cpp:264:9:264:30 | ... = ... | provenance |  |
+nodes
+| test.cpp:16:11:16:21 | **mk_string_t [string] | semmle.label | **mk_string_t [string] |
+| test.cpp:18:5:18:7 | *str [post update] [string] | semmle.label | *str [post update] [string] |
+| test.cpp:18:5:18:30 | ... = ... | semmle.label | ... = ... |
+| test.cpp:18:19:18:24 | call to malloc | semmle.label | call to malloc |
+| test.cpp:19:5:19:7 | *str [string] | semmle.label | *str [string] |
+| test.cpp:20:12:20:14 | *str [string] | semmle.label | *str [string] |
+| test.cpp:39:21:39:31 | *call to mk_string_t [string] | semmle.label | *call to mk_string_t [string] |
+| test.cpp:39:21:39:31 | *call to mk_string_t [string] | semmle.label | *call to mk_string_t [string] |
+| test.cpp:42:13:42:15 | *str [string] | semmle.label | *str [string] |
+| test.cpp:42:18:42:23 | string | semmle.label | string |
+| test.cpp:72:17:72:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:72:22:72:27 | string | semmle.label | string |
+| test.cpp:80:17:80:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:80:22:80:27 | string | semmle.label | string |
+| test.cpp:88:11:88:30 | **mk_string_t_plus_one [string] | semmle.label | **mk_string_t_plus_one [string] |
+| test.cpp:90:5:90:7 | *str [post update] [string] | semmle.label | *str [post update] [string] |
+| test.cpp:90:5:90:34 | ... = ... | semmle.label | ... = ... |
+| test.cpp:90:19:90:24 | call to malloc | semmle.label | call to malloc |
+| test.cpp:91:5:91:7 | *str [string] | semmle.label | *str [string] |
+| test.cpp:92:12:92:14 | *str [string] | semmle.label | *str [string] |
+| test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | semmle.label | *call to mk_string_t_plus_one [string] |
+| test.cpp:96:21:96:40 | *call to mk_string_t_plus_one [string] | semmle.label | *call to mk_string_t_plus_one [string] |
+| test.cpp:99:13:99:15 | *str [string] | semmle.label | *str [string] |
+| test.cpp:99:18:99:23 | string | semmle.label | string |
+| test.cpp:129:17:129:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:129:22:129:27 | string | semmle.label | string |
+| test.cpp:137:17:137:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:137:22:137:27 | string | semmle.label | string |
+| test.cpp:147:5:147:7 | *str [post update] [string] | semmle.label | *str [post update] [string] |
+| test.cpp:147:5:147:34 | ... = ... | semmle.label | ... = ... |
+| test.cpp:147:19:147:24 | call to malloc | semmle.label | call to malloc |
+| test.cpp:148:5:148:7 | *str [string] | semmle.label | *str [string] |
+| test.cpp:152:13:152:15 | *str [string] | semmle.label | *str [string] |
+| test.cpp:152:18:152:23 | string | semmle.label | string |
+| test.cpp:154:13:154:15 | *str [string] | semmle.label | *str [string] |
+| test.cpp:154:18:154:23 | string | semmle.label | string |
+| test.cpp:156:13:156:15 | *str [string] | semmle.label | *str [string] |
+| test.cpp:156:18:156:23 | string | semmle.label | string |
+| test.cpp:175:17:175:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:175:22:175:27 | string | semmle.label | string |
+| test.cpp:187:17:187:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:187:22:187:27 | string | semmle.label | string |
+| test.cpp:195:17:195:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:195:22:195:27 | string | semmle.label | string |
+| test.cpp:199:17:199:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:199:22:199:27 | string | semmle.label | string |
+| test.cpp:203:17:203:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:203:22:203:27 | string | semmle.label | string |
+| test.cpp:207:17:207:19 | *str [string] | semmle.label | *str [string] |
+| test.cpp:207:22:207:27 | string | semmle.label | string |
+| test.cpp:214:24:214:24 | p | semmle.label | p |
+| test.cpp:216:10:216:10 | p | semmle.label | p |
+| test.cpp:220:27:220:54 | call to malloc | semmle.label | call to malloc |
+| test.cpp:220:27:220:54 | call to malloc | semmle.label | call to malloc |
+| test.cpp:222:15:222:20 | buffer | semmle.label | buffer |
+| test.cpp:228:27:228:54 | call to malloc | semmle.label | call to malloc |
+| test.cpp:228:27:228:54 | call to malloc | semmle.label | call to malloc |
+| test.cpp:232:10:232:15 | buffer | semmle.label | buffer |
+| test.cpp:235:27:235:31 | *p_str [Return] [string] | semmle.label | *p_str [Return] [string] |
+| test.cpp:235:27:235:31 | *p_str [string] | semmle.label | *p_str [string] |
+| test.cpp:235:40:235:45 | buffer | semmle.label | buffer |
+| test.cpp:236:5:236:9 | *p_str [post update] [string] | semmle.label | *p_str [post update] [string] |
+| test.cpp:236:5:236:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:241:20:241:38 | call to malloc | semmle.label | call to malloc |
+| test.cpp:241:20:241:38 | call to malloc | semmle.label | call to malloc |
+| test.cpp:242:16:242:19 | set_string output argument [string] | semmle.label | set_string output argument [string] |
+| test.cpp:242:22:242:27 | buffer | semmle.label | buffer |
+| test.cpp:243:12:243:14 | *str [string] | semmle.label | *str [string] |
+| test.cpp:243:12:243:21 | string | semmle.label | string |
+| test.cpp:249:14:249:33 | call to my_alloc | semmle.label | call to my_alloc |
+| test.cpp:249:14:249:33 | call to my_alloc | semmle.label | call to my_alloc |
+| test.cpp:250:12:250:12 | p | semmle.label | p |
+| test.cpp:256:5:256:25 | ... = ... | semmle.label | ... = ... |
+| test.cpp:256:9:256:25 | call to malloc | semmle.label | call to malloc |
+| test.cpp:257:12:257:12 | p | semmle.label | p |
+| test.cpp:262:15:262:30 | call to malloc | semmle.label | call to malloc |
+| test.cpp:262:15:262:30 | call to malloc | semmle.label | call to malloc |
+| test.cpp:264:9:264:30 | ... = ... | semmle.label | ... = ... |
+| test.cpp:264:13:264:30 | call to malloc | semmle.label | call to malloc |
+| test.cpp:266:12:266:12 | p | semmle.label | p |
+subpaths
+| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:235:27:235:31 | *p_str [Return] [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
+| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:235:27:235:31 | *p_str [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
+#select
+| test.cpp:42:5:42:11 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:42:18:42:23 | string | This write may overflow $@ by 1 element. | test.cpp:42:18:42:23 | string | string |
+| test.cpp:72:9:72:15 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:72:22:72:27 | string | This write may overflow $@ by 1 element. | test.cpp:72:22:72:27 | string | string |
+| test.cpp:80:9:80:15 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:80:22:80:27 | string | This write may overflow $@ by 2 elements. | test.cpp:80:22:80:27 | string | string |
+| test.cpp:99:5:99:11 | call to strncpy | test.cpp:90:19:90:24 | call to malloc | test.cpp:99:18:99:23 | string | This write may overflow $@ by 1 element. | test.cpp:99:18:99:23 | string | string |
+| test.cpp:129:9:129:15 | call to strncpy | test.cpp:90:19:90:24 | call to malloc | test.cpp:129:22:129:27 | string | This write may overflow $@ by 1 element. | test.cpp:129:22:129:27 | string | string |
+| test.cpp:137:9:137:15 | call to strncpy | test.cpp:90:19:90:24 | call to malloc | test.cpp:137:22:137:27 | string | This write may overflow $@ by 2 elements. | test.cpp:137:22:137:27 | string | string |
+| test.cpp:152:5:152:11 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:152:18:152:23 | string | This write may overflow $@ by 1 element. | test.cpp:152:18:152:23 | string | string |
+| test.cpp:154:5:154:11 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:154:18:154:23 | string | This write may overflow $@ by 1 element. | test.cpp:154:18:154:23 | string | string |
+| test.cpp:156:5:156:11 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:156:18:156:23 | string | This write may overflow $@ by 2 elements. | test.cpp:156:18:156:23 | string | string |
+| test.cpp:175:9:175:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:175:22:175:27 | string | This write may overflow $@ by 1 element. | test.cpp:175:22:175:27 | string | string |
+| test.cpp:187:9:187:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:187:22:187:27 | string | This write may overflow $@ by 1 element. | test.cpp:187:22:187:27 | string | string |
+| test.cpp:195:9:195:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:195:22:195:27 | string | This write may overflow $@ by 1 element. | test.cpp:195:22:195:27 | string | string |
+| test.cpp:199:9:199:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:199:22:199:27 | string | This write may overflow $@ by 2 elements. | test.cpp:199:22:199:27 | string | string |
+| test.cpp:203:9:203:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:203:22:203:27 | string | This write may overflow $@ by 2 elements. | test.cpp:203:22:203:27 | string | string |
+| test.cpp:207:9:207:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:207:22:207:27 | string | This write may overflow $@ by 3 elements. | test.cpp:207:22:207:27 | string | string |
+| test.cpp:243:5:243:10 | call to memset | test.cpp:241:20:241:38 | call to malloc | test.cpp:243:12:243:21 | string | This write may overflow $@ by 1 element. | test.cpp:243:16:243:21 | string | string |
+| test.cpp:250:5:250:10 | call to memset | test.cpp:249:14:249:33 | call to my_alloc | test.cpp:250:12:250:12 | p | This write may overflow $@ by 1 element. | test.cpp:250:12:250:12 | p | p |
+| test.cpp:266:5:266:10 | call to memset | test.cpp:262:15:262:30 | call to malloc | test.cpp:266:12:266:12 | p | This write may overflow $@ by 1 element. | test.cpp:266:12:266:12 | p | p |

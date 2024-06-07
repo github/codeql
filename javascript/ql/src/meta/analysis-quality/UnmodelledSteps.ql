@@ -9,7 +9,6 @@
  */
 
 import javascript
-import meta.MetaMetrics
 private import Expressions.ExprHasNoEffect
 import meta.internal.TaintMetrics
 

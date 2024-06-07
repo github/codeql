@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.kohsuke.stapler.framework.io", "LargeText", True, "LargeText", "(File,Charset,boolean,boolean)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["org.kohsuke.stapler.framework.io", "LargeText", True, "LargeText", "(File,Charset,boolean,boolean)", "", "Argument[0]", "path-injection", "ai-manual"]

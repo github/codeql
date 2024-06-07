@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:${testdir}/../../../../resources/assemblies/System.Data.dll /r:${testdir}/../../../../resources/assemblies/System.Web.dll /r:${testdir}/../../../../resources/assemblies/System.Web.Mvc.dll /r:System.ComponentModel.Primitives.dll /r:System.Collections.Specialized.dll /r:${testdir}/../../../../resources/assemblies/System.Net.Http.dll
-
 using System;
 using System.Data.SqlClient;
 using System.Web;

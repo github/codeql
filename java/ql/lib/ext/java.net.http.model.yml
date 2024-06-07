@@ -8,5 +8,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.net.http", "HttpRequest", False, "newBuilder", "", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net.http", "HttpRequest$Builder", False, "uri", "", "", "Argument[0]", "open-url", "manual"]
+      - ["java.net.http", "HttpClient", True, "send", "(HttpRequest,HttpResponse$BodyHandler)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["java.net.http", "HttpRequest", False, "newBuilder", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net.http", "HttpRequest$Builder", False, "uri", "", "", "Argument[0]", "request-forgery", "manual"]

@@ -1,0 +1,23 @@
+sequelSqlConstruction
+| sequel.rb:62:29:62:49 | call to cast | sequel.rb:62:45:62:48 | name |
+| sequel.rb:65:29:65:49 | call to function | sequel.rb:65:45:65:48 | name |
+sequelSqlExecution
+| sequel.rb:9:9:9:60 | ...[...] | sequel.rb:9:14:9:59 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:12:9:12:64 | call to run | sequel.rb:12:18:12:63 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:15:9:17:11 | call to fetch | sequel.rb:15:20:15:65 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:20:9:20:65 | ...[...] | sequel.rb:20:14:20:64 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:23:9:23:65 | call to execute | sequel.rb:23:22:23:65 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:26:9:26:71 | call to execute_ddl | sequel.rb:26:26:26:71 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:29:9:29:71 | call to execute_dui | sequel.rb:29:26:29:71 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:32:9:32:74 | call to execute_insert | sequel.rb:32:29:32:74 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:35:9:35:62 | ... << ... | sequel.rb:35:17:35:62 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:38:9:38:79 | call to fetch_rows | sequel.rb:38:25:38:70 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:41:9:41:81 | call to with_sql_all | sequel.rb:41:35:41:80 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:44:9:44:84 | call to with_sql_delete | sequel.rb:44:38:44:83 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:47:9:47:90 | call to with_sql_each | sequel.rb:47:36:47:81 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:50:9:50:83 | call to with_sql_first | sequel.rb:50:37:50:82 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:53:9:53:84 | call to with_sql_insert | sequel.rb:53:38:53:83 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:56:9:56:90 | call to with_sql_single_value | sequel.rb:56:44:56:89 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:59:9:59:84 | call to with_sql_update | sequel.rb:59:38:59:83 | "SELECT * FROM users WHERE use..." |
+| sequel.rb:62:9:62:20 | ...[...] | sequel.rb:62:14:62:19 | :table |
+| sequel.rb:65:9:65:20 | ...[...] | sequel.rb:65:14:65:19 | :table |

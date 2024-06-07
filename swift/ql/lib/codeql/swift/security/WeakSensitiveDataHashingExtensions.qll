@@ -4,7 +4,6 @@
  */
 
 import swift
-import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
 
@@ -20,22 +19,22 @@ abstract class WeakSensitiveDataHashingSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for weak sensitive data hashing vulnerabilities.
+ * A barrier for weak sensitive data hashing vulnerabilities.
  */
-abstract class WeakSensitiveDataHashingSanitizer extends DataFlow::Node { }
+abstract class WeakSensitiveDataHashingBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class WeakSensitiveDataHashingAdditionalTaintStep extends Unit {
+class WeakSensitiveDataHashingAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to weak sensitive data hashing vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-private class WeakHashingSinks extends SinkModelCsv {
+private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -49,9 +48,11 @@ private class WeakHashingSinks extends SinkModelCsv {
         // CryptoSwift
         ";MD5;true;calculate(for:);;;Argument[0];weak-hash-input-MD5",
         ";MD5;true;callAsFunction(_:);;;Argument[0];weak-hash-input-MD5",
+        ";MD5;true;process(block:currentHash:);;;Argument[0];weak-hash-input-MD5",
         ";MD5;true;update(withBytes:isLast:);;;Argument[0];weak-hash-input-MD5",
         ";SHA1;true;calculate(for:);;;Argument[0];weak-hash-input-SHA1",
         ";SHA1;true;callAsFunction(_:);;;Argument[0];weak-hash-input-SHA1",
+        ";SHA1;true;process(block:currentHash:);;;Argument[0];weak-hash-input-SHA1",
         ";SHA1;true;update(withBytes:isLast:);;;Argument[0];weak-hash-input-SHA1",
         ";Digest;true;md5(_:);;;Argument[0];weak-hash-input-MD5",
         ";Digest;true;sha1(_:);;;Argument[0];weak-hash-input-SHA1",
@@ -68,10 +69,10 @@ private class WeakHashingSinks extends SinkModelCsv {
 /**
  * A sink defined in a CSV model.
  */
-private class DefaultWeakHashingSink extends WeakSensitiveDataHashingSink {
+private class DefaultWeakSenitiveDataHashingSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  DefaultWeakHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+  DefaultWeakSenitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
 
   override string getAlgorithm() { result = algorithm }
 }

@@ -1,12 +1,105 @@
 test_LetStmt
 | legacyletstmt.js:1:1:3:1 | let (x  ... + y);\\n} | 0 | legacyletstmt.js:1:6:1:11 | x = 23 | legacyletstmt.js:1:22:3:1 | {\\n  con ... + y);\\n} |
 | legacyletstmt.js:1:1:3:1 | let (x  ... + y);\\n} | 1 | legacyletstmt.js:1:14:1:19 | y = 19 | legacyletstmt.js:1:22:3:1 | {\\n  con ... + y);\\n} |
-test_LineTerminators
-| conditionals.js:12:1:12:1 | } |
-| functions.js:9:1:9:1 | } |
-| loops.js:22:1:22:18 | for (x = 0 in xs); |
-| others.js:4:1:4:14 | var x = 23, y; |
-| try.js:5:1:5:29 | try {} catch(x) {} finally {} |
+test_getGuard
+| guardedCatch.js:4:4:6:2 | catch ( ... !");\\n\\t} | guardedCatch.js:4:16:4:33 | e instanceof Error |
+test_Containers
+| conditionals.js:1:1:2:5 | if (true)\\n    ; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:2:5:2:5 | ; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:3:1:6:5 | if (b)\\n ... e\\n    ; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:4:5:4:5 | ; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:6:5:6:5 | ; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:7:1:12:1 | switch  ... ault:\\n} | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:8:1:8:8 | case 23: | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:9:1:10:10 | case c:\\n    break; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:10:5:10:10 | break; | conditionals.js:1:1:12:1 | <toplevel> |
+| conditionals.js:11:1:11:8 | default: | conditionals.js:1:1:12:1 | <toplevel> |
+| es2015.js:1:1:2:16 | for (va ... log(x); | es2015.js:1:1:3:0 | <toplevel> |
+| es2015.js:1:6:1:10 | var x | es2015.js:1:1:3:0 | <toplevel> |
+| es2015.js:2:2:2:16 | console.log(x); | es2015.js:1:1:3:0 | <toplevel> |
+| foreach.js:1:1:1:12 | var sum = 0; | foreach.js:1:1:9:0 | <toplevel> |
+| foreach.js:2:1:2:42 | var obj ... p3: 8}; | foreach.js:1:1:9:0 | <toplevel> |
+| foreach.js:4:1:6:1 | for eac ... item;\\n} | foreach.js:1:1:9:0 | <toplevel> |
+| foreach.js:4:11:4:18 | var item | foreach.js:1:1:9:0 | <toplevel> |
+| foreach.js:4:28:6:1 | {\\n  sum += item;\\n} | foreach.js:1:1:9:0 | <toplevel> |
+| foreach.js:5:3:5:14 | sum += item; | foreach.js:1:1:9:0 | <toplevel> |
+| foreach.js:8:1:8:17 | console.log(sum); | foreach.js:1:1:9:0 | <toplevel> |
+| functions.js:1:1:3:1 | functio ...  x+y;\\n} | functions.js:1:1:9:1 | <toplevel> |
+| functions.js:1:18:3:1 | {\\n    return x+y;\\n} | functions.js:1:1:3:1 | functio ...  x+y;\\n} |
+| functions.js:2:5:2:15 | return x+y; | functions.js:1:1:3:1 | functio ...  x+y;\\n} |
+| functions.js:5:1:5:15 | function h() {} | functions.js:1:1:9:1 | <toplevel> |
+| functions.js:5:14:5:15 | {} | functions.js:5:1:5:15 | function h() {} |
+| functions.js:7:1:9:1 | k = fun ... turn;\\n} | functions.js:1:1:9:1 | <toplevel> |
+| functions.js:7:16:9:1 | {\\n    return;\\n} | functions.js:7:5:9:1 | functio ... turn;\\n} |
+| functions.js:8:5:8:11 | return; | functions.js:7:5:9:1 | functio ... turn;\\n} |
+| guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} | guardedCatch.js:1:1:10:0 | <toplevel> |
+| guardedCatch.js:1:15:9:1 | {\\n\\ttry  ... );\\n\\t}\\n} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:2:2:8:2 | try {\\n\\t ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:2:6:4:2 | {\\n\\t\\tg();\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:3:3:3:6 | g(); | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:4:4:6:2 | catch ( ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:4:36:6:2 | {\\n\\t\\tcon ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:5:3:5:24 | console ... ror!"); | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:6:4:8:2 | catch ( ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:6:14:8:2 | {\\n\\t\\tcon ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| guardedCatch.js:7:3:7:33 | console ... lse!"); | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
+| jscript.js:1:1:1:28 | functio ... ad() {} | jscript.js:1:1:4:0 | <toplevel> |
+| jscript.js:1:27:1:28 | {} | jscript.js:1:1:1:28 | functio ... ad() {} |
+| jscript.js:3:1:3:36 | window. ... ad() {} | jscript.js:1:1:4:0 | <toplevel> |
+| jscript.js:3:35:3:36 | {} | jscript.js:3:17:3:36 | function onload() {} |
+| legacyletstmt.js:1:1:3:1 | let (x  ... + y);\\n} | legacyletstmt.js:1:1:4:0 | <toplevel> |
+| legacyletstmt.js:1:22:3:1 | {\\n  con ... + y);\\n} | legacyletstmt.js:1:1:4:0 | <toplevel> |
+| legacyletstmt.js:2:3:2:21 | console.log(x + y); | legacyletstmt.js:1:1:4:0 | <toplevel> |
+| loops.js:1:1:2:5 | while(true)\\n    ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:2:5:2:5 | ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:3:1:11:1 | outer:  ... inue;\\n} | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:3:8:11:1 | for(a;  ... inue;\\n} | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:3:21:11:1 | {\\n    f ... inue;\\n} | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:4:5:10:21 | for(;;) ... ntinue; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:5:9:10:21 | if (d)\\n ... ntinue; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:6:13:6:27 | continue outer; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:7:14:10:21 | if (e)\\n ... ntinue; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:8:13:8:24 | break outer; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:10:13:10:21 | continue; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:13:1:15:11 | do {\\n   ... ile(a); | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:13:4:15:1 | {\\n    ;\\n} | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:14:5:14:5 | ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:17:1:17:29 | for (va ... ; ++i); | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:17:6:17:17 | var i=0,n=10 | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:17:29:17:29 | ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:19:1:19:18 | for (var x in xs); | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:19:6:19:10 | var x | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:19:18:19:18 | ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:20:1:20:14 | for (x in xs); | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:20:14:20:14 | ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:21:1:21:16 | for (x.f in xs); | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:21:16:21:16 | ; | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:22:1:22:18 | for (x = 0 in xs); | loops.js:1:1:22:18 | <toplevel> |
+| loops.js:22:18:22:18 | ; | loops.js:1:1:22:18 | <toplevel> |
+| others.js:1:1:2:1 | with(a) {\\n} | others.js:1:1:4:14 | <toplevel> |
+| others.js:1:9:2:1 | {\\n} | others.js:1:1:4:14 | <toplevel> |
+| others.js:3:1:3:9 | debugger; | others.js:1:1:4:14 | <toplevel> |
+| others.js:4:1:4:14 | var x = 23, y; | others.js:1:1:4:14 | <toplevel> |
+| try.js:1:1:3:16 | try {\\n  ... ) { ; } | try.js:1:1:5:29 | <toplevel> |
+| try.js:1:5:3:1 | {\\n    throw "!";\\n} | try.js:1:1:5:29 | <toplevel> |
+| try.js:2:5:2:14 | throw "!"; | try.js:1:1:5:29 | <toplevel> |
+| try.js:3:3:3:16 | catch(x) { ; } | try.js:1:1:5:29 | <toplevel> |
+| try.js:3:12:3:16 | { ; } | try.js:1:1:5:29 | <toplevel> |
+| try.js:3:14:3:14 | ; | try.js:1:1:5:29 | <toplevel> |
+| try.js:4:1:4:20 | try {} finally { ; } | try.js:1:1:5:29 | <toplevel> |
+| try.js:4:5:4:6 | {} | try.js:1:1:5:29 | <toplevel> |
+| try.js:4:16:4:20 | { ; } | try.js:1:1:5:29 | <toplevel> |
+| try.js:4:18:4:18 | ; | try.js:1:1:5:29 | <toplevel> |
+| try.js:5:1:5:29 | try {}  ... ally {} | try.js:1:1:5:29 | <toplevel> |
+| try.js:5:5:5:6 | {} | try.js:1:1:5:29 | <toplevel> |
+| try.js:5:8:5:18 | catch(x) {} | try.js:1:1:5:29 | <toplevel> |
+| try.js:5:17:5:18 | {} | try.js:1:1:5:29 | <toplevel> |
+| try.js:5:28:5:29 | {} | try.js:1:1:5:29 | <toplevel> |
+test_JumpTargets
+| conditionals.js:10:5:10:10 | break; | (none) | conditionals.js:7:1:12:1 | switch  ... ault:\\n} |
+| loops.js:6:13:6:27 | continue outer; | outer | loops.js:3:1:11:1 | outer:  ... inue;\\n} |
+| loops.js:8:13:8:24 | break outer; | outer | loops.js:3:1:11:1 | outer:  ... inue;\\n} |
+| loops.js:10:13:10:21 | continue; | (none) | loops.js:4:5:10:21 | for(;;) ... ntinue; |
 test_EnclosingStmt
 | conditionals.js:1:5:1:8 | true | conditionals.js:1:1:2:5 | if (true)\\n    ; |
 | conditionals.js:3:5:3:5 | b | conditionals.js:3:1:6:5 | if (b)\\n ... e\\n    ; |
@@ -135,6 +228,12 @@ test_EnclosingStmt
 | try.js:2:11:2:13 | "!" | try.js:2:5:2:14 | throw "!"; |
 | try.js:3:9:3:9 | x | try.js:3:3:3:16 | catch(x) { ; } |
 | try.js:5:14:5:14 | x | try.js:5:8:5:18 | catch(x) {} |
+test_LineTerminators
+| conditionals.js:12:1:12:1 | } |
+| functions.js:9:1:9:1 | } |
+| loops.js:22:1:22:18 | for (x = 0 in xs); |
+| others.js:4:1:4:14 | var x = 23, y; |
+| try.js:5:1:5:29 | try {} catch(x) {} finally {} |
 test_NumCatchClauses
 | guardedCatch.js:2:2:8:2 | try {\\n\\t ... !");\\n\\t} | 2 |
 | try.js:1:1:3:16 | try {\\n  ... ) { ; } | 1 |
@@ -142,107 +241,8 @@ test_NumCatchClauses
 | try.js:5:1:5:29 | try {}  ... ally {} | 1 |
 test_DoubleColonMethods
 | jscript.js:1:1:1:28 | functio ... ad() {} | jscript.js:1:10:1:15 | window | jscript.js:1:18:1:23 | onload | jscript.js:1:1:1:28 | functio ... ad() {} |
+test_EnhancedForDefault
+| loops.js:22:1:22:18 | for (x = 0 in xs); | loops.js:22:10:22:10 | 0 |
 test_SemicolonInsertion
 | functions.js:7:1:9:1 | k = fun ... turn;\\n} |
 | jscript.js:3:1:3:36 | window. ... ad() {} |
-test_getGuard
-| guardedCatch.js:4:4:6:2 | catch ( ... !");\\n\\t} | guardedCatch.js:4:16:4:33 | e instanceof Error |
-test_Containers
-| conditionals.js:1:1:2:5 | if (true)\\n    ; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:2:5:2:5 | ; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:3:1:6:5 | if (b)\\n ... e\\n    ; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:4:5:4:5 | ; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:6:5:6:5 | ; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:7:1:12:1 | switch  ... ault:\\n} | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:8:1:8:8 | case 23: | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:9:1:10:10 | case c:\\n    break; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:10:5:10:10 | break; | conditionals.js:1:1:12:1 | <toplevel> |
-| conditionals.js:11:1:11:8 | default: | conditionals.js:1:1:12:1 | <toplevel> |
-| es2015.js:1:1:2:16 | for (va ... log(x); | es2015.js:1:1:3:0 | <toplevel> |
-| es2015.js:1:6:1:10 | var x | es2015.js:1:1:3:0 | <toplevel> |
-| es2015.js:2:2:2:16 | console.log(x); | es2015.js:1:1:3:0 | <toplevel> |
-| foreach.js:1:1:1:12 | var sum = 0; | foreach.js:1:1:9:0 | <toplevel> |
-| foreach.js:2:1:2:42 | var obj ... p3: 8}; | foreach.js:1:1:9:0 | <toplevel> |
-| foreach.js:4:1:6:1 | for eac ... item;\\n} | foreach.js:1:1:9:0 | <toplevel> |
-| foreach.js:4:11:4:18 | var item | foreach.js:1:1:9:0 | <toplevel> |
-| foreach.js:4:28:6:1 | {\\n  sum += item;\\n} | foreach.js:1:1:9:0 | <toplevel> |
-| foreach.js:5:3:5:14 | sum += item; | foreach.js:1:1:9:0 | <toplevel> |
-| foreach.js:8:1:8:17 | console.log(sum); | foreach.js:1:1:9:0 | <toplevel> |
-| functions.js:1:1:3:1 | functio ...  x+y;\\n} | functions.js:1:1:9:1 | <toplevel> |
-| functions.js:1:18:3:1 | {\\n    return x+y;\\n} | functions.js:1:1:3:1 | functio ...  x+y;\\n} |
-| functions.js:2:5:2:15 | return x+y; | functions.js:1:1:3:1 | functio ...  x+y;\\n} |
-| functions.js:5:1:5:15 | function h() {} | functions.js:1:1:9:1 | <toplevel> |
-| functions.js:5:14:5:15 | {} | functions.js:5:1:5:15 | function h() {} |
-| functions.js:7:1:9:1 | k = fun ... turn;\\n} | functions.js:1:1:9:1 | <toplevel> |
-| functions.js:7:16:9:1 | {\\n    return;\\n} | functions.js:7:5:9:1 | functio ... turn;\\n} |
-| functions.js:8:5:8:11 | return; | functions.js:7:5:9:1 | functio ... turn;\\n} |
-| guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} | guardedCatch.js:1:1:10:0 | <toplevel> |
-| guardedCatch.js:1:15:9:1 | {\\n\\ttry  ... );\\n\\t}\\n} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:2:2:8:2 | try {\\n\\t ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:2:6:4:2 | {\\n\\t\\tg();\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:3:3:3:6 | g(); | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:4:4:6:2 | catch ( ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:4:36:6:2 | {\\n\\t\\tcon ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:5:3:5:24 | console ... ror!"); | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:6:4:8:2 | catch ( ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:6:14:8:2 | {\\n\\t\\tcon ... !");\\n\\t} | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| guardedCatch.js:7:3:7:33 | console ... lse!"); | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
-| jscript.js:1:1:1:28 | functio ... ad() {} | jscript.js:1:1:4:0 | <toplevel> |
-| jscript.js:1:27:1:28 | {} | jscript.js:1:1:1:28 | functio ... ad() {} |
-| jscript.js:3:1:3:36 | window. ... ad() {} | jscript.js:1:1:4:0 | <toplevel> |
-| jscript.js:3:35:3:36 | {} | jscript.js:3:17:3:36 | function onload() {} |
-| legacyletstmt.js:1:1:3:1 | let (x  ... + y);\\n} | legacyletstmt.js:1:1:4:0 | <toplevel> |
-| legacyletstmt.js:1:22:3:1 | {\\n  con ... + y);\\n} | legacyletstmt.js:1:1:4:0 | <toplevel> |
-| legacyletstmt.js:2:3:2:21 | console.log(x + y); | legacyletstmt.js:1:1:4:0 | <toplevel> |
-| loops.js:1:1:2:5 | while(true)\\n    ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:2:5:2:5 | ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:3:1:11:1 | outer:  ... inue;\\n} | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:3:8:11:1 | for(a;  ... inue;\\n} | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:3:21:11:1 | {\\n    f ... inue;\\n} | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:4:5:10:21 | for(;;) ... ntinue; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:5:9:10:21 | if (d)\\n ... ntinue; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:6:13:6:27 | continue outer; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:7:14:10:21 | if (e)\\n ... ntinue; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:8:13:8:24 | break outer; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:10:13:10:21 | continue; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:13:1:15:11 | do {\\n   ... ile(a); | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:13:4:15:1 | {\\n    ;\\n} | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:14:5:14:5 | ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:17:1:17:29 | for (va ... ; ++i); | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:17:6:17:17 | var i=0,n=10 | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:17:29:17:29 | ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:19:1:19:18 | for (var x in xs); | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:19:6:19:10 | var x | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:19:18:19:18 | ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:20:1:20:14 | for (x in xs); | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:20:14:20:14 | ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:21:1:21:16 | for (x.f in xs); | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:21:16:21:16 | ; | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:22:1:22:18 | for (x = 0 in xs); | loops.js:1:1:22:18 | <toplevel> |
-| loops.js:22:18:22:18 | ; | loops.js:1:1:22:18 | <toplevel> |
-| others.js:1:1:2:1 | with(a) {\\n} | others.js:1:1:4:14 | <toplevel> |
-| others.js:1:9:2:1 | {\\n} | others.js:1:1:4:14 | <toplevel> |
-| others.js:3:1:3:9 | debugger; | others.js:1:1:4:14 | <toplevel> |
-| others.js:4:1:4:14 | var x = 23, y; | others.js:1:1:4:14 | <toplevel> |
-| try.js:1:1:3:16 | try {\\n  ... ) { ; } | try.js:1:1:5:29 | <toplevel> |
-| try.js:1:5:3:1 | {\\n    throw "!";\\n} | try.js:1:1:5:29 | <toplevel> |
-| try.js:2:5:2:14 | throw "!"; | try.js:1:1:5:29 | <toplevel> |
-| try.js:3:3:3:16 | catch(x) { ; } | try.js:1:1:5:29 | <toplevel> |
-| try.js:3:12:3:16 | { ; } | try.js:1:1:5:29 | <toplevel> |
-| try.js:3:14:3:14 | ; | try.js:1:1:5:29 | <toplevel> |
-| try.js:4:1:4:20 | try {} finally { ; } | try.js:1:1:5:29 | <toplevel> |
-| try.js:4:5:4:6 | {} | try.js:1:1:5:29 | <toplevel> |
-| try.js:4:16:4:20 | { ; } | try.js:1:1:5:29 | <toplevel> |
-| try.js:4:18:4:18 | ; | try.js:1:1:5:29 | <toplevel> |
-| try.js:5:1:5:29 | try {}  ... ally {} | try.js:1:1:5:29 | <toplevel> |
-| try.js:5:5:5:6 | {} | try.js:1:1:5:29 | <toplevel> |
-| try.js:5:8:5:18 | catch(x) {} | try.js:1:1:5:29 | <toplevel> |
-| try.js:5:17:5:18 | {} | try.js:1:1:5:29 | <toplevel> |
-| try.js:5:28:5:29 | {} | try.js:1:1:5:29 | <toplevel> |
-test_JumpTargets
-| conditionals.js:10:5:10:10 | break; | (none) | conditionals.js:7:1:12:1 | switch  ... ault:\\n} |
-| loops.js:6:13:6:27 | continue outer; | outer | loops.js:3:1:11:1 | outer:  ... inue;\\n} |
-| loops.js:8:13:8:24 | break outer; | outer | loops.js:3:1:11:1 | outer:  ... inue;\\n} |
-| loops.js:10:13:10:21 | continue; | (none) | loops.js:4:5:10:21 | for(;;) ... ntinue; |
-test_EnhancedForDefault
-| loops.js:22:1:22:18 | for (x = 0 in xs); | loops.js:22:10:22:10 | 0 |

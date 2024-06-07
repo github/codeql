@@ -181,3 +181,9 @@ let optChain = \Foo.opt?.opt
 let optChainWrap = \Foo.opt?.value
 let slf = \Int.self
 let tupleElement = \(Int, Int).0
+
+func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+  return (repeat each t)
+}
+
+let _ = makeTuple("A", 2)

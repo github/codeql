@@ -8,7 +8,7 @@ CodeQL has classes for identifying code that calls other code, and code that can
 Call graph classes
 ------------------
 
-The CodeQL library for Java provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
+The CodeQL library for Java/Kotlin provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
 
 For example, in the following program all callables and calls have been annotated with comments:
 
@@ -88,7 +88,7 @@ This simple query typically returns a large number of results.
 
    We have to use ``polyCalls`` instead of ``calls`` here: we want to be reasonably sure that ``callee`` is not called, either directly or via overriding.
 
-Running this query on a typical Java project results in lots of hits in the Java standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate ``fromSource`` to check whether a compilation unit is a source file, and refine our query:
+Running this query on a typical Java/Kotlin project results in lots of hits in the Java/Kotlin standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate ``fromSource`` to check whether a compilation unit is a source file, and refine our query:
 
 .. code-block:: ql
 

@@ -41,9 +41,19 @@ func encrypt(data []byte, password string) []byte {
 func makePasswordFiveChar() string {
 	s := make([]rune, 5)
 	s[0] = charset[rand.Intn(len(charset))] // BAD: weak RNG used to generate salt
-	s[1] = charset[rand.Intn(len(charset))] // Rest OK because the only the first result is caught
+	s[1] = charset[rand.Intn(len(charset))] // Rest OK because only the first result is caught
 	s[2] = charset[rand.Intn(len(charset))]
 	s[3] = charset[rand.Intn(len(charset))]
 	s[4] = charset[rand.Intn(len(charset))]
 	return string(s)
+}
+
+func generateRandomKey() ed25519.PrivateKey {
+	candidates := "0123456789ABCDEF"
+	seed := ""
+	for i := 0; i < ed25519.SeedSize; i++ {
+		randNumber := rand.Intn(len(candidates))
+		seed += string(candidates[randNumber])
+	}
+	return ed25519.NewKeyFromSeed([]byte(seed)) // BAD: seed candidates were selected with a weak RNG
 }

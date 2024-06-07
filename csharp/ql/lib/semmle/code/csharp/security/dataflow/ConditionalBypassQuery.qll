@@ -6,7 +6,8 @@
 import csharp
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.security.SensitiveActions
@@ -14,12 +15,12 @@ private import semmle.code.csharp.security.SensitiveActions
 /**
  * A data flow source for user-controlled bypass of sensitive method.
  */
-abstract class Source extends DataFlow::Node { }
+abstract class Source extends ApiSourceNode { }
 
 /**
  * A data flow sink for user-controlled bypass of sensitive method.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /** Gets the 'MethodCall' which is considered sensitive. */
   abstract MethodCall getSensitiveMethodCall();
 }
@@ -60,8 +61,15 @@ private module ConditionalBypassConfig implements DataFlow::ConfigSig {
  */
 module ConditionalBypass = TaintTracking::Global<ConditionalBypassConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /** The result of a reverse dns may be user-controlled. */
 class ReverseDnsSource extends Source {

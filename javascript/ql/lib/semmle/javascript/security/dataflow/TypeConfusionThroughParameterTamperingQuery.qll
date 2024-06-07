@@ -57,7 +57,7 @@ private class IsArrayBarrier extends DataFlow::BarrierGuardNode, DataFlow::CallN
   IsArrayBarrier() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
   override predicate blocks(boolean outcome, Expr e) {
-    e = getArgument(0).asExpr() and
+    e = this.getArgument(0).asExpr() and
     outcome = [true, false] // separation between string/array removes type confusion in both branches
   }
 }

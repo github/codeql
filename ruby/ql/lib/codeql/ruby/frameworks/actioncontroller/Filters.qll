@@ -412,9 +412,7 @@ module Filters {
   /**
    * Holds if `n` is the self parameter of method `m`.
    */
-  private predicate selfParameter(DataFlowPrivate::SelfParameterNode n, Method m) {
-    m = n.getMethod()
-  }
+  private predicate selfParameter(DataFlow::SelfParameterNode n, Method m) { m = n.getCallable() }
 
   /**
    * A class defining additional jump steps arising from filters.

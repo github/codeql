@@ -19,20 +19,20 @@ import java
 import semmle.code.java.Reflection
 import semmle.code.java.frameworks.spring.Spring
 
-library class CamelAnnotation extends Annotation {
-  CamelAnnotation() { getType().getPackage().hasName("org.apache.camel") }
+class CamelAnnotation extends Annotation {
+  CamelAnnotation() { this.getType().getPackage().hasName("org.apache.camel") }
 }
 
 /**
  * An annotation indicating that the annotated method is called by Apache Camel.
  */
 class CamelConsumeAnnotation extends CamelAnnotation {
-  CamelConsumeAnnotation() { getType().hasName("Consume") }
+  CamelConsumeAnnotation() { this.getType().hasName("Consume") }
 }
 
 /**
  * A method that may be called by Apache Camel in response to a message.
  */
 class CamelConsumeMethod extends Method {
-  CamelConsumeMethod() { getAnAnnotation() instanceof CamelConsumeAnnotation }
+  CamelConsumeMethod() { this.getAnAnnotation() instanceof CamelConsumeAnnotation }
 }

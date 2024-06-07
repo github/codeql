@@ -1,0 +1,3 @@
+| test.kt:4:1:4:24 | AliasInt | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |
+| test.kt:5:1:5:31 | AliasX | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |
+| test.kt:6:1:6:36 | AliasY | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |

@@ -20,7 +20,13 @@ or prepared statements.
 <p>
 For NoSQL queries, make use of an operator like MongoDB's <code>$eq</code>
 to ensure that untrusted data is interpreted as a literal value and not as
-a query object.
+a query object. Alternatively, check that the untrusted data is a literal
+value and not a query object before using it in a query.
+</p>
+<p>
+For SQL queries, use query parameters or prepared statements to
+embed untrusted data into the query string, or use a library like 
+<code>sqlstring</code> to escape untrusted data.
 </p>
 </recommendation>
 
@@ -32,31 +38,61 @@ an HTTP request handler in a web application, whose parameter
 </p>
 
 <p>
-The handler constructs two copies of the same SQL query involving
-user input taken from the request object, once unsafely using
-string concatenation, and once safely using query parameters.
+The handler constructs an SQL query string from user input
+and executes it as a database query using the <code>pg</code> library. 
+The user input may contain quote characters, so this code is vulnerable
+to a SQL injection attack.
 </p>
 
-<p>
-In the first case, the query string <code>query1</code> is built by
-directly concatenating a user-supplied request parameter with some
-string literals. The parameter may include quote characters, so this
-code is vulnerable to a SQL injection attack.
-</p>
+<sample src="examples/SqlInjection.js" />
 
 <p>
-In the second case, the parameter is embedded into the query string
-<code>query2</code> using query parameters. In this example, we use
+To fix this vulnerability, we can use query parameters to embed the
+user input into the query string. In this example, we use
 the API offered by the <code>pg</code> Postgres database connector
 library, but other libraries offer similar features. This version is
 immune to injection attacks.
 </p>
 
-<sample src="examples/SqlInjection.js" />
+<sample src="examples/SqlInjectionFix.js" />
+
+<p>
+Alternatively, we can use a library like <code>sqlstring</code> to
+escape the user input before embedding it into the query string:
+</p>
+<sample src="examples/SqlInjectionFix2.js" />
+</example>
+
+<example>
+<p>
+In the following example, an express handler attempts to delete
+a single document from a MongoDB collection. The document to be
+deleted is identified by its <code>_id</code> field, which is
+constructed from user input. The user input may contain a query
+object, so this code is vulnerable to a NoSQL injection attack.
+</p>
+
+<sample src="examples/NoSqlInjection.js" />
+
+<p>
+To fix this vulnerability, we can use the <code>$eq</code> operator
+to ensure that the user input is interpreted as a literal value
+and not as a query object:
+</p>
+
+<sample src="examples/NoSqlInjectionFix.js" />
+
+<p>
+Alternatively check that the user input is a
+literal value and not a query object before using it:
+</p>
+
+<sample src="examples/NoSqlInjectionFix2.js" />
 </example>
 
 <references>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
 <li>MongoDB: <a href="https://docs.mongodb.com/manual/reference/operator/query/eq">$eq operator</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf">NoSQL injection</a>.</li>
 </references>
 </qhelp>

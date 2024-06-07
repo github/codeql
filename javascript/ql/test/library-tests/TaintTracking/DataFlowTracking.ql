@@ -18,7 +18,7 @@ class BasicBarrierGuard extends DataFlow::BarrierGuardNode, DataFlow::CallNode {
   BasicBarrierGuard() { this = getACall("isSafe") }
 
   override predicate blocks(boolean outcome, Expr e) {
-    outcome = true and e = getArgument(0).asExpr()
+    outcome = true and e = this.getArgument(0).asExpr()
   }
 }
 

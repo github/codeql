@@ -1,0 +1,148 @@
+// This program tests the regular expressions from the tests to figure out which ones are really
+// vulnerable to various attack strings with the Swift `Regex` implementation.  We also confirm
+// all really are valid Swift regular expressions.
+//
+// The program works by searching the test source file (or part of it) for regular expressions in
+// the form `Regex("...")` or `Regex(#"..."#)`.  A drawback of this approach is that it doesn't
+// process escape characters in the way Swift does, so it's best not to use them in non-trivial
+// test cases (use Swift #""# strings to avoid needing escape sequences).
+
+import Foundation
+
+class TestCase: Thread {
+	var regex: Regex<AnyRegexOutput>
+	var regexStr: String
+	var targetString: String
+	var wholeMatch: Bool
+	var matched: Bool
+	var done: Bool
+
+	init(regex: Regex<AnyRegexOutput>, regexStr: String, targetString: String, wholeMatch: Bool) {
+		self.regex = regex
+		self.regexStr = regexStr
+		self.targetString = targetString
+		self.wholeMatch = wholeMatch
+		self.matched = false
+		self.done = false
+	}
+
+	override func main() {
+		// run the regex on the target string
+		do
+		{
+			if (wholeMatch) {
+				if let _ = try regex.wholeMatch(in: targetString) {
+					matched = true
+					//print("  wholeMatch \(regexStr) on \(targetString)")
+				}
+			} else {
+				if let _ = try regex.firstMatch(in: targetString) {
+					matched = true
+					//print("  firstMatch \(regexStr) on \(targetString)")
+				}
+			}
+		} catch {
+			print("WEIRD FAILURE")
+		}
+		done = true
+	}
+}
+
+let attackStrings = [
+	String(repeating: "a", count: 100) + "!",
+	String(repeating: "b", count: 100) + "!",
+	String(repeating: "d", count: 100) + "!",
+	String(repeating: "G", count: 100) + "!",
+	String(repeating: "0", count: 100) + "!",
+	String(repeating: "5", count: 100) + "!",
+	String(repeating: "ab", count: 100) + "!",
+	String(repeating: "aab", count: 100) + "!",
+	String(repeating: "1s", count: 100) + "!",
+	String(repeating: "\n", count: 100) + ".",
+
+	"_" + String(repeating: "__", count: 100) + "!",
+	" '" + String(repeating: #"\\\\"#, count: 100),
+	"/" + String(repeating: "\\/a", count:100),
+	"/" + String(repeating: "\\\\/a", count:100),
+	String(repeating: "##", count: 100) + "\na",
+	"a" + String(repeating: "[]", count: 100) + ".b\n",
+	"[" + String(repeating: "][", count: 100) + "]!",
+	"'" + String(repeating: "\\a", count: 100) + "\"",
+	"'" + String(repeating: "\\\\a", count: 100) + "\"",
+	String(repeating: "\u{000C}", count: 100) + "!",
+	"00000000000000" + String(repeating: "e", count: 100) + "!",
+	"aa" + String(repeating: "b", count: 100) + "!",
+	"ab" + String(repeating: "c", count: 100) + "!",
+	String(repeating: " X", count: 100) + "!",
+	String(repeating: "bbbbbbbbbb.", count: 100) + "!",
+
+	"X" + String(repeating: "a", count: 100),
+	"X" + String(repeating: "b", count: 100),
+	"X" + String(repeating: "7", count: 100),
+]
+
+print("testing regular expressions...")
+print()
+
+var tests: [TestCase] = []
+
+let lineRegex = try Regex(".*Regex\\(#*\"(.*)\"#*\\).*") // matches `Regex("...")`, `Regex(#"..."#)` etc.
+
+// read source file, process it line by line...
+let wholeFile = try String(contentsOfFile: "redos_variants.swift")
+var lines = wholeFile.components(separatedBy: .newlines)
+
+// filter lines (running more than a few thousand test cases at once is not recommended)
+lines = Array(lines[1 ..< 120])
+
+var regexpCount = 0
+for line in lines {
+
+	// check if the line matches the line regex...
+	if let match = try lineRegex.wholeMatch(in: line) {
+		if let regexSubstr = match.output[1].substring {
+			let regexStr = String(regexSubstr)
+			//print("regex: \(regexStr)")
+
+			// create the regex
+			if let regex = try? Regex(regexStr) {
+				// create test cases
+				for attackString in attackStrings {
+					tests.append(TestCase(regex: regex, regexStr: regexStr, targetString: attackString, wholeMatch: true))
+					tests.append(TestCase(regex: regex, regexStr: regexStr, targetString: attackString, wholeMatch: false))
+				}
+				regexpCount += 1
+			} else {
+				print("FAILED TO PARSE \(regexStr)")
+			}
+		}
+	}
+}
+
+// run the tests...
+// (in parallel, because each test doesn't necessarily terminate and we have no easy way to force
+//  them to terminate short of ending the process as a whole)
+print("\(regexpCount) regular expression(s)")
+print("\(tests.count) test case(s)")
+for test in tests {
+	test.start()
+}
+
+// wait...
+Thread.sleep(forTimeInterval: 20.0)
+
+// report those cases that are still running
+print("incomplete after 20 seconds:")
+for test in tests {
+	if test.done == false {
+		var str = test.targetString
+		str = str.replacingOccurrences(of: "\n", with: "\\n")
+		if str.count > 35 {
+			str = str.prefix(15) + " ... " + str.suffix(15)
+		}
+		let match = test.wholeMatch ? "wholeMatch" : "firstMatch"
+		print("  \(test.regexStr) on \(str) (\(match))")
+	}
+}
+
+print("end.")

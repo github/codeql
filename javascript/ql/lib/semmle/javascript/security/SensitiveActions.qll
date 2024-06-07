@@ -13,22 +13,6 @@ import javascript
 import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
-/**
- * DEPRECATED: Use `SensitiveNode` instead.
- * An expression that might contain sensitive data.
- */
-deprecated class SensitiveExpr extends Expr {
-  SensitiveNode node;
-
-  SensitiveExpr() { node.asExpr() = this }
-
-  /** Gets a human-readable description of this expression for use in alert messages. */
-  deprecated string describe() { result = node.describe() }
-
-  /** Gets a classification of the kind of sensitive data this expression might contain. */
-  deprecated SensitiveDataClassification getClassification() { result = node.getClassification() }
-}
-
 /** An expression that might contain sensitive data. */
 cached
 abstract class SensitiveNode extends DataFlow::Node {
@@ -102,39 +86,37 @@ private predicate writesProperty(DataFlow::Node node, string name) {
 
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
-  SensitiveDataClassification classification;
+  string name;
 
   BasicSensitiveWrite() {
-    exists(string name |
-      /*
-       * PERFORMANCE OPTIMISATION:
-       * `nameIndicatesSensitiveData` performs a `regexpMatch` on `name`.
-       * To carry out a regex match, we must first compute the Cartesian product
-       * of all possible `name`s and regexes, then match.
-       * To keep this product as small as possible,
-       * we want to filter `name` as much as possible before the product.
-       *
-       * Do this by factoring out a helper predicate containing the filtering
-       * logic that restricts `name`. This helper predicate will get picked first
-       * in the join order, since it is the only call here that binds `name`.
-       */
+    /*
+     * PERFORMANCE OPTIMISATION:
+     * `nameIndicatesSensitiveData` performs a `regexpMatch` on `name`.
+     * To carry out a regex match, we must first compute the Cartesian product
+     * of all possible `name`s and regexes, then match.
+     * To keep this product as small as possible,
+     * we want to filter `name` as much as possible before the product.
+     *
+     * Do this by factoring out a helper predicate containing the filtering
+     * logic that restricts `name`. This helper predicate will get picked first
+     * in the join order, since it is the only call here that binds `name`.
+     */
 
-      writesProperty(this, name) and
-      nameIndicatesSensitiveData(name, classification)
-    )
+    writesProperty(this, name) and
+    nameIndicatesSensitiveData(name)
   }
 
   /** Gets a classification of the kind of sensitive data the write might handle. */
-  SensitiveDataClassification getClassification() { result = classification }
+  SensitiveDataClassification getClassification() { nameIndicatesSensitiveData(name, result) }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
-  SensitiveDataClassification classification;
+  BasicSensitiveVariableAccess() { nameIndicatesSensitiveData(name) }
 
-  BasicSensitiveVariableAccess() { nameIndicatesSensitiveData(name, classification) }
-
-  override SensitiveDataClassification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() {
+    nameIndicatesSensitiveData(name, result)
+  }
 }
 
 /** A function name that suggests it may be sensitive. */
@@ -154,11 +136,11 @@ abstract class SensitiveDataFunctionName extends SensitiveFunctionName {
 
 /** A method that might return sensitive data, based on the name. */
 class CredentialsFunctionName extends SensitiveDataFunctionName {
-  SensitiveDataClassification classification;
+  CredentialsFunctionName() { nameIndicatesSensitiveData(this) }
 
-  CredentialsFunctionName() { nameIndicatesSensitiveData(this, classification) }
-
-  override SensitiveDataClassification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() {
+    nameIndicatesSensitiveData(this, result)
+  }
 }
 
 /**

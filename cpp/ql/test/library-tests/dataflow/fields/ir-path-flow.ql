@@ -4,8 +4,8 @@
 
 import semmle.code.cpp.ir.dataflow.DataFlow
 import IRConfiguration
-import DataFlow::PathGraph
+import IRFlow::PathGraph
 
-from DataFlow::PathNode src, DataFlow::PathNode sink, IRConf conf
-where conf.hasFlowPath(src, sink)
+from IRFlow::PathNode src, IRFlow::PathNode sink
+where IRFlow::flowPath(src, sink)
 select sink, src, sink, sink + " flows from $@", src, src.toString()

@@ -17,3 +17,26 @@ updates:
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-patch', 'version-update:semver-minor']
+
+  - package-ecosystem: "gomod"
+    directory: "go/extractor"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "golang.org/x/mod"
+      - dependency-name: "golang.org/x/tools"
+    groups:
+      extractor-dependencies:
+        patterns:
+          - "golang.org/x/*"
+    reviewers:
+      - "github/codeql-go"
+
+  - package-ecosystem: "gomod"
+    directory: "go/ql/test"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "*"
+    reviewers:
+      - "github/codeql-go"

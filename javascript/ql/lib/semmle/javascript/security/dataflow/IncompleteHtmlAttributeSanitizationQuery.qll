@@ -45,7 +45,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
     lbl = Label::characterToLabel(node.(StringReplaceCall).getAReplacedString()) or
-    isSanitizer(node)
+    this.isSanitizer(node)
   }
 
   override predicate isSanitizer(DataFlow::Node n) {

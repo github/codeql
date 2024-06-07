@@ -171,3 +171,33 @@ func case_19() {
   let config = URLSessionConfiguration()
   config.tlsMinimumSupportedProtocolVersion = def.TLSVersion // GOOD
 }
+
+class MyClass {
+  var config = URLSessionConfiguration()
+}
+
+func case_20(myObj: MyClass) {
+  myObj.config.tlsMinimumSupportedProtocolVersion = tls_protocol_version_t.TLSv13 // GOOD
+  myObj.config.tlsMinimumSupportedProtocolVersion = tls_protocol_version_t.TLSv10 // BAD
+}
+
+extension URLSessionConfiguration {
+  convenience init(withMinVersion: tls_protocol_version_t) {
+    self.init()
+    tlsMinimumSupportedProtocolVersion = withMinVersion
+  }
+}
+
+func case_21() {
+  let _ = URLSessionConfiguration(withMinVersion: tls_protocol_version_t.TLSv13) // GOOD
+  let _ = URLSessionConfiguration(withMinVersion: tls_protocol_version_t.TLSv10) // BAD
+}
+
+func setVersion(version: inout tls_protocol_version_t, value: tls_protocol_version_t) {
+  version = value
+}
+
+func case_22(config: URLSessionConfiguration) {
+  setVersion(version: &config.tlsMinimumSupportedProtocolVersion, value: tls_protocol_version_t.TLSv13) // GOOD
+  setVersion(version: &config.tlsMinimumSupportedProtocolVersion, value: tls_protocol_version_t.TLSv10) // BAD
+}

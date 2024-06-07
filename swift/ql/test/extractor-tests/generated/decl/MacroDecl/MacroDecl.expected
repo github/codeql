@@ -1,0 +1,3 @@
+| test.swift:2:1:2:50 | MacroDecl | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | test | getNumberOfMembers: | 0 | getInterfaceType: | () -> () | getName: | A() | getNumberOfParameters: | 0 | getNumberOfRoles: | 1 |
+| test.swift:4:1:4:15 | MacroDecl | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | test | getNumberOfMembers: | 0 | getInterfaceType: | () -> () | getName: | B() | getNumberOfParameters: | 0 | getNumberOfRoles: | 1 |
+| test.swift:7:1:7:15 | MacroDecl | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | test | getNumberOfMembers: | 0 | getInterfaceType: | () -> () | getName: | C() | getNumberOfParameters: | 0 | getNumberOfRoles: | 2 |

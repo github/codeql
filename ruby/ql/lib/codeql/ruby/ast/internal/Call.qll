@@ -121,13 +121,15 @@ private Ruby::AstNode getSuperParent(Ruby::Super sup) {
   result = sup
   or
   result = getSuperParent(sup).getParent() and
-  not result instanceof Ruby::Method
+  not result instanceof Ruby::Method and
+  not result instanceof Ruby::SingletonMethod
 }
 
 private string getSuperMethodName(Ruby::Super sup) {
-  exists(Ruby::Method meth |
-    meth = getSuperParent(sup).getParent() and
+  exists(Ruby::AstNode meth | meth = getSuperParent(sup).getParent() |
     result = any(Method c | toGenerated(c) = meth).getName()
+    or
+    result = any(SingletonMethod c | toGenerated(c) = meth).getName()
   )
 }
 

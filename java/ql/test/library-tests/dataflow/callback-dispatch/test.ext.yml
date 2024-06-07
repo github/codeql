@@ -1,18 +1,17 @@
 extensions:
   - addsTo:
-      pack: codeql/java-tests
+      pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["my.callback.qltest", "A", False, "applyConsumer1", "(Object,Consumer1)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConsumer1Field1Field2", "(A,A,Consumer1)", "", "Argument[0].Field[my.callback.qltest.A.field1]", "Argument[2].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConsumer1Field1Field2", "(A,A,Consumer1)", "", "Argument[1].Field[my.callback.qltest.A.field2]", "Argument[2].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConsumer2", "(Object,Consumer2)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConsumer3", "(Object,Consumer3)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConsumer3_ret_postup", "(Consumer3)", "", "Argument[0].Parameter[0]", "ReturnValue", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "forEach", "(Object[],Consumer3)", "", "Argument[0].ArrayElement", "Argument[1].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyProducer1", "(Producer1)", "", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "produceConsume", "(Producer1,Consumer3)", "", "Argument[0].ReturnValue", "Argument[1].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "produceConsume", "(Producer1,Consumer3)", "", "Argument[1].Parameter[0]", "ReturnValue", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConverter1", "(Object,Converter1)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
-      - ["my.callback.qltest", "A", False, "applyConverter1", "(Object,Converter1)", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
-
+      - ["my.callback.qltest", "A", False, "applyConsumer1", "(Object,A$Consumer1)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer1Field1Field2", "(A,A,A$Consumer1)", "", "Argument[0].Field[my.callback.qltest.A.field1]", "Argument[2].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer1Field1Field2", "(A,A,A$Consumer1)", "", "Argument[1].Field[my.callback.qltest.A.field2]", "Argument[2].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer2", "(Object,A$Consumer2)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer3", "(Object,A$Consumer3)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer3_ret_postup", "(A$Consumer3)", "", "Argument[0].Parameter[0]", "ReturnValue", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "forEach", "(Object[],A$Consumer3)", "", "Argument[0].ArrayElement", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyProducer1", "(A$Producer1)", "", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "produceConsume", "(A$Producer1,A$Consumer3)", "", "Argument[0].ReturnValue", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "produceConsume", "(A$Producer1,A$Consumer3)", "", "Argument[1].Parameter[0]", "ReturnValue", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConverter1", "(Object,A$Converter1)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConverter1", "(Object,A$Converter1)", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]

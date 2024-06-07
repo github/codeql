@@ -9,8 +9,9 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Taint
 
+pragma[nomagic]
 private Type stripTopLevelSpecifiersOnly(Type t) {
-  result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  result = stripTopLevelSpecifiersOnly(pragma[only_bind_out](t.(SpecifiedType).getBaseType()))
   or
   result = t and
   not t instanceof SpecifiedType
@@ -57,7 +58,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    */
   Type getFormatCharType() {
     result =
-      stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex())
+      stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(this.getParameter(this.getFormatParameterIndex())
               .getType()
               .getUnderlyingType()).(PointerType).getBaseType())
   }
@@ -67,10 +68,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    isMicrosoft() and
-    result = getFormatCharType()
+    this.isMicrosoft() and
+    result = this.getFormatCharType()
     or
-    not isMicrosoft() and
+    not this.isMicrosoft() and
     result instanceof PlainCharType
   }
 
@@ -80,10 +81,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * which is correct for a particular function.
    */
   Type getNonDefaultCharType() {
-    getDefaultCharType().getSize() = 1 and
-    result = getWideCharType()
+    this.getDefaultCharType().getSize() = 1 and
+    result = this.getWideCharType()
     or
-    not getDefaultCharType().getSize() = 1 and
+    not this.getDefaultCharType().getSize() = 1 and
     result instanceof PlainCharType
   }
 
@@ -94,10 +95,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    */
   pragma[nomagic]
   Type getWideCharType() {
-    result = getFormatCharType() and
+    result = this.getFormatCharType() and
     result.getSize() > 1
     or
-    not getFormatCharType().getSize() > 1 and
+    not this.getFormatCharType().getSize() > 1 and
     result = getAFormatterWideTypeOrDefault() // may have more than one result
   }
 
@@ -120,14 +121,14 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * the first format specifier in the format string.
    */
   int getFirstFormatArgumentIndex() {
-    result = getNumberOfParameters() and
+    result = this.getNumberOfParameters() and
     // the formatting function either has a definition in the snapshot, or all
     // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
     // really know the correct number)
     (
-      hasDefinition()
+      this.hasDefinition()
       or
-      forall(FunctionDeclarationEntry fde | fde = getADeclarationEntry() |
+      forall(FunctionDeclarationEntry fde | fde = this.getADeclarationEntry() |
         result = fde.getNumberOfParameters()
       )
     )
@@ -139,30 +140,30 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   int getSizeParameterIndex() { none() }
 
   override predicate hasArrayWithNullTerminator(int bufParam) {
-    bufParam = getFormatParameterIndex()
+    bufParam = this.getFormatParameterIndex()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    bufParam = getOutputParameterIndex(false) and
-    countParam = getSizeParameterIndex()
+    bufParam = this.getOutputParameterIndex(false) and
+    countParam = this.getSizeParameterIndex()
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) {
-    bufParam = getOutputParameterIndex(false) and
-    not exists(getSizeParameterIndex())
+    bufParam = this.getOutputParameterIndex(false) and
+    not exists(this.getSizeParameterIndex())
   }
 
-  override predicate hasArrayInput(int bufParam) { bufParam = getFormatParameterIndex() }
+  override predicate hasArrayInput(int bufParam) { bufParam = this.getFormatParameterIndex() }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = getOutputParameterIndex(false) }
+  override predicate hasArrayOutput(int bufParam) { bufParam = this.getOutputParameterIndex(false) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(int arg |
-      arg = getFormatParameterIndex() or
-      arg >= getFirstFormatArgumentIndex()
+      arg = this.getFormatParameterIndex() or
+      arg >= this.getFirstFormatArgumentIndex()
     |
       (input.isParameterDeref(arg) or input.isParameter(arg)) and
-      output.isParameterDeref(getOutputParameterIndex(_))
+      output.isParameterDeref(this.getOutputParameterIndex(_))
     )
   }
 }

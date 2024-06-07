@@ -1,6 +1,4 @@
-| main.go:7:2:7:25 | call to Println | 0 | main.go:7:14:7:24 | ...+... |
-| main.go:10:2:10:19 | call to Println | 0 | main.go:10:14:10:18 | ...+... |
+| main.go:7:2:7:25 | call to Println | 0 | main.go:7:2:7:25 | []type{args} |
+| main.go:10:2:10:19 | call to Println | 0 | main.go:10:2:10:19 | []type{args} |
 | main.go:14:8:14:24 | call to make | 0 | main.go:14:23:14:23 | 1 |
-| main.go:16:2:16:26 | call to Println | 0 | main.go:16:14:16:15 | ss |
-| main.go:16:2:16:26 | call to Println | 1 | main.go:16:18:16:18 | 0 |
-| main.go:16:2:16:26 | call to Println | 2 | main.go:16:21:16:25 | index expression |
+| main.go:16:2:16:26 | call to Println | 0 | main.go:16:2:16:26 | []type{args} |

@@ -5,8 +5,8 @@ import java
  */
 class SetWritable extends Method {
   SetWritable() {
-    getDeclaringType() instanceof TypeFile and
-    hasName("setWritable")
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName("setWritable")
   }
 }
 
@@ -22,7 +22,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
       .hasQualifiedName("java.util", "Set") and
   (
     // The set is defined inline using `EnumSet.of(...)`.
-    exists(MethodAccess enumSetOf |
+    exists(MethodCall enumSetOf |
       enumSetOf = enumSetRef and
       enumSetOf.getMethod().hasName("of") and
       enumSetOf
@@ -41,7 +41,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
       result = getAContainedEnumConstant(enumSetAccess.getVariable().getAnAssignedValue())
       or
       // ...or the value is added to the set.
-      exists(MethodAccess addToSet |
+      exists(MethodCall addToSet |
         addToSet.getQualifier() = enumSetAccess.getVariable().getAnAccess()
       |
         // Call to `add(..)` on the enum set variable.
@@ -63,7 +63,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
   pathExpr.getType().(RefType).hasQualifiedName("java.nio.file", "Path") and
   (
     // Look for conversion from `File` to `Path` using `file.toPath()`.
-    exists(MethodAccess fileToPath |
+    exists(MethodCall fileToPath |
       fileToPath = pathExpr and
       result = fileToPath.getQualifier() and
       fileToPath.getMethod().hasName("toPath") and
@@ -71,7 +71,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
     )
     or
     // Look for the pattern `Paths.get(file.get*Path())` for converting between a `File` and a `Path`.
-    exists(MethodAccess pathsGet, MethodAccess fileGetPath |
+    exists(MethodCall pathsGet, MethodCall fileGetPath |
       pathsGet = pathExpr and
       pathsGet.getMethod().hasName("get") and
       pathsGet.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Paths") and
@@ -90,7 +90,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
  */
 private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritable) {
   // Calls to `File.setWritable(.., false)`.
-  exists(MethodAccess fileSetWritable |
+  exists(MethodCall fileSetWritable |
     // A call to the `setWritable` method.
     fileSetWritable.getMethod() instanceof SetWritable and
     // Where we may be setting `writable` to `true`.
@@ -102,7 +102,7 @@ private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritab
   )
   or
   // Calls to `Files.setPosixFilePermissions(...)`.
-  exists(MethodAccess setPosixPerms |
+  exists(MethodCall setPosixPerms |
     setPosixPerms = setWorldWritable and
     setPosixPerms.getMethod().hasName("setPosixFilePermissions") and
     setPosixPerms.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and

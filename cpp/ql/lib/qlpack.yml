@@ -1,11 +1,19 @@
 name: codeql/cpp-all
-version: 0.7.1-dev
+version: 1.0.1-dev
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/dataflow: ${workspace}
+  codeql/mad: ${workspace}
+  codeql/rangeanalysis: ${workspace}
   codeql/ssa: ${workspace}
+  codeql/typeflow: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+  codeql/xml: ${workspace}
+dataExtensions:
+  - ext/*.model.yml
+warnOnImplicitThis: true

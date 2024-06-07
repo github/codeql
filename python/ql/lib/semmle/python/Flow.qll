@@ -126,7 +126,10 @@ class ControlFlowNode extends @py_flow_node {
   cached
   string toString() {
     Stages::AST::ref() and
-    exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
+    // Since modules can have ambigous names, entry nodes can too, if we do not collate them.
+    exists(Scope s | s.getEntryNode() = this |
+      result = "Entry node for " + concat( | | s.toString(), ",")
+    )
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
     or
@@ -547,6 +550,31 @@ class IfExprNode extends ControlFlowNode {
   override IfExp getNode() { result = super.getNode() }
 }
 
+/** A control flow node corresponding to an assignment expression such as `lhs := rhs`. */
+class AssignmentExprNode extends ControlFlowNode {
+  AssignmentExprNode() { toAst(this) instanceof AssignExpr }
+
+  /** Gets the flow node corresponding to the left-hand side of the assignment expression */
+  ControlFlowNode getTarget() {
+    exists(AssignExpr a |
+      this.getNode() = a and
+      a.getTarget() = result.getNode() and
+      result.getBasicBlock().dominates(this.getBasicBlock())
+    )
+  }
+
+  /** Gets the flow node corresponding to the right-hand side of the assignment expression */
+  ControlFlowNode getValue() {
+    exists(AssignExpr a |
+      this.getNode() = a and
+      a.getValue() = result.getNode() and
+      result.getBasicBlock().dominates(this.getBasicBlock())
+    )
+  }
+
+  override AssignExpr getNode() { result = super.getNode() }
+}
+
 /** A control flow node corresponding to a binary expression, such as `x + y` */
 class BinaryExprNode extends ControlFlowNode {
   BinaryExprNode() { toAst(this) instanceof BinaryExpr }
@@ -630,6 +658,8 @@ class DefinitionNode extends ControlFlowNode {
     Stages::AST::ref() and
     exists(Assign a | a.getATarget().getAFlowNode() = this)
     or
+    exists(AssignExpr a | a.getTarget().getAFlowNode() = this)
+    or
     exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
     or
     exists(Alias a | a.getAsname().getAFlowNode() = this)
@@ -640,12 +670,23 @@ class DefinitionNode extends ControlFlowNode {
     exists(Assign a | list_or_tuple_nested_element(a.getATarget()).getAFlowNode() = this)
     or
     exists(For for | for.getTarget().getAFlowNode() = this)
+    or
+    exists(Parameter param | this = param.asName().getAFlowNode() and exists(param.getDefault()))
   }
 
   /** flow node corresponding to the value assigned for the definition corresponding to this flow node */
   ControlFlowNode getValue() {
     result = assigned_value(this.getNode()).getAFlowNode() and
-    (result.getBasicBlock().dominates(this.getBasicBlock()) or result.isImport())
+    (
+      result.getBasicBlock().dominates(this.getBasicBlock())
+      or
+      result.isImport()
+      or
+      // since the default value for a parameter is evaluated in the same basic block as
+      // the function definition, but the parameter belongs to the basic block of the function,
+      // there is no dominance relationship between the two.
+      exists(Parameter param | this = param.asName().getAFlowNode())
+    )
   }
 }
 
@@ -776,6 +817,9 @@ private AstNode assigned_value(Expr lhs) {
   /* lhs = result */
   exists(Assign a | a.getATarget() = lhs and result = a.getValue())
   or
+  /* lhs := result */
+  exists(AssignExpr a | a.getTarget() = lhs and result = a.getValue())
+  or
   /* lhs : annotation = result */
   exists(AnnAssign a | a.getTarget() = lhs and result = a.getValue())
   or
@@ -795,6 +839,8 @@ private AstNode assigned_value(Expr lhs) {
   or
   /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
   result.(For).getTarget() = lhs
+  or
+  exists(Parameter param | lhs = param.asName() and result = param.getDefault())
 }
 
 predicate nested_sequence_assign(

@@ -62,16 +62,8 @@ private module Micro {
     override Http::RouteHandler getRouteHandler() { result = h }
   }
 
-  deprecated class MicroRequestExpr extends NodeJSLib::RequestExpr {
-    override MicroRequestSource src;
-  }
-
   class MicroRequestNode extends NodeJSLib::RequestNode {
     override MicroRequestSource src;
-  }
-
-  deprecated class MicroReseponseExpr extends NodeJSLib::ResponseExpr {
-    override MicroResponseSource src;
   }
 
   class MicroResponseNode extends NodeJSLib::ResponseNode {
@@ -101,7 +93,7 @@ private module Micro {
     override string getKind() { result = "body" }
 
     override Http::RouteHandler getRouteHandler() {
-      result = getRouteHandlerFromReqRes(getArgument(0))
+      result = getRouteHandlerFromReqRes(this.getArgument(0))
     }
 
     override predicate isUserControlledObject() { name = "json" }

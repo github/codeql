@@ -17,22 +17,22 @@ module ExtractionMetrics {
     /**
      * Gets the CPU time in nanoseconds it took to extract this file.
      */
-    float getCpuTime() { result = strictsum(getTime(_, 0)) }
+    float getCpuTime() { result = strictsum(this.getTime(_, 0)) }
 
     /**
      * Gets the wall-clock time in nanoseconds it took to extract this file.
      */
-    float getWallclockTime() { result = strictsum(getTime(_, 1)) }
+    float getWallclockTime() { result = strictsum(this.getTime(_, 1)) }
 
     /**
      * Gets the CPU time in nanoseconds it took to process phase `phaseName` during the extraction of this file.
      */
-    float getCpuTime(PhaseName phaseName) { result = getTime(phaseName, 0) }
+    float getCpuTime(PhaseName phaseName) { result = this.getTime(phaseName, 0) }
 
     /**
      * Gets the wall-clock time in nanoseconds it took to process phase `phaseName` during the extraction of this file.
      */
-    float getWallclockTime(PhaseName phaseName) { result = getTime(phaseName, 1) }
+    float getWallclockTime(PhaseName phaseName) { result = this.getTime(phaseName, 1) }
 
     /**
      * Holds if this file was extracted from the trap cache.
@@ -60,7 +60,7 @@ module ExtractionMetrics {
         ) = time
       |
         // assume the cache-lookup was for free
-        if isFromCache() then result = 0 else result = time
+        if this.isFromCache() then result = 0 else result = time
       )
     }
   }

@@ -1,8 +1,8 @@
 edges
-| UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName | UnsafeUnzipSymlink.go:112:13:112:20 | linkName |
-| UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName | UnsafeUnzipSymlink.go:112:23:112:30 | fileName |
-| UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName |
-| UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName |
+| UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | provenance |  |
+| UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | provenance |  |
+| UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName | provenance |  |
+| UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName | provenance |  |
 nodes
 | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | semmle.label | selection of Linkname |
 | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | semmle.label | selection of Name |

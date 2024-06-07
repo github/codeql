@@ -1,0 +1,13 @@
+name: codeql/java-automodel-tests
+version: 1.0.0-dev
+groups:
+    - java
+    - automodel
+    - test
+dependencies:
+  codeql/java-all: ${workspace}
+  codeql/java-automodel-queries: ${workspace}
+  codeql/java-tests: ${workspace}
+extractor: java
+tests: .
+warnOnImplicitThis: true

@@ -46,7 +46,8 @@ class SpuriousArguments extends Expr {
 
   SpuriousArguments() {
     this = invk.getArgument(maxArity(invk)).asExpr() and
-    not invk.isIncomplete()
+    not invk.isIncomplete() and
+    not invk.getAstNode() instanceof TaggedTemplateExpr
   }
 
   /**
@@ -60,7 +61,7 @@ class SpuriousArguments extends Expr {
    * expected by any potential callee.
    */
   int getCount() {
-    result = count(int i | exists(invk.getArgument(i)) and i >= maxArity(getCall()))
+    result = count(int i | exists(invk.getArgument(i)) and i >= maxArity(this.getCall()))
   }
 
   /**
@@ -73,7 +74,7 @@ class SpuriousArguments extends Expr {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
     exists(DataFlow::Node lastArg |
       lastArg = max(DataFlow::Node arg, int i | arg = invk.getArgument(i) | arg order by i)
     |

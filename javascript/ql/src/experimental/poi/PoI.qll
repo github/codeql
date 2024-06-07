@@ -102,13 +102,13 @@ private module StandardPoIs {
       t.start() and
       result = cand
       or
-      exists(DataFlow::TypeTracker t2 | result = track(cand, t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.track(cand, t2).track(t2, t))
     }
 
     override predicate is(Node l0, Node l1, string t1) {
       l0 instanceof Http::RouteHandlerCandidate and
       not l0 instanceof Http::RouteHandler and
-      l1 = track(l0, TypeTracker::end()) and
+      l1 = this.track(l0, TypeTracker::end()) and
       (if l1 = l0 then t1 = "ends here" else t1 = "starts/ends here")
     }
   }
@@ -266,11 +266,11 @@ abstract class PoI extends string {
    * Gets the message format for the point of interest.
    */
   string getFormat() {
-    is(_) and result = ""
+    this.is(_) and result = ""
     or
-    is(_, _, _) and result = "$@"
+    this.is(_, _, _) and result = "$@"
     or
-    is(_, _, _, _, _) and result = "$@ $@"
+    this.is(_, _, _, _, _) and result = "$@ $@"
   }
 }
 

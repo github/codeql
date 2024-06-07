@@ -173,6 +173,11 @@ class Module extends TModule {
     result.getParentModule() = this and
     result.getOwnModuleName() = name
   }
+
+  /**
+   * Holds if this is a built-in module, e.g. `Object`.
+   */
+  predicate isBuiltin() { isBuiltinModule(this) }
 }
 
 /**

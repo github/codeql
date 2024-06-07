@@ -1137,7 +1137,7 @@
 | E.cs:184:13:184:22 | ... == ... | false | E.cs:184:13:184:14 | (...) ... | non-null |
 | E.cs:184:13:184:22 | ... == ... | true | E.cs:184:13:184:14 | (...) ... | null |
 | E.cs:184:13:184:22 | ... == ... | true | E.cs:184:19:184:22 | null | non-null |
-| E.cs:193:19:193:29 | call to method ToString | non-null | E.cs:193:17:193:17 | access to parameter o | non-null |
+| E.cs:193:17:193:29 | call to method ToString | non-null | E.cs:193:17:193:17 | access to parameter o | non-null |
 | E.cs:198:17:198:29 | ... ? ... : ... | non-null | E.cs:198:17:198:17 | access to parameter b | false |
 | E.cs:198:17:198:29 | ... ? ... : ... | non-null | E.cs:198:28:198:29 | "" | non-null |
 | E.cs:198:17:198:29 | ... ? ... : ... | null | E.cs:198:17:198:17 | access to parameter b | true |
@@ -1184,9 +1184,9 @@
 | E.cs:293:13:293:13 | access to local variable s | non-null | E.cs:292:20:292:32 | ... ? ... : ... | non-null |
 | E.cs:293:13:293:13 | access to local variable s | null | E.cs:292:20:292:20 | access to parameter b | true |
 | E.cs:293:13:293:13 | access to local variable s | null | E.cs:292:20:292:32 | ... ? ... : ... | null |
-| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:15:293:19 | call to method M2 | non-null |
-| E.cs:293:15:293:19 | call to method M2 | non-null | E.cs:293:13:293:13 | access to local variable s | non-null |
-| E.cs:293:15:293:19 | call to method M2 | null | E.cs:293:13:293:13 | access to local variable s | null |
+| E.cs:293:13:293:19 | call to method M2 | non-null | E.cs:293:13:293:13 | access to local variable s | non-null |
+| E.cs:293:13:293:19 | call to method M2 | null | E.cs:293:13:293:13 | access to local variable s | null |
+| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:13:293:19 | call to method M2 | non-null |
 | E.cs:295:13:295:13 | access to local variable s | non-null | E.cs:292:20:292:32 | ... ? ... : ... | non-null |
 | E.cs:295:13:295:13 | access to local variable s | null | E.cs:292:20:292:32 | ... ? ... : ... | null |
 | E.cs:302:9:302:9 | access to local variable s | empty | E.cs:301:17:301:27 | ... as ... | empty |
@@ -1300,6 +1300,11 @@
 | E.cs:429:13:429:22 | access to property HasValue | true | E.cs:429:13:429:13 | access to parameter i | non-null |
 | E.cs:432:16:432:24 | call to method Any<Int32> | false | E.cs:432:16:432:18 | access to parameter is | empty |
 | E.cs:432:16:432:24 | call to method Any<Int32> | true | E.cs:432:16:432:18 | access to parameter is | non-empty |
+| E.cs:437:13:437:21 | ... is ... | false | E.cs:437:13:437:13 | access to parameter s | non-null |
+| E.cs:437:13:437:21 | ... is ... | true | E.cs:437:13:437:13 | access to parameter s | null |
+| E.cs:442:13:442:29 | ... is ... | true | E.cs:442:13:442:13 | access to parameter s | non-null |
+| E.cs:447:13:447:25 | ... is ... | true | E.cs:447:13:447:13 | access to parameter s | non-null |
+| E.cs:452:13:452:23 | ... is ... | true | E.cs:452:13:452:13 | access to parameter s | non-null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |
@@ -1394,54 +1399,54 @@
 | GuardedString.cs:19:13:19:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:19:13:19:13 | access to local variable s | null | GuardedString.cs:7:20:7:20 | access to parameter b | true |
 | GuardedString.cs:19:13:19:13 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
-| GuardedString.cs:19:13:19:26 | ... == ... | true | GuardedString.cs:19:15:19:21 | access to property Length | non-null |
-| GuardedString.cs:19:15:19:21 | access to property Length | non-null | GuardedString.cs:19:13:19:13 | access to local variable s | non-null |
-| GuardedString.cs:19:15:19:21 | access to property Length | null | GuardedString.cs:19:13:19:13 | access to local variable s | null |
+| GuardedString.cs:19:13:19:21 | access to property Length | non-null | GuardedString.cs:19:13:19:13 | access to local variable s | non-null |
+| GuardedString.cs:19:13:19:21 | access to property Length | null | GuardedString.cs:19:13:19:13 | access to local variable s | null |
+| GuardedString.cs:19:13:19:26 | ... == ... | true | GuardedString.cs:19:13:19:21 | access to property Length | non-null |
 | GuardedString.cs:20:31:20:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:20:31:20:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:22:13:22:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:20 | access to parameter b | false |
 | GuardedString.cs:22:13:22:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:22:13:22:13 | access to local variable s | null | GuardedString.cs:7:20:7:20 | access to parameter b | true |
 | GuardedString.cs:22:13:22:13 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
-| GuardedString.cs:22:13:22:25 | ... > ... | true | GuardedString.cs:22:15:22:21 | access to property Length | non-null |
-| GuardedString.cs:22:15:22:21 | access to property Length | non-null | GuardedString.cs:22:13:22:13 | access to local variable s | non-null |
-| GuardedString.cs:22:15:22:21 | access to property Length | null | GuardedString.cs:22:13:22:13 | access to local variable s | null |
+| GuardedString.cs:22:13:22:21 | access to property Length | non-null | GuardedString.cs:22:13:22:13 | access to local variable s | non-null |
+| GuardedString.cs:22:13:22:21 | access to property Length | null | GuardedString.cs:22:13:22:13 | access to local variable s | null |
+| GuardedString.cs:22:13:22:25 | ... > ... | true | GuardedString.cs:22:13:22:21 | access to property Length | non-null |
 | GuardedString.cs:23:31:23:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:23:31:23:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:25:13:25:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:20 | access to parameter b | false |
 | GuardedString.cs:25:13:25:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:25:13:25:13 | access to local variable s | null | GuardedString.cs:7:20:7:20 | access to parameter b | true |
 | GuardedString.cs:25:13:25:13 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
-| GuardedString.cs:25:13:25:26 | ... >= ... | true | GuardedString.cs:25:15:25:21 | access to property Length | non-null |
-| GuardedString.cs:25:15:25:21 | access to property Length | non-null | GuardedString.cs:25:13:25:13 | access to local variable s | non-null |
-| GuardedString.cs:25:15:25:21 | access to property Length | null | GuardedString.cs:25:13:25:13 | access to local variable s | null |
+| GuardedString.cs:25:13:25:21 | access to property Length | non-null | GuardedString.cs:25:13:25:13 | access to local variable s | non-null |
+| GuardedString.cs:25:13:25:21 | access to property Length | null | GuardedString.cs:25:13:25:13 | access to local variable s | null |
+| GuardedString.cs:25:13:25:26 | ... >= ... | true | GuardedString.cs:25:13:25:21 | access to property Length | non-null |
 | GuardedString.cs:26:31:26:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:26:31:26:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:28:13:28:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:20 | access to parameter b | false |
 | GuardedString.cs:28:13:28:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:28:13:28:13 | access to local variable s | null | GuardedString.cs:7:20:7:20 | access to parameter b | true |
 | GuardedString.cs:28:13:28:13 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
-| GuardedString.cs:28:13:28:26 | ... < ... | true | GuardedString.cs:28:15:28:21 | access to property Length | non-null |
-| GuardedString.cs:28:15:28:21 | access to property Length | non-null | GuardedString.cs:28:13:28:13 | access to local variable s | non-null |
-| GuardedString.cs:28:15:28:21 | access to property Length | null | GuardedString.cs:28:13:28:13 | access to local variable s | null |
+| GuardedString.cs:28:13:28:21 | access to property Length | non-null | GuardedString.cs:28:13:28:13 | access to local variable s | non-null |
+| GuardedString.cs:28:13:28:21 | access to property Length | null | GuardedString.cs:28:13:28:13 | access to local variable s | null |
+| GuardedString.cs:28:13:28:26 | ... < ... | true | GuardedString.cs:28:13:28:21 | access to property Length | non-null |
 | GuardedString.cs:29:31:29:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:29:31:29:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:31:13:31:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:20 | access to parameter b | false |
 | GuardedString.cs:31:13:31:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:31:13:31:13 | access to local variable s | null | GuardedString.cs:7:20:7:20 | access to parameter b | true |
 | GuardedString.cs:31:13:31:13 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
-| GuardedString.cs:31:13:31:27 | ... <= ... | true | GuardedString.cs:31:15:31:21 | access to property Length | non-null |
-| GuardedString.cs:31:15:31:21 | access to property Length | non-null | GuardedString.cs:31:13:31:13 | access to local variable s | non-null |
-| GuardedString.cs:31:15:31:21 | access to property Length | null | GuardedString.cs:31:13:31:13 | access to local variable s | null |
+| GuardedString.cs:31:13:31:21 | access to property Length | non-null | GuardedString.cs:31:13:31:13 | access to local variable s | non-null |
+| GuardedString.cs:31:13:31:21 | access to property Length | null | GuardedString.cs:31:13:31:13 | access to local variable s | null |
+| GuardedString.cs:31:13:31:27 | ... <= ... | true | GuardedString.cs:31:13:31:21 | access to property Length | non-null |
 | GuardedString.cs:32:31:32:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:32:31:32:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:34:13:34:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:20 | access to parameter b | false |
 | GuardedString.cs:34:13:34:13 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:34:13:34:13 | access to local variable s | null | GuardedString.cs:7:20:7:20 | access to parameter b | true |
 | GuardedString.cs:34:13:34:13 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
-| GuardedString.cs:34:13:34:26 | ... != ... | false | GuardedString.cs:34:15:34:21 | access to property Length | non-null |
-| GuardedString.cs:34:15:34:21 | access to property Length | non-null | GuardedString.cs:34:13:34:13 | access to local variable s | non-null |
-| GuardedString.cs:34:15:34:21 | access to property Length | null | GuardedString.cs:34:13:34:13 | access to local variable s | null |
+| GuardedString.cs:34:13:34:21 | access to property Length | non-null | GuardedString.cs:34:13:34:13 | access to local variable s | non-null |
+| GuardedString.cs:34:13:34:21 | access to property Length | null | GuardedString.cs:34:13:34:13 | access to local variable s | null |
+| GuardedString.cs:34:13:34:26 | ... != ... | false | GuardedString.cs:34:13:34:21 | access to property Length | non-null |
 | GuardedString.cs:35:31:35:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:35:31:35:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:37:31:37:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |

@@ -90,12 +90,12 @@ module ElazarlGoproxy {
         onreqcall.getTarget().hasQualifiedName(packagePath(), "ProxyHttpServer", "OnRequest")
       |
         handlerReg.getReceiver() = onreqcall.getASuccessor*() and
-        check = onreqcall.getArgument(0)
+        check = onreqcall.getSyntacticArgument(0)
       )
     }
   }
 
-  private class UserControlledRequestData extends UntrustedFlowSource::Range {
+  private class UserControlledRequestData extends RemoteFlowSource::Range {
     UserControlledRequestData() {
       exists(DataFlow::FieldReadNode frn | this = frn |
         // liberally consider ProxyCtx.UserData to be untrusted; it's a data field set by a request handler
@@ -112,13 +112,11 @@ module ElazarlGoproxy {
     ProxyLogFunction() { this.hasQualifiedName(packagePath(), "ProxyCtx", ["Logf", "Warnf"]) }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
   }
 
   private class ProxyLog extends LoggerCall::Range, DataFlow::MethodCallNode {
     ProxyLog() { this.getTarget() instanceof ProxyLogFunction }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 }

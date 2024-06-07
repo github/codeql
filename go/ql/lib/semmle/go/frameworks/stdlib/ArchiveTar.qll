@@ -13,7 +13,7 @@ module ArchiveTar {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("archive/tar", "NewWriter") and
+      this.hasQualifiedName("archive/tar", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 

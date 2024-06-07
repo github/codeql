@@ -1,0 +1,269 @@
+edges
+| PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| PoC/server.py:1:26:1:32 | ControlFlowNode for request | PoC/server.py:26:21:26:27 | ControlFlowNode for request | provenance |  |
+| PoC/server.py:1:26:1:32 | ControlFlowNode for request | PoC/server.py:43:14:43:20 | ControlFlowNode for request | provenance |  |
+| PoC/server.py:1:26:1:32 | ControlFlowNode for request | PoC/server.py:52:14:52:20 | ControlFlowNode for request | provenance |  |
+| PoC/server.py:1:26:1:32 | ControlFlowNode for request | PoC/server.py:77:14:77:20 | ControlFlowNode for request | provenance |  |
+| PoC/server.py:1:26:1:32 | ControlFlowNode for request | PoC/server.py:98:14:98:20 | ControlFlowNode for request | provenance |  |
+| PoC/server.py:26:5:26:17 | ControlFlowNode for author_string | PoC/server.py:27:25:27:37 | ControlFlowNode for author_string | provenance |  |
+| PoC/server.py:26:21:26:27 | ControlFlowNode for request | PoC/server.py:26:5:26:17 | ControlFlowNode for author_string | provenance | AdditionalTaintStep |
+| PoC/server.py:27:5:27:10 | ControlFlowNode for author | PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | provenance |  |
+| PoC/server.py:27:5:27:10 | ControlFlowNode for author | PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | provenance |  |
+| PoC/server.py:27:14:27:38 | ControlFlowNode for Attribute() | PoC/server.py:27:5:27:10 | ControlFlowNode for author | provenance |  |
+| PoC/server.py:27:25:27:37 | ControlFlowNode for author_string | PoC/server.py:27:14:27:38 | ControlFlowNode for Attribute() | provenance | Config |
+| PoC/server.py:43:5:43:10 | ControlFlowNode for author | PoC/server.py:47:38:47:67 | ControlFlowNode for BinaryExpr | provenance |  |
+| PoC/server.py:43:14:43:20 | ControlFlowNode for request | PoC/server.py:43:5:43:10 | ControlFlowNode for author | provenance | AdditionalTaintStep |
+| PoC/server.py:47:38:47:67 | ControlFlowNode for BinaryExpr | PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | provenance | Config |
+| PoC/server.py:52:5:52:10 | ControlFlowNode for author | PoC/server.py:54:17:54:70 | ControlFlowNode for BinaryExpr | provenance |  |
+| PoC/server.py:52:14:52:20 | ControlFlowNode for request | PoC/server.py:52:5:52:10 | ControlFlowNode for author | provenance | AdditionalTaintStep |
+| PoC/server.py:53:5:53:10 | ControlFlowNode for search | PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | provenance |  |
+| PoC/server.py:53:14:57:5 | ControlFlowNode for Dict | PoC/server.py:53:5:53:10 | ControlFlowNode for search | provenance |  |
+| PoC/server.py:54:17:54:70 | ControlFlowNode for BinaryExpr | PoC/server.py:53:14:57:5 | ControlFlowNode for Dict | provenance | Config |
+| PoC/server.py:77:5:77:10 | ControlFlowNode for author | PoC/server.py:80:23:80:101 | ControlFlowNode for BinaryExpr | provenance |  |
+| PoC/server.py:77:14:77:20 | ControlFlowNode for request | PoC/server.py:77:5:77:10 | ControlFlowNode for author | provenance | AdditionalTaintStep |
+| PoC/server.py:78:5:78:15 | ControlFlowNode for accumulator | PoC/server.py:84:5:84:9 | ControlFlowNode for group | provenance |  |
+| PoC/server.py:78:19:83:5 | ControlFlowNode for Dict | PoC/server.py:78:5:78:15 | ControlFlowNode for accumulator | provenance |  |
+| PoC/server.py:80:23:80:101 | ControlFlowNode for BinaryExpr | PoC/server.py:78:19:83:5 | ControlFlowNode for Dict | provenance | Config |
+| PoC/server.py:84:5:84:9 | ControlFlowNode for group | PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | provenance |  |
+| PoC/server.py:84:5:84:9 | ControlFlowNode for group | PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | provenance |  |
+| PoC/server.py:98:5:98:10 | ControlFlowNode for author | PoC/server.py:99:5:99:10 | ControlFlowNode for mapper | provenance |  |
+| PoC/server.py:98:14:98:20 | ControlFlowNode for request | PoC/server.py:98:5:98:10 | ControlFlowNode for author | provenance | AdditionalTaintStep |
+| PoC/server.py:99:5:99:10 | ControlFlowNode for mapper | PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | provenance |  |
+| flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | provenance |  |
+| flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | flask_mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | provenance |  |
+| flask_mongoengine_bad.py:19:5:19:17 | ControlFlowNode for unsafe_search | flask_mongoengine_bad.py:20:30:20:42 | ControlFlowNode for unsafe_search | provenance |  |
+| flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | flask_mongoengine_bad.py:19:5:19:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| flask_mongoengine_bad.py:20:5:20:15 | ControlFlowNode for json_search | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | provenance |  |
+| flask_mongoengine_bad.py:20:19:20:43 | ControlFlowNode for Attribute() | flask_mongoengine_bad.py:20:5:20:15 | ControlFlowNode for json_search | provenance |  |
+| flask_mongoengine_bad.py:20:30:20:42 | ControlFlowNode for unsafe_search | flask_mongoengine_bad.py:20:19:20:43 | ControlFlowNode for Attribute() | provenance | Config |
+| flask_mongoengine_bad.py:26:5:26:17 | ControlFlowNode for unsafe_search | flask_mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | provenance |  |
+| flask_mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | flask_mongoengine_bad.py:26:5:26:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| flask_mongoengine_bad.py:27:5:27:15 | ControlFlowNode for json_search | flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | provenance |  |
+| flask_mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | flask_mongoengine_bad.py:27:5:27:15 | ControlFlowNode for json_search | provenance |  |
+| flask_mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | flask_mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | provenance | Config |
+| flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for request | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | provenance |  |
+| flask_pymongo_bad.py:11:5:11:17 | ControlFlowNode for unsafe_search | flask_pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | provenance |  |
+| flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | flask_pymongo_bad.py:11:5:11:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| flask_pymongo_bad.py:12:5:12:15 | ControlFlowNode for json_search | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | provenance |  |
+| flask_pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() | flask_pymongo_bad.py:12:5:12:15 | ControlFlowNode for json_search | provenance |  |
+| flask_pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | flask_pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() | provenance | Config |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | provenance |  |
+| mongoengine_bad.py:18:5:18:17 | ControlFlowNode for unsafe_search | mongoengine_bad.py:19:30:19:42 | ControlFlowNode for unsafe_search | provenance |  |
+| mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | mongoengine_bad.py:18:5:18:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| mongoengine_bad.py:19:5:19:15 | ControlFlowNode for json_search | mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | provenance |  |
+| mongoengine_bad.py:19:19:19:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:19:5:19:15 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:19:30:19:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:19:19:19:43 | ControlFlowNode for Attribute() | provenance | Config |
+| mongoengine_bad.py:26:5:26:17 | ControlFlowNode for unsafe_search | mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | provenance |  |
+| mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | mongoengine_bad.py:26:5:26:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| mongoengine_bad.py:27:5:27:15 | ControlFlowNode for json_search | mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | provenance |  |
+| mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:27:5:27:15 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | provenance | Config |
+| mongoengine_bad.py:34:5:34:17 | ControlFlowNode for unsafe_search | mongoengine_bad.py:35:30:35:42 | ControlFlowNode for unsafe_search | provenance |  |
+| mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | mongoengine_bad.py:34:5:34:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| mongoengine_bad.py:35:5:35:15 | ControlFlowNode for json_search | mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | provenance |  |
+| mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:35:5:35:15 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:35:30:35:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() | provenance | Config |
+| mongoengine_bad.py:42:5:42:17 | ControlFlowNode for unsafe_search | mongoengine_bad.py:43:30:43:42 | ControlFlowNode for unsafe_search | provenance |  |
+| mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | mongoengine_bad.py:42:5:42:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| mongoengine_bad.py:43:5:43:15 | ControlFlowNode for json_search | mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | provenance |  |
+| mongoengine_bad.py:43:19:43:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:43:5:43:15 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:43:30:43:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:43:19:43:43 | ControlFlowNode for Attribute() | provenance | Config |
+| mongoengine_bad.py:50:5:50:17 | ControlFlowNode for unsafe_search | mongoengine_bad.py:51:30:51:42 | ControlFlowNode for unsafe_search | provenance |  |
+| mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | mongoengine_bad.py:50:5:50:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| mongoengine_bad.py:51:5:51:15 | ControlFlowNode for json_search | mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:51:19:51:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:51:5:51:15 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:51:30:51:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:51:19:51:43 | ControlFlowNode for Attribute() | provenance | Config |
+| mongoengine_bad.py:57:5:57:17 | ControlFlowNode for unsafe_search | mongoengine_bad.py:58:30:58:42 | ControlFlowNode for unsafe_search | provenance |  |
+| mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | mongoengine_bad.py:57:5:57:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| mongoengine_bad.py:58:5:58:15 | ControlFlowNode for json_search | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | provenance |  |
+| mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:58:5:58:15 | ControlFlowNode for json_search | provenance |  |
+| mongoengine_bad.py:58:30:58:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | provenance | Config |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for request | pymongo_test.py:12:21:12:27 | ControlFlowNode for request | provenance |  |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for request | pymongo_test.py:29:27:29:33 | ControlFlowNode for request | provenance |  |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for request | pymongo_test.py:39:27:39:33 | ControlFlowNode for request | provenance |  |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for request | pymongo_test.py:52:26:52:32 | ControlFlowNode for request | provenance |  |
+| pymongo_test.py:12:5:12:17 | ControlFlowNode for unsafe_search | pymongo_test.py:13:30:13:42 | ControlFlowNode for unsafe_search | provenance |  |
+| pymongo_test.py:12:21:12:27 | ControlFlowNode for request | pymongo_test.py:12:5:12:17 | ControlFlowNode for unsafe_search | provenance | AdditionalTaintStep |
+| pymongo_test.py:13:5:13:15 | ControlFlowNode for json_search | pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:13:19:13:43 | ControlFlowNode for Attribute() | pymongo_test.py:13:5:13:15 | ControlFlowNode for json_search | provenance |  |
+| pymongo_test.py:13:30:13:42 | ControlFlowNode for unsafe_search | pymongo_test.py:13:19:13:43 | ControlFlowNode for Attribute() | provenance | Config |
+| pymongo_test.py:29:5:29:12 | ControlFlowNode for event_id | pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | provenance |  |
+| pymongo_test.py:29:16:29:51 | ControlFlowNode for Attribute() | pymongo_test.py:29:5:29:12 | ControlFlowNode for event_id | provenance |  |
+| pymongo_test.py:29:27:29:33 | ControlFlowNode for request | pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | pymongo_test.py:29:16:29:51 | ControlFlowNode for Attribute() | provenance | Config |
+| pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | provenance | Decoding-NoSQL |
+| pymongo_test.py:39:5:39:12 | ControlFlowNode for event_id | pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | provenance |  |
+| pymongo_test.py:39:16:39:51 | ControlFlowNode for Attribute() | pymongo_test.py:39:5:39:12 | ControlFlowNode for event_id | provenance |  |
+| pymongo_test.py:39:27:39:33 | ControlFlowNode for request | pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | pymongo_test.py:39:16:39:51 | ControlFlowNode for Attribute() | provenance | Config |
+| pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | provenance | Decoding-NoSQL |
+| pymongo_test.py:52:5:52:11 | ControlFlowNode for decoded | pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | provenance |  |
+| pymongo_test.py:52:15:52:50 | ControlFlowNode for Attribute() | pymongo_test.py:52:5:52:11 | ControlFlowNode for decoded | provenance |  |
+| pymongo_test.py:52:26:52:32 | ControlFlowNode for request | pymongo_test.py:52:26:52:49 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| pymongo_test.py:52:26:52:49 | ControlFlowNode for Subscript | pymongo_test.py:52:15:52:50 | ControlFlowNode for Attribute() | provenance | Config |
+| pymongo_test.py:54:5:54:10 | ControlFlowNode for search | pymongo_test.py:59:25:59:56 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | pymongo_test.py:54:5:54:10 | ControlFlowNode for search | provenance |  |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | provenance | Decoding-NoSQL |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:61:25:61:57 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:62:25:62:42 | ControlFlowNode for Dict | provenance |  |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | pymongo_test.py:63:25:63:31 | ControlFlowNode for decoded | provenance |  |
+nodes
+| PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| PoC/server.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:26:5:26:17 | ControlFlowNode for author_string | semmle.label | ControlFlowNode for author_string |
+| PoC/server.py:26:21:26:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:27:5:27:10 | ControlFlowNode for author | semmle.label | ControlFlowNode for author |
+| PoC/server.py:27:14:27:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| PoC/server.py:27:25:27:37 | ControlFlowNode for author_string | semmle.label | ControlFlowNode for author_string |
+| PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:43:5:43:10 | ControlFlowNode for author | semmle.label | ControlFlowNode for author |
+| PoC/server.py:43:14:43:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:47:38:47:67 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| PoC/server.py:52:5:52:10 | ControlFlowNode for author | semmle.label | ControlFlowNode for author |
+| PoC/server.py:52:14:52:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:53:5:53:10 | ControlFlowNode for search | semmle.label | ControlFlowNode for search |
+| PoC/server.py:53:14:57:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:54:17:54:70 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:77:5:77:10 | ControlFlowNode for author | semmle.label | ControlFlowNode for author |
+| PoC/server.py:77:14:77:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:78:5:78:15 | ControlFlowNode for accumulator | semmle.label | ControlFlowNode for accumulator |
+| PoC/server.py:78:19:83:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:80:23:80:101 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| PoC/server.py:84:5:84:9 | ControlFlowNode for group | semmle.label | ControlFlowNode for group |
+| PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:98:5:98:10 | ControlFlowNode for author | semmle.label | ControlFlowNode for author |
+| PoC/server.py:98:14:98:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:99:5:99:10 | ControlFlowNode for mapper | semmle.label | ControlFlowNode for mapper |
+| PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | semmle.label | ControlFlowNode for mapper |
+| flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mongoengine_bad.py:19:5:19:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mongoengine_bad.py:20:5:20:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| flask_mongoengine_bad.py:20:19:20:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_mongoengine_bad.py:20:30:20:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| flask_mongoengine_bad.py:26:5:26:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mongoengine_bad.py:27:5:27:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| flask_mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_pymongo_bad.py:11:5:11:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_pymongo_bad.py:12:5:12:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| flask_pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| mongoengine_bad.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:18:5:18:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:19:5:19:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:19:19:19:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:19:30:19:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| mongoengine_bad.py:26:5:26:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:27:5:27:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| mongoengine_bad.py:34:5:34:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:35:5:35:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:35:30:35:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| mongoengine_bad.py:42:5:42:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:43:5:43:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:43:19:43:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:43:30:43:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| mongoengine_bad.py:50:5:50:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:51:5:51:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:51:19:51:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:51:30:51:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:57:5:57:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:58:5:58:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:58:30:58:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| pymongo_test.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_test.py:12:5:12:17 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| pymongo_test.py:12:21:12:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_test.py:13:5:13:15 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| pymongo_test.py:13:19:13:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_test.py:13:30:13:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:29:5:29:12 | ControlFlowNode for event_id | semmle.label | ControlFlowNode for event_id |
+| pymongo_test.py:29:16:29:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_test.py:29:27:29:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:33:45:33:72 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| pymongo_test.py:39:5:39:12 | ControlFlowNode for event_id | semmle.label | ControlFlowNode for event_id |
+| pymongo_test.py:39:16:39:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_test.py:39:27:39:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:43:45:43:72 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| pymongo_test.py:52:5:52:11 | ControlFlowNode for decoded | semmle.label | ControlFlowNode for decoded |
+| pymongo_test.py:52:15:52:50 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_test.py:52:26:52:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_test.py:52:26:52:49 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_test.py:54:5:54:10 | ControlFlowNode for search | semmle.label | ControlFlowNode for search |
+| pymongo_test.py:54:14:58:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:55:17:55:23 | ControlFlowNode for decoded | semmle.label | ControlFlowNode for decoded |
+| pymongo_test.py:59:25:59:56 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:61:25:61:57 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:62:25:62:42 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:63:25:63:31 | ControlFlowNode for decoded | semmle.label | ControlFlowNode for decoded |
+subpaths
+#select
+| PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | This NoSQL query contains an unsanitized $@. | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | This NoSQL query contains an unsanitized $@. | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:59:25:59:56 | ControlFlowNode for Dict | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:59:25:59:56 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:61:25:61:57 | ControlFlowNode for Dict | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:61:25:61:57 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:62:25:62:42 | ControlFlowNode for Dict | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:62:25:62:42 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| pymongo_test.py:63:25:63:31 | ControlFlowNode for decoded | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:63:25:63:31 | ControlFlowNode for decoded | This NoSQL query contains an unsanitized $@. | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

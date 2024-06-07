@@ -107,3 +107,9 @@ void testAcceptRecv(int socket1, int socket2)
 		LoadLibrary(buffer); // BAD: using data from recv
 	}
 }
+
+void argumentUse(char *ptr, FILE *stream) {
+	char buffer[80];
+	ptr = fgets(buffer, sizeof(buffer), stream);
+	system(ptr); // BAD
+}

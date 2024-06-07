@@ -534,11 +534,11 @@ def test_null_class(generate):
     )
 
 
-def test_ipa_classes_ignored(generate):
+def test_synth_classes_ignored(generate):
     assert generate([
-        schema.Class(name="A", ipa=schema.IpaInfo()),
-        schema.Class(name="B", ipa=schema.IpaInfo(from_class="A")),
-        schema.Class(name="C", ipa=schema.IpaInfo(on_arguments={"x": "A"})),
+        schema.Class(name="A", synth=schema.SynthInfo()),
+        schema.Class(name="B", synth=schema.SynthInfo(from_class="A")),
+        schema.Class(name="C", synth=schema.SynthInfo(on_arguments={"x": "A"})),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
         includes=[],
@@ -546,10 +546,10 @@ def test_ipa_classes_ignored(generate):
     )
 
 
-def test_ipa_derived_classes_ignored(generate):
+def test_synth_derived_classes_ignored(generate):
     assert generate([
         schema.Class(name="A", derived={"B", "C"}),
-        schema.Class(name="B", bases=["A"], ipa=schema.IpaInfo()),
+        schema.Class(name="B", bases=["A"], synth=schema.SynthInfo()),
         schema.Class(name="C", bases=["A"]),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
@@ -560,6 +560,33 @@ def test_ipa_derived_classes_ignored(generate):
                 name="cs",
                 columns=[
                     dbscheme.Column("id", "@c", binding=True),
+                ],
+            )
+        ],
+    )
+
+
+def test_synth_properties_ignored(generate):
+    assert generate([
+        schema.Class(name="A", properties=[
+            schema.SingleProperty("x", "a"),
+            schema.SingleProperty("y", "b", synth=True),
+            schema.SingleProperty("z", "c"),
+            schema.OptionalProperty("foo", "bar", synth=True),
+            schema.RepeatedProperty("baz", "bazz", synth=True),
+            schema.RepeatedOptionalProperty("bazzz", "bazzzz", synth=True),
+            schema.RepeatedUnorderedProperty("bazzzzz", "bazzzzzz", synth=True),
+        ]),
+    ]) == dbscheme.Scheme(
+        src=schema_file.name,
+        includes=[],
+        declarations=[
+            dbscheme.Table(
+                name="as",
+                columns=[
+                    dbscheme.Column("id", "@a", binding=True),
+                    dbscheme.Column("x", "a"),
+                    dbscheme.Column("z", "c"),
                 ],
             )
         ],

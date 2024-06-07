@@ -1,1 +1,2 @@
 import experimental.meta.InlineTaintTest
+import MakeInlineTaintTest<TestTaintTrackingConfig>

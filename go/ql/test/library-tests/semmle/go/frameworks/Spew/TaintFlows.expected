@@ -1,17 +1,2 @@
-| test.go:26:16:26:35 | call to getUntrustedString | test.go:33:14:33:23 | sUntrusted |
-| test.go:26:16:26:35 | call to getUntrustedString | test.go:35:14:35:23 | sUntrusted |
-| test.go:26:16:26:35 | call to getUntrustedString | test.go:41:18:41:27 | sUntrusted |
-| test.go:26:16:26:35 | call to getUntrustedString | test.go:51:13:51:16 | str3 |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:30:12:30:21 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:31:13:31:22 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:32:15:32:24 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:34:17:34:26 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:36:17:36:26 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:38:16:38:25 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:39:17:39:26 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:40:19:40:28 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:42:21:42:30 | pUntrusted |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:45:13:45:16 | str1 |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:48:13:48:16 | str2 |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:54:13:54:16 | str4 |
-| test.go:28:16:28:35 | call to getUntrustedStruct | test.go:57:13:57:16 | str5 |
+invalidModelRow
+testFailures

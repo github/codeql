@@ -8,12 +8,6 @@ private import semmle.javascript.security.TaintedUrlSuffix
 import DomBasedXssCustomizations::DomBasedXss
 private import Xss::Shared as Shared
 
-/** DEPRECATED. Use `Configuration`. */
-deprecated class HtmlInjectionConfiguration = Configuration;
-
-/** DEPRECATED. Use `Configuration`. */
-deprecated class JQueryHtmlOrSelectorInjectionConfiguration = Configuration;
-
 /**
  * A sink that is not a URL write or a JQuery selector,
  * assumed to be a value that is interpreted as HTML.
@@ -24,9 +18,6 @@ class HtmlSink extends DataFlow::Node instanceof Sink {
     not this instanceof JQueryHtmlOrSelectorSink
   }
 }
-
-/** DEPRECATED: Alias for HtmlSink */
-deprecated class HTMLSink = HtmlSink;
 
 /**
  * A taint-tracking configuration for reasoning about XSS.
@@ -92,13 +83,9 @@ class Configuration extends TaintTracking::Configuration {
     // we assume that `.join()` calls have a prefix, and thus block the prefix label.
     node = any(DataFlow::MethodCallNode call | call.getMethodName() = "join") and
     lbl = prefixLabel()
-  }
-
-  override predicate isSanitizerEdge(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel label
-  ) {
-    isOptionallySanitizedEdge(pred, succ) and
-    label = [DataFlow::FlowLabel::taint(), prefixLabel(), TaintedUrlSuffix::label()]
+    or
+    isOptionallySanitizedNode(node) and
+    lbl = [DataFlow::FlowLabel::taint(), prefixLabel(), TaintedUrlSuffix::label()]
   }
 
   override predicate isAdditionalFlowStep(

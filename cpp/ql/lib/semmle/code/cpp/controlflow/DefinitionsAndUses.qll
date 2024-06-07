@@ -78,7 +78,7 @@ predicate parameterUsePair(Parameter p, VariableAccess va) {
 /**
  * Utility class: A definition or use of a stack variable.
  */
-library class DefOrUse extends ControlFlowNodeBase {
+class DefOrUse extends ControlFlowNodeBase {
   DefOrUse() {
     // Uninstantiated templates are purely syntax, and only on instantiation
     // will they be complete with information about types, conversions, call
@@ -98,7 +98,7 @@ library class DefOrUse extends ControlFlowNodeBase {
 
   pragma[noinline]
   private predicate reaches_helper(boolean isDef, SemanticStackVariable v, BasicBlock bb, int i) {
-    getVariable(isDef) = v and
+    this.getVariable(isDef) = v and
     bb.getNode(i) = this
   }
 
@@ -118,21 +118,21 @@ library class DefOrUse extends ControlFlowNodeBase {
      * predicates are duplicated for now.
      */
 
-    exists(BasicBlock bb, int i | reaches_helper(isDef, v, bb, i) |
+    exists(BasicBlock bb, int i | this.reaches_helper(isDef, v, bb, i) |
       exists(int j |
         j > i and
         (bbDefAt(bb, j, v, defOrUse) or bbUseAt(bb, j, v, defOrUse)) and
-        not exists(int k | firstBarrierAfterThis(isDef, k, v) and k < j)
+        not exists(int k | this.firstBarrierAfterThis(isDef, k, v) and k < j)
       )
       or
-      not firstBarrierAfterThis(isDef, _, v) and
+      not this.firstBarrierAfterThis(isDef, _, v) and
       bbSuccessorEntryReachesDefOrUse(bb, v, defOrUse, _)
     )
   }
 
   private predicate firstBarrierAfterThis(boolean isDef, int j, SemanticStackVariable v) {
     exists(BasicBlock bb, int i |
-      getVariable(isDef) = v and
+      this.getVariable(isDef) = v and
       bb.getNode(i) = this and
       j = min(int k | bbBarrierAt(bb, k, v, _) and k > i)
     )
@@ -140,7 +140,7 @@ library class DefOrUse extends ControlFlowNodeBase {
 }
 
 /** A definition of a stack variable. */
-library class Def extends DefOrUse {
+class Def extends DefOrUse {
   Def() { definition(_, this) }
 
   override SemanticStackVariable getVariable(boolean isDef) {
@@ -155,7 +155,7 @@ private predicate parameterIsOverwritten(Function f, Parameter p) {
 }
 
 /** A definition of a parameter. */
-library class ParameterDef extends DefOrUse {
+class ParameterDef extends DefOrUse {
   ParameterDef() {
     // Optimization: parameters that are not overwritten do not require
     // reachability analysis
@@ -169,7 +169,7 @@ library class ParameterDef extends DefOrUse {
 }
 
 /** A use of a stack variable. */
-library class Use extends DefOrUse {
+class Use extends DefOrUse {
   Use() { useOfVar(_, this) }
 
   override SemanticStackVariable getVariable(boolean isDef) {

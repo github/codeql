@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.Properties
 /** An argument of a MyBatis annotated method. */
 class MyBatisAnnotatedMethodCallArgument extends DataFlow::Node {
   MyBatisAnnotatedMethodCallArgument() {
-    exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma | ma.getMethod() = msoam |
+    exists(MyBatisSqlOperationAnnotationMethod msoam, MethodCall ma | ma.getMethod() = msoam |
       ma.getAnArgument() = this.asExpr()
     )
   }

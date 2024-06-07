@@ -70,7 +70,7 @@ You must specify an `@id` property for your query. It must be unique and should 
 * C and C++: `cpp`
 * C#: `cs`
 * Go: `go`
-* Java: `java`
+* Java and Kotlin: `java`
 * JavaScript and TypeScript: `js`
 * Python: `py`
 
@@ -113,11 +113,11 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
   * `medium`
   * `high`
   * `very-high`
-* `@problem.severity`–defines the level of severity of non-security alerts: 
+* `@problem.severity`–defines the likelihood that an alert, either security-related or not, causes an actual problem such as incorrect program behavior: 
   * `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
   * `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
   * `recommendation`–an issue where the code behaves correctly, but it could be improved.
-* `@security-severity`-defines the level of severity, between 0.0 and 10.0, for queries with `@tags security`. For more information about calculating `@security-severity`, see the [GitHub changelog](https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/).  
+* `@security-severity`-defines the level of severity, between 0.0 and 10.0, for queries with `@tags security`. For more information about how this value is calculated and then used in code scanning analysis, see [About alert severity and security severity levels](https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts#about-alert-severity-and-security-severity-levels) in the GitHub user documentation.
 
 ## Query tags `@tags`
 
@@ -155,7 +155,10 @@ If your query is a security query, use one or more `@tags` to associate it with 
 ||`external/cwe/cwe-036` |
 ||`external/cwe/cwe-073` |
 
-When you tag a query like this, the associated CWE pages from [MITRE.org](https://cwe.mitre.org/index.html) will automatically appear in the reference section of its associated qhelp file.
+When you tag a query like this, the associated CWE pages from [MITRE.org](https://cwe.mitre.org/index.html) will automatically appear in the references section of its associated qhelp file.
+
+> [!NOTE]
+> The automatic addition of CWE reference links works only if the qhelp file already contains a `<references>` section.
 
 #### Metric/summary `@tags`
 
@@ -175,14 +178,14 @@ The select clause of each alert query defines the alert message that is displaye
 * Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions (`$@`).
 * Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
 * If a reference to the current location can't be avoided use "this location" instead of "here". For example, `Bad thing at this location.` is preferable to `Bad thing here.`. This avoids the "click here" anti-pattern.
-* For path queries, if possible, try to follow the template: `This path depends on a [user-provided value].`, or alternatively (if the first option doesn't work) `[User-provided value] flows to this location and is used in a path.`. 
+* For path queries, if possible, try to follow the template: `This path depends on a [user-provided value].`, or alternatively (if the first option doesn't work) `[User-provided value] flows to this location and is used in a path.`.
 * Taint tracking queries generally have a sink that "depends on" the source, and dataflow queries generally have a source that "flows to" the sink.
 
 ### Links in alert messages
 
 * Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions.
-* Avoid using link texts that don't describe what they link to. For example, rewrite `This sensitive data is written to a logfile unescaped [here]` to `This sensitive data is [written to a logfile unescaped]`. 
-* Make link text as concise and precise as possible. For example, avoid starting a link text with an indefinite article (a, an). `Path construction depends on a [user-provided value]` is preferable to `Path construction depends on [a user-provided value]`. (Where the square brackets indicate a link.) See [the W3C guide on link texts](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) for further information. 
+* Avoid using link texts that don't describe what they link to. For example, rewrite `This sensitive data is written to a logfile unescaped [here]` to `This sensitive data is [written to a logfile unescaped]`.
+* Make link text as concise and precise as possible. For example, avoid starting a link text with an indefinite article (a, an). `Path construction depends on a [user-provided value]` is preferable to `Path construction depends on [a user-provided value]`. (Where the square brackets indicate a link.) See [the W3C guide on link texts](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) for further information.
 * When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining the results of a query](https://codeql.github.com/docs/writing-codeql-queries/defining-the-results-of-a-query/).
 
 For examples of select clauses and alert messages, see the query source files at the following pages:
@@ -203,5 +206,3 @@ The `select` clause of a summary metric query must have one of the following res
   - This indicates a metric without a specific location in the codebase, for example the total lines of code in a codebase.
 - A code `entity` followed by a `number`
   - This indicates a metric with a specific location in the codebase, for example the lines of code within a file. The `entity` here must have a valid location in the source code.
-
-

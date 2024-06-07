@@ -34,9 +34,13 @@ private module Cached {
 
   cached
   predicate hasUnreachedInstructionCached(IRFunction irFunc) {
-    exists(OldInstruction oldInstruction |
+    exists(OldIR::Instruction oldInstruction |
       irFunc = oldInstruction.getEnclosingIRFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+      (
+        Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+        or
+        oldInstruction.getOpcode() instanceof Opcode::Unreached
+      )
     )
   }
 
@@ -230,20 +234,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the partial operand of this `ChiInstruction` updates the bit range
-   * `[startBitOffset, endBitOffset)` of the total operand.
-   */
-  cached
-  predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBitOffset, int endBitOffset) {
-    exists(Alias::MemoryLocation location, OldInstruction oldInstruction |
-      oldInstruction = getOldInstruction(chi.getPartial()) and
-      location = Alias::getResultMemoryLocation(oldInstruction) and
-      startBitOffset = Alias::getStartBitOffset(location) and
-      endBitOffset = Alias::getEndBitOffset(location)
-    )
-  }
-
-  /**
    * Holds if `operand` totally overlaps with its definition and consumes the bit range
    * `[startBitOffset, endBitOffset)`.
    */
@@ -366,21 +356,19 @@ private module Cached {
     then
       result = getChi(getOldInstruction(instruction)) and
       kind instanceof GotoEdge
-    else (
+    else
       exists(OldInstruction oldInstruction |
-        oldInstruction = getOldInstruction(instruction) and
+        (
+          oldInstruction = getOldInstruction(instruction)
+          or
+          instruction = getChi(oldInstruction)
+        ) and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
           then result = unreachedInstruction(instruction.getEnclosingIRFunction())
           else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
       )
-      or
-      exists(OldInstruction oldInstruction |
-        instruction = getChi(oldInstruction) and
-        result = getNewInstruction(oldInstruction.getSuccessor(kind))
-      )
-    )
   }
 
   cached
@@ -420,12 +408,6 @@ private module Cached {
     )
   }
 
-  /** DEPRECATED: Alias for getInstructionAst */
-  cached
-  deprecated Language::AST getInstructionAST(Instruction instr) {
-    result = getInstructionAst(instr)
-  }
-
   cached
   Language::LanguageType getInstructionResultType(Instruction instr) {
     result = instr.(RawIR::Instruction).getResultLanguageType()
@@ -445,6 +427,11 @@ private module Cached {
     result = instr.(OldInstruction).getResultLanguageType()
     or
     instr = unreachedInstruction(_) and result = Language::getVoidType()
+  }
+
+  cached
+  IRType getInstructionResultIRType(Instruction instr) {
+    result = instr.getResultLanguageType().getIRType()
   }
 
   /**
@@ -991,9 +978,6 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
-/** DEPRECATED: Alias for canReuseSsaForMemoryResult */
-deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
-
 /**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
  * `DebugSsa` module, which is then imported by PrintSSA.
@@ -1002,9 +986,6 @@ module DebugSsa {
   import PhiInsertion
   import DefUse
 }
-
-/** DEPRECATED: Alias for DebugSsa */
-deprecated module DebugSSA = DebugSsa;
 
 import CachedForDebugging
 
@@ -1078,6 +1059,3 @@ module Ssa {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

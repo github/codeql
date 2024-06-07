@@ -43,6 +43,9 @@ function isTypeAlwaysSafeToExpand(type: ts.Type): boolean {
       return false;
     }
   }
+  if (type.aliasSymbol != null) {
+    return false;
+  }
   return true;
 }
 
@@ -380,6 +383,11 @@ export class TypeTable {
    */
   public restrictedExpansion = false;
 
+  /**
+   * If set to true, skip extracting types.
+   */
+  public skipExtractingTypes = false;
+
   private virtualSourceRoot: VirtualSourceRoot;
 
   /**
@@ -414,15 +422,41 @@ export class TypeTable {
   }
 
   /**
+   * Caches the result of `getId`: `type -> [id (not unfolded), id (unfolded)]`.
+   *
+   * A value of `undefined` means the value is not yet computed,
+   * and `number | null` corresponds to the return value of `getId`.
+   */
+  private idCache = new WeakMap<ts.Type, [number | null | undefined, number | null | undefined]>();
+
+  /**
    * Gets the canonical ID for the given type, generating a fresh ID if necessary.
    *
    * Returns `null` if we do not support extraction of this type.
    */
   public getId(type: ts.Type, unfoldAlias: boolean): number | null {
+    let cached = this.idCache.get(type) ?? [undefined, undefined];
+    let cachedValue = cached[unfoldAlias ? 1 : 0];
+    if (cachedValue !== undefined) return cachedValue;
+
+    let result = this.getIdRaw(type, unfoldAlias);
+    cached[unfoldAlias ? 1 : 0] = result;
+    return result;
+  }
+
+  /**
+   * Gets the canonical ID for the given type, generating a fresh ID if necessary.
+   *
+   * Returns `null` if we do not support extraction of this type.
+   */
+  public getIdRaw(type: ts.Type, unfoldAlias: boolean): number | null {
     if (this.typeRecursionDepth > 100) {
       // Ignore infinitely nested anonymous types, such as `{x: {x: {x: ... }}}`.
       // Such a type can't be written directly with TypeScript syntax (as it would need to be named),
       // but it can occur rarely as a result of type inference.
+
+      // Caching this value is technically incorrect, as a type might be seen at depth 101 and then we cache the fact that it can't be extracted. 
+      // Then later the type is seen at a lower depth and could be extracted, but then we immediately give up because of the cached failure. 
       return null;
     }
     // Replace very long string literal types with `string`.
@@ -447,7 +481,7 @@ export class TypeTable {
         this.isInShallowTypeContext ? TypeExtractionState.PendingShallow : TypeExtractionState.PendingFull);
       // If the type is the self-type for a named type (not a generic instantiation of it),
       // emit the self-type binding for that type.
-      if (content.startsWith("reference;") && !(isTypeReference(type) && type.target !== type)) {
+      if (content.startsWith("reference;") && isTypeSelfReference(type)) {
         this.selfTypes.symbols.push(this.getSymbolId(type.aliasSymbol || type.symbol));
         this.selfTypes.selfTypes.push(id);
       }
@@ -533,7 +567,7 @@ export class TypeTable {
         let enclosingType = getEnclosingTypeOfThisType(type);
         if (enclosingType != null) {
           return "this;" + this.getId(enclosingType, false);
-        } else if (symbol.parent == null) {
+        } else if (symbol.parent == null || isFunctionTypeOrTypeAlias(symbol.declarations?.[0])) {
           // The type variable is bound on a call signature. Only extract it by name.
           return "lextypevar;" + symbol.name;
         } else {
@@ -614,14 +648,14 @@ export class TypeTable {
         // cannot be written using TypeScript syntax - so we ignore them entirely.
         return null;
       }
-      return this.makeTypeStringVector("union", unionType.types);
+      return this.makeDeduplicatedTypeStringVector("union", unionType.types);
     }
     if (flags & ts.TypeFlags.Intersection) {
       let intersectionType = type as ts.IntersectionType;
       if (intersectionType.types.length === 0) {
         return null; // Ignore malformed type.
       }
-      return this.makeTypeStringVector("intersection", intersectionType.types);
+      return this.makeDeduplicatedTypeStringVector("intersection", intersectionType.types);
     }
     if (isTypeReference(type) && (type.target.objectFlags & ts.ObjectFlags.Tuple)) {
       // Encode the minimum length and presence of rest element in the first two parts of the type string.
@@ -656,11 +690,16 @@ export class TypeTable {
    */
   public getSymbolId(symbol: AugmentedSymbol): number {
     if (symbol.flags & ts.SymbolFlags.Alias) {
-      symbol = this.typeChecker.getAliasedSymbol(symbol);
+      let aliasedSymbol: AugmentedSymbol = this.typeChecker.getAliasedSymbol(symbol);
+      if (aliasedSymbol.$id !== -1) { // Check if aliased symbol is on-stack
+        // Follow aliases eagerly, except in cases where this leads to cycles (for things like `import Foo = Foo.Bar`)
+        symbol = aliasedSymbol;
+      }
     }
     // We cache the symbol ID to avoid rebuilding long symbol strings.
     let id = symbol.$id;
     if (id != null) return id;
+    symbol.$id = -1; // Mark as on-stack while we are computing the ID
     let content = this.getSymbolString(symbol);
     id = this.symbolIds.get(content);
     if (id != null) {
@@ -780,6 +819,27 @@ export class TypeTable {
       let id = this.getId(types[i], false);
       if (id == null) return null;
       hash += ";" + id;
+    }
+    return hash;
+  }
+
+  /**
+   * Returns the given string with the IDs of the given types appended,
+   * ignoring duplicates, and each separated by `;`.
+   */
+  private makeDeduplicatedTypeStringVector(tag: string, types: ReadonlyArray<ts.Type>, length = types.length): string | null {
+    let seenIds = new Set<number>();
+    let numberOfSeenIds = 0;
+    let hash = tag;
+    for (let i = 0; i < length; ++i) {
+      let id = this.getId(types[i], false);
+      if (id == null) return null;
+      seenIds.add(id);
+      if (seenIds.size > numberOfSeenIds) {
+        // This ID was not seen before
+        ++numberOfSeenIds;
+        hash += ";" + id;
+      }
     }
     return hash;
   }
@@ -1211,8 +1271,15 @@ export class TypeTable {
       let indexOnStack = stack.length;
       stack.push(id);
 
+      /** Indicates if a type contains no type variables, is a type variable, or strictly contains type variables. */
+      const enum TypeVarDepth {
+        noTypeVar = 0,
+        isTypeVar = 1,
+        containsTypeVar = 2,
+      }
+
       for (let symbol of type.getProperties()) {
-        let propertyType = this.tryGetTypeOfSymbol(symbol);
+        let propertyType = typeTable.tryGetTypeOfSymbol(symbol);
         if (propertyType == null) continue;
         traverseType(propertyType);
       }
@@ -1237,13 +1304,6 @@ export class TypeTable {
       }
 
       return lowlinkTable.get(id);
-
-      /** Indicates if a type contains no type variables, is a type variable, or strictly contains type variables. */
-      const enum TypeVarDepth {
-        noTypeVar = 0,
-        isTypeVar = 1,
-        containsTypeVar = 2,
-      }
 
       function traverseType(type: ts.Type): TypeVarDepth {
         if (isTypeVariable(type)) return TypeVarDepth.isTypeVar;
@@ -1326,5 +1386,37 @@ export class TypeTable {
         callback(constraint);
       }
     }
+  }
+}
+
+function isFunctionTypeOrTypeAlias(declaration: ts.Declaration | undefined) {
+  if (declaration == null) return false;
+  return declaration.kind === ts.SyntaxKind.FunctionType || declaration.kind === ts.SyntaxKind.TypeAliasDeclaration;
+}
+
+/**
+ * Given a `type` whose type-string is known to be a `reference`, returns true if this is the self-type for the referenced type.
+ *
+ * For example, for `type Foo<R> = ...` this returns true if `type` is `Foo<R>`.
+ */
+function isTypeSelfReference(type: ts.Type) {
+  if (type.aliasSymbol != null) {
+    const { aliasTypeArguments } = type;
+    if (aliasTypeArguments == null) return true;
+    let declaration = type.aliasSymbol.declarations?.[0];
+    if (declaration == null || declaration.kind !== ts.SyntaxKind.TypeAliasDeclaration) return false;
+    let alias = declaration as ts.TypeAliasDeclaration;
+    for (let i = 0; i < aliasTypeArguments.length; ++i) {
+      if (aliasTypeArguments[i].symbol?.declarations?.[0] !== alias.typeParameters[i]) {
+        return false;
+      }
+    }
+    return true;
+  } else if (isTypeReference(type)) {
+    return type.target === type;
+  } else {
+    // Return true because we know we have mapped this type to kind `reference`, and in the cases
+    // not covered above (i.e. generic types) it is always a self-reference.
+    return true;
   }
 }

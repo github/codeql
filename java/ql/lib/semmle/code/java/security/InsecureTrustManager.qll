@@ -2,11 +2,12 @@
 
 import java
 private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.security.SecurityFlag
 
 /** The creation of an insecure `TrustManager`. */
-abstract class InsecureTrustManagerSource extends DataFlow::Node { }
+abstract class InsecureTrustManagerSource extends ApiSourceNode { }
 
 private class DefaultInsecureTrustManagerSource extends InsecureTrustManagerSource {
   DefaultInsecureTrustManagerSource() {
@@ -18,13 +19,13 @@ private class DefaultInsecureTrustManagerSource extends InsecureTrustManagerSour
  * The use of a `TrustManager` in an SSL context.
  * Intentionally insecure connections are not considered sinks.
  */
-abstract class InsecureTrustManagerSink extends DataFlow::Node {
+abstract class InsecureTrustManagerSink extends ApiSinkNode {
   InsecureTrustManagerSink() { not isGuardedByInsecureFlag(this) }
 }
 
 private class DefaultInsecureTrustManagerSink extends InsecureTrustManagerSink {
   DefaultInsecureTrustManagerSink() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m.hasName("init") and
       m.getDeclaringType() instanceof SslContext and
       ma.getMethod() = m

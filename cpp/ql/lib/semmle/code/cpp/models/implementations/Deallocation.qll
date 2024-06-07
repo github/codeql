@@ -13,24 +13,28 @@ private class StandardDeallocationFunction extends DeallocationFunction {
   int freedArg;
 
   StandardDeallocationFunction() {
-    hasGlobalOrStdOrBslName([
+    this.hasGlobalOrStdOrBslName([
         // --- C library allocation
         "free", "realloc"
       ]) and
     freedArg = 0
     or
-    hasGlobalName([
-        // --- OpenSSL memory allocation
-        "CRYPTO_free", "CRYPTO_secure_free"
+    this.hasGlobalName([
+        // --- OpenSSL memory deallocation
+        "CRYPTO_free", "CRYPTO_secure_free",
+        // --- glib memory deallocation
+        "g_free"
       ]) and
     freedArg = 0
     or
-    hasGlobalOrStdName([
+    this.hasGlobalOrStdName([
         // --- Windows Memory Management for Windows Drivers
-        "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeMdl", "IoFreeWorkItem", "IoFreeErrorLogEntry",
-        "MmFreeContiguousMemory", "MmFreeContiguousMemorySpecifyCache", "MmFreeNonCachedMemory",
-        "MmFreeMappingAddress", "MmFreePagesFromMdl", "MmUnmapReservedMapping",
-        "MmUnmapLockedPages",
+        "ExFreePool", "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeIrp", "IoFreeMdl",
+        "IoFreeErrorLogEntry", "IoFreeWorkItem", "MmFreeContiguousMemory",
+        "MmFreeContiguousMemorySpecifyCache", "MmFreeNonCachedMemory", "MmFreeMappingAddress",
+        "MmFreePagesFromMdl", "MmUnmapReservedMapping", "MmUnmapLockedPages",
+        "NdisFreeGenericObject", "NdisFreeMemory", "NdisFreeMemoryWithTag", "NdisFreeMdl",
+        "NdisFreeNetBufferListPool", "NdisFreeNetBufferPool",
         // --- Windows Global / Local legacy allocation
         "LocalFree", "GlobalFree", "LocalReAlloc", "GlobalReAlloc",
         // --- Windows System Services allocation
@@ -44,15 +48,16 @@ private class StandardDeallocationFunction extends DeallocationFunction {
       ]) and
     freedArg = 0
     or
-    hasGlobalOrStdName([
+    this.hasGlobalOrStdName([
         // --- Windows Memory Management for Windows Drivers
         "ExFreeToLookasideListEx", "ExFreeToPagedLookasideList", "ExFreeToNPagedLookasideList",
+        "NdisFreeMemoryWithTagPriority", "StorPortFreeMdl", "StorPortFreePool",
         // --- NetBSD pool manager
         "pool_put", "pool_cache_put"
       ]) and
     freedArg = 1
     or
-    hasGlobalOrStdName(["HeapFree", "HeapReAlloc"]) and
+    this.hasGlobalOrStdName(["HeapFree", "HeapReAlloc"]) and
     freedArg = 2
   }
 
@@ -65,9 +70,9 @@ private class StandardDeallocationFunction extends DeallocationFunction {
 private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
   DeallocationFunction target;
 
-  CallDeallocationExpr() { target = getTarget() }
+  CallDeallocationExpr() { target = this.getTarget() }
 
-  override Expr getFreedExpr() { result = getArgument(target.getFreedArg()) }
+  override Expr getFreedExpr() { result = this.getArgument(target.getFreedArg()) }
 }
 
 /**
@@ -76,7 +81,7 @@ private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
 private class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
   DeleteDeallocationExpr() { this instanceof DeleteExpr }
 
-  override Expr getFreedExpr() { result = getExpr() }
+  override Expr getFreedExpr() { result = this.getExpr() }
 }
 
 /**
@@ -85,5 +90,5 @@ private class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
 private class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
   DeleteArrayDeallocationExpr() { this instanceof DeleteArrayExpr }
 
-  override Expr getFreedExpr() { result = getExpr() }
+  override Expr getFreedExpr() { result = this.getExpr() }
 }

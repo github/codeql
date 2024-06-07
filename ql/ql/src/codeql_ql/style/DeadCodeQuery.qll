@@ -186,6 +186,16 @@ private AstNode aliveStep(AstNode prev) {
   result = prev.(Module).getImplements(_)
   or
   result = prev.(PredicateExpr).getQualifier()
+  or
+  // a module argument is live if the constructed module is
+  result = prev.(ModuleExpr).getArgument(_)
+  or
+  // a type declaration is live if a reference to it is live
+  result = prev.(TypeExpr).getResolvedType().getDeclaration()
+  or
+  // a module member that implements a signature member is live if the module is
+  prev.(Module).getAMember() = result and
+  result.(Declaration).implements(_)
 }
 
 private AstNode deprecated() {

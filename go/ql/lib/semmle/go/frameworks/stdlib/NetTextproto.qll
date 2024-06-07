@@ -13,11 +13,11 @@ module NetTextproto {
 
     FunctionModels() {
       // signature: func NewConn(conn io.ReadWriteCloser) *Conn
-      hasQualifiedName("net/textproto", "NewConn") and
+      this.hasQualifiedName("net/textproto", "NewConn") and
       (inp.isResult() and outp.isParameter(0))
       or
       // signature: func NewWriter(w *bufio.Writer) *Writer
-      hasQualifiedName("net/textproto", "NewWriter") and
+      this.hasQualifiedName("net/textproto", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 
@@ -32,11 +32,11 @@ module NetTextproto {
 
     MethodModels() {
       // signature: func (*Writer) DotWriter() io.WriteCloser
-      hasQualifiedName("net/textproto", "Writer", "DotWriter") and
+      this.hasQualifiedName("net/textproto", "Writer", "DotWriter") and
       (inp.isResult() and outp.isReceiver())
       or
       // signature: func (*Writer) PrintfLine(format string, args ...interface{}) error
-      hasQualifiedName("net/textproto", "Writer", "PrintfLine") and
+      this.hasQualifiedName("net/textproto", "Writer", "PrintfLine") and
       (inp.isParameter(_) and outp.isReceiver())
     }
 

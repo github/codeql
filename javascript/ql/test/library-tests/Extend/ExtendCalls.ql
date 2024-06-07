@@ -2,22 +2,22 @@ import javascript
 
 class Assertion extends CallExpr {
   Assertion() {
-    getCalleeName() = "checkDeep" or
-    getCalleeName() = "checkShallow"
+    this.getCalleeName() = "checkDeep" or
+    this.getCalleeName() = "checkShallow"
   }
 
-  predicate shouldBeDeep() { getCalleeName() = "checkDeep" }
+  predicate shouldBeDeep() { this.getCalleeName() = "checkDeep" }
 
-  ExtendCall getExtendCall() { result = getArgument(0).flow() }
+  ExtendCall getExtendCall() { result = this.getArgument(0).flow() }
 
   string getMessage() {
-    if not exists(getExtendCall())
+    if not exists(this.getExtendCall())
     then result = "Not an extend call"
     else
-      if shouldBeDeep() and not getExtendCall().isDeep()
+      if this.shouldBeDeep() and not this.getExtendCall().isDeep()
       then result = "Not deep"
       else
-        if not shouldBeDeep() and getExtendCall().isDeep()
+        if not this.shouldBeDeep() and this.getExtendCall().isDeep()
         then result = "Not shallow"
         else result = "OK"
   }

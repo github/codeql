@@ -9,7 +9,7 @@ private import dotnet
 /**
  * An instruction that pushes a value onto the stack.
  */
-class Expr extends DotNet::Expr, Instruction, @cil_expr {
+deprecated class Expr extends DotNet::Expr, Instruction, @cil_expr {
   override int getPushCount() { result = 1 }
 
   override Type getType() { result = Instruction.super.getType() }
@@ -24,7 +24,7 @@ class Expr extends DotNet::Expr, Instruction, @cil_expr {
 }
 
 /** An instruction that changes control flow. */
-class Branch extends Instruction, @cil_jump {
+deprecated class Branch extends Instruction, @cil_jump {
   /** Gets the instruction that is jumped to. */
   Instruction getTarget() { cil_jump(this, result) }
 
@@ -32,7 +32,7 @@ class Branch extends Instruction, @cil_jump {
 }
 
 /** An instruction that unconditionally jumps to another instruction. */
-class UnconditionalBranch extends Branch, @cil_unconditional_jump {
+deprecated class UnconditionalBranch extends Branch, @cil_unconditional_jump {
   override Instruction getASuccessorType(FlowType t) {
     t instanceof NormalFlow and result = this.getTarget()
   }
@@ -41,7 +41,7 @@ class UnconditionalBranch extends Branch, @cil_unconditional_jump {
 }
 
 /** An instruction that jumps to a target based on a condition. */
-class ConditionalBranch extends Branch, @cil_conditional_jump {
+deprecated class ConditionalBranch extends Branch, @cil_conditional_jump {
   override Instruction getASuccessorType(FlowType t) {
     t instanceof TrueFlow and result = this.getTarget()
     or
@@ -52,12 +52,12 @@ class ConditionalBranch extends Branch, @cil_conditional_jump {
 }
 
 /** An expression with two operands. */
-class BinaryExpr extends Expr, @cil_binary_expr {
+deprecated class BinaryExpr extends Expr, @cil_binary_expr {
   override int getPopCount() { result = 2 }
 }
 
 /** An expression with one operand. */
-class UnaryExpr extends Expr, @cil_unary_expr {
+deprecated class UnaryExpr extends Expr, @cil_unary_expr {
   override int getPopCount() { result = 1 }
 
   /** Gets the operand of this unary expression. */
@@ -65,12 +65,12 @@ class UnaryExpr extends Expr, @cil_unary_expr {
 }
 
 /** A binary expression that compares two values. */
-class ComparisonOperation extends BinaryExpr, @cil_comparison_operation {
+deprecated class ComparisonOperation extends BinaryExpr, @cil_comparison_operation {
   override BoolType getType() { exists(result) }
 }
 
 /** A binary arithmetic expression. */
-class BinaryArithmeticExpr extends BinaryExpr, @cil_binary_arithmetic_operation {
+deprecated class BinaryArithmeticExpr extends BinaryExpr, @cil_binary_arithmetic_operation {
   override Type getType() {
     exists(Type t0, Type t1 |
       t0 = this.getOperandType(0).getUnderlyingType() and
@@ -86,28 +86,28 @@ class BinaryArithmeticExpr extends BinaryExpr, @cil_binary_arithmetic_operation 
 }
 
 /** A binary bitwise expression. */
-class BinaryBitwiseOperation extends BinaryExpr, @cil_binary_bitwise_operation {
+deprecated class BinaryBitwiseOperation extends BinaryExpr, @cil_binary_bitwise_operation {
   // This is wrong but efficient - should depend on the types of the operands.
   override IntType getType() { exists(result) }
 }
 
 /** A unary bitwise expression. */
-class UnaryBitwiseOperation extends UnaryExpr, @cil_unary_bitwise_operation {
+deprecated class UnaryBitwiseOperation extends UnaryExpr, @cil_unary_bitwise_operation {
   // This is wrong but efficient - should depend on the types of the operands.
   override IntType getType() { exists(result) }
 }
 
 /** A unary expression that converts a value from one primitive type to another. */
-class Conversion extends UnaryExpr, @cil_conversion_operation {
+deprecated class Conversion extends UnaryExpr, @cil_conversion_operation {
   /** Gets the expression being converted. */
   Expr getExpr() { result = this.getOperand(0) }
 }
 
 /** A branch that leaves the scope of a `Handler`. */
-class Leave extends UnconditionalBranch, @cil_leave_any { }
+deprecated class Leave extends UnconditionalBranch, @cil_leave_any { }
 
 /** An expression that pushes a literal value onto the stack. */
-class Literal extends DotNet::Literal, Expr, @cil_literal {
+deprecated class Literal extends DotNet::Literal, Expr, @cil_literal {
   /** Gets the pushed value. */
   override string getValue() { cil_value(this, result) }
 
@@ -115,43 +115,43 @@ class Literal extends DotNet::Literal, Expr, @cil_literal {
 }
 
 /** An integer literal. */
-class IntLiteral extends Literal, @cil_ldc_i {
+deprecated class IntLiteral extends Literal, @cil_ldc_i {
   override string getExtra() { none() }
 
   override IntType getType() { exists(result) }
 }
 
 /** An expression that pushes a `float`/`Single`. */
-class FloatLiteral extends Literal, @cil_ldc_r { }
+deprecated class FloatLiteral extends Literal, @cil_ldc_r { }
 
 /** An expression that pushes a `null` value onto the stack. */
-class NullLiteral extends Literal, @cil_ldnull { }
+deprecated class NullLiteral extends Literal, @cil_ldnull { }
 
 /** An expression that pushes a string onto the stack. */
-class StringLiteral extends Literal, @cil_ldstr { }
+deprecated class StringLiteral extends Literal, @cil_ldstr { }
 
 /** A branch with one operand. */
-class UnaryBranch extends ConditionalBranch, @cil_unary_jump {
+deprecated class UnaryBranch extends ConditionalBranch, @cil_unary_jump {
   override int getPopCount() { result = 1 }
 
   override int getPushCount() { result = 0 }
 }
 
 /** A branch with two operands. */
-class BinaryBranch extends ConditionalBranch, @cil_binary_jump {
+deprecated class BinaryBranch extends ConditionalBranch, @cil_binary_jump {
   override int getPopCount() { result = 2 }
 
   override int getPushCount() { result = 0 }
 }
 
 /** A call. */
-class Call extends Expr, DotNet::Call, @cil_call_any {
+deprecated class Call extends Expr, DotNet::Call, @cil_call_any {
   /** Gets the method that is called. */
   override Method getTarget() { cil_access(this, result) }
 
   override Method getARuntimeTarget() { result = this.getTarget().getAnOverrider*() }
 
-  override string getExtra() { result = this.getTarget().getQualifiedName() }
+  override string getExtra() { result = this.getTarget().getFullyQualifiedName() }
 
   /**
    * Gets the return type of the call. Methods that do not return a value
@@ -198,24 +198,24 @@ class Call extends Expr, DotNet::Call, @cil_call_any {
 }
 
 /** A tail call. */
-class TailCall extends Call {
+deprecated class TailCall extends Call {
   TailCall() { this.isTailCall() }
 
   override predicate canFlowNext() { none() }
 }
 
 /** A call to a static target. */
-class StaticCall extends Call {
+deprecated class StaticCall extends Call {
   StaticCall() { not this.isVirtual() }
 }
 
 /** A call to a virtual target. */
-class VirtualCall extends Call {
+deprecated class VirtualCall extends Call {
   VirtualCall() { this.isVirtual() }
 }
 
 /** A read of an array element. */
-class ReadArrayElement extends BinaryExpr, @cil_read_array {
+deprecated class ReadArrayElement extends BinaryExpr, @cil_read_array {
   /** Gets the array being read. */
   Expr getArray() { result = this.getOperand(1) }
 
@@ -224,14 +224,14 @@ class ReadArrayElement extends BinaryExpr, @cil_read_array {
 }
 
 /** A write of an array element. */
-class WriteArrayElement extends Instruction, @cil_write_array {
+deprecated class WriteArrayElement extends Instruction, @cil_write_array {
   override int getPushCount() { result = 0 }
 
   override int getPopCount() { result = 3 }
 }
 
 /** A `return` statement. */
-class Return extends Instruction, @cil_ret {
+deprecated class Return extends Instruction, @cil_ret {
   /** Gets the expression being returned, if any. */
   Expr getExpr() { result = this.getOperand(0) }
 
@@ -239,7 +239,7 @@ class Return extends Instruction, @cil_ret {
 }
 
 /** A `throw` statement. */
-class Throw extends Instruction, DotNet::Throw, @cil_throw_any {
+deprecated class Throw extends Instruction, DotNet::Throw, @cil_throw_any {
   override Expr getExpr() { result = this.getOperand(0) }
 
   /** Gets the type of the exception being thrown. */
@@ -249,7 +249,7 @@ class Throw extends Instruction, DotNet::Throw, @cil_throw_any {
 }
 
 /** Stores a value at an address/location. */
-class StoreIndirect extends Instruction, @cil_stind {
+deprecated class StoreIndirect extends Instruction, @cil_stind {
   override int getPopCount() { result = 2 }
 
   /** Gets the location to store the value at. */
@@ -260,4 +260,4 @@ class StoreIndirect extends Instruction, @cil_stind {
 }
 
 /** Loads a value from an address/location. */
-class LoadIndirect extends UnaryExpr, @cil_ldind { }
+deprecated class LoadIndirect extends UnaryExpr, @cil_ldind { }

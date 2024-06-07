@@ -4,33 +4,36 @@
 
 private import python
 private import DataFlowPrivate
-import semmle.python.dataflow.new.TypeTracker
+import semmle.python.dataflow.new.TypeTracking
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * IPA type for data flow nodes.
  *
- * Flow between SSA variables are computed in `Essa.qll`
+ * Nodes broadly fall into three categories.
  *
- * Flow from SSA variables to control flow nodes are generally via uses.
- *
- * Flow from control flow nodes to SSA variables are generally via assignments.
- *
- * The current implementation of these cross flows can be seen in `EssaTaintTracking`.
+ * - Control flow nodes: Flow between these is based on use-use flow computed via an SSA analysis.
+ * - Module variable nodes: These represent global variables and act as canonical targets for reads and writes of these.
+ * - Synthetic nodes: These handle flow in various special cases.
  */
 newtype TNode =
-  /** A node corresponding to an SSA variable. */
-  TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(ControlFlowNode node) {
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
   } or
+  /**
+   * A node corresponding to a scope entry definition. That is, the value of a variable
+   * as it enters a scope.
+   */
+  TScopeEntryDefinitionNode(ScopeEntryDefinition def) { not def.getScope() instanceof Module } or
   /**
    * A synthetic node representing the value of an object before a state change.
    *
@@ -105,14 +108,7 @@ newtype TNode =
   // So for now we live with having these synthetic ORM nodes for _all_ classes, which
   // is a bit wasteful, but we don't think it will hurt too much.
   TSyntheticOrmModelNode(Class cls) or
-  TSummaryNode(
-    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
-  ) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  } or
-  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
-    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-  } or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   /** A synthetic node to capture positional arguments that are passed to a `*args` parameter. */
   TSynthStarArgsElementParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
@@ -122,15 +118,22 @@ newtype TNode =
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  } or
+  /** A synthetic node representing a captured variable. */
+  TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  /** A synthetic node representing the heap of a function. Used for variable capture. */
+  TSynthCapturedVariablesParameterNode(Function f) {
+    f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
+    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
+    exists(TFunction(f))
+  } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
-
-/** Helper for `Node::getEnclosingCallable`. */
-private DataFlowCallable getCallableScope(Scope s) {
-  result.getScope() = s
-  or
-  not exists(DataFlowCallable c | c.getScope() = s) and
-  result = getCallableScope(s.getEnclosingScope())
-}
 
 private import semmle.python.internal.CachedStages
 
@@ -153,6 +156,7 @@ class Node extends TNode {
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -162,16 +166,12 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  cached
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     Stages::DataFlow::ref() and
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /** Gets the ESSA variable corresponding to this node, if any. */
-  EssaVariable asVar() { none() }
 
   /** Gets the control-flow node corresponding to this node, if any. */
   ControlFlowNode asCfgNode() { none() }
@@ -183,25 +183,6 @@ class Node extends TNode {
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
-}
-
-/** A data-flow node corresponding to an SSA variable. */
-class EssaNode extends Node, TEssaNode {
-  EssaVariable var;
-
-  EssaNode() { this = TEssaNode(var) }
-
-  /** Gets the `EssaVariable` represented by this data-flow node. */
-  EssaVariable getVar() { result = var }
-
-  override EssaVariable asVar() { result = var }
-
-  /** Gets a textual representation of this element. */
-  override string toString() { result = var.toString() }
-
-  override Scope getScope() { result = var.getScope() }
-
-  override Location getLocation() { result = var.getLocation() }
 }
 
 /** A data-flow node corresponding to a control-flow node. */
@@ -294,6 +275,28 @@ class ExprNode extends CfgNode {
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
+
+/**
+ * A node corresponding to a scope entry definition. That is, the value of a variable
+ * as it enters a scope.
+ */
+class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
+  ScopeEntryDefinition def;
+
+  ScopeEntryDefinitionNode() { this = TScopeEntryDefinitionNode(def) }
+
+  /** Gets the `ScopeEntryDefinition` associated with this node. */
+  ScopeEntryDefinition getDefinition() { result = def }
+
+  /** Gets the source variable represented by this node. */
+  SsaSourceVariable getVariable() { result = def.getSourceVariable() }
+
+  override Location getLocation() { result = def.getLocation() }
+
+  override Scope getScope() { result = def.getScope() }
+
+  override string toString() { result = "Entry definition for " + this.getVariable().toString() }
+}
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
@@ -407,7 +410,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode for " + mod.getName() + "." + var.getId()
+    result = "ModuleVariableNode in " + concat( | | mod.toString(), ",") + " for " + var.getId()
   }
 
   /** Gets the module in which this variable appears. */
@@ -426,8 +429,8 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
-  EssaNode getAWrite() {
-    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  Node getAWrite() {
+    any(EssaNodeDefinition def).definedBy(var, result.asCfgNode().(DefinitionNode))
   }
 
   /** Gets the possible values of the variable at the end of import time */
@@ -472,7 +475,7 @@ class IterableSequenceNode extends Node, TIterableSequenceNode {
 
   override string toString() { result = "IterableSequence" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -489,7 +492,7 @@ class IterableElementNode extends Node, TIterableElementNode {
 
   override string toString() { result = "IterableElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -504,7 +507,7 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 
   override string toString() { result = "StarPatternElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -588,32 +591,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 }
 
 /**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends GuardNode {
-  /** Holds if this guard validates `node` upon evaluating to `branch`. */
-  abstract predicate checks(ControlFlowNode node, boolean branch);
-
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
-      AdjacentUses::useOfDef(def, node) and
-      this.checks(node, branch) and
-      AdjacentUses::useOfDef(def, result.asCfgNode()) and
-      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
-    )
-  }
-}
-
-/**
  * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
  */
@@ -628,17 +605,60 @@ newtype TContent =
     or
     // Arguments can overflow and end up in the starred parameter tuple.
     exists(any(CallNode cn).getArg(index))
+    or
+    // since flow summaries might use tuples, we ensure that we at least have valid
+    // TTupleElementContent for the 0..7 (7 was picked to match `small_tuple` in
+    // data-flow-private)
+    index in [0 .. 7]
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
-    key = any(KeyValuePair kvp).getKey().(StrConst).getS()
+    // {"key": ...}
+    key = any(KeyValuePair kvp).getKey().(StringLiteral).getText()
     or
+    // func(key=...)
     key = any(Keyword kw).getArg()
+    or
+    // d["key"] = ...
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+    or
+    // d.setdefault("key", ...)
+    exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
+      key = call.getArg(0).getNode().(StringLiteral).getText()
+    )
   } or
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
-  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
+  TAttributeContent(string attr) {
+    attr = any(Attribute a).getName()
+    or
+    // Flow summaries that target attributes rely on a TAttributeContent being
+    // available. However, since the code above only constructs a TAttributeContent
+    // based on the attribute names seen in the DB, we can end up in a scenario where
+    // flow summaries don't work due to missing TAttributeContent. To get around this,
+    // we need to add the attribute names used by flow summaries. This needs to be done
+    // both for the summaries written in QL and the ones written in data-extension
+    // files.
+    //
+    // 1) Summaries in QL. Sadly the following code leads to non-monotonic recursion
+    //   name = any(AccessPathToken a).getAnArgument("Attribute")
+    // instead we use a qltest to alert if we write a new summary in QL that uses an
+    // attribute -- see
+    // python/ql/test/library-tests/dataflow/summaries-checks/missing-attribute-content.ql
+    attr in ["re", "string", "pattern"]
+    or
+    //
+    // 2) summaries in data-extension files
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
+      attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  } or
+  /** A captured variable. */
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A data-flow value can have associated content.
@@ -699,6 +719,18 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v }
 }
 
 /**

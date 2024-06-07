@@ -1,6 +1,6 @@
 name: codeql/ruby-queries
-version: 0.6.1-dev
-groups: 
+version: 1.0.1-dev
+groups:
   - ruby
   - queries
 suites: codeql-suites
@@ -9,3 +9,4 @@ dependencies:
   codeql/ruby-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true

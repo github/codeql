@@ -11,14 +11,32 @@
 
 using namespace codeql;
 
+namespace {
+struct DisplayLoc {
+  llvm::StringRef file;
+  unsigned line;
+  unsigned column;
+
+  static DisplayLoc from(swift::SourceManager& sourceManager, swift::SourceLoc loc) {
+    if (loc.isInvalid()) {
+      return {"<invalid loc>", 0, 0};
+    }
+    auto file = sourceManager.getDisplayNameForLoc(loc);
+    auto [line, column] = sourceManager.getLineAndColumnInBuffer(loc);
+    return {file, line, column};
+  }
+};
+
+}  // namespace
+
 void SwiftDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceManager,
                                                 const swift::DiagnosticInfo& diagInfo) {
   if (diagInfo.IsChildNote) return;
-  Diagnostics diag{trap.createLabel<DiagnosticsTag>()};
+  Diagnostics diag{trap.createTypedLabel<DiagnosticsTag>()};
   diag.kind = translateDiagnosticsKind(diagInfo.Kind);
   diag.text = getDiagMessage(sourceManager, diagInfo);
   trap.emit(diag);
-  locationExtractor.attachLocation(sourceManager, diagInfo.Loc, diag.id);
+  locationExtractor.attachLocation(sourceManager, diagInfo, diag.id);
 
   forwardToLog(sourceManager, diagInfo, diag.text);
   for (const auto& child : diagInfo.ChildDiagnosticInfo) {
@@ -37,8 +55,7 @@ std::string SwiftDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourc
 void SwiftDiagnosticsConsumer::forwardToLog(swift::SourceManager& sourceManager,
                                             const swift::DiagnosticInfo& diagInfo,
                                             const std::string& message) {
-  auto file = sourceManager.getDisplayNameForLoc(diagInfo.Loc);
-  auto [line, column] = sourceManager.getLineAndColumnInBuffer(diagInfo.Loc);
+  auto [file, line, column] = DisplayLoc::from(sourceManager, diagInfo.Loc);
   using Kind = swift::DiagnosticKind;
   switch (diagInfo.Kind) {
     case Kind::Error:

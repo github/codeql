@@ -5,7 +5,7 @@ private class KnownType extends Type {
 }
 
 class TypeRef extends @typeref {
-  string toString() { hasName(result) }
+  string toString() { this.hasName(result) }
 
   predicate hasName(string name) { typerefs(this, name) }
 
@@ -13,14 +13,14 @@ class TypeRef extends @typeref {
 }
 
 class MissingType extends TypeRef {
-  MissingType() { not exists(getType()) }
+  MissingType() { not exists(this.getType()) }
 }
 
 from
   Class class1, MissingType class2, MissingType class3, MissingType class4, MissingType class5,
   MissingType del2, Field a, Method b, Method c, Method d, Method e, Method f, Method g
 where
-  class1.hasQualifiedName("Assembly1", "Class1") and
+  class1.hasFullyQualifiedName("Assembly1", "Class1") and
   class2.hasName("Class2") and
   class3.hasName("Class3") and
   class4.hasName("Class4") and

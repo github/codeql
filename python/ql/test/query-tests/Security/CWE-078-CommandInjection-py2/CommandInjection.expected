@@ -1,23 +1,25 @@
 edges
-| command_injection.py:0:0:0:0 | ModuleVariableNode for command_injection.request | command_injection.py:18:13:18:19 | ControlFlowNode for request |
-| command_injection.py:5:26:5:32 | ControlFlowNode for ImportMember | command_injection.py:5:26:5:32 | GSSA Variable request |
-| command_injection.py:5:26:5:32 | GSSA Variable request | command_injection.py:0:0:0:0 | ModuleVariableNode for command_injection.request |
-| command_injection.py:18:13:18:19 | ControlFlowNode for request | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:21:15:21:27 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:25:19:25:31 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:26:19:26:31 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr |
+| command_injection.py:5:26:5:32 | ControlFlowNode for ImportMember | command_injection.py:5:26:5:32 | ControlFlowNode for request | provenance |  |
+| command_injection.py:5:26:5:32 | ControlFlowNode for request | command_injection.py:18:13:18:19 | ControlFlowNode for request | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:21:15:21:27 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:25:19:25:31 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:26:19:26:31 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr | provenance |  |
+| command_injection.py:18:13:18:19 | ControlFlowNode for request | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:18:13:18:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| command_injection.py:18:13:18:41 | ControlFlowNode for Attribute() | command_injection.py:18:5:18:9 | ControlFlowNode for files | provenance |  |
 nodes
-| command_injection.py:0:0:0:0 | ModuleVariableNode for command_injection.request | semmle.label | ModuleVariableNode for command_injection.request |
 | command_injection.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| command_injection.py:5:26:5:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| command_injection.py:5:26:5:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:18:5:18:9 | ControlFlowNode for files | semmle.label | ControlFlowNode for files |
 | command_injection.py:18:13:18:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:18:13:18:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:21:15:21:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |

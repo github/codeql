@@ -26,7 +26,7 @@ def ql_output_path(): return paths.root_dir / "ql/lib/other/path"
 def ql_test_output_path(): return paths.root_dir / "ql/test/path"
 
 
-def generated_registry_path(): return paths.root_dir / "registry.list"
+def generated_registry_path(): return paths.root_dir / "ql/registry.list"
 
 
 def import_file(): return stub_path().with_suffix(".qll")
@@ -139,16 +139,26 @@ def a_ql_class(**kwargs):
     return ql.Class(**kwargs, import_prefix=gen_import)
 
 
-def a_ql_stub(**kwargs):
-    return ql.Stub(**kwargs, import_prefix=gen_import)
+def a_ql_stub(*, name, import_prefix="", **kwargs):
+    return ql.Stub(name=name, **kwargs, import_prefix=gen_import,
+                   base_import=f"{gen_import_prefix}{import_prefix}{name}")
 
 
 def test_one_empty_class(generate_classes):
     assert generate_classes([
         schema.Class("A")
     ]) == {
-        "A.qll": (a_ql_stub(name="A", base_import=gen_import_prefix + "A"),
+        "A.qll": (a_ql_stub(name="A"),
                   a_ql_class(name="A", final=True)),
+    }
+
+
+def test_one_empty_internal_class(generate_classes):
+    assert generate_classes([
+        schema.Class("A", pragmas=["ql_internal"])
+    ]) == {
+        "A.qll": (a_ql_stub(name="A", internal=True),
+                  a_ql_class(name="A", final=True, internal=True)),
     }
 
 
@@ -159,15 +169,11 @@ def test_hierarchy(generate_classes):
         schema.Class("B", bases=["A"], derived={"D"}),
         schema.Class("A", derived={"B", "C"}),
     ]) == {
-        "A.qll": (a_ql_stub(name="A", base_import=gen_import_prefix + "A"),
-                  a_ql_class(name="A")),
-        "B.qll": (a_ql_stub(name="B", base_import=gen_import_prefix + "B"),
-                  a_ql_class(name="B", bases=["A"], imports=[stub_import_prefix + "A"])),
-        "C.qll": (a_ql_stub(name="C", base_import=gen_import_prefix + "C"),
-                  a_ql_class(name="C", bases=["A"], imports=[stub_import_prefix + "A"])),
-        "D.qll": (a_ql_stub(name="D", base_import=gen_import_prefix + "D"),
-                  a_ql_class(name="D", final=True, bases=["B", "C"],
-                             imports=[stub_import_prefix + cls for cls in "BC"])),
+        "A.qll": (a_ql_stub(name="A"), a_ql_class(name="A")),
+        "B.qll": (a_ql_stub(name="B"), a_ql_class(name="B", bases=["A"], imports=[stub_import_prefix + "A"])),
+        "C.qll": (a_ql_stub(name="C"), a_ql_class(name="C", bases=["A"], imports=[stub_import_prefix + "A"])),
+        "D.qll": (a_ql_stub(name="D"), a_ql_class(name="D", final=True, bases=["B", "C"],
+                                                  imports=[stub_import_prefix + cls for cls in "BC"])),
     }
 
 
@@ -196,11 +202,11 @@ def test_hierarchy_children(generate_children_implementations):
         schema.Class("C", bases=["A"], derived={"D"}, pragmas=["ql_internal"]),
         schema.Class("D", bases=["B", "C"]),
     ]) == ql.GetParentImplementation(
-        classes=[a_ql_class(name="A", ql_internal=True),
+        classes=[a_ql_class(name="A", internal=True),
                  a_ql_class(name="B", bases=["A"], imports=[
                      stub_import_prefix + "A"]),
                  a_ql_class(name="C", bases=["A"], imports=[
-                     stub_import_prefix + "A"], ql_internal=True),
+                     stub_import_prefix + "A"], internal=True),
                  a_ql_class(name="D", final=True, bases=["B", "C"],
                             imports=[stub_import_prefix + cls for cls in "BC"]),
                  ],
@@ -213,11 +219,26 @@ def test_single_property(generate_classes):
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects",
                                                     tableparams=["this", "result"], doc="foo of this my object"),
+                                    ])),
+    }
+
+
+def test_internal_property(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar", pragmas=["ql_internal"])]),
+    ]) == {
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
+                         a_ql_class(name="MyObject", final=True,
+                                    properties=[
+                                        ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                    tableparams=["this", "result"], doc="foo of this my object",
+                                                    internal=True),
                                     ])),
     }
 
@@ -236,9 +257,8 @@ def test_children(generate_classes):
             schema.RepeatedOptionalProperty("child_4", "int", is_child=True),
         ]),
     ]) == {
-        "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
-                         a_ql_class(name="FakeRoot", final=True)),
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "FakeRoot.qll": (a_ql_stub(name="FakeRoot"), a_ql_class(name="FakeRoot", final=True)),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="A", type="int", tablename="my_objects",
@@ -286,7 +306,7 @@ def test_single_properties(generate_classes):
             schema.SingleProperty("three", "z"),
         ]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="One", type="x", tablename="my_objects",
@@ -309,9 +329,8 @@ def test_optional_property(generate_classes, is_child, prev_child):
         schema.Class("MyObject", properties=[
             schema.OptionalProperty("foo", "bar", is_child=is_child)]),
     ]) == {
-        "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
-                         a_ql_class(name="FakeRoot", final=True)),
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "FakeRoot.qll": (a_ql_stub(name="FakeRoot"), a_ql_class(name="FakeRoot", final=True)),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True, properties=[
                                     ql.Property(singular="Foo", type="bar", tablename="my_object_foos",
                                                 tableparams=["this", "result"],
@@ -327,9 +346,8 @@ def test_repeated_property(generate_classes, is_child, prev_child):
         schema.Class("MyObject", properties=[
             schema.RepeatedProperty("foo", "bar", is_child=is_child)]),
     ]) == {
-        "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
-                         a_ql_class(name="FakeRoot", final=True)),
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "FakeRoot.qll": (a_ql_stub(name="FakeRoot"), a_ql_class(name="FakeRoot", final=True)),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True, properties=[
                                     ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                                                 tableparams=["this", "index", "result"], prev_child=prev_child,
@@ -344,9 +362,8 @@ def test_repeated_unordered_property(generate_classes):
         schema.Class("MyObject", properties=[
             schema.RepeatedUnorderedProperty("foo", "bar")]),
     ]) == {
-        "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
-                         a_ql_class(name="FakeRoot", final=True)),
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "FakeRoot.qll": (a_ql_stub(name="FakeRoot"), a_ql_class(name="FakeRoot", final=True)),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True, properties=[
                                     ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                                                 tableparams=["this", "result"], is_unordered=True,
@@ -363,9 +380,8 @@ def test_repeated_optional_property(generate_classes, is_child, prev_child):
             schema.RepeatedOptionalProperty("foo", "bar", is_child=is_child)]),
     ]) == {
 
-        "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
-                         a_ql_class(name="FakeRoot", final=True)),
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "FakeRoot.qll": (a_ql_stub(name="FakeRoot"), a_ql_class(name="FakeRoot", final=True)),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True, properties=[
                                     ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                                                 tableparams=["this", "index", "result"], is_optional=True,
@@ -380,7 +396,7 @@ def test_predicate_property(generate_classes):
         schema.Class("MyObject", properties=[
             schema.PredicateProperty("is_foo")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True, properties=[
                                     ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo",
                                                 tableparams=["this"], is_predicate=True, doc="this my object is foo"),
@@ -395,7 +411,7 @@ def test_single_class_property(generate_classes, is_child, prev_child):
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "Bar", is_child=is_child)]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(
             name="MyObject", final=True, imports=[stub_import_prefix + "Bar"], properties=[
                 ql.Property(singular="Foo", type="Bar", tablename="my_objects",
@@ -404,8 +420,7 @@ def test_single_class_property(generate_classes, is_child, prev_child):
                             prev_child=prev_child, doc="foo of this my object"),
             ],
         )),
-        "Bar.qll": (a_ql_stub(name="Bar", base_import=gen_import_prefix + "Bar"),
-                    a_ql_class(name="Bar", final=True)),
+        "Bar.qll": (a_ql_stub(name="Bar"), a_ql_class(name="Bar", final=True)),
     }
 
 
@@ -414,8 +429,7 @@ def test_class_with_doc(generate_classes):
     assert generate_classes([
         schema.Class("A", doc=doc),
     ]) == {
-        "A.qll": (a_ql_stub(name="A", base_import=gen_import_prefix + "A"),
-                  a_ql_class(name="A", final=True, doc=doc)),
+        "A.qll": (a_ql_stub(name="A", doc=doc), a_ql_class(name="A", final=True, doc=doc)),
     }
 
 
@@ -425,9 +439,9 @@ def test_class_dir(generate_classes):
         schema.Class("A", derived={"B"}, group=dir),
         schema.Class("B", bases=["A"]),
     ]) == {
-        f"{dir}/A.qll": (a_ql_stub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
-                         a_ql_class(name="A", dir=pathlib.Path(dir))),
-        "B.qll": (a_ql_stub(name="B", base_import=gen_import_prefix + "B"),
+        f"{dir}/A.qll": (
+            a_ql_stub(name="A", import_prefix="another.rel.path."), a_ql_class(name="A", dir=pathlib.Path(dir))),
+        "B.qll": (a_ql_stub(name="B"),
                   a_ql_class(name="B", final=True, bases=["A"],
                              imports=[stub_import_prefix + "another.rel.path.A"])),
     }
@@ -586,11 +600,11 @@ def test_test_partial_properties(opts, generate_tests):
                                                                                type="bool")),
         "B/B_getZ.ql": a_ql_property_tester(class_name="B",
                                             property=ql.PropertyForTest(getter="getZ", is_total=False,
-                                                                        is_indexed=True,
-                                                                        type="int")),
+                                                                               is_indexed=True,
+                                                                               type="int")),
         "B/B_getAW.ql": a_ql_property_tester(class_name="B",
                                              property=ql.PropertyForTest(getter="getAW", is_total=False,
-                                                                         type="string")),
+                                                                                type="string")),
     }
 
 
@@ -611,7 +625,7 @@ def test_test_properties_deduplicated(opts, generate_tests):
         ]),
         "Final/Final_getY.ql": a_ql_property_tester(class_name="Final",
                                                     property=ql.PropertyForTest(getter="getY", is_total=False,
-                                                                                is_indexed=True,
+                                                                                       is_indexed=True,
                                                                                        type="bool")),
     }
 
@@ -699,6 +713,18 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
     }
 
 
+def test_test_with(opts, generate_tests):
+    write(opts.ql_test_output / "B" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"A", "B"}),
+        schema.Class("A", bases=["Base"], test_with="B"),
+        schema.Class("B", bases=["Base"]),
+    ]) == {
+        "B/A.ql": a_ql_class_tester(class_name="A"),
+        "B/B.ql": a_ql_class_tester(class_name="B"),
+    }
+
+
 def test_property_description(generate_classes):
     description = ["Lorem", "Ipsum"]
     assert generate_classes([
@@ -706,7 +732,7 @@ def test_property_description(generate_classes):
             schema.SingleProperty("foo", "bar", description=description),
         ]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects",
@@ -722,7 +748,7 @@ def test_property_doc_override(generate_classes):
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar", doc="baz")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects",
@@ -737,7 +763,7 @@ def test_repeated_property_doc_override(generate_classes):
             schema.RepeatedProperty("x", "int", doc="children of this"),
             schema.RepeatedOptionalProperty("y", "int", doc="child of this")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="X", plural="Xes", type="int",
@@ -759,7 +785,7 @@ def test_property_doc_abbreviations(generate_classes, abbr, expected):
         schema.Class("Object", properties=[
             schema.SingleProperty(f"foo_{abbr}_bar", "baz")]),
     ]) == {
-        "Object.qll": (a_ql_stub(name="Object", base_import=gen_import_prefix + "Object"),
+        "Object.qll": (a_ql_stub(name="Object"),
                        a_ql_class(name="Object", final=True,
                                   properties=[
                                       ql.Property(singular=f"Foo{abbr.capitalize()}Bar", type="baz",
@@ -776,7 +802,7 @@ def test_property_doc_abbreviations_ignored_if_within_word(generate_classes, abb
         schema.Class("Object", properties=[
             schema.SingleProperty(f"foo_{abbr}acadabra_bar", "baz")]),
     ]) == {
-        "Object.qll": (a_ql_stub(name="Object", base_import=gen_import_prefix + "Object"),
+        "Object.qll": (a_ql_stub(name="Object"),
                        a_ql_class(name="Object", final=True,
                                   properties=[
                                       ql.Property(singular=f"Foo{abbr.capitalize()}acadabraBar", type="baz",
@@ -792,7 +818,7 @@ def test_repeated_property_doc_override_with_format(generate_classes):
             schema.RepeatedProperty("x", "int", doc="special {children} of this"),
             schema.RepeatedOptionalProperty("y", "int", doc="special {child} of this")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="X", plural="Xes", type="int",
@@ -815,7 +841,7 @@ def test_repeated_property_doc_override_with_multiple_formats(generate_classes):
             schema.RepeatedProperty("x", "int", doc="{cat} or {dog}"),
             schema.RepeatedOptionalProperty("y", "int", doc="{cats} or {dogs}")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="X", plural="Xes", type="int",
@@ -835,7 +861,7 @@ def test_property_doc_override_with_format(generate_classes):
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar", doc="special {baz} of this")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects",
@@ -850,7 +876,7 @@ def test_property_on_class_with_default_doc_name(generate_classes):
             schema.SingleProperty("foo", "bar")],
             default_doc_name="baz"),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects",
@@ -859,27 +885,76 @@ def test_property_on_class_with_default_doc_name(generate_classes):
     }
 
 
-def test_stub_on_class_with_ipa_from_class(generate_classes):
+def test_stub_on_class_with_synth_from_class(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", ipa=schema.IpaInfo(from_class="A")),
+        schema.Class("MyObject", synth=schema.SynthInfo(from_class="A"),
+                     properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject", ipa_accessors=[
-            ql.IpaUnderlyingAccessor(argument="Entity", type="Raw::A", constructorparams=["result"]),
+        "MyObject.qll": (a_ql_stub(name="MyObject", synth_accessors=[
+            ql.SynthUnderlyingAccessor(argument="Entity", type="Raw::A", constructorparams=["result"]),
         ]),
-            a_ql_class(name="MyObject", final=True, ipa=True)),
+            a_ql_class(name="MyObject", final=True, properties=[
+                       ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
+                                   tableparams=["this", "result"], doc="foo of this my object"),
+                       ])),
     }
 
 
-def test_stub_on_class_with_ipa_on_arguments(generate_classes):
+def test_stub_on_class_with_synth_on_arguments(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", ipa=schema.IpaInfo(on_arguments={"base": "A", "index": "int", "label": "string"})),
+        schema.Class("MyObject", synth=schema.SynthInfo(on_arguments={"base": "A", "index": "int", "label": "string"}),
+                     properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject", ipa_accessors=[
-            ql.IpaUnderlyingAccessor(argument="Base", type="Raw::A", constructorparams=["result", "_", "_"]),
-            ql.IpaUnderlyingAccessor(argument="Index", type="int", constructorparams=["_", "result", "_"]),
-            ql.IpaUnderlyingAccessor(argument="Label", type="string", constructorparams=["_", "_", "result"]),
+        "MyObject.qll": (a_ql_stub(name="MyObject", synth_accessors=[
+            ql.SynthUnderlyingAccessor(argument="Base", type="Raw::A", constructorparams=["result", "_", "_"]),
+            ql.SynthUnderlyingAccessor(argument="Index", type="int", constructorparams=["_", "result", "_"]),
+            ql.SynthUnderlyingAccessor(argument="Label", type="string", constructorparams=["_", "_", "result"]),
         ]),
-            a_ql_class(name="MyObject", final=True, ipa=True)),
+            a_ql_class(name="MyObject", final=True, properties=[
+                       ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
+                                   tableparams=["this", "result"], doc="foo of this my object"),
+                       ])),
+    }
+
+
+def test_synth_property(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar", synth=True)]),
+    ]) == {
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
+                         a_ql_class(name="MyObject", final=True,
+                                    properties=[
+                                        ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                    synth=True,
+                                                    tableparams=["this", "result"], doc="foo of this my object"),
+                                    ])),
+    }
+
+
+def test_hideable_class(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", hideable=True),
+    ]) == {
+        "MyObject.qll": (a_ql_stub(name="MyObject"), a_ql_class(name="MyObject", final=True, hideable=True)),
+    }
+
+
+def test_hideable_property(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", hideable=True),
+        schema.Class("Other", properties=[
+            schema.SingleProperty("x", "MyObject"),
+        ]),
+    ]) == {
+        "MyObject.qll": (a_ql_stub(name="MyObject"), a_ql_class(name="MyObject", final=True, hideable=True)),
+        "Other.qll": (a_ql_stub(name="Other"),
+                      a_ql_class(name="Other", imports=[stub_import_prefix + "MyObject"],
+                                 final=True, properties=[
+                                 ql.Property(singular="X", type="MyObject", tablename="others",
+                                             type_is_hideable=True,
+                                             tableparams=["this", "result"], doc="x of this other"),
+                                 ])),
     }
 
 

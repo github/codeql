@@ -12,9 +12,11 @@
 import cpp
 
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow2` instead.
+ *
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) data flow analyses.
  */
-module DataFlow2 {
+deprecated module DataFlow2 {
   import semmle.code.cpp.dataflow.internal.DataFlowImpl2
 }

@@ -13,7 +13,7 @@ module Reflect {
 
     FunctionModels() {
       // signature: func Append(s Value, x ...Value) Value
-      hasQualifiedName("reflect", "Append") and
+      this.hasQualifiedName("reflect", "Append") and
       (inp.isParameter(_) and outp.isResult())
     }
 

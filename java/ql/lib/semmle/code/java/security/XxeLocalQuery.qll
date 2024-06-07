@@ -27,7 +27,7 @@ deprecated class XxeLocalConfig extends TaintTracking::Configuration {
 /**
  * A taint-tracking configuration for unvalidated local user input that is used in XML external entity expansion.
  */
-module XxeLocalConfig implements DataFlow::ConfigSig {
+deprecated module XxeLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XxeSink }
@@ -40,6 +40,8 @@ module XxeLocalConfig implements DataFlow::ConfigSig {
 }
 
 /**
+ * DEPRECATED: Use `XxeFlow` instead and configure threat model sources to include `local`.
+ *
  * Detect taint flow of unvalidated local user input that is used in XML external entity expansion.
  */
-module XxeLocalFlow = TaintTracking::Global<XxeLocalConfig>;
+deprecated module XxeLocalFlow = TaintTracking::Global<XxeLocalConfig>;

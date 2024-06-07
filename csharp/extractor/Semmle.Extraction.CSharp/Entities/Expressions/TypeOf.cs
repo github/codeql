@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax; // lgtm[cs/similar-file]
+using System.IO; // lgtm[cs/similar-file]
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.TYPEOF,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             var ret = new Expression(info);

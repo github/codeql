@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "A dep `Gopkg.toml` file was found",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/gopkg-toml-found",
+    "name": "A dep `Gopkg.toml` file was found"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

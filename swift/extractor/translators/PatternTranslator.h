@@ -7,6 +7,8 @@ namespace codeql {
 
 class PatternTranslator : public AstTranslatorBase<PatternTranslator> {
  public:
+  static constexpr std::string_view name = "pattern";
+
   using AstTranslatorBase<PatternTranslator>::AstTranslatorBase;
 
   codeql::NamedPattern translateNamedPattern(const swift::NamedPattern& pattern);
@@ -21,5 +23,13 @@ class PatternTranslator : public AstTranslatorBase<PatternTranslator> {
   codeql::ExprPattern translateExprPattern(const swift::ExprPattern& pattern);
   codeql::ParenPattern translateParenPattern(const swift::ParenPattern& pattern);
   codeql::BoolPattern translateBoolPattern(const swift::BoolPattern& pattern);
+
+ private:
+  template <typename T>
+  TrapClassOf<T> createPatternEntry(const T& pattern) {
+    auto entry = dispatcher.createEntry(pattern);
+    entry.type = dispatcher.fetchOptionalLabel(pattern.getType());
+    return entry;
+  }
 };
 }  // namespace codeql

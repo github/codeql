@@ -9,22 +9,7 @@ CodeQL for C/C++
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `rsyslog database <https://downloads.lgtm.com/snapshots/cpp/rsyslog/rsyslog/rsyslog-all-revision-2018-April-27--14-12-31.zip>`__
-
-.. note::
-
-   For this example, we will be analyzing `rsyslog <https://github.com/rsyslog/rsyslog>`__.
-
-   You can also query the project in `the query console <https://lgtm.com/query/project:1506087977050/lang:cpp/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `rsyslog <https://github.com/rsyslog/rsyslog>`__ from GitHub.
 
 ``snprintf``
 ============
@@ -93,8 +78,6 @@ Model answer
    :language: ql
 
 .. rst-class:: build
-
-- More full-featured version: `https://lgtm.com/rules/1505913226124 <https://lgtm.com/rules/1505913226124>`__.
 
 .. note::
 

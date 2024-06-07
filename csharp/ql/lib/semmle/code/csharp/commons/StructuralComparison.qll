@@ -195,48 +195,6 @@ predicate toGvn = toGvnCached/1;
 /**
  * Holds if the control flow elements `x` and `y` are structurally equal.
  */
-pragma[inline]
-predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
-  pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
-    pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
-}
-
-/**
- * DEPRECATED: Use `sameGvn` instead.
- *
- * A configuration for performing structural comparisons of program elements
- * (expressions and statements).
- *
- * The predicate `candidate()` must be overridden, in order to identify the
- * elements for which to perform structural comparison.
- *
- * Each use of the library is identified by a unique string value.
- */
-abstract deprecated class StructuralComparisonConfiguration extends string {
-  bindingset[this]
-  StructuralComparisonConfiguration() { any() }
-
-  /**
-   * Holds if elements `x` and `y` are candidates for testing structural
-   * equality.
-   *
-   * Subclasses are expected to override this predicate to identify the
-   * top-level elements which they want to compare. Care should be
-   * taken to avoid identifying too many pairs of elements, as in general
-   * there are very many structurally equal subtrees in a program, and
-   * in order to keep the computation feasible we must focus attention.
-   *
-   * Note that this relation is not expected to be symmetric -- it's
-   * fine to include a pair `(x, y)` but not `(y, x)`.
-   * In fact, not including the symmetrically implied fact will save
-   * half the computation time on the structural comparison.
-   */
-  abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
-
-  /**
-   * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
-   * flagged as candidates for structural equality, that is,
-   * `candidate(x, y)` must hold.
-   */
-  predicate same(ControlFlowElement x, ControlFlowElement y) { candidate(x, y) and sameGvn(x, y) }
-}
+bindingset[x, y]
+pragma[inline_late]
+predicate sameGvn(ControlFlowElement x, ControlFlowElement y) { toGvn(x) = toGvn(y) }

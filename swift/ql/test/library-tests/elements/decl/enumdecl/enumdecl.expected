@@ -1,0 +1,27 @@
+| enumdecl.swift:2:1:6:1 | MyColours | (EnumDecl), .getEnumElement(0) = red, .getEnumElement(1) = green, .getEnumElement(2) = yellow, .getEnumElement(3) = blue, .getType = MyColours |
+| enumdecl.swift:3:2:3:7 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyColours, .getElement(0) = red |
+| enumdecl.swift:3:7:3:7 | red | (EnumElementDecl), .getDeclaringDecl = MyColours |
+| enumdecl.swift:4:2:4:14 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyColours, .getElement(0) = green, .getElement(1) = yellow |
+| enumdecl.swift:4:7:4:7 | green | (EnumElementDecl), .getDeclaringDecl = MyColours |
+| enumdecl.swift:4:14:4:14 | yellow | (EnumElementDecl), .getDeclaringDecl = MyColours |
+| enumdecl.swift:5:2:5:7 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyColours, .getElement(0) = blue |
+| enumdecl.swift:5:7:5:7 | blue | (EnumElementDecl), .getDeclaringDecl = MyColours |
+| enumdecl.swift:8:1:11:1 | MyContainer | (EnumDecl), .getEnumElement(0) = str, .getEnumElement(1) = pair, .getType = MyContainer |
+| enumdecl.swift:9:2:9:17 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyContainer, .getElement(0) = str |
+| enumdecl.swift:9:7:9:17 | str | (EnumElementDecl), .getDeclaringDecl = MyContainer, .getParam(0) = _ |
+| enumdecl.swift:10:2:10:26 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyContainer, .getElement(0) = pair |
+| enumdecl.swift:10:7:10:26 | pair | (EnumElementDecl), .getDeclaringDecl = MyContainer, .getParam(0) = x, .getParam(1) = y |
+| enumdecl.swift:13:1:16:1 | MyNumbers | (EnumDecl), .getEnumElement(0) = one, .getEnumElement(1) = two, .getEnumElement(2) = three, .getEnumElement(3) = four, .getType = MyNumbers |
+| enumdecl.swift:14:2:14:16 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyNumbers, .getElement(0) = one, .getElement(1) = two |
+| enumdecl.swift:14:7:14:13 | one | (EnumElementDecl), .getDeclaringDecl = MyNumbers |
+| enumdecl.swift:14:16:14:16 | two | (EnumElementDecl), .getDeclaringDecl = MyNumbers |
+| enumdecl.swift:15:2:15:14 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyNumbers, .getElement(0) = three, .getElement(1) = four |
+| enumdecl.swift:15:7:15:7 | three | (EnumElementDecl), .getDeclaringDecl = MyNumbers |
+| enumdecl.swift:15:14:15:14 | four | (EnumElementDecl), .getDeclaringDecl = MyNumbers |
+| enumdecl.swift:18:1:20:1 | MyGreek | (EnumDecl), .getEnumElement(0) = alpha, .getEnumElement(1) = beta, .getEnumElement(2) = gamma, .getEnumElement(3) = delta, .getEnumElement(4) = epsilon, .getType = MyGreek |
+| enumdecl.swift:19:2:19:34 | case ... | (EnumCaseDecl), .getDeclaringDecl = MyGreek, .getElement(0) = alpha, .getElement(1) = beta, .getElement(2) = gamma, .getElement(3) = delta, .getElement(4) = epsilon |
+| enumdecl.swift:19:7:19:7 | alpha | (EnumElementDecl), .getDeclaringDecl = MyGreek |
+| enumdecl.swift:19:14:19:14 | beta | (EnumElementDecl), .getDeclaringDecl = MyGreek |
+| enumdecl.swift:19:20:19:20 | gamma | (EnumElementDecl), .getDeclaringDecl = MyGreek |
+| enumdecl.swift:19:27:19:27 | delta | (EnumElementDecl), .getDeclaringDecl = MyGreek |
+| enumdecl.swift:19:34:19:34 | epsilon | (EnumElementDecl), .getDeclaringDecl = MyGreek |

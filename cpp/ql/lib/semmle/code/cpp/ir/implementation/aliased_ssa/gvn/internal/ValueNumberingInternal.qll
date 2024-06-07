@@ -176,7 +176,6 @@ private predicate binaryValueNumber0(
   )
 }
 
-pragma[assume_small_delta]
 private predicate binaryValueNumber(
   BinaryInstruction instr, IRFunction irFunc, Opcode opcode, TValueNumber leftOperand,
   TValueNumber rightOperand
@@ -202,7 +201,6 @@ private predicate pointerArithmeticValueNumber0(
   )
 }
 
-pragma[assume_small_delta]
 private predicate pointerArithmeticValueNumber(
   PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, int elementSize,
   TValueNumber leftOperand, TValueNumber rightOperand
@@ -249,7 +247,6 @@ private predicate loadTotalOverlapValueNumber0(
   )
 }
 
-pragma[assume_small_delta]
 private predicate loadTotalOverlapValueNumber(
   LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, TValueNumber memOperand,
   TValueNumber operand

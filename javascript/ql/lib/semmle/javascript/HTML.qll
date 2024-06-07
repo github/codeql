@@ -7,7 +7,7 @@ module HTML {
    * An HTML file.
    */
   class HtmlFile extends File {
-    HtmlFile() { getFileType().isHtml() }
+    HtmlFile() { this.getFileType().isHtml() }
   }
 
   /**
@@ -18,7 +18,7 @@ module HTML {
    */
   private class FileContainingHtml extends File {
     FileContainingHtml() {
-      getFileType().isHtml()
+      this.getFileType().isHtml()
       or
       // The file contains an expression containing an HTML element
       exists(Expr e |
@@ -43,8 +43,6 @@ module HTML {
   class Element extends Locatable, @xmlelement {
     Element() { exists(FileContainingHtml f | xmlElements(this, _, _, _, f)) }
 
-    override Location getLocation() { xmllocations(this, result) }
-
     /**
      * Gets the name of this HTML element.
      *
@@ -60,17 +58,19 @@ module HTML {
     /**
      * Holds if this is a toplevel element, that is, if it does not have a parent element.
      */
-    predicate isTopLevel() { not exists(getParent()) }
+    predicate isTopLevel() { not exists(this.getParent()) }
 
     /**
      * Gets the root HTML document element in which this element is contained.
      */
-    DocumentElement getDocument() { result = getRoot() }
+    DocumentElement getDocument() { result = this.getRoot() }
 
     /**
      * Gets the root element in which this element is contained.
      */
-    Element getRoot() { if isTopLevel() then result = this else result = getParent().getRoot() }
+    Element getRoot() {
+      if this.isTopLevel() then result = this else result = this.getParent().getRoot()
+    }
 
     /**
      * Gets the `i`th child element (0-based) of this element.
@@ -80,7 +80,7 @@ module HTML {
     /**
      * Gets a child element of this element.
      */
-    Element getChild() { result = getChild(_) }
+    Element getChild() { result = this.getChild(_) }
 
     /**
      * Gets the `i`th attribute (0-based) of this element.
@@ -90,17 +90,17 @@ module HTML {
     /**
      * Gets an attribute of this element.
      */
-    Attribute getAnAttribute() { result = getAttribute(_) }
+    Attribute getAnAttribute() { result = this.getAttribute(_) }
 
     /**
      * Gets an attribute of this element that has the given name.
      */
     Attribute getAttributeByName(string name) {
-      result = getAnAttribute() and
+      result = this.getAnAttribute() and
       result.getName() = name
     }
 
-    override string toString() { result = "<" + getName() + ">...</>" }
+    override string toString() { result = "<" + this.getName() + ">...</>" }
 
     override string getAPrimaryQlClass() { result = "HTML::Element" }
   }
@@ -120,8 +120,6 @@ module HTML {
   class Attribute extends Locatable, @xmlattribute {
     Attribute() { exists(FileContainingHtml f | xmlAttrs(this, _, _, _, _, f)) }
 
-    override Location getLocation() { xmllocations(this, result) }
-
     /**
      * Gets the inline script of this attribute, if any.
      */
@@ -136,7 +134,7 @@ module HTML {
      * Gets the root element in which the element to which this attribute
      * belongs is contained.
      */
-    Element getRoot() { result = getElement().getRoot() }
+    Element getRoot() { result = this.getElement().getRoot() }
 
     /**
      * Gets the name of this attribute.
@@ -151,7 +149,7 @@ module HTML {
      */
     string getValue() { xmlAttrs(this, _, _, result, _, _) }
 
-    override string toString() { result = getName() + "=" + getValue() }
+    override string toString() { result = this.getName() + "=" + this.getValue() }
 
     override string getAPrimaryQlClass() { result = "HTML::Attribute" }
   }
@@ -170,7 +168,7 @@ module HTML {
    * ```
    */
   class DocumentElement extends Element {
-    DocumentElement() { getName() = "html" }
+    DocumentElement() { this.getName() = "html" }
   }
 
   /**
@@ -183,12 +181,12 @@ module HTML {
    * ```
    */
   class IframeElement extends Element {
-    IframeElement() { getName() = "iframe" }
+    IframeElement() { this.getName() = "iframe" }
 
     /**
      * Gets the value of the `src` attribute.
      */
-    string getSourcePath() { result = getAttributeByName("src").getValue() }
+    string getSourcePath() { result = this.getAttributeByName("src").getValue() }
   }
 
   /**
@@ -201,7 +199,7 @@ module HTML {
    * ```
    */
   class ScriptElement extends Element {
-    ScriptElement() { getName() = "script" }
+    ScriptElement() { this.getName() = "script" }
 
     /**
      * Gets the absolute file system path the value of the `src` attribute
@@ -212,38 +210,38 @@ module HTML {
      * to the enclosing HTML file. Base URLs are not taken into account.
      */
     string resolveSourcePath() {
-      exists(string path | path = getSourcePath() |
+      exists(string path | path = this.getSourcePath() |
         result = path.regexpCapture("file://(/.*)", 1)
         or
         not path.regexpMatch("(\\w+:)?//.*") and
-        result = getSourcePath().(ScriptSrcPath).resolve(getSearchRoot()).toString()
+        result = this.getSourcePath().(ScriptSrcPath).resolve(this.getSearchRoot()).toString()
       )
     }
 
     /**
      * Gets the value of the `src` attribute.
      */
-    string getSourcePath() { result = getAttributeByName("src").getValue() }
+    string getSourcePath() { result = this.getAttributeByName("src").getValue() }
 
     /**
      * Gets the value of the `integrity` attribute.
      */
-    string getIntegrityDigest() { result = getAttributeByName("integrity").getValue() }
+    string getIntegrityDigest() { result = this.getAttributeByName("integrity").getValue() }
 
     /**
      * Gets the folder relative to which the `src` attribute is resolved.
      */
     Folder getSearchRoot() {
-      if getSourcePath().matches("/%")
+      if this.getSourcePath().matches("/%")
       then result.getBaseName() = ""
-      else result = getFile().getParentContainer()
+      else result = this.getFile().getParentContainer()
     }
 
     /**
      * Gets the script referred to by the `src` attribute,
      * if it can be determined.
      */
-    Script resolveSource() { result.getFile().getAbsolutePath() = resolveSourcePath() }
+    Script resolveSource() { result.getFile().getAbsolutePath() = this.resolveSourcePath() }
 
     /**
      * Gets the inline script of this script element, if any.
@@ -251,15 +249,15 @@ module HTML {
     private InlineScript getInlineScript() {
       toplevel_parent_xml_node(result, this) and
       // the src attribute has precedence
-      not exists(getSourcePath())
+      not exists(this.getSourcePath())
     }
 
     /**
      * Gets the script of this element, if it can be determined.
      */
     Script getScript() {
-      result = getInlineScript() or
-      result = resolveSource()
+      result = this.getInlineScript() or
+      result = this.resolveSource()
     }
 
     override string getAPrimaryQlClass() { result = "HTML::ScriptElement" }
@@ -301,7 +299,7 @@ module HTML {
   class TextNode extends Locatable, @xmlcharacters {
     TextNode() { exists(FileContainingHtml f | xmlChars(this, _, _, _, _, f)) }
 
-    override string toString() { result = getText() }
+    override string toString() { result = this.getText() }
 
     /**
      * Gets the content of this text node.
@@ -324,8 +322,6 @@ module HTML {
      * Holds if this text node is inside a `CDATA` tag.
      */
     predicate isCData() { xmlChars(this, _, _, _, 1, _) }
-
-    override Location getLocation() { xmllocations(this, result) }
   }
 
   /**
@@ -344,10 +340,8 @@ module HTML {
     Element getParent() { xmlComments(this, _, result, _) }
 
     /** Gets the text of this comment, not including delimiters. */
-    string getText() { result = toString().regexpCapture("(?s)<!--(.*)-->", 1) }
+    string getText() { result = this.toString().regexpCapture("(?s)<!--(.*)-->", 1) }
 
     override string toString() { xmlComments(this, result, _, _) }
-
-    override Location getLocation() { xmllocations(this, result) }
   }
 }

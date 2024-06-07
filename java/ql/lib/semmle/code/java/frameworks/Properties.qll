@@ -2,35 +2,37 @@
 
 import semmle.code.java.Type
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.configfiles.ConfigFiles
+private import semmle.code.java.dataflow.RangeUtils
 
 /**
  * The `java.util.Properties` class.
  */
 class TypeProperty extends Class {
-  TypeProperty() { hasQualifiedName("java.util", "Properties") }
+  TypeProperty() { this.hasQualifiedName("java.util", "Properties") }
 }
 
 /** The `getProperty` method of the class `java.util.Properties`. */
 class PropertiesGetPropertyMethod extends Method {
   PropertiesGetPropertyMethod() {
-    getDeclaringType() instanceof TypeProperty and
-    hasName("getProperty")
+    this.getDeclaringType() instanceof TypeProperty and
+    this.hasName("getProperty")
   }
 }
 
 /** The `get` method of the class `java.util.Properties`. */
 class PropertiesGetMethod extends Method {
   PropertiesGetMethod() {
-    getDeclaringType() instanceof TypeProperty and
-    hasName("get")
+    this.getDeclaringType() instanceof TypeProperty and
+    this.hasName("get")
   }
 }
 
 /** The `setProperty` method of the class `java.util.Properties`. */
 class PropertiesSetPropertyMethod extends Method {
   PropertiesSetPropertyMethod() {
-    getDeclaringType() instanceof TypeProperty and
-    hasName("setProperty")
+    this.getDeclaringType() instanceof TypeProperty and
+    this.hasName("setProperty")
   }
 }
 
@@ -39,7 +41,26 @@ class PropertiesSetPropertyMethod extends Method {
  */
 class PropertiesStoreMethod extends Method {
   PropertiesStoreMethod() {
-    getDeclaringType() instanceof TypeProperty and
-    (getName().matches("store%") or getName() = "save")
+    this.getDeclaringType() instanceof TypeProperty and
+    (this.getName().matches("store%") or this.getName() = "save")
+  }
+}
+
+/**
+ * A call to the `getProperty` method of the class `java.util.Properties`.
+ */
+class PropertiesGetPropertyMethodCall extends MethodCall {
+  PropertiesGetPropertyMethodCall() { this.getMethod() instanceof PropertiesGetPropertyMethod }
+
+  private ConfigPair getPair() {
+    this.getArgument(0).(ConstantStringExpr).getStringValue() = result.getNameElement().getName()
+  }
+
+  /**
+   * Get the potential string values that can be associated with the given property name.
+   */
+  string getPropertyValue() {
+    result = this.getPair().getValueElement().getValue() or
+    result = this.getArgument(1).(ConstantStringExpr).getStringValue()
   }
 }

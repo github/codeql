@@ -25,7 +25,7 @@ module Linting {
      * Holds if this directive applies to `gva` and declares the variable it references.
      */
     predicate declaresGlobalForAccess(GlobalVarAccess gva) {
-      appliesTo(gva) and declaresGlobal(gva.getName(), _)
+      this.appliesTo(gva) and this.declaresGlobal(gva.getName(), _)
     }
   }
 }

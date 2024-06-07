@@ -13,14 +13,14 @@
 import python
 import semmle.python.regex
 
-predicate unmatchable_caret(Regex r, int start) {
+predicate unmatchable_caret(RegExp r, int start) {
   not r.getAMode() = "MULTILINE" and
   not r.getAMode() = "VERBOSE" and
   r.specialCharacter(start, start + 1, "^") and
   not r.firstItem(start, start + 1)
 }
 
-from Regex r, int offset
+from RegExp r, int offset
 where unmatchable_caret(r, offset)
 select r,
   "This regular expression includes an unmatchable caret at offset " + offset.toString() + "."

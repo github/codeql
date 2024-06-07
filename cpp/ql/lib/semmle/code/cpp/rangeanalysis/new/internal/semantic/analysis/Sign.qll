@@ -73,7 +73,7 @@ class Sign extends TSign {
    * Gets a possible sign after subtracting an expression with sign `s` from an expression
    * that has this sign.
    */
-  Sign sub(Sign s) { result = add(s.neg()) }
+  Sign sub(Sign s) { result = this.add(s.neg()) }
 
   /**
    * Gets a possible sign after multiplying an expression with sign `s` to an expression
@@ -231,37 +231,37 @@ class Sign extends TSign {
     or
     op instanceof Opcode::Store and result = this
     or
-    op instanceof Opcode::AddOne and result = inc()
+    op instanceof Opcode::AddOne and result = this.inc()
     or
-    op instanceof Opcode::SubOne and result = dec()
+    op instanceof Opcode::SubOne and result = this.dec()
     or
-    op instanceof Opcode::Negate and result = neg()
+    op instanceof Opcode::Negate and result = this.neg()
     or
-    op instanceof Opcode::BitComplement and result = bitnot()
+    op instanceof Opcode::BitComplement and result = this.bitnot()
   }
 
   /** Perform `op` on this sign and sign `s`. */
   Sign applyBinaryOp(Sign s, Opcode op) {
-    op instanceof Opcode::Add and result = add(s)
+    op instanceof Opcode::Add and result = this.add(s)
     or
-    op instanceof Opcode::Sub and result = sub(s)
+    op instanceof Opcode::Sub and result = this.sub(s)
     or
-    op instanceof Opcode::Mul and result = mul(s)
+    op instanceof Opcode::Mul and result = this.mul(s)
     or
-    op instanceof Opcode::Div and result = div(s)
+    op instanceof Opcode::Div and result = this.div(s)
     or
-    op instanceof Opcode::Rem and result = rem(s)
+    op instanceof Opcode::Rem and result = this.rem(s)
     or
-    op instanceof Opcode::BitAnd and result = bitand(s)
+    op instanceof Opcode::BitAnd and result = this.bitand(s)
     or
-    op instanceof Opcode::BitOr and result = bitor(s)
+    op instanceof Opcode::BitOr and result = this.bitor(s)
     or
-    op instanceof Opcode::BitXor and result = bitxor(s)
+    op instanceof Opcode::BitXor and result = this.bitxor(s)
     or
-    op instanceof Opcode::ShiftLeft and result = lshift(s)
+    op instanceof Opcode::ShiftLeft and result = this.lshift(s)
     or
-    op instanceof Opcode::ShiftRight and result = rshift(s)
+    op instanceof Opcode::ShiftRight and result = this.rshift(s)
     or
-    op instanceof Opcode::ShiftRightUnsigned and result = urshift(s)
+    op instanceof Opcode::ShiftRightUnsigned and result = this.urshift(s)
   }
 }

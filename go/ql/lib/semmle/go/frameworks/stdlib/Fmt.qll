@@ -7,8 +7,12 @@ import go
 // Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
-  /** The `Sprint` or `Append` functions or one of their variants. */
-  class AppenderOrSprinter extends TaintTracking::FunctionModel {
+  /**
+   * The `Sprint` or `Append` functions or one of their variants.
+   *
+   * DEPRECATED: Use AppenderOrSprinterFunc instead.
+   */
+  deprecated class AppenderOrSprinter extends TaintTracking::FunctionModel {
     AppenderOrSprinter() { this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"]) }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -16,8 +20,15 @@ module Fmt {
     }
   }
 
+  /** The `Sprint` or `Append` functions or one of their variants. */
+  class AppenderOrSprinterFunc extends Function {
+    AppenderOrSprinterFunc() {
+      this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"])
+    }
+  }
+
   /** The `Sprint` function or one of its variants. */
-  class Sprinter extends AppenderOrSprinter {
+  class Sprinter extends AppenderOrSprinterFunc {
     Sprinter() { this.getName().matches("Sprint%") }
   }
 
@@ -30,7 +41,7 @@ module Fmt {
   private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
     PrintCall() { this.getTarget() instanceof Printer }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   /** The `Fprint` function or one of its variants. */
@@ -66,8 +77,6 @@ module Fmt {
     }
 
     override int getFormatStringIndex() { result = argOffset }
-
-    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 
   /** The `Sscan` function or one of its variants. */

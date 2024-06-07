@@ -10,7 +10,6 @@
  *       language-features
  */
 
-import csharp
 import Linq.Helpers
 
 /*
@@ -31,7 +30,7 @@ import Linq.Helpers
  * bool allEven = lst.All(i => i % 2 == 0);
  */
 
-from ForeachStmt fes
+from ForeachStmtGenericEnumerable fes
 where missedAllOpportunity(fes)
 select fes,
   "This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'."

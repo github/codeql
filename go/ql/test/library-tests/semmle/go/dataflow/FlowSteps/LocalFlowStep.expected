@@ -44,6 +44,8 @@
 | file://:0:0:0:0 | function append | main.go:40:8:40:13 | append |
 | file://:0:0:0:0 | function copy | main.go:42:2:42:5 | copy |
 | file://:0:0:0:0 | function make | main.go:41:8:41:11 | make |
+| file://:0:0:0:0 | function max | main.go:65:7:65:9 | max |
+| file://:0:0:0:0 | function min | main.go:64:7:64:9 | min |
 | main.go:3:6:3:10 | function test1 | main.go:34:2:34:6 | test1 |
 | main.go:3:12:3:12 | argument corresponding to x | main.go:3:12:3:12 | definition of x |
 | main.go:3:12:3:12 | definition of x | main.go:5:5:5:5 | x |
@@ -112,6 +114,25 @@
 | main.go:55:6:55:7 | definition of ch | main.go:56:2:56:3 | ch |
 | main.go:55:6:55:7 | definition of ch | main.go:57:4:57:5 | ch |
 | main.go:55:6:55:7 | zero value for ch | main.go:55:6:55:7 | definition of ch |
+| main.go:61:2:61:2 | definition of x | main.go:64:11:64:11 | x |
+| main.go:61:2:61:2 | definition of x | main.go:65:11:65:11 | x |
+| main.go:61:7:61:7 | 1 | main.go:61:2:61:2 | definition of x |
+| main.go:62:2:62:2 | definition of y | main.go:64:14:64:14 | y |
+| main.go:62:2:62:2 | definition of y | main.go:65:14:65:14 | y |
+| main.go:62:7:62:7 | 2 | main.go:62:2:62:2 | definition of y |
+| main.go:63:2:63:2 | definition of z | main.go:64:17:64:17 | z |
+| main.go:63:2:63:2 | definition of z | main.go:65:17:65:17 | z |
+| main.go:63:7:63:7 | 3 | main.go:63:2:63:2 | definition of z |
+| main.go:64:2:64:2 | definition of a | main.go:66:9:66:9 | a |
+| main.go:64:7:64:18 | call to min | main.go:64:2:64:2 | definition of a |
+| main.go:64:11:64:11 | x | main.go:64:7:64:18 | call to min |
+| main.go:64:14:64:14 | y | main.go:64:7:64:18 | call to min |
+| main.go:64:17:64:17 | z | main.go:64:7:64:18 | call to min |
+| main.go:65:2:65:2 | definition of b | main.go:66:12:66:12 | b |
+| main.go:65:7:65:18 | call to max | main.go:65:2:65:2 | definition of b |
+| main.go:65:11:65:11 | x | main.go:65:7:65:18 | call to max |
+| main.go:65:14:65:14 | y | main.go:65:7:65:18 | call to max |
+| main.go:65:17:65:17 | z | main.go:65:7:65:18 | call to max |
 | strings.go:8:12:8:12 | argument corresponding to s | strings.go:8:12:8:12 | definition of s |
 | strings.go:8:12:8:12 | definition of s | strings.go:9:24:9:24 | s |
 | strings.go:8:12:8:12 | definition of s | strings.go:10:27:10:27 | s |

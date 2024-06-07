@@ -1,0 +1,12 @@
+| switch.swift:2:1:12:1 | switch index { ... } | 0 | switch.swift:3:4:5:7 | case ... |
+| switch.swift:2:1:12:1 | switch index { ... } | 1 | switch.swift:6:4:7:20 | case ... |
+| switch.swift:2:1:12:1 | switch index { ... } | 2 | switch.swift:8:4:9:18 | case ... |
+| switch.swift:2:1:12:1 | switch index { ... } | 3 | switch.swift:10:4:11:22 | case ... |
+| switch.swift:21:1:30:1 | switch x { ... } | 0 | switch.swift:22:3:23:5 | case ... |
+| switch.swift:21:1:30:1 | switch x { ... } | 1 | switch.swift:24:3:25:5 | case ... |
+| switch.swift:21:1:30:1 | switch x { ... } | 2 | switch.swift:26:3:27:5 | case ... |
+| switch.swift:21:1:30:1 | switch x { ... } | 3 | switch.swift:28:3:29:5 | case ... |
+| switch.swift:32:1:42:1 | switch x { ... } | 0 | switch.swift:33:3:39:5 | case ... |
+| switch.swift:32:1:42:1 | switch x { ... } | 1 | switch.swift:40:3:41:5 | case ... |
+| switch.swift:34:5:39:5 | switch a { ... } | 0 | switch.swift:35:8:36:16 | case ... |
+| switch.swift:34:5:39:5 | switch a { ... } | 1 | switch.swift:37:8:38:16 | case ... |

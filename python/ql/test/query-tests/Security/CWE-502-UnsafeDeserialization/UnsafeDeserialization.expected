@@ -1,25 +1,30 @@
 edges
-| unsafe_deserialization.py:0:0:0:0 | ModuleVariableNode for unsafe_deserialization.request | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request |
-| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:8:26:8:32 | GSSA Variable request |
-| unsafe_deserialization.py:8:26:8:32 | GSSA Variable request | unsafe_deserialization.py:0:0:0:0 | ModuleVariableNode for unsafe_deserialization.request |
-| unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute |
-| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload |
-| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload |
-| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload |
-| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload |
+| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for request | provenance |  |
+| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for request | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | provenance |  |
+| unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:14:15:14:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| unsafe_deserialization.py:14:15:14:41 | ControlFlowNode for Attribute() | unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | provenance |  |
 nodes
-| unsafe_deserialization.py:0:0:0:0 | ModuleVariableNode for unsafe_deserialization.request | semmle.label | ModuleVariableNode for unsafe_deserialization.request |
 | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| unsafe_deserialization.py:8:26:8:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| unsafe_deserialization.py:14:15:14:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 subpaths
 #select
 | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
 | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
 | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
 | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
+| unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |

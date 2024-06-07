@@ -1,0 +1,12 @@
+| switch.swift:3:4:5:7 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 0 | getBody: | switch.swift:4:7:5:7 | { ... } |
+| switch.swift:6:4:7:20 | case ... | getNumberOfLabels: | 2 | getNumberOfVariables: | 0 | getBody: | switch.swift:7:7:7:20 | { ... } |
+| switch.swift:8:4:9:18 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 1 | getBody: | switch.swift:9:7:9:18 | { ... } |
+| switch.swift:10:4:11:22 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 0 | getBody: | switch.swift:11:7:11:22 | { ... } |
+| switch.swift:22:3:23:5 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 0 | getBody: | switch.swift:23:5:23:5 | { ... } |
+| switch.swift:24:3:25:5 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 2 | getBody: | switch.swift:25:5:25:5 | { ... } |
+| switch.swift:26:3:27:5 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 2 | getBody: | switch.swift:27:5:27:5 | { ... } |
+| switch.swift:28:3:29:5 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 1 | getBody: | switch.swift:29:5:29:5 | { ... } |
+| switch.swift:33:3:39:5 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 1 | getBody: | switch.swift:34:5:39:5 | { ... } |
+| switch.swift:35:8:36:16 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 0 | getBody: | switch.swift:36:10:36:16 | { ... } |
+| switch.swift:37:8:38:16 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 0 | getBody: | switch.swift:38:10:38:16 | { ... } |
+| switch.swift:40:3:41:5 | case ... | getNumberOfLabels: | 1 | getNumberOfVariables: | 0 | getBody: | switch.swift:41:5:41:5 | { ... } |

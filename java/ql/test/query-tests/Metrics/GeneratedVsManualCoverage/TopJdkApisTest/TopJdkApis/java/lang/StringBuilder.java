@@ -19,7 +19,4 @@ public class StringBuilder extends AbstractStringBuilder implements Serializable
     public StringBuilder(int p0){} // manual summary
 
     public StringBuilder append(CharSequence s, int start, int end) { return null; }
-
-    public void setCharAt(int p0, char p1){}
-    public void setLength(int p0){}
 }

@@ -9,6 +9,7 @@ class GoodController < ActionController::Base
       <h2>Hello <%= name %> </h2></body></html>
       "
     template = ERB.new(html_text).result(binding) 
+    render inline: html_text
   end
 end
 

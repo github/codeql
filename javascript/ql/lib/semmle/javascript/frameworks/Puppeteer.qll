@@ -71,7 +71,7 @@ module Puppeteer {
   private class PuppeteerGotoCall extends ClientRequest::Range, API::InvokeNode {
     PuppeteerGotoCall() { this = page().getMember("goto").getACall() }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
@@ -86,7 +86,7 @@ module Puppeteer {
       this = page().getMember(["addStyleTag", "addScriptTag"]).getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getParameter(0).getMember("url").asSink() }
+    override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("url").asSink() }
 
     override DataFlow::Node getHost() { none() }
 

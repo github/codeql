@@ -50,14 +50,14 @@ class StringReplaceCallSequence extends DataFlow::CallNode instanceof StringRepl
 
   /** Gets a string that is the replacement of this call. */
   string getAReplacementString() {
-    getAMember().replaces(_, result)
+    this.getAMember().replaces(_, result)
     or
     // StringReplaceCall::replaces/2 can't always find the `old` string, so this is added as a fallback.
-    getAMember().getRawReplacement().getStringValue() = result
+    this.getAMember().getRawReplacement().getStringValue() = result
   }
 
   /** Gets a string that is being replaced by this call. */
-  string getAReplacedString() { getAMember().getAReplacedString() = result }
+  string getAReplacedString() { this.getAMember().getAReplacedString() = result }
 }
 
 /**

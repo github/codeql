@@ -13,7 +13,7 @@ module EncodingCsv {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("encoding/csv", "NewWriter") and
+      this.hasQualifiedName("encoding/csv", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 

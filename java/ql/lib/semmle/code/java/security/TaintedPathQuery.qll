@@ -5,8 +5,15 @@ import semmle.code.java.frameworks.Networking
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.security.PathCreation
 import semmle.code.java.security.PathSanitizer
+private import semmle.code.java.security.Sanitizers
+
+/** A sink for tainted path flow configurations. */
+abstract class TaintedPathSink extends DataFlow::Node { }
+
+private class DefaultTaintedPathSink extends TaintedPathSink {
+  DefaultTaintedPathSink() { sinkNode(this, "path-injection") }
+}
 
 /**
  * A unit class for adding additional taint steps.
@@ -53,18 +60,12 @@ private class TaintPreservingUriCtorParam extends Parameter {
  * A taint-tracking configuration for tracking flow from remote sources to the creation of a path.
  */
 module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
-    or
-    sinkNode(sink, ["create-file", "read-file"])
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof TaintedPathSink }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer instanceof PathInjectionSanitizer
   }
 
@@ -79,19 +80,13 @@ module TaintedPathFlow = TaintTracking::Global<TaintedPathConfig>;
 /**
  * A taint-tracking configuration for tracking flow from local user input to the creation of a path.
  */
-module TaintedPathLocalConfig implements DataFlow::ConfigSig {
+deprecated module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
-    or
-    sinkNode(sink, "create-file")
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof TaintedPathSink }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer instanceof PathInjectionSanitizer
   }
 
@@ -100,5 +95,9 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   }
 }
 
-/** Tracks flow from local user input to the creation of a path. */
-module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;
+/**
+ * DEPRECATED: Use `TaintedPathFlow` instead and configure threat model sources to include `local`.
+ *
+ * Tracks flow from local user input to the creation of a path.
+ */
+deprecated module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;

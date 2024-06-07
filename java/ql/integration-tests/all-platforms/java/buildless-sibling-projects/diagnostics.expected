@@ -1,0 +1,98 @@
+{
+  "markdownMessage": "Java analysis dropped the following dependencies because a sibling project depends on a higher version:\n\n* `junit/junit-4.11`",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/dependencies-disagree",
+    "name": "Java analysis found sibling projects that disagree about some of their direct dependency versions"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used JDK version 11.0.0 as recommended by build tool Gradle",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/jdk-selected",
+    "name": "Java analysis used JDK version 11.0.0 as recommended by build tool Gradle"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used the highest recommended Java version out of:\n\n* Gradle at `<test-root-directory>/./gradle-sample` recommends version 8.0.0\n* Gradle at `<test-root-directory>/./gradle-sample2` recommends version 11.0.0",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/jdk-version-disagree",
+    "name": "Java analysis found sibling projects that disagree about the needed Java version. The highest recommended version will be used"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis will combine recommended JDK versions and/or external dependency information from:\n\n* Gradle at `<test-root-directory>/./gradle-sample`\n* Gradle at `<test-root-directory>/./gradle-sample2`\n* Maven at `<test-root-directory>/./maven-project-1`\n* Maven at `<test-root-directory>/./maven-project-2`",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/using-build-tool-advice-multiple",
+    "name": "Java analysis found several sibling projects and will combine their recommended JDK versions and/or external dependency information"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis with build-mode 'none' completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/complete",
+    "name": "Java analysis with build-mode 'none' completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java was extracted with build-mode set to 'none'. This means that all Java source in the working directory will be scanned, with build tools such as Maven and Gradle only contributing information about external dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/mode-active",
+    "name": "Java was extracted with build-mode set to 'none'"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Reading the dependency graph from build files provided 4 classpath entries",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/depgraph-provided-by-multiple",
+    "name": "Java analysis extracted precise dependency graph information from multiple build tools"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

@@ -19,7 +19,7 @@ private import CIL
  * Either a finally handler (`FinallyHandler`), filter handler (`FilterHandler`),
  * catch handler (`CatchHandler`), or a fault handler (`FaultHandler`).
  */
-class Handler extends Element, EntryPoint, @cil_handler {
+deprecated class Handler extends Element, EntryPoint, @cil_handler {
   override MethodImplementation getImplementation() { cil_handler(this, result, _, _, _, _, _) }
 
   /** Gets the 0-based index of this handler. Handlers are evaluated in this sequence. */
@@ -38,30 +38,30 @@ class Handler extends Element, EntryPoint, @cil_handler {
    * Holds if the instruction `i` is in the scope of this handler.
    */
   predicate isInScope(Instruction i) {
-    i.getImplementation() = getImplementation() and
-    i.getIndex() in [getTryStart().getIndex() .. getTryEnd().getIndex()]
+    i.getImplementation() = this.getImplementation() and
+    i.getIndex() in [this.getTryStart().getIndex() .. this.getTryEnd().getIndex()]
   }
 
   override string toString() { none() }
 
   override Instruction getASuccessorType(FlowType t) {
-    result = getHandlerStart() and
+    result = this.getHandlerStart() and
     t instanceof NormalFlow
   }
 
   /** Gets the type of the caught exception, if any. */
   Type getCaughtType() { cil_handler_type(this, result) }
 
-  override Location getLocation() { result = getTryStart().getLocation() }
+  override Location getLocation() { result = this.getTryStart().getLocation() }
 }
 
 /** A handler corresponding to a `finally` block. */
-class FinallyHandler extends Handler, @cil_finally_handler {
+deprecated class FinallyHandler extends Handler, @cil_finally_handler {
   override string toString() { result = "finally {...}" }
 }
 
 /** A handler corresponding to a `where()` clause. */
-class FilterHandler extends Handler, @cil_filter_handler {
+deprecated class FilterHandler extends Handler, @cil_filter_handler {
   override string toString() { result = "where (...)" }
 
   /** Gets the filter clause - the start of a sequence of instructions to evaluate the filter function. */
@@ -71,13 +71,13 @@ class FilterHandler extends Handler, @cil_filter_handler {
 }
 
 /** A handler corresponding to a `catch` clause. */
-class CatchHandler extends Handler, @cil_catch_handler {
-  override string toString() { result = "catch(" + getCaughtType().getName() + ") {...}" }
+deprecated class CatchHandler extends Handler, @cil_catch_handler {
+  override string toString() { result = "catch(" + this.getCaughtType().getName() + ") {...}" }
 
   override int getPushCount() { result = 1 }
 }
 
 /** A handler for memory faults. */
-class FaultHandler extends Handler, @cil_fault_handler {
+deprecated class FaultHandler extends Handler, @cil_fault_handler {
   override string toString() { result = "fault {...}" }
 }

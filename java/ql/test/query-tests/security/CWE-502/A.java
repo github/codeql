@@ -7,6 +7,7 @@ import com.esotericsoftware.kryo.io.Input;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.Yaml;
+import org.nibblesec.tools.SerialKiller;
 
 public class A {
   public Object deserialize1(Socket sock) throws java.io.IOException, ClassNotFoundException {
@@ -19,6 +20,12 @@ public class A {
     InputStream inputStream = sock.getInputStream();
     ObjectInputStream in = new ObjectInputStream(inputStream);
     return in.readUnshared(); // $unsafeDeserialization
+  }
+
+  public Object deserializeWithSerialKiller(Socket sock) throws java.io.IOException, ClassNotFoundException {
+    InputStream inputStream = sock.getInputStream();
+    ObjectInputStream in = new SerialKiller(inputStream, "/etc/serialkiller.conf");
+    return in.readUnshared(); // OK
   }
 
   public Object deserialize3(Socket sock) throws java.io.IOException {

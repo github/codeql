@@ -1,0 +1,57 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
+load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//python/ql/lib:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//python/ql/lib:dbscheme-stats",
+)
+
+pkg_files(
+    name = "dbscheme-group",
+    srcs = [
+        ":dbscheme",
+        ":dbscheme-stats",
+    ],
+    strip_prefix = None,
+)
+
+pkg_filegroup(
+    name = "db-files",
+    srcs = [
+        ":dbscheme-group",
+        "//python/downgrades",
+    ],
+)
+
+pkg_files(
+    name = "codeql-extractor-yml",
+    srcs = ["codeql-extractor.yml"],
+    strip_prefix = None,
+)
+
+codeql_pkg_files(
+    name = "extractor-arch",
+    exes = [
+        "//python/extractor/tsg-python",
+    ],
+    prefix = "tools/{CODEQL_PLATFORM}",
+)
+
+codeql_pack(
+    name = "python",
+    srcs = [
+        ":codeql-extractor-yml",
+        ":dbscheme-group",
+        ":extractor-arch",
+        "//python/downgrades",
+        "//python/extractor",
+        "//python/tools",
+    ],
+)

@@ -1,22 +1,18 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.SignAnalysisCommon
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeUtils
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisRelativeSpecific
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
-module SignAnalysisInstantiated =
-  SignAnalysis<FloatDelta, RangeUtil<FloatDelta, CppLangImplRelative>>;
+module SignAnalysisInstantiated = SignAnalysis<FloatDelta>;
 
-class SignAnalysisTest extends InlineExpectationsTest {
-  SignAnalysisTest() { this = "SignAnalysisTest" }
+module SignAnalysisTest implements TestSig {
+  string getARelevantTag() { result = "sign" }
 
-  override string getARelevantTag() { result = "sign" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SemExpr e, IR::CallInstruction call |
       getSemanticExpr(call.getArgument(0)) = e and
       call.getStaticCallTarget().hasName("sign") and
@@ -27,6 +23,8 @@ class SignAnalysisTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<SignAnalysisTest>
 
 private string getASignString(SemExpr e) {
   result = strictconcat(SignAnalysisInstantiated::semExprSign(e).toString(), "")

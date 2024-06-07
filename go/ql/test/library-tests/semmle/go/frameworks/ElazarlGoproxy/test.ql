@@ -1,27 +1,25 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import TestUtilities.InlineExpectationsTest
 
-class UntrustedFlowSourceTest extends InlineExpectationsTest {
-  UntrustedFlowSourceTest() { this = "untrustedflowsource" }
+module RemoteFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "remoteflowsource" }
 
-  override string getARelevantTag() { result = "untrustedflowsource" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "untrustedflowsource" and
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "remoteflowsource" and
     value = element and
-    exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
+    exists(RemoteFlowSource src | value = "\"" + src.toString() + "\"" |
       src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }
 
-class HeaderWriteTest extends InlineExpectationsTest {
-  HeaderWriteTest() { this = "headerwrite" }
+module HeaderWriteTest implements TestSig {
+  string getARelevantTag() { result = "headerwrite" }
 
-  override string getARelevantTag() { result = "headerwrite" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "headerwrite" and
     exists(Http::HeaderWrite hw, string name, string val | element = hw.toString() |
       hw.definesHeader(name, val) and
@@ -32,12 +30,10 @@ class HeaderWriteTest extends InlineExpectationsTest {
   }
 }
 
-class LoggerTest extends InlineExpectationsTest {
-  LoggerTest() { this = "LoggerTest" }
+module LoggerTest implements TestSig {
+  string getARelevantTag() { result = "logger" }
 
-  override string getARelevantTag() { result = "logger" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(LoggerCall log |
       log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
@@ -48,32 +44,32 @@ class LoggerTest extends InlineExpectationsTest {
   }
 }
 
-class Config extends TaintTracking::Configuration {
-  Config() { this = "goproxy config" }
-
-  override predicate isSource(DataFlow::Node n) {
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
     n = any(DataFlow::CallNode c | c.getCalleeName().matches("tainted%")).getResult()
   }
 
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     n = any(DataFlow::CallNode cn | cn.getTarget().getName() = "sink").getAnArgument()
   }
 }
 
-class TaintFlow extends InlineExpectationsTest {
-  TaintFlow() { this = "goproxy flow" }
+module Flow = TaintTracking::Global<Config>;
 
-  override string getARelevantTag() { result = "taintflow" }
+module TaintFlow implements TestSig {
+  string getARelevantTag() { result = "taintflow" }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "taintflow" and
     value = "" and
     element = "" and
-    exists(Config c, DataFlow::Node toNode |
+    exists(DataFlow::Node toNode |
       toNode
           .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
             location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      c.hasFlowTo(toNode)
+      Flow::flowTo(toNode)
     )
   }
 }
+
+import MakeTest<MergeTests4<RemoteFlowSourceTest, HeaderWriteTest, LoggerTest, TaintFlow>>

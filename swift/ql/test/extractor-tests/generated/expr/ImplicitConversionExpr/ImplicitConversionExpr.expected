@@ -1,5 +1,5 @@
 | implicit_conversions.swift:2:3:2:3 | (UnsafePointer<CChar>) ... | StringToPointerExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:2:3:2:3 | Hello |
 | implicit_conversions.swift:4:16:4:16 | (Int?) ... | InjectIntoOptionalExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:4:16:4:16 | 42 |
-| implicit_conversions.swift:5:25:5:25 | (Equatable) ... | ErasureExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:5:25:5:25 | 42 |
-| implicit_conversions.swift:12:3:12:5 | ((() -> Void)?) ... | AbiSafeConversionExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:3:12:5 | .b |
+| implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | ErasureExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:5:25:5:25 | 42 |
+| implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | AbiSafeConversionExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:3:12:5 | .b |
 | implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | InjectIntoOptionalExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:9:12:10 | { ... } |

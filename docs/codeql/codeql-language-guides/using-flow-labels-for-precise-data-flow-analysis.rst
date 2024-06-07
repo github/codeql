@@ -70,18 +70,22 @@ For example, we would like to flag this code:
 
 .. code-block:: javascript
 
-  var data = JSON.parse(str);
-  if (data.length > 0) {  // problematic: `data` may be `null`
-    ...
+  function test(str) {
+    var data = JSON.parse(str);
+    if (data.length > 0) {  // problematic: `data` may be `null`
+      ...
+    }
   }
 
 This code, on the other hand, should not be flagged:
 
 .. code-block:: javascript
 
-  var data = JSON.parse(str);
-  if (data && data.length > 0) { // unproblematic: `data` is first checked for nullness
-    ...
+  function test(str) {
+    var data = JSON.parse(str);
+    if (data && data.length > 0) { // unproblematic: `data` is first checked for nullness
+      ...
+    }
   }
 
 We will first try to write a query to find this kind of problem without flow labels, and use the
@@ -168,11 +172,13 @@ checked for null-guardedness:
 
 .. code-block:: javascript
 
-  var root = JSON.parse(str);
-  if (root) {
-    var payload = root.data;   // unproblematic: `root` cannot be `null` here
-    if (payload.length > 0) {  // problematic: `payload` may be `null` here
-      ...
+  function test(str) {
+    var root = JSON.parse(str);
+    if (root) {
+      var payload = root.data;   // unproblematic: `root` cannot be `null` here
+      if (payload.length > 0) {  // problematic: `payload` may be `null` here
+        ...
+      }
     }
   }
 
@@ -399,7 +405,7 @@ string may be an absolute path and whether it may contain ``..`` components.
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/javascript-further-reading.rst

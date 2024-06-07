@@ -57,7 +57,7 @@ predicate assignmentToShadowingLocal(LocalVariableDecl d, Field f) {
       ff.getSourceDeclaration() = f
     )
     or
-    exists(MethodAccess get, Method getter | get = assignedValue and getter = get.getMethod() |
+    exists(MethodCall get, Method getter | get = assignedValue and getter = get.getMethod() |
       getterFor(getter, f)
     )
   )
@@ -66,7 +66,7 @@ predicate assignmentToShadowingLocal(LocalVariableDecl d, Field f) {
 predicate assignmentFromShadowingLocal(LocalVariableDecl d, Field f) {
   shadows(d, _, _, _) and
   exists(VarAccess access | access = d.getAnAccess() |
-    exists(MethodAccess set, Expr arg, Method setter |
+    exists(MethodCall set, Expr arg, Method setter |
       access = getARelevantChild(arg) and
       arg = set.getAnArgument() and
       setter = set.getMethod() and
@@ -82,7 +82,7 @@ predicate assignmentFromShadowingLocal(LocalVariableDecl d, Field f) {
 }
 
 private Expr getARelevantChild(Expr parent) {
-  exists(MethodAccess ma | parent = ma.getAnArgument() and result = parent)
+  exists(MethodCall ma | parent = ma.getAnArgument() and result = parent)
   or
   exists(Variable v | parent = v.getAnAccess() and result = parent)
   or

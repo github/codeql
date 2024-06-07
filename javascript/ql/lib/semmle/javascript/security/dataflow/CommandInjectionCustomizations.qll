@@ -49,6 +49,6 @@ module CommandInjection {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("command-line-injection").asSink() }
+    SinkFromModel() { this = ModelOutput::getASinkNode("command-injection").asSink() }
   }
 }

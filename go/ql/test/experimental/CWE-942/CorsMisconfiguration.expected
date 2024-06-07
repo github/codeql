@@ -1,3 +1,5 @@
+| CorsGin.go:28:35:28:69 | slice literal | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
+| CorsGin.go:98:21:98:55 | slice literal | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
 | CorsMisconfiguration.go:26:4:26:56 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
 | CorsMisconfiguration.go:32:4:32:42 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
 | CorsMisconfiguration.go:53:4:53:44 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |

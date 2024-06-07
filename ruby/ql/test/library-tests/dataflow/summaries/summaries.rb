@@ -20,7 +20,7 @@ sink(tainted3) # $ hasValueFlow=tainted
 tainted4 = Foo.firstArg(tainted)
 sink(tainted4) # $ hasTaintFlow=tainted
 
-notTainted = Foo.firstArg(nil, tainted))
+notTainted = Foo.firstArg(nil, tainted)
 sink(notTainted)
 
 tainted5 = Foo.secondArg(nil, tainted)
@@ -128,7 +128,7 @@ x = Foo.new
 x.flowToSelf(tainted)
 sink(x) # $ hasTaintFlow=tainted
 
-Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
+Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted $ hasTaintFlow=tainted
 Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
 
 Foo.sinkAnyNamedArg(tainted)
@@ -150,3 +150,19 @@ Foo.secondArrayElementIsSink([tainted, "safe", "safe"])
 Foo.secondArrayElementIsSink(["safe", tainted, "safe"]) # $ hasValueFlow=tainted
 Foo.secondArrayElementIsSink(["safe", "safe", tainted])
 Foo.secondArrayElementIsSink([tainted] * 10) # $ MISSING: hasValueFlow=tainted
+
+FuzzyLib.fuzzyCall(tainted) # $ hasValueFlow=tainted
+FuzzyLib.foo.bar.fuzzyCall(tainted) # $ hasValueFlow=tainted
+FuzzyLib.foo[0].fuzzyCall(tainted) # $ hasValueFlow=tainted
+FuzzyLib.foo do |x|
+  x.fuzzyCall(tainted) # $ hasValueFlow=tainted
+  x.otherCall(tainted)
+end
+class FuzzySub < FuzzyLib::Foo
+  def blah
+    self.fuzzyCall(source("tainted")) # $ hasValueFlow=tainted
+  end
+  def self.blah
+    self.fuzzyCall(source("tainted")) # $ hasValueFlow=tainted
+  end
+end

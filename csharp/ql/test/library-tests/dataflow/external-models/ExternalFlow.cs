@@ -149,9 +149,9 @@ namespace My.Qltest
 
         static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
-        static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
+        static T[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
 
-        static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
+        static void Apply2(Action<object> f, D d1, D d2) => throw null;
 
         static void Parse(string s, out int i) => throw null;
 
@@ -185,16 +185,16 @@ namespace My.Qltest
         void M1()
         {
             var o = new object();
-            Sink(GeneratedFlow(o));
+            Sink(GeneratedFlow(o)); // no flow because the modelled method exists in source code
         }
 
         void M2()
         {
             var o1 = new object();
-            Sink(GeneratedFlowArgs(o1, null));
+            Sink(GeneratedFlowArgs(o1, null)); // no flow because the modelled method exists in source code
 
             var o2 = new object();
-            Sink(GeneratedFlowArgs(null, o2));
+            Sink(GeneratedFlowArgs(null, o2)); // no flow because the modelled method exists in source code
         }
 
         void M3()
@@ -206,11 +206,65 @@ namespace My.Qltest
             Sink(MixedFlowArgs(null, o2));
         }
 
+        void M4()
+        {
+            var o1 = new object();
+            Sink(GeneratedFlowWithGeneratedNeutral(o1));
+
+            var o2 = new object();
+            Sink(GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
+        }
+
         object GeneratedFlow(object o) => throw null;
 
         object GeneratedFlowArgs(object o1, object o2) => throw null;
 
         object MixedFlowArgs(object o1, object o2) => throw null;
+
+        object GeneratedFlowWithGeneratedNeutral(object o) => throw null;
+
+        object GeneratedFlowWithManualNeutral(object o) => throw null;
+
+        static void Sink(object o) { }
+    }
+
+    public interface HI { }
+
+    public class HC : HI { }
+
+    public static class HE
+    {
+        public static object ExtensionMethod(this HI h) => throw null;
+    }
+
+    public class H
+    {
+        void M1()
+        {
+            var h = new HC();
+            var o = h.ExtensionMethod();
+            Sink(o);
+        }
+
+        static void Sink(object o) { }
+    }
+
+    [System.Runtime.CompilerServices.InlineArray(10)]
+    public struct MyInlineArray
+    {
+        private object myInlineArrayElements;
+    }
+
+    public class I
+    {
+        void M1(MyInlineArray a)
+        {
+            a[0] = new object();
+            var b = GetFirst(a);
+            Sink(b);
+        }
+
+        object GetFirst(MyInlineArray arr) => throw null;
 
         static void Sink(object o) { }
     }

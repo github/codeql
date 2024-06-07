@@ -24,6 +24,11 @@ class TypeUrl extends RefType {
   TypeUrl() { this.hasQualifiedName("java.net", "URL") }
 }
 
+/** The type `java.net.URLDecoder`. */
+class TypeUrlDecoder extends RefType {
+  TypeUrlDecoder() { this.hasQualifiedName("java.net", "URLDecoder") }
+}
+
 /** The type `java.net.URI`. */
 class TypeUri extends RefType {
   TypeUri() { this.hasQualifiedName("java.net", "URI") }
@@ -37,9 +42,6 @@ class UrlConnectionGetInputStreamMethod extends Method {
     this.hasNoParameters()
   }
 }
-
-/** DEPRECATED: Alias for UrlConnectionGetInputStreamMethod */
-deprecated class URLConnectionGetInputStreamMethod = UrlConnectionGetInputStreamMethod;
 
 /** The method `java.net.Socket::getInputStream`. */
 class SocketGetInputStreamMethod extends Method {
@@ -157,6 +159,14 @@ class UrlOpenConnectionMethod extends Method {
   UrlOpenConnectionMethod() {
     this.getDeclaringType() instanceof TypeUrl and
     this.getName() = "openConnection"
+  }
+}
+
+/** The method `java.net.URLDecoder::decode`. */
+class UrlDecodeMethod extends Method {
+  UrlDecodeMethod() {
+    this.getDeclaringType() instanceof TypeUrlDecoder and
+    this.getName() = "decode"
   }
 }
 

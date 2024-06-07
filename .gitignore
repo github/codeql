@@ -39,6 +39,9 @@
 # local bazel options
 /local.bazelrc
 
+# generated cmake directory
+/.bazel-cmake
+
 # CLion project files
 /.clwb
 
@@ -59,3 +62,6 @@ node_modules/
 
 # Temporary folders for working with generated models
 .model-temp
+
+# bazel-built in-tree extractor packs
+/*/extractor-pack

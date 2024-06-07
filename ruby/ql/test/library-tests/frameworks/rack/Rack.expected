@@ -1,4 +1,26 @@
-| rack.rb:1:1:5:3 | HelloWorld | rack.rb:2:12:2:14 | env |
-| rack.rb:7:1:16:3 | Proxy | rack.rb:12:12:12:18 | the_env |
-| rack.rb:18:1:31:3 | Logger | rack.rb:24:12:24:14 | env |
-| rack.rb:45:1:61:3 | Baz | rack.rb:46:12:46:14 | env |
+rackRequestHandlers
+| rack.rb:2:3:9:5 | call | rack.rb:2:12:2:14 | env | rack.rb:8:5:8:38 | call to [] |
+| rack.rb:17:3:21:5 | call | rack.rb:17:12:17:18 | the_env | rack.rb:20:5:20:27 | call to [] |
+| rack.rb:30:3:36:5 | call | rack.rb:30:12:30:14 | env | rack.rb:35:5:35:26 | call to [] |
+| rack.rb:40:3:44:5 | call | rack.rb:40:12:40:14 | env | rack.rb:43:5:43:45 | call to [] |
+| rack.rb:60:3:62:5 | call | rack.rb:60:12:60:14 | env | rack.rb:66:7:66:24 | call to [] |
+| rack.rb:60:3:62:5 | call | rack.rb:60:12:60:14 | env | rack.rb:73:5:73:23 | call to [] |
+| rack.rb:79:3:81:5 | call | rack.rb:79:17:79:19 | env | rack.rb:93:5:93:78 | call to finish |
+| rack.rb:98:3:107:5 | call | rack.rb:98:12:98:14 | env | rack.rb:110:5:110:28 | call to [] |
+| rack.rb:98:3:107:5 | call | rack.rb:98:12:98:14 | env | rack.rb:114:5:114:30 | call to [] |
+| rack.rb:119:3:123:5 | call | rack.rb:119:12:119:14 | env | rack.rb:122:5:122:42 | call to [] |
+| rack_apps.rb:6:3:12:5 | call | rack_apps.rb:6:12:6:14 | env | rack_apps.rb:10:12:10:34 | call to [] |
+| rack_apps.rb:16:3:18:5 | call | rack_apps.rb:16:17:16:19 | env | rack_apps.rb:17:5:17:28 | call to [] |
+| rack_apps.rb:21:14:21:50 | -> { ... } | rack_apps.rb:21:17:21:19 | env | rack_apps.rb:21:24:21:48 | call to [] |
+| rack_apps.rb:23:21:23:53 | { ... } | rack_apps.rb:23:24:23:26 | env | rack_apps.rb:23:29:23:51 | call to [] |
+rackResponseContentTypes
+| rack.rb:8:5:8:38 | call to [] | rack.rb:7:34:7:45 | "text/plain" |
+| rack.rb:20:5:20:27 | call to [] | rack.rb:19:28:19:38 | "text/html" |
+redirectResponses
+| rack.rb:43:5:43:45 | call to [] | rack.rb:42:30:42:40 | "/foo.html" |
+| rack.rb:93:5:93:78 | call to finish | rack.rb:93:60:93:70 | redirect_to |
+requestInputAccesses
+| rack.rb:100:18:100:28 | call to cookies |
+| rack.rb:103:14:103:23 | call to params |
+| rack.rb:104:18:104:32 | ...[...] |
+| rack.rb:120:14:120:32 | ...[...] |

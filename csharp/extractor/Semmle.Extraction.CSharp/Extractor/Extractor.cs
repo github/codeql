@@ -1,18 +1,18 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Semmle.Util;
-using System.Text;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Semmle.Util.Logging;
-using System.Collections.Concurrent;
-using System.Globalization;
-using System.Threading;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -47,6 +47,8 @@ namespace Semmle.Extraction.CSharp
                 }
             }
 
+            public void Started(int item, int total, string source) { }
+
             public void MissingNamespace(string @namespace) { }
 
             public void MissingSummary(int types, int namespaces) { }
@@ -71,9 +73,9 @@ namespace Semmle.Extraction.CSharp
 
         public static ILogger MakeLogger(Verbosity verbosity, bool includeConsole)
         {
-            var fileLogger = new FileLogger(verbosity, GetCSharpLogPath());
+            var fileLogger = new FileLogger(verbosity, GetCSharpLogPath(), logThreadId: true);
             return includeConsole
-                ? new CombinedLogger(new ConsoleLogger(verbosity), fileLogger)
+                ? new CombinedLogger(new ConsoleLogger(verbosity, logThreadId: true), fileLogger)
                 : (ILogger)fileLogger;
         }
 
@@ -95,7 +97,8 @@ namespace Semmle.Extraction.CSharp
             stopwatch.Start();
 
             var options = Options.CreateWithEnvironment(args);
-            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
+            var workingDirectory = Directory.GetCurrentDirectory();
+            var compilerArgs = options.CompilerArguments.ToArray();
 
             using var logger = MakeLogger(options.Verbosity, options.Console);
 
@@ -121,7 +124,7 @@ namespace Semmle.Extraction.CSharp
 
                 var compilerArguments = CSharpCommandLineParser.Default.Parse(
                     compilerVersion.ArgsWithResponse,
-                    Entities.Compilation.Settings.Cwd,
+                    workingDirectory,
                     compilerVersion.FrameworkPath,
                     compilerVersion.AdditionalReferenceDirectories
                     );
@@ -129,7 +132,7 @@ namespace Semmle.Extraction.CSharp
                 if (compilerArguments is null)
                 {
                     var sb = new StringBuilder();
-                    sb.Append("  Failed to parse command line: ").AppendList(" ", Entities.Compilation.Settings.Args);
+                    sb.Append("  Failed to parse command line: ").AppendList(" ", compilerArgs);
                     logger.Log(Severity.Error, sb.ToString());
                     ++analyser.CompilationErrors;
                     return ExitCode.Failed;
@@ -141,7 +144,7 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                return AnalyseTracing(analyser, compilerArguments, options, canonicalPathCache, stopwatch);
+                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, canonicalPathCache, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -282,9 +285,14 @@ namespace Semmle.Extraction.CSharp
                 try
                 {
                     using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    var st = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.Log(Severity.Trace, $"Parsing source file: '{path}'");
+                    var tree = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.Log(Severity.Trace, $"Source file parsed: '{path}'");
+
                     lock (ret)
-                        ret.Add(st);
+                    {
+                        ret.Add(tree);
+                    }
                 }
                 catch (IOException ex)
                 {
@@ -302,8 +310,6 @@ namespace Semmle.Extraction.CSharp
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
             Action<CSharpCompilation, CommonOptions> initializeAnalyser,
-            Action analyseCompilation,
-            Action<Entities.PerformanceMetrics> logPerformance,
             Action postProcess)
         {
             using var references = new BlockingCollection<MetadataReference>();
@@ -332,7 +338,7 @@ namespace Semmle.Extraction.CSharp
             var compilation = getCompilation(syntaxTrees, references);
 
             initializeAnalyser(compilation, options);
-            analyseCompilation();
+            analyser.AnalyseCompilation();
             analyser.AnalyseReferences();
 
             foreach (var tree in compilation.SyntaxTrees)
@@ -362,7 +368,7 @@ namespace Semmle.Extraction.CSharp
                 PeakWorkingSet = currentProcess.PeakWorkingSet64
             };
 
-            logPerformance(performance);
+            analyser.LogPerformance(performance);
             analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
 
             postProcess();
@@ -371,6 +377,8 @@ namespace Semmle.Extraction.CSharp
         }
 
         private static ExitCode AnalyseTracing(
+            string cwd,
+            string[] args,
             TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
             Options options,
@@ -381,8 +389,17 @@ namespace Semmle.Extraction.CSharp
                 references => ResolveReferences(compilerArguments, analyser, canonicalPathCache, references),
                 (analyser, syntaxTrees) =>
                 {
+                    var paths = compilerArguments.SourceFiles
+                        .Select(src => src.Path)
+                        .ToList();
+
+                    if (compilerArguments.GeneratedFilesOutputDirectory is not null)
+                    {
+                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
+                    }
+
                     return ReadSyntaxTrees(
-                        compilerArguments.SourceFiles.Select(src => canonicalPathCache.GetCanonicalPath(src.Path)),
+                        paths.Select(canonicalPathCache.GetCanonicalPath),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,
@@ -406,9 +423,7 @@ namespace Semmle.Extraction.CSharp
                             .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
-                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
-                () => analyser.AnalyseCompilation(),
-                performance => analyser.LogPerformance(performance),
+                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation, cwd, args),
                 () => { });
         }
 

@@ -16,7 +16,8 @@
 | inline_assembly.c:10:3:10:7 | Store: ... = ... | positive strictlyPositive |
 | inline_assembly.c:10:7:10:7 | Constant: (unsigned int)... | positive strictlyPositive |
 | inline_assembly.c:12:32:12:32 | Load: y | positive strictlyPositive |
-| inline_assembly.c:21:32:21:32 | Load: y | positive strictlyPositive |
+| inline_assembly.c:21:29:21:29 | Load: x | positive |
+| inline_assembly.c:21:32:21:32 | Load: y | positive |
 | minmax.c:16:9:16:10 | Constant: 1 | positive strictlyPositive |
 | minmax.c:16:9:16:10 | Store: 1 | positive strictlyPositive |
 | minmax.c:16:16:16:17 | Constant: 2 | positive strictlyPositive |
@@ -675,6 +676,7 @@
 | test.c:398:9:398:22 | CopyValue: ... , ... | positive strictlyPositive |
 | test.c:398:14:398:14 | Load: y | positive strictlyPositive |
 | test.c:398:14:398:19 | Add: ... += ... | positive strictlyPositive |
+| test.c:398:14:398:19 | Load: ... += ... | positive strictlyPositive |
 | test.c:398:14:398:19 | Store: ... += ... | positive strictlyPositive |
 | test.c:398:19:398:19 | Constant: (unsigned int)... | positive strictlyPositive |
 | test.c:398:22:398:22 | Load: y | positive strictlyPositive |

@@ -10,5 +10,19 @@ jobs:
   echo-chamber2:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo '${{ github.event.comment.body }}'
+    - run: echo '${{ github.event.comment.body }}'
+    - run: echo '${{ github.event.issue.body }}'
+    - run: echo '${{ github.event.issue.title }}'
+
+  echo-chamber3:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@v3
+      with:
+        script: console.log('${{ github.event.comment.body }}')
+    - uses: actions/github-script@v3
+      with:
+        script: console.log('${{ github.event.issue.body }}')
+    - uses: actions/github-script@v3
+      with:
+        script: console.log('${{ github.event.issue.title }}')

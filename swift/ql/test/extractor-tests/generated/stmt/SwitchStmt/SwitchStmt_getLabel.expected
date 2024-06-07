@@ -1,0 +1,2 @@
+| switch.swift:32:1:42:1 | switch x { ... } | outer |
+| switch.swift:34:5:39:5 | switch a { ... } | inner |

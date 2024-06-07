@@ -32,7 +32,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
   /**
    * Gets the data flow node holding the input object to be stringified.
    */
-  DataFlow::Node getInput() { result = getArgument(0) }
+  DataFlow::Node getInput() { result = this.getArgument(0) }
 
   /**
    * Gets the data flow node holding the resulting string.
@@ -59,9 +59,6 @@ class Json2CsvTaintStep extends TaintTracking::SharedTaintStep {
   }
 }
 
-/** DEPRECATED: Alias for Json2CsvTaintStep */
-deprecated class JSON2CSVTaintStep = Json2CsvTaintStep;
-
 /**
  * A step through the [`prettyjson`](https://www.npmjs.com/package/prettyjson) library.
  * This is not quite a `JSON.stringify` call, as it e.g. does not wrap keys in double quotes.
@@ -77,6 +74,3 @@ class PrettyJsonTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
-
-/** DEPRECATED: Alias for PrettyJsonTaintStep */
-deprecated class PrettyJSONTaintStep = PrettyJsonTaintStep;

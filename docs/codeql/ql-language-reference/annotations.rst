@@ -126,7 +126,7 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 ``deprecated``
 ==============
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
 
 The ``deprecated`` annotation is applied to names that are outdated and scheduled for removal
 in a future release of QL.
@@ -292,7 +292,7 @@ at the places where it is called.
 ``pragma[inline_late]``
 -----------------------
 
-**Available for**: |non-member predicates|
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[inline_late]`` annotation must be used in conjunction with a
 ``bindingset[...]`` pragma. Together, they tell the QL optimiser to use the
@@ -302,7 +302,7 @@ after join ordering. This can be useful to prevent the optimiser from choosing
 a sub-optimal join order.
 
 For instance, in the example below, the ``pragma[inline_late]`` and
-``bindingset[x]`` annotations specifiy that calls to ``p`` should be join ordered
+``bindingset[x]`` annotations specify that calls to ``p`` should be join ordered
 in a context where ``x`` is already bound. This forces the join orderer to
 order ``q(x)`` before ``p(x)``, which is more computationally efficient
 than ordering ``p(x)`` before ``q(x)``.
@@ -435,16 +435,18 @@ For more information, see ":ref:`Binding <binding>`."
 
 **Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
-The ``pragma[assume_small_delta]`` annotation changes the compilation of the annotated recursive predicate.
-If the compiler normally generates the join orders ``order_<1>``, ``order_<2>``, ``order_<3>``, and ``standard_order``,
-applying this annotation makes ``standard_order`` the same as ``order_<3>`` and removes the (now redundant) ``order_<3>`` join order.
+.. pull-quote:: Important
+
+   This annotation is deprecated.
+
+The ``pragma[assume_small_delta]`` annotation has no effect and can be safely removed.
 
 .. _language:
 
 Language pragmas
 ================
 
-**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |modules|, |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
 
 ``language[monotonicAggregates]``
 ---------------------------------

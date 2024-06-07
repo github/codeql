@@ -18,12 +18,13 @@ import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
 import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection
 import DataFlow::PathGraph
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string type
 where
   (
-    cfg instanceof SqlInjection::Configuration or
-    cfg instanceof NosqlInjection::Configuration
+    cfg instanceof SqlInjection::Configuration and type = "string"
+    or
+    cfg instanceof NosqlInjection::Configuration and type = "object"
   ) and
   cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "This query " + type + " depends on a $@.", source.getNode(),
   "user-provided value"

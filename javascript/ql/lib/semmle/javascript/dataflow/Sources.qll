@@ -49,12 +49,12 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
    */
-  predicate flowsToExpr(Expr sink) { flowsTo(DataFlow::valueNode(sink)) }
+  predicate flowsToExpr(Expr sink) { this.flowsTo(DataFlow::valueNode(sink)) }
 
   /**
    * Gets a node into which data may flow from this node in zero or more local steps.
    */
-  DataFlow::Node getALocalUse() { flowsTo(result) }
+  DataFlow::Node getALocalUse() { this.flowsTo(result) }
 
   /**
    * Gets a reference (read or write) of property `propName` on this node.
@@ -66,13 +66,15 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
   /**
    * Gets a read of property `propName` on this node.
    */
-  DataFlow::PropRead getAPropertyRead(string propName) { result = getAPropertyReference(propName) }
+  DataFlow::PropRead getAPropertyRead(string propName) {
+    result = this.getAPropertyReference(propName)
+  }
 
   /**
    * Gets a write of property `propName` on this node.
    */
   DataFlow::PropWrite getAPropertyWrite(string propName) {
-    result = getAPropertyReference(propName)
+    result = this.getAPropertyReference(propName)
   }
 
   /**
@@ -81,7 +83,7 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    */
   pragma[nomagic]
   predicate hasPropertyWrite(string propName, DataFlow::Node rhs) {
-    rhs = getAPropertyWrite(propName).getRhs()
+    rhs = this.getAPropertyWrite(propName).getRhs()
   }
 
   /**
@@ -96,18 +98,18 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
   /**
    * Gets a read of any property on this node.
    */
-  DataFlow::PropRead getAPropertyRead() { result = getAPropertyReference() }
+  DataFlow::PropRead getAPropertyRead() { result = this.getAPropertyReference() }
 
   /**
    * Gets a write of any property on this node.
    */
-  DataFlow::PropWrite getAPropertyWrite() { result = getAPropertyReference() }
+  DataFlow::PropWrite getAPropertyWrite() { result = this.getAPropertyReference() }
 
   /**
    * Gets an invocation of the method or constructor named `memberName` on this node.
    */
   DataFlow::InvokeNode getAMemberInvocation(string memberName) {
-    result = getAPropertyRead(memberName).getAnInvocation()
+    result = this.getAPropertyRead(memberName).getAnInvocation()
   }
 
   /**
@@ -117,7 +119,9 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    * (as in `o.m(...)`), and calls where the callee undergoes some additional
    * data flow (as in `tmp = o.m; tmp(...)`).
    */
-  DataFlow::CallNode getAMemberCall(string memberName) { result = getAMemberInvocation(memberName) }
+  DataFlow::CallNode getAMemberCall(string memberName) {
+    result = this.getAMemberInvocation(memberName)
+  }
 
   /**
    * Gets a method call that invokes method `methodName` on this node.
@@ -126,7 +130,7 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    * that is, `o.m(...)` or `o[p](...)`.
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
-    result = getAMemberInvocation(methodName) and
+    result = this.getAMemberInvocation(methodName) and
     Cached::isSyntacticMethodCall(result)
   }
 
@@ -136,7 +140,7 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    * This includes only calls that have the syntactic shape of a method call,
    * that is, `o.m(...)` or `o[p](...)`.
    */
-  DataFlow::CallNode getAMethodCall() { result = getAMethodCall(_) }
+  DataFlow::CallNode getAMethodCall() { result = this.getAMethodCall(_) }
 
   /**
    * Gets a chained method call that invokes `methodName` last.
@@ -146,14 +150,14 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    */
   DataFlow::CallNode getAChainedMethodCall(string methodName) {
     // the direct call to `getAMethodCall` is needed in case the base is not a `DataFlow::CallNode`.
-    result = [getAMethodCall+().getAMethodCall(methodName), getAMethodCall(methodName)]
+    result = [this.getAMethodCall+().getAMethodCall(methodName), this.getAMethodCall(methodName)]
   }
 
   /**
    * Gets a `new` call that invokes constructor `constructorName` on this node.
    */
   DataFlow::NewNode getAConstructorInvocation(string constructorName) {
-    result = getAMemberInvocation(constructorName)
+    result = this.getAMemberInvocation(constructorName)
   }
 
   /**
@@ -164,24 +168,24 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
   /**
    * Gets a function call to this node.
    */
-  DataFlow::CallNode getACall() { result = getAnInvocation() }
+  DataFlow::CallNode getACall() { result = this.getAnInvocation() }
 
   /**
    * Gets a `new` call to this node.
    */
-  DataFlow::NewNode getAnInstantiation() { result = getAnInvocation() }
+  DataFlow::NewNode getAnInstantiation() { result = this.getAnInvocation() }
 
   /**
    * Gets a source node whose value is stored in property `prop` of this node.
    */
   DataFlow::SourceNode getAPropertySource(string prop) {
-    result.flowsTo(getAPropertyWrite(prop).getRhs())
+    result.flowsTo(this.getAPropertyWrite(prop).getRhs())
   }
 
   /**
    * Gets a source node whose value is stored in a property of this node.
    */
-  DataFlow::SourceNode getAPropertySource() { result.flowsTo(getAPropertyWrite().getRhs()) }
+  DataFlow::SourceNode getAPropertySource() { result.flowsTo(this.getAPropertyWrite().getRhs()) }
 
   /**
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
@@ -318,6 +322,7 @@ module SourceNode {
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
         astNode instanceof ImportSpecifier or
+        astNode instanceof ExportNamespaceSpecifier or
         astNode instanceof ImportMetaExpr or
         astNode instanceof TaggedTemplateExpr or
         astNode instanceof Templating::PipeRefExpr or

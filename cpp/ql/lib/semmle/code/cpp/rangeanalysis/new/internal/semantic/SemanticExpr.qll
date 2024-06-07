@@ -4,6 +4,7 @@
 
 private import Semantic
 private import SemanticExprSpecific::SemanticExprConfig as Specific
+private import SemanticType
 
 /**
  * An language-neutral expression.
@@ -87,7 +88,7 @@ class SemIntegerLiteralExpr extends SemNumericLiteralExpr {
   final int getIntValue() { Specific::integerLiteral(this, _, result) }
 
   final override float getApproximateFloatValue() {
-    result = getIntValue()
+    result = this.getIntValue()
     or
     Specific::largeIntegerLiteral(this, _, result)
   }
@@ -124,13 +125,13 @@ class SemBinaryExpr extends SemKnownExpr {
 
   /** Holds if `a` and `b` are the two operands, in either order. */
   final predicate hasOperands(SemExpr a, SemExpr b) {
-    a = getLeftOperand() and b = getRightOperand()
+    a = this.getLeftOperand() and b = this.getRightOperand()
     or
-    a = getRightOperand() and b = getLeftOperand()
+    a = this.getRightOperand() and b = this.getLeftOperand()
   }
 
   /** Gets the two operands. */
-  final SemExpr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+  final SemExpr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
 }
 
 /** An expression that performs and ordered comparison of two operands. */
@@ -154,8 +155,8 @@ class SemRelationalExpr extends SemBinaryExpr {
    */
   final SemExpr getLesserOperand() {
     if opcode instanceof Opcode::CompareLT or opcode instanceof Opcode::CompareLE
-    then result = getLeftOperand()
-    else result = getRightOperand()
+    then result = this.getLeftOperand()
+    else result = this.getRightOperand()
   }
 
   /**
@@ -167,8 +168,8 @@ class SemRelationalExpr extends SemBinaryExpr {
    */
   final SemExpr getGreaterOperand() {
     if opcode instanceof Opcode::CompareGT or opcode instanceof Opcode::CompareGE
-    then result = getLeftOperand()
-    else result = getRightOperand()
+    then result = this.getLeftOperand()
+    else result = this.getRightOperand()
   }
 
   /** Holds if this comparison returns `false` if the two operands are equal. */
@@ -241,8 +242,21 @@ class SemConvertExpr extends SemUnaryExpr {
   SemConvertExpr() { opcode instanceof Opcode::Convert }
 }
 
+private import semmle.code.cpp.ir.IR as IR
+
+/** A conversion instruction which is guaranteed to not overflow. */
+private class SafeConversion extends IR::ConvertInstruction {
+  SafeConversion() {
+    exists(SemType tFrom, SemType tTo |
+      tFrom = getSemanticType(super.getUnary().getResultIRType()) and
+      tTo = getSemanticType(super.getResultIRType()) and
+      conversionCannotOverflow(tFrom, tTo)
+    )
+  }
+}
+
 class SemCopyValueExpr extends SemUnaryExpr {
-  SemCopyValueExpr() { opcode instanceof Opcode::CopyValue }
+  SemCopyValueExpr() { opcode instanceof Opcode::CopyValue or this instanceof SafeConversion }
 }
 
 class SemNegateExpr extends SemUnaryExpr {
@@ -280,11 +294,11 @@ class SemLoadExpr extends SemNullaryExpr {
 }
 
 class SemSsaLoadExpr extends SemLoadExpr {
-  SemSsaLoadExpr() { exists(getDef()) }
+  SemSsaLoadExpr() { exists(this.getDef()) }
 }
 
 class SemNonSsaLoadExpr extends SemLoadExpr {
-  SemNonSsaLoadExpr() { not exists(getDef()) }
+  SemNonSsaLoadExpr() { not exists(this.getDef()) }
 }
 
 class SemStoreExpr extends SemUnaryExpr {

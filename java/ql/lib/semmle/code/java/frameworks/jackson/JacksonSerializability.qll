@@ -20,9 +20,6 @@ class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
   }
 }
 
-/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
-deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
-
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
 
@@ -71,7 +68,7 @@ private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
 /** A type whose values are explicitly serialized in a call to a Jackson method. */
 private class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       // A call to a Jackson write method...
       ma.getMethod() instanceof JacksonWriteValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be serialized.
@@ -94,7 +91,7 @@ private module TypeLiteralToJacksonDatabindFlowConfig implements DataFlow::Confi
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m, int i |
+    exists(MethodCall ma, Method m, int i |
       ma.getArgument(i) = sink.asExpr() and
       m = ma.getMethod() and
       m.getParameterType(i) instanceof TypeClass and
@@ -119,7 +116,7 @@ private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializa
   ExplicitlyReadJacksonDeserializableType() {
     usesType(getSourceWithFlowToJacksonDatabind().getReferencedType(), this)
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       // A call to a Jackson read method...
       ma.getMethod() instanceof JacksonReadValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be deserialized.
@@ -149,7 +146,6 @@ class JacksonSerializableField extends SerializableField {
 
 /** A field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableField extends DeserializableField {
-  pragma[assume_small_delta]
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
@@ -181,7 +177,7 @@ private class JacksonDeserializedTaintStep extends AdditionalTaintStep {
  * This informs Jackson to treat the annotations on the second class argument as if they were on
  * the first class argument. This allows adding annotations to library classes, for example.
  */
-class JacksonAddMixinCall extends MethodAccess {
+class JacksonAddMixinCall extends MethodCall {
   JacksonAddMixinCall() {
     exists(Method m |
       m = this.getMethod() and
