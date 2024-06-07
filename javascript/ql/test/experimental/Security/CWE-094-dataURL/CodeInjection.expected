@@ -1,4 +1,3 @@
-WARNING: Unused class Sink (/home/am/CodeQL-home/codeql-repo-amammad/javascript/ql/src/experimental/Security/CWE-094-dataURL/CodeInjection.ql:23,16-20)
 nodes
 | test.js:5:11:5:44 | payload |
 | test.js:5:21:5:44 | req.que ... rameter |
@@ -46,7 +45,7 @@ edges
 | test.js:19:18:19:24 | payload | test.js:19:18:19:30 | payload + sth |
 | test.js:19:18:19:24 | payload | test.js:19:18:19:30 | payload + sth |
 #select
-| test.js:7:16:7:25 | payloadURL | test.js:5:21:5:44 | req.que ... rameter | test.js:7:16:7:25 | payloadURL | payloadURL depends on a $@. | test.js:5:21:5:44 | req.que ... rameter | user-provided value |
-| test.js:10:16:10:25 | payloadURL | test.js:5:21:5:44 | req.que ... rameter | test.js:10:16:10:25 | payloadURL | payloadURL depends on a $@. | test.js:5:21:5:44 | req.que ... rameter | user-provided value |
-| test.js:18:18:18:24 | payload | test.js:17:21:17:44 | req.que ... rameter | test.js:18:18:18:24 | payload | payload depends on a $@. | test.js:17:21:17:44 | req.que ... rameter | user-provided value |
-| test.js:19:18:19:30 | payload + sth | test.js:17:21:17:44 | req.que ... rameter | test.js:19:18:19:30 | payload + sth | payload + sth depends on a $@. | test.js:17:21:17:44 | req.que ... rameter | user-provided value |
+| test.js:7:16:7:25 | payloadURL | test.js:5:21:5:44 | req.que ... rameter | test.js:7:16:7:25 | payloadURL | This command line depends on a $@. | test.js:5:21:5:44 | req.que ... rameter | user-provided value |
+| test.js:10:16:10:25 | payloadURL | test.js:5:21:5:44 | req.que ... rameter | test.js:10:16:10:25 | payloadURL | This command line depends on a $@. | test.js:5:21:5:44 | req.que ... rameter | user-provided value |
+| test.js:18:18:18:24 | payload | test.js:17:21:17:44 | req.que ... rameter | test.js:18:18:18:24 | payload | This command line depends on a $@. | test.js:17:21:17:44 | req.que ... rameter | user-provided value |
+| test.js:19:18:19:30 | payload + sth | test.js:17:21:17:44 | req.que ... rameter | test.js:19:18:19:30 | payload + sth | This command line depends on a $@. | test.js:17:21:17:44 | req.que ... rameter | user-provided value |
