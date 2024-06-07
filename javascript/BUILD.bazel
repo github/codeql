@@ -33,6 +33,5 @@ codeql_pack(
         "//javascript/extractor:tools-extractor",
         "//javascript/resources",
     ],
-    visibility = ["//visibility:public"],
     zips = {"//javascript/extractor/lib/typescript": "tools"},
 )
