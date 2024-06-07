@@ -2,7 +2,7 @@
 <qhelp>
     <overview>
         <p>
-            <a href="https://helmetjs.github.io/">Helmet</a> is a collection of middleware functions for securing Express apps. It sets various HTTP headers to guard against common web vulnerabilities.<br>
+            <a href="https://helmetjs.github.io/">Helmet</a> is a collection of middleware functions for securing Express apps. It sets various HTTP headers to guard against common web vulnerabilities.
 
             This query detects Helmet misconfigurations that can lead to security vulnerabilities, specifically:
         </p>
@@ -13,7 +13,7 @@
         </ul>
 
         <p>
-            Content Security Policy (CSP) helps spot and prevent injection attacks such as Cross-Site Scripting (XSS).<br>
+            Content Security Policy (CSP) helps spot and prevent injection attacks such as Cross-Site Scripting (XSS).
 
             Removing frame protections exposes an application to attacks such as clickjacking, where an attacker can trick a user into clicking on a button or link on a targeted page when they intended to click on the page carrying out the attack.
         </p>
