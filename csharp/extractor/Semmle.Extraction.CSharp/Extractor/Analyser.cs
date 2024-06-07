@@ -312,8 +312,6 @@ namespace Semmle.Extraction.CSharp
             else
                 Logger.Log(Severity.Info, "EXTRACTION SUCCEEDED in {0}", stopWatch.Elapsed);
 
-            Logger.Dispose();
-
             compilationTrapFile?.Dispose();
         }
 

@@ -83,7 +83,7 @@
 /csharp/paket.main_extension.bzl linguist-generated=true
 
 # ripunzip tool
-/misc/bazel/internal/ripunzip/ripunzip-* filter=lfs diff=lfs merge=lfs -text
+/misc/ripunzip/ripunzip-* filter=lfs diff=lfs merge=lfs -text
 
 # swift prebuilt resources
 /swift/third_party/resource-dir/*.zip filter=lfs diff=lfs merge=lfs -text

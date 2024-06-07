@@ -169,7 +169,18 @@ module ModelInput {
    */
   class TypeModel extends Unit {
     /**
+     * Holds if any of the other predicates in this class might have a result
+     * for the given `type`.
+     *
+     * The implementation of this predicate should not depend on `DataFlow::Node`.
+     */
+    bindingset[type]
+    predicate isTypeUsed(string type) { none() }
+
+    /**
      * Gets a data-flow node that is a source of the given `type`.
+     *
+     * Note that `type` should also be included in `isTypeUsed`.
      *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the source.
@@ -180,6 +191,8 @@ module ModelInput {
      * Gets a data-flow node that is a sink of the given `type`,
      * usually because it is an argument passed to a parameter of that type.
      *
+     * Note that `type` should also be included in `isTypeUsed`.
+     *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the sink.
      */
@@ -187,6 +200,8 @@ module ModelInput {
 
     /**
      * Gets an API node that is a source or sink of the given `type`.
+     *
+     * Note that `type` should also be included in `isTypeUsed`.
      *
      * Unlike `getASource` and `getASink`, this may depend on API graphs.
      */
@@ -366,6 +381,8 @@ predicate isRelevantType(string type) {
   ) and
   (
     Specific::isTypeUsed(type)
+    or
+    any(TypeModel model).isTypeUsed(type)
     or
     exists(TestAllModels t)
   )

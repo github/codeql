@@ -21,6 +21,8 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    using-range-analsis-in-cpp
    hash-consing-and-value-numbering
    advanced-dataflow-scenarios-cpp
+   customizing-library-models-for-cpp
+   
 
 
 -  :doc:`Basic query for C and C++ code <basic-query-for-cpp-code>`: Learn to write and run a simple CodeQL query.
@@ -46,3 +48,5 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Hash consing and value numbering <hash-consing-and-value-numbering>`: You can use specialized CodeQL libraries to recognize expressions that are syntactically identical or compute the same value at runtime in C and C++ codebases.
 
 -  :doc:`Advanced C/C++ dataflow scenarios <advanced-dataflow-scenarios-cpp>`: You can track precise data flow in C and C++ codebases by distinguishing between a pointer and its indirection(s).
+
+-  :doc:`Customizing library models for C and C++ <customizing-library-models-for-cpp>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.

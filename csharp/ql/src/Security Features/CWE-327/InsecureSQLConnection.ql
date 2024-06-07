@@ -32,6 +32,11 @@ module InsecureSqlConnectionConfig implements DataFlow::ConfigSig {
         oc.getType().getName() = "SqlConnectionStringBuilder"
         or
         oc.getType().getName() = "SqlConnection"
+      ) and
+      not exists(MemberInitializer mi |
+        mi = oc.getInitializer().(ObjectInitializer).getAMemberInitializer() and
+        mi.getLValue().(PropertyAccess).getTarget().getName() = "Encrypt" and
+        mi.getRValue().(BoolLiteral).getValue() = "true"
       )
     )
   }

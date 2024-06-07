@@ -21,7 +21,7 @@ alias(
             "@swift_toolchain_" + os,
         ],
         target_compatible_with = ["@platforms//os:" + os],
-        deps = ["@bazel_tools//tools/bash/runfiles"],
+        deps = ["//misc/bazel:sh_runfiles"],
     )
     for os in ("linux", "macos")
 ]
