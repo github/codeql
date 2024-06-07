@@ -115,12 +115,10 @@ module DecompressionTaintConfig implements DataFlow::StateConfigSig {
     (
       exists(FunctionCall fc | fc.getTarget() instanceof GzopenFunction |
         fc.getArgument(0) = source.asExpr() and
-        // arg 0 can be a path string whichwe must do following check
+        // arg 0 can be a path string which we must do following check
         not fc.getArgument(0).isConstant()
       )
       or
-      // IDK whether it is good to use all file decriptors function returns as source or not
-      // because we can do more sanitization from fd function sources
       exists(FunctionCall fc | fc.getTarget() instanceof GzdopenFunction |
         fc.getArgument(0) = source.asExpr()
       )
