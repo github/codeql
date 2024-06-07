@@ -14,18 +14,19 @@ module BuildlessIdentifiers<BuildlessASTSig A> {
   }
 
   predicate namespace(string ns) {
-    ns = "" // The global namespace
-    or
-    exists(AST::SourceNamespace n | n.getName() = ns)
+    ns = ["", getQualifiedName(_)]
   }
 
   // What are the identifiers in scope at a given point in the program?
   // Give a potential object that the identifier refers to
-  predicate identifiers(AST::SourceScope scope, string name, AST::SourceElement decl) {
-    scope.(AST::SourceNamespace).getName() = name and decl = scope
+  predicate identifiers(AST::SourceScope scope, string name, AST::SourceDeclaration decl) {
+    scope.(AST::SourceDeclaration).getName() = name and decl = scope
     or
     decl = scope.(AST::SourceNamespace).getAChild() and
-    name = decl.(AST::SourceDeclaration).getName()
+    name = decl.getName()
+    or
+    decl = scope.(AST::SourceTypeDefinition).getAMember() and
+    name = decl.getName()
   }
 }
 
