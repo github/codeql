@@ -1,7 +1,7 @@
 import ast
 
 module BuildlessModel<BuildlessASTSig Sig> {
-  module AST = Buildless<Sig>;
+  module AST = BuildlessAST<Sig>;
 
   private string getQualifiedName(AST::SourceNamespace ns) {
     not exists(AST::SourceNamespace p | ns = p.getAChild()) and result = ns.getName()
@@ -39,6 +39,7 @@ module BuildlessModel<BuildlessASTSig Sig> {
   {
     abstract SourceDeclaration getParent();
     abstract string getName();
+    abstract string getMangledName();
   }
 
   class NamespaceDeclaration extends SourceDeclaration {
@@ -60,6 +61,8 @@ module BuildlessModel<BuildlessASTSig Sig> {
       then result = this.getParent().getFullyQualifiedName() + "::" + this.getName()
       else result = this.getName()
     }
+
+    override string getMangledName() { result = this.getFullyQualifiedName() }
   }
 
   class SourceTypeDeclaration extends SourceDeclaration {
@@ -69,7 +72,7 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
     override Location getLocation() { result = def.getLocation() }
 
-    override string toString() { result = "type_definition " + def.getName() }
+    override string toString() { result = "typename " + def.getName() }
 
     NamespaceDeclaration getParentNamespace() { 
         result.getSourceNode() = def.getParent()
@@ -86,7 +89,9 @@ module BuildlessModel<BuildlessASTSig Sig> {
     override string getName() { result = def.getName() }
 
     // Mangled name
-    // string getMangledName() { if exists(this.getParent()) then result = this.getParent().getFullyQualifiedName() + "::" + getName() else result = getName() }
+    override string getMangledName() { 
+        if exists(this.getParent()) then result = this.getParent().getMangledName() + 
+            "." + this.getName() else result = this.getName() }
   }
 
   class SourceFunctionDeclaration extends SourceDeclaration
@@ -107,8 +112,12 @@ module BuildlessModel<BuildlessASTSig Sig> {
     override Location getLocation() { result = fn.getLocation() }
 
     override string getName() { result = fn.getName() }
-  }
+
+    override string getMangledName() { 
+        if exists(this.getParent()) then result = this.getParent().getMangledName() + 
+            "." + this.getName()+"()" else result = this.getName()+"()" }
+}
 }
 
 // For debugging in context
-module TestTypes = BuildlessModel<CompiledAST>;
+module TestModel = BuildlessModel<CompiledAST>;

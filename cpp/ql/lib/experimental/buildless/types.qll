@@ -1,12 +1,12 @@
 import ast
 
-module BuildlessTypes<BuildlessASTSig AST> {
-  module A = Buildless<AST>;
+module BuildlessTypes<BuildlessASTSig Sig> {
+  module AST = BuildlessAST<Sig>;
 
   private newtype TType =
     TBuiltinType(string name) { name = ["int", "char"] }
     or
-    TUserType(string fqn) { exists(A::SourceTypeDefinition d | d.getName() = fqn) }
+    TUserType(string fqn) { exists(AST::SourceTypeDefinition d | d.getName() = fqn) }
     //or
     //TPointerType(Type type) { exists(A::SourcePointer p | p.getType() = type) }
     //or
@@ -27,7 +27,7 @@ module BuildlessTypes<BuildlessASTSig AST> {
   {
     override string getName() { this = TUserType(result) }
 
-    override Location getLocation() { exists(A::SourceTypeDefinition d | this.getName() = d.getName() | result = d.getLocation()) }
+    override Location getLocation() { exists(AST::SourceTypeDefinition d | this.getName() = d.getName() | result = d.getLocation()) }
   }
 }
 

@@ -1,7 +1,7 @@
 import compiled_ast
 import ast_sig
 
-module Buildless<BuildlessASTSig AST> {
+module BuildlessAST<BuildlessASTSig AST> {
   final class Node = AST::Node;
 
   // Any node in the abstract syntax tree
@@ -170,4 +170,4 @@ module Buildless<BuildlessASTSig AST> {
   }
 }
 
-module TestAST = Buildless<CompiledAST>;
+module TestAST = BuildlessAST<CompiledAST>;
