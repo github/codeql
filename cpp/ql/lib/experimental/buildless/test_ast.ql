@@ -23,5 +23,10 @@ query predicate naiveCallTargets(TestAST::CallExpr call, TestAST::SourceFunction
     and target.getName() = "max"
 }
 
+query predicate fnParents(TestAST::SourceFunction fn, TestAST::SourceNamespace parent)
+{
+    parent = fn.getParent()
+}
+
 from TestAST::SourceFunction fn
 select fn, fn.getReturnType(), count(fn.getReturnType()), fn.getReturnType().getAQlClass()

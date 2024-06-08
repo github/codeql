@@ -22,7 +22,7 @@ module CompiledAST implements BuildlessASTSig {
     TDeclarationType(SourceLocation loc, Type type) {
       // TODO: Avoid template instantiation here
       exists(DeclarationEntry decl |
-        decl.getLocation() = loc and not decl.isFromTemplateInstantiation(_)
+        decl.getLocation() = loc and not decl.isFromTemplateInstantiation(_) 
       |
         type = reachableType(decl.getType())
       )
@@ -43,10 +43,12 @@ module CompiledAST implements BuildlessASTSig {
 
     Stmt getStmt() { this = TStatement(result.getLocation()) }
 
-    Function getFunction() { this = TDeclaration(result.getLocation()) }
+    Function getFunction() { this = TDeclaration(result.getLocation()) and not result.isFromTemplateInstantiation(_) and not result.isCompilerGenerated()}
 
     DeclarationEntry getDeclaration() {
-      this = TDeclaration(result.getLocation())
+      this = TDeclaration(result.getLocation()) and 
+      not result.isFromTemplateInstantiation(_)
+      and not result.getDeclaration().(Function).isCompilerGenerated()
       /* or this = TDeclarationType(result.getLocation(), _) */
     }
 
