@@ -202,6 +202,15 @@ func findMethodOnTypeWithGivenReceiver(tp types.Type, object types.Object) *type
 	return nil
 }
 
+func getTypeParamType(object types.Object) *types.TypeParam {
+	typeNameObject, ok := object.(*types.TypeName)
+	if !ok {
+		return nil
+	}
+	typeParamType, _ := typeNameObject.Type().(*types.TypeParam)
+	return typeParamType
+}
+
 // ReceiverObjectID associates a label with the given object and returns it, together with a flag indicating whether
 // the object already had a label associated with it; the object must be the receiver of `methlbl`, since that label
 // is used to construct the label of the object

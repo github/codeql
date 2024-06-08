@@ -682,9 +682,6 @@ var ObjectType = NewPrimaryKeyType("@object")
 // ObjectKind is a case type for distinguishing different kinds of built-in and declared objects
 var ObjectKind = NewCaseType(ObjectType, "kind")
 
-// TypeParamParentObjectType is the type of objects that can have type parameters as children
-var TypeParamParentObjectType = NewUnionType("@typeparamparentobject")
-
 // DeclObjectType is the type of declared objects
 var DeclObjectType = NewUnionType("@declobject")
 
@@ -698,7 +695,7 @@ var PkgObjectType = ObjectKind.NewBranch("@pkgobject")
 var TypeObjectType = NewUnionType("@typeobject")
 
 // DeclTypeObjectType is the type of declared named types
-var DeclTypeObjectType = ObjectKind.NewBranch("@decltypeobject", TypeObjectType, DeclObjectType, TypeParamParentObjectType)
+var DeclTypeObjectType = ObjectKind.NewBranch("@decltypeobject", TypeObjectType, DeclObjectType)
 
 // BuiltinTypeObjectType is the type of built-in named types
 var BuiltinTypeObjectType = ObjectKind.NewBranch("@builtintypeobject", TypeObjectType, BuiltinObjectType)
@@ -725,7 +722,7 @@ var DeclVarObjectType = ObjectKind.NewBranch("@declvarobject", VarObjectType, De
 var FunctionObjectType = NewUnionType("@functionobject", ValueObjectType)
 
 // DeclFuncObjectType is the type of declared functions, including (abstract and concrete) methods
-var DeclFuncObjectType = ObjectKind.NewBranch("@declfunctionobject", FunctionObjectType, DeclObjectType, TypeParamParentObjectType)
+var DeclFuncObjectType = ObjectKind.NewBranch("@declfunctionobject", FunctionObjectType, DeclObjectType)
 
 // BuiltinFuncObjectType is the type of built-in functions
 var BuiltinFuncObjectType = ObjectKind.NewBranch("@builtinfunctionobject", FunctionObjectType, BuiltinObjectType)
@@ -1214,6 +1211,4 @@ var TypeParamTable = NewTable("typeparam",
 	EntityColumn(TypeParamType, "tp").Unique(),
 	StringColumn("name"),
 	EntityColumn(CompositeType, "bound"),
-	EntityColumn(TypeParamParentObjectType, "parent"),
-	IntColumn("idx"),
-).KeySet("parent", "idx")
+)

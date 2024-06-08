@@ -227,9 +227,7 @@ has_ellipsis(int id: @callorconversionexpr ref);
 
 variadic(int id: @signaturetype ref);
 
-#keyset[parent, idx]
-typeparam(unique int tp: @typeparamtype ref, string name: string ref, int bound: @compositetype ref,
-          int parent: @typeparamparentobject ref, int idx: int ref);
+typeparam(unique int tp: @typeparamtype ref, string name: string ref, int bound: @compositetype ref);
 
 @container = @file | @folder;
 
@@ -439,8 +437,6 @@ case @object.kind of
 | 6 = @declfunctionobject
 | 7 = @builtinfunctionobject
 | 8 = @labelobject;
-
-@typeparamparentobject = @decltypeobject | @declfunctionobject;
 
 @declobject = @decltypeobject | @declconstobject | @declvarobject | @declfunctionobject;
 

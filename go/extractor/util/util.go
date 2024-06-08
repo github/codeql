@@ -3,6 +3,7 @@ package util
 import (
 	"errors"
 	"fmt"
+	"go/types"
 	"io/fs"
 	"log"
 	"net/url"
@@ -286,4 +287,32 @@ func getImportPathFromRepoURL(repourl string) string {
 	// strip off leading slashes and trailing `.git` if present
 	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
 	return host + "/" + path
+}
+
+var typeParamParent map[*types.TypeParam]types.Object = make(map[*types.TypeParam]types.Object)
+
+func GetTypeParamParent(tp *types.TypeParam) types.Object {
+	parent, exists := typeParamParent[tp]
+	if !exists {
+		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
+	}
+	return parent
+}
+
+// PopulateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
+func PopulateTypeParamParents(typeparams *types.TypeParamList, parent types.Object) {
+	if typeparams != nil {
+		for idx := 0; idx < typeparams.Len(); idx++ {
+			setTypeParamParent(typeparams.At(idx), parent)
+		}
+	}
+}
+
+func setTypeParamParent(tp *types.TypeParam, newobj types.Object) {
+	obj, exists := typeParamParent[tp]
+	if !exists {
+		typeParamParent[tp] = newobj
+	} else if newobj != obj {
+		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), obj, newobj)
+	}
 }
