@@ -398,7 +398,8 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 		if !exists {
 			// Populate type parameter parents for functions. Note that methods
 			// do not appear as objects in any scope, so they have to be dealt
-			// with separately in extractMethods.
+			// with separately using extractMethod when we extract the named
+			// type or interface type that they are defined on.
 			if funcObj, ok := obj.(*types.Func); ok {
 				populateTypeParamParents(funcObj.Type().(*types.Signature).TypeParams(), obj)
 				populateTypeParamParents(funcObj.Type().(*types.Signature).RecvTypeParams(), obj)

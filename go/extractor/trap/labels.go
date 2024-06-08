@@ -150,6 +150,7 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 	if !exists {
 		scope := object.Parent()
 		if scope == nil {
+			// Note that `scope` should only be nil for methods and struct fields
 			panic(fmt.Sprintf("Object has no scope: %v :: %v.\n", object,
 				l.tw.Package.Fset.Position(object.Pos())))
 		} else {
