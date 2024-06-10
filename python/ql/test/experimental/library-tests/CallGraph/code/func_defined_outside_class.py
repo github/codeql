@@ -19,7 +19,7 @@ class A(object):
 
 a = A()
 a.foo_ref() # $ pt=A.foo
-a.outside_ref() # $ pt=outside
+a.outside_ref() # $ pt,tt=outside
 
 a.outside_sm() # $ pt=outside_sm
 a.outside_cm() # $ pt=outside_cm

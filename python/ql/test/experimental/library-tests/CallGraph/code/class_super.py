@@ -47,7 +47,7 @@ class B(A):
 b = B()
 b.foo() # $ pt,tt=B.foo
 b.foo_on_super() # $ pt,tt=B.foo_on_super
-b.od() # $ pt=outside_def
+b.od() # $ pt,tt=outside_def
 b.sm() # $ pt,tt=B.sm
 
 print("="*10, "static method")
