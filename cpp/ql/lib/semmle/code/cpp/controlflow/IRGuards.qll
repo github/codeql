@@ -929,7 +929,8 @@ private class BuiltinExpectCallInstruction extends CallInstruction {
 
 /**
  * Holds if `left == right + k` is `areEqual` if `cmp` evaluates to `value`,
- * and `cmp` is nested inside a call to `__builtin_expect`.
+ * and `cmp` is an instruction that compares the value of
+ * `__builtin_expect(left == right + k, _)` to `0`.
  */
 private predicate builtin_expect_eq(
   CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
@@ -958,8 +959,8 @@ private predicate complex_eq(
 }
 
 /**
- * Holds if `op == k` is `areEqual` if `cmp` evaluates to `value`, and
- * `cmp` is nested inside a call to `__builtin_expect`.
+ * Holds if `op == k` is `areEqual` if `cmp` evaluates to `value`, and `cmp` is
+ * an instruction that compares the value of `__builtin_expect(op == k, _)` to `0`.
  */
 private predicate unary_builtin_expect_eq(
   CompareInstruction cmp, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
