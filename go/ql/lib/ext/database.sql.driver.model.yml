@@ -6,4 +6,4 @@ extensions:
       - ["database/sql/driver", "Conn", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql/driver", "ConnPrepareContext", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql/driver", "ValueConverter", True, "ConvertValue", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["database/sql/driver", "Valuer", True, "Value", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql/driver", "Valuer", True, "Value", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

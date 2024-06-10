@@ -82,7 +82,7 @@ Bug Fixes
 Python
 """"""
 
-*   The `View AST functionality <https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/>`__ no longer prints detailed information about regular expressions, greatly improving performance.
+*   The `View AST functionality <https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code>`__ no longer prints detailed information about regular expressions, greatly improving performance.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

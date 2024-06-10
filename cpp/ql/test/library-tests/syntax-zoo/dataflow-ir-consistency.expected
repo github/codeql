@@ -4,12 +4,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-| builtin.c:5:5:5:11 | (no string representation) | Node should have one toString but has 0. |
-| misc.c:227:7:227:28 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:80:18:80:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:80:18:80:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:89:18:89:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:89:18:89:23 | (no string representation) | Node should have one toString but has 0. |
 parameterCallable
 localFlowIsLocal
 readStepIsLocal

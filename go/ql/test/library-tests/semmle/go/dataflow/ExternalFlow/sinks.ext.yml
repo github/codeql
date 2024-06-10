@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: sinkModel
-    data:
-      - ["github.com/nonexistent/test", "B", False, "Sink1", "", "", "Argument[0]", "qltest", "manual"]
-      - ["github.com/nonexistent/test", "B", False, "SinkMethod", "", "", "Argument[-1]", "qltest", "manual"]
-      - ["github.com/nonexistent/test", "B", False, "SinkManyArgs", "", "", "Argument[0..2]", "qltest", "manual"]

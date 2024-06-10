@@ -3,6 +3,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal class EnvironmentVariableNames
     {
         /// <summary>
+        /// Controls whether to generate source files from resources (`.resx`).
+        /// </summary>
+        public const string ResourceGeneration = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_EXTRACT_RESOURCES";
+
+        /// <summary>
         /// Controls whether to generate source files from Asp.Net Core views (`.cshtml`, `.razor`).
         /// </summary>
         public const string WebViewGeneration = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_EXTRACT_WEB_VIEWS";
@@ -54,6 +59,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The default value is `https://api.nuget.org/v3/index.json`.
         /// </summary>
         public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
+
+        /// <summary>
+        /// Controls whether to include NuGet feeds from nuget.config files in the fallback restore logic.
+        /// </summary>
+        public const string AddNugetConfigFeedsToFallback = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK_INCLUDE_NUGET_CONFIG_FEEDS";
+
+        /// <summary>
+        /// Specifies the path to the nuget executable to be used for package restoration.
+        /// </summary>
+        public const string NugetExePath = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_PATH";
 
         /// <summary>
         /// Specifies the location of the diagnostic directory.

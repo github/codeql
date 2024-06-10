@@ -560,7 +560,7 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
   TaintFunction, SideEffectFunction, AliasFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
+    (input.isParameterDeref(0) or input.isParameter(0)) and
     output.isQualifierObject()
   }
 
@@ -580,16 +580,33 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
 }
 
 /**
+ * A `begin` member function, or a related function, that returns an iterator.
+ */
+class BeginFunction extends MemberFunction {
+  BeginFunction() {
+    this.hasName(["begin", "cbegin", "rbegin", "crbegin", "before_begin", "cbefore_begin"]) and
+    this.getType().getUnspecifiedType() instanceof Iterator
+  }
+}
+
+/**
+ * An `end` member function, or a related function, that returns an iterator.
+ */
+class EndFunction extends MemberFunction {
+  EndFunction() {
+    this.hasName(["end", "cend", "rend", "crend"]) and
+    this.getType().getUnspecifiedType() instanceof Iterator
+  }
+}
+
+/**
  * A `begin` or `end` member function, or a related member function, that
  * returns an iterator.
  */
 class BeginOrEndFunction extends MemberFunction {
   BeginOrEndFunction() {
-    this.hasName([
-        "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
-        "cbefore_begin"
-      ]) and
-    this.getType().getUnspecifiedType() instanceof Iterator
+    this instanceof BeginFunction or
+    this instanceof EndFunction
   }
 }
 

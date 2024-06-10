@@ -2183,17 +2183,35 @@ module StdlibPrivate {
      * for how a request is processed and given to an application.
      */
     class WsgirefSimpleServerApplication extends Http::Server::RequestHandler::Range {
+      boolean validator;
+
       WsgirefSimpleServerApplication() {
         exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
           (
             setAppCall =
-              WsgirefSimpleServer::subclassRef().getReturn().getMember("set_app").getACall()
+              WsgirefSimpleServer::subclassRef().getReturn().getMember("set_app").getACall() and
+            validator = false
             or
             setAppCall
                 .(DataFlow::MethodCallNode)
-                .calls(any(WsgiServerSubclass cls).getASelfRef(), "set_app")
+                .calls(any(WsgiServerSubclass cls).getASelfRef(), "set_app") and
+            validator = false
+            or
+            // assume an application that is passed to `wsgiref.validate.validator` is eventually passed to `set_app`
+            setAppCall =
+              API::moduleImport("wsgiref").getMember("validate").getMember("validator").getACall() and
+            validator = true
           ) and
           appArg in [setAppCall.getArg(0), setAppCall.getArgByName("application")]
+          or
+          // `make_server` calls `set_app`
+          setAppCall =
+            API::moduleImport("wsgiref")
+                .getMember("simple_server")
+                .getMember("make_server")
+                .getACall() and
+          appArg in [setAppCall.getArg(2), setAppCall.getArgByName("app")] and
+          validator = false
         |
           appArg = poorMansFunctionTracker(this)
         )
@@ -2202,6 +2220,9 @@ module StdlibPrivate {
       override Parameter getARoutedParameter() { none() }
 
       override string getFramework() { result = "Stdlib: wsgiref.simple_server application" }
+
+      /** Holds if this simple server application was passed to `wsgiref.validate.validator`. */
+      predicate isValidated() { validator = true }
     }
 
     /**
@@ -2304,6 +2325,114 @@ module StdlibPrivate {
       override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
       override string getMimetypeDefault() { none() }
+    }
+
+    /**
+     * Provides models for the `wsgiref.headers.Headers` class
+     *
+     * See https://docs.python.org/3/library/wsgiref.html#module-wsgiref.headers.
+     */
+    module Headers {
+      /** Gets a reference to the `wsgiref.headers.Headers` class. */
+      API::Node classRef() {
+        result = API::moduleImport("wsgiref").getMember("headers").getMember("Headers")
+        or
+        result = ModelOutput::getATypeNode("wsgiref.headers.Headers~Subclass").getASubclass*()
+      }
+
+      /** Gets a reference to an instance of `wsgiref.headers.Headers`. */
+      private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+        t.start() and
+        result = classRef().getACall()
+        or
+        exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+      }
+
+      /** Gets a reference to an instance of `wsgiref.headers.Headers`. */
+      DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+      /** Holds if there exists an application that is validated by `wsgiref.validate.validator`. */
+      private predicate existsValidatedApplication() {
+        exists(WsgirefSimpleServerApplication app | app.isValidated())
+      }
+
+      /** A class instantiation of `wsgiref.headers.Headers`, conidered as a write to a response header. */
+      private class WsgirefHeadersInstantiation extends Http::Server::ResponseHeaderBulkWrite::Range,
+        DataFlow::CallCfgNode
+      {
+        WsgirefHeadersInstantiation() { this = classRef().getACall() }
+
+        override DataFlow::Node getBulkArg() {
+          result = [this.getArg(0), this.getArgByName("headers")]
+        }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+
+      /** A call to a method that writes to a response header. */
+      private class HeaderWriteCall extends Http::Server::ResponseHeaderWrite::Range,
+        DataFlow::MethodCallNode
+      {
+        HeaderWriteCall() {
+          this.calls(instance(), ["add_header", "set", "setdefault", "__setitem__"])
+        }
+
+        override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+        override DataFlow::Node getValueArg() { result = this.getArg(1) }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+
+      /** A dict-like write to a response header. */
+      private class HeaderWriteSubscript extends Http::Server::ResponseHeaderWrite::Range,
+        DataFlow::Node
+      {
+        DataFlow::Node name;
+        DataFlow::Node value;
+
+        HeaderWriteSubscript() {
+          exists(SubscriptNode subscript |
+            this.asCfgNode() = subscript and
+            value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+            name.asCfgNode() = subscript.getIndex() and
+            subscript.getObject() = instance().asCfgNode()
+          )
+        }
+
+        override DataFlow::Node getNameArg() { result = name }
+
+        override DataFlow::Node getValueArg() { result = value }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+
+      /**
+       * A call to a `start_response` function that sets the response headers.
+       */
+      private class WsgirefSimpleServerSetHeaders extends Http::Server::ResponseHeaderBulkWrite::Range,
+        DataFlow::CallCfgNode
+      {
+        WsgirefSimpleServerSetHeaders() { this.getFunction() = startResponse() }
+
+        override DataFlow::Node getBulkArg() {
+          result = [this.getArg(1), this.getArgByName("headers")]
+        }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
     }
   }
 
@@ -2785,7 +2914,7 @@ module StdlibPrivate {
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private API::CallNode hashlibNewCall(string algorithmName) {
     algorithmName =
-      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StrConst).getText() and
+      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StringLiteral).getText() and
     result = API::moduleImport("hashlib").getMember("new").getACall()
   }
 
@@ -2908,7 +3037,8 @@ module StdlibPrivate {
       exists(string algorithmName | result.matchesName(algorithmName) |
         this.getDigestArg().asSink() = hashlibMember(algorithmName).asSource()
         or
-        this.getDigestArg().getAValueReachingSink().asExpr().(StrConst).getText() = algorithmName
+        this.getDigestArg().getAValueReachingSink().asExpr().(StringLiteral).getText() =
+          algorithmName
       )
     }
 
@@ -4418,7 +4548,7 @@ module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "pop" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
@@ -4441,7 +4571,7 @@ module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "get" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
@@ -4541,7 +4671,7 @@ module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "setdefault" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }

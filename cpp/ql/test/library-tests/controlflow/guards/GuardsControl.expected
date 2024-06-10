@@ -79,6 +79,12 @@
 | test.c:137:7:137:7 | 0 | false | 142 | 136 |
 | test.c:146:7:146:8 | ! ... | true | 146 | 147 |
 | test.c:146:8:146:8 | x | false | 146 | 147 |
+| test.c:152:8:152:8 | p | true | 152 | 154 |
+| test.c:158:8:158:9 | ! ... | true | 158 | 160 |
+| test.c:158:9:158:9 | p | false | 158 | 160 |
+| test.c:164:8:164:8 | s | true | 164 | 166 |
+| test.c:170:8:170:9 | ! ... | true | 170 | 172 |
+| test.c:170:9:170:9 | s | false | 170 | 172 |
 | test.cpp:18:8:18:10 | call to get | true | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | false | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | false | 34 | 34 |
@@ -90,3 +96,15 @@
 | test.cpp:61:10:61:10 | i | Case[1] | 65 | 66 |
 | test.cpp:74:10:74:10 | i | Case[0..10] | 75 | 77 |
 | test.cpp:74:10:74:10 | i | Case[11..20] | 78 | 79 |
+| test.cpp:93:6:93:6 | c | true | 93 | 94 |
+| test.cpp:99:6:99:6 | f | true | 99 | 100 |
+| test.cpp:105:6:105:14 | ... != ... | true | 105 | 106 |
+| test.cpp:111:6:111:14 | ... != ... | true | 111 | 112 |
+| test.cpp:122:9:122:9 | b | true | 123 | 125 |
+| test.cpp:122:9:122:9 | b | true | 125 | 125 |
+| test.cpp:125:13:125:20 | ! ... | true | 125 | 125 |
+| test.cpp:125:14:125:17 | call to safe | false | 125 | 125 |
+| test.cpp:131:6:131:21 | call to __builtin_expect | true | 131 | 132 |
+| test.cpp:135:6:135:21 | call to __builtin_expect | true | 135 | 136 |
+| test.cpp:141:6:141:21 | call to __builtin_expect | true | 141 | 142 |
+| test.cpp:145:6:145:21 | call to __builtin_expect | true | 145 | 146 |

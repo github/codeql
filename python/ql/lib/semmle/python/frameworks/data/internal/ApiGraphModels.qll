@@ -1,17 +1,17 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with flow models specified in extensible predicates.
  *
- * The CSV specification has the following columns:
+ * The extensible predicates have the following columns:
  * - Sources:
- *   `type; path; kind`
+ *   `type, path, kind`
  * - Sinks:
- *   `type; path; kind`
+ *   `type, path, kind`
  * - Summaries:
- *   `type; path; input; output; kind`
+ *   `type, path, input, output, kind`
  * - Types:
- *   `type1; type2; path`
+ *   `type1, type2, path`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -76,11 +76,13 @@ private import codeql.dataflow.internal.AccessPathSyntax
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
   /**
+   * DEPRECATED: Use the extensible predicate `sourceModel` instead.
+   *
    * A unit class for adding additional source model rows.
    *
    * Extend this class to add additional source definitions.
    */
-  class SourceModelCsv extends Unit {
+  deprecated class SourceModelCsv extends Unit {
     /**
      * Holds if `row` specifies a source definition.
      *
@@ -93,15 +95,17 @@ module ModelInput {
      *
      * The kind `remote` represents a general remote flow source.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
    * A unit class for adding additional sink model rows.
    *
    * Extend this class to add additional sink definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `sinkModel` instead.
    */
-  class SinkModelCsv extends Unit {
+  deprecated class SinkModelCsv extends Unit {
     /**
      * Holds if `row` specifies a sink definition.
      *
@@ -112,15 +116,17 @@ module ModelInput {
      * indicates that the value at `(type, path)` should be seen as a sink
      * of the given `kind`.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
    * A unit class for adding additional summary model rows.
    *
    * Extend this class to add additional flow summary definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `summaryModel` instead.
    */
-  class SummaryModelCsv extends Unit {
+  deprecated class SummaryModelCsv extends Unit {
     /**
      * Holds if `row` specifies a summary definition.
      *
@@ -134,15 +140,18 @@ module ModelInput {
      * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
      * respectively.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
    * A unit class for adding additional type model rows.
    *
    * Extend this class to add additional type definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `typeModel` or the class
+   * `TypeModel` instead.
    */
-  class TypeModelCsv extends Unit {
+  deprecated class TypeModelCsv extends Unit {
     /**
      * Holds if `row` specifies a type definition.
      *
@@ -152,7 +161,7 @@ module ModelInput {
      * ```
      * indicates that `(type2, path)` should be seen as an instance of `type1`.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
@@ -160,7 +169,18 @@ module ModelInput {
    */
   class TypeModel extends Unit {
     /**
+     * Holds if any of the other predicates in this class might have a result
+     * for the given `type`.
+     *
+     * The implementation of this predicate should not depend on `DataFlow::Node`.
+     */
+    bindingset[type]
+    predicate isTypeUsed(string type) { none() }
+
+    /**
      * Gets a data-flow node that is a source of the given `type`.
+     *
+     * Note that `type` should also be included in `isTypeUsed`.
      *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the source.
@@ -171,6 +191,8 @@ module ModelInput {
      * Gets a data-flow node that is a sink of the given `type`,
      * usually because it is an argument passed to a parameter of that type.
      *
+     * Note that `type` should also be included in `isTypeUsed`.
+     *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the sink.
      */
@@ -179,6 +201,8 @@ module ModelInput {
     /**
      * Gets an API node that is a source or sink of the given `type`.
      *
+     * Note that `type` should also be included in `isTypeUsed`.
+     *
      * Unlike `getASource` and `getASink`, this may depend on API graphs.
      */
     API::Node getAnApiNode(string type) { none() }
@@ -186,8 +210,10 @@ module ModelInput {
 
   /**
    * A unit class for adding additional type variable model rows.
+   *
+   * DEPRECATED: Use the extensible predicate `typeVariableModel` instead.
    */
-  class TypeVariableModelCsv extends Unit {
+  deprecated class TypeVariableModelCsv extends Unit {
     /**
      * Holds if `row` specifies a path through a type variable.
      *
@@ -197,7 +223,7 @@ module ModelInput {
      * ```
      * means `path` can be substituted for a token `TypeVar[name]`.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 }
 
@@ -216,27 +242,88 @@ abstract class TestAllModels extends Unit { }
  * does not preserve empty trailing substrings.
  */
 bindingset[result]
-private string inversePad(string s) { s = result + ";dummy" }
+deprecated private string inversePad(string s) { s = result + ";dummy" }
 
-private predicate sourceModel(string row) { any(SourceModelCsv s).row(inversePad(row)) }
+deprecated private predicate sourceModel(string row) { any(SourceModelCsv s).row(inversePad(row)) }
 
-private predicate sinkModel(string row) { any(SinkModelCsv s).row(inversePad(row)) }
+deprecated private predicate sinkModel(string row) { any(SinkModelCsv s).row(inversePad(row)) }
 
-private predicate summaryModel(string row) { any(SummaryModelCsv s).row(inversePad(row)) }
+deprecated private predicate summaryModel(string row) {
+  any(SummaryModelCsv s).row(inversePad(row))
+}
 
-private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
+deprecated private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
 
-private predicate typeVariableModel(string row) { any(TypeVariableModelCsv s).row(inversePad(row)) }
+deprecated private predicate typeVariableModel(string row) {
+  any(TypeVariableModelCsv s).row(inversePad(row))
+}
+
+private class DeprecationAdapter extends Unit {
+  abstract predicate sourceModel(string type, string path, string kind);
+
+  abstract predicate sinkModel(string type, string path, string kind);
+
+  abstract predicate summaryModel(string type, string path, string input, string output, string kind);
+
+  abstract predicate typeModel(string type1, string type2, string path);
+
+  abstract predicate typeVariableModel(string name, string path);
+}
+
+private class DeprecationAdapterImpl extends DeprecationAdapter {
+  deprecated override predicate sourceModel(string type, string path, string kind) {
+    exists(string row |
+      sourceModel(row) and
+      row.splitAt(";", 0) = type and
+      row.splitAt(";", 1) = path and
+      row.splitAt(";", 2) = kind
+    )
+  }
+
+  deprecated override predicate sinkModel(string type, string path, string kind) {
+    exists(string row |
+      sinkModel(row) and
+      row.splitAt(";", 0) = type and
+      row.splitAt(";", 1) = path and
+      row.splitAt(";", 2) = kind
+    )
+  }
+
+  deprecated override predicate summaryModel(
+    string type, string path, string input, string output, string kind
+  ) {
+    exists(string row |
+      summaryModel(row) and
+      row.splitAt(";", 0) = type and
+      row.splitAt(";", 1) = path and
+      row.splitAt(";", 2) = input and
+      row.splitAt(";", 3) = output and
+      row.splitAt(";", 4) = kind
+    )
+  }
+
+  deprecated override predicate typeModel(string type1, string type2, string path) {
+    exists(string row |
+      typeModel(row) and
+      row.splitAt(";", 0) = type1 and
+      row.splitAt(";", 1) = type2 and
+      row.splitAt(";", 2) = path
+    )
+  }
+
+  deprecated override predicate typeVariableModel(string name, string path) {
+    exists(string row |
+      typeVariableModel(row) and
+      row.splitAt(";", 0) = name and
+      row.splitAt(";", 1) = path
+    )
+  }
+}
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(string type, string path, string kind, string model) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = type and
-    row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind and
-    model = "SourceModelCsv"
-  )
+  any(DeprecationAdapter a).sourceModel(type, path, kind) and
+  model = "SourceModelCsv"
   or
   exists(QlBuiltins::ExtensionId madId |
     Extensions::sourceModel(type, path, kind, madId) and
@@ -246,13 +333,8 @@ predicate sourceModel(string type, string path, string kind, string model) {
 
 /** Holds if a sink model exists for the given parameters. */
 private predicate sinkModel(string type, string path, string kind, string model) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = type and
-    row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind and
-    model = "SinkModelCsv"
-  )
+  any(DeprecationAdapter a).sinkModel(type, path, kind) and
+  model = "SinkModelCsv"
   or
   exists(QlBuiltins::ExtensionId madId |
     Extensions::sinkModel(type, path, kind, madId) and
@@ -264,15 +346,8 @@ private predicate sinkModel(string type, string path, string kind, string model)
 private predicate summaryModel(
   string type, string path, string input, string output, string kind, string model
 ) {
-  exists(string row |
-    summaryModel(row) and
-    row.splitAt(";", 0) = type and
-    row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = input and
-    row.splitAt(";", 3) = output and
-    row.splitAt(";", 4) = kind and
-    model = "SummaryModelCsv"
-  )
+  any(DeprecationAdapter a).summaryModel(type, path, input, output, kind) and
+  model = "SummaryModelCsv"
   or
   exists(QlBuiltins::ExtensionId madId |
     Extensions::summaryModel(type, path, input, output, kind, madId) and
@@ -281,30 +356,43 @@ private predicate summaryModel(
 }
 
 /** Holds if a type model exists for the given parameters. */
-private predicate typeModel(string type1, string type2, string path) {
-  exists(string row |
-    typeModel(row) and
-    row.splitAt(";", 0) = type1 and
-    row.splitAt(";", 1) = type2 and
-    row.splitAt(";", 2) = path
-  )
+predicate typeModel(string type1, string type2, string path) {
+  any(DeprecationAdapter a).typeModel(type1, type2, path)
   or
   Extensions::typeModel(type1, type2, path)
 }
 
 /** Holds if a type variable model exists for the given parameters. */
 private predicate typeVariableModel(string name, string path) {
-  exists(string row |
-    typeVariableModel(row) and
-    row.splitAt(";", 0) = name and
-    row.splitAt(";", 1) = path
-  )
+  any(DeprecationAdapter a).typeVariableModel(name, path)
   or
   Extensions::typeVariableModel(name, path)
 }
 
 /**
- * Holds if CSV rows involving `type` might be relevant for the analysis of this database.
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(string type, string path, string kind |
+    Extensions::sourceModel(type, path, kind, madId) and
+    model = "Source: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string kind |
+    Extensions::sinkModel(type, path, kind, madId) and
+    model = "Sink: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string input, string output, string kind |
+    Extensions::summaryModel(type, path, input, output, kind, madId) and
+    model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
+  )
+}
+
+/**
+ * Holds if rows involving `type` might be relevant for the analysis of this database.
  */
 predicate isRelevantType(string type) {
   (
@@ -315,6 +403,8 @@ predicate isRelevantType(string type) {
   ) and
   (
     Specific::isTypeUsed(type)
+    or
+    any(TypeModel model).isTypeUsed(type)
     or
     exists(TestAllModels t)
   )
@@ -327,7 +417,7 @@ predicate isRelevantType(string type) {
 }
 
 /**
- * Holds if `type,path` is used in some CSV row.
+ * Holds if `type,path` is used in some row.
  */
 pragma[nomagic]
 predicate isRelevantFullPath(string type, string path) {
@@ -340,7 +430,7 @@ predicate isRelevantFullPath(string type, string path) {
   )
 }
 
-/** A string from a CSV row that should be parsed as an access path. */
+/** A string from a row that should be parsed as an access path. */
 private predicate accessPathRange(string s) {
   isRelevantFullPath(_, s)
   or
@@ -449,7 +539,7 @@ private API::Node getNodeFromType(string type) {
  * Gets the API node identified by the first `n` tokens of `path` in the given `(type, path)` tuple.
  */
 pragma[nomagic]
-private API::Node getNodeFromPath(string type, AccessPath path, int n) {
+API::Node getNodeFromPath(string type, AccessPath path, int n) {
   isRelevantFullPath(type, path) and
   (
     n = 0 and
@@ -632,7 +722,7 @@ module ModelOutput {
   cached
   private module Cached {
     /**
-     * Holds if a CSV source model contributed `source` with the given `kind`.
+     * Holds if a source model contributed `source` with the given `kind`.
      */
     cached
     API::Node getASourceNode(string kind, string model) {
@@ -643,7 +733,7 @@ module ModelOutput {
     }
 
     /**
-     * Holds if a CSV sink model contributed `sink` with the given `kind`.
+     * Holds if a sink model contributed `sink` with the given `kind`.
      */
     cached
     API::Node getASinkNode(string kind, string model) {
@@ -654,7 +744,7 @@ module ModelOutput {
     }
 
     /**
-     * Holds if a relevant CSV summary exists for these parameters.
+     * Holds if a relevant summary exists for these parameters.
      */
     cached
     predicate relevantSummaryModel(
@@ -684,7 +774,7 @@ module ModelOutput {
 
     /**
      * Holds if `node` is seen as an instance of `type` due to a type definition
-     * contributed by a CSV model.
+     * contributed by a model.
      */
     cached
     API::Node getATypeNode(string type) { result = getNodeFromType(type) }
@@ -718,25 +808,6 @@ module ModelOutput {
    * Gets an error message relating to an invalid CSV row in a model.
    */
   string getAWarning() {
-    // Check number of columns
-    exists(string row, string kind, int expectedArity, int actualArity |
-      any(SourceModelCsv csv).row(row) and kind = "source" and expectedArity = 3
-      or
-      any(SinkModelCsv csv).row(row) and kind = "sink" and expectedArity = 3
-      or
-      any(SummaryModelCsv csv).row(row) and kind = "summary" and expectedArity = 5
-      or
-      any(TypeModelCsv csv).row(row) and kind = "type" and expectedArity = 3
-      or
-      any(TypeVariableModelCsv csv).row(row) and kind = "type-variable" and expectedArity = 2
-    |
-      actualArity = count(row.indexOf(";")) + 1 and
-      actualArity != expectedArity and
-      result =
-        "CSV " + kind + " row should have " + expectedArity + " columns but has " + actualArity +
-          ": " + row
-    )
-    or
     // Check names and arguments of access path tokens
     exists(AccessPath path, AccessPathToken token |
       (isRelevantFullPath(_, path) or typeVariableModel(_, path)) and

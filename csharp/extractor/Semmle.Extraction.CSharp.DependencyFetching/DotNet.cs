@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
             if (!res)
             {
                 throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
@@ -95,9 +95,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IList<string> GetListedSdks() => GetResultList("--list-sdks");
 
-        private IList<string> GetResultList(string args, string? workingDirectory = null)
+        private IList<string> GetResultList(string args, string? workingDirectory = null, bool silent = true)
         {
-            if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results))
+            if (dotnetCliInvoker.RunCommand(args, workingDirectory, out var results, silent))
             {
                 return results;
             }
@@ -143,7 +143,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
             var versions = new List<string>();
 
-            foreach (var path in files.Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
+            foreach (var path in files.Where(p => string.Equals(FileUtils.SafeGetFileName(p, logger), "global.json", StringComparison.OrdinalIgnoreCase)))
             {
                 try
                 {

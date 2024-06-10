@@ -10,8 +10,6 @@ extensions:
       - ["System.ComponentModel.Design.Serialization", "ContextStack", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "ContextStack", False, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "ContextStack", False, "get_Item", "(System.Type)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "DesignerSerializerAttribute", False, "get_TypeId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "RootDesignerSerializerAttribute", False, "get_TypeId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -39,10 +37,6 @@ extensions:
       - ["System.ComponentModel.Design.Serialization", "DesignerSerializerAttribute", "DesignerSerializerAttribute", "(System.Type,System.Type)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "DesignerSerializerAttribute", "get_SerializerBaseTypeName", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "DesignerSerializerAttribute", "get_SerializerTypeName", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderHost2", "get_CanReloadWithErrors", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderHost2", "get_IgnoreErrorsDuringReload", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderHost2", "set_CanReloadWithErrors", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderHost2", "set_IgnoreErrorsDuringReload", "(System.Boolean)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderHost", "EndLoad", "(System.String,System.Boolean,System.Collections.ICollection)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderHost", "Reload", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "IDesignerLoaderService", "AddLoadDependency", "()", "summary", "df-generated"]
@@ -89,8 +83,6 @@ extensions:
       - ["System.ComponentModel.Design.Serialization", "MemberRelationshipService", "set_Item", "(System.Object,System.ComponentModel.MemberDescriptor,System.ComponentModel.Design.Serialization.MemberRelationship)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "ResolveNameEventArgs", "ResolveNameEventArgs", "(System.String)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "ResolveNameEventArgs", "get_Name", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "ResolveNameEventArgs", "get_Value", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design.Serialization", "ResolveNameEventArgs", "set_Value", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "RootDesignerSerializerAttribute", "RootDesignerSerializerAttribute", "(System.String,System.String,System.Boolean)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "RootDesignerSerializerAttribute", "RootDesignerSerializerAttribute", "(System.String,System.Type,System.Boolean)", "summary", "df-generated"]
       - ["System.ComponentModel.Design.Serialization", "RootDesignerSerializerAttribute", "RootDesignerSerializerAttribute", "(System.Type,System.Type,System.Boolean)", "summary", "df-generated"]

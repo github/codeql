@@ -20,8 +20,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly Lazy<string[]> solutions;
         private readonly Lazy<string[]> dlls;
         private readonly Lazy<string[]> nugetConfigs;
+        private readonly Lazy<string[]> nugetExes;
         private readonly Lazy<string[]> globalJsons;
+        private readonly Lazy<string[]> packagesConfigs;
         private readonly Lazy<string[]> razorViews;
+        private readonly Lazy<string[]> resources;
         private readonly Lazy<string?> rootNugetConfig;
 
         public FileProvider(DirectoryInfo sourceDir, ILogger logger)
@@ -31,27 +34,36 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             all = GetAllFiles();
             allNonBinary = new Lazy<FileInfo[]>(() => all.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToArray());
-            smallNonBinary = new Lazy<string[]>(() =>
-            {
-                var ret = SelectSmallFiles(allNonBinary.Value).SelectFileNames().ToArray();
-                logger.LogInfo($"Found {ret.Length} small non-binary files in {SourceDir}.");
-                return ret;
-            });
+            smallNonBinary = new Lazy<string[]>(() => ReturnAndLogFiles("small non-binary", SelectSmallFiles(allNonBinary.Value).SelectFileNames().ToArray()));
             sources = new Lazy<string[]>(() => SelectTextFileNamesByExtension("source", ".cs"));
             projects = new Lazy<string[]>(() => SelectTextFileNamesByExtension("project", ".csproj"));
             solutions = new Lazy<string[]>(() => SelectTextFileNamesByExtension("solution", ".sln"));
             dlls = new Lazy<string[]>(() => SelectBinaryFileNamesByExtension("DLL", ".dll"));
-            nugetConfigs = new Lazy<string[]>(() => allNonBinary.Value.SelectFileNamesByName("nuget.config").ToArray());
-            globalJsons = new Lazy<string[]>(() => allNonBinary.Value.SelectFileNamesByName("global.json").ToArray());
+            nugetConfigs = new Lazy<string[]>(() => SelectTextFileNamesByName("nuget.config"));
+            globalJsons = new Lazy<string[]>(() => SelectTextFileNamesByName("global.json"));
+            packagesConfigs = new Lazy<string[]>(() => SelectTextFileNamesByName("packages.config"));
             razorViews = new Lazy<string[]>(() => SelectTextFileNamesByExtension("razor view", ".cshtml", ".razor"));
+            resources = new Lazy<string[]>(() => SelectTextFileNamesByExtension("resource", ".resx"));
 
             rootNugetConfig = new Lazy<string?>(() => all.SelectRootFiles(SourceDir).SelectFileNamesByName("nuget.config").FirstOrDefault());
+            nugetExes = new Lazy<string[]>(() => all.SelectFileNamesByName("nuget.exe").ToArray());
+        }
+
+        private string[] ReturnAndLogFiles(string filetype, IEnumerable<string> files)
+        {
+            var ret = files.ToArray();
+            logger.LogInfo($"Found {ret.Length} {filetype} files in {SourceDir}.");
+            return ret;
         }
 
         private string[] SelectTextFileNamesByExtension(string filetype, params string[] extensions)
+            => ReturnAndLogFiles(filetype, allNonBinary.Value.SelectFileNamesByExtension(extensions));
+
+        private string[] SelectTextFileNamesByName(string name)
         {
-            var ret = allNonBinary.Value.SelectFileNamesByExtension(extensions).ToArray();
-            logger.LogInfo($"Found {ret.Length} {filetype} files in {SourceDir}.");
+            var ret = allNonBinary.Value.SelectFileNamesByName(name).ToArray();
+            var ending = ret.Length == 0 ? "." : $": {string.Join(", ", ret.OrderBy(s => s))}.";
+            logger.LogInfo($"Found {ret.Length} {name} files in {SourceDir}{ending}");
             return ret;
         }
 
@@ -113,8 +125,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public ICollection<string> Solutions => solutions.Value;
         public IEnumerable<string> Dlls => dlls.Value;
         public ICollection<string> NugetConfigs => nugetConfigs.Value;
+        public ICollection<string> NugetExes => nugetExes.Value;
         public string? RootNugetConfig => rootNugetConfig.Value;
         public IEnumerable<string> GlobalJsons => globalJsons.Value;
+        public ICollection<string> PackagesConfigs => packagesConfigs.Value;
         public ICollection<string> RazorViews => razorViews.Value;
+        public ICollection<string> Resources => resources.Value;
     }
 }

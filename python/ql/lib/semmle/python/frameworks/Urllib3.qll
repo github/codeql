@@ -78,7 +78,7 @@ module Urllib3 {
           // see https://urllib3.readthedocs.io/en/stable/user-guide.html?highlight=cert_reqs#certificate-verification
           disablingNode = constructor.getKeywordParameter("cert_reqs").asSink() and
           argumentOrigin = constructor.getKeywordParameter("cert_reqs").getAValueReachingSink() and
-          argumentOrigin.asExpr().(StrConst).getText() = "CERT_NONE"
+          argumentOrigin.asExpr().(StringLiteral).getText() = "CERT_NONE"
           or
           // assert_hostname
           // see https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html?highlight=assert_hostname#urllib3.HTTPSConnectionPool

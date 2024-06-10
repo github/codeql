@@ -1,3 +1,4 @@
+invalidModelRow
 edges
 | test.go:14:8:14:15 | call to source | test.go:15:34:15:35 | fi | provenance |  |
 | test.go:15:2:15:44 | ... := ...[0] | test.go:16:7:16:12 | header | provenance |  |

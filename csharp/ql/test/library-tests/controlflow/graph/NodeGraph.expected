@@ -3541,6 +3541,9 @@ ConditionalAccess.cs:
 #    7| exit M3 (normal)
 #-----|  -> exit M3
 
+#    7| access to property Length
+#-----|  -> exit M3 (normal)
+
 #    7| access to parameter s1
 #-----| non-null -> ... ?? ...
 #-----| null -> access to parameter s2
@@ -3559,9 +3562,6 @@ ConditionalAccess.cs:
 #-----| non-null -> [non-null] ... ?? ...
 #-----| null -> [null] ... ?? ...
 
-#    7| access to property Length
-#-----|  -> exit M3 (normal)
-
 #    9| enter M4
 #-----|  -> access to parameter s
 
@@ -3574,12 +3574,12 @@ ConditionalAccess.cs:
 #-----| non-null -> access to property Length
 #-----| null -> 0
 
-#    9| ... ?? ...
-#-----|  -> exit M4 (normal)
-
 #    9| access to property Length
 #-----| non-null -> ... ?? ...
 #-----| null -> 0
+
+#    9| ... ?? ...
+#-----|  -> exit M4 (normal)
 
 #    9| 0
 #-----|  -> ... ?? ...
@@ -3602,12 +3602,12 @@ ConditionalAccess.cs:
 #-----| non-null -> access to property Length
 #-----| null -> 0
 
+#   13| access to property Length
+#-----|  -> 0
+
 #   13| ... > ...
 #-----| true -> 0
 #-----| false -> 1
-
-#   13| access to property Length
-#-----|  -> 0
 
 #   13| (...) ...
 #-----|  -> ... > ...
@@ -3674,14 +3674,14 @@ ConditionalAccess.cs:
 #   24| String s = ...
 #-----|  -> ...;
 
+#   24| call to method ToString
+#-----|  -> String s = ...
+
 #   24| (...) ...
 #-----| non-null -> call to method ToString
 
 #   24| access to parameter i
 #-----|  -> (...) ...
-
-#   24| call to method ToString
-#-----|  -> String s = ...
 
 #   25| ... = ...
 #-----|  -> exit M7 (normal)
@@ -3739,11 +3739,11 @@ ConditionalAccess.cs:
 #   35| this access
 #-----|  -> access to property Prop
 
-#   35| ...;
-#-----|  -> this access
-
 #   35| call to method Out
 #-----|  -> exit M8 (normal)
+
+#   35| ...;
+#-----|  -> this access
 
 #   41| enter CommaJoinWith
 #-----|  -> access to parameter s1
@@ -8195,12 +8195,12 @@ Foreach.cs:
 #-----| non-null -> call to method ToArray<String>
 #-----| null -> call to method Empty<String>
 
-#   20| ... ?? ...
-#-----|  -> foreach (... ... in ...) ...
-
 #   20| call to method ToArray<String>
 #-----| non-null -> ... ?? ...
 #-----| null -> call to method Empty<String>
+
+#   20| ... ?? ...
+#-----|  -> foreach (... ... in ...) ...
 
 #   20| call to method Empty<String>
 #-----|  -> ... ?? ...
@@ -9592,39 +9592,91 @@ MultiImplementationA.cs:
 #    4| call to constructor Object
 #-----|  -> {...}
 
+#    4| enter C1
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+#    4| exit C1
+
+#    4| exit C1 (normal)
+#-----|  -> exit C1
+
 #    4| {...}
 #-----|  -> exit C1 (normal)
-#-----|  -> exit C1 (normal)
+
+#    6| enter get_P1
+#-----|  -> null
+#-----|  -> 0
+
+#    6| exit get_P1
+
+#    6| exit get_P1 (abnormal)
+#-----|  -> exit get_P1
+
+#    6| exit get_P1 (normal)
+#-----|  -> exit get_P1
 
 #    6| throw ...
-#-----| exception(NullReferenceException) -> exit get_P1 (abnormal)
 #-----| exception(NullReferenceException) -> exit get_P1 (abnormal)
 
 #    6| null
 #-----|  -> throw ...
 
+#    7| enter get_P2
+#-----|  -> {...}
+#-----|  -> {...}
+
+#    7| exit get_P2
+
+#    7| exit get_P2 (abnormal)
+#-----|  -> exit get_P2
+
+#    7| exit get_P2 (normal)
+#-----|  -> exit get_P2
+
 #    7| {...}
 #-----|  -> null
 
 #    7| throw ...;
 #-----| exception(NullReferenceException) -> exit get_P2 (abnormal)
-#-----| exception(NullReferenceException) -> exit get_P2 (abnormal)
 
 #    7| null
 #-----|  -> throw ...;
+
+#    7| enter set_P2
+#-----|  -> {...}
+#-----|  -> {...}
+
+#    7| exit set_P2
+
+#    7| exit set_P2 (abnormal)
+#-----|  -> exit set_P2
+
+#    7| exit set_P2 (normal)
+#-----|  -> exit set_P2
 
 #    7| {...}
 #-----|  -> null
 
 #    7| throw ...;
 #-----| exception(NullReferenceException) -> exit set_P2 (abnormal)
-#-----| exception(NullReferenceException) -> exit set_P2 (abnormal)
 
 #    7| null
 #-----|  -> throw ...;
+
+#    8| enter M
+#-----|  -> null
+#-----|  -> 2
+
+#    8| exit M
+
+#    8| exit M (abnormal)
+#-----|  -> exit M
+
+#    8| exit M (normal)
+#-----|  -> exit M
 
 #    8| throw ...
-#-----| exception(NullReferenceException) -> exit M (abnormal)
 #-----| exception(NullReferenceException) -> exit M (abnormal)
 
 #    8| null
@@ -9641,33 +9693,65 @@ MultiImplementationA.cs:
 
 #   14| access to parameter i
 #-----|  -> exit get_Item (normal)
-#-----|  -> exit get_Item (normal)
+
+#   14| enter get_Item
+#-----|  -> access to parameter i
+#-----|  -> null
+
+#   14| exit get_Item
+
+#   14| exit get_Item (abnormal)
+#-----|  -> exit get_Item
+
+#   14| exit get_Item (normal)
+#-----|  -> exit get_Item
+
+#   15| enter get_Item
+#-----|  -> {...}
+#-----|  -> {...}
+
+#   15| exit get_Item
+
+#   15| exit get_Item (abnormal)
+#-----|  -> exit get_Item
+
+#   15| exit get_Item (normal)
+#-----|  -> exit get_Item
 
 #   15| {...}
 #-----|  -> access to parameter s
 
 #   15| return ...;
 #-----| return -> exit get_Item (normal)
-#-----| return -> exit get_Item (normal)
 
 #   15| access to parameter s
 #-----|  -> return ...;
 
+#   15| enter set_Item
+#-----|  -> {...}
+#-----|  -> {...}
+
+#   15| exit set_Item
+
+#   15| exit set_Item (normal)
+#-----|  -> exit set_Item
+
 #   15| {...}
 #-----|  -> exit set_Item (normal)
-#-----|  -> exit set_Item (normal)
+
+#   16| enter M1
+#-----|  -> {...}
+#-----|  -> {...}
 
 #   16| exit M1
 
-MultiImplementationB.cs:
-#   14| exit M1
+#   16| exit M1 (normal)
+#-----|  -> exit M1
 
-MultiImplementationA.cs:
 #   17| {...}
 #-----|  -> M2(...)
 
 #   18| M2(...)
-#-----|  -> exit M1 (normal)
 #-----|  -> exit M1 (normal)
 
 #   18| enter M2
@@ -9684,6 +9768,18 @@ MultiImplementationA.cs:
 #   20| call to constructor Object
 #-----|  -> this access
 
+#   20| enter C2
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+#   20| exit C2
+
+#   20| exit C2 (abnormal)
+#-----|  -> exit C2
+
+#   20| exit C2 (normal)
+#-----|  -> exit C2
+
 #   20| {...}
 #-----|  -> ...;
 
@@ -9692,13 +9788,21 @@ MultiImplementationA.cs:
 
 #   20| ... = ...
 #-----|  -> exit C2 (normal)
-#-----|  -> exit C2 (normal)
 
 #   20| ...;
 #-----|  -> this access
 
 #   20| access to parameter i
 #-----|  -> ... = ...
+
+#   21| enter C2
+#-----|  -> 0
+#-----|  -> 1
+
+#   21| exit C2
+
+#   21| exit C2 (normal)
+#-----|  -> exit C2
 
 #   21| call to constructor C2
 #-----|  -> {...}
@@ -9708,14 +9812,35 @@ MultiImplementationA.cs:
 
 #   21| {...}
 #-----|  -> exit C2 (normal)
-#-----|  -> exit C2 (normal)
+
+#   22| enter ~C2
+#-----|  -> {...}
+#-----|  -> {...}
+
+#   22| exit ~C2
+
+#   22| exit ~C2 (abnormal)
+#-----|  -> exit ~C2
+
+#   22| exit ~C2 (normal)
+#-----|  -> exit ~C2
 
 #   22| {...}
 #-----|  -> exit ~C2 (normal)
-#-----|  -> exit ~C2 (normal)
+
+#   23| enter implicit conversion
+#-----|  -> null
+#-----|  -> null
+
+#   23| exit implicit conversion
+
+#   23| exit implicit conversion (abnormal)
+#-----|  -> exit implicit conversion
+
+#   23| exit implicit conversion (normal)
+#-----|  -> exit implicit conversion
 
 #   23| null
-#-----|  -> exit implicit conversion (normal)
 #-----|  -> exit implicit conversion (normal)
 
 #   24| access to property P
@@ -9733,12 +9858,27 @@ MultiImplementationA.cs:
 #   28| call to constructor Object
 #-----|  -> {...}
 
+#   28| enter C3
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+#   28| exit C3
+
+#   28| exit C3 (normal)
+#-----|  -> exit C3
+
 #   28| {...}
 #-----|  -> exit C3 (normal)
-#-----|  -> exit C3 (normal)
+
+#   30| enter get_P3
+#-----|  -> null
+
+#   30| exit get_P3
+
+#   30| exit get_P3 (abnormal)
+#-----|  -> exit get_P3
 
 #   30| throw ...
-#-----| exception(NullReferenceException) -> exit get_P3 (abnormal)
 #-----| exception(NullReferenceException) -> exit get_P3 (abnormal)
 
 #   30| null
@@ -9747,15 +9887,34 @@ MultiImplementationA.cs:
 #   34| call to constructor Object
 #-----|  -> {...}
 
+#   34| enter C4
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+#   34| exit C4
+
+#   34| exit C4 (normal)
+#-----|  -> exit C4
+
 #   34| {...}
 #-----|  -> exit C4 (normal)
-#-----|  -> exit C4 (normal)
+
+#   36| enter M1
+#-----|  -> {...}
+#-----|  -> 0
+
+#   36| exit M1
+
+#   36| exit M1 (abnormal)
+#-----|  -> exit M1
+
+#   36| exit M1 (normal)
+#-----|  -> exit M1
 
 #   36| {...}
 #-----|  -> null
 
 #   36| throw ...;
-#-----| exception(NullReferenceException) -> exit M1 (abnormal)
 #-----| exception(NullReferenceException) -> exit M1 (abnormal)
 
 #   36| null
@@ -9782,200 +9941,25 @@ MultiImplementationB.cs:
 #    1| call to constructor Object
 #-----|  -> {...}
 
-MultiImplementationA.cs:
-#    4| enter C1
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationB.cs:
-#    1| enter C1
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationA.cs:
-#    4| exit C1
-
-MultiImplementationB.cs:
-#    1| exit C1
-
-MultiImplementationA.cs:
-#    4| exit C1 (normal)
-#-----|  -> exit C1
-#-----|  -> exit C1
-
-MultiImplementationB.cs:
-#    1| exit C1 (normal)
-#-----|  -> exit C1
-#-----|  -> exit C1
-
 #    1| {...}
-#-----|  -> exit C1 (normal)
 #-----|  -> exit C1 (normal)
 
 #    3| 0
 #-----|  -> exit get_P1 (normal)
-#-----|  -> exit get_P1 (normal)
-
-MultiImplementationA.cs:
-#    6| enter get_P1
-#-----|  -> null
-#-----|  -> 0
-
-MultiImplementationB.cs:
-#    3| enter get_P1
-#-----|  -> null
-#-----|  -> 0
-
-MultiImplementationA.cs:
-#    6| exit get_P1
-
-MultiImplementationB.cs:
-#    3| exit get_P1
-
-MultiImplementationA.cs:
-#    6| exit get_P1 (abnormal)
-#-----|  -> exit get_P1
-#-----|  -> exit get_P1
-
-MultiImplementationB.cs:
-#    3| exit get_P1 (abnormal)
-#-----|  -> exit get_P1
-#-----|  -> exit get_P1
-
-MultiImplementationA.cs:
-#    6| exit get_P1 (normal)
-#-----|  -> exit get_P1
-#-----|  -> exit get_P1
-
-MultiImplementationB.cs:
-#    3| exit get_P1 (normal)
-#-----|  -> exit get_P1
-#-----|  -> exit get_P1
-
-MultiImplementationA.cs:
-#    7| enter get_P2
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationB.cs:
-#    4| enter get_P2
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationA.cs:
-#    7| exit get_P2
-
-MultiImplementationB.cs:
-#    4| exit get_P2
-
-MultiImplementationA.cs:
-#    7| exit get_P2 (abnormal)
-#-----|  -> exit get_P2
-#-----|  -> exit get_P2
-
-MultiImplementationB.cs:
-#    4| exit get_P2 (abnormal)
-#-----|  -> exit get_P2
-#-----|  -> exit get_P2
-
-MultiImplementationA.cs:
-#    7| exit get_P2 (normal)
-#-----|  -> exit get_P2
-#-----|  -> exit get_P2
-
-MultiImplementationB.cs:
-#    4| exit get_P2 (normal)
-#-----|  -> exit get_P2
-#-----|  -> exit get_P2
 
 #    4| {...}
 #-----|  -> 1
 
 #    4| return ...;
 #-----| return -> exit get_P2 (normal)
-#-----| return -> exit get_P2 (normal)
 
 #    4| 1
 #-----|  -> return ...;
 
-MultiImplementationA.cs:
-#    7| enter set_P2
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationB.cs:
-#    4| enter set_P2
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationA.cs:
-#    7| exit set_P2
-
-MultiImplementationB.cs:
-#    4| exit set_P2
-
-MultiImplementationA.cs:
-#    7| exit set_P2 (abnormal)
-#-----|  -> exit set_P2
-#-----|  -> exit set_P2
-
-MultiImplementationB.cs:
-#    4| exit set_P2 (abnormal)
-#-----|  -> exit set_P2
-#-----|  -> exit set_P2
-
-MultiImplementationA.cs:
-#    7| exit set_P2 (normal)
-#-----|  -> exit set_P2
-#-----|  -> exit set_P2
-
-MultiImplementationB.cs:
-#    4| exit set_P2 (normal)
-#-----|  -> exit set_P2
-#-----|  -> exit set_P2
-
 #    4| {...}
 #-----|  -> exit set_P2 (normal)
-#-----|  -> exit set_P2 (normal)
-
-MultiImplementationA.cs:
-#    8| enter M
-#-----|  -> null
-#-----|  -> 2
-
-MultiImplementationB.cs:
-#    5| enter M
-#-----|  -> null
-#-----|  -> 2
-
-MultiImplementationA.cs:
-#    8| exit M
-
-MultiImplementationB.cs:
-#    5| exit M
-
-MultiImplementationA.cs:
-#    8| exit M (abnormal)
-#-----|  -> exit M
-#-----|  -> exit M
-
-MultiImplementationB.cs:
-#    5| exit M (abnormal)
-#-----|  -> exit M
-#-----|  -> exit M
-
-MultiImplementationA.cs:
-#    8| exit M (normal)
-#-----|  -> exit M
-#-----|  -> exit M
-
-MultiImplementationB.cs:
-#    5| exit M (normal)
-#-----|  -> exit M
-#-----|  -> exit M
 
 #    5| 2
-#-----|  -> exit M (normal)
 #-----|  -> exit M (normal)
 
 #   11| this access
@@ -9987,150 +9971,28 @@ MultiImplementationB.cs:
 #   11| 1
 #-----|  -> ... = ...
 
-MultiImplementationA.cs:
-#   14| enter get_Item
-#-----|  -> access to parameter i
-#-----|  -> null
-
-MultiImplementationB.cs:
-#   12| enter get_Item
-#-----|  -> access to parameter i
-#-----|  -> null
-
-MultiImplementationA.cs:
-#   14| exit get_Item
-
-MultiImplementationB.cs:
-#   12| exit get_Item
-
-MultiImplementationA.cs:
-#   14| exit get_Item (abnormal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
-MultiImplementationB.cs:
-#   12| exit get_Item (abnormal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
-MultiImplementationA.cs:
-#   14| exit get_Item (normal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
-MultiImplementationB.cs:
-#   12| exit get_Item (normal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
 #   12| throw ...
-#-----| exception(NullReferenceException) -> exit get_Item (abnormal)
 #-----| exception(NullReferenceException) -> exit get_Item (abnormal)
 
 #   12| null
 #-----|  -> throw ...
-
-MultiImplementationA.cs:
-#   15| enter get_Item
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationB.cs:
-#   13| enter get_Item
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationA.cs:
-#   15| exit get_Item
-
-MultiImplementationB.cs:
-#   13| exit get_Item
-
-MultiImplementationA.cs:
-#   15| exit get_Item (abnormal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
-MultiImplementationB.cs:
-#   13| exit get_Item (abnormal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
-MultiImplementationA.cs:
-#   15| exit get_Item (normal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
-
-MultiImplementationB.cs:
-#   13| exit get_Item (normal)
-#-----|  -> exit get_Item
-#-----|  -> exit get_Item
 
 #   13| {...}
 #-----|  -> null
 
 #   13| throw ...;
 #-----| exception(NullReferenceException) -> exit get_Item (abnormal)
-#-----| exception(NullReferenceException) -> exit get_Item (abnormal)
 
 #   13| null
 #-----|  -> throw ...;
 
-MultiImplementationA.cs:
-#   15| enter set_Item
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationB.cs:
-#   13| enter set_Item
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationA.cs:
-#   15| exit set_Item
-
-MultiImplementationB.cs:
-#   13| exit set_Item
-
-MultiImplementationA.cs:
-#   15| exit set_Item (normal)
-#-----|  -> exit set_Item
-#-----|  -> exit set_Item
-
-MultiImplementationB.cs:
-#   13| exit set_Item (normal)
-#-----|  -> exit set_Item
-#-----|  -> exit set_Item
-
 #   13| {...}
 #-----|  -> exit set_Item (normal)
-#-----|  -> exit set_Item (normal)
-
-MultiImplementationA.cs:
-#   16| enter M1
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationB.cs:
-#   14| enter M1
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationA.cs:
-#   16| exit M1 (normal)
-#-----|  -> exit M1
-#-----|  -> exit M1
-
-MultiImplementationB.cs:
-#   14| exit M1 (normal)
-#-----|  -> exit M1
-#-----|  -> exit M1
 
 #   15| {...}
 #-----|  -> M2(...)
 
 #   16| M2(...)
-#-----|  -> exit M1 (normal)
 #-----|  -> exit M1 (normal)
 
 #   16| enter M2
@@ -10150,77 +10012,14 @@ MultiImplementationB.cs:
 #   18| call to constructor Object
 #-----|  -> this access
 
-MultiImplementationA.cs:
-#   20| enter C2
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationB.cs:
-#   18| enter C2
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationA.cs:
-#   20| exit C2
-
-MultiImplementationB.cs:
-#   18| exit C2
-
-MultiImplementationA.cs:
-#   20| exit C2 (abnormal)
-#-----|  -> exit C2
-#-----|  -> exit C2
-
-MultiImplementationB.cs:
-#   18| exit C2 (abnormal)
-#-----|  -> exit C2
-#-----|  -> exit C2
-
-MultiImplementationA.cs:
-#   20| exit C2 (normal)
-#-----|  -> exit C2
-#-----|  -> exit C2
-
-MultiImplementationB.cs:
-#   18| exit C2 (normal)
-#-----|  -> exit C2
-#-----|  -> exit C2
-
 #   18| {...}
 #-----|  -> null
 
 #   18| throw ...;
 #-----| exception(NullReferenceException) -> exit C2 (abnormal)
-#-----| exception(NullReferenceException) -> exit C2 (abnormal)
 
 #   18| null
 #-----|  -> throw ...;
-
-MultiImplementationA.cs:
-#   21| enter C2
-#-----|  -> 0
-#-----|  -> 1
-
-MultiImplementationB.cs:
-#   19| enter C2
-#-----|  -> 0
-#-----|  -> 1
-
-MultiImplementationA.cs:
-#   21| exit C2
-
-MultiImplementationB.cs:
-#   19| exit C2
-
-MultiImplementationA.cs:
-#   21| exit C2 (normal)
-#-----|  -> exit C2
-#-----|  -> exit C2
-
-MultiImplementationB.cs:
-#   19| exit C2 (normal)
-#-----|  -> exit C2
-#-----|  -> exit C2
 
 #   19| call to constructor C2
 #-----|  -> {...}
@@ -10230,92 +10029,17 @@ MultiImplementationB.cs:
 
 #   19| {...}
 #-----|  -> exit C2 (normal)
-#-----|  -> exit C2 (normal)
-
-MultiImplementationA.cs:
-#   22| enter ~C2
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationB.cs:
-#   20| enter ~C2
-#-----|  -> {...}
-#-----|  -> {...}
-
-MultiImplementationA.cs:
-#   22| exit ~C2
-
-MultiImplementationB.cs:
-#   20| exit ~C2
-
-MultiImplementationA.cs:
-#   22| exit ~C2 (abnormal)
-#-----|  -> exit ~C2
-#-----|  -> exit ~C2
-
-MultiImplementationB.cs:
-#   20| exit ~C2 (abnormal)
-#-----|  -> exit ~C2
-#-----|  -> exit ~C2
-
-MultiImplementationA.cs:
-#   22| exit ~C2 (normal)
-#-----|  -> exit ~C2
-#-----|  -> exit ~C2
-
-MultiImplementationB.cs:
-#   20| exit ~C2 (normal)
-#-----|  -> exit ~C2
-#-----|  -> exit ~C2
 
 #   20| {...}
 #-----|  -> null
 
 #   20| throw ...;
 #-----| exception(NullReferenceException) -> exit ~C2 (abnormal)
-#-----| exception(NullReferenceException) -> exit ~C2 (abnormal)
 
 #   20| null
 #-----|  -> throw ...;
 
-MultiImplementationA.cs:
-#   23| enter implicit conversion
-#-----|  -> null
-#-----|  -> null
-
-MultiImplementationB.cs:
-#   21| enter implicit conversion
-#-----|  -> null
-#-----|  -> null
-
-MultiImplementationA.cs:
-#   23| exit implicit conversion
-
-MultiImplementationB.cs:
-#   21| exit implicit conversion
-
-MultiImplementationA.cs:
-#   23| exit implicit conversion (abnormal)
-#-----|  -> exit implicit conversion
-#-----|  -> exit implicit conversion
-
-MultiImplementationB.cs:
-#   21| exit implicit conversion (abnormal)
-#-----|  -> exit implicit conversion
-#-----|  -> exit implicit conversion
-
-MultiImplementationA.cs:
-#   23| exit implicit conversion (normal)
-#-----|  -> exit implicit conversion
-#-----|  -> exit implicit conversion
-
-MultiImplementationB.cs:
-#   21| exit implicit conversion (normal)
-#-----|  -> exit implicit conversion
-#-----|  -> exit implicit conversion
-
 #   21| throw ...
-#-----| exception(NullReferenceException) -> exit implicit conversion (abnormal)
 #-----| exception(NullReferenceException) -> exit implicit conversion (abnormal)
 
 #   21| null
@@ -10336,131 +10060,16 @@ MultiImplementationB.cs:
 #   25| call to constructor Object
 #-----|  -> {...}
 
-MultiImplementationA.cs:
-#   28| enter C3
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationB.cs:
-#   25| enter C3
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationA.cs:
-#   28| exit C3
-
-MultiImplementationB.cs:
-#   25| exit C3
-
-MultiImplementationA.cs:
-#   28| exit C3 (normal)
-#-----|  -> exit C3
-#-----|  -> exit C3
-
-MultiImplementationB.cs:
-#   25| exit C3 (normal)
-#-----|  -> exit C3
-#-----|  -> exit C3
-
 #   25| {...}
 #-----|  -> exit C3 (normal)
-#-----|  -> exit C3 (normal)
-
-MultiImplementationA.cs:
-#   30| enter get_P3
-#-----|  -> null
-
-MultiImplementationB.cs:
-#   27| enter get_P3
-#-----|  -> null
-
-MultiImplementationA.cs:
-#   30| exit get_P3
-
-MultiImplementationB.cs:
-#   27| exit get_P3
-
-MultiImplementationA.cs:
-#   30| exit get_P3 (abnormal)
-#-----|  -> exit get_P3
-#-----|  -> exit get_P3
-
-MultiImplementationB.cs:
-#   27| exit get_P3 (abnormal)
-#-----|  -> exit get_P3
-#-----|  -> exit get_P3
 
 #   30| call to constructor Object
 #-----|  -> {...}
 
-MultiImplementationA.cs:
-#   34| enter C4
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationB.cs:
-#   30| enter C4
-#-----|  -> call to constructor Object
-#-----|  -> call to constructor Object
-
-MultiImplementationA.cs:
-#   34| exit C4
-
-MultiImplementationB.cs:
-#   30| exit C4
-
-MultiImplementationA.cs:
-#   34| exit C4 (normal)
-#-----|  -> exit C4
-#-----|  -> exit C4
-
-MultiImplementationB.cs:
-#   30| exit C4 (normal)
-#-----|  -> exit C4
-#-----|  -> exit C4
-
 #   30| {...}
 #-----|  -> exit C4 (normal)
-#-----|  -> exit C4 (normal)
-
-MultiImplementationA.cs:
-#   36| enter M1
-#-----|  -> {...}
-#-----|  -> 0
-
-MultiImplementationB.cs:
-#   32| enter M1
-#-----|  -> {...}
-#-----|  -> 0
-
-MultiImplementationA.cs:
-#   36| exit M1
-
-MultiImplementationB.cs:
-#   32| exit M1
-
-MultiImplementationA.cs:
-#   36| exit M1 (abnormal)
-#-----|  -> exit M1
-#-----|  -> exit M1
-
-MultiImplementationB.cs:
-#   32| exit M1 (abnormal)
-#-----|  -> exit M1
-#-----|  -> exit M1
-
-MultiImplementationA.cs:
-#   36| exit M1 (normal)
-#-----|  -> exit M1
-#-----|  -> exit M1
-
-MultiImplementationB.cs:
-#   32| exit M1 (normal)
-#-----|  -> exit M1
-#-----|  -> exit M1
 
 #   32| 0
-#-----|  -> exit M1 (normal)
 #-----|  -> exit M1 (normal)
 
 NullCoalescing.cs:
@@ -12374,6 +11983,9 @@ Switch.cs:
 #  131| return ...;
 #-----| return -> exit M12 (normal)
 
+#  131| call to method ToString
+#-----|  -> return ...;
+
 #  131| access to parameter o
 #-----|  -> String s
 
@@ -12405,9 +12017,6 @@ Switch.cs:
 
 #  131| null
 #-----| null -> [null] ... => ...
-
-#  131| call to method ToString
-#-----|  -> return ...;
 
 #  134| enter M13
 #-----|  -> {...}

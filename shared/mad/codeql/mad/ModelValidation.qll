@@ -41,7 +41,9 @@ module KindValidation<KindValidationConfigSig Config> {
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
           "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
           // Go-only currently, but may be shared in the future
-          "jwt"
+          "jwt",
+          // CPP-only currently
+          "remote-sink"
         ]
       or
       this.matches([

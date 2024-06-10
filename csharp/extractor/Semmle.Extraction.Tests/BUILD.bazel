@@ -1,0 +1,21 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_xunit_test",
+)
+
+codeql_xunit_test(
+    name = "Semmle.Extraction.Tests",
+    srcs = glob([
+        "*.cs",
+    ]),
+    deps = [
+        "//csharp/extractor/Semmle.Extraction",
+        "//csharp/extractor/Semmle.Extraction.CSharp",
+        "//csharp/extractor/Semmle.Extraction.CSharp.DependencyFetching",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Standalone:bin/Semmle.Extraction.CSharp.Standalone",
+        "//csharp/extractor/Semmle.Extraction.CSharp.StubGenerator",
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.net.test.sdk",
+        "@paket.main//system.io.filesystem",
+    ],
+)

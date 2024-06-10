@@ -2,11 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: summaryModel
-    data:
-      - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", False, "WaitForStartAsync", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceHelpers", "IsWindowsService", "()", "summary", "df-generated"]

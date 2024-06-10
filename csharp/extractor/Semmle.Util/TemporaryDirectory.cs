@@ -15,9 +15,9 @@ namespace Semmle.Util
 
         public DirectoryInfo DirInfo { get; }
 
-        public TemporaryDirectory(string name, string userReportedDirectoryPurpose, ILogger logger)
+        public TemporaryDirectory(string path, string userReportedDirectoryPurpose, ILogger logger)
         {
-            DirInfo = new DirectoryInfo(name);
+            DirInfo = new DirectoryInfo(path);
             DirInfo.Create();
             this.userReportedDirectoryPurpose = userReportedDirectoryPurpose;
             this.logger = logger;

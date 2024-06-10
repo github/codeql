@@ -185,5 +185,42 @@ namespace Semmle.Util
 
             return new FileInfo(outputPath);
         }
+
+        public static string SafeGetDirectoryName(string path, ILogger logger)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(path);
+                if (dir is null)
+                {
+                    return "";
+                }
+
+                if (!dir.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    dir += Path.DirectorySeparatorChar;
+                }
+
+                return dir;
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get directory name for {path}: {ex.Message}");
+                return "";
+            }
+        }
+
+        public static string? SafeGetFileName(string path, ILogger logger)
+        {
+            try
+            {
+                return Path.GetFileName(path);
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get file name for {path}: {ex.Message}");
+                return null;
+            }
+        }
     }
 }

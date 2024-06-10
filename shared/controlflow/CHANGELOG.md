@@ -1,3 +1,21 @@
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.1.16
+
+No user-facing changes.
+
+## 0.1.15
+
+No user-facing changes.
+
+## 0.1.14
+
+No user-facing changes.
+
 ## 0.1.13
 
 No user-facing changes.

@@ -127,7 +127,7 @@ module WebSocketRequestCall {
 /**
  * A message written to a WebSocket, considered as a flow sink for reflected XSS.
  */
-class WebSocketReaderAsSource extends UntrustedFlowSource::Range {
+class WebSocketReaderAsSource extends RemoteFlowSource::Range {
   WebSocketReaderAsSource() {
     exists(WebSocketReader r | this = r.getAnOutput().getNode(r.getACall()))
   }

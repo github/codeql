@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Extracting suppress nullable warning expressions did not work when applied directly to a method call (like `System.Console.Readline()!`). This has been fixed.

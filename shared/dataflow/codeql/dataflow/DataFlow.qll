@@ -72,12 +72,24 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this element. */
     string toString();
 
+    /** Gets the location of this call. */
+    Location getLocation();
+
     DataFlowCallable getEnclosingCallable();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class DataFlowCallable {
     /** Gets a textual representation of this element. */
     string toString();
+
+    /** Gets the location of this callable. */
+    Location getLocation();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class ReturnKind {
@@ -251,10 +263,18 @@ signature module InputSig<LocationSig Location> {
    */
   predicate expectsContent(Node n, ContentSet c);
 
+  /** A set of `Node`s in a `DataFlowCallable`. */
+  class NodeRegion {
+    /** Holds if this region contains `n`. */
+    predicate contains(Node n);
+
+    int totalOrder();
+  }
+
   /**
-   * Holds if the node `n` is unreachable when the call context is `call`.
+   * Holds if the nodes in `nr` are unreachable when the call context is `call`.
    */
-  predicate isUnreachableInCall(Node n, DataFlowCall call);
+  predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call);
 
   default int accessPathLimit() { result = 5 }
 
@@ -307,6 +327,24 @@ signature module InputSig<LocationSig Location> {
    * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
    */
   default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
+
+  /**
+   * A second-level control-flow scope in a callable.
+   *
+   * This is used to provide a more fine-grained separation of a callable
+   * context for the purpose of identifying uncertain control flow. For most
+   * languages, this is not needed, as this separation is handled through
+   * virtual dispatch, but for some cases (for example, C++) this can be used to
+   * identify, for example, large top-level switch statements acting like
+   * virtual dispatch.
+   */
+  class DataFlowSecondLevelScope {
+    /** Gets a textual representation of this element. */
+    string toString();
+  }
+
+  /** Gets the second-level scope containing the node `n`, if any. */
+  default DataFlowSecondLevelScope getSecondLevelScope(Node n) { none() }
 
   bindingset[call, p, arg]
   default predicate golangSpecificParamArgFilter(
@@ -591,7 +629,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate accessPathLimit = Config::accessPathLimit/0;
 
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = ""
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
     }
 
@@ -613,7 +651,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate accessPathLimit = Config::accessPathLimit/0;
 
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = ""
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
     }
 

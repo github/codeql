@@ -32,5 +32,4 @@ extensions:
       - ["System.Composition.Hosting", "CompositionHost", "CreateCompositionHost", "(System.Collections.Generic.IEnumerable<System.Composition.Hosting.Core.ExportDescriptorProvider>)", "summary", "df-generated"]
       - ["System.Composition.Hosting", "CompositionHost", "CreateCompositionHost", "(System.Composition.Hosting.Core.ExportDescriptorProvider[])", "summary", "df-generated"]
       - ["System.Composition.Hosting", "CompositionHost", "Dispose", "()", "summary", "df-generated"]
-      - ["System.Composition.Hosting", "CompositionHost", "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "summary", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", "CreateContainer", "()", "summary", "df-generated"]

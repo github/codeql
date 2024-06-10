@@ -269,14 +269,10 @@ compGenerated
 | file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
-| file://<external>/EnumEntries.class:0:0:0:0 | addFirst | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/EnumEntries.class:0:0:0:0 | addLast | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | getFirst | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | getLast | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/EnumEntries.class:0:0:0:0 | removeFirst | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/EnumEntries.class:0:0:0:0 | removeLast | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | reversed | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
@@ -343,7 +339,7 @@ compGenerated
 | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:154:33:154:61 |  | Declaring classes of adapter functions in Kotlin |
 | reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
-| reflection.kt:157:1:157:49 | ConstructorOptional | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:157:26:157:45 | ConstructorOptional | Forwarder for Kotlin calls that need default arguments filling in |
 | reflection.kt:162:25:162:45 |  | Declaring classes of adapter functions in Kotlin |
 | reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | The class around a local function, a lambda, or a function reference |
 propertyReferenceOverrides

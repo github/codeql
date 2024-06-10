@@ -3,7 +3,8 @@ import semmle.code.csharp.commons.Compilation
 
 bindingset[arg]
 private string normalize(string arg) {
-  not exists(arg.indexOf(":")) and result = arg
+  (not exists(arg.indexOf(":")) or not exists(arg.indexOf("/8.0"))) and
+  result = arg
   or
   exists(int i, int j |
     i = arg.indexOf(":") and
