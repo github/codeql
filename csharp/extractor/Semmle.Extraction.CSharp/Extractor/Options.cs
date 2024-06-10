@@ -25,12 +25,14 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// All other arguments passed to the compilation.
         /// </summary>
-        public IList<string> CompilerArguments { get; } = new List<string>();
+        public List<string> CompilerArguments { get; } = new List<string>();
 
         /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
         /// </summary>
         public bool AssemblySensitiveTrap { get; private set; } = false;
+
+        public string? BinaryLogPath { get; set; }
 
         public static Options CreateWithEnvironment(string[] arguments)
         {
@@ -64,6 +66,9 @@ namespace Semmle.Extraction.CSharp
                     return true;
                 case "load-sources-from-project":
                     ProjectsToLoad.Add(value);
+                    return true;
+                case "binlog":
+                    BinaryLogPath = value;
                     return true;
                 default:
                     return base.HandleOption(key, value);

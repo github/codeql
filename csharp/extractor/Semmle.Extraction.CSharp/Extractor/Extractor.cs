@@ -13,6 +13,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Semmle.Util;
 using Semmle.Util.Logging;
+using Basic.CompilerLog;
+using Basic.CompilerLog.Util;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -93,14 +95,61 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
+            var options = Options.CreateWithEnvironment(args);
+            using var logger = MakeLogger(options.Verbosity, options.Console);
+            if (options.BinaryLogPath is string binlogPath)
+            {
+                logger.LogInfo($"Reading compiler calls from binary log {binlogPath}");
+                using var fileStream = new FileStream(binlogPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                // Filter out compiler calls that aren't interesting for examination
+                var predicate = bool (CompilerCall compilerCall) =>
+                {
+                    if (!compilerCall.IsCSharp)
+                    {
+                        return false;
+                    }
+
+                    return compilerCall.Kind switch
+                    {
+                        CompilerCallKind.XamlPreCompile => false,
+                        CompilerCallKind.Satellite => false,
+                        CompilerCallKind.WpfTemporaryCompile => false,
+                        _ => true
+                    };
+                };
+
+                var compilerCalls = BinaryLogUtil.ReadAllCompilerCalls(fileStream, predicate);
+                var allFailed = true;
+                foreach (var compilerCall in compilerCalls)
+                {
+                    var diagnosticName = compilerCall.GetDiagnosticName();
+                    Console.WriteLine($"Processing {diagnosticName}");
+                    var compilerCallOptions = Options.CreateWithEnvironment([]);
+                    compilerCallOptions.CompilerName = compilerCall.CompilerFilePath;
+                    compilerCallOptions.CompilerArguments.AddRange(compilerCall.GetArguments());
+                    logger.LogInfo($"Running extractor on arguments from binary log. Processing {diagnosticName}.");
+                    var ec = Run(compilerCallOptions, logger);
+                    if (ec != ExitCode.Failed)
+                    {
+                        allFailed &= false;
+                    }
+                }
+
+                return allFailed ? ExitCode.Failed : ExitCode.Ok;
+            }
+            else
+            {
+                return Run(options, logger);
+            }
+        }
+
+        public static ExitCode Run(Options options, ILogger logger)
+        {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-
-            var options = Options.CreateWithEnvironment(args);
             var workingDirectory = Directory.GetCurrentDirectory();
             var compilerArgs = options.CompilerArguments.ToArray();
-
-            using var logger = MakeLogger(options.Verbosity, options.Console);
 
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
@@ -393,10 +442,10 @@ namespace Semmle.Extraction.CSharp
                         .Select(src => src.Path)
                         .ToList();
 
-                    if (compilerArguments.GeneratedFilesOutputDirectory is not null)
-                    {
-                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
-                    }
+                    // if (compilerArguments.GeneratedFilesOutputDirectory is not null)
+                    // {
+                    //     paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
+                    // }
 
                     return ReadSyntaxTrees(
                         paths.Select(canonicalPathCache.GetCanonicalPath),
