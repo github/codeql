@@ -16,9 +16,11 @@ extensions:
       - ["System.Formats.Tar", "TarWriter", False, "TarWriter", "(System.IO.Stream,System.Formats.Tar.TarEntryFormat,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Tar", "TarWriter", False, "WriteEntry", "(System.Formats.Tar.TarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Tar", "TarWriter", False, "WriteEntry", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "WriteEntry", "(System.String,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.Formats.Tar.TarEntry,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.Formats.Tar.TarEntry,System.Threading.CancellationToken)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Tar", "UstarTarEntry", False, "UstarTarEntry", "(System.Formats.Tar.TarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:

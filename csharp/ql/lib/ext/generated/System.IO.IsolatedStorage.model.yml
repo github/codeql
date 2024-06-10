@@ -90,6 +90,5 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanRead", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanSeek", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanWrite", "()", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_Handle", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_IsAsync", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_Length", "()", "summary", "df-generated"]

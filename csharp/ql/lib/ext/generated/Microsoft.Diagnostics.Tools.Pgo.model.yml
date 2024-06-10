@@ -14,6 +14,7 @@ extensions:
       - ["Microsoft.Diagnostics.Tools.Pgo", "KeyValueMap<TKey,TValue>", False, "LookupRange", "(TKey,TKey)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "KeyValueMap<TKey,TValue>", False, "TryLookup", "(TKey,TValue)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "MinimumCostCirculation", False, "FindBellmanFordCycle", "(Microsoft.Diagnostics.Tools.Pgo.Node)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo", "MinimumCostCirculation", False, "FindNegativeCycle", "(Microsoft.Diagnostics.Tools.Pgo.CirculationGraph)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "Node", False, "AddInEdge", "(Microsoft.Diagnostics.Tools.Pgo.Edge)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "Node", False, "AddOutEdge", "(Microsoft.Diagnostics.Tools.Pgo.Edge)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
@@ -32,7 +33,6 @@ extensions:
       - ["Microsoft.Diagnostics.Tools.Pgo", "LbrTraceEventData32", "Entries", "(Microsoft.Diagnostics.Tools.Pgo.LbrTraceEventData32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "LbrTraceEventData64", "Entries", "(Microsoft.Diagnostics.Tools.Pgo.LbrTraceEventData64,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "MinimumCostCirculation", "FindMinCostCirculation", "(Microsoft.Diagnostics.Tools.Pgo.CirculationGraph,System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.Diagnostics.Tools.Pgo", "MinimumCostCirculation", "FindNegativeCycle", "(Microsoft.Diagnostics.Tools.Pgo.CirculationGraph)", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "Node", "NetInFlow", "()", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "Node", "NetOutFlow", "()", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo", "Node", "ToString", "()", "summary", "df-generated"]

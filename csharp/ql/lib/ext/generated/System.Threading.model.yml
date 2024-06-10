@@ -34,8 +34,10 @@ extensions:
       - ["System.Threading", "SemaphoreSlim", False, "get_AvailableWaitHandle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading", "ThreadExceptionEventArgs", False, "ThreadExceptionEventArgs", "(System.Exception)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Threading", "ThreadExceptionEventArgs", False, "get_Exception", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading", "ThreadLocal<T>", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading", "ThreadPoolBoundHandle", False, "AllocateNativeOverlapped", "(System.Threading.PreAllocatedOverlapped)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading", "ThreadPoolBoundHandle", False, "get_Handle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading", "WaitHandleExtensions", False, "GetSafeWaitHandle", "(System.Threading.WaitHandle)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading", "WaitHandleExtensions", False, "SetSafeWaitHandle", "(System.Threading.WaitHandle,Microsoft.Win32.SafeHandles.SafeWaitHandle)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -423,7 +425,6 @@ extensions:
       - ["System.Threading", "ThreadLocal<T>", "Dispose", "()", "summary", "df-generated"]
       - ["System.Threading", "ThreadLocal<T>", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Threading", "ThreadLocal<T>", "ThreadLocal", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.Threading", "ThreadLocal<T>", "ToString", "()", "summary", "df-generated"]
       - ["System.Threading", "ThreadLocal<T>", "get_IsValueCreated", "()", "summary", "df-generated"]
       - ["System.Threading", "ThreadLocal<T>", "get_Values", "()", "summary", "df-generated"]
       - ["System.Threading", "ThreadPool", "BindHandle", "(System.IntPtr)", "summary", "df-generated"]
@@ -510,4 +511,3 @@ extensions:
       - ["System.Threading", "WaitHandleCannotBeOpenedException", "WaitHandleCannotBeOpenedException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Threading", "WaitHandleCannotBeOpenedException", "WaitHandleCannotBeOpenedException", "(System.String)", "summary", "df-generated"]
       - ["System.Threading", "WaitHandleCannotBeOpenedException", "WaitHandleCannotBeOpenedException", "(System.String,System.Exception)", "summary", "df-generated"]
-      - ["System.Threading", "WaitHandleExtensions", "GetSafeWaitHandle", "(System.Threading.WaitHandle)", "summary", "df-generated"]

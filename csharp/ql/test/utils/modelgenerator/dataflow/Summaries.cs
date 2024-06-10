@@ -576,3 +576,16 @@ public class Inheritance
     }
 }
 
+public class MemberFlow
+{
+    public class C
+    {
+        public string Prop { get; set; }
+    }
+
+    // summary=Models;MemberFlow;false;M1;(Models.MemberFlow+C);;Argument[0];ReturnValue;taint;df-generated
+    public string M1(C p)
+    {
+        return p.Prop;
+    }
+}

@@ -6,13 +6,13 @@ extensions:
     data:
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", False, "CreateHandlerPipeline", "(System.Net.Http.HttpMessageHandler,System.Collections.Generic.IEnumerable<System.Net.Http.DelegatingHandler>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", False, "CreateHandlerPipeline", "(System.Net.Http.HttpMessageHandler,System.Collections.Generic.IEnumerable<System.Net.Http.DelegatingHandler>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", True, "Build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Http", "HttpClientFactoryOptions", "get_HttpClientActions", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpClientFactoryOptions", "get_HttpMessageHandlerBuilderActions", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "Build", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "get_AdditionalHandlers", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "get_Services", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "ITypedHttpClientFactory<TClient>", "CreateClient", "(System.Net.Http.HttpClient)", "summary", "df-generated"]

@@ -6,6 +6,7 @@ extensions:
     data:
       - ["ILLink.Tasks", "ILLink", True, "GenerateCommandLineCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["ILLink.Tasks", "ILLink", True, "GenerateFullPathToTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "GenerateResponseFileCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["ILLink.Tasks", "ILLink", True, "get_ToolName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -16,7 +17,6 @@ extensions:
       - ["ILLink.Tasks", "CreateRuntimeRootILLinkDescriptorFile", "Execute", "()", "summary", "df-generated"]
       - ["ILLink.Tasks", "CreateRuntimeRootILLinkDescriptorFile", "ProcessCoreTypes", "(System.String)", "summary", "df-generated"]
       - ["ILLink.Tasks", "CreateRuntimeRootILLinkDescriptorFile", "ProcessExceptionTypes", "(System.String)", "summary", "df-generated"]
-      - ["ILLink.Tasks", "ILLink", "GenerateResponseFileCommands", "()", "summary", "df-generated"]
       - ["ILLink.Tasks", "ILLink", "get_StandardErrorLoggingImportance", "()", "summary", "df-generated"]
       - ["ILLink.Tasks", "ILLink", "set_BeforeFieldInit", "(System.Boolean)", "summary", "df-generated"]
       - ["ILLink.Tasks", "ILLink", "set_IPConstProp", "(System.Boolean)", "summary", "df-generated"]

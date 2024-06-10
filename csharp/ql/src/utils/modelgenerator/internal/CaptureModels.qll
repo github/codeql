@@ -10,7 +10,7 @@ private import CaptureModelsPrinting
  * A node from which flow can return to the caller. This is either a regular
  * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
  */
-private class ReturnNodeExt extends DataFlow::Node {
+class ReturnNodeExt extends DataFlow::Node {
   private DataFlowImplCommon::ReturnKindExt kind;
 
   ReturnNodeExt() {
@@ -30,7 +30,10 @@ private class ReturnNodeExt extends DataFlow::Node {
 }
 
 class DataFlowTargetApi extends TargetApiSpecific {
-  DataFlowTargetApi() { not isUninterestingForDataFlowModels(this) }
+  DataFlowTargetApi() {
+    not isUninterestingForDataFlowModels(this) // and
+    // this.getFullyQualifiedNameDebug().matches("Internal.TypeSystem.TypeSystemHelpers%")
+  }
 }
 
 private module Printing implements PrintingSig {
@@ -188,7 +191,7 @@ module ThroughFlowConfig implements DataFlow::StateConfigSig {
   }
 }
 
-private module ThroughFlow = TaintTracking::GlobalWithState<ThroughFlowConfig>;
+module ThroughFlow = TaintTracking::GlobalWithState<ThroughFlowConfig>;
 
 /**
  * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
@@ -260,7 +263,7 @@ module PropagateToSinkConfig implements DataFlow::ConfigSig {
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 }
 
-private module PropagateToSink = TaintTracking::Global<PropagateToSinkConfig>;
+module PropagateToSink = TaintTracking::Global<PropagateToSinkConfig>;
 
 /**
  * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.

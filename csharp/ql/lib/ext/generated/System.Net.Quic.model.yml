@@ -10,6 +10,7 @@ extensions:
       - ["System.Net.Quic", "QuicConnection", False, "get_RemoteCertificate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_RemoteEndPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_TargetHostName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", False, "ListenAsync", "(System.Net.Quic.QuicListenerOptions,System.Threading.CancellationToken)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -24,7 +25,6 @@ extensions:
       - ["System.Net.Quic", "QuicException", "get_QuicError", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicException", "get_TransportErrorCode", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "AcceptConnectionAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
-      - ["System.Net.Quic", "QuicListener", "ListenAsync", "(System.Net.Quic.QuicListenerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "ToString", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "get_IsSupported", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "get_LocalEndPoint", "()", "summary", "df-generated"]

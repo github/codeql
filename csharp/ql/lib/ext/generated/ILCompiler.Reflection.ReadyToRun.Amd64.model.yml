@@ -2,6 +2,12 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcTransition", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.Amd64", "UnwindInfo", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcInfo+SafePointOffset", "SafePointOffset", "(System.Int32,System.UInt32)", "summary", "df-generated"]
@@ -14,8 +20,6 @@ extensions:
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcSlotTable", "get_NumTracked", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcTransition", "GcTransition", "(System.Int32,System.Int32,System.Boolean,System.Int32,ILCompiler.Reflection.ReadyToRun.Amd64.GcSlotTable,System.Reflection.PortableExecutable.Machine)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcTransition", "GetSlotState", "(ILCompiler.Reflection.ReadyToRun.Amd64.GcSlotTable,System.Reflection.PortableExecutable.Machine)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcTransition", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "InterruptibleRange", "InterruptibleRange", "(System.UInt32,System.UInt32,System.UInt32)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "UnwindCode", "UnwindCode", "(System.Byte[],System.Int32,System.Int32)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.Amd64", "UnwindInfo", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "UnwindInfo", "UnwindInfo", "(System.Byte[],System.Int32)", "summary", "df-generated"]
