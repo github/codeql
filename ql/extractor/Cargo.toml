@@ -16,7 +16,7 @@ clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 rayon = "1.9.0"
-regex = "1.10.4"
+regex = "1.10.5"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 
 [patch.crates-io]
