@@ -45,3 +45,7 @@
 | test.cpp:122:9:122:9 | b |
 | test.cpp:125:13:125:20 | ! ... |
 | test.cpp:125:14:125:17 | call to safe |
+| test.cpp:131:6:131:21 | call to __builtin_expect |
+| test.cpp:135:6:135:21 | call to __builtin_expect |
+| test.cpp:141:6:141:21 | call to __builtin_expect |
+| test.cpp:145:6:145:21 | call to __builtin_expect |
