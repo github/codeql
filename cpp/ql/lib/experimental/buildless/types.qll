@@ -1,4 +1,4 @@
-import ast
+import AST
 
 module BuildlessTypes<BuildlessASTSig Sig> {
   module AST = BuildlessAST<Sig>;

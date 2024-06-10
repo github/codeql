@@ -15,15 +15,25 @@ module BuildlessModel<BuildlessASTSig Sig> {
     TNamespace(string fqn) { fqn = getQualifiedName(_) } or
     TASTNode(AST::SourceElement node) { any() }
 
-  class Type extends string
-  {
+  class Type extends string {
     Type() { exists(SourceTypeDeclaration t | t.getMangledName() = this) }
 
     // string toString() { result = "i am a type" }
+    string getName() { result = this.getADeclaration().getName() }
+
+    Location getLocation() { result = this.getADefinition().getLocation() }
 
     SourceTypeDeclaration getADeclaration() { result.getMangledName() = this }
 
     SourceTypeDefinition getADefinition() { result.getMangledName() = this }
+
+    Namespace getParentNamespace() {
+      result.getADeclaration() = this.getADeclaration().getParentNamespace()
+    }
+
+    Type getParentType() { result.getADeclaration() = this.getADeclaration().getParentType() }
+
+    string getFullyQualifiedName() { result = this.getADeclaration().getFullyQualifiedName() }
   }
 
   class Element extends TElement {
@@ -34,6 +44,8 @@ module BuildlessModel<BuildlessASTSig Sig> {
     string getFullyQualifiedName() { this = TNamespace(result) }
 
     override string toString() { result = "namespace " + this.getFullyQualifiedName() }
+
+    NamespaceDeclaration getADeclaration() { result.getNamespace() = this }
   }
 
   class SourceElement extends Element, TASTNode {
@@ -56,9 +68,7 @@ module BuildlessModel<BuildlessASTSig Sig> {
     abstract predicate isDefinition();
   }
 
-  abstract class SourceDefinition extends SourceDeclaration
-  {
-  }
+  abstract class SourceDefinition extends SourceDeclaration { }
 
   class NamespaceDeclaration extends SourceDeclaration {
     AST::SourceNamespace ns;
@@ -93,6 +103,15 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
     override string toString() { result = "typename " + def.getName() }
 
+    string getFullyQualifiedName() {
+      if exists(this.getParentNamespace())
+      then result = this.getParentNamespace().getFullyQualifiedName() + "::" + this.getName()
+      else
+        if exists(this.getParentType())
+        then result = this.getParentType() + "::" + this.getName()
+        else result = this.getName()
+    }
+
     NamespaceDeclaration getParentNamespace() { result.getSourceNode() = def.getParent() }
 
     SourceTypeDeclaration getParentType() { result.getSourceNode() = def.getParent() }
@@ -113,8 +132,7 @@ module BuildlessModel<BuildlessASTSig Sig> {
     override predicate isDefinition() { def.isDefinition() }
   }
 
-  class SourceTypeDefinition extends SourceTypeDeclaration, SourceDefinition
-  {
+  class SourceTypeDefinition extends SourceTypeDeclaration, SourceDefinition {
     SourceTypeDefinition() { this.isDefinition() }
   }
 
@@ -146,8 +164,7 @@ module BuildlessModel<BuildlessASTSig Sig> {
     override predicate isDefinition() { fn.isDefinition() }
   }
 
-  class SourceFunctionDefinition extends SourceFunctionDeclaration, SourceDefinition
-  {
+  class SourceFunctionDefinition extends SourceFunctionDeclaration, SourceDefinition {
     SourceFunctionDefinition() { this.isDefinition() }
   }
 

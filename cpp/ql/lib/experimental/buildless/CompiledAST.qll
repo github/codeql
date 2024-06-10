@@ -147,7 +147,7 @@ module CompiledAST implements BuildlessASTSig {
   predicate arrayType(Node type, Node element) { none() }
 
   predicate typename(Node node, string name) {
-    name = node.getDeclaration().getDeclaration().(Class).getName() or
+    exists(Class c | c = node.getDeclaration().getDeclaration() | not c.isAnonymous() and c.getName() = name) or
     name = node.getType().getName()
   }
 

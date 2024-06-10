@@ -1,5 +1,9 @@
 Next:
 - [x] Namespaces
+- [ ] Unnamed class/struct/union and name mangling
+- [ ] Linker awareness is creating duplicates
+
+
 
 - Resolve the type of a local variable
 
