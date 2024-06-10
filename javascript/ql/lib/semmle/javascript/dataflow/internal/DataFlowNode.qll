@@ -33,4 +33,10 @@ newtype TNode =
   TExceptionalInvocationReturnNode(InvokeExpr e) or
   TGlobalAccessPathRoot() or
   TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
-  TReflectiveParametersNode(Function f)
+  TReflectiveParametersNode(Function f) or
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+  }

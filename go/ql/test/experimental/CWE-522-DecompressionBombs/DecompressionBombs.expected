@@ -25,12 +25,8 @@ edges
 | test.go:130:33:130:40 | filename | test.go:130:2:130:41 | ... := ...[0] | provenance | Config |
 | test.go:132:3:132:19 | ... := ...[0] | test.go:134:37:134:38 | rc | provenance |  |
 | test.go:132:12:132:12 | f | test.go:132:3:132:19 | ... := ...[0] | provenance | MaD:8 |
-| test.go:143:2:143:59 | ... := ...[0] | test.go:144:20:144:37 | implicit dereference | provenance |  |
+| test.go:143:2:143:59 | ... := ...[0] | test.go:145:12:145:12 | f | provenance |  |
 | test.go:143:51:143:58 | filename | test.go:143:2:143:59 | ... := ...[0] | provenance | Config |
-| test.go:144:20:144:37 | implicit dereference | test.go:144:20:144:37 | implicit dereference | provenance |  |
-| test.go:144:20:144:37 | implicit dereference | test.go:144:20:144:37 | implicit read of field Reader | provenance |  |
-| test.go:144:20:144:37 | implicit dereference | test.go:144:20:144:37 | implicit read of field Reader | provenance | Config |
-| test.go:144:20:144:37 | implicit read of field Reader | test.go:145:12:145:12 | f | provenance |  |
 | test.go:145:12:145:12 | f | test.go:145:12:145:19 | call to Open | provenance | Config |
 | test.go:145:12:145:19 | call to Open | test.go:147:37:147:38 | rc | provenance |  |
 | test.go:158:19:158:22 | definition of file | test.go:159:25:159:28 | file | provenance |  |
@@ -215,8 +211,6 @@ nodes
 | test.go:134:37:134:38 | rc | semmle.label | rc |
 | test.go:143:2:143:59 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:143:51:143:58 | filename | semmle.label | filename |
-| test.go:144:20:144:37 | implicit dereference | semmle.label | implicit dereference |
-| test.go:144:20:144:37 | implicit read of field Reader | semmle.label | implicit read of field Reader |
 | test.go:145:12:145:12 | f | semmle.label | f |
 | test.go:145:12:145:19 | call to Open | semmle.label | call to Open |
 | test.go:147:37:147:38 | rc | semmle.label | rc |

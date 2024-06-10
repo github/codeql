@@ -1,55 +1,30 @@
 edges
-| klog.go:20:3:25:3 | range statement[1] | klog.go:20:13:20:19 | definition of headers | provenance |  |
-| klog.go:20:3:25:3 | range statement[1] | klog.go:20:13:20:19 | definition of headers | provenance | Config |
-| klog.go:20:13:20:19 | definition of headers | klog.go:21:27:21:33 | headers | provenance |  |
-| klog.go:20:13:20:19 | definition of headers | klog.go:21:27:21:33 | headers | provenance | Config |
+| klog.go:20:3:25:3 | range statement[1] | klog.go:21:27:21:33 | headers | provenance |  |
 | klog.go:20:30:20:37 | selection of Header | klog.go:20:3:25:3 | range statement[1] | provenance | Config |
-| klog.go:21:4:24:4 | range statement[1] | klog.go:21:11:21:16 | definition of header | provenance |  |
-| klog.go:21:4:24:4 | range statement[1] | klog.go:21:11:21:16 | definition of header | provenance | Config |
-| klog.go:21:11:21:16 | definition of header | klog.go:22:15:22:20 | header | provenance |  |
-| klog.go:21:11:21:16 | definition of header | klog.go:22:15:22:20 | header | provenance | Config |
+| klog.go:21:4:24:4 | range statement[1] | klog.go:22:15:22:20 | header | provenance |  |
 | klog.go:21:27:21:33 | headers | klog.go:21:4:24:4 | range statement[1] | provenance | Config |
 | klog.go:28:13:28:20 | selection of Header | klog.go:28:13:28:41 | call to Get | provenance | Config |
 | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | provenance |  |
 | passwords.go:8:12:8:12 | definition of x | passwords.go:9:14:9:14 | x | provenance |  |
-| passwords.go:8:12:8:12 | definition of x | passwords.go:9:14:9:14 | x | provenance | Config |
 | passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | definition of x | provenance |  |
 | passwords.go:34:28:34:35 | password | passwords.go:34:14:34:35 | ...+... | provenance | Config |
-| passwords.go:36:2:36:5 | definition of obj1 | passwords.go:39:14:39:17 | obj1 | provenance |  |
-| passwords.go:36:2:36:5 | definition of obj1 | passwords.go:39:14:39:17 | obj1 | provenance | Config |
-| passwords.go:36:10:38:2 | struct literal | passwords.go:36:2:36:5 | definition of obj1 | provenance |  |
-| passwords.go:36:10:38:2 | struct literal | passwords.go:36:2:36:5 | definition of obj1 | provenance | Config |
+| passwords.go:36:10:38:2 | struct literal | passwords.go:39:14:39:17 | obj1 | provenance |  |
 | passwords.go:37:13:37:13 | x | passwords.go:36:10:38:2 | struct literal | provenance | Config |
-| passwords.go:41:2:41:5 | definition of obj2 | passwords.go:44:14:44:17 | obj2 | provenance |  |
-| passwords.go:41:2:41:5 | definition of obj2 | passwords.go:44:14:44:17 | obj2 | provenance | Config |
-| passwords.go:41:10:43:2 | struct literal | passwords.go:41:2:41:5 | definition of obj2 | provenance |  |
-| passwords.go:41:10:43:2 | struct literal | passwords.go:41:2:41:5 | definition of obj2 | provenance | Config |
+| passwords.go:41:10:43:2 | struct literal | passwords.go:44:14:44:17 | obj2 | provenance |  |
 | passwords.go:42:6:42:13 | password | passwords.go:41:10:43:2 | struct literal | provenance | Config |
 | passwords.go:46:6:46:9 | definition of obj3 | passwords.go:47:14:47:17 | obj3 | provenance |  |
-| passwords.go:46:6:46:9 | definition of obj3 | passwords.go:47:14:47:17 | obj3 | provenance | Config |
 | passwords.go:48:11:48:18 | password | passwords.go:46:6:46:9 | definition of obj3 | provenance | Config |
-| passwords.go:85:2:85:14 | definition of utilityObject | passwords.go:88:14:88:26 | utilityObject | provenance |  |
-| passwords.go:85:2:85:14 | definition of utilityObject | passwords.go:88:14:88:26 | utilityObject | provenance | Config |
-| passwords.go:85:19:87:2 | struct literal | passwords.go:85:2:85:14 | definition of utilityObject | provenance |  |
-| passwords.go:85:19:87:2 | struct literal | passwords.go:85:2:85:14 | definition of utilityObject | provenance | Config |
+| passwords.go:85:19:87:2 | struct literal | passwords.go:88:14:88:26 | utilityObject | provenance |  |
 | passwords.go:86:16:86:36 | call to make | passwords.go:85:19:87:2 | struct literal | provenance | Config |
-| passwords.go:90:2:90:7 | definition of secret | passwords.go:91:23:91:28 | secret | provenance |  |
-| passwords.go:90:2:90:7 | definition of secret | passwords.go:91:23:91:28 | secret | provenance | Config |
-| passwords.go:90:12:90:19 | password | passwords.go:90:2:90:7 | definition of secret | provenance |  |
-| passwords.go:90:12:90:19 | password | passwords.go:90:2:90:7 | definition of secret | provenance | Config |
+| passwords.go:90:12:90:19 | password | passwords.go:91:23:91:28 | secret | provenance |  |
 | passwords.go:101:33:101:40 | password | passwords.go:101:15:101:40 | ...+... | provenance | Config |
 | passwords.go:107:34:107:41 | password | passwords.go:107:16:107:41 | ...+... | provenance | Config |
 | passwords.go:112:33:112:40 | password | passwords.go:112:15:112:40 | ...+... | provenance | Config |
 | passwords.go:116:28:116:36 | password1 | passwords.go:116:28:116:45 | call to String | provenance | Config |
 | passwords.go:116:28:116:45 | call to String | passwords.go:116:14:116:45 | ...+... | provenance | Config |
-| passwords.go:118:2:118:7 | definition of config | passwords.go:125:14:125:19 | config | provenance |  |
-| passwords.go:118:2:118:7 | definition of config | passwords.go:125:14:125:19 | config | provenance | Config |
-| passwords.go:118:2:118:7 | definition of config [x] | passwords.go:126:14:126:19 | config [x] | provenance |  |
-| passwords.go:118:2:118:7 | definition of config [y] | passwords.go:127:14:127:19 | config [y] | provenance |  |
-| passwords.go:118:12:123:2 | struct literal | passwords.go:118:2:118:7 | definition of config | provenance |  |
-| passwords.go:118:12:123:2 | struct literal | passwords.go:118:2:118:7 | definition of config | provenance | Config |
-| passwords.go:118:12:123:2 | struct literal [x] | passwords.go:118:2:118:7 | definition of config [x] | provenance |  |
-| passwords.go:118:12:123:2 | struct literal [y] | passwords.go:118:2:118:7 | definition of config [y] | provenance |  |
+| passwords.go:118:12:123:2 | struct literal | passwords.go:125:14:125:19 | config | provenance |  |
+| passwords.go:118:12:123:2 | struct literal [x] | passwords.go:126:14:126:19 | config [x] | provenance |  |
+| passwords.go:118:12:123:2 | struct literal [y] | passwords.go:127:14:127:19 | config [y] | provenance |  |
 | passwords.go:119:13:119:13 | x | passwords.go:118:12:123:2 | struct literal | provenance | Config |
 | passwords.go:121:13:121:20 | password | passwords.go:118:12:123:2 | struct literal | provenance | Config |
 | passwords.go:121:13:121:20 | password | passwords.go:118:12:123:2 | struct literal [x] | provenance |  |
@@ -69,10 +44,8 @@ edges
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | provenance |  |
 nodes
 | klog.go:20:3:25:3 | range statement[1] | semmle.label | range statement[1] |
-| klog.go:20:13:20:19 | definition of headers | semmle.label | definition of headers |
 | klog.go:20:30:20:37 | selection of Header | semmle.label | selection of Header |
 | klog.go:21:4:24:4 | range statement[1] | semmle.label | range statement[1] |
-| klog.go:21:11:21:16 | definition of header | semmle.label | definition of header |
 | klog.go:21:27:21:33 | headers | semmle.label | headers |
 | klog.go:22:15:22:20 | header | semmle.label | header |
 | klog.go:28:13:28:20 | selection of Header | semmle.label | selection of Header |
@@ -118,11 +91,9 @@ nodes
 | passwords.go:32:12:32:19 | password | semmle.label | password |
 | passwords.go:34:14:34:35 | ...+... | semmle.label | ...+... |
 | passwords.go:34:28:34:35 | password | semmle.label | password |
-| passwords.go:36:2:36:5 | definition of obj1 | semmle.label | definition of obj1 |
 | passwords.go:36:10:38:2 | struct literal | semmle.label | struct literal |
 | passwords.go:37:13:37:13 | x | semmle.label | x |
 | passwords.go:39:14:39:17 | obj1 | semmle.label | obj1 |
-| passwords.go:41:2:41:5 | definition of obj2 | semmle.label | definition of obj2 |
 | passwords.go:41:10:43:2 | struct literal | semmle.label | struct literal |
 | passwords.go:42:6:42:13 | password | semmle.label | password |
 | passwords.go:44:14:44:17 | obj2 | semmle.label | obj2 |
@@ -130,11 +101,9 @@ nodes
 | passwords.go:47:14:47:17 | obj3 | semmle.label | obj3 |
 | passwords.go:48:11:48:18 | password | semmle.label | password |
 | passwords.go:51:14:51:27 | fixed_password | semmle.label | fixed_password |
-| passwords.go:85:2:85:14 | definition of utilityObject | semmle.label | definition of utilityObject |
 | passwords.go:85:19:87:2 | struct literal | semmle.label | struct literal |
 | passwords.go:86:16:86:36 | call to make | semmle.label | call to make |
 | passwords.go:88:14:88:26 | utilityObject | semmle.label | utilityObject |
-| passwords.go:90:2:90:7 | definition of secret | semmle.label | definition of secret |
 | passwords.go:90:12:90:19 | password | semmle.label | password |
 | passwords.go:91:23:91:28 | secret | semmle.label | secret |
 | passwords.go:101:15:101:40 | ...+... | semmle.label | ...+... |
@@ -146,9 +115,6 @@ nodes
 | passwords.go:116:14:116:45 | ...+... | semmle.label | ...+... |
 | passwords.go:116:28:116:36 | password1 | semmle.label | password1 |
 | passwords.go:116:28:116:45 | call to String | semmle.label | call to String |
-| passwords.go:118:2:118:7 | definition of config | semmle.label | definition of config |
-| passwords.go:118:2:118:7 | definition of config [x] | semmle.label | definition of config [x] |
-| passwords.go:118:2:118:7 | definition of config [y] | semmle.label | definition of config [y] |
 | passwords.go:118:12:123:2 | struct literal | semmle.label | struct literal |
 | passwords.go:118:12:123:2 | struct literal [x] | semmle.label | struct literal [x] |
 | passwords.go:118:12:123:2 | struct literal [y] | semmle.label | struct literal [y] |

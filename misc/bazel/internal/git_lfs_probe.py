@@ -57,10 +57,18 @@ def git(*args, **kwargs):
 
 
 def get_endpoint():
-    lfs_env = get_env(subprocess.check_output(["git", "lfs", "env"], text=True, cwd=source_dir))
-    endpoint = next(v for k, v in lfs_env.items() if k.startswith('Endpoint'))
+    lfs_env_items = iter(get_env(subprocess.check_output(["git", "lfs", "env"], text=True, cwd=source_dir)).items())
+    endpoint = next(v for k, v in lfs_env_items if k.startswith('Endpoint'))
     endpoint, _, _ = endpoint.partition(' ')
-    ssh_endpoint = lfs_env.get("  SSH")
+    # only take the ssh endpoint if it follows directly after the first endpoint we found
+    # in a situation like
+    #   Endpoint (a)=...
+    #   Endpoint (b)=...
+    #     SSH=...
+    # we want to ignore the SSH endpoint, as it's not linked to the default (a) endpoint
+    following_key, following_value = next(lfs_env_items, (None, None))
+    ssh_endpoint = following_value if following_key == "  SSH" else None
+
     endpoint = Endpoint(endpoint, {
         "Content-Type": "application/vnd.git-lfs+json",
         "Accept": "application/vnd.git-lfs+json",

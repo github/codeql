@@ -98,6 +98,44 @@ private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.mad.ModelValidation as SharedModelVal
 
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    model =
+      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
+        + ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    model =
+      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) and
+    model =
+      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
+        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
+  )
+}
+
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
   sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
@@ -121,7 +159,9 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 
 /**
  * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -554,9 +594,9 @@ private predicate interpretNeutral(UnboundCallable c, string kind, string proven
 private class SummarizedCallableAdapter extends SummarizedCallable {
   SummarizedCallableAdapter() {
     exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
-      not this.hasBody()
+      not this.fromSource()
       or
-      this.hasBody() and provenance.isManual()
+      this.fromSource() and provenance.isManual()
     )
   }
 

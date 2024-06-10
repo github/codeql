@@ -45,6 +45,7 @@ private newtype TIRDataFlowNode =
     or
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
+  TSsaPhiInputNode(Ssa::PhiNode phi, IRBlock input) { phi.hasInputFromBlock(_, _, _, _, input) } or
   TSsaPhiNode(Ssa::PhiNode phi) or
   TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
   TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
@@ -114,6 +115,13 @@ predicate conversionFlow(
       instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
       or
       instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+      or
+      exists(BuiltInInstruction builtIn |
+        builtIn = instrTo and
+        // __builtin_bit_cast
+        builtIn.getBuiltInOperation() instanceof BuiltInBitCast and
+        opFrom = builtIn.getAnOperand()
+      )
     )
     or
     additional = true and
@@ -159,6 +167,12 @@ class Node extends TIRDataFlowNode {
   Operand asOperand() { result = this.(OperandNode).getOperand() }
 
   /**
+   * Gets the operand that is indirectly tracked by this node behind `index`
+   * number of indirections.
+   */
+  Operand asIndirectOperand(int index) { hasOperandAndIndex(this, result, index) }
+
+  /**
    * Holds if this node is at index `i` in basic block `block`.
    *
    * Note: Phi nodes are considered to be at index `-1`.
@@ -169,6 +183,9 @@ class Node extends TIRDataFlowNode {
     this.asOperand().getUse() = block.getInstruction(i)
     or
     this.(SsaPhiNode).getPhiNode().getBasicBlock() = block and i = -1
+    or
+    this.(SsaPhiInputNode).getBlock() = block and
+    i = block.getInstructionCount()
     or
     this.(RawIndirectOperand).getOperand().getUse() = block.getInstruction(i)
     or
@@ -622,7 +639,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
-  override string toStringImpl() { result = "Phi" }
+  override string toStringImpl() { result = phi.toString() }
 
   /**
    * Gets a node that is used as input to this phi node.
@@ -631,7 +648,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    */
   cached
   final Node getAnInput(boolean fromBackEdge) {
-    localFlowStep(result, this) and
+    result.(SsaPhiInputNode).getPhiNode() = phi and
     exists(IRBlock bPhi, IRBlock bResult |
       bPhi = phi.getBasicBlock() and bResult = result.getBasicBlock()
     |
@@ -652,6 +669,58 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    * on reads instead of writes.
    */
   predicate isPhiRead() { phi.isPhiRead() }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that is used as an input to a phi node.
+ *
+ * This class exists to allow more powerful barrier guards. Consider this
+ * example:
+ *
+ * ```cpp
+ * int x = source();
+ * if(!safe(x)) {
+ *   x = clear();
+ * }
+ * // phi node for x here
+ * sink(x);
+ * ```
+ *
+ * At the phi node for `x` it is neither the case that `x` is dominated by
+ * `safe(x)`, or is the case that the phi is dominated by a clearing of `x`.
+ *
+ * By inserting a "phi input" node as the last entry in the basic block that
+ * defines the inputs to the phi we can conclude that each of those inputs are
+ * safe to pass to `sink`.
+ */
+class SsaPhiInputNode extends Node, TSsaPhiInputNode {
+  Ssa::PhiNode phi;
+  IRBlock block;
+
+  SsaPhiInputNode() { this = TSsaPhiInputNode(phi, block) }
+
+  /** Gets the phi node associated with this node. */
+  Ssa::PhiNode getPhiNode() { result = phi }
+
+  /** Gets the basic block in which this input originates. */
+  IRBlock getBlock() { result = block }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
+
+  override DataFlowType getType() { result = this.getSourceVariable().getType() }
+
+  override predicate isGLValue() { phi.getSourceVariable().isGLValue() }
+
+  final override Location getLocationImpl() { result = block.getLastInstruction().getLocation() }
+
+  override string toStringImpl() { result = "Phi input" }
+
+  /** Gets the source variable underlying this phi node. */
+  Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
 }
 
 /**
@@ -2176,6 +2245,9 @@ private module Cached {
       // Def-use/Use-use flow
       Ssa::ssaFlow(nodeFrom, nodeTo)
       or
+      // Phi input -> Phi
+      nodeFrom.(SsaPhiInputNode).getPhiNode() = nodeTo.(SsaPhiNode).getPhiNode()
+      or
       IteratorFlow::localFlowStep(nodeFrom, nodeTo)
       or
       // Operand -> Instruction flow
@@ -2614,6 +2686,22 @@ class ContentSet instanceof Content {
   }
 }
 
+pragma[nomagic]
+private predicate guardControlsPhiInput(
+  IRGuardCondition g, boolean branch, Ssa::Definition def, IRBlock input, Ssa::PhiNode phi
+) {
+  phi.hasInputFromBlock(def, _, _, _, input) and
+  (
+    g.controls(input, branch)
+    or
+    exists(EdgeKind kind |
+      g.getBlock() = input and
+      kind = getConditionalEdge(branch) and
+      input.getSuccessor(kind) = phi.getBasicBlock()
+    )
+  )
+}
+
 /**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
@@ -2662,12 +2750,20 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
    */
-  ExprNode getABarrierNode() {
+  Node getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
-      result.getConvertedExpr() = e and
+      result.asConvertedExpr() = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
+    |
+      guardChecks(g, def.getARead().asOperand().getDef().getConvertedResultExpression(), branch) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaPhiInputNode(phi, input)
     )
   }
 
@@ -2704,7 +2800,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
-  IndirectExprNode getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
+  Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
 
   /**
    * Gets an indirect expression node with indirection index `indirectionIndex` that is
@@ -2740,12 +2836,22 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
-  IndirectExprNode getAnIndirectBarrierNode(int indirectionIndex) {
+  Node getAnIndirectBarrierNode(int indirectionIndex) {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
-      result.getConvertedExpr(indirectionIndex) = e and
+      result.asIndirectConvertedExpr(indirectionIndex) = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
+    |
+      guardChecks(g,
+        def.getARead().asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
+        branch) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaPhiInputNode(phi, input)
     )
   }
 }
@@ -2755,6 +2861,14 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  */
 signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction instr, boolean branch);
 
+private EdgeKind getConditionalEdge(boolean branch) {
+  branch = true and
+  result instanceof TrueEdge
+  or
+  branch = false and
+  result instanceof FalseEdge
+}
+
 /**
  * Provides a set of barrier nodes for a guard that validates an instruction.
  *
@@ -2763,12 +2877,20 @@ signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction in
  */
 module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
-  ExprNode getABarrierNode() {
+  Node getABarrierNode() {
     exists(IRGuardCondition g, ValueNumber value, boolean edge, Operand use |
       instructionGuardChecks(g, value.getAnInstruction(), edge) and
       use = value.getAnInstruction().getAUse() and
       result.asOperand() = use and
-      g.controls(use.getDef().getBlock(), edge)
+      g.controls(result.getBasicBlock(), edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
+    |
+      instructionGuardChecks(g, def.getARead().asOperand().getDef(), branch) and
+      guardControlsPhiInput(g, branch, def, input, phi) and
+      result = TSsaPhiInputNode(phi, input)
     )
   }
 }

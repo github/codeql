@@ -11,6 +11,10 @@ module AstTest {
     g.(FunctionCall).getTarget().getName() = "guarded" and
     checked = g.(FunctionCall).getArgument(0) and
     isTrue = true
+    or
+    g.(FunctionCall).getTarget().getName() = "unsafe" and
+    checked = g.(FunctionCall).getArgument(0) and
+    isTrue = false
   }
 
   /** Common data flow configuration to be used by tests. */
@@ -105,9 +109,13 @@ module IRTest {
   predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean isTrue) {
     exists(Call call |
       call = g.getUnconvertedResultExpression() and
+      checked = call.getArgument(0)
+    |
       call.getTarget().hasName("guarded") and
-      checked = call.getArgument(0) and
       isTrue = true
+      or
+      call.getTarget().hasName("unsafe") and
+      isTrue = false
     )
   }
 

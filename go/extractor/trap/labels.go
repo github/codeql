@@ -152,16 +152,9 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 			panic(fmt.Sprintf("Object has no scope: %v :: %v.\n", object,
 				l.tw.Package.Fset.Position(object.Pos())))
 		} else {
-			// associate method receiver objects to special keys, because those can be
-			// referenced from other files via their method
-			meth := findMethodWithGivenReceiver(object.Type(), object)
-			if meth == nil {
-				if pointerType, ok := object.Type().(*types.Pointer); ok {
-					meth = findMethodWithGivenReceiver(pointerType.Elem(), object)
-				}
-			}
-
-			if meth != nil {
+			if meth := findMethodWithGivenReceiver(object); meth != nil {
+				// associate method receiver objects to special keys, because those can be
+				// referenced from other files via their method
 				methlbl, _ := l.MethodID(meth, getTypeLabel())
 				label, _ = l.ReceiverObjectID(object, methlbl)
 			} else {
@@ -174,7 +167,20 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 	return label, exists
 }
 
-func findMethodWithGivenReceiver(tp types.Type, object types.Object) *types.Func {
+// findMethodWithGivenReceiver finds a method with `object` as its receiver, if one exists
+func findMethodWithGivenReceiver(object types.Object) *types.Func {
+	meth := findMethodOnTypeWithGivenReceiver(object.Type(), object)
+	if meth != nil {
+		return meth
+	}
+	if pointerType, ok := object.Type().(*types.Pointer); ok {
+		meth = findMethodOnTypeWithGivenReceiver(pointerType.Elem(), object)
+	}
+	return meth
+}
+
+// findMethodWithGivenReceiver finds a method on type `tp` with `object` as its receiver, if one exists
+func findMethodOnTypeWithGivenReceiver(tp types.Type, object types.Object) *types.Func {
 	if namedType, ok := tp.(*types.Named); ok {
 		for i := 0; i < namedType.NumMethods(); i++ {
 			meth := namedType.Method(i)

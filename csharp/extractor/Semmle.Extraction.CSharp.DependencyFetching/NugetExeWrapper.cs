@@ -97,6 +97,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return envVarPath;
             }
 
+            try
+            {
+                return DownloadNugetExe(fileProvider.SourceDir.FullName);
+            }
+            catch (Exception exc)
+            {
+                logger.LogInfo($"Download of nuget.exe failed: {exc.Message}");
+            }
+
             var nugetExesInRepo = fileProvider.NugetExes;
             if (nugetExesInRepo.Count > 1)
             {
@@ -119,7 +128,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return nugetPath;
             }
 
-            return DownloadNugetExe(fileProvider.SourceDir.FullName);
+            throw new Exception("Could not find or download nuget.exe.");
         }
 
         private string DownloadNugetExe(string sourceDir)
@@ -136,28 +145,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Directory.CreateDirectory(directory);
             logger.LogInfo("Attempting to download nuget.exe");
-            try
-            {
-                FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
-                logger.LogInfo($"Downloaded nuget.exe to {nuget}");
-                return nuget;
-            }
-            catch
-            {
-                // Download failed.
-                throw new FileNotFoundException("Download of nuget.exe failed.");
-            }
+            FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
+            logger.LogInfo($"Downloaded nuget.exe to {nuget}");
+            return nuget;
         }
 
         private bool RunWithMono => !Win32.IsWindows() && !string.IsNullOrEmpty(Path.GetExtension(nugetExe));
 
         /// <summary>
-        /// Restore all files in a specified package.
+        /// Restore all packages in the specified packages.config file.
         /// </summary>
-        /// <param name="package">The package file.</param>
-        private bool TryRestoreNugetPackage(string package)
+        /// <param name="packagesConfig">The packages.config file.</param>
+        private bool TryRestoreNugetPackage(string packagesConfig)
         {
-            logger.LogInfo($"Restoring file {package}...");
+            logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
             /* Use nuget.exe to install a package.
              * Note that there is a clutch of NuGet assemblies which could be used to
@@ -169,12 +170,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (RunWithMono)
             {
                 exe = "mono";
-                args = $"{nugetExe} install -OutputDirectory {packageDirectory} {package}";
+                args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" \"{packagesConfig}\"";
             }
             else
             {
                 exe = nugetExe!;
-                args = $"install -OutputDirectory {packageDirectory} {package}";
+                args = $"install -OutputDirectory \"{packageDirectory}\" \"{packagesConfig}\"";
             }
 
             var pi = new ProcessStartInfo(exe, args)
@@ -195,7 +196,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             else
             {
-                logger.LogInfo($"Restored file {package}");
+                logger.LogInfo($"Restored file \"{packagesConfig}\"");
                 return true;
             }
         }
@@ -205,7 +206,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public int InstallPackages()
         {
-            return fileProvider.PackagesConfigs.Count(package => TryRestoreNugetPackage(package));
+            return fileProvider.PackagesConfigs.Count(TryRestoreNugetPackage);
         }
 
         private bool HasNoPackageSource()
@@ -239,7 +240,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (RunWithMono)
             {
                 exe = "mono";
-                args = $"{nugetExe} {command}";
+                args = $"\"{nugetExe}\" {command}";
             }
             else
             {

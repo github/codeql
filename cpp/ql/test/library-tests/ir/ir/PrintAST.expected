@@ -22734,6 +22734,25 @@ ir.cpp:
 # 2552|             Type = [Class] ClassWithDestructor
 # 2552|             ValueCategory = xvalue
 # 2553|     getStmt(1): [ReturnStmt] return ...
+# 2555| [TopLevelFunction] void builtin_bitcast(unsigned long)
+# 2555|   <params>: 
+# 2555|     getParameter(0): [Parameter] ul
+# 2555|         Type = [LongType] unsigned long
+# 2555|   getEntryPoint(): [BlockStmt] { ... }
+# 2556|     getStmt(0): [DeclStmt] declaration
+# 2556|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 2556|           Type = [DoubleType] double
+# 2556|         getVariable().getInitializer(): [Initializer] initializer for d
+# 2556|           getExpr(): [BuiltInBitCast] __builtin_bit_cast
+# 2556|               Type = [DoubleType] double
+# 2556|               ValueCategory = prvalue
+# 2556|             getChild(0): [TypeName] double
+# 2556|                 Type = [DoubleType] double
+# 2556|                 ValueCategory = prvalue
+# 2556|             getChild(1): [VariableAccess] ul
+# 2556|                 Type = [LongType] unsigned long
+# 2556|                 ValueCategory = prvalue(load)
+# 2557|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

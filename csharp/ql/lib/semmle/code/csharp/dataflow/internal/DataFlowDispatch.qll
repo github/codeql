@@ -10,8 +10,8 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
 /**
- * Gets a source declaration of callable `c` that has a body or has
- * a flow summary.
+ * Gets a source declaration of callable `c` that has a body and is
+ * defined in source.
  */
 Callable getCallableForDataFlow(Callable c) {
   result = c.getUnboundDeclaration() and
@@ -269,13 +269,19 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   override DataFlowCallable getARuntimeTarget() {
     result.asCallable() = getCallableForDataFlow(dc.getADynamicTarget())
     or
-    exists(Callable c, boolean static |
-      result.asSummarizedCallable() = c and
-      c = this.getATarget(static)
+    // Only use summarized callables with generated summaries in case
+    // we are not able to dispatch to a source declaration.
+    exists(FlowSummary::SummarizedCallable sc, boolean static |
+      result.asSummarizedCallable() = sc and
+      sc = this.getATarget(static) and
+      not (
+        sc.applyGeneratedModel() and
+        dc.getADynamicTarget().getUnboundDeclaration().getFile().fromSource()
+      )
     |
       static = false
       or
-      static = true and not c instanceof RuntimeCallable
+      static = true and not sc instanceof RuntimeCallable
     )
   }
 

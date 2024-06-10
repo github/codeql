@@ -5,5 +5,5 @@ extensions:
     data:
       - ["compress/zlib", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["compress/zlib", "", False, "NewReaderDict", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["compress/zlib", "Resetter", True, "Reset", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["compress/zlib", "Writer", True, "Reset", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["compress/zlib", "Resetter", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["compress/zlib", "Writer", True, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

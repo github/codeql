@@ -29,6 +29,7 @@ pub struct Extractor {
 
 impl Extractor {
     pub fn run(&self) -> std::io::Result<()> {
+        tracing::info!("Extraction started");
         let diagnostics = diagnostics::DiagnosticLoggers::new(&self.prefix);
         let mut main_thread_logger = diagnostics.logger();
         let num_threads = match crate::options::num_threads() {
@@ -170,7 +171,9 @@ impl Extractor {
         let mut trap_writer = trap::Writer::new();
         crate::extractor::populate_empty_location(&mut trap_writer);
 
-        write_trap(&self.trap_dir, &path, &trap_writer, trap_compression)
+        let res = write_trap(&self.trap_dir, &path, &trap_writer, trap_compression);
+        tracing::info!("Extraction complete");
+        res
     }
 }
 

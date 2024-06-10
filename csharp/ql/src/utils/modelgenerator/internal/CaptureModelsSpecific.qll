@@ -168,6 +168,8 @@ private predicate irrelevantCollectionType(CS::Type ct) {
 predicate isRelevantType(CS::Type t) {
   not t instanceof CS::SimpleType and
   not t instanceof CS::Enum and
+  not t instanceof SystemDateTimeStruct and
+  not t instanceof SystemTypeClass and
   not irrelevantCollectionType(t)
 }
 

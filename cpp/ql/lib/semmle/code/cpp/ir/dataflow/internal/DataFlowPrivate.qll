@@ -1336,6 +1336,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof FinalGlobalValue
   or
   n instanceof InitialGlobalValue
+  or
+  n instanceof SsaPhiInputNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1634,6 +1636,8 @@ private Instruction getAnInstruction(Node n) {
   or
   result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
   or
+  result = n.(SsaPhiInputNode).getBasicBlock().getFirstInstruction()
+  or
   n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
   or
   not n instanceof IndirectInstruction and
@@ -1763,7 +1767,7 @@ module IteratorFlow {
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesRead(sv, result.asDef(), bb, i)
+        Ssa::ssaDefReachesReadExt(sv, result.asDef(), bb, i)
       )
     }
 
@@ -1797,7 +1801,7 @@ module IteratorFlow {
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesRead(_, def.asDef(), bbStar, iStar) and
+        Ssa::ssaDefReachesReadExt(_, def.asDef(), bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
