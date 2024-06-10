@@ -1,3 +1,7 @@
+/**
+ * This module provides a hand-modifiable wrapper around the generated class `BuiltinLiteralExpr`.
+ */
+
 private import codeql.swift.generated.expr.BuiltinLiteralExpr
 
 /**

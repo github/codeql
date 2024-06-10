@@ -1,3 +1,7 @@
+/**
+ * This module provides a hand-modifiable wrapper around the generated class `LiteralExpr`.
+ */
+
 private import codeql.swift.generated.expr.LiteralExpr
 
 /**
@@ -5,5 +9,4 @@ private import codeql.swift.generated.expr.LiteralExpr
  *
  * This is the root class for all literals.
  */
-class LiteralExpr extends Generated::LiteralExpr {
-}
+class LiteralExpr extends Generated::LiteralExpr { }
