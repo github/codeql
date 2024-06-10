@@ -23,6 +23,8 @@ for file in map(pathlib.Path, opts.gitinfo_files):
     gitfiles[file.name] = file
 
 version_string = gitfiles["git-ql-describe-all.log"].read_text().strip()
+if version_string == "no-git":
+    version_string = gitfiles["git-describe-all.log"].read_text().strip()
 version_string += f" ({gitfiles['git-ql-rev-parse.log'].read_text().strip()})"
 
 output_file = pathlib.Path(opts.output)
