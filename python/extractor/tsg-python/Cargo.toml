@@ -6,15 +6,6 @@ version = "0.1.0"
 authors = ["Taus Brock-Nannestad <tausbn@github.com>"]
 edition = "2021"
 
-# When changing/updating these, the `Cargo.Bazel.lock` file has to be regenerated.
-# Run `CARGO_BAZEL_REPIN=true CARGO_BAZEL_REPIN_ONLY=py_deps ./tools/bazel sync --only=py_deps`
-# in the `semmle-code` repository to do so.
-# For more information, check out the documentation at
-# https://bazelbuild.github.io/rules_rust/crate_universe.html#repinning--updating-dependencies
-# In the future, the hope is to move this handling of the dependencies entirely into the `codeql` repository,
-# but that depends on `rules_rust` being fully compatible with bzlmod, which they aren't yet
-# (c.f. https://github.com/bazelbuild/rules_rust/issues/2452).
-# Warning: The process takes >5min on my M1 mac, so do wait for a while.
 [dependencies]
 anyhow = "1.0"
 regex = "1"
