@@ -15,7 +15,6 @@ codeql_csharp_library(
     srcs = glob([
         "Entities/**/*.cs",
         "Extractor/**/*.cs",
-        "Properties/*.cs",
         "*.cs",
     ]),
     # enable via -c dbg on the bazel command line/in .bazelrc.local

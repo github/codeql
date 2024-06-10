@@ -7,7 +7,6 @@ codeql_xunit_test(
     name = "Semmle.Extraction.Tests",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
     ]),
     deps = [
         "//csharp/extractor/Semmle.Extraction",
