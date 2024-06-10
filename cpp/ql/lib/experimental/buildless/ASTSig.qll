@@ -26,6 +26,7 @@ signature module BuildlessASTSig
     predicate functionReturn(Node fn, Node returnType);
     predicate functionName(Node fn, string name);
     predicate functionParameter(Node fn, int i, Node parameterDecl);
+    predicate functionDefinition(Node fn);  // If a definition as opposed to a declaration
 
     // Statements
     predicate stmt(Node node);
@@ -51,6 +52,7 @@ signature module BuildlessASTSig
     predicate arrayType(Node type, Node element);
     predicate typename(Node node, string name);  // Any named type, including built-in types
     predicate templated(Node node);
+    predicate typeDefinition(Node node);  // If a definition as opposed to a declaration
 
     predicate classOrStructDefinition(Node node);
     predicate classMember(Node classOrStruct, int child, Node member);

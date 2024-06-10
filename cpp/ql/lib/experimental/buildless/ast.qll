@@ -1,5 +1,5 @@
-import compiled_ast
-import ast_sig
+import CompiledAST
+import ASTSig
 
 module BuildlessAST<BuildlessASTSig AST> {
   final class Node = AST::Node;
@@ -49,6 +49,8 @@ module BuildlessAST<BuildlessASTSig AST> {
     SourceParameter getParameter(int i) { AST::functionParameter(this, i, result) }
 
     SourceType getReturnType() { AST::functionReturn(this, result) }
+
+    predicate isDefinition() { AST::functionDefinition(this) }
   }
 
   // A syntax node that declares a variable (including fields and parameters)
@@ -136,6 +138,8 @@ module BuildlessAST<BuildlessASTSig AST> {
     override string toString() { result = this.getName() }
 
     SourceElement getAMember() { AST::classMember(this, _, result) }
+
+    predicate isDefinition() { AST::typeDefinition(this) }
   }
 
   // A node that contains a type of some kind

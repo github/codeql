@@ -1,4 +1,4 @@
-import ast
+import AST
 
 module BuildlessModel<BuildlessASTSig Sig> {
   module AST = BuildlessAST<Sig>;
@@ -13,7 +13,18 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
   private newtype TElement =
     TNamespace(string fqn) { fqn = getQualifiedName(_) } or
-    TASTNode(AST::SourceElement node) { any() } 
+    TASTNode(AST::SourceElement node) { any() }
+
+  class Type extends string
+  {
+    Type() { exists(SourceTypeDeclaration t | t.getMangledName() = this) }
+
+    // string toString() { result = "i am a type" }
+
+    SourceTypeDeclaration getADeclaration() { result.getMangledName() = this }
+
+    SourceTypeDefinition getADefinition() { result.getMangledName() = this }
+  }
 
   class Element extends TElement {
     string toString() { result = "element" }
@@ -25,25 +36,31 @@ module BuildlessModel<BuildlessASTSig Sig> {
     override string toString() { result = "namespace " + this.getFullyQualifiedName() }
   }
 
-  class SourceElement extends Element, TASTNode
-  {
+  class SourceElement extends Element, TASTNode {
     AST::SourceElement node;
 
     SourceElement() { this = TASTNode(node) }
+
     Location getLocation() { result = node.getLocation() }
 
     AST::SourceElement getSourceNode() { result = node }
   }
 
-  class SourceDeclaration extends SourceElement, TASTNode
-  {
+  class SourceDeclaration extends SourceElement, TASTNode {
     abstract SourceDeclaration getParent();
+
     abstract string getName();
+
     abstract string getMangledName();
+
+    abstract predicate isDefinition();
+  }
+
+  abstract class SourceDefinition extends SourceDeclaration
+  {
   }
 
   class NamespaceDeclaration extends SourceDeclaration {
-
     AST::SourceNamespace ns;
 
     NamespaceDeclaration() { ns = node }
@@ -63,6 +80,8 @@ module BuildlessModel<BuildlessASTSig Sig> {
     }
 
     override string getMangledName() { result = this.getFullyQualifiedName() }
+
+    override predicate isDefinition() { any() }
   }
 
   class SourceTypeDeclaration extends SourceDeclaration {
@@ -74,37 +93,42 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
     override string toString() { result = "typename " + def.getName() }
 
-    NamespaceDeclaration getParentNamespace() { 
-        result.getSourceNode() = def.getParent()
-    }
+    NamespaceDeclaration getParentNamespace() { result.getSourceNode() = def.getParent() }
 
-    SourceTypeDeclaration getParentType() { 
-        result.getSourceNode() = def.getParent()
-    }
+    SourceTypeDeclaration getParentType() { result.getSourceNode() = def.getParent() }
 
-    override SourceDeclaration getParent() { 
-        result = this.getParentNamespace() or result = this.getParentType()
+    override SourceDeclaration getParent() {
+      result = this.getParentNamespace() or result = this.getParentType()
     }
 
     override string getName() { result = def.getName() }
 
     // Mangled name
-    override string getMangledName() { 
-        if exists(this.getParent()) then result = this.getParent().getMangledName() + 
-            "." + this.getName() else result = this.getName() }
+    override string getMangledName() {
+      if exists(this.getParent())
+      then result = this.getParent().getMangledName() + "." + this.getName()
+      else result = this.getName()
+    }
+
+    override predicate isDefinition() { def.isDefinition() }
   }
 
-  class SourceFunctionDeclaration extends SourceDeclaration
+  class SourceTypeDefinition extends SourceTypeDeclaration, SourceDefinition
   {
+    SourceTypeDefinition() { this.isDefinition() }
+  }
+
+  class SourceFunctionDeclaration extends SourceDeclaration {
     AST::SourceFunction fn;
 
-    SourceFunctionDeclaration() { fn=node }
+    SourceFunctionDeclaration() { fn = node }
 
     SourceTypeDeclaration getParentType() { result.getSourceNode() = fn.getParent() }
+
     NamespaceDeclaration getParentNamespace() { result.getSourceNode() = fn.getParent() }
 
-    override SourceDeclaration getParent() { 
-        result = this.getParentType() or result = this.getParentNamespace()
+    override SourceDeclaration getParent() {
+      result = this.getParentType() or result = this.getParentNamespace()
     }
 
     override string toString() { result = fn.getName() + "()" }
@@ -113,10 +137,21 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
     override string getName() { result = fn.getName() }
 
-    override string getMangledName() { 
-        if exists(this.getParent()) then result = this.getParent().getMangledName() + 
-            "." + this.getName()+"()" else result = this.getName()+"()" }
-}
+    override string getMangledName() {
+      if exists(this.getParent())
+      then result = this.getParent().getMangledName() + "." + this.getName() + "()"
+      else result = this.getName() + "()"
+    }
+
+    override predicate isDefinition() { fn.isDefinition() }
+  }
+
+  class SourceFunctionDefinition extends SourceFunctionDeclaration, SourceDefinition
+  {
+    SourceFunctionDefinition() { this.isDefinition() }
+  }
+
+  predicate invalidParent(SourceDeclaration decl) { decl.getParent+() = decl }
 }
 
 // For debugging in context

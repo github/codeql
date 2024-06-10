@@ -1,5 +1,5 @@
 import cpp
-import ast_sig
+import ASTSig
 
 module CompiledAST implements BuildlessASTSig {
   private class SourceLocation extends Location {
@@ -13,20 +13,24 @@ module CompiledAST implements BuildlessASTSig {
     result = reachableType(type).(ReferenceType).getBaseType()
   }
 
+  private class SourceDeclEntry extends DeclarationEntry {
+    SourceDeclEntry() {
+      not this.isAffectedByMacro() and
+      not this.isFromTemplateInstantiation(_) and
+      not this.isInMacroExpansion() and
+      not this.getDeclaration().isInMacroExpansion() and
+      this.getLocation() instanceof SourceLocation and
+      not this.(FunctionDeclarationEntry).getDeclaration().isCompilerGenerated()
+    }
+  }
+
   private newtype TNode =
     // TFunction(SourceLocation loc) { exists(Function f | f.getLocation() = loc) } or
     TStatement(SourceLocation loc) { exists(Stmt s | s.getLocation() = loc) } or
-    TDeclaration(SourceLocation loc) { exists(DeclarationEntry decl | decl.getLocation() = loc) } or
+    TDeclaration(SourceDeclEntry decl) or
     TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) } or
     TFunctionCallName(SourceLocation loc) { exists(FunctionCall c | c.getLocation() = loc) } or
-    TDeclarationType(SourceLocation loc, Type type) {
-      // TODO: Avoid template instantiation here
-      exists(DeclarationEntry decl |
-        decl.getLocation() = loc and not decl.isFromTemplateInstantiation(_) 
-      |
-        type = reachableType(decl.getType())
-      )
-    } or
+    TDeclarationType(SourceDeclEntry decl, Type type) { type = reachableType(decl.getType()) } or
     TNamespaceDeclaration(NamespaceDeclarationEntry ns) { any() }
 
   class Node extends TNode {
@@ -34,29 +38,28 @@ module CompiledAST implements BuildlessASTSig {
 
     SourceLocation getLocation() {
       this = TStatement(result) or
-      this = TDeclaration(result) or
+      result = this.getDeclaration().getLocation() or
       this = TExpression(result) or
       this = TFunctionCallName(result) or
-      this = TDeclarationType(result, _) or
+      result = this.getVariableDeclaration().getLocation() or
       result = this.getNamespaceDeclaration().getLocation()
     }
 
     Stmt getStmt() { this = TStatement(result.getLocation()) }
 
-    Function getFunction() { this = TDeclaration(result.getLocation()) and not result.isFromTemplateInstantiation(_) and not result.isCompilerGenerated()}
-
-    DeclarationEntry getDeclaration() {
-      this = TDeclaration(result.getLocation()) and 
-      not result.isFromTemplateInstantiation(_)
-      and not result.getDeclaration().(Function).isCompilerGenerated()
-      /* or this = TDeclarationType(result.getLocation(), _) */
+    Function getFunction() {
+      result = this.getDeclaration().getDeclaration() and
+      not result.isFromTemplateInstantiation(_) and
+      not result.isCompilerGenerated()
     }
+
+    SourceDeclEntry getDeclaration() { this = TDeclaration(result) }
 
     NamespaceDeclarationEntry getNamespaceDeclaration() { this = TNamespaceDeclaration(result) }
 
     Type getType() { this = TDeclarationType(_, result) }
 
-    DeclarationEntry getVariableDeclaration() { this = TDeclarationType(result.getLocation(), _) }
+    SourceDeclEntry getVariableDeclaration() { this = TDeclarationType(result, _) }
 
     Expr getExpr() { this = TExpression(result.getLocation()) }
 
@@ -124,16 +127,16 @@ module CompiledAST implements BuildlessASTSig {
   // etc
   // Types
   predicate ptrType(Node node, Node element) {
-    exists(PointerType type, Location loc |
-      node = TDeclarationType(loc, type) and
-      element = TDeclarationType(loc, type.getBaseType())
+    exists(PointerType type, SourceDeclEntry e |
+      node = TDeclarationType(e, type) and
+      element = TDeclarationType(e, type.getBaseType())
     )
   }
 
   predicate refType(Node node, Node element) {
-    exists(ReferenceType type, Location loc |
-      node = TDeclarationType(loc, type) and
-      element = TDeclarationType(loc, type.getBaseType())
+    exists(ReferenceType type, SourceDeclEntry e |
+      node = TDeclarationType(e, type) and
+      element = TDeclarationType(e, type.getBaseType())
     )
   }
 
@@ -159,6 +162,7 @@ module CompiledAST implements BuildlessASTSig {
       member.getDeclaration().getDeclaration() and
     child = 0 and
     classOrStruct.getLocation().getFile() = member.getLocation().getFile() // TODO: Disambiguate
+    // and not member.getDeclaration().getDeclaration() instanceof FriendDecl
   }
 
   // Templates
@@ -234,9 +238,9 @@ module CompiledAST implements BuildlessASTSig {
   predicate type(Node node) { node = TDeclarationType(_, _) }
 
   predicate constType(Node node, Node element) {
-    exists(SpecifiedType type, Location loc |
-      node = TDeclarationType(loc, type) and
-      element = TDeclarationType(loc, type.getBaseType()) and
+    exists(SpecifiedType type, SourceDeclEntry e |
+      node = TDeclarationType(e, type) and
+      element = TDeclarationType(e, type.getBaseType()) and
       type.isConst()
     )
   }
@@ -247,15 +251,25 @@ module CompiledAST implements BuildlessASTSig {
     ns.getNamespaceDeclaration().getNamespace().getName() = name
   }
 
+  pragma[nomagic]
+  private predicate namespaceNamespace(Node ns, Node child) {
+    ns.getNamespaceDeclaration().getNamespace().getAChildNamespace() =
+      child.getNamespaceDeclaration().getNamespace() and
+    ns.getLocation().getFile() = child.getLocation().getFile()
+  }
+
+  pragma[nomagic]
+  private predicate namespaceDecl(Node ns, Node child) {
+    child.getDeclaration().getDeclaration() =
+    ns.getNamespaceDeclaration().getNamespace().getADeclaration()
+    and
+    ns.getLocation().getFile() = child.getLocation().getFile() and
+    ns.getLocation().getStartLine() <= child.getLocation().getStartLine()
+  }
+
   predicate namespaceMember(Node ns, Node member) {
-    (
-      member.getDeclaration().getDeclaration() =
-        ns.getNamespaceDeclaration().getNamespace().getADeclaration()
-      or
-      ns.getNamespaceDeclaration().getNamespace().getAChildNamespace() =
-        member.getNamespaceDeclaration().getNamespace()
-    ) and
-    ns.getLocation().getFile() = member.getLocation().getFile()
+    namespaceNamespace(ns, member) or
+    namespaceDecl(ns, member)
   }
 
   predicate edge(Node parent, int index, Node child) {
@@ -265,4 +279,8 @@ module CompiledAST implements BuildlessASTSig {
     or
     blockMember(parent, index, child)
   }
+
+  predicate typeDefinition(Node node) { node.getDeclaration().(TypeDeclarationEntry).isDefinition() }
+
+  predicate functionDefinition(Node fn) { fn.getDeclaration().(FunctionDeclarationEntry).isDefinition() }
 }
