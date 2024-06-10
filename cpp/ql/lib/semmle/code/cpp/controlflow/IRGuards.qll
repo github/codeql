@@ -375,6 +375,33 @@ cached
 class IRGuardCondition extends Instruction {
   Instruction branch;
 
+  /*
+   * An `IRGuardCondition` supports reasoning about four different kinds of
+   * relations:
+   * 1. A unary equality relation of the form `e == k`
+   * 2. A binary equality relation of the form `e1 == e2 + k`
+   * 3. A unary inequality relation of the form `e < k`
+   * 4. A binary inequality relation of the form `e1 < e2 + k`
+   *
+   * where `k` is a constant.
+   *
+   * Furthermore, the unary relations (i.e., case 1 and case 3) are also
+   * inferred from `switch` statement guards: equality relations are inferred
+   * from the unique `case` statement, if any, and inequality relations are
+   * inferred from the [case range](https://gcc.gnu.org/onlinedocs/gcc/Case-Ranges.html)
+   * gcc extension.
+   *
+   * The implementation of all four follows the same structure: Each relation
+   * has a cached user-facing predicate that. For example,
+   * `GuardCondition::comparesEq` calls `compares_eq`. This predicate has
+   * several cases that recursively decompose the relation to bring it to a
+   * canonical form (i.e., a relation of the form `e1 == e2 + k`). The base
+   * case for this relation (i.e., `simple_comparison_eq`) handles
+   * `CompareEQInstruction`s and `CompareNEInstruction`, and recursive
+   * predicates (e.g., `complex_eq`) rewrites larger expressions such as
+   * `e1 + k1 == e2 + k2` into canonical the form `e1 == e2 + (k2 - k1)`.
+   */
+
   cached
   IRGuardCondition() { branch = getBranchForCondition(this) }
 
@@ -837,6 +864,32 @@ private predicate unary_simple_comparison_eq(
     inNonZeroCase = false
   )
   or
+  // Any instruction with an integral type could potentially be part of a
+  // check for nullness when used in a guard. So we include all integral
+  // typed instructions here. However, since some of these instructions are
+  // already included as guards in other cases, we exclude those here.
+  // These are instructions that compute a binary equality or inequality
+  // relation. For example, the following:
+  // ```cpp
+  // if(a == b + 42) { ... }
+  // ```
+  // generates the following IR:
+  // ```
+  // r1(glval<int>) = VariableAddress[a]     :
+  // r2(int)        = Load[a]                : &:r1, m1
+  // r3(glval<int>) = VariableAddress[b]     :
+  // r4(int)        = Load[b]                : &:r3, m2
+  // r5(int)        = Constant[42]           :
+  // r6(int)        = Add                    : r4, r5
+  // r7(bool)       = CompareEQ              : r2, r6
+  // v1(void)       = ConditionalBranch      : r7
+  // ```
+  // and since `r7` is an integral typed instruction this predicate could
+  // include a case for when `r7` evaluates to true (in which case we would
+  // infer that `r6` was non-zero, and a case for when `r7` evaluates to false
+  // (in which case we would infer that `r6` was zero).
+  // However, since `a == b + 42` is already supported when reasoning about
+  // binary equalities we exclude those cases here.
   not test.isGLValue() and
   not simple_comparison_eq(test, _, _, _, _) and
   not simple_comparison_lt(test, _, _, _) and
