@@ -442,10 +442,10 @@ namespace Semmle.Extraction.CSharp
                         .Select(src => src.Path)
                         .ToList();
 
-                    if (compilerArguments.GeneratedFilesOutputDirectory is not null)
-                    {
-                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
-                    }
+                    // if (compilerArguments.GeneratedFilesOutputDirectory is not null)
+                    // {
+                    //     paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
+                    // }
 
                     return ReadSyntaxTrees(
                         paths.Select(canonicalPathCache.GetCanonicalPath),
