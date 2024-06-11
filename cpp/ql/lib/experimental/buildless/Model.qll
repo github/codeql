@@ -34,6 +34,35 @@ module BuildlessModel<BuildlessASTSig Sig> {
     Type getParentType() { result.getADeclaration() = this.getADeclaration().getParentType() }
 
     string getFullyQualifiedName() { result = this.getADeclaration().getFullyQualifiedName() }
+
+    Field getAField() { result.getParentType() = this }
+  }
+
+  private Type lookupNameInType(Type type, string name)
+  {
+    // TODO!
+    none()
+  }
+
+  class Field extends string {
+    Type containingType;
+    SourceTypeDefinition containingTypeDef;
+    AST::SourceVariableDeclaration fieldDef;
+
+    Field() {
+      containingType.getADefinition() = containingTypeDef and
+      fieldDef = containingTypeDef.getAField() and
+      this = containingTypeDef.getMangledName() + "::" + fieldDef.getName()
+    }
+
+    Location getLocation() { result = fieldDef.getLocation() }
+
+    Type getParentType() { result = containingType }
+
+    string getName() { result = fieldDef.getName() }
+
+    // TODO: The type of the field
+
   }
 
   class Element extends TElement {
@@ -89,7 +118,7 @@ module BuildlessModel<BuildlessASTSig Sig> {
       else result = this.getName()
     }
 
-    override string getMangledName() { result = this.getFullyQualifiedName() }
+    override string getMangledName() { result = "::" + this.getFullyQualifiedName() }
 
     override predicate isDefinition() { any() }
   }
@@ -125,11 +154,15 @@ module BuildlessModel<BuildlessASTSig Sig> {
     // Mangled name
     override string getMangledName() {
       if exists(this.getParent())
-      then result = this.getParent().getMangledName() + "." + this.getName()
-      else result = this.getName()
+      then result = this.getParent().getMangledName() + "::" + this.getName()
+      else result = "::" + this.getName()
     }
 
     override predicate isDefinition() { def.isDefinition() }
+
+    AST::SourceVariableDeclaration getAField() {
+      result = def.getAMember()
+    }
   }
 
   class SourceTypeDefinition extends SourceTypeDeclaration, SourceDefinition {
@@ -157,8 +190,8 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
     override string getMangledName() {
       if exists(this.getParent())
-      then result = this.getParent().getMangledName() + "." + this.getName() + "()"
-      else result = this.getName() + "()"
+      then result = this.getParent().getMangledName() + "::" + this.getName() + "()"
+      else result = "::" + this.getName() + "()"
     }
 
     override predicate isDefinition() { fn.isDefinition() }

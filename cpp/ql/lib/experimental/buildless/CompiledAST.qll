@@ -31,7 +31,8 @@ module CompiledAST implements BuildlessASTSig {
     TExpression(SourceLocation loc) { exists(Expr e | e.getLocation() = loc) } or
     TFunctionCallName(SourceLocation loc) { exists(FunctionCall c | c.getLocation() = loc) } or
     TDeclarationType(SourceDeclEntry decl, Type type) { type = reachableType(decl.getType()) } or
-    TNamespaceDeclaration(NamespaceDeclarationEntry ns) { any() }
+    TNamespaceDeclaration(NamespaceDeclarationEntry ns) { any() } or
+    TInclude(Include i)
 
   class Node extends TNode {
     string toString() { result = "node" }
@@ -42,8 +43,11 @@ module CompiledAST implements BuildlessASTSig {
       this = TExpression(result) or
       this = TFunctionCallName(result) or
       result = this.getVariableDeclaration().getLocation() or
-      result = this.getNamespaceDeclaration().getLocation()
+      result = this.getNamespaceDeclaration().getLocation() or
+      result = this.getInclude().getLocation()
     }
+
+    Include getInclude() { this = TInclude(result) }
 
     Stmt getStmt() { this = TStatement(result.getLocation()) }
 
@@ -69,9 +73,17 @@ module CompiledAST implements BuildlessASTSig {
   predicate nodeLocation(Node node, Location location) { location = node.getLocation() }
 
   // Include graph
-  predicate userInclude(Node include, string path) { none() }
+  predicate userInclude(Node include, string path) {
+    exists(string head | head = include.getInclude().getHead() |
+      path = head.substring(1, head.length() - 1) and head.charAt(0) = "\""
+    )
+  }
 
-  predicate systemInclude(Node include, string path) { none() }
+  predicate systemInclude(Node include, string path) {
+    exists(string head | head = include.getInclude().getHead() |
+      path = head.substring(1, head.length() - 1) and head.charAt(0) = "<"
+    )
+  }
 
   // Functions
   predicate function(Node fn) { exists(fn.getFunction()) }
@@ -147,7 +159,10 @@ module CompiledAST implements BuildlessASTSig {
   predicate arrayType(Node type, Node element) { none() }
 
   predicate typename(Node node, string name) {
-    exists(Class c | c = node.getDeclaration().getDeclaration() | not c.isAnonymous() and c.getName() = name) or
+    exists(Class c | c = node.getDeclaration().getDeclaration() |
+      not c.isAnonymous() and c.getName() = name
+    )
+    or
     name = node.getType().getName()
   }
 
@@ -261,8 +276,7 @@ module CompiledAST implements BuildlessASTSig {
   pragma[nomagic]
   private predicate namespaceDecl(Node ns, Node child) {
     child.getDeclaration().getDeclaration() =
-    ns.getNamespaceDeclaration().getNamespace().getADeclaration()
-    and
+      ns.getNamespaceDeclaration().getNamespace().getADeclaration() and
     ns.getLocation().getFile() = child.getLocation().getFile() and
     ns.getLocation().getStartLine() <= child.getLocation().getStartLine()
   }
@@ -280,7 +294,11 @@ module CompiledAST implements BuildlessASTSig {
     blockMember(parent, index, child)
   }
 
-  predicate typeDefinition(Node node) { node.getDeclaration().(TypeDeclarationEntry).isDefinition() }
+  predicate typeDefinition(Node node) {
+    node.getDeclaration().(TypeDeclarationEntry).isDefinition()
+  }
 
-  predicate functionDefinition(Node fn) { fn.getDeclaration().(FunctionDeclarationEntry).isDefinition() }
+  predicate functionDefinition(Node fn) {
+    fn.getDeclaration().(FunctionDeclarationEntry).isDefinition()
+  }
 }

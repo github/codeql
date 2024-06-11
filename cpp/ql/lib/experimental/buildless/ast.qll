@@ -17,12 +17,38 @@ module BuildlessAST<BuildlessASTSig AST> {
     SourceElement getAChild() { result = this.getChild(_) }
   }
 
-  abstract class SourceScope extends SourceElement
-  {
+  bindingset[path]
+  private File getAnIncludeTarget(string path) {
+    exists(string p | p = result.toString() | path = p.suffix(p.length() - path.length()))
   }
 
-  class SourceNamespace extends SourceScope, SourceDeclaration
-  {
+  class Include extends SourceElement {
+    string path;
+
+    Include() { AST::userInclude(this, path) or AST::systemInclude(this, path) }
+
+    File getATarget() {
+      result = getAnIncludeTarget(path)
+      or
+      path.prefix(3) = "../" and result = getAnIncludeTarget(path.suffix(3))
+      or
+      path.prefix(2) = "./" and result = getAnIncludeTarget(path.suffix(2))
+    }
+
+    predicate isSystemInclude() { AST::systemInclude(this, _) }
+
+    predicate isUserInclude() { AST::userInclude(this, _) }
+
+    override string toString() {
+      this.isSystemInclude() and result = "#include <" + path + ">"
+      or
+      this.isUserInclude() and result = "#include \"" + path + "\""
+    }
+  }
+
+  abstract class SourceScope extends SourceElement { }
+
+  class SourceNamespace extends SourceScope, SourceDeclaration {
     SourceNamespace() { AST::namespace(this) }
 
     override string getName() { AST::namespaceName(this, result) }
@@ -31,8 +57,7 @@ module BuildlessAST<BuildlessASTSig AST> {
   }
 
   // Any syntax node that is a declaration
-  abstract class SourceDeclaration extends SourceElement
-  {
+  abstract class SourceDeclaration extends SourceElement {
     abstract string getName();
   }
 
@@ -84,13 +109,11 @@ module BuildlessAST<BuildlessASTSig AST> {
     override string toString() { result = "{ ... }" }
   }
 
-  class Expr extends SourceElement
-  {
+  class Expr extends SourceElement {
     Expr() { AST::expression(this) }
   }
 
-  class AccessExpr extends Expr
-  {
+  class AccessExpr extends Expr {
     string identifier;
 
     AccessExpr() { AST::accessExpr(this, identifier) }
@@ -100,19 +123,19 @@ module BuildlessAST<BuildlessASTSig AST> {
     override string toString() { result = this.getName() }
   }
 
-  class CallExpr extends Expr
-  {
+  class CallExpr extends Expr {
     CallExpr() { AST::callExpr(this) }
 
     Expr getReceiver() { AST::callReceiver(this, result) }
+
     Expr getArgument(int i) { AST::callArgument(this, i, result) }
 
     override string toString() { result = "...(...)" }
   }
 
-  class Literal extends Expr
-  {
+  class Literal extends Expr {
     string value;
+
     Literal() { AST::literal(this, value) }
 
     override string toString() { result = value }
@@ -120,17 +143,13 @@ module BuildlessAST<BuildlessASTSig AST> {
     string getValue() { result = value }
   }
 
-  class StringLiteral extends Literal
-  {
+  class StringLiteral extends Literal {
     StringLiteral() { AST::stringLiteral(this, _) }
   }
 
-  abstract class SourceDefinition extends SourceDeclaration
-  {
-  }
+  abstract class SourceDefinition extends SourceDeclaration { }
 
-  class SourceTypeDefinition extends SourceDefinition
-  {
+  class SourceTypeDefinition extends SourceDefinition {
     SourceTypeDefinition() { AST::classOrStructDefinition(this) }
 
     override string getName() { AST::typename(this, result) }
@@ -143,33 +162,33 @@ module BuildlessAST<BuildlessASTSig AST> {
   }
 
   // A node that contains a type of some kind
-  class SourceType extends SourceElement
-  {
+  class SourceType extends SourceElement {
     SourceType() { AST::type(this) }
 
     override string toString() { AST::typename(this, result) }
   }
 
-  class SourcePointer extends SourceType
-  {
+  class SourcePointer extends SourceType {
     SourceType pointee;
+
     SourcePointer() { AST::ptrType(this, pointee) }
 
     SourceType getType() { result = pointee }
   }
 
-  class SourceConst extends SourceType
-  {
+  class SourceConst extends SourceType {
     SourceType type;
+
     SourceConst() { AST::constType(this, type) }
 
     SourceType getType() { result = type }
   }
 
-  class SourceReference extends SourceType
-  {
+  class SourceReference extends SourceType {
     SourceType type;
+
     SourceReference() { AST::refType(this, type) }
+
     SourceType getType() { result = type }
   }
 }
