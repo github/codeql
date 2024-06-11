@@ -15,6 +15,8 @@ def codeql_rust_binary(
     # )
     rust_binary(
         name = name,
+        target_compatible_with = target_compatible_with,
+        visibility = visibility,
         **kwargs
     )
     # if symbols_test:
