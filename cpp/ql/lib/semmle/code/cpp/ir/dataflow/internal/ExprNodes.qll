@@ -1,3 +1,7 @@
+/**
+ * Provides the classes `ExprNode` and `IndirectExprNode` for converting between `Expr` and `Node`.
+ */
+
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
