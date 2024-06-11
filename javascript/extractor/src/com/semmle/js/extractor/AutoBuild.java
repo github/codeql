@@ -42,7 +42,6 @@ import com.google.gson.JsonParseException;
 import com.semmle.js.dependencies.AsyncFetcher;
 import com.semmle.js.dependencies.DependencyResolver;
 import com.semmle.js.dependencies.packument.PackageJson;
-import com.semmle.js.extractor.AutoBuild.JSDiagnosticKind;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.trapcache.DefaultTrapCache;
