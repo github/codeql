@@ -41,8 +41,7 @@ type GoModule struct {
 func (module *GoModule) RequiredGoVersion() util.SemVer {
 	if module.Module != nil && module.Module.Toolchain != nil {
 		return util.NewSemVer(module.Module.Toolchain.Name)
-	}
-	if module.Module != nil && module.Module.Go != nil {
+	} else if module.Module != nil && module.Module.Go != nil {
 		return util.NewSemVer(module.Module.Go.Version)
 	} else {
 		return tryReadGoDirective(module.Path)

@@ -7,7 +7,6 @@ codeql_xunit_test(
     name = "Semmle.Autobuild.Cpp.Tests",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
     ]),
     deps = [
         "//csharp/autobuilder/Semmle.Autobuild.Cpp:bin/Semmle.Autobuild.Cpp",

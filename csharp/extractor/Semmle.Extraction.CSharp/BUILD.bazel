@@ -11,7 +11,6 @@ codeql_csharp_library(
         "Extractor/**/*.cs",
         "Kinds/**/*.cs",
         "Populators/**/*.cs",
-        "Properties/**/*.cs",
         "*.cs",
     ]),
     allow_unsafe_blocks = True,
