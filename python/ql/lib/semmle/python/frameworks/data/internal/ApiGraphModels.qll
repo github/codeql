@@ -370,6 +370,28 @@ private predicate typeVariableModel(string name, string path) {
 }
 
 /**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(string type, string path, string kind |
+    Extensions::sourceModel(type, path, kind, madId) and
+    model = "Source: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string kind |
+    Extensions::sinkModel(type, path, kind, madId) and
+    model = "Sink: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string input, string output, string kind |
+    Extensions::summaryModel(type, path, input, output, kind, madId) and
+    model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
+  )
+}
+
+/**
  * Holds if rows involving `type` might be relevant for the analysis of this database.
  */
 predicate isRelevantType(string type) {
