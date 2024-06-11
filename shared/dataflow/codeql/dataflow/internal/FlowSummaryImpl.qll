@@ -4,7 +4,6 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
-private import DataFlowImpl
 private import AccessPathSyntax as AccessPathSyntax
 
 /**
