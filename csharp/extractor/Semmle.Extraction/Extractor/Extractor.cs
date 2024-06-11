@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Reflection;
-using System.IO;
 using Semmle.Util.Logging;
 using CompilationInfo = (string key, string value);
 
@@ -9,20 +8,18 @@ namespace Semmle.Extraction
     /// <summary>
     /// Implementation of the main extractor state.
     /// </summary>
-    public abstract class Extractor
+    public class Extractor
     {
         public string Cwd { get; init; }
         public string[] Args { get; init; }
-        public abstract ExtractorMode Mode { get; }
+        public ExtractorMode Mode { get; }
         public string OutputPath { get; }
         public IEnumerable<CompilationInfo> CompilationInfos { get; }
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
         /// </summary>
-        /// <param name="logger">The object used for logging.</param>
-        /// <param name="pathTransformer">The object used for path transformations.</param>
-        protected Extractor(string cwd, string[] args, string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer)
+        public Extractor(string cwd, string[] args, string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer, ExtractorMode mode, bool isQlTest)
         {
             OutputPath = outputPath;
             Logger = logger;
@@ -30,6 +27,12 @@ namespace Semmle.Extraction
             CompilationInfos = compilationInfos;
             Cwd = cwd;
             Args = args;
+
+            Mode = mode;
+            if (isQlTest)
+            {
+                Mode |= ExtractorMode.QlTest;
+            }
         }
 
         // Limit the number of error messages in the log file

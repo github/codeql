@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp
         public void Initialize(string outputPath, IEnumerable<(string, string)> compilationInfos, CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
-            extractor = new StandaloneExtractor(Directory.GetCurrentDirectory(), outputPath, compilationInfos, Logger, PathTransformer, options);
+            extractor = new Extraction.Extractor(Directory.GetCurrentDirectory(), [], outputPath, compilationInfos, Logger, PathTransformer, ExtractorMode.Standalone, options.QlTest);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
