@@ -4,7 +4,6 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
-private import DataFlowImpl
 private import AccessPathSyntax as AccessPathSyntax
 
 /**
@@ -253,6 +252,13 @@ module Make<
        * that has provenance `provenance`.
        */
       predicate hasProvenance(Provenance provenance) { provenance = "manual" }
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
 
     final private class NeutralCallableFinal = NeutralCallable;
@@ -292,6 +298,13 @@ module Make<
        * Gets the kind of the neutral.
        */
       abstract string getKind();
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
   }
 
@@ -1692,10 +1705,11 @@ module Make<
               )
             )
             or
-            exists(ReturnNodeExt ret |
+            exists(ReturnNode ret, ValueReturnKind kind |
               c = "ReturnValue" and
               ret = node.asNode() and
-              ret.getKind().(ValueReturnKind).getKind() = getStandardReturnValueKind() and
+              valueReturnNode(ret, kind) and
+              kind.getKind() = getStandardReturnValueKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
             )
             or

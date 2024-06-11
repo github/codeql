@@ -10,8 +10,6 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/mod/semver"
-
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
@@ -156,7 +154,7 @@ func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
 func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && semver.Compare(toolchain.GetEnvGoSemVer(), "v1.16") >= 0 {
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(toolchain.V1_16) {
 		for _, goMod := range workspace.Modules {
 			// stat go.mod and go.sum
 			goModPath := goMod.Path
@@ -320,21 +318,26 @@ func setGopath(root string) {
 	log.Printf("GOPATH set to %s.\n", newGopath)
 }
 
-// Try to build the project without custom commands. If that fails, return a boolean indicating
-// that we should install dependencies ourselves.
+// Try to build the project with a build script. If that fails, return a boolean indicating
+// that we should install dependencies in the normal way.
 func buildWithoutCustomCommands(modMode project.ModMode) bool {
 	shouldInstallDependencies := false
-	// try to build the project
-	buildSucceeded := autobuilder.Autobuild()
+	// try to run a build script
+	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
+	scriptCount := len(scriptsExecuted)
 
-	// Build failed or there are still dependency errors; we'll try to install dependencies
-	// ourselves
-	if !buildSucceeded {
-		log.Println("Build failed, continuing to install dependencies.")
+	// If there is no build script we could invoke successfully or there are still dependency errors;
+	// we'll try to install dependencies ourselves in the normal Go way.
+	if !scriptSucceeded {
+		if scriptCount > 0 {
+			log.Printf("Unsuccessfully ran %d build scripts(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		} else {
+			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
+		}
 
 		shouldInstallDependencies = true
 	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+		log.Printf("Dependencies are still not resolving after executing %d build script(s), continuing to install dependencies in the normal way.\n", scriptCount)
 
 		shouldInstallDependencies = true
 	}
@@ -537,12 +540,12 @@ func installDependenciesAndBuild() {
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+greatestGoVersion.Version)
+	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
 		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
-				"v"+greatestGoVersion.Version,
+				greatestGoVersion,
 				toolchain.GetEnvGoSemVer())
 		}
 	}
@@ -554,7 +557,7 @@ func installDependenciesAndBuild() {
 	for i, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
-		fixGoVendorIssues(&workspace, goVersionInfo.Found)
+		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
 		tryUpdateGoModAndGoSum(workspace)
 

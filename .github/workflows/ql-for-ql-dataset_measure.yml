@@ -53,8 +53,8 @@ jobs:
       - name: Create database
         run: |
           "${CODEQL}" database create \
-            --search-path "ql/extractor-pack" \
-            --threads 4 \
+          --search-path "${{ github.workspace }}"
+          --threads 4 \
             --language ql --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
         env:

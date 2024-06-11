@@ -1,5 +1,5 @@
 package,sink,source,summary,sink:credentials-key,sink:jwt,source:remote,summary:taint,summary:value
-,,,2,,,,,2
+,,,5,,,,,5
 archive/tar,,,5,,,,5,
 archive/zip,,,6,,,,6,
 bufio,,,17,,,,17,

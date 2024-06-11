@@ -73,7 +73,7 @@ The CodeQL examples in this article are only excerpts and are not meant to repre
 Abstract syntax
 ---------------
 
-The abstract syntax tree (AST) represents the elements of the source code organized into a tree. The `AST viewer <https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/>`__
+The abstract syntax tree (AST) represents the elements of the source code organized into a tree. The `AST viewer <https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code/>`__
 in Visual Studio Code shows the AST nodes, including the relevant CodeQL classes and predicates.
 
 All CodeQL AST classes inherit from the `AstNode` class, which provides the following member predicates

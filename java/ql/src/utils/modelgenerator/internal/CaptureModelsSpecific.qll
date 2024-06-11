@@ -13,6 +13,7 @@ private import semmle.code.java.dataflow.TaintTracking as Tt
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.code.java.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 module DataFlow = Df::DataFlow;
 
@@ -24,90 +25,106 @@ class Unit = J::Unit;
 
 class Callable = J::Callable;
 
-private J::Method superImpl(J::Method m) {
-  result = m.getAnOverride() and
-  not exists(result.getAnOverride()) and
-  not m instanceof J::ToStringMethod
-}
-
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("javax.swing%") or
   cu.getPackage().getName().matches("java.awt%")
 }
 
-/**
- * Holds if it is relevant to generate models for `api`.
- */
-private predicate isRelevantForModels(Callable api) {
+private predicate relevant(Callable api) {
+  api.isPublic() and
+  api.getDeclaringType().isPublic() and
+  api.fromSource() and
   not isUninterestingForModels(api) and
-  not isInfrequentlyUsed(api.getCompilationUnit()) and
-  // Disregard all APIs that have a manual model.
-  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() and
-  not api =
-    any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
+  not isInfrequentlyUsed(api.getCompilationUnit())
+}
+
+private J::Method getARelevantOverride(J::Method m) {
+  result = m.getAnOverride() and
+  relevant(result) and
+  // Other exclusions for overrides.
+  not m instanceof J::ToStringMethod
 }
 
 /**
- * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ * Gets the super implementation of `m` if it is relevant.
+ * If such a super implementations does not exist, returns `m` if it is relevant.
  */
-predicate isRelevantForDataFlowModels(Callable api) {
-  isRelevantForModels(api) and
-  (not api.getDeclaringType() instanceof J::Interface or exists(api.getBody()))
+private J::Callable liftedImpl(J::Callable m) {
+  (
+    result = getARelevantOverride(m)
+    or
+    result = m and relevant(m)
+  ) and
+  not exists(getARelevantOverride(result))
 }
 
-predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
+private predicate hasManualModel(Callable api) {
+  api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
+  api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
+}
 
 /**
- * A class of Callables that are relevant for generating summary, source and sinks models for.
+ * Holds if it is irrelevant to generate models for `api` based on data flow analysis.
  *
- * In the Standard library and 3rd party libraries it the Callables that can be called
- * from outside the library itself.
+ * This serves as an extra filter for the `relevant` predicate.
+ */
+predicate isUninterestingForDataFlowModels(Callable api) {
+  api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
+}
+
+/**
+ * Holds if it is irrelevant to generate models for `api` based on type-based analysis.
+ *
+ * This serves as an extra filter for the `relevant` predicate.
+ */
+predicate isUninterestingForTypeBasedFlowModels(Callable api) { none() }
+
+/**
+ * A class of callables that are potentially relevant for generating summary, source, sink
+ * and neutral models.
+ *
+ * In the Standard library and 3rd party libraries it is the callables (or callables that have a
+ * super implementation) that can be called from outside the library itself.
  */
 class TargetApiSpecific extends Callable {
+  private Callable lift;
+
   TargetApiSpecific() {
-    this.isPublic() and
-    this.fromSource() and
-    (
-      this.getDeclaringType().isPublic() or
-      superImpl(this).getDeclaringType().isPublic()
-    ) and
-    isRelevantForModels(this)
+    lift = liftedImpl(this) and
+    not hasManualModel(lift)
   }
 
   /**
-   * Gets the callable that a model will be lifted to, if any.
+   * Gets the callable that a model will be lifted to.
    */
-  Callable lift() {
-    exists(Method m | m = superImpl(this) and m.fromSource() | result = m)
-    or
-    not exists(superImpl(this)) and result = this
-  }
+  Callable lift() { result = lift }
+
+  /**
+   * Holds if this callable is relevant in terms of generating models.
+   */
+  predicate isRelevant() { relevant(this) }
 }
 
-private string isExtensible(J::RefType ref) {
-  if ref.isFinal() then result = "false" else result = "true"
-}
-
-private string typeAsModel(J::RefType type) {
-  result =
-    type.getCompilationUnit().getPackage().getName() + ";" +
-      type.getErasure().(J::RefType).nestedName()
-}
-
-private J::RefType bestTypeForModel(TargetApiSpecific api) {
-  result = api.lift().getDeclaringType()
+private string isExtensible(Callable c) {
+  if c.getDeclaringType().isFinal() then result = "false" else result = "true"
 }
 
 /**
- * Returns the appropriate type name for the model. Either the type
- * declaring the method or the supertype introducing the method.
+ * Returns the appropriate type name for the model.
  */
-private string typeAsSummaryModel(TargetApiSpecific api) {
-  result = typeAsModel(bestTypeForModel(api))
+private string typeAsModel(Callable c) {
+  exists(RefType type | type = c.getDeclaringType() |
+    result =
+      type.getCompilationUnit().getPackage().getName() + ";" +
+        type.getErasure().(J::RefType).nestedName()
+  )
 }
 
-private predicate partialModel(TargetApiSpecific api, string type, string name, string parameters) {
-  type = typeAsSummaryModel(api) and
+private predicate partialModel(
+  Callable api, string type, string extensible, string name, string parameters
+) {
+  type = typeAsModel(api) and
+  extensible = isExtensible(api) and
   name = api.getName() and
   parameters = ExternalFlow::paramsString(api)
 }
@@ -116,11 +133,11 @@ private predicate partialModel(TargetApiSpecific api, string type, string name, 
  * Computes the first 6 columns for MaD rows.
  */
 string asPartialModel(TargetApiSpecific api) {
-  exists(string type, string name, string parameters |
-    partialModel(api, type, name, parameters) and
+  exists(string type, string extensible, string name, string parameters |
+    partialModel(api.lift(), type, extensible, name, parameters) and
     result =
       type + ";" //
-        + isExtensible(bestTypeForModel(api)) + ";" //
+        + extensible + ";" //
         + name + ";" //
         + parameters + ";" //
         + /* ext + */ ";" //
@@ -132,7 +149,7 @@ string asPartialModel(TargetApiSpecific api) {
  */
 string asPartialNeutralModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
-    partialModel(api, type, name, parameters) and
+    partialModel(api, type, _, name, parameters) and
     result =
       type + ";" //
         + name + ";" //
@@ -190,26 +207,23 @@ string parameterAccess(J::Parameter p) {
 
 class InstanceParameterNode = DataFlow::InstanceParameterNode;
 
+class ParameterPosition = DataFlowDispatch::ParameterPosition;
+
 /**
- * Gets the MaD string represention of the the return node `node`.
+ * Gets the MaD string representation of return through parameter at position
+ * `pos` of callable `c`.
  */
-string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
-  if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
-  then result = "ReturnValue"
-  else
-    exists(int pos |
-      pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()
-    |
-      result = parameterAccess(node.(DataFlow::Node).getEnclosingCallable().getParameter(pos))
-      or
-      result = qualifierString() and pos = -1
-    )
+bindingset[c]
+string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
+  result = parameterAccess(c.getParameter(pos))
+  or
+  result = qualifierString() and pos = -1
 }
 
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
@@ -228,6 +242,15 @@ predicate sinkModelSanitizer(DataFlow::Node node) {
   )
 }
 
+private class ManualNeutralSinkCallable extends Callable {
+  ManualNeutralSinkCallable() {
+    this =
+      any(FlowSummaryImpl::Public::NeutralCallable nc |
+        nc.hasManualModel() and nc.getKind() = "sink"
+      ).asCallable()
+  }
+}
+
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
@@ -236,14 +259,15 @@ predicate apiSource(DataFlow::Node source) {
     source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
     source instanceof DataFlow::ParameterNode
   ) and
-  source.getEnclosingCallable().isPublic() and
-  exists(J::RefType t |
-    t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
-    not t instanceof J::TypeObject and
-    t.isPublic()
-  ) and
-  isRelevantForModels(source.getEnclosingCallable()) and
-  exists(asPartialModel(source.getEnclosingCallable()))
+  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
+    exists(liftedImpl(enclosing)) and
+    not enclosing instanceof ManualNeutralSinkCallable and
+    exists(J::RefType t |
+      t = enclosing.getDeclaringType().getAnAncestor() and
+      not t instanceof J::TypeObject and
+      t.isPublic()
+    )
+  )
 }
 
 /**

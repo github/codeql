@@ -455,8 +455,8 @@ module Public {
     CallNode getCallNode() { result = call }
 
     override Type getType() {
-      exists(Function f | f = call.getTarget() |
-        result = f.getParameterType(f.getNumParameter() - 1)
+      exists(SignatureType t | t = call.getCall().getCalleeType() |
+        result = t.getParameterType(t.getNumParameter() - 1)
       )
     }
 

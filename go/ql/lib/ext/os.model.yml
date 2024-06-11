@@ -6,4 +6,4 @@ extensions:
       - ["os", "", False, "Expand", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["os", "", False, "ExpandEnv", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["os", "", False, "NewFile", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["os", "File", True, "Fd", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["os", "File", True, "Fd", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

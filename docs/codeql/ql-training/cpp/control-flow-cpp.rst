@@ -11,7 +11,7 @@ CodeQL for C/C++
 Setup
 =====
 
-For this example you need to set up `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__ and download the CodeQL database for `ChakraCore <https://github.com/Chakra-Core/ChakraCore/>`__ from GitHub.
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code/>`__ and download the CodeQL database for `ChakraCore <https://github.com/Chakra-Core/ChakraCore/>`__ from GitHub.
 
 
 .. rst-class:: agenda

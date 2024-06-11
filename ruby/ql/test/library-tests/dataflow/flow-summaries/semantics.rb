@@ -33,7 +33,7 @@ def m5(x, y, z)
 end
 
 def m6
-    sink s6(foo: source "a", bar: source "b") # $ MISSING: hasValueFlow=a
+    sink s6(foo: (source "a"), bar: (source "b")) # $ hasValueFlow=a
 end
 
 def m7(x)

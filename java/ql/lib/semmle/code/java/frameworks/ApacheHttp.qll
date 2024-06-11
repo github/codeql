@@ -6,16 +6,12 @@ import java
 private import semmle.code.java.dataflow.FlowSteps
 
 class ApacheHttpGetParams extends Method {
-  ApacheHttpGetParams() {
-    this.getDeclaringType().getQualifiedName() = "org.apache.http.HttpMessage" and
-    this.getName() = "getParams"
-  }
+  ApacheHttpGetParams() { this.hasQualifiedName("org.apache.http", "HttpMessage", "getParams") }
 }
 
 class ApacheHttpEntityGetContent extends Method {
   ApacheHttpEntityGetContent() {
-    this.getDeclaringType().getQualifiedName() = "org.apache.http.HttpEntity" and
-    this.getName() = "getContent"
+    this.hasQualifiedName("org.apache.http", "HttpEntity", "getContent")
   }
 }
 
