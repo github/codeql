@@ -189,7 +189,7 @@ private module Printing = ModelPrinting<ModelPrintingInput>;
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
+class TypeBasedFlowTargetApi extends Specific::SummaryTargetApi {
   TypeBasedFlowTargetApi() { not Specific::isUninterestingForTypeBasedFlowModels(this) }
 
   /**
