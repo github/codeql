@@ -1,3 +1,13 @@
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The precision of virtual dispatch has been improved. This increases precision in general for all data flow queries. 
+
+### Minor Analysis Improvements
+
+* Support for Eclipse Compiler for Java (ecj) has been fixed to work with (a) runs that don't pass `-noExit` and (b) runs that use post-Java-9 command-line arguments.
+
 ## 1.0.0
 
 ### Breaking Changes
