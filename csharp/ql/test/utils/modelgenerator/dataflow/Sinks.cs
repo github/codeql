@@ -84,7 +84,6 @@ public class NewSinks
     }
 
     // Not a new sink because a simple type is used in an intermediate step
-    // SPURIOUS-sink=Sinks;NewSinks;false;WrapResponseWriteFileSimpleType;(System.String);;Argument[0];test-sink;df-generated
     // neutral=Sinks;NewSinks;WrapResponseWriteFileSimpleType;(System.String);summary;df-generated
     public void WrapResponseWriteFileSimpleType(string s)
     {

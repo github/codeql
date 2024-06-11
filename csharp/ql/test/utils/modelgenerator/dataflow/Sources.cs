@@ -36,7 +36,6 @@ public class NewSources
     }
 
     // Not a new source because a simple type is used in an intermediate step
-    // SPURIOUS-source=Sources;NewSources;false;WrapConsoleReadLineGetBool;();;ReturnValue;local;df-generated
     // neutral=Sources;NewSources;WrapConsoleReadLineGetBool;();summary;df-generated
     public bool WrapConsoleReadLineGetBool()
     {
