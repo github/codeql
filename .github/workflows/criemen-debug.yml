@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest-xl]
+        os: [windows-2019]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
