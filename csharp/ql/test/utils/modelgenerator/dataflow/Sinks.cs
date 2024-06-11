@@ -101,7 +101,6 @@ public class NewSinks
 
     // Not a new sink as this callable already has a manual sink.
     // neutral=Sinks;NewSinks;ManualSinkAlreadyDefined;(System.Object);summary;df-generated
-    // SPURIOUS-sink=Sinks;NewSinks;false;ManualSinkAlreadyDefined;(System.Object);;Argument[0];test-sink;df-generated
     public void ManualSinkAlreadyDefined(object o)
     {
         Sink(o);

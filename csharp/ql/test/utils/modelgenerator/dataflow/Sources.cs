@@ -68,14 +68,12 @@ public class NewSources
     // Not a new source as this callable has been manually modelled
     // as source neutral.
     // neutral=Sources;NewSources;ManualNeutralSource;();summary;df-generated
-    // SPURIOUS-source=Sources;NewSources;false;ManualNeutralSource;();;ReturnValue;local;df-generated
     public string ManualNeutralSource()
     {
         return Console.ReadLine();
     }
 
     // Not a new source as this callable already has a manual source.
-    // SPURIOUS-source=Sources;NewSources;false;ManualSourceAlreadyDefined;();;ReturnValue;local;df-generated
     // neutral=Sources;NewSources;ManualSourceAlreadyDefined;();summary;df-generated
     public string ManualSourceAlreadyDefined()
     {
