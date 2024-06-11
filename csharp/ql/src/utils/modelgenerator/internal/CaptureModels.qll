@@ -225,6 +225,10 @@ module FromSourceConfig implements DataFlow::ConfigSig {
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSinkCallContext }
 
+  predicate isBarrier(DataFlow::Node n) {
+    exists(Type t | t = n.getType() and not isRelevantType(t))
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isRelevantTaintStep(node1, node2)
   }
@@ -257,7 +261,11 @@ module PropagateToSinkConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { ExternalFlow::sinkNode(sink, _) }
 
-  predicate isBarrier(DataFlow::Node node) { sinkModelSanitizer(node) }
+  predicate isBarrier(DataFlow::Node node) {
+    exists(Type t | t = node.getType() and not isRelevantType(t))
+    or
+    sinkModelSanitizer(node)
+  }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
