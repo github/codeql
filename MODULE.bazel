@@ -30,6 +30,31 @@ bazel_dep(name = "rules_rust", version = "0.46.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
 
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2021",
+    # We need to specify both here so that we can do cross-compilation for macos
+    extra_target_triples = [
+        "x86_64-apple-darwin",
+        "aarch64-apple-darwin",
+    ],
+    versions = [
+        "1.74.0",
+    ],
+)
+use_repo(
+    rust,
+    "rust_toolchains",
+)
+
+register_toolchains("@rust_toolchains//:all")
+
+rust_host_tools = use_extension("//rust:extensions.bzl", "rust_host_tools")
+
+# Don't download a second toolchain as host toolchain, make sure this is the same version as above
+rust_host_tools.host_tools(version = "1.70.0", edition = "2021")
+use_repo(rust_host_tools, "rust_host_tools")
 crate = use_extension(
     "@rules_rust//crate_universe:extension.bzl",
     "crate",

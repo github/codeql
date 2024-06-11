@@ -1,0 +1,26 @@
+name: Debug bazel problem
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - criemen/repr-bazel-bug
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest-xl]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - if: runner.os == 'Windows'
+        name: build
+        shell: bash
+        run: |
+          bazel build //ruby:ruby-arch-zip
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: debug-${{ runner.os }}
+          path: C:/tmp/modextwd
