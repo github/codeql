@@ -18,7 +18,7 @@ jobs:
         name: build
         shell: bash
         run: |
-          bazel build //ruby:ruby-arch-zip
+          bazel build "//ruby:ruby-arch-zip"
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
