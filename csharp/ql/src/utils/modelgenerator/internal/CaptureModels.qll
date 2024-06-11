@@ -249,6 +249,7 @@ string captureSource(DataFlowTargetApi api) {
     PropagateFromSource::flow(source, sink) and
     ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
+    not irrelevantSourceSinkApi(source.getEnclosingCallable(), api) and
     result = ModelPrinting::asSourceModel(api, sink.getOutput(), kind)
   )
 }
