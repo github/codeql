@@ -21,4 +21,4 @@ jobs:
         if: failure()
         with:
           name: debug-${{ runner.os }}
-          path: C:/tmp/modextwd
+          path: C:\tmp\modextwd
