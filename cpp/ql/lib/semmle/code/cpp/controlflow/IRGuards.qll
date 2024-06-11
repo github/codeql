@@ -762,6 +762,8 @@ private predicate compares_eq(
   exists(AbstractValue dual | value = dual.getDualValue() |
     compares_eq(test.(LogicalNotInstruction).getUnary(), left, right, k, areEqual, dual)
   )
+  or
+  compares_eq(test.(BuiltinExpectCallInstruction).getCondition(), left, right, k, areEqual, value)
 }
 
 /**
@@ -831,6 +833,9 @@ private predicate unary_compares_eq(
     int_value(const) = k1 and
     k = k1 + k2
   )
+  or
+  unary_compares_eq(test.(BuiltinExpectCallInstruction).getCondition(), op, k, areEqual,
+    inNonZeroCase, value)
 }
 
 /** Rearrange various simple comparisons into `left == right + k` form. */
@@ -910,12 +915,68 @@ private predicate unary_simple_comparison_eq(
   )
 }
 
+/** A call to the builtin operation `__builtin_expect`. */
+private class BuiltinExpectCallInstruction extends CallInstruction {
+  BuiltinExpectCallInstruction() { this.getStaticCallTarget().hasName("__builtin_expect") }
+
+  /** Gets the condition of this call. */
+  Instruction getCondition() {
+    // The first parameter of `__builtin_expect` has type `long`. So we skip
+    // the conversion when inferring guards.
+    result = this.getArgument(0).(ConvertInstruction).getUnary()
+  }
+}
+
+/**
+ * Holds if `left == right + k` is `areEqual` if `cmp` evaluates to `value`,
+ * and `cmp` is an instruction that compares the value of
+ * `__builtin_expect(left == right + k, _)` to `0`.
+ */
+private predicate builtin_expect_eq(
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+) {
+  exists(BuiltinExpectCallInstruction call, Instruction const, AbstractValue innerValue |
+    int_value(const) = 0 and
+    cmp.hasOperands(call.getAUse(), const.getAUse()) and
+    compares_eq(call.getCondition(), left, right, k, areEqual, innerValue)
+  |
+    cmp instanceof CompareNEInstruction and
+    value = innerValue
+    or
+    cmp instanceof CompareEQInstruction and
+    value.getDualValue() = innerValue
+  )
+}
+
 private predicate complex_eq(
   CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   sub_eq(cmp, left, right, k, areEqual, value)
   or
   add_eq(cmp, left, right, k, areEqual, value)
+  or
+  builtin_expect_eq(cmp, left, right, k, areEqual, value)
+}
+
+/**
+ * Holds if `op == k` is `areEqual` if `cmp` evaluates to `value`, and `cmp` is
+ * an instruction that compares the value of `__builtin_expect(op == k, _)` to `0`.
+ */
+private predicate unary_builtin_expect_eq(
+  CompareInstruction cmp, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
+  AbstractValue value
+) {
+  exists(BuiltinExpectCallInstruction call, Instruction const, AbstractValue innerValue |
+    int_value(const) = 0 and
+    cmp.hasOperands(call.getAUse(), const.getAUse()) and
+    unary_compares_eq(call.getCondition(), op, k, areEqual, inNonZeroCase, innerValue)
+  |
+    cmp instanceof CompareNEInstruction and
+    value = innerValue
+    or
+    cmp instanceof CompareEQInstruction and
+    value.getDualValue() = innerValue
+  )
 }
 
 private predicate unary_complex_eq(
@@ -924,6 +985,8 @@ private predicate unary_complex_eq(
   unary_sub_eq(test, op, k, areEqual, inNonZeroCase, value)
   or
   unary_add_eq(test, op, k, areEqual, inNonZeroCase, value)
+  or
+  unary_builtin_expect_eq(test, op, k, areEqual, inNonZeroCase, value)
 }
 
 /*
