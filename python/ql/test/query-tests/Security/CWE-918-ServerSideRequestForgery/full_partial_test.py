@@ -164,3 +164,13 @@ def partial_ssrf_7():
     if re.match(r'[a-zA-Z0-9]+', user_input):
         url = f"https://example.com/foo#{user_input}"
         requests.get(url) # NOT OK, but NOT FOUND - user input can contain arbitrary character as a suffix.
+
+    reg = re.compile(r'^[a-zA-Z0-9]+$')
+
+    if reg.match(user_input):
+       url = f"https://example.com/foo#{user_input}"
+       requests.get(url) # OK - user input can only contain alphanumerical characters
+
+    if reg.fullmatch(user_input):
+       url = f"https://example.com/foo#{user_input}"
+       requests.get(url) # OK - user input can only contain alphanumerical characters 

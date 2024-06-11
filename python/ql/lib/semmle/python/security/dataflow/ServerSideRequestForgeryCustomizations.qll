@@ -157,6 +157,15 @@ module ServerSideRequestForgery {
       branch = true and
       call = API::moduleImport("re").getMember(["match", "fullmatch"]).getACall() and
       strNode = [call.getArg(1), call.getArgByName("string")]
+      or
+      branch = true and
+      call =
+        API::moduleImport("re")
+            .getMember("compile")
+            .getReturn()
+            .getMember(["match", "fullmatch"])
+            .getACall() and
+      strNode = [call.getArg(0), call.getArgByName("string")]
     )
   }
 }
