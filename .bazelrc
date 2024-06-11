@@ -16,6 +16,7 @@ test --build_tests_only
 # this requires developer mode, but is required to have pack installer functioning
 startup --windows_enable_symlinks
 common --enable_runfiles
+startup --output_base=C:/tmp
 
 # with the above, we can avoid building python zips which is the default on windows as that's expensive
 build --nobuild_python_zip
