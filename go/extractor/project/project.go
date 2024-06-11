@@ -3,6 +3,7 @@ package project
 import (
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -47,6 +48,16 @@ func (module *GoModule) RequiredGoVersion() util.SemVer {
 	}
 }
 
+// Runs `go mod tidy` for this module.
+func (module *GoModule) Tidy() *exec.Cmd {
+	return toolchain.TidyModule(filepath.Dir(module.Path))
+}
+
+// Runs `go mod vendor -e` for this module.
+func (module *GoModule) Vendor() *exec.Cmd {
+	return toolchain.VendorModule(filepath.Dir(module.Path))
+}
+
 // Represents information about a Go project workspace: this may either be a folder containing
 // a `go.work` file or a collection of `go.mod` files.
 type GoWorkspace struct {
@@ -56,6 +67,8 @@ type GoWorkspace struct {
 	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
 	ModMode       ModMode                 // A value indicating which module mode to use for this workspace
 	Extracted     bool                    // A value indicating whether this workspace was extracted successfully
+
+	ShouldInstallDependencies bool // A value indicating whether dependencies should be installed for this module
 }
 
 // Represents a nullable version string.
