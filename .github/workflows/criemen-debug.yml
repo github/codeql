@@ -14,11 +14,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - if: runner.os == 'Windows'
-        name: build
-        shell: bash
-        run: |
-          bazel build "//ruby:ruby-arch-zip"
+      - name: build
+        shell: powershell
+        run: bazel build "//ruby:ruby-arch-zip"
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
