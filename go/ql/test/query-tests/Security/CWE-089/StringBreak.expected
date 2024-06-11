@@ -2,10 +2,10 @@ edges
 | StringBreak.go:10:2:10:40 | ... := ...[0] | StringBreak.go:14:47:14:57 | versionJSON | provenance |  |
 | StringBreakMismatched.go:12:2:12:40 | ... := ...[0] | StringBreakMismatched.go:13:29:13:47 | type conversion | provenance |  |
 | StringBreakMismatched.go:13:13:13:62 | call to Replace | StringBreakMismatched.go:17:26:17:32 | escaped | provenance |  |
-| StringBreakMismatched.go:13:29:13:47 | type conversion | StringBreakMismatched.go:13:13:13:62 | call to Replace | provenance | MaD:838 |
+| StringBreakMismatched.go:13:29:13:47 | type conversion | StringBreakMismatched.go:13:13:13:62 | call to Replace | provenance | MaD:841 |
 | StringBreakMismatched.go:24:2:24:40 | ... := ...[0] | StringBreakMismatched.go:25:29:25:47 | type conversion | provenance |  |
 | StringBreakMismatched.go:25:13:25:61 | call to Replace | StringBreakMismatched.go:29:27:29:33 | escaped | provenance |  |
-| StringBreakMismatched.go:25:29:25:47 | type conversion | StringBreakMismatched.go:25:13:25:61 | call to Replace | provenance | MaD:838 |
+| StringBreakMismatched.go:25:29:25:47 | type conversion | StringBreakMismatched.go:25:13:25:61 | call to Replace | provenance | MaD:841 |
 nodes
 | StringBreak.go:10:2:10:40 | ... := ...[0] | semmle.label | ... := ...[0] |
 | StringBreak.go:14:47:14:57 | versionJSON | semmle.label | versionJSON |

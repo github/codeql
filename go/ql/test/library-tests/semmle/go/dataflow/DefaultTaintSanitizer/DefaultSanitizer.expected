@@ -1,6 +1,6 @@
 edges
 | Builtin.go:6:2:6:2 | definition of b | Builtin.go:8:9:8:17 | type conversion | provenance |  |
-| Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b | provenance | MaD:553 |
+| Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b | provenance | MaD:556 |
 nodes
 | Builtin.go:6:2:6:2 | definition of b | semmle.label | definition of b |
 | Builtin.go:7:2:7:15 | selection of Body | semmle.label | selection of Body |
