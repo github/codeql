@@ -29,10 +29,10 @@
   arr4.splice(0, 0, "source");
   sink(arr4.pop()); // NOT OK
 
-  // var arr4_variant = [];
-  // arr4_variant.splice(0, 0, "safe", "source");
-  // arr4_variant.pop();
-  // sink(arr4_variant.pop()); // NOT OK
+  var arr4_variant = [];
+  arr4_variant.splice(0, 0, "safe", "source");
+  arr4_variant.pop();
+  sink(arr4_variant.pop()); // NOT OK
 
   var arr5 = [].concat(arr4);
   sink(arr5.pop()); // NOT OK
@@ -51,7 +51,7 @@
     sink(ary); // OK - its the array itself, not an element.
   });
 
-  sink(arr[0]); // OK - tuple like usage. 
+  sink(arr[0]); // OK - tuple like usage.
 
   for (const x of arr) {
     sink(x); // NOT OK
@@ -64,7 +64,7 @@
   for (const x of [...arr]) {
     sink(x); // NOT OK
   }
-  
+
   var arr7 = [];
   arr7.push(...arr);
   for (const x of arr7) {

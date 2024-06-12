@@ -139,6 +139,31 @@ nodes
 | arrays.js:30:8:30:15 | [DotExpr] arr4.pop | semmle.label | [DotExpr] arr4.pop |
 | arrays.js:30:8:30:17 | [MethodCallExpr] arr4.pop() | semmle.label | [MethodCallExpr] arr4.pop() |
 | arrays.js:30:13:30:15 | [Label] pop | semmle.label | [Label] pop |
+| arrays.js:32:3:32:24 | [DeclStmt] var arr4_variant = ... | semmle.label | [DeclStmt] var arr4_variant = ... |
+| arrays.js:32:7:32:18 | [VarDecl] arr4_variant | semmle.label | [VarDecl] arr4_variant |
+| arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | semmle.label | [VariableDeclarator] arr4_variant = [] |
+| arrays.js:32:22:32:23 | [ArrayExpr] [] | semmle.label | [ArrayExpr] [] |
+| arrays.js:33:3:33:14 | [VarRef] arr4_variant | semmle.label | [VarRef] arr4_variant |
+| arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | semmle.label | [DotExpr] arr4_variant.splice |
+| arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | semmle.label | [MethodCallExpr] arr4_va ... ource") |
+| arrays.js:33:3:33:46 | [ExprStmt] arr4_va ... urce"); | semmle.label | [ExprStmt] arr4_va ... urce"); |
+| arrays.js:33:16:33:21 | [Label] splice | semmle.label | [Label] splice |
+| arrays.js:33:23:33:23 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays.js:33:26:33:26 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays.js:33:29:33:34 | [Literal] "safe" | semmle.label | [Literal] "safe" |
+| arrays.js:33:37:33:44 | [Literal] "source" | semmle.label | [Literal] "source" |
+| arrays.js:34:3:34:14 | [VarRef] arr4_variant | semmle.label | [VarRef] arr4_variant |
+| arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | semmle.label | [DotExpr] arr4_variant.pop |
+| arrays.js:34:3:34:20 | [MethodCallExpr] arr4_variant.pop() | semmle.label | [MethodCallExpr] arr4_variant.pop() |
+| arrays.js:34:3:34:21 | [ExprStmt] arr4_variant.pop(); | semmle.label | [ExprStmt] arr4_variant.pop(); |
+| arrays.js:34:16:34:18 | [Label] pop | semmle.label | [Label] pop |
+| arrays.js:35:3:35:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | semmle.label | [CallExpr] sink(ar ... .pop()) |
+| arrays.js:35:3:35:27 | [ExprStmt] sink(ar ... pop()); | semmle.label | [ExprStmt] sink(ar ... pop()); |
+| arrays.js:35:8:35:19 | [VarRef] arr4_variant | semmle.label | [VarRef] arr4_variant |
+| arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | semmle.label | [DotExpr] arr4_variant.pop |
+| arrays.js:35:8:35:25 | [MethodCallExpr] arr4_variant.pop() | semmle.label | [MethodCallExpr] arr4_variant.pop() |
+| arrays.js:35:21:35:23 | [Label] pop | semmle.label | [Label] pop |
 | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | semmle.label | [DeclStmt] var arr5 = ... |
 | arrays.js:37:7:37:10 | [VarDecl] arr5 | semmle.label | [VarDecl] arr5 |
 | arrays.js:37:7:37:28 | [VariableDeclarator] arr5 = ... t(arr4) | semmle.label | [VariableDeclarator] arr5 = ... t(arr4) |
@@ -419,6 +444,8 @@ nodes
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
@@ -467,54 +494,62 @@ edges
 | arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:29:3:29:30 | [ExprStmt] arr4.sp ... urce"); | semmle.order | 16 |
 | arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:30:3:30:19 | [ExprStmt] sink(arr4.pop()); | semmle.label | 17 |
 | arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:30:3:30:19 | [ExprStmt] sink(arr4.pop()); | semmle.order | 17 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | semmle.label | 18 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | semmle.order | 18 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:38:3:38:19 | [ExprStmt] sink(arr5.pop()); | semmle.label | 19 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:38:3:38:19 | [ExprStmt] sink(arr5.pop()); | semmle.order | 19 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:40:3:40:28 | [ExprStmt] sink(ar ... pop()); | semmle.label | 20 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:40:3:40:28 | [ExprStmt] sink(ar ... pop()); | semmle.order | 20 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:42:3:42:16 | [DeclStmt] var arr6 = ... | semmle.label | 21 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:42:3:42:16 | [DeclStmt] var arr6 = ... | semmle.order | 21 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:43:3:45:3 | [ForStmt] for (va ... i]; } | semmle.label | 22 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:43:3:45:3 | [ForStmt] for (va ... i]; } | semmle.order | 22 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:46:3:46:19 | [ExprStmt] sink(arr6.pop()); | semmle.label | 23 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:46:3:46:19 | [ExprStmt] sink(arr6.pop()); | semmle.order | 23 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:49:3:52:5 | [ExprStmt] ["sourc ... . }); | semmle.label | 24 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:49:3:52:5 | [ExprStmt] ["sourc ... . }); | semmle.order | 24 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:54:3:54:15 | [ExprStmt] sink(arr[0]); | semmle.label | 25 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:54:3:54:15 | [ExprStmt] sink(arr[0]); | semmle.order | 25 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:56:3:58:3 | [ForOfStmt] for (co ... OK } | semmle.label | 26 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:56:3:58:3 | [ForOfStmt] for (co ... OK } | semmle.order | 26 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:60:3:62:3 | [ForOfStmt] for (co ... OK } | semmle.label | 27 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:60:3:62:3 | [ForOfStmt] for (co ... OK } | semmle.order | 27 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:64:3:66:3 | [ForOfStmt] for (co ... OK } | semmle.label | 28 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:64:3:66:3 | [ForOfStmt] for (co ... OK } | semmle.order | 28 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:68:3:68:16 | [DeclStmt] var arr7 = ... | semmle.label | 29 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:68:3:68:16 | [DeclStmt] var arr7 = ... | semmle.order | 29 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:69:3:69:20 | [ExprStmt] arr7.push(...arr); | semmle.label | 30 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:69:3:69:20 | [ExprStmt] arr7.push(...arr); | semmle.order | 30 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:70:3:72:3 | [ForOfStmt] for (co ... OK } | semmle.label | 31 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:70:3:72:3 | [ForOfStmt] for (co ... OK } | semmle.order | 31 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:74:3:74:42 | [DeclStmt] const arrayFrom = ... | semmle.label | 32 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:74:3:74:42 | [DeclStmt] const arrayFrom = ... | semmle.order | 32 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:75:3:77:3 | [ForOfStmt] for (co ... OK } | semmle.label | 33 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:75:3:77:3 | [ForOfStmt] for (co ... OK } | semmle.order | 33 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:79:3:79:31 | [ExprStmt] sink(ar ... back)); | semmle.label | 34 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:79:3:79:31 | [ExprStmt] sink(ar ... back)); | semmle.order | 34 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:81:3:81:42 | [DeclStmt] const arrayFind = ... | semmle.label | 35 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:81:3:81:42 | [DeclStmt] const arrayFind = ... | semmle.order | 35 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:82:3:82:37 | [ExprStmt] sink(ar ... back)); | semmle.label | 36 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:82:3:82:37 | [ExprStmt] sink(ar ... back)); | semmle.order | 36 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:84:3:84:31 | [DeclStmt] const uniq = ... | semmle.label | 37 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:84:3:84:31 | [DeclStmt] const uniq = ... | semmle.order | 37 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:85:3:87:3 | [ForOfStmt] for (co ... OK } | semmle.label | 38 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:85:3:87:3 | [ForOfStmt] for (co ... OK } | semmle.order | 38 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:89:3:89:19 | [ExprStmt] sink(arr.at(-1)); | semmle.label | 39 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:89:3:89:19 | [ExprStmt] sink(arr.at(-1)); | semmle.order | 39 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:91:3:91:36 | [ExprStmt] sink([" ... => x)); | semmle.label | 40 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:91:3:91:36 | [ExprStmt] sink([" ... => x)); | semmle.order | 40 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:92:3:92:38 | [ExprStmt] sink([" ... !!x)); | semmle.label | 41 |
-| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:92:3:92:38 | [ExprStmt] sink([" ... !!x)); | semmle.order | 41 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:32:3:32:24 | [DeclStmt] var arr4_variant = ... | semmle.label | 18 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:32:3:32:24 | [DeclStmt] var arr4_variant = ... | semmle.order | 18 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:33:3:33:46 | [ExprStmt] arr4_va ... urce"); | semmle.label | 19 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:33:3:33:46 | [ExprStmt] arr4_va ... urce"); | semmle.order | 19 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:34:3:34:21 | [ExprStmt] arr4_variant.pop(); | semmle.label | 20 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:34:3:34:21 | [ExprStmt] arr4_variant.pop(); | semmle.order | 20 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:35:3:35:27 | [ExprStmt] sink(ar ... pop()); | semmle.label | 21 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:35:3:35:27 | [ExprStmt] sink(ar ... pop()); | semmle.order | 21 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | semmle.label | 22 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | semmle.order | 22 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:38:3:38:19 | [ExprStmt] sink(arr5.pop()); | semmle.label | 23 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:38:3:38:19 | [ExprStmt] sink(arr5.pop()); | semmle.order | 23 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:40:3:40:28 | [ExprStmt] sink(ar ... pop()); | semmle.label | 24 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:40:3:40:28 | [ExprStmt] sink(ar ... pop()); | semmle.order | 24 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:42:3:42:16 | [DeclStmt] var arr6 = ... | semmle.label | 25 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:42:3:42:16 | [DeclStmt] var arr6 = ... | semmle.order | 25 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:43:3:45:3 | [ForStmt] for (va ... i]; } | semmle.label | 26 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:43:3:45:3 | [ForStmt] for (va ... i]; } | semmle.order | 26 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:46:3:46:19 | [ExprStmt] sink(arr6.pop()); | semmle.label | 27 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:46:3:46:19 | [ExprStmt] sink(arr6.pop()); | semmle.order | 27 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:49:3:52:5 | [ExprStmt] ["sourc ... . }); | semmle.label | 28 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:49:3:52:5 | [ExprStmt] ["sourc ... . }); | semmle.order | 28 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:54:3:54:15 | [ExprStmt] sink(arr[0]); | semmle.label | 29 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:54:3:54:15 | [ExprStmt] sink(arr[0]); | semmle.order | 29 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:56:3:58:3 | [ForOfStmt] for (co ... OK } | semmle.label | 30 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:56:3:58:3 | [ForOfStmt] for (co ... OK } | semmle.order | 30 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:60:3:62:3 | [ForOfStmt] for (co ... OK } | semmle.label | 31 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:60:3:62:3 | [ForOfStmt] for (co ... OK } | semmle.order | 31 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:64:3:66:3 | [ForOfStmt] for (co ... OK } | semmle.label | 32 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:64:3:66:3 | [ForOfStmt] for (co ... OK } | semmle.order | 32 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:68:3:68:16 | [DeclStmt] var arr7 = ... | semmle.label | 33 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:68:3:68:16 | [DeclStmt] var arr7 = ... | semmle.order | 33 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:69:3:69:20 | [ExprStmt] arr7.push(...arr); | semmle.label | 34 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:69:3:69:20 | [ExprStmt] arr7.push(...arr); | semmle.order | 34 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:70:3:72:3 | [ForOfStmt] for (co ... OK } | semmle.label | 35 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:70:3:72:3 | [ForOfStmt] for (co ... OK } | semmle.order | 35 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:74:3:74:42 | [DeclStmt] const arrayFrom = ... | semmle.label | 36 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:74:3:74:42 | [DeclStmt] const arrayFrom = ... | semmle.order | 36 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:75:3:77:3 | [ForOfStmt] for (co ... OK } | semmle.label | 37 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:75:3:77:3 | [ForOfStmt] for (co ... OK } | semmle.order | 37 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:79:3:79:31 | [ExprStmt] sink(ar ... back)); | semmle.label | 38 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:79:3:79:31 | [ExprStmt] sink(ar ... back)); | semmle.order | 38 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:81:3:81:42 | [DeclStmt] const arrayFind = ... | semmle.label | 39 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:81:3:81:42 | [DeclStmt] const arrayFind = ... | semmle.order | 39 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:82:3:82:37 | [ExprStmt] sink(ar ... back)); | semmle.label | 40 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:82:3:82:37 | [ExprStmt] sink(ar ... back)); | semmle.order | 40 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:84:3:84:31 | [DeclStmt] const uniq = ... | semmle.label | 41 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:84:3:84:31 | [DeclStmt] const uniq = ... | semmle.order | 41 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:85:3:87:3 | [ForOfStmt] for (co ... OK } | semmle.label | 42 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:85:3:87:3 | [ForOfStmt] for (co ... OK } | semmle.order | 42 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:89:3:89:19 | [ExprStmt] sink(arr.at(-1)); | semmle.label | 43 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:89:3:89:19 | [ExprStmt] sink(arr.at(-1)); | semmle.order | 43 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:91:3:91:36 | [ExprStmt] sink([" ... => x)); | semmle.label | 44 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:91:3:91:36 | [ExprStmt] sink([" ... => x)); | semmle.order | 44 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:92:3:92:38 | [ExprStmt] sink([" ... !!x)); | semmle.label | 45 |
+| arrays.js:1:14:93:1 | [BlockStmt] { let ... OT OK } | arrays.js:92:3:92:38 | [ExprStmt] sink([" ... !!x)); | semmle.order | 45 |
 | arrays.js:2:3:2:24 | [DeclStmt] let source = ... | arrays.js:2:7:2:23 | [VariableDeclarator] source = "source" | semmle.label | 1 |
 | arrays.js:2:3:2:24 | [DeclStmt] let source = ... | arrays.js:2:7:2:23 | [VariableDeclarator] source = "source" | semmle.order | 1 |
 | arrays.js:2:7:2:23 | [VariableDeclarator] source = "source" | arrays.js:2:7:2:12 | [VarDecl] source | semmle.label | 1 |
@@ -747,6 +782,42 @@ edges
 | arrays.js:30:8:30:15 | [DotExpr] arr4.pop | arrays.js:30:13:30:15 | [Label] pop | semmle.order | 2 |
 | arrays.js:30:8:30:17 | [MethodCallExpr] arr4.pop() | arrays.js:30:8:30:15 | [DotExpr] arr4.pop | semmle.label | 0 |
 | arrays.js:30:8:30:17 | [MethodCallExpr] arr4.pop() | arrays.js:30:8:30:15 | [DotExpr] arr4.pop | semmle.order | 0 |
+| arrays.js:32:3:32:24 | [DeclStmt] var arr4_variant = ... | arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | semmle.label | 1 |
+| arrays.js:32:3:32:24 | [DeclStmt] var arr4_variant = ... | arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | semmle.order | 1 |
+| arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | arrays.js:32:7:32:18 | [VarDecl] arr4_variant | semmle.label | 1 |
+| arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | arrays.js:32:7:32:18 | [VarDecl] arr4_variant | semmle.order | 1 |
+| arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | arrays.js:32:22:32:23 | [ArrayExpr] [] | semmle.label | 2 |
+| arrays.js:32:7:32:23 | [VariableDeclarator] arr4_variant = [] | arrays.js:32:22:32:23 | [ArrayExpr] [] | semmle.order | 2 |
+| arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | arrays.js:33:3:33:14 | [VarRef] arr4_variant | semmle.label | 1 |
+| arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | arrays.js:33:3:33:14 | [VarRef] arr4_variant | semmle.order | 1 |
+| arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | arrays.js:33:16:33:21 | [Label] splice | semmle.label | 2 |
+| arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | arrays.js:33:16:33:21 | [Label] splice | semmle.order | 2 |
+| arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | semmle.label | 0 |
+| arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | arrays.js:33:3:33:21 | [DotExpr] arr4_variant.splice | semmle.order | 0 |
+| arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays.js:33:3:33:46 | [ExprStmt] arr4_va ... urce"); | arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | semmle.label | 1 |
+| arrays.js:33:3:33:46 | [ExprStmt] arr4_va ... urce"); | arrays.js:33:3:33:45 | [MethodCallExpr] arr4_va ... ource") | semmle.order | 1 |
+| arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | arrays.js:34:3:34:14 | [VarRef] arr4_variant | semmle.label | 1 |
+| arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | arrays.js:34:3:34:14 | [VarRef] arr4_variant | semmle.order | 1 |
+| arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | arrays.js:34:16:34:18 | [Label] pop | semmle.label | 2 |
+| arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | arrays.js:34:16:34:18 | [Label] pop | semmle.order | 2 |
+| arrays.js:34:3:34:20 | [MethodCallExpr] arr4_variant.pop() | arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | semmle.label | 0 |
+| arrays.js:34:3:34:20 | [MethodCallExpr] arr4_variant.pop() | arrays.js:34:3:34:18 | [DotExpr] arr4_variant.pop | semmle.order | 0 |
+| arrays.js:34:3:34:21 | [ExprStmt] arr4_variant.pop(); | arrays.js:34:3:34:20 | [MethodCallExpr] arr4_variant.pop() | semmle.label | 1 |
+| arrays.js:34:3:34:21 | [ExprStmt] arr4_variant.pop(); | arrays.js:34:3:34:20 | [MethodCallExpr] arr4_variant.pop() | semmle.order | 1 |
+| arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | arrays.js:35:3:35:6 | [VarRef] sink | semmle.label | 0 |
+| arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | arrays.js:35:3:35:6 | [VarRef] sink | semmle.order | 0 |
+| arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays.js:35:3:35:27 | [ExprStmt] sink(ar ... pop()); | arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | semmle.label | 1 |
+| arrays.js:35:3:35:27 | [ExprStmt] sink(ar ... pop()); | arrays.js:35:3:35:26 | [CallExpr] sink(ar ... .pop()) | semmle.order | 1 |
+| arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | arrays.js:35:8:35:19 | [VarRef] arr4_variant | semmle.label | 1 |
+| arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | arrays.js:35:8:35:19 | [VarRef] arr4_variant | semmle.order | 1 |
+| arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | arrays.js:35:21:35:23 | [Label] pop | semmle.label | 2 |
+| arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | arrays.js:35:21:35:23 | [Label] pop | semmle.order | 2 |
+| arrays.js:35:8:35:25 | [MethodCallExpr] arr4_variant.pop() | arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | semmle.label | 0 |
+| arrays.js:35:8:35:25 | [MethodCallExpr] arr4_variant.pop() | arrays.js:35:8:35:23 | [DotExpr] arr4_variant.pop | semmle.order | 0 |
 | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | arrays.js:37:7:37:28 | [VariableDeclarator] arr5 = ... t(arr4) | semmle.label | 1 |
 | arrays.js:37:3:37:29 | [DeclStmt] var arr5 = ... | arrays.js:37:7:37:28 | [VariableDeclarator] arr5 = ... t(arr4) | semmle.order | 1 |
 | arrays.js:37:7:37:28 | [VariableDeclarator] arr5 = ... t(arr4) | arrays.js:37:7:37:10 | [VarDecl] arr5 | semmle.label | 1 |
@@ -1193,6 +1264,16 @@ edges
 | file://:0:0:0:0 | (Arguments) | arrays.js:29:21:29:28 | [Literal] "source" | semmle.order | 2 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:30:8:30:17 | [MethodCallExpr] arr4.pop() | semmle.label | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:30:8:30:17 | [MethodCallExpr] arr4.pop() | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:23:33:23 | [Literal] 0 | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:23:33:23 | [Literal] 0 | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:26:33:26 | [Literal] 0 | semmle.label | 1 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:26:33:26 | [Literal] 0 | semmle.order | 1 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:29:33:34 | [Literal] "safe" | semmle.label | 2 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:29:33:34 | [Literal] "safe" | semmle.order | 2 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:37:33:44 | [Literal] "source" | semmle.label | 3 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:33:37:33:44 | [Literal] "source" | semmle.order | 3 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:35:8:35:25 | [MethodCallExpr] arr4_variant.pop() | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays.js:35:8:35:25 | [MethodCallExpr] arr4_variant.pop() | semmle.order | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:37:24:37:27 | [VarRef] arr4 | semmle.label | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:37:24:37:27 | [VarRef] arr4 | semmle.order | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:38:8:38:17 | [MethodCallExpr] arr5.pop() | semmle.label | 0 |
