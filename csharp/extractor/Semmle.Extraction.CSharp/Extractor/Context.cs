@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
 
@@ -177,6 +178,26 @@ namespace Semmle.Extraction.CSharp
 
             extractedGenerics.Add(entity.Label);
             return true;
+        }
+
+        public string TryAdjustRelativeMappedFilePath(string mappedToPath, string mappedFromPath)
+        {
+            if (!Path.IsPathRooted(mappedToPath))
+            {
+                try
+                {
+                    var fullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(mappedFromPath)!, mappedToPath));
+                    Extractor.Logger.LogDebug($"Found relative path in line mapping: '{mappedToPath}', interpreting it as '{fullPath}'");
+
+                    mappedToPath = fullPath;
+                }
+                catch (Exception e)
+                {
+                    Extractor.Logger.LogDebug($"Failed to compute absolute path for relative path in line mapping: '{mappedToPath}': {e}");
+                }
+            }
+
+            return mappedToPath;
         }
     }
 }

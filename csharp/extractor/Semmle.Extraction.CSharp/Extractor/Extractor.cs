@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
-            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
+            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, pathTransformer, canonicalPathCache, options.AssemblySensitiveTrap);
 
             try
             {
@@ -144,7 +144,7 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, canonicalPathCache, stopwatch);
+                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -226,7 +226,7 @@ namespace Semmle.Extraction.CSharp
         /// The resolved references will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        private static IEnumerable<Action> ResolveReferences(Microsoft.CodeAnalysis.CommandLineArguments args, Analyser analyser, CanonicalPathCache canonicalPathCache, BlockingCollection<MetadataReference> ret)
+        private static IEnumerable<Action> ResolveReferences(Microsoft.CodeAnalysis.CommandLineArguments args, Analyser analyser, BlockingCollection<MetadataReference> ret)
         {
             var referencePaths = new Lazy<string[]>(() => FixedReferencePaths(args).ToArray());
             return args.MetadataReferences.Select<CommandLineReference, Action>(clref => () =>
@@ -235,7 +235,7 @@ namespace Semmle.Extraction.CSharp
                 {
                     if (File.Exists(clref.Reference))
                     {
-                        var reference = MakeReference(clref, canonicalPathCache.GetCanonicalPath(clref.Reference));
+                        var reference = MakeReference(clref, analyser.PathCache.GetCanonicalPath(clref.Reference));
                         ret.Add(reference);
                     }
                     else
@@ -252,7 +252,7 @@ namespace Semmle.Extraction.CSharp
                     var composed = referencePaths.Value
                         .Select(path => Path.Combine(path, clref.Reference))
                         .Where(path => File.Exists(path))
-                        .Select(path => canonicalPathCache.GetCanonicalPath(path))
+                        .Select(path => analyser.PathCache.GetCanonicalPath(path))
                         .FirstOrDefault();
 
                     if (composed is not null)
@@ -382,11 +382,10 @@ namespace Semmle.Extraction.CSharp
             TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
             Options options,
-            CanonicalPathCache canonicalPathCache,
             Stopwatch stopwatch)
         {
             return Analyse(stopwatch, analyser, options,
-                references => ResolveReferences(compilerArguments, analyser, canonicalPathCache, references),
+                references => ResolveReferences(compilerArguments, analyser, references),
                 (analyser, syntaxTrees) =>
                 {
                     var paths = compilerArguments.SourceFiles
@@ -399,7 +398,7 @@ namespace Semmle.Extraction.CSharp
                     }
 
                     return ReadSyntaxTrees(
-                        paths.Select(canonicalPathCache.GetCanonicalPath),
+                        paths.Select(analyser.PathCache.GetCanonicalPath),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,

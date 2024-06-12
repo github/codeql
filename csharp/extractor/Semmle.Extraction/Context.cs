@@ -51,7 +51,7 @@ namespace Semmle.Extraction
                 try
                 {
                     writingLabel = true;
-                    entity.DefineLabel(TrapWriter.Writer, Extractor);
+                    entity.DefineLabel(TrapWriter.Writer);
                 }
                 finally
                 {

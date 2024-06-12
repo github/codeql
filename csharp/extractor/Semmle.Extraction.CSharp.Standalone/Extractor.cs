@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
-            using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
+            using var analyser = new StandaloneAnalyser(pm, logger, pathTransformer, canonicalPathCache, false);
             try
             {
                 AnalyseStandalone(analyser, extractionInput, options, pm, stopwatch);

@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp
 {
     public class StandaloneAnalyser : Analyser
     {
-        public StandaloneAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
-            : base(pm, logger, addAssemblyTrapPrefix, pathTransformer)
+        public StandaloneAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
         {
         }
 
@@ -18,7 +19,7 @@ namespace Semmle.Extraction.CSharp
             compilation = compilationIn;
             extractor = new Extraction.Extractor(Directory.GetCurrentDirectory(), [], outputPath, compilationInfos, Logger, PathTransformer, ExtractorMode.Standalone, options.QlTest);
             this.options = options;
-            LogExtractorInfo(Extraction.Extractor.Version);
+            LogExtractorInfo();
             SetReferencePaths();
         }
 

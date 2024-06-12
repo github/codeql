@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using Semmle.Util.Logging;
 using CompilationInfo = (string key, string value);
 
@@ -109,21 +108,6 @@ namespace Semmle.Extraction
         public IEnumerable<string> MissingNamespaces => missingNamespaces;
 
         public ILogger Logger { get; private set; }
-
-        public static string Version
-        {
-            get
-            {
-                // the attribute for the git information are always attached to the entry assembly by our build system
-                var assembly = Assembly.GetEntryAssembly();
-                var versionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-                if (versionString == null)
-                {
-                    return "unknown (not built from internal bazel workspace)";
-                }
-                return versionString.InformationalVersion;
-            }
-        }
 
         public PathTransformer PathTransformer { get; }
     }
