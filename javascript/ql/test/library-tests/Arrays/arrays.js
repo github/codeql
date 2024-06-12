@@ -29,6 +29,11 @@
   arr4.splice(0, 0, "source");
   sink(arr4.pop()); // NOT OK
 
+  // var arr4_variant = [];
+  // arr4_variant.splice(0, 0, "safe", "source");
+  // arr4_variant.pop();
+  // sink(arr4_variant.pop()); // NOT OK
+
   var arr5 = [].concat(arr4);
   sink(arr5.pop()); // NOT OK
 
