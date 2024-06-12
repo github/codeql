@@ -2,7 +2,7 @@
 Update generated files related to Go in the repo. Using --force will regenerate all files from scratch.
 
 In particular the script will:
-1. update the `vendor` dir with `go work vendor` (using a go toolchain provided by bazel)
+1. update the `vendor` dir with `go mod vendor` (using a go toolchain provided by bazel)
 2. update `BUILD.bazel` files using gazelle
 3. update `ql/lib/go.dbscheme` using a compiled `go-dbschemegen`
 """
