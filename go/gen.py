@@ -48,7 +48,7 @@ if opts.force:
 existing_build_files = set(go_extractor_dir.glob("*/**/BUILD.bazel"))
 
 print("updating vendor directory")
-subprocess.check_call([go, "-C", go_extractor_dir, "work", "vendor"])
+subprocess.check_call([go, "-C", go_extractor_dir, "mod", "vendor"])
 
 if opts.force:
     print("clearing generated BUILD files")
