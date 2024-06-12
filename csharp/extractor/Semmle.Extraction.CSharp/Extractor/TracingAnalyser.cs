@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp
             this.options = options;
             this.compilation = compilation;
             this.ExtractionContext = new ExtractionContext(cwd, args, GetOutputName(compilation, commandLineArguments), [], Logger, PathTransformer, ExtractorMode.None, options.QlTest);
-            var errorCount = LogDiagnostics(compilation);
+            var errorCount = LogDiagnostics();
 
             SetReferencePaths();
 
@@ -137,9 +137,9 @@ namespace Semmle.Extraction.CSharp
             return Path.Combine(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
         }
 
-        private int LogDiagnostics(CSharpCompilation compilation)
+        private int LogDiagnostics()
         {
-            var filteredDiagnostics = compilation
+            var filteredDiagnostics = compilation!
                 .GetDiagnostics()
                 .Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id))
                 .ToList();
