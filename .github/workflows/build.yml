@@ -25,4 +25,6 @@ jobs:
 
       - name: Run action
         if: steps.changes.outputs.src == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
         uses: ./
