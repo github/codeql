@@ -190,9 +190,9 @@ namespace Semmle.Extraction
             }
         }
 
-        protected Context(ExtractionContext extractor, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
+        protected Context(ExtractionContext extractionContext, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
         {
-            ExtractionContext = extractor;
+            ExtractionContext = extractionContext;
             TrapWriter = trapWriter;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
         }
