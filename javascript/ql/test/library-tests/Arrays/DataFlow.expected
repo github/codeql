@@ -19,4 +19,5 @@
 | arrays.js:29:21:29:28 | "source" | arrays.js:38:8:38:17 | arr5.pop() |
 | arrays.js:29:21:29:28 | "source" | arrays.js:40:8:40:26 | arr5.slice(2).pop() |
 | arrays.js:29:21:29:28 | "source" | arrays.js:46:8:46:17 | arr6.pop() |
+| arrays.js:33:37:33:44 | "source" | arrays.js:35:8:35:25 | arr4_variant.pop() |
 | arrays.js:49:4:49:11 | "source" | arrays.js:50:10:50:18 | ary.pop() |

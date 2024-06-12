@@ -77,8 +77,8 @@ module ArrayTaintTracking {
     succ = call.getReceiver().getALocalSource() and
     call.getCalleeName() = ["push", "unshift"]
     or
-    // `array.splice(i, del, e)`: if `e` is tainted, then so is `array`.
-    pred = call.getArgument(2) and
+    // `array.splice(i, del, ...items)`: if any item is tainted, then so is `array`.
+    pred = call.getArgument(any(int i | i >= 2)) and
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
@@ -274,14 +274,14 @@ private module ArrayDataFlow {
 
   /**
    * A step modeling that `splice` can insert elements into an array.
-   * For example in `array.splice(i, del, e)`: if `e` is tainted, then so is `array
+   * For example in `array.splice(i, del, ...items)`: if any item is tainted, then so is `array`
    */
   private class ArraySpliceStep extends PreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = "splice" and
         prop = arrayElement() and
-        element = call.getArgument(2) and
+        element = call.getArgument(any(int i | i >= 2)) and
         call = obj.getAMethodCall()
       )
     }
