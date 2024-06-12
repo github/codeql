@@ -1,4 +1,4 @@
-load("//java/kotlin-extractor:versions.bzl", "VERSIONS", "version_less")
+load("//java/kotlin-extractor:versions.bzl", "VERSIONS")
 load("//misc/bazel:lfs.bzl", "lfs_smudge")
 
 _kotlin_dep_build = """
@@ -69,42 +69,34 @@ def _embeddable_source_impl(repository_ctx):
 
 _embeddable_source = repository_rule(implementation = _embeddable_source_impl)
 
-def _get_default_version(repository_ctx):
+def _get_version(repository_ctx, available = []):
     default_version = repository_ctx.getenv("CODEQL_KOTLIN_SINGLE_VERSION")
     if default_version:
         return default_version
-    kotlin_plugin_versions = repository_ctx.path(Label("//java/kotlin-extractor:current_kotlin_version.py"))
-    python = repository_ctx.which("python3") or repository_ctx.which("python")
-    env = {}
     repository_ctx.watch(Label("//java/kotlin-extractor:dev/.kotlinc_version"))
-    if not repository_ctx.which("kotlinc"):
-        # take default from the kotlinc wrapper
-        path = repository_ctx.getenv("PATH")
-        path_to_add = repository_ctx.path(Label("//java/kotlin-extractor:dev"))
-        if not path:
-            path = str(path_to_add)
-        elif repository_ctx.os.name == "windows":
-            path = "%s;%s" % (path, path_to_add)
-        else:
-            path = "%s:%s" % (path, path_to_add)
-        env["PATH"] = path
-    res = repository_ctx.execute([python, kotlin_plugin_versions], environment = env)
+    version_picker = repository_ctx.path(Label("//java/kotlin-extractor:pick-kotlin-version.py"))
+    python = repository_ctx.which("python3") or repository_ctx.which("python")
+
+    # use the kotlinc wrapper as fallback
+    path = repository_ctx.getenv("PATH")
+    path_to_add = repository_ctx.path(Label("//java/kotlin-extractor:dev"))
+    if not path:
+        path = str(path_to_add)
+    elif repository_ctx.os.name == "windows":
+        path = "%s;%s" % (path, path_to_add)
+    else:
+        path = "%s:%s" % (path, path_to_add)
+    res = repository_ctx.execute([python, version_picker] + available, environment = {"PATH": path})
     if res.return_code != 0:
         fail(res.stderr)
     return res.stdout.strip()
 
-def _get_available_version(version):
-    for available_version in reversed(VERSIONS):
-        if not version_less(version, available_version):
-            return available_version
-    fail("no available version found for version %s among:\n  %s" % (version, " ".join(VERSIONS)))
-
 def _defaults_impl(repository_ctx):
-    default_version = _get_default_version(repository_ctx)
+    default_version = _get_version(repository_ctx)
     default_variant = "standalone"
     if repository_ctx.getenv("CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE") in ("true", "1"):
         default_variant = "embeddable"
-    available_version = _get_available_version(default_version)
+    available_version = _get_version(repository_ctx, VERSIONS)
     info = struct(
         version = default_version,
         variant = default_variant,

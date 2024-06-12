@@ -178,8 +178,18 @@ kt_javac_options(
         ) for variant in ("standalone", "embeddable") for version in VERSIONS],
         visibility = ["//visibility:public"],
     ),
-    sh_binary(
-        name = "print-default-version",
-        srcs = ["//java/kotlin-extractor/defaults:default-version-printer"],
+    genrule(
+        name = "versions-list",
+        outs = ["kotlin-versions.list"],
+        cmd = "\n".join(["cat > $@ << EOF"] + VERSIONS + ["EOF"]),
+    ),
+    # these are packed in the extractor pack for running QL tests
+    filegroup(
+        name = "version-picker",
+        srcs = [
+            "pick-kotlin-version.py",
+            ":versions-list",
+        ],
+        visibility = ["//visibility:public"],
     ),
 ) if not _for_embeddable else None
