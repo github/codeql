@@ -2,7 +2,7 @@
 library: true
 warnOnImplicitThis: true
 name: githubsecuritylab/actions-all
-version: 0.0.36
+version: 0.1.0
 dependencies:
   codeql/javascript-all: ^1.0.0
   codeql/util: ^1.0.0
