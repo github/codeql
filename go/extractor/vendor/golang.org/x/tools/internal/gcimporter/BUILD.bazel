@@ -12,10 +12,8 @@ go_library(
         "iimport.go",
         "newInterface10.go",
         "newInterface11.go",
-        "support_go117.go",
         "support_go118.go",
         "unified_no.go",
-        "ureader_no.go",
         "ureader_yes.go",
     ],
     importmap = "github.com/github/codeql-go/extractor/vendor/golang.org/x/tools/internal/gcimporter",
@@ -23,7 +21,9 @@ go_library(
     visibility = ["//go/extractor/vendor/golang.org/x/tools:__subpackages__"],
     deps = [
         "//go/extractor/vendor/golang.org/x/tools/go/types/objectpath",
+        "//go/extractor/vendor/golang.org/x/tools/internal/aliases",
         "//go/extractor/vendor/golang.org/x/tools/internal/pkgbits",
         "//go/extractor/vendor/golang.org/x/tools/internal/tokeninternal",
+        "//go/extractor/vendor/golang.org/x/tools/internal/typesinternal",
     ],
 )
