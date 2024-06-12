@@ -79,7 +79,6 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "MoveNext", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "Reset", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "get_Current", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Enumerator", "(Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "MoveNext", "()", "summary", "df-generated"]

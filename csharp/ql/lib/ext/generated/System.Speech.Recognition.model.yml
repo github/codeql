@@ -71,7 +71,6 @@ extensions:
       - ["System.Speech.Recognition", "LoadGrammarCompletedEventArgs", "get_Grammar", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "RecognitionEventArgs", "get_Result", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "RecognitionResult", "GetAudioForWordRange", "(System.Speech.Recognition.RecognizedWordUnit,System.Speech.Recognition.RecognizedWordUnit)", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "RecognitionResult", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "RecognitionResult", "get_Alternates", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "RecognitionResult", "get_Audio", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "RecognizeCompletedEventArgs", "get_AudioPosition", "()", "summary", "df-generated"]

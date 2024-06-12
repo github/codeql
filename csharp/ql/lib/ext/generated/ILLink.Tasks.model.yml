@@ -4,9 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["ILLink.Tasks", "ILLink", False, "GenerateCommandLineCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["ILLink.Tasks", "ILLink", False, "GenerateFullPathToTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["ILLink.Tasks", "ILLink", False, "get_ToolName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "GenerateCommandLineCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "GenerateFullPathToTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "get_ToolName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

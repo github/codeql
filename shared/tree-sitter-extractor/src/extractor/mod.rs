@@ -33,8 +33,7 @@ pub fn set_tracing_level(language: &str) {
                         })
                         .unwrap_or_else(|_| "warn");
                     tracing_subscriber::EnvFilter::new(format!(
-                        "{}_extractor={}",
-                        language, verbosity
+                        "{language}_extractor={verbosity},codeql_extractor={verbosity}"
                     ))
                 },
             ),

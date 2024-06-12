@@ -2,29 +2,29 @@ edges
 | ZipSlip.cs:15:24:15:40 | access to local variable fullPath_relative : String | ZipSlip.cs:30:71:30:87 | access to local variable fullPath_relative : String | provenance |  |
 | ZipSlip.cs:15:24:15:40 | access to local variable fullPath_relative : String | ZipSlip.cs:35:28:35:56 | access to local variable destFilePath_notCanonicalized : String | provenance |  |
 | ZipSlip.cs:15:44:15:75 | call to method GetFullPath : String | ZipSlip.cs:15:24:15:40 | access to local variable fullPath_relative : String | provenance |  |
-| ZipSlip.cs:15:61:15:74 | access to property FullName : String | ZipSlip.cs:15:44:15:75 | call to method GetFullPath : String | provenance | MaD:1115 |
+| ZipSlip.cs:15:61:15:74 | access to property FullName : String | ZipSlip.cs:15:44:15:75 | call to method GetFullPath : String | provenance | MaD:1124 |
 | ZipSlip.cs:18:24:18:49 | access to local variable file_badDirectoryTraversal : String | ZipSlip.cs:22:71:22:96 | access to local variable file_badDirectoryTraversal : String | provenance |  |
 | ZipSlip.cs:18:53:18:66 | access to property FullName : String | ZipSlip.cs:18:24:18:49 | access to local variable file_badDirectoryTraversal : String | provenance |  |
 | ZipSlip.cs:22:28:22:39 | access to local variable destFileName : String | ZipSlip.cs:23:41:23:52 | access to local variable destFileName | provenance |  |
 | ZipSlip.cs:22:43:22:97 | call to method Combine : String | ZipSlip.cs:22:28:22:39 | access to local variable destFileName : String | provenance |  |
-| ZipSlip.cs:22:71:22:96 | access to local variable file_badDirectoryTraversal : String | ZipSlip.cs:22:43:22:97 | call to method Combine : String | provenance | MaD:1098 |
+| ZipSlip.cs:22:71:22:96 | access to local variable file_badDirectoryTraversal : String | ZipSlip.cs:22:43:22:97 | call to method Combine : String | provenance | MaD:1107 |
 | ZipSlip.cs:30:28:30:39 | access to local variable destFilePath : String | ZipSlip.cs:31:41:31:52 | access to local variable destFilePath | provenance |  |
 | ZipSlip.cs:30:43:30:88 | call to method Combine : String | ZipSlip.cs:30:28:30:39 | access to local variable destFilePath : String | provenance |  |
-| ZipSlip.cs:30:71:30:87 | access to local variable fullPath_relative : String | ZipSlip.cs:30:43:30:88 | call to method Combine : String | provenance | MaD:1098 |
+| ZipSlip.cs:30:71:30:87 | access to local variable fullPath_relative : String | ZipSlip.cs:30:43:30:88 | call to method Combine : String | provenance | MaD:1107 |
 | ZipSlip.cs:35:28:35:56 | access to local variable destFilePath_notCanonicalized : String | ZipSlip.cs:39:45:39:73 | access to local variable destFilePath_notCanonicalized | provenance |  |
 | ZipSlip.cs:58:20:58:27 | access to local variable fullpath : String | ZipSlip.cs:62:33:62:40 | access to local variable fullpath | provenance |  |
 | ZipSlip.cs:58:20:58:27 | access to local variable fullpath : String | ZipSlip.cs:71:37:71:44 | access to local variable fullpath | provenance |  |
 | ZipSlip.cs:58:31:58:75 | call to method Combine : String | ZipSlip.cs:58:20:58:27 | access to local variable fullpath : String | provenance |  |
-| ZipSlip.cs:58:61:58:74 | access to property FullName : String | ZipSlip.cs:58:31:58:75 | call to method Combine : String | provenance | MaD:1098 |
+| ZipSlip.cs:58:61:58:74 | access to property FullName : String | ZipSlip.cs:58:31:58:75 | call to method Combine : String | provenance | MaD:1107 |
 | ZipSlip.cs:105:32:105:43 | access to local variable destFilePath : String | ZipSlip.cs:112:74:112:85 | access to local variable destFilePath | provenance |  |
 | ZipSlip.cs:105:32:105:43 | access to local variable destFilePath : String | ZipSlip.cs:119:71:119:82 | access to local variable destFilePath | provenance |  |
 | ZipSlip.cs:105:32:105:43 | access to local variable destFilePath : String | ZipSlip.cs:126:57:126:68 | access to local variable destFilePath | provenance |  |
 | ZipSlip.cs:105:32:105:43 | access to local variable destFilePath : String | ZipSlip.cs:134:58:134:69 | access to local variable destFilePath | provenance |  |
 | ZipSlip.cs:105:47:105:86 | call to method Combine : String | ZipSlip.cs:105:32:105:43 | access to local variable destFilePath : String | provenance |  |
-| ZipSlip.cs:105:72:105:85 | access to property FullName : String | ZipSlip.cs:105:47:105:86 | call to method Combine : String | provenance | MaD:1098 |
+| ZipSlip.cs:105:72:105:85 | access to property FullName : String | ZipSlip.cs:105:47:105:86 | call to method Combine : String | provenance | MaD:1107 |
 | ZipSlipBad.cs:9:16:9:27 | access to local variable destFileName : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | provenance |  |
 | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | ZipSlipBad.cs:9:16:9:27 | access to local variable destFileName : String | provenance |  |
-| ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | provenance | MaD:1098 |
+| ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | provenance | MaD:1107 |
 nodes
 | ZipSlip.cs:15:24:15:40 | access to local variable fullPath_relative : String | semmle.label | access to local variable fullPath_relative : String |
 | ZipSlip.cs:15:44:15:75 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |

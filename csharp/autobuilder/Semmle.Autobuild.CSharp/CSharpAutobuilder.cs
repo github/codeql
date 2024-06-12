@@ -12,7 +12,7 @@ namespace Semmle.Autobuild.CSharp
     public class CSharpAutobuildOptions : AutobuildOptionsShared
     {
         private const string buildModeEnvironmentVariable = "CODEQL_EXTRACTOR_CSHARP_BUILD_MODE";
-        private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
+        internal const string ExtractorOptionBuildless = "CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS";
 
         public bool Buildless { get; }
 
@@ -26,7 +26,7 @@ namespace Semmle.Autobuild.CSharp
         public CSharpAutobuildOptions(IBuildActions actions) : base(actions)
         {
             Buildless =
-                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false) ||
+                actions.GetEnvironmentVariable(ExtractorOptionBuildless).AsBool("buildless", false) ||
                 actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
 
 
@@ -51,7 +51,7 @@ namespace Semmle.Autobuild.CSharp
                 case CSharpBuildStrategy.Buildless:
                     // No need to check that the extractor has been executed in buildless mode
                     attempt = BuildScript.Bind(
-                        AddBuildlessStartedDiagnostic() & new StandaloneBuildRule().Analyse(this, false),
+                        AddBuildlessWronglyConfiguredWarning() & AddBuildlessStartedDiagnostic() & new StandaloneBuildRule().Analyse(this, false),
                         AddBuildlessEndedDiagnostic);
                     break;
                 case CSharpBuildStrategy.Auto:
@@ -80,6 +80,27 @@ namespace Semmle.Autobuild.CSharp
 
                 return 1;
             });
+
+        private BuildScript AddBuildlessWronglyConfiguredWarning()
+        {
+            return BuildScript.Create(actions =>
+            {
+                if (actions.GetEnvironmentVariable(CSharpAutobuildOptions.ExtractorOptionBuildless) is null)
+                {
+                    return 0;
+                }
+
+                AddDiagnostic(new DiagnosticMessage(
+                    Options.Language,
+                    "buildless/use-build-mode",
+                    "C# was extracted with the deprecated 'buildless' option, use build-mode instead",
+                    visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                    markdownMessage: "C# was extracted with the deprecated 'buildless' option, use build-mode instead.",
+                    severity: DiagnosticMessage.TspSeverity.Warning
+                ));
+                return 0;
+            });
+        }
 
         private BuildScript AddBuildlessStartedDiagnostic()
         {

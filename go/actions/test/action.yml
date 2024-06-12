@@ -40,7 +40,7 @@ runs:
     - name: Build
       shell: bash
       run: |
-        bazel run go:create-extractor-pack
+        bazel run go:go-installer
 
     - name: Check that all Go code is autoformatted
       if: inputs.run-code-checks == 'true' && !cancelled()
