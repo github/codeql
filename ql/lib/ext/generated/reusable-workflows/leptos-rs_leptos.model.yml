@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["leptos-rs/leptos/.github/workflows/run-cargo-make-task.yml", "*", "input.directory", "code-injection", "generated"]
      - ["leptos-rs/leptos/.github/workflows/run-cargo-make-task.yml", "*", "input.cargo_make_task", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["stdlib-js/stdlib/.github/workflows/update_pr_copyright_years.yml", "*", "input.pull_request_number", "code-injection", "generated"]
      - ["stdlib-js/stdlib/.github/workflows/lint_autofix.yml", "*", "input.pull_request_number", "code-injection", "generated"]

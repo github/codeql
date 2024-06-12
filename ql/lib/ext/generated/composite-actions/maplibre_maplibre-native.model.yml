@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["maplibre/maplibre-native", "*", "input.artifact-name", "code-injection", "generated"]
      - ["maplibre/maplibre-native", "*", "input.externalData", "code-injection", "generated"]

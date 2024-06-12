@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["apache/pekko", "*", "input.upload", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["reggionick/s3-deploy", "*", "input.bucket", "command-injection", "manual"]
       - ["reggionick/s3-deploy", "*", "input.bucket-region", "command-injection", "manual"]

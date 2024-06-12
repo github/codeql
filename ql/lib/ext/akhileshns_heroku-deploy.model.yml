@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["akhileshns/heroku-deploy", "*", "input.branch", "output.status", "taint", "manual"]
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["akhileshns/heroku-deploy", "*", "input.heroku_app_name", "command-injection", "manual"]
       - ["akhileshns/heroku-deploy", "*", "input.buildpack", "command-injection", "manual"]

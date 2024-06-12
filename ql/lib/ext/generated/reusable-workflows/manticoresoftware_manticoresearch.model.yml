@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "input.CTEST_END", "code-injection", "generated"]
      - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "input.CTEST_START", "code-injection", "generated"]

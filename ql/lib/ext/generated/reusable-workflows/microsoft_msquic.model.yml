@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["microsoft/msquic/.github/workflows/build-reuse-winkernel.yml", "*", "input.arch", "code-injection", "generated"]
      - ["microsoft/msquic/.github/workflows/build-reuse-winkernel.yml", "*", "input.tls", "code-injection", "generated"]

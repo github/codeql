@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["shimataro/ssh-key-action/.github/workflows/reusable-verify.yml", "*", "input.package_installation_command", "code-injection", "generated"]

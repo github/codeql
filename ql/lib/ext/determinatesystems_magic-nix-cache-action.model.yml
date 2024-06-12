@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["determinatesystems/magic-nix-cache-action", "*", "input.source-url", "command-injection", "manual"]
       - ["determinatesystems/magic-nix-cache-action", "*", "input.source-tag", "command-injection", "manual"]

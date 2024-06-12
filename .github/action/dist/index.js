@@ -28604,7 +28604,7 @@ const toolcache = __importStar(__nccwpck_require__(7784));
 const toolrunner = __importStar(__nccwpck_require__(8159));
 async function newCodeQL() {
     return {
-        language: "yaml",
+        language: "javascript",
         path: await findCodeQL(),
         pack: "githubsecuritylab/actions-queries",
         suite: `codeql-suites/${core.getInput("suite") || "actions-code-scanning"}.qls`,
@@ -28771,16 +28771,16 @@ async function run() {
         var codeql = await cql.newCodeQL();
         core.debug(`CodeQL CLI found at '${codeql.path}'`);
         await cql.runCommand(codeql, ["version", "--format", "terse"]);
-        // check yaml support
+        // check javascript support
         var languages = await cql.runCommandJson(codeql, [
             "resolve",
             "languages",
             "--format",
             "json",
         ]);
-        if (!languages.hasOwnProperty("yaml")) {
-            core.setFailed("CodeQL Yaml extractor not installed");
-            throw new Error("CodeQL Yaml extractor not installed");
+        if (!languages.hasOwnProperty("javascript")) {
+            core.setFailed("CodeQL javascript extractor not installed");
+            throw new Error("CodeQL javascript extractor not installed");
         }
         // download pack
         core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);

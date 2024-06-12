@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["matter-labs/zksync-era/.github/workflows/ci-core-reusable.yml", "*", "input.compilers", "code-injection", "generated"]
      - ["matter-labs/zksync-era/.github/workflows/build-prover-template.yml", "*", "input.image_tag_suffix", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["shader-slang/slang", "*", "input.platform", "code-injection", "generated"]
      - ["shader-slang/slang", "*", "input.os", "code-injection", "generated"]

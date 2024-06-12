@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["codeigniter4/codeigniter4/.github/workflows/reusable-serviceless-phpunit-test.yml", "*", "input.extra-composer-options", "code-injection", "generated"]
      - ["codeigniter4/codeigniter4/.github/workflows/reusable-serviceless-phpunit-test.yml", "*", "input.php-version", "code-injection", "generated"]

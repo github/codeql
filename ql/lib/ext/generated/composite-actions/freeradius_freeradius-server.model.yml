@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["freeradius/freeradius-server", "*", "input.gcc_ver", "code-injection", "generated"]
      - ["freeradius/freeradius-server", "*", "input.llvm_ver", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["fastly/compute-actions", "*", "input.fastly-api-token", "code-injection", "generated"]

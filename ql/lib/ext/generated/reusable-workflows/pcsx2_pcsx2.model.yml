@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.configuration", "code-injection", "generated"]
      - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.platform", "code-injection", "generated"]

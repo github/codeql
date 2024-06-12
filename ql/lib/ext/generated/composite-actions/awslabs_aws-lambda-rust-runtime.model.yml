@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["awslabs/aws-lambda-rust-runtime", "*", "input.package", "code-injection", "generated"]

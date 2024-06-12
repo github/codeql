@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["zenml-io/zenml", "*", "input.install_integrations", "code-injection", "generated"]

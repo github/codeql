@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["agoric/agoric-sdk", "*", "input.xsnap-random-init", "code-injection", "generated"]
      - ["agoric/agoric-sdk", "*", "input.path", "code-injection", "generated"]

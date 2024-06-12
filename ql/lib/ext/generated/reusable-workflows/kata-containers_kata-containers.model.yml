@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["kata-containers/kata-containers/.github/workflows/release-s390x.yaml", "*", "input.target-arch", "code-injection", "generated"]
      - ["kata-containers/kata-containers/.github/workflows/release-ppc64le.yaml", "*", "input.target-arch", "code-injection", "generated"]

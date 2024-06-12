@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["mdanalysis/mdanalysis", "*", "input.extra-pip-deps", "code-injection", "generated"]
      - ["mdanalysis/mdanalysis", "*", "input.full-deps", "code-injection", "generated"]

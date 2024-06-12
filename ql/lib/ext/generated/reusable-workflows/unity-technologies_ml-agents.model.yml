@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["unity-technologies/ml-agents/.github/workflows/pytest.yml", "*", "input.pytest_markers", "code-injection", "generated"]

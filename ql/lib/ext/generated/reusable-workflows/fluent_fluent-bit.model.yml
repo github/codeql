@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["fluent/fluent-bit/.github/workflows/call-windows-unit-tests.yaml", "*", "input.unstable", "code-injection", "generated"]
      - ["fluent/fluent-bit/lib/wasm-micro-runtime-WAMR-1.3.0/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.the_path", "code-injection", "generated"]

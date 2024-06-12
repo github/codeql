@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["projectnessie/nessie", "*", "input.job-name", "code-injection", "generated"]
      - ["projectnessie/nessie", "*", "input.java-version", "code-injection", "generated"]

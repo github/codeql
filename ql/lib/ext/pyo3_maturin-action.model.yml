@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["pyo3/maturin-action", "*", "input.before-script-linux", "command-injection", "manual"]
       - ["pyo3/maturin-action", "*", "input.target", "command-injection", "manual"]

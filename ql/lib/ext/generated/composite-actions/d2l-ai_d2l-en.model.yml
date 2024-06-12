@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["d2l-ai/d2l-en", "*", "input.command", "code-injection", "generated"]
      - ["d2l-ai/d2l-en", "*", "input.work-dir", "code-injection", "generated"]

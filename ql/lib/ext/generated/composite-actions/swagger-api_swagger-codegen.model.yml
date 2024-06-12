@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["swagger-api/swagger-codegen", "*", "input.options", "code-injection", "generated"]
      - ["swagger-api/swagger-codegen", "*", "input.spec-url", "code-injection", "generated"]

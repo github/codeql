@@ -15,7 +15,7 @@ export async function run(): Promise<void> {
 
     await cql.runCommand(codeql, ["version", "--format", "terse"]);
 
-    // check yaml support
+    // check javascript support
     var languages = await cql.runCommandJson(codeql, [
       "resolve",
       "languages",
@@ -23,9 +23,9 @@ export async function run(): Promise<void> {
       "json",
     ]);
 
-    if (!languages.hasOwnProperty("yaml")) {
-      core.setFailed("CodeQL Yaml extractor not installed");
-      throw new Error("CodeQL Yaml extractor not installed");
+    if (!languages.hasOwnProperty("javascript")) {
+      core.setFailed("CodeQL javascript extractor not installed");
+      throw new Error("CodeQL javascript extractor not installed");
     }
 
     // download pack

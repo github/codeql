@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["dfhack/dfhack/.github/workflows/build-windows.yml", "*", "input.artifact-name", "code-injection", "generated"]
      - ["dfhack/dfhack/.github/workflows/build-windows.yml", "*", "input.append-date-and-hash", "code-injection", "generated"]

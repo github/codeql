@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["firebase/firebase-ios-sdk", "*", "input.min-ios-version", "code-injection", "generated"]
      - ["firebase/firebase-ios-sdk", "*", "input.sources", "code-injection", "generated"]

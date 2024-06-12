@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["ionic-team/ionic-framework", "*", "input.totalShards", "code-injection", "generated"]
      - ["ionic-team/ionic-framework", "*", "input.shard", "code-injection", "generated"]

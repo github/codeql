@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["github/ruby", "*", "input.builddir", "code-injection", "generated"]
      - ["github/ruby", "*", "input.srcdir", "code-injection", "generated"]

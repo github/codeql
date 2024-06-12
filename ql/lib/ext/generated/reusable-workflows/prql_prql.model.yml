@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["prql/prql/.github/workflows/test-rust.yaml", "*", "input.target", "code-injection", "generated"]

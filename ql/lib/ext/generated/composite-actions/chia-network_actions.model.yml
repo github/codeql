@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["chia-network/actions", "*", "input.keypair_path", "code-injection", "generated"]
      - ["chia-network/actions", "*", "input.role_name", "code-injection", "generated"]

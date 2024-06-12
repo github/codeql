@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["expo/vscode-expo", "*", "input.command", "code-injection", "generated"]
      - ["expo/vscode-expo", "*", "input.semver", "code-injection", "generated"]

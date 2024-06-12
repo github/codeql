@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["learningequality/kolibri/.github/workflows/upload_github_release_asset.yml", "*", "input.release_id", "code-injection", "generated"]
      - ["learningequality/kolibri/.github/workflows/upload_github_release_asset.yml", "*", "input.filename", "code-injection", "generated"]

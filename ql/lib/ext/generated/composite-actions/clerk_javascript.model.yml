@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["clerk/javascript", "*", "input.auth-email", "code-injection", "generated"]
      - ["clerk/javascript", "*", "input.auth-password", "code-injection", "generated"]

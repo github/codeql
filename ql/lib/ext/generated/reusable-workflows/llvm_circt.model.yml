@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.package_name_prefix", "code-injection", "generated"]
      - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.install", "code-injection", "generated"]

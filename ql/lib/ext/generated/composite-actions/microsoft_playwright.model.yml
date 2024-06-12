@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["microsoft/playwright", "*", "input.report_dir", "code-injection", "generated"]
      - ["microsoft/playwright", "*", "input.connection_string", "code-injection", "generated"]

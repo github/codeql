@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["ocaml/dune", "*", "input.OCAML_COMPILER", "code-injection", "generated"]
      - ["ocaml/dune", "*", "input.DKML_COMPILER", "code-injection", "generated"]

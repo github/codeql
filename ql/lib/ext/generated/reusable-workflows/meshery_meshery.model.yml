@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.adapter_version", "code-injection", "generated"]
      - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.sm_version", "code-injection", "generated"]

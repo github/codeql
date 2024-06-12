@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["project-chip/connectedhomeip", "*", "input.with", "code-injection", "generated"]
      - ["project-chip/connectedhomeip", "*", "input.action", "code-injection", "generated"]

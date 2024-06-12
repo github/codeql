@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sourceModel
+      extensible: actionsSourceModel
     data:
       - ["cypress-io/github-action", "*", "env.GH_BRANCH", "branch", "manual"]

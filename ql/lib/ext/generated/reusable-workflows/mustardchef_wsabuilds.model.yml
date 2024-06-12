@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.amazonflag", "code-injection", "generated"]
      - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.magiskver", "code-injection", "generated"]

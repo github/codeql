@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["datafuselabs/databend", "*", "input.dataset", "code-injection", "generated"]
      - ["datafuselabs/databend", "*", "input.dirs", "code-injection", "generated"]

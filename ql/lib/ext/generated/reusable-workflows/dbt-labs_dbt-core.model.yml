@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["dbt-labs/dbt-core/.github/workflows/release.yml", "*", "input.nightly_release", "code-injection", "generated"]
      - ["dbt-labs/dbt-core/.github/workflows/release.yml", "*", "input.test_run", "code-injection", "generated"]

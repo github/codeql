@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["obsproject/obs-studio", "*", "input.failCondition", "code-injection", "generated"]
      - ["obsproject/obs-studio", "*", "input.checkGlob", "code-injection", "generated"]

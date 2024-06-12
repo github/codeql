@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["hashicorp/terraform-cdk/.github/workflows/unit.yml", "*", "input.package", "code-injection", "generated"]
      - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.gitUser", "code-injection", "generated"]

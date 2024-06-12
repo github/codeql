@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["trunk-io/trunk-action", "*", "input.tools", "code-injection", "generated"]
      - ["trunk-io/trunk-action", "*", "input.post-init", "code-injection", "generated"]

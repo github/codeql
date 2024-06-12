@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["pinecone-io/pinecone-python-client/.github/workflows/publish-to-pypi.yaml", "*", "input.prereleaseSuffix", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["shaka-project/shaka-packager/.github/workflows/publish-npm.yaml", "*", "input.latest", "code-injection", "generated"]
      - ["shaka-project/shaka-packager/.github/workflows/publish-npm.yaml", "*", "input.tag", "code-injection", "generated"]

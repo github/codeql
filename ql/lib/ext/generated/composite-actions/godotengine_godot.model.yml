@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["godotengine/godot", "*", "input.bin", "code-injection", "generated"]
      - ["godotengine/godot", "*", "input.tests", "code-injection", "generated"]

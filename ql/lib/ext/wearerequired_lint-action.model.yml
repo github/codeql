@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["wearerequired/lint-action", "*", "input.git_name", "command-injection", "manual"]
       - ["wearerequired/lint-action", "*", "input.git_email", "command-injection", "manual"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: summaryModel
+      extensible: actionsSummaryModel
     data:
       - ["suisei-cn/actions-download-file", "*", "input.filename", "output.filename", "taint", "manual"]

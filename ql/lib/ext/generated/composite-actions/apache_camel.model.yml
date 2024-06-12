@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["apache/camel", "*", "input.end-commit", "code-injection", "generated"]
      - ["apache/camel", "*", "input.start-commit", "code-injection", "generated"]

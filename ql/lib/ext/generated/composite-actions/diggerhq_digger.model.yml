@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["diggerhq/digger", "*", "input.checkov-version", "code-injection", "generated"]
      - ["diggerhq/digger", "*", "input.google-auth-credentials", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["py-actions/flake8", "*", "input.flake8-version", "command-injection", "manual"]
       - ["py-actions/flake8", "*", "input.plugins", "command-injection", "manual"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["treeverse/lakefs", "*", "input.compose-flags", "code-injection", "generated"]
      - ["treeverse/lakefs", "*", "input.compose-directory", "code-injection", "generated"]

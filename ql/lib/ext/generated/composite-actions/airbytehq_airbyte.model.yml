@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["airbytehq/airbyte", "*", "input.options", "code-injection", "generated"]
      - ["airbytehq/airbyte", "*", "input.subcommand", "code-injection", "generated"]

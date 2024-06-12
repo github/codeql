@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-version", "code-injection", "generated"]
      - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-target", "code-injection", "generated"]

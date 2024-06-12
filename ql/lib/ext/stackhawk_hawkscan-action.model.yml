@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["stackhawk/hawkscan-action", "*", "input.workspace", "command-injection", "manual"]
       - ["stackhawk/hawkscan-action", "*", "input.apiKey", "command-injection", "manual"]

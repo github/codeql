@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["operator-framework/java-operator-sdk/.github/workflows/integration-tests.yml", "*", "input.http-client", "code-injection", "generated"]
      - ["operator-framework/java-operator-sdk/.github/workflows/integration-tests.yml", "*", "input.kube-version", "code-injection", "generated"]

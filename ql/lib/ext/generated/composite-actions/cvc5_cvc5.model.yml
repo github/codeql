@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["cvc5/cvc5", "*", "input.build-dir", "code-injection", "generated"]
      - ["cvc5/cvc5", "*", "input.macos-target", "code-injection", "generated"]

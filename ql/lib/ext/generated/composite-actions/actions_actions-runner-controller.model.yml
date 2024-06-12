@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["actions/actions-runner-controller", "*", "input.image-tag", "code-injection", "generated"]
      - ["actions/actions-runner-controller", "*", "input.image-name", "code-injection", "generated"]

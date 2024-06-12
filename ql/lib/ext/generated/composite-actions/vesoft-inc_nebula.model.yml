@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["vesoft-inc/nebula", "*", "input.target-path", "code-injection", "generated"]
      - ["vesoft-inc/nebula", "*", "input.bucket", "code-injection", "generated"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["ledgerhq/ledger-live", "*", "input.os", "code-injection", "generated"]
      - ["ledgerhq/ledger-live", "*", "input.turborepo-server-port", "code-injection", "generated"]

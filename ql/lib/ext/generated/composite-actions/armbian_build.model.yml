@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["armbian/build", "*", "input.armbian_pgp_password", "code-injection", "generated"]
      - ["armbian/build", "*", "input.armbian_extensions", "code-injection", "generated"]

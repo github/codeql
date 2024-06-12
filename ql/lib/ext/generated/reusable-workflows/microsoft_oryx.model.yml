@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["microsoft/oryx/.github/workflows/automationTemplate.yaml", "*", "input.platformName", "code-injection", "generated"]

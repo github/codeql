@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["powerdns/pdns/.github/workflows/build-packages.yml", "*", "input.os", "code-injection", "generated"]
      - ["powerdns/pdns/.github/workflows/build-packages.yml", "*", "input.product", "code-injection", "generated"]

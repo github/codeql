@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.aws_s3_cp_extra_args", "code-injection", "generated"]
      - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.s3_path", "code-injection", "generated"]

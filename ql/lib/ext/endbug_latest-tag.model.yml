@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
       - ["endbug/latest-tag", "*", "input.ref", "command-injection", "manual"]
       - ["endbug/latest-tag", "*", "input.tag-name", "command-injection", "manual"]

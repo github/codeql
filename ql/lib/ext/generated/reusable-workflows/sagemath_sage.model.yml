@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: githubsecuritylab/actions-all
-      extensible: sinkModel
+      extensible: actionsSinkModel
     data:
      - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.stage", "code-injection", "generated"]
      - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.targets_optional", "code-injection", "generated"]
