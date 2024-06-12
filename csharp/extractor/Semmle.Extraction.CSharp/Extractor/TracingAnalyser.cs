@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new Extraction.Extractor(cwd, args, GetOutputName(compilation, commandLineArguments), [], Logger, PathTransformer, ExtractorMode.None, options.QlTest);
+            this.ExtractionContext = new ExtractionContext(cwd, args, GetOutputName(compilation, commandLineArguments), [], Logger, PathTransformer, ExtractorMode.None, options.QlTest);
             var errorCount = LogDiagnostics(compilation);
 
             SetReferencePaths();

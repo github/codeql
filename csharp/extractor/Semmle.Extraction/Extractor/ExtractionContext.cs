@@ -7,7 +7,7 @@ namespace Semmle.Extraction
     /// <summary>
     /// Implementation of the main extractor state.
     /// </summary>
-    public class Extractor
+    public class ExtractionContext
     {
         public string Cwd { get; init; }
         public string[] Args { get; init; }
@@ -18,7 +18,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
         /// </summary>
-        public Extractor(string cwd, string[] args, string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer, ExtractorMode mode, bool isQlTest)
+        public ExtractionContext(string cwd, string[] args, string outputPath, IEnumerable<CompilationInfo> compilationInfos, ILogger logger, PathTransformer pathTransformer, ExtractorMode mode, bool isQlTest)
         {
             OutputPath = outputPath;
             Logger = logger;

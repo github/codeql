@@ -40,7 +40,7 @@ namespace Semmle.Extraction
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 trapFile.WriteLine("\"");
-                Context.Extractor.Message(new Message($"Unhandled exception generating id: {ex.Message}", ToString() ?? "", null, ex.StackTrace));
+                Context.ExtractionContext.Message(new Message($"Unhandled exception generating id: {ex.Message}", ToString() ?? "", null, ex.StackTrace));
             }
             trapFile.WriteLine();
         }

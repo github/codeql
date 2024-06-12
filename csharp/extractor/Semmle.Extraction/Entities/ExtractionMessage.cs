@@ -25,7 +25,7 @@ namespace Semmle.Extraction.Entities
             {
                 if (messageCount == limit + 1)
                 {
-                    Context.Extractor.Logger.LogWarning($"Stopped logging extractor messages after reaching {limit}");
+                    Context.ExtractionContext.Logger.LogWarning($"Stopped logging extractor messages after reaching {limit}");
                 }
                 return;
             }

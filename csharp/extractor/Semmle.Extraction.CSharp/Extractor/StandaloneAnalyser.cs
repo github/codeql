@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp
         public void Initialize(string outputPath, IEnumerable<(string, string)> compilationInfos, CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
-            extractor = new Extraction.Extractor(Directory.GetCurrentDirectory(), [], outputPath, compilationInfos, Logger, PathTransformer, ExtractorMode.Standalone, options.QlTest);
+            ExtractionContext = new ExtractionContext(Directory.GetCurrentDirectory(), [], outputPath, compilationInfos, Logger, PathTransformer, ExtractorMode.Standalone, options.QlTest);
             this.options = options;
             LogExtractorInfo();
             SetReferencePaths();
@@ -25,9 +25,9 @@ namespace Semmle.Extraction.CSharp
 
 #nullable disable warnings
 
-        public IEnumerable<string> MissingTypes => extractor.MissingTypes;
+        public IEnumerable<string> MissingTypes => ExtractionContext.MissingTypes;
 
-        public IEnumerable<string> MissingNamespaces => extractor.MissingNamespaces;
+        public IEnumerable<string> MissingNamespaces => ExtractionContext.MissingNamespaces;
 
 #nullable restore warnings
     }

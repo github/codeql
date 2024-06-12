@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class Analyser : IDisposable
     {
-        protected Extraction.Extractor? extractor;
+        protected ExtractionContext? ExtractionContext;
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
@@ -108,12 +108,12 @@ namespace Semmle.Extraction.CSharp
                         var def = reader.GetAssemblyDefinition();
                         assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
                     }
-                    extractor.SetAssemblyFile(assemblyIdentity, refPath);
+                    ExtractionContext.SetAssemblyFile(assemblyIdentity, refPath);
 
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    extractor.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
+                    ExtractionContext.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (compilation.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -201,7 +201,7 @@ namespace Semmle.Extraction.CSharp
 
                 if (!upToDate)
                 {
-                    var cx = new Context(extractor, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                    var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
                     // Ensure that the file itself is populated in case the source file is totally empty
                     var root = tree.GetRoot();
                     Entities.File.Create(cx, root.SyntaxTree.FilePath);
@@ -223,7 +223,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
+                ExtractionContext.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
             }
         }
 
@@ -231,7 +231,7 @@ namespace Semmle.Extraction.CSharp
         {
             try
             {
-                var assemblyPath = extractor.OutputPath;
+                var assemblyPath = ExtractionContext.OutputPath;
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var currentTaskId = IncrementTaskCount();
@@ -241,11 +241,11 @@ namespace Semmle.Extraction.CSharp
                 var assembly = compilation.Assembly;
                 var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
 
-                extractor.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
+                ExtractionContext.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
 
                 ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
@@ -328,7 +328,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Number of errors encountered during extraction.
         /// </summary>
-        private int ExtractorErrors => extractor?.Errors ?? 0;
+        private int ExtractorErrors => ExtractionContext?.Errors ?? 0;
 
         /// <summary>
         /// Number of errors encountered by the compiler.

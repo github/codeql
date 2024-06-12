@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp
 
         internal CommentProcessor CommentGenerator { get; } = new CommentProcessor();
 
-        public Context(Extraction.Extractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
+        public Context(ExtractionContext e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
             : base(e, trapWriter, addAssemblyTrapPrefix)
         {
             Compilation = c;
@@ -187,13 +187,13 @@ namespace Semmle.Extraction.CSharp
                 try
                 {
                     var fullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(mappedFromPath)!, mappedToPath));
-                    Extractor.Logger.LogDebug($"Found relative path in line mapping: '{mappedToPath}', interpreting it as '{fullPath}'");
+                    ExtractionContext.Logger.LogDebug($"Found relative path in line mapping: '{mappedToPath}', interpreting it as '{fullPath}'");
 
                     mappedToPath = fullPath;
                 }
                 catch (Exception e)
                 {
-                    Extractor.Logger.LogDebug($"Failed to compute absolute path for relative path in line mapping: '{mappedToPath}': {e}");
+                    ExtractionContext.Logger.LogDebug($"Failed to compute absolute path for relative path in line mapping: '{mappedToPath}': {e}");
                 }
             }
 
