@@ -29,7 +29,11 @@ bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.46.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
-
+single_version_override(
+    module_name = "rules_rust",
+    patch_strip = 1,
+    patches = ["//:rules_rust.patch"],
+)
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(

@@ -1,0 +1,40 @@
+diff --git a/crate_universe/extension.bzl b/crate_universe/extension.bzl
+index 509401d5..e946eb3a 100644
+--- a/crate_universe/extension.bzl
++++ b/crate_universe/extension.bzl
+@@ -228,7 +228,7 @@ def _package_to_json(p):
+     })
+ 
+ def _get_generator(module_ctx):
+-    """Query Network Resources to local a `cargo-bazel` binary.  
++    """Query Network Resources to local a `cargo-bazel` binary.
+ 
+     Based off get_generator in crates_universe/private/generate_utils.bzl
+ 
+@@ -348,16 +348,24 @@ def _crate_impl(module_ctx):
+             all_repos.append(cfg.name)
+             local_repos.append(cfg.name)
+ 
++        # Postpone actually calling _generate_hub_and_spokes as it's rather expensive, and _every_ module_ctx.path can cause
++        # a restart of the module extension. In partigular with multiple cargo configurations, we'd run `cargo-bazel`
++        # a lot of times for no good reason, because the restart mechanism would cause us to re-run the entire module extension.
++        # Save the parameters in this list, and only call _generate_hub_and_spokes once we have all labels resolved.
++        # We do not need to batch the calls from specs, as those do not call module_ctx.path, and don't cause restarts.
++        generate_hubs_and_spokes_calls = []
+         for cfg in mod.tags.from_cargo:
+             annotations = _annotations_for_repo(
+                 module_annotations,
+                 repo_specific_annotations.get(cfg.name),
+             )
+-
+             cargo_lockfile = module_ctx.path(cfg.cargo_lockfile)
+             manifests = {str(module_ctx.path(m)): str(m) for m in cfg.manifests}
+-            _generate_hub_and_spokes(module_ctx, cargo_bazel, cfg, annotations, cargo_lockfile = cargo_lockfile, manifests = manifests)
++            generate_hubs_and_spokes_calls.append((cfg, annotations, cargo_lockfile, manifests))
+ 
++        for call in generate_hubs_and_spokes_calls:
++            cfg, annotations, cargo_lockfile, manifests = call
++            _generate_hub_and_spokes(module_ctx, cargo_bazel, cfg, annotations, cargo_lockfile = cargo_lockfile, manifests = manifests)
+         for cfg in mod.tags.from_specs:
+             # We don't have a Cargo.lock so the resolution can change.
+             # We could maybe make this reproducible by using `-minimal-version` during resolution.
