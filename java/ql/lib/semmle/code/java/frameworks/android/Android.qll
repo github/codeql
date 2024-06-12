@@ -4,6 +4,12 @@
 
 import java
 private import semmle.code.xml.AndroidManifest
+private import semmle.code.java.frameworks.Swagger
+
+/** Holds if this database is of an Android application. */
+predicate isAndroid() {
+  exists(AndroidManifestXmlFile m | not m instanceof SwaggerCodegenAndroidManifest)
+}
 
 /**
  * Gets a reflexive/transitive superType
