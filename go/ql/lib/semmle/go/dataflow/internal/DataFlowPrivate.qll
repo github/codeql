@@ -311,6 +311,13 @@ class DataFlowCallable extends TDataFlowCallable {
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = getCallableLocation(this.asCallable()) or
+    result = this.asFileScope().getLocation() or
+    result = getCallableLocation(this.asSummarizedCallable())
+  }
+
   /** Gets a best-effort total ordering. */
   int totalorder() {
     this =
@@ -320,6 +327,13 @@ class DataFlowCallable extends TDataFlowCallable {
         c order by file, startline, startcolumn
       )
   }
+}
+
+private Location getCallableLocation(Callable c) {
+  exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+    c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+    result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  )
 }
 
 /** A function call relevant for data flow. */
@@ -343,6 +357,9 @@ class DataFlowCall extends Expr {
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
   }
+
+  /** Gets the location of this call. */
+  Location getLocation() { result = super.getLocation() }
 
   // #45 - Stub Implementation
   /** Gets an argument to this call as a Node. */

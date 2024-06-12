@@ -3,13 +3,13 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["sync", "Map", True, "CompareAndSwap", "", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
-      - ["sync", "Map", True, "Load", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["sync", "Map", True, "LoadOrStore", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["sync", "Map", True, "LoadOrStore", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
+      - ["sync", "Map", True, "CompareAndSwap", "", "", "Argument[2]", "Argument[receiver]", "taint", "manual"]
+      - ["sync", "Map", True, "Load", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["sync", "Map", True, "LoadOrStore", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["sync", "Map", True, "LoadOrStore", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
       - ["sync", "Map", True, "LoadOrStore", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
-      - ["sync", "Map", True, "Store", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["sync", "Map", True, "Swap", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["sync", "Map", True, "Swap", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["sync", "Pool", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["sync", "Pool", True, "Put", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["sync", "Map", True, "Store", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["sync", "Map", True, "Swap", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["sync", "Map", True, "Swap", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["sync", "Pool", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync", "Pool", True, "Put", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

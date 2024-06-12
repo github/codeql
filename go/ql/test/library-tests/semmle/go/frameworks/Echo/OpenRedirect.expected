@@ -1,29 +1,17 @@
 edges
-| test.go:172:2:172:6 | definition of param | test.go:173:20:173:24 | param | provenance |  |
-| test.go:172:2:172:6 | definition of param | test.go:173:20:173:24 | param | provenance | Config |
-| test.go:172:11:172:32 | call to Param | test.go:172:2:172:6 | definition of param | provenance |  |
-| test.go:172:11:172:32 | call to Param | test.go:172:2:172:6 | definition of param | provenance | Config |
-| test.go:178:2:178:6 | definition of param | test.go:182:24:182:28 | param | provenance |  |
-| test.go:178:2:178:6 | definition of param | test.go:182:24:182:28 | param | provenance | Config |
-| test.go:178:11:178:32 | call to Param | test.go:178:2:178:6 | definition of param | provenance |  |
-| test.go:178:11:178:32 | call to Param | test.go:178:2:178:6 | definition of param | provenance | Config |
+| test.go:172:11:172:32 | call to Param | test.go:173:20:173:24 | param | provenance |  |
+| test.go:178:11:178:32 | call to Param | test.go:182:24:182:28 | param | provenance |  |
 | test.go:182:24:182:28 | param | test.go:182:20:182:28 | ...+... | provenance | Config |
-| test.go:190:2:190:4 | definition of url | test.go:193:21:193:23 | url | provenance |  |
-| test.go:190:2:190:4 | definition of url | test.go:193:21:193:23 | url | provenance | Config |
-| test.go:190:9:190:26 | star expression | test.go:190:2:190:4 | definition of url | provenance |  |
-| test.go:190:9:190:26 | star expression | test.go:190:2:190:4 | definition of url | provenance | Config |
 | test.go:190:9:190:26 | star expression | test.go:190:10:190:26 | selection of URL | provenance | Config |
+| test.go:190:9:190:26 | star expression | test.go:193:21:193:23 | url | provenance |  |
 | test.go:190:10:190:26 | selection of URL | test.go:190:9:190:26 | star expression | provenance | Config |
 | test.go:193:21:193:23 | url | test.go:193:21:193:32 | call to String | provenance | Config |
 nodes
-| test.go:172:2:172:6 | definition of param | semmle.label | definition of param |
 | test.go:172:11:172:32 | call to Param | semmle.label | call to Param |
 | test.go:173:20:173:24 | param | semmle.label | param |
-| test.go:178:2:178:6 | definition of param | semmle.label | definition of param |
 | test.go:178:11:178:32 | call to Param | semmle.label | call to Param |
 | test.go:182:20:182:28 | ...+... | semmle.label | ...+... |
 | test.go:182:24:182:28 | param | semmle.label | param |
-| test.go:190:2:190:4 | definition of url | semmle.label | definition of url |
 | test.go:190:9:190:26 | star expression | semmle.label | star expression |
 | test.go:190:10:190:26 | selection of URL | semmle.label | selection of URL |
 | test.go:193:21:193:23 | url | semmle.label | url |

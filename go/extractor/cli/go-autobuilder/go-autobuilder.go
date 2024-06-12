@@ -10,8 +10,6 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/mod/semver"
-
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
@@ -156,7 +154,7 @@ func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
 func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && semver.Compare(toolchain.GetEnvGoSemVer(), "v1.16") >= 0 {
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(toolchain.V1_16) {
 		for _, goMod := range workspace.Modules {
 			// stat go.mod and go.sum
 			goModPath := goMod.Path
@@ -542,12 +540,12 @@ func installDependenciesAndBuild() {
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+greatestGoVersion.Version)
+	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
 		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
-				"v"+greatestGoVersion.Version,
+				greatestGoVersion,
 				toolchain.GetEnvGoSemVer())
 		}
 	}
@@ -559,7 +557,7 @@ func installDependenciesAndBuild() {
 	for i, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
-		fixGoVendorIssues(&workspace, goVersionInfo.Found)
+		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
 		tryUpdateGoModAndGoSum(workspace)
 

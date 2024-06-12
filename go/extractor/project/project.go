@@ -13,7 +13,6 @@ import (
 	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/mod/modfile"
-	"golang.org/x/mod/semver"
 )
 
 // DependencyInstallerMode is an enum describing how dependencies should be installed
@@ -49,53 +48,47 @@ type GoWorkspace struct {
 }
 
 // Represents a nullable version string.
-type GoVersionInfo struct {
-	// The version string, if any
-	Version string
-	// A value indicating whether a version string was found
-	Found bool
-}
+type GoVersionInfo = util.SemVer
 
 // Determines the version of Go that is required by this workspace. This is, in order of preference:
 // 1. The Go version specified in the `go.work` file, if any.
 // 2. The greatest Go version specified in any `go.mod` file, if any.
-func (workspace *GoWorkspace) RequiredGoVersion() GoVersionInfo {
+func (workspace *GoWorkspace) RequiredGoVersion() util.SemVer {
 	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
 		// If we have parsed a `go.work` file, return the version number from it.
-		return GoVersionInfo{Version: workspace.WorkspaceFile.Go.Version, Found: true}
+		return util.NewSemVer(workspace.WorkspaceFile.Go.Version)
 	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
-		var greatestVersion string = ""
+		var greatestVersion util.SemVer = nil
 		for _, module := range workspace.Modules {
 			if module.Module != nil && module.Module.Go != nil {
 				// If we have parsed the file, retrieve the version number we have already obtained.
-				if greatestVersion == "" || semver.Compare("v"+module.Module.Go.Version, "v"+greatestVersion) > 0 {
-					greatestVersion = module.Module.Go.Version
+				modVersion := util.NewSemVer(module.Module.Go.Version)
+				if greatestVersion == nil || modVersion.IsNewerThan(greatestVersion) {
+					greatestVersion = modVersion
 				}
 			} else {
 				modVersion := tryReadGoDirective(module.Path)
-				if modVersion.Found && (greatestVersion == "" || semver.Compare("v"+modVersion.Version, "v"+greatestVersion) > 0) {
-					greatestVersion = modVersion.Version
+				if modVersion != nil && (greatestVersion == nil || modVersion.IsNewerThan(greatestVersion)) {
+					greatestVersion = modVersion
 				}
 			}
 		}
 
 		// If we have found some version, return it.
-		if greatestVersion != "" {
-			return GoVersionInfo{Version: greatestVersion, Found: true}
-		}
+		return greatestVersion
 	}
 
-	return GoVersionInfo{Version: "", Found: false}
+	return nil
 }
 
 // Finds the greatest Go version required by any of the given `workspaces`.
 // Returns a `GoVersionInfo` value with `Found: false` if no version information is available.
-func RequiredGoVersion(workspaces *[]GoWorkspace) GoVersionInfo {
-	greatestGoVersion := GoVersionInfo{Version: "", Found: false}
+func RequiredGoVersion(workspaces *[]GoWorkspace) util.SemVer {
+	var greatestGoVersion util.SemVer = nil
 	for _, workspace := range *workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
-		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare("v"+goVersionInfo.Version, "v"+greatestGoVersion.Version) > 0) {
+		if goVersionInfo != nil && (greatestGoVersion == nil || goVersionInfo.IsNewerThan(greatestGoVersion)) {
 			greatestGoVersion = goVersionInfo
 		}
 	}
@@ -183,7 +176,7 @@ var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+
 // there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
 func hasInvalidToolchainVersion(modFile *modfile.File) bool {
 	return modFile.Toolchain == nil && modFile.Go != nil &&
-		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && semver.Compare("v"+modFile.Go.Version, "v1.21.0") >= 0
+		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_21)
 }
 
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
@@ -537,17 +530,14 @@ const (
 
 // argsForGoVersion returns the arguments to pass to the Go compiler for the given `ModMode` and
 // Go version
-func (m ModMode) ArgsForGoVersion(version string) []string {
+func (m ModMode) ArgsForGoVersion(version util.SemVer) []string {
 	switch m {
 	case ModUnset:
 		return []string{}
 	case ModReadonly:
 		return []string{"-mod=readonly"}
 	case ModMod:
-		if !semver.IsValid(version) {
-			log.Fatalf("Invalid Go semver: '%s'", version)
-		}
-		if semver.Compare(version, "v1.14") < 0 {
+		if version.IsOlderThan(toolchain.V1_14) {
 			return []string{} // -mod=mod is the default behaviour for go <= 1.13, and is not accepted as an argument
 		} else {
 			return []string{"-mod=mod"}
@@ -574,7 +564,7 @@ func getModMode(depMode DependencyInstallerMode, baseDir string) ModMode {
 
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
 // The version string is returned in the "1.2.3" format.
-func tryReadGoDirective(path string) GoVersionInfo {
+func tryReadGoDirective(path string) util.SemVer {
 	versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)`)
 	goMod, err := os.ReadFile(path)
 	if err != nil {
@@ -583,9 +573,9 @@ func tryReadGoDirective(path string) GoVersionInfo {
 		matches := versionRe.FindSubmatch(goMod)
 		if matches != nil {
 			if len(matches) > 1 {
-				return GoVersionInfo{string(matches[1]), true}
+				return util.NewSemVer(string(matches[1]))
 			}
 		}
 	}
-	return GoVersionInfo{"", false}
+	return nil
 }

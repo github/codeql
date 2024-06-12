@@ -1,13 +1,7 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
-pkg_files(
-    name = "sh-files",
-    srcs = glob(["*.sh"]),
-    attributes = pkg_attributes(mode = "0755"),
-)
-
-pkg_files(
-    name = "non-sh-files",
+codeql_pkg_files(
+    name = "codeql-tools",
     srcs = glob(
         ["*"],
         exclude = [
@@ -15,14 +9,7 @@ pkg_files(
             "BUILD.bazel",
         ],
     ),
-)
-
-pkg_filegroup(
-    name = "codeql-tools",
-    srcs = [
-        ":non-sh-files",
-        ":sh-files",
-    ],
+    exes = glob(["*.sh"]),
     prefix = "tools",
     visibility = ["//go:__pkg__"],
 )

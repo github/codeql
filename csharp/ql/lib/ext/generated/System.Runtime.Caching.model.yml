@@ -4,6 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Runtime.Caching", "CacheEntryChangeMonitor", True, "get_CacheKeys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "CacheEntryChangeMonitor", True, "get_LastModified", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "CacheEntryChangeMonitor", True, "get_RegionName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryRemovedArguments", False, "CacheEntryRemovedArguments", "(System.Runtime.Caching.ObjectCache,System.Runtime.Caching.CacheEntryRemovedReason,System.Runtime.Caching.CacheItem)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryRemovedArguments", False, "CacheEntryRemovedArguments", "(System.Runtime.Caching.ObjectCache,System.Runtime.Caching.CacheEntryRemovedReason,System.Runtime.Caching.CacheItem)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryRemovedArguments", False, "get_CacheItem", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -14,22 +17,19 @@ extensions:
       - ["System.Runtime.Caching", "CacheEntryUpdateArguments", False, "get_Key", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryUpdateArguments", False, "get_RegionName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryUpdateArguments", False, "get_Source", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "ChangeMonitor", True, "get_UniqueId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "FileChangeMonitor", True, "get_FilePaths", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "FileChangeMonitor", True, "get_LastModified", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Caching", "HostFileChangeMonitor", False, "HostFileChangeMonitor", "(System.Collections.Generic.IList<System.String>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Caching", "HostFileChangeMonitor", False, "get_FilePaths", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Caching", "HostFileChangeMonitor", False, "get_LastModified", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Caching", "HostFileChangeMonitor", False, "get_UniqueId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Caching", "MemoryCache", False, "CreateCacheEntryChangeMonitor", "(System.Collections.Generic.IEnumerable<System.String>,System.String)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Caching", "MemoryCache", False, "CreateCacheEntryChangeMonitor", "(System.Collections.Generic.IEnumerable<System.String>,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Caching", "MemoryCache", False, "MemoryCache", "(System.String,System.Collections.Specialized.NameValueCollection)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Caching", "MemoryCache", False, "MemoryCache", "(System.String,System.Collections.Specialized.NameValueCollection,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Caching", "MemoryCache", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "ObjectCache", True, "CreateCacheEntryChangeMonitor", "(System.Collections.Generic.IEnumerable<System.String>,System.String)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "ObjectCache", True, "CreateCacheEntryChangeMonitor", "(System.Collections.Generic.IEnumerable<System.String>,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Caching", "ObjectCache", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Runtime.Caching", "CacheEntryChangeMonitor", "get_CacheKeys", "()", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "CacheEntryChangeMonitor", "get_LastModified", "()", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "CacheEntryChangeMonitor", "get_RegionName", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryRemovedArguments", "get_RemovedReason", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "CacheEntryUpdateArguments", "get_RemovedReason", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "CacheItem", "CacheItem", "(System.String)", "summary", "df-generated"]
@@ -42,9 +42,6 @@ extensions:
       - ["System.Runtime.Caching", "ChangeMonitor", "OnChanged", "(System.Object)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "get_HasChanged", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "get_IsDisposed", "()", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "ChangeMonitor", "get_UniqueId", "()", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "FileChangeMonitor", "get_FilePaths", "()", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "FileChangeMonitor", "get_LastModified", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "HostFileChangeMonitor", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "MemoryCache", "Add", "(System.Runtime.Caching.CacheItem,System.Runtime.Caching.CacheItemPolicy)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "MemoryCache", "AddOrGetExisting", "(System.Runtime.Caching.CacheItem,System.Runtime.Caching.CacheItemPolicy)", "summary", "df-generated"]
@@ -78,7 +75,6 @@ extensions:
       - ["System.Runtime.Caching", "ObjectCache", "AddOrGetExisting", "(System.String,System.Object,System.DateTimeOffset,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "AddOrGetExisting", "(System.String,System.Object,System.Runtime.Caching.CacheItemPolicy,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "Contains", "(System.String,System.String)", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "ObjectCache", "CreateCacheEntryChangeMonitor", "(System.Collections.Generic.IEnumerable<System.String>,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "Get", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "GetCacheItem", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "GetCount", "(System.String)", "summary", "df-generated"]
@@ -91,5 +87,4 @@ extensions:
       - ["System.Runtime.Caching", "ObjectCache", "Set", "(System.String,System.Object,System.Runtime.Caching.CacheItemPolicy,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "get_DefaultCacheCapabilities", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "get_Item", "(System.String)", "summary", "df-generated"]
-      - ["System.Runtime.Caching", "ObjectCache", "get_Name", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ObjectCache", "set_Item", "(System.String,System.Object)", "summary", "df-generated"]

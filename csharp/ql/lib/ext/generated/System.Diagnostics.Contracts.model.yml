@@ -4,13 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Diagnostics.Contracts", "ContractClassAttribute", False, "ContractClassAttribute", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Diagnostics.Contracts", "ContractClassAttribute", False, "get_TypeContainingContracts", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Diagnostics.Contracts", "ContractClassForAttribute", False, "ContractClassForAttribute", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Diagnostics.Contracts", "ContractClassForAttribute", False, "get_TypeContractsAreFor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "ContractException", "(System.Diagnostics.Contracts.ContractFailureKind,System.String,System.String,System.String,System.Exception)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "ContractException", "(System.Diagnostics.Contracts.ContractFailureKind,System.String,System.String,System.String,System.Exception)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Diagnostics.Contracts", "ContractException", False, "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "get_Condition", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "get_Failure", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", False, "get_UserMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -52,6 +47,10 @@ extensions:
       - ["System.Diagnostics.Contracts", "Contract", "Requires<TException>", "(System.Boolean,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Contracts", "Contract", "Result<T>", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Contracts", "Contract", "ValueAtReturn<T>", "(T)", "summary", "df-generated"]
+      - ["System.Diagnostics.Contracts", "ContractClassAttribute", "ContractClassAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.Diagnostics.Contracts", "ContractClassAttribute", "get_TypeContainingContracts", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.Contracts", "ContractClassForAttribute", "ContractClassForAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.Diagnostics.Contracts", "ContractClassForAttribute", "get_TypeContractsAreFor", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractException", "get_Kind", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractFailedEventArgs", "SetHandled", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Contracts", "ContractFailedEventArgs", "SetUnwind", "()", "summary", "df-generated"]
