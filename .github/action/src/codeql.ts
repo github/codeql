@@ -24,7 +24,7 @@ export interface CodeQLConfig {
 
 export async function newCodeQL(): Promise<CodeQLConfig> {
   return {
-    language: "yaml",
+    language: "javascript",
     path: await findCodeQL(),
     pack: "githubsecuritylab/actions-queries",
     suite: `codeql-suites/${core.getInput("suite") || "actions-code-scanning"}.qls`,
