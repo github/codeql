@@ -2,9 +2,7 @@
 library: false
 name: githubsecuritylab/actions-queries
 version: 0.0.36
-groups:
-  - actions
-  - queries
+groups: [actions, queries]
 suites: codeql-suites
 extractor: javascript
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
