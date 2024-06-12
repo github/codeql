@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,13 +21,5 @@ namespace Semmle.Extraction.CSharp
             LogExtractorInfo();
             SetReferencePaths();
         }
-
-#nullable disable warnings
-
-        public IEnumerable<string> MissingTypes => ExtractionContext.MissingTypes;
-
-        public IEnumerable<string> MissingNamespaces => ExtractionContext.MissingNamespaces;
-
-#nullable restore warnings
     }
 }

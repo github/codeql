@@ -93,19 +93,12 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var analyzerStopwatch = new Stopwatch();
+            analyzerStopwatch.Start();
 
             var options = Options.CreateWithEnvironment(args);
-            var workingDirectory = Directory.GetCurrentDirectory();
-            var compilerArgs = options.CompilerArguments.ToArray();
 
             using var logger = MakeLogger(options.Verbosity, options.Console);
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, pathTransformer, canonicalPathCache, options.AssemblySensitiveTrap);
 
             try
             {
@@ -115,12 +108,19 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 var compilerVersion = new CompilerVersion(options);
-
                 if (compilerVersion.SkipExtraction)
                 {
                     logger.Log(Severity.Warning, "  Unrecognized compiler '{0}' because {1}", compilerVersion.SpecifiedCompiler, compilerVersion.SkipReason);
                     return ExitCode.Ok;
                 }
+
+                var workingDirectory = Directory.GetCurrentDirectory();
+                var compilerArgs = options.CompilerArguments.ToArray();
+
+                var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+                var pathTransformer = new PathTransformer(canonicalPathCache);
+
+                using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, pathTransformer, canonicalPathCache, options.AssemblySensitiveTrap);
 
                 var compilerArguments = CSharpCommandLineParser.Default.Parse(
                     compilerVersion.ArgsWithResponse,
@@ -144,7 +144,7 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, stopwatch);
+                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, analyzerStopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

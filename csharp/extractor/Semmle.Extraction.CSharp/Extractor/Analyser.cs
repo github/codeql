@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class Analyser : IDisposable
     {
-        protected ExtractionContext? ExtractionContext;
+        public ExtractionContext? ExtractionContext { get; protected set; }
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
