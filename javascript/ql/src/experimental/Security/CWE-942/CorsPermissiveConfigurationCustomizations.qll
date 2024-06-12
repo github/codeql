@@ -59,7 +59,7 @@ module CorsPermissiveConfiguration {
    */
   class CorsApolloServer extends Sink, DataFlow::ValueNode {
     CorsApolloServer() {
-      exists(Apollo::ApolloServer agql |
+      exists(ApolloServer agql |
         this =
           agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
       )
