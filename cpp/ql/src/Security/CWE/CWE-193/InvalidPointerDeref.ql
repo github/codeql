@@ -137,7 +137,7 @@ module FinalFlow = DataFlow::GlobalWithState<FinalConfig>;
  */
 predicate hasFlowPath(
   FinalFlow::PathNode source, FinalFlow::PathNode sink, PointerArithmeticInstruction pai,
-  string operation, int delta
+  string operation, QlBuiltins::BigInt delta
 ) {
   FinalFlow::flowPath(source, sink) and
   operationIsOffBy(source.getNode(), pai, _, _, operation, sink.getNode(), delta) and
@@ -145,13 +145,13 @@ predicate hasFlowPath(
 }
 
 from
-  FinalFlow::PathNode source, FinalFlow::PathNode sink, int k, string kstr,
+  FinalFlow::PathNode source, FinalFlow::PathNode sink, QlBuiltins::BigInt k, string kstr,
   PointerArithmeticInstruction pai, string operation, Expr offset, DataFlow::Node n
 where
-  k = min(int cand | hasFlowPath(source, sink, pai, operation, cand)) and
+  k = min(QlBuiltins::BigInt cand | hasFlowPath(source, sink, pai, operation, cand)) and
   offset = pai.getRight().getUnconvertedResultExpression() and
   n = source.getNode() and
-  if k = 0 then kstr = "" else kstr = " + " + k
+  if k = 0.toBigInt() then kstr = "" else kstr = " + " + k
 select sink.getNode(), source, sink,
   "This " + operation + " might be out of bounds, as the pointer might be equal to $@ + $@" + kstr +
     ".", n, n.toString(), offset, offset.toString()

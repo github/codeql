@@ -26,18 +26,18 @@ module SemanticExprConfig {
     )
   }
 
-  predicate integerLiteral(Expr expr, SemIntegerType type, int value) {
+  predicate integerLiteral(Expr expr, SemIntegerType type, QlBuiltins::BigInt value) {
     exists(string valueString |
       anyConstantExpr(expr, type, valueString) and
-      value = valueString.toInt()
+      value = valueString.toBigInt()
     )
   }
 
-  predicate largeIntegerLiteral(Expr expr, SemIntegerType type, float approximateFloatValue) {
+  predicate largeIntegerLiteral(Expr expr, SemIntegerType type, QlBuiltins::BigInt value) {
     exists(string valueString |
       anyConstantExpr(expr, type, valueString) and
       not exists(valueString.toInt()) and
-      approximateFloatValue = valueString.toFloat()
+      value = valueString.toBigInt()
     )
   }
 
@@ -229,8 +229,9 @@ module SemanticExprConfig {
     v.asInstruction() = bound.(IRBound::ValueNumberBound).getValueNumber().getAnInstruction()
   }
 
-  Expr getBoundExpr(Bound bound, int delta) {
-    result = getSemanticExpr(bound.(IRBound::Bound).getInstruction(delta))
+  Expr getBoundExpr(Bound bound, QlBuiltins::BigInt delta) {
+    result =
+      getSemanticExpr(bound.(IRBound::Bound).getInstruction(any(int i | i.toBigInt() = delta)))
   }
 
   class Guard = IRGuards::IRGuardCondition;

@@ -3,35 +3,16 @@ private import codeql.rangeanalysis.RangeAnalysis
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExpr
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticType
 
-module FloatDelta implements DeltaSig {
-  class Delta = float;
-
-  bindingset[d]
-  bindingset[result]
-  float toFloat(Delta d) { result = d }
-
-  bindingset[d]
-  bindingset[result]
-  int toInt(Delta d) { result = d }
-
-  bindingset[n]
-  bindingset[result]
-  Delta fromInt(int n) { result = n }
-
-  bindingset[f]
-  Delta fromFloat(float f) { result = f }
-}
-
-module FloatOverflow implements OverflowSig<Sem, FloatDelta> {
+module FloatOverflow implements OverflowSig<Sem> {
   predicate semExprDoesNotOverflow(boolean positively, SemExpr expr) {
-    exists(float lb, float ub, float delta |
+    exists(float lb, float ub, QlBuiltins::BigInt delta |
       typeBounds(expr.getSemType(), lb, ub) and
       ConstantStage::initialBounded(expr, any(ConstantBounds::SemZeroBound b), delta, positively, _,
         _, _)
     |
-      positively = true and delta < ub
+      positively = true and delta < ub.toString().toBigInt()
       or
-      positively = false and delta > lb
+      positively = false and delta > lb.toString().toBigInt()
     )
   }
 

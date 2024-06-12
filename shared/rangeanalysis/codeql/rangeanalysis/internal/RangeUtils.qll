@@ -1,38 +1,38 @@
 private import codeql.rangeanalysis.RangeAnalysis
 
-module MakeUtils<Semantic Lang, DeltaSig D> {
+module MakeUtils<Semantic Lang> {
   private import Lang
 
   /**
    * Gets an expression that equals `v - d`.
    */
-  Expr ssaRead(SsaVariable v, D::Delta delta) {
-    result = v.getAUse() and delta = D::fromInt(0)
+  Expr ssaRead(SsaVariable v, QlBuiltins::BigInt delta) {
+    result = v.getAUse() and delta = 0.toBigInt()
     or
-    exists(D::Delta d1, ConstantIntegerExpr c |
+    exists(QlBuiltins::BigInt d1, ConstantIntegerExpr c |
       result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
-      delta = D::fromFloat(D::toFloat(d1) - c.getIntValue()) and
+      delta = d1 - c.getIntValue() and
       // In the scope of `x += ..`, which is SSA translated as `x2 = x1 + ..`,
       // the variable `x1` is shadowed by `x2`, so there's no need to view this
       // as a read of `x1`.
       not isAssignOp(result)
     )
     or
-    exists(SubExpr sub, D::Delta d1, ConstantIntegerExpr c |
+    exists(SubExpr sub, QlBuiltins::BigInt d1, ConstantIntegerExpr c |
       result = sub and
       sub.getLeftOperand() = ssaRead(v, d1) and
       sub.getRightOperand() = c and
-      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue()) and
+      delta = d1 + c.getIntValue() and
       not isAssignOp(result)
     )
     or
     result = v.(SsaExplicitUpdate).getDefiningExpr() and
     if result instanceof PostIncExpr
-    then delta = D::fromFloat(1) // x++ === ++x - 1
+    then delta = 1.toBigInt() // x++ === ++x - 1
     else
       if result instanceof PostDecExpr
-      then delta = D::fromFloat(-1) // x-- === --x + 1
-      else delta = D::fromFloat(0)
+      then delta = -1.toBigInt() // x-- === --x + 1
+      else delta = 0.toBigInt()
     or
     result.(CopyValueExpr).getOperand() = ssaRead(v, delta)
   }
@@ -45,7 +45,7 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
    * - `isEq = false` : `v != e + delta`
    */
   pragma[nomagic]
-  Guard eqFlowCond(SsaVariable v, Expr e, D::Delta delta, boolean isEq, boolean testIsTrue) {
+  Guard eqFlowCond(SsaVariable v, Expr e, QlBuiltins::BigInt delta, boolean isEq, boolean testIsTrue) {
     exists(boolean eqpolarity |
       result.isEquality(ssaRead(v, delta), e, eqpolarity) and
       (testIsTrue = true or testIsTrue = false) and
@@ -60,17 +60,17 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
   /**
    * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
    */
-  predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, D::Delta delta) {
+  predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, QlBuiltins::BigInt delta) {
     exists(Expr defExpr | defExpr = v.getDefiningExpr() |
-      defExpr.(CopyValueExpr).getOperand() = e and delta = D::fromFloat(0)
+      defExpr.(CopyValueExpr).getOperand() = e and delta = 0.toBigInt()
       or
-      defExpr.(PostIncExpr).getOperand() = e and delta = D::fromFloat(1)
+      defExpr.(PostIncExpr).getOperand() = e and delta = 1.toBigInt()
       or
-      defExpr.(PreIncExpr).getOperand() = e and delta = D::fromFloat(1)
+      defExpr.(PreIncExpr).getOperand() = e and delta = 1.toBigInt()
       or
-      defExpr.(PostDecExpr).getOperand() = e and delta = D::fromFloat(-1)
+      defExpr.(PostDecExpr).getOperand() = e and delta = -1.toBigInt()
       or
-      defExpr.(PreDecExpr).getOperand() = e and delta = D::fromFloat(-1)
+      defExpr.(PreDecExpr).getOperand() = e and delta = -1.toBigInt()
       or
       e = defExpr and
       not (
@@ -80,36 +80,34 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
         defExpr instanceof PostDecExpr or
         defExpr instanceof PreDecExpr
       ) and
-      delta = D::fromFloat(0)
+      delta = 0.toBigInt()
     )
   }
 
   /**
    * Holds if `e1 + delta` equals `e2`.
    */
-  predicate valueFlowStep(Expr e2, Expr e1, D::Delta delta) {
-    e2.(CopyValueExpr).getOperand() = e1 and delta = D::fromFloat(0)
+  predicate valueFlowStep(Expr e2, Expr e1, QlBuiltins::BigInt delta) {
+    e2.(CopyValueExpr).getOperand() = e1 and delta = 0.toBigInt()
     or
-    e2.(PostIncExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    e2.(PostIncExpr).getOperand() = e1 and delta = 0.toBigInt()
     or
-    e2.(PostDecExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    e2.(PostDecExpr).getOperand() = e1 and delta = 0.toBigInt()
     or
-    e2.(PreIncExpr).getOperand() = e1 and delta = D::fromFloat(1)
+    e2.(PreIncExpr).getOperand() = e1 and delta = 1.toBigInt()
     or
-    e2.(PreDecExpr).getOperand() = e1 and delta = D::fromFloat(-1)
+    e2.(PreDecExpr).getOperand() = e1 and delta = -1.toBigInt()
     or
-    additionalValueFlowStep(e2, e1, D::toInt(delta))
+    additionalValueFlowStep(e2, e1, delta)
     or
-    exists(Expr x | e2.(AddExpr).hasOperands(e1, x) |
-      D::fromInt(x.(ConstantIntegerExpr).getIntValue()) = delta
-    )
+    exists(Expr x | e2.(AddExpr).hasOperands(e1, x) | x.(ConstantIntegerExpr).getIntValue() = delta)
     or
     exists(Expr x, SubExpr sub |
       e2 = sub and
       sub.getLeftOperand() = e1 and
       sub.getRightOperand() = x
     |
-      D::fromInt(-x.(ConstantIntegerExpr).getIntValue()) = delta
+      -x.(ConstantIntegerExpr).getIntValue() = delta
     )
   }
 

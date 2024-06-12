@@ -7,4 +7,4 @@ private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 /**
  * Gets the constant integer value of the specified expression, if any.
  */
-int getIntConstantValue(SemExpr expr) { none() }
+QlBuiltins::BigInt getIntConstantValue(SemExpr expr) { none() }

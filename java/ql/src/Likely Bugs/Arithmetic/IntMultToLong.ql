@@ -21,10 +21,10 @@ import semmle.code.java.dataflow.RangeAnalysis
 import semmle.code.java.Conversions
 
 /** Gets an upper bound on the absolute value of `e`. */
-float exprBound(Expr e) {
-  result = e.(ConstantIntegerExpr).getIntValue().(float).abs()
+QlBuiltins::BigInt exprBound(Expr e) {
+  result = e.(ConstantIntegerExpr).getIntValue().abs()
   or
-  exists(float lower, float upper |
+  exists(QlBuiltins::BigInt lower, QlBuiltins::BigInt upper |
     bounded(e, any(ZeroBound zb), lower, false, _) and
     bounded(e, any(ZeroBound zb), upper, true, _) and
     result = upper.abs().maximum(lower.abs())
@@ -33,11 +33,13 @@ float exprBound(Expr e) {
 
 /** A multiplication that does not overflow. */
 predicate small(MulExpr e) {
-  exists(NumType t, float lhs, float rhs, float res | t = e.getType() |
+  exists(NumType t, QlBuiltins::BigInt lhs, QlBuiltins::BigInt rhs, QlBuiltins::BigInt res |
+    t = e.getType()
+  |
     lhs = exprBound(e.getLeftOperand()) and
     rhs = exprBound(e.getRightOperand()) and
     lhs * rhs = res and
-    res <= t.getOrdPrimitiveType().getMaxValue()
+    res <= t.getOrdPrimitiveType().getMaxValue().toString().toBigInt()
   )
 }
 

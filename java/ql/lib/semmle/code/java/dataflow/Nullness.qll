@@ -236,7 +236,7 @@ private Expr nonEmptyExpr() {
     // ...or it is guarded by a condition proving its length to be non-zero.
     exists(ConditionBlock cond, boolean branch, FieldAccess length |
       cond.controls(result.getBasicBlock(), branch) and
-      cond.getCondition() = integerGuard(length, branch, 0, false) and
+      cond.getCondition() = integerGuard(length, branch, 0.toBigInt(), false) and
       length.getField().hasName("length") and
       length.getQualifier() = v.getAUse()
     )
@@ -266,7 +266,7 @@ private Expr nonEmptyExpr() {
       or
       // ...or a check on its `size`.
       exists(MethodCall size |
-        c = integerGuard(size, branch, 0, false) and
+        c = integerGuard(size, branch, 0.toBigInt(), false) and
         size.getMethod().hasName("size") and
         size.getQualifier() = v.getAUse()
       )
@@ -485,7 +485,10 @@ private predicate correlatedConditions(
       inverted = branch1.booleanXor(branch2)
     )
     or
-    exists(SsaVariable v, VarRead rv1, VarRead rv2, int k, boolean branch1, boolean branch2 |
+    exists(
+      SsaVariable v, VarRead rv1, VarRead rv2, QlBuiltins::BigInt k, boolean branch1,
+      boolean branch2
+    |
       rv1 = v.getAUse() and
       rv2 = v.getAUse() and
       cond1.getCondition() = integerGuard(rv1, branch1, k, true) and
@@ -495,7 +498,7 @@ private predicate correlatedConditions(
       inverted = branch1.booleanXor(branch2)
     )
     or
-    exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
+    exists(SsaVariable v, QlBuiltins::BigInt k, boolean branch1, boolean branch2 |
       cond1.getCondition() = intBoundGuard(v.getAUse(), branch1, k) and
       cond2.getCondition() = intBoundGuard(v.getAUse(), branch2, k) and
       inverted = branch1.booleanXor(branch2)
@@ -630,19 +633,19 @@ private Expr trackingVarGuard(
       )
     )
     or
-    exists(int k |
+    exists(QlBuiltins::BigInt k |
       init.(ConstantIntegerExpr).getIntValue() = k and
       kind = TrackVarKindInt()
     |
       result = integerGuard(trackvar.getAnAccess(), branch, k, isA)
       or
-      exists(int k2 |
+      exists(QlBuiltins::BigInt k2 |
         result = integerGuard(trackvar.getAnAccess(), branch.booleanNot(), k2, true) and
         isA = false and
         k2 != k
       )
       or
-      exists(int bound, boolean branch_with_lower_bound |
+      exists(QlBuiltins::BigInt bound, boolean branch_with_lower_bound |
         result = intBoundGuard(trackvar.getAnAccess(), branch_with_lower_bound, bound) and
         isA = false
       |
