@@ -171,8 +171,16 @@ def _codeql_pack_info_impl(ctx):
         for zip in zip_target.files.to_list():
             zips_to_prefixes[zip] = prefix
     return [
-        DefaultInfo(files = depset(zips_to_prefixes.keys(), transitive = [ctx.attr.src[DefaultInfo].files])),
-        _CodeQLPackInfo(arch_overrides = ctx.attr.arch_overrides, files = ctx.attr.src[PackageFilegroupInfo], zips = _ZipInfo(zips_to_prefixes = zips_to_prefixes), pack_prefix = ctx.attr.prefix),
+        DefaultInfo(files = depset(
+            zips_to_prefixes.keys(),
+            transitive = [ctx.attr.src[DefaultInfo].files],
+        )),
+        _CodeQLPackInfo(
+            arch_overrides = ctx.attr.arch_overrides,
+            files = ctx.attr.src[PackageFilegroupInfo],
+            zips = _ZipInfo(zips_to_prefixes = zips_to_prefixes),
+            pack_prefix = ctx.attr.prefix,
+        ),
     ]
 
 _codeql_pack_info = rule(
@@ -369,7 +377,7 @@ def codeql_pack_group(name, srcs, visibility = None, skip_installer = False, pre
     Prefixes all paths in the pack group with `prefix`.
 
     The compression level of the generated zip files can be set with `compression_level`. Note that this doesn't affect the compression
-    level of extra zip files that are added to a pack, as thes files will not be re-compressed.
+    level of extra zip files that are added to a pack, as these files will not be re-compressed.
     """
     internal = _make_internal(name)
 

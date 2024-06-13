@@ -71,22 +71,13 @@ codeql_pkg_files(
     ],
 )
 
-pkg_filegroup(
-    name = "swift-files",
+codeql_pack(
+    name = "swift",
     srcs = [
         ":root-files",
         ":tools",
         "//swift/downgrades",
     ],
-    visibility = ["//visibility:public"],
-)
-
-# WARNING: This pack is re-defined internally, with an appropriate transition
-# to switch the internal toolchain to the correct x86-macos one.
-# Therefore, check there before making any changes to this pack definition.
-codeql_pack(
-    name = "swift",
-    srcs = [":swift-files"],
     zips = select({
         "@platforms//os:windows": {},
         "//conditions:default": {
