@@ -19,10 +19,11 @@ class DangerousActionUsesStep extends PoisonableStep, UsesStep {
 private string dangerousCommands() {
   result =
     [
-      "npm install", "npm run ", "yarn ", "npm ci(\\b|$)", "make ", "terraform plan",
+      "npm i(nstall)?(\\b|$)", "npm run ", "yarn ", "npm ci(\\b|$)", "make ", "terraform plan",
       "terraform apply", "gomplate ", "pre-commit run", "pre-commit install", "go generate",
       "msbuild ", "mvn ", "gradle ", "bundle install", "bundle exec ", "^ant ", "mkdocs build",
-      "pytest", "pip install -r ", "pip install --requirement", "java -jar "
+      "pytest", "pip install -r ", "pip install --requirement", "java -jar ", "poetry install",
+      "poetry run"
     ]
 }
 

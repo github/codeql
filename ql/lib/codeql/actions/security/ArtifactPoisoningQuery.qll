@@ -20,12 +20,13 @@ class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep
   DownloadArtifactActionStep() {
     this.getCallee() =
       [
-        "dawidd6/action-download-artifact", "marcofaggian/action-download-multiple-artifacts",
-        "benday-inc/download-latest-artifact", "blablacar/action-download-last-artifact",
-        "levonet/action-download-last-artifact", "bettermarks/action-artifact-download",
-        "aochmann/actions-download-artifact", "cytopia/download-artifact-retry-action",
-        "alextompkins/download-prior-artifact", "nmerget/download-gzip-artifact",
-        "benday-inc/download-artifact", "synergy-au/download-workflow-artifacts-action",
+        "actions/download-artifact", "dawidd6/action-download-artifact",
+        "marcofaggian/action-download-multiple-artifacts", "benday-inc/download-latest-artifact",
+        "blablacar/action-download-last-artifact", "levonet/action-download-last-artifact",
+        "bettermarks/action-artifact-download", "aochmann/actions-download-artifact",
+        "cytopia/download-artifact-retry-action", "alextompkins/download-prior-artifact",
+        "nmerget/download-gzip-artifact", "benday-inc/download-artifact",
+        "synergy-au/download-workflow-artifacts-action", "ishworkh/docker-image-artifact-download",
         "ishworkh/container-image-artifact-download", "sidx1024/action-download-artifact",
         "hyperskill/azblob-download-artifact", "ma-ve/action-download-artifact-with-retry"
       ] and
