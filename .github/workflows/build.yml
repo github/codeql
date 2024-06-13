@@ -26,3 +26,5 @@ jobs:
       - name: Run action
         if: steps.changes.outputs.src == 'true'
         uses: ./
+        with:
+          token: ${{ secrets.GHCR_TOKEN }}
