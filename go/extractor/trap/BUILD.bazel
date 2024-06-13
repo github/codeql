@@ -15,6 +15,7 @@ go_library(
         "//go/extractor/srcarchive",
         "//go/extractor/util",
         "//go/extractor/vendor/golang.org/x/tools/go/packages",
+        "//go/extractor/vendor/golang.org/x/tools/go/types/objectpath",
     ],
 )
 
