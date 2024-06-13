@@ -116,19 +116,6 @@ namespace Semmle.Extraction
         }
 
         /// <summary>
-        /// Archive a file given the file contents.
-        /// </summary>
-        /// <param name="inputPath">The path of the file.</param>
-        /// <param name="contents">The contents of the file.</param>
-        public void Archive(PathTransformer.ITransformedPath inputPath, string contents)
-        {
-            if (string.IsNullOrEmpty(archive))
-                return;
-
-            ArchiveContents(inputPath, contents);
-        }
-
-        /// <summary>
         /// Try to move a file from sourceFile to destFile.
         /// If successful returns true,
         /// otherwise returns false and leaves the file in its original place.
@@ -210,22 +197,20 @@ namespace Semmle.Extraction
         /// exceed the system path limit of 260 characters.</exception>
         private void ArchivePath(string fullInputPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
         {
-            var contents = File.ReadAllText(fullInputPath, inputEncoding);
-            ArchiveContents(transformedPath, contents);
-        }
-
-        private void ArchiveContents(PathTransformer.ITransformedPath transformedPath, string contents)
-        {
             var dest = FileUtils.NestPaths(logger, archive, transformedPath.Value);
-            var tmpSrcFile = Path.GetTempFileName();
-            File.WriteAllText(tmpSrcFile, contents, utf8);
             try
             {
+                var contents = File.ReadAllText(fullInputPath, inputEncoding);
+                var tmpSrcFile = Path.GetTempFileName();
+                File.WriteAllText(tmpSrcFile, contents, utf8);
+
                 FileUtils.MoveOrReplace(tmpSrcFile, dest);
             }
             catch (Exception ex)
             {
-                // If this happened, it was probably because the same file was compiled multiple times.
+                // If this happened, it was probably because
+                // - the same file was compiled multiple times, or
+                // - the file doesn't exist (due to wrong #line directive or because it's an in-memory source generated AST).
                 // In any case, this is not a fatal error.
                 logger.LogWarning("Problem archiving " + dest + ": " + ex);
             }
