@@ -12,6 +12,11 @@ extensions:
       - ["Microsoft.Extensions.Options", "OptionsManager<TOptions>", False, "OptionsManager", "(Microsoft.Extensions.Options.IOptionsFactory<TOptions>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsMonitor<TOptions>", False, "OptionsMonitor", "(Microsoft.Extensions.Options.IOptionsFactory<TOptions>,System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IOptionsChangeTokenSource<TOptions>>,Microsoft.Extensions.Options.IOptionsMonitorCache<TOptions>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Options", "OptionsMonitor<TOptions>", False, "OptionsMonitor", "(Microsoft.Extensions.Options.IOptionsFactory<TOptions>,System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IOptionsChangeTokenSource<TOptions>>,Microsoft.Extensions.Options.IOptionsMonitorCache<TOptions>)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", False, "AddError", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", False, "AddError", "(System.String,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", False, "AddResult", "(Microsoft.Extensions.Options.ValidateOptionsResult)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", False, "AddResult", "(System.ComponentModel.DataAnnotations.ValidationResult)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", False, "AddResults", "(System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -183,9 +188,5 @@ extensions:
       - ["Microsoft.Extensions.Options", "ValidateOptions<TOptions>", "get_Validation", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "ValidateOptionsResult", "Fail", "(System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "ValidateOptionsResult", "Fail", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", "AddError", "(System.String,System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", "AddResult", "(Microsoft.Extensions.Options.ValidateOptionsResult)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", "AddResult", "(System.ComponentModel.DataAnnotations.ValidationResult)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", "AddResults", "(System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", "Build", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Options", "ValidateOptionsResultBuilder", "Clear", "()", "summary", "df-generated"]

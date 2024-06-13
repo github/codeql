@@ -4,8 +4,13 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Text.RegularExpressions", "Capture", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Text.RegularExpressions", "Capture", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", False, "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", False, "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32,System.String)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "Group", False, "Synchronized", "(System.Text.RegularExpressions.Group)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "GroupCollection", False, "TryGetValue", "(System.String,System.Text.RegularExpressions.Group)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Keys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "Match", False, "NextMatch", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "Match", False, "Synchronized", "(System.Text.RegularExpressions.Match)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -80,8 +85,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Text.RegularExpressions", "Capture", "ToString", "()", "summary", "df-generated"]
-      - ["System.Text.RegularExpressions", "Capture", "get_Value", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "Capture", "get_ValueSpan", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "CaptureCollection", "Contains", "(System.Object)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "CaptureCollection", "Contains", "(System.Text.RegularExpressions.Capture)", "summary", "df-generated"]
@@ -96,7 +99,6 @@ extensions:
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "GeneratedRegexAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32)", "summary", "df-generated"]
-      - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32,System.String)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.String)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "get_CultureName", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", "get_MatchTimeoutMilliseconds", "()", "summary", "df-generated"]
@@ -116,7 +118,6 @@ extensions:
       - ["System.Text.RegularExpressions", "GroupCollection", "get_IsFixedSize", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GroupCollection", "get_IsReadOnly", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "GroupCollection", "get_IsSynchronized", "()", "summary", "df-generated"]
-      - ["System.Text.RegularExpressions", "GroupCollection", "get_Keys", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "Match", "Result", "(System.String)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "Match", "get_Empty", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "Match", "get_Groups", "()", "summary", "df-generated"]

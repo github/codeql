@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Diagnostics.Tracing", "EventCounter", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", False, "DisableEvents", "(System.Diagnostics.Tracing.EventSource)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", False, "EnableEvents", "(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", False, "EnableEvents", "(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
@@ -17,6 +18,9 @@ extensions:
       - ["System.Diagnostics.Tracing", "EventSource", False, "get_Guid", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventWrittenEventArgs", False, "get_ActivityId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Diagnostics.Tracing", "IncrementingEventCounter", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Diagnostics.Tracing", "IncrementingPollingCounter", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Diagnostics.Tracing", "PollingCounter", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -29,7 +33,6 @@ extensions:
       - ["System.Diagnostics.Tracing", "EventCommandEventArgs", "DisableEvent", "(System.Int32)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventCommandEventArgs", "EnableEvent", "(System.Int32)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventCounter", "EventCounter", "(System.String,System.Diagnostics.Tracing.EventSource)", "summary", "df-generated"]
-      - ["System.Diagnostics.Tracing", "EventCounter", "ToString", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventCounter", "WriteMetric", "(System.Double)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventCounter", "WriteMetric", "(System.Single)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", "Dispose", "()", "summary", "df-generated"]
@@ -91,6 +94,3 @@ extensions:
       - ["System.Diagnostics.Tracing", "EventWrittenEventArgs", "get_Version", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "IncrementingEventCounter", "Increment", "(System.Double)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "IncrementingEventCounter", "IncrementingEventCounter", "(System.String,System.Diagnostics.Tracing.EventSource)", "summary", "df-generated"]
-      - ["System.Diagnostics.Tracing", "IncrementingEventCounter", "ToString", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.Tracing", "IncrementingPollingCounter", "ToString", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.Tracing", "PollingCounter", "ToString", "()", "summary", "df-generated"]

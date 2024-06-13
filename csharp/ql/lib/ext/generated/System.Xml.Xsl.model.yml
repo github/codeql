@@ -6,6 +6,7 @@ extensions:
     data:
       - ["System.Xml.Xsl", "IXsltContextFunction", True, "Invoke", "(System.Xml.Xsl.XsltContext,System.Object[],System.Xml.XPath.XPathNavigator)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl", "IXsltContextFunction", True, "Invoke", "(System.Xml.Xsl.XsltContext,System.Object[],System.Xml.XPath.XPathNavigator)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Xml.Xsl", "IXsltContextFunction", True, "Invoke", "(System.Xml.Xsl.XsltContext,System.Object[],System.Xml.XPath.XPathNavigator)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl", "IXsltContextFunction", True, "get_ArgTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Xsl", "XslCompiledTransform", False, "Load", "(System.Reflection.MethodInfo,System.Byte[],System.Type[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Xml.Xsl", "XslTransform", False, "Transform", "(System.Xml.XPath.IXPathNavigable,System.Xml.Xsl.XsltArgumentList)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
