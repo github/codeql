@@ -29,14 +29,20 @@ module Log {
   }
 
   private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
-    LogFormatter() { this.getName() = ["Fatalf", "Panicf", "Printf"] }
+    LogFormatter() { this.getName() = ["Fatalf", "Panicf", "Printf", "Panic", "Panicf", "Panicln"] }
 
     override int getFormatStringIndex() { result = 0 }
   }
 
   /** A fatal log function, which calls `os.Exit`. */
   private class FatalLogFunction extends Function {
-    FatalLogFunction() { this.hasQualifiedName("log", ["Fatal", "Fatalf", "Fatalln"]) }
+    FatalLogFunction() {
+      exists(string fn | fn = ["Fatal", "Fatalf", "Fatalln"] |
+        this.hasQualifiedName("log", fn)
+        or
+        this.(Method).hasQualifiedName("log", "Logger", fn)
+      )
+    }
 
     override predicate mayReturnNormally() { none() }
   }
