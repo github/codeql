@@ -641,3 +641,33 @@ private class NeutralCallableAdapter extends NeutralCallable {
 
   override predicate hasExactModel() { exact = true }
 }
+
+/**
+ * A callable where there exists a MaD sink model that applies to it.
+ */
+private class SinkModelCallableAdapter extends SinkModelCallable {
+  private Provenance provenance;
+
+  SinkModelCallableAdapter() {
+    SourceSinkInterpretationInput::sinkElement(this, _, _, provenance, _)
+  }
+
+  override predicate hasProvenance(Provenance p) { provenance = p }
+}
+
+final class SinkCallable = SinkModelCallable;
+
+/**
+ * A callable where there exists a MaD source model that applies to it.
+ */
+private class SourceModelCallableAdapter extends SourceModelCallable {
+  private Provenance provenance;
+
+  SourceModelCallableAdapter() {
+    SourceSinkInterpretationInput::sourceElement(this, _, _, provenance, _)
+  }
+
+  override predicate hasProvenance(Provenance p) { provenance = p }
+}
+
+final class SourceCallable = SourceModelCallable;
