@@ -345,3 +345,14 @@ void test_array(PtrContainer *containers) {
     delete containers[2].ptr; // GOOD [FALSE POSITIVE]
     delete containers[2].ptr; // BAD (double free)
 }
+
+struct E {
+    struct EC {
+        int* a;
+    } ec[2];
+};
+
+void test(E* e) {
+    free(e->ec[0].a);
+    free(e->ec[1].a); // GOOD [FALSE POSITIVE]
+}

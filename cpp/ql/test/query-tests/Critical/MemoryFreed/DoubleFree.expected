@@ -28,6 +28,11 @@ edges
 | test_free.cpp:346:12:346:24 | *access to array [ptr] | test_free.cpp:346:26:346:28 | ptr | provenance |  |
 | test_free.cpp:346:12:346:24 | *access to array [ptr] | test_free.cpp:346:26:346:28 | ptr | provenance |  |
 | test_free.cpp:346:12:346:24 | *access to array [ptr] | test_free.cpp:346:26:346:28 | ptr | provenance |  |
+| test_free.cpp:356:10:356:10 | *e [post update] [ec, a] | test_free.cpp:357:10:357:10 | *e [ec, a] | provenance |  |
+| test_free.cpp:356:10:356:17 | *access to array [post update] [a] | test_free.cpp:356:10:356:10 | *e [post update] [ec, a] | provenance |  |
+| test_free.cpp:356:10:356:19 | pointer to free output argument | test_free.cpp:356:10:356:17 | *access to array [post update] [a] | provenance |  |
+| test_free.cpp:357:10:357:10 | *e [ec, a] | test_free.cpp:357:10:357:17 | *access to array [a] | provenance |  |
+| test_free.cpp:357:10:357:17 | *access to array [a] | test_free.cpp:357:10:357:19 | a | provenance |  |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:14:10:14:10 | a | semmle.label | a |
@@ -75,6 +80,12 @@ nodes
 | test_free.cpp:346:26:346:28 | ptr | semmle.label | ptr |
 | test_free.cpp:346:26:346:28 | ptr | semmle.label | ptr |
 | test_free.cpp:346:26:346:28 | ptr | semmle.label | ptr |
+| test_free.cpp:356:10:356:10 | *e [post update] [ec, a] | semmle.label | *e [post update] [ec, a] |
+| test_free.cpp:356:10:356:17 | *access to array [post update] [a] | semmle.label | *access to array [post update] [a] |
+| test_free.cpp:356:10:356:19 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test_free.cpp:357:10:357:10 | *e [ec, a] | semmle.label | *e [ec, a] |
+| test_free.cpp:357:10:357:17 | *access to array [a] | semmle.label | *access to array [a] |
+| test_free.cpp:357:10:357:19 | a | semmle.label | a |
 subpaths
 #select
 | test_free.cpp:14:10:14:10 | a | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:14:10:14:10 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:14:10:14:10 | a | a | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -97,3 +108,4 @@ subpaths
 | test_free.cpp:346:26:346:28 | ptr | test_free.cpp:343:26:343:28 | pointer to operator delete output argument | test_free.cpp:346:26:346:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:346:26:346:28 | ptr | ptr | test_free.cpp:343:5:343:28 | delete | delete |
 | test_free.cpp:346:26:346:28 | ptr | test_free.cpp:344:26:344:28 | pointer to operator delete output argument | test_free.cpp:346:26:346:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:346:26:346:28 | ptr | ptr | test_free.cpp:344:5:344:28 | delete | delete |
 | test_free.cpp:346:26:346:28 | ptr | test_free.cpp:345:26:345:28 | pointer to operator delete output argument | test_free.cpp:346:26:346:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:346:26:346:28 | ptr | ptr | test_free.cpp:345:5:345:28 | delete | delete |
+| test_free.cpp:357:10:357:19 | a | test_free.cpp:356:10:356:19 | pointer to free output argument | test_free.cpp:357:10:357:19 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:357:19:357:19 | a | a | test_free.cpp:356:5:356:8 | call to free | call to free |
