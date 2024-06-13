@@ -341,9 +341,9 @@ struct PtrContainer {
 
 void test_array(PtrContainer *containers) {
     delete containers[0].ptr; // GOOD
-    delete containers[1].ptr; // GOOD [FALSE POSITIVE]
-    delete containers[2].ptr; // GOOD [FALSE POSITIVE]
-    delete containers[2].ptr; // BAD (double free)
+    delete containers[1].ptr; // GOOD
+    delete containers[2].ptr; // GOOD
+    delete containers[2].ptr; // BAD (double free) [NOT DETECTED]
 }
 
 struct E {
@@ -354,5 +354,5 @@ struct E {
 
 void test(E* e) {
     free(e->ec[0].a);
-    free(e->ec[1].a); // GOOD [FALSE POSITIVE]
+    free(e->ec[1].a); // GOOD
 }
