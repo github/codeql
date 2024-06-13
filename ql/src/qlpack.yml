@@ -5,8 +5,8 @@ version: 0.1.0
 groups: [actions, queries]
 suites: codeql-suites
 extractor: javascript
+dbscheme: semmlecode.javascript.dbscheme
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
-  codeql/javascript-all: ^1.0.0
   githubsecuritylab/actions-all: ${workspace}
 warnOnImplicitThis: true
