@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.Populators;
+using System.Reflection;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -18,7 +19,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class Analyser : IDisposable
     {
-        protected Extraction.Extractor? extractor;
+        public ExtractionContext? ExtractionContext { get; protected set; }
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
@@ -38,14 +39,23 @@ namespace Semmle.Extraction.CSharp
 
         public PathTransformer PathTransformer { get; }
 
-        protected Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
+        public IPathCache PathCache { get; }
+
+        protected Analyser(
+            IProgressMonitor pm,
+            ILogger logger,
+            PathTransformer pathTransformer,
+            IPathCache pathCache,
+            bool addAssemblyTrapPrefix)
         {
             Logger = logger;
+            PathTransformer = pathTransformer;
+            PathCache = pathCache;
             this.addAssemblyTrapPrefix = addAssemblyTrapPrefix;
+            this.progressMonitor = pm;
+
             Logger.Log(Severity.Info, "EXTRACTION STARTING at {0}", DateTime.Now);
             stopWatch.Start();
-            progressMonitor = pm;
-            PathTransformer = pathTransformer;
         }
 
         /// <summary>
@@ -98,12 +108,12 @@ namespace Semmle.Extraction.CSharp
                         var def = reader.GetAssemblyDefinition();
                         assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
                     }
-                    extractor.SetAssemblyFile(assemblyIdentity, refPath);
+                    ExtractionContext.SetAssemblyFile(assemblyIdentity, refPath);
 
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    extractor.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
+                    ExtractionContext.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
                 }
             }
         }
@@ -148,7 +158,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (compilation.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -191,7 +201,7 @@ namespace Semmle.Extraction.CSharp
 
                 if (!upToDate)
                 {
-                    var cx = new Context(extractor, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                    var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
                     // Ensure that the file itself is populated in case the source file is totally empty
                     var root = tree.GetRoot();
                     Entities.File.Create(cx, root.SyntaxTree.FilePath);
@@ -213,7 +223,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
+                ExtractionContext.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
             }
         }
 
@@ -221,7 +231,7 @@ namespace Semmle.Extraction.CSharp
         {
             try
             {
-                var assemblyPath = extractor.OutputPath;
+                var assemblyPath = ExtractionContext.OutputPath;
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var currentTaskId = IncrementTaskCount();
@@ -231,11 +241,11 @@ namespace Semmle.Extraction.CSharp
                 var assembly = compilation.Assembly;
                 var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
 
-                extractor.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
+                ExtractionContext.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
 
                 ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
@@ -318,7 +328,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Number of errors encountered during extraction.
         /// </summary>
-        private int ExtractorErrors => extractor?.Errors ?? 0;
+        private int ExtractorErrors => ExtractionContext?.Errors ?? 0;
 
         /// <summary>
         /// Number of errors encountered by the compiler.
@@ -333,11 +343,26 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Logs information about the extractor.
         /// </summary>
-        public void LogExtractorInfo(string extractorVersion)
+        public void LogExtractorInfo()
         {
             Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
-            Logger.Log(Severity.Info, "  Extractor version: {0}", extractorVersion);
+            Logger.Log(Severity.Info, "  Extractor version: {0}", Version);
             Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
+        }
+
+        private static string Version
+        {
+            get
+            {
+                // the attribute for the git information are always attached to the entry assembly by our build system
+                var assembly = Assembly.GetEntryAssembly();
+                var versionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (versionString == null)
+                {
+                    return "unknown (not built from internal bazel workspace)";
+                }
+                return versionString.InformationalVersion;
+            }
         }
     }
 }

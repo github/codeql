@@ -801,7 +801,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       input = bb
       or
       varBlockReachesExt(def, v, bb, input) and
-      ssaDefReachesThroughBlock(def, input)
+      ssaDefReachesThroughBlock(def, pragma[only_bind_into](input))
     )
   }
 
