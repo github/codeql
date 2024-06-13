@@ -59,7 +59,7 @@ public class Sinks {
     sink(o);
   }
 
-  // MISSING SINK
+  // sink=p;Sinks;true;compoundPropgate;(Sinks);;Argument[0];test-sink;df-generated
   // neutral=p;Sinks;compoundPropgate;(Sinks);summary;df-generated
   public void compoundPropgate(Sinks s) {
     s.fieldSink();
