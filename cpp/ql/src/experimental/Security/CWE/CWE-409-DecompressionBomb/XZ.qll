@@ -13,14 +13,6 @@ class LzmaStreamVar extends VariableAccess {
   LzmaStreamVar() { this.getType().hasName("lzma_stream") }
 }
 
-/**
- * The `lzma_*_decoder` function is used as a required condition for decompression
- */
-class LzmaDecoderFunction extends Function {
-  LzmaDecoderFunction() {
-    this.hasGlobalName(["lzma_stream_decoder", "lzma_auto_decoder", "lzma_alone_decoder"])
-  }
-}
 
 /**
  * The `lzma_code` function is used in Flow sink
