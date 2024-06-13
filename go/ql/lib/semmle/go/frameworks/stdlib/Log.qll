@@ -11,7 +11,9 @@ module Log {
 
     LogFunction() {
       exists(string fn |
-        fn.matches(["Fatal%", "Panic%", "Print%"]) and firstPrintedArg = 0
+        fn =
+          ["Fatal", "Fatalf", "Fatalln", "Panic", "Panicf", "Panicln", "Print", "Printf", "Println"] and
+        firstPrintedArg = 0
         or
         fn = "Output" and firstPrintedArg = 1
       |
@@ -25,7 +27,7 @@ module Log {
   }
 
   private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
-    LogFormatter() { this.getName().matches("%f") }
+    LogFormatter() { this.getName() = ["Fatalf", "Panicf", "Printf"] }
 
     override int getFormatStringIndex() { result = 0 }
   }
@@ -42,9 +44,7 @@ module Log {
 
   /** A fatal log function, which calls `os.Exit`. */
   private class FatalLogFunction extends Function {
-    FatalLogFunction() {
-      exists(string fn | fn.matches("Fatal%") | this.hasQualifiedName("log", fn))
-    }
+    FatalLogFunction() { this.hasQualifiedName("log", ["Fatal", "Fatalf", "Fatalln"]) }
 
     override predicate mayReturnNormally() { none() }
   }
