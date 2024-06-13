@@ -87,7 +87,6 @@
 /lib/codeql/swift/elements/expr/BridgeFromObjCExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeToObjCExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeToObjCExprConstructor.qll linguist-generated
-/lib/codeql/swift/elements/expr/BuiltinLiteralExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CallExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CallExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/CaptureListExprConstructor.qll linguist-generated
@@ -166,7 +165,6 @@
 /lib/codeql/swift/elements/expr/LinearFunctionExtractOriginalExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/LinearToDifferentiableFunctionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/LinearToDifferentiableFunctionExprConstructor.qll linguist-generated
-/lib/codeql/swift/elements/expr/LiteralExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/LoadExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/LoadExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/LookupExpr.qll linguist-generated

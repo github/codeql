@@ -95,7 +95,7 @@ module FlowFromFree<FlowFromFreeParamSig P> {
         e = any(StoreInstruction store).getDestinationAddress().getUnconvertedResultExpression()
       )
       or
-      n.asExpr() instanceof ArrayExpr
+      [n.asExpr(), n.asIndirectExpr()] instanceof ArrayExpr
     }
   }
 
