@@ -8,9 +8,9 @@ import go
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
   /**
-   * The `Sprint` or `Append` functions or one of their variants.
-   *
    * DEPRECATED: Use AppenderOrSprinterFunc instead.
+   *
+   * The `Sprint` or `Append` functions or one of their variants.
    */
   deprecated class AppenderOrSprinter extends TaintTracking::FunctionModel {
     AppenderOrSprinter() { this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"]) }
