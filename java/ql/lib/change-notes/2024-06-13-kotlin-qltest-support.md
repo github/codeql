@@ -1,4 +1,5 @@
 ---
 category: fix
 ---
-* Support of `codeql test run` for Kotlin sources has been fixed.
+
+* Support for `codeql test run` for Kotlin sources has been fixed.
