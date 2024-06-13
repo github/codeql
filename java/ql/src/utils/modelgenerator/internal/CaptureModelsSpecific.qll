@@ -186,6 +186,8 @@ predicate isRelevantType(J::Type t) {
   )
 }
 
+J::Type getUnderlyingContentTypeSpecific(DataFlow::Content c) { none() }
+
 /**
  * Gets the MaD string representation of the qualifier.
  */
