@@ -1,13 +1,13 @@
 edges
 | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | provenance | Config Sink:MaD:2159 |
-| ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | provenance | MaD:47576 Sink:MaD:2159 |
-| ExceptionInformationExposure.cs:23:32:23:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:23:32:23:44 | access to property StackTrace | provenance | MaD:47581 Sink:MaD:2159 |
-| ExceptionInformationExposure.cs:39:28:39:44 | access to property InnerException : Exception | ExceptionInformationExposure.cs:39:28:39:55 | access to property StackTrace | provenance | MaD:47581 |
-| ExceptionInformationExposure.cs:40:28:40:29 | access to local variable ex : Exception | ExceptionInformationExposure.cs:40:28:40:40 | access to property StackTrace | provenance | MaD:47581 |
+| ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | provenance | MaD:47762 Sink:MaD:2159 |
+| ExceptionInformationExposure.cs:23:32:23:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:23:32:23:44 | access to property StackTrace | provenance | MaD:47767 Sink:MaD:2159 |
+| ExceptionInformationExposure.cs:39:28:39:44 | access to property InnerException : Exception | ExceptionInformationExposure.cs:39:28:39:55 | access to property StackTrace | provenance | MaD:47767 |
+| ExceptionInformationExposure.cs:40:28:40:29 | access to local variable ex : Exception | ExceptionInformationExposure.cs:40:28:40:40 | access to property StackTrace | provenance | MaD:47767 |
 | ExceptionInformationExposure.cs:41:28:41:29 | access to local variable ex : Exception | ExceptionInformationExposure.cs:41:28:41:40 | call to method ToString | provenance | Config |
-| ExceptionInformationExposure.cs:41:28:41:29 | access to local variable ex : Exception | ExceptionInformationExposure.cs:41:28:41:40 | call to method ToString | provenance | MaD:47576 |
+| ExceptionInformationExposure.cs:41:28:41:29 | access to local variable ex : Exception | ExceptionInformationExposure.cs:41:28:41:40 | call to method ToString | provenance | MaD:47762 |
 | ExceptionInformationExposure.cs:47:28:47:44 | object creation of type MyException : MyException | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | provenance | Config Sink:MaD:2159 |
-| ExceptionInformationExposure.cs:47:28:47:44 | object creation of type MyException : MyException | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | provenance | MaD:47576 Sink:MaD:2159 |
+| ExceptionInformationExposure.cs:47:28:47:44 | object creation of type MyException : MyException | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | provenance | MaD:47762 Sink:MaD:2159 |
 nodes
 | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | semmle.label | access to local variable ex : Exception |
 | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | semmle.label | call to method ToString |

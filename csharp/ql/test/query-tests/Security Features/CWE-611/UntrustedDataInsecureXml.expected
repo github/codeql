@@ -1,6 +1,6 @@
 edges
 | Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | provenance |  |
-| Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | provenance | MaD:11390 |
+| Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | provenance | MaD:11546 |
 nodes
 | Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Test.cs:11:50:11:84 | access to indexer | semmle.label | access to indexer |
