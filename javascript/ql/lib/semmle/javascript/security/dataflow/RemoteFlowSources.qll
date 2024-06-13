@@ -177,3 +177,12 @@ private class ExternalRemoteFlowSource extends RemoteFlowSource {
 
   override string getSourceType() { result = ap.getSourceType() }
 }
+
+/**
+ * A response from an outgoing network request.
+ */
+private class ResponseSource extends RemoteFlowSource {
+  ResponseSource() { this = any(ClientRequest r).getAResponseDataNode() }
+
+  override string getSourceType() { result = "a response from a remote server" }
+}
