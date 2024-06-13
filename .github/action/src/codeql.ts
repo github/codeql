@@ -121,7 +121,6 @@ export async function codeqlDatabaseCreate(
   var database_path = path.join(temp, "codeql-actions-db");
   var source_root =
     codeql.source_root || process.env["GITHUB_WORKSPACE"] || "./";
-  source_root = path.join(source_root, "**", "*.yml");
 
   await runCommand(codeql, [
     "database",
