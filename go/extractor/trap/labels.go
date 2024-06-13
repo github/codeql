@@ -5,6 +5,7 @@ import (
 	"go/types"
 
 	"github.com/github/codeql-go/extractor/util"
+	"golang.org/x/tools/go/types/objectpath"
 )
 
 // Label represents a label
@@ -149,6 +150,7 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 	if !exists {
 		scope := object.Parent()
 		if scope == nil {
+			// Note that `scope` should only be nil for methods and struct fields
 			panic(fmt.Sprintf("Object has no scope: %v :: %v.\n", object,
 				l.tw.Package.Fset.Position(object.Pos())))
 		} else {
@@ -157,7 +159,15 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 				// referenced from other files via their method
 				methlbl, _ := l.MethodID(meth, getTypeLabel())
 				label, _ = l.ReceiverObjectID(object, methlbl)
+			} else if path, err := objectpath.For(object); err == nil {
+				// If we can, use the object path as the label. This is needed
+				// for type parameters. Note that `objectpath` returns an error
+				// for non-exported objects.
+				label = l.GlobalID(fmt.Sprintf("%v,{%s};object", object.Pkg().Path(), path))
 			} else {
+				// Otherwise, construct a label based on the scope and the object's name.
+				// If the scope is not package scope then it will be given a fresh label,
+				// which will be different when it is referenced from different packages.
 				scopeLbl := l.ScopeID(scope, object.Pkg())
 				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
 			}
@@ -190,6 +200,15 @@ func findMethodOnTypeWithGivenReceiver(tp types.Type, object types.Object) *type
 		}
 	}
 	return nil
+}
+
+func getTypeParamType(object types.Object) *types.TypeParam {
+	typeNameObject, ok := object.(*types.TypeName)
+	if !ok {
+		return nil
+	}
+	typeParamType, _ := typeNameObject.Type().(*types.TypeParam)
+	return typeParamType
 }
 
 // ReceiverObjectID associates a label with the given object and returns it, together with a flag indicating whether
