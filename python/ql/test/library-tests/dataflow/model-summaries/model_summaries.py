@@ -122,7 +122,7 @@ a, b = MS_spread_all(SOURCE)
 SINK(a)  # $ flow="SOURCE, l:-1 -> a"
 SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
-from foo import MS_Class, MS_Class_transitive
+from foo import MS_Class, MS_Class_transitive, get_instance, get_class
 
 # Class summaries
 class_via_positional = MS_Class(SOURCE)
@@ -174,6 +174,16 @@ SINK_F(y)
 SINK_F(MS_Class.explicit_self(SOURCE))
 # Instead, `Argument[self:]` refers to a keyword argument named `self` (which you are allowed to do in Python)
 SINK(c.explicit_self(self = SOURCE))  # $ flow="SOURCE -> c.explicit_self(..)"
+
+
+instance = get_instance()
+SINK(instance.instance_method(SOURCE)[1])  # $ flow="SOURCE -> instance.instance_method(..)[1]"
+
+returned_class = get_class()
+SINK(returned_class(SOURCE).config)  # $ flow="SOURCE -> returned_class(..).config"
+
+SINK(returned_class().instance_method(SOURCE)[1])  # $flow="SOURCE -> returned_class().instance_method(..)[1]"
+
 
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
