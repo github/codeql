@@ -26,6 +26,11 @@ runs:
       shell: bash
       run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
+    - name: Regenerate Bazel files for Dependabot PR
+      if: github.actor == 'dependabot[bot]'
+      shell: bash
+      run: bazel run //go:gazelle
+
     - name: Check checked-in generated code
       if: inputs.run-code-checks == 'true'
       shell: bash
