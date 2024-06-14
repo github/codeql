@@ -15,14 +15,24 @@ import Variables.Definition
 import semmle.python.ApiGraphs
 
 private predicate is_pytest_fixture(Import imp, Variable name) {
-  exists(Alias a |
+  exists(Alias a, API::Node pytest_fixture, API::Node decorator |
+    pytest_fixture = API::moduleImport("pytest").getMember("fixture") and
+    // The additional `.getReturn()` is to account for the difference between
+    // ```
+    // @pytest.fixture
+    // def foo():
+    //    ...
+    // ```
+    // and
+    // ```
+    // @pytest.fixture(some, args, here)
+    // def foo():
+    //    ...
+    // ```
+    decorator in [pytest_fixture, pytest_fixture.getReturn()] and
     a = imp.getAName() and
     a.getAsname().(Name).getVariable() = name and
-    API::moduleImport("pytest")
-        .getMember("fixture")
-        .getReturn()
-        .getAValueReachableFromSource()
-        .asExpr() = a.getValue()
+    a.getValue() = decorator.getReturn().getAValueReachableFromSource().asExpr()
   )
 }
 

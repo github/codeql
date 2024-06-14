@@ -115,4 +115,4 @@ def baz() -> Optional['subexpression_return_type']:
 
 from pytest_fixtures import not_a_fixture  # BAD
 from pytest_fixtures import fixture, wrapped_fixture  # GOOD (pytest fixtures are used implicitly by pytest)
-from pytest_fixtures import session_fixture, wrapped_autouse_fixture  # GOOD [FALSE POSITIVE]
+from pytest_fixtures import session_fixture, wrapped_autouse_fixture  # GOOD (pytest fixtures are used implicitly by pytest)
