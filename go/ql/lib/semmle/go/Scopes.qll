@@ -113,7 +113,9 @@ class Entity extends @object {
 
   /** Gets the qualified name of this entity, if any. */
   string getQualifiedName() {
-    exists(string pkg, string name | this.hasQualifiedName(pkg, name) | result = pkg + "." + name)
+    exists(string pkg, string name | this.hasQualifiedName(pkg, name) |
+      if pkg = "" then result = name else result = pkg + "." + name
+    )
   }
 
   /**
