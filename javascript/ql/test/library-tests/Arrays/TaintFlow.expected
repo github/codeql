@@ -3,25 +3,25 @@
 | arrays.js:2:16:2:23 | "source" | arrays.js:15:27:15:27 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:16:23:16:23 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:20:8:20:16 | arr.pop() |
-| arrays.js:2:16:2:23 | "source" | arrays.js:54:8:54:13 | arr[0] |
-| arrays.js:2:16:2:23 | "source" | arrays.js:57:10:57:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:58:8:58:13 | arr[0] |
 | arrays.js:2:16:2:23 | "source" | arrays.js:61:10:61:10 | x |
 | arrays.js:2:16:2:23 | "source" | arrays.js:65:10:65:10 | x |
-| arrays.js:2:16:2:23 | "source" | arrays.js:71:10:71:10 | x |
-| arrays.js:2:16:2:23 | "source" | arrays.js:76:10:76:10 | x |
-| arrays.js:2:16:2:23 | "source" | arrays.js:79:8:79:29 | arr.fin ... llback) |
-| arrays.js:2:16:2:23 | "source" | arrays.js:82:8:82:35 | arrayFi ... llback) |
-| arrays.js:2:16:2:23 | "source" | arrays.js:86:10:86:10 | x |
-| arrays.js:2:16:2:23 | "source" | arrays.js:89:8:89:17 | arr.at(-1) |
+| arrays.js:2:16:2:23 | "source" | arrays.js:69:10:69:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:75:10:75:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:80:10:80:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:83:8:83:29 | arr.fin ... llback) |
+| arrays.js:2:16:2:23 | "source" | arrays.js:86:8:86:35 | arrayFi ... llback) |
+| arrays.js:2:16:2:23 | "source" | arrays.js:90:10:90:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:93:8:93:17 | arr.at(-1) |
 | arrays.js:18:22:18:29 | "source" | arrays.js:18:50:18:50 | e |
 | arrays.js:22:15:22:22 | "source" | arrays.js:23:8:23:17 | arr2.pop() |
 | arrays.js:25:15:25:22 | "source" | arrays.js:26:8:26:17 | arr3.pop() |
 | arrays.js:29:21:29:28 | "source" | arrays.js:30:8:30:17 | arr4.pop() |
-| arrays.js:29:21:29:28 | "source" | arrays.js:38:8:38:17 | arr5.pop() |
-| arrays.js:29:21:29:28 | "source" | arrays.js:40:8:40:26 | arr5.slice(2).pop() |
-| arrays.js:29:21:29:28 | "source" | arrays.js:46:8:46:17 | arr6.pop() |
+| arrays.js:29:21:29:28 | "source" | arrays.js:42:8:42:17 | arr5.pop() |
+| arrays.js:29:21:29:28 | "source" | arrays.js:44:8:44:26 | arr5.slice(2).pop() |
+| arrays.js:29:21:29:28 | "source" | arrays.js:50:8:50:17 | arr6.pop() |
 | arrays.js:33:37:33:44 | "source" | arrays.js:35:8:35:25 | arr4_variant.pop() |
-| arrays.js:49:4:49:11 | "source" | arrays.js:50:10:50:18 | ary.pop() |
-| arrays.js:49:4:49:11 | "source" | arrays.js:51:10:51:12 | ary |
-| arrays.js:91:9:91:16 | "source" | arrays.js:91:8:91:34 | ["sourc ... ) => x) |
-| arrays.js:92:9:92:16 | "source" | arrays.js:92:8:92:36 | ["sourc ... => !!x) |
+| arrays.js:53:4:53:11 | "source" | arrays.js:54:10:54:18 | ary.pop() |
+| arrays.js:53:4:53:11 | "source" | arrays.js:55:10:55:12 | ary |
+| arrays.js:95:9:95:16 | "source" | arrays.js:95:8:95:34 | ["sourc ... ) => x) |
+| arrays.js:96:9:96:16 | "source" | arrays.js:96:8:96:36 | ["sourc ... => !!x) |
