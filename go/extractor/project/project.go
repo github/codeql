@@ -457,6 +457,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	}
 
 	goModDirs := util.GetParentDirs(goModPaths)
+	newGoModDirs := []string{}
 	straySourceFiles := util.GoFilesOutsideDirs(".", goModDirs...)
 	if len(straySourceFiles) > 0 {
 		if emitDiagnostics {
@@ -473,6 +474,27 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			for _, component := range components {
 				path = filepath.Join(path, component)
 
+				// If this path is already covered by a new `go.mod` file we will initialise,
+				// then we don't need a more deeply-nested one. Keeping a separate list of
+				// `go.mod` files we are initialising in `newGoModDirs` allows us to descend as
+				// deep as we need to into the directory structure to place new `go.mod` files
+				// that don't conflict with pre-existing ones, but means we won't descend past
+				// the ones we are initialising ourselves. E.g. consider the following layout:
+				//
+				// - pre-existing/go.mod
+				// - no-go-mod/main.go
+				// - no-go-mod/sub-dir/foo.go
+				//
+				// Here, we want to initialise a `go.mod` in `no-go-mod/` only. This works fine
+				// without the `newGoModDirs` check below. However, if we added `no-go-mod/` to
+				// `goModDirs`, we would recurse all the way into `no-go-mod/sub-dir/` and
+				// initialise another `go.mod` file there, which we do not want. If we were to
+				// add an `else` branch to the `goModDirs` check, then we wouldn't be able to
+				// descend into `no-go-mod/` for the `go.mod` file we want.
+				if startsWithAnyOf(path, newGoModDirs) {
+					break
+				}
+
 				// Try to initialize a `go.mod` file automatically for the stray source files if
 				// doing so would not place it in a parent directory of an existing `go.mod` file.
 				if !startsWithAnyOf(path, goModDirs) {
@@ -481,7 +503,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 						DepMode: GoGetNoModules,
 						ModMode: ModUnset,
 					})
-					goModDirs = append(goModDirs, path)
+					newGoModDirs = append(newGoModDirs, path)
 					break
 				}
 			}
