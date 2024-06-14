@@ -45,7 +45,6 @@ public class Sources {
   }
 
   // Not a new source because a simple type is used in an intermediate step
-  // SPURIOUS-source=p;Sources;true;wrapSourceGetBool;();;ReturnValue;test-source;df-generated
   // neutral=p;Sources;wrapSourceGetBool;();summary;df-generated
   public Boolean wrapSourceGetBool() {
     String s = source();

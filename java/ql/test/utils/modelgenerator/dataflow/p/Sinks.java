@@ -66,7 +66,6 @@ public class Sinks {
   }
 
   // Not a new sink because a simple type is used in an intermediate step
-  // SPURIOUS-sink=p;Sinks;true;wrapSinkSimpleType;(String);;Argument[0];test-sink;df-generated
   // neutral=p;Sinks;wrapSinkSimpleType;(String);summary;df-generated
   public void wrapSinkSimpleType(String s) {
     Boolean b = s == "hello";
