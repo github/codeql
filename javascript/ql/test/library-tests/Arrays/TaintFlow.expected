@@ -3,6 +3,7 @@
 | arrays.js:2:16:2:23 | "source" | arrays.js:15:27:15:27 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:16:23:16:23 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:20:8:20:16 | arr.pop() |
+| arrays.js:2:16:2:23 | "source" | arrays.js:39:8:39:24 | arr4_spread.pop() |
 | arrays.js:2:16:2:23 | "source" | arrays.js:58:8:58:13 | arr[0] |
 | arrays.js:2:16:2:23 | "source" | arrays.js:61:10:61:10 | x |
 | arrays.js:2:16:2:23 | "source" | arrays.js:65:10:65:10 | x |
