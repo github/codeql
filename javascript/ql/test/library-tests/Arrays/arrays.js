@@ -34,9 +34,9 @@
   arr4_variant.pop();
   sink(arr4_variant.pop()); // NOT OK
 
-  // var arr4_spread = [];
-  // arr4_spread.splice(0, 0, ...arr);
-  // sink(arr4_spread.pop()); // NOT OK
+  var arr4_spread = [];
+  arr4_spread.splice(0, 0, ...arr);
+  sink(arr4_spread.pop()); // NOT OK
 
   var arr5 = [].concat(arr4);
   sink(arr5.pop()); // NOT OK
