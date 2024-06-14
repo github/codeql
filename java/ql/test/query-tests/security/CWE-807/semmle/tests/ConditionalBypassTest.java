@@ -53,10 +53,10 @@ class ConditionalBypassTest {
 		InetAddress loopback = InetAddress.getLoopbackAddress();
 		// GOOD: reverse DNS on loopback address is fine
 		if (loopback.getCanonicalHostName().equals("localhost")) {
-			login(user, password); // $ hasConditionalBypassTest
+			login(user, password);
 		}
 		if (Inet4Address.getLoopbackAddress().getCanonicalHostName().equals("localhost")) {
-			login(user, password); // $ hasConditionalBypassTest
+			login(user, password);
 		}
 	}
 
