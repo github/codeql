@@ -38,7 +38,7 @@ class ConditionalBypassTest {
 		}
 
 		// FALSE NEGATIVE: we have no way of telling that the skipped method is sensitive
-		if (adminCookie.getValue() == "false") // $ MISSING: $ hasConditionalBypassTest
+		if (adminCookie.getValue() == "false") // $ MISSING: hasConditionalBypassTest
 			doReallyImportantSecurityWork();
 
 		InetAddress local = InetAddress.getLocalHost();
