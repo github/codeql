@@ -15,5 +15,11 @@ def fixture_wrapper():
 def wrapped_fixture():
     pass
 
+@pytest.fixture(scope='session', autorun=True)
+def factory_fixture():
+    pass
+
+fixture_instance = factory_fixture()
+
 def not_a_fixture():
     pass

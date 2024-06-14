@@ -113,4 +113,4 @@ def baz() -> Optional['subexpression_return_type']:
     pass
 
 
-from pytest_fixtures import fixture, wrapped_fixture, not_a_fixture
+from pytest_fixtures import fixture, wrapped_fixture, fixture_instance, not_a_fixture
