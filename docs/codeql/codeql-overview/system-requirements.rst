@@ -26,7 +26,7 @@ For extraction of compiled languages (C/C++, C#, Go, Java) and Ruby on Linux:
 - ``glibc`` version 2.17 or greater must be installed.
 - ``musl-c``-based Linux distributions, such as Alpine Linux, are not supported.
 
-For extraction using autobuild on Windows:
+For extraction of compiled languages on Windows:
 
 - The ``PowerShell.exe`` executable must be available on the ``PATH``.
 
