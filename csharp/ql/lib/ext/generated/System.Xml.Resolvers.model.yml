@@ -6,6 +6,7 @@ extensions:
     data:
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "XmlPreloadedResolver", "(System.Xml.XmlResolver,System.Xml.Resolvers.XmlKnownDtds,System.Collections.Generic.IEqualityComparer<System.Uri>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "XmlPreloadedResolver", "(System.Xml.XmlResolver,System.Xml.Resolvers.XmlKnownDtds,System.Collections.Generic.IEqualityComparer<System.Uri>)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "get_PreloadedUris", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -19,4 +20,3 @@ extensions:
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", "XmlPreloadedResolver", "(System.Xml.Resolvers.XmlKnownDtds)", "summary", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", "XmlPreloadedResolver", "(System.Xml.XmlResolver)", "summary", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", "XmlPreloadedResolver", "(System.Xml.XmlResolver,System.Xml.Resolvers.XmlKnownDtds)", "summary", "df-generated"]
-      - ["System.Xml.Resolvers", "XmlPreloadedResolver", "get_PreloadedUris", "()", "summary", "df-generated"]

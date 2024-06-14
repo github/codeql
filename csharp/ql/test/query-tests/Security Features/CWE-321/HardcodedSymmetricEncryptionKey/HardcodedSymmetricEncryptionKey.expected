@@ -13,10 +13,10 @@ edges
 | HardcodedSymmetricEncryptionKey.cs:44:51:44:69 | access to local variable byteArrayFromString : Byte[] | HardcodedSymmetricEncryptionKey.cs:112:63:112:65 | key : Byte[] | provenance |  |
 | HardcodedSymmetricEncryptionKey.cs:50:35:50:35 | access to local variable c : Byte[] | HardcodedSymmetricEncryptionKey.cs:59:64:59:71 | password : Byte[] | provenance |  |
 | HardcodedSymmetricEncryptionKey.cs:59:64:59:71 | password : Byte[] | HardcodedSymmetricEncryptionKey.cs:68:87:68:94 | access to parameter password | provenance |  Sink:MaD:1857 |
-| HardcodedSymmetricEncryptionKey.cs:59:64:59:71 | password : Byte[] | HardcodedSymmetricEncryptionKey.cs:68:87:68:94 | access to parameter password | provenance |  Sink:MaD:39313 |
+| HardcodedSymmetricEncryptionKey.cs:59:64:59:71 | password : Byte[] | HardcodedSymmetricEncryptionKey.cs:68:87:68:94 | access to parameter password | provenance |  Sink:MaD:39497 |
 | HardcodedSymmetricEncryptionKey.cs:103:57:103:59 | key : Byte[] | HardcodedSymmetricEncryptionKey.cs:108:23:108:25 | access to parameter key | provenance |  Sink:MaD:1859 |
 | HardcodedSymmetricEncryptionKey.cs:112:63:112:65 | key : Byte[] | HardcodedSymmetricEncryptionKey.cs:121:87:121:89 | access to parameter key | provenance |  Sink:MaD:1858 |
-| HardcodedSymmetricEncryptionKey.cs:112:63:112:65 | key : Byte[] | HardcodedSymmetricEncryptionKey.cs:121:87:121:89 | access to parameter key | provenance |  Sink:MaD:39315 |
+| HardcodedSymmetricEncryptionKey.cs:112:63:112:65 | key : Byte[] | HardcodedSymmetricEncryptionKey.cs:121:87:121:89 | access to parameter key | provenance |  Sink:MaD:39499 |
 nodes
 | HardcodedSymmetricEncryptionKey.cs:17:21:17:97 | array creation of type Byte[] | semmle.label | array creation of type Byte[] |
 | HardcodedSymmetricEncryptionKey.cs:22:23:22:99 | array creation of type Byte[] | semmle.label | array creation of type Byte[] |

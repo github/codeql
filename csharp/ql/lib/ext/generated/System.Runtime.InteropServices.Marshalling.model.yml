@@ -37,6 +37,7 @@ extensions:
       - ["System.Runtime.InteropServices.Marshalling", "SpanMarshaller<T,TUnmanagedElement>+ManagedToUnmanagedIn", False, "GetUnmanagedValuesDestination", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "SpanMarshaller<T,TUnmanagedElement>", False, "GetManagedValuesDestination", "(System.Span<T>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller+ManagedToUnmanagedIn", False, "ToUnmanaged", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", False, "Deconstruct", "(System.Void*,System.Void**)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -171,7 +172,6 @@ extensions:
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller", "ConvertToManaged", "(System.Byte*)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller", "ConvertToUnmanaged", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller", "Free", "(System.Byte*)", "summary", "df-generated"]
-      - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "Deconstruct", "(System.Void*,System.Void**)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "VirtualMethodTableInfo", "(System.Void*,System.Void**)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "get_ThisPointer", "()", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "get_VirtualMethodTable", "()", "summary", "df-generated"]

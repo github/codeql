@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Collections.Specialized", "CollectionsUtil", False, "CreateCaseInsensitiveHashtable", "(System.Collections.IDictionary)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "ListDictionary", False, "ListDictionary", "(System.Collections.IComparer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameObjectCollectionBase", False, "BaseAdd", "(System.String,System.Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameObjectCollectionBase", False, "BaseAdd", "(System.String,System.Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
@@ -20,6 +21,7 @@ extensions:
       - ["System.Collections.Specialized", "NameObjectCollectionBase", False, "NameObjectCollectionBase", "(System.Collections.IHashCodeProvider,System.Collections.IComparer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameObjectCollectionBase", False, "NameObjectCollectionBase", "(System.Int32,System.Collections.IHashCodeProvider,System.Collections.IComparer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameObjectCollectionBase", False, "NameObjectCollectionBase", "(System.Int32,System.Collections.IHashCodeProvider,System.Collections.IComparer)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Collections.Specialized", "NameObjectCollectionBase", True, "get_Keys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", False, "NameValueCollection", "(System.Collections.Specialized.NameValueCollection)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", False, "NameValueCollection", "(System.Int32,System.Collections.Specialized.NameValueCollection)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", False, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -30,6 +32,7 @@ extensions:
       - ["System.Collections.Specialized", "NameValueCollection", True, "Get", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", True, "GetKey", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", True, "Set", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Collections.Specialized", "NameValueCollection", True, "get_AllKeys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NotifyCollectionChangedEventArgs", False, "NotifyCollectionChangedEventArgs", "(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList,System.Collections.IList,System.Int32)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NotifyCollectionChangedEventArgs", False, "NotifyCollectionChangedEventArgs", "(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList,System.Collections.IList,System.Int32)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "NotifyCollectionChangedEventArgs", False, "NotifyCollectionChangedEventArgs", "(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList,System.Int32)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
@@ -44,7 +47,9 @@ extensions:
       - ["System.Collections.Specialized", "OrderedDictionary", False, "OrderedDictionary", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Specialized", "StringDictionary", True, "CopyTo", "(System.Array,System.Int32)", "", "Argument[this]", "Argument[0].Element", "taint", "df-generated"]
       - ["System.Collections.Specialized", "StringDictionary", True, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Specialized", "StringDictionary", True, "get_Keys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "StringDictionary", True, "get_SyncRoot", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Specialized", "StringDictionary", True, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Specialized", "StringEnumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -76,7 +81,6 @@ extensions:
       - ["System.Collections.Specialized", "BitVector32", "set_Item", "(System.Collections.Specialized.BitVector32+Section,System.Int32)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "BitVector32", "set_Item", "(System.Int32,System.Boolean)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "CollectionsUtil", "CreateCaseInsensitiveHashtable", "()", "summary", "df-generated"]
-      - ["System.Collections.Specialized", "CollectionsUtil", "CreateCaseInsensitiveHashtable", "(System.Collections.IDictionary)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "CollectionsUtil", "CreateCaseInsensitiveHashtable", "(System.Int32)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "CollectionsUtil", "CreateCaseInsensitiveSortedList", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "HybridDictionary", "Contains", "(System.Object)", "summary", "df-generated"]
@@ -112,7 +116,6 @@ extensions:
       - ["System.Collections.Specialized", "NameObjectCollectionBase", "OnDeserialization", "(System.Object)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameObjectCollectionBase", "get_Count", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameObjectCollectionBase", "get_IsSynchronized", "()", "summary", "df-generated"]
-      - ["System.Collections.Specialized", "NameObjectCollectionBase", "get_Keys", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", "GetValues", "(System.Int32)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", "GetValues", "(System.String)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", "HasKeys", "()", "summary", "df-generated"]
@@ -124,7 +127,6 @@ extensions:
       - ["System.Collections.Specialized", "NameValueCollection", "NameValueCollection", "(System.Int32,System.Collections.IHashCodeProvider,System.Collections.IComparer)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", "NameValueCollection", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NameValueCollection", "Remove", "(System.String)", "summary", "df-generated"]
-      - ["System.Collections.Specialized", "NameValueCollection", "get_AllKeys", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NotifyCollectionChangedEventArgs", "NotifyCollectionChangedEventArgs", "(System.Collections.Specialized.NotifyCollectionChangedAction)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NotifyCollectionChangedEventArgs", "NotifyCollectionChangedEventArgs", "(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "NotifyCollectionChangedEventArgs", "NotifyCollectionChangedEventArgs", "(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList,System.Collections.IList)", "summary", "df-generated"]
@@ -160,8 +162,6 @@ extensions:
       - ["System.Collections.Specialized", "StringDictionary", "Remove", "(System.String)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "StringDictionary", "get_Count", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "StringDictionary", "get_IsSynchronized", "()", "summary", "df-generated"]
-      - ["System.Collections.Specialized", "StringDictionary", "get_Keys", "()", "summary", "df-generated"]
-      - ["System.Collections.Specialized", "StringDictionary", "get_Values", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "StringDictionary", "set_Item", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "StringEnumerator", "MoveNext", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "StringEnumerator", "Reset", "()", "summary", "df-generated"]

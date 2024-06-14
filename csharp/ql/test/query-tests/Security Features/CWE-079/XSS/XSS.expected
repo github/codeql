@@ -4,10 +4,10 @@ edges
 | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | provenance |  |
 | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | provenance |  |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | provenance |  |
-| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:25:19:52 | access to indexer : String | provenance | MaD:11390 |
+| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:25:19:52 | access to indexer : String | provenance | MaD:11546 |
 | XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | provenance |  |
 | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer | provenance |  |
-| XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer | provenance | MaD:11390 |
+| XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer | provenance | MaD:11546 |
 | XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion | provenance |  |
 | XSSAspNetCore.cs:40:56:40:58 | foo : String | XSSAspNetCore.cs:44:51:44:53 | access to parameter foo | provenance |  |
 | XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | XSSAspNetCore.cs:58:43:58:62 | access to indexer : StringValues | provenance |  |

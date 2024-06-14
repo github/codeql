@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.Extensions.DependencyModel.Resolution", "CompositeCompilationAssemblyResolver", False, "CompositeCompilationAssemblyResolver", "(Microsoft.Extensions.DependencyModel.Resolution.ICompilationAssemblyResolver[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "ICompilationAssemblyResolver", True, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[0]", "Argument[1].Element", "taint", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel.Resolution", "ICompilationAssemblyResolver", True, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[this]", "Argument[1].Element", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
