@@ -22,6 +22,7 @@ extensions:
       - ["argparse", "Member[ArgumentParser].Subclass.Instance.Member[parse_known_args]", "Argument[0,args:]", "ReturnValue", "taint"]
       - ["cgi", "Member[FieldStorage].Subclass.Instance.Member[getvalue]", "Argument[self]", "ReturnValue", "taint"]
       - ["contextlib", "Member[_BaseExitStack].Subclass.Instance.Member[enter_context]", "Argument[0,cm:]", "ReturnValue", "taint"]
+      - ["copy", "Member[copy,deepcopy]", "Argument[0,x:]", "ReturnValue", "value"]
       - ["ctypes", "Member[create_unicode_buffer]", "Argument[0,init:]", "ReturnValue", "taint"]
       - ["distutils", "Member[util].Member[change_root]", "Argument[0,new_root:]", "ReturnValue", "taint"]
       - ["email", "Member[header].Member[Header].Subclass.Call", "Argument[0,s:]", "ReturnValue", "taint"]
