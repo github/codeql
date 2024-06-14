@@ -186,7 +186,13 @@ predicate isRelevantType(J::Type t) {
   )
 }
 
-J::Type getUnderlyingContentTypeSpecific(DataFlow::Content c) { none() }
+/**
+ * Gets the underlying type of the content `c`.
+ */
+J::Type getUnderlyingContentType(DataFlow::Content c) {
+  result = c.(DataFlow::FieldContent).getField().getType() or
+  result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+}
 
 /**
  * Gets the MaD string representation of the qualifier.

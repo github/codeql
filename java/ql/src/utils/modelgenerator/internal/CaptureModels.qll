@@ -42,15 +42,6 @@ private module Printing implements PrintingSig {
 module ModelPrinting = PrintingImpl<Printing>;
 
 /**
- * Gets the underlying type of the content `c`.
- */
-private Type getUnderlyingContentType(DataFlow::Content c) {
-  result = getUnderlyingContentTypeSpecific(c) or
-  result = c.(DataFlow::FieldContent).getField().getType() or
-  result = c.(DataFlow::SyntheticFieldContent).getField().getType()
-}
-
-/**
  * Holds if `c` is a relevant content kind, where the underlying type is relevant.
  */
 private predicate isRelevantTypeInContent(DataFlow::Content c) {

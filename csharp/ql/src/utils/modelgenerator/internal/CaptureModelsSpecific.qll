@@ -173,7 +173,12 @@ predicate isRelevantType(CS::Type t) {
   not irrelevantCollectionType(t)
 }
 
-CS::Type getUnderlyingContentTypeSpecific(DataFlow::Content c) {
+/**
+ * Gets the underlying type of the content `c`.
+ */
+CS::Type getUnderlyingContentType(DataFlow::Content c) {
+  result = c.(DataFlow::FieldContent).getField().getType() or
+  result = c.(DataFlow::SyntheticFieldContent).getField().getType() or
   result = c.(DataFlow::PropertyContent).getProperty().getType()
 }
 
