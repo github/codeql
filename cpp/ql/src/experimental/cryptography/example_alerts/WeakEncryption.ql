@@ -2,7 +2,7 @@
  * @name Weak cryptography
  * @description Finds explicit uses of symmetric encryption algorithms that are weak, unknown, or otherwise unaccepted.
  * @kind problem
- * @id cpp/weak-crypto/banned-encryption-algorithms
+ * @id cpp/experimental/weak-crypto/banned-encryption-algorithms
  * @problem.severity error
  * @precision high
  * @tags external/cwe/cwe-327
