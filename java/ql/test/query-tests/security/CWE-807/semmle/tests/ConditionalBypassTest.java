@@ -49,6 +49,15 @@ class ConditionalBypassTest {
 		if (Inet4Address.getLocalHost().getCanonicalHostName().equals("localhost")) {
 			login(user, password);
 		}
+
+		InetAddress loopback = InetAddress.getLoopbackAddress();
+		// GOOD: reverse DNS on loopback address is fine
+		if (loopback.getCanonicalHostName().equals("localhost")) {
+			login(user, password); // $ SPURIOUS: hasConditionalBypassTest
+		}
+		if (Inet4Address.getLoopbackAddress().getCanonicalHostName().equals("localhost")) {
+			login(user, password); // $ SPURIOUS: hasConditionalBypassTest
+		}
 	}
 
 	public static void test(String user, String password) {
