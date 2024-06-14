@@ -1,2 +1,1 @@
-| ClassWithAnnotatedMethod.java:1:7:1:30 | ClassWithAnnotatedMethod | Unused class: ClassWithAnnotatedMethod is not referenced within this codebase. If not used as an external API it should be removed. |
 | UnusedClass.java:1:7:1:17 | UnusedClass | Unused class: UnusedClass is not referenced within this codebase. If not used as an external API it should be removed. |
