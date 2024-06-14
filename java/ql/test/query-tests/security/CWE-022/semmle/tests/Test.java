@@ -5,12 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.DirectoryScanner;
@@ -24,10 +26,10 @@ import org.springframework.util.FileCopyUtils;
 
 public class Test {
 
-    private InetAddress address;
+    private HttpServletRequest request;
 
     public Object source() {
-        return address.getHostName();
+        return request.getParameter("source");
     }
 
     void test() throws IOException {
@@ -166,8 +168,8 @@ public class Test {
         new LargeText((File) source(), null, false, false); // $ hasTaintFlow
     }
 
-    void doGet6(String root, InetAddress address) throws IOException {
-        String temp = address.getHostName();
+    void doGet6(String root, HttpServletRequest request) throws IOException {
+        String temp = request.getParameter("source");
         // GOOD: Use `contains` and `startsWith` to check if the path is safe
         if (!temp.contains("..") && temp.startsWith(root + "/")) {
             File file = new File(temp);
