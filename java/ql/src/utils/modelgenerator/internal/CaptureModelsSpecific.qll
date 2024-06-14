@@ -279,6 +279,12 @@ predicate apiSource(DataFlow::Node source) {
 }
 
 /**
+ * Holds if it is not relevant to generate a source model for `api`, even
+ * if flow is detected from a node within `source` to a sink within `api`.
+ */
+predicate irrelevantSourceSinkApi(Callable source, TargetApiSpecific api) { none() }
+
+/**
  * Gets the MaD input string representation of `source`.
  */
 string asInputArgumentSpecific(DataFlow::Node source) {
