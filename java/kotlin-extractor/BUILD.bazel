@@ -13,16 +13,20 @@ bazel build @codeql//java/kotlin-extractor
 ```
 will build a default variant:
 * standalone, unless `CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE` is set to true, in which case it will go for embeddable
-* the version will be taken as the last supported version less than the version of the currently installed `kotlinc`
-    * if `CODEQL_KOTLIN_SINGLE_VERSION` is set, that will be used instead
-    * if `kotlinc` is not installed, `1.9.20-Beta` will be used
+* the version will be taken as the last supported version less than the version of the currently available `kotlinc`,
+  or `CODEQL_KOTLIN_SINGLE_VERSION` if set.
 
-If `kotlinc` is updated, bazel won't be aware of it and will therefore keep the same default version. Possible workarounds for that:
+If building from the `codeql` repository, `@codeql` can be skipped.
+
+It is recommended to use the `kotlinc` wrapper in `dev` (which is also available in `tools` from `semmle-code`), which
+takes care about providing a sensible default version and keep the version of the default target up to date.
+
+If the wrapper is not used and `kotlinc` is updated, bazel won't be aware of it and will therefore keep the same default
+version. Possible workarounds for that:
+* switch to using the `kotlinc` wrapper in `dev` as mentioned above
 * `bazel clean`
 * `bazel fetch --force @codeql//java/kotlin-extractor`
 * `bazel fetch --force @codeql_kotlin_defaults//:all` (only from `codeql`)
-
-If building from the `codeql` repository, `@codeql` can be skipped.
 """
 
 # This file is used in the `@codeql_kotlin_embeddable` external repo, which means we need to
