@@ -58,7 +58,6 @@ public class NewSources
     {
         public T Value { get; set; }
 
-        // SPURIOUS-source=Sources;NewSources+MyContainer<T>;false;Read;();;ReturnValue;local;df-generated
         // summary=Sources;NewSources+MyContainer<T>;false;Read;();;Argument[this];ReturnValue;taint;df-generated
         public string Read()
         {
