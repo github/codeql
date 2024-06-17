@@ -131,8 +131,6 @@ class WebSocketReaderAsSource extends RemoteFlowSource::Range {
   WebSocketReaderAsSource() {
     exists(WebSocketReader r | this = r.getAnOutput().getNode(r.getACall()))
   }
-
-  override string getSourceType() { result = "WebSocket reader" }
 }
 
 /**

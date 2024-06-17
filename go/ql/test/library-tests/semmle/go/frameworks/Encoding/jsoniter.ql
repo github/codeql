@@ -10,8 +10,6 @@ class UntrustedFunction extends Function {
 
 class RemoteSource extends DataFlow::Node, RemoteFlowSource::Range {
   RemoteSource() { this = any(UntrustedFunction f).getACall() }
-
-  override string getSourceType() { result = "untrusted function call" }
 }
 
 from CommandInjection::Flow::PathNode source, CommandInjection::Flow::PathNode sink

@@ -106,8 +106,6 @@ module ElazarlGoproxy {
         call.getTarget().hasQualifiedName(packagePath(), "ProxyCtx", "Charset")
       )
     }
-
-    override string getSourceType() { result = "HTTP request data" }
   }
 
   private class ProxyLogFunction extends StringOps::Formatting::Range, Method {

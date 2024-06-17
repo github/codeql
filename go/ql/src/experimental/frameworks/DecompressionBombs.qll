@@ -19,8 +19,6 @@ class MimeMultipartFileHeader extends RemoteFlowSource::Range {
       frn.getField().hasQualifiedName("mime/multipart", "Form", "Value")
     )
   }
-
-  override string getSourceType() { result = "mime/multipart file header" }
 }
 
 /** Provides a taint tracking configuration for reasoning about decompression bomb vulnerabilities. */

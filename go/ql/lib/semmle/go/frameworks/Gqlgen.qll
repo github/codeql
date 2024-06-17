@@ -43,7 +43,5 @@ module Gqlgen {
     ResolverParameter() {
       this.asParameter() = any(ResolverImplementationMethod h).getAnUntrustedParameter()
     }
-
-    override string getSourceType() { result = "GraphQL request" }
   }
 }

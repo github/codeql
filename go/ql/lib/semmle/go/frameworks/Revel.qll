@@ -19,8 +19,6 @@ module Revel {
         f.hasQualifiedName(packagePath(), "Controller", "Params")
       )
     }
-
-    override string getSourceType() { result = "Revel controller parameter" }
   }
 
   private class ParamsFixedSanitizer extends TaintTracking::DefaultTaintSanitizer,
@@ -41,8 +39,6 @@ module Revel {
         f.hasQualifiedName(packagePath(), "RouteMatch", "Params")
       )
     }
-
-    override string getSourceType() { result = "Revel route match parameter" }
   }
 
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
@@ -56,8 +52,6 @@ module Revel {
           ]
       )
     }
-
-    override string getSourceType() { result = "HTTP request field" }
   }
 
   private class UserControlledRequestMethod extends RemoteFlowSource::Range,
@@ -71,8 +65,6 @@ module Revel {
               "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
             ])
     }
-
-    override string getSourceType() { result = "Revel request method" }
   }
 
   private string contentTypeFromFilename(DataFlow::Node filename) {

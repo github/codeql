@@ -34,8 +34,6 @@ private module Gin {
         this = fld.getARead()
       )
     }
-
-    override string getSourceType() { result = "HTTP request context" }
   }
 
   /**
@@ -55,8 +53,6 @@ private module Gin {
         this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
-
-    override string getSourceType() { result = "HTTP request data" }
   }
 
   /**

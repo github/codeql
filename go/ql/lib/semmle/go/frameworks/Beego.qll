@@ -71,8 +71,6 @@ module Beego {
     }
 
     predicate isSafeUrlSource() { methodName in ["URI", "URL"] }
-
-    override string getSourceType() { result = "Beego Input" }
   }
 
   /** `BeegoInput` sources that are safe to use for redirection. */
@@ -102,8 +100,6 @@ module Beego {
         )
       )
     }
-
-    override string getSourceType() { result = "a Beego Controller" }
   }
 
   /**
@@ -115,8 +111,6 @@ module Beego {
         frn.getField().hasQualifiedName(contextPackagePath(), "BeegoInput", "RequestBody")
       )
     }
-
-    override string getSourceType() { result = "Beego Input Request Body" }
   }
 
   /**
@@ -128,8 +122,6 @@ module Beego {
         this = m.getACall().getResult()
       )
     }
-
-    override string getSourceType() { result = "a Beego cookie" }
   }
 
   private class BeegoOutputInstance extends Http::ResponseWriter::Range {

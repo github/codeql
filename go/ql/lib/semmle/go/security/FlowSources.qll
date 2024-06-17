@@ -41,8 +41,6 @@ module RemoteFlowSource {
    */
   class MaDRemoteSource extends Range {
     MaDRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
-
-    override string getSourceType() { result = "external" }
   }
 }
 
@@ -54,9 +52,6 @@ abstract class SourceNode extends DataFlow::Node {
    * Gets a string that represents the source kind with respect to threat modeling.
    */
   abstract string getThreatModel();
-
-  /** Gets a string that describes the type of this flow source. */
-  abstract string getSourceType();
 }
 
 /**

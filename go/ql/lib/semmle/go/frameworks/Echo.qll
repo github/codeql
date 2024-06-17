@@ -24,8 +24,6 @@ private module Echo {
         this = call.getResult(0)
       )
     }
-
-    override string getSourceType() { result = "HTTP request context" }
   }
 
   /**
@@ -52,8 +50,6 @@ private module Echo {
         this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
-
-    override string getSourceType() { result = "HTTP request data" }
   }
 
   /**

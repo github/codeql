@@ -138,7 +138,5 @@ module Twirp {
         this.getType().(PointerType).getBaseType() instanceof ProtobufMessageType
       )
     }
-
-    override string getSourceType() { result = "Twirp request" }
   }
 }
