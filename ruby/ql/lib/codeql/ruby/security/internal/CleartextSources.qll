@@ -40,16 +40,32 @@ module CleartextSources {
     re.getConstantValue().getStringlikeValue() = [".*", ".+"]
   }
 
+  /** Holds if `c` is a sensitive data classification that is relevant to consider for Cleartext Storage queries. */
+  private predicate isRelevantClassification(SensitiveDataClassification c) {
+    c =
+      [
+        SensitiveDataClassification::password(), SensitiveDataClassification::certificate(),
+        SensitiveDataClassification::secret(), SensitiveDataClassification::private()
+      ]
+  }
+
+  pragma[noinline]
+  private string getCombinedRelevantSensitiveRegexp() {
+    // Combine all the maybe-sensitive regexps into one using non-capturing groups and |.
+    result =
+      "(?:" +
+        strictconcat(string r, SensitiveDataClassification c |
+          r = maybeSensitiveRegexp(c) and isRelevantClassification(c)
+        |
+          r, ")|(?:"
+        ) + ")"
+  }
+
   /** Holds if the given name indicates the presence of sensitive data that is relevant to consider for Cleartext Storage queries. */
   bindingset[name]
   private predicate nameIndicatesRelevantSensitiveData(string name) {
-    exists(SensitiveDataClassification classification |
-      nameIndicatesSensitiveData(name, classification) and
-      classification in [
-          SensitiveDataClassification::password(), SensitiveDataClassification::certificate(),
-          SensitiveDataClassification::secret(), SensitiveDataClassification::private(),
-        ]
-    )
+    name.regexpMatch(getCombinedRelevantSensitiveRegexp()) and
+    not name.regexpMatch(notSensitiveRegexp())
   }
 
   /**
