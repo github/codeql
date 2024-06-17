@@ -27,10 +27,47 @@ Query Packs
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
+C/C++
+"""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+C#
+""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Golang
+""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
 Java
 """"
 
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
 *   Removed :code:`local` query variants. The results pertaining to local sources can be found using the non-local counterpart query. As an example, the results previously found by :code:`java/unvalidated-url-redirection-local` can be found by :code:`java/unvalidated-url-redirection`, if the :code:`local` threat model is enabled. The removed queries are :code:`java/path-injection-local`, :code:`java/command-line-injection-local`, :code:`java/xss-local`, :code:`java/sql-injection-local`, :code:`java/http-response-splitting-local`, :code:`java/improper-validation-of-array-construction-local`, :code:`java/improper-validation-of-array-index-local`, :code:`java/tainted-format-string-local`, :code:`java/tainted-arithmetic-local`, :code:`java/unvalidated-url-redirection-local`, :code:`java/xxe-local` and :code:`java/tainted-numeric-cast-local`.
+
+JavaScript/TypeScript
+"""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Python
+""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Ruby
+""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Swift
+"""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,6 +104,49 @@ JavaScript/TypeScript
 """""""""""""""""""""
 
 *   Fixed a bug where very large TypeScript files would cause database creation to crash. Large files over 10MB were already excluded from analysis, but the file size check was not applied to TypeScript files.
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+C/C++
+"""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+C#
+""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Golang
+""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Java
+""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+JavaScript/TypeScript
+"""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Python
+""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Ruby
+""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Swift
+"""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
 
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,6 +197,79 @@ Python
 
 Shared Libraries
 ----------------
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+Dataflow Analysis
+"""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Control Flow Analysis
+"""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Regular Expression Analysis
+"""""""""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Static Single Assignment (SSA)
+""""""""""""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Type Trackers
+"""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Models-as-Data (MaD)
+""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+YAML Data Analysis
+""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+XML Data Analysis
+"""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+QL Detective Tutorial
+"""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Database of Common Typographical Errors
+"""""""""""""""""""""""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Utility Classes
+"""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Range Analysis
+""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Threat Models
+"""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+Type-flow Analysis
+""""""""""""""""""
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
