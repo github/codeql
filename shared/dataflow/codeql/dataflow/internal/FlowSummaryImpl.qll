@@ -1756,7 +1756,7 @@ module Make<
         final private class SourceOrSinkElementFinal = SourceOrSinkElement;
 
         bindingset[this]
-        private class SourceSinkModelCallableBase extends SourceOrSinkElementFinal {
+        abstract private class SourceSinkModelCallableBase extends SourceOrSinkElementFinal {
           /**
            * Holds if there exists a manual model that applies to this.
            */
