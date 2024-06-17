@@ -5,6 +5,8 @@
  * In addition to the `PathGraph`, a `query predicate models` is provided to
  * list the contents of the referenced MaD rows.
  */
+module;
+
 signature predicate interpretModelForTestSig(QlBuiltins::ExtensionId madId, string model);
 
 signature class PathNodeSig {
