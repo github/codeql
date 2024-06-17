@@ -93,7 +93,11 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       // 3rd party actions returning the PR head sha/ref
       exists(UsesStep step |
         (
-          step.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+          step.getCallee() =
+            [
+              "eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch",
+              "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
+            ] and
           // TODO: This should be read step of the head_sha or head_ref output vars
           this.getArgument("ref").matches("%.head_ref%")
           or
@@ -229,10 +233,10 @@ class GhSHACheckout extends SHACheckoutStep instanceof Run {
 /** An If node that contains an actor, user or label check */
 abstract class ControlCheck extends If {
   predicate dominates(Step step) {
-    step.getIf() = this or 
+    step.getIf() = this or
     step.getEnclosingJob().getIf() = this or
-    step.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this  or
-    step.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this 
+    step.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
+    step.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
   }
 }
 
@@ -259,7 +263,7 @@ class ActorControlCheck extends ControlCheck {
           .regexpFind([
               "\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",
               "\\bgithub\\.event\\.comment\\.user\\.login\\b",
-              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", 
+              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
             ], _, _)
     )
   }
@@ -270,10 +274,7 @@ class RepositoryControlCheck extends ControlCheck {
     // eg: github.repository == 'test/foo'
     exists(
       normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.repository\\b",
-              "\\bgithub\\.repository_owner\\b",
-            ], _, _)
+          .regexpFind(["\\bgithub\\.repository\\b", "\\bgithub\\.repository_owner\\b",], _, _)
     )
   }
 }

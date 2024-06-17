@@ -16,19 +16,33 @@ abstract class UntrustedArtifactDownloadStep extends Step {
   abstract string getPath();
 }
 
+class GitHubDownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep {
+  GitHubDownloadArtifactActionStep() {
+    // By default, the permissions are scoped so they can only download Artifacts within the current workflow run.
+    // To elevate permissions for this scenario, you can specify a github-token along with other repository and run identifiers
+    this.getCallee() = "actions/download-artifact" and
+    this.getArgument("run-id").matches("%github.event.workflow_run.id%") and
+    exists(this.getArgument("github-token"))
+  }
+
+  override string getPath() {
+    if exists(this.getArgument("path")) then result = this.getArgument("path") else result = ""
+  }
+}
+
 class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep {
   DownloadArtifactActionStep() {
     this.getCallee() =
       [
-        "actions/download-artifact", "dawidd6/action-download-artifact",
-        "marcofaggian/action-download-multiple-artifacts", "benday-inc/download-latest-artifact",
-        "blablacar/action-download-last-artifact", "levonet/action-download-last-artifact",
-        "bettermarks/action-artifact-download", "aochmann/actions-download-artifact",
-        "cytopia/download-artifact-retry-action", "alextompkins/download-prior-artifact",
-        "nmerget/download-gzip-artifact", "benday-inc/download-artifact",
-        "synergy-au/download-workflow-artifacts-action", "ishworkh/docker-image-artifact-download",
-        "ishworkh/container-image-artifact-download", "sidx1024/action-download-artifact",
-        "hyperskill/azblob-download-artifact", "ma-ve/action-download-artifact-with-retry"
+        "dawidd6/action-download-artifact", "marcofaggian/action-download-multiple-artifacts",
+        "benday-inc/download-latest-artifact", "blablacar/action-download-last-artifact",
+        "levonet/action-download-last-artifact", "bettermarks/action-artifact-download",
+        "aochmann/actions-download-artifact", "cytopia/download-artifact-retry-action",
+        "alextompkins/download-prior-artifact", "nmerget/download-gzip-artifact",
+        "benday-inc/download-artifact", "synergy-au/download-workflow-artifacts-action",
+        "ishworkh/docker-image-artifact-download", "ishworkh/container-image-artifact-download",
+        "sidx1024/action-download-artifact", "hyperskill/azblob-download-artifact",
+        "ma-ve/action-download-artifact-with-retry"
       ] and
     (
       not exists(this.getArgument(["branch", "branch_name"])) or
