@@ -158,13 +158,23 @@ namespace Semmle.Extraction.CSharp
                     var compilerArgs = compilerCall.GetArguments();
                     var args = reader.ReadCommandLineArguments(compilerCall);
 
+                    // Generated syntax trees are always added to the end of the list of syntax trees.
+                    var generatedSyntaxTrees = compilation.SyntaxTrees.Skip(compilationData.Compilation.SyntaxTrees.Count());
+
                     using var analyser = new BinaryLogAnalyser(new LogProgressMonitor(logger), logger, pathTransformer, canonicalPathCache, options.AssemblySensitiveTrap);
 
                     var exit = Analyse(stopwatch, analyser, options,
                         references => [() => compilation.References.ForEach(r => references.Add(r))],
                         (analyser, syntaxTrees) => [() => syntaxTrees.AddRange(compilation.SyntaxTrees)],
                         (syntaxTrees, references) => compilation,
-                        (compilation, options) => analyser.Initialize(compilerCall.ProjectDirectory, compilerArgs?.ToArray() ?? [], TracingAnalyser.GetOutputName(compilation, args), compilation, options),
+                        (compilation, options) => analyser.Initialize(
+                            compilerCall.ProjectDirectory,
+                            compilerArgs?.ToArray() ?? [],
+                            TracingAnalyser.GetOutputName(compilation, args),
+                            compilation,
+                            generatedSyntaxTrees,
+                            diagnosticName,
+                            options),
                         () => { });
 
                     switch (exit)

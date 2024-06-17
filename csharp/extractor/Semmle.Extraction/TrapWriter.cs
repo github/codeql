@@ -106,13 +106,41 @@ namespace Semmle.Extraction
         /// <param name="inputEncoding">The encoding used by the input file.</param>
         public void Archive(string originalPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
         {
+            Archive(() =>
+            {
+                var fullInputPath = Path.GetFullPath(originalPath);
+                return File.ReadAllText(fullInputPath, inputEncoding);
+            }, transformedPath);
+        }
+
+        public void ArchiveContent(string contents, PathTransformer.ITransformedPath transformedPath)
+        {
+            Archive(() => contents, transformedPath);
+        }
+
+        private void Archive(Func<string> getContent, PathTransformer.ITransformedPath transformedPath)
+        {
             if (string.IsNullOrEmpty(archive))
+            {
                 return;
+            }
 
-            // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
-            var fullInputPath = Path.GetFullPath(originalPath);
+            var dest = FileUtils.NestPaths(logger, archive, transformedPath.Value);
+            try
+            {
+                var tmpSrcFile = Path.GetTempFileName();
+                File.WriteAllText(tmpSrcFile, getContent(), utf8);
 
-            ArchivePath(fullInputPath, transformedPath, inputEncoding);
+                FileUtils.MoveOrReplace(tmpSrcFile, dest);
+            }
+            catch (Exception ex)
+            {
+                // If this happened, it was probably because
+                // - the same file was compiled multiple times, or
+                // - the file doesn't exist (due to wrong #line directive or because it's an in-memory source generated AST).
+                // In any case, this is not a fatal error.
+                logger.LogWarning("Problem archiving " + dest + ": " + ex);
+            }
         }
 
         /// <summary>
@@ -183,37 +211,6 @@ namespace Semmle.Extraction
         public void Emit(ITrapEmitter emitter)
         {
             emitter.EmitTrap(Writer);
-        }
-
-        /// <summary>
-        /// Attempts to archive the specified input file to the normal area of the source archive.
-        /// The file's path must be sufficiently short so as to render the path of its copy in the
-        /// source archive less than the system path limit of 260 characters.
-        /// </summary>
-        /// <param name="fullInputPath">The full path to the input file.</param>
-        /// <param name="transformedPath">The transformed path to the input file.</param>
-        /// <param name="inputEncoding">The encoding used by the input file.</param>
-        /// <exception cref="PathTooLongException">If the output path in the source archive would
-        /// exceed the system path limit of 260 characters.</exception>
-        private void ArchivePath(string fullInputPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
-        {
-            var dest = FileUtils.NestPaths(logger, archive, transformedPath.Value);
-            try
-            {
-                var contents = File.ReadAllText(fullInputPath, inputEncoding);
-                var tmpSrcFile = Path.GetTempFileName();
-                File.WriteAllText(tmpSrcFile, contents, utf8);
-
-                FileUtils.MoveOrReplace(tmpSrcFile, dest);
-            }
-            catch (Exception ex)
-            {
-                // If this happened, it was probably because
-                // - the same file was compiled multiple times, or
-                // - the file doesn't exist (due to wrong #line directive or because it's an in-memory source generated AST).
-                // In any case, this is not a fatal error.
-                logger.LogWarning("Problem archiving " + dest + ": " + ex);
-            }
         }
 
         private static string TrapExtension(CompressionMode compression)

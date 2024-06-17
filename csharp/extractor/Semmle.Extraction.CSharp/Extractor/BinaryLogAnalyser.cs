@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -11,10 +12,15 @@ namespace Semmle.Extraction.CSharp
         {
         }
 
-        public void Initialize(string cwd, string[] args, string outputPath, CSharpCompilation compilationIn, CommonOptions options)
+        public void Initialize(
+            string cwd, string[] args, string outputPath, CSharpCompilation compilation,
+            IEnumerable<Microsoft.CodeAnalysis.SyntaxTree> generatedSyntaxTrees,
+            string compilationIdentifier, CommonOptions options)
         {
-            compilation = compilationIn;
-            ExtractionContext = new ExtractionContext(cwd, args, outputPath, [], Logger, PathTransformer, ExtractorMode.BinaryLog, options.QlTest);
+            base.compilation = compilation;
+            ExtractionContext = new BinaryLogExtractionContext(
+                cwd, args, outputPath, generatedSyntaxTrees, compilationIdentifier,
+                Logger, PathTransformer, options.QlTest);
             this.options = options;
             LogExtractorInfo();
             SetReferencePaths();
