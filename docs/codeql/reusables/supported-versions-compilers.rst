@@ -35,9 +35,9 @@
     .. [4] Support for the Arm Compiler (armcc) is preliminary.
     .. [5] Builds that execute on Java 7 to 22 can be analyzed. The analysis understands Java 22 standard language features.
     .. [6] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
-    .. [7] Kotlin support is currently in beta.
+    .. [7] Kotlin support for mobile applications is currently in beta.
     .. [8] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [9] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
     .. [10] Requires glibc 2.17.
-    .. [11] Swift support is currently in beta. Support for the analysis of Swift requires macOS or Linux.
+    .. [11] Swift support for mobile applications is currently in beta. Support for the analysis of Swift requires macOS or Linux.
     .. [12] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
