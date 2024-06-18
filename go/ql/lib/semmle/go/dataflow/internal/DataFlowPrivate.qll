@@ -102,10 +102,14 @@ private Field getASparselyUsedChannelTypedField() {
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(ValueEntity v, Write w |
+  exists(ValueEntity v |
     not v instanceof SsaSourceVariable and
     not v instanceof Field and
-    w.writes(v, n1) and
+    (
+      any(Write w).writes(v, n1)
+      or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
+    ) and
     n2 = v.getARead()
   )
   or
