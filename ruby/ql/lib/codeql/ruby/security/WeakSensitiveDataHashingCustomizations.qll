@@ -8,6 +8,7 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.security.SensitiveActions
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.dataflow.SSA
 
 private module SensitiveDataSources {
   /**
@@ -42,28 +43,24 @@ private module SensitiveDataSources {
   /**
    * A call to a method that may return sensitive data.
    */
-  class SensitiveMethodCall extends SensitiveDataSource::Range, DataFlow::CallNode instanceof SensitiveNode
-  {
-    SensitiveDataMethodName methodName;
-
-    SensitiveMethodCall() { methodName = this.getMethodName() }
-
+  class SensitiveMethodCall extends SensitiveDataSource::Range instanceof SensitiveCall {
     override SensitiveDataClassification getClassification() {
-      result = methodName.getClassification()
+      result = SensitiveCall.super.getClassification()
     }
   }
 
   /**
    * An assignment to a variable that may contain sensitive data.
    */
-  class SensitiveVariableAssignment extends SensitiveDataSource::Range instanceof SensitiveNode {
+  class SensitiveVariableAssignment extends SensitiveDataSource::Range, DataFlow::SsaDefinitionNode {
+    SensitiveNode sensitiveNode;
+
     SensitiveVariableAssignment() {
-      this.(DataFlow::VariableAccessNode).asVariableAccessAstNode() instanceof
-        Ast::VariableWriteAccess
+      this.getDefinition().(Ssa::WriteDefinition).getWriteAccess() = sensitiveNode.asExpr()
     }
 
     override SensitiveDataClassification getClassification() {
-      result = SensitiveNode.super.getClassification()
+      result = sensitiveNode.getClassification()
     }
   }
 
