@@ -15,11 +15,11 @@ Digest::MD5.hexdigest(x) # BAD: weak hash function used for sensitive data
 def get_safe_data()
   return "hello"
 end
+
 def get_password()
   return "changeme"
 end
 
-# FIXME
 Digest::MD5.hexdigest(get_safe_data()) # OK: input is not sensitive
 Digest::MD5.hexdigest(get_password()) # BAD: weak hash function used for sensitive data
 
