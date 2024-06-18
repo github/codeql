@@ -9,6 +9,88 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.security.SensitiveActions
 private import codeql.ruby.dataflow.BarrierGuards
 
+private module SensitiveDataSources {
+  /**
+   * A data flow source of sensitive data, such as secrets, certificates, or passwords.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `SensitiveDataSource::Range` instead.
+   */
+  class SensitiveDataSource extends DataFlow::Node instanceof SensitiveDataSource::Range {
+    /**
+     * Gets the classification of the sensitive data.
+     */
+    SensitiveDataClassification getClassification() { result = super.getClassification() }
+  }
+
+  /** Provides a class for modeling new sources of sensitive data, such as secrets, certificates, or passwords. */
+  module SensitiveDataSource {
+    /**
+     * A data flow source of sensitive data, such as secrets, certificates, or passwords.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `SensitiveDataSource` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the classification of the sensitive data.
+       */
+      abstract SensitiveDataClassification getClassification();
+    }
+  }
+
+  /**
+   * A call to a method that may return sensitive data.
+   */
+  class SensitiveMethodCall extends SensitiveDataSource::Range, DataFlow::CallNode instanceof SensitiveNode
+  {
+    SensitiveDataMethodName methodName;
+
+    SensitiveMethodCall() { methodName = this.getMethodName() }
+
+    override SensitiveDataClassification getClassification() {
+      result = methodName.getClassification()
+    }
+  }
+
+  /**
+   * An assignment to a variable that may contain sensitive data.
+   */
+  class SensitiveVariableAssignment extends SensitiveDataSource::Range instanceof SensitiveNode {
+    SensitiveVariableAssignment() {
+      this.(DataFlow::VariableAccessNode).asVariableAccessAstNode() instanceof
+        Ast::VariableWriteAccess
+    }
+
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveNode.super.getClassification()
+    }
+  }
+
+  /**
+   * A read from a hash value that may return sensitive data.
+   */
+  class SensitiveHashValueAccess extends SensitiveDataSource::Range instanceof SensitiveNode {
+    SensitiveHashValueAccess() {
+      this.asExpr() instanceof Cfg::CfgNodes::ExprNodes::ElementReferenceCfgNode
+    }
+
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveNode.super.getClassification()
+    }
+  }
+
+  /**
+   * A parameter node that may contain sensitive data.
+   */
+  class SensitiveParameter extends SensitiveDataSource::Range, DataFlow::ParameterNode instanceof SensitiveNode
+  {
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveNode.super.getClassification()
+    }
+  }
+}
+
 /**
  * Provides default sources, sinks and sanitizers for detecting
  * "use of a broken or weak cryptographic hashing algorithm on sensitive data"
@@ -49,9 +131,10 @@ module NormalHashFunction {
   /**
    * A source of sensitive data, considered as a flow source.
    */
-  class SensitiveDataSourceAsSource extends Source instanceof SensitiveDataSource {
+  class SensitiveDataSourceAsSource extends Source instanceof SensitiveDataSources::SensitiveDataSource
+  {
     override SensitiveDataClassification getClassification() {
-      result = SensitiveDataSource.super.getClassification()
+      result = SensitiveDataSources::SensitiveDataSource.super.getClassification()
     }
   }
 
@@ -118,13 +201,14 @@ module ComputationallyExpensiveHashFunction {
   /**
    * A source of passwords, considered as a flow source.
    */
-  class PasswordSourceAsSource extends Source instanceof SensitiveDataSource {
+  class PasswordSourceAsSource extends Source instanceof SensitiveDataSources::SensitiveDataSource {
     PasswordSourceAsSource() {
-      this.(SensitiveDataSource).getClassification() = SensitiveDataClassification::password()
+      this.(SensitiveDataSources::SensitiveDataSource).getClassification() =
+        SensitiveDataClassification::password()
     }
 
     override SensitiveDataClassification getClassification() {
-      result = SensitiveDataSource.super.getClassification()
+      result = SensitiveDataSources::SensitiveDataSource.super.getClassification()
     }
   }
 
