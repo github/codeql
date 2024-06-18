@@ -13,35 +13,31 @@ edges
 | UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:296:18:298:4 | slice literal | provenance |  |
 | UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:304:18:306:4 | slice literal | provenance |  |
 | UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:312:18:314:4 | slice literal | provenance |  |
-| UnsafeTLS.go:329:25:329:94 | []type{args} [array] | UnsafeTLS.go:329:25:329:94 | call to append | provenance | MaD:29 |
+| UnsafeTLS.go:329:25:329:94 | []type{args} [array] | UnsafeTLS.go:329:25:329:94 | call to append | provenance | MaD:31 |
 | UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:329:25:329:94 | []type{args} [array] | provenance |  |
-| UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:329:25:329:94 | call to append | provenance | FunctionModel |
 | UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites | UnsafeTLS.go:336:54:336:57 | selection of ID | provenance |  |
-| UnsafeTLS.go:336:26:336:58 | []type{args} [array] | UnsafeTLS.go:336:26:336:58 | call to append | provenance | MaD:29 |
+| UnsafeTLS.go:336:26:336:58 | []type{args} [array] | UnsafeTLS.go:336:26:336:58 | call to append | provenance | MaD:31 |
 | UnsafeTLS.go:336:54:336:57 | selection of ID | UnsafeTLS.go:336:26:336:58 | []type{args} [array] | provenance |  |
-| UnsafeTLS.go:336:54:336:57 | selection of ID | UnsafeTLS.go:336:26:336:58 | call to append | provenance | FunctionModel |
 | UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites | UnsafeTLS.go:344:40:344:43 | selection of ID | provenance |  |
-| UnsafeTLS.go:344:19:344:44 | []type{args} [array] | UnsafeTLS.go:344:19:344:44 | call to append | provenance | MaD:29 |
-| UnsafeTLS.go:344:19:344:44 | []type{args} [array] | UnsafeTLS.go:344:19:344:44 | call to append [array] | provenance | MaD:29 |
+| UnsafeTLS.go:344:19:344:44 | []type{args} [array] | UnsafeTLS.go:344:19:344:44 | call to append | provenance | MaD:31 |
+| UnsafeTLS.go:344:19:344:44 | []type{args} [array] | UnsafeTLS.go:344:19:344:44 | call to append [array] | provenance | MaD:31 |
 | UnsafeTLS.go:344:19:344:44 | call to append | UnsafeTLS.go:344:26:344:37 | cipherSuites | provenance |  |
 | UnsafeTLS.go:344:19:344:44 | call to append | UnsafeTLS.go:346:25:346:36 | cipherSuites | provenance |  |
 | UnsafeTLS.go:344:19:344:44 | call to append [array] | UnsafeTLS.go:344:26:344:37 | cipherSuites [array] | provenance |  |
-| UnsafeTLS.go:344:26:344:37 | cipherSuites | UnsafeTLS.go:344:19:344:44 | call to append | provenance | FunctionModel |
-| UnsafeTLS.go:344:26:344:37 | cipherSuites [array] | UnsafeTLS.go:344:19:344:44 | call to append | provenance | MaD:28 |
-| UnsafeTLS.go:344:26:344:37 | cipherSuites [array] | UnsafeTLS.go:344:19:344:44 | call to append [array] | provenance | MaD:28 |
+| UnsafeTLS.go:344:26:344:37 | cipherSuites | UnsafeTLS.go:344:19:344:44 | call to append | provenance | MaD:28 |
+| UnsafeTLS.go:344:26:344:37 | cipherSuites [array] | UnsafeTLS.go:344:19:344:44 | call to append | provenance | MaD:29 |
+| UnsafeTLS.go:344:26:344:37 | cipherSuites [array] | UnsafeTLS.go:344:19:344:44 | call to append [array] | provenance | MaD:29 |
 | UnsafeTLS.go:344:40:344:43 | selection of ID | UnsafeTLS.go:344:19:344:44 | []type{args} [array] | provenance |  |
-| UnsafeTLS.go:344:40:344:43 | selection of ID | UnsafeTLS.go:344:19:344:44 | call to append | provenance | FunctionModel |
 | UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites | UnsafeTLS.go:353:40:353:51 | selection of ID | provenance |  |
-| UnsafeTLS.go:353:19:353:52 | []type{args} [array] | UnsafeTLS.go:353:19:353:52 | call to append | provenance | MaD:29 |
-| UnsafeTLS.go:353:19:353:52 | []type{args} [array] | UnsafeTLS.go:353:19:353:52 | call to append [array] | provenance | MaD:29 |
+| UnsafeTLS.go:353:19:353:52 | []type{args} [array] | UnsafeTLS.go:353:19:353:52 | call to append | provenance | MaD:31 |
+| UnsafeTLS.go:353:19:353:52 | []type{args} [array] | UnsafeTLS.go:353:19:353:52 | call to append [array] | provenance | MaD:31 |
 | UnsafeTLS.go:353:19:353:52 | call to append | UnsafeTLS.go:353:26:353:37 | cipherSuites | provenance |  |
 | UnsafeTLS.go:353:19:353:52 | call to append | UnsafeTLS.go:355:25:355:36 | cipherSuites | provenance |  |
 | UnsafeTLS.go:353:19:353:52 | call to append [array] | UnsafeTLS.go:353:26:353:37 | cipherSuites [array] | provenance |  |
-| UnsafeTLS.go:353:26:353:37 | cipherSuites | UnsafeTLS.go:353:19:353:52 | call to append | provenance | FunctionModel |
-| UnsafeTLS.go:353:26:353:37 | cipherSuites [array] | UnsafeTLS.go:353:19:353:52 | call to append | provenance | MaD:28 |
-| UnsafeTLS.go:353:26:353:37 | cipherSuites [array] | UnsafeTLS.go:353:19:353:52 | call to append [array] | provenance | MaD:28 |
+| UnsafeTLS.go:353:26:353:37 | cipherSuites | UnsafeTLS.go:353:19:353:52 | call to append | provenance | MaD:28 |
+| UnsafeTLS.go:353:26:353:37 | cipherSuites [array] | UnsafeTLS.go:353:19:353:52 | call to append | provenance | MaD:29 |
+| UnsafeTLS.go:353:26:353:37 | cipherSuites [array] | UnsafeTLS.go:353:19:353:52 | call to append [array] | provenance | MaD:29 |
 | UnsafeTLS.go:353:40:353:51 | selection of ID | UnsafeTLS.go:353:19:353:52 | []type{args} [array] | provenance |  |
-| UnsafeTLS.go:353:40:353:51 | selection of ID | UnsafeTLS.go:353:19:353:52 | call to append | provenance | FunctionModel |
 | UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:362:18:364:4 | slice literal | provenance |  |
 | UnsafeTLS.go:371:5:371:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:370:18:372:4 | slice literal | provenance |  |
 | UnsafeTLS.go:379:5:379:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:378:18:380:4 | slice literal | provenance |  |

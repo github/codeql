@@ -1,8 +1,0 @@
-load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
-
-native_binary(
-    name = "ripunzip",
-    src = select({"@platforms//os:" + os: "@ripunzip-" + os for os in ("linux", "windows", "macos")}),
-    out = "ripunzip.exe",
-    visibility = ["//visibility:public"],
-)

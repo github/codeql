@@ -2,6 +2,7 @@
 Wrappers and helpers around `rules_pkg` to build codeql packs.
 """
 
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", _strip_prefix = "strip_prefix")
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
@@ -22,7 +23,7 @@ def _expand_path(path, platform):
     if _PLAT_PLACEHOLDER in path:
         path = path.replace(_PLAT_PLACEHOLDER, platform)
         return ("arch", path)
-    return ("generic", path)
+    return ("common", path)
 
 def _detect_platform(ctx = None):
     return os_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
@@ -41,7 +42,6 @@ def codeql_pkg_files(
     internal = _make_internal(name)
     if "attributes" in kwargs:
         fail("do not use attributes with codeql_pkg_* rules. Use `exes` to mark executable files.")
-    internal_srcs = []
     if srcs and exes:
         pkg_files(
             name = internal("srcs"),
@@ -70,100 +70,16 @@ def codeql_pkg_files(
             **kwargs
         )
 
-def _extract_pkg_filegroup_impl(ctx):
-    src = ctx.attr.src[PackageFilegroupInfo]
-    arch_overrides = ctx.attr.arch_overrides
-    platform = _detect_platform(ctx)
-
-    if src.pkg_dirs or src.pkg_symlinks:
-        fail("`pkg_dirs` and `pkg_symlinks` are not supported for codeql packaging rules")
-
-    pkg_files = []
-    for pfi, origin in src.pkg_files:
-        dest_src_map = {}
-        for dest, file in pfi.dest_src_map.items():
-            file_kind, expanded_dest = _expand_path(dest, platform)
-            if file_kind == "generic" and dest in arch_overrides:
-                file_kind = "arch"
-            if file_kind == ctx.attr.kind:
-                dest_src_map[expanded_dest] = file
-
-        if dest_src_map:
-            pkg_files.append((PackageFilesInfo(dest_src_map = dest_src_map, attributes = pfi.attributes), origin))
-
-    files = [depset(pfi.dest_src_map.values()) for pfi, _ in pkg_files]
-    return [
-        PackageFilegroupInfo(pkg_files = pkg_files, pkg_dirs = [], pkg_symlinks = []),
-        DefaultInfo(files = depset(transitive = files)),
-    ]
-
-_extract_pkg_filegroup = rule(
-    implementation = _extract_pkg_filegroup_impl,
-    doc = """
-        This internal rule extracts the arch or generic part of a `PackageFilegroupInfo` source, returning a
-        `PackageFilegroupInfo` that is a subset of the provided `src`, while expanding `{CODEQL_PLATFORM}` in
-        destination paths to the relevant codeql platform (linux64, win64 or osx64).
-        The distinction between generic and arch contents is given on a per-file basis depending on the install path
-        containing {CODEQL_PLATFORM}, which will typically have been added by a `prefix` attribute to a `pkg_*` rule.
-        Files that are arch-specific, but outside of the `CODEQL_PLATFORM` path can be specified in `arch_overrides`.
-        No `pkg_dirs` or `pkg_symlink` must have been used for assembling the source mapping information: we could
-        easily add support for that, but we don't require it for now.
-    """,
-    attrs = {
-        "src": attr.label(providers = [PackageFilegroupInfo, DefaultInfo]),
-        "kind": attr.string(doc = "What part to extract", values = ["generic", "arch"]),
-        "arch_overrides": attr.string_list(doc = "A list of files that should be included in the arch package regardless of the path"),
-    } | OS_DETECTION_ATTRS,
-)
-
 _ZipInfo = provider(fields = {"zips_to_prefixes": "mapping of zip files to prefixes"})
 
-def _zip_info_impl(ctx):
-    zips = {}
-    for zip_target, prefix in ctx.attr.srcs.items():
-        for zip in zip_target.files.to_list():
-            zips[zip] = prefix
-    return [
-        _ZipInfo(zips_to_prefixes = zips),
-    ]
-
-_zip_info = rule(
-    implementation = _zip_info_impl,
-    doc = """
-        This internal rule simply instantiates a _ZipInfo provider out of `zips`.
-    """,
-    attrs = {
-        "srcs": attr.label_keyed_string_dict(
-            doc = "mapping from zip files to install prefixes",
-            allow_files = [".zip"],
-        ),
+CodeQLPackInfo = provider(
+    "A provider that encapsulates all the information needed to build a codeql pack.",
+    fields = {
+        "pack_prefix": "A prefix to add to all paths, IF the user requests so. We omit it for local installation targets of single packs (but not pack groups)",
+        "files": "PackageFilegroupInfo provider with list of all files in this pack (CODEQL_PLATFORM in paths unresolved)",
+        "zips": "A _ZipInfo provider to include in the pack, (CODEQL_PLATFORM unresolved).",
+        "arch_overrides": "A list of files that should be included in the arch-specific bit, even though the path doesn't contain CODEQL_PLATFORM.",
     },
-)
-
-def _zip_info_filter_impl(ctx):
-    platform = _detect_platform(ctx)
-    filtered_zips = {}
-    for zip_info in ctx.attr.srcs:
-        for zip, prefix in zip_info[_ZipInfo].zips_to_prefixes.items():
-            zip_kind, expanded_prefix = _expand_path(prefix, platform)
-            if zip_kind == ctx.attr.kind:
-                filtered_zips[zip] = expanded_prefix
-    return [
-        _ZipInfo(zips_to_prefixes = filtered_zips),
-    ]
-
-_zip_info_filter = rule(
-    implementation = _zip_info_filter_impl,
-    doc = """
-        This internal rule transforms a _ZipInfo provider so that:
-        * only zips matching `kind` are included
-        * a kind of a zip is given by its prefix: if it contains {CODEQL_PLATFORM} it is arch, otherwise it's generic
-        * in the former case, {CODEQL_PLATFORM} is expanded
-    """,
-    attrs = {
-        "srcs": attr.label_list(doc = "_ZipInfos to transform", providers = [_ZipInfo]),
-        "kind": attr.string(doc = "Which zip kind to consider", values = ["generic", "arch"]),
-    } | OS_DETECTION_ATTRS,
 )
 
 def _imported_zips_manifest_impl(ctx):
@@ -188,7 +104,6 @@ _imported_zips_manifest = rule(
     implementation = _imported_zips_manifest_impl,
     doc = """
         This internal rule prints a zip manifest file that `misc/bazel/internal/install.py` understands.
-        {CODEQL_PLATFORM} can be used as zip prefixes and will be expanded to the relevant codeql platform.
     """,
     attrs = {
         "srcs": attr.label_list(
@@ -248,140 +163,307 @@ def _get_zip_filename(name_prefix, kind):
     if kind == "arch":
         return name_prefix + "-" + _detect_platform() + ".zip"  # using + because there's a select
     else:
-        return "%s-generic.zip" % name_prefix
+        return "%s-common.zip" % name_prefix
+
+def _codeql_pack_info_impl(ctx):
+    zips_to_prefixes = {}
+    for zip_target, prefix in ctx.attr.extra_zips.items():
+        for zip in zip_target.files.to_list():
+            zips_to_prefixes[zip] = prefix
+    return [
+        DefaultInfo(files = depset(
+            zips_to_prefixes.keys(),
+            transitive = [ctx.attr.src[DefaultInfo].files],
+        )),
+        CodeQLPackInfo(
+            arch_overrides = ctx.attr.arch_overrides,
+            files = ctx.attr.src[PackageFilegroupInfo],
+            zips = _ZipInfo(zips_to_prefixes = zips_to_prefixes),
+            pack_prefix = ctx.attr.prefix,
+        ),
+    ]
+
+_codeql_pack_info = rule(
+    implementation = _codeql_pack_info_impl,
+    doc = """
+        This internal rule is a bit of a catch-all forwarder for the various information we need to forward to allow
+        building pack groups.
+        We have conflicting requirements for this data:
+        To build installer targets, we need to resolve all files, as directly as possible (no intermediate zip step),
+        and potentially omit the `prefix`.
+        To provide production distribution zips, we need to expose zip targets that distinguish between common and per-platform
+        files, and that do contain `prefix` in their path.
+        In both cases, we need to pull in the correct extra_zips for some packs.
+        Therefore, we preserve the input data from the pack declaration fairly directly,
+        and only massage it into the right form once we use it.
+    """,
+    attrs = {
+        "src": attr.label(providers = [PackageFilegroupInfo], mandatory = True, doc = "The files to include in the pack, with unresolved CODEQL_PLATFORM paths (a pkg_filegroup rule instance)."),
+        "extra_zips": attr.label_keyed_string_dict(
+            doc = "Mapping from zip files to install prefixes.",
+            allow_files = [".zip"],
+        ),
+        "prefix": attr.string(doc = "Prefix to add to all files."),
+        "arch_overrides": attr.string_list(doc = "A list of files that should be included in the arch package regardless of the path, specify the path _without_ `prefix`."),
+    },
+    provides = [CodeQLPackInfo],
+)
+
+_CODEQL_PACK_GROUP_EXTRACT_ATTRS = {
+    "srcs": attr.label_list(providers = [CodeQLPackInfo], mandatory = True, doc = "List of `_codeql_pack_info` rules (generated by `codeql_pack`)."),
+    "apply_pack_prefix": attr.bool(doc = "Set to `False` to skip adding the per-pack prefix to all file paths.", default = True),
+    "kind": attr.string(doc = "Extract only the commmon, arch-specific, or all files from the pack group.", values = ["common", "arch", "all"]),
+    "prefix": attr.string(doc = "Prefix to add to all files, is prefixed after the per-pack prefix has been applied.", default = ""),
+} | OS_DETECTION_ATTRS
+
+# common option parsing for _codeql_pack_group_extract_* rules
+def _codeql_pack_group_extract_options(ctx):
+    platform = _detect_platform(ctx)
+    apply_pack_prefix = ctx.attr.apply_pack_prefix
+    include_all_files = ctx.attr.kind == "all"
+    return platform, apply_pack_prefix, include_all_files
+
+def _codeql_pack_group_extract_files_impl(ctx):
+    pkg_files = []
+
+    platform, apply_pack_prefix, include_all_files = _codeql_pack_group_extract_options(ctx)
+    for src in ctx.attr.srcs:
+        src = src[CodeQLPackInfo]
+        if src.files.pkg_dirs or src.files.pkg_symlinks:
+            fail("`pkg_dirs` and `pkg_symlinks` are not supported for codeql packaging rules")
+        prefix = paths.join(ctx.attr.prefix, src.pack_prefix) if apply_pack_prefix else ctx.attr.prefix
+
+        arch_overrides = src.arch_overrides
+
+        # for each file, resolve whether it's filtered out or not by the current kind, and add the pack prefix
+        for pfi, origin in src.files.pkg_files:
+            dest_src_map = {}
+            for dest, file in pfi.dest_src_map.items():
+                pack_dest = paths.join(prefix, dest)
+                file_kind, expanded_dest = _expand_path(pack_dest, platform)
+                if file_kind == "common" and dest in arch_overrides:
+                    file_kind = "arch"
+                if include_all_files or file_kind == ctx.attr.kind:
+                    dest_src_map[expanded_dest] = file
+
+            if dest_src_map:
+                pkg_files.append((PackageFilesInfo(dest_src_map = dest_src_map, attributes = pfi.attributes), origin))
+
+    files = [depset(pfi.dest_src_map.values()) for pfi, _ in pkg_files]
+
+    return [
+        DefaultInfo(files = depset(transitive = files)),
+        PackageFilegroupInfo(pkg_files = pkg_files, pkg_dirs = [], pkg_symlinks = []),
+    ]
+
+_codeql_pack_group_extract_files = rule(
+    implementation = _codeql_pack_group_extract_files_impl,
+    doc = """
+    Extract the files from a list of codeql packs (i.e. a pack group), and filter to the requested `kind`.
+    See also `_codeql_pack_group_extract_zips`.
+    """,
+    attrs = _CODEQL_PACK_GROUP_EXTRACT_ATTRS,
+    provides = [PackageFilegroupInfo],
+)
+
+def _codeql_pack_group_extract_zips_impl(ctx):
+    zips_to_prefixes = {}
+
+    platform, apply_pack_prefix, include_all_files = _codeql_pack_group_extract_options(ctx)
+    for src in ctx.attr.srcs:
+        src = src[CodeQLPackInfo]
+        prefix = paths.join(ctx.attr.prefix, src.pack_prefix) if apply_pack_prefix else ctx.attr.prefix
+
+        # for each zip file, resolve whether it's filtered out or not by the current kind, and add the pack prefix
+        for zip, zip_prefix in src.zips.zips_to_prefixes.items():
+            zip_kind, expanded_prefix = _expand_path(paths.join(prefix, zip_prefix), platform)
+            if include_all_files or zip_kind == ctx.attr.kind:
+                zips_to_prefixes[zip] = expanded_prefix
+
+    return [
+        DefaultInfo(files = depset(zips_to_prefixes.keys())),
+        _ZipInfo(zips_to_prefixes = zips_to_prefixes),
+    ]
+
+_codeql_pack_group_extract_zips = rule(
+    implementation = _codeql_pack_group_extract_zips_impl,
+    doc = """
+    Extract the zip files from a list of codeql packs (i.e. a pack group), and filter to the requested `kind`.
+    See also `_codeql_pack_group_extract_files`.
+    """,
+    attrs = _CODEQL_PACK_GROUP_EXTRACT_ATTRS,
+    provides = [_ZipInfo],
+)
+
+def _codeql_pack_install(name, srcs, install_dest = None, build_file_label = None, prefix = "", apply_pack_prefix = True):
+    """
+    Create a runnable target `name` that installs the list of codeql packs given in `srcs` in `install_dest`,
+    relative to the directory where the rule is used.
+    The base directory can be overwritten by `build_file_label`.
+    At run time, you can pass `--destdir` to change the installation directory.
+
+    If `apply_pack_prefix` is set to `True`, the pack prefix will be added to all paths.
+    We skip applying the pack prefix for the single-pack installations in the source tree, and include it when
+    installing packs as part of a pack group.
+    """
+    internal = _make_internal(name)
+    _codeql_pack_group_extract_files(
+        name = internal("all-files"),
+        srcs = srcs,
+        prefix = prefix,
+        kind = "all",
+        apply_pack_prefix = apply_pack_prefix,
+        visibility = ["//visibility:private"],
+    )
+    _codeql_pack_group_extract_zips(
+        name = internal("all-extra-zips"),
+        kind = "all",
+        srcs = srcs,
+        prefix = prefix,
+        apply_pack_prefix = apply_pack_prefix,
+        visibility = ["//visibility:private"],
+    )
+    _imported_zips_manifest(
+        name = internal("zip-manifest"),
+        srcs = [internal("all-extra-zips")],
+        visibility = ["//visibility:private"],
+    )
+    pkg_install(
+        name = internal("script"),
+        srcs = [internal("all-files")],
+        visibility = ["//visibility:private"],
+    )
+    if build_file_label == None:
+        native.filegroup(
+            # used to locate current src directory
+            name = internal("build-file"),
+            srcs = ["BUILD.bazel"],
+            visibility = ["//visibility:private"],
+        )
+        build_file_label = internal("build-file")
+
+    py_binary(
+        name = name,
+        srcs = [Label("//misc/bazel/internal:install.py")],
+        main = Label("//misc/bazel/internal:install.py"),
+        data = [
+            internal("script"),
+            internal("zip-manifest"),
+            Label("//misc/ripunzip"),
+        ] + ([build_file_label] if build_file_label else []),
+        deps = ["@rules_python//python/runfiles"],
+        args = [
+                   "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
+                   "--ripunzip=$(rlocationpath %s)" % Label("//misc/ripunzip"),
+                   "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
+               ] + ([
+                   "--build-file=$(rlocationpath %s)" % build_file_label,
+               ] if build_file_label else []) +
+               (["--destdir", "\"%s\"" % install_dest] if install_dest else []),
+    )
+
+def codeql_pack_group(name, srcs, visibility = None, skip_installer = False, prefix = "", install_dest = None, build_file_label = None, compression_level = 6):
+    """
+    Create a group of codeql packs of name `name`.
+    Accepts a list of `codeql_pack`s in `srcs` (essentially, `_codeql_pack_info` instantiations).
+    A pack group declares the following:
+    * a `<name>-common-zip` target creating a `<name>-common.zip` archive with the common parts of the pack group
+    * a `<name>-arch-zip` target creating a `<name>-<codeql_platform>.zip` archive with the arch-specific parts of the pack group
+    * a `<name>-installer` target that will install the pack group in `install_dest`, relative to where the rule is used.
+      The base directory can be overwritten by `build_file_label`, see `codeql_pack_install`.
+      The install destination can be overridden appending `-- --destdir=...` to the `bazel run` invocation.
+    The installer target will be omitted if `skip_installer` is set to `True`.
+
+    Prefixes all paths in the pack group with `prefix`.
+
+    The compression level of the generated zip files can be set with `compression_level`. Note that this doesn't affect the compression
+    level of extra zip files that are added to a pack, as these files will not be re-compressed.
+    """
+    internal = _make_internal(name)
+
+    for kind in ("common", "arch"):
+        _codeql_pack_group_extract_files(
+            name = internal(kind),
+            srcs = srcs,
+            kind = kind,
+            prefix = prefix,
+            visibility = ["//visibility:private"],
+        )
+        pkg_zip(
+            name = internal(kind, "zip-base"),
+            srcs = [internal(kind)],
+            visibility = ["//visibility:private"],
+            compression_level = compression_level,
+        )
+        _codeql_pack_group_extract_zips(
+            name = internal(kind, "extra-zips"),
+            kind = kind,
+            srcs = srcs,
+            prefix = prefix,
+            visibility = ["//visibility:private"],
+        )
+        _zipmerge(
+            name = internal(kind, "zip"),
+            srcs = [internal(kind, "zip-base"), internal(kind, "extra-zips")],
+            out = _get_zip_filename(name, kind),
+            visibility = visibility,
+        )
+    if not skip_installer:
+        _codeql_pack_install(name, srcs, build_file_label = build_file_label, install_dest = install_dest, prefix = prefix, apply_pack_prefix = True)
 
 def codeql_pack(
         *,
         name,
         srcs = None,
         zips = None,
-        zip_filename = None,
-        visibility = None,
-        install_dest = "extractor-pack",
-        compression_level = None,
         arch_overrides = None,
-        zip_prefix = None,
+        pack_prefix = None,
+        install_dest = "extractor-pack",
         **kwargs):
     """
-    Define a codeql pack. This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
-    `zips` is a map from `.zip` files to prefixes to import.
-    * defines a `<name>-generic-zip` target creating a `<zip_filename>-generic.zip` archive with the generic bits,
-      prefixed with `zip_prefix`
-    * defines a `<name>-arch-zip` target creating a `<zip_filename>-<codeql_platform>.zip` archive with the
-      arch-specific bits, prefixed with `zip_prefix`
-    * defines a runnable `<name>-installer` target that will install the pack in `install_dest`, relative to where the
-      rule is used. The install destination can be overridden appending `-- --destdir=...` to the `bazel run`
-      invocation. This installation _does not_ prefix the contents with `zip_prefix`.
-    The prefix for the zip files can be set with `zip_prefix`, it is `name` by default.
+    Define a codeql pack.
+    Packs are used as input to `codeql_pack_group`, which allows convenient building and bundling of packs.
 
-    The distinction between arch-specific and generic contents is made based on whether the paths (including possible
+    This macro accepts `pkg_files`, `pkg_filegroup` or their `codeql_*` counterparts as `srcs`.
+    `zips` is a map from `.zip` files to prefixes to import.
+    The distinction between arch-specific and common contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
     be replaced by the appropriate platform (`linux64`, `win64` or `osx64`).
     Specific file paths can be placed in the arch-specific package by adding them to `arch_overrides`, even if their
     path doesn't contain the `CODEQL_PLATFORM` placeholder.
 
-    `compression_level` can be used to tweak the compression level used when creating archives. Consider that this
-    does not affect the contents of `zips`, only `srcs`.
+    The codeql pack rules will expand the `{CODEQL_PLATFORM}` marker in paths, and use that to split the files into a common and an arch-specific part.
+    This placeholder will be replaced by the appropriate platform (`linux64`, `win64` or `osx64`).
+    `arch_overrides` is a list of files that should be included in the arch-specific bits of the pack, even if their path doesn't
+    contain the `{CODEQL_PLATFORM}` marker.
+    All files in the pack will be prefixed with `name`, unless `pack_prefix` is set, then is used instead.
+
+    This rule also provides a convenient installer target, with a path governed by `install_dest`.
+    This installer is used for installing this pack into the source-tree, relative to the directory where the rule is used.
+    See `codeql_pack_install` for more details.
+
+    This function does not accept `visibility`, as packs are always public to make it easy to define pack groups.
     """
     internal = _make_internal(name)
-    zip_filename = zip_filename or name
     zips = zips or {}
-    if zip_prefix == None:
-        zip_prefix = name
+    if pack_prefix == None:
+        pack_prefix = name
     pkg_filegroup(
         name = internal("all"),
         srcs = srcs,
         visibility = ["//visibility:private"],
         **kwargs
     )
-    if zips:
-        _zip_info(
-            name = internal("zip-info"),
-            srcs = zips,
-            visibility = ["//visibility:private"],
-        )
-    for kind in ("generic", "arch"):
-        _extract_pkg_filegroup(
-            name = internal(kind),
-            src = internal("all"),
-            kind = kind,
-            arch_overrides = arch_overrides,
-            visibility = ["//visibility:private"],
-        )
-        if zips:
-            pkg_zip(
-                name = internal(kind, "zip-base"),
-                srcs = [internal(kind)],
-                visibility = ["//visibility:private"],
-                compression_level = compression_level,
-            )
-            _zip_info_filter(
-                name = internal(kind, "zip-info"),
-                kind = kind,
-                srcs = [internal("zip-info")],
-                visibility = ["//visibility:private"],
-            )
-            _zipmerge(
-                name = internal(kind, "zip"),
-                srcs = [internal(kind, "zip-base"), internal(kind, "zip-info")],
-                out = _get_zip_filename(name, kind),
-                prefix = zip_prefix,
-                visibility = visibility,
-            )
-        else:
-            pkg_zip(
-                name = internal(kind, "zip"),
-                srcs = [internal(kind)],
-                visibility = visibility,
-                package_dir = zip_prefix,
-                package_file_name = _get_zip_filename(name, kind),
-                compression_level = compression_level,
-            )
-    if zips:
-        _imported_zips_manifest(
-            name = internal("zip-manifest"),
-            srcs = [internal("generic-zip-info"), internal("arch-zip-info")],
-            visibility = ["//visibility:private"],
-        )
-
-    pkg_install(
-        name = internal("script"),
-        srcs = [internal("generic"), internal("arch")],
-        visibility = ["//visibility:private"],
-    )
-    native.filegroup(
-        # used to locate current src directory
-        name = internal("build-file"),
-        srcs = ["BUILD.bazel"],
-        visibility = ["//visibility:private"],
-    )
-    py_binary(
-        name = internal("installer"),
-        srcs = [Label("//misc/bazel/internal:install.py")],
-        main = Label("//misc/bazel/internal:install.py"),
-        data = [
-            internal("build-file"),
-            internal("script"),
-        ] + ([
-            internal("zip-manifest"),
-            Label("//misc/bazel/internal/ripunzip"),
-        ] if zips else []),
-        deps = ["@rules_python//python/runfiles"],
-        args = [
-            "--build-file=$(rlocationpath %s)" % internal("build-file"),
-            "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
-            "--destdir",
-            install_dest,
-        ] + ([
-            "--ripunzip=$(rlocationpath %s)" % Label("//misc/bazel/internal/ripunzip"),
-            "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
-        ] if zips else []),
-        visibility = visibility,
-    )
-    native.filegroup(
+    _codeql_pack_info(
         name = name,
-        srcs = [internal("generic-zip"), internal("arch-zip")],
+        src = internal("all"),
+        extra_zips = zips,
+        prefix = pack_prefix,
+        arch_overrides = arch_overrides,
+        # packs are always public, so that we can easily bundle them into groups
+        visibility = ["//visibility:public"],
     )
+    _codeql_pack_install(internal("installer"), [name], install_dest = install_dest, apply_pack_prefix = False)
 
 strip_prefix = _strip_prefix
 

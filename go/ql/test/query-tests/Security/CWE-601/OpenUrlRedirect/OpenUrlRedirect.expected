@@ -1,43 +1,22 @@
 edges
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | provenance | Config |
-| stdlib.go:13:3:13:8 | definition of target | stdlib.go:15:30:15:35 | target | provenance |  |
-| stdlib.go:13:3:13:8 | definition of target | stdlib.go:15:30:15:35 | target | provenance | Config |
 | stdlib.go:13:13:13:18 | selection of Form | stdlib.go:13:13:13:32 | call to Get | provenance | Config |
-| stdlib.go:13:13:13:32 | call to Get | stdlib.go:13:3:13:8 | definition of target | provenance |  |
-| stdlib.go:13:13:13:32 | call to Get | stdlib.go:13:3:13:8 | definition of target | provenance | Config |
-| stdlib.go:22:3:22:8 | definition of target | stdlib.go:24:30:24:35 | target | provenance |  |
-| stdlib.go:22:3:22:8 | definition of target | stdlib.go:24:30:24:35 | target | provenance | Config |
+| stdlib.go:13:13:13:32 | call to Get | stdlib.go:15:30:15:35 | target | provenance |  |
 | stdlib.go:22:13:22:18 | selection of Form | stdlib.go:22:13:22:32 | call to Get | provenance | Config |
-| stdlib.go:22:13:22:32 | call to Get | stdlib.go:22:3:22:8 | definition of target | provenance |  |
-| stdlib.go:22:13:22:32 | call to Get | stdlib.go:22:3:22:8 | definition of target | provenance | Config |
-| stdlib.go:31:3:31:8 | definition of target | stdlib.go:35:34:35:39 | target | provenance |  |
-| stdlib.go:31:3:31:8 | definition of target | stdlib.go:35:34:35:39 | target | provenance | Config |
+| stdlib.go:22:13:22:32 | call to Get | stdlib.go:24:30:24:35 | target | provenance |  |
 | stdlib.go:31:13:31:18 | selection of Form | stdlib.go:31:13:31:32 | call to Get | provenance | Config |
-| stdlib.go:31:13:31:32 | call to Get | stdlib.go:31:3:31:8 | definition of target | provenance |  |
-| stdlib.go:31:13:31:32 | call to Get | stdlib.go:31:3:31:8 | definition of target | provenance | Config |
+| stdlib.go:31:13:31:32 | call to Get | stdlib.go:35:34:35:39 | target | provenance |  |
 | stdlib.go:35:34:35:39 | target | stdlib.go:35:30:35:39 | ...+... | provenance | Config |
-| stdlib.go:44:3:44:8 | definition of target | stdlib.go:46:23:46:28 | target | provenance |  |
-| stdlib.go:44:3:44:8 | definition of target | stdlib.go:46:23:46:28 | target | provenance | Config |
 | stdlib.go:44:13:44:18 | selection of Form | stdlib.go:44:13:44:32 | call to Get | provenance | Config |
-| stdlib.go:44:13:44:32 | call to Get | stdlib.go:44:3:44:8 | definition of target | provenance |  |
-| stdlib.go:44:13:44:32 | call to Get | stdlib.go:44:3:44:8 | definition of target | provenance | Config |
-| stdlib.go:64:3:64:8 | definition of target | stdlib.go:67:23:67:28 | target | provenance |  |
-| stdlib.go:64:3:64:8 | definition of target | stdlib.go:67:23:67:28 | target | provenance | Config |
+| stdlib.go:44:13:44:32 | call to Get | stdlib.go:46:23:46:28 | target | provenance |  |
 | stdlib.go:64:13:64:18 | selection of Form | stdlib.go:64:13:64:32 | call to Get | provenance | Config |
-| stdlib.go:64:13:64:32 | call to Get | stdlib.go:64:3:64:8 | definition of target | provenance |  |
-| stdlib.go:64:13:64:32 | call to Get | stdlib.go:64:3:64:8 | definition of target | provenance | Config |
+| stdlib.go:64:13:64:32 | call to Get | stdlib.go:67:23:67:28 | target | provenance |  |
 | stdlib.go:67:23:67:28 | target | stdlib.go:67:23:67:37 | ...+... | provenance | Config |
 | stdlib.go:67:23:67:37 | ...+... | stdlib.go:67:23:67:40 | ...+... | provenance | Config |
-| stdlib.go:89:3:89:8 | definition of target | stdlib.go:90:3:90:8 | target | provenance |  |
-| stdlib.go:89:3:89:8 | definition of target | stdlib.go:90:3:90:8 | target | provenance | Config |
 | stdlib.go:89:13:89:18 | selection of Form | stdlib.go:89:13:89:32 | call to Get | provenance | Config |
-| stdlib.go:89:13:89:32 | call to Get | stdlib.go:89:3:89:8 | definition of target | provenance |  |
-| stdlib.go:89:13:89:32 | call to Get | stdlib.go:89:3:89:8 | definition of target | provenance | Config |
-| stdlib.go:90:3:90:8 | definition of target | stdlib.go:92:23:92:28 | target | provenance |  |
-| stdlib.go:90:3:90:8 | definition of target | stdlib.go:92:23:92:28 | target | provenance | Config |
+| stdlib.go:89:13:89:32 | call to Get | stdlib.go:90:3:90:8 | target | provenance |  |
 | stdlib.go:90:3:90:8 | target | stdlib.go:90:3:90:25 | ... += ... | provenance | Config |
-| stdlib.go:90:3:90:25 | ... += ... | stdlib.go:90:3:90:8 | definition of target | provenance |  |
-| stdlib.go:90:3:90:25 | ... += ... | stdlib.go:90:3:90:8 | definition of target | provenance | Config |
+| stdlib.go:90:3:90:25 | ... += ... | stdlib.go:92:23:92:28 | target | provenance |  |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | provenance |  |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] | provenance |  |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:113:24:113:24 | r [pointer, URL] | provenance |  |
@@ -56,33 +35,19 @@ edges
 | stdlib.go:113:24:113:24 | implicit dereference [URL] | stdlib.go:113:24:113:28 | selection of URL | provenance |  |
 | stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] | provenance |  |
 | stdlib.go:113:24:113:28 | selection of URL | stdlib.go:113:24:113:37 | call to String | provenance | Config |
-| stdlib.go:146:3:146:8 | definition of target | stdlib.go:152:3:152:3 | target = phi(def@146:3, def@149:4) | provenance |  |
-| stdlib.go:146:3:146:8 | definition of target | stdlib.go:152:3:152:3 | target = phi(def@146:3, def@149:4) | provenance | Config |
 | stdlib.go:146:13:146:18 | selection of Form | stdlib.go:146:13:146:32 | call to Get | provenance | Config |
-| stdlib.go:146:13:146:32 | call to Get | stdlib.go:146:3:146:8 | definition of target | provenance |  |
-| stdlib.go:146:13:146:32 | call to Get | stdlib.go:146:3:146:8 | definition of target | provenance | Config |
-| stdlib.go:152:3:152:3 | target = phi(def@146:3, def@149:4) | stdlib.go:152:23:152:28 | target | provenance |  |
-| stdlib.go:152:3:152:3 | target = phi(def@146:3, def@149:4) | stdlib.go:152:23:152:28 | target | provenance | Config |
-| stdlib.go:159:3:159:5 | definition of url | stdlib.go:162:24:162:26 | url | provenance |  |
-| stdlib.go:159:3:159:5 | definition of url | stdlib.go:162:24:162:26 | url | provenance | Config |
-| stdlib.go:159:10:159:15 | star expression | stdlib.go:159:3:159:5 | definition of url | provenance |  |
-| stdlib.go:159:10:159:15 | star expression | stdlib.go:159:3:159:5 | definition of url | provenance | Config |
+| stdlib.go:146:13:146:32 | call to Get | stdlib.go:152:23:152:28 | target | provenance |  |
 | stdlib.go:159:10:159:15 | star expression | stdlib.go:159:11:159:15 | selection of URL | provenance | Config |
+| stdlib.go:159:10:159:15 | star expression | stdlib.go:162:24:162:26 | url | provenance |  |
 | stdlib.go:159:11:159:15 | selection of URL | stdlib.go:159:10:159:15 | star expression | provenance | Config |
 | stdlib.go:162:24:162:26 | url | stdlib.go:162:24:162:35 | call to String | provenance | Config |
 | stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:35:173:52 | call to RequestURI | provenance | Config |
 | stdlib.go:173:35:173:52 | call to RequestURI | stdlib.go:173:24:173:52 | ...+... | provenance | Config |
-| stdlib.go:182:3:182:8 | definition of target | stdlib.go:184:23:184:28 | target | provenance |  |
-| stdlib.go:182:3:182:8 | definition of target | stdlib.go:184:23:184:28 | target | provenance | Config |
-| stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:182:3:182:8 | definition of target | provenance | Src:MaD:670  |
-| stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:182:3:182:8 | definition of target | provenance | Src:MaD:670 Config |
+| stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:184:23:184:28 | target | provenance | Src:MaD:673  |
 | stdlib.go:190:3:190:8 | definition of target | stdlib.go:192:23:192:28 | target | provenance |  |
-| stdlib.go:190:3:190:8 | definition of target | stdlib.go:192:23:192:28 | target | provenance | Config |
 | stdlib.go:190:3:190:8 | definition of target | stdlib.go:194:23:194:28 | target | provenance |  |
-| stdlib.go:190:3:190:8 | definition of target | stdlib.go:194:23:194:28 | target | provenance | Config |
 | stdlib.go:190:3:190:57 | ... := ...[0] | stdlib.go:190:3:190:8 | definition of target | provenance |  |
-| stdlib.go:190:3:190:57 | ... := ...[0] | stdlib.go:190:3:190:8 | definition of target | provenance | Config |
-| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:190:3:190:57 | ... := ...[0] | provenance | Src:MaD:670 Config |
+| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:190:3:190:57 | ... := ...[0] | provenance | Src:MaD:673 Config |
 | stdlib.go:192:23:192:28 | implicit dereference | stdlib.go:190:3:190:8 | definition of target | provenance | Config |
 | stdlib.go:192:23:192:28 | implicit dereference | stdlib.go:192:23:192:33 | selection of Path | provenance | Config |
 | stdlib.go:192:23:192:28 | target | stdlib.go:192:23:192:28 | implicit dereference | provenance | Config |
@@ -91,33 +56,26 @@ edges
 nodes
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form | semmle.label | selection of Form |
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | semmle.label | call to Get |
-| stdlib.go:13:3:13:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:13:13:13:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:13:13:13:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:15:30:15:35 | target | semmle.label | target |
-| stdlib.go:22:3:22:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:22:13:22:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:22:13:22:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:24:30:24:35 | target | semmle.label | target |
-| stdlib.go:31:3:31:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:31:13:31:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:31:13:31:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:35:30:35:39 | ...+... | semmle.label | ...+... |
 | stdlib.go:35:34:35:39 | target | semmle.label | target |
-| stdlib.go:44:3:44:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:44:13:44:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:44:13:44:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:46:23:46:28 | target | semmle.label | target |
-| stdlib.go:64:3:64:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:64:13:64:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:64:13:64:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:67:23:67:28 | target | semmle.label | target |
 | stdlib.go:67:23:67:37 | ...+... | semmle.label | ...+... |
 | stdlib.go:67:23:67:40 | ...+... | semmle.label | ...+... |
-| stdlib.go:89:3:89:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:89:13:89:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:89:13:89:32 | call to Get | semmle.label | call to Get |
-| stdlib.go:90:3:90:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:90:3:90:8 | target | semmle.label | target |
 | stdlib.go:90:3:90:25 | ... += ... | semmle.label | ... += ... |
 | stdlib.go:92:23:92:28 | target | semmle.label | target |
@@ -134,12 +92,9 @@ nodes
 | stdlib.go:113:24:113:24 | r [pointer, URL] | semmle.label | r [pointer, URL] |
 | stdlib.go:113:24:113:28 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:113:24:113:37 | call to String | semmle.label | call to String |
-| stdlib.go:146:3:146:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:146:13:146:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:146:13:146:32 | call to Get | semmle.label | call to Get |
-| stdlib.go:152:3:152:3 | target = phi(def@146:3, def@149:4) | semmle.label | target = phi(def@146:3, def@149:4) |
 | stdlib.go:152:23:152:28 | target | semmle.label | target |
-| stdlib.go:159:3:159:5 | definition of url | semmle.label | definition of url |
 | stdlib.go:159:10:159:15 | star expression | semmle.label | star expression |
 | stdlib.go:159:11:159:15 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:162:24:162:26 | url | semmle.label | url |
@@ -147,7 +102,6 @@ nodes
 | stdlib.go:173:24:173:52 | ...+... | semmle.label | ...+... |
 | stdlib.go:173:35:173:39 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:173:35:173:52 | call to RequestURI | semmle.label | call to RequestURI |
-| stdlib.go:182:3:182:8 | definition of target | semmle.label | definition of target |
 | stdlib.go:182:13:182:33 | call to FormValue | semmle.label | call to FormValue |
 | stdlib.go:184:23:184:28 | target | semmle.label | target |
 | stdlib.go:190:3:190:8 | definition of target | semmle.label | definition of target |

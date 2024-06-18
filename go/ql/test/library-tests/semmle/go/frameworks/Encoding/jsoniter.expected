@@ -1,15 +1,16 @@
+invalidModelRow
 edges
 | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | jsoniter.go:27:17:27:30 | untrustedInput | provenance |  |
 | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | jsoniter.go:31:21:31:34 | untrustedInput | provenance |  |
 | jsoniter.go:24:21:24:40 | call to getUntrustedString | jsoniter.go:35:27:35:41 | untrustedString | provenance |  |
 | jsoniter.go:24:21:24:40 | call to getUntrustedString | jsoniter.go:39:31:39:45 | untrustedString | provenance |  |
-| jsoniter.go:27:17:27:30 | untrustedInput | jsoniter.go:27:33:27:37 | &... | provenance | MaD:349 |
+| jsoniter.go:27:17:27:30 | untrustedInput | jsoniter.go:27:33:27:37 | &... | provenance | MaD:352 |
 | jsoniter.go:27:33:27:37 | &... | jsoniter.go:28:15:28:24 | selection of field | provenance |  |
-| jsoniter.go:31:21:31:34 | untrustedInput | jsoniter.go:31:37:31:42 | &... | provenance | MaD:347 |
+| jsoniter.go:31:21:31:34 | untrustedInput | jsoniter.go:31:37:31:42 | &... | provenance | MaD:350 |
 | jsoniter.go:31:37:31:42 | &... | jsoniter.go:32:15:32:25 | selection of field | provenance |  |
-| jsoniter.go:35:27:35:41 | untrustedString | jsoniter.go:35:44:35:49 | &... | provenance | MaD:350 |
+| jsoniter.go:35:27:35:41 | untrustedString | jsoniter.go:35:44:35:49 | &... | provenance | MaD:353 |
 | jsoniter.go:35:44:35:49 | &... | jsoniter.go:36:15:36:25 | selection of field | provenance |  |
-| jsoniter.go:39:31:39:45 | untrustedString | jsoniter.go:39:48:39:53 | &... | provenance | MaD:348 |
+| jsoniter.go:39:31:39:45 | untrustedString | jsoniter.go:39:48:39:53 | &... | provenance | MaD:351 |
 | jsoniter.go:39:48:39:53 | &... | jsoniter.go:40:15:40:25 | selection of field | provenance |  |
 nodes
 | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | semmle.label | call to getUntrustedBytes |

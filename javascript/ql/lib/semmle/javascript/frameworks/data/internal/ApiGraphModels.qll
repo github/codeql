@@ -169,7 +169,18 @@ module ModelInput {
    */
   class TypeModel extends Unit {
     /**
+     * Holds if any of the other predicates in this class might have a result
+     * for the given `type`.
+     *
+     * The implementation of this predicate should not depend on `DataFlow::Node`.
+     */
+    bindingset[type]
+    predicate isTypeUsed(string type) { none() }
+
+    /**
      * Gets a data-flow node that is a source of the given `type`.
+     *
+     * Note that `type` should also be included in `isTypeUsed`.
      *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the source.
@@ -180,6 +191,8 @@ module ModelInput {
      * Gets a data-flow node that is a sink of the given `type`,
      * usually because it is an argument passed to a parameter of that type.
      *
+     * Note that `type` should also be included in `isTypeUsed`.
+     *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the sink.
      */
@@ -187,6 +200,8 @@ module ModelInput {
 
     /**
      * Gets an API node that is a source or sink of the given `type`.
+     *
+     * Note that `type` should also be included in `isTypeUsed`.
      *
      * Unlike `getASource` and `getASink`, this may depend on API graphs.
      */
@@ -355,6 +370,28 @@ private predicate typeVariableModel(string name, string path) {
 }
 
 /**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(string type, string path, string kind |
+    Extensions::sourceModel(type, path, kind, madId) and
+    model = "Source: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string kind |
+    Extensions::sinkModel(type, path, kind, madId) and
+    model = "Sink: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string input, string output, string kind |
+    Extensions::summaryModel(type, path, input, output, kind, madId) and
+    model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
+  )
+}
+
+/**
  * Holds if rows involving `type` might be relevant for the analysis of this database.
  */
 predicate isRelevantType(string type) {
@@ -366,6 +403,8 @@ predicate isRelevantType(string type) {
   ) and
   (
     Specific::isTypeUsed(type)
+    or
+    any(TypeModel model).isTypeUsed(type)
     or
     exists(TestAllModels t)
   )

@@ -8,6 +8,7 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
@@ -710,8 +711,14 @@ class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
 }
 
 private Expr getRelatedExpr(Node n) {
-  n.asExpr() = result or
-  n.(PostUpdateNode).getPreUpdateNode().asExpr() = result
+  n.asExpr() = result
+  or
+  exists(InstanceAccessExt iae | iae = n.(ImplicitInstanceAccess).getInstanceAccess() |
+    iae.isImplicitFieldQualifier(result) or
+    iae.isImplicitMethodQualifier(result)
+  )
+  or
+  getRelatedExpr(n.(PostUpdateNode).getPreUpdateNode()) = result
 }
 
 /** Gets the second-level scope containing the node `n`, if any. */

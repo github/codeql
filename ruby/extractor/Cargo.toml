@@ -6,19 +6,10 @@ version = "0.1.0"
 authors = ["GitHub"]
 edition = "2021"
 
-# When changing/updating these, the `cargo-bazel-lock.json` file has to be regenerated.
-# Run `CARGO_BAZEL_REPIN=true CARGO_BAZEL_REPIN_ONLY=ruby_deps ./tools/bazel sync --only=ruby_deps`
-# in the `semmle-code` repository to do so.
-# For more information, check out the documentation at
-# https://bazelbuild.github.io/rules_rust/crate_universe.html#repinning--updating-dependencies
-# In the future, the hope is to move this handling of the dependencies entirely into the `codeql` repository,
-# but that depends on `rules_rust` being fully compatible with bzlmod, which they aren't yet
-# (c.f. https://github.com/bazelbuild/rules_rust/issues/2452).
-# Warning: The process takes >5min on my M1 mac, so do wait for a while.
 [dependencies]
 tree-sitter = ">= 0.22.6"
 tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "38d5004a797298dc42c85e7706c5ceac46a3f29f" }
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "b41dc0f4c8e040905fcbb5d93bab667541c08ec7" }
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "dc2d7d6b50f9975bc3c35bbec0ba11b2617b736b" }
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }

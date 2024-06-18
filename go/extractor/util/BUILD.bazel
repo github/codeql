@@ -4,13 +4,21 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "util",
-    srcs = ["util.go"],
+    srcs = [
+        "semver.go",
+        "util.go",
+    ],
     importpath = "github.com/github/codeql-go/extractor/util",
     visibility = ["//visibility:public"],
+    deps = ["//go/extractor/vendor/golang.org/x/mod/semver"],
 )
 
 go_test(
     name = "util_test",
-    srcs = ["util_test.go"],
+    srcs = [
+        "semver_test.go",
+        "util_test.go",
+    ],
     embed = [":util"],
+    deps = ["//go/extractor/vendor/golang.org/x/mod/semver"],
 )

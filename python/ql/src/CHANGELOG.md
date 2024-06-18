@@ -1,3 +1,9 @@
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* Added models for `opml` library.
+
 ## 1.0.0
 
 ### Breaking Changes

@@ -1,17 +1,21 @@
+models
+| 1 | Sink: java.net; URL; false; openConnection; ; ; Argument[this]; request-forgery; manual |
+| 2 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 3 | Summary: java.net; URL; false; URL; (URL,String); ; Argument[1]; Argument[this]; taint; ai-manual |
 edges
 | HttpsUrlsTest.java:23:23:23:31 | "http://" : String | HttpsUrlsTest.java:24:21:24:56 | ... + ... : String | provenance |  |
-| HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | HttpsUrlsTest.java:28:50:28:50 | u | provenance |  Sink:MaD:42929 |
+| HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | HttpsUrlsTest.java:28:50:28:50 | u | provenance |  Sink:MaD:1 |
 | HttpsUrlsTest.java:24:21:24:56 | ... + ... : String | HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | provenance | Config |
-| HttpsUrlsTest.java:24:21:24:56 | ... + ... : String | HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | provenance | MaD:42962 |
+| HttpsUrlsTest.java:24:21:24:56 | ... + ... : String | HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | provenance | MaD:2 |
 | HttpsUrlsTest.java:36:23:36:28 | "http" : String | HttpsUrlsTest.java:37:21:37:28 | protocol : String | provenance |  |
-| HttpsUrlsTest.java:37:13:37:62 | new URL(...) : URL | HttpsUrlsTest.java:41:50:41:50 | u | provenance |  Sink:MaD:42929 |
+| HttpsUrlsTest.java:37:13:37:62 | new URL(...) : URL | HttpsUrlsTest.java:41:50:41:50 | u | provenance |  Sink:MaD:1 |
 | HttpsUrlsTest.java:37:21:37:28 | protocol : String | HttpsUrlsTest.java:37:13:37:62 | new URL(...) : URL | provenance | Config |
 | HttpsUrlsTest.java:49:23:49:31 | "http://" : String | HttpsUrlsTest.java:51:64:51:98 | ... + ... : String | provenance |  |
-| HttpsUrlsTest.java:51:13:51:99 | new URL(...) : URL | HttpsUrlsTest.java:55:50:55:50 | u | provenance |  Sink:MaD:42929 |
+| HttpsUrlsTest.java:51:13:51:99 | new URL(...) : URL | HttpsUrlsTest.java:55:50:55:50 | u | provenance |  Sink:MaD:1 |
 | HttpsUrlsTest.java:51:64:51:98 | ... + ... : String | HttpsUrlsTest.java:51:13:51:99 | new URL(...) : URL | provenance | Config |
-| HttpsUrlsTest.java:51:64:51:98 | ... + ... : String | HttpsUrlsTest.java:51:13:51:99 | new URL(...) : URL | provenance | MaD:42970 |
+| HttpsUrlsTest.java:51:64:51:98 | ... + ... : String | HttpsUrlsTest.java:51:13:51:99 | new URL(...) : URL | provenance | MaD:3 |
 | HttpsUrlsTest.java:87:23:87:28 | "http" : String | HttpsUrlsTest.java:88:21:88:28 | protocol : String | provenance |  |
-| HttpsUrlsTest.java:88:13:88:52 | new URL(...) : URL | HttpsUrlsTest.java:92:50:92:50 | u | provenance |  Sink:MaD:42929 |
+| HttpsUrlsTest.java:88:13:88:52 | new URL(...) : URL | HttpsUrlsTest.java:92:50:92:50 | u | provenance |  Sink:MaD:1 |
 | HttpsUrlsTest.java:88:21:88:28 | protocol : String | HttpsUrlsTest.java:88:13:88:52 | new URL(...) : URL | provenance | Config |
 nodes
 | HttpsUrlsTest.java:23:23:23:31 | "http://" : String | semmle.label | "http://" : String |

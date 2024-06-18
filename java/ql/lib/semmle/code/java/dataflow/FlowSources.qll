@@ -126,7 +126,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
       m.getMethod() instanceof ReverseDnsMethod and
       not exists(MethodCall l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
-        l.getMethod().getName() = "getLocalHost"
+        (l.getMethod().getName() = "getLocalHost" or l.getMethod().getName() = "getLoopbackAddress")
       )
     )
   }

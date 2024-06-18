@@ -7,7 +7,6 @@ extensions:
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "CompareToImpl", "(Internal.TypeSystem.TypeDesc,Internal.TypeSystem.TypeSystemComparer)", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_ClassCode", "()", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Constraints", "()", "summary", "df-generated"]
-      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_DiagnosticName", "()", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Index", "()", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Kind", "()", "summary", "df-generated"]
       - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Name", "()", "summary", "df-generated"]

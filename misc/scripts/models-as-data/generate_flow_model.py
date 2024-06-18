@@ -126,7 +126,7 @@ Requirements: `codeql` should both appear on your path.
         resultBqrs = os.path.join(self.workDir, "out.bqrs")
 
         helpers.run_cmd(['codeql', 'query', 'run', queryFile, '--database',
-               self.database, '--output', resultBqrs, '--threads', '8'], "Failed to generate " + query)
+               self.database, '--output', resultBqrs, '--threads', '8', '--ram', '32768'], "Failed to generate " + query)
 
         return helpers.readData(self.workDir, resultBqrs)
 

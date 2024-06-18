@@ -588,7 +588,13 @@ private module Cached {
       n in [-1 .. 10] and
       splatPos = unique(int i | splatArgumentAt(c, i) and i > 0)
     } or
-    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
+    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+    TForbiddenRecursionGuard() {
+      none() and
+      // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+      // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+    }
 
   class TSelfParameterNode = TSelfMethodParameterNode or TSelfToplevelParameterNode;
 
@@ -719,6 +725,7 @@ private module Cached {
   newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
+    TAnyContent() or
     TKnownOrUnknownElementContent(Content::KnownElementContent c) or
     TElementLowerBoundContent(int lower, boolean includeUnknown) {
       FlowSummaryImpl::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown, lower)
@@ -730,7 +737,7 @@ private module Cached {
 
   cached
   class TContentSet =
-    TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
+    TSingletonContent or TAnyElementContent or TAnyContent or TKnownOrUnknownElementContent or
         TElementLowerBoundContent or TElementContentOfTypeContent;
 
   private predicate trackKnownValue(ConstantValue cv) {
