@@ -51,38 +51,19 @@ data:
             The following code snippet demonstrates Helmet configured in an insecure manner:
         </p>
 
-        <pre>
-const helmet = require('helmet');
-app.use(helmet({
-    frameguard: false,
-    contentSecurityPolicy: false
-}));
-        </pre>
+        <sample src="examples/helmet_insecure.js" />
 
         <p>
             In this example, the defaults are used, which enables frame protection and a default Content Security Policy.
         </p>
 
-        <pre>
-app.use(helmet());
-        </pre>
+        <sample src="examples/helmet_default.js" />
 
         <p>
             You can also enable a custom Content Security Policy by passing an object to the <code>contentSecurityPolicy</code> key. For example, taken from the <a href="https://helmetjs.github.io/#content-security-policy">Helmet docs</a>:
         </p>
 
-        <pre>
-app.use(
-    helmet({
-        contentSecurityPolicy: {
-            directives: {
-                "script-src": ["'self'", "example.com"],
-                "style-src": null,
-            },
-        },
-    })
-);
-        </pre>
+        <sample src="examples/helmet_custom.js" />
 
     </example>
     <references>
