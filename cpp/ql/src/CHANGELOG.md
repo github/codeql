@@ -1,3 +1,26 @@
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* The `cpp/dangerous-function-overflow` no longer produces a false positive alert when the `gets` function does not have exactly one parameter.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* The "Use of unique pointer after lifetime ends" query (`cpp/use-of-unique-pointer-after-lifetime-ends`) no longer reports an alert when the pointer is converted to a boolean
+* The "Variable not initialized before use" query (`cpp/not-initialised`) no longer reports an alert on static variables.
+
+## 0.9.12
+
+### New Queries
+
+* Added a new query, `cpp/iterator-to-expired-container`, to detect the creation of iterators owned by a temporary objects that are about to be destroyed.
+
 ## 0.9.11
 
 ### Minor Analysis Improvements

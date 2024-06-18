@@ -9,7 +9,9 @@ extensions:
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "get_CustomChannelBinding", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "get_CustomServiceNames", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicyTypeConverter", False, "ConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "Merge", "(System.Collections.IEnumerable)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "Merge", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "ServiceNameCollection", "(System.Collections.ICollection)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -19,12 +21,8 @@ extensions:
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "ExtendedProtectionPolicy", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "ExtendedProtectionPolicy", "(System.Security.Authentication.ExtendedProtection.PolicyEnforcement)", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "ExtendedProtectionPolicy", "(System.Security.Authentication.ExtendedProtection.PolicyEnforcement,System.Security.Authentication.ExtendedProtection.ProtectionScenario,System.Collections.ICollection)", "summary", "df-generated"]
-      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "get_OSSupportsExtendedProtection", "()", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "get_PolicyEnforcement", "()", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "get_ProtectionScenario", "()", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicyTypeConverter", "CanConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Type)", "summary", "df-generated"]
       - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", "Contains", "(System.String)", "summary", "df-generated"]
-      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", "Merge", "(System.Collections.IEnumerable)", "summary", "df-generated"]
-      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", "Merge", "(System.String)", "summary", "df-generated"]
-      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", "ServiceNameCollection", "(System.Collections.ICollection)", "summary", "df-generated"]

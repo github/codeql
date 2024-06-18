@@ -20,7 +20,10 @@ include = [
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter = "~0.20.3"
+tree-sitter = ">= 0.22.6"
 
 [build-dependencies]
 cc = "1.0"
+
+[patch.crates-io]
+tree-sitter = {git = "https://github.com/redsun82/tree-sitter.git", rev = "1f5c1112ceaa8fc6aff61d1852690407670d2a96"}

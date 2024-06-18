@@ -15,6 +15,7 @@ extensions:
       - ["System.Runtime.InteropServices.Marshalling", "ComVariantMarshaller+RefPropagate", False, "FromManaged", "(System.Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "ComVariantMarshaller+RefPropagate", False, "FromUnmanaged", "(System.Runtime.InteropServices.Marshalling.ComVariant)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "ComVariantMarshaller+RefPropagate", False, "ToUnmanaged", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.InteropServices.Marshalling", "IIUnknownStrategy", True, "CreateInstancePointer", "(System.Void*)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "PointerArrayMarshaller<T,TUnmanagedElement>+ManagedToUnmanagedIn", False, "FromManaged", "(T*[],System.Span<TUnmanagedElement>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "PointerArrayMarshaller<T,TUnmanagedElement>+ManagedToUnmanagedIn", False, "FromManaged", "(T*[],System.Span<TUnmanagedElement>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "PointerArrayMarshaller<T,TUnmanagedElement>+ManagedToUnmanagedIn", False, "GetUnmanagedValuesDestination", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -36,6 +37,7 @@ extensions:
       - ["System.Runtime.InteropServices.Marshalling", "SpanMarshaller<T,TUnmanagedElement>+ManagedToUnmanagedIn", False, "GetUnmanagedValuesDestination", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "SpanMarshaller<T,TUnmanagedElement>", False, "GetManagedValuesDestination", "(System.Span<T>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller+ManagedToUnmanagedIn", False, "ToUnmanaged", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", False, "Deconstruct", "(System.Void*,System.Void**)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -102,7 +104,6 @@ extensions:
       - ["System.Runtime.InteropServices.Marshalling", "IIUnknownInterfaceDetailsStrategy", "GetIUnknownDerivedDetails", "(System.RuntimeTypeHandle)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "IIUnknownInterfaceType", "get_Iid", "()", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "IIUnknownInterfaceType", "get_ManagedVirtualMethodTable", "()", "summary", "df-generated"]
-      - ["System.Runtime.InteropServices.Marshalling", "IIUnknownStrategy", "CreateInstancePointer", "(System.Void*)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "IIUnknownStrategy", "QueryInterface", "(System.Void*,System.Guid,System.Void*)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "IIUnknownStrategy", "Release", "(System.Void*)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "IUnknownDerivedAttribute<T,TImpl>", "get_Iid", "()", "summary", "df-generated"]
@@ -171,7 +172,6 @@ extensions:
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller", "ConvertToManaged", "(System.Byte*)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller", "ConvertToUnmanaged", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "Utf8StringMarshaller", "Free", "(System.Byte*)", "summary", "df-generated"]
-      - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "Deconstruct", "(System.Void*,System.Void**)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "VirtualMethodTableInfo", "(System.Void*,System.Void**)", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "get_ThisPointer", "()", "summary", "df-generated"]
       - ["System.Runtime.InteropServices.Marshalling", "VirtualMethodTableInfo", "get_VirtualMethodTable", "()", "summary", "df-generated"]

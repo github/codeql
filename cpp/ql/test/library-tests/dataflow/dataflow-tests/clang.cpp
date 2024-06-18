@@ -52,3 +52,9 @@ void following_pointers( // $ ast-def=sourceStruct1_ptr ir-def=*cleanArray1 ir-d
   sink(stackArray); // $ ast,ir
   indirect_sink(stackArray); // $ ast ir=50:25 ir=50:35 ir=51:19
 }
+
+void test_bitcast() {
+  unsigned long x = source();
+  double d = __builtin_bit_cast(double, x);
+  sink(d); // $ ir MISSING: ast
+}

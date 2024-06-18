@@ -1,7 +1,7 @@
 edges
 | test.py:23:25:23:25 | ControlFlowNode for e | test.py:24:16:24:16 | ControlFlowNode for e | provenance |  |
 | test.py:31:25:31:25 | ControlFlowNode for e | test.py:32:16:32:16 | ControlFlowNode for e | provenance |  |
-| test.py:32:16:32:16 | ControlFlowNode for e | test.py:32:16:32:30 | ControlFlowNode for Attribute | provenance |  |
+| test.py:32:16:32:16 | ControlFlowNode for e | test.py:32:16:32:30 | ControlFlowNode for Attribute | provenance | Config |
 | test.py:49:9:49:11 | ControlFlowNode for err | test.py:50:29:50:31 | ControlFlowNode for err | provenance |  |
 | test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:49:9:49:11 | ControlFlowNode for err | provenance |  |
 | test.py:50:29:50:31 | ControlFlowNode for err | test.py:50:16:50:32 | ControlFlowNode for format_error() | provenance |  |

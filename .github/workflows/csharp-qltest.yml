@@ -65,7 +65,7 @@ jobs:
           key: csharp-qltest-${{ matrix.slice }}
       - name: Run QL tests
         run: |
-          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path extractor-pack --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
   unit-tests:
@@ -81,10 +81,11 @@ jobs:
           dotnet-version: 8.0.101
       - name: Extractor unit tests
         run: |
+          dotnet tool restore
           dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Util.Tests
           dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Extraction.Tests
           dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.Cpp.Tests
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest
@@ -100,6 +101,6 @@ jobs:
           # Update existing stubs in the repo with the freshly generated ones
           mv "$STUBS_PATH/output/stubs/_frameworks" ql/test/resources/stubs/
           git status
-          codeql test run --threads=0 --search-path extractor-pack --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
+          codeql test run --threads=0 --search-path "${{ github.workspace }}" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
         env:
           GITHUB_TOKEN: ${{ github.token }}

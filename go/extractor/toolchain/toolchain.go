@@ -11,8 +11,12 @@ import (
 	"strings"
 
 	"github.com/github/codeql-go/extractor/util"
-	"golang.org/x/mod/semver"
 )
+
+var V1_14 = util.NewSemVer("v1.14.0")
+var V1_16 = util.NewSemVer("v1.16.0")
+var V1_18 = util.NewSemVer("v1.18.0")
+var V1_21 = util.NewSemVer("v1.21.0")
 
 // Check if Go is installed in the environment.
 func IsInstalled() bool {
@@ -23,11 +27,11 @@ func IsInstalled() bool {
 // The default Go version that is available on a system and a set of all versions
 // that we know are installed on the system.
 var goVersion = ""
-var goVersions = map[string]struct{}{}
+var goVersions = map[util.SemVer]struct{}{}
 
 // Adds an entry to the set of installed Go versions for the normalised `version` number.
-func addGoVersion(version string) {
-	goVersions[semver.Canonical("v"+version)] = struct{}{}
+func addGoVersion(version util.SemVer) {
+	goVersions[version] = struct{}{}
 }
 
 // Returns the current Go version as returned by 'go version', e.g. go1.14.4
@@ -53,19 +57,19 @@ func GetEnvGoVersion() string {
 		}
 
 		goVersion = parseGoVersion(string(out))
-		addGoVersion(goVersion[2:])
+		addGoVersion(util.NewSemVer(goVersion))
 	}
 	return goVersion
 }
 
 // Determines whether, to our knowledge, `version` is available on the current system.
-func HasGoVersion(version string) bool {
-	_, found := goVersions[semver.Canonical("v"+version)]
+func HasGoVersion(version util.SemVer) bool {
+	_, found := goVersions[version]
 	return found
 }
 
 // Attempts to install the Go toolchain `version`.
-func InstallVersion(workingDir string, version string) bool {
+func InstallVersion(workingDir string, version util.SemVer) bool {
 	// No need to install it if we know that it is already installed.
 	if HasGoVersion(version) {
 		return true
@@ -74,7 +78,7 @@ func InstallVersion(workingDir string, version string) bool {
 	// Construct a command to invoke `go version` with `GOTOOLCHAIN=go1.N.0` to give
 	// Go a valid toolchain version to download the toolchain we need; subsequent commands
 	// should then work even with an invalid version that's still in `go.mod`
-	toolchainArg := "GOTOOLCHAIN=go" + semver.Canonical("v" + version)[1:]
+	toolchainArg := "GOTOOLCHAIN=go" + version.String()[1:]
 	versionCmd := Version()
 	versionCmd.Dir = workingDir
 	versionCmd.Env = append(os.Environ(), toolchainArg)
@@ -107,20 +111,12 @@ func InstallVersion(workingDir string, version string) bool {
 }
 
 // Returns the current Go version in semver format, e.g. v1.14.4
-func GetEnvGoSemVer() string {
+func GetEnvGoSemVer() util.SemVer {
 	goVersion := GetEnvGoVersion()
 	if !strings.HasPrefix(goVersion, "go") {
 		log.Fatalf("Expected 'go version' output of the form 'go1.2.3'; got '%s'", goVersion)
 	}
-	// Go versions don't follow the SemVer format, but the only exception we normally care about
-	// is release candidates; so this is a horrible hack to convert e.g. `go1.22rc1` into `go1.22-rc1`
-	// which is compatible with the SemVer specification
-	rcIndex := strings.Index(goVersion, "rc")
-	if rcIndex != -1 {
-		return semver.Canonical("v"+goVersion[2:rcIndex]) + "-" + goVersion[rcIndex:]
-	} else {
-		return semver.Canonical("v" + goVersion[2:])
-	}
+	return util.NewSemVer(goVersion)
 }
 
 // The 'go version' command may output warnings on separate lines before
@@ -137,7 +133,7 @@ func parseGoVersion(data string) string {
 
 // Returns a value indicating whether the system Go toolchain supports workspaces.
 func SupportsWorkspaces() bool {
-	return semver.Compare(GetEnvGoSemVer(), "v1.18.0") >= 0
+	return GetEnvGoSemVer().IsAtLeast(V1_18)
 }
 
 // Run `go mod tidy -e` in the directory given by `path`.
@@ -185,12 +181,14 @@ func RunList(format string, patterns []string, flags ...string) (string, error) 
 	return RunListWithEnv(format, patterns, nil, flags...)
 }
 
+// Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs.
+func List(format string, patterns []string, flags ...string) *exec.Cmd {
+	return ListWithEnv(format, patterns, nil, flags...)
+}
+
 // Runs `go list`.
 func RunListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) (string, error) {
-	args := append([]string{"list", "-e", "-f", format}, flags...)
-	args = append(args, patterns...)
-	cmd := exec.Command("go", args...)
-	cmd.Env = append(os.Environ(), additionalEnv...)
+	cmd := ListWithEnv(format, patterns, additionalEnv, flags...)
 	out, err := cmd.Output()
 
 	if err != nil {
@@ -203,6 +201,16 @@ func RunListWithEnv(format string, patterns []string, additionalEnv []string, fl
 	}
 
 	return strings.TrimSpace(string(out)), nil
+}
+
+// Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs
+// and the extra environment variables given by `additionalEnv`.
+func ListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) *exec.Cmd {
+	args := append([]string{"list", "-e", "-f", format}, flags...)
+	args = append(args, patterns...)
+	cmd := exec.Command("go", args...)
+	cmd.Env = append(os.Environ(), additionalEnv...)
+	return cmd
 }
 
 // PkgInfo holds package directory and module directory (if any) for a package

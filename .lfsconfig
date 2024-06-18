@@ -2,4 +2,6 @@
 # codeql is publicly forked by many users, and we don't want any LFS file polluting their working
 # copies. We therefore exclude everything by default.
 # For files required by bazel builds, use rules in `misc/bazel/lfs.bzl` to download them on demand.
+# we go for `fetchinclude` to something not exsiting rather than `fetchexclude = *` because the
+# former is easier to override (with `git -c` or a local git config) to fetch something specific
 fetchinclude = /nothing

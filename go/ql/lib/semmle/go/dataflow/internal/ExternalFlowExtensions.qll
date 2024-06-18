@@ -25,3 +25,10 @@ extensible predicate summaryModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
+
+/**
+ * Holds if a neutral model exists for the given parameters.
+ */
+extensible predicate neutralModel(
+  string package, string type, string name, string signature, string kind, string provenance
+);

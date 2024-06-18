@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Directly writing user input (for example, an HTTP request parameter) to an HTTP header
+can lead to an HTTP response-splitting vulnerability.</p>
+
+<p>If user-controlled input is used in an HTTP header that allows line break characters, an attacker can 
+inject additional headers or control the response body, leading to vulnerabilities such as XSS or cache poisoning.
+</p>
+
+</overview>
+
+<recommendation>
+<p>Ensure that user input containing line break characters is not written to an HTTP header.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the case marked BAD writes user input to the header name. 
+In the GOOD case, input is first escaped to not contain any line break characters.</p>
+<sample src="examples/header_injection.py" />
+</example>
+
+<references>
+<li>
+SecLists.org: <a href="https://seclists.org/bugtraq/2005/Apr/187">HTTP response splitting</a>.
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/HTTP_Response_Splitting">HTTP Response Splitting</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_response_splitting">HTTP response splitting</a>.
+</li>
+<li>
+CAPEC: <a href="https://capec.mitre.org/data/definitions/105.html">CAPEC-105: HTTP Request Splitting</a>
+</li>
+</references>
+</qhelp>

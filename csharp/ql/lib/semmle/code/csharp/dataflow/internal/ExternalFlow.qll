@@ -94,7 +94,47 @@ private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Private::External
 private import semmle.code.csharp.commons.QualifiedName
+private import semmle.code.csharp.dispatch.OverridableCallable
+private import semmle.code.csharp.frameworks.System
 private import codeql.mad.ModelValidation as SharedModelVal
+
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    model =
+      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
+        + ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    model =
+      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) and
+    model =
+      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
+        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
+  )
+}
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
@@ -119,7 +159,9 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 
 /**
  * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -389,20 +431,6 @@ Declaration interpretElement(
   )
 }
 
-/**
- * A callable where there exists a MaD sink model that applies to it.
- */
-class SinkCallable extends Callable {
-  SinkCallable() { SourceSinkInterpretationInput::sinkElement(this, _, _, _, _) }
-}
-
-/**
- * A callable where there exists a MaD source model that applies to it.
- */
-class SourceCallable extends Callable {
-  SourceCallable() { SourceSinkInterpretationInput::sourceElement(this, _, _, _, _) }
-}
-
 cached
 private module Cached {
   /**
@@ -442,20 +470,16 @@ predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
  */
 predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
-/** Holds if the summary should apply for all overrides of `c`. */
-predicate isBaseCallableOrPrototype(UnboundCallable c) {
-  c.getDeclaringType() instanceof Interface
-  or
-  exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
-    m.isAbstract()
-    or
-    c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+private predicate isOverridableCallable(OverridableCallable c) {
+  not exists(Type t, Callable base | c.getOverridee+() = base and t = base.getDeclaringType() |
+    t instanceof SystemObjectClass or
+    t instanceof SystemValueTypeClass
   )
 }
 
 /** Gets a string representing whether the summary should apply for all overrides of `c`. */
 private string getCallableOverride(UnboundCallable c) {
-  if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+  if isOverridableCallable(c) then result = "true" else result = "false"
 }
 
 private module QualifiedNameInput implements QualifiedNameInputSig {
@@ -516,10 +540,13 @@ string asPartialModel(UnboundCallable c) {
   )
 }
 
-/** Computes the first 4 columns for neutral CSV rows of `c`. */
-string asPartialNeutralModel(UnboundCallable c) {
+/**
+ * Gets the signature of `c` in the format `namespace;type;name;parameters`.
+ */
+string getSignature(UnboundCallable c) {
   exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters) and
+    partialModel(c, namespace, type, name, parameters)
+  |
     result =
       namespace + ";" //
         + type + ";" //
@@ -551,7 +578,13 @@ private predicate interpretNeutral(UnboundCallable c, string kind, string proven
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() {
+    exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
+      not this.fromSource()
+      or
+      this.fromSource() and provenance.isManual()
+    )
+  }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
@@ -604,3 +637,33 @@ private class NeutralCallableAdapter extends NeutralCallable {
 
   override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }
+
+/**
+ * A callable where there exists a MaD sink model that applies to it.
+ */
+private class SinkModelCallableAdapter extends SinkModelCallable {
+  private Provenance provenance;
+
+  SinkModelCallableAdapter() {
+    SourceSinkInterpretationInput::sinkElement(this, _, _, provenance, _)
+  }
+
+  override predicate hasProvenance(Provenance p) { provenance = p }
+}
+
+final class SinkCallable = SinkModelCallable;
+
+/**
+ * A callable where there exists a MaD source model that applies to it.
+ */
+private class SourceModelCallableAdapter extends SourceModelCallable {
+  private Provenance provenance;
+
+  SourceModelCallableAdapter() {
+    SourceSinkInterpretationInput::sourceElement(this, _, _, provenance, _)
+  }
+
+  override predicate hasProvenance(Provenance p) { provenance = p }
+}
+
+final class SourceCallable = SourceModelCallable;

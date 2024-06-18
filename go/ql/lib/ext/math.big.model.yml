@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["math/big", "Int", False, "Int64", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["math/big", "Int", False, "Int64", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

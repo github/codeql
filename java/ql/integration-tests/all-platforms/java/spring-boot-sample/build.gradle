@@ -1,0 +1,25 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.github'
+version = '0.0.1-SNAPSHOT'
+
+// The generated sample would explicitly set sourceCompatibility to Java 17 here,
+// but I omit it to test we recognise the Spring Boot plugin version.
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

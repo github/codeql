@@ -1,5 +1,5 @@
 name: codeql/dataflow
-version: 0.2.7-dev
+version: 1.0.2-dev
 groups: shared
 library: true
 dependencies:

@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.frameworks.data.ModelsAsData
 
@@ -125,6 +126,13 @@ newtype TNode =
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
+  } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
 
 private import semmle.python.internal.CachedStages

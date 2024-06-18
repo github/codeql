@@ -4,6 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "Initialize", "(Microsoft.Extensions.Diagnostics.Metrics.IObservableInstrumentsSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "InstrumentPublished", "(System.Diagnostics.Metrics.Instrument,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderConfigurationExtensions", False, "AddConfiguration", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,Microsoft.Extensions.Configuration.IConfiguration)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderConsoleExtensions", False, "AddDebugConsole", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "AddListener", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,Microsoft.Extensions.Diagnostics.Metrics.IMetricsListener)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -24,8 +26,6 @@ extensions:
       - ["Microsoft.Extensions.Diagnostics.Metrics", "ConsoleMetrics", "get_DebugListenerName", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsBuilder", "get_Services", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "GetMeasurementHandlers", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "Initialize", "(Microsoft.Extensions.Diagnostics.Metrics.IObservableInstrumentsSource)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "InstrumentPublished", "(System.Diagnostics.Metrics.Instrument,System.Object)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "MeasurementsCompleted", "(System.Diagnostics.Metrics.Instrument,System.Object)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "get_Name", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "IObservableInstrumentsSource", "RecordObservableInstruments", "()", "summary", "df-generated"]

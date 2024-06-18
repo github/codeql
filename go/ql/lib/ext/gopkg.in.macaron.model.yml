@@ -19,4 +19,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["gopkg.in/macaron", "RequestBody", True, "String", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["gopkg.in/macaron", "RequestBody", True, "String", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

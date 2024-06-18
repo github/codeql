@@ -1,0 +1,16 @@
+load("@ruby_deps//:defs.bzl", "aliases", "all_crate_deps")
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+package(default_visibility = ["//visibility:public"])
+
+rust_library(
+    name = "codeql-extractor",
+    srcs = glob([
+        "src/**/*.rs",
+    ]),
+    aliases = aliases(),
+    compile_data = [
+        "src/generator/prefix.dbscheme",
+    ],
+    deps = all_crate_deps(package_name = "ruby/extractor/codeql-extractor-fake-crate"),
+)

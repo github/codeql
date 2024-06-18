@@ -9,6 +9,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking::TaintTracking
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import SensitiveDataHeuristics::HeuristicNames
+private import SensitiveDataHeuristics
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
 
@@ -37,6 +38,34 @@ module CleartextSources {
    */
   private predicate effectiveSubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
     re.getConstantValue().getStringlikeValue() = [".*", ".+"]
+  }
+
+  /** Holds if `c` is a sensitive data classification that is relevant to consider for Cleartext Storage queries. */
+  private predicate isRelevantClassification(SensitiveDataClassification c) {
+    c =
+      [
+        SensitiveDataClassification::password(), SensitiveDataClassification::certificate(),
+        SensitiveDataClassification::secret(), SensitiveDataClassification::private()
+      ]
+  }
+
+  pragma[noinline]
+  private string getCombinedRelevantSensitiveRegexp() {
+    // Combine all the maybe-sensitive regexps into one using non-capturing groups and |.
+    result =
+      "(?:" +
+        strictconcat(string r, SensitiveDataClassification c |
+          r = maybeSensitiveRegexp(c) and isRelevantClassification(c)
+        |
+          r, ")|(?:"
+        ) + ")"
+  }
+
+  /** Holds if the given name indicates the presence of sensitive data that is relevant to consider for Cleartext Storage queries. */
+  bindingset[name]
+  private predicate nameIndicatesRelevantSensitiveData(string name) {
+    name.regexpMatch(getCombinedRelevantSensitiveRegexp()) and
+    not name.regexpMatch(notSensitiveRegexp())
   }
 
   /**
@@ -92,17 +121,17 @@ module CleartextSources {
   }
 
   /**
-   * A call that might obfuscate a password, for example through hashing.
+   * A call that might obfuscate sensitive data, for example through hashing.
    */
   private class ObfuscatorCall extends Sanitizer, DataFlow::CallNode {
     ObfuscatorCall() { nameIsNotSensitive(this.getMethodName()) }
   }
 
   /**
-   * A data flow node that does not contain a clear-text password, according to its syntactic name.
+   * A data flow node that does not contain clear-text sensitive data, according to its syntactic name.
    */
-  private class NameGuidedNonCleartextPassword extends NonCleartextPassword {
-    NameGuidedNonCleartextPassword() {
+  private class NameGuidedNonCleartextSensitive extends NonCleartextSensitive {
+    NameGuidedNonCleartextSensitive() {
       exists(string name | nameIsNotSensitive(name) |
         // accessing a non-sensitive variable
         this.asExpr().getExpr().(VariableReadAccess).getVariable().getName() = name
@@ -129,18 +158,23 @@ module CleartextSources {
   }
 
   /**
-   * A data flow node that receives flow that is not a clear-text password.
+   * A data flow node that receives flow that is not clear-text sensitive data.
    */
-  class NonCleartextPasswordFlow extends NonCleartextPassword {
-    NonCleartextPasswordFlow() {
-      any(NonCleartextPassword other).(DataFlow::LocalSourceNode).flowsTo(this)
+  class NonCleartextSensitiveFlow extends NonCleartextSensitive {
+    NonCleartextSensitiveFlow() {
+      any(NonCleartextSensitive other).(DataFlow::LocalSourceNode).flowsTo(this)
     }
   }
 
   /**
-   * A data flow node that does not contain a clear-text password.
+   * DEPRECATED: Use NonCleartextSensitiveFlow instead.
    */
-  abstract private class NonCleartextPassword extends DataFlow::Node { }
+  deprecated class NonCleartextPasswordFlow = NonCleartextSensitiveFlow;
+
+  /**
+   * A data flow node that does not contain clear-text sensitive data.
+   */
+  abstract private class NonCleartextSensitive extends DataFlow::Node { }
 
   // `writeNode` assigns pair with key `name` to `val`
   private predicate hashKeyWrite(DataFlow::CallNode writeNode, string name, DataFlow::Node val) {
@@ -153,18 +187,18 @@ module CleartextSources {
   }
 
   /**
-   * A value written to a hash entry with a key that may contain password information.
+   * A value written to a hash entry with a key that may contain sensitive information.
    */
-  private class HashKeyWritePasswordSource extends Source {
+  private class HashKeyWriteSensitiveSource extends Source {
     private string name;
     private DataFlow::ExprNode recv;
 
-    HashKeyWritePasswordSource() {
+    HashKeyWriteSensitiveSource() {
       exists(DataFlow::CallNode writeNode |
-        name.regexpMatch(maybePassword()) and
+        nameIndicatesRelevantSensitiveData(name) and
         not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
-        not this instanceof NonCleartextPassword and
+        not this instanceof NonCleartextSensitive and
         // hash[name] = val
         hashKeyWrite(writeNode, name, this) and
         recv = writeNode.getReceiver()
@@ -177,7 +211,7 @@ module CleartextSources {
     string getName() { result = name }
 
     /**
-     * Gets the name of the hash variable that this password source is assigned
+     * Gets the name of the hash variable that this sensitive source is assigned
      * to, if applicable.
      */
     LocalVariable getVariable() {
@@ -186,17 +220,17 @@ module CleartextSources {
   }
 
   /**
-   * An entry into a hash literal that may contain a password
+   * An entry into a hash literal that may contain sensitive data
    */
-  private class HashLiteralPasswordSource extends Source {
+  private class HashLiteralSensitiveSource extends Source {
     private string name;
 
-    HashLiteralPasswordSource() {
+    HashLiteralSensitiveSource() {
       exists(CfgNodes::ExprNodes::HashLiteralCfgNode lit |
-        name.regexpMatch(maybePassword()) and
+        nameIndicatesRelevantSensitiveData(name) and
         not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
-        not this instanceof NonCleartextPassword and
+        not this instanceof NonCleartextSensitive and
         // hash = { name: val }
         exists(CfgNodes::ExprNodes::PairCfgNode p | p = lit.getAKeyValuePair() |
           p.getKey().getConstantValue().getStringlikeValue() = name and
@@ -208,14 +242,14 @@ module CleartextSources {
     override string describe() { result = "a write to " + name }
   }
 
-  /** An assignment that may assign a password to a variable */
-  private class AssignPasswordVariableSource extends Source {
+  /** An assignment that may assign sensitive data to a variable */
+  private class AssignSensitiveVariableSource extends Source {
     string name;
 
-    AssignPasswordVariableSource() {
+    AssignSensitiveVariableSource() {
       // avoid safe values assigned to presumably unsafe names
-      not this instanceof NonCleartextPassword and
-      name.regexpMatch(maybePassword()) and
+      not this instanceof NonCleartextSensitive and
+      nameIndicatesRelevantSensitiveData(name) and
       not nameIsNotSensitive(name) and
       exists(Assignment a |
         this.asExpr().getExpr() = a.getRightOperand() and
@@ -226,14 +260,14 @@ module CleartextSources {
     override string describe() { result = "an assignment to " + name }
   }
 
-  /** A parameter that may contain a password. */
-  private class ParameterPasswordSource extends Source {
+  /** A parameter that may contain sensitive data. */
+  private class ParameterSensitiveSource extends Source {
     private string name;
 
-    ParameterPasswordSource() {
-      name.regexpMatch(maybePassword()) and
+    ParameterSensitiveSource() {
+      nameIndicatesRelevantSensitiveData(name) and
       not nameIsNotSensitive(name) and
-      not this instanceof NonCleartextPassword and
+      not this instanceof NonCleartextSensitive and
       exists(Parameter p, LocalVariable v |
         v = p.getAVariable() and
         v.getName() = name and
@@ -260,10 +294,10 @@ module CleartextSources {
   deprecated predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(string name, ElementReference ref, LocalVariable hashVar |
       // from `hsh[password] = "changeme"` to a `hsh[password]` read
-      nodeFrom.(HashKeyWritePasswordSource).getName() = name and
+      nodeFrom.(HashKeyWriteSensitiveSource).getName() = name and
       nodeTo.asExpr().getExpr() = ref and
       ref.getArgument(0).getConstantValue().getStringlikeValue() = name and
-      nodeFrom.(HashKeyWritePasswordSource).getVariable() = hashVar and
+      nodeFrom.(HashKeyWriteSensitiveSource).getVariable() = hashVar and
       ref.getReceiver().(VariableReadAccess).getVariable() = hashVar and
       nodeFrom.asExpr().getASuccessor*() = nodeTo.asExpr()
     )

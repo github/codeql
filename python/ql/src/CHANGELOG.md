@@ -1,3 +1,25 @@
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* Added models for `opml` library.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Added models of `gradio` PyPI package.
+
+## 0.9.16
+
+### New Queries
+
+* The `py/header-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack and renamed to `py/http-response-splitting`. This query finds instances of http header injection / response splitting vulnerabilities.
+
 ## 0.9.15
 
 No user-facing changes.

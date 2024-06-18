@@ -12384,6 +12384,30 @@ ir.cpp:
 # 1898|     v1898_5(void)            = AliasedUse                           : ~m?
 # 1898|     v1898_6(void)            = ExitFunction                         : 
 
+# 1899| const char[17] __PRETTY_FUNCTION__
+# 1899|   Block 0
+# 1899|     v1899_1(void)            = EnterFunction                        : 
+# 1899|     mu1899_2(unknown)        = AliasedDefinition                    : 
+# 1899|     r1899_3(glval<char[17]>) = VariableAddress[__PRETTY_FUNCTION__] : 
+# 1899|     r1899_4(glval<char[17]>) = StringConstant[__PRETTY_FUNCTION__]  : 
+# 1899|     r1899_5(char[17])        = Load[?]                              : &:r1899_4, ~m?
+# 1899|     mu1899_6(char[17])       = Store[__PRETTY_FUNCTION__]           : &:r1899_3, r1899_5
+# 1899|     v1899_7(void)            = ReturnVoid                           : 
+# 1899|     v1899_8(void)            = AliasedUse                           : ~m?
+# 1899|     v1899_9(void)            = ExitFunction                         : 
+
+# 1900| const char[10] __func__
+# 1900|   Block 0
+# 1900|     v1900_1(void)            = EnterFunction             : 
+# 1900|     mu1900_2(unknown)        = AliasedDefinition         : 
+# 1900|     r1900_3(glval<char[10]>) = VariableAddress[__func__] : 
+# 1900|     r1900_4(glval<char[10]>) = StringConstant[__func__]  : 
+# 1900|     r1900_5(char[10])        = Load[?]                   : &:r1900_4, ~m?
+# 1900|     mu1900_6(char[10])       = Store[__func__]           : &:r1900_3, r1900_5
+# 1900|     v1900_7(void)            = ReturnVoid                : 
+# 1900|     v1900_8(void)            = AliasedUse                : ~m?
+# 1900|     v1900_9(void)            = ExitFunction              : 
+
 # 1911| void* missing_declaration_entries::Bar1<int>::missing_type_decl_entry(missing_declaration_entries::Bar1<int>::pointer)
 # 1911|   Block 0
 # 1911|     v1911_1(void)              = EnterFunction                : 
@@ -16692,6 +16716,23 @@ ir.cpp:
 # 2550|     v2550_6(void)                       = ReturnVoid                            : 
 # 2550|     v2550_7(void)                       = AliasedUse                            : ~m?
 # 2550|     v2550_8(void)                       = ExitFunction                          : 
+
+# 2555| void builtin_bitcast(unsigned long)
+# 2555|   Block 0
+# 2555|     v2555_1(void)                 = EnterFunction               : 
+# 2555|     mu2555_2(unknown)             = AliasedDefinition           : 
+# 2555|     mu2555_3(unknown)             = InitializeNonLocal          : 
+# 2555|     r2555_4(glval<unsigned long>) = VariableAddress[ul]         : 
+# 2555|     mu2555_5(unsigned long)       = InitializeParameter[ul]     : &:r2555_4
+# 2556|     r2556_1(glval<double>)        = VariableAddress[d]          : 
+# 2556|     r2556_2(glval<unsigned long>) = VariableAddress[ul]         : 
+# 2556|     r2556_3(unsigned long)        = Load[ul]                    : &:r2556_2, ~m?
+# 2556|     r2556_4(double)               = BuiltIn[__builtin_bit_cast] : 0:r2556_3
+# 2556|     mu2556_5(double)              = Store[d]                    : &:r2556_1, r2556_4
+# 2557|     v2557_1(void)                 = NoOp                        : 
+# 2555|     v2555_6(void)                 = ReturnVoid                  : 
+# 2555|     v2555_7(void)                 = AliasedUse                  : ~m?
+# 2555|     v2555_8(void)                 = ExitFunction                : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

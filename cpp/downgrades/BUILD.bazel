@@ -6,7 +6,7 @@ pkg_files(
         ["**"],
         exclude = ["BUILD.bazel"],
     ),
-    prefix = "cpp/downgrades",
+    prefix = "downgrades",
     strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//cpp:__pkg__"],
 )
