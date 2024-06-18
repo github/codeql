@@ -49,9 +49,9 @@ module NormalHashFunction {
   /**
    * A source of sensitive data, considered as a flow source.
    */
-  class SensitiveNodeSourceAsSource extends Source instanceof SensitiveNode {
+  class SensitiveDataSourceAsSource extends Source instanceof SensitiveDataSource {
     override SensitiveDataClassification getClassification() {
-      result = SensitiveNode.super.getClassification()
+      result = SensitiveDataSource.super.getClassification()
     }
   }
 
@@ -118,13 +118,13 @@ module ComputationallyExpensiveHashFunction {
   /**
    * A source of passwords, considered as a flow source.
    */
-  class PasswordSourceAsSource extends Source instanceof SensitiveNode {
+  class PasswordSourceAsSource extends Source instanceof SensitiveDataSource {
     PasswordSourceAsSource() {
-      this.(SensitiveNode).getClassification() = SensitiveDataClassification::password()
+      this.(SensitiveDataSource).getClassification() = SensitiveDataClassification::password()
     }
 
     override SensitiveDataClassification getClassification() {
-      result = SensitiveNode.super.getClassification()
+      result = SensitiveDataSource.super.getClassification()
     }
   }
 
