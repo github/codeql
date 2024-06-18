@@ -69,14 +69,12 @@ public class Sources {
 
   // Not a new source as this callable has been manually modelled
   // as source neutral.
-  // SPURIOUS-source=p;Sources;true;manualNeutralSource;();;ReturnValue;test-source;df-generated
   // neutral=p;Sources;manualNeutralSource;();summary;df-generated
   public String manualNeutralSource() {
     return source();
   }
 
   // Not a new source as this callable already has a manual source.
-  // SPURIOUS-source=p;Sources;true;manualSourceAlreadyDefined;();;ReturnValue;test-source;df-generated
   // neutral=p;Sources;manualSourceAlreadyDefined;();summary;df-generated
   public String manualSourceAlreadyDefined() {
     return source();
