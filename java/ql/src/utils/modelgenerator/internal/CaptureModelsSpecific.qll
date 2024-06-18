@@ -110,51 +110,23 @@ private string isExtensible(Callable c) {
 }
 
 /**
- * Returns the appropriate type name for the model.
+ * Holds if the callable `c` is in package `package`
+ * and is a member of `type`.
  */
-private string typeAsModel(Callable c) {
-  exists(RefType type | type = c.getDeclaringType() |
-    result =
-      type.getCompilationUnit().getPackage().getName() + ";" +
-        type.getErasure().(J::RefType).nestedName()
+private predicate qualifiedName(Callable c, string package, string type) {
+  exists(RefType t | t = c.getDeclaringType() |
+    package = t.getCompilationUnit().getPackage().getName() and
+    type = t.getErasure().(J::RefType).nestedName()
   )
 }
 
-private predicate partialModel(
-  Callable api, string type, string extensible, string name, string parameters
+predicate partialModel(
+  Callable api, string package, string type, string extensible, string name, string parameters
 ) {
-  type = typeAsModel(api) and
+  qualifiedName(api, package, type) and
   extensible = isExtensible(api) and
   name = api.getName() and
   parameters = ExternalFlow::paramsString(api)
-}
-
-/**
- * Computes the first 6 columns for MaD rows.
- */
-string asPartialModel(TargetApiSpecific api) {
-  exists(string type, string extensible, string name, string parameters |
-    partialModel(api.lift(), type, extensible, name, parameters) and
-    result =
-      type + ";" //
-        + extensible + ";" //
-        + name + ";" //
-        + parameters + ";" //
-        + /* ext + */ ";" //
-  )
-}
-
-/**
- * Computes the first 4 columns for neutral MaD rows.
- */
-string asPartialNeutralModel(TargetApiSpecific api) {
-  exists(string type, string name, string parameters |
-    partialModel(api, type, _, name, parameters) and
-    result =
-      type + ";" //
-        + name + ";" //
-        + parameters + ";" //
-  )
 }
 
 predicate isPrimitiveTypeUsedForBulkData(J::Type t) {

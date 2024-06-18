@@ -33,13 +33,13 @@ class DataFlowTargetApi extends TargetApiSpecific {
   DataFlowTargetApi() { not isUninterestingForDataFlowModels(this) }
 }
 
-private module Printing implements PrintingSig {
+private module ModelPrintingInput implements ModelPrintingSig {
   class Api = DataFlowTargetApi;
 
   string getProvenance() { result = "df-generated" }
 }
 
-module ModelPrinting = PrintingImpl<Printing>;
+module Printing = ModelPrinting<ModelPrintingInput>;
 
 /**
  * Holds if `c` is a relevant content kind, where the underlying type is relevant.
@@ -94,7 +94,7 @@ string captureQualifierFlow(TargetApiSpecific api) {
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
   ) and
-  result = ModelPrinting::asValueModel(api, qualifierString(), "ReturnValue")
+  result = Printing::asValueModel(api, qualifierString(), "ReturnValue")
 }
 
 private int accessPathLimit0() { result = 2 }
@@ -202,7 +202,7 @@ string captureThroughFlow(DataFlowTargetApi api) {
     input = parameterNodeAsInput(p) and
     output = returnNodeExt.getOutput() and
     input != output and
-    result = ModelPrinting::asTaintModel(api, input, output)
+    result = Printing::asTaintModel(api, input, output)
   )
 }
 
@@ -250,7 +250,7 @@ string captureSource(DataFlowTargetApi api) {
     ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
     not irrelevantSourceSinkApi(source.getEnclosingCallable(), api) and
-    result = ModelPrinting::asSourceModel(api, sink.getOutput(), kind)
+    result = Printing::asSourceModel(api, sink.getOutput(), kind)
   )
 }
 
@@ -291,6 +291,6 @@ string captureSink(DataFlowTargetApi api) {
     PropagateToSink::flow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
-    result = ModelPrinting::asSinkModel(api, asInputArgument(src), kind)
+    result = Printing::asSinkModel(api, asInputArgument(src), kind)
   )
 }
