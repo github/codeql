@@ -14,7 +14,6 @@ private import codeql.ruby.DataFlow
 import codeql.ruby.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 private import codeql.ruby.CFG
-private import codeql.ruby.typetracking.TypeTracking
 
 /** An expression that might contain sensitive data. */
 cached
