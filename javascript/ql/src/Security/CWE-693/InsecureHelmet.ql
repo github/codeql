@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 5.0
  * @precision high
- * @id javascript/insecure-helmet-configuration
+ * @id js/insecure-helmet-configuration
  * @tags security
  *        cwe-693
  *        cwe-1021
