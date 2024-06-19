@@ -3,5 +3,5 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
-      - ["std", "iterator", True, "operator*", "", "", "Argument[-1].Element[*]", "ReturnValue[*]", "value", "manual"]
-      - ["std", "iterator", True, "operator->", "", "", "Argument[-1].Element[*]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "iterator", True, "operator*", "", "", "Argument[-1].Element[*@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "iterator", True, "operator->", "", "", "Argument[-1].Element[*@]", "ReturnValue[*@]", "value", "manual"]
