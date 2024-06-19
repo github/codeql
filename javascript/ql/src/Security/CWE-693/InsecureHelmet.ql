@@ -53,8 +53,8 @@ extensible predicate requiredHelmetSecuritySetting(string name);
 
 from HelmetProperty helmetProperty, ExpressLibraries::HelmetRouteHandler helmet
 where
-  helmetSetting.isFalse() and
-  helmetSetting.isImportantSecuritySetting() and
-  helmetSetting.getHelmet() = helmet
-select helmet, "Helmet route handler, called with $@ set to 'false'.", helmetSetting,
-  helmetSetting.getName()
+  helmetProperty.isFalse() and
+  helmetProperty.isImportantSecuritySetting() and
+  helmetProperty.getHelmet() = helmet
+select helmet, "Helmet route handler, called with $@ set to 'false'.", helmetProperty,
+helmetProperty.getName()
