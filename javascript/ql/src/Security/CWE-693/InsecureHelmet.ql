@@ -57,4 +57,4 @@ where
   helmetProperty.isImportantSecuritySetting() and
   helmetProperty.getHelmet() = helmet
 select helmet, "Helmet route handler, called with $@ set to 'false'.", helmetProperty,
-helmetProperty.getName()
+  helmetProperty.getName()
