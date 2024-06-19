@@ -1,7 +1,7 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,6-14)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,31-39)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:7,6-14)
-WARNING: Module TaintTracking has been deprecated and may be removed in future (localTaint.ql:6,3-16)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:4,6-14)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:4,31-39)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:7,6-14)
+WARNING: module 'TaintTracking' has been deprecated and may be removed in future (localTaint.ql:6,3-16)
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:10:14:10:14 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:11:15:11:15 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:12:13:12:13 | x |  |

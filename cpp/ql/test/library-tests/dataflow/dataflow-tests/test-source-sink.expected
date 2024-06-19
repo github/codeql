@@ -1,5 +1,5 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (test-source-sink.ql:3,25-42)
-WARNING: Module DataFlow has been deprecated and may be removed in future (test-source-sink.ql:3,57-74)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (test-source-sink.ql:3,25-42)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (test-source-sink.ql:3,57-74)
 astFlow
 | BarrierGuard.cpp:5:19:5:24 | source | BarrierGuard.cpp:9:10:9:15 | source |
 | BarrierGuard.cpp:13:17:13:22 | source | BarrierGuard.cpp:15:10:15:15 | source |
