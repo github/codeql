@@ -49,7 +49,7 @@ class HelmetProperty extends Property {
 
 extensible predicate requiredHelmetSecuritySetting(string name);
 
-from HelmetProperty helmetSetting, ExpressLibraries::HelmetRouteHandler helmet
+from HelmetProperty helmetProperty, ExpressLibraries::HelmetRouteHandler helmet
 where
   helmetSetting.isFalse() and
   helmetSetting.isImportantSecuritySetting() and
