@@ -3,7 +3,7 @@
  * @description The Helmet middleware is used to set security-related HTTP headers in Express applications. This query finds instances where the middleware is configured with important security features disabled.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.0
+ * @security-severity 7.0
  * @precision high
  * @id js/insecure-helmet-configuration
  * @tags security
