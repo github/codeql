@@ -398,7 +398,7 @@ namespace Semmle.Extraction.CSharp
                     }
 
                     return ReadSyntaxTrees(
-                        paths.Select(analyser.PathCache.GetCanonicalPath),
+                        paths.Select(analyser.PathCache.GetCanonicalPath).ToHashSet(),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,
