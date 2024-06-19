@@ -13,16 +13,18 @@
 
 import semmle.javascript.frameworks.ExpressModules
 
-class HelmetProperty extends Property {
+class HelmetProperty extends DataFlow::Node instanceof DataFlow::PropWrite {
   ExpressLibraries::HelmetRouteHandler helmet;
 
   HelmetProperty() {
-    helmet.(DataFlow::CallNode).getAnArgument().asExpr().(ObjectExpr).getAProperty() = this
+    this = helmet.(DataFlow::CallNode).getAnArgument().getALocalSource().getAPropertyWrite()
   }
 
   ExpressLibraries::HelmetRouteHandler getHelmet() { result = helmet }
 
-  predicate isFalse() { this.getInit().(BooleanLiteral).getBoolValue() = false }
+  predicate isFalse() { DataFlow::PropWrite.super.getRhs().mayHaveBooleanValue(true) }
+
+  string getName() { result = DataFlow::PropWrite.super.getPropertyName() }
 
   predicate isImportantSecuritySetting() {
     this.getName() in ["frameguard", "contentSecurityPolicy"]
