@@ -74,6 +74,8 @@
 
 import cpp
 private import new.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
@@ -166,8 +168,12 @@ predicate sinkModel(
   Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, _)
 }
 
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
+/**
+ * Holds if a summary model exists for the given parameters.
+ *
+ * This predicate does not expand `@` to `*`s.
+ */
+private predicate summaryModel0(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance
 ) {
@@ -188,6 +194,33 @@ predicate summaryModel(
   or
   Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
     provenance, _)
+}
+
+/**
+ * Holds if `input` is `input0`, but with all occurences of `@` replaced
+ * by `n` repetitions of `*` (and similarly for `output` and `output0`).
+ */
+bindingset[input0, output0, n]
+pragma[inline_late]
+private predicate expandInputAndOutput(
+  string input0, string input, string output0, string output, int n
+) {
+  input = input0.replaceAll("@", repeatStars(n)) and
+  output = output0.replaceAll("@", repeatStars(n))
+}
+
+/**
+ * Holds if a summary model exists for the given parameters.
+ */
+predicate summaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance
+) {
+  exists(string input0, string output0 |
+    summaryModel0(namespace, type, subtypes, name, signature, ext, input0, output0, kind, provenance) and
+    expandInputAndOutput(input0, input, output0, output,
+      [0 .. Private::getMaxElementContentIndirectionIndex() - 1])
+  )
 }
 
 private predicate relevantNamespace(string namespace) {
