@@ -35,6 +35,12 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
       result = "Field" and
       arg = repeatStars(c.getIndirectionIndex() - 1) + c.getField().getName()
     )
+    or
+    exists(ElementContent ec |
+      cs.isSingleton(ec) and
+      result = "Element" and
+      arg = repeatStars(ec.getIndirectionIndex() - 1)
+    )
   }
 
   string encodeWithoutContent(ContentSet c, string arg) {
