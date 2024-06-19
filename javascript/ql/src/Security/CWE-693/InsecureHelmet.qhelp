@@ -22,14 +22,12 @@
             Users of the query can extend the set of required Helmet features by adding additional checks for them, using CodeQL <a href="https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/">data extensions</a>.
         </p>
 
-        <pre>
-extensions:
-- addsTo:
-    pack: codeql/javascript-all
-    extensible: requiredHelmetSecuritySetting
+        <pre>extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: requiredHelmetSecuritySetting
 data:
-    - name: "frameguard"
-        </pre>
+    - ["frameguard"]</pre>
 
         <p>
             Note: <code>frameguard</code> is an example: the query already enforces this setting, so it is not necessary to add it to the data extension. 

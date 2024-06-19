@@ -11,6 +11,8 @@
  *        cwe-1021
  */
 
+import javascript
+import DataFlow
 import semmle.javascript.frameworks.ExpressModules
 
 class HelmetProperty extends DataFlow::Node instanceof DataFlow::PropWrite {
@@ -22,32 +24,16 @@ class HelmetProperty extends DataFlow::Node instanceof DataFlow::PropWrite {
 
   ExpressLibraries::HelmetRouteHandler getHelmet() { result = helmet }
 
-  predicate isFalse() { DataFlow::PropWrite.super.getRhs().mayHaveBooleanValue(true) }
+  predicate isFalse() { DataFlow::PropWrite.super.getRhs().mayHaveBooleanValue(false) }
 
   string getName() { result = DataFlow::PropWrite.super.getPropertyName() }
 
   predicate isImportantSecuritySetting() {
-    this.getName() in ["frameguard", "contentSecurityPolicy"]
-    or
-    // read from data extensions to allow enforcing other settings
+    // read from data extensions to allow enforcing custom settings
+    // defaults are located in javascript/ql/lib/semmle/frameworks/helmet/Helmet.Required.Setting.model.yml
     requiredHelmetSecuritySetting(this.getName())
   }
 }
-
-/*
- * Extend the required Helmet security settings using data extensions.
- * Docs: https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/
- * For example:
- *
- * extensions:
- *  - addsTo:
- *      pack: codeql/javascript-all
- *      extensible: requiredHelmetSecuritySetting
- *    data:
- *      - name: "frameguard"
- *
- * Note: `frameguard` is an example: the query already enforces this setting, so it is not necessary to add it to the data extension.
- */
 
 extensible predicate requiredHelmetSecuritySetting(string name);
 
@@ -56,5 +42,5 @@ where
   helmetProperty.isFalse() and
   helmetProperty.isImportantSecuritySetting() and
   helmetProperty.getHelmet() = helmet
-select helmet, "Helmet route handler, called with $@ set to 'false'.", helmetProperty,
+select helmet, "Helmet security middleware, configured with security setting $@ set to 'false', which disables enforcing that feature.", helmetProperty,
   helmetProperty.getName()
