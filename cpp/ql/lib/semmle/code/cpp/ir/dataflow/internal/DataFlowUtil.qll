@@ -2083,6 +2083,9 @@ private newtype TContent =
       indirectionIndex =
         [1 .. max(Ssa::getMaxIndirectionsForType(getAFieldWithSize(u, bytes).getUnspecifiedType()))]
     )
+  } or
+  TElementContent(int indirectionIndex) {
+    indirectionIndex = [1 .. getMaxElementContentIndirectionIndex()]
   }
 
 /**
@@ -2191,6 +2194,25 @@ class UnionContent extends Content, TUnionContent {
       uc.getIndirectionIndex() >= indirectionIndex
     )
   }
+}
+
+/**
+ * A `Content` that represents one of the elements of a
+ * container (e.g., `std::vector`).
+ */
+class ElementContent extends Content, TElementContent {
+  int indirectionIndex;
+
+  ElementContent() { this = TElementContent(indirectionIndex) }
+
+  pragma[inline]
+  override int getIndirectionIndex() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) { none() }
+
+  override string toString() { result = contentStars(this) + "element" }
 }
 
 /**

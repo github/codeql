@@ -147,7 +147,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, st
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  node instanceof ArgumentNode and
+  c.isSingleton(any(ElementContent ec))
+}
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
