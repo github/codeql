@@ -412,6 +412,8 @@ class ArgumentPosition = Position;
 
 abstract class Position extends TPosition {
   abstract string toString();
+
+  abstract int getIndirectionIndex();
 }
 
 class DirectPosition extends Position, TDirectPosition {
@@ -421,13 +423,15 @@ class DirectPosition extends Position, TDirectPosition {
 
   override string toString() {
     index = -1 and
-    result = "this"
+    result = "this pointer"
     or
     index != -1 and
     result = index.toString()
   }
 
   int getIndex() { result = index }
+
+  final override int getIndirectionIndex() { result = 0 }
 }
 
 class IndirectionPosition extends Position, TIndirectionPosition {
@@ -438,16 +442,13 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 
   override string toString() {
     if argumentIndex = -1
-    then if indirectionIndex > 0 then result = "this indirection" else result = "this"
-    else
-      if indirectionIndex > 0
-      then result = argumentIndex.toString() + " indirection"
-      else result = argumentIndex.toString()
+    then result = repeatStars(indirectionIndex - 1) + "this"
+    else result = repeatStars(indirectionIndex) + argumentIndex.toString()
   }
 
   int getArgumentIndex() { result = argumentIndex }
 
-  int getIndirectionIndex() { result = indirectionIndex }
+  final override int getIndirectionIndex() { result = indirectionIndex }
 }
 
 newtype TPosition =
