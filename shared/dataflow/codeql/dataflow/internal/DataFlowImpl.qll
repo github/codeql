@@ -1444,6 +1444,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
+        pragma[nomagic]
+        private predicate compatibleContainer0(ApHeadContent apc, DataFlowType containerType) {
+          exists(DataFlowType containerType0, Content c |
+            PrevStage::storeStepCand(_, _, c, _, _, containerType0) and
+            compatibleTypesCached(containerType0, containerType) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        bindingset[apc, containerType]
+        pragma[inline_late]
+        private predicate compatibleContainer(ApHeadContent apc, DataFlowType containerType) {
+          compatibleContainer0(apc, containerType)
+        }
+
         /**
          * Holds if `node` is reachable with access path `ap` from a source.
          *
@@ -1465,7 +1480,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t0, ap, apa) and
           PrevStage::revFlow(node, state, apa) and
-          filter(node, state, t0, ap, t)
+          filter(node, state, t0, ap, t) and
+          (
+            if castingNodeEx(node)
+            then
+              ap instanceof ApNil or compatibleContainer(getHeadContent(ap), node.getDataFlowType())
+            else any()
+          )
         }
 
         pragma[nomagic]
@@ -2860,7 +2881,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage3Param implements MkStage<Stage2>::StageParam {
       private module PrevStage = Stage2;
 
-      class Typ = DataFlowType;
+      class Typ = Unit;
 
       class Ap = ApproxAccessPathFront;
 
@@ -2868,7 +2889,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
-      Typ getTyp(DataFlowType t) { result = t }
+      Typ getTyp(DataFlowType t) { any() }
 
       bindingset[c, t, tail]
       Ap apCons(Content c, Typ t, Ap tail) { result.getAHead() = c and exists(t) and exists(tail) }
@@ -2905,7 +2926,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
         Typ t, LocalCc lcc
       ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _, _) and
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _, _) and
+        exists(t) and
         exists(lcc)
       }
 
@@ -2928,7 +2950,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         // the cons candidates including types are used to construct subsequent
         // access path approximations.
         t0 = t and
-        (if castingNodeEx(node) then compatibleTypesFilter(node.getDataFlowType(), t0) else any()) and
         (
           notExpectsContent(node)
           or
@@ -2937,11 +2958,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        // We need to typecheck stores here, since reverse flow through a getter
-        // might have a different type here compared to inside the getter.
-        compatibleTypesFilter(typ, contentType)
-      }
+      predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
     }
 
     private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
