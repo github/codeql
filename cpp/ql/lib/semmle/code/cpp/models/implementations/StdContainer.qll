@@ -56,37 +56,6 @@ private class Vector extends StdSequenceContainer {
 }
 
 /**
- * Additional model for standard container constructors that reference the
- * value type of the container (that is, the `T` in `std::vector<T>`).  For
- * example the fill constructor:
- * ```
- * std::vector<std::string> v(100, potentially_tainted_string);
- * ```
- */
-private class StdSequenceContainerConstructor extends Constructor {
-  StdSequenceContainerConstructor() {
-    this.getDeclaringType() instanceof Vector or
-    this.getDeclaringType() instanceof Deque or
-    this.getDeclaringType() instanceof List or
-    this.getDeclaringType() instanceof ForwardList
-  }
-
-  /**
-   * Gets the index of a parameter to this function that is a reference to the
-   * value type of the container.
-   */
-  int getAValueTypeParameterIndex() {
-    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
-  }
-
-  /**
-   * Gets the index of a parameter to this function that is an iterator.
-   */
-  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
-}
-
-/**
  * The standard container functions `push_back` and `push_front`.
  */
 class StdSequenceContainerPush extends MemberFunction {

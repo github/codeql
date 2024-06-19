@@ -197,7 +197,7 @@ private predicate summaryModel0(
 }
 
 /**
- * Holds if `input` is `input0`, but with all occurences of `@` replaced
+ * Holds if `input` is `input0`, but with all occurrences of `@` replaced
  * by `n` repetitions of `*` (and similarly for `output` and `output0`).
  */
 bindingset[input0, output0, n]
@@ -701,7 +701,7 @@ private predicate hasClassAndName(Class classWithMethod, Function method, string
 }
 
 /**
- * Holds if `nameClass` is in namespace `namespace` and has
+ * Holds if `namedClass` is in namespace `namespace` and has
  * name `type` (excluding any template parameters).
  */
 bindingset[type, namespace]
