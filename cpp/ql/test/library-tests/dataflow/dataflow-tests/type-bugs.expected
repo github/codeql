@@ -1,5 +1,15 @@
 astTypeBugs
 irTypeBugs
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary param] this in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] read: Argument[this].Element[**] in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] read: Argument[this].Element[*] in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] to write: ReturnValue[**] in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] to write: ReturnValue[*] in operator* |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary param] this in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] read: Argument[this].Element[**] in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] read: Argument[this].Element[*] in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] to write: ReturnValue[**] in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] to write: ReturnValue[*] in operator-> |
 incorrectBaseType
 | clang.cpp:22:8:22:20 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | clang.cpp:23:17:23:29 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
