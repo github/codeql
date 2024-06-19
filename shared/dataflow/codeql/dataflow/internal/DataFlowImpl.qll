@@ -2853,7 +2853,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private import LocalFlowBigStep
 
     pragma[nomagic]
-    private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
+    private predicate castingNodeEx(NodeEx node) {
+      node.asNode() instanceof CastingNode or exists(node.asParamReturnNode())
+    }
 
     private module Stage3Param implements MkStage<Stage2>::StageParam {
       private module PrevStage = Stage2;
