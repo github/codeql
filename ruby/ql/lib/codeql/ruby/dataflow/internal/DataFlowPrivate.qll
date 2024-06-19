@@ -2087,7 +2087,6 @@ private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
   or

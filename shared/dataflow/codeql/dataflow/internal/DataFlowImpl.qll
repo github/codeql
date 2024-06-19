@@ -2928,7 +2928,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         // the cons candidates including types are used to construct subsequent
         // access path approximations.
         t0 = t and
-        (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t0) else any()) and
+        (if castingNodeEx(node) then compatibleTypesFilter(node.getDataFlowType(), t0) else any()) and
         (
           notExpectsContent(node)
           or
@@ -2940,7 +2940,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate typecheckStore(Typ typ, DataFlowType contentType) {
         // We need to typecheck stores here, since reverse flow through a getter
         // might have a different type here compared to inside the getter.
-        compatibleTypes(typ, contentType)
+        compatibleTypesFilter(typ, contentType)
       }
     }
 
@@ -2951,7 +2951,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       if castingNodeEx(node)
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if typeStrongerThanFilter(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          if typeStrongerThanFilter(nt, t0)
+          then t = nt
+          else (
+            compatibleTypesFilter(nt, t0) and t = t0
+          )
         )
       else t = t0
     }
@@ -3050,7 +3054,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate typecheckStore(Typ typ, DataFlowType contentType) {
         // We need to typecheck stores here, since reverse flow through a getter
         // might have a different type here compared to inside the getter.
-        compatibleTypes(typ, contentType)
+        compatibleTypesFilter(typ, contentType)
       }
     }
 
@@ -3306,7 +3310,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        compatibleTypes(typ, contentType)
+        compatibleTypesFilter(typ, contentType)
       }
     }
 
@@ -4246,7 +4250,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Stage5::storeStepCand(mid.getNodeExOutgoing(), _, c, node, contentType, t) and
         state = mid.getState() and
         cc = mid.getCallContext() and
-        compatibleTypes(t0, contentType)
+        compatibleTypesFilter(t0, contentType)
       )
     }
 
@@ -5296,7 +5300,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           storeExUnrestricted(midNode, c, node, contentType, t2) and
           ap2.getHead() = c and
           ap2.len() = unbindInt(ap1.len() + 1) and
-          compatibleTypes(t1, contentType)
+          compatibleTypesFilter(t1, contentType)
         )
       }
 
