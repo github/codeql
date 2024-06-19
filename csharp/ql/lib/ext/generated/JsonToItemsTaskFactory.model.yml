@@ -5,16 +5,20 @@ extensions:
       extensible: summaryModel
     data:
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+CaseInsensitiveDictionaryConverter", True, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItem", False, "JsonModelItem", "(System.String,System.Collections.Generic.Dictionary<System.String,System.String>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItem", False, "JsonModelItem", "(System.String,System.Collections.Generic.Dictionary<System.String,System.String>)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItemConverter", True, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", False, "JsonToItemsTask", "(System.String,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", False, "SetPropertyValue", "(Microsoft.Build.Framework.TaskPropertyInfo,System.Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", False, "CreateTask", "(Microsoft.Build.Framework.IBuildEngine)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", False, "GetTaskParameters", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", False, "Initialize", "(System.String,System.Collections.Generic.IDictionary<System.String,Microsoft.Build.Framework.TaskPropertyInfo>,System.String,Microsoft.Build.Framework.IBuildEngine)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", False, "Initialize", "(System.String,System.Collections.Generic.IDictionary<System.String,Microsoft.Build.Framework.TaskPropertyInfo>,System.String,Microsoft.Build.Framework.IBuildEngine)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+CaseInsensitiveDictionaryConverter", "Write", "(System.Text.Json.Utf8JsonWriter,System.Collections.Generic.Dictionary<System.String,System.String>,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
-      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItem", "JsonModelItem", "(System.String,System.Collections.Generic.Dictionary<System.String,System.String>)", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItem", "get_Identity", "()", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItem", "get_Metadata", "()", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonModelItemConverter", "Write", "(System.Text.Json.Utf8JsonWriter,JsonToItemsTaskFactory.JsonToItemsTaskFactory+JsonModelItem,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
@@ -22,11 +26,9 @@ extensions:
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "Execute", "()", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "GetJsonAsync", "(System.String,System.IO.FileStream)", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "GetPropertyValue", "(Microsoft.Build.Framework.TaskPropertyInfo)", "summary", "df-generated"]
-      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "JsonToItemsTask", "(System.String,System.Boolean)", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "TryGetJson", "(System.String,JsonToItemsTaskFactory.JsonToItemsTaskFactory+JsonModelRoot)", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "get_JsonOptions", "()", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory+JsonToItemsTask", "get_TaskName", "()", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", "CleanupTask", "(Microsoft.Build.Framework.ITask)", "summary", "df-generated"]
-      - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", "CreateTask", "(Microsoft.Build.Framework.IBuildEngine)", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", "get_FactoryName", "()", "summary", "df-generated"]
       - ["JsonToItemsTaskFactory", "JsonToItemsTaskFactory", "get_TaskType", "()", "summary", "df-generated"]

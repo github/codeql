@@ -181,12 +181,14 @@ func RunList(format string, patterns []string, flags ...string) (string, error) 
 	return RunListWithEnv(format, patterns, nil, flags...)
 }
 
+// Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs.
+func List(format string, patterns []string, flags ...string) *exec.Cmd {
+	return ListWithEnv(format, patterns, nil, flags...)
+}
+
 // Runs `go list`.
 func RunListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) (string, error) {
-	args := append([]string{"list", "-e", "-f", format}, flags...)
-	args = append(args, patterns...)
-	cmd := exec.Command("go", args...)
-	cmd.Env = append(os.Environ(), additionalEnv...)
+	cmd := ListWithEnv(format, patterns, additionalEnv, flags...)
 	out, err := cmd.Output()
 
 	if err != nil {
@@ -199,6 +201,16 @@ func RunListWithEnv(format string, patterns []string, additionalEnv []string, fl
 	}
 
 	return strings.TrimSpace(string(out)), nil
+}
+
+// Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs
+// and the extra environment variables given by `additionalEnv`.
+func ListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) *exec.Cmd {
+	args := append([]string{"list", "-e", "-f", format}, flags...)
+	args = append(args, patterns...)
+	cmd := exec.Command("go", args...)
+	cmd.Env = append(os.Environ(), additionalEnv...)
+	return cmd
 }
 
 // PkgInfo holds package directory and module directory (if any) for a package

@@ -9,27 +9,27 @@ edges
 | XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder | XSS.cs:28:26:28:45 | call to method ToString | provenance | MaD:1980 |
 | XSS.cs:37:20:37:23 | access to local variable name : String | XSS.cs:38:36:38:39 | access to local variable name | provenance |  Sink:MaD:2159 |
 | XSS.cs:37:27:37:53 | access to property QueryString : NameValueCollection | XSS.cs:37:20:37:23 | access to local variable name : String | provenance |  |
-| XSS.cs:37:27:37:53 | access to property QueryString : NameValueCollection | XSS.cs:37:27:37:61 | access to indexer : String | provenance | MaD:11390 |
+| XSS.cs:37:27:37:53 | access to property QueryString : NameValueCollection | XSS.cs:37:27:37:61 | access to indexer : String | provenance | MaD:11546 |
 | XSS.cs:37:27:37:61 | access to indexer : String | XSS.cs:37:20:37:23 | access to local variable name : String | provenance |  |
 | XSS.cs:57:20:57:23 | access to local variable name : String | XSS.cs:59:22:59:25 | access to local variable name | provenance |  |
 | XSS.cs:57:27:57:65 | access to property QueryString : NameValueCollection | XSS.cs:57:20:57:23 | access to local variable name : String | provenance |  |
-| XSS.cs:57:27:57:65 | access to property QueryString : NameValueCollection | XSS.cs:57:27:57:73 | access to indexer : String | provenance | MaD:11390 |
+| XSS.cs:57:27:57:65 | access to property QueryString : NameValueCollection | XSS.cs:57:27:57:73 | access to indexer : String | provenance | MaD:11546 |
 | XSS.cs:57:27:57:73 | access to indexer : String | XSS.cs:57:20:57:23 | access to local variable name : String | provenance |  |
 | XSS.cs:75:20:75:23 | access to local variable name : String | XSS.cs:76:36:76:39 | access to local variable name | provenance |  |
 | XSS.cs:75:27:75:53 | access to property QueryString : NameValueCollection | XSS.cs:75:20:75:23 | access to local variable name : String | provenance |  |
-| XSS.cs:75:27:75:53 | access to property QueryString : NameValueCollection | XSS.cs:75:27:75:61 | access to indexer : String | provenance | MaD:11390 |
+| XSS.cs:75:27:75:53 | access to property QueryString : NameValueCollection | XSS.cs:75:27:75:61 | access to indexer : String | provenance | MaD:11546 |
 | XSS.cs:75:27:75:61 | access to indexer : String | XSS.cs:75:20:75:23 | access to local variable name : String | provenance |  |
 | XSS.cs:78:20:78:24 | access to local variable name2 : String | XSS.cs:79:36:79:40 | access to local variable name2 | provenance |  |
 | XSS.cs:78:28:78:42 | access to property Request : HttpRequestBase | XSS.cs:78:20:78:24 | access to local variable name2 : String | provenance |  |
 | XSS.cs:85:20:85:23 | access to local variable name : String | XSS.cs:86:28:86:31 | access to local variable name | provenance |  |
 | XSS.cs:85:20:85:23 | access to local variable name : String | XSS.cs:87:31:87:34 | access to local variable name | provenance |  |
 | XSS.cs:85:27:85:53 | access to property QueryString : NameValueCollection | XSS.cs:85:20:85:23 | access to local variable name : String | provenance |  |
-| XSS.cs:85:27:85:53 | access to property QueryString : NameValueCollection | XSS.cs:85:27:85:61 | access to indexer : String | provenance | MaD:11390 |
+| XSS.cs:85:27:85:53 | access to property QueryString : NameValueCollection | XSS.cs:85:27:85:61 | access to indexer : String | provenance | MaD:11546 |
 | XSS.cs:85:27:85:61 | access to indexer : String | XSS.cs:85:20:85:23 | access to local variable name : String | provenance |  |
 | XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:1811 |
-| XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:23372 |
+| XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:23593 |
 | XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:20:94:23 | access to local variable name : String | provenance |  |
-| XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:27:94:61 | access to indexer : String | provenance | MaD:11390 |
+| XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:27:94:61 | access to indexer : String | provenance | MaD:11546 |
 | XSS.cs:94:27:94:61 | access to indexer : String | XSS.cs:94:20:94:23 | access to local variable name : String | provenance |  |
 | script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | provenance |  |
 | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | provenance |  |

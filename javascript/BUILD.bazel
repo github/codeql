@@ -33,14 +33,5 @@ codeql_pack(
         "//javascript/extractor:tools-extractor",
         "//javascript/resources",
     ],
-    visibility = ["//visibility:public"],
     zips = {"//javascript/extractor/lib/typescript": "tools"},
-)
-
-# TODO copy for internal repository backward compatibility
-genrule(
-    name = "javascript.zip",
-    srcs = [":javascript-generic-zip"],
-    outs = ["javascript.zip"],
-    cmd = "cp $< $@",
 )

@@ -4,13 +4,16 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.ComponentModel.Design", "CommandID", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerCollection", False, "DesignerCollection", "(System.Collections.IList)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerCollection", True, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerOptionService+DesignerOptionCollection", False, "get_Properties", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerOptionService", False, "CreateOptionCollection", "(System.ComponentModel.Design.DesignerOptionService+DesignerOptionCollection,System.String,System.Object)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerOptionService", False, "CreateOptionCollection", "(System.ComponentModel.Design.DesignerOptionService+DesignerOptionCollection,System.String,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Design", "DesignerVerb", False, "get_Text", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "DesignerVerbCollection", "(System.ComponentModel.Design.DesignerVerb[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "Remove", "(System.ComponentModel.Design.DesignerVerb)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.ComponentModel.Design", "MenuCommand", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Design", "ServiceContainer", False, "ServiceContainer", "(System.IServiceProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -26,7 +29,6 @@ extensions:
       - ["System.ComponentModel.Design", "CommandID", "CommandID", "(System.Guid,System.Int32)", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "CommandID", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "CommandID", "GetHashCode", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design", "CommandID", "ToString", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "CommandID", "get_Guid", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "CommandID", "get_ID", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "ComponentChangedEventArgs", "ComponentChangedEventArgs", "(System.Object,System.ComponentModel.MemberDescriptor,System.Object,System.Object)", "summary", "df-generated"]
@@ -76,8 +78,6 @@ extensions:
       - ["System.ComponentModel.Design", "DesignerTransactionCloseEventArgs", "DesignerTransactionCloseEventArgs", "(System.Boolean,System.Boolean)", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerTransactionCloseEventArgs", "get_LastTransaction", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerTransactionCloseEventArgs", "get_TransactionCommitted", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design", "DesignerVerb", "ToString", "()", "summary", "df-generated"]
-      - ["System.ComponentModel.Design", "DesignerVerb", "get_Text", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerVerbCollection", "Contains", "(System.ComponentModel.Design.DesignerVerb)", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerVerbCollection", "IndexOf", "(System.ComponentModel.Design.DesignerVerb)", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "DesignerVerbCollection", "OnValidate", "(System.Object)", "summary", "df-generated"]
@@ -189,7 +189,6 @@ extensions:
       - ["System.ComponentModel.Design", "MenuCommand", "Invoke", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "MenuCommand", "Invoke", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "MenuCommand", "OnCommandChanged", "(System.EventArgs)", "summary", "df-generated"]
-      - ["System.ComponentModel.Design", "MenuCommand", "ToString", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "MenuCommand", "get_CommandID", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "MenuCommand", "get_OleStatus", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Design", "MenuCommand", "get_Properties", "()", "summary", "df-generated"]

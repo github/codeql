@@ -2,7 +2,7 @@
 Update generated files related to Go in the repo. Using --force will regenerate all files from scratch.
 
 In particular the script will:
-1. update the `vendor` dir with `go work vendor` (using a go toolchain provided by bazel)
+1. update the `vendor` dir with `go mod vendor` (using a go toolchain provided by bazel)
 2. update `BUILD.bazel` files using gazelle
 3. update `ql/lib/go.dbscheme` using a compiled `go-dbschemegen`
 """
@@ -48,7 +48,7 @@ if opts.force:
 existing_build_files = set(go_extractor_dir.glob("*/**/BUILD.bazel"))
 
 print("updating vendor directory")
-subprocess.check_call([go, "-C", go_extractor_dir, "work", "vendor"])
+subprocess.check_call([go, "-C", go_extractor_dir, "mod", "vendor"])
 
 if opts.force:
     print("clearing generated BUILD files")

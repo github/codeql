@@ -1,4 +1,4 @@
-WARNING: Type PathCreation has been deprecated and may be removed in future (PathCreation.ql:4,6-18)
+WARNING: type 'PathCreation' has been deprecated and may be removed in future (PathCreation.ql:4,6-18)
 | PathCreation.java:13:18:13:32 | new File(...) | PathCreation.java:13:27:13:31 | "dir" |
 | PathCreation.java:14:19:14:40 | new File(...) | PathCreation.java:14:28:14:32 | "dir" |
 | PathCreation.java:14:19:14:40 | new File(...) | PathCreation.java:14:35:14:39 | "sub" |

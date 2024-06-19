@@ -4,7 +4,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateCommandLineCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateFullPathToTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateResponseFileCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "get_ToolName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -18,10 +21,7 @@ extensions:
       - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunSymbolsCompileList", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "ResolveReadyToRunCompilers", "ExecuteCore", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "ExecuteTool", "(System.String,System.String,System.String)", "summary", "df-generated"]
-      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "GenerateCommandLineCommands", "()", "summary", "df-generated"]
-      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "GenerateFullPathToTool", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "LogEventsFromTextOutput", "(System.String,Microsoft.Build.Framework.MessageImportance)", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "ValidateParameters", "()", "summary", "df-generated"]
-      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "get_ToolName", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "TaskBase", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "TaskBase", "ExecuteCore", "()", "summary", "df-generated"]

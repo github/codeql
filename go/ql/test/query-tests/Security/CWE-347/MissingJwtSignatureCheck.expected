@@ -1,16 +1,16 @@
 edges
-| go-jose.v3.go:25:16:25:20 | selection of URL | go-jose.v3.go:25:16:25:28 | call to Query | provenance | MaD:735 |
-| go-jose.v3.go:25:16:25:28 | call to Query | go-jose.v3.go:25:16:25:47 | call to Get | provenance | MaD:742 |
+| go-jose.v3.go:25:16:25:20 | selection of URL | go-jose.v3.go:25:16:25:28 | call to Query | provenance | MaD:738 |
+| go-jose.v3.go:25:16:25:28 | call to Query | go-jose.v3.go:25:16:25:47 | call to Get | provenance | MaD:745 |
 | go-jose.v3.go:25:16:25:47 | call to Get | go-jose.v3.go:26:15:26:25 | signedToken | provenance |  |
 | go-jose.v3.go:26:15:26:25 | signedToken | go-jose.v3.go:29:19:29:29 | definition of signedToken | provenance |  |
 | go-jose.v3.go:29:19:29:29 | definition of signedToken | go-jose.v3.go:31:37:31:47 | signedToken | provenance |  |
-| go-jose.v3.go:31:2:31:48 | ... := ...[0] | go-jose.v3.go:33:12:33:23 | DecodedToken | provenance |  Sink:MaD:321 |
-| go-jose.v3.go:31:37:31:47 | signedToken | go-jose.v3.go:31:2:31:48 | ... := ...[0] | provenance | MaD:323 |
-| golang-jwt-v5.go:28:16:28:20 | selection of URL | golang-jwt-v5.go:28:16:28:28 | call to Query | provenance | MaD:735 |
-| golang-jwt-v5.go:28:16:28:28 | call to Query | golang-jwt-v5.go:28:16:28:47 | call to Get | provenance | MaD:742 |
+| go-jose.v3.go:31:2:31:48 | ... := ...[0] | go-jose.v3.go:33:12:33:23 | DecodedToken | provenance |  Sink:MaD:324 |
+| go-jose.v3.go:31:37:31:47 | signedToken | go-jose.v3.go:31:2:31:48 | ... := ...[0] | provenance | MaD:326 |
+| golang-jwt-v5.go:28:16:28:20 | selection of URL | golang-jwt-v5.go:28:16:28:28 | call to Query | provenance | MaD:738 |
+| golang-jwt-v5.go:28:16:28:28 | call to Query | golang-jwt-v5.go:28:16:28:47 | call to Get | provenance | MaD:745 |
 | golang-jwt-v5.go:28:16:28:47 | call to Get | golang-jwt-v5.go:29:25:29:35 | signedToken | provenance |  |
 | golang-jwt-v5.go:29:25:29:35 | signedToken | golang-jwt-v5.go:32:29:32:39 | definition of signedToken | provenance |  |
-| golang-jwt-v5.go:32:29:32:39 | definition of signedToken | golang-jwt-v5.go:34:58:34:68 | signedToken | provenance |  Sink:MaD:335 |
+| golang-jwt-v5.go:32:29:32:39 | definition of signedToken | golang-jwt-v5.go:34:58:34:68 | signedToken | provenance |  Sink:MaD:338 |
 nodes
 | go-jose.v3.go:25:16:25:20 | selection of URL | semmle.label | selection of URL |
 | go-jose.v3.go:25:16:25:28 | call to Query | semmle.label | call to Query |

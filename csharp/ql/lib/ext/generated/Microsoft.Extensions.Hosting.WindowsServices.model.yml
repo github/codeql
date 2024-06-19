@@ -2,6 +2,13 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", False, "WindowsServiceLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.WindowsServiceLifetimeOptions>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", False, "WindowsServiceLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.WindowsServiceLifetimeOptions>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", False, "WindowsServiceLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.WindowsServiceLifetimeOptions>)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceHelpers", "IsWindowsService", "()", "summary", "df-generated"]
@@ -11,4 +18,3 @@ extensions:
       - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", "OnStop", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", "StopAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", "WindowsServiceLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Hosting.WindowsServices", "WindowsServiceLifetime", "WindowsServiceLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.WindowsServiceLifetimeOptions>)", "summary", "df-generated"]

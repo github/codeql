@@ -3,8 +3,11 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
+      - ["", "", False, "append", "", "", "Argument[0]", "ReturnValue", "taint", "manual"] # special case for when arg[0] has core type []byte and second argument has core type bytestring and is followed by ...
       - ["", "", False, "append", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["", "", False, "append", "", "", "Argument[1]", "ReturnValue", "taint", "manual"] # special case for when arg[0] has core type []byte and second argument has core type bytestring and is followed by ...
       - ["", "", False, "append", "", "", "Argument[1].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["", "", False, "copy", "", "", "Argument[1]", "Argument[0]", "taint", "manual"] # special case for when arg[0] has core type []byte and second argument has core type bytestring
       - ["", "", False, "copy", "", "", "Argument[1].ArrayElement", "Argument[0].ArrayElement", "value", "manual"]
       - ["", "", False, "max", "", "", "Argument[0..1000]", "ReturnValue", "value", "manual"]
       - ["", "", False, "min", "", "", "Argument[0..1000]", "ReturnValue", "value", "manual"]

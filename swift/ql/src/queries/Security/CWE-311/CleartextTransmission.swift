@@ -9,7 +9,7 @@ func transmitMyData(connection : NWConnection, faveSong : String, creditCardNo :
 	connection.send(content: creditCardNo, completion: .idempotent)
 
 	// GOOD: encrypted sensitive information saved
-	connection.send(content: encrypt(creditCardNo), completion: .idempotent
+	connection.send(content: encrypt(creditCardNo), completion: .idempotent)
 
 	// ...
 }

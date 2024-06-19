@@ -43,6 +43,11 @@ private module Config implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     CS::isAdditionalTaintStep(nodeFrom, nodeTo)
   }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet cs) {
+    cs.isAny() and
+    isSink(node)
+  }
 }
 
 /**

@@ -4,6 +4,7 @@
 
 import go
 private import semmle.go.dataflow.ExternalFlow as ExternalFlow
+private import codeql.threatmodels.ThreatModels
 
 /**
  * DEPRECATED: Use `RemoteFlowSource` instead.
@@ -31,12 +32,38 @@ module RemoteFlowSource {
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RemoteFlowSource` instead.
    */
-  abstract class Range extends DataFlow::Node { }
+  abstract class Range extends SourceNode {
+    override string getThreatModel() { result = "remote" }
+  }
 
   /**
    * A source of data that is controlled by an untrusted user.
    */
   class MaDRemoteSource extends Range {
     MaDRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
+  }
+}
+
+/**
+ * A data flow source.
+ */
+abstract class SourceNode extends DataFlow::Node {
+  /**
+   * Gets a string that represents the source kind with respect to threat modeling.
+   */
+  abstract string getThreatModel();
+}
+
+/**
+ * A class of data flow sources that respects the
+ * current threat model configuration.
+ */
+class ThreatModelFlowSource extends DataFlow::Node {
+  ThreatModelFlowSource() {
+    exists(string kind |
+      // Specific threat model.
+      currentThreatModel(kind) and
+      (this.(SourceNode).getThreatModel() = kind or ExternalFlow::sourceNode(this, kind))
+    )
   }
 }
