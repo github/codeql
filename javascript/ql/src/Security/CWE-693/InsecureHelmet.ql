@@ -42,5 +42,6 @@ where
   helmetProperty.isFalse() and
   helmetProperty.isImportantSecuritySetting() and
   helmetProperty.getHelmet() = helmet
-select helmet, "Helmet security middleware, configured with security setting $@ set to 'false', which disables enforcing that feature.", helmetProperty,
-  helmetProperty.getName()
+select helmet,
+  "Helmet security middleware, configured with security setting $@ set to 'false', which disables enforcing that feature.",
+  helmetProperty, helmetProperty.getName()
