@@ -887,6 +887,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate nodeDataFlowType(Node n, DataFlowType t) { t = getNodeType(n) }
 
     cached
+    predicate typeStrongerThanCached(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+
+    cached
     predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
     cached
@@ -1622,7 +1625,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   bindingset[t1, t2]
   pragma[inline_late]
-  private predicate typeStrongerThan0(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+  predicate typeStrongerThanFilter(DataFlowType t1, DataFlowType t2) {
+    typeStrongerThanCached(t1, t2)
+  }
 
   private predicate callEdge(DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p) {
     viableParamArg(call, p, arg) and
@@ -1703,7 +1708,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           nodeDataFlowType(arg, at) and
           nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
-          typeStrongerThan0(pt, at)
+          typeStrongerThanFilter(pt, at)
         )
         or
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
@@ -1714,7 +1719,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
-          typeStrongerThan0(at, pt)
+          typeStrongerThanFilter(at, pt)
         )
         or
         exists(ParamNode p |
@@ -1754,7 +1759,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         nodeDataFlowType(arg, at) and
         nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
-        typeStrongerThan0(at, pt)
+        typeStrongerThanFilter(at, pt)
       )
       or
       exists(ArgNode arg |
@@ -1823,8 +1828,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * stronger then compatibility is checked and `t1` is returned.
      */
     bindingset[t1, t2]
+    pragma[inline_late]
     DataFlowType getStrongestType(DataFlowType t1, DataFlowType t2) {
-      if typeStrongerThan(t2, t1) then result = t2 else (compatibleTypes(t1, t2) and result = t1)
+      if typeStrongerThanCached(t2, t1)
+      then result = t2
+      else (
+        compatibleTypes(t1, t2) and result = t1
+      )
     }
 
     /**

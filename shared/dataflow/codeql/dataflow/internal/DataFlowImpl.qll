@@ -2951,7 +2951,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       if castingNodeEx(node)
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          if typeStrongerThanFilter(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
         )
       else t = t0
     }
