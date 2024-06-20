@@ -18,6 +18,14 @@ class Package extends @package {
     )
   }
 
+  /**
+   * Gets the path of this package with the major version suffix (like "/v2")
+   * removed.
+   */
+  string getPathWithoutMajorVersionSuffix() {
+    result = this.getPath().regexpReplaceAll("[./]v\\d+$", "")
+  }
+
   /** Gets the scope of this package. */
   PackageScope getScope() { packages(this, _, _, result) }
 
