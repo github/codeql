@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang
+// semmle-extractor-options: --clang
 
 int source();
 void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
