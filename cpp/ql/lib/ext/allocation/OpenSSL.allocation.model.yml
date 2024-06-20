@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: allocationFunctionModel
+    data:
+      - ["", "", False, "CRYPTO_malloc", "0", "", "", True]
+      - ["", "", False, "CRYPTO_zalloc", "0", "", "", True]
+      - ["", "", False, "CRYPTO_secure_malloc", "0", "", "", True]
+      - ["", "", False, "CRYPTO_secure_zalloc", "0", "", "", True]
+
