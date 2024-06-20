@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["neo4j-contrib/neo4j-apoc-procedures", "*", "input.project-name", "code-injection", "generated"]

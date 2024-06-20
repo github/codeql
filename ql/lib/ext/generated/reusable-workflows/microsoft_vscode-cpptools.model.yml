@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["microsoft/vscode-cpptools/.github/workflows/job-compile-and-test.yml", "*", "input.yarn-args", "code-injection", "generated"]

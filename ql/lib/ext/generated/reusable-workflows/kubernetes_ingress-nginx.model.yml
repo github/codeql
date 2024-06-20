@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["kubernetes/ingress-nginx/.github/workflows/zz-tmpl-k8s-e2e.yaml", "*", "input.k8s-version", "code-injection", "generated"]

@@ -1,9 +1,9 @@
 ---
-name: githubsecuritylab/actions-tests
+name: github/actions-tests
 groups: [javascript, test]
 dependencies:
-  githubsecuritylab/actions-all: ${workspace}
-  githubsecuritylab/actions-queries: ${workspace}
+  github/actions-all: ${workspace}
+  github/actions-queries: ${workspace}
 extractor: javascript
 tests: .
 warnOnImplicitThis: true

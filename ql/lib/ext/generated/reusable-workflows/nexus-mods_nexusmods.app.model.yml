@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["nexus-mods/nexusmods.app/.github/workflows/build-windows-pupnet.yaml", "*", "input.AppVersion", "code-injection", "generated"]

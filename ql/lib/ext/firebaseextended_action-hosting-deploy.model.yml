@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["firebaseextended/action-hosting-deploy", "*", "input.firebaseToolsVersion", "command-injection", "manual"]

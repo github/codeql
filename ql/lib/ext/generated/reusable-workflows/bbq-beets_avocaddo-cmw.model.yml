@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["bbq-beets/avocaddo-cmw/.github/workflows/mobile-ci-cd.yml", "*", "input.git-user-email", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "input.project-name", "code-injection", "generated"]

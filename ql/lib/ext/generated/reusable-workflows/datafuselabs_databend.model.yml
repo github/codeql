@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["datafuselabs/databend/.github/workflows/reuse.benchmark.yml", "*", "input.run_id", "code-injection", "generated"]

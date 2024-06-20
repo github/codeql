@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["daspn/private-actions-checkout", "*", "input.actions_list", "command-injection", "manual"]

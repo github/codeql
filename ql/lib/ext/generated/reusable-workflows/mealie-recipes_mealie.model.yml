@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["mealie-recipes/mealie/.github/workflows/partial-builder.yml", "*", "input.tag", "code-injection", "generated"]

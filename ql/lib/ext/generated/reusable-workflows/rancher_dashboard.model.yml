@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["rancher/dashboard/.github/workflows/build-extension-charts.yml", "*", "input.tagged_release", "code-injection", "generated"]

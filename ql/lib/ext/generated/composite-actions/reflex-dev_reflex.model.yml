@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["reflex-dev/reflex", "*", "input.create-venv-at-path", "code-injection", "generated"]

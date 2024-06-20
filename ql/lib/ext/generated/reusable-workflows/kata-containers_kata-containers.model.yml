@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["kata-containers/kata-containers/.github/workflows/release-s390x.yaml", "*", "input.target-arch", "code-injection", "generated"]

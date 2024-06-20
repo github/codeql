@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSummaryModel
     data:
       - ["mad9000/actions-find-and-replace-string", "*", "input.source", "output.value", "taint", "manual"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["openbao/openbao/.github/workflows/test-run-acc-tests-for-path.yml", "*", "input.path", "code-injection", "generated"]

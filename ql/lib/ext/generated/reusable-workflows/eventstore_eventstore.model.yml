@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["eventstore/eventstore/.github/workflows/build-reusable.yml", "*", "input.arch", "code-injection", "generated"]

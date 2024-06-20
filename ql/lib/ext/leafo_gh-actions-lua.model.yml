@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["leafo/gh-actions-lua", "*", "input.luaVersion", "command-injection", "manual"]

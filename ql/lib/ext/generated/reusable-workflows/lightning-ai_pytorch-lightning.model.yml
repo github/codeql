@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["lightning-ai/pytorch-lightning/.github/workflows/_legacy-checkpoints.yml", "*", "input.push_to_s3", "code-injection", "generated"]

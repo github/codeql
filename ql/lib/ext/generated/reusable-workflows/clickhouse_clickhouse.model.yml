@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["clickhouse/clickhouse/.github/workflows/reusable_test.yml", "*", "input.test_name", "code-injection", "generated"]

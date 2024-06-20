@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSummaryModel
     data:
       - ["gradle/gradle-build-action", "*", "input.cache-encryption-key", "env.GRADLE_ENCRYPTION_KEY", "taint", "manual"]

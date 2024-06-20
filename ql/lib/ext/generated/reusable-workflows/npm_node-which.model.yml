@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["npm/node-which/.github/workflows/release-integration.yml", "*", "input.releases", "code-injection", "generated"]

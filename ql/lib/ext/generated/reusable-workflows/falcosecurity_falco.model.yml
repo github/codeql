@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["falcosecurity/falco/.github/workflows/reusable_build_packages.yaml", "*", "input.build_type", "code-injection", "generated"]
