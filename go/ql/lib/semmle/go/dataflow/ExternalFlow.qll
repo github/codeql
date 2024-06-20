@@ -306,14 +306,31 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
+/**
+ * Gets the string for the package path corresponding to `p`, if one exists.
+ *
+ * If `p` has `$THISVERSION` at the end then we remove that and do not attempt
+ * to match any other versions of the same package. If `p` contains a major
+ * version suffix (like "/v2") then we also do not attempt to match any
+ */
 bindingset[p]
 private string interpretPackage(string p) {
-  exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
-    if exists(p.regexpCapture(r, 4))
-    then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
-    else result = package(p, "")
+  exists(Package pkg | result = pkg.getPath() |
+    exists(string thisVersion, string specifiedVersionRegex |
+      thisVersion = "$THISVERSION" and
+      specifiedVersionRegex = "[./]v\\d+"
+    |
+      if p.suffix(p.length() - thisVersion.length()) = thisVersion
+      then result = p.prefix(p.length() - 12)
+      else
+        if exists(p.regexpFind(specifiedVersionRegex, 0, _))
+        then result = p
+        else p = pkg.getPathWithoutMajorVersionSuffix()
+    )
   )
   or
+  // Special case for built-in functions, which are not in any package, but
+  // satisfy `hasQualifiedName` with the package path "".
   p = "" and result = ""
 }
 
