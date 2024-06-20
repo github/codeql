@@ -16,4 +16,5 @@ dependencies:
   codeql/xml: ${workspace}
 dataExtensions:
   - ext/*.model.yml
+  - ext/deallocation/*.model.yml
 warnOnImplicitThis: true
