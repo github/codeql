@@ -373,6 +373,63 @@ private class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
   override predicate requiresDealloc() { not exists(this.getPlacementPointer()) }
 }
 
+/**
+ * Holds if `f` is an allocation function according to the
+ * extensible `allocationFunctionModel` predicate.
+ */
+private predicate isAllocationFunctionFromModel(
+  Function f, string namespace, string type, string name
+) {
+  exists(boolean subtypes | allocationFunctionModel(namespace, type, subtypes, name, _, _, _, _) |
+    if type = ""
+    then f.hasQualifiedName(namespace, "", name)
+    else
+      exists(Class c |
+        c.hasQualifiedName(namespace, type) and f.hasQualifiedName(namespace, _, name)
+      |
+        if subtypes = true
+        then f = c.getADerivedClass*().getAMemberFunction()
+        else f = c.getAMemberFunction()
+      )
+  )
+}
+
+/**
+ * An allocation function modeled via the extensible `allocationFunctionModel` predicate.
+ */
+private class AllocationFunctionFromModel extends AllocationFunction {
+  string namespace;
+  string type;
+  string name;
+
+  AllocationFunctionFromModel() { isAllocationFunctionFromModel(this, namespace, type, name) }
+
+  final override int getSizeArg() {
+    exists(string sizeArg |
+      allocationFunctionModel(namespace, type, _, name, sizeArg, _, _, _) and
+      result = sizeArg.toInt()
+    )
+  }
+
+  final override int getSizeMult() {
+    exists(string sizeMult |
+      allocationFunctionModel(namespace, type, _, name, _, sizeMult, _, _) and
+      result = sizeMult.toInt()
+    )
+  }
+
+  final override int getReallocPtrArg() {
+    exists(string reallocPtrArg |
+      allocationFunctionModel(namespace, type, _, name, _, _, reallocPtrArg, _) and
+      result = reallocPtrArg.toInt()
+    )
+  }
+
+  final override predicate requiresDealloc() {
+    allocationFunctionModel(namespace, type, _, name, _, _, _, true)
+  }
+}
+
 private module HeuristicAllocation {
   /** A class that maps an `AllocationExpr` to an `HeuristicAllocationExpr`. */
   private class HeuristicAllocationModeled extends HeuristicAllocationExpr instanceof AllocationExpr
