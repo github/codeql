@@ -93,6 +93,7 @@ module UrlRedirect {
   private class SinkFromModel extends Sink {
     SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }
+
   /**
    * The right side of a string-concat, considered as a sanitizer.
    */
