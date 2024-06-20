@@ -1,6 +1,6 @@
 ---
 library: false
-name: githubsecuritylab/actions-queries
+name: github/actions-queries
 version: 0.1.2
 groups: [actions, queries]
 suites: codeql-suites
@@ -8,5 +8,5 @@ extractor: javascript
 dbscheme: semmlecode.javascript.dbscheme
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
-  githubsecuritylab/actions-all: ${workspace}
+  github/actions-all: ${workspace}
 warnOnImplicitThis: true

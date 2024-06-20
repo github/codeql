@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["openmined/pysyft/.github/workflows/cd-post-release-tests.yml", "*", "input.release_platform", "code-injection", "generated"]

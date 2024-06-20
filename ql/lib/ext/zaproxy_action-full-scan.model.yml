@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["zaproxy/action-full-scan", "*", "input.docker_name", "command-injection", "manual"]

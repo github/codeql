@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["home-assistant/android", "*", "input.lokalise-token", "code-injection", "generated"]

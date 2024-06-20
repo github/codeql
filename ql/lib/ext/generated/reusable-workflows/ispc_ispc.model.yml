@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["ispc/ispc/.github/workflows/reusable.rebuild.yml", "*", "input.version", "code-injection", "generated"]

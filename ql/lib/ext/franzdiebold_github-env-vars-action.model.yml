@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSourceModel
     data:
       - ["franzdiebold/github-env-vars-action", "*", "output.CI_PR_DESCRIPTION", "text", "manual"]

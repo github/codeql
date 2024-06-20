@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["anchore/scan-action", "*", "input.grype-version", "command-injection", "manual"]

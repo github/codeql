@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSourceModel
     data:
       - ["amannn/action-semantic-pull-request", "*", "output.error_message", "text", "manual"]

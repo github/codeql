@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["roots/issue-closer-action", "*", "input.issue-close-message", "code-injection", "manual"]

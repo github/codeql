@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["0xpolygon/polygon-edge/.github/workflows/loadtest.yml", "*", "input.scenario", "code-injection", "generated"]

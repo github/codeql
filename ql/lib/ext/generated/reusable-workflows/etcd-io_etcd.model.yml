@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["etcd-io/etcd/.github/workflows/tests-template.yaml", "*", "input.arch", "code-injection", "generated"]

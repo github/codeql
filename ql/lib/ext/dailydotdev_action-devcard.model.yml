@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["dailydotdev/action-devcard", "*", "input.commit_branch", "sql-injection", "manual"]

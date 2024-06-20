@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["materialdesigninxaml/materialdesigninxamltoolkit/.github/workflows/build_artifacts.yml", "*", "input.mdix-mahapps-version", "code-injection", "generated"]

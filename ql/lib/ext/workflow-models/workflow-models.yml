@@ -1,14 +1,14 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: repositoryDataModel
     data: []
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: workflowDataModel
     data: []
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: contextTriggerDataModel 
     data:
       - ["commit_comment", "github.event.comment"] 
@@ -55,7 +55,7 @@ extensions:
       - ["workflow_call", "github.event.workflow"]
       - ["workflow_call", "github.event.workflow_run"]
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: externallyTriggerableEventsDataModel
     data:
       - ["discussion"]

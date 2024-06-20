@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSourceModel
     data:
       - ["xt0rted/slash-command-action", "*", "output.command-arguments", "text", "manual"]

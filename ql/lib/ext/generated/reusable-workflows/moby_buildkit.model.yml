@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.env", "code-injection", "generated"]

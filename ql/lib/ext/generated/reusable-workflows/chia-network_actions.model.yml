@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["chia-network/actions/.github/workflows/docker-build.yaml", "*", "input.docker-context", "code-injection", "generated"]

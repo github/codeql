@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["crazy-max/ghaction-chocolatey", "*", "input.args", "command-injection", "manual"]

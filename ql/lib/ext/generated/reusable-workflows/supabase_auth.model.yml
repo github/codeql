@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["supabase/auth/.github/workflows/publish.yml", "*", "input.version", "code-injection", "generated"]

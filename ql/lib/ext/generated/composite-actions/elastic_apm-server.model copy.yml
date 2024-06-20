@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSummaryModel
     data:
       - ["elastic/apm-server", "*", "input.version", "output.release-version", "taint", "manual"]

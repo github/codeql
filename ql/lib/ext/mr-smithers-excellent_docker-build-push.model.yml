@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
       - ["mr-smithers-excellent/docker-build-push", "*", "input.tags", "command-injection", "manual"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["apache/pulsar-helm-chart", "*", "input.limit-access-to-users", "code-injection", "generated"]

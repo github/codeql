@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: githubsecuritylab/actions-all
+      pack: github/actions-all
       extensible: actionsSinkModel
     data:
      - ["expensify/app/.github/workflows/e2ePerformanceTests.yml", "*", "input.PR_NUMBER", "code-injection", "generated"]
