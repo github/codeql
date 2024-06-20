@@ -502,4 +502,10 @@ module TS55 {
   for (const str of strings) {
     str.toLowerCase(); // <- string in 5.5, string | number in 5.4
   }
+
+  function f1(obj: Record<string, unknown>, key: string) {
+    if (typeof obj[key] === "string") {
+      var str = obj[key].toUpperCase(); // Now okay, previously was error
+    }
+  }
 }
