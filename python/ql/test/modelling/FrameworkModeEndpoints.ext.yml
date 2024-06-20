@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      - ["MyPackage.Foo.C1","Member[m1].ReturnValue","remote"]
+      - ["MyPackage","Member[Foo].Member[C1].Instance.Member[m2].ReturnValue","remote"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ["MyPackage.Foo.C1!","Member[m3]","Argument[0]","ReturnValue","value"]
+      - ["MyPackage","Member[Foo].Member[C1].Member[m4]","Argument[0]","ReturnValue","value"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ["MyPackage.Foo.C2!","MyPackage","Member[Foo].Member[C3].Member[get_C2_instance].ReturnValue"]
