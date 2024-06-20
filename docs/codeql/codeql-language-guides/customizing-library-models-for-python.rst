@@ -139,11 +139,11 @@ Combining this with the sink model we added earlier, the sink in the example is 
 Example: Taint sources from Django 'upload_to' argument
 -------------------------------------------------------
 
-This example is a bit more advanced, involving both a call-back function and a class constructor.
-The Django web framework allows you to specify a function that determines the path where uploaded files are stored (see https://docs.djangoproject.com/en/5.0/ref/models/fields/#django.db.models.FileField.upload_to).
+This example is a bit more advanced, involving both a callback function and a class constructor.
+The Django web framework allows you to specify a function that determines the path where uploaded files are stored (see the `Django documentation <https://docs.djangoproject.com/en/5.0/ref/models/fields/#django.db.models.FileField.upload_to>`_).
 This function is passed as an argument to the **FileField** constructor.
 The function is called with two arguments: the instance of the model and the filename of the uploaded file.
-This filename is what we want to marks as a taint source. An example use looks as follows:
+This filename is what we want to mark as a taint source. An example use looks as follows:
 
 .. code-block:: python
 
@@ -178,7 +178,7 @@ Note that this source is already known by the CodeQL Python analysis, but for th
 
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
   
-    - **Call** selects calls to the class, that is constructor calls.
+    - **Call** selects calls to the class. That is, constructor calls.
     - **Argument[upload_to:]** selects the named argument named **upload_to**. Note that the colon at the end of the argument name indicates that we are looking for a named argument.
     - **Parameter[1,filename:]** selects parameters of the callback function. We provide two parameters to search for, namely the second positional parameter and the named parameter **filename**.
 
@@ -276,7 +276,7 @@ We might also provide a summary stating that the elements of the input list are 
             "value",
           ]
 
-The tracking of list elements is imprecise in that the analysis does not know, where in the list the tracked value is found.
+The tracking of list elements is imprecise in that the analysis does not know where in the list the tracked value is found.
 So this summary simply states that if the value is found somewhere in the input list, it will also be found somewhere in the output list, unchanged.
 
 Reference material
@@ -406,7 +406,7 @@ The following components are supported:
 - **ReturnValue** selects the return value of a function or call.
 - **Member[**\ `name`\ **]** selects the function/method/class/value with the given name.
 - **Instance** selects instances of a class, including instances of its subclasses.
-- **Attribut[**\ `name`\ **]** selects the attribute with the given name.
+- **Attribute[**\ `name`\ **]** selects the attribute with the given name.
 - **ListElement** selects an element of a list.
 - **SetElement** selects an element of a set.
 - **TupleElement[**\ `number`\ **]** selects the subscript at the given index.
@@ -439,7 +439,7 @@ Unlike sources, sinks tend to be highly query-specific, rarely affecting more th
 - **html-injection**: A sink that can be used for HTML injection, such as a server response body.
 - **js-injection**: A sink that can be used for JS injection, such as a server response body.
 - **url-redirection**: A sink that can be used to redirect the user to a malicious URL.
-- **unsafe-deserialization**: A deserialization sink that can lead to code execution or other unsafe behaviour, such as an unsafe YAML parser.
+- **unsafe-deserialization**: A deserialization sink that can lead to code execution or other unsafe behavior, such as an unsafe YAML parser.
 - **log-injection**: A sink that can be used for log injection, such as in a **logging.info** call.
 
 Summary kinds
