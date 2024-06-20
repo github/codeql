@@ -17,7 +17,10 @@
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `package` column selects a package.
+ * 1. The `package` column selects a package. Note that if the package does not
+ *    contain a major version suffix (like "/v2") then we will match all major
+ *    versions. This can be disabled by putting `$THISVERSION` at the end of
+ *    the package path.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
