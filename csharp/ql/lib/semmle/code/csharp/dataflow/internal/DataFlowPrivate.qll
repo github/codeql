@@ -2522,15 +2522,11 @@ predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
     t1.(DataFlowNullType).isConvertibleTo(t2)
     or
     t2.(DataFlowNullType).isConvertibleTo(t1)
-    or
-    t1 instanceof Gvn::TypeParameterGvnType
-    or
-    t2 instanceof Gvn::TypeParameterGvnType
-    or
-    t1 instanceof GvnUnknownType
-    or
-    t2 instanceof GvnUnknownType
   )
+  or
+  exists(dt1.asGvnType()) and uselessTypebound(dt2)
+  or
+  uselessTypebound(dt1) and exists(dt2.asGvnType())
   or
   compatibleTypesDelegateLeft(dt1, dt2)
   or
