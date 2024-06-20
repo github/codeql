@@ -34,4 +34,21 @@ private module Pandas {
 
     override string getFormat() { result = "pickle" }
   }
+
+
+  private class PandasQueryCall extends CodeExecution::Range, DataFlow::CallCfgNode {
+    /**
+     * A call to `pandas.DataFrame.query` or `pandas.DataFrame.eval`
+     * See https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html
+     * See https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.eval.html
+     */
+
+    PandasQueryCall() {
+      this = API::moduleImport("pandas").getMember("DataFrame").getReturn().getMember(["query", "eval"]).getACall()
+    }
+
+    override DataFlow::Node getCode() { 
+      result in [this.getArg(0), this.getArgByName("expr")] 
+    }
+  }
 }
