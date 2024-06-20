@@ -14,7 +14,7 @@ class Package extends @package {
   /** Gets the path of this package. */
   string getPath() {
     exists(string fullPath | packages(this, _, fullPath, _) |
-      result = fullPath.regexpReplaceAll("^.*/vendor/", "")
+      result = fullPath.regexpReplaceAll("^.*\\bvendor/", "")
     )
   }
 
