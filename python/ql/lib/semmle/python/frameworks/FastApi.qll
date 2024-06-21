@@ -361,28 +361,27 @@ module FastApi {
     }
 
     /**
-     * A call to `append` on a `headers` of a FastAPI Response, with the `Set-Cookie`
-     * header-key.
+     * A call to `append` on a `headers` of a FastAPI Response.
      */
-    private class HeadersAppendCookie extends Http::Server::CookieWrite::Range,
+    private class HeadersAppend extends Http::Server::ResponseHeaderWrite::Range,
       DataFlow::MethodCallNode
     {
-      HeadersAppendCookie() {
-        exists(DataFlow::AttrRead headers, DataFlow::Node keyArg |
+      HeadersAppend() {
+        exists(DataFlow::AttrRead headers |
           headers.accesses(instance(), "headers") and
-          this.calls(headers, "append") and
-          keyArg in [this.getArg(0), this.getArgByName("key")] and
-          keyArg.getALocalSource().asExpr().(StringLiteral).getText().toLowerCase() = "set-cookie"
+          this.calls(headers, "append")
         )
       }
 
-      override DataFlow::Node getHeaderArg() {
+      override DataFlow::Node getNameArg() { result = [this.getArg(0), this.getArgByName("key")] }
+
+      override DataFlow::Node getValueArg() {
         result in [this.getArg(1), this.getArgByName("value")]
       }
 
-      override DataFlow::Node getNameArg() { none() }
+      override predicate nameAllowsNewline() { none() }
 
-      override DataFlow::Node getValueArg() { none() }
+      override predicate valueAllowsNewline() { none() }
     }
   }
 }

@@ -1239,7 +1239,7 @@ module Http {
     {
       CookieHeaderWrite() {
         exists(StringLiteral str |
-          str.getText() = "Set-Cookie" and
+          str.getText().toLowerCase() = "set-cookie" and
           DataFlow::exprNode(str)
               .(DataFlow::LocalSourceNode)
               .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
