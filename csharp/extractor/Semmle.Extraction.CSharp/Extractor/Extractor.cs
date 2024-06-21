@@ -189,7 +189,7 @@ namespace Semmle.Extraction.CSharp
                             break;
                         case ExitCode.Failed:
                             logger.LogWarning($"  Compilation {diagnosticName} failed");
-                            return ExitCode.Failed;
+                            break;
                     }
                 }
                 return allFailed ? ExitCode.Failed : ExitCode.Ok;
