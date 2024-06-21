@@ -37,6 +37,14 @@ module Pycurl {
     /** Gets a reference to an instance of `pycurl.Curl`. */
     private API::Node instance() { result = classRef().getReturn() }
 
+    /** Gets a reference to an instance of `pycurl.Curl.setopt`. */
+    private API::Node setopt() { result = instance().getMember("setopt") }
+
+    /** Gets a reference to an instance of `pycurl.Curl.SSL_VERIFYPEER`. */
+    private API::Node sslverifypeer() {
+      result = API::moduleImport("pycurl").getMember("SSL_VERIFYPEER")
+    }
+
     /**
      * When the first parameter value of the `setopt` function is set to `pycurl.URL`,
      * the second parameter value is the request resource link.
@@ -45,7 +53,7 @@ module Pycurl {
      */
     private class OutgoingRequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
       OutgoingRequestCall() {
-        this = instance().getMember("setopt").getACall() and
+        this = setopt().getACall() and
         this.getArg(0).asCfgNode().(AttrNode).getName() = "URL"
       }
 
@@ -58,8 +66,13 @@ module Pycurl {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        // TODO: Look into disabling certificate validation
-        none()
+        exists(API::CallNode c |
+          c = setopt().getACall() and
+          sslverifypeer().getAValueReachableFromSource() = c.getArg(0) and
+          exists(IntegerLiteral i | i.getN() = "0" and c.getArg(1).asExpr() = i)
+        |
+          disablingNode = c and argumentOrigin = c.getArg(1)
+        )
       }
     }
   }
