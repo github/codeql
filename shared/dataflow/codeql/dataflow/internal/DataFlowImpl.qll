@@ -1776,22 +1776,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[inline]
           predicate fwdFlowIn(
-            DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
-            CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
-            Ap ap, ApApprox apa, boolean cc, boolean allowsFlowThrough
+            DataFlowCall call, ArgNodeEx arg, DataFlowCallable inner, ParamNodeEx p,
+            FlowState state, Cc outercc, CcCall innercc, ParamNodeOption summaryCtx, TypOption argT,
+            ApOption argAp, Typ t, Ap ap, ApApprox apa, boolean cc, boolean allowsFlowThrough
           ) {
-            exists(ArgNodeEx arg |
-              // type flow disabled: linear recursion
-              fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
-                argAp, t, ap, apa, cc, allowsFlowThrough) and
-              fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, pragma[only_bind_into](cc))
-              or
-              // type flow enabled: non-linear recursion
-              exists(boolean emptyAp |
-                fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
-                fwdFlowInValidEdgeTypeFlowEnabled(call, arg, outercc, inner, p, innercc, emptyAp,
-                  apa, cc, allowsFlowThrough)
-              )
+            // type flow disabled: linear recursion
+            fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
+              argAp, t, ap, apa, cc, allowsFlowThrough) and
+            fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, pragma[only_bind_into](cc))
+            or
+            // type flow enabled: non-linear recursion
+            exists(boolean emptyAp |
+              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
+              fwdFlowInValidEdgeTypeFlowEnabled(call, arg, outercc, inner, p, innercc, emptyAp, apa,
+                cc, allowsFlowThrough)
             )
           }
         }
@@ -1804,8 +1802,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           boolean allowsFlowThrough
         ) {
           exists(boolean allowsFlowThrough0 |
-            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, p, state, _, innercc, _, _, _, t, ap,
-              apa, _, allowsFlowThrough0) and
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, _, p, state, _, innercc, _, _, _, t,
+              ap, apa, _, allowsFlowThrough0) and
             if PrevStage::parameterMayFlowThrough(p, apa)
             then allowsFlowThrough = allowsFlowThrough0
             else allowsFlowThrough = false
@@ -1907,8 +1905,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
             Typ t, Ap ap, boolean cc
           ) {
-            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, c, p, state, _, innercc, _, _, _, t,
-              ap, _, cc, _)
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, _, c, p, state, _, innercc, _, _, _,
+              t, ap, _, cc, _)
           }
 
           pragma[nomagic]
@@ -1993,13 +1991,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[inline]
         private predicate fwdFlowThrough0(
-          DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-          TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
-          ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
+          DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
+          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa,
+          RetNodeEx ret, ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp,
+          ApApprox innerArgApa
         ) {
           fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, innerArgT, innerArgAp, innerArgApa, t,
             ap, apa) and
-          fwdFlowIsEntered(call, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
+          fwdFlowIsEntered(call, arg, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
             innerArgAp)
         }
 
@@ -2009,8 +2008,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
           ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _, _,
-            innerArgApa)
+          fwdFlowThrough0(call, _, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _,
+            _, innerArgApa)
         }
 
         private module FwdFlowThroughRestriction implements FwdFlowInInputSig {
@@ -2025,11 +2024,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate fwdFlowIsEntered(
-          DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, ParamNodeEx p, Typ t, Ap ap
+          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx,
+          TypOption argT, ApOption argAp, ParamNodeEx p, Typ t, Ap ap
         ) {
-          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, _, p, _, cc, innerCc, summaryCtx,
-            argT, argAp, t, ap, _, _, true)
+          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, arg, _, p, _, cc, innerCc,
+            summaryCtx, argT, argAp, t, ap, _, _, true)
         }
 
         pragma[nomagic]
@@ -2052,8 +2051,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, FlowState state, CcCall ccc, Ap ap, ApApprox apa, RetNodeEx ret,
           ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, _, state, ccc, _, _, _, _, ap, apa, ret, innerSummaryCtx, innerArgT,
-            innerArgAp, innerArgApa)
+          fwdFlowThrough0(call, _, _, state, ccc, _, _, _, _, ap, apa, ret, innerSummaryCtx,
+            innerArgT, innerArgAp, innerArgApa)
         }
 
         pragma[nomagic]
