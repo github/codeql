@@ -9,15 +9,6 @@ private module Chi {
   string packagePath() { result = package("github.com/go-chi/chi", "") }
 
   /**
-   * Functions that extract URL parameters, considered as a source of remote flow.
-   */
-  private class UserControlledFunction extends RemoteFlowSource::Range, DataFlow::CallNode {
-    UserControlledFunction() {
-      this.getTarget().hasQualifiedName(packagePath(), ["URLParam", "URLParamFromCtx"])
-    }
-  }
-
-  /**
    * Methods that extract URL parameters, considered as a source of remote flow.
    */
   private class UserControlledRequestMethod extends RemoteFlowSource::Range,
