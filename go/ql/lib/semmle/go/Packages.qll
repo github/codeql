@@ -23,7 +23,7 @@ class Package extends @package {
    * removed.
    */
   string getPathWithoutMajorVersionSuffix() {
-    result = this.getPath().regexpReplaceAll("[./]v\\d+$", "")
+    result = this.getPath().regexpReplaceAll("[./]v\\d+", "")
   }
 
   /** Gets the scope of this package. */
