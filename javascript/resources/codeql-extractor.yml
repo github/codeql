@@ -92,3 +92,13 @@ options:
     description: Whether to skip the extraction of types in a TypeScript application
     type: string
     pattern: "^(false|true)$"
+  ts_memory:
+    title: TypeScript compiler memory
+    description: Amount of memory (in MB) allocated to the TypeScript compiler process
+    type: string
+    pattern: "[0-9]+"
+  jvm_max_memory:
+    title: JVM memory
+    description: The maximum memory allocation pool (in MB) for the JVM
+    type: string
+    pattern: "[0-9]+"
