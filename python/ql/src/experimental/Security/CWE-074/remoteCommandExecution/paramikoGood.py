@@ -12,23 +12,14 @@ paramiko_ssh_client.connect(hostname="127.0.0.1", port="22", username="ssh_user_
 
 
 @app.route('/external_exec_command_1')
-def bad1():
+def withAuthorization():
     user_cmd = request.args.get('command')
+    auth_jwt = request.args.get('Auth')
+    # validating jwt token first
+    # .... then continue to run the command
     stdin, stdout, stderr = paramiko_ssh_client.exec_command(user_cmd)
     return stdout
 
-@app.route('/external_exec_command_2')
-def bad2():
-    user_cmd = request.args.get('command')
-    stdin, stdout, stderr = paramiko_ssh_client.exec_command(command=user_cmd)
-    return stdout
-
-
-@app.route('/proxycommand')
-def bad2():
-    user_cmd = request.args.get('command')
-    stdin, stdout, stderr = paramiko_ssh_client.connect('hostname', username='user',password='yourpassword',sock=paramiko.ProxyCommand(user_cmd))
-    return stdout
 
 if __name__ == '__main__':
     app.debug = False
