@@ -148,6 +148,10 @@ calls.rb:
 #  649| CustomNew2
 #-----|  -> Object
 
+element_reference.rb:
+#    1| ClassWithElementRef
+#-----|  -> Object
+
 hello.rb:
 #    1| EnglishWords
 
