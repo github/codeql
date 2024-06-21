@@ -312,9 +312,13 @@ private predicate elementSpec(
 /**
  * Gets the string for the package path corresponding to `p`, if one exists.
  *
- * If `p` has `$THISVERSION` at the end then we remove that and do not attempt
- * to match any other versions of the same package. If `p` contains a major
- * version suffix (like "/v2") then we also do not attempt to match any
+ * We attempt to account for major version suffixes as follows: if `p` is
+ * `github.com/a/b/c/d` then we will return any path for a package that was
+ * imported which matches that, possibly with a major version suffix in it,
+ * so if `github.com/a/b/c/d/v2` or `github.com/a/b/v3/c/d` were imported then
+ * they will be in the results. There are two situations where we do not do
+ * this: (1) when `p` already contains a major version suffix; (2) if `p` has
+ * `$THISVERSION` at the end (which we remove).
  */
 bindingset[p]
 private string interpretPackage(string p) {
