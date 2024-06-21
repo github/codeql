@@ -49,7 +49,7 @@ module MissingJwtSignatureCheck {
     }
   }
 
-  private class DefaultSource extends Source instanceof RemoteFlowSource { }
+  private class DefaultSource extends Source instanceof ThreatModelFlowSource { }
 
   private class DefaultSink extends Sink {
     DefaultSink() { sinkNode(this, "jwt") }

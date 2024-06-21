@@ -47,7 +47,7 @@
   }
 
   for (const e of Array.from(set)) {
-    sink(e); // NOT OK  (not caught by type-tracking, as it doesn't include array steps). 
+    sink(e); // NOT OK
   }
 
   sink(map.get("key")); // NOT OK.

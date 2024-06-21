@@ -11,7 +11,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["ILCompiler.IBC", "IBCProfileData", "GetAllMethodProfileData", "()", "summary", "df-generated"]
       - ["ILCompiler.IBC", "IBCProfileData", "GetMethodBlockCount", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
       - ["ILCompiler.IBC", "IBCProfileData", "GetMethodProfileData", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
       - ["ILCompiler.IBC", "IBCProfileData", "get_PartialNGen", "()", "summary", "df-generated"]

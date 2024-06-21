@@ -133,7 +133,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         .Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count)
                         .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
 
-                    return Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone) ?
+                    return Context.ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone) ?
                         candidates.FirstOrDefault() :
                         candidates.SingleOrDefault();
                 }

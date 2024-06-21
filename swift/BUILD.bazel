@@ -78,7 +78,6 @@ codeql_pack(
         ":tools",
         "//swift/downgrades",
     ],
-    visibility = ["//visibility:public"],
     zips = select({
         "@platforms//os:windows": {},
         "//conditions:default": {

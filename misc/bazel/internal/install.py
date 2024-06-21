@@ -21,7 +21,7 @@ parser.add_argument("--destdir", type=pathlib.Path, required=True,
                     help="Desination directory, relative to `--build-file`")
 parser.add_argument("--pkg-install-script", required=True,
                     help="The wrapped `pkg_install` installation script rlocation")
-parser.add_argument("--build-file", required=True,
+parser.add_argument("--build-file",
                     help="BUILD.bazel rlocation relative to which the installation should take place")
 parser.add_argument("--ripunzip",
                     help="ripunzip executable rlocation. Must be provided if `--zip-manifest` is.")
@@ -33,9 +33,13 @@ opts = parser.parse_args()
 if opts.zip_manifest and not opts.ripunzip:
     parser.error("Provide `--ripunzip` when specifying `--zip-manifest`")
 
-build_file = runfiles.Rlocation(opts.build_file)
+if opts.build_file:
+    build_file = runfiles.Rlocation(opts.build_file)
+    destdir = pathlib.Path(build_file).resolve().parent / opts.destdir
+else:
+    destdir = pathlib.Path(opts.destdir)
+    assert destdir.is_absolute(), "Provide `--build-file` to resolve destination directory"
 script = runfiles.Rlocation(opts.pkg_install_script)
-destdir = pathlib.Path(build_file).resolve().parent / opts.destdir
 
 if destdir.exists() and opts.cleanup:
     shutil.rmtree(destdir)

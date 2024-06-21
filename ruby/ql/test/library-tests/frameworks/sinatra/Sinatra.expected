@@ -43,43 +43,75 @@ filterPatterns
 | app.rb:106:3:108:5 | call to before | app.rb:106:10:106:23 | "/protected/*" |
 | app.rb:111:3:113:5 | call to after | app.rb:111:9:111:23 | "/create/:slug" |
 additionalFlowSteps
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:2:22:4:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:6:24:8:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:10:21:13:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:15:23:18:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:20:23:22:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:24:26:26:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:28:26:31:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:33:25:35:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:37:16:42:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:44:53:46:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:48:14:50:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:52:37:54:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:56:32:58:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:60:48:62:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:66:41:68:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:70:20:72:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:74:11:77:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:79:11:82:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:89:16:92:5 | lambda self in do ... end |
-| app.rb:84:10:87:5 | [post] do ... end | app.rb:94:15:96:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:2:22:4:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:6:24:8:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:10:21:13:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:15:23:18:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:20:23:22:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:24:26:26:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:28:26:31:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:33:25:35:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:37:16:42:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:44:53:46:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:48:14:50:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:52:37:54:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:56:32:58:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:60:48:62:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:66:41:68:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:70:20:72:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:74:11:77:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:79:11:82:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:89:16:92:5 | lambda self in do ... end |
-| app.rb:102:10:104:5 | [post] do ... end | app.rb:94:15:96:5 | lambda self in do ... end |
+| app.rb:85:5:85:9 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:95:10:95:14 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:95:10:95:14 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:95:10:95:14 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:95:10:95:14 | self |

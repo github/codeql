@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Runtime.Serialization.DataContractSerializerSettings)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "get_DataContractResolver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -59,10 +60,15 @@ extensions:
       - ["System.Runtime.Serialization", "StreamingContext", False, "StreamingContext", "(System.Runtime.Serialization.StreamingContextStates,System.Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "StreamingContext", False, "get_Context", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "XPathQueryGenerator", False, "CreateFromDataContractSerializer", "(System.Type,System.Reflection.MemberInfo[],System.Text.StringBuilder,System.Xml.XmlNamespaceManager)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization", "XmlSerializableServices", False, "AddDefaultSchema", "(System.Xml.Schema.XmlSchemaSet,System.Xml.XmlQualifiedName)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "XmlSerializableServices", False, "WriteNodes", "(System.Xml.XmlWriter,System.Xml.XmlNode[])", "", "Argument[1].Element", "Argument[0]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractExporter", False, "XsdDataContractExporter", "(System.Xml.Schema.XmlSchemaSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractExporter", False, "get_Schemas", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization", "XsdDataContractImporter", False, "CanImport", "(System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.XmlSchemaElement)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization", "XsdDataContractImporter", False, "Import", "(System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.XmlSchemaElement)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", False, "Import", "(System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.XmlSchemaElement)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization", "XsdDataContractImporter", False, "Import", "(System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.XmlSchemaElement)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization", "XsdDataContractImporter", False, "Import", "(System.Xml.Schema.XmlSchemaSet,System.Xml.XmlQualifiedName)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", False, "XsdDataContractImporter", "(System.CodeDom.CodeCompileUnit)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -83,7 +89,6 @@ extensions:
       - ["System.Runtime.Serialization", "DataContractResolver", "TryResolveType", "(System.Type,System.Type,System.Runtime.Serialization.DataContractResolver,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.Runtime.Serialization.DataContractSerializerSettings)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.String,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.String,System.String,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString)", "summary", "df-generated"]
@@ -296,7 +301,6 @@ extensions:
       - ["System.Runtime.Serialization", "XmlObjectSerializer", "WriteObjectContent", "(System.Xml.XmlWriter,System.Object)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XmlObjectSerializer", "WriteStartObject", "(System.Xml.XmlDictionaryWriter,System.Object)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XmlObjectSerializer", "WriteStartObject", "(System.Xml.XmlWriter,System.Object)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "XmlSerializableServices", "AddDefaultSchema", "(System.Xml.Schema.XmlSchemaSet,System.Xml.XmlQualifiedName)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XmlSerializableServices", "ReadNodes", "(System.Xml.XmlReader)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractExporter", "CanExport", "(System.Collections.Generic.ICollection<System.Reflection.Assembly>)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractExporter", "CanExport", "(System.Collections.Generic.ICollection<System.Type>)", "summary", "df-generated"]
@@ -309,12 +313,10 @@ extensions:
       - ["System.Runtime.Serialization", "XsdDataContractExporter", "GetSchemaTypeName", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "CanImport", "(System.Xml.Schema.XmlSchemaSet)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "CanImport", "(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.ICollection<System.Xml.XmlQualifiedName>)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "XsdDataContractImporter", "CanImport", "(System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.XmlSchemaElement)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "CanImport", "(System.Xml.Schema.XmlSchemaSet,System.Xml.XmlQualifiedName)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "GetCodeTypeReference", "(System.Xml.XmlQualifiedName)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "GetCodeTypeReference", "(System.Xml.XmlQualifiedName,System.Xml.Schema.XmlSchemaElement)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "GetKnownTypeReferences", "(System.Xml.XmlQualifiedName)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "Import", "(System.Xml.Schema.XmlSchemaSet)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "Import", "(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.ICollection<System.Xml.XmlQualifiedName>)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "XsdDataContractImporter", "Import", "(System.Xml.Schema.XmlSchemaSet,System.Xml.XmlQualifiedName)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "XsdDataContractImporter", "get_CodeCompileUnit", "()", "summary", "df-generated"]

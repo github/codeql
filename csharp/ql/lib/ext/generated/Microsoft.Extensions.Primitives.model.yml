@@ -4,10 +4,18 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", False, "CancellationChangeToken", "(System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "Extensions", False, "Append", "(System.Text.StringBuilder,Microsoft.Extensions.Primitives.StringSegment)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "Extensions", False, "Append", "(System.Text.StringBuilder,Microsoft.Extensions.Primitives.StringSegment)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "Extensions", False, "Append", "(System.Text.StringBuilder,Microsoft.Extensions.Primitives.StringSegment)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringSegment", False, "AsMemory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Split", "(System.Char[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Split", "(System.Char[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Substring", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Substring", "(System.Int32,System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringSegment", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringSegment", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", False, "Enumerator", "(Microsoft.Extensions.Primitives.StringTokenizer)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer", False, "StringTokenizer", "(Microsoft.Extensions.Primitives.StringSegment,System.Char[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -18,7 +26,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", "CancellationChangeToken", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CancellationChangeToken", "get_HasChanged", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CompositeChangeToken", "CompositeChangeToken", "(System.Collections.Generic.IReadOnlyList<Microsoft.Extensions.Primitives.IChangeToken>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "CompositeChangeToken", "get_ActiveChangeCallbacks", "()", "summary", "df-generated"]
@@ -31,7 +38,6 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.String,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "InplaceStringBuilder", "(System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringSegment", "AsMemory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "(System.Int32,System.Int32)", "summary", "df-generated"]
@@ -57,9 +63,6 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringSegment", "StringSegment", "(System.String,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "Subsegment", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "Subsegment", "(System.Int32,System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringSegment", "Substring", "(System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringSegment", "Substring", "(System.Int32,System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringSegment", "ToString", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "Trim", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "TrimEnd", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "TrimStart", "()", "summary", "df-generated"]
@@ -68,7 +71,6 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringSegment", "get_Item", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "get_Length", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "get_Offset", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringSegment", "get_Value", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "op_Equality", "(Microsoft.Extensions.Primitives.StringSegment,Microsoft.Extensions.Primitives.StringSegment)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "op_Inequality", "(Microsoft.Extensions.Primitives.StringSegment,Microsoft.Extensions.Primitives.StringSegment)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegmentComparer", "Compare", "(Microsoft.Extensions.Primitives.StringSegment,Microsoft.Extensions.Primitives.StringSegment)", "summary", "df-generated"]

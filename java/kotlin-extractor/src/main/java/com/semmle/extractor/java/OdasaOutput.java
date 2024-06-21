@@ -39,7 +39,6 @@ import com.semmle.util.data.Pair;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.NestedError;
 import com.semmle.util.exception.ResourceError;
-import com.semmle.util.extraction.PopulationSpecFile;
 import com.semmle.util.extraction.SpecFileEntry;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
