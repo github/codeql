@@ -647,9 +647,7 @@ private predicate parseAngles(
 /** Holds if `s` can be broken into a string of the form `(betweenParens)`. */
 bindingset[s]
 pragma[inline_late]
-private predicate parseParens(string s, string betweenParens) {
-  betweenParens = s.regexpCapture("\\(([^\\)]+)\\)", 1)
-}
+private predicate parseParens(string s, string betweenParens) { s = "(" + betweenParens + ")" }
 
 /**
  * Holds if `elementSpec(_, type, _, name, signature, _)` and:
