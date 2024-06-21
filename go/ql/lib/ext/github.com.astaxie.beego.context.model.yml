@@ -9,6 +9,12 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
+      - ["github.com/astaxie/beego", "Controller", True, "ParseForm", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/astaxie/beego", "Controller", True, "GetFile", "", "", "ReturnValue[0..1]", "remote", "manual"]
+      - ["github.com/astaxie/beego", "Controller", True, "GetFiles", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/astaxie/beego", "Controller", True, "GetString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/astaxie/beego", "Controller", True, "GetStrings", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/astaxie/beego", "Controller", True, "Input", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "Data", "", "", "ReturnValue[0]", "remote", "manual"]
@@ -23,6 +29,12 @@ extensions:
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "URL", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"]
 
+      - ["github.com/beego/beego", "Controller", True, "ParseForm", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/beego/beego", "Controller", True, "GetFile", "", "", "ReturnValue[0..1]", "remote", "manual"]
+      - ["github.com/beego/beego", "Controller", True, "GetFiles", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego", "Controller", True, "GetString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego", "Controller", True, "GetStrings", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego", "Controller", True, "Input", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "Data", "", "", "ReturnValue[0]", "remote", "manual"]
@@ -37,6 +49,12 @@ extensions:
       - ["github.com/beego/beego/context", "BeegoInput", True, "URL", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"]
 
+      - ["github.com/beego/beego/server/web", "Controller", True, "ParseForm", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/beego/beego/server/web", "Controller", True, "GetFile", "", "", "ReturnValue[0..1]", "remote", "manual"]
+      - ["github.com/beego/beego/server/web", "Controller", True, "GetFiles", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego/server/web", "Controller", True, "GetString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego/server/web", "Controller", True, "GetStrings", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego/server/web", "Controller", True, "Input", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "Data", "", "", "ReturnValue[0]", "remote", "manual"]

@@ -57,30 +57,6 @@ module Beego {
   }
 
   /**
-   * `beego.Controller` sources of untrusted data.
-   */
-  private class BeegoControllerSource extends RemoteFlowSource::Range {
-    BeegoControllerSource() {
-      exists(string methodName, FunctionOutput output |
-        methodName = "ParseForm" and
-        output.isParameter(0)
-        or
-        methodName in ["GetFile", "GetFiles", "GetString", "GetStrings", "Input"] and
-        output.isResult(0)
-        or
-        methodName = "GetFile" and
-        output.isResult(1)
-      |
-        exists(DataFlow::MethodCallNode c |
-          c.getTarget().hasQualifiedName(packagePath(), "Controller", methodName)
-        |
-          this = output.getExitNode(c)
-        )
-      )
-    }
-  }
-
-  /**
    * `BeegoInputRequestBody` sources of untrusted data.
    */
   private class BeegoInputRequestBodySource extends RemoteFlowSource::Range {
