@@ -889,6 +889,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     predicate compatibleTypesCached(DataFlowType t1, DataFlowType t2) { compatibleTypes(t1, t2) }
 
+    private predicate relevantType(DataFlowType t) { t = getNodeType(_) }
+
+    cached
+    predicate isTopType(DataFlowType t) {
+      strictcount(DataFlowType t0 | relevantType(t0)) =
+        strictcount(DataFlowType t0 | relevantType(t0) and compatibleTypesCached(t, t0))
+    }
+
     cached
     predicate typeStrongerThanCached(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
 
