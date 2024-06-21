@@ -23,6 +23,7 @@ extensions:
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "URI", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "URL", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/astaxie/beego/context", "BeegoInput", True, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/astaxie/beego/context", "Context", True, "GetCookie", "", "", "ReturnValue", "remote", "manual"]
 
       - ["github.com/beego/beego/context", "BeegoInput", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
@@ -38,6 +39,7 @@ extensions:
       - ["github.com/beego/beego/context", "BeegoInput", True, "URI", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "URL", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/context", "BeegoInput", True, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego/context", "Context", True, "GetCookie", "", "", "ReturnValue", "remote", "manual"]
 
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
@@ -53,3 +55,4 @@ extensions:
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "URI", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "URL", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/beego/beego/server/web/context", "BeegoInput", True, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/beego/beego/server/web/context", "Context", True, "GetCookie", "", "", "ReturnValue", "remote", "manual"]

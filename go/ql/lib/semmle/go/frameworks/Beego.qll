@@ -56,17 +56,6 @@ module Beego {
     }
   }
 
-  /**
-   * `beego/context.Context` sources of untrusted data.
-   */
-  private class BeegoContextSource extends RemoteFlowSource::Range {
-    BeegoContextSource() {
-      exists(Method m | m.hasQualifiedName(contextPackagePath(), "Context", "GetCookie") |
-        this = m.getACall().getResult()
-      )
-    }
-  }
-
   private class BeegoOutputInstance extends Http::ResponseWriter::Range {
     SsaWithFields v;
 
