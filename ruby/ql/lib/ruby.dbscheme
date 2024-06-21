@@ -569,6 +569,13 @@ ruby_do_block_def(
   unique int id: @ruby_do_block
 );
 
+@ruby_element_reference_block_type = @ruby_block | @ruby_do_block
+
+ruby_element_reference_block(
+  unique int ruby_element_reference: @ruby_element_reference ref,
+  unique int block: @ruby_element_reference_block_type ref
+);
+
 @ruby_element_reference_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
 
 #keyset[ruby_element_reference, index]

@@ -633,6 +633,9 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ElementReference" }
 
+    /** Gets the node corresponding to the field `block`. */
+    final AstNode getBlock() { ruby_element_reference_block(this, result) }
+
     /** Gets the node corresponding to the field `object`. */
     final UnderscorePrimary getObject() { ruby_element_reference_def(this, result) }
 
@@ -641,7 +644,9 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ruby_element_reference_def(this, result) or ruby_element_reference_child(this, _, result)
+      ruby_element_reference_block(this, result) or
+      ruby_element_reference_def(this, result) or
+      ruby_element_reference_child(this, _, result)
     }
   }
 
