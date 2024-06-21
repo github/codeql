@@ -1078,5 +1078,5 @@ template<typename T>
 void indirect_sink_const_ref(const T&);
 
 void test_temp_with_conversion_from_materialization() {
-  indirect_sink_const_ref(source()); // $ MISSING: ast,ir
+  indirect_sink_const_ref(source()); // $ ir MISSING: ast
 }
