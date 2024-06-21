@@ -154,8 +154,20 @@ namespace Semmle.Extraction.CSharp
 
                     var compilerCall = compilationData.CompilerCall;
                     var diagnosticName = compilerCall.GetDiagnosticName();
-                    logger.LogInfo($"  Processing compilation {diagnosticName}");
+                    logger.LogInfo($"  Processing compilation {diagnosticName} at {compilerCall.ProjectDirectory}");
                     var compilerArgs = compilerCall.GetArguments();
+
+                    var compilationIdentifierPath = string.Empty;
+                    try
+                    {
+                        compilationIdentifierPath = FileUtils.ConvertPathToSafeRelativePath(
+                            Path.GetRelativePath(Directory.GetCurrentDirectory(), compilerCall.ProjectDirectory));
+                    }
+                    catch (ArgumentException exc)
+                    {
+                        logger.LogWarning($"  Failed to get relative path for {compilerCall.ProjectDirectory} from current working directory {Directory.GetCurrentDirectory()}: {exc.Message}");
+                    }
+
                     var args = reader.ReadCommandLineArguments(compilerCall);
 
                     // Generated syntax trees are always added to the end of the list of syntax trees.
@@ -173,7 +185,7 @@ namespace Semmle.Extraction.CSharp
                             TracingAnalyser.GetOutputName(compilation, args),
                             compilation,
                             generatedSyntaxTrees,
-                            diagnosticName,
+                            Path.Combine(compilationIdentifierPath, diagnosticName),
                             options),
                         () => { });
 
