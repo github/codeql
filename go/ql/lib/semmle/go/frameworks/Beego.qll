@@ -57,17 +57,6 @@ module Beego {
   }
 
   /**
-   * `BeegoInputRequestBody` sources of untrusted data.
-   */
-  private class BeegoInputRequestBodySource extends RemoteFlowSource::Range {
-    BeegoInputRequestBodySource() {
-      exists(DataFlow::FieldReadNode frn | this = frn |
-        frn.getField().hasQualifiedName(contextPackagePath(), "BeegoInput", "RequestBody")
-      )
-    }
-  }
-
-  /**
    * `beego/context.Context` sources of untrusted data.
    */
   private class BeegoContextSource extends RemoteFlowSource::Range {
