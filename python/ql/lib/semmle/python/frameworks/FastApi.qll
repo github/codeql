@@ -383,5 +383,33 @@ module FastApi {
 
       override predicate valueAllowsNewline() { none() }
     }
+
+    class HeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+      DataFlow::Node index;
+      DataFlow::Node value;
+
+      HeaderSubscriptWrite() {
+        exists(SubscriptNode subscript, DataFlow::AttrRead headerLookup |
+          // To give `this` a value, we need to choose between either LHS or RHS,
+          // and just go with the LHS
+          this.asCfgNode() = subscript
+        |
+          headerLookup.accesses(instance(), "headers") and
+          exists(DataFlow::Node subscriptObj | subscriptObj.asCfgNode() = subscript.getObject() |
+            headerLookup.flowsTo(subscriptObj)
+          ) and
+          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          index.asCfgNode() = subscript.getIndex()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result = index }
+
+      override DataFlow::Node getValueArg() { result = value }
+
+      override predicate nameAllowsNewline() { none() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
   }
 }
