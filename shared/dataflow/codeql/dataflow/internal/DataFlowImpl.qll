@@ -2486,6 +2486,264 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           callEdgeReturn(call, c, _, _, _, _, _)
         }
 
+        additional module Graph {
+          private newtype TStagePathNode =
+            TStagePathNodeMid(
+              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+              ApOption argAp, Typ t, Ap ap
+            ) {
+              fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _) and
+              revFlow(node, state, _, _, ap)
+            } or
+            TStagePathNodeSrcGrp() or
+            TStagePathNodeSinkGrp()
+
+          class StagePathNode extends TStagePathNode {
+            abstract string toString();
+
+            abstract Location getLocation();
+
+            predicate isSource() { none() }
+
+            predicate isSink() { none() }
+
+            predicate isArbitrarySource() { this instanceof TStagePathNodeSrcGrp }
+
+            predicate isArbitrarySink() { this instanceof TStagePathNodeSinkGrp }
+          }
+
+          class StagePathNodeSrcGrp extends StagePathNode, TStagePathNodeSrcGrp {
+            override string toString() { result = "<any source>" }
+
+            override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+          }
+
+          class StagePathNodeSinkGrp extends StagePathNode, TStagePathNodeSinkGrp {
+            override string toString() { result = "<any sink>" }
+
+            override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+          }
+
+          class StagePathNodeMid extends StagePathNode, TStagePathNodeMid {
+            NodeEx node;
+            FlowState state;
+            Cc cc;
+            ParamNodeOption summaryCtx;
+            TypOption argT;
+            ApOption argAp;
+            Typ t;
+            Ap ap;
+
+            StagePathNodeMid() {
+              this = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            }
+
+            override string toString() {
+              result =
+                node.toString() + " " + cc.toString() + " " + t.toString() + " " + ap.toString()
+            }
+
+            override Location getLocation() { result = node.getLocation() }
+
+            override predicate isSource() {
+              sourceNode(node, state) and
+              (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
+              summaryCtx = TParamNodeNone() and
+              t = getNodeTyp(node) and
+              ap instanceof ApNil
+            }
+
+            override predicate isSink() {
+              sinkNode(node, state) and
+              (if hasSinkCallCtx() then instanceofCcNoCall(cc) else any()) and
+              ap instanceof ApNil
+            }
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowInStep(
+            ArgNodeEx arg, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
+            ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
+            boolean allowsFlowThrough
+          ) {
+            exists(ApApprox apa, boolean allowsFlowThrough0 |
+              FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, arg, _, p, state, outercc, innercc,
+                summaryCtx, argT, argAp, t, ap, apa, _, allowsFlowThrough0) and
+              if PrevStage::parameterMayFlowThrough(p, apa)
+              then allowsFlowThrough = allowsFlowThrough0
+              else allowsFlowThrough = false
+            )
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowThroughStep0(
+            DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
+            ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa,
+            RetNodeEx ret, ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp,
+            ApApprox innerArgApa
+          ) {
+            fwdFlowThrough0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret,
+              innerSummaryCtx, innerArgT, innerArgAp, innerArgApa)
+          }
+
+          bindingset[node, state, cc, summaryCtx, argT, argAp, t, ap]
+          pragma[inline_late]
+          private StagePathNode mkStagePathNode(
+            NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+            ApOption argAp, Typ t, Ap ap
+          ) {
+            result = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowThroughStep1(
+            StagePathNode pn1, StagePathNode pn2, StagePathNode pn3, DataFlowCall call, Cc cc,
+            FlowState state, CcCall ccc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp,
+            Typ t, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
+          ) {
+            exists(FlowState state0, ArgNodeEx arg, ParamNodeEx p, Typ innerArgT, Ap innerArgAp |
+              fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa,
+                ret, p, innerArgT, innerArgAp, innerArgApa) and
+              revFlow(arg, state0, _, _, _) and
+              pn1 = mkStagePathNode(arg, state0, cc, summaryCtx, argT, argAp, innerArgT, innerArgAp) and
+              pn2 =
+                mkStagePathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
+                  TypOption::some(innerArgT), apSome(innerArgAp), innerArgT, innerArgAp) and
+              pn3 =
+                mkStagePathNode(ret, state, ccc, TParamNodeSome(p.asNode()),
+                  TypOption::some(innerArgT), apSome(innerArgAp), t, ap)
+            )
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowThroughStep2(
+            StagePathNode pn1, StagePathNode pn2, StagePathNode pn3, NodeEx node, Cc cc,
+            FlowState state, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
+            Ap ap
+          ) {
+            exists(
+              DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
+              ApApprox innerArgApa, ApApprox apa
+            |
+              fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, ccc, summaryCtx, argT, argAp, t,
+                ap, apa, ret, innerArgApa) and
+              flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
+              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            )
+          }
+
+          private predicate step(
+            StagePathNode pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
+            TypOption argT, ApOption argAp, Typ t, Ap ap
+          ) {
+            exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
+              pn1 = TStagePathNodeMid(mid, state0, cc, summaryCtx, argT, argAp, t0, ap) and
+              localCc = getLocalCc(cc)
+            |
+              localStep(mid, state0, node, state, true, _, localCc) and
+              t = t0
+              or
+              localStep(mid, state0, node, state, false, t, localCc) and
+              ap instanceof ApNil
+            )
+            or
+            exists(NodeEx mid, FlowState state0, Typ t0 |
+              pn1 = TStagePathNodeMid(mid, state0, _, _, _, _, t0, ap) and
+              cc = ccNone() and
+              summaryCtx = TParamNodeNone() and
+              argT instanceof TypOption::None and
+              argAp = apNone()
+            |
+              jumpStepEx(mid, node) and
+              state = state0 and
+              t = t0
+              or
+              additionalJumpStep(mid, node, _) and
+              state = state0 and
+              t = getNodeTyp(node) and
+              ap instanceof ApNil
+              or
+              additionalJumpStateStep(mid, state0, node, state) and
+              t = getNodeTyp(node) and
+              ap instanceof ApNil
+            )
+            or
+            // store
+            exists(NodeEx mid, Content c, Typ t0, Ap ap0 |
+              pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
+              fwdFlowStore(mid, t0, ap0, c, t, node, state, cc, summaryCtx, argT, argAp) and
+              ap = apCons(c, t0, ap0)
+            )
+            or
+            // read
+            exists(NodeEx mid, Typ t0, Ap ap0, Content c |
+              pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
+              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx, argT, argAp) and
+              fwdFlowConsCand(t0, ap0, c, t, ap)
+            )
+            or
+            // flow into a callable
+            exists(
+              ArgNodeEx arg, boolean allowsFlowThrough, Cc outercc, ParamNodeOption outerSummaryCtx,
+              TypOption outerArgT, ApOption outerArgAp
+            |
+              pn1 =
+                TStagePathNodeMid(arg, state, outercc, outerSummaryCtx, outerArgT, outerArgAp, t, ap) and
+              fwdFlowInStep(arg, node, state, outercc, cc, outerSummaryCtx, outerArgT, outerArgAp,
+                t, ap, allowsFlowThrough) and
+              if allowsFlowThrough = true
+              then (
+                summaryCtx = TParamNodeSome(node.asNode()) and
+                argT = TypOption::some(t) and
+                argAp = apSome(ap)
+              ) else (
+                summaryCtx = TParamNodeNone() and
+                argT instanceof TypOption::None and
+                argAp = apNone()
+              )
+            )
+            or
+            // flow out of a callable
+            exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow, ApApprox apa |
+              pn1 = TStagePathNodeMid(ret, state, innercc, summaryCtx, argT, argAp, t, ap) and
+              fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
+              fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, apa, allowsFieldFlow) and
+              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            )
+            or
+            // flow through a callable
+            fwdFlowThroughStep2(pn1, _, _, node, cc, state, summaryCtx, argT, argAp, t, ap)
+          }
+
+          query predicate subpaths(
+            StagePathNode arg, StagePathNode par, StagePathNode ret, StagePathNode out
+          ) {
+            exists(
+              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+              ApOption argAp, Typ t0, Typ t, Ap ap
+            |
+              fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, argT, argAp, t0, ap) and
+              fwdFlow1(node, state, cc, summaryCtx, argT, argAp, t0, t, ap, _) and
+              out = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            )
+          }
+
+          query predicate edges(StagePathNode pn1, StagePathNode pn2) {
+            exists(
+              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+              ApOption argAp, Typ t0, Typ t, Ap ap
+            |
+              step(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              fwdFlow1(node, state, cc, summaryCtx, argT, argAp, t0, t, ap, _) and
+              pn2 = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            )
+            or
+            pn1.isArbitrarySource() and pn2.isSource()
+            or
+            pn1.isSink() and pn2.isArbitrarySink()
+          }
+        }
+
         additional predicate stats(
           boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
           int tfnodes, int tftuples
