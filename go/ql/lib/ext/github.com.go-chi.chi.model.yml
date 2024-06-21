@@ -5,3 +5,4 @@ extensions:
     data:
       - ["github.com/go-chi/chi", "", True, "URLParam", "", "", "ReturnValue", "remote", "manual"]
       - ["github.com/go-chi/chi", "", True, "URLParamFromCtx", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/go-chi/chi", "Context", True, "URLParam", "", "", "ReturnValue", "remote", "manual"]
