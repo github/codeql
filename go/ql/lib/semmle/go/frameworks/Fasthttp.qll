@@ -279,20 +279,24 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.Args Type.
    */
-  module Args {
+  deprecated module Args {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
      *
      * When support for lambdas has been implemented we should model "VisitAll".
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Args",

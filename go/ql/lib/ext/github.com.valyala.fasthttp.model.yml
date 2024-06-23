@@ -13,6 +13,12 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
+      - ["github.com/valyala/fasthttp", "Args", True, "Peek", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "Args", True, "PeekBytes", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "Args", True, "PeekMulti", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "Args", True, "PeekMultiBytes", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "Args", True, "QueryString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "Args", True, "String", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/valyala/fasthttp", "URI", True, "FullURI", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/valyala/fasthttp", "URI", True, "LastPathSegment", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/valyala/fasthttp", "URI", True, "Path", "", "", "ReturnValue[0]", "remote", "manual"]
