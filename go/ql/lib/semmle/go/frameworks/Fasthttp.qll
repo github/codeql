@@ -515,20 +515,24 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources.
    */
-  module RequestHeader {
+  deprecated module RequestHeader {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestHeader",
