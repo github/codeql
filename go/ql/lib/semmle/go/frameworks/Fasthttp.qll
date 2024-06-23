@@ -405,14 +405,16 @@ module Fasthttp {
    */
   module Request {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::range` instead.
+     *
      * The methods as Remote user controllable source which can be many part of request.
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
