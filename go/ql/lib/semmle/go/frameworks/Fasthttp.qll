@@ -252,18 +252,22 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.URI Type.
    */
-  module URI {
+  deprecated module URI {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are part of the incoming URL.
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "URI",

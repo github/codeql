@@ -8,3 +8,14 @@ extensions:
       - ["github.com/valyala/fasthttp", "URI", False, "Update", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
       - ["github.com/valyala/fasthttp", "URI", False, "UpdateBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
       - ["github.com/valyala/fasthttp", "URI", False, "Parse", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/valyala/fasthttp", "URI", True, "FullURI", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", True, "LastPathSegment", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", True, "Path", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", True, "PathOriginal", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", True, "QueryString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/valyala/fasthttp", "URI", True, "String", "", "", "ReturnValue[0]", "remote", "manual"]
