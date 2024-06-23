@@ -853,6 +853,14 @@ class JobImpl extends AstNodeImpl, TJobNode {
     this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
   }
 
+  private predicate hasRuntimeData() {
+    exists(string path, string trigger, string name, string secrets_source, string perms |
+      workflowDataModel(path, trigger, name, secrets_source, perms, _) and
+      path.trim() = this.getLocation().getFile().getRelativePath() and
+      name.trim().matches(this.getId() + "%")
+    )
+  }
+
   private predicate hasRuntimeWritePermissions() {
     // the effective runtime permissions have write access
     exists(string path, string trigger, string name, string secrets_source, string perms |
@@ -885,15 +893,18 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Holds if the action is privileged and externally triggerable. */
   predicate isPrivilegedExternallyTriggerable() {
     exists(EventImpl e |
-      // job is triggereable by an external user
       this.getATriggerEvent() = e and
+      // job is triggereable by an external user
       e.isExternallyTriggerable() and
-      // job is privileged (write access or access to secrets)
+      // no matter if `pull_request` is granted write permissions or access to secrets
+      // when the job is triggered by a `pull_request` event from a fork, they will get revoked
+      not e.getName() = "pull_request" and
       (
-        this.isPrivileged() and
-        not e.getName() = "pull_request"
+        // job is privileged (write access or access to secrets)
+        this.isPrivileged()
         or
-        not this.isPrivileged() and
+        // the trigger event is __normally__ privileged and we have no runtime data to prove otherwise
+        not this.hasRuntimeData() and
         e.isPrivileged()
       )
     )
