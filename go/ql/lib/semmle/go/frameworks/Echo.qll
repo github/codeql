@@ -23,19 +23,6 @@ private module Echo {
   }
 
   /**
-   * A call to a method on `Context` struct that unmarshals data into a target.
-   */
-  private class EchoContextBinder extends RemoteFlowSource::Range {
-    EchoContextBinder() {
-      exists(DataFlow::MethodCallNode call |
-        call.getTarget().hasQualifiedName(packagePath(), "Context", "Bind")
-      |
-        this = FunctionOutput::parameter(0).getExitNode(call)
-      )
-    }
-  }
-
-  /**
    * `echo.Context` methods which set the content-type to `text/html` and write a result in one operation.
    */
   private class EchoHtmlOutputs extends Http::ResponseBody::Range {

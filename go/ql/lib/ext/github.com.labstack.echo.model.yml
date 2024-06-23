@@ -10,6 +10,7 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
+      - ["github.com/labstack/echo", "Context", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
       - ["github.com/labstack/echo", "Context", True, "Param", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/labstack/echo", "Context", True, "ParamValues", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["github.com/labstack/echo", "Context", True, "QueryParam", "", "", "ReturnValue[0]", "remote", "manual"]
