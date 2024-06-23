@@ -10,23 +10,6 @@ private module Echo {
   private string packagePath() { result = package("github.com/labstack/echo", "") }
 
   /**
-   * Data from a `Context` interface method, considered as a source of remote flow.
-   */
-  private class EchoContextSource extends RemoteFlowSource::Range {
-    EchoContextSource() {
-      exists(DataFlow::MethodCallNode call, string methodName |
-        methodName =
-          [
-            "Param", "ParamValues", "QueryParam", "QueryParams", "QueryString", "FormValue",
-            "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"
-          ] and
-        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
-        this = call.getResult(0)
-      )
-    }
-  }
-
-  /**
    * Data from a `Context` interface method that is not generally exploitable for open-redirect attacks.
    */
   private class EchoContextRedirectUnexploitableSource extends Http::Redirect::UnexploitableSource {
