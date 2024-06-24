@@ -130,10 +130,6 @@ class TargetApiSpecific extends Callable {
   predicate isRelevant() { relevant(this) }
 }
 
-string asPartialModel(TargetApiSpecific api) { result = ExternalFlow::asPartialModel(api.lift()) }
-
-string asPartialNeutralModel(TargetApiSpecific api) { result = ExternalFlow::getSignature(api) }
-
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.
  * Eg. char[] is roughly equivalent to string and thus a highly

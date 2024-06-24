@@ -376,7 +376,7 @@ private predicate callableInfo(Callable c, string name, UnboundValueOrRefType de
 private class InterpretedCallable extends Callable {
   InterpretedCallable() {
     exists(string namespace, string type, string name |
-      partialModel(this, namespace, type, name, _) and
+      partialModel(this, namespace, type, _, name, _) and
       elementSpec(namespace, type, _, name, _, _)
     )
     or
@@ -520,24 +520,11 @@ string parameterQualifiedTypeNamesToString(Callable c) {
 }
 
 predicate partialModel(
-  UnboundCallable c, string namespace, string type, string name, string parameters
+  Callable c, string namespace, string type, string extensible, string name, string parameters
 ) {
   QN::hasQualifiedName(c, namespace, type, name) and
+  extensible = getCallableOverride(c) and
   parameters = "(" + parameterQualifiedTypeNamesToString(c) + ")"
-}
-
-/** Computes the first 6 columns for positive CSV rows of `c`. */
-string asPartialModel(UnboundCallable c) {
-  exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters) and
-    result =
-      namespace + ";" //
-        + type + ";" //
-        + getCallableOverride(c) + ";" //
-        + name + ";" //
-        + parameters + ";" //
-        + /* ext + */ ";" //
-  )
 }
 
 /**
@@ -545,7 +532,7 @@ string asPartialModel(UnboundCallable c) {
  */
 string getSignature(UnboundCallable c) {
   exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters)
+    partialModel(c, namespace, type, _, name, parameters)
   |
     result =
       namespace + ";" //
