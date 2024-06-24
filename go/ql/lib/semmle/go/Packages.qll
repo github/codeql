@@ -33,6 +33,12 @@ class Package extends @package {
   string toString() { result = "package " + this.getPath() }
 }
 
+/**
+ * Gets a regex which matches major version suffixes.
+ *
+ * For example, this will match "/v2" followed by the end of a string or a "/"
+ * (but it won't include the end of the strong or the "/" in the match).
+ */
 string majorVersionSuffixRegex() { result = "[./]v\\d+(?=$|/)" }
 
 /**
