@@ -1,0 +1,5 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: deallocationFunctionModel
+    data: []
