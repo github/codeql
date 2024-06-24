@@ -1,0 +1,14 @@
+===================================================================
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,9 +1,9 @@
+ "bzlmod declaration for bazelbuild/rules_nodejs"
+ 
+ module(
+     name = "rules_nodejs",
+-    version = "0.0.0",
++    version = "6.2.0",
+     compatibility_level = 1,
+ )
+ 
+ # Lower-bounds (minimum) versions for direct runtime dependencies
