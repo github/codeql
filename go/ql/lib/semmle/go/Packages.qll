@@ -34,10 +34,10 @@ class Package extends @package {
 }
 
 /**
- * Gets a regex which matches major version suffixes.
+ * Gets a regex that matches major version suffixes.
  *
- * For example, this will match "/v2" followed by the end of a string or a "/"
- * (but it won't include the end of the strong or the "/" in the match).
+ * For example, this will match "/v2" followed by the end of the string or a "/"
+ * (but it won't include the end of the string or the "/" in the match).
  */
 string majorVersionSuffixRegex() { result = "[./]v\\d+(?=$|/)" }
 
