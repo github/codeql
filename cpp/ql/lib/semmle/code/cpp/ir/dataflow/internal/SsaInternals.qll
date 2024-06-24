@@ -12,54 +12,107 @@ private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
 import SsaInternalsCommon
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA as AliasedSSA
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
 
 private module SourceVariables {
+  private predicate isSourceVirtualVariableVariable(AliasedSSA::VariableVirtualVariable vv, int ind) {
+    ind = [1 .. countIndirectionsForCppType(vv.getType()) + 1]
+  }
+
   cached
   private newtype TSourceVariable =
-    TMkSourceVariable(BaseSourceVariable base, int ind) {
+    TSourceSsaVariable(BaseSourceVariable base, int ind) {
+      // Only create a SSA variable if it's not already created by the `TSourceVirtualVariable` branch.
+      not exists(AliasedSSA::VariableVirtualVariable vv, VariableAllocation var |
+        isSourceVirtualVariableVariable(vv, ind) and
+        var = vv.getAllocation() and
+        var.getIRVariable() = base.(BaseIRVariable).getIRVariable()
+      ) and
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
+    } or
+    TSourceVirtualVariable(AliasedSSA::VariableVirtualVariable vv, int ind) {
+      isSourceVirtualVariableVariable(vv, ind)
     }
 
-  class SourceVariable extends TSourceVariable {
-    BaseSourceVariable base;
+  abstract private class AbstractSourceVariable extends TSourceVariable {
     int ind;
 
-    SourceVariable() { this = TMkSourceVariable(base, ind) }
-
-    /** Gets the IR variable associated with this `SourceVariable`, if any. */
-    IRVariable getIRVariable() { result = base.(BaseIRVariable).getIRVariable() }
-
-    /**
-     * Gets the base source variable (i.e., the variable without any
-     * indirections) of this source variable.
-     */
-    BaseSourceVariable getBaseVariable() { result = base }
+    bindingset[ind]
+    AbstractSourceVariable() { any() }
 
     /** Gets a textual representation of this element. */
-    string toString() { result = repeatStars(this.getIndirection()) + base.toString() }
+    abstract string toString();
 
     /**
      * Gets the number of loads performed on the base source variable
      * to reach the value of this source variable.
      */
-    int getIndirection() { result = ind }
-
-    /** Holds if this variable is a glvalue. */
-    predicate isGLValue() { ind = 0 }
+    final int getIndirection() { result = ind }
 
     /**
      * Gets the type of this source variable. If `isGLValue()` holds, then
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    DataFlowType getType() {
+    abstract DataFlowType getType();
+
+    /** Gets the location of this variable. */
+    abstract Location getLocation();
+
+    /** Holds if this variable is a glvalue. */
+    final predicate isGLValue() { ind = 0 }
+
+    /** Gets the IR variable associated with this `SourceVariable`, if any. */
+    abstract IRVariable getIRVariable();
+
+    /**
+     * Gets the base source variable (i.e., the variable without any
+     * indirections) of this source variable.
+     */
+    abstract BaseSourceVariable getBaseVariable();
+  }
+
+  final class SourceVariable = AbstractSourceVariable;
+
+  private class SourceSsaVariable extends AbstractSourceVariable, TSourceSsaVariable {
+    BaseSourceVariable base;
+
+    SourceSsaVariable() { this = TSourceSsaVariable(base, ind) }
+
+    override IRVariable getIRVariable() { result = base.(BaseIRVariable).getIRVariable() }
+
+    override BaseSourceVariable getBaseVariable() { result = base }
+
+    override string toString() { result = repeatStars(this.getIndirection()) + base.toString() }
+
+    override DataFlowType getType() {
       if this.isGLValue()
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
     }
 
-    /** Gets the location of this variable. */
-    Location getLocation() { result = this.getBaseVariable().getLocation() }
+    override Location getLocation() { result = this.getBaseVariable().getLocation() }
+  }
+
+  private class SourceVirtualVariable extends AbstractSourceVariable, TSourceVirtualVariable {
+    AliasedSSA::VirtualVariable vv;
+
+    SourceVirtualVariable() { this = TSourceVirtualVariable(vv, ind) }
+
+    override Location getLocation() { result = vv.getLocation() }
+
+    override BaseIRVariable getBaseVariable() { result.getIRVariable() = this.getIRVariable() }
+
+    override IRVariable getIRVariable() {
+      result = vv.getAllocation().(VariableAllocation).getIRVariable()
+    }
+
+    override DataFlowType getType() {
+      result = getTypeImpl(any(Type t | vv.getType().hasType(t, false)), ind - 1)
+    }
+
+    override string toString() { result = repeatStars(this.getIndirection()) + vv.toString() }
   }
 }
 
@@ -106,7 +159,7 @@ cached
 private newtype TDefImpl =
   TDefAddressImpl(BaseIRVariable v) or
   TDirectDefImpl(Operand address, int indirectionIndex) {
-    isDef(_, _, address, _, _, indirectionIndex)
+    isDef(_, _, address, _, indirectionIndex)
   } or
   TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
@@ -117,8 +170,8 @@ private newtype TDefImpl =
 cached
 private newtype TUseImpl =
   TDirectUseImpl(Operand operand, int indirectionIndex) {
-    isUse(_, operand, _, _, indirectionIndex) and
-    not isDef(true, _, operand, _, _, _)
+    isUse(_, operand, _, indirectionIndex) and
+    not isDef(true, _, operand, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
@@ -142,7 +195,7 @@ private predicate isGlobalUse(
     min(int cand, VariableAddressInstruction vai |
       vai.getEnclosingIRFunction() = f and
       vai.getAstVariable() = v and
-      isDef(_, _, _, vai, cand, indirectionIndex)
+      isSsaDef(_, _, _, vai, cand, indirectionIndex)
     |
       cand
     )
@@ -154,8 +207,8 @@ private predicate isGlobalDefImpl(
   exists(VariableAddressInstruction vai |
     vai.getEnclosingIRFunction() = f and
     vai.getAstVariable() = v and
-    isUse(_, _, vai, indirection, indirectionIndex) and
-    not isDef(_, _, _, vai, _, indirectionIndex)
+    isSsaUse(_, _, vai, indirection, indirectionIndex) and
+    not isSsaDef(_, _, _, vai, _, indirectionIndex)
   )
 }
 
@@ -201,29 +254,8 @@ abstract class DefImpl extends TDefImpl {
   /** Gets the indirection index of this definition. */
   final int getIndirectionIndex() { result = indirectionIndex }
 
-  /**
-   * Gets the index (i.e., the number of loads required) of this
-   * definition or use.
-   *
-   * Note that this is _not_ the definition's (or use's) index in
-   * the enclosing basic block. To obtain this index, use
-   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
-   */
-  abstract int getIndirection();
-
-  /**
-   * Gets the base source variable (i.e., the variable without
-   * any indirection) of this definition or use.
-   */
-  abstract BaseSourceVariable getBaseSourceVariable();
-
   /** Gets the variable that is defined or used. */
-  SourceVariable getSourceVariable() {
-    exists(BaseSourceVariable v, int indirection |
-      sourceVariableHasBaseAndIndex(result, v, indirection) and
-      defHasSourceVariable(this, v, indirection)
-    )
-  }
+  abstract SourceVariable getSourceVariable();
 
   abstract predicate isCertain();
 
@@ -262,50 +294,17 @@ abstract class UseImpl extends TUseImpl {
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
 
-  /**
-   * Gets the index (i.e., the number of loads required) of this
-   * definition or use.
-   *
-   * Note that this is _not_ the definition's (or use's) index in
-   * the enclosing basic block. To obtain this index, use
-   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
-   */
-  abstract int getIndirection();
-
   /** Gets the indirection index of this use. */
   final int getIndirectionIndex() { result = indirectionIndex }
 
-  /**
-   * Gets the base source variable (i.e., the variable without
-   * any indirection) of this definition or use.
-   */
-  abstract BaseSourceVariable getBaseSourceVariable();
-
   /** Gets the variable that is defined or used. */
-  SourceVariable getSourceVariable() {
-    exists(BaseSourceVariable v, int indirection |
-      sourceVariableHasBaseAndIndex(result, v, indirection) and
-      useHasSourceVariable(this, v, indirection)
-    )
-  }
+  abstract SourceVariable getSourceVariable();
 
   /**
    * Holds if this use is guaranteed to read the
    * associated variable.
    */
   abstract predicate isCertain();
-}
-
-pragma[noinline]
-private predicate defHasSourceVariable(DefImpl def, BaseSourceVariable bv, int ind) {
-  bv = def.getBaseSourceVariable() and
-  ind = def.getIndirection()
-}
-
-pragma[noinline]
-private predicate useHasSourceVariable(UseImpl use, BaseSourceVariable bv, int ind) {
-  bv = use.getBaseSourceVariable() and
-  ind = use.getIndirection()
 }
 
 pragma[noinline]
@@ -336,8 +335,6 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
 
   override string toString() { result = "Def of &" + v.toString() }
 
-  final override int getIndirection() { result = 0 }
-
   final override predicate isCertain() { any() }
 
   final override Node0Impl getValue() { none() }
@@ -356,12 +353,7 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
 
   override Cpp::Location getLocation() { result = v.getIRVariable().getLocation() }
 
-  final override SourceVariable getSourceVariable() {
-    result.getBaseVariable() = v and
-    result.getIndirection() = 0
-  }
-
-  final override BaseSourceVariable getBaseSourceVariable() { result = v }
+  final override SourceVariable getSourceVariable() { sourceVariableHasBaseAndIndex(result, v, 0) }
 }
 
 private class DirectDef extends DefImpl, TDirectDefImpl {
@@ -379,19 +371,31 @@ private class DirectDef extends DefImpl, TDirectDefImpl {
 
   override Operand getAddressOperand() { result = address }
 
-  private BaseSourceVariableInstruction getBase() {
-    isDef(_, _, address, result, _, indirectionIndex)
+  private predicate isNonVirtualDefOf(BaseSourceVariable bv, int ind) {
+    exists(BaseSourceVariableInstruction base |
+      isSsaDef(_, _, address, base, ind, indirectionIndex) and
+      bv = base.getBaseSourceVariable()
+    )
   }
 
-  override BaseSourceVariable getBaseSourceVariable() {
-    result = this.getBase().getBaseSourceVariable()
+  private predicate isVirtualDefOf(BaseIRVariable bv, int ind) {
+    exists(VariableAllocation v |
+      isVirtualDef(_, _, address, v, ind, indirectionIndex) and
+      bv.getIRVariable() = v.getIRVariable()
+    )
   }
 
-  override int getIndirection() { isDef(_, _, address, _, result, indirectionIndex) }
+  override SourceVariable getSourceVariable() {
+    exists(BaseSourceVariable bv, int ind | sourceVariableHasBaseAndIndex(result, bv, ind) |
+      this.isNonVirtualDefOf(bv, ind)
+      or
+      this.isVirtualDefOf(bv, ind)
+    )
+  }
 
-  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  override Node0Impl getValue() { isDef(_, result, address, _, _) }
 
-  override predicate isCertain() { isDef(true, _, address, _, _, indirectionIndex) }
+  override predicate isCertain() { isDef(true, _, address, _, indirectionIndex) }
 }
 
 private class DirectUseImpl extends UseImpl, TDirectUseImpl {
@@ -406,12 +410,13 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
     // predicate's implementation.
     if this.getBase().getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
     then
-      exists(Operand op, int indirection, Instruction base |
-        indirection = this.getIndirection() and
+      exists(Operand op, int indirection, Instruction base, SourceVariable sv |
+        sv = this.getSourceVariable() and
+        indirection = sv.getIndirection() and
         base = this.getBase() and
         op =
           min(Operand cand, int i |
-            isUse(_, cand, base, indirection, indirectionIndex) and
+            isSsaUse(_, cand, base, indirection, indirectionIndex) and
             block.getInstruction(i) = cand.getUse()
           |
             cand order by i
@@ -421,19 +426,37 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
     else operand.getUse() = block.getInstruction(index)
   }
 
-  private BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, indirectionIndex) }
+  override SourceVariable getSourceVariable() {
+    exists(BaseSourceVariable bv, int indirection |
+      sourceVariableHasBaseAndIndex(result, bv, indirection)
+    |
+      this.isNonVirtualUseOf(_, bv, indirection)
+      or
+      this.isVirtualUseOf(bv, indirection)
+    )
+  }
 
-  override BaseSourceVariable getBaseSourceVariable() {
-    result = this.getBase().getBaseSourceVariable()
+  private BaseSourceVariableInstruction getBase() { this.isNonVirtualUseOf(result, _, _) }
+
+  private predicate isNonVirtualUseOf(
+    BaseSourceVariableInstruction base, BaseSourceVariable bv, int ind
+  ) {
+    isSsaUse(_, operand, base, ind, indirectionIndex) and
+    base.getBaseSourceVariable() = bv
+  }
+
+  private predicate isVirtualUseOf(BaseIRVariable bv, int ind) {
+    exists(VariableAllocation v |
+      isVirtualUse(_, operand, v, ind, indirectionIndex) and
+      bv.getIRVariable() = v.getIRVariable()
+    )
   }
 
   final Operand getOperand() { result = operand }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 
-  override int getIndirection() { isUse(_, operand, _, result, indirectionIndex) }
-
-  override predicate isCertain() { isUse(true, operand, _, _, indirectionIndex) }
+  override predicate isCertain() { isUse(true, operand, _, indirectionIndex) }
 
   override Node getNode() { nodeHasOperand(result, operand, indirectionIndex) }
 }
@@ -459,7 +482,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 
   override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex) }
 
-  override int getIndirection() { result = indirectionIndex + 1 }
+  int getIndirection() { result = indirectionIndex + 1 }
 
   override predicate isCertain() { any() }
 
@@ -492,7 +515,13 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
     result instanceof UnknownDefaultLocation
   }
 
-  override BaseIRVariable getBaseSourceVariable() { result.getIRVariable().getAst() = p }
+  override SourceVariable getSourceVariable() {
+    exists(BaseIRVariable bv, int ind |
+      sourceVariableHasBaseAndIndex(result, bv, ind) and
+      bv.getIRVariable().getAst() = p and
+      ind = this.getIndirection()
+    )
+  }
 }
 
 /**
@@ -556,7 +585,8 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
-  override int getIndirection() { isGlobalUse(global, f, result, indirectionIndex) }
+  /** Gets the indirection of this use. */
+  int getIndirection() { isGlobalUse(global, f, result, indirectionIndex) }
 
   /** Gets the global variable associated with this use. */
   GlobalLikeVariable getVariable() { result = global }
@@ -578,8 +608,12 @@ class GlobalUse extends UseImpl, TGlobalUse {
     )
   }
 
-  override BaseSourceVariable getBaseSourceVariable() {
-    baseSourceVariableIsGlobal(result, global, f)
+  override SourceVariable getSourceVariable() {
+    exists(BaseIRVariable bv, int ind |
+      sourceVariableHasBaseAndIndex(result, bv, ind) and
+      baseSourceVariableIsGlobal(bv, global, f) and
+      ind = this.getIndirection()
+    )
   }
 
   final override Cpp::Location getLocation() { result = f.getLocation() }
@@ -625,11 +659,15 @@ class GlobalDefImpl extends DefImpl, TGlobalDefImpl {
   }
 
   /** Gets the global variable associated with this definition. */
-  override BaseSourceVariable getBaseSourceVariable() {
-    baseSourceVariableIsGlobal(result, global, f)
+  override SourceVariable getSourceVariable() {
+    exists(BaseSourceVariable bv, int ind |
+      sourceVariableHasBaseAndIndex(result, bv, ind) and
+      baseSourceVariableIsGlobal(bv, global, f) and
+      ind = this.getIndirection()
+    )
   }
 
-  override int getIndirection() { result = indirectionIndex }
+  int getIndirection() { result = indirectionIndex }
 
   override Node0Impl getValue() { none() }
 
@@ -681,13 +719,7 @@ predicate outNodeHasAddressAndIndex(
  */
 predicate defToNode(Node node, Def def, SourceVariable sv, IRBlock bb, int i, boolean uncertain) {
   def.hasIndexInBlock(bb, i, sv) and
-  (
-    nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
-    or
-    nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
-    or
-    node.(InitialGlobalValue).getGlobalDef() = def
-  ) and
+  node = def.getNode() and
   if def.isCertain() then uncertain = false else uncertain = true
 }
 
@@ -1116,12 +1148,8 @@ abstract class Def extends SsaDef, TDef {
   /** Gets the indirection index of this definition. */
   abstract int getIndirectionIndex();
 
-  /**
-   * Gets the indirection level that this definition is writing to.
-   * For instance, `x = y` is a definition of `x` at indirection level 1 and
-   * `*x = y` is a definition of `x` at indirection level 2.
-   */
-  abstract int getIndirection();
+  /** Gets the node associated with this use. */
+  abstract Node getNode();
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is not
@@ -1157,7 +1185,11 @@ private class NonGlobalDef extends Def {
 
   override int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
 
-  override int getIndirection() { result = this.getImpl().getIndirection() }
+  final override Node getNode() {
+    nodeHasOperand(result, this.getValue().asOperand(), this.getIndirectionIndex())
+    or
+    nodeHasInstruction(result, this.getValue().asInstruction(), this.getIndirectionIndex())
+  }
 }
 
 class GlobalDef extends Def {
@@ -1191,7 +1223,10 @@ class GlobalDef extends Def {
 
   final override int getIndirectionIndex() { result = global.getIndirectionIndex() }
 
-  final override int getIndirection() { result = global.getIndirection() }
+  /** Gets the indirection of this def. */
+  int getIndirection() { result = global.getIndirection() }
+
+  final override Node getNode() { result.(InitialGlobalValue).getGlobalDef() = this }
 }
 
 class Phi extends TPhi, SsaDef {

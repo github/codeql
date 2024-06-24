@@ -13,10 +13,10 @@ void test_pointer_deref_assignment()
 
 	*p_x = source();
 
-	sink(x); // $ MISSING: ast,ir
+	sink(x); // $ ir MISSING: ast
 	sink(*p_x); // $ ast,ir
-	sink(*p2_x); // $ MISSING: ast,ir
-	sink(r_x); // $ MISSING: ast,ir
+	sink(*p2_x); // $ ir MISSING: ast
+	sink(r_x); // $ ir MISSING: ast
 }
 
 void test_reference_deref_assignment()
@@ -28,10 +28,10 @@ void test_reference_deref_assignment()
 
 	r_x = source();
 
-	sink(x); // $ MISSING: ast,ir
-	sink(*p_x); // $ MISSING: ast,ir
+	sink(x); // $ ir MISSING: ast
+	sink(*p_x); // $ ir MISSING: ast
 	sink(r_x); // $ ast,ir
-	sink(r2_x); // $ MISSING: ast,ir
+	sink(r2_x); // $ ir MISSING: ast
 }
 
 class MyInt

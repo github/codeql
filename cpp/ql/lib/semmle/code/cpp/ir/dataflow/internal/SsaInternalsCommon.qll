@@ -8,6 +8,8 @@ private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
 private import TypeFlow
 private import semmle.code.cpp.ir.ValueNumbering
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA as AliasedSSA
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
@@ -571,6 +573,8 @@ private class BaseCallInstruction extends BaseSourceVariableInstruction, CallIns
 
 cached
 private module Cached {
+  private import semmle.code.cpp.Caching
+
   /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
   private predicate isConversion(Operand op) {
     exists(Instruction def, Operand use |
@@ -588,7 +592,7 @@ private module Cached {
    * `indirectionIndex` specifies the number of loads required to read the variable.
    */
   cached
-  predicate isUse(
+  predicate isSsaUse(
     boolean certain, Operand op, BaseSourceVariableInstruction base, int ind, int indirectionIndex
   ) {
     not ignoreOperand(op) and
@@ -602,6 +606,43 @@ private module Cached {
       not isConversion(op) and
       ind = ind0 + [0 .. upper] and
       indirectionIndex = ind - ind0
+    )
+  }
+
+  /**
+   * Holds if the IR alias anlaysis has determined that the `indirectionIndex`'th
+   * indirection of `op` points to the `ind`'th indirection of `v`.
+   *
+   * Since the IR alias analysis is a 'must' analysis `certain` is always `true`.
+   */
+  cached
+  predicate isVirtualUse(
+    boolean certain, Operand op, VariableAllocation v, int ind, int indirectionIndex
+  ) {
+    exists(
+      AliasedSSA::VariableVirtualVariable vv, MemoryOperand mem, Instruction use, CppType type,
+      int upper
+    |
+      vv = AliasedSSA::getOperandMemoryLocation(mem) and
+      v = vv.getAllocation() and
+      op = mem.getAddressOperand() and
+      type = v.getIRVariable().getLanguageType() and
+      upper = countIndirectionsForCppType(type) and
+      certain = true and
+      use = mem.getUse() and
+      not ignoreInstruction(use) and
+      ind = 1 + [0 .. upper] and
+      indirectionIndex = ind
+    )
+  }
+
+  cached
+  predicate isUse(boolean certain, Operand op, int ind, int indirectionIndex) {
+    Stages::IR::ref() and
+    (
+      isSsaUse(certain, op, _, ind, indirectionIndex)
+      or
+      isVirtualUse(certain, op, _, ind, indirectionIndex)
     )
   }
 
@@ -692,7 +733,7 @@ private module Cached {
    * after the write operation.
    */
   cached
-  predicate isDef(
+  predicate isSsaDef(
     boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
     int indirectionIndex
   ) {
@@ -708,6 +749,41 @@ private module Cached {
       indirectionIndex = ind - (ind0 + lower) and
       lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
     )
+  }
+
+  /**
+   * Holds if the the IR alias analysis has determined that the `indirectionIndex`'th
+   * definition of `address` writes to the `ind`'th indirection of `v`.
+   *
+   * * Since the IR alias analysis is a 'must' analysis `certain` is always `true`.
+   */
+  cached
+  predicate isVirtualDef(
+    boolean certain, Node0Impl value, Operand address, VariableAllocation v, int ind,
+    int indirectionIndex
+  ) {
+    exists(
+      AliasedSSA::VariableVirtualVariable vv, StoreInstruction store, int upper, CppType type,
+      int lower
+    |
+      vv = AliasedSSA::getResultMemoryLocation(store) and
+      v = vv.getAllocation() and
+      address = store.getDestinationAddressOperand() and
+      value.asInstruction() = store and
+      type = v.getIRVariable().getLanguageType() and
+      upper = countIndirectionsForCppType(type) and
+      lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _))) and
+      ind = [lower .. upper + 1] and
+      indirectionIndex = ind - lower and
+      certain = true
+    )
+  }
+
+  cached
+  predicate isDef(boolean certain, Node0Impl value, Operand address, int ind, int indirectionIndex) {
+    isSsaDef(certain, value, address, _, ind, indirectionIndex)
+    or
+    isVirtualDef(certain, value, address, _, ind, indirectionIndex)
   }
 
   /**

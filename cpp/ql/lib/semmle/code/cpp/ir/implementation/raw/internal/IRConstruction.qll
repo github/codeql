@@ -30,6 +30,8 @@ InstructionTag getInstructionTag(Instruction instruction) {
  */
 cached
 module Raw {
+  private import semmle.code.cpp.Caching
+
   class InstructionTag1 = TranslatedElement;
 
   class InstructionTag2 = InstructionTag;
@@ -55,6 +57,7 @@ module Raw {
 
   cached
   predicate hasInstruction(TranslatedElement element, InstructionTag tag) {
+    Stages::IR::ref() and
     element.hasInstruction(_, tag, _)
   }
 
