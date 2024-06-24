@@ -384,6 +384,10 @@ module FastApi {
       override predicate valueAllowsNewline() { none() }
     }
 
+    /**
+     * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+     * `response.headers[name] = value`.
+     */
     class HeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
       DataFlow::Node index;
       DataFlow::Node value;
