@@ -44,7 +44,6 @@ edges
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:131:36:131:36 | userControlledString | provenance |  |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:132:21:132:21 | userControlledString | provenance |  |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:133:22:133:22 | userControlledString | provenance |  |
-| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:134:24:134:24 | userControlledString | provenance |  |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:144:42:144:42 | userControlledString | provenance |  |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:145:75:145:75 | userControlledString | provenance |  |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:148:35:148:35 | userControlledString | provenance |  |
@@ -65,7 +64,6 @@ edges
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:131:36:131:36 | userControlledString | provenance |  |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:132:21:132:21 | userControlledString | provenance |  |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:133:22:133:22 | userControlledString | provenance |  |
-| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:134:24:134:24 | userControlledString | provenance |  |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:144:42:144:42 | userControlledString | provenance |  |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:145:75:145:75 | userControlledString | provenance |  |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:148:35:148:35 | userControlledString | provenance |  |
@@ -110,14 +108,6 @@ edges
 | CommandInjection.swift:132:21:132:21 | userControlledString | CommandInjection.swift:132:20:132:41 | [...] [Collection element] | provenance |  |
 | CommandInjection.swift:133:21:133:42 | [...] [Collection element] | CommandInjection.swift:93:20:93:40 | arguments [Collection element] | provenance |  |
 | CommandInjection.swift:133:22:133:22 | userControlledString | CommandInjection.swift:133:21:133:42 | [...] [Collection element] | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:144:42:144:42 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:145:75:145:75 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:148:35:148:35 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:149:70:149:70 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:154:53:154:53 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:157:52:157:52 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:158:33:158:33 | userControlledString | provenance |  |
-| CommandInjection.swift:134:24:134:24 | userControlledString | CommandInjection.swift:160:57:160:57 | userControlledString | provenance |  |
 | CommandInjection.swift:145:67:145:95 | [...] [Collection element] | CommandInjection.swift:145:67:145:95 | [...] | provenance |  |
 | CommandInjection.swift:145:75:145:75 | userControlledString | CommandInjection.swift:145:67:145:95 | [...] [Collection element] | provenance |  |
 | CommandInjection.swift:148:23:148:55 | call to URL.init(string:) [some:0] | CommandInjection.swift:148:23:148:56 | ...! | provenance |  |
@@ -158,11 +148,8 @@ edges
 | CommandInjection.swift:186:19:186:19 | userControlledString | CommandInjection.swift:186:18:186:39 | [...] [Collection element] | provenance |  |
 | CommandInjection.swift:188:3:188:3 | [post] getter for .p1 [arguments, Collection element] | CommandInjection.swift:188:3:188:3 | [post] getter for .p1 | provenance |  |
 | CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] | CommandInjection.swift:188:3:188:3 | [post] getter for .p1 [arguments, Collection element] | provenance |  |
-| CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] | CommandInjection.swift:189:19:189:19 | tainted1 [Collection element] | provenance |  |
-| CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] | CommandInjection.swift:190:18:190:18 | tainted1 [Collection element] | provenance |  |
 | CommandInjection.swift:189:3:189:5 | [post] ...! [arguments, Collection element] | CommandInjection.swift:189:3:189:5 | [post] ...! | provenance |  |
 | CommandInjection.swift:189:19:189:19 | tainted1 [Collection element] | CommandInjection.swift:189:3:189:5 | [post] ...! [arguments, Collection element] | provenance |  |
-| CommandInjection.swift:189:19:189:19 | tainted1 [Collection element] | CommandInjection.swift:190:18:190:18 | tainted1 [Collection element] | provenance |  |
 | CommandInjection.swift:190:3:190:3 | [post] ...! [arguments, Collection element] | CommandInjection.swift:190:3:190:3 | [post] ...! | provenance |  |
 | CommandInjection.swift:190:18:190:18 | tainted1 [Collection element] | CommandInjection.swift:190:3:190:3 | [post] ...! [arguments, Collection element] | provenance |  |
 | CommandInjection.swift:192:30:192:51 | [...] [Collection element] | CommandInjection.swift:194:18:194:18 | tainted2 [Collection element] | provenance |  |
@@ -259,7 +246,6 @@ nodes
 | CommandInjection.swift:132:21:132:21 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:133:21:133:42 | [...] [Collection element] | semmle.label | [...] [Collection element] |
 | CommandInjection.swift:133:22:133:22 | userControlledString | semmle.label | userControlledString |
-| CommandInjection.swift:134:24:134:24 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:144:42:144:42 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:145:67:145:95 | [...] | semmle.label | [...] |
 | CommandInjection.swift:145:67:145:95 | [...] [Collection element] | semmle.label | [...] [Collection element] |
