@@ -23,7 +23,7 @@ private string dangerousCommands() {
       "terraform apply", "gomplate ", "pre-commit run", "pre-commit install", "go generate",
       "msbuild ", "mvn ", "gradle ", "bundle install", "bundle exec ", "^ant ", "mkdocs build",
       "pytest", "pip install -r ", "pip install --requirement", "java -jar ", "poetry install",
-      "poetry run"
+      "poetry run", "cargo "
     ]
 }
 
