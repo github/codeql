@@ -32,6 +32,11 @@ int main(int argc, char *argv[])
 		scanf("%i", i); // GOOD: no problems with non-strings
 		scanf("%i %s", i, buffer100); // BAD: second format parameter may overflow
 		sscanf(argv[0], "%s", buffer100); // BAD: argv[0] could be more than 100 characters
+
+		char* argv1 = argv[1];
+		char buffer_with_tainted_char[4] = {0};
+		buffer_with_tainted_char[0] = *argv1;
+		sprintf(buffer100, buffer_with_tainted_char); // GOOD: Only a single character in buffer_with_tainted_char is tainted
 	}
 
 	// Test cases for BadlyBoundedWrite.ql
