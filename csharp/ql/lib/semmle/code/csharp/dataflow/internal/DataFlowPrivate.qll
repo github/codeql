@@ -2483,7 +2483,7 @@ private predicate uselessTypebound(DataFlowType dt) {
     )
 }
 
-pragma[inline]
+pragma[nomagic]
 private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2) {
   exists(Gvn::GvnType t1, Gvn::GvnType t2 |
     t1 = exprNode(dt1.getADelegateCreation()).(NodeImpl).getDataFlowType().asGvnType() and
@@ -2507,7 +2507,7 @@ private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
+pragma[nomagic]
 predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
   exists(Gvn::GvnType t1, Gvn::GvnType t2 |
     t1 = dt1.asGvnType() and
@@ -2522,15 +2522,11 @@ predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
     t1.(DataFlowNullType).isConvertibleTo(t2)
     or
     t2.(DataFlowNullType).isConvertibleTo(t1)
-    or
-    t1 instanceof Gvn::TypeParameterGvnType
-    or
-    t2 instanceof Gvn::TypeParameterGvnType
-    or
-    t1 instanceof GvnUnknownType
-    or
-    t2 instanceof GvnUnknownType
   )
+  or
+  exists(dt1.asGvnType()) and uselessTypebound(dt2)
+  or
+  uselessTypebound(dt1) and exists(dt2.asGvnType())
   or
   compatibleTypesDelegateLeft(dt1, dt2)
   or
