@@ -33,7 +33,7 @@ class Package extends @package {
   string toString() { result = "package " + this.getPath() }
 }
 
-string majorVersionSuffixRegex() { result = "[./]v\\d+" }
+string majorVersionSuffixRegex() { result = "[./]v\\d+(?=$|/)" }
 
 /**
  * Gets an import path that identifies a package in module `mod` with the given path,
