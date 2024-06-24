@@ -776,6 +776,7 @@ module TypeTracking<TypeTrackingInput I> {
         predicate isSink() { this instanceof TPathNodeSink }
       }
 
+      pragma[no_dynamic_join_order]
       private predicate edgeCand(Node n1, TypeTracker tt1, Node n2, TypeTracker tt2) {
         n1 = flow(tt1) and
         (
