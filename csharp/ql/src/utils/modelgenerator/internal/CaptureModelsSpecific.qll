@@ -257,6 +257,29 @@ predicate apiSource(DataFlow::Node source) {
   )
 }
 
+private predicate uniquelyCalls(DataFlowCallable dc1, DataFlowCallable dc2) {
+  exists(DataFlowCall call |
+    dc1 = call.getEnclosingCallable() and
+    dc2 = unique(DataFlowCallable dc0 | dc0 = viableCallable(call) | dc0)
+  )
+}
+
+bindingset[dc1, dc2]
+private predicate uniquelyCallsPlus(DataFlowCallable dc1, DataFlowCallable dc2) =
+  fastTC(uniquelyCalls/2)(dc1, dc2)
+
+/**
+ * Holds if it is not relevant to generate a source model for `api`, even
+ * if flow is detected from a node within `source` to a sink within `api`.
+ */
+bindingset[sourceEnclosing, api]
+predicate irrelevantSourceSinkApi(Callable sourceEnclosing, TargetApiSpecific api) {
+  not exists(DataFlowCallable dc1, DataFlowCallable dc2 | uniquelyCallsPlus(dc1, dc2) or dc1 = dc2 |
+    dc1.getUnderlyingCallable() = api and
+    dc2.getUnderlyingCallable() = sourceEnclosing
+  )
+}
+
 /**
  * Gets the MaD input string representation of `source`.
  */

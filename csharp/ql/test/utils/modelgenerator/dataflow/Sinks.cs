@@ -12,6 +12,10 @@ public class NewSinks
     public string TaintedProp { get; set; }
     public string PrivateSetTaintedProp { get; private set; }
 
+    // Sink defined in the extensible file next to the test.
+    // neutral=Sinks;NewSinks;Sink;(System.Object);summary;df-generated
+    public void Sink(object o) => throw null;
+
     // New sink
     // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
     // neutral=Sinks;NewSinks;WrapResponseWrite;(System.Object);summary;df-generated
@@ -77,6 +81,14 @@ public class NewSinks
     {
         var response = new HttpResponse();
         response.WriteFile(PrivateSetTaintedProp);
+    }
+
+    // Not a new sink because a simple type is used in an intermediate step
+    // neutral=Sinks;NewSinks;WrapResponseWriteFileSimpleType;(System.String);summary;df-generated
+    public void WrapResponseWriteFileSimpleType(string s)
+    {
+        var r = s == "hello";
+        Sink(r);
     }
 }
 

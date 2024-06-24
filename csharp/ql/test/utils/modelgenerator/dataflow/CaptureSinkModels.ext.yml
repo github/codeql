@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - [ "Sinks", "NewSinks", False, "Sink", "(System.Object)", "", "Argument[0]", "test-sink", "manual"]
