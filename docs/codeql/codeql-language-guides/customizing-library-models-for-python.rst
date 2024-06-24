@@ -36,7 +36,7 @@ In this example, we'll show how to add the following argument, passed to **sudo*
 
 .. code-block:: python
 
-  from fabric.api import sudo
+  from fabric.operations import sudo
   sudo(cmd) # <-- add 'cmd' as a taint sink
 
 Note that this sink is already recognized by the CodeQL Python analysis, but for this example, you could use the following data extension:
@@ -48,7 +48,7 @@ Note that this sink is already recognized by the CodeQL Python analysis, but for
         pack: codeql/python-all
         extensible: sinkModel
       data:
-        - ["fabric", "Member[api].Member[sudo].Argument[0]", "command-injection"]
+        - ["fabric", "Member[operations].Member[sudo].Argument[0]", "command-injection"]
 
 
 - Since we're adding a new sink, we add a tuple to the **sinkModel** extensible predicate.
@@ -56,8 +56,8 @@ Note that this sink is already recognized by the CodeQL Python analysis, but for
   The string **"fabric"** means we start at the places where the codebase imports the package **fabric**.
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
 
-  - **Member[api]** selects accesses to the **api** package.
-  - **Member[sudo]** selects accesses to the **sudo** function in the **api** package.
+  - **Member[operations]** selects accesses to the **operations** module.
+  - **Member[sudo]** selects accesses to the **sudo** function in the **operations** module.
   - **Argument[0]** selects the first argument to calls to that function.
 
 - **command-injection** indicates that this is considered a sink for the command injection query.
