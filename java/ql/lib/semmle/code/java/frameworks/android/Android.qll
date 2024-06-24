@@ -5,6 +5,9 @@
 import java
 private import semmle.code.xml.AndroidManifest
 
+/** Holds if this database is of an Android application. */
+predicate isAndroid() { exists(AndroidManifestXmlFile m) }
+
 /**
  * Gets a reflexive/transitive superType
  */
