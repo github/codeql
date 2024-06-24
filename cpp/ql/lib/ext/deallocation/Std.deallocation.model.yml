@@ -5,6 +5,7 @@ extensions:
     data:
       - ["", "", False, "free", "0"]
       - ["std", "", False, "free", "0"]
+      - ["bsl", "", False, "free", "0"]
       - ["", "", False, "realloc", "0"]
       - ["std", "", False, "realloc", "0"]
       - ["bsl", "", False, "realloc", "0"]
