@@ -56,7 +56,7 @@ Note that this sink is already recognized by the CodeQL Python analysis, but for
   The string **"fabric"** means we start at the places where the codebase imports the package **fabric**.
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
 
-  - **Member[fabric]** selects accesses to the **fabric** package.
+  - **Member[api]** selects accesses to the **api** package.
   - **Member[sudo]** selects accesses to the **sudo** function in the **api** package.
   - **Argument[0]** selects the first argument to calls to that function.
 
@@ -167,7 +167,7 @@ Note that this source is already known by the CodeQL Python analysis, but for th
       data:
         - [
             "django.db.models.FileField!",
-            "Call.Argument[upload_to:].Parameter[1,filenam:]",
+            "Call.Argument[0,upload_to:].Parameter[1,filenam:]",
             "remote",
           ]
 
@@ -179,7 +179,7 @@ Note that this source is already known by the CodeQL Python analysis, but for th
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
   
     - **Call** selects calls to the class. That is, constructor calls.
-    - **Argument[upload_to:]** selects the named argument named **upload_to**. Note that the colon at the end of the argument name indicates that we are looking for a named argument.
+    - **Argument[0,upload_to:]** selects the first positional argument, or the named argument named **upload_to**. Note that the colon at the end of the argument name indicates that we are looking for a named argument.
     - **Parameter[1,filename:]** selects parameters of the callback function. We provide two parameters to search for, namely the second positional parameter and the named parameter **filename**.
 
 - Finally, the kind **remote** indicates that this is considered a source of remote flow.
@@ -215,7 +215,7 @@ Note that this flow is already recognized by the CodeQL Python analysis, but for
 
 
 - Since we're adding flow through a function call, we add a tuple to the **summaryModel** extensible predicate.
-- The first column, **"re"**, begins the search for relevant calls at places where the **re** package is imported.
+- The first column, **re**, begins the search for relevant calls at places where the **re** package is imported.
 - The second column, **Member[compile]**, is a path leading to the function calls we wish to model.
   In this case, we select references to the **compile** function from the `re` package.
 - The third column, **Argument[0,pattern:]**, indicates the input of the flow. In this case, either the first argument to the function call or the argument named **pattern**.
