@@ -23,7 +23,7 @@ class Package extends @package {
    * removed.
    */
   string getPathWithoutMajorVersionSuffix() {
-    result = this.getPath().regexpReplaceAll("[./]v\\d+", "")
+    result = this.getPath().regexpReplaceAll(majorVersionSuffixRegex(), "")
   }
 
   /** Gets the scope of this package. */
@@ -32,6 +32,8 @@ class Package extends @package {
   /** Gets a textual representation of this element. */
   string toString() { result = "package " + this.getPath() }
 }
+
+string majorVersionSuffixRegex() { result = "[./]v\\d+" }
 
 /**
  * Gets an import path that identifies a package in module `mod` with the given path,

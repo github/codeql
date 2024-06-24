@@ -322,16 +322,15 @@ private predicate elementSpec(
  */
 bindingset[p]
 private string interpretPackage(string p) {
-  exists(Package pkg, string thisVersion, string specifiedVersionRegex |
+  exists(Package pkg, string thisVersion |
     result = pkg.getPath() and
-    thisVersion = "$THISVERSION" and
-    specifiedVersionRegex = "[./]v\\d+"
+    thisVersion = "$THISVERSION"
   |
     p = result + thisVersion
     or
     not p = any(string s) + thisVersion and
     (
-      if exists(p.regexpFind(specifiedVersionRegex, 0, _))
+      if exists(p.regexpFind(majorVersionSuffixRegex(), 0, _))
       then result = p
       else p = pkg.getPathWithoutMajorVersionSuffix()
     )
