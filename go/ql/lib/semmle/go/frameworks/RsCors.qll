@@ -1,18 +1,45 @@
 /**
- * Provides classes for modeling the `github.com/gin-contrib/cors` package.
+ * Provides classes for modeling the `github.com/rs/cors` package.
  */
 
 import go
 
 /**
- * Provides classes for modeling the `github.com/gin-contrib/cors` package.
+ * Provides abstract class for modeling the Go CORS handler model origin write.
  */
-module GinCors {
+abstract class UniversalOriginWrite extends DataFlow::ExprNode {
+  abstract DataFlow::Node getBase();
+
+  abstract Variable getConfig();
+}
+
+/**
+ * Provides abstract class for modeling the Go CORS handler model allow all origins write.
+ */
+abstract class UniversalAllowAllOriginsWrite extends DataFlow::ExprNode {
+  abstract DataFlow::Node getBase();
+
+  abstract Variable getConfig();
+}
+
+/**
+ * Provides abstract class for modeling the Go CORS handler model allow credentials write.
+ */
+abstract class UniversalAllowCredentialsWrite extends DataFlow::ExprNode {
+  abstract DataFlow::Node getBase();
+
+  abstract Variable getConfig();
+}
+
+/**
+ * Provides classes for modeling the `github.com/rs/cors` package.
+ */
+module RsCors {
   /** Gets the package name `github.com/gin-gonic/gin`. */
-  string packagePath() { result = package("github.com/gin-contrib/cors", "") }
+  string packagePath() { result = package("github.com/rs/cors", "") }
 
   /**
-   * A new function create a new gin Handler that passed to gin as middleware
+   * A new function create a new rs Handler
    */
   class New extends Function {
     New() { exists(Function f | f.hasQualifiedName(packagePath(), "New") | this = f) }
@@ -26,22 +53,22 @@ module GinCors {
 
     AllowCredentialsWrite() {
       exists(Field f, Write w |
-        f.hasQualifiedName(packagePath(), "Config", "AllowCredentials") and
+        f.hasQualifiedName(packagePath(), "Options", "AllowCredentials") and
         w.writesField(base, f, this) and
         this.getType() instanceof BoolType
       )
     }
 
     /**
-     * Get config struct holding header values
+     * Get options struct holding header values
      */
     override DataFlow::Node getBase() { result = base }
 
     /**
-     * Get config variable holding header values
+     * Get options variable holding header values
      */
-    override GinConfig getConfig() {
-      exists(GinConfig gc |
+    override RsOptions getConfig() {
+      exists(RsOptions gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
             base.asInstruction() or
@@ -60,22 +87,22 @@ module GinCors {
 
     AllowOriginsWrite() {
       exists(Field f, Write w |
-        f.hasQualifiedName(packagePath(), "Config", "AllowOrigins") and
+        f.hasQualifiedName(packagePath(), "Options", "AllowedOrigins") and
         w.writesField(base, f, this) and
         this.asExpr() instanceof SliceLit
       )
     }
 
     /**
-     * Get config struct holding header values
+     * Get options struct holding header values
      */
     override DataFlow::Node getBase() { result = base }
 
     /**
-     * Get config variable holding header values
+     * Get options variable holding header values
      */
-    override GinConfig getConfig() {
-      exists(GinConfig gc |
+    override RsOptions getConfig() {
+      exists(RsOptions gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
             base.asInstruction() or
@@ -94,22 +121,22 @@ module GinCors {
 
     AllowAllOriginsWrite() {
       exists(Field f, Write w |
-        f.hasQualifiedName(packagePath(), "Config", "AllowAllOrigins") and
+        f.hasQualifiedName(packagePath(), "Options", "AllowAllOrigins") and
         w.writesField(base, f, this) and
         this.getType() instanceof BoolType
       )
     }
 
     /**
-     * Get config struct holding header values
+     * Get options struct holding header values
      */
     override DataFlow::Node getBase() { result = base }
 
     /**
-     * Get config variable holding header values
+     * Get options variable holding header values
      */
-    override GinConfig getConfig() {
-      exists(GinConfig gc |
+    override RsOptions getConfig() {
+      exists(RsOptions gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
             base.asInstruction() or
@@ -121,18 +148,18 @@ module GinCors {
   }
 
   /**
-   * A variable of type Config that holds the headers to be set.
+   * A variable of type Options that holds the headers to be set.
    */
-  class GinConfig extends Variable {
+  class RsOptions extends Variable {
     SsaWithFields v;
 
-    GinConfig() {
+    RsOptions() {
       this = v.getBaseVariable().getSourceVariable() and
-      exists(Type t | t.hasQualifiedName(packagePath(), "Config") | v.getType() = t)
+      exists(Type t | t.hasQualifiedName(packagePath(), "Options") | v.getType() = t)
     }
 
     /**
-     * Get variable declaration of GinConfig
+     * Get variable declaration of Options
      */
     SsaWithFields getV() { result = v }
   }
