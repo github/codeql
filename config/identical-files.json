@@ -181,11 +181,6 @@
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
   ],
-  "C++ IR ValueNumberingImports": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingImports.qll"
-  ],
   "IR SSA SSAConstruction": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll"
