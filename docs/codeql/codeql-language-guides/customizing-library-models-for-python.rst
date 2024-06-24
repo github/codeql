@@ -251,8 +251,8 @@ Note that this flow is already recognized by the CodeQL Python analysis, but for
 
 
 - Since we're adding flow through a function call, we add a tuple to the **summaryModel** extensible predicate.
-- The first column, **"builtins"**, begins the search for relevant calls at references to the **builtin** package.
-  In Python, the built-in functions are available in the **builtins** package.
+- The first column, **"builtins"**, begins the search for relevant calls among references to the built-in names.
+  In Python, many built-in functions are available. Technically, most of these are part of the **builtins** package, but they can be accessed without an explicit import. When we write **builtins** in the first column, we will find both the implicit and explicit references to the built-in functions.
 - The second column, **Member[sorted]**, selects references to the **sorted** function from the **builtins** package; that is, the built-in function **sorted**.
 - The third column, **Argument[0]**, indicates the input of the flow. In this case, the first argument to the function call.
 - The fourth column, **ReturnValue**, indicates the output of the flow. In this case, the return value of the function call.
@@ -400,8 +400,10 @@ The **path**, **input**, and **output** columns consist of a **.**-separated lis
 The following components are supported:
 
 - **Argument[**\ `number`\ **]** selects the argument at the given index.
+- **Argument[**\ `name`:\ **]** selects the argument with the given name.
 - **Argument[this]** selects the receiver of a method call.
 - **Parameter[**\ `number`\ **]** selects the parameter at the given index.
+- **Parameter[**\ `name`:\ **]** selects the named parameter with the given name.
 - **Parameter[this]** selects the **this** parameter of a function.
 - **ReturnValue** selects the return value of a function or call.
 - **Member[**\ `name`\ **]** selects the function/method/class/value with the given name.
