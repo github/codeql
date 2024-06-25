@@ -97,12 +97,9 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getBigIntValSig/1 getBigIn
     )
   }
 
-  /** Gets the int value of a constant integer expression. */
-  int calculateIntValue(Expr e) { result = calculateBigIntValue(e).toInt() }
-
   /** Gets the big int value of a constant integer expression. */
   QlBuiltins::BigInt calculateBigIntValue(Expr e) {
-    exists(IntegralType t | e.getType() = t) and
+    e.getType() instanceof IntegralType and
     (
       exists(CastingExpr cast, QlBuiltins::BigInt val |
         cast = e and val = getBigIntVal(cast.getExpr())

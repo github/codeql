@@ -105,7 +105,7 @@ private predicate constantIntegerExpr(Expr e, QlBuiltins::BigInt val) {
     e = arrlen
   )
   or
-  CalcConstants::calculateIntValue(e).toBigInt() = val
+  CalcConstants::calculateBigIntValue(e) = val
 }
 
 pragma[nomagic]

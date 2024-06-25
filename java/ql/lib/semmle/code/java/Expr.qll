@@ -256,14 +256,14 @@ class CompileTimeConstantExpr extends Expr {
    */
   cached
   QlBuiltins::BigInt getBigIntValue() {
-    exists(IntegralType t | this.getType() = t) and
+    this.getType() instanceof IntegralType and
     (
       result = this.(IntegerLiteral).getBigIntValue()
       or
       result = this.(CharacterLiteral).getCodePointValue().toBigInt()
     )
     or
-    result = CalcCompileTimeConstants::calculateIntValue(this).toBigInt()
+    result = CalcCompileTimeConstants::calculateBigIntValue(this)
     or
     result = this.(LiveLiteral).getValue().getBigIntValue()
   }
