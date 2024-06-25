@@ -130,7 +130,7 @@ namespace Semmle.Extraction.CSharp
                     return Path.ChangeExtension(entryPointFile, ".exe");
                 }
 
-                var entryPointFilename = entry.Locations.First().SourceTree!.FilePath;
+                var entryPointFilename = entry.Locations.Best().SourceTree!.FilePath;
                 return Path.ChangeExtension(entryPointFilename, ".exe");
             }
 

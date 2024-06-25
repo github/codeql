@@ -379,7 +379,7 @@ namespace Semmle.Extraction
         {
             if (!(optionalSymbol is null))
             {
-                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.FirstOrDefault()));
+                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.BestOrDefault()));
             }
             else if (!(optionalEntity is null))
             {

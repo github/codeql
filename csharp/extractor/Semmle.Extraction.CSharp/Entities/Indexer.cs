@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<IndexerDeclarationSyntax>()
                     .Select(s => s.GetLocation())
                     .Concat(Symbol.Locations)
-                    .First();
+                    .Best();
             }
         }
 
