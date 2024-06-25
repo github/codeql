@@ -2,6 +2,7 @@ private import semmle.javascript.Locations
 private import DataFlowImplSpecific
 private import codeql.dataflow.DataFlow as SharedDataFlow
 private import codeql.dataflow.TaintTracking as SharedTaintTracking
+private import codeql.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 module JSDataFlow implements SharedDataFlow::InputSig<Location> {
   import Private
@@ -21,4 +22,12 @@ module JSDataFlow implements SharedDataFlow::InputSig<Location> {
 
 module JSTaintFlow implements SharedTaintTracking::InputSig<Location, JSDataFlow> {
   import semmle.javascript.dataflow.internal.TaintTrackingPrivate
+}
+
+module JSFlowSummary implements FlowSummaryImpl::InputSig<Location, JSDataFlow> {
+  private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
+  import FlowSummaryPrivate
+
+  // Explicitly implement signature members that have a default
+  predicate callbackSelfParameterPosition = FlowSummaryPrivate::callbackSelfParameterPosition/0;
 }

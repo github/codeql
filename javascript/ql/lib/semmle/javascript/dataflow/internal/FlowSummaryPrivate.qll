@@ -294,6 +294,9 @@ string encodeArgumentPosition(ArgumentPosition pos) {
   positionName(pos, result) and result != "any"
 }
 
+/** Gets the return kind corresponding to specification `"ReturnValue"`. */
+ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() }
+
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
 
