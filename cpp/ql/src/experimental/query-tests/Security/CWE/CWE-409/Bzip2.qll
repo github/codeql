@@ -6,45 +6,40 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.commons.File
-
-/**
- * A `bz_stream` Variable as a Flow source
- */
-class BzStreamVar extends VariableAccess {
-  BzStreamVar() { this.getType().hasName("bz_stream") }
-}
-
-/**
- * A `BZFILE` Variable as a Flow source
- */
-class BzFileVar extends VariableAccess {
-  BzFileVar() { this.getType().hasName("BZFILE") }
-}
+import DecompressionBomb
 
 /**
  * The `BZ2_bzDecompress` function as a Flow source
  */
-class BZ2BzDecompressFunction extends Function {
+class BZ2BzDecompressFunction extends DecompressionFunction {
   BZ2BzDecompressFunction() { this.hasGlobalName(["BZ2_bzDecompress"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
  * The `BZ2_bzReadOpen` function
  */
-class BZ2BzReadOpenFunction extends Function {
+class BZ2BzReadOpenFunction extends DecompressionFunction {
   BZ2BzReadOpenFunction() { this.hasGlobalName(["BZ2_bzReadOpen"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
- * The `BZ2_bzRead` function is used in Flow sink
+ * The `BZ2_bzRead` function is used in flow sink.
  */
-class BZ2BzReadFunction extends Function {
+class BZ2BzReadFunction extends DecompressionFunction {
   BZ2BzReadFunction() { this.hasGlobalName("BZ2_bzRead") }
+
+  override int getArchiveParameterIndex() { result = 1 }
 }
 
 /**
- * The `BZ2_bzBuffToBuffDecompress` function is used in Flow sink
+ * The `BZ2_bzBuffToBuffDecompress` function is used in flow sink.
  */
-class BZ2BzBuffToBuffDecompressFunction extends Function {
+class BZ2BzBuffToBuffDecompressFunction extends DecompressionFunction {
   BZ2BzBuffToBuffDecompressFunction() { this.hasGlobalName("BZ2_bzBuffToBuffDecompress") }
+
+  override int getArchiveParameterIndex() { result = 2 }
 }

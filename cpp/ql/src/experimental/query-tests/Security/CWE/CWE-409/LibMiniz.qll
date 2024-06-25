@@ -5,72 +5,44 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
+import DecompressionBomb
 
 /**
- * A unsigned char Variable is used in Flow source
+ * The `mz_uncompress` functions are used in flow sink.
  */
-class UnsignedCharVar extends VariableAccess {
-  UnsignedCharVar() { this.getType().stripType().resolveTypedefs*() instanceof UnsignedCharType }
-}
-
-/**
- * The `mz_streamp`, `z_stream` Variables are used in Flow source
- */
-class MzStreampVar extends VariableAccess {
-  MzStreampVar() { this.getType().hasName(["mz_streamp", "z_stream"]) }
-}
-
-/**
- * A Char Variable is used in Flow source
- */
-class CharVar extends VariableAccess {
-  CharVar() { this.getType().stripType().resolveTypedefs*() instanceof CharType }
-}
-
-/**
- * A `mz_zip_archive` Variable is used in Flow source
- */
-class MzZipArchiveVar extends VariableAccess {
-  MzZipArchiveVar() { this.getType().hasName("mz_zip_archive") }
-}
-
-/**
- * The `mz_uncompress` functions are used in Flow Sink
- */
-class MzUncompress extends Function {
+class MzUncompress extends DecompressionFunction {
   MzUncompress() { this.hasGlobalName(["uncompress", "mz_uncompress", "mz_uncompress2"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
  * A `zip handle` is used in Flow source
  */
-class MzZip extends Function {
+class MzZip extends DecompressionFunction {
   MzZip() {
     this.hasGlobalName([
         "mz_zip_reader_open", "mz_zip_reader_open_file", "mz_zip_reader_open_file_in_memory",
         "mz_zip_reader_open_buffer", "mz_zip_reader_entry_open"
       ])
   }
+
+  override int getArchiveParameterIndex() { result = 1 }
 }
 
 /**
- * The `mz_inflate` functions are used in Flow Sink
+ * The `mz_inflate` functions are used in flow sink.
  */
-class MzInflate extends Function {
+class MzInflate extends DecompressionFunction {
   MzInflate() { this.hasGlobalName(["mz_inflate", "inflate"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
- * The `mz_inflateInit` functions are used in Flow Sink
+ * The `mz_zip_reader_extract_*` functions are used in flow sink.
  */
-class MzInflateInit extends Function {
-  MzInflateInit() { this.hasGlobalName(["inflateInit", "mz_inflateInit"]) }
-}
-
-/**
- * The `mz_zip_reader_extract_*` functions are used in Flow Sink
- */
-class MzZipReaderExtract extends Function {
+class MzZipReaderExtract extends DecompressionFunction {
   MzZipReaderExtract() {
     this.hasGlobalName([
         "mz_zip_reader_extract_file_to_heap", "mz_zip_reader_extract_to_heap",
@@ -80,23 +52,29 @@ class MzZipReaderExtract extends Function {
         "mz_zip_reader_extract_file_to_file"
       ])
   }
+
+  override int getArchiveParameterIndex() { result = 1 }
 }
 
 /**
- * The `tinfl_decompress_mem_*` functions are used in Flow Sink
+ * The `tinfl_decompress_mem_*` functions are used in flow sink.
  */
-class TinflDecompressMem extends Function {
+class TinflDecompressMem extends DecompressionFunction {
   TinflDecompressMem() {
     this.hasGlobalName([
         "tinfl_decompress_mem_to_callback", "tinfl_decompress_mem_to_mem",
         "tinfl_decompress_mem_to_heap"
       ])
   }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
- * The `tinfl_decompress_*` functions are used in Flow Sink
+ * The `tinfl_decompress_*` functions are used in flow sink.
  */
-class TinflDecompress extends Function {
+class TinflDecompress extends DecompressionFunction {
   TinflDecompress() { this.hasGlobalName(["tinfl_decompress"]) }
+
+  override int getArchiveParameterIndex() { result = 1 }
 }

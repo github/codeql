@@ -5,21 +5,17 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
+import DecompressionBomb
 
 /**
- * A `z_stream` Variable as a Flow source
- */
-class ZStreamVar extends VariableAccess {
-  ZStreamVar() { this.getType().hasName("z_stream") }
-}
-
-/**
- * The `inflate`/`inflateSync` functions are used in Flow sink
+ * The `inflate` and `inflateSync` functions are used in flow sink.
  *
  * `inflate(z_streamp strm, int flush)`
  *
  * `inflateSync(z_streamp strm)`
  */
-class InflateFunction extends Function {
+class InflateFunction extends DecompressionFunction {
   InflateFunction() { this.hasGlobalName(["inflate", "inflateSync"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }

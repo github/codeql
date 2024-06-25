@@ -5,17 +5,13 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
+import DecompressionBomb
 
 /**
- * A Bytef Variable as a Flow source
+ * The `uncompress`/`uncompress2` function is used in flow sink.
  */
-class BytefVar extends VariableAccess {
-  BytefVar() { this.getType().hasName("Bytef") }
-}
-
-/**
- * The `uncompress`/`uncompress2` function is used in Flow sink
- */
-class UncompressFunction extends Function {
+class UncompressFunction extends DecompressionFunction {
   UncompressFunction() { this.hasGlobalName(["uncompress", "uncompress2"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }

@@ -6,52 +6,49 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.commons.File
+import DecompressionBomb
 
 /**
- * A ZSTD_inBuffer Variable as a Flow source
+ * The `ZSTD_decompress`  function is used in flow sink.
  */
-class ZSTDinBufferVar extends VariableAccess {
-  ZSTDinBufferVar() { this.getType().hasName("ZSTD_inBuffer") }
-}
-
-/**
- * A ZSTD_inBuffer_s Variable as a Flow source
- */
-class ZSTDinBufferSVar extends VariableAccess {
-  ZSTDinBufferSVar() { this.getType().hasName("ZSTD_inBuffer_s") }
-}
-
-/**
- * The `ZSTD_decompress`  function is used in Flow sink
- */
-class ZSTDDecompressFunction extends Function {
+class ZSTDDecompressFunction extends DecompressionFunction {
   ZSTDDecompressFunction() { this.hasGlobalName(["ZSTD_decompress"]) }
+
+  override int getArchiveParameterIndex() { result = 2 }
 }
 
 /**
- * The `ZSTD_decompressDCtx` function is used in Flow sink
+ * The `ZSTD_decompressDCtx` function is used in flow sink.
  */
-class ZSTDDecompressDCtxFunction extends Function {
+class ZSTDDecompressDCtxFunction extends DecompressionFunction {
   ZSTDDecompressDCtxFunction() { this.hasGlobalName(["ZSTD_decompressDCtx"]) }
+
+  override int getArchiveParameterIndex() { result = 3 }
 }
 
 /**
- * The `ZSTD_decompressStream` function is used in Flow sink
+ * The `ZSTD_decompressStream` function is used in flow sink.
  */
-class ZSTDDecompressStreamFunction extends Function {
+class ZSTDDecompressStreamFunction extends DecompressionFunction {
   ZSTDDecompressStreamFunction() { this.hasGlobalName(["ZSTD_decompressStream"]) }
+
+  override int getArchiveParameterIndex() { result = 2 }
 }
 
 /**
- * The `ZSTD_decompress_usingDDict` function is used in Flow sink
+ * The `ZSTD_decompress_usingDDict` function is used in flow sink.
  */
-class ZSTDDecompressUsingDictFunction extends Function {
+class ZSTDDecompressUsingDictFunction extends DecompressionFunction {
   ZSTDDecompressUsingDictFunction() { this.hasGlobalName(["ZSTD_decompress_usingDDict"]) }
+
+  override int getArchiveParameterIndex() { result = 3 }
 }
 
 /**
- * The `ZSTD_decompress_usingDDict` function is used in Flow sink
+ * The `ZSTD_decompress_usingDDict` function is used in flow sink.
  */
-class ZSTDDecompressUsingDDictFunction extends Function {
+class ZSTDDecompressUsingDDictFunction extends DecompressionFunction {
   ZSTDDecompressUsingDDictFunction() { this.hasGlobalName(["ZSTD_decompress_usingDDict"]) }
+
+  override int getArchiveParameterIndex() { result = 3 }
 }

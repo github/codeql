@@ -5,25 +5,22 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
+import DecompressionBomb
 
 /**
- * A `lzma_stream` Variable as a Flow source
+ * The `lzma_code` function is used in flow sink.
  */
-class LzmaStreamVar extends VariableAccess {
-  LzmaStreamVar() { this.getType().hasName("lzma_stream") }
-}
-
-
-/**
- * The `lzma_code` function is used in Flow sink
- */
-class LzmaCodeFunction extends Function {
+class LzmaCodeFunction extends DecompressionFunction {
   LzmaCodeFunction() { this.hasGlobalName(["lzma_code"]) }
+
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
- * The `lzma_stream_buffer_decode` function is used in Flow sink
+ * The `lzma_stream_buffer_decode` function is used in flow sink.
  */
-class LzmaStreamBufferDecodeFunction extends Function {
+class LzmaStreamBufferDecodeFunction extends DecompressionFunction {
   LzmaStreamBufferDecodeFunction() { this.hasGlobalName(["lzma_stream_buffer_decode"]) }
+
+  override int getArchiveParameterIndex() { result = 1 }
 }
