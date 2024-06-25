@@ -1009,10 +1009,19 @@ predicate expectsContent(Node n, ContentSet c) {
   any(AdditionalFlowInternal flow).expectsContent(n, c)
 }
 
+abstract class NodeRegion extends Unit {
+  NodeRegion() { none() }
+
+  /** Holds if this region contains `n`. */
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { none() }
+}
+
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
+predicate isUnreachableInCall(NodeRegion n, DataFlowCall call) {
   none() // TODO: could be useful, but not currently implemented for JS
 }
 
