@@ -187,8 +187,8 @@ Note that this source is already known by the CodeQL Python analysis, but for th
 Example: Adding flow through 're.compile'
 ----------------------------------------------
 
-In this example, we'll show how to add flow through calls to `re.compile`.
-`re.compile` returns a compiled regular expression for efficient evaluation, but the pattern to be compiled is stored in the `pattern` attribute of the resulting object.
+In this example, we'll show how to add flow through calls to ``re.compile``.
+``re.compile`` returns a compiled regular expression for efficient evaluation, but the pattern to be compiled is stored in the ``pattern`` attribute of the resulting object.
 
 .. code-block:: python
 
@@ -217,9 +217,9 @@ Note that this flow is already recognized by the CodeQL Python analysis, but for
 - Since we're adding flow through a function call, we add a tuple to the **summaryModel** extensible predicate.
 - The first column, **re**, begins the search for relevant calls at places where the **re** package is imported.
 - The second column, **Member[compile]**, is a path leading to the function calls we wish to model.
-  In this case, we select references to the **compile** function from the `re` package.
+  In this case, we select references to the **compile** function from the ``re`` package.
 - The third column, **Argument[0,pattern:]**, indicates the input of the flow. In this case, either the first argument to the function call or the argument named **pattern**.
-- The fourth column, **ReturnValue.Attribute[pattern]**, indicates the output of the flow. In this case, the `pattern` attribute of the return value of the function call.
+- The fourth column, **ReturnValue.Attribute[pattern]**, indicates the output of the flow. In this case, the ``pattern`` attribute of the return value of the function call.
 - The last column, **value**, indicates the kind of flow to add. The value **value** means the input value is unchanged as
   it flows to the output.
 
@@ -399,20 +399,20 @@ The **path**, **input**, and **output** columns consist of a **.**-separated lis
 
 The following components are supported:
 
-- **Argument[**\ `number`\ **]** selects the argument at the given index.
-- **Argument[**\ `name`:\ **]** selects the argument with the given name.
+- **Argument[**\ ``number``\ **]** selects the argument at the given index.
+- **Argument[**\ ``name``:\ **]** selects the argument with the given name.
 - **Argument[this]** selects the receiver of a method call.
-- **Parameter[**\ `number`\ **]** selects the parameter at the given index.
-- **Parameter[**\ `name`:\ **]** selects the named parameter with the given name.
+- **Parameter[**\ ``number``\ **]** selects the parameter at the given index.
+- **Parameter[**\ ``name``:\ **]** selects the named parameter with the given name.
 - **Parameter[this]** selects the **this** parameter of a function.
 - **ReturnValue** selects the return value of a function or call.
-- **Member[**\ `name`\ **]** selects the function/method/class/value with the given name.
+- **Member[**\ ``name``\ **]** selects the function/method/class/value with the given name.
 - **Instance** selects instances of a class, including instances of its subclasses.
-- **Attribute[**\ `name`\ **]** selects the attribute with the given name.
+- **Attribute[**\ ``name``\ **]** selects the attribute with the given name.
 - **ListElement** selects an element of a list.
 - **SetElement** selects an element of a set.
-- **TupleElement[**\ `number`\ **]** selects the subscript at the given index.
-- **DictionaryElement[**\ `name`\ **]** selects the subscript at the given name.
+- **TupleElement[**\ ``number``\ **]** selects the subscript at the given index.
+- **DictionaryElement[**\ ``name``\ **]** selects the subscript at the given name.
 
 
 Additional notes about the syntax of operands:
