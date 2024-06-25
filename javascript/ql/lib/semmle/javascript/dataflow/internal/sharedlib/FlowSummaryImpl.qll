@@ -1276,10 +1276,12 @@ module Private {
           c = "Argument" or parseArg(c, ppos)
         )
         or
-        exists(ReturnNodeExt ret |
+        exists(
+          ReturnNode ret // TODO: hacked to make this compile; need to switch to module in qlpack
+        |
           c = "ReturnValue" and
           ret = node.asNode() and
-          ret.getKind().(ValueReturnKind).getKind() = getReturnValueKind() and
+          ret.getKind() = getReturnValueKind() and
           mid.asCallable() = getNodeEnclosingCallable(ret)
         )
         or
