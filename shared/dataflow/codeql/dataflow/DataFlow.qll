@@ -957,7 +957,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private predicate edgesProj(InputPathNode node1, InputPathNode node2) {
-      Graph::edges(node2, node1, _, _)
+      Graph::edges(node1, node2, _, _)
     }
 
     private module Pass1 =
