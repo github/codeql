@@ -405,6 +405,9 @@ private predicate typeBounds(ArithmeticType t, float lb, float ub) {
         lb = 0 and ub = limit - 1
       )
   )
+  or
+  // This covers all floating point types. The range is (-Inf, +Inf).
+  t instanceof FloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
 }
 
 private Type stripReference(Type t) {
