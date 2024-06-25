@@ -60,7 +60,7 @@ Note that this sink is already recognized by the CodeQL Python analysis, but for
   - **Member[sudo]** selects accesses to the **sudo** function in the **operations** module.
   - **Argument[0]** selects the first argument to calls to that function.
 
-- **command-injection** indicates that this is considered a sink for the command injection query.
+- **"command-injection"** indicates that this is considered a sink for the command injection query.
 
 Example: Taint sink in the 'invoke' package
 -------------------------------------------
@@ -92,7 +92,7 @@ Note that this sink is already recognized by the CodeQL Python analysis, but for
   - **Member[run]** selects accesses to the **run** method in the **Context** class.
   - **Argument[0]** selects the first argument to calls to that method.
 
-- **command-injection** indicates that this is considered a sink for the command injection query.
+- **"command-injection"** indicates that this is considered a sink for the command injection query.
 
 Note that the **Instance** component is used to select instances of a class, including instances of its subclasses.
 Since methods on instances are common targets, we have a more compact syntax for selecting them. The first column, the type, is allowed to contain a dotted path ending in a class name.
@@ -182,7 +182,7 @@ Note that this source is already known by the CodeQL Python analysis, but for th
     - **Argument[0,upload_to:]** selects the first positional argument, or the named argument named **upload_to**. Note that the colon at the end of the argument name indicates that we are looking for a named argument.
     - **Parameter[1]** selects the second parameter of the callback function, which is the parameter receiving the filename.
 
-- Finally, the kind **remote** indicates that this is considered a source of remote flow.
+- Finally, the kind **"remote"** indicates that this is considered a source of remote flow.
 
 Example: Adding flow through 're.compile'
 ----------------------------------------------
@@ -215,12 +215,12 @@ Note that this flow is already recognized by the CodeQL Python analysis, but for
 
 
 - Since we're adding flow through a function call, we add a tuple to the **summaryModel** extensible predicate.
-- The first column, **re**, begins the search for relevant calls at places where the **re** package is imported.
-- The second column, **Member[compile]**, is a path leading to the function calls we wish to model.
+- The first column, **"re"**, begins the search for relevant calls at places where the **re** package is imported.
+- The second column, **"Member[compile]"**, is a path leading to the function calls we wish to model.
   In this case, we select references to the **compile** function from the ``re`` package.
-- The third column, **Argument[0,pattern:]**, indicates the input of the flow. In this case, either the first argument to the function call or the argument named **pattern**.
-- The fourth column, **ReturnValue.Attribute[pattern]**, indicates the output of the flow. In this case, the ``pattern`` attribute of the return value of the function call.
-- The last column, **value**, indicates the kind of flow to add. The value **value** means the input value is unchanged as
+- The third column, **"Argument[0,pattern:]"**, indicates the input of the flow. In this case, either the first argument to the function call or the argument named **pattern**.
+- The fourth column, **"ReturnValue.Attribute[pattern]"**, indicates the output of the flow. In this case, the ``pattern`` attribute of the return value of the function call.
+- The last column, **"value"**, indicates the kind of flow to add. The value **value** means the input value is unchanged as
   it flows to the output.
 
 Example: Adding flow through 'sorted'
@@ -253,10 +253,10 @@ Note that this flow is already recognized by the CodeQL Python analysis, but for
 - Since we're adding flow through a function call, we add a tuple to the **summaryModel** extensible predicate.
 - The first column, **"builtins"**, begins the search for relevant calls among references to the built-in names.
   In Python, many built-in functions are available. Technically, most of these are part of the **builtins** package, but they can be accessed without an explicit import. When we write **builtins** in the first column, we will find both the implicit and explicit references to the built-in functions.
-- The second column, **Member[sorted]**, selects references to the **sorted** function from the **builtins** package; that is, the built-in function **sorted**.
-- The third column, **Argument[0]**, indicates the input of the flow. In this case, the first argument to the function call.
-- The fourth column, **ReturnValue**, indicates the output of the flow. In this case, the return value of the function call.
-- The last column, **taint**, indicates the kind of flow to add. The value **taint** means the output is not necessarily equal
+- The second column, **"Member[sorted]"**, selects references to the **sorted** function from the **builtins** package; that is, the built-in function **sorted**.
+- The third column, **"Argument[0]"**, indicates the input of the flow. In this case, the first argument to the function call.
+- The fourth column, **"ReturnValue"**, indicates the output of the flow. In this case, the return value of the function call.
+- The last column, **"taint"**, indicates the kind of flow to add. The value **taint** means the output is not necessarily equal
   to the input, but was derived from the input in a taint-preserving way.
 
 We might also provide a summary stating that the elements of the input list are preserved in the output list:
