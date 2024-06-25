@@ -19,8 +19,8 @@
  * reading.
  * 1. The `package` column selects a package. Note that if the package does not
  *    contain a major version suffix (like "/v2") then we will match all major
- *    versions. This can be disabled by putting `$THISVERSION` at the end of
- *    the package path.
+ *    versions. This can be disabled by putting `fixed-version:` at the start
+ *    of the package path.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
@@ -266,7 +266,7 @@ module ModelValidation {
       ext = "" and
       pred = "neutral"
     |
-      not package.replaceAll("$ANYVERSION", "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
+      not package.replaceAll(fixedVersionPrefix(), "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]*") and
@@ -309,6 +309,8 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
+private string fixedVersionPrefix() { result = "fixed-version:" }
+
 /**
  * Gets the string for the package path corresponding to `p`, if one exists.
  *
@@ -318,17 +320,14 @@ private predicate elementSpec(
  * so if `github.com/a/b/c/d/v2` or `github.com/a/b/v3/c/d` were imported then
  * they will be in the results. There are two situations where we do not do
  * this: (1) when `p` already contains a major version suffix; (2) if `p` has
- * `$THISVERSION` at the end (which we remove).
+ * `fixed-version:` at the start (which we remove).
  */
 bindingset[p]
 private string interpretPackage(string p) {
-  exists(Package pkg, string thisVersion |
-    result = pkg.getPath() and
-    thisVersion = "$THISVERSION"
-  |
-    p = result + thisVersion
+  exists(Package pkg | result = pkg.getPath() |
+    p = fixedVersionPrefix() + result
     or
-    not p = any(string s) + thisVersion and
+    not p = fixedVersionPrefix() + any(string s) and
     (
       if exists(p.regexpFind(majorVersionSuffixRegex(), 0, _))
       then result = p
