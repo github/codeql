@@ -246,9 +246,7 @@ predicate neverSkipInPathGraph(Node n) {
 
 class DataFlowExpr = Expr;
 
-private newtype TDataFlowType =
-  TTodoDataFlowType() or
-  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+private newtype TDataFlowType = TTodoDataFlowType()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
