@@ -167,7 +167,7 @@ Note that this source is already known by the CodeQL Python analysis, but for th
       data:
         - [
             "django.db.models.FileField!",
-            "Call.Argument[0,upload_to:].Parameter[1,filenam:]",
+            "Call.Argument[0,upload_to:].Parameter[1]",
             "remote",
           ]
 
@@ -180,7 +180,7 @@ Note that this source is already known by the CodeQL Python analysis, but for th
   
     - **Call** selects calls to the class. That is, constructor calls.
     - **Argument[0,upload_to:]** selects the first positional argument, or the named argument named **upload_to**. Note that the colon at the end of the argument name indicates that we are looking for a named argument.
-    - **Parameter[1,filename:]** selects parameters of the callback function. We provide two parameters to search for, namely the second positional parameter and the named parameter **filename**.
+    - **Parameter[1]** selects the second parameter of the callback function, which is the parameter receiving the filename.
 
 - Finally, the kind **remote** indicates that this is considered a source of remote flow.
 
