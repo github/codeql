@@ -285,13 +285,11 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-bindingset[pos]
 string encodeParameterPosition(ParameterPosition pos) {
   positionName(pos, result) and result != "any"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-bindingset[pos]
 string encodeArgumentPosition(ArgumentPosition pos) {
   positionName(pos, result) and result != "any"
 }
