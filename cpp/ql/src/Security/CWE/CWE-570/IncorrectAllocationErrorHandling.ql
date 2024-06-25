@@ -216,7 +216,7 @@ predicate noThrowInTryBlock(NewOrNewArrayExpr newExpr, BadAllocCatchBlock catchB
 predicate nullCheckInThrowingNew(NewOrNewArrayExpr newExpr, GuardCondition guard) {
   newExpr.getAllocator() instanceof ThrowingAllocator and
   // There can be many guard conditions that compares `newExpr` againgst 0.
-  // For example, for `if(!p)` both `p` and `!p` is a guard condition. To not
+  // For example, for `if(!p)` both `p` and `!p` are guard conditions. To not
   // produce duplicates results we pick the "first" guard condition according
   // to some arbitrary ordering (i.e., location information). This means `!p` is the
   // element that we use to construct the alert.
