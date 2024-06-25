@@ -128,11 +128,11 @@ We could add a data extension similar to the previous one, but with the type **i
         pack: codeql/python-all
         extensible: typeModel
       data:
-        - ["invoke.Context", "invoke", "Member[context].Member[Context].Instance"]
+        - ["invoke.Context", "invoke.context.Context", ""]
 
 - The first column, **"invoke.Context"**, is the name of the type to reach.
-- The second column, **"invoke"**, is the name of the type from which to evaluate the path.
-- The third column, **"Member[context].Member[Context].Instance"**, is the access path leading from **invoke** to **invoke.Context**.
+- The second column, **"invoke.context.Context"**, is the name of the type from which to evaluate the path.
+- The third column is just an empty string, indicating that any instance of **invoke.context.Context** is also an instance of **invoke.Context**.
 
 Combining this with the sink model we added earlier, the sink in the example is detected by the model.
 

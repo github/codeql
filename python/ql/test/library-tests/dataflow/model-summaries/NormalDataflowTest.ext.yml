@@ -34,3 +34,6 @@ extensions:
       - ["foo.MS_Class!", "foo", "Member[get_class].ReturnValue"]
       # Ideally this would be a consequence of the above line
       - ["foo.MS_Class", "foo", "Member[get_class].ReturnValue.Instance"]
+      - ["foo.MS_Class", "foo.MS_Factory!", "Member[get_instance].ReturnValue"]
+      - ["foo.MS_Class", "foo.MS_Factory", "Member[make].ReturnValue"]
+      - ["foo.MS_Class", "foo.Impl.MS_Class_Impl", ""]
