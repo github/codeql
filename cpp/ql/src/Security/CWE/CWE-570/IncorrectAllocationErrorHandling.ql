@@ -215,13 +215,18 @@ predicate noThrowInTryBlock(NewOrNewArrayExpr newExpr, BadAllocCatchBlock catchB
  */
 predicate nullCheckInThrowingNew(NewOrNewArrayExpr newExpr, GuardCondition guard) {
   newExpr.getAllocator() instanceof ThrowingAllocator and
-  (
-    // Handles null comparisons.
-    guard.ensuresEq(globalValueNumber(newExpr).getAnExpr(), any(NullValue null), _, _, _)
-    or
-    // Handles `if(ptr)` and `if(!ptr)` cases.
-    guard = globalValueNumber(newExpr).getAnExpr()
-  )
+  // There can be many guard conditions that compares `newExpr` againgst 0.
+  // For example, for `if(!p)` both `p` and `!p` are guard conditions. To not
+  // produce duplicates results we pick the "first" guard condition according
+  // to some arbitrary ordering (i.e., location information). This means `!p` is the
+  // element that we use to construct the alert.
+  guard =
+    min(GuardCondition gc, int startline, int startcolumn, int endline, int endcolumn |
+      gc.comparesEq(globalValueNumber(newExpr).getAnExpr(), 0, _, _) and
+      gc.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn)
+    |
+      gc order by startline, startcolumn, endline, endcolumn
+    )
 }
 
 from NewOrNewArrayExpr newExpr, Element element, string msg, string elementString
