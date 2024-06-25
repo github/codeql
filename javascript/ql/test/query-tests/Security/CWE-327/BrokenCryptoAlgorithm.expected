@@ -1,7 +1,7 @@
 edges
-| tst.js:3:5:3:24 | secretText | tst.js:11:17:11:26 | secretText |
-| tst.js:3:5:3:24 | secretText | tst.js:22:21:22:30 | secretText |
-| tst.js:3:18:3:24 | trusted | tst.js:3:5:3:24 | secretText |
+| tst.js:3:5:3:24 | secretText | tst.js:11:17:11:26 | secretText | provenance |  |
+| tst.js:3:5:3:24 | secretText | tst.js:22:21:22:30 | secretText | provenance |  |
+| tst.js:3:18:3:24 | trusted | tst.js:3:5:3:24 | secretText | provenance |  |
 nodes
 | tst.js:3:5:3:24 | secretText | semmle.label | secretText |
 | tst.js:3:18:3:24 | trusted | semmle.label | trusted |

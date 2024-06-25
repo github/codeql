@@ -1,36 +1,36 @@
 edges
-| tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() |
-| tst.js:19:9:19:36 | suffix | tst.js:20:31:20:36 | suffix |
-| tst.js:19:18:19:30 | Math.random() | tst.js:19:18:19:36 | Math.random() % 255 |
-| tst.js:19:18:19:36 | Math.random() % 255 | tst.js:19:9:19:36 | suffix |
-| tst.js:20:31:20:36 | suffix | tst.js:20:20:20:36 | "prefix" + suffix |
-| tst.js:28:9:28:26 | pw | tst.js:29:20:29:21 | pw |
-| tst.js:28:14:28:26 | Math.random() | tst.js:28:9:28:26 | pw |
-| tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() |
-| tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() |
-| tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) |
-| tst.js:71:9:71:48 | rand | tst.js:72:34:72:37 | rand |
-| tst.js:71:16:71:48 | Math.fl ... 999999) | tst.js:71:9:71:48 | rand |
-| tst.js:71:27:71:39 | Math.random() | tst.js:71:27:71:47 | Math.ra ... 9999999 |
-| tst.js:71:27:71:47 | Math.ra ... 9999999 | tst.js:71:16:71:48 | Math.fl ... 999999) |
-| tst.js:72:9:72:48 | concat | tst.js:73:23:73:28 | concat |
-| tst.js:72:18:72:48 | ts.toSt ... tring() | tst.js:72:9:72:48 | concat |
-| tst.js:72:34:72:37 | rand | tst.js:72:34:72:48 | rand.toString() |
-| tst.js:72:34:72:48 | rand.toString() | tst.js:72:18:72:48 | ts.toSt ... tring() |
-| tst.js:77:16:77:21 | secret | tst.js:77:16:77:21 | secret |
-| tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
-| tst.js:115:27:115:39 | Math.random() | tst.js:115:27:115:55 | Math.ra ... 000_000 |
-| tst.js:115:27:115:55 | Math.ra ... 000_000 | tst.js:115:16:115:56 | Math.fl ... 00_000) |
-| tst.js:116:33:116:45 | Math.random() | tst.js:116:33:116:61 | Math.ra ... 000_000 |
-| tst.js:116:33:116:61 | Math.ra ... 000_000 | tst.js:116:22:116:62 | Math.fl ... 00_000) |
-| tst.js:117:26:117:38 | Math.random() | tst.js:117:26:117:54 | Math.ra ... 000_000 |
-| tst.js:117:26:117:54 | Math.ra ... 000_000 | tst.js:117:15:117:55 | Math.fl ... 00_000) |
-| tst.js:118:34:118:46 | Math.random() | tst.js:118:34:118:62 | Math.ra ... 000_000 |
-| tst.js:118:34:118:62 | Math.ra ... 000_000 | tst.js:118:23:118:63 | Math.fl ... 00_000) |
-| tst.js:136:21:136:67 | chars[M ... ength)] | tst.js:136:9:136:67 | password |
-| tst.js:136:27:136:66 | Math.fl ... length) | tst.js:136:21:136:67 | chars[M ... ength)] |
-| tst.js:136:38:136:50 | Math.random() | tst.js:136:38:136:65 | Math.ra ... .length |
-| tst.js:136:38:136:65 | Math.ra ... .length | tst.js:136:27:136:66 | Math.fl ... length) |
+| tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() | provenance |  |
+| tst.js:19:9:19:36 | suffix | tst.js:20:31:20:36 | suffix | provenance |  |
+| tst.js:19:18:19:30 | Math.random() | tst.js:19:18:19:36 | Math.random() % 255 | provenance |  |
+| tst.js:19:18:19:36 | Math.random() % 255 | tst.js:19:9:19:36 | suffix | provenance |  |
+| tst.js:20:31:20:36 | suffix | tst.js:20:20:20:36 | "prefix" + suffix | provenance |  |
+| tst.js:28:9:28:26 | pw | tst.js:29:20:29:21 | pw | provenance |  |
+| tst.js:28:14:28:26 | Math.random() | tst.js:28:9:28:26 | pw | provenance |  |
+| tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() | provenance |  |
+| tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() | provenance |  |
+| tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) | provenance |  |
+| tst.js:71:9:71:48 | rand | tst.js:72:34:72:37 | rand | provenance |  |
+| tst.js:71:16:71:48 | Math.fl ... 999999) | tst.js:71:9:71:48 | rand | provenance |  |
+| tst.js:71:27:71:39 | Math.random() | tst.js:71:27:71:47 | Math.ra ... 9999999 | provenance |  |
+| tst.js:71:27:71:47 | Math.ra ... 9999999 | tst.js:71:16:71:48 | Math.fl ... 999999) | provenance |  |
+| tst.js:72:9:72:48 | concat | tst.js:73:23:73:28 | concat | provenance |  |
+| tst.js:72:18:72:48 | ts.toSt ... tring() | tst.js:72:9:72:48 | concat | provenance |  |
+| tst.js:72:34:72:37 | rand | tst.js:72:34:72:48 | rand.toString() | provenance |  |
+| tst.js:72:34:72:48 | rand.toString() | tst.js:72:18:72:48 | ts.toSt ... tring() | provenance |  |
+| tst.js:77:16:77:21 | secret | tst.js:77:16:77:21 | secret | provenance |  |
+| tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret | provenance |  |
+| tst.js:115:27:115:39 | Math.random() | tst.js:115:27:115:55 | Math.ra ... 000_000 | provenance |  |
+| tst.js:115:27:115:55 | Math.ra ... 000_000 | tst.js:115:16:115:56 | Math.fl ... 00_000) | provenance |  |
+| tst.js:116:33:116:45 | Math.random() | tst.js:116:33:116:61 | Math.ra ... 000_000 | provenance |  |
+| tst.js:116:33:116:61 | Math.ra ... 000_000 | tst.js:116:22:116:62 | Math.fl ... 00_000) | provenance |  |
+| tst.js:117:26:117:38 | Math.random() | tst.js:117:26:117:54 | Math.ra ... 000_000 | provenance |  |
+| tst.js:117:26:117:54 | Math.ra ... 000_000 | tst.js:117:15:117:55 | Math.fl ... 00_000) | provenance |  |
+| tst.js:118:34:118:46 | Math.random() | tst.js:118:34:118:62 | Math.ra ... 000_000 | provenance |  |
+| tst.js:118:34:118:62 | Math.ra ... 000_000 | tst.js:118:23:118:63 | Math.fl ... 00_000) | provenance |  |
+| tst.js:136:21:136:67 | chars[M ... ength)] | tst.js:136:9:136:67 | password | provenance |  |
+| tst.js:136:27:136:66 | Math.fl ... length) | tst.js:136:21:136:67 | chars[M ... ength)] | provenance |  |
+| tst.js:136:38:136:50 | Math.random() | tst.js:136:38:136:65 | Math.ra ... .length | provenance |  |
+| tst.js:136:38:136:65 | Math.ra ... .length | tst.js:136:27:136:66 | Math.fl ... length) | provenance |  |
 nodes
 | tst.js:2:20:2:32 | Math.random() | semmle.label | Math.random() |
 | tst.js:6:20:6:43 | "prefix ... andom() | semmle.label | "prefix ... andom() |
