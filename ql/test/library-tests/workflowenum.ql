@@ -1,5 +1,5 @@
 import actions
-import codeql.actions.dataflow.internal.ExternalFlowExtensions as Extensions
+import codeql.actions.config.ConfigExtensions as Extensions
 
 from
   string path, string trigger, string job, string secrets_source, string permissions,

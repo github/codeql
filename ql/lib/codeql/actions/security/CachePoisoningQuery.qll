@@ -1,5 +1,5 @@
 import actions
-import codeql.actions.dataflow.ExternalFlow
+import codeql.actions.config.Config
 
 string defaultBranchTriggerEvent() {
   result =

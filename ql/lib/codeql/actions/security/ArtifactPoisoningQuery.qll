@@ -254,8 +254,8 @@ class ArtifactPoisoningSink extends DataFlow::Node {
         poisonable.(UsesStep) = this.asExpr()
       ) and
       (
-        not poisonable instanceof LocalCommandExecutionRunStep or
-        poisonable.(LocalCommandExecutionRunStep).getCommand().matches(download.getPath() + "%")
+        not poisonable instanceof LocalScriptExecutionRunStep or
+        poisonable.(LocalScriptExecutionRunStep).getCommand().matches(download.getPath() + "%")
       )
     )
   }

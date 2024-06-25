@@ -1,7 +1,7 @@
 private import codeql.actions.ast.internal.Yaml
 private import codeql.Locations
 private import codeql.actions.Helper
-private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.config.Config
 
 /**
  * Gets the length of each line in the StringValue .

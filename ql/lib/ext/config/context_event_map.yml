@@ -1,14 +1,6 @@
 extensions:
   - addsTo:
       pack: github/actions-all
-      extensible: repositoryDataModel
-    data: []
-  - addsTo:
-      pack: github/actions-all
-      extensible: workflowDataModel
-    data: []
-  - addsTo:
-      pack: github/actions-all
       extensible: contextTriggerDataModel 
     data:
       - ["commit_comment", "github.event.comment"] 
@@ -54,19 +46,4 @@ extensions:
       - ["workflow_call", "github.event.review"] 
       - ["workflow_call", "github.event.workflow"]
       - ["workflow_call", "github.event.workflow_run"]
-  - addsTo:
-      pack: github/actions-all
-      extensible: externallyTriggerableEventsDataModel
-    data:
-      - ["discussion"]
-      - ["discussion_comment"]
-      - ["fork"]
-      - ["issue_comment"]
-      - ["issues"]
-      - ["pull_request"]
-      - ["pull_request_comment"]
-      - ["pull_request_review"]
-      - ["pull_request_review_comment"]
-      - ["pull_request_target"]
-      - ["workflow_run"] # depending on trigger workflow
-      - ["workflow_call"] # depending on caller
+
