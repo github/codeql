@@ -133,7 +133,11 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       or
       // 3rd party actions returning the PR head sha/ref
       exists(UsesStep step |
-        step.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+        step.getCallee() =
+          [
+            "eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch",
+            "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
+          ] and
         this.getArgument("ref").regexpMatch(".*head_sha.*") and
         DataFlow::hasLocalFlowExpr(step, this.getArgumentExpr("ref"))
       )
