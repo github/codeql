@@ -13,6 +13,8 @@ extensions:
       pack: codeql/python-all
       extensible: summaryModel
     data:
+      # See https://docs.python.org/3/library/copy.html#copy.deepcopy
+      - ["copy", "Member[copy,deepcopy]", "Argument[0,x:]", "ReturnValue", "value"]
       # See See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
       - ["fnmatch", "Member[filter]", "Argument[0,names:].ListElement", "ReturnValue.ListElement", "value"]
       - ["fnmatch", "Member[filter]", "Argument[0,names:]", "ReturnValue", "taint"]
