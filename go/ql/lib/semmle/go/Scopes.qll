@@ -572,6 +572,7 @@ class Method extends Function {
    * Note that all methods implement themselves, and that unlike the predicate `implements`
    * this does allow interface methods to implement other interfaces.
    */
+  pragma[no_dynamic_join_order]
   predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
