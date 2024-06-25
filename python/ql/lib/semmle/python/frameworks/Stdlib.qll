@@ -254,9 +254,13 @@ module Stdlib {
    * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
    */
   module Logger {
+    private import semmle.python.dataflow.new.internal.DataFlowDispatch as DD
+
     /** Gets a reference to the `logging.Logger` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+      or
+      result = API::moduleImport("logging").getMember("getLoggerClass").getReturn().getASubclass*()
       or
       result = ModelOutput::getATypeNode("logging.Logger~Subclass").getASubclass*()
     }
@@ -276,6 +280,13 @@ module Stdlib {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       ClassInstantiation() {
         this = subclassRef().getACall()
+        or
+        this =
+          DD::selfTracker(subclassRef()
+                .getAValueReachableFromSource()
+                .asExpr()
+                .(ClassExpr)
+                .getInnerScope())
         or
         this = API::moduleImport("logging").getMember("root").asSource()
         or
