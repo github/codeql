@@ -258,6 +258,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2, string model) {
     model = "ValuePreservingMethod"
   )
   or
+  cloneStep(node1, node2) and model = "CloneStep"
+  or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), true, model)
 }

@@ -394,6 +394,18 @@ class CastNode extends ExprNode {
   }
 }
 
+/** Holds if `n1` is the qualifier of a call to `clone()` and `n2` is the result. */
+predicate cloneStep(Node n1, Node n2) {
+  exists(MethodCall mc |
+    mc.getMethod() instanceof CloneMethod and
+    n1 = getInstanceArgument(mc) and
+    n2.asExpr() = mc
+  )
+}
+
+bindingset[node1, node2]
+predicate validParameterAliasStep(Node node1, Node node2) { not cloneStep(node1, node2) }
+
 private predicate id_member(Member x, Member y) { x = y }
 
 private predicate idOf_member(Member x, int y) = equivalenceRelation(id_member/2)(x, y)
