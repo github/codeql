@@ -1,67 +1,35 @@
 import actions
+import codeql.actions.config.Config
 
 abstract class PoisonableStep extends Step { }
 
-// source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
 private string dangerousActions() {
-  result =
-    [
-      "pre-commit/action", "oxsecurity/megalinter", "bridgecrewio/checkov-action",
-      "ruby/setup-ruby", "actions/jekyll-build-pages"
-    ]
+  exists(string action |
+    poisonableActionsDataModel(action) and
+    result = action
+  )
 }
 
 class DangerousActionUsesStep extends PoisonableStep, UsesStep {
   DangerousActionUsesStep() { this.getCallee() = dangerousActions() }
 }
 
-// source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L23
-private string dangerousCommands() {
-  result =
-    [
-      "npm i(nstall)?(\\b|$)", "npm run ", "yarn ", "npm ci(\\b|$)", "make ", "terraform plan",
-      "terraform apply", "gomplate ", "pre-commit run", "pre-commit install", "go generate",
-      "msbuild ", "mvn ", "gradle ", "bundle install", "bundle exec ", "^ant ", "mkdocs build",
-      "pytest", "pip install -r ", "pip install --requirement", "java -jar ", "poetry install",
-      "poetry run", "cargo "
-    ]
-}
-
-class BuildRunStep extends PoisonableStep, Run {
-  BuildRunStep() {
-    exists(
-      this.getScript().splitAt("\n").trim().regexpFind("([^a-z]|^)" + dangerousCommands(), _, _)
+class PoisonableCommandStep extends PoisonableStep, Run {
+  PoisonableCommandStep() {
+    exists(string regexp |
+      poisonableCommandsDataModel(regexp) and
+      exists(this.getScript().splitAt("\n").trim().regexpFind("([^a-z]|^)" + regexp, _, _))
     )
   }
 }
 
-bindingset[cmdRegexp]
-string wrapLocalCmd(string cmdRegexp) { result = "(^|;\\s*|\\s+)" + cmdRegexp + "(\\s+|;|$)" }
-
-class LocalCommandExecutionRunStep extends PoisonableStep, Run {
+class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   string cmd;
 
-  LocalCommandExecutionRunStep() {
-    // Heuristic:
-    exists(string line | line = this.getScript().splitAt("\n").trim() |
-      // ./xxxx
-      // TODO: It could also be in the form of `dir/cmd`
-      cmd = line.regexpCapture(wrapLocalCmd("\\.\\/(.*)"), 2)
-      or
-      // sh xxxx
-      cmd = line.regexpCapture(wrapLocalCmd("(ba|z|fi)?sh\\s+(.*)"), 3)
-      or
-      // node xxxx.js
-      cmd = line.regexpCapture(wrapLocalCmd("node\\s+(.*)(\\.js|\\.ts)"), 2)
-      or
-      // python xxxx.py
-      cmd = line.regexpCapture(wrapLocalCmd("python\\s+(.*)\\.py"), 2)
-      or
-      // ruby xxxx.rb
-      cmd = line.regexpCapture(wrapLocalCmd("ruby\\s+(.*)\\.rb"), 2)
-      or
-      // go xxxx.go
-      cmd = line.regexpCapture(wrapLocalCmd("go\\s+(.*)\\.go"), 2)
+  LocalScriptExecutionRunStep() {
+    exists(string line, string regexp, int group | line = this.getScript().splitAt("\n").trim() |
+      poisonableLocalScriptsDataModel(regexp, group) and
+      cmd = line.regexpCapture(regexp, group)
     )
   }
 

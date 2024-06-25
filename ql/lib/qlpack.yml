@@ -11,6 +11,6 @@ dependencies:
 extractor: javascript
 groups: javascript
 dataExtensions:
-  - ext/*.model.yml
-  - ext/**/*.model.yml
-  - ext/workflow-models/workflow-models.yml
+  - ext/manual/*.model.yml
+  - ext/generated/**/*.model.yml
+  - ext/config/*.yml

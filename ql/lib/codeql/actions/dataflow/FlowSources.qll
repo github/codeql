@@ -1,5 +1,6 @@
-private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.config.Config
+private import codeql.actions.dataflow.ExternalFlow
 
 /**
  * A data flow source.

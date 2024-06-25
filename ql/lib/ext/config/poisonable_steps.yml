@@ -1,0 +1,55 @@
+extensions:
+  - addsTo:
+      pack: github/actions-all
+      extensible: poisonableActionsDataModel
+    # source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
+    # source: https://boostsecurityio.github.io/lotp/
+    data:
+      - ["pre-commit/action"]
+      - ["oxsecurity/megalinter"]
+      - ["bridgecrewio/checkov-action"]
+      - ["ruby/setup-ruby"]
+      - ["actions/jekyll-build-pages"]
+  - addsTo:
+      pack: github/actions-all
+      extensible: poisonableCommandsDataModel
+    # source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L23
+    # source: https://boostsecurityio.github.io/lotp/
+    data:
+      - ["ant "]
+      - ["bundle install"]
+      - ["bundle exec "]
+      - ["cargo "]
+      - ["go generate"]
+      - ["gomplate "]
+      - ["gradle "]
+      - ["java -jar "]
+      - ["make "]
+      - ["mkdocs build"]
+      - ["msbuild "]
+      - ["mvn "]
+      - ["npm i(nstall)?(\\b|$)"]
+      - ["npm run "]
+      - ["npm ci(\\b|$)"]
+      - ["pip install -r "]
+      - ["pip install --requirement"]
+      - ["poetry install"]
+      - ["poetry run"]
+      - ["pre-commit run"]
+      - ["pre-commit install"]
+      - ["pytest"]
+      - ["terraform plan"]
+      - ["terraform apply"]
+      - ["yarn "]
+  - addsTo:
+      pack: github/actions-all
+      extensible: poisonableLocalScriptsDataModel
+    data:
+      # TODO: It could also be in the form of `dir/cmd`
+      - ["(^|;\\s*|\\s+)(\\.\\/)(.*)(\\s+|;|$)", 3]
+      - ["(^|;\\s*|\\s+)(source|sh|bash|zsh|fish)\\s+(.*)(\\s+|;|$)", 3]
+      - ["(^|;\\s*|\\s+)(node)\\s+(.*)(\\.js|\\.ts)(\\s+|;|$)", 3]
+      - ["(^|;\\s*|\\s+)(python)\\s+(.*)\\.py(\\s+|;|$)", 3]
+      - ["(^|;\\s*|\\s+)(ruby)\\s+(.*)\\.rb(\\s+|;|$)", 3]
+      - ["(^|;\\s*|\\s+)(go)\\s+(.*)\\.go(\\s+|;|$)", 3]
+

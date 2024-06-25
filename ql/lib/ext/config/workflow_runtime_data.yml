@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: github/actions-all
+      extensible: repositoryDataModel
+    data: []
+  - addsTo:
+      pack: github/actions-all
+      extensible: workflowDataModel
+    data: []
