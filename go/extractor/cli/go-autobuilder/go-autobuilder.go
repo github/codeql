@@ -10,8 +10,6 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/mod/semver"
-
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
@@ -156,7 +154,7 @@ func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
 func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && semver.Compare(toolchain.GetEnvGoSemVer(), "v1.16") >= 0 {
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(toolchain.V1_16) {
 		for _, goMod := range workspace.Modules {
 			// stat go.mod and go.sum
 			goModPath := goMod.Path
@@ -170,7 +168,7 @@ func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 			beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
 
 			// run `go mod tidy -e`
-			cmd := toolchain.TidyModule(goModDir)
+			cmd := goMod.Tidy()
 			res := util.RunCmd(cmd)
 
 			if !res {
@@ -320,25 +318,35 @@ func setGopath(root string) {
 	log.Printf("GOPATH set to %s.\n", newGopath)
 }
 
-// Try to build the project without custom commands. If that fails, return a boolean indicating
-// that we should install dependencies ourselves.
-func buildWithoutCustomCommands(modMode project.ModMode) bool {
-	shouldInstallDependencies := false
-	// try to build the project
-	buildSucceeded := autobuilder.Autobuild()
+// Try to build the project with a build script. If that fails, return a boolean indicating
+// that we should install dependencies in the normal way.
+func buildWithoutCustomCommands(workspaces []project.GoWorkspace) {
+	// try to run a build script
+	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
+	scriptCount := len(scriptsExecuted)
 
-	// Build failed or there are still dependency errors; we'll try to install dependencies
-	// ourselves
-	if !buildSucceeded {
-		log.Println("Build failed, continuing to install dependencies.")
+	// If there is no build script we could invoke successfully or there are still dependency errors;
+	// we'll try to install dependencies ourselves in the normal Go way.
+	if !scriptSucceeded {
+		if scriptCount > 0 {
+			log.Printf("Unsuccessfully ran %d build scripts(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		} else {
+			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
+		}
 
-		shouldInstallDependencies = true
-	} else if util.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+		// Install dependencies for all workspaces.
+		for i, _ := range workspaces {
+			workspaces[i].ShouldInstallDependencies = true
+		}
+	} else {
+		for i, workspace := range workspaces {
+			if toolchain.DepErrors("./...", workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+				log.Printf("Dependencies are still not resolving for `%s` after executing %d build script(s), continuing to install dependencies in the normal way.\n", workspace.BaseDir, scriptCount)
 
-		shouldInstallDependencies = true
+				workspaces[i].ShouldInstallDependencies = true
+			}
+		}
 	}
-	return shouldInstallDependencies
 }
 
 // Build the project with custom commands.
@@ -425,7 +433,7 @@ func installDependencies(workspace project.GoWorkspace) {
 			path := filepath.Dir(module.Path)
 
 			if util.DirExists(filepath.Join(path, "vendor")) {
-				vendor := toolchain.VendorModule(path)
+				vendor := module.Vendor()
 				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
 				util.RunCmd(vendor)
 			}
@@ -487,7 +495,9 @@ func extract(workspace project.GoWorkspace) bool {
 
 // Build the project and run the extractor.
 func installDependenciesAndBuild() {
-	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), toolchain.GetEnvGoVersion())
+	// do not print experiments the autobuilder was built with if any, only the version
+	version := strings.SplitN(runtime.Version(), " ", 2)[0]
+	log.Printf("Autobuilder was built with %s, environment has %s\n", version, toolchain.GetEnvGoVersion())
 
 	srcdir := getSourceDir()
 
@@ -535,12 +545,12 @@ func installDependenciesAndBuild() {
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+greatestGoVersion.Version)
+	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
 		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
-				"v"+greatestGoVersion.Version,
+				greatestGoVersion,
 				toolchain.GetEnvGoSemVer())
 		}
 	}
@@ -548,23 +558,25 @@ func installDependenciesAndBuild() {
 	// Track all projects which could not be extracted successfully
 	var unsuccessfulProjects = []string{}
 
-	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
-	for i, workspace := range workspaces {
+	// Attempt to automatically fix issues with each workspace
+	for _, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
-		fixGoVendorIssues(&workspace, goVersionInfo.Found)
+		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
 		tryUpdateGoModAndGoSum(workspace)
+	}
 
-		// check whether an explicit dependency installation command was provided
-		inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-		shouldInstallDependencies := false
-		if inst == "" {
-			shouldInstallDependencies = buildWithoutCustomCommands(workspace.ModMode)
-		} else {
-			buildWithCustomCommands(inst)
-		}
+	// check whether an explicit dependency installation command was provided
+	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
+	if inst == "" {
+		buildWithoutCustomCommands(workspaces)
+	} else {
+		buildWithCustomCommands(inst)
+	}
 
+	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
+	for i, workspace := range workspaces {
 		if workspace.ModMode == project.ModVendor {
 			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
 			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
@@ -575,7 +587,7 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		if shouldInstallDependencies {
+		if workspace.ShouldInstallDependencies {
 			if workspace.ModMode == project.ModVendor {
 				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {

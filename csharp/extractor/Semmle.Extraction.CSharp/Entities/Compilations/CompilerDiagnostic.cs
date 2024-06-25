@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 if (messageCount == limit + 1)
                 {
-                    Context.Extractor.Logger.LogWarning($"Stopped logging {key} compiler diagnostics for the current compilation after reaching {limit}");
+                    Context.ExtractionContext.Logger.LogWarning($"Stopped logging {key} compiler diagnostics for the current compilation after reaching {limit}");
                 }
 
                 return;

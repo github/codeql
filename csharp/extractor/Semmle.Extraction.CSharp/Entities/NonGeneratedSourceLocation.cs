@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var mapped = Symbol.GetMappedLineSpan();
             if (mapped.HasMappedPath && mapped.IsValid)
             {
-                var path = TryAdjustRelativeMappedFilePath(mapped.Path, Position.Path, Context.Extractor.Logger);
+                var path = Context.TryAdjustRelativeMappedFilePath(mapped.Path, Position.Path);
                 var mappedLoc = Create(Context, Location.Create(path, default, mapped.Span));
 
                 trapFile.locations_mapped(this, mappedLoc);
@@ -63,26 +63,6 @@ namespace Semmle.Extraction.CSharp.Entities
             public static SourceLocationFactory Instance { get; } = new SourceLocationFactory();
 
             public override NonGeneratedSourceLocation Create(Context cx, Location init) => new NonGeneratedSourceLocation(cx, init);
-        }
-
-        public static string TryAdjustRelativeMappedFilePath(string mappedToPath, string mappedFromPath, ILogger logger)
-        {
-            if (!Path.IsPathRooted(mappedToPath))
-            {
-                try
-                {
-                    var fullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(mappedFromPath)!, mappedToPath));
-                    logger.LogDebug($"Found relative path in line mapping: '{mappedToPath}', interpreting it as '{fullPath}'");
-
-                    mappedToPath = fullPath;
-                }
-                catch (Exception e)
-                {
-                    logger.LogDebug($"Failed to compute absolute path for relative path in line mapping: '{mappedToPath}': {e}");
-                }
-            }
-
-            return mappedToPath;
         }
     }
 }

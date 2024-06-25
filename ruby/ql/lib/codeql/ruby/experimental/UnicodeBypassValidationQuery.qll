@@ -79,6 +79,46 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof RemoteFlowSource and state = PreValidationState()
+    or
+    (
+      exists(Escaping escaping | source = escaping.getOutput())
+      or
+      source instanceof RegexExecution
+      or
+      // String Manipulation Method Calls
+      // https://ruby-doc.org/core-2.7.0/String.html
+      // String Manipulation Method Calls
+      // https://ruby-doc.org/core-2.7.0/String.html
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() =
+          [
+            [
+                "ljust", "lstrip", "succ", "next", "rjust", "capitalize", "chomp", "gsub", "chop",
+                "downcase", "swapcase", "uprcase", "scrub", "slice", "squeeze", "strip", "sub",
+                "tr", "tr_s", "reverse"
+              ] + ["", "!"], "concat", "dump", "each_line", "replace", "insert", "inspect", "lines",
+            "partition", "prepend", "replace", "rpartition", "scan", "split", "undump",
+            "unpack" + ["", "1"]
+          ] and
+        source = cn
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() =
+          [
+            "casecmp" + ["", "?"], "center", "count", "each_char", "index", "rindex", "sum",
+            ["delete", "delete_prefix", "delete_suffix"] + ["", "!"],
+            ["start_with", "end_with" + "eql", "include"] + ["?", "!"], "match" + ["", "?"],
+          ] and
+        source = cn.getReceiver()
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn = API::getTopLevelMember("CGI").getAMethodCall("escapeHTML") and
+        source = cn
+      )
+    ) and
+    state = PostValidationState()
   }
 
   predicate isAdditionalFlowStep(

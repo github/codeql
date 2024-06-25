@@ -157,8 +157,8 @@
 })();
 
 (function(){
-	require("cookie-session")({ secret: "change_me" }); // NOT OK
-	require('crypto').createHmac('sha256', 'change_me'); // NOT OK
+	require("cookie-session")({ secret: "oiuneawrgiyubaegr" }); // NOT OK
+	require('crypto').createHmac('sha256', 'oiuneawrgiyubaegr'); // NOT OK
 
 	var basicAuth = require('express-basic-auth');
 	basicAuth({users: { [adminName]: 'change_me' }});  // OK
@@ -294,3 +294,10 @@
     headers.append("Authorization", `Basic sdsdag:aaaiuogrweuibgbbbbb`); // NOT OK
     headers.append("Authorization", `Basic sdsdag:000000000000001`); // OK
 });
+
+(function () {
+    require('crypto').createHmac('sha256', 'mytoken'); // OK
+    require('crypto').createHmac('sha256', 'SampleToken'); // OK
+    require('crypto').createHmac('sha256', 'MyPassword'); // OK
+    require('crypto').createHmac('sha256', 'iubfewiaaweiybgaeuybgera'); // NOT OK
+})();

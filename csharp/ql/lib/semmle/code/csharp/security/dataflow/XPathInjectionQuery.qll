@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.xml.XPath
 private import semmle.code.csharp.frameworks.system.Xml
@@ -16,7 +17,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for untrusted user input used in XPath expression.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for untrusted user input used in XPath expression.

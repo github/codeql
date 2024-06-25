@@ -2,6 +2,15 @@ import javascript
 import testUtilities.ConsistencyChecking
 import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
+class TypeModelFromCodeQL extends ModelInput::TypeModel {
+  override predicate isTypeUsed(string type) { type = "danger-constant" }
+
+  override DataFlow::Node getASource(string type) {
+    type = "danger-constant" and
+    result.getStringValue() = "danger-constant"
+  }
+}
+
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.(DataFlow::CallNode).getCalleeName() = "source"

@@ -1,0 +1,6 @@
+<Project InitialTargets="LocalToolRestore">
+  <Target Name="LocalToolRestore">
+    <Message Text="Restoring tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>

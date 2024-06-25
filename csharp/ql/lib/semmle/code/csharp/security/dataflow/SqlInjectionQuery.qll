@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.security.Sanitizers
@@ -16,7 +17,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A sink for SQL injection vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for SQL injection vulnerabilities.

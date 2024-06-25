@@ -107,7 +107,7 @@ class SnprintfSizeExpr extends BufferAccess, FunctionCall {
 }
 
 class MemcmpSizeExpr extends BufferAccess, FunctionCall {
-  MemcmpSizeExpr() { this.getTarget().hasName("Memcmp") }
+  MemcmpSizeExpr() { this.getTarget().hasName("memcmp") }
 
   override Expr getPointer() {
     result = this.getArgument(0) or

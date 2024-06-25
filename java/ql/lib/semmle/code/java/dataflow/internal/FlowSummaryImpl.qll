@@ -131,7 +131,7 @@ private predicate relatedArgSpec(Callable c, string spec) {
     sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
     sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
   |
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c = interpretElement(namespace, type, subtypes, name, signature, ext, _)
   )
 }
 
@@ -202,7 +202,7 @@ module SourceSinkInterpretationInput implements
       sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
         madId) and
       model = "MaD:" + madId.toString() and
-      baseSource = interpretElement(namespace, type, subtypes, name, signature, ext) and
+      baseSource = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSource and output = originalOutput
         or
@@ -221,7 +221,7 @@ module SourceSinkInterpretationInput implements
       sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance,
         madId) and
       model = "MaD:" + madId.toString() and
-      baseSink = interpretElement(namespace, type, subtypes, name, signature, ext) and
+      baseSink = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSink and originalInput = input
         or
@@ -310,7 +310,7 @@ module Private {
      */
     predicate summaryElement(
       Input::SummarizedCallableBase c, string input, string output, string kind, string provenance,
-      string model
+      string model, boolean isExact
     ) {
       exists(
         string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -320,7 +320,7 @@ module Private {
         summaryModel(namespace, type, subtypes, name, signature, ext, originalInput, originalOutput,
           kind, provenance, madId) and
         model = "MaD:" + madId.toString() and
-        baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext) and
+        baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext, isExact) and
         (
           c.asCallable() = baseCallable and input = originalInput and output = originalOutput
           or
@@ -336,10 +336,12 @@ module Private {
      * Holds if a neutral model exists for `c` of kind `kind`
      * and with provenance `provenance`.
      */
-    predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
+    predicate neutralElement(
+      Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
+    ) {
       exists(string namespace, string type, string name, string signature |
         neutralModel(namespace, type, name, signature, kind, provenance) and
-        c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
+        c.asCallable() = interpretElement(namespace, type, false, name, signature, "", isExact)
       )
     }
   }

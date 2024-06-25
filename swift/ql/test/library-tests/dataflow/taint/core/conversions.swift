@@ -190,3 +190,53 @@ class TestArrayConversion {
 		sink(arg: arr2c[0]) // $ tainted=172
 	}
 }
+
+// ---
+
+class MyValue {
+	var v : Int
+
+	init(_ v: Int) {
+		self.v = v
+	}
+}
+
+extension Int {
+	init(withUInt: UInt) {
+		sink(arg: withUInt) // $ tainted=232
+		self = Int(withUInt)
+		sink(arg:self) // $ tainted=232
+	}
+
+	init(withMyValue: MyValue) {
+		sink(arg: withMyValue.v) // $ tainted=235
+		self = withMyValue.v
+		sink(arg:self) // $ MISSING: tainted=235
+	}
+
+	init(withMyValue2: MyValue) {
+		sink(arg: withMyValue2.v) // $ tainted=238
+		let x = withMyValue2.v
+		self = x
+		sink(arg:self) // $ tainted=238
+	}
+
+	static func mkInt(withMyValue: MyValue) -> Int {
+		sink(arg: withMyValue.v) // $ tainted=241
+		return withMyValue.v
+	}
+}
+
+func testIntExtensions() {
+	sink(arg: Int(withUInt: 0))
+	sink(arg: Int(withUInt: sourceUInt())) // $ tainted=232
+
+	sink(arg: Int(withMyValue: MyValue(0)))
+	sink(arg: Int(withMyValue: MyValue(sourceInt()))) // $ MISSING: tainted=235
+
+	sink(arg: Int(withMyValue2: MyValue(0)))
+	sink(arg: Int(withMyValue2: MyValue(sourceInt()))) // $ tainted=238
+
+	sink(arg: Int.mkInt(withMyValue: MyValue(0)))
+	sink(arg: Int.mkInt(withMyValue: MyValue(sourceInt()))) // $ tainted=241
+}

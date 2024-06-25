@@ -13,10 +13,8 @@
 | errors.cs:74:17:74:17 | x | Int32 |
 | errors.cs:75:17:75:17 | x | Int32 |
 | errors.cs:82:13:82:13 | F | Int32 |
-| errors.cs:89:13:89:13 | F | Int32 |
 | errors.cs:91:29:91:29 | a | Func<Int32,Int32,Int32> |
 | errors.cs:91:34:91:35 | x1 | Int32 |
 | errors.cs:91:38:91:39 | x2 | Int32 |
-| errors.cs:92:29:92:29 | a | Func<Int32,Int32,Int32> |
 | errors.cs:92:34:92:35 | y1 | Int32 |
 | errors.cs:92:38:92:39 | y2 | Int32 |

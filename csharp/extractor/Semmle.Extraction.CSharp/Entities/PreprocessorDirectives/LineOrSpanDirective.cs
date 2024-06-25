@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var path = Symbol.File.ValueText;
             if (!string.IsNullOrWhiteSpace(path))
             {
-                path = NonGeneratedSourceLocation.TryAdjustRelativeMappedFilePath(path, Symbol.SyntaxTree.FilePath, Context.Extractor.Logger);
+                path = Context.TryAdjustRelativeMappedFilePath(path, Symbol.SyntaxTree.FilePath);
                 var file = File.Create(Context, path);
                 trapFile.directive_line_file(this, file);
             }

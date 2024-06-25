@@ -7,4 +7,4 @@ struct Kiwi {
 struct Lemon {
   signed int __attribute__ ((vector_size (16))) lemon_x;
 };
-// semmle-extractor-options: --edg --c99 --edg --clang --edg --clang_vector_types --gnu_version 40700
+// semmle-extractor-options: --edg --c99 --clang --edg --clang_vector_types --gnu_version 40700

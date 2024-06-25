@@ -4,7 +4,6 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
-private import DataFlowImpl
 private import AccessPathSyntax as AccessPathSyntax
 
 /**
@@ -253,6 +252,13 @@ module Make<
        * that has provenance `provenance`.
        */
       predicate hasProvenance(Provenance provenance) { provenance = "manual" }
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
 
     final private class NeutralCallableFinal = NeutralCallable;
@@ -262,6 +268,20 @@ module Make<
      */
     class NeutralSummaryCallable extends NeutralCallableFinal {
       NeutralSummaryCallable() { this.getKind() = "summary" }
+    }
+
+    /**
+     * A callable that has a neutral source model.
+     */
+    class NeutralSourceCallable extends NeutralCallableFinal {
+      NeutralSourceCallable() { this.getKind() = "source" }
+    }
+
+    /**
+     * A callable that has a neutral sink model.
+     */
+    class NeutralSinkCallable extends NeutralCallableFinal {
+      NeutralSinkCallable() { this.getKind() = "sink" }
     }
 
     /**
@@ -292,6 +312,13 @@ module Make<
        * Gets the kind of the neutral.
        */
       abstract string getKind();
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
   }
 
@@ -1286,10 +1313,8 @@ module Make<
        * be useful to include in the exposed local data-flow/taint-tracking relations.
        */
       predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
-        exists(ReturnKind rk, SummaryNode ret, DataFlowCall call |
-          summaryLocalStep(summaryArgParam(call, arg, sc), ret, true, _) and
-          summaryReturnNode(ret, pragma[only_bind_into](rk)) and
-          out = getAnOutNode(call, pragma[only_bind_into](rk))
+        exists(SummaryNode ret |
+          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
         )
       }
 
@@ -1694,10 +1719,11 @@ module Make<
               )
             )
             or
-            exists(ReturnNodeExt ret |
+            exists(ReturnNode ret, ValueReturnKind kind |
               c = "ReturnValue" and
               ret = node.asNode() and
-              ret.getKind().(ValueReturnKind).getKind() = getStandardReturnValueKind() and
+              valueReturnNode(ret, kind) and
+              kind.getKind() = getStandardReturnValueKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
             )
             or
@@ -1725,6 +1751,37 @@ module Make<
             sinkElementRef(ref, input, kind, model) and
             interpretInput(input, input.getNumToken(), ref, node)
           )
+        }
+
+        final private class SourceOrSinkElementFinal = SourceOrSinkElement;
+
+        bindingset[this]
+        abstract private class SourceSinkModelCallableBase extends SourceOrSinkElementFinal {
+          /**
+           * Holds if there exists a manual model that applies to this.
+           */
+          final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+          /**
+           * Holds if this has provenance `p`.
+           */
+          abstract predicate hasProvenance(Provenance p);
+        }
+
+        /**
+         * A callable that has a source model.
+         */
+        abstract class SourceModelCallable extends SourceSinkModelCallableBase {
+          bindingset[this]
+          SourceModelCallable() { exists(this) }
+        }
+
+        /**
+         * A callable that has a sink model.
+         */
+        abstract class SinkModelCallable extends SourceSinkModelCallableBase {
+          bindingset[this]
+          SinkModelCallable() { exists(this) }
         }
 
         /** A source or sink relevant for testing. */

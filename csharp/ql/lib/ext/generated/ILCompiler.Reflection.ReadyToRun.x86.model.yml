@@ -2,18 +2,22 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcInfo", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable+GcSlot", False, "GcSlot", "(System.Int32,System.String,System.Int32,System.Int32,ILCompiler.Reflection.ReadyToRun.GcSlotFlags)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable+GcSlot", False, "GcSlot", "(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,ILCompiler.Reflection.ReadyToRun.GcSlotFlags)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable+GcSlot", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["ILCompiler.Reflection.ReadyToRun.x86", "CalleeSavedRegister", "CalleeSavedRegister", "(System.Int32,ILCompiler.Reflection.ReadyToRun.x86.CalleeSavedRegisters)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "CalleeSavedRegister", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "GcInfo", "GcInfo", "(System.Byte[],System.Int32,System.Reflection.PortableExecutable.Machine,System.UInt16)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "GcInfo", "GetRegisterName", "(System.Int32)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcInfo", "ToString", "()", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable+GcSlot", "GcSlot", "(System.Int32,System.String,System.Int32,System.Int32,ILCompiler.Reflection.ReadyToRun.GcSlotFlags)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable+GcSlot", "GcSlot", "(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,ILCompiler.Reflection.ReadyToRun.GcSlotFlags)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable+GcSlot", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable", "GcSlotTable", "(System.Byte[],ILCompiler.Reflection.ReadyToRun.x86.InfoHdrSmall,System.Int32)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.x86", "GcSlotTable", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "GcTransitionCall+CallRegister", "CallRegister", "(ILCompiler.Reflection.ReadyToRun.x86.Registers,System.Boolean)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "GcTransitionCall+PtrArg", "PtrArg", "(System.UInt32,System.UInt32)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.x86", "GcTransitionCall", "GcTransitionCall", "(System.Int32)", "summary", "df-generated"]

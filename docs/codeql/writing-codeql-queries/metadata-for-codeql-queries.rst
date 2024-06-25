@@ -9,7 +9,7 @@ About query metadata
 --------------------
 
 Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a QLDoc comment.
-This metadata tells the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` and the `Code scanning feature in GitHub <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning-with-codeql>`__ how to handle the query and display its results correctly.
+This metadata tells the CodeQL `extension for VS Code <https://docs.github.com/en/code-security/codeql-for-vs-code/>`__ and the `Code scanning feature in GitHub <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning-with-codeql>`__ how to handle the query and display its results correctly.
 It also gives other users information about what the query results mean. For more information on query metadata, see the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__ in our `open source repository <https://github.com/github/codeql>`__ on GitHub.
 
 .. pull-quote::

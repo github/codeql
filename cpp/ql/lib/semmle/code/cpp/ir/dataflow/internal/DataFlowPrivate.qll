@@ -988,7 +988,7 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
-  suppressUnusedNode(n) and
+  exists(n) and
   result instanceof VoidType // stub implementation
 }
 
@@ -999,12 +999,9 @@ string ppReprType(DataFlowType t) { none() } // stub implementation
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any() // stub implementation
+  t1 instanceof VoidType and t2 instanceof VoidType // stub implementation
 }
-
-private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -1061,6 +1058,16 @@ class DataFlowCallable extends TDataFlowCallable {
   Cpp::Declaration getUnderlyingCallable() {
     result = this.asSummarizedCallable() or // SummarizedCallable = Function (in CPP)
     result = this.asSourceCallable()
+  }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
   }
 }
 
@@ -1159,6 +1166,16 @@ class DataFlowCall extends TDataFlowCall {
    * Gets the location of this call.
    */
   Location getLocation() { none() }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCall c, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        c order by startline, startcolumn
+      )
+  }
 }
 
 /**
@@ -1247,43 +1264,53 @@ module IsUnreachableInCall {
     any(G::IRGuardCondition guard).ensuresLt(left, right, k, block, areEqual)
   }
 
-  predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  class NodeRegion instanceof IRBlock {
+    string toString() { result = "NodeRegion" }
+
+    predicate contains(Node n) { this = n.getBasicBlock() }
+
+    int totalOrder() {
+      this =
+        rank[result](IRBlock b, int startline, int startcolumn |
+          b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+        |
+          b order by startline, startcolumn
+        )
+    }
+  }
+
+  predicate isUnreachableInCall(NodeRegion block, DataFlowCall call) {
     exists(
       InstructionDirectParameterNode paramNode, ConstantIntegralTypeArgumentNode arg,
-      IntegerConstantInstruction constant, int k, Operand left, Operand right, IRBlock block
+      IntegerConstantInstruction constant, int k, Operand left, Operand right, int argval
     |
       // arg flows into `paramNode`
-      DataFlowImplCommon::viableParamArg(call, paramNode, arg) and
+      DataFlowImplCommon::viableParamArg(call, pragma[only_bind_into](paramNode),
+        pragma[only_bind_into](arg)) and
       left = constant.getAUse() and
       right = valueNumber(paramNode.getInstruction()).getAUse() and
-      block = n.getBasicBlock()
+      argval = arg.getValue()
     |
       // and there's a guard condition which ensures that the result of `left == right + k` is `areEqual`
-      exists(boolean areEqual |
-        ensuresEq(pragma[only_bind_into](left), pragma[only_bind_into](right),
-          pragma[only_bind_into](k), pragma[only_bind_into](block), areEqual)
-      |
+      exists(boolean areEqual | ensuresEq(left, right, k, block, areEqual) |
         // this block ensures that left = right + k, but it holds that `left != right + k`
         areEqual = true and
-        constant.getValue().toInt() != arg.getValue() + k
+        constant.getValue().toInt() != argval + k
         or
         // this block ensures that or `left != right + k`, but it holds that `left = right + k`
         areEqual = false and
-        constant.getValue().toInt() = arg.getValue() + k
+        constant.getValue().toInt() = argval + k
       )
       or
       // or there's a guard condition which ensures that the result of `left < right + k` is `isLessThan`
-      exists(boolean isLessThan |
-        ensuresLt(pragma[only_bind_into](left), pragma[only_bind_into](right),
-          pragma[only_bind_into](k), pragma[only_bind_into](block), isLessThan)
-      |
+      exists(boolean isLessThan | ensuresLt(left, right, k, block, isLessThan) |
         isLessThan = true and
         // this block ensures that `left < right + k`, but it holds that `left >= right + k`
-        constant.getValue().toInt() >= arg.getValue() + k
+        constant.getValue().toInt() >= argval + k
         or
         // this block ensures that `left >= right + k`, but it holds that `left < right + k`
         isLessThan = false and
-        constant.getValue().toInt() < arg.getValue() + k
+        constant.getValue().toInt() < argval + k
       )
     )
   }
@@ -1306,6 +1333,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof FinalGlobalValue
   or
   n instanceof InitialGlobalValue
+  or
+  n instanceof SsaPhiInputNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1604,6 +1633,8 @@ private Instruction getAnInstruction(Node n) {
   or
   result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
   or
+  result = n.(SsaPhiInputNode).getBasicBlock().getFirstInstruction()
+  or
   n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
   or
   not n instanceof IndirectInstruction and
@@ -1733,7 +1764,7 @@ module IteratorFlow {
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesRead(sv, result.asDef(), bb, i)
+        Ssa::ssaDefReachesReadExt(sv, result.asDef(), bb, i)
       )
     }
 
@@ -1767,7 +1798,7 @@ module IteratorFlow {
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesRead(_, def.asDef(), bbStar, iStar) and
+        Ssa::ssaDefReachesReadExt(_, def.asDef(), bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)

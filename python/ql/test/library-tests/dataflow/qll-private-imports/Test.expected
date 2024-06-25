@@ -1,1 +1,1 @@
-ERROR: Could not resolve type DataFlow::Add (Test.ql:7,6-19)
+ERROR: could not resolve type DataFlow::Add (Test.ql:7,6-19)

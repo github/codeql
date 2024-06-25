@@ -7,10 +7,17 @@ module AstTest {
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(GuardCondition g, Expr checked, boolean isTrue) {
-    g.(FunctionCall).getTarget().getName() = "guarded" and
-    checked = g.(FunctionCall).getArgument(0) and
-    isTrue = true
+  predicate testBarrierGuard(GuardCondition g, Expr checked, boolean branch) {
+    exists(Call call, boolean b |
+      checked = call.getArgument(0) and
+      g.comparesEq(call, 0, b, any(BooleanValue bv | bv.getValue() = branch))
+    |
+      call.getTarget().hasName("guarded") and
+      b = false
+      or
+      call.getTarget().hasName("unsafe") and
+      b = true
+    )
   }
 
   /** Common data flow configuration to be used by tests. */
@@ -102,12 +109,16 @@ module IRTest {
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean isTrue) {
-    exists(Call call |
-      call = g.getUnconvertedResultExpression() and
-      call.getTarget().hasName("guarded") and
-      checked = call.getArgument(0) and
-      isTrue = true
+  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean branch) {
+    exists(CallInstruction call, boolean b |
+      checked = call.getArgument(0).getUnconvertedResultExpression() and
+      g.comparesEq(call.getAUse(), 0, b, any(BooleanValue bv | bv.getValue() = branch))
+    |
+      call.getStaticCallTarget().hasName("guarded") and
+      b = false
+      or
+      call.getStaticCallTarget().hasName("unsafe") and
+      b = true
     )
   }
 
@@ -139,6 +150,9 @@ module IRTest {
         sink.asExpr() = e
         or
         call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = e
+        or
+        call.getTarget().getName() = "indirect_sink_const_ref" and
         sink.asIndirectExpr() = e
       )
     }

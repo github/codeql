@@ -68,7 +68,7 @@ module ImproperLdapAuth {
 
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
-      source instanceof RemoteFlowSource or source instanceof EmptyString
+      source instanceof ThreatModelFlowSource or source instanceof EmptyString
     }
 
     predicate isSink(DataFlow::Node sink) { sink instanceof LdapAuthSink }

@@ -1,0 +1,27 @@
+alias(
+    name = "resource-dir",
+    actual = select({"@platforms//os:" + os: "@swift-resource-dir-" + os for os in ("linux", "macos")}),
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+[
+    sh_binary(
+        name = "update-" + os,
+        srcs = ["update.sh"],
+        args = [
+            "$(rlocationpath @swift_toolchain_%s)" % os,
+            "$(rlocationpath resource-dir-%s.zip)" % os,
+        ],
+        data = [
+            "resource-dir-%s.zip" % os,
+            "@swift_toolchain_" + os,
+        ],
+        target_compatible_with = ["@platforms//os:" + os],
+        deps = ["//misc/bazel:sh_runfiles"],
+    )
+    for os in ("linux", "macos")
+]

@@ -151,7 +151,7 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <ul>
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
- *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
+ *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es", ".xsjs", ".xsjslib").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb", ".html.dot", ".jsp").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
@@ -159,6 +159,7 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
  *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
+ *   <li>JSON files whose base name is ".xsaccess".
  *   <li>All extension-less files.
  * </ul>
  *
@@ -393,9 +394,10 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, tsconfig.json files, and
-    // codeql-javascript-*.json files
+    // include .eslintrc files, .xsaccess files, package.json files, 
+    // tsconfig.json files, and codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
+    patterns.add("**/.xsaccess");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
@@ -735,6 +737,7 @@ public class AutoBuild {
          .collect(Collectors.toList());
 
     filesToExtract = filesToExtract.stream()
+        .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
@@ -1010,6 +1013,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     return config;
   }
 
+  private boolean isFileTooLarge(Path f) {
+    long fileSize = f.toFile().length();
+    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
+      warn("Skipping " + f + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
+      return true;
+    }
+    return false;
+  }
+
   private Set<Path> extractTypeScript(
       Set<Path> files,
       Set<Path> extractedFiles,
@@ -1051,9 +1063,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             // compiler can parse them for us.
             continue;
           }
-          if (!extractedFiles.contains(sourcePath)) {
-            typeScriptFiles.add(sourcePath);
+          if (extractedFiles.contains(sourcePath)) {
+            continue;
           }
+          typeScriptFiles.add(sourcePath);
         }
         typeScriptFiles.sort(PATH_ORDERING);
         extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
@@ -1234,11 +1247,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     File f = file.toFile();
     if (!f.exists()) {
       warn("Skipping " + file + ", which does not exist.");
-      return;
-    }
-    long fileSize = f.length();
-    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
-      warn("Skipping " + file + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
       return;
     }
 

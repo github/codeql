@@ -1,0 +1,17 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_binary",
+)
+
+codeql_csharp_binary(
+    name = "Semmle.Autobuild.Cpp",
+    srcs = glob([
+        "*.cs",
+    ]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//csharp/autobuilder/Semmle.Autobuild.Shared",
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.build",
+    ],
+)
