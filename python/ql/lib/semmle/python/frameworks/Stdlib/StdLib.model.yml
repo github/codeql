@@ -13,6 +13,9 @@ extensions:
       pack: codeql/python-all
       extensible: summaryModel
     data:
+      # See See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
+      - ["fnmatch", "Member[filter]", "Argument[0,names:].ListElement", "ReturnValue.ListElement", "value"]
+      - ["fnmatch", "Member[filter]", "Argument[0,names:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/optparse.html#optparse.OptionParser.parse_args
       - ["optparse.OptionParser", "Member[parse_args]", "Argument[0,args:,1,values:]", "ReturnValue.TupleElement[0,1]", "taint"]
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
