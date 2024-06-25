@@ -2486,6 +2486,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           callEdgeReturn(call, c, _, _, _, _, _)
         }
 
+        /**
+         * INTERNAL: Only for debugging.
+         *
+         * Provides a graph representation of the data flow in this stage suitable for use in a `path-problem` query.
+         */
         additional module Graph {
           private newtype TStagePathNode =
             TStagePathNodeMid(
@@ -2502,6 +2507,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             abstract string toString();
 
             abstract Location getLocation();
+
+            /** Gets the corresponding `Node`, if any. */
+            Node getNode() { none() }
 
             predicate isSource() { none() }
 
@@ -2544,6 +2552,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             }
 
             override Location getLocation() { result = node.getLocation() }
+
+            override Node getNode() { result = node.asNode() }
 
             override predicate isSource() {
               sourceNode(node, state) and
