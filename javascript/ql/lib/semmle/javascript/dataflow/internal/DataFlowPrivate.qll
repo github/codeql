@@ -8,6 +8,8 @@ private import semmle.javascript.dataflow.internal.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.internal.flow_summaries.AllFlowSummaries
 private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
+private import semmle.javascript.dataflow.FlowSummary as FlowSummary
 private import semmle.javascript.dataflow.internal.BarrierGuards
 
 class DataFlowSecondLevelScope = Unit;
@@ -117,7 +119,8 @@ private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
   or
   kind = MkNormalReturnKind() and result = call.asAccessorCall().(DataFlow::PropRead)
   or
-  FlowSummaryImpl::Private::summaryOutNode(call, result.(FlowSummaryNode).getSummaryNode(), kind)
+  FlowSummaryImpl::Private::summaryOutNode(call.(SummaryCall).getReceiver(),
+    result.(FlowSummaryNode).getSummaryNode(), kind)
 }
 
 class ReturnNode extends DataFlow::Node {
@@ -275,7 +278,8 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   // argument to setter (TODO: this has no post-update node)
   pos.asPositional() = 0 and n = call.asAccessorCall().(DataFlow::PropWrite).getRhs()
   or
-  FlowSummaryImpl::Private::summaryArgumentNode(call, n.(FlowSummaryNode).getSummaryNode(), pos)
+  FlowSummaryImpl::Private::summaryArgumentNode(call.(SummaryCall).getReceiver(),
+    n.(FlowSummaryNode).getSummaryNode(), pos)
 }
 
 predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
@@ -802,8 +806,8 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   or
   node2 = FlowSteps::getThrowTarget(node1)
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode(), true)
+  FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode(), true, _) // TODO: preserve 'model'
   or
   // Step from post-update nodes to local sources of the pre-update node. This emulates how JS usually tracks side effects.
   exists(PostUpdateNode postUpdate |
@@ -828,7 +832,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     nodeGetEnclosingCallable(pragma[only_bind_out](node2))
   or
   exists(FlowSummaryImpl::Private::SummaryNode input, FlowSummaryImpl::Private::SummaryNode output |
-    FlowSummaryImpl::Private::Steps::summaryStoreStep(input, MkAwaited(), output) and
+    FlowSummaryPrivate::Steps::summaryStoreStep(input, MkAwaited(), output) and
     node1 = TFlowSummaryNode(input) and
     (
       node2 = TFlowSummaryNode(output) and
@@ -837,7 +841,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
       node2 = TFlowSummaryIntermediateAwaitStoreNode(input)
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryReadStep(input, MkAwaited(), output) and
+    FlowSummaryPrivate::Steps::summaryReadStep(input, MkAwaited(), output) and
     node1 = TFlowSummaryNode(input) and
     node2 = TFlowSummaryNode(output)
   )
@@ -859,7 +863,7 @@ predicate jumpStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   node1.getContainer() != node2.getContainer()
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
+  FlowSummaryPrivate::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode())
   or
   DataFlow::AdditionalFlowStep::jumpStep(node1, node2)
@@ -882,8 +886,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   exists(ContentSet contentSet |
-    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
-      contentSet, node2.(FlowSummaryNode).getSummaryNode())
+    FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), contentSet,
+      node2.(FlowSummaryNode).getSummaryNode())
   |
     not isSpecialContentSet(contentSet) and
     c = contentSet
@@ -894,7 +898,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   // For deep reads, generate read edges with a self-loop
   exists(Node origin, ContentSet contentSet |
-    FlowSummaryImpl::Private::Steps::summaryReadStep(origin.(FlowSummaryNode).getSummaryNode(),
+    FlowSummaryPrivate::Steps::summaryReadStep(origin.(FlowSummaryNode).getSummaryNode(),
       contentSet, node2.(FlowSummaryNode).getSummaryNode()) and
     node1 = [origin, node2]
   |
@@ -938,13 +942,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2 = tryGetPostUpdate(write.getBase())
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode()) and
   not isSpecialContentSet(c)
   or
   // Store into Awaited
   exists(FlowSummaryImpl::Private::SummaryNode input, FlowSummaryImpl::Private::SummaryNode output |
-    FlowSummaryImpl::Private::Steps::summaryStoreStep(input, MkAwaited(), output) and
+    FlowSummaryPrivate::Steps::summaryStoreStep(input, MkAwaited(), output) and
     node1 = TFlowSummaryIntermediateAwaitStoreNode(input) and
     node2 = TFlowSummaryNode(output) and
     c = ContentSet::promiseValue()
@@ -964,15 +968,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  FlowSummaryPrivate::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   // Clear promise content before storing into promise value, to avoid creating nested promises
   n = TFlowSummaryIntermediateAwaitStoreNode(_) and
   c = MkPromiseFilter()
   or
   // After reading from Awaited, the output must not be stored in a promise content
-  FlowSummaryImpl::Private::Steps::summaryReadStep(_, MkAwaited(),
-    n.(FlowSummaryNode).getSummaryNode()) and
+  FlowSummaryPrivate::Steps::summaryReadStep(_, MkAwaited(), n.(FlowSummaryNode).getSummaryNode()) and
   c = MkPromiseFilter()
   or
   any(AdditionalFlowInternal flow).clearsContent(n, c)
@@ -998,12 +1001,11 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  FlowSummaryPrivate::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   // After storing into Awaited, the result must be stored in a promise-content.
   // There is a value step from the input directly to this node, hence the need for expectsContent.
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(_, MkAwaited(),
-    n.(FlowSummaryNode).getSummaryNode()) and
+  FlowSummaryPrivate::Steps::summaryStoreStep(_, MkAwaited(), n.(FlowSummaryNode).getSummaryNode()) and
   c = MkPromiseFilter()
   or
   any(AdditionalFlowInternal flow).expectsContent(n, c)
@@ -1035,7 +1037,10 @@ int accessPathLimit() { result = 2 }
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable callable, ParameterPosition pos |
+    isParameterNodeImpl(p, callable, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(callable.asLibraryCallable(), pos)
+  )
   or
   exists(Function f |
     VariableCaptureOutput::heuristicAllowInstanceParameterReturnInSelf(f) and

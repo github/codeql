@@ -10,6 +10,7 @@ private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
 private import semmle.javascript.dataflow.internal.VariableCapture as VariableCapture
 
 cached
@@ -58,7 +59,10 @@ private module Cached {
     TConstructorThisPostUpdate(Constructor ctor) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TFlowSummaryIntermediateAwaitStoreNode(FlowSummaryImpl::Private::SummaryNode sn) {
-      FlowSummaryImpl::Private::Steps::summaryStoreStep(sn, MkAwaited(), _)
+      // NOTE: This dependency goes through the 'Steps' module whose instantiation depends on the call graph,
+      //       but the specific predicate we're referering to does not use that information.
+      //       So it doesn't cause negative recursion but it might look a bit surprising.
+      FlowSummaryPrivate::Steps::summaryStoreStep(sn, MkAwaited(), _)
     } or
     TSynthCaptureNode(VariableCapture::VariableCaptureOutput::SynthesizedCaptureNode node) or
     TGenericSynthesizedNode(AstNode node, string tag, DataFlowPrivate::DataFlowCallable container) {

@@ -2,20 +2,21 @@ private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
 private import semmle.javascript.dataflow.internal.Contents::Public
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
 private import semmle.javascript.dataflow.internal.BarrierGuards
 
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   TaintTracking::AdditionalTaintStep::step(node1, node2)
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode(), false)
+  FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode(), false, _) // TODO: preserve 'model' parameter
   or
   // Convert steps into and out of array elements to plain taint steps
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+  FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
+  FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
 }
 

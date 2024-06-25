@@ -70,11 +70,6 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   result = TAnyType() and exists(t) and exists(rk)
 }
 
-/** Gets the type of synthetic global `sg`. */
-DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
-  result = TAnyType() and exists(sg)
-}
-
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
@@ -97,21 +92,21 @@ predicate summaryElement(
 predicate neutralSummaryElement(FlowSummary::SummarizedCallable c, string provenance) { none() }
 
 pragma[inline]
-private SummaryComponent makeContentComponents(
+private Private::SummaryComponent makeContentComponents(
   Private::AccessPathToken token, string name, ContentSet contents
 ) {
   token.getName() = name and
-  result = FlowSummary::SummaryComponent::content(contents)
+  result = Private::SummaryComponent::content(contents)
   or
   token.getName() = "With" + name and
-  result = FlowSummary::SummaryComponent::withContent(contents)
+  result = Private::SummaryComponent::withContent(contents)
   or
   token.getName() = "Without" + name and
-  result = FlowSummary::SummaryComponent::withoutContent(contents)
+  result = Private::SummaryComponent::withoutContent(contents)
 }
 
 pragma[inline]
-private SummaryComponent makePropertyContentComponents(
+private Private::SummaryComponent makePropertyContentComponents(
   Private::AccessPathToken token, string name, PropertyName content
 ) {
   result = makeContentComponents(token, name, ContentSet::property(content))
@@ -160,12 +155,12 @@ private ParameterPosition parsePosition(string operand) {
  *
  * This covers all the JS-specific components of a flow summary.
  */
-SummaryComponent interpretComponentSpecific(Private::AccessPathToken c) {
+Private::SummaryComponent interpretComponentSpecific(Private::AccessPathToken c) {
   c.getName() = "Argument" and
-  result = FlowSummary::SummaryComponent::argument(parsePosition(c.getAnArgument()))
+  result = Private::SummaryComponent::argument(parsePosition(c.getAnArgument()))
   or
   c.getName() = "Parameter" and
-  result = FlowSummary::SummaryComponent::parameter(parsePosition(c.getAnArgument()))
+  result = Private::SummaryComponent::parameter(parsePosition(c.getAnArgument()))
   or
   result = makePropertyContentComponents(c, "Member", c.getAnArgument())
   or
@@ -210,20 +205,20 @@ SummaryComponent interpretComponentSpecific(Private::AccessPathToken c) {
   or
   c.getName() = "ReturnValue" and
   c.getAnArgument() = "exception" and
-  result = SummaryComponent::return(MkExceptionalReturnKind())
+  result = Private::SummaryComponent::return(MkExceptionalReturnKind())
   or
   // Awaited is mapped down to a combination steps that handle coercion and promise-flattening.
   c.getName() = "Awaited" and
   c.getNumArgument() = 0 and
-  result = SummaryComponent::content(MkAwaited())
+  result = Private::SummaryComponent::content(MkAwaited())
   or
   c.getName() = "AnyMemberDeep" and
   c.getNumArgument() = 0 and
-  result = SummaryComponent::content(MkAnyPropertyDeep())
+  result = Private::SummaryComponent::content(MkAnyPropertyDeep())
   or
   c.getName() = "ArrayElementDeep" and
   c.getNumArgument() = 0 and
-  result = SummaryComponent::content(MkArrayElementDeep())
+  result = Private::SummaryComponent::content(MkArrayElementDeep())
 }
 
 private string getMadStringFromContentSetAux(ContentSet cs) {
@@ -272,13 +267,14 @@ private string getMadStringFromContentSet(ContentSet cs) {
 }
 
 /** Gets the textual representation of a summary component in the format used for MaD models. */
-string getMadRepresentationSpecific(SummaryComponent sc) {
+string getMadRepresentationSpecific(Private::SummaryComponent sc) {
   exists(ContentSet cs |
-    sc = Private::TContentSummaryComponent(cs) and result = getMadStringFromContentSet(cs)
+    sc = Private::SummaryComponent::content(cs) and
+    result = getMadStringFromContentSet(cs)
   )
   or
   exists(ReturnKind rk |
-    sc = Private::TReturnSummaryComponent(rk) and
+    sc = Private::SummaryComponent::return(rk) and
     not rk = getReturnValueKind() and
     result = "ReturnValue[" + rk + "]"
   )
@@ -368,3 +364,13 @@ bindingset[s]
 ParameterPosition parseArgBody(string s) {
   result = parseParamBody(s) // Currently these are identical
 }
+
+private module FlowSummaryStepInput implements Private::StepsInputSig {
+  DataFlowCall getACall(SummarizedCallable sc) {
+    exists(LibraryCallable callable | callable = sc |
+      result.asOrdinaryCall() = [callable.getACall(), callable.getACallSimple()]
+    )
+  }
+}
+
+module Steps = Private::Steps<FlowSummaryStepInput>;
