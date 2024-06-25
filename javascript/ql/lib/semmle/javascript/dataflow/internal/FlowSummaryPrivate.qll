@@ -286,11 +286,15 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 bindingset[pos]
-string getParameterPosition(ParameterPosition pos) { positionName(pos, result) and result != "any" }
+string encodeParameterPosition(ParameterPosition pos) {
+  positionName(pos, result) and result != "any"
+}
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
 bindingset[pos]
-string getArgumentPosition(ArgumentPosition pos) { positionName(pos, result) and result != "any" }
+string encodeArgumentPosition(ArgumentPosition pos) {
+  positionName(pos, result) and result != "any"
+}
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }

@@ -30,12 +30,12 @@ module Public {
       or
       exists(ArgumentPosition pos |
         this = TParameterSummaryComponent(pos) and
-        result = "Parameter[" + getArgumentPosition(pos) + "]"
+        result = "Parameter[" + encodeArgumentPosition(pos) + "]"
       )
       or
       exists(ParameterPosition pos |
         this = TArgumentSummaryComponent(pos) and
-        result = "Argument[" + getParameterPosition(pos) + "]"
+        result = "Argument[" + encodeParameterPosition(pos) + "]"
       )
       or
       exists(string synthetic |
