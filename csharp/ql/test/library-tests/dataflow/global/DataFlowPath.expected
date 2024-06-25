@@ -451,6 +451,10 @@ edges
 | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | provenance |  |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | provenance |  |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String | provenance |  |
+| MultiImplementationA.cs:5:28:5:41 | "taint source" : String | MultiImplementationA.cs:7:27:7:27 | x : String | provenance |  |
+| MultiImplementationA.cs:7:27:7:27 | x : String | MultiImplementationA.cs:7:39:7:39 | access to parameter x | provenance |  |
+| MultiImplementationA.cs:7:27:7:27 | x : String | MultiImplementationB.cs:5:39:5:39 | access to parameter x | provenance |  |
+| MultiImplementationB.cs:3:28:3:41 | "taint source" : String | MultiImplementationA.cs:7:27:7:27 | x : String | provenance |  |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | provenance |  |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | provenance |  |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | provenance |  |
@@ -904,6 +908,11 @@ nodes
 | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | semmle.label | access to parameter e : null [element] : String |
 | GlobalDataFlow.cs:558:44:558:47 | delegate call : String | semmle.label | delegate call : String |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | semmle.label | access to local variable x : String |
+| MultiImplementationA.cs:5:28:5:41 | "taint source" : String | semmle.label | "taint source" : String |
+| MultiImplementationA.cs:7:27:7:27 | x : String | semmle.label | x : String |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x | semmle.label | access to parameter x |
+| MultiImplementationB.cs:3:28:3:41 | "taint source" : String | semmle.label | "taint source" : String |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x | semmle.label | access to parameter x |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | semmle.label | access to local variable x : String |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | semmle.label | access to local variable x : String |
@@ -1075,5 +1084,9 @@ subpaths
 | GlobalDataFlow.cs:317:15:317:24 | access to parameter sinkParam8 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:317:15:317:24 | access to parameter sinkParam8 | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:323:15:323:24 | access to parameter sinkParam9 | GlobalDataFlow.cs:211:46:211:59 | "taint source" : String | GlobalDataFlow.cs:323:15:323:24 | access to parameter sinkParam9 | access to parameter sinkParam9 |
 | Capture.cs:273:30:273:30 | access to parameter x | Capture.cs:273:34:273:47 | "taint source" : String | Capture.cs:273:30:273:30 | access to parameter x | access to parameter x |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x | MultiImplementationA.cs:5:28:5:41 | "taint source" : String | MultiImplementationA.cs:7:39:7:39 | access to parameter x | access to parameter x |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x | MultiImplementationB.cs:3:28:3:41 | "taint source" : String | MultiImplementationA.cs:7:39:7:39 | access to parameter x | access to parameter x |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x | MultiImplementationA.cs:5:28:5:41 | "taint source" : String | MultiImplementationB.cs:5:39:5:39 | access to parameter x | access to parameter x |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x | MultiImplementationB.cs:3:28:3:41 | "taint source" : String | MultiImplementationB.cs:5:39:5:39 | access to parameter x | access to parameter x |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | access to property SinkProperty0 |
 | Splitting.cs:21:21:21:33 | call to method Return<String> | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:21:21:21:33 | call to method Return<String> | call to method Return<String> |
