@@ -374,12 +374,18 @@ predicate neverSkipInPathGraph(Node node) {
 string ppReprType(DataFlowType t) { none() }
 
 pragma[inline]
+private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
+  t1 != TAnyType() and
+  t2 = TAnyType()
+}
+
+pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
   or
-  t1 instanceof TAnyType and exists(t2)
+  compatibleTypesNonSymRefl(t1, t2)
   or
-  t2 instanceof TAnyType and exists(t1)
+  compatibleTypesNonSymRefl(t2, t1)
 }
 
 predicate forceHighPrecision(Content c) { none() }
