@@ -64,4 +64,19 @@ public class NewSources
             return Value.ToString();
         }
     }
+
+    // Not a new source as this callable has been manually modelled
+    // as source neutral.
+    // neutral=Sources;NewSources;ManualNeutralSource;();summary;df-generated
+    public string ManualNeutralSource()
+    {
+        return Console.ReadLine();
+    }
+
+    // Not a new source as this callable already has a manual source.
+    // neutral=Sources;NewSources;ManualSourceAlreadyDefined;();summary;df-generated
+    public string ManualSourceAlreadyDefined()
+    {
+        return Console.ReadLine();
+    }
 }

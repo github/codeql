@@ -9,6 +9,6 @@
 import internal.CaptureModels
 import internal.CaptureSummaryFlowQuery
 
-from DataFlowTargetApi api, string noflow
+from DataFlowSummaryTargetApi api, string noflow
 where noflow = captureNoFlow(api)
 select noflow order by noflow

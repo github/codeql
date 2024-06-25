@@ -29,12 +29,16 @@ private class ReturnNodeExt extends DataFlow::Node {
   }
 }
 
-class DataFlowTargetApi extends TargetApiSpecific {
-  DataFlowTargetApi() { not isUninterestingForDataFlowModels(this) }
+class DataFlowSummaryTargetApi extends SummaryTargetApi {
+  DataFlowSummaryTargetApi() { not isUninterestingForDataFlowModels(this) }
 }
 
+class DataFlowSourceTargetApi = SourceTargetApi;
+
+class DataFlowSinkTargetApi = SinkTargetApi;
+
 private module ModelPrintingInput implements ModelPrintingSig {
-  class Api = DataFlowTargetApi;
+  class Api = TargetApiBase;
 
   string getProvenance() { result = "df-generated" }
 }
@@ -89,7 +93,7 @@ string asInputArgument(DataFlow::Node source) { result = asInputArgumentSpecific
 /**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
-string captureQualifierFlow(TargetApiSpecific api) {
+string captureQualifierFlow(DataFlowSummaryTargetApi api) {
   exists(ReturnNodeExt ret |
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
@@ -150,7 +154,7 @@ module PropagateFlowConfig implements DataFlow::StateConfigSig {
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof DataFlowTargetApi and
+    source.getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
     state.(TaintRead).getStep() = 0
   }
 
@@ -195,7 +199,7 @@ private module PropagateFlow = TaintTracking::GlobalWithState<PropagateFlowConfi
 /**
  * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
  */
-string captureThroughFlow(DataFlowTargetApi api) {
+string captureThroughFlow(DataFlowSummaryTargetApi api) {
   exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input, string output |
     PropagateFlow::flow(p, returnNodeExt) and
     returnNodeExt.(DataFlow::Node).getEnclosingCallable() = api and
@@ -222,10 +226,8 @@ module PropagateFromSourceConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(DataFlowTargetApi c |
-      sink instanceof ReturnNodeExt and
-      sink.getEnclosingCallable() = c
-    )
+    sink instanceof ReturnNodeExt and
+    sink.getEnclosingCallable() instanceof DataFlowSourceTargetApi
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSinkCallContext }
@@ -244,7 +246,7 @@ private module PropagateFromSource = TaintTracking::Global<PropagateFromSourceCo
 /**
  * Gets the source model(s) of `api`, if there is flow from an existing known source to the return of `api`.
  */
-string captureSource(DataFlowTargetApi api) {
+string captureSource(DataFlowSourceTargetApi api) {
   exists(DataFlow::Node source, ReturnNodeExt sink, string kind |
     PropagateFromSource::flow(source, sink) and
     ExternalFlow::sourceNode(source, kind) and
@@ -262,7 +264,9 @@ string captureSource(DataFlowTargetApi api) {
  * into an existing known sink (then the API itself becomes a sink).
  */
 module PropagateToSinkConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { apiSource(source) }
+  predicate isSource(DataFlow::Node source) {
+    apiSource(source) and source.getEnclosingCallable() instanceof DataFlowSinkTargetApi
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(string kind | isRelevantSinkKind(kind) and ExternalFlow::sinkNode(sink, kind))
@@ -286,7 +290,7 @@ private module PropagateToSink = TaintTracking::Global<PropagateToSinkConfig>;
 /**
  * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
  */
-string captureSink(DataFlowTargetApi api) {
+string captureSink(DataFlowSinkTargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, string kind |
     PropagateToSink::flow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and

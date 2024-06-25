@@ -66,4 +66,17 @@ public class Sources {
       return value.toString();
     }
   }
+
+  // Not a new source as this callable has been manually modelled
+  // as source neutral.
+  // neutral=p;Sources;manualNeutralSource;();summary;df-generated
+  public String manualNeutralSource() {
+    return source();
+  }
+
+  // Not a new source as this callable already has a manual source.
+  // neutral=p;Sources;manualSourceAlreadyDefined;();summary;df-generated
+  public String manualSourceAlreadyDefined() {
+    return source();
+  }
 }

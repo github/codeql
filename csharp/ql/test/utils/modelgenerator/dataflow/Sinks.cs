@@ -90,6 +90,21 @@ public class NewSinks
         var r = s == "hello";
         Sink(r);
     }
+
+    // Not a new sink as this callable has been manually modelled
+    // as sink neutral.
+    // neutral=Sinks;NewSinks;ManualSinkNeutral;(System.Object);summary;df-generated
+    public void ManualSinkNeutral(object o)
+    {
+        Sink(o);
+    }
+
+    // Not a new sink as this callable already has a manual sink.
+    // neutral=Sinks;NewSinks;ManualSinkAlreadyDefined;(System.Object);summary;df-generated
+    public void ManualSinkAlreadyDefined(object o)
+    {
+        Sink(o);
+    }
 }
 
 public class CompoundSinks

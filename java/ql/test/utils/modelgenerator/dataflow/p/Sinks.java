@@ -71,4 +71,10 @@ public class Sinks {
     Boolean b = s == "hello";
     sink(b);
   }
+
+  // Not a new sink as this callable already has a manual sink.
+  // neutral=p;Sinks;manualSinkAlreadyDefined;(Object);summary;df-generated
+  public void manualSinkAlreadyDefined(Object o) {
+    sink(o);
+  }
 }

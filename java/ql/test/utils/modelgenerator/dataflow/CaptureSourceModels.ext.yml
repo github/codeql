@@ -5,3 +5,10 @@ extensions:
       extensible: sourceModel
     data:
       - [ "p", "Sources", False, "source", "()", "", "ReturnValue", "test-source", "manual" ]
+      - [ "p", "Sources", False, "manualSourceAlreadyDefined", "()", "", "ReturnValue", "test-source", "manual" ]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["p", "Sources", "manualNeutralSource", "()", "source", "manual"]
