@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Using a <code>RemoteCertificateValidationCallback</code> that always returns <code>true</code> is insecure because it allows any certificate to be accepted as valid. This can lead to a variety of security issues, including man-in-the-middle attacks.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Ensure that <code>RemoteCertificateValidationCallback</code> implementations properly verify the certificate before returning <code>true</code>. Avoid implementing callbacks that unconditionally accept all certificates.
+    </p>
+  </recommendation>
+  <example>
+    <p>
+      The following example demonstrates an insecure use of <code>RemoteCertificateValidationCallback</code> that always returns <code>true</code>:
+    </p>
+    <sample src="InsecureCertificateValidationExample.cs"/>
+    <p>
+      A secure approach would involve proper verification of the certificate before returning <code>true</code>:
+    </p>
+    <sample src="SecureCertificateValidationExample.cs"/>
+  </example>
+  <references>
+    <li>
+      CA5359: Do not disable certificate validation
+      <a href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5359">CA5359</a>
+    </li>
+  </references>
+</qhelp>
