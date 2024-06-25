@@ -1492,6 +1492,9 @@ module StdlibPrivate {
     or
     // io.open is a special case, since it is an alias for the builtin `open`
     result = API::moduleImport("io").getMember("open")
+    or
+    // similarly, coecs.open calls the builtin `open`: https://github.com/python/cpython/blob/3.12/Lib/codecs.py#L918
+    result = API::moduleImport("codecs").getMember("open")
   }
 
   /**
