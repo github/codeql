@@ -24,8 +24,8 @@ class DbQualityDiagnostic extends TDbQualityDiagnostic {
     result =
       "There were significant issues scanning Java code. " +
         "This may be caused by problems identifying dependencies or use of generated source code, among other reasons -- "
-        + "see other CodeQL diagnostics reported here for more details of possible causes. " +
-        "This may lead to false-positive or missing results. Consider analysing Java using the `autobuild` or `manual` build modes."
+        + "see other CodeQL diagnostics reported on the CodeQL status page for more details of possible causes. " +
+        "Addressing these warnings is advisable to avoid false-positive or missing results. If not, consider scanning Java using either the `autobuild` or `manual` build modes."
   }
 }
 
