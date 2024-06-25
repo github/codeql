@@ -478,11 +478,7 @@ class DataFlowCall extends TDataFlowCall {
     this = MkSummaryCall(enclosingCallable, receiver)
   }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    none() // Overridden in subclass
-  }
+  Location getLocation() { none() } // Overridden in subclass
 }
 
 private class OrdinaryCall extends DataFlowCall, MkOrdinaryCall {
@@ -498,11 +494,7 @@ private class OrdinaryCall extends DataFlowCall, MkOrdinaryCall {
 
   override string toString() { result = node.toString() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    node.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = node.getLocation() }
 }
 
 private class PartialCall extends DataFlowCall, MkPartialCall {
@@ -521,11 +513,7 @@ private class PartialCall extends DataFlowCall, MkPartialCall {
 
   override string toString() { result = node.toString() + " (as partial invocation)" }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    node.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = node.getLocation() }
 }
 
 private class BoundCall extends DataFlowCall, MkBoundCall {
@@ -542,11 +530,7 @@ private class BoundCall extends DataFlowCall, MkBoundCall {
     result = node.toString() + " (as call with " + boundArgs + " bound arguments)"
   }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    node.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = node.getLocation() }
 }
 
 private class AccessorCall extends DataFlowCall, MkAccessorCall {
@@ -560,11 +544,7 @@ private class AccessorCall extends DataFlowCall, MkAccessorCall {
 
   override string toString() { result = ref.toString() + " (as accessor call)" }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    ref.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = ref.getLocation() }
 }
 
 class SummaryCall extends DataFlowCall, MkSummaryCall {
@@ -598,11 +578,7 @@ private class ImpliedLambdaCall extends DataFlowCall, MkImpliedLambdaCall {
 
   override string toString() { result = "[implied lambda call] " + function }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = function.getLocation() }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = function.getEnclosingContainer()
