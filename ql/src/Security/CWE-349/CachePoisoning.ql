@@ -41,7 +41,8 @@ where
     // the job writes to the cache
     // (No need to follow the checkout step as the cache writing is normally done after the job completes)
     j.getAStep() = s and
-    s instanceof CacheWritingStep
+    s instanceof CacheWritingStep and
+    not s instanceof PoisonableStep
     or
     // the job executes checked-out code
     // (The cache specific token can be leaked even for non-privileged workflows)
