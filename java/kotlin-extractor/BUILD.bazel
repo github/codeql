@@ -113,7 +113,12 @@ kt_javac_options(
                         "src/**/*.kt",
                         "src/**/*.java",
                     ],
-                    exclude = ["src/main/kotlin/utils/versions/**"],
+                    exclude = [
+                        # a specific version is included back by `get_compatibility_sources`
+                        "src/main/kotlin/utils/versions/**",
+                        # this appears if `generated_dbscheme.py` is run manually, while we want the one built by bazel
+                        "src/main/kotlin/KotlinExtractorDbScheme.kt",
+                    ],
                 ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
             javac_opts = ":javac-options",
             kotlinc_opts = ":kotlinc-options-%s" % v,
