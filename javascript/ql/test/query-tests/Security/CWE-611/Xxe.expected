@@ -1,8 +1,8 @@
 edges
-| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src |
-| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src |
-| libxml.noent.js:16:27:16:35 | req.files | libxml.noent.js:16:27:16:66 | req.fil ... 'utf8') |
+| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src | provenance |  |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src | provenance |  |
+| libxml.noent.js:16:27:16:35 | req.files | libxml.noent.js:16:27:16:66 | req.fil ... 'utf8') | provenance |  |
 nodes
 | domparser.js:2:7:2:36 | src | semmle.label | src |
 | domparser.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |

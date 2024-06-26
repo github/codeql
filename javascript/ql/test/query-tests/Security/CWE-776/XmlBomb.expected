@@ -1,12 +1,12 @@
 edges
-| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src |
-| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src |
-| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src |
-| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src |
-| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src |
+| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src | provenance |  |
+| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src | provenance |  |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src | provenance |  |
+| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src | provenance |  |
+| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src | provenance |  |
 nodes
 | closure.js:2:7:2:36 | src | semmle.label | src |
 | closure.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |

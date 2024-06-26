@@ -1,9 +1,9 @@
 edges
-| CleartextStorage2.js:5:7:5:58 | pw | CleartextStorage2.js:7:33:7:34 | pw |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw |
-| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
-| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw |
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw |
+| CleartextStorage2.js:5:7:5:58 | pw | CleartextStorage2.js:7:33:7:34 | pw | provenance |  |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw | provenance |  |
+| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | provenance |  |
+| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw | provenance |  |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw | provenance |  |
 nodes
 | CleartextStorage2.js:5:7:5:58 | pw | semmle.label | pw |
 | CleartextStorage2.js:5:12:5:58 | url.par ... assword | semmle.label | url.par ... assword |
