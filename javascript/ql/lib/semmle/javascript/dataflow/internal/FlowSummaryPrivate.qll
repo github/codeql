@@ -380,7 +380,14 @@ module Steps = Private::Steps<FlowSummaryStepInput>;
  * `arg` will be printed in square brackets (`[]`) after the result, unless
  * `arg` is the empty string.
  */
-string encodeReturn(ReturnKind rk, string arg) { none() }
+string encodeReturn(ReturnKind rk, string arg) {
+  result = "ReturnValue" and
+  (
+    rk = MkNormalReturnKind() and arg = ""
+    or
+    rk = MkExceptionalReturnKind() and arg = "exception"
+  )
+}
 
 /**
  * Gets the textual representation of without-content `c` used in MaD.
