@@ -22,8 +22,8 @@
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
  *    signature is a comma-separated list of types enclosed in parentheses. The
- *    types can be short names or fully qualified names (mixing these two options
- *    is not allowed within a single signature).
+ *    types must be stripped of template names. That is, write `const vector &`
+ *    instead of `const vector<T> &`.
  * 6. The `ext` column specifies additional API-graph-like edges. Currently
  *    there is only one valid value: "".
  * 7. The `input` column specifies how data enters the element selected by the
