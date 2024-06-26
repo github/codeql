@@ -352,15 +352,14 @@ def _codeql_pack_install(name, srcs, install_dest = None, build_file_label = Non
             Label("//misc/ripunzip"),
         ] + ([build_file_label] if build_file_label else []),
         deps = ["@rules_python//python/runfiles"],
-        args = (
-            ["--build-file=$(rlocationpath %s)" % build_file_label] if build_file_label else []
-        ) + (
-            ["--destdir", "\"%s\"" % install_dest] if install_dest else []
-        ) + [
-            "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
-            "--ripunzip=$(rlocationpath %s)" % Label("//misc/ripunzip"),
-            "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
-        ],
+        args = [
+                   "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
+                   "--ripunzip=$(rlocationpath %s)" % Label("//misc/ripunzip"),
+                   "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
+               ] + ([
+                   "--build-file=$(rlocationpath %s)" % build_file_label,
+               ] if build_file_label else []) +
+               (["--destdir", "\"%s\"" % install_dest] if install_dest else []),
     )
 
 def codeql_pack_group(name, srcs, visibility = None, skip_installer = False, prefix = "", install_dest = None, build_file_label = None, compression_level = 6):

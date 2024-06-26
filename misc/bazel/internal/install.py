@@ -7,9 +7,9 @@ This mainly wraps around a `pkg_install` script from `rules_pkg` adding:
 * installing imported zip files using a provided `--ripunzip`
 
 This also allows installing onto multiple targets (sequentially):
-* each provided --destdir sets the destination for the following options (which means even in case we install to one
-  destination, --destdir must come before other installing options)
 * multiple --pkg-install-script and --zip-manifest options can be passed
+* --subdir can be used to change installation directory with respect to --destdir (an implicit initial --subdir=. is
+  implied)
 """
 
 import argparse
@@ -25,8 +25,11 @@ assert runfiles, "Installer should be run with `bazel run`"
 
 def options():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--destdir", type=ChangeDestDir, action="append", dest="actions",
-                        help="Desination directory for following actions, relative to `--build-file`")
+    parser.set_defaults(actions=[ChangeDestDir('.')])
+    parser.add_argument("--destdir", type=pathlib.Path,
+                        help="Base desination directory, relative to `--build-file` if provided")
+    parser.add_argument("--subdir", type=ChangeDestDir,
+                        help="Subdirectory of `--destdir` to use for following install actions")
     parser.add_argument("--pkg-install-script", type=RunPackageScript, action="append", dest="actions",
                         help="The wrapped `pkg_install` installation script rlocation")
     parser.add_argument("--zip-manifest", type=InstallZips, action="append", dest="actions",
@@ -44,14 +47,30 @@ def options():
 class Context:
     basedir: pathlib.Path | None
     current_destdir: pathlib.Path | None
+    is_current_destdir_initialized: bool
     ripunzip: str | None
     cleanup: bool
 
+    def ensure_destdir(self):
+        if not self.is_current_destdir_initialized:
+            if self.current_destdir.exists() and self.cleanup:
+                shutil.rmtree(self.current_destdir)
+                self.current_destdir.mkdir(parents=True, exist_ok=True)
+            self.is_current_destdir_initialized = True
+
+
+
 
 def initial_context(opts):
+    if opts.build_file:
+        basedir = pathlib.Path(runfiles.Rlocation(opts.build_file)).resolve().parent / opts.destdir
+    else:
+        assert opts.destdir.is_absolute(), "Provide `--build-file` to resolve destination directories"
+        basedir = opts.destdir
     return Context(
-        basedir=opts.build_file and pathlib.Path(runfiles.Rlocation(opts.build_file)).resolve().parent,
-        current_destdir=None,
+        basedir=basedir,
+        current_destdir=basedir,
+        is_current_destdir_initialized=False,
         ripunzip=opts.ripunzip and runfiles.Rlocation(opts.ripunzip),
         cleanup=opts.cleanup,
     )
@@ -64,20 +83,11 @@ class Action:
 
 @dataclasses.dataclass
 class ChangeDestDir(Action):
-    destdir: pathlib.Path
-
-    def __post_init__(self):
-        self.destdir = pathlib.Path(self.destdir)
+    target: str
 
     def run(self, context):
-        if context.basedir:
-            context.current_destdir = context.basedir / self.destdir
-        else:
-            assert self.destdir.is_absolute(), "Provide `--build-file` to resolve destination directories"
-            context.current_destdir = self.destdir
-        if context.current_destdir.exists() and context.cleanup:
-            shutil.rmtree(context.current_destdir)
-        context.current_destdir.mkdir(parents=True, exist_ok=True)
+        context.current_destdir = context.basedir / self.target
+        context.is_current_destdir_initialized = False
 
 
 @dataclasses.dataclass
@@ -85,7 +95,7 @@ class RunPackageScript(Action):
     script: str
 
     def run(self, context):
-        assert context.current_destdir, "--destdir must be specified before any install action"
+        context.ensure_destdir()
         script = runfiles.Rlocation(self.script)
         subprocess.run([script, "--destdir", context.current_destdir], check=True)
 
@@ -95,8 +105,8 @@ class InstallZips(Action):
     manifest: str
 
     def run(self, context):
-        assert context.current_destdir, "--destdir must be specified before any install action"
         assert context.ripunzip, "--ripunzip must be provided if any --zip-manifest is"
+        context.ensure_destdir()
         manifest_file = runfiles.Rlocation(self.manifest)
         with open(manifest_file) as manifest:
             for line in manifest:
