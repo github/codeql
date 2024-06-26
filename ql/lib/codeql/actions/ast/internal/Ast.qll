@@ -848,9 +848,21 @@ class JobImpl extends AstNodeImpl, TJobNode {
     this.getPermissions().getAPermission().matches("%write")
   }
 
+  private predicate hasExplicitReadPermission() {
+    // the job has not an explicit write permission
+    exists(this.getPermissions().getAPermission()) and
+    not this.getPermissions().getAPermission().matches("%write")
+  }
+
   private predicate hasImplicitWritePermission() {
     // the job has an explicit write permission
     this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+  }
+
+  private predicate hasImplicitReadPermission() {
+    // the job has not an explicit write permission
+    exists(this.getEnclosingWorkflow().getPermissions().getAPermission()) and
+    not this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
   }
 
   private predicate hasRuntimeData() {
@@ -892,8 +904,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Holds if the action is privileged and externally triggerable. */
   predicate isPrivilegedExternallyTriggerable() {
-    exists(EventImpl e |
-      this.getATriggerEvent() = e and
+    exists(EventImpl e | this.getATriggerEvent() = e |
       // job is triggereable by an external user
       e.isExternallyTriggerable() and
       // no matter if `pull_request` is granted write permissions or access to secrets
@@ -903,9 +914,18 @@ class JobImpl extends AstNodeImpl, TJobNode {
         // job is privileged (write access or access to secrets)
         this.isPrivileged()
         or
-        // the trigger event is __normally__ privileged and we have no runtime data to prove otherwise
+        // the trigger event is __normally__ privileged
+        e.isPrivileged() and
+        // and we have no runtime data to prove otherwise
         not this.hasRuntimeData() and
-        e.isPrivileged()
+        // and the job is not explicitly non-privileged
+        not (
+          (
+            this.hasExplicitReadPermission() or
+            this.hasImplicitReadPermission()
+          ) and
+          not this.hasExplicitSecretAccess()
+        )
       )
     )
   }
