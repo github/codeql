@@ -5,8 +5,24 @@
 import java
 private import semmle.code.xml.AndroidManifest
 
-/** Holds if this database is of an Android application. */
-predicate isAndroid() { exists(AndroidManifestXmlFile m) }
+/**
+ * There is an android manifest file which defines an activity, service or
+ * content provider (so it corresponds to an android application rather than a
+ * library), and `file` is in a subfolder of the folder that contains it.
+ */
+predicate inAndroidApplication(File file) {
+  file.isSourceFile() and
+  exists(AndroidComponentXmlElement acxe, AndroidManifestXmlFile amxf |
+    amxf.getManifestElement().getApplicationElement().getAComponentElement() = acxe and
+    (
+      acxe instanceof AndroidActivityXmlElement or
+      acxe instanceof AndroidServiceXmlElement or
+      acxe instanceof AndroidProviderXmlElement
+    )
+  |
+    file.getParentContainer+() = amxf.getParentContainer()
+  )
+}
 
 /**
  * Gets a reflexive/transitive superType

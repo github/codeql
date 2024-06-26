@@ -14,7 +14,7 @@ private import semmle.code.java.frameworks.android.Android
 private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink {
   AndroidFilesystemCleartextStorageSink() {
     filesystemInput(_, this.asExpr()) and
-    isAndroid()
+    inAndroidApplication(this.getLocation().getFile())
   }
 }
 
