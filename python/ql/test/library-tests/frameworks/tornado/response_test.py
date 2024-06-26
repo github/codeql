@@ -69,7 +69,7 @@ class CookieWriting(tornado.web.RequestHandler):
         self.set_cookie(name="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
         self.set_header("Set-Cookie", "key2=value2") # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2"
         self.add_header("Set-Cookie", "key3=value3") # $ headerWriteName="Set-Cookie" headerWriteValue="key3=value3" CookieWrite CookieRawHeader="key3=value3"
-        self.request.headers.append("Set-Cookie", "key4=value4") # $ headerWriteName="Set-Cookie" headerWriteValue="key4=value4" CookieWrite CookieRawHeader="key4=value4"
+        self.request.headers.add("Set-Cookie", "key4=value4") # $ headerWriteName="Set-Cookie" headerWriteValue="key4=value4" CookieWrite CookieRawHeader="key4=value4"
         self.request.headers["Set-Cookie"] = "key5=value5" # $ headerWriteName="Set-Cookie" headerWriteValue="key5=value5" CookieWrite CookieRawHeader="key5=value5"
 
 

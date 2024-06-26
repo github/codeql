@@ -95,7 +95,7 @@ module Tornado {
     private class TornadoHeadersAppendCall extends Http::Server::ResponseHeaderWrite::Range,
       DataFlow::MethodCallNode
     {
-      TornadoHeadersAppendCall() { this.calls(instance(), "append") }
+      TornadoHeadersAppendCall() { this.calls(instance(), "add") }
 
       override DataFlow::Node getNameArg() { result = [this.getArg(0), this.getArgByName("name")] }
 
