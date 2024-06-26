@@ -43,9 +43,6 @@
    predicate isEncryptedByDefault(){
      version.compareTo("4.0") >= 0
    }
-   Version getVersion(){
-     result = version
-   }
  }
  
  predicate isEncryptTrue(Source source, Sink sink){
