@@ -395,7 +395,7 @@ string encodeReturn(ReturnKind rk, string arg) {
  * `arg` will be printed in square brackets (`[]`) after the result, unless
  * `arg` is the empty string.
  */
-string encodeWithoutContent(ContentSet c, string arg) { none() }
+string encodeWithoutContent(ContentSet c, string arg) { result = "Without" + encodeContent(c, arg) }
 
 /**
  * Gets the textual representation of with-content `c` used in MaD.
@@ -403,7 +403,7 @@ string encodeWithoutContent(ContentSet c, string arg) { none() }
  * `arg` will be printed in square brackets (`[]`) after the result, unless
  * `arg` is the empty string.
  */
-string encodeWithContent(ContentSet c, string arg) { none() }
+string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
 
 /**
  * Gets a parameter position corresponding to the unknown token `token`.
