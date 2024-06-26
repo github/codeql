@@ -10,9 +10,13 @@ class StrlenLiteralRangeExpr extends SimpleRangeAnalysisExpr, FunctionCall {
     this.getTarget().hasGlobalOrStdName("strlen") and this.getArgument(0).isConstant()
   }
 
-  override int getLowerBounds() { result = this.getArgument(0).getValue().length() }
+  override QlBuiltins::BigInt getLowerBounds() {
+    result = this.getArgument(0).getValue().length().toBigInt()
+  }
 
-  override int getUpperBounds() { result = this.getArgument(0).getValue().length() }
+  override QlBuiltins::BigInt getUpperBounds() {
+    result = this.getArgument(0).getValue().length().toBigInt()
+  }
 
   override predicate dependsOnChild(Expr e) { none() }
 }
