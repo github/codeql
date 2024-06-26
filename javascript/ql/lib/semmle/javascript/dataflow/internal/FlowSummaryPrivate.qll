@@ -221,63 +221,62 @@ Private::SummaryComponent interpretComponentSpecific(Private::AccessPathToken c)
   result = Private::SummaryComponent::content(MkArrayElementDeep())
 }
 
-private string getMadStringFromContentSetAux(ContentSet cs) {
+private string encodeContentAux(ContentSet cs, string arg) {
   cs = ContentSet::arrayElement() and
-  result = "ArrayElement"
+  result = "ArrayElement" and
+  arg = ""
   or
   cs = ContentSet::arrayElementUnknown() and
-  result = "ArrayElement[?]"
+  result = "ArrayElement" and
+  arg = "?"
   or
   exists(int n |
     cs = ContentSet::arrayElementLowerBound(n) and
-    result = "ArrayElement[" + n + "..]" and
+    result = "ArrayElement" and
+    arg = n + ".." and
     n > 0 // n=0 is just 'ArrayElement'
     or
     cs = ContentSet::arrayElementKnown(n) and
-    result = "ArrayElement[" + n + "]"
+    result = "ArrayElement" and
+    arg = n.toString()
     or
     n = cs.asPropertyName().toInt() and
     n >= 0 and
-    result = "ArrayElement[" + n + "!]"
+    result = "ArrayElement" and
+    arg = n + "!"
   )
   or
-  cs = ContentSet::mapValueAll() and result = "MapValue"
-  or
-  cs = ContentSet::mapKey() and result = "MapKey"
-  or
-  cs = ContentSet::setElement() and result = "SetElement"
-  or
-  cs = ContentSet::iteratorElement() and result = "IteratorElement"
-  or
-  cs = ContentSet::iteratorError() and result = "IteratorError"
-  or
-  exists(string awaitedArg |
-    cs = getPromiseContent(awaitedArg) and
-    result = "Awaited[" + awaitedArg + "]"
+  arg = "" and
+  (
+    cs = ContentSet::mapValueAll() and result = "MapValue"
+    or
+    cs = ContentSet::mapKey() and result = "MapKey"
+    or
+    cs = ContentSet::setElement() and result = "SetElement"
+    or
+    cs = ContentSet::iteratorElement() and result = "IteratorElement"
+    or
+    cs = ContentSet::iteratorError() and result = "IteratorError"
   )
   or
-  cs = MkAwaited() and result = "Awaited"
+  cs = getPromiseContent(arg) and
+  result = "Awaited"
+  or
+  cs = MkAwaited() and result = "Awaited" and arg = ""
 }
 
-private string getMadStringFromContentSet(ContentSet cs) {
-  result = getMadStringFromContentSetAux(cs)
+/**
+ * Gets the textual representation of content `cs` used in MaD.
+ *
+ * `arg` will be printed in square brackets (`[]`) after the result, unless
+ * `arg` is the empty string.
+ */
+string encodeContent(ContentSet cs, string arg) {
+  result = encodeContentAux(cs, arg)
   or
-  not exists(getMadStringFromContentSetAux(cs)) and
-  result = "Member[" + cs.asSingleton() + "]"
-}
-
-/** Gets the textual representation of a summary component in the format used for MaD models. */
-string getMadRepresentationSpecific(Private::SummaryComponent sc) {
-  exists(ContentSet cs |
-    sc = Private::SummaryComponent::content(cs) and
-    result = getMadStringFromContentSet(cs)
-  )
-  or
-  exists(ReturnKind rk |
-    sc = Private::SummaryComponent::return(rk) and
-    not rk = getReturnValueKind() and
-    result = "ReturnValue[" + rk + "]"
-  )
+  not exists(encodeContentAux(cs, _)) and
+  result = "Member" and
+  arg = cs.asSingleton().toString()
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
@@ -374,14 +373,6 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
 }
 
 module Steps = Private::Steps<FlowSummaryStepInput>;
-
-/**
- * Gets the textual representation of content `c` used in MaD.
- *
- * `arg` will be printed in square brackets (`[]`) after the result, unless
- * `arg` is the empty string.
- */
-string encodeContent(ContentSet c, string arg) { none() }
 
 /**
  * Gets the textual representation of return kind `rk` used in MaD.
