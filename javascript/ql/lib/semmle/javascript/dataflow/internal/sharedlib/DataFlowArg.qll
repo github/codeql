@@ -30,4 +30,24 @@ module JSFlowSummary implements FlowSummaryImpl::InputSig<Location, JSDataFlow> 
 
   // Explicitly implement signature members that have a default
   predicate callbackSelfParameterPosition = FlowSummaryPrivate::callbackSelfParameterPosition/0;
+
+  predicate encodeContent = FlowSummaryPrivate::encodeContent/2;
+
+  predicate encodeReturn = FlowSummaryPrivate::encodeReturn/2;
+
+  predicate encodeWithoutContent = FlowSummaryPrivate::encodeWithoutContent/2;
+
+  predicate encodeWithContent = FlowSummaryPrivate::encodeWithContent/2;
+
+  predicate decodeUnknownParameterPosition = FlowSummaryPrivate::decodeUnknownParameterPosition/1;
+
+  predicate decodeUnknownArgumentPosition = FlowSummaryPrivate::decodeUnknownArgumentPosition/1;
+
+  predicate decodeUnknownContent = FlowSummaryPrivate::decodeUnknownContent/1;
+
+  predicate decodeUnknownReturn = FlowSummaryPrivate::decodeUnknownReturn/1;
+
+  predicate decodeUnknownWithoutContent = FlowSummaryPrivate::decodeUnknownWithoutContent/1;
+
+  predicate decodeUnknownWithContent = FlowSummaryPrivate::decodeUnknownWithContent/1;
 }

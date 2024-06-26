@@ -374,3 +374,97 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
 }
 
 module Steps = Private::Steps<FlowSummaryStepInput>;
+
+/**
+ * Gets the textual representation of content `c` used in MaD.
+ *
+ * `arg` will be printed in square brackets (`[]`) after the result, unless
+ * `arg` is the empty string.
+ */
+string encodeContent(ContentSet c, string arg) { none() }
+
+/**
+ * Gets the textual representation of return kind `rk` used in MaD.
+ *
+ * `arg` will be printed in square brackets (`[]`) after the result, unless
+ * `arg` is the empty string.
+ */
+string encodeReturn(ReturnKind rk, string arg) { none() }
+
+/**
+ * Gets the textual representation of without-content `c` used in MaD.
+ *
+ * `arg` will be printed in square brackets (`[]`) after the result, unless
+ * `arg` is the empty string.
+ */
+string encodeWithoutContent(ContentSet c, string arg) { none() }
+
+/**
+ * Gets the textual representation of with-content `c` used in MaD.
+ *
+ * `arg` will be printed in square brackets (`[]`) after the result, unless
+ * `arg` is the empty string.
+ */
+string encodeWithContent(ContentSet c, string arg) { none() }
+
+/**
+ * Gets a parameter position corresponding to the unknown token `token`.
+ *
+ * The token is unknown because it could not be reverse-encoded using the
+ * `encodeParameterPosition` predicate. This is useful for example when a
+ * single token gives rise to multiple parameter positions, such as ranges
+ * `0..n`.
+ */
+bindingset[token]
+ParameterPosition decodeUnknownParameterPosition(AccessPathSyntax::AccessPathTokenBase token) {
+  none()
+}
+
+/**
+ * Gets an argument position corresponding to the unknown token `token`.
+ *
+ * The token is unknown because it could not be reverse-encoded using the
+ * `encodeArgumentPosition` predicate. This is useful for example when a
+ * single token gives rise to multiple argument positions, such as ranges
+ * `0..n`.
+ */
+bindingset[token]
+ArgumentPosition decodeUnknownArgumentPosition(AccessPathSyntax::AccessPathTokenBase token) {
+  none()
+}
+
+/**
+ * Gets a content corresponding to the unknown token `token`.
+ *
+ * The token is unknown because it could not be reverse-encoded using the
+ * `encodeContent` predicate.
+ */
+bindingset[token]
+ContentSet decodeUnknownContent(AccessPathSyntax::AccessPathTokenBase token) { none() }
+
+/**
+ * Gets a return kind corresponding to the unknown token `token`.
+ *
+ * The token is unknown because it could not be reverse-encoded using the
+ * `encodeReturn` predicate.
+ */
+bindingset[token]
+ReturnKind decodeUnknownReturn(AccessPathSyntax::AccessPathTokenBase token) { none() }
+
+/**
+ * Gets a without-content corresponding to the unknown token `token`.
+ *
+ * The token is unknown because it could not be reverse-encoded using the
+ * `encodeWithoutContent` predicate.
+ */
+bindingset[token]
+ContentSet decodeUnknownWithoutContent(AccessPathSyntax::AccessPathTokenBase token) { none() }
+
+/**
+ * Gets a with-content corresponding to the unknown token `token`.
+ *
+ * The token is unknown because it could not be reverse-encoded using the
+ * `encodeWithContent` predicate.
+ */
+bindingset[token]
+ContentSet decodeUnknownWithContent(AccessPathSyntax::AccessPathTokenBase token) { none() }
