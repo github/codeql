@@ -50,7 +50,7 @@ abstract class SimpleRangeAnalysisDefinition extends RangeSsaDefinition {
    * `getFullyConvertedLowerBounds` and `getFullyConvertedUpperBounds` for
    * recursive calls to get the bounds of their dependencies.
    */
-  abstract float getLowerBounds(StackVariable v);
+  abstract QlBuiltins::BigInt getLowerBounds(StackVariable v);
 
   /**
    * Gets the upper bound of the variable `v` defined by this definition.
@@ -59,7 +59,7 @@ abstract class SimpleRangeAnalysisDefinition extends RangeSsaDefinition {
    * `getFullyConvertedLowerBounds` and `getFullyConvertedUpperBounds` for
    * recursive calls to get the bounds of their dependencies.
    */
-  abstract float getUpperBounds(StackVariable v);
+  abstract QlBuiltins::BigInt getUpperBounds(StackVariable v);
 }
 
 import SimpleRangeAnalysisInternal
