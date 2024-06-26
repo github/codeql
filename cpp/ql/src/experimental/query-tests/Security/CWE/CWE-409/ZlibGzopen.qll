@@ -41,19 +41,33 @@ class GzReadFunction extends DecompressionFunction {
 }
 
 /**
- * The `gzdopen` function.
+ * The `gzdopen` function is used in flow steps.
  *
  * `gzdopen(int fd, const char *mode)`
  */
-class GzdopenFunction extends Function {
+class GzdopenFunction extends DecompressionFlowStep {
   GzdopenFunction() { this.hasGlobalName("gzdopen") }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(FunctionCall fc | fc.getTarget() = this |
+      node1.asExpr() = fc.getArgument(0) and
+      node2.asExpr() = fc
+    )
+  }
 }
 
 /**
- * The `gzopen` function.
+ * The `gzopen` function is used in flow steps.
  *
  * `gzopen(const char *path, const char *mode)`
  */
-class GzopenFunction extends Function {
+class GzopenFunction extends DecompressionFlowStep {
   GzopenFunction() { this.hasGlobalName("gzopen") }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(FunctionCall fc | fc.getTarget() = this |
+      node1.asExpr() = fc.getArgument(0) and
+      node2.asExpr() = fc
+    )
+  }
 }

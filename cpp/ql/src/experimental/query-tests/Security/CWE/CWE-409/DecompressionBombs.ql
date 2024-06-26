@@ -29,27 +29,7 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() instanceof UnzOpenFunction |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc
-    )
-    or
-    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_reader_entry |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc.getArgument(1)
-    )
-    or
-    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_entry |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc.getArgument(1)
-    )
-    or
-    exists(FunctionCall fc |
-      fc.getTarget() instanceof GzopenFunction or fc.getTarget() instanceof GzdopenFunction
-    |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc
-    )
+    any(DecompressionFlowStep f).isAdditionalFlowStep(node1, node2)
   }
 }
 
