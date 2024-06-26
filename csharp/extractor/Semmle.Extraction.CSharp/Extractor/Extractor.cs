@@ -169,9 +169,7 @@ namespace Semmle.Extraction.CSharp
                     }
 
                     var args = reader.ReadCommandLineArguments(compilerCall);
-
-                    // Generated syntax trees are always added to the end of the list of syntax trees.
-                    var generatedSyntaxTrees = compilation.SyntaxTrees.Skip(compilationData.Compilation.SyntaxTrees.Count());
+                    var generatedSyntaxTrees = compilationData.GetGeneratedSyntaxTrees();
 
                     using var analyser = new BinaryLogAnalyser(new LogProgressMonitor(logger), logger, pathTransformer, canonicalPathCache, options.AssemblySensitiveTrap);
 
