@@ -263,6 +263,10 @@ private string encodeContentAux(ContentSet cs, string arg) {
   result = "Awaited"
   or
   cs = MkAwaited() and result = "Awaited" and arg = ""
+  or
+  cs = MkAnyPropertyDeep() and result = "AnyMemberDeep" and arg = ""
+  or
+  cs = MkArrayElementDeep() and result = "ArrayElementDeep" and arg = ""
 }
 
 /**
