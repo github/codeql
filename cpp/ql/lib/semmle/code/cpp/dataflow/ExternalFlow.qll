@@ -624,6 +624,34 @@ private predicate signatureMatches(Function func, string signature, string type,
 }
 
 /**
+ * Internal: Do not use.
+ *
+ * This module only exists to expose internal predicates for testing purposes.
+ */
+module ExternalFlowDebug {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate signatureMatches_debug = signatureMatches/5;
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate getSignatureParameterName_debug = getSignatureParameterName/4;
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate getParameterTypeName_debug = getParameterTypeName/2;
+}
+
+/**
  * Holds if `s` can be broken into a string of the form
  * `beforeAngles<betweenAngles>`,
  * or `s = beforeAngles` where `beforeAngles` does not have any brackets.
