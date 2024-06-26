@@ -3,7 +3,7 @@
  * @description Priveleged workflows have read/write access to the base repository and access to secrets.
  *              By explicitly checking out and running the build script from a fork the untrusted code is running in an environment
  *              that is able to push to the base repository and to access secrets.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision very-high
  * @security-severity 9.3
@@ -17,12 +17,14 @@ import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 
-from LocalJob j, PRHeadCheckoutStep checkout
+query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
+
+from LocalJob j, PRHeadCheckoutStep checkout, PoisonableStep s
 where
   j = checkout.getEnclosingJob() and
   j.getAStep() = checkout and
   // the checkout is followed by a known poisonable step
-  checkout.getAFollowingStep() instanceof PoisonableStep and
+  checkout.getAFollowingStep() = s and
   // the checkout is not controlled by an access check
   not exists(ControlCheck check | check.dominates(checkout)) and
   // the checkout occurs in a privileged context
@@ -31,4 +33,4 @@ where
     or
     inPrivilegedExternallyTriggerableJob(checkout)
   )
-select checkout, "Potential unsafe checkout of untrusted pull request on privileged workflow."
+select s, checkout, s, "Potential unsafe checkout of untrusted code on a privileged workflow."

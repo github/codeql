@@ -1,7 +1,7 @@
 /**
  * @name Cache Poisoning
  * @description The cache can be poisoned by untrusted code, leading to a cache poisoning attack.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @security-severity 7.5
@@ -15,6 +15,8 @@ import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
+
+query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
 
 from LocalJob j, Event e, PRHeadCheckoutStep checkout, Step s
 where
@@ -48,5 +50,4 @@ where
     // excluding privileged workflows since they can be exploited in easier circumstances
     not j.isPrivileged()
   )
-select checkout, "Potential cache poisoning in the context of the default branch on step $@.", s,
-  s.toString()
+select s, checkout, s, "Potential cache poisoning in the context of the default branch" 
