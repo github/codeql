@@ -419,7 +419,8 @@ string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeCon
  */
 bindingset[token]
 ParameterPosition decodeUnknownParameterPosition(AccessPathSyntax::AccessPathTokenBase token) {
-  none()
+  token.getName() = "Parameter" and
+  desugaredPositionName(result, token.getAnArgument())
 }
 
 /**
@@ -432,7 +433,8 @@ ParameterPosition decodeUnknownParameterPosition(AccessPathSyntax::AccessPathTok
  */
 bindingset[token]
 ArgumentPosition decodeUnknownArgumentPosition(AccessPathSyntax::AccessPathTokenBase token) {
-  none()
+  token.getName() = "Argument" and
+  desugaredPositionName(result, token.getAnArgument())
 }
 
 /**
