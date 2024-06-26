@@ -76,7 +76,7 @@ namespace Semmle.Extraction
         /// lexicographically smaller filepath and span is considered better.
         /// </summary>
         public static Location? BestOrDefault(this IEnumerable<Location> locations) =>
-            locations.Any() ? locations.Aggregate((best, loc) => BetterThan(best, loc) ? best : loc) : null;
+            locations.Any() ? locations.Aggregate((best, loc) => BetterThan(loc, best) ? loc : best) : null;
 
         public static Location Best(this IEnumerable<Location> locations) =>
             locations.BestOrDefault() ?? throw new ArgumentException("No location found.");
