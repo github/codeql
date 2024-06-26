@@ -38,7 +38,9 @@ class DataFlowSourceTargetApi = SourceTargetApi;
 class DataFlowSinkTargetApi = SinkTargetApi;
 
 private module ModelPrintingInput implements ModelPrintingSig {
-  class Api = TargetApiBase;
+  class SummaryApi = DataFlowSummaryTargetApi;
+
+  class SourceOrSinkApi = SourceOrSinkTargetApi;
 
   string getProvenance() { result = "df-generated" }
 }

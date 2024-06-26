@@ -178,7 +178,9 @@ private predicate output(Callable callable, TypeParameter tp, string output) {
 }
 
 private module ModelPrintingInput implements ModelPrintingSig {
-  class Api = TypeBasedFlowTargetApi;
+  class SummaryApi = TypeBasedFlowTargetApi;
+
+  class SourceOrSinkApi = TypeBasedFlowTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
