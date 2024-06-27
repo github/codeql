@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 8.6
- * @precision high
+ * @precision medium
  * @id cpp/uncontrolled-arithmetic
  * @tags security
  *       external/cwe/cwe-190
