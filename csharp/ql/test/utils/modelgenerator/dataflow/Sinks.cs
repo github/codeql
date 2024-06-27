@@ -118,7 +118,7 @@ public class NewSinks
 
     public class DataWriterKind1 : DataWriter
     {
-        // sink=Sinks;NewSinks+DataWriter;true;Write;(System.Object);;Argument[0];test-sink;df-generated
+        // sink=Sinks;NewSinks+DataWriterKind1;true;Write;(System.Object);;Argument[0];test-sink;df-generated
         // neutral=Sinks;NewSinks+DataWriterKind1;Write;(System.Object);summary;df-generated
         public override void Write(object o)
         {
@@ -128,7 +128,7 @@ public class NewSinks
 
     public class DataWriterKind2 : DataWriter
     {
-        // sink=Sinks;NewSinks+DataWriter;true;Write;(System.Object);;Argument[0];test-sink2;df-generated
+        // sink=Sinks;NewSinks+DataWriterKind2;true;Write;(System.Object);;Argument[0];test-sink2;df-generated
         // neutral=Sinks;NewSinks+DataWriterKind2;Write;(System.Object);summary;df-generated
         public override void Write(object o)
         {

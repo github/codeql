@@ -97,7 +97,7 @@ public class NewSources
 
     public class DataReaderKind1 : DataReader
     {
-        // source=Sources;NewSources+DataReader;true;Read;();;ReturnValue;source-kind-1;df-generated
+        // source=Sources;NewSources+DataReaderKind1;true;Read;();;ReturnValue;source-kind-1;df-generated
         // neutral=Sources;NewSources+DataReaderKind1;Read;();summary;df-generated
         public override string Read()
         {
@@ -107,7 +107,7 @@ public class NewSources
 
     public class DataReaderKind2 : DataReader
     {
-        // source=Sources;NewSources+DataReader;true;Read;();;ReturnValue;source-kind-2;df-generated
+        // source=Sources;NewSources+DataReaderKind2;true;Read;();;ReturnValue;source-kind-2;df-generated
         // neutral=Sources;NewSources+DataReaderKind2;Read;();summary;df-generated
         public override string Read()
         {
