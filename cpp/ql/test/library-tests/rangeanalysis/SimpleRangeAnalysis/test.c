@@ -468,7 +468,7 @@ unsigned long mult_rounding() {
   unsigned long x, y, xy;
   x = y = 1000000003UL; // 1e9 + 3
   xy = x * y;
-  return xy; // BUG: upper bound should be >= 1000000006000000009UL
+  return xy; // = 1000000006000000009UL
 }
 
 unsigned long mult_overflow() {

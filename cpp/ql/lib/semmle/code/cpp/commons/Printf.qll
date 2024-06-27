@@ -356,10 +356,8 @@ class FormattingFunctionCall extends Expr {
  * `f` is assumed to be nonnegative.
  */
 bindingset[f]
-private int lengthInBase10(float f) {
-  f = 0 and result = 1
-  or
-  result = f.log10().floor() + 1
+private QlBuiltins::BigInt lengthInBase10(QlBuiltins::BigInt f) {
+  result = f.toString().length().toBigInt()
 }
 
 pragma[nomagic]
@@ -373,7 +371,7 @@ private BufferWriteEstimationReason getEstimationReasonForIntegralExpression(Exp
   // expr should already be given as getFullyConverted
   if
     upperBound(expr) < exprMaxVal(expr) and
-    (exprMinVal(expr) >= 0 or lowerBound(expr) > exprMinVal(expr))
+    (exprMinVal(expr) >= 0.toBigInt() or lowerBound(expr) > exprMinVal(expr))
   then
     // next we check whether the estimate may have been widened
     if upperBoundMayBeWidened(expr)
@@ -1174,31 +1172,32 @@ class FormatLiteral extends Literal instanceof StringLiteral {
         or
         this.getConversionChar(n).toLowerCase() = ["d", "i"] and
         // e.g. -2^31 = "-2147483648"
-        exists(float typeBasedBound, float valueBasedBound |
+        exists(QlBuiltins::BigInt typeBasedBound, QlBuiltins::BigInt valueBasedBound |
           // The first case handles length sub-specifiers
           // Subtract one in the exponent because one bit is for the sign.
           // Add 1 to account for the possible sign in the output.
           typeBasedBound =
-            1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
+            1.toBigInt() +
+              lengthInBase10(2.toBigInt().pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
           // The second case uses range analysis to deduce a length that's shorter than the length
           // of the number -2^31.
-          exists(Expr arg, float lower, float upper |
+          exists(Expr arg, QlBuiltins::BigInt lower, QlBuiltins::BigInt upper |
             arg = this.getUse().getConversionArgument(n) and
             lower = lowerBound(arg.getFullyConverted()) and
             upper = upperBound(arg.getFullyConverted())
           |
             valueBasedBound =
-              max(int cand |
+              max(QlBuiltins::BigInt cand |
                 // Include the sign bit in the length if it can be negative
                 (
-                  if lower < 0
-                  then cand = 1 + lengthInBase10(lower.abs())
+                  if lower < 0.toBigInt()
+                  then cand = 1.toBigInt() + lengthInBase10(lower.abs())
                   else cand = lengthInBase10(lower)
                 )
                 or
                 (
-                  if upper < 0
-                  then cand = 1 + lengthInBase10(upper.abs())
+                  if upper < 0.toBigInt()
+                  then cand = 1.toBigInt() + lengthInBase10(upper.abs())
                   else cand = lengthInBase10(upper)
                 )
               ) and
@@ -1206,26 +1205,28 @@ class FormatLiteral extends Literal instanceof StringLiteral {
             // to detect non-trivial range analysis without taking into account up-casting
             reason = getEstimationReasonForIntegralExpression(arg)
           ) and
-          len = valueBasedBound.minimum(typeBasedBound)
+          len = valueBasedBound.minimum(typeBasedBound).toInt()
         )
         or
         this.getConversionChar(n).toLowerCase() = "u" and
         // e.g. 2^32 - 1 = "4294967295"
-        exists(float typeBasedBound, float valueBasedBound |
+        exists(QlBuiltins::BigInt typeBasedBound, QlBuiltins::BigInt valueBasedBound |
           // The first case handles length sub-specifiers
-          typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8) - 1) and
+          typeBasedBound =
+            lengthInBase10(2.toBigInt().pow(this.getIntegralDisplayType(n).getSize() * 8) -
+                1.toBigInt()) and
           // The second case uses range analysis to deduce a length that's shorter than
           // the length of the number 2^31 - 1.
-          exists(Expr arg, float lower, float upper |
+          exists(Expr arg, QlBuiltins::BigInt lower, QlBuiltins::BigInt upper |
             arg = this.getUse().getConversionArgument(n) and
             lower = lowerBound(arg.getFullyConverted()) and
             upper = upperBound(arg.getFullyConverted())
           |
             valueBasedBound =
-              lengthInBase10(max(float cand |
+              lengthInBase10(max(QlBuiltins::BigInt cand |
                   // If lower can be negative we use `(unsigned)-1` as the candidate value.
-                  lower < 0 and
-                  cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  lower < 0.toBigInt() and
+                  cand = 2.toBigInt().pow(any(IntType t | t.isUnsigned()).getSize() * 8)
                   or
                   cand = upper
                 )) and
@@ -1233,7 +1234,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
             // to detect non-trivial range analysis without taking into account up-casting
             reason = getEstimationReasonForIntegralExpression(arg)
           ) and
-          len = valueBasedBound.minimum(typeBasedBound)
+          len = valueBasedBound.minimum(typeBasedBound).toInt()
         )
         or
         this.getConversionChar(n).toLowerCase() = "x" and
@@ -1250,7 +1251,10 @@ class FormatLiteral extends Literal instanceof StringLiteral {
                 digits = 2 * t.getSize()
               )
             ) and
-          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+          exists(
+            Expr arg, QlBuiltins::BigInt lower, QlBuiltins::BigInt upper,
+            QlBuiltins::BigInt typeLower, QlBuiltins::BigInt typeUpper
+          |
             arg = this.getUse().getConversionArgument(n) and
             lower = lowerBound(arg.getFullyConverted()) and
             upper = upperBound(arg.getFullyConverted()) and
@@ -1260,10 +1264,10 @@ class FormatLiteral extends Literal instanceof StringLiteral {
             valueBasedBound =
               lengthInBase16(max(float cand |
                   // If lower can be negative we use `(unsigned)-1` as the candidate value.
-                  lower < 0 and
+                  lower < 0.toBigInt() and
                   cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
                   or
-                  cand = upper
+                  cand = upper.toString().toFloat()
                 )) and
             (
               if lower > typeLower or upper < typeUpper

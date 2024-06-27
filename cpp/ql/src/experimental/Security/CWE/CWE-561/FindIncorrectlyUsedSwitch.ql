@@ -28,32 +28,32 @@ predicate isRealRange(Expr exp) {
   lowerBound(exp).toString() != "-4294967296" and
   lowerBound(exp).toString() != "-Infinity" and
   lowerBound(exp).toString() != "NaN" and
-  upperBound(exp) != 2147483647 and
-  upperBound(exp) != 268435455 and
-  upperBound(exp) != 33554431 and
-  upperBound(exp) != 8388607 and
-  upperBound(exp) != 65535 and
-  upperBound(exp) != 32767 and
-  upperBound(exp) != 255 and
-  upperBound(exp) != 127 and
-  upperBound(exp) != 63 and
-  upperBound(exp) != 31 and
-  upperBound(exp) != 15 and
-  upperBound(exp) != 7 and
-  lowerBound(exp) != -2147483648 and
-  lowerBound(exp) != -268435456 and
-  lowerBound(exp) != -33554432 and
-  lowerBound(exp) != -8388608 and
-  lowerBound(exp) != -65536 and
-  lowerBound(exp) != -32768 and
-  lowerBound(exp) != -128
+  upperBound(exp) != 2147483647.toBigInt() and
+  upperBound(exp) != 268435455.toBigInt() and
+  upperBound(exp) != 33554431.toBigInt() and
+  upperBound(exp) != 8388607.toBigInt() and
+  upperBound(exp) != 65535.toBigInt() and
+  upperBound(exp) != 32767.toBigInt() and
+  upperBound(exp) != 255.toBigInt() and
+  upperBound(exp) != 127.toBigInt() and
+  upperBound(exp) != 63.toBigInt() and
+  upperBound(exp) != 31.toBigInt() and
+  upperBound(exp) != 15.toBigInt() and
+  upperBound(exp) != 7.toBigInt() and
+  lowerBound(exp) != "-2147483648".toBigInt() and
+  lowerBound(exp) != -268435456.toBigInt() and
+  lowerBound(exp) != -33554432.toBigInt() and
+  lowerBound(exp) != -8388608.toBigInt() and
+  lowerBound(exp) != -65536.toBigInt() and
+  lowerBound(exp) != -32768.toBigInt() and
+  lowerBound(exp) != -128.toBigInt()
 }
 
 /** Holds if the range of values for the condition is less than the choices. */
 predicate isNotAllSelected(SwitchStmt swtmp) {
   not swtmp.getExpr().isConstant() and
-  exists(int i |
-    i != 0 and
+  exists(QlBuiltins::BigInt i |
+    i != 0.toBigInt() and
     (
       i = lowerBound(swtmp.getASwitchCase().getExpr()) and
       upperBound(swtmp.getExpr()) < i
@@ -70,7 +70,7 @@ predicate isNotAllSelected(SwitchStmt swtmp) {
 /** Holds if the range of values for the condition is greater than the selection. */
 predicate isConditionBig(SwitchStmt swtmp) {
   not swtmp.hasDefaultCase() and
-  not exists(int iu, int il |
+  not exists(QlBuiltins::BigInt iu, QlBuiltins::BigInt il |
     (
       iu = upperBound(swtmp.getASwitchCase().getExpr()) or
       iu = upperBound(swtmp.getASwitchCase().getEndExpr())
@@ -130,7 +130,7 @@ from SwitchStmt sw, string msg
 where
   isRealRange(sw.getExpr()) and
   lowerBound(sw.getExpr()) != upperBound(sw.getExpr()) and
-  lowerBound(sw.getExpr()) != 0 and
+  lowerBound(sw.getExpr()) != 0.toBigInt() and
   not exists(Expr cexp |
     cexp = sw.getASwitchCase().getExpr() and not isRealRange(cexp)
     or
