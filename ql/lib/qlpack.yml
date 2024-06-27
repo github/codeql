@@ -4,10 +4,10 @@ warnOnImplicitThis: true
 name: github/actions-all
 version: 0.1.7
 dependencies:
-  codeql/util: ^1.0.0
-  codeql/yaml: ^1.0.0
-  codeql/controlflow: ^1.0.0
-  codeql/dataflow: ^1.0.0
+  codeql/util: ^1.0.1
+  codeql/yaml: ^1.0.1
+  codeql/controlflow: ^1.0.1
+  codeql/dataflow: ^1.0.1
 extractor: javascript
 groups: javascript
 dataExtensions:
