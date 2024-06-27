@@ -12,4 +12,3 @@
 | Test.java:28:34:28:40 | string2 | Test.java:28:13:28:41 | encode(...) |
 | Test.java:30:30:30:35 | bytes2 | Test.java:30:12:30:36 | encode(...) |
 | Test.java:31:30:31:35 | bytes2 | Test.java:31:12:31:36 | decode(...) |
-| Test.java:33:18:33:21 | date | Test.java:33:18:33:29 | clone(...) |
