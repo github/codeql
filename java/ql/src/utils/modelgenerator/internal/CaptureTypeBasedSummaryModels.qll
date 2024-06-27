@@ -284,7 +284,9 @@ private predicate output(Callable callable, TypeVariable tv, string output) {
 }
 
 module ModelPrintingInput implements ModelPrintingSig {
-  class Api = TypeBasedFlowTargetApi;
+  class SummaryApi = TypeBasedFlowTargetApi;
+
+  class SourceOrSinkApi = Specific::SourceOrSinkTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
