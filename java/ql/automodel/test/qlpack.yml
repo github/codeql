@@ -1,5 +1,5 @@
 name: codeql/java-automodel-tests
-version: 0.0.1-dev
+version: 1.0.0-dev
 groups:
     - java
     - automodel

@@ -79,7 +79,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     internal class BindingElementAccess : ElementAccess
     {
         private BindingElementAccess(ExpressionNodeInfo info)
-            : base(info, FindConditionalQualifier(info.Node), ((ElementBindingExpressionSyntax)info.Node).ArgumentList) { }
+            : base(info, FindConditionalQualifier(info.Node), ((ElementBindingExpressionSyntax)info.Node).ArgumentList)
+        {
+        }
 
         public static Expression Create(ExpressionNodeInfo info) => new BindingElementAccess(info).TryPopulate();
 

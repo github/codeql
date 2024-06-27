@@ -123,7 +123,7 @@ class IteratorCrementNonMemberOperator extends Operator {
 }
 
 private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMemberOperator,
-  DataFlowFunction
+  DataFlowFunction, SideEffectFunction, AliasFunction
 {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input = getIteratorArgumentInput(this, 0) and
@@ -131,6 +131,24 @@ private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMe
     or
     input.isParameterDeref(0) and output.isReturnValueDeref()
   }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = false
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    // See the comment on `IteratorCrementMemberOperatorModel::hasSpecificWriteSideEffect`
+    // for an explanation of these values.
+    i = 0 and buffer = false and mustWrite = false
+  }
+
+  override predicate parameterNeverEscapes(int index) { none() }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { index = 0 }
 }
 
 /**
@@ -146,7 +164,7 @@ class IteratorCrementMemberOperator extends MemberFunction {
 }
 
 private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOperator,
-  DataFlowFunction, TaintFunction
+  DataFlowFunction, TaintFunction, SideEffectFunction, AliasFunction
 {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
@@ -163,6 +181,28 @@ private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOp
     input.isQualifierObject() and
     output.isReturnValueDeref()
   }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    // We have two choices here: either `buffer` must be `true` or `mustWrite`
+    // must be `false` to ensure that the IR alias analysis doesn't think that
+    // `it++` completely override the value of the iterator.
+    // We choose `mustWrite` must be `false`. In that case, the value of
+    // `buffer` isn't super important (it just decides which kind of read side
+    // effect will be emitted).
+    i = -1 and buffer = false and mustWrite = false
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 }
 
 /**
@@ -332,7 +372,7 @@ class IteratorAssignArithmeticOperator extends Function {
  * non-member and member versions, use `IteratorPointerDereferenceOperator`.
  */
 class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
-  IteratorReferenceFunction
+  IteratorReferenceFunction, AliasFunction, SideEffectFunction
 {
   IteratorPointerDereferenceMemberOperator() {
     this.getClassAndName("operator*") instanceof Iterator
@@ -344,6 +384,18 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
     or
     input.isReturnValueDeref() and
     output.isQualifierObject()
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
   }
 }
 
@@ -361,7 +413,7 @@ class IteratorPointerDereferenceNonMemberOperator extends Operator, IteratorRefe
 }
 
 private class IteratorPointerDereferenceNonMemberOperatorModel extends IteratorPointerDereferenceNonMemberOperator,
-  TaintFunction
+  TaintFunction, AliasFunction, SideEffectFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input = getIteratorArgumentInput(this, 0) and
@@ -369,6 +421,18 @@ private class IteratorPointerDereferenceNonMemberOperatorModel extends IteratorP
     or
     input.isReturnValueDeref() and
     output.isParameterDeref(0)
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = 0 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = false
   }
 }
 
@@ -421,6 +485,71 @@ class IteratorAssignmentMemberOperator extends MemberFunction {
 }
 
 /**
+ * A member `operator==` or `operator!=` function for an iterator type.
+ *
+ * Note that this class _only_ matches member functions. To find both
+ * non-member and member versions, use `IteratorLogicalOperator`.
+ */
+class IteratorLogicalMemberOperator extends MemberFunction {
+  IteratorLogicalMemberOperator() {
+    this.getClassAndName(["operator!=", "operator=="]) instanceof Iterator
+  }
+}
+
+private class IteratorLogicalMemberOperatorModel extends IteratorLogicalMemberOperator,
+  AliasFunction, SideEffectFunction
+{
+  override predicate parameterNeverEscapes(int index) { index = [-1, 0] }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+}
+
+/**
+ * A member `operator==` or `operator!=` function for an iterator type.
+ *
+ * Note that this class _only_ matches non-member functions. To find both
+ * non-member and member versions, use `IteratorLogicalOperator`.
+ */
+class IteratorLogicalNonMemberOperator extends Function {
+  IteratorLogicalNonMemberOperator() {
+    this.hasName(["operator!=", "operator=="]) and
+    exists(getIteratorArgumentInput(this, 0)) and
+    exists(getIteratorArgumentInput(this, 1))
+  }
+}
+
+private class IteratorLogicalNonMemberOperatorModel extends IteratorLogicalNonMemberOperator,
+  AliasFunction, SideEffectFunction
+{
+  override predicate parameterNeverEscapes(int index) { index = [0, 1] }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+}
+
+/**
+ * A (member or non-member) `operator==` or `operator!=` function for an iterator type.
+ */
+class IteratorLogicalOperator extends Function {
+  IteratorLogicalOperator() {
+    this instanceof IteratorLogicalNonMemberOperator
+    or
+    this instanceof IteratorLogicalMemberOperator
+  }
+}
+
+/**
  * An `operator=` member function of an iterator class that is not a copy or move assignment
  * operator.
  *
@@ -428,11 +557,45 @@ class IteratorAssignmentMemberOperator extends MemberFunction {
  * `operator*` and use their own `operator=` to assign to the container.
  */
 private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMemberOperator,
-  TaintFunction
+  TaintFunction, SideEffectFunction, AliasFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
+    (input.isParameterDeref(0) or input.isParameter(0)) and
     output.isQualifierObject()
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    // See the comment on `IteratorCrementMemberOperatorModel::hasSpecificWriteSideEffect`
+    // for an explanation of these values.
+    i = -1 and buffer = false and mustWrite = false
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = 0 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { index = -1 }
+}
+
+/**
+ * A `begin` member function, or a related function, that returns an iterator.
+ */
+class BeginFunction extends MemberFunction {
+  BeginFunction() {
+    this.hasName(["begin", "cbegin", "rbegin", "crbegin", "before_begin", "cbefore_begin"]) and
+    this.getType().getUnspecifiedType() instanceof Iterator
+  }
+}
+
+/**
+ * An `end` member function, or a related function, that returns an iterator.
+ */
+class EndFunction extends MemberFunction {
+  EndFunction() {
+    this.hasName(["end", "cend", "rend", "crend"]) and
+    this.getType().getUnspecifiedType() instanceof Iterator
   }
 }
 
@@ -442,11 +605,8 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
  */
 class BeginOrEndFunction extends MemberFunction {
   BeginOrEndFunction() {
-    this.hasName([
-        "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
-        "cbefore_begin"
-      ]) and
-    this.getType().getUnspecifiedType() instanceof Iterator
+    this instanceof BeginFunction or
+    this instanceof EndFunction
   }
 }
 

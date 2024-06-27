@@ -2,6 +2,8 @@ package toolchain
 
 import (
 	"bufio"
+	"encoding/json"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -9,8 +11,12 @@ import (
 	"strings"
 
 	"github.com/github/codeql-go/extractor/util"
-	"golang.org/x/mod/semver"
 )
+
+var V1_14 = util.NewSemVer("v1.14.0")
+var V1_16 = util.NewSemVer("v1.16.0")
+var V1_18 = util.NewSemVer("v1.18.0")
+var V1_21 = util.NewSemVer("v1.21.0")
 
 // Check if Go is installed in the environment.
 func IsInstalled() bool {
@@ -21,11 +27,11 @@ func IsInstalled() bool {
 // The default Go version that is available on a system and a set of all versions
 // that we know are installed on the system.
 var goVersion = ""
-var goVersions = map[string]struct{}{}
+var goVersions = map[util.SemVer]struct{}{}
 
 // Adds an entry to the set of installed Go versions for the normalised `version` number.
-func addGoVersion(version string) {
-	goVersions[semver.Canonical("v"+version)] = struct{}{}
+func addGoVersion(version util.SemVer) {
+	goVersions[version] = struct{}{}
 }
 
 // Returns the current Go version as returned by 'go version', e.g. go1.14.4
@@ -36,7 +42,14 @@ func GetEnvGoVersion() string {
 		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
 		// to use the local Go toolchain instead.
 		cmd := Version()
-		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+
+		// If 'GOTOOLCHAIN' is already set, then leave it as is. This allows us to force a specific
+		// Go version in tests and also allows users to override the system default more generally.
+		_, hasToolchainVar := os.LookupEnv("GOTOOLCHAIN")
+		if !hasToolchainVar {
+			cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		}
+
 		out, err := cmd.CombinedOutput()
 
 		if err != nil {
@@ -44,19 +57,19 @@ func GetEnvGoVersion() string {
 		}
 
 		goVersion = parseGoVersion(string(out))
-		addGoVersion(goVersion[2:])
+		addGoVersion(util.NewSemVer(goVersion))
 	}
 	return goVersion
 }
 
 // Determines whether, to our knowledge, `version` is available on the current system.
-func HasGoVersion(version string) bool {
-	_, found := goVersions[semver.Canonical("v"+version)]
+func HasGoVersion(version util.SemVer) bool {
+	_, found := goVersions[version]
 	return found
 }
 
 // Attempts to install the Go toolchain `version`.
-func InstallVersion(workingDir string, version string) bool {
+func InstallVersion(workingDir string, version util.SemVer) bool {
 	// No need to install it if we know that it is already installed.
 	if HasGoVersion(version) {
 		return true
@@ -65,7 +78,7 @@ func InstallVersion(workingDir string, version string) bool {
 	// Construct a command to invoke `go version` with `GOTOOLCHAIN=go1.N.0` to give
 	// Go a valid toolchain version to download the toolchain we need; subsequent commands
 	// should then work even with an invalid version that's still in `go.mod`
-	toolchainArg := "GOTOOLCHAIN=go" + semver.Canonical("v" + version)[1:]
+	toolchainArg := "GOTOOLCHAIN=go" + version.String()[1:]
 	versionCmd := Version()
 	versionCmd.Dir = workingDir
 	versionCmd.Env = append(os.Environ(), toolchainArg)
@@ -98,20 +111,12 @@ func InstallVersion(workingDir string, version string) bool {
 }
 
 // Returns the current Go version in semver format, e.g. v1.14.4
-func GetEnvGoSemVer() string {
+func GetEnvGoSemVer() util.SemVer {
 	goVersion := GetEnvGoVersion()
 	if !strings.HasPrefix(goVersion, "go") {
 		log.Fatalf("Expected 'go version' output of the form 'go1.2.3'; got '%s'", goVersion)
 	}
-	// Go versions don't follow the SemVer format, but the only exception we normally care about
-	// is release candidates; so this is a horrible hack to convert e.g. `go1.22rc1` into `go1.22-rc1`
-	// which is compatible with the SemVer specification
-	rcIndex := strings.Index(goVersion, "rc")
-	if rcIndex != -1 {
-		return semver.Canonical("v"+goVersion[2:rcIndex]) + "-" + goVersion[rcIndex:]
-	} else {
-		return semver.Canonical("v" + goVersion[2:])
-	}
+	return util.NewSemVer(goVersion)
 }
 
 // The 'go version' command may output warnings on separate lines before
@@ -128,7 +133,7 @@ func parseGoVersion(data string) string {
 
 // Returns a value indicating whether the system Go toolchain supports workspaces.
 func SupportsWorkspaces() bool {
-	return semver.Compare(GetEnvGoSemVer(), "v1.18.0") >= 0
+	return GetEnvGoSemVer().IsAtLeast(V1_18)
 }
 
 // Run `go mod tidy -e` in the directory given by `path`.
@@ -169,4 +174,164 @@ func VendorModule(path string) *exec.Cmd {
 func Version() *exec.Cmd {
 	version := exec.Command("go", "version")
 	return version
+}
+
+// Runs `go list` with `format`, `patterns`, and `flags` for the respective inputs.
+func RunList(format string, patterns []string, flags ...string) (string, error) {
+	return RunListWithEnv(format, patterns, nil, flags...)
+}
+
+// Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs.
+func List(format string, patterns []string, flags ...string) *exec.Cmd {
+	return ListWithEnv(format, patterns, nil, flags...)
+}
+
+// Runs `go list`.
+func RunListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) (string, error) {
+	cmd := ListWithEnv(format, patterns, additionalEnv, flags...)
+	out, err := cmd.Output()
+
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			log.Printf("Warning: go list command failed, output below:\nstdout:\n%s\nstderr:\n%s\n", out, exitErr.Stderr)
+		} else {
+			log.Printf("Warning: Failed to run go list: %s", err.Error())
+		}
+		return "", err
+	}
+
+	return strings.TrimSpace(string(out)), nil
+}
+
+// Constructs a `go list` command with `format`, `patterns`, and `flags` for the respective inputs
+// and the extra environment variables given by `additionalEnv`.
+func ListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) *exec.Cmd {
+	args := append([]string{"list", "-e", "-f", format}, flags...)
+	args = append(args, patterns...)
+	cmd := exec.Command("go", args...)
+	cmd.Env = append(os.Environ(), additionalEnv...)
+	return cmd
+}
+
+// PkgInfo holds package directory and module directory (if any) for a package
+type PkgInfo struct {
+	PkgDir string // the directory directly containing source code of this package
+	ModDir string // the module directory containing this package, empty if not a module
+}
+
+// GetPkgsInfo gets the absolute module and package root directories for the packages matched by the
+// patterns `patterns`. It passes to `go list` the flags specified by `flags`.  If `includingDeps`
+// is true, all dependencies will also be included.
+func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[string]PkgInfo, error) {
+	// enable module mode so that we can find a module root if it exists, even if go module support is
+	// disabled by a build
+	if includingDeps {
+		// the flag `-deps` causes all dependencies to be retrieved
+		flags = append(flags, "-deps")
+	}
+
+	// using -json overrides -f format
+	output, err := RunList("", patterns, append(flags, "-json")...)
+	if err != nil {
+		return nil, err
+	}
+
+	// the output of `go list -json` is a stream of json object
+	type goListPkgInfo struct {
+		ImportPath string
+		Dir        string
+		Module     *struct {
+			Dir string
+		}
+	}
+	pkgInfoMapping := make(map[string]PkgInfo)
+	streamDecoder := json.NewDecoder(strings.NewReader(output))
+	for {
+		var pkgInfo goListPkgInfo
+		decErr := streamDecoder.Decode(&pkgInfo)
+		if decErr == io.EOF {
+			break
+		}
+		if decErr != nil {
+			log.Printf("Error decoding output of go list -json: %s", err.Error())
+			return nil, decErr
+		}
+		pkgAbsDir, err := filepath.Abs(pkgInfo.Dir)
+		if err != nil {
+			log.Printf("Unable to make package dir %s absolute: %s", pkgInfo.Dir, err.Error())
+		}
+		var modAbsDir string
+		if pkgInfo.Module != nil {
+			modAbsDir, err = filepath.Abs(pkgInfo.Module.Dir)
+			if err != nil {
+				log.Printf("Unable to make module dir %s absolute: %s", pkgInfo.Module.Dir, err.Error())
+			}
+		}
+		pkgInfoMapping[pkgInfo.ImportPath] = PkgInfo{
+			PkgDir: pkgAbsDir,
+			ModDir: modAbsDir,
+		}
+	}
+	return pkgInfoMapping, nil
+}
+
+// GetPkgInfo fills the package info structure for the specified package path.
+// It passes the `go list` the flags specified by `flags`.
+func GetPkgInfo(pkgpath string, flags ...string) PkgInfo {
+	return PkgInfo{
+		PkgDir: GetPkgDir(pkgpath, flags...),
+		ModDir: GetModDir(pkgpath, flags...),
+	}
+}
+
+// GetModDir gets the absolute directory of the module containing the package with path
+// `pkgpath`. It passes the `go list` the flags specified by `flags`.
+func GetModDir(pkgpath string, flags ...string) string {
+	// enable module mode so that we can find a module root if it exists, even if go module support is
+	// disabled by a build
+	mod, err := RunListWithEnv("{{.Module}}", []string{pkgpath}, []string{"GO111MODULE=on"}, flags...)
+	if err != nil || mod == "<nil>" {
+		// if the command errors or modules aren't being used, return the empty string
+		return ""
+	}
+
+	modDir, err := RunListWithEnv("{{.Module.Dir}}", []string{pkgpath}, []string{"GO111MODULE=on"}, flags...)
+	if err != nil {
+		return ""
+	}
+
+	abs, err := filepath.Abs(modDir)
+	if err != nil {
+		log.Printf("Warning: unable to make %s absolute: %s", modDir, err.Error())
+		return ""
+	}
+	return abs
+}
+
+// GetPkgDir gets the absolute directory containing the package with path `pkgpath`. It passes the
+// `go list` command the flags specified by `flags`.
+func GetPkgDir(pkgpath string, flags ...string) string {
+	pkgDir, err := RunList("{{.Dir}}", []string{pkgpath}, flags...)
+	if err != nil {
+		return ""
+	}
+
+	abs, err := filepath.Abs(pkgDir)
+	if err != nil {
+		log.Printf("Warning: unable to make %s absolute: %s", pkgDir, err.Error())
+		return ""
+	}
+	return abs
+}
+
+// DepErrors checks there are any errors resolving dependencies for `pkgpath`. It passes the `go
+// list` command the flags specified by `flags`.
+func DepErrors(pkgpath string, flags ...string) bool {
+	out, err := RunList("{{if .DepsErrors}}error{{else}}{{end}}", []string{pkgpath}, flags...)
+	if err != nil {
+		// if go list failed, assume dependencies are broken
+		return false
+	}
+
+	return out != ""
 }

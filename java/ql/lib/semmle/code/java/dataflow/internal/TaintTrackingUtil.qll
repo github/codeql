@@ -98,7 +98,7 @@ private module Cached {
   predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     DataFlow::localFlowStep(src, sink)
     or
-    localAdditionalTaintStep(src, sink)
+    localAdditionalTaintStep(src, sink, _)
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
@@ -119,14 +119,15 @@ private module Cached {
    * different objects.
    */
   cached
-  predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
+  predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
+    localAdditionalTaintExprStep(src.asExpr(), sink.asExpr(), model)
     or
     localAdditionalTaintUpdateStep(src.asExpr(),
-      sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+      sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr(), model)
     or
     exists(DataFlow::Content f |
       readStep(src, f, sink) and
+      model = "" and
       not sink.getTypeBound() instanceof PrimitiveType and
       not sink.getTypeBound() instanceof BoxedType and
       not sink.getTypeBound() instanceof NumberType and
@@ -138,7 +139,7 @@ private module Cached {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src.(DataFlowPrivate::FlowSummaryNode)
-          .getSummaryNode(), sink.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
+          .getSummaryNode(), sink.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
   }
 
   /**
@@ -146,10 +147,12 @@ private module Cached {
    * global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    localAdditionalTaintStep(src, sink) or
-    entrypointFieldStep(src, sink) or
-    any(AdditionalTaintStep a).step(src, sink)
+  predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
+    localAdditionalTaintStep(src, sink, model)
+    or
+    entrypointFieldStep(src, sink) and model = "entrypointFieldStep"
+    or
+    any(AdditionalTaintStep a).step(src, sink) and model = "AdditionalTaintStep"
   }
 
   /**
@@ -198,26 +201,29 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) 
  * local data flow steps. That is, `src` and `sink` are likely to represent
  * different objects.
  */
-private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
-  sink.(AddExpr).getAnOperand() = src and sink.getType() instanceof TypeString
+private predicate localAdditionalTaintExprStep(Expr src, Expr sink, string model) {
+  (
+    sink.(AddExpr).getAnOperand() = src and sink.getType() instanceof TypeString
+    or
+    sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
+    or
+    sink.(StringTemplateExpr).getComponent(_) = src
+    or
+    sink.(LogicExpr).getAnOperand() = src
+  ) and
+  model = ""
   or
-  sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
+  constructorStep(src, sink, model)
   or
-  sink.(StringTemplateExpr).getComponent(_) = src
+  qualifierToMethodStep(src, sink, model)
   or
-  sink.(LogicExpr).getAnOperand() = src
+  argToMethodStep(src, sink, model)
   or
-  constructorStep(src, sink)
+  comparisonStep(src, sink) and model = ""
   or
-  qualifierToMethodStep(src, sink)
+  serializationStep(src, sink) and model = "serializationStep"
   or
-  argToMethodStep(src, sink)
-  or
-  comparisonStep(src, sink)
-  or
-  serializationStep(src, sink)
-  or
-  formatStep(src, sink)
+  formatStep(src, sink) and model = "formatStep"
 }
 
 /**
@@ -226,12 +232,12 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
  * different objects.
  * This is restricted to cases where the step updates the value of `sink`.
  */
-private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
-  qualifierToArgumentStep(src, sink)
+private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink, string model) {
+  qualifierToArgumentStep(src, sink, model)
   or
-  argToArgStep(src, sink)
+  argToArgStep(src, sink, model)
   or
-  argToQualifierStep(src, sink)
+  argToQualifierStep(src, sink, model)
 }
 
 private class BulkData extends RefType {
@@ -263,19 +269,21 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 }
 
 /** An object construction that preserves the data flow status of any of its arguments. */
-private predicate constructorStep(Expr tracked, ConstructorCall sink) {
+private predicate constructorStep(Expr tracked, ConstructorCall sink, string model) {
   exists(int argi | sink.getArgument(argi) = tracked |
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and
       p = c.getParameter(argi) and
       sup.getEnclosingCallable() = c and
-      constructorStep(p.getAnAccess(), sup)
+      constructorStep(p.getAnAccess(), sup, model)
     )
     or
     // a custom InputStream that wraps a tainted data source is tainted
+    model = "inputStreamWrapper" and
     inputStreamWrapper(sink.getConstructor(), argi)
     or
+    model = "TaintPreservingCallable" and
     sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
   )
 }
@@ -289,8 +297,9 @@ private int argToParam(Call call, int argIdx) {
 }
 
 /** Access to a method that passes taint from qualifier to argument. */
-private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
+private predicate qualifierToArgumentStep(Expr tracked, Expr sink, string model) {
   exists(MethodCall ma, int arg |
+    model = "TaintPreservingCallable" and
     ma.getMethod().(TaintPreservingCallable).transfersTaint(-1, argToParam(ma, arg)) and
     tracked = ma.getQualifier() and
     sink = ma.getArgument(arg)
@@ -298,17 +307,19 @@ private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
 }
 
 /** Access to a method that passes taint from the qualifier. */
-private predicate qualifierToMethodStep(Expr tracked, MethodCall sink) {
-  taintPreservingQualifierToMethod(sink.getMethod()) and
+private predicate qualifierToMethodStep(Expr tracked, MethodCall sink, string model) {
+  taintPreservingQualifierToMethod(sink.getMethod(), model) and
   tracked = sink.getQualifier()
 }
 
 /**
  * Methods that return tainted data when called on tainted data.
  */
-private predicate taintPreservingQualifierToMethod(Method m) {
+private predicate taintPreservingQualifierToMethod(Method m, string model) {
+  model = "" and
   m instanceof CloneMethod
   or
+  model = "%StringWriter" and
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
   (
     m.getName() = "getBuffer"
@@ -316,29 +327,34 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName() = "toString"
   )
   or
+  model = "TypeObjectInputStream.read%" and
   m.getDeclaringType() instanceof TypeObjectInputStream and
   m.getName().matches("read%")
   or
+  model = "SpringUntrustedDataType.getter" and
   m instanceof GetterMethod and
   m.getDeclaringType().getADescendant() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
+  model = "TaintPreservingCallable" and
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
   or
+  model = "JaxRsResourceMethod" and
   exists(JaxRsResourceMethod resourceMethod |
     m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType()
   )
 }
 
 /** Access to a method that passes taint from an argument. */
-private predicate argToMethodStep(Expr tracked, MethodCall sink) {
+private predicate argToMethodStep(Expr tracked, MethodCall sink, string model) {
   exists(Method m, int i |
     m = sink.getMethod() and
-    taintPreservingArgumentToMethod(m, argToParam(sink, i)) and
+    taintPreservingArgumentToMethod(m, argToParam(sink, i), model) and
     tracked = sink.getArgument(i)
   )
   or
   exists(Method springResponseEntityOfOk |
+    model = "SpringResponseEntity" and
     sink.getMethod() = springResponseEntityOfOk and
     springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
     springResponseEntityOfOk.hasName(["ok", "of"]) and
@@ -347,6 +363,7 @@ private predicate argToMethodStep(Expr tracked, MethodCall sink) {
   )
   or
   exists(Method springResponseEntityBody |
+    model = "SpringResponseEntityBodyBuilder" and
     sink.getMethod() = springResponseEntityBody and
     springResponseEntityBody.getDeclaringType() instanceof SpringResponseEntityBodyBuilder and
     springResponseEntityBody.hasName("body") and
@@ -359,7 +376,8 @@ private predicate argToMethodStep(Expr tracked, MethodCall sink) {
  * Holds if `method` is a library method that returns tainted data if its
  * `arg`th argument is tainted.
  */
-private predicate taintPreservingArgumentToMethod(Method method, int arg) {
+private predicate taintPreservingArgumentToMethod(Method method, int arg, string model) {
+  model = "org.apache.commons.codec.binary.Base64" and
   method.getDeclaringType().hasQualifiedName("org.apache.commons.codec.binary", "Base64") and
   (
     method.getName() = "decodeBase64" and arg = 0
@@ -367,6 +385,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     method.getName().matches("encodeBase64%") and arg = 0
   )
   or
+  model = "TaintPreservingCallable" and
   method.(TaintPreservingCallable).returnsTaintFrom(arg)
 }
 
@@ -374,8 +393,9 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
  * Holds if `tracked` and `sink` are arguments to a method that transfers taint
  * between arguments.
  */
-private predicate argToArgStep(Expr tracked, Expr sink) {
+private predicate argToArgStep(Expr tracked, Expr sink, string model) {
   exists(MethodCall ma, Method method, int input, int output |
+    model = "TaintPreservingCallable" and
     method.(TaintPreservingCallable).transfersTaint(argToParam(ma, input), argToParam(ma, output)) and
     ma.getMethod() = method and
     ma.getArgument(input) = tracked and
@@ -387,8 +407,9 @@ private predicate argToArgStep(Expr tracked, Expr sink) {
  * Holds if `tracked` is the argument of a method that transfers taint
  * from the argument to the qualifier and `sink` is the qualifier.
  */
-private predicate argToQualifierStep(Expr tracked, Expr sink) {
+private predicate argToQualifierStep(Expr tracked, Expr sink, string model) {
   exists(Method m, int i, MethodCall ma |
+    model = "TaintPreservingCallable" and
     taintPreservingArgumentToQualifier(m, argToParam(ma, i)) and
     ma.getMethod() = m and
     tracked = ma.getArgument(i) and

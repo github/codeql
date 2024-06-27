@@ -7,7 +7,7 @@ private import semmle.code.java.security.CommandArguments
 private import semmle.code.java.security.Sanitizers
 
 /** A taint-tracking configuration to reason about use of externally controlled strings to make command line commands. */
-module ExecTaintedLocalConfig implements DataFlow::ConfigSig {
+deprecated module ExecTaintedLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
@@ -20,6 +20,8 @@ module ExecTaintedLocalConfig implements DataFlow::ConfigSig {
 }
 
 /**
+ * DEPRCATED: Unused.
+ *
  * Taint-tracking flow for use of externally controlled strings to make command line commands.
  */
-module ExecTaintedLocalFlow = TaintTracking::Global<ExecTaintedLocalConfig>;
+deprecated module ExecTaintedLocalFlow = TaintTracking::Global<ExecTaintedLocalConfig>;

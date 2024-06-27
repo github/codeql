@@ -1,5 +1,5 @@
-load("@semmle_code//:common.bzl", "codeql_fat_jar", "codeql_java_project")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@semmle_code//:common.bzl", "codeql_fat_jar", "codeql_java_project")
 
 java_library(
     name = "deps",

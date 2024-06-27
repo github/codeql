@@ -263,9 +263,10 @@ deprecated private module Config implements FullStateConfigSig {
 
   predicate isBarrierOut(Node node, FlowState state) { none() }
 
-  predicate isAdditionalFlowStep(Node node1, Node node2) {
+  predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
     singleConfiguration() and
-    any(Configuration config).isAdditionalFlowStep(node1, node2)
+    any(Configuration config).isAdditionalFlowStep(node1, node2) and
+    model = ""
   }
 
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {

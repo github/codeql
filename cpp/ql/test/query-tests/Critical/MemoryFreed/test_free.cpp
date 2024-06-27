@@ -264,9 +264,9 @@ void test_ref_delete(int *&p) {
 }
 
 void test_free_assign() {
-	void *a = malloc(10); 
+	void *a = malloc(10);
 	void *b;
-	free(b = a); // GOOD 
+	free(b = a); // GOOD
 }
 
 struct MyStruct {
@@ -300,4 +300,59 @@ void g_free (void*);
 void test_g_free(char* buf) {
     g_free(buf);
     g_free(buf); // BAD
+}
+
+// inspired by real world FPs
+
+void test_goto() {
+    int *a = (int *)malloc(sizeof(int));
+
+    *a = 1; // GOOD
+    if (condition())
+    {
+        delete a;
+        goto after;
+    }
+    *a = 1; // GOOD
+    if (condition())
+    {
+        delete a;
+    }
+    *a = 1; // BAD (use after free)
+    delete a; // BAD (double free)
+after:
+    *a = 1; // BAD (use after free)
+}
+
+void test_reassign() {
+    int *a = (int *)malloc(sizeof(int));
+
+    *a = 1; // GOOD
+    delete a;
+    *a = 1; // BAD (use after free)
+    a = (int *)malloc(sizeof(int));
+    *a = 1; // GOOD
+    delete a;
+}
+
+struct PtrContainer {
+    int *ptr;
+};
+
+void test_array(PtrContainer *containers) {
+    delete containers[0].ptr; // GOOD
+    delete containers[1].ptr; // GOOD
+    delete containers[2].ptr; // GOOD
+    delete containers[2].ptr; // BAD (double free) [NOT DETECTED]
+}
+
+struct E {
+    struct EC {
+        int* a;
+    } ec[2];
+};
+
+void test(E* e) {
+    free(e->ec[0].a);
+    free(e->ec[1].a); // GOOD
 }

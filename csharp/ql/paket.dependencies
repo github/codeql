@@ -1,0 +1,2 @@
+
+# empty paket.dependencies, so that the top-level paket invocations don't recurse into this directory

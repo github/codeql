@@ -11,11 +11,18 @@ newtype TLocation =
   TSynthLocation(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
     any(DataFlow::Node n).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
     // avoid overlap with existing DB locations
-    not exists(File f |
-      locations_default(_, f, startline, startcolumn, endline, endcolumn) and
-      f.getAbsolutePath() = filepath
-    )
+    not existingDBLocation(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+pragma[nomagic]
+private predicate existingDBLocation(
+  string filepath, int startline, int startcolumn, int endline, int endcolumn
+) {
+  exists(File f |
+    locations_default(_, f, startline, startcolumn, endline, endcolumn) and
+    f.getAbsolutePath() = filepath
+  )
+}
 
 /**
  * A location as given by a file, a start line, a start column,

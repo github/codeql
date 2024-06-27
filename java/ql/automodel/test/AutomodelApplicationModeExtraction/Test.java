@@ -19,11 +19,11 @@ class Test {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
 		reference.set( // $ sinkModelCandidate=set(Object):Argument[this]
 			args[0] // $ negativeSinkExample=set(Object):Argument[0] // modeled as a flow step
-		);  // $ negativeSourceExample=set(Object):ReturnValue // return type is void
+		);  // not a source candidate (return type is void)
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
-		supplier.get(); // $ sourceModelCandidate=get():ReturnValue
+		supplier.get(); // not a source candidate (lambda flow)
 	}
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
@@ -52,7 +52,7 @@ class Test {
 	public static int compareFiles(File f1, File f2) {
 		return f1.compareTo( // $ negativeSinkExample=compareTo(File):Argument[this]
 			f2 // $ negativeSinkExample=compareTo(File):Argument[0] // modeled as not a sink
-		); // $ negativeSourceExample=compareTo(File):ReturnValue // return type is int
+		); // not a source candidate (return type is int)
 	}
 
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
@@ -66,6 +66,7 @@ class Test {
 
 	public static void WebSocketExample(URLConnection c) throws Exception {
 		c.getInputStream(); // $ sinkModelCandidate=getInputStream():Argument[this] positiveSourceExample=getInputStream():ReturnValue(remote) // not a source candidate (manual modeling)
+		c.connect(); // $ sinkModelCandidate=connect():Argument[this] // not a source candidate (return type is void)
 	}
 
 	public static void fileFilterExample(File f, FileFilter ff) {
@@ -102,10 +103,10 @@ class MoreTests {
 
 		Files.delete(
 			p // $ sinkModelCandidate=delete(Path):Argument[0] positiveSinkExample=delete(Path):Argument[0](path-injection)
-		); // $ negativeSourceExample=delete(Path):ReturnValue // return type is void
+		); // not a source candidate (return type is void)
 
 		Files.deleteIfExists(
 			p // $ sinkModelCandidate=deleteIfExists(Path):Argument[0] positiveSinkExample=deleteIfExists(Path):Argument[0](path-injection)
-		); // $ negativeSourceExample=deleteIfExists(Path):ReturnValue // return type is boolean
+		); // not a source candidate (return type is boolean)
 	}
 }

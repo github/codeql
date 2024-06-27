@@ -28,25 +28,27 @@ newtype TApplicationModeEndpoint =
     AutomodelJavaUtil::isFromSource(call) and
     exists(Argument argExpr |
       arg.asExpr() = argExpr and call = argExpr.getCall() and not argExpr.isVararg()
-    )
+    ) and
+    not AutomodelJavaUtil::isUnexploitableType(arg.getType())
   } or
   TInstanceArgument(Call call, DataFlow::Node arg) {
     AutomodelJavaUtil::isFromSource(call) and
     arg = DataFlow::getInstanceArgument(call) and
-    not call instanceof ConstructorCall
+    not call instanceof ConstructorCall and
+    not AutomodelJavaUtil::isUnexploitableType(arg.getType())
   } or
   TImplicitVarargsArray(Call call, DataFlow::ImplicitVarargsArray arg, int idx) {
     AutomodelJavaUtil::isFromSource(call) and
     call = arg.getCall() and
-    idx = call.getCallee().getVaragsParameterIndex()
+    idx = call.getCallee().getVaragsParameterIndex() and
+    not AutomodelJavaUtil::isUnexploitableType(arg.getType())
   } or
-  TMethodReturnValue(Call call) {
+  TMethodReturnValue(MethodCall call) {
     AutomodelJavaUtil::isFromSource(call) and
-    not call instanceof ConstructorCall
+    not AutomodelJavaUtil::isUnexploitableType(call.getType())
   } or
   TOverriddenParameter(Parameter p, Method overriddenMethod) {
     AutomodelJavaUtil::isFromSource(p) and
-    not p.getCallable().callsConstructor(_) and
     p.getCallable().(Method).overrides(overriddenMethod)
   }
 
@@ -163,7 +165,7 @@ class ImplicitVarargsArray extends CallArgument, TImplicitVarargsArray {
  * may be a source.
  */
 class MethodReturnValue extends ApplicationModeEndpoint, TMethodReturnValue {
-  Call call;
+  MethodCall call;
 
   MethodReturnValue() { this = TMethodReturnValue(call) }
 
@@ -257,7 +259,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     |
       sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
       ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
-        provenance)
+        provenance, _)
     )
     or
     isCustomSink(e, kind) and provenance = "custom-sink"
@@ -270,7 +272,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     |
       sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
       ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
-        provenance)
+        provenance, _)
     )
   }
 

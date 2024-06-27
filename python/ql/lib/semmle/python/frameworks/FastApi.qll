@@ -183,7 +183,7 @@ module FastApi {
       |
         exists(Assign assign | assign = cls.getAStmt() |
           assign.getATarget().(Name).getId() = "media_type" and
-          result = assign.getValue().(StrConst).getText()
+          result = assign.getValue().(StringLiteral).getText()
         )
         or
         // TODO: this should use a proper MRO calculation instead
@@ -372,7 +372,7 @@ module FastApi {
           headers.accesses(instance(), "headers") and
           this.calls(headers, "append") and
           keyArg in [this.getArg(0), this.getArgByName("key")] and
-          keyArg.getALocalSource().asExpr().(StrConst).getText().toLowerCase() = "set-cookie"
+          keyArg.getALocalSource().asExpr().(StringLiteral).getText().toLowerCase() = "set-cookie"
         )
       }
 

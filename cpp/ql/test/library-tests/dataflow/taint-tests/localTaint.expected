@@ -1,7 +1,7 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,6-14)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,31-39)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:7,6-14)
-WARNING: Module TaintTracking has been deprecated and may be removed in future (localTaint.ql:6,3-16)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:4,6-14)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:4,31-39)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:7,6-14)
+WARNING: module 'TaintTracking' has been deprecated and may be removed in future (localTaint.ql:6,3-16)
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:10:14:10:14 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:11:15:11:15 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:12:13:12:13 | x |  |
@@ -8223,3 +8223,50 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:531:9:531:10 | it | vector.cpp:531:8:531:8 | call to operator* | TAINT |
 | vector.cpp:532:8:532:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
 | vector.cpp:532:8:532:9 | vs | vector.cpp:532:10:532:10 | call to operator[] | TAINT |
+| zmq.cpp:17:21:17:26 | socket | zmq.cpp:17:21:17:26 | socket |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:20:35:20:46 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:25:3:25:14 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:26:8:26:19 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:17:56:17:66 | message_len | zmq.cpp:20:49:20:59 | message_len |  |
+| zmq.cpp:17:56:17:66 | message_len | zmq.cpp:28:49:28:59 | message_len |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:20:26:20:32 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:21:10:21:16 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:22:24:22:30 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:28:26:28:32 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:20:26:20:32 | message [inner post update] |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:21:10:21:16 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:22:24:22:30 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:28:26:28:32 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:20:26:20:32 | message | zmq.cpp:20:25:20:32 | & ... |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:25:3:25:14 | message_data |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:26:8:26:19 | message_data |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:22:24:22:30 | message [inner post update] |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:28:26:28:32 | message |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:22:24:22:30 | message | zmq.cpp:22:23:22:30 | & ... |  |
+| zmq.cpp:25:3:25:14 | message_data | zmq.cpp:25:3:25:17 | access to array | TAINT |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:25:3:25:14 | message_data [inner post update] |  |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:26:8:26:19 | message_data |  |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:25:3:25:28 | ... = ... | zmq.cpp:25:3:25:17 | access to array [post update] |  |
+| zmq.cpp:25:16:25:16 | 0 | zmq.cpp:25:3:25:17 | access to array | TAINT |
+| zmq.cpp:25:21:25:26 | call to source | zmq.cpp:25:3:25:28 | ... = ... |  |
+| zmq.cpp:26:8:26:19 | ref arg message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:26:8:26:19 | ref arg message_data | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:28:25:28:32 | ref arg & ... | zmq.cpp:28:26:28:32 | message [inner post update] |  |
+| zmq.cpp:28:25:28:32 | ref arg & ... | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:28:25:28:32 | ref arg & ... | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:28:26:28:32 | message | zmq.cpp:28:25:28:32 | & ... |  |
+| zmq.cpp:28:35:28:46 | ref arg message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:30:23:30:30 | ref arg & ... | zmq.cpp:30:24:30:30 | message [inner post update] |  |
+| zmq.cpp:30:24:30:30 | message | zmq.cpp:30:23:30:30 | & ... |  |

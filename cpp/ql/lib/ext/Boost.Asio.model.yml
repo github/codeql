@@ -1,0 +1,26 @@
+extensions:
+  # partial model of the Boost::Asio network library
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["boost::asio", "", False, "read", "", "", "Argument[*1]", "remote", "manual"]
+      - ["boost::asio", "", False, "read_at", "", "", "Argument[*2]", "remote", "manual"]
+      - ["boost::asio", "", False, "read_until", "", "", "Argument[*1]", "remote", "manual"]
+      - ["boost::asio", "", False, "async_read", "", "", "Argument[*1]", "remote", "manual"]
+      - ["boost::asio", "", False, "async_read_at", "", "", "Argument[*2]", "remote", "manual"]
+      - ["boost::asio", "", False, "async_read_until", "", "", "Argument[*1]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sinkModel
+    data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
+      - ["boost::asio", "", False, "write", "", "", "Argument[*1]", "remote-sink", "manual"]
+      - ["boost::asio", "", False, "write_at", "", "", "Argument[*2]", "remote-sink", "manual"]
+      - ["boost::asio", "", False, "async_write", "", "", "Argument[*1]", "remote-sink", "manual"]
+      - ["boost::asio", "", False, "async_write_at", "", "", "Argument[*2]", "remote-sink", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["boost::asio", "", False, "buffer", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]

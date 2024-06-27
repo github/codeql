@@ -54,3 +54,51 @@ void temp_test7(bool b) {
 void temp_test8(bool b) {
     b ? throw ClassWithConstructor('x', ClassWithDestructor2().get_x()) : ClassWithDestructor2();
 }
+
+void temp_test8_simple(bool b) {
+    b ? throw ClassWithDestructor2().get_x() : 'a';
+}
+
+struct string
+{
+    string(const char *);
+    ~string();
+};
+
+bool const_ref_string(const string &);
+
+bool conditional_temp_via_conjunction(bool b)
+{
+    return b && const_ref_string("");
+}
+
+ClassWithDestructor2 make();
+
+void temp_test9() {
+    make();
+}
+
+void temp_test10(int i) {
+    while(i < 10) {
+        make();
+    }
+}
+
+struct ClassWithDestructor3 {
+    ~ClassWithDestructor3();
+    ClassWithDestructor2 getClassWithDestructor2();
+};
+
+ClassWithDestructor3 makeClassWithDestructor3();
+
+void temp_test11() {
+    // Two destructors are called at the semicolon (i.e., they're both attached
+    // to the call to `getClassWithDestructor2()`):
+    // First, ~ClassWithDestructor2::ClassWithDestructor2(), and then the call
+    // to `~ClassWithDestructor3::ClassWithDestructor3()`.
+    makeClassWithDestructor3().getClassWithDestructor2();
+}
+
+void temp_test12(ClassWithDestructor3 x) {
+    x.getClassWithDestructor2().get_x() + 5;
+}

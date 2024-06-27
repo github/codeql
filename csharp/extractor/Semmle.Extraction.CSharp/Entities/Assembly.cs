@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
             isOutputAssembly = init is null;
             if (isOutputAssembly)
             {
-                assemblyPath = cx.Extractor.OutputPath;
+                assemblyPath = cx.ExtractionContext.OutputPath;
                 assembly = cx.Compilation.Assembly;
             }
             else
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 assembly = init!.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
                 var idString = identity.Name + " " + identity.Version;
-                assemblyPath = cx.Extractor.GetAssemblyFile(idString);
+                assemblyPath = cx.ExtractionContext.GetAssemblyFile(idString);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (assemblyPath is not null)
             {
-                var isBuildlessOutputAssembly = isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone);
+                var isBuildlessOutputAssembly = isOutputAssembly && Context.ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone);
                 var identifier = isBuildlessOutputAssembly
                     ? ""
                     : assembly.ToString() ?? "";
@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
+            if (isOutputAssembly && Context.ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone))
             {
                 trapFile.Write("buildlessOutputAssembly");
             }

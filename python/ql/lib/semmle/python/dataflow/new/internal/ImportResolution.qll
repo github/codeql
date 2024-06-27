@@ -146,7 +146,7 @@ module ImportResolution {
       def.getValue() = n and
       def.(NameNode).getId() = "__all__" and
       def.getScope() = m and
-      any(StrConst s | s.getText() = name) = n.getAnElement().getNode()
+      any(StringLiteral s | s.getText() = name) = n.getAnElement().getNode()
     )
   }
 
@@ -210,7 +210,7 @@ module ImportResolution {
       exists(SubscriptNode sub |
         sub.getObject() = sys_modules_reference().asCfgNode() and
         sub.getIndex() = n and
-        n.getNode().(StrConst).getText() = name and
+        n.getNode().(StringLiteral).getText() = name and
         sub.(DefinitionNode).getValue() = mod.asCfgNode() and
         mod = getModuleReference(result)
       )

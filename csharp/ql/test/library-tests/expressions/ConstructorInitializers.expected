@@ -22,6 +22,7 @@
 | file://:0:0:0:0 | Rectangle | expressions.cs:351:18:351:26 | call to constructor Object | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | Rectangle2 | expressions.cs:361:18:361:27 | call to constructor Object | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | ReducedClass | ReducedExpression.cs:2:7:2:18 | call to constructor Object | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | SuppressNullableWarning | expressions.cs:522:11:522:33 | call to constructor Object | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | TestConversionOperator | expressions.cs:330:11:330:32 | call to constructor Object | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | TestCreations | expressions.cs:383:18:383:30 | call to constructor Object | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | TestUnaryOperator | expressions.cs:292:11:292:27 | call to constructor Object | file://:0:0:0:0 | Object |

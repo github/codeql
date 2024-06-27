@@ -2,16 +2,14 @@ edges
 | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | provenance |  |
 | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | provenance |  |
 | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String | provenance |  |
 | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | provenance |  |
 | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:12:34:12:75 | access to indexer : String | provenance |  |
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:12:34:12:75 | access to indexer : String | provenance | MaD:11546 |
 | MissingXMLValidation.cs:12:34:12:75 | access to indexer : String | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | provenance |  |
-| MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | provenance |  |
-| MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | provenance |  |
-| MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:35:26:35:58 | object creation of type StringReader | provenance |  |
-| MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | provenance |  |
+| MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | provenance | MaD:1162 |
+| MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | provenance | MaD:1162 |
+| MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | provenance | MaD:1162 |
+| MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | provenance | MaD:1162 |
 nodes
 | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
 | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
@@ -22,8 +20,6 @@ nodes
 | MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
 | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
 | MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
-| MissingXMLValidation.cs:35:26:35:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
-| MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
 | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
 | MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
 subpaths

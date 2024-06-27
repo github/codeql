@@ -354,7 +354,7 @@ void test_vector_output_iterator(int b) {
 	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
 		taint_vector_output_iterator(it);
 	}
-	sink(v4); // $ ast,ir
+	sink(v4); // $ ast MISSING: ir
 	
 	std::vector<int>::iterator i5 = v5.begin();
 	*i5 = source();
@@ -389,7 +389,7 @@ void test_vector_output_iterator(int b) {
 	*i9 = source();
 	taint_vector_output_iterator(i9);
 
-	sink(v9); // $ ast=330:10 ir=330:10 ir SPURIOUS: ast=389:8 ir=389:8
+	sink(v9); // $ ast=330:10 ir SPURIOUS: ast=389:8
 
 	std::vector<int>::iterator i10 = v10.begin();
 	vector_iterator_assign_wrapper(i10, 10);
@@ -397,7 +397,7 @@ void test_vector_output_iterator(int b) {
 
 	std::vector<int>::iterator i11 = v11.begin();
 	vector_iterator_assign_wrapper(i11, source());
-	sink(v11); // $ ast,ir
+	sink(v11); // $ ast MISSING: ir
 
 	std::vector<int>::iterator i12 = v12.begin();
 	*i12++ = 0;
@@ -440,14 +440,14 @@ void test_vector_inserter(char *source_string) {
 		std::vector<std::string> out;
 		auto it = std::back_inserter(out);
 		*++it = std::string(source_string);
-		sink(out); // $ ast MISSING: ir
+		sink(out); // $ ast,ir
 	}
 
 	{
 		std::vector<int> out;
 		auto it = std::back_inserter(out);
 		*++it = source();
-		sink(out); // $ ast MISSING: ir
+		sink(out); // $ ast,ir
 	}
 }
 

@@ -15,8 +15,6 @@
 | arguments.c | 15 | --edg |
 | arguments.c | 16 | __CODEQL_TEST__ |
 | arguments.c | 17 | --gcc |
-| arguments.c | 18 | --predefined_macros |
-| arguments.c | 19 | <tools>/qltest/predefined_macros |
-| arguments.c | 20 | -w |
-| arguments.c | 21 | -Werror |
-| arguments.c | 22 | arguments.c |
+| arguments.c | 18 | -w |
+| arguments.c | 19 | -Werror |
+| arguments.c | 20 | arguments.c |

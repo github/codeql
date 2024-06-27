@@ -1,0 +1,114 @@
+edges
+| gzipBombs.rb:4:3:4:11 | gzip_path | gzipBombs.rb:6:25:6:33 | gzip_path | provenance |  |
+| gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:4:15:4:27 | ...[...] | provenance |  |
+| gzipBombs.rb:4:15:4:27 | ...[...] | gzipBombs.rb:4:3:4:11 | gzip_path | provenance |  |
+| gzipBombs.rb:6:25:6:33 | gzip_path | gzipBombs.rb:6:3:6:34 | call to open | provenance | Config |
+| gzipBombs.rb:6:25:6:33 | gzip_path | gzipBombs.rb:7:25:7:33 | gzip_path | provenance |  |
+| gzipBombs.rb:7:25:7:33 | gzip_path | gzipBombs.rb:7:3:9:5 | call to open | provenance | Config |
+| gzipBombs.rb:7:25:7:33 | gzip_path | gzipBombs.rb:10:25:10:33 | gzip_path | provenance |  |
+| gzipBombs.rb:10:25:10:33 | gzip_path | gzipBombs.rb:10:3:14:5 | call to open | provenance | Config |
+| gzipBombs.rb:10:25:10:33 | gzip_path | gzipBombs.rb:15:44:15:52 | gzip_path | provenance |  |
+| gzipBombs.rb:15:44:15:52 | gzip_path | gzipBombs.rb:15:22:15:53 | call to open | provenance | Config |
+| gzipBombs.rb:15:44:15:52 | gzip_path | gzipBombs.rb:20:34:20:42 | gzip_path | provenance |  |
+| gzipBombs.rb:20:24:20:49 | call to open | gzipBombs.rb:20:3:20:50 | call to new | provenance | Config |
+| gzipBombs.rb:20:34:20:42 | gzip_path | gzipBombs.rb:20:24:20:49 | call to open | provenance | Config |
+| gzipBombs.rb:20:34:20:42 | gzip_path | gzipBombs.rb:21:34:21:42 | gzip_path | provenance |  |
+| gzipBombs.rb:21:24:21:49 | call to open | gzipBombs.rb:21:3:21:50 | call to new | provenance | Config |
+| gzipBombs.rb:21:34:21:42 | gzip_path | gzipBombs.rb:21:24:21:49 | call to open | provenance | Config |
+| gzipBombs.rb:21:34:21:42 | gzip_path | gzipBombs.rb:25:30:25:38 | gzip_path | provenance |  |
+| gzipBombs.rb:25:25:25:39 | call to open | gzipBombs.rb:25:3:25:40 | call to zcat | provenance | Config |
+| gzipBombs.rb:25:30:25:38 | gzip_path | gzipBombs.rb:25:25:25:39 | call to open | provenance | Config |
+| zipBombs.rb:4:3:4:14 | zipfile_path | zipBombs.rb:6:25:6:36 | zipfile_path | provenance |  |
+| zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:4:18:4:30 | ...[...] | provenance |  |
+| zipBombs.rb:4:18:4:30 | ...[...] | zipBombs.rb:4:3:4:14 | zipfile_path | provenance |  |
+| zipBombs.rb:6:25:6:36 | zipfile_path | zipBombs.rb:6:3:11:5 | call to open | provenance | Config |
+| zipBombs.rb:6:25:6:36 | zipfile_path | zipBombs.rb:12:25:12:36 | zipfile_path | provenance |  |
+| zipBombs.rb:12:25:12:36 | zipfile_path | zipBombs.rb:12:3:14:5 | call to open | provenance | Config |
+| zipBombs.rb:12:25:12:36 | zipfile_path | zipBombs.rb:15:33:15:44 | zipfile_path | provenance |  |
+| zipBombs.rb:15:33:15:44 | zipfile_path | zipBombs.rb:15:11:15:45 | call to open | provenance | Config |
+| zipBombs.rb:15:33:15:44 | zipfile_path | zipBombs.rb:17:18:17:29 | zipfile_path | provenance |  |
+| zipBombs.rb:17:18:17:29 | zipfile_path | zipBombs.rb:17:3:17:42 | call to read | provenance | Config |
+| zipBombs.rb:17:18:17:29 | zipfile_path | zipBombs.rb:18:18:18:29 | zipfile_path | provenance |  |
+| zipBombs.rb:18:18:18:29 | zipfile_path | zipBombs.rb:18:3:18:51 | call to extract | provenance | Config |
+| zipBombs.rb:18:18:18:29 | zipfile_path | zipBombs.rb:20:18:20:29 | zipfile_path | provenance |  |
+| zipBombs.rb:20:18:20:29 | zipfile_path | zipBombs.rb:28:7:28:33 | call to read | provenance | Config |
+| zipBombs.rb:20:18:20:29 | zipfile_path | zipBombs.rb:32:29:32:40 | zipfile_path | provenance |  |
+| zipBombs.rb:32:29:32:40 | zipfile_path | zipBombs.rb:34:5:34:17 | call to extract | provenance | Config |
+| zipBombs.rb:32:29:32:40 | zipfile_path | zipBombs.rb:35:5:35:31 | call to read | provenance | Config |
+| zipBombs.rb:32:29:32:40 | zipfile_path | zipBombs.rb:39:18:39:29 | zipfile_path | provenance |  |
+| zipBombs.rb:39:18:39:29 | zipfile_path | zipBombs.rb:41:7:41:31 | call to read | provenance | Config |
+| zipBombs.rb:39:18:39:29 | zipfile_path | zipBombs.rb:42:7:42:19 | call to extract | provenance | Config |
+| zipBombs.rb:39:18:39:29 | zipfile_path | zipBombs.rb:46:10:46:36 | call to read | provenance | Config |
+| zipBombs.rb:39:18:39:29 | zipfile_path | zipBombs.rb:49:29:49:40 | zipfile_path | provenance |  |
+| zipBombs.rb:49:29:49:40 | zipfile_path | zipBombs.rb:51:8:51:34 | call to read | provenance | Config |
+| zipBombs.rb:49:29:49:40 | zipfile_path | zipBombs.rb:53:29:53:40 | zipfile_path | provenance |  |
+| zipBombs.rb:53:29:53:40 | zipfile_path | zipBombs.rb:55:5:55:31 | call to read | provenance | Config |
+nodes
+| gzipBombs.rb:4:3:4:11 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:4:15:4:20 | call to params | semmle.label | call to params |
+| gzipBombs.rb:4:15:4:27 | ...[...] | semmle.label | ...[...] |
+| gzipBombs.rb:6:3:6:34 | call to open | semmle.label | call to open |
+| gzipBombs.rb:6:25:6:33 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:7:3:9:5 | call to open | semmle.label | call to open |
+| gzipBombs.rb:7:25:7:33 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:10:3:14:5 | call to open | semmle.label | call to open |
+| gzipBombs.rb:10:25:10:33 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:15:22:15:53 | call to open | semmle.label | call to open |
+| gzipBombs.rb:15:44:15:52 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:20:3:20:50 | call to new | semmle.label | call to new |
+| gzipBombs.rb:20:24:20:49 | call to open | semmle.label | call to open |
+| gzipBombs.rb:20:34:20:42 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:21:3:21:50 | call to new | semmle.label | call to new |
+| gzipBombs.rb:21:24:21:49 | call to open | semmle.label | call to open |
+| gzipBombs.rb:21:34:21:42 | gzip_path | semmle.label | gzip_path |
+| gzipBombs.rb:25:3:25:40 | call to zcat | semmle.label | call to zcat |
+| gzipBombs.rb:25:25:25:39 | call to open | semmle.label | call to open |
+| gzipBombs.rb:25:30:25:38 | gzip_path | semmle.label | gzip_path |
+| zipBombs.rb:4:3:4:14 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:4:18:4:23 | call to params | semmle.label | call to params |
+| zipBombs.rb:4:18:4:30 | ...[...] | semmle.label | ...[...] |
+| zipBombs.rb:6:3:11:5 | call to open | semmle.label | call to open |
+| zipBombs.rb:6:25:6:36 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:12:3:14:5 | call to open | semmle.label | call to open |
+| zipBombs.rb:12:25:12:36 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:15:11:15:45 | call to open | semmle.label | call to open |
+| zipBombs.rb:15:33:15:44 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:17:3:17:42 | call to read | semmle.label | call to read |
+| zipBombs.rb:17:18:17:29 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:18:3:18:51 | call to extract | semmle.label | call to extract |
+| zipBombs.rb:18:18:18:29 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:20:18:20:29 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:28:7:28:33 | call to read | semmle.label | call to read |
+| zipBombs.rb:32:29:32:40 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:34:5:34:17 | call to extract | semmle.label | call to extract |
+| zipBombs.rb:35:5:35:31 | call to read | semmle.label | call to read |
+| zipBombs.rb:39:18:39:29 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:41:7:41:31 | call to read | semmle.label | call to read |
+| zipBombs.rb:42:7:42:19 | call to extract | semmle.label | call to extract |
+| zipBombs.rb:46:10:46:36 | call to read | semmle.label | call to read |
+| zipBombs.rb:49:29:49:40 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:51:8:51:34 | call to read | semmle.label | call to read |
+| zipBombs.rb:53:29:53:40 | zipfile_path | semmle.label | zipfile_path |
+| zipBombs.rb:55:5:55:31 | call to read | semmle.label | call to read |
+subpaths
+#select
+| gzipBombs.rb:6:3:6:34 | call to open | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:6:3:6:34 | call to open | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| gzipBombs.rb:7:3:9:5 | call to open | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:7:3:9:5 | call to open | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| gzipBombs.rb:10:3:14:5 | call to open | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:10:3:14:5 | call to open | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| gzipBombs.rb:15:22:15:53 | call to open | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:15:22:15:53 | call to open | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| gzipBombs.rb:20:3:20:50 | call to new | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:20:3:20:50 | call to new | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| gzipBombs.rb:21:3:21:50 | call to new | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:21:3:21:50 | call to new | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| gzipBombs.rb:25:3:25:40 | call to zcat | gzipBombs.rb:4:15:4:20 | call to params | gzipBombs.rb:25:3:25:40 | call to zcat | This file Decompression depends on a $@. | gzipBombs.rb:4:15:4:20 | call to params | potentially untrusted source |
+| zipBombs.rb:6:3:11:5 | call to open | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:6:3:11:5 | call to open | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:12:3:14:5 | call to open | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:12:3:14:5 | call to open | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:15:11:15:45 | call to open | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:15:11:15:45 | call to open | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:17:3:17:42 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:17:3:17:42 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:18:3:18:51 | call to extract | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:18:3:18:51 | call to extract | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:28:7:28:33 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:28:7:28:33 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:34:5:34:17 | call to extract | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:34:5:34:17 | call to extract | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:35:5:35:31 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:35:5:35:31 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:41:7:41:31 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:41:7:41:31 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:42:7:42:19 | call to extract | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:42:7:42:19 | call to extract | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:46:10:46:36 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:46:10:46:36 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:51:8:51:34 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:51:8:51:34 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |
+| zipBombs.rb:55:5:55:31 | call to read | zipBombs.rb:4:18:4:23 | call to params | zipBombs.rb:55:5:55:31 | call to read | This file Decompression depends on a $@. | zipBombs.rb:4:18:4:23 | call to params | potentially untrusted source |

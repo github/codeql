@@ -1,0 +1,15 @@
+extensions:
+  # Make sure that the extensible model predicates have at least one definition
+  # to avoid errors about undefined extensionals.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSourceModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSinkModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSummaryModel
+    data: []

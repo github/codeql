@@ -2,14 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: summaryModel
-    data:
-      - ["System.Timers", "Timer", False, "get_Site", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Timers", "Timer", False, "get_SynchronizingObject", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Timers", "Timer", False, "set_Site", "(System.ComponentModel.ISite)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Timers", "Timer", False, "set_SynchronizingObject", "(System.ComponentModel.ISynchronizeInvoke)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Timers", "ElapsedEventArgs", "ElapsedEventArgs", "(System.DateTime)", "summary", "df-generated"]
@@ -22,11 +14,4 @@ extensions:
       - ["System.Timers", "Timer", "Stop", "()", "summary", "df-generated"]
       - ["System.Timers", "Timer", "Timer", "(System.Double)", "summary", "df-generated"]
       - ["System.Timers", "Timer", "Timer", "(System.TimeSpan)", "summary", "df-generated"]
-      - ["System.Timers", "Timer", "get_AutoReset", "()", "summary", "df-generated"]
-      - ["System.Timers", "Timer", "get_Enabled", "()", "summary", "df-generated"]
-      - ["System.Timers", "Timer", "get_Interval", "()", "summary", "df-generated"]
-      - ["System.Timers", "Timer", "set_AutoReset", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.Timers", "Timer", "set_Enabled", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.Timers", "Timer", "set_Interval", "(System.Double)", "summary", "df-generated"]
       - ["System.Timers", "TimersDescriptionAttribute", "TimersDescriptionAttribute", "(System.String)", "summary", "df-generated"]
-      - ["System.Timers", "TimersDescriptionAttribute", "get_Description", "()", "summary", "df-generated"]

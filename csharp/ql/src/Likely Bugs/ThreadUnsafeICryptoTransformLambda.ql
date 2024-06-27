@@ -15,7 +15,7 @@
  */
 
 import csharp
-import ParallelSink
+import semmle.code.csharp.security.dataflow.flowsinks.ParallelSink
 import ICryptoTransform
 
 module NotThreadSafeCryptoUsageIntoParallelInvokeConfig implements DataFlow::ConfigSig {

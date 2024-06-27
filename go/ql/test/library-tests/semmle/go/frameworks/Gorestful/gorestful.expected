@@ -1,3 +1,4 @@
+invalidModelRow
 edges
 | gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression | provenance |  |
 | gorestful.go:17:12:17:39 | call to BodyParameter | gorestful.go:18:15:18:17 | val | provenance |  |

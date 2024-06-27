@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.frameworks.data.ModelsAsData
 
@@ -125,6 +126,13 @@ newtype TNode =
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
+  } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
 
 private import semmle.python.internal.CachedStages
@@ -606,17 +614,18 @@ newtype TContent =
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
     // {"key": ...}
-    key = any(KeyValuePair kvp).getKey().(StrConst).getText()
+    key = any(KeyValuePair kvp).getKey().(StringLiteral).getText()
     or
     // func(key=...)
     key = any(Keyword kw).getArg()
     or
     // d["key"] = ...
-    key = any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StrConst).getText())
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
     or
     // d.setdefault("key", ...)
     exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
-      key = call.getArg(0).getNode().(StrConst).getText()
+      key = call.getArg(0).getNode().(StringLiteral).getText()
     )
   } or
   /** An element of a dictionary under any key. */
@@ -637,12 +646,14 @@ newtype TContent =
     //   name = any(AccessPathToken a).getAnArgument("Attribute")
     // instead we use a qltest to alert if we write a new summary in QL that uses an
     // attribute -- see
-    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    // python/ql/test/library-tests/dataflow/summaries-checks/missing-attribute-content.ql
     attr in ["re", "string", "pattern"]
     or
     //
     // 2) summaries in data-extension files
-    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
   } or

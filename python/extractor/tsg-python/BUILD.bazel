@@ -1,5 +1,5 @@
 load("@py_deps//:defs.bzl", "aliases", "all_crate_deps")
-load("@semmle_code//:common.bzl", "codeql_rust_binary")
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
 
 codeql_rust_binary(
     name = "tsg-python",

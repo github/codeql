@@ -12,6 +12,7 @@ edges
 | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:154:10:154:10 | a | provenance |  |
 | test_free.cpp:207:10:207:10 | pointer to free output argument | test_free.cpp:209:10:209:10 | a | provenance |  |
 | test_free.cpp:301:12:301:14 | pointer to g_free output argument | test_free.cpp:302:12:302:14 | buf | provenance |  |
+| test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:322:12:322:12 | a | provenance |  |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:14:10:14:10 | a | semmle.label | a |
@@ -39,6 +40,8 @@ nodes
 | test_free.cpp:209:10:209:10 | a | semmle.label | a |
 | test_free.cpp:301:12:301:14 | pointer to g_free output argument | semmle.label | pointer to g_free output argument |
 | test_free.cpp:302:12:302:14 | buf | semmle.label | buf |
+| test_free.cpp:319:16:319:16 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
+| test_free.cpp:322:12:322:12 | a | semmle.label | a |
 subpaths
 #select
 | test_free.cpp:14:10:14:10 | a | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:14:10:14:10 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:14:10:14:10 | a | a | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -54,3 +57,4 @@ subpaths
 | test_free.cpp:154:10:154:10 | a | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:154:10:154:10 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:154:10:154:10 | a | a | test_free.cpp:152:22:152:25 | call to free | call to free |
 | test_free.cpp:209:10:209:10 | a | test_free.cpp:207:10:207:10 | pointer to free output argument | test_free.cpp:209:10:209:10 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:209:10:209:10 | a | a | test_free.cpp:207:5:207:8 | call to free | call to free |
 | test_free.cpp:302:12:302:14 | buf | test_free.cpp:301:12:301:14 | pointer to g_free output argument | test_free.cpp:302:12:302:14 | buf | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:302:12:302:14 | buf | buf | test_free.cpp:301:5:301:10 | call to g_free | call to g_free |
+| test_free.cpp:322:12:322:12 | a | test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:322:12:322:12 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:322:12:322:12 | a | a | test_free.cpp:319:9:319:16 | delete | delete |

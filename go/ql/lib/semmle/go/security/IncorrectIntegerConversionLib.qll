@@ -258,13 +258,14 @@ private class MaxValueState extends TMaxValueState {
  * A node that blocks some flow states and transforms some others as they flow
  * through it.
  */
-abstract class BarrierFlowStateTransformer extends DataFlow::Node {
+abstract class FlowStateTransformer extends DataFlow::Node {
   /**
-   * Holds if this should be a barrier for `flowstate`.
+   * Holds if this should be a barrier for a flow state with bit size `bitSize`
+   * and architecture bit size `architectureBitSize`.
    *
    * This includes flow states which are transformed into other flow states.
    */
-  abstract predicate barrierFor(MaxValueState flowstate);
+  abstract predicate barrierFor(int bitSize, int architectureBitSize);
 
   /**
    * Gets the flow state that `flowstate` is transformed into.
@@ -275,7 +276,20 @@ abstract class BarrierFlowStateTransformer extends DataFlow::Node {
    * transform(transform(x)) = transform(x)
    * ```
    */
-  abstract MaxValueState transform(MaxValueState flowstate);
+  MaxValueState transform(MaxValueState state) {
+    this.barrierFor(state.getBitSize(), state.getSinkBitSize()) and
+    result.getBitSize() =
+      max(int bitsize |
+        bitsize = validBitSize() and
+        bitsize < state.getBitSize() and
+        not this.barrierFor(bitsize, state.getSinkBitSize())
+      ) and
+    (
+      result.getArchitectureBitSize() = state.getArchitectureBitSize()
+      or
+      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
+    )
+  }
 }
 
 private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
@@ -372,30 +386,68 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
  * for all flow states and would not transform any flow states, thus
  * effectively blocking them.
  */
-class UpperBoundCheck extends BarrierFlowStateTransformer {
+class UpperBoundCheck extends FlowStateTransformer {
   UpperBoundCheckGuard g;
 
   UpperBoundCheck() {
     this = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g)
   }
 
-  override predicate barrierFor(MaxValueState flowstate) {
-    g.isBoundFor(flowstate.getBitSize(), flowstate.getSinkBitSize())
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    g.isBoundFor(bitSize, architectureBitSize)
+  }
+}
+
+private predicate integerTypeBound(IntegerType it, int bitSize, int architectureBitSize) {
+  bitSize = validBitSize() and
+  architectureBitSize = [32, 64] and
+  exists(int offset | if it instanceof SignedIntegerType then offset = 1 else offset = 0 |
+    if it instanceof IntType or it instanceof UintType
+    then bitSize >= architectureBitSize - offset
+    else bitSize >= it.getSize() - offset
+  )
+}
+
+/**
+ * An expression which a type assertion guarantees will have a particular
+ * integer type.
+ *
+ * If this is a checked type expression then this value will only be used if
+ * the type assertion succeeded. If it is not checked then there will be a
+ * run-time panic if the type assertion fails, so we can assume it succeeded.
+ */
+class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
+  IntegerType it;
+
+  TypeAssertionCheck() {
+    exists(TypeAssertExpr tae |
+      this = DataFlow::exprNode(tae.getExpr()) and
+      it = tae.getTypeExpr().getType().getUnderlyingType()
+    )
   }
 
-  override MaxValueState transform(MaxValueState state) {
-    this.barrierFor(state) and
-    result.getBitSize() =
-      max(int bitsize |
-        bitsize = validBitSize() and
-        bitsize < state.getBitSize() and
-        not g.isBoundFor(bitsize, state.getSinkBitSize())
-      ) and
-    (
-      result.getArchitectureBitSize() = state.getArchitectureBitSize()
-      or
-      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    integerTypeBound(it, bitSize, architectureBitSize)
+  }
+}
+
+/**
+ * The implicit definition of a variable with integer type for a case clause of
+ * a type switch statement which declares a variable in its guard, which has
+ * effectively had a checked type assertion.
+ */
+class TypeSwitchVarFlowStateTransformer extends DataFlow::SsaNode, FlowStateTransformer {
+  IntegerType it;
+
+  TypeSwitchVarFlowStateTransformer() {
+    exists(IR::TypeSwitchImplicitVariableInstruction insn, LocalVariable lv | insn.writes(lv, _) |
+      this.getSourceVariable() = lv and
+      it = lv.getType().getUnderlyingType()
     )
+  }
+
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    integerTypeBound(it, bitSize, architectureBitSize)
   }
 }
 
@@ -497,7 +549,10 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Safely guarded by a barrier guard.
-    exists(BarrierFlowStateTransformer bfst | node = bfst and bfst.barrierFor(state))
+    exists(FlowStateTransformer fst |
+      node = fst and
+      fst.barrierFor(state.getBitSize(), state.getSinkBitSize())
+    )
     or
     // When there is a flow from a source to a sink, do not allow the flow to
     // continue to a further sink.
@@ -507,9 +562,9 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    // Create additional flow steps for `BarrierFlowStateTransformer`s
-    state2 = node2.(BarrierFlowStateTransformer).transform(state1) and
-    DataFlow::simpleLocalFlowStep(node1, node2)
+    // Create additional flow steps for `FlowStateTransformer`s
+    state2 = node2.(FlowStateTransformer).transform(state1) and
+    DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
 }
 
@@ -517,7 +572,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
  * Tracks taint flow from an integer obtained from parsing a string that flows
  * to a type conversion to a smaller integer type, which could cause data loss.
  */
-module Flow = TaintTracking::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
+module Flow = DataFlow::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
 
 /** Gets a string describing the size of the integer parsed. */
 deprecated string describeBitSize(int bitSize, int intTypeBitSize) {

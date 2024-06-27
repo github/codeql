@@ -4,6 +4,7 @@ from create_database_utils import *
 from buildless_test_utils import *
 import subprocess
 
+# This serves the "repo" directory on http://localhost:9427
 repo_server_process = subprocess.Popen(["python3", "-m", "http.server", "9427"], cwd = "repo")
 
 try:

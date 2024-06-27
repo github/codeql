@@ -18,12 +18,12 @@ else:
 
 WIN = sys.platform == "win32"
 
-
-if WIN:
+if WIN and "CODEQL_EXTRACTOR_PYTHON_OPTION_PYTHON_EXECUTABLE_NAME" not in os.environ:
     # installing `py` launcher is optional when installing Python on windows, so it's
     # possible that the user did not install it, see
     # https://github.com/github/codeql-cli-binaries/issues/125#issuecomment-1157429430
-    # so we check whether it has been installed. Newer versions have a `--list` option,
+    # so we check whether it has been installed, and we check only if the "python_executable_name"
+    # extractor option has not been specified. Newer versions have a `--list` option,
     # but that has only been mentioned in the docs since 3.9, so to not risk it not
     # working on potential older versions, we'll just use `py --version` which forwards
     # the `--version` argument to the default python executable.

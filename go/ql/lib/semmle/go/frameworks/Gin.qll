@@ -10,9 +10,9 @@ private module Gin {
   string packagePath() { result = package("github.com/gin-gonic/gin", "") }
 
   /**
-   * Data from a `Context` struct, considered as a source of untrusted flow.
+   * Data from a `Context` struct, considered as a source of remote flow.
    */
-  private class GithubComGinGonicGinContextSource extends UntrustedFlowSource::Range {
+  private class GithubComGinGonicGinContextSource extends RemoteFlowSource::Range {
     GithubComGinGonicGinContextSource() {
       // Method calls:
       exists(DataFlow::MethodCallNode call, string methodName |
@@ -39,7 +39,7 @@ private module Gin {
   /**
    * A call to a method on `Context` struct that unmarshals data into a target.
    */
-  private class GithubComGinGonicGinContextBindSource extends UntrustedFlowSource::Range {
+  private class GithubComGinGonicGinContextBindSource extends RemoteFlowSource::Range {
     GithubComGinGonicGinContextBindSource() {
       exists(DataFlow::MethodCallNode call, string methodName |
         call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and

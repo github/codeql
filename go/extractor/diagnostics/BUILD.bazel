@@ -1,0 +1,10 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "diagnostics",
+    srcs = ["diagnostics.go"],
+    importpath = "github.com/github/codeql-go/extractor/diagnostics",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,20 @@
+edges
+| test.go:15:9:15:32 | call to GetCliArg | test.go:17:7:17:28 | ...+... | provenance | Src:MaD:5  |
+| test.go:27:11:27:63 | call to ExecuteQuery | test.go:28:7:28:11 | query | provenance | Src:MaD:2  |
+| test.go:32:11:32:15 | selection of URL | test.go:32:11:32:23 | call to Query | provenance | MaD:738 |
+| test.go:32:11:32:23 | call to Query | test.go:32:11:32:36 | call to Get | provenance | MaD:745 |
+| test.go:32:11:32:36 | call to Get | test.go:34:7:34:30 | ...+... | provenance |  |
+nodes
+| test.go:15:9:15:32 | call to GetCliArg | semmle.label | call to GetCliArg |
+| test.go:17:7:17:28 | ...+... | semmle.label | ...+... |
+| test.go:27:11:27:63 | call to ExecuteQuery | semmle.label | call to ExecuteQuery |
+| test.go:28:7:28:11 | query | semmle.label | query |
+| test.go:32:11:32:15 | selection of URL | semmle.label | selection of URL |
+| test.go:32:11:32:23 | call to Query | semmle.label | call to Query |
+| test.go:32:11:32:36 | call to Get | semmle.label | call to Get |
+| test.go:34:7:34:30 | ...+... | semmle.label | ...+... |
+subpaths
+#select
+| test.go:15:9:15:32 | call to GetCliArg | test.go:17:7:17:28 | ...+... |
+| test.go:27:11:27:63 | call to ExecuteQuery | test.go:28:7:28:11 | query |
+| test.go:32:11:32:15 | selection of URL | test.go:34:7:34:30 | ...+... |

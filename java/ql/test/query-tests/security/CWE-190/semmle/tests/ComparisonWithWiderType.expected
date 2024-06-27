@@ -1,0 +1,2 @@
+| ComparisonWithWiderType.java:4:25:4:29 | ... < ... | Comparison between $@ of type int and $@ of wider type long. | ComparisonWithWiderType.java:4:25:4:25 | i | expression | ComparisonWithWiderType.java:4:29:4:29 | l | expression |
+| ComparisonWithWiderType.java:16:26:16:30 | ... > ... | Comparison between $@ of type byte and $@ of wider type short. | ComparisonWithWiderType.java:16:30:16:30 | b | expression | ComparisonWithWiderType.java:16:26:16:26 | c | expression |

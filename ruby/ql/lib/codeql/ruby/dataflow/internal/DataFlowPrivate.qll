@@ -244,10 +244,11 @@ module LocalFlow {
   }
 
   predicate flowSummaryLocalStep(
-    FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c
+    FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c,
+    string model
   ) {
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.getSummaryNode(),
-      nodeTo.getSummaryNode(), true) and
+      nodeTo.getSummaryNode(), true, model) and
     c = nodeFrom.getSummarizedCallable()
   }
 
@@ -271,7 +272,7 @@ module LocalFlow {
     node1 =
       unique(FlowSummaryNode n1 |
         FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-          node2.(FlowSummaryNode).getSummaryNode(), true)
+          node2.(FlowSummaryNode).getSummaryNode(), true, _)
       )
   }
 }
@@ -587,7 +588,13 @@ private module Cached {
       n in [-1 .. 10] and
       splatPos = unique(int i | splatArgumentAt(c, i) and i > 0)
     } or
-    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
+    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+    TForbiddenRecursionGuard() {
+      none() and
+      // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+      // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+    }
 
   class TSelfParameterNode = TSelfMethodParameterNode or TSelfToplevelParameterNode;
 
@@ -606,25 +613,28 @@ private module Cached {
    * data flow.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
-    or
-    exists(SsaImpl::DefinitionExt def |
-      // captured variables are handled by the shared `VariableCapture` library
-      not def instanceof VariableCapture::CapturedSsaDefinitionExt
-    |
-      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    (
+      LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      exists(SsaImpl::DefinitionExt def |
+        // captured variables are handled by the shared `VariableCapture` library
+        not def instanceof VariableCapture::CapturedSsaDefinitionExt
+      |
+        LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
+        or
+        LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+        or
+        LocalFlow::localFlowSsaInputFromRead(def, nodeFrom, nodeTo) and
+        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      )
       or
-      LocalFlow::localFlowSsaInputFromRead(def, nodeFrom, nodeTo) and
-      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
-    )
+      VariableCapture::valueStep(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
-    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, _)
-    or
-    VariableCapture::valueStep(nodeFrom, nodeTo)
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, _, model)
   }
 
   /** This is the local flow predicate that is exposed. */
@@ -656,7 +666,8 @@ private module Cached {
     or
     VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
     or
-    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, any(LibraryCallableToIncludeInTypeTracking c))
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, any(LibraryCallableToIncludeInTypeTracking c),
+      _)
   }
 
   /** Holds if `n` wraps an SSA definition without ingoing flow. */
@@ -714,6 +725,7 @@ private module Cached {
   newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
+    TAnyContent() or
     TKnownOrUnknownElementContent(Content::KnownElementContent c) or
     TElementLowerBoundContent(int lower, boolean includeUnknown) {
       FlowSummaryImpl::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown, lower)
@@ -725,7 +737,7 @@ private module Cached {
 
   cached
   class TContentSet =
-    TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
+    TSingletonContent or TAnyElementContent or TAnyContent or TKnownOrUnknownElementContent or
         TElementLowerBoundContent or TElementContentOfTypeContent;
 
   private predicate trackKnownValue(ConstantValue cv) {
@@ -752,7 +764,7 @@ private module Cached {
       // external model data. This, unfortunately, does not included any field names used
       // in models defined in QL code.
       exists(string input, string output |
-        ModelOutput::relevantSummaryModel(_, _, input, output, _)
+        ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
@@ -2075,7 +2087,6 @@ private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
   or
@@ -2165,10 +2176,18 @@ class DataFlowExpr = CfgNodes::ExprCfgNode;
  */
 predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+
+  int totalOrder() { result = 1 }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 newtype LambdaCallKind =
   TYieldCallKind() or
@@ -2240,6 +2259,16 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
+
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

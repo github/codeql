@@ -3,10 +3,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - [ "NoSummaries", "ManuallyModelled", False, "HasSummary", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - [ "Models", "ManuallyModelled", False, "HasSummary", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - [ "NoSummaries", "ManuallyModelled", "HasNeutralSummary", "(System.Object)", "summary", "manual"]
+      - [ "Models", "ManuallyModelled", "HasNeutralSummary", "(System.Object)", "summary", "manual"]

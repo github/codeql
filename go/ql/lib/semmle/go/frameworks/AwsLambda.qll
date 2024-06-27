@@ -1,12 +1,12 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/aws/aws-lambda-go/lambda` package.
  */
 
 import go
 
 /** A source of input data in an AWS Lambda. */
-private class LambdaInput extends UntrustedFlowSource::Range {
+private class LambdaInput extends RemoteFlowSource::Range {
   LambdaInput() {
     exists(Parameter p | p = this.asParameter() |
       p = any(HandlerFunction hf).getAParameter() and

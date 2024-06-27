@@ -5,6 +5,8 @@
 Exploring the structure of your source code
 =================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 You can use the AST viewer to display the abstract syntax tree of a CodeQL database.
 
 About the abstract syntax tree

@@ -1,3 +1,0 @@
-
-class Request(object):
-    pass

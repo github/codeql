@@ -1003,7 +1003,7 @@ module NodeJSLib {
       exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
     }
 
-    override string getCredentialsKind() { result = "Node.js http(s) client login username" }
+    override string getCredentialsKind() { result = "user name" }
   }
 
   /**
@@ -1014,7 +1014,7 @@ module NodeJSLib {
       exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
     }
 
-    override string getCredentialsKind() { result = "Node.js http(s) client login password" }
+    override string getCredentialsKind() { result = "password" }
   }
 
   /**

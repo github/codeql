@@ -8,7 +8,6 @@ import optparse
 import compileall
 
 from python_tracer import getzipfilename
-from unparse import strip_comments_and_docstrings
 
 # TO DO -- Add options to set destination directory and source directory
 
@@ -84,9 +83,7 @@ def write_source(zipped, root, name, extensions=[".py"]):
             if ext not in extensions:
                 continue
             path = os.path.join(dirpath, name)
-            temp = strip_comments_and_docstrings(path)
-            zipped.write(temp, os.path.relpath(path, root))
-            os.remove(temp)
+            zipped.write(path, os.path.relpath(path, root))
 
 def main():
     parser = optparse.OptionParser(usage = "usage: %prog [install-dir]")

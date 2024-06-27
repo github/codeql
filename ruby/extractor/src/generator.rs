@@ -15,12 +15,7 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    tracing_subscriber::fmt()
-        .with_target(false)
-        .without_time()
-        .with_level(true)
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
-        .init();
+    codeql_extractor::extractor::set_tracing_level("ruby");
 
     let languages = vec![
         Language {

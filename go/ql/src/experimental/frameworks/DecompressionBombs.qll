@@ -4,7 +4,7 @@
 
 import go
 
-class MimeMultipartFileHeader extends UntrustedFlowSource::Range {
+class MimeMultipartFileHeader extends RemoteFlowSource::Range {
   MimeMultipartFileHeader() {
     exists(DataFlow::FieldReadNode frn | this = frn |
       frn.getField().hasQualifiedName("mime/multipart", "FileHeader", ["Filename", "Header"])
@@ -29,7 +29,7 @@ module DecompressionBomb {
     class FlowState = DecompressionBombs::FlowState;
 
     predicate isSource(DataFlow::Node source, FlowState state) {
-      source instanceof UntrustedFlowSource and
+      source instanceof ThreatModelFlowSource and
       state = ""
     }
 

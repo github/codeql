@@ -29,7 +29,11 @@ import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
 /**
  * Holds if models describing `type` may be relevant for the analysis of this database.
  */
-predicate isTypeUsed(string type) { API::moduleImportExists(type) }
+bindingset[type]
+predicate isTypeUsed(string type) {
+  // If `type` is a path, then it is the first component that should be imported.
+  API::moduleImportExists(type.splitAt(".", 0))
+}
 
 /**
  * Holds if `type` can be obtained from an instance of `otherType` due to
@@ -41,8 +45,59 @@ predicate hasImplicitTypeModel(string type, string otherType) { none() }
 bindingset[type, path]
 API::Node getExtraNodeFromPath(string type, AccessPath path, int n) { none() }
 
+/**
+ * Holds if `type` = `typePath`+`suffix` and `suffix` is either empty or "!".
+ */
+bindingset[type]
+private predicate parseType(string type, string typePath, string suffix) {
+  exists(string regexp |
+    regexp = "([^!]+)(!|)" and
+    typePath = type.regexpCapture(regexp, 1) and
+    suffix = type.regexpCapture(regexp, 2)
+  )
+}
+
+private predicate parseRelevantType(string type, string typePath, string suffix) {
+  isRelevantType(type) and
+  parseType(type, typePath, suffix)
+}
+
+pragma[nomagic]
+private string getTypePathComponent(string typePath, int n) {
+  parseRelevantType(_, typePath, _) and
+  result = typePath.splitAt(".", n)
+}
+
+private int getNumTypePathComponents(string typePath) {
+  result = strictcount(int n | exists(getTypePathComponent(typePath, n)))
+}
+
+private API::Node getNodeFromTypePath(string typePath, int n) {
+  n = 1 and
+  result = API::moduleImport(getTypePathComponent(typePath, 0))
+  or
+  result = getNodeFromTypePath(typePath, n - 1).getMember(getTypePathComponent(typePath, n - 1))
+}
+
+private API::Node getNodeFromTypePath(string typePath) {
+  result = getNodeFromTypePath(typePath, getNumTypePathComponents(typePath))
+}
+
 /** Gets a Python-specific interpretation of the given `type`. */
-API::Node getExtraNodeFromType(string type) { result = API::moduleImport(type) }
+API::Node getExtraNodeFromType(string type) {
+  result = API::moduleImport(type)
+  or
+  exists(string typePath, string suffix, API::Node node |
+    parseRelevantType(type, typePath, suffix) and
+    node = getNodeFromTypePath(typePath)
+  |
+    suffix = "!" and
+    result = node
+    or
+    suffix = "" and
+    result = node.getAnInstance()
+  )
+}
 
 /**
  * Gets a Python-specific API graph successor of `node` reachable by resolving `token`.
@@ -53,7 +108,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   result = node.getMember(token.getAnArgument())
   or
   token.getName() = "Instance" and
-  result = node.getReturn() // In Python `Instance` is just an alias for `ReturnValue`
+  result = node.getAnInstance()
   or
   token.getName() = "Awaited" and
   result = node.getAwaited()
@@ -138,7 +193,7 @@ predicate invocationMatchesExtraCallSiteFilter(API::CallNode invoke, AccessPathT
 pragma[nomagic]
 private predicate relevantInputOutputPath(API::CallNode base, AccessPath inputOrOutput) {
   exists(string type, string input, string output, string path |
-    ModelOutput::relevantSummaryModel(type, path, input, output, _) and
+    ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
     ModelOutput::resolvedSummaryBase(type, path, base) and
     inputOrOutput = [input, output]
   )
@@ -170,7 +225,7 @@ private API::Node getNodeFromInputOutputPath(API::CallNode baseNode, AccessPath 
  */
 predicate summaryStep(API::Node pred, API::Node succ, string kind) {
   exists(string type, string path, API::CallNode base, AccessPath input, AccessPath output |
-    ModelOutput::relevantSummaryModel(type, path, input, output, kind) and
+    ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and // TODO???
     ModelOutput::resolvedSummaryBase(type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
     succ = getNodeFromInputOutputPath(base, output)

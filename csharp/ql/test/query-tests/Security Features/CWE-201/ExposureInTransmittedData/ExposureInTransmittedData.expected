@@ -1,5 +1,6 @@
 edges
-| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance |  |
+| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance |  Sink:MaD:2159 |
+| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance | MaD:868 Sink:MaD:2159 |
 | ExposureInTransmittedData.cs:30:13:30:13 | access to local variable p : String | ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p | provenance |  |
 | ExposureInTransmittedData.cs:30:13:30:13 | access to local variable p : String | ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p | provenance |  |
 | ExposureInTransmittedData.cs:30:13:30:13 | access to local variable p : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | provenance |  |

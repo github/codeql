@@ -777,6 +777,16 @@ class CaseClause extends @caseclause, Stmt, ScopeNode {
   /** Gets the number of statements of this `case` clause. */
   int getNumStmt() { result = this.getNumChildStmt() }
 
+  /**
+   * Gets the implicitly declared variable for this `case` clause, if any.
+   *
+   * This exists for case clauses in type switch statements which declare a
+   * variable in the guard.
+   */
+  LocalVariable getImplicitlyDeclaredVariable() {
+    not exists(result.getDeclaration()) and result.getScope().(LocalScope).getNode() = this
+  }
+
   override predicate mayHaveSideEffects() {
     this.getAnExpr().mayHaveSideEffects() or
     this.getAStmt().mayHaveSideEffects()

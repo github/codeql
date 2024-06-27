@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -89,6 +90,10 @@ module UrlRedirect {
     }
   }
 
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+  }
+
   /**
    * The right side of a string-concat, considered as a sanitizer.
    */
@@ -118,8 +123,8 @@ module UrlRedirect {
 
     ReplaceBackslashesSanitizer() {
       this.calls(receiver, "replace") and
-      this.getArg(0).asExpr().(StrConst).getText() = "\\" and
-      this.getArg(1).asExpr().(StrConst).getText() in ["/", ""]
+      this.getArg(0).asExpr().(StringLiteral).getText() = "\\" and
+      this.getArg(1).asExpr().(StringLiteral).getText() in ["/", ""]
     }
 
     override predicate sanitizes(FlowState state) { state instanceof MayContainBackslashes }

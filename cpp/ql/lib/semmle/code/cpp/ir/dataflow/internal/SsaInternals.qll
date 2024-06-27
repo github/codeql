@@ -9,6 +9,7 @@ private import semmle.code.cpp.models.interfaces.PartialFlow as PartialFlow
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as FIO
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
+private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
 import SsaInternalsCommon
 
@@ -18,15 +19,6 @@ private module SourceVariables {
     TMkSourceVariable(BaseSourceVariable base, int ind) {
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
-
-  private int maxNumberOfIndirections() { result = max(SourceVariable sv | | sv.getIndirection()) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
 
   class SourceVariable extends TSourceVariable {
     BaseSourceVariable base;
@@ -74,17 +66,26 @@ private module SourceVariables {
 import SourceVariables
 
 /**
- * Holds if the `(operand, indirectionIndex)` columns should be
- * assigned a `RawIndirectOperand` value.
+ * Holds if `indirectionIndex` is a valid non-zero indirection index for
+ * operand `op`. That is, `indirectionIndex` is between 1 and the maximum
+ * indirection for the operand's type.
  */
-predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
+predicate hasIndirectOperand(Operand op, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreOperand(op) and
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
-    indirectionIndex = [1 .. m] and
-    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
+    indirectionIndex = [1 .. m]
   )
+}
+
+/**
+ * Holds if the `(operand, indirectionIndex)` columns should be
+ * assigned a `RawIndirectOperand` value.
+ */
+predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
+  hasIndirectOperand(op, indirectionIndex) and
+  not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
 }
 
 /**
@@ -102,34 +103,27 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 }
 
 cached
-private newtype TDefOrUseImpl =
+private newtype TDefImpl =
   TDefAddressImpl(BaseIRVariable v) or
-  TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
-    isDef(_, _, address, base, _, indirectionIndex)
+  TDirectDefImpl(Operand address, int indirectionIndex) {
+    isDef(_, _, address, _, _, indirectionIndex)
   } or
-  TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
-    isUse(_, operand, base, _, indirectionIndex) and
+  TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
+    // Represents the initial "definition" of a global variable when entering
+    // a function body.
+    isGlobalDefImpl(v, f, _, indirectionIndex)
+  }
+
+cached
+private newtype TUseImpl =
+  TDirectUseImpl(Operand operand, int indirectionIndex) {
+    isUse(_, operand, _, _, indirectionIndex) and
     not isDef(true, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
     isGlobalUse(v, f, _, indirectionIndex)
-  } or
-  TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
-    // Represents the initial "definition" of a global variable when entering
-    // a function body.
-    isGlobalDefImpl(v, f, _, indirectionIndex)
-  } or
-  TIteratorDef(
-    Operand iteratorDerefAddress, BaseSourceVariableInstruction container, int indirectionIndex
-  ) {
-    isIteratorDef(container, iteratorDerefAddress, _, _, indirectionIndex)
-  } or
-  TIteratorUse(
-    Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
-  ) {
-    isIteratorUse(container, iteratorAddress, _, indirectionIndex)
   } or
   TFinalParameterUse(Parameter p, int indirectionIndex) {
     underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex) and
@@ -177,7 +171,76 @@ private predicate underlyingTypeIsModifiableAt(Type underlying, int indirectionI
 
 private Indirection getIndirectionForUnspecifiedType(Type t) { result.getType() = t }
 
-abstract private class DefOrUseImpl extends TDefOrUseImpl {
+abstract class DefImpl extends TDefImpl {
+  int indirectionIndex;
+
+  bindingset[indirectionIndex]
+  DefImpl() { any() }
+
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /** Gets the block of this definition or use. */
+  final IRBlock getBlock() { this.hasIndexInBlock(result, _) }
+
+  /** Holds if this definition or use has index `index` in block `block`. */
+  abstract predicate hasIndexInBlock(IRBlock block, int index);
+
+  /**
+   * Holds if this definition (or use) has index `index` in block `block`,
+   * and is a definition (or use) of the variable `sv`
+   */
+  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    this.hasIndexInBlock(block, index) and
+    sv = this.getSourceVariable()
+  }
+
+  /** Gets the location of this element. */
+  abstract Cpp::Location getLocation();
+
+  /** Gets the indirection index of this definition. */
+  final int getIndirectionIndex() { result = indirectionIndex }
+
+  /**
+   * Gets the index (i.e., the number of loads required) of this
+   * definition or use.
+   *
+   * Note that this is _not_ the definition's (or use's) index in
+   * the enclosing basic block. To obtain this index, use
+   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
+   */
+  abstract int getIndirection();
+
+  /**
+   * Gets the base source variable (i.e., the variable without
+   * any indirection) of this definition or use.
+   */
+  abstract BaseSourceVariable getBaseSourceVariable();
+
+  /** Gets the variable that is defined or used. */
+  SourceVariable getSourceVariable() {
+    exists(BaseSourceVariable v, int indirection |
+      sourceVariableHasBaseAndIndex(result, v, indirection) and
+      defHasSourceVariable(this, v, indirection)
+    )
+  }
+
+  abstract predicate isCertain();
+
+  abstract Node0Impl getValue();
+
+  Operand getAddressOperand() { none() }
+}
+
+abstract class UseImpl extends TUseImpl {
+  int indirectionIndex;
+
+  bindingset[indirectionIndex]
+  UseImpl() { any() }
+
+  /** Gets the node associated with this use. */
+  abstract Node getNode();
+
   /** Gets a textual representation of this element. */
   abstract string toString();
 
@@ -207,35 +270,30 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
    * the enclosing basic block. To obtain this index, use
    * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
    */
-  abstract int getIndirectionIndex();
+  abstract int getIndirection();
 
-  /**
-   * Gets the instruction that computes the base of this definition or use.
-   * This is always a `VariableAddressInstruction` or an `CallInstruction`.
-   */
-  abstract BaseSourceVariableInstruction getBase();
+  /** Gets the indirection index of this use. */
+  final int getIndirectionIndex() { result = indirectionIndex }
 
   /**
    * Gets the base source variable (i.e., the variable without
    * any indirection) of this definition or use.
    */
-  final BaseSourceVariable getBaseSourceVariable() {
-    this.getBase().getBaseSourceVariable() = result
-  }
+  abstract BaseSourceVariable getBaseSourceVariable();
 
   /** Gets the variable that is defined or used. */
   SourceVariable getSourceVariable() {
-    exists(BaseSourceVariable v, int ind |
-      sourceVariableHasBaseAndIndex(result, v, ind) and
-      defOrUseHasSourceVariable(this, v, ind)
+    exists(BaseSourceVariable v, int indirection |
+      sourceVariableHasBaseAndIndex(result, v, indirection) and
+      useHasSourceVariable(this, v, indirection)
     )
   }
-}
 
-private predicate defOrUseHasSourceVariable(DefOrUseImpl defOrUse, BaseSourceVariable bv, int ind) {
-  defHasSourceVariable(defOrUse, bv, ind)
-  or
-  useHasSourceVariable(defOrUse, bv, ind)
+  /**
+   * Holds if this use is guaranteed to read the
+   * associated variable.
+   */
+  abstract predicate isCertain();
 }
 
 pragma[noinline]
@@ -256,21 +314,15 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
-abstract class DefImpl extends DefOrUseImpl {
-  int ind;
-
-  bindingset[ind]
-  DefImpl() { any() }
-
-  override int getIndirectionIndex() { result = ind }
-
-  override string toString() { result = "Def of " + this.getSourceVariable() }
-
-  abstract int getIndirection();
-
-  abstract predicate isCertain();
-
-  abstract Node0Impl getValue();
+/**
+ * Gets the instruction that computes the address that's used to
+ * initialize `v`.
+ */
+private Instruction getInitializationTargetAddress(IRVariable v) {
+  exists(TranslatedVariableInitialization init |
+    init.getIRVariable() = v and
+    result = init.getTargetAddress()
+  )
 }
 
 /** An initial definition of an `IRVariable`'s address. */
@@ -279,8 +331,10 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
 
   DefAddressImpl() {
     this = TDefAddressImpl(v) and
-    ind = 0
+    indirectionIndex = 0
   }
+
+  override string toString() { result = "Def of &" + v.toString() }
 
   final override int getIndirection() { result = 0 }
 
@@ -289,8 +343,15 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
   final override Node0Impl getValue() { none() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    block = v.getIRVariable().getEnclosingIRFunction().getEntryBlock() and
-    index = 0
+    exists(IRVariable var | var = v.getIRVariable() |
+      block.getInstruction(index) = getInitializationTargetAddress(var)
+      or
+      // If there is no translatated element that does initialization of the
+      // variable we place the SSA definition at the entry block of the function.
+      not exists(getInitializationTargetAddress(var)) and
+      block = var.getEnclosingIRFunction().getEntryBlock() and
+      index = 0
+    )
   }
 
   override Cpp::Location getLocation() { result = v.getIRVariable().getLocation() }
@@ -300,95 +361,54 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
     result.getIndirection() = 0
   }
 
-  final override BaseSourceVariableInstruction getBase() { none() }
+  final override BaseSourceVariable getBaseSourceVariable() { result = v }
 }
 
-/**
- * An SSA definition that has an associated `Operand` representing the address
- * that is being written to.
- */
-abstract private class OperandBasedDef extends DefImpl {
+private class DirectDef extends DefImpl, TDirectDefImpl {
   Operand address;
 
-  bindingset[ind]
-  OperandBasedDef() { any() }
-
-  Operand getAddressOperand() { result = address }
+  DirectDef() { this = TDirectDefImpl(address, indirectionIndex) }
 
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     this.getAddressOperand().getUse() = block.getInstruction(index)
   }
+
+  override string toString() { result = "Def of " + this.getSourceVariable() }
+
+  override Operand getAddressOperand() { result = address }
+
+  private BaseSourceVariableInstruction getBase() {
+    isDef(_, _, address, result, _, indirectionIndex)
+  }
+
+  override BaseSourceVariable getBaseSourceVariable() {
+    result = this.getBase().getBaseSourceVariable()
+  }
+
+  override int getIndirection() { isDef(_, _, address, _, result, indirectionIndex) }
+
+  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, _, _, indirectionIndex) }
 }
 
-private class DirectDef extends OperandBasedDef, TDefImpl {
-  BaseSourceVariableInstruction base;
+private class DirectUseImpl extends UseImpl, TDirectUseImpl {
+  Operand operand;
 
-  DirectDef() { this = TDefImpl(base, address, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = base }
-
-  override int getIndirection() { isDef(_, _, address, base, result, ind) }
-
-  override Node0Impl getValue() { isDef(_, result, address, base, _, _) }
-
-  override predicate isCertain() { isDef(true, _, address, base, _, ind) }
-}
-
-private class IteratorDef extends OperandBasedDef, TIteratorDef {
-  BaseSourceVariableInstruction container;
-
-  IteratorDef() { this = TIteratorDef(address, container, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = container }
-
-  override int getIndirection() { isIteratorDef(container, address, _, result, ind) }
-
-  override Node0Impl getValue() { isIteratorDef(container, address, result, _, _) }
-
-  override predicate isCertain() { none() }
-}
-
-abstract class UseImpl extends DefOrUseImpl {
-  int ind;
-
-  bindingset[ind]
-  UseImpl() { any() }
-
-  /** Gets the node associated with this use. */
-  abstract Node getNode();
+  DirectUseImpl() { this = TDirectUseImpl(operand, indirectionIndex) }
 
   override string toString() { result = "Use of " + this.getSourceVariable() }
-
-  /** Gets the indirection index of this use. */
-  final override int getIndirectionIndex() { result = ind }
-
-  /** Gets the number of loads that precedence this use. */
-  abstract int getIndirection();
-
-  /**
-   * Holds if this use is guaranteed to read the
-   * associated variable.
-   */
-  abstract predicate isCertain();
-}
-
-abstract private class OperandBasedUse extends UseImpl {
-  Operand operand;
-  BaseSourceVariableInstruction base;
-
-  bindingset[ind]
-  OperandBasedUse() { any() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
     // predicate's implementation.
-    if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+    if this.getBase().getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
     then
-      exists(Operand op, int indirectionIndex, int indirection |
-        indirectionIndex = this.getIndirectionIndex() and
+      exists(Operand op, int indirection, Instruction base |
         indirection = this.getIndirection() and
+        base = this.getBase() and
         op =
           min(Operand cand, int i |
             isUse(_, cand, base, indirection, indirectionIndex) and
@@ -401,31 +421,21 @@ abstract private class OperandBasedUse extends UseImpl {
     else operand.getUse() = block.getInstruction(index)
   }
 
-  final override BaseSourceVariableInstruction getBase() { result = base }
+  private BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, indirectionIndex) }
+
+  override BaseSourceVariable getBaseSourceVariable() {
+    result = this.getBase().getBaseSourceVariable()
+  }
 
   final Operand getOperand() { result = operand }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
-}
 
-private class DirectUse extends OperandBasedUse, TUseImpl {
-  DirectUse() { this = TUseImpl(base, operand, ind) }
+  override int getIndirection() { isUse(_, operand, _, result, indirectionIndex) }
 
-  override int getIndirection() { isUse(_, operand, base, result, ind) }
+  override predicate isCertain() { isUse(true, operand, _, _, indirectionIndex) }
 
-  override predicate isCertain() { isUse(true, operand, base, _, ind) }
-
-  override Node getNode() { nodeHasOperand(result, operand, ind) }
-}
-
-private class IteratorUse extends OperandBasedUse, TIteratorUse {
-  IteratorUse() { this = TIteratorUse(operand, base, ind) }
-
-  override int getIndirection() { isIteratorUse(base, operand, result, ind) }
-
-  override predicate isCertain() { none() }
-
-  override Node getNode() { nodeHasOperand(result, operand, ind) }
+  override Node getNode() { nodeHasOperand(result, operand, indirectionIndex) }
 }
 
 pragma[nomagic]
@@ -439,13 +449,17 @@ private predicate finalParameterNodeHasParameterAndIndex(
 class FinalParameterUse extends UseImpl, TFinalParameterUse {
   Parameter p;
 
-  FinalParameterUse() { this = TFinalParameterUse(p, ind) }
+  FinalParameterUse() { this = TFinalParameterUse(p, indirectionIndex) }
+
+  override string toString() { result = "Use of " + p.toString() }
 
   Parameter getParameter() { result = p }
 
-  override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, ind) }
+  int getArgumentIndex() { result = p.getIndex() }
 
-  override int getIndirection() { result = ind + 1 }
+  override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex) }
+
+  override int getIndirection() { result = indirectionIndex + 1 }
 
   override predicate isCertain() { any() }
 
@@ -478,13 +492,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
     result instanceof UnknownDefaultLocation
   }
 
-  override BaseSourceVariableInstruction getBase() {
-    exists(InitializeParameterInstruction init |
-      init.getParameter() = p and
-      // This is always a `VariableAddressInstruction`
-      result = init.getAnOperand().getDef()
-    )
-  }
+  override BaseIRVariable getBaseSourceVariable() { result.getIRVariable().getAst() = p }
 }
 
 /**
@@ -542,11 +550,13 @@ class GlobalUse extends UseImpl, TGlobalUse {
   GlobalLikeVariable global;
   IRFunction f;
 
-  GlobalUse() { this = TGlobalUse(global, f, ind) }
+  GlobalUse() { this = TGlobalUse(global, f, indirectionIndex) }
+
+  override string toString() { result = "Use of " + global }
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
-  override int getIndirection() { isGlobalUse(global, f, result, ind) }
+  override int getIndirection() { isGlobalUse(global, f, result, indirectionIndex) }
 
   /** Gets the global variable associated with this use. */
   GlobalLikeVariable getVariable() { result = global }
@@ -568,8 +578,8 @@ class GlobalUse extends UseImpl, TGlobalUse {
     )
   }
 
-  override SourceVariable getSourceVariable() {
-    sourceVariableIsGlobal(result, global, f, this.getIndirection())
+  override BaseSourceVariable getBaseSourceVariable() {
+    baseSourceVariableIsGlobal(result, global, f)
   }
 
   final override Cpp::Location getLocation() { result = f.getLocation() }
@@ -586,8 +596,6 @@ class GlobalUse extends UseImpl, TGlobalUse {
   Type getUnderlyingType() { result = global.getUnderlyingType() }
 
   override predicate isCertain() { any() }
-
-  override BaseSourceVariableInstruction getBase() { none() }
 }
 
 /**
@@ -596,10 +604,9 @@ class GlobalUse extends UseImpl, TGlobalUse {
  *
  * See the QLDoc for `GlobalUse` for how this is used.
  */
-class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
+class GlobalDefImpl extends DefImpl, TGlobalDefImpl {
   GlobalLikeVariable global;
   IRFunction f;
-  int indirectionIndex;
 
   GlobalDefImpl() { this = TGlobalDefImpl(global, f, indirectionIndex) }
 
@@ -608,9 +615,6 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
 
   /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = f }
-
-  /** Gets the global variable associated with this definition. */
-  override int getIndirectionIndex() { result = indirectionIndex }
 
   /** Holds if this definition or use has index `index` in block `block`. */
   final override predicate hasIndexInBlock(IRBlock block, int index) {
@@ -621,11 +625,15 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   }
 
   /** Gets the global variable associated with this definition. */
-  override SourceVariable getSourceVariable() {
-    sourceVariableIsGlobal(result, global, f, this.getIndirection())
+  override BaseSourceVariable getBaseSourceVariable() {
+    baseSourceVariableIsGlobal(result, global, f)
   }
 
-  int getIndirection() { result = indirectionIndex }
+  override int getIndirection() { result = indirectionIndex }
+
+  override Node0Impl getValue() { none() }
+
+  override predicate isCertain() { any() }
 
   /**
    * Gets the type of this definition after specifiers have been deeply
@@ -641,64 +649,22 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   override string toString() { result = "Def of " + this.getSourceVariable() }
 
   override Location getLocation() { result = f.getLocation() }
-
-  override BaseSourceVariableInstruction getBase() { none() }
 }
 
 /**
- * Holds if `defOrUse1` is a definition which is first read by `use`,
- * or if `defOrUse1` is a use and `use` is a next subsequent use.
- *
- * In both cases, `use` can either be an explicit use written in the
- * source file, or it can be a phi node as computed by the SSA library.
+ * Holds if there is a definition or access at index `i1` in basic block `bb1`
+ * and the next subsequent read is at index `i2` in basic block `bb2`.
  */
-predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
-  exists(IRBlock bb1, int i1, SourceVariable v |
-    defOrUse1
-        .asDefOrUse()
-        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
-          pragma[only_bind_out](v))
-  |
-    exists(IRBlock bb2, int i2, DefinitionExt def |
-      adjacentDefReadExt(pragma[only_bind_into](def), pragma[only_bind_into](bb1),
-        pragma[only_bind_into](i1), pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
-      def.getSourceVariable() = v and
-      use.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
-    )
-    or
-    exists(PhiNode phi |
-      lastRefRedefExt(_, bb1, i1, phi) and
-      use.asPhi() = phi and
-      phi.getSourceVariable() = pragma[only_bind_into](v)
-    )
-  )
+predicate adjacentDefRead(IRBlock bb1, int i1, SourceVariable sv, IRBlock bb2, int i2) {
+  adjacentDefReadExt(_, sv, bb1, i1, bb2, i2)
 }
 
-/**
- * Holds if `globalDef` represents the initial definition of a global variable that
- * flows to `useOrPhi`.
- */
-private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
-  exists(IRBlock bb1, int i1, SourceVariable v |
-    globalDef
-        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
-          pragma[only_bind_out](v))
-  |
-    exists(IRBlock bb2, int i2 |
-      adjacentDefReadExt(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
-        pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
-      useOrPhi.asDefOrUse().hasIndexInBlock(bb2, i2, v)
-    )
-    or
-    exists(PhiNode phi |
-      lastRefRedefExt(_, bb1, i1, phi) and
-      useOrPhi.asPhi() = phi and
-      phi.getSourceVariable() = pragma[only_bind_into](v)
-    )
+predicate useToNode(IRBlock bb, int i, SourceVariable sv, Node nodeTo) {
+  exists(UseImpl use |
+    use.hasIndexInBlock(bb, i, sv) and
+    nodeTo = use.getNode()
   )
 }
-
-private predicate useToNode(UseOrPhi use, Node nodeTo) { use.getNode() = nodeTo }
 
 pragma[noinline]
 predicate outNodeHasAddressAndIndex(
@@ -708,11 +674,19 @@ predicate outNodeHasAddressAndIndex(
   out.getIndirectionIndex() = indirectionIndex
 }
 
-private predicate defToNode(Node nodeFrom, Def def, boolean uncertain) {
+/**
+ * INTERNAL: Do not use.
+ *
+ * Holds if `node` is the node that corresponds to the definition of `def`.
+ */
+predicate defToNode(Node node, Def def, SourceVariable sv, IRBlock bb, int i, boolean uncertain) {
+  def.hasIndexInBlock(bb, i, sv) and
   (
-    nodeHasOperand(nodeFrom, def.getValue().asOperand(), def.getIndirectionIndex())
+    nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
     or
-    nodeHasInstruction(nodeFrom, def.getValue().asInstruction(), def.getIndirectionIndex())
+    nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
+    or
+    node.(InitialGlobalValue).getGlobalDef() = def
   ) and
   if def.isCertain() then uncertain = false else uncertain = true
 }
@@ -720,14 +694,16 @@ private predicate defToNode(Node nodeFrom, Def def, boolean uncertain) {
 /**
  * INTERNAL: Do not use.
  *
- * Holds if `nodeFrom` is the node that correspond to the definition or use `defOrUse`.
+ * Holds if `node` is the node that corresponds to the definition or use at
+ * index `i` in block `bb` of `sv`.
+ *
+ * `uncertain` is `true` if this is an uncertain definition.
  */
-predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse, boolean uncertain) {
-  // Node -> Def
-  defToNode(nodeFrom, defOrUse, uncertain)
+predicate nodeToDefOrUse(Node node, SourceVariable sv, IRBlock bb, int i, boolean uncertain) {
+  defToNode(node, _, sv, bb, i, uncertain)
   or
   // Node -> Use
-  useToNode(defOrUse, nodeFrom) and
+  useToNode(bb, i, sv, node) and
   uncertain = false
 }
 
@@ -736,96 +712,59 @@ predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse, boolean uncertain)
  * only holds when there is no use-use relation out of `nTo`.
  */
 private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
-  not exists(UseOrPhi defOrUse |
-    nodeToDefOrUse(nTo, defOrUse, _) and
-    adjacentDefRead(defOrUse, _)
+  not exists(SourceVariable sv, IRBlock bb2, int i2 |
+    useToNode(bb2, i2, sv, nTo) and
+    adjacentDefRead(bb2, i2, sv, _, _)
   ) and
+  exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
+    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
+    instr = op2.getDef() and
+    conversionFlow(op1, instr, _, _)
+  )
+}
+
+/**
+ * Holds if `node` is a phi input node that should receive flow from the
+ * definition to (or use of) `sv` at `(bb1, i1)`.
+ */
+private predicate phiToNode(SsaPhiInputNode node, SourceVariable sv, IRBlock bb1, int i1) {
+  exists(PhiNode phi, IRBlock input |
+    phi.hasInputFromBlock(_, sv, bb1, i1, input) and
+    node.getPhiNode() = phi and
+    node.getBlock() = input
+  )
+}
+
+/**
+ * Holds if there should be flow from `nodeFrom` to `nodeTo` because
+ * `nodeFrom` is a definition or use of `sv` at index `i1` at basic
+ * block `bb1`.
+ *
+ * `uncertain` is `true` if `(bb1, i1)` is a definition, and that definition
+ * is _not_ guaranteed to overwrite the entire allocation.
+ */
+private predicate ssaFlowImpl(
+  IRBlock bb1, int i1, SourceVariable sv, Node nodeFrom, Node nodeTo, boolean uncertain
+) {
+  nodeToDefOrUse(nodeFrom, sv, bb1, i1, uncertain) and
   (
-    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
-      hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
-      hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
-      instr = op2.getDef() and
-      conversionFlow(op1, instr, _, _)
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      useToNode(bb2, i2, sv, nodeTo)
     )
     or
-    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
-      hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
-      hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
-      instr = op2.getDef() and
-      isDereference(instr, op1, _)
-    )
-  )
-}
-
-/**
- * The reason for this predicate is a bit annoying:
- * We cannot mark a `PointerArithmeticInstruction` that computes an offset based on some SSA
- * variable `x` as a use of `x` since this creates taint-flow in the following example:
- * ```c
- * int x = array[source]
- * sink(*array)
- * ```
- * This is because `source` would flow from the operand of `PointerArithmeticInstruction` to the
- * result of the instruction, and into the `IndirectOperand` that represents the value of `*array`.
- * Then, via use-use flow, flow will arrive at `*array` in `sink(*array)`.
- *
- * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
- * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
- */
-private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
-  exists(DefOrUse defOrUse, Node adjusted |
-    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
-    nodeToDefOrUse(adjusted, defOrUse, _) and
-    adjacentDefRead(defOrUse, use)
-  )
-}
-
-/**
- * Holds if `nodeFrom` flows to `nodeTo` because there is `def-use` or
- * `use-use` flow from `defOrUse` to `use`.
- *
- * `uncertain` is `true` if the `defOrUse` is an uncertain definition.
- */
-private predicate localSsaFlow(
-  SsaDefOrUse defOrUse, Node nodeFrom, UseOrPhi use, Node nodeTo, boolean uncertain
-) {
-  nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
-  adjacentDefRead(defOrUse, use) and
-  useToNode(use, nodeTo) and
+    phiToNode(nodeTo, sv, bb1, i1)
+  ) and
   nodeFrom != nodeTo
 }
 
-private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
-  exists(UseOrPhi use |
-    localSsaFlow(defOrUse, nodeFrom, use, nodeTo, uncertain)
-    or
-    // Initial global variable value to a first use
-    nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
-    globalDefToUse(defOrUse, use) and
-    useToNode(use, nodeTo) and
-    uncertain = false
-  )
-}
-
-/**
- * Holds if `def` is the corresponding definition of
- * the SSA library's `definition`.
- */
-private DefinitionExt ssaDefinition(Def def) {
-  exists(IRBlock block, int i, SourceVariable sv |
-    def.hasIndexInBlock(block, i, sv) and
-    result.definesAt(sv, block, i, _)
-  )
-}
-
 /** Gets a node that represents the prior definition of `node`. */
-private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
-  exists(IRBlock bb, int i, SourceVariable sv, DefinitionExt def, DefOrUse defOrUse0 |
-    lastRefRedefExt(pragma[only_bind_into](def), pragma[only_bind_into](bb),
-      pragma[only_bind_into](i), ssaDefinition(defOrUse)) and
-    def.getSourceVariable() = sv and
-    defOrUse0.hasIndexInBlock(bb, i, sv) and
-    nodeToDefOrUse(result, defOrUse0, _)
+private Node getAPriorDefinition(DefinitionExt next) {
+  exists(IRBlock bb, int i, SourceVariable sv |
+    lastRefRedefExt(_, pragma[only_bind_into](sv), pragma[only_bind_into](bb),
+      pragma[only_bind_into](i), _, next) and
+    nodeToDefOrUse(result, sv, bb, i, _)
   )
 }
 
@@ -877,12 +816,16 @@ private predicate modeledFlowBarrier(Node n) {
 
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
-  exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+  exists(Node nFrom, boolean uncertain, IRBlock bb, int i, SourceVariable sv |
+    ssaFlowImpl(bb, i, sv, nFrom, nodeTo, uncertain) and
     not modeledFlowBarrier(nFrom) and
     nodeFrom != nodeTo
   |
-    if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
+    if uncertain = true
+    then
+      nodeFrom =
+        [nFrom, getAPriorDefinition(any(DefinitionExt next | next.definesAt(sv, bb, i, _)))]
+    else nodeFrom = nFrom
   )
 }
 
@@ -891,7 +834,7 @@ private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction
 }
 
 private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
-  operand.(ArgumentOperand).getCall() = call
+  operand = call.getArgumentOperand(_)
   or
   exists(FieldAddressInstruction fai |
     fai.getObjectAddressOperand() = operand and
@@ -927,15 +870,37 @@ private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
  * Holds if there is use-use flow from `pun`'s pre-update node to `n`.
  */
 private predicate postUpdateNodeToFirstUse(PostUpdateNode pun, Node n) {
-  exists(UseOrPhi use |
-    adjustForPointerArith(pun, use) and
-    useToNode(use, n)
+  // We cannot mark a `PointerArithmeticInstruction` that computes an offset
+  // based on some SSA
+  // variable `x` as a use of `x` since this creates taint-flow in the
+  // following example:
+  // ```c
+  // int x = array[source]
+  // sink(*array)
+  // ```
+  // This is because `source` would flow from the operand of `PointerArithmetic`
+  // instruction to the result of the instruction, and into the `IndirectOperand`
+  // that represents the value of `*array`. Then, via use-use flow, flow will
+  // arrive at `*array` in `sink(*array)`.
+  // So this predicate recurses back along conversions and `PointerArithmetic`
+  // instructions to find the first use that has provides use-use flow, and
+  // uses that target as the target of the `nodeFrom`.
+  exists(Node adjusted, IRBlock bb1, int i1, SourceVariable sv |
+    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
+    useToNode(bb1, i1, sv, adjusted)
+  |
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      useToNode(bb2, i2, sv, n)
+    )
+    or
+    phiToNode(n, sv, bb1, i1)
   )
 }
 
 private predicate stepUntilNotInCall(DataFlowCall call, Node n1, Node n2) {
   isArgumentOfCallable(call, n1) and
-  exists(Node mid | localSsaFlow(_, n1, _, mid, _) |
+  exists(Node mid | ssaFlowImpl(_, _, _, n1, mid, _) |
     isArgumentOfCallable(call, mid) and
     stepUntilNotInCall(call, mid, n2)
     or
@@ -982,43 +947,25 @@ predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
   )
 }
 
-/**
- * Holds if `use` is a use of `sv` and is a next adjacent use of `phi` in
- * index `i1` in basic block `bb1`.
- *
- * This predicate exists to prevent an early join of `adjacentDefRead` with `definesAt`.
- */
-pragma[nomagic]
-private predicate fromPhiNodeToUse(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use) {
-  exists(IRBlock bb2, int i2 |
-    use.asDefOrUse().hasIndexInBlock(bb2, i2, sv) and
-    adjacentDefReadExt(pragma[only_bind_into](phi), pragma[only_bind_into](bb1),
-      pragma[only_bind_into](i1), pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
-  )
-}
-
 /** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
-  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use |
+  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1 |
     phi = nodeFrom.getPhiNode() and
-    phi.definesAt(sv, bb1, i1, _) and
-    useToNode(use, nodeTo)
+    phi.definesAt(sv, bb1, i1, _)
   |
-    fromPhiNodeToUse(phi, sv, bb1, i1, use)
-    or
-    exists(PhiNode phiTo |
-      phi != phiTo and
-      lastRefRedefExt(phi, bb1, i1, phiTo) and
-      nodeTo.(SsaPhiNode).getPhiNode() = phiTo
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(bb1, i1, sv, bb2, i2) and
+      useToNode(bb2, i2, sv, nodeTo)
     )
+    or
+    phiToNode(nodeTo, sv, bb1, i1)
   )
 }
 
-private predicate sourceVariableIsGlobal(
-  SourceVariable sv, GlobalLikeVariable global, IRFunction func, int indirectionIndex
+private predicate baseSourceVariableIsGlobal(
+  BaseIRVariable base, GlobalLikeVariable global, IRFunction func
 ) {
-  exists(IRVariable irVar, BaseIRVariable base |
-    sourceVariableHasBaseAndIndex(sv, base, indirectionIndex) and
+  exists(IRVariable irVar |
     irVar = base.getIRVariable() and
     irVar.getEnclosingIRFunction() = func and
     global = irVar.getAst() and
@@ -1075,42 +1022,54 @@ module SsaCached {
    * path between them without any read of `def`.
    */
   cached
-  predicate adjacentDefReadExt(DefinitionExt def, IRBlock bb1, int i1, IRBlock bb2, int i2) {
-    SsaImpl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2)
+  predicate adjacentDefReadExt(
+    DefinitionExt def, SourceVariable sv, IRBlock bb1, int i1, IRBlock bb2, int i2
+  ) {
+    SsaImpl::adjacentDefReadExt(def, sv, bb1, i1, bb2, i2)
   }
 
   /**
    * Holds if the node at index `i` in `bb` is a last reference to SSA definition
    * `def`. The reference is last because it can reach another write `next`,
    * without passing through another read or write.
+   *
+   * The path from node `i` in `bb` to `next` goes via basic block `input`,
+   * which is either a predecessor of the basic block of `next`, or `input` =
+   * `bb` in case `next` occurs in basic block `bb`.
    */
   cached
-  predicate lastRefRedefExt(DefinitionExt def, IRBlock bb, int i, DefinitionExt next) {
-    SsaImpl::lastRefRedefExt(def, _, bb, i, next)
+  predicate lastRefRedefExt(
+    DefinitionExt def, SourceVariable sv, IRBlock bb, int i, IRBlock input, DefinitionExt next
+  ) {
+    SsaImpl::lastRefRedefExt(def, sv, bb, i, input, next)
   }
+
+  cached
+  Definition phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
+    SsaImpl::phiHasInputFromBlockExt(phi, result, bb)
+  }
+
+  cached
+  predicate ssaDefReachesReadExt(SourceVariable v, DefinitionExt def, IRBlock bb, int i) {
+    SsaImpl::ssaDefReachesReadExt(v, def, bb, i)
+  }
+
+  predicate variableRead = SsaInput::variableRead/4;
+
+  predicate variableWrite = SsaInput::variableWrite/4;
 }
 
 cached
-private newtype TSsaDefOrUse =
-  TDefOrUse(DefOrUseImpl defOrUse) {
-    defOrUse instanceof UseImpl
-    or
-    // Like in the pruning stage, we only include definition that's live after the
-    // write as the final definitions computed by SSA.
-    exists(DefinitionExt def, SourceVariable sv, IRBlock bb, int i |
-      def.definesAt(sv, bb, i, _) and
-      defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
-    )
-  } or
-  TPhi(PhiNode phi) or
-  TGlobalDef(GlobalDefImpl global)
+private newtype TSsaDef =
+  TDef(DefinitionExt def) or
+  TPhi(PhiNode phi)
 
-abstract private class SsaDefOrUse extends TSsaDefOrUse {
+abstract private class SsaDef extends TSsaDef {
   /** Gets a textual representation of this element. */
   string toString() { none() }
 
   /** Gets the underlying non-phi definition or use. */
-  DefOrUseImpl asDefOrUse() { none() }
+  DefinitionExt asDef() { none() }
 
   /** Gets the underlying phi node. */
   PhiNode asPhi() { none() }
@@ -1119,52 +1078,97 @@ abstract private class SsaDefOrUse extends TSsaDefOrUse {
   abstract Location getLocation();
 }
 
-class DefOrUse extends TDefOrUse, SsaDefOrUse {
-  DefOrUseImpl defOrUse;
+abstract class Def extends SsaDef, TDef {
+  DefinitionExt def;
 
-  DefOrUse() { this = TDefOrUse(defOrUse) }
+  Def() { this = TDef(def) }
 
-  final override DefOrUseImpl asDefOrUse() { result = defOrUse }
+  final override DefinitionExt asDef() { result = def }
 
-  final override Location getLocation() { result = defOrUse.getLocation() }
+  /** Gets the source variable underlying this SSA definition. */
+  final SourceVariable getSourceVariable() { result = def.getSourceVariable() }
 
-  final SourceVariable getSourceVariable() { result = defOrUse.getSourceVariable() }
-
-  override string toString() { result = defOrUse.toString() }
+  override string toString() { result = def.toString() }
 
   /**
    * Holds if this definition (or use) has index `index` in block `block`,
    * and is a definition (or use) of the variable `sv`.
    */
   predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-    defOrUse.hasIndexInBlock(block, index, sv)
+    def.definesAt(sv, block, index, _)
   }
+
+  /** Gets the value written by this definition, if any. */
+  Node0Impl getValue() { none() }
+
+  /**
+   * Holds if this definition is guaranteed to overwrite the entire
+   * destination's allocation.
+   */
+  abstract predicate isCertain();
+
+  /** Gets the address operand written to by this definition. */
+  Operand getAddressOperand() { none() }
+
+  /** Gets the address written to by this definition. */
+  final Instruction getAddress() { result = this.getAddressOperand().getDef() }
+
+  /** Gets the indirection index of this definition. */
+  abstract int getIndirectionIndex();
+
+  /**
+   * Gets the indirection level that this definition is writing to.
+   * For instance, `x = y` is a definition of `x` at indirection level 1 and
+   * `*x = y` is a definition of `x` at indirection level 2.
+   */
+  abstract int getIndirection();
+
+  /**
+   * Gets a definition that ultimately defines this SSA definition and is not
+   * itself a phi node.
+   */
+  Def getAnUltimateDefinition() { result.asDef() = def.getAnUltimateDefinition() }
 }
 
-class GlobalDef extends TGlobalDef, SsaDefOrUse {
+private predicate isGlobal(DefinitionExt def, GlobalDefImpl global) {
+  exists(SourceVariable sv, IRBlock bb, int i |
+    def.definesAt(sv, bb, i, _) and
+    global.hasIndexInBlock(bb, i, sv)
+  )
+}
+
+private class NonGlobalDef extends Def {
+  NonGlobalDef() { not isGlobal(def, _) }
+
+  final override Location getLocation() { result = this.getImpl().getLocation() }
+
+  private DefImpl getImpl() {
+    exists(SourceVariable sv, IRBlock bb, int i |
+      this.hasIndexInBlock(bb, i, sv) and
+      result.hasIndexInBlock(bb, i, sv)
+    )
+  }
+
+  override Node0Impl getValue() { result = this.getImpl().getValue() }
+
+  override predicate isCertain() { this.getImpl().isCertain() }
+
+  override Operand getAddressOperand() { result = this.getImpl().getAddressOperand() }
+
+  override int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
+
+  override int getIndirection() { result = this.getImpl().getIndirection() }
+}
+
+class GlobalDef extends Def {
   GlobalDefImpl global;
 
-  GlobalDef() { this = TGlobalDef(global) }
-
-  /** Gets the location of this definition. */
-  final override Location getLocation() { result = global.getLocation() }
+  GlobalDef() { isGlobal(def, global) }
 
   /** Gets a textual representation of this definition. */
   override string toString() { result = global.toString() }
 
-  /**
-   * Holds if this definition has index `index` in block `block`, and
-   * is a definition of the variable `sv`.
-   */
-  predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-    global.hasIndexInBlock(block, index, sv)
-  }
-
-  /** Gets the indirection index of this definition. */
-  int getIndirection() { result = global.getIndirection() }
-
-  /** Gets the indirection index of this definition. */
-  int getIndirectionIndex() { result = global.getIndirectionIndex() }
+  final override Location getLocation() { result = global.getLocation() }
 
   /**
    * Gets the type of this definition after specifiers have been deeply stripped
@@ -1182,9 +1186,15 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
 
   /** Gets the global variable associated with this definition. */
   GlobalLikeVariable getVariable() { result = global.getVariable() }
+
+  override predicate isCertain() { any() }
+
+  final override int getIndirectionIndex() { result = global.getIndirectionIndex() }
+
+  final override int getIndirection() { result = global.getIndirection() }
 }
 
-class Phi extends TPhi, SsaDefOrUse {
+class Phi extends TPhi, SsaDef {
   PhiNode phi;
 
   Phi() { this = TPhi(phi) }
@@ -1193,67 +1203,22 @@ class Phi extends TPhi, SsaDefOrUse {
 
   final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
 
-  override string toString() { result = "Phi" }
+  override string toString() { result = phi.toString() }
 
-  SsaPhiNode getNode() { result.getPhiNode() = phi }
-}
+  SsaPhiInputNode getNode(IRBlock block) { result.getPhiNode() = phi and result.getBlock() = block }
 
-class UseOrPhi extends SsaDefOrUse {
-  UseOrPhi() {
-    this.asDefOrUse() instanceof UseImpl
-    or
-    this instanceof Phi
-  }
+  predicate hasInputFromBlock(Definition inp, IRBlock bb) { inp = phiHasInputFromBlockExt(phi, bb) }
 
-  final override Location getLocation() {
-    result = this.asDefOrUse().getLocation() or result = this.(Phi).getLocation()
-  }
-
-  final Node getNode() {
-    result = this.(Phi).getNode()
-    or
-    result = this.asDefOrUse().(UseImpl).getNode()
-  }
-}
-
-class Def extends DefOrUse {
-  override DefImpl defOrUse;
-
-  Operand getAddressOperand() { result = defOrUse.(OperandBasedDef).getAddressOperand() }
-
-  Instruction getAddress() { result = this.getAddressOperand().getDef() }
-
-  /**
-   * Gets the indirection index of this definition.
-   *
-   * This predicate ensures that joins go from `defOrUse` to the result
-   * instead of the other way around.
-   */
-  pragma[inline]
-  int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndirectionIndex()
-  }
-
-  /**
-   * Gets the indirection level that this definition is writing to.
-   * For instance, `x = y` is a definition of `x` at indirection level 1 and
-   * `*x = y` is a definition of `x` at indirection level 2.
-   *
-   * This predicate ensures that joins go from `defOrUse` to the result
-   * instead of the other way around.
-   */
-  pragma[inline]
-  int getIndirection() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndirection()
-  }
-
-  Node0Impl getValue() { result = defOrUse.getValue() }
-
-  predicate isCertain() { defOrUse.isCertain() }
+  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
 }
 
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
+/**
+ * An static single assignment (SSA) phi node.
+ *
+ * This is either a normal phi node or a phi-read node.
+ */
 class PhiNode extends SsaImpl::DefinitionExt {
   PhiNode() {
     this instanceof SsaImpl::PhiNode or
@@ -1267,10 +1232,47 @@ class PhiNode extends SsaImpl::DefinitionExt {
    * on reads instead of writes.
    */
   predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
+
+  /**
+   * Holds if the node at index `i` in `bb` is a last reference to SSA
+   * definition `def` of `sv`. The reference is last because it can reach
+   * this phi node, without passing through another read or write.
+   *
+   * The path from node `i` in `bb` to this phi node goes via basic block
+   * `input`, which is either a predecessor of the basic block of this phi
+   * node, or `input` = `bb` in case this phi node occurs in basic block `bb`.
+   */
+  predicate hasInputFromBlock(DefinitionExt def, SourceVariable sv, IRBlock bb, int i, IRBlock input) {
+    SsaCached::lastRefRedefExt(def, sv, bb, i, input, this)
+  }
+
+  /** Gets a definition that is an input to this phi node. */
+  final Definition getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
 }
 
-class DefinitionExt = SsaImpl::DefinitionExt;
+/** An static single assignment (SSA) definition. */
+class DefinitionExt extends SsaImpl::DefinitionExt {
+  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
 
-class UncertainWriteDefinition = SsaImpl::UncertainWriteDefinition;
+  /**
+   * Gets a definition that ultimately defines this SSA definition and is
+   * not itself a phi node.
+   */
+  final DefinitionExt getAnUltimateDefinition() {
+    result = this.getAPhiInputOrPriorDefinition*() and
+    not result instanceof PhiNode
+  }
+
+  /** Gets a node that represents a read of this SSA definition. */
+  Node getARead() {
+    exists(SourceVariable sv, IRBlock bb, int i | SsaCached::ssaDefReachesReadExt(sv, this, bb, i) |
+      useToNode(bb, i, sv, result)
+      or
+      phiToNode(result, sv, bb, i)
+    )
+  }
+}
+
+class Definition = SsaImpl::Definition;
 
 import SsaCached

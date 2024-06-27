@@ -1,4 +1,4 @@
-| test.py:17:9:18:18 | Str | Implicit string concatenation. Maybe missing a comma? |
-| test.py:23:9:24:18 | Str | Implicit string concatenation. Maybe missing a comma? |
-| test.py:33:9:34:30 | Str | Implicit string concatenation. Maybe missing a comma? |
-| test.py:35:9:36:18 | Str | Implicit string concatenation. Maybe missing a comma? |
+| test.py:17:9:18:18 | StringLiteral | Implicit string concatenation. Maybe missing a comma? |
+| test.py:23:9:24:18 | StringLiteral | Implicit string concatenation. Maybe missing a comma? |
+| test.py:33:9:34:30 | StringLiteral | Implicit string concatenation. Maybe missing a comma? |
+| test.py:35:9:36:18 | StringLiteral | Implicit string concatenation. Maybe missing a comma? |

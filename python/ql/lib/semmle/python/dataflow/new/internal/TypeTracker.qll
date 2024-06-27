@@ -1,6 +1,7 @@
 /** Step Summaries and Type Tracking */
 
 private import TypeTrackerSpecific
+private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 
 cached
 private module Cached {
@@ -12,10 +13,22 @@ private module Cached {
     LevelStep() or
     CallStep() or
     ReturnStep() or
-    deprecated StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
-    deprecated LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
+    deprecated StoreStep(TypeTrackerContent content) {
+      exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+        basicStoreStep(_, _, dfc)
+      )
+    } or
+    deprecated LoadStep(TypeTrackerContent content) {
+      exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+        basicLoadStep(_, _, dfc)
+      )
+    } or
     deprecated LoadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
-      basicLoadStoreStep(_, _, load, store)
+      exists(DataFlowPublic::AttributeContent dfcLoad, DataFlowPublic::AttributeContent dfcStore |
+        dfcLoad.getAttribute() = load and dfcStore.getAttribute() = store
+      |
+        basicLoadStoreStep(_, _, dfcLoad, dfcStore)
+      )
     } or
     deprecated WithContent(ContentFilter filter) { basicWithContentStep(_, _, filter) } or
     deprecated WithoutContent(ContentFilter filter) { basicWithoutContentStep(_, _, filter) } or
@@ -29,13 +42,13 @@ private module Cached {
       // Restrict `content` to those that might eventually match a load.
       // We can't rely on `basicStoreStep` since `startInContent` might be used with
       // a content that has no corresponding store.
-      exists(TypeTrackerContent loadContents |
+      exists(DataFlowPublic::AttributeContent loadContents |
         (
           basicLoadStep(_, _, loadContents)
           or
           basicLoadStoreStep(_, _, loadContents, _)
         ) and
-        compatibleContents(content, loadContents)
+        compatibleContents(content, loadContents.getAttribute())
       )
     }
 
@@ -45,13 +58,13 @@ private module Cached {
       content = noContent()
       or
       // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
-      exists(TypeTrackerContent storeContent |
+      exists(DataFlowPublic::AttributeContent storeContent |
         (
           basicStoreStep(_, _, storeContent)
           or
           basicLoadStoreStep(_, _, _, storeContent)
         ) and
-        compatibleContents(storeContent, content)
+        compatibleContents(storeContent.getAttribute(), content)
       )
     }
 
@@ -198,7 +211,10 @@ private module Cached {
       flowsToStoreStep(nodeFrom, nodeTo, content) and
       summary = StoreStep(content)
       or
-      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+      exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+        basicLoadStep(nodeFrom, nodeTo, dfc)
+      ) and
+      summary = LoadStep(content)
     )
     or
     exists(TypeTrackerContent loadContent, TypeTrackerContent storeContent |
@@ -281,7 +297,12 @@ deprecated private predicate smallstepProj(Node nodeFrom, StepSummary summary) {
 deprecated private predicate flowsToStoreStep(
   Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent content
 ) {
-  exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
+  exists(Node obj |
+    nodeTo.flowsTo(obj) and
+    exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+      basicStoreStep(nodeFrom, obj, dfc)
+    )
+  )
 }
 
 /**
@@ -292,7 +313,12 @@ deprecated private predicate flowsToLoadStoreStep(
   TypeTrackerContent storeContent
 ) {
   exists(Node obj |
-    nodeTo.flowsTo(obj) and basicLoadStoreStep(nodeFrom, obj, loadContent, storeContent)
+    nodeTo.flowsTo(obj) and
+    exists(DataFlowPublic::AttributeContent loadDfc, DataFlowPublic::AttributeContent storeDfc |
+      loadDfc.getAttribute() = loadContent and storeDfc.getAttribute() = storeContent
+    |
+      basicLoadStoreStep(nodeFrom, obj, loadDfc, storeDfc)
+    )
   )
 }
 

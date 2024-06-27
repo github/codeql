@@ -71,17 +71,6 @@ class ExternalApiDataNode extends DataFlow::Node {
   predicate hasQualifiedName(string qualifier, string name) {
     this.getCallable().hasFullyQualifiedName(qualifier, name)
   }
-
-  /**
-   * DEPRECATED: Use hasQualifiedName/2 instead.
-   *
-   * Gets the description of the callable being called.
-   */
-  deprecated string getCallableDescription() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) and result = getQualifiedName(qualifier, name)
-    )
-  }
 }
 
 /**
@@ -139,13 +128,13 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
 
   /** Gets a textual representation of this element. */
   string toString() {
-    exists(Callable m, int index, string indexString |
+    exists(Callable m, int index, string indexString, string qualifier, string name |
       if index = -1 then indexString = "qualifier" else indexString = "param " + index
     |
       this = TExternalApiParameter(m, index) and
+      m.getDeclaringType().hasFullyQualifiedName(qualifier, name) and
       result =
-        m.getDeclaringType().getFullyQualifiedName() + "." + m.toStringWithTypes() + " [" +
-          indexString + "]"
+        getQualifiedName(qualifier, name) + "." + m.toStringWithTypes() + " [" + indexString + "]"
     )
   }
 }

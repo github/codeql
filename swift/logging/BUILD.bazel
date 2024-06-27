@@ -4,10 +4,10 @@ cc_library(
     hdrs = glob(["*.h"]),
     visibility = ["//visibility:public"],
     deps = [
+        "//shared/cpp:extractor_shared",
         "@absl//absl/strings",
         "@binlog",
         "@fmt",
         "@json",
-        "//shared/cpp:extractor_shared",
     ],
 )

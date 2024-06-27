@@ -1,0 +1,42 @@
+{
+  "markdownMessage": "C# analysis with build-mode 'none' completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/buildless/complete",
+    "name": "C# analysis with build-mode 'none' completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "C# was extracted with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/buildless/mode-active",
+    "name": "C# was extracted with build-mode set to 'none'"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "C# was extracted with the deprecated 'buildless' option, use build-mode instead.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/buildless/use-build-mode",
+    "name": "C# was extracted with the deprecated 'buildless' option, use build-mode instead"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

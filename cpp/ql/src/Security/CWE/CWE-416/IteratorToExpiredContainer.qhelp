@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using an iterator owned by a container after the lifetime of the container has expired can lead to undefined behavior.
+This is because the iterator may be invalidated when the container is destroyed, and dereferencing an invalidated iterator is undefined behavior.
+These problems can be hard to spot due to C++'s complex rules for temporary object lifetimes and their extensions.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Never create an iterator to a temporary container when the iterator is expected to be used after the container's lifetime has expired.
+</p>
+
+</recommendation>
+<example>
+<p>
+
+</p>
+
+<p>
+The rules for lifetime extension ensures that the code in <code>lifetime_of_temp_extended</code> is well-defined. This is because the
+lifetime of the temporary container returned by <code>get_vector</code> is extended to the end of the loop. However, prior to C++23,
+the lifetime extension rules do not ensure that the container returned by <code>get_vector</code> is extended in <code>lifetime_of_temp_not_extended</code>.
+This is because the temporary container is not bound to a rvalue reference.
+</p>
+<sample src="IteratorToExpiredContainerExtendedLifetime.cpp" />
+
+<p>
+To fix <code>lifetime_of_temp_not_extended</code>, consider rewriting the code so that the lifetime of the temporary object is extended.
+In <code>fixed_lifetime_of_temp_not_extended</code>, the lifetime of the temporary object has been extended by storing it in an rvalue reference.
+</p>
+<sample src="IteratorToExpiredContainerExtendedLifetime-fixed.cpp" />
+
+</example>
+<references>
+
+<li>CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/MEM30-C.+Do+not+access+freed+memory">MEM30-C. Do not access freed memory</a>.</li>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Using_freed_memory">Using freed memory</a>.
+</li>
+<li>
+<a href="https://github.com/isocpp/CppCoreGuidelines/blob/master/docs/Lifetime.pdf">Lifetime safety: Preventing common dangling</a>
+</li>
+<li>
+<a href="https://en.cppreference.com/w/cpp/container">Containers library</a>
+</li>
+<li>
+<a href="https://en.cppreference.com/w/cpp/language/range-for">Range-based for loop (since C++11)</a>
+</li>
+
+</references>
+</qhelp>

@@ -20,7 +20,11 @@
 
    macOS 12 Monterey
 
-   macOS 13 Ventura","x86-64
+   macOS 13 Ventura
+
+   macOS 14 Sonoma","x86-64
+
+   x86-64, arm64 (Apple Silicon)
 
    x86-64, arm64 (Apple Silicon)
 

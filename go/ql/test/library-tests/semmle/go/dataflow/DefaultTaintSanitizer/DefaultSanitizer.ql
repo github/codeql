@@ -6,7 +6,7 @@
 import go
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof UntrustedFlowSource }
+  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node n) { any(ReturnStmt s).getAnExpr() = n.asExpr() }
 }

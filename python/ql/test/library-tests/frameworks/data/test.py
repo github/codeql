@@ -48,7 +48,7 @@ sub = SubClass()
 class Sub2Class (CommonTokens.Class):
     pass
 
-sub2 = Sub2Class() # TODO: Currently not recognized as an instance of CommonTokens.Class
+sub2 = Sub2Class()
 
 val = inst.foo()
 

@@ -2,14 +2,15 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.ApacheHttp
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.frameworks.JaxWS
 private import semmle.code.java.security.RequestForgery
 
 /** A URL redirection sink. */
-abstract class UrlRedirectSink extends DataFlow::Node { }
+abstract class UrlRedirectSink extends ApiSinkNode { }
 
 /** A URL redirection sanitizer. */
 abstract class UrlRedirectSanitizer extends DataFlow::Node { }

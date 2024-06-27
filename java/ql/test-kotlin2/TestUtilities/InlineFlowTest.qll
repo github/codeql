@@ -10,7 +10,7 @@ private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
 private import internal.InlineExpectationsTestImpl
 
-private module FlowTestImpl implements InputSig<JavaDataFlow> {
+private module FlowTestImpl implements InputSig<Location, JavaDataFlow> {
   predicate defaultSource(DataFlow::Node source) {
     source.asExpr().(MethodCall).getMethod().getName() = ["source", "taint"]
   }
@@ -30,4 +30,4 @@ private module FlowTestImpl implements InputSig<JavaDataFlow> {
   }
 }
 
-import InlineFlowTestMake<JavaDataFlow, JavaTaintTracking, Impl, FlowTestImpl>
+import InlineFlowTestMake<Location, JavaDataFlow, JavaTaintTracking, Impl, FlowTestImpl>

@@ -2406,3 +2406,26 @@ expressions.cs:
 #  520|           -1: [TypeMention] object
 #  520|       3: [ConstructorInitializer] call to constructor ClassC1
 #  520|         0: [ParameterAccess] access to parameter oc2
+#  522|   24: [Class] SuppressNullableWarning
+#  525|     5: [Method] Api
+#  525|       -1: [TypeMention] object
+#  525|       4: [ObjectCreation] object creation of type Object
+#  525|         0: [TypeMention] object
+#  527|     6: [Method] Test
+#  527|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#  527|         0: [Parameter] arg0
+#  527|           -1: [TypeMention] object
+#  528|       4: [BlockStmt] {...}
+#  529|         0: [LocalVariableDeclStmt] ... ...;
+#  529|           0: [LocalVariableDeclAndInitExpr] Object x = ...
+#  529|             -1: [TypeMention] object
+#  529|             0: [LocalVariableAccess] access to local variable x
+#  529|             1: [SuppressNullableWarningExpr] ...!
+#  529|               0: [ParameterAccess] access to parameter arg0
+#  530|         1: [LocalVariableDeclStmt] ... ...;
+#  530|           0: [LocalVariableDeclAndInitExpr] Object y = ...
+#  530|             -1: [TypeMention] object
+#  530|             0: [LocalVariableAccess] access to local variable y
+#  530|             1: [SuppressNullableWarningExpr] ...!
+#  530|               0: [MethodCall] call to method Api

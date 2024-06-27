@@ -381,18 +381,18 @@ expressionTypes
 | NullableRefTypes.cs:211:13:211:13 | access to local variable t | Type? |
 | NullableRefTypes.cs:211:13:211:28 | Type t = ... | Type? |
 | NullableRefTypes.cs:211:17:211:17 | access to parameter o | object? |
-| NullableRefTypes.cs:211:19:211:28 | call to method GetType | Type? |
+| NullableRefTypes.cs:211:17:211:28 | call to method GetType | Type? |
 | NullableRefTypes.cs:212:16:212:16 | access to local variable t | Type? |
 | NullableRefTypes.cs:212:16:212:27 | call to method ToString | string! |
 | NullableRefTypes.cs:217:17:217:17 | access to local variable a | string! |
 | NullableRefTypes.cs:217:17:217:36 | String a = ... | string! |
 | NullableRefTypes.cs:217:21:217:29 | call to method GetSelf | TestNullableFlowStates? |
 | NullableRefTypes.cs:217:21:217:29 | this access | TestNullableFlowStates |
-| NullableRefTypes.cs:217:31:217:36 | access to field Field | string? |
+| NullableRefTypes.cs:217:21:217:36 | access to field Field | string? |
 | NullableRefTypes.cs:218:17:218:17 | access to local variable b | string! |
 | NullableRefTypes.cs:218:17:218:28 | String b = ... | string! |
 | NullableRefTypes.cs:218:21:218:24 | access to parameter list | List<string!>? |
-| NullableRefTypes.cs:218:26:218:28 | access to indexer | string? |
+| NullableRefTypes.cs:218:21:218:28 | access to indexer | string? |
 | NullableRefTypes.cs:218:27:218:27 | 0 | int! |
 | NullableRefTypes.cs:219:16:219:16 | access to local variable c | string! |
 | NullableRefTypes.cs:219:16:219:26 | String c = ... | string! |
@@ -481,13 +481,13 @@ exprFlowState
 | NullableRefTypes.cs:206:9:206:16 | call to method Check | Not null |
 | NullableRefTypes.cs:206:15:206:15 | access to local variable y | Not null |
 | NullableRefTypes.cs:211:17:211:17 | access to parameter o | Maybe null |
-| NullableRefTypes.cs:211:19:211:28 | call to method GetType | Maybe null |
+| NullableRefTypes.cs:211:17:211:28 | call to method GetType | Maybe null |
 | NullableRefTypes.cs:212:16:212:16 | access to local variable t | Maybe null |
 | NullableRefTypes.cs:212:16:212:27 | call to method ToString | Not null |
 | NullableRefTypes.cs:217:21:217:29 | call to method GetSelf | Maybe null |
-| NullableRefTypes.cs:217:31:217:36 | access to field Field | Maybe null |
+| NullableRefTypes.cs:217:21:217:36 | access to field Field | Maybe null |
 | NullableRefTypes.cs:218:21:218:24 | access to parameter list | Maybe null |
-| NullableRefTypes.cs:218:26:218:28 | access to indexer | Maybe null |
+| NullableRefTypes.cs:218:21:218:28 | access to indexer | Maybe null |
 | NullableRefTypes.cs:218:27:218:27 | 0 | Not null |
 | NullableRefTypes.cs:219:20:219:23 | access to parameter list | Maybe null |
 | NullableRefTypes.cs:219:20:219:26 | access to indexer | Not null |

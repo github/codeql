@@ -510,6 +510,9 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
       or
       exists(ReExportDeclaration red | red = this |
         result = red.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
+        or
+        spec instanceof ExportNamespaceSpecifier and
+        result = DataFlow::valueNode(spec)
       )
     )
   }
@@ -522,6 +525,19 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
 
   /** Gets an export specifier of this declaration. */
   ExportSpecifier getASpecifier() { result = this.getSpecifier(_) }
+}
+
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+
+private class ExportNamespaceStep extends PreCallGraphStep {
+  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    exists(ExportNamedDeclaration exprt, ExportNamespaceSpecifier spec |
+      spec = exprt.getASpecifier() and
+      pred =
+        exprt.(ReExportDeclaration).getReExportedES2015Module().getAnExport().getSourceNode(prop) and
+      succ = DataFlow::valueNode(spec)
+    )
+  }
 }
 
 /**

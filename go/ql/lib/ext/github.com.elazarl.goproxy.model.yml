@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["github.com/elazarl/goproxy", "CertStorage", True, "Fetch", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/elazarl/goproxy", "CertStorage", True, "Fetch", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/elazarl/goproxy", "CertStorage", True, "Fetch", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]

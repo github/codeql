@@ -88,31 +88,6 @@ private module ExperimentalPrivateDjango {
             result = baseClassRef().getReturn().getAMember()
           }
 
-          class DjangoResponseSetItemCall extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
-            DjangoResponseSetItemCall() {
-              this = baseClassRef().getReturn().getMember("__setitem__").getACall()
-            }
-
-            override DataFlow::Node getNameArg() { result = this.getArg(0) }
-
-            override DataFlow::Node getValueArg() { result = this.getArg(1) }
-          }
-
-          class DjangoResponseDefinition extends DataFlow::Node, HeaderDeclaration::Range {
-            DataFlow::Node headerInput;
-
-            DjangoResponseDefinition() {
-              headerInput = headerInstance().asSink() and
-              headerInput.asCfgNode() = this.asCfgNode().(DefinitionNode).getValue()
-            }
-
-            override DataFlow::Node getNameArg() {
-              result.asExpr() = this.asExpr().(Subscript).getIndex()
-            }
-
-            override DataFlow::Node getValueArg() { result = headerInput }
-          }
-
           /**
            * Gets a call to `set_cookie()`.
            *
@@ -159,7 +134,7 @@ private module ExperimentalPrivateDjango {
             }
 
             override predicate isSameSite() {
-              exists(StrConst str |
+              exists(StringLiteral str |
                 str.getText() in ["Strict", "Lax"] and
                 DataFlow::exprNode(str)
                     .(DataFlow::LocalSourceNode)

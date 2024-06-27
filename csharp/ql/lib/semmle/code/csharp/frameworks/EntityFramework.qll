@@ -99,7 +99,9 @@ module EntityFramework {
   // see `SummarizedCallableImpl` qldoc
   private class EFSummarizedCallableAdapter extends SummarizedCallable instanceof EFSummarizedCallable
   {
-    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(
+      string input, string output, boolean preservesValue, string model
+    ) {
       none()
     }
 
@@ -174,11 +176,13 @@ module EntityFramework {
     }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
-      preservesValue = false
+      preservesValue = false and
+      model = "RawSqlStringConstructorSummarizedCallable"
     }
   }
 
@@ -188,11 +192,13 @@ module EntityFramework {
     }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
-      preservesValue = false
+      preservesValue = false and
+      model = "RawSqlStringConversionSummarizedCallable"
     }
   }
 
@@ -431,25 +437,20 @@ module EntityFramework {
     ) {
       this = dbSet.getDbContextClass() and
       this.output(output, mapped, dbSet) and
-      result = dbSet.getFullName() + "#" + output.getMadRepresentation()
+      exists(string qualifier, string type, string name |
+        mapped.hasFullyQualifiedName(qualifier, type, name) and
+        result = getQualifiedName(qualifier, type, name)
+      )
     }
+
+    pragma[nomagic]
+    string getSyntheticNameProj(Property mapped) { result = this.getSyntheticName(_, mapped, _) }
   }
 
   private class DbContextClassSetProperty extends Property {
     private DbContextClass c;
 
     DbContextClassSetProperty() { this = c.getADbSetProperty(_) }
-
-    /**
-     * Gets the fully qualified name for this.
-     */
-    string getFullName() {
-      exists(string qualifier, string type, string name |
-        this.hasFullyQualifiedName(qualifier, type, name)
-      |
-        result = getQualifiedName(qualifier, type, name)
-      )
-    }
 
     /**
      * Gets the context class where this is a DbSet property.
@@ -463,12 +464,14 @@ module EntityFramework {
     DbContextClassSetPropertySynthetic() { this = p.getGetter() }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       exists(string name, DbContextClass c |
         preservesValue = true and
         name = c.getSyntheticName(output, _, p) and
-        input = SummaryComponentStack::syntheticGlobal(name)
+        input = SummaryComponentStack::syntheticGlobal(name) and
+        model = "DbContextClassSetPropertySynthetic"
       )
     }
   }
@@ -479,13 +482,15 @@ module EntityFramework {
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
     override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+      string model
     ) {
       exists(string name, Property mapped |
         preservesValue = true and
         c.input(input, mapped) and
-        name = c.getSyntheticName(_, mapped, _) and
-        output = SummaryComponentStack::syntheticGlobal(name)
+        name = c.getSyntheticNameProj(mapped) and
+        output = SummaryComponentStack::syntheticGlobal(name) and
+        model = "DbContextSaveChanges"
       )
     }
   }
@@ -494,7 +499,7 @@ module EntityFramework {
    * Add all possible synthetic global names.
    */
   private class EFSummarizedCallableSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
-    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticName(_, _, _) }
+    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticNameProj(_) }
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack

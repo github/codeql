@@ -2862,14 +2862,14 @@ module PrivateDjango {
         //
         // This also strongly implies that `mw` is in fact a Django middleware setting and
         // not just a variable named `MIDDLEWARE`.
-        list.getAnElt().(StrConst).getText() =
+        list.getAnElt().(StringLiteral).getText() =
           "django.contrib.auth.middleware.AuthenticationMiddleware"
       )
     }
 
     override boolean getVerificationSetting() {
       if
-        list.getAnElt().(StrConst).getText() in [
+        list.getAnElt().(StringLiteral).getText() in [
             "django.middleware.csrf.CsrfViewMiddleware",
             // see https://github.com/mozilla/django-session-csrf
             "session_csrf.CsrfMiddleware"

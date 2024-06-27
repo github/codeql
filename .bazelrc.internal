@@ -1,0 +1,10 @@
+# this file should contain bazel settings required to build things from `semmle-code`
+
+common --registry=file:///%workspace%/ql/misc/bazel/registry
+common --registry=https://bcr.bazel.build
+
+# See bazelbuild/rules_dotnet#413: strict_deps in C# also appliy to 3rd-party deps, and when we pull
+# in (for example) the xunit package, there's no code in this at all, it just depends transitively on
+# its implementation packages without providing any code itself.
+# We either can depend on internal implementation details, or turn of strict deps.
+common --@rules_dotnet//dotnet/settings:strict_deps=false

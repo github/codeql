@@ -1,0 +1,6 @@
+<Project>
+  <!--
+    This .props file contains an intentionally empty <Project> node. It's resetting the top level Directory.Build.props
+    so that the settings are ignored in QL (integration) tests.
+  -->
+</Project>

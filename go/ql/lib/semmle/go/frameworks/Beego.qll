@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/beego/beego` package.
  */
 
@@ -9,7 +9,7 @@ private import semmle.go.security.SafeUrlFlowCustomizations
 
 // Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the [Beego](https://github.com/beego/beego) package.
  */
 module Beego {
@@ -50,7 +50,7 @@ module Beego {
   /**
    * `BeegoInput` sources of untrusted data.
    */
-  private class BeegoInputSource extends UntrustedFlowSource::Range {
+  private class BeegoInputSource extends RemoteFlowSource::Range {
     string methodName;
 
     BeegoInputSource() {
@@ -81,7 +81,7 @@ module Beego {
   /**
    * `beego.Controller` sources of untrusted data.
    */
-  private class BeegoControllerSource extends UntrustedFlowSource::Range {
+  private class BeegoControllerSource extends RemoteFlowSource::Range {
     BeegoControllerSource() {
       exists(string methodName, FunctionOutput output |
         methodName = "ParseForm" and
@@ -105,7 +105,7 @@ module Beego {
   /**
    * `BeegoInputRequestBody` sources of untrusted data.
    */
-  private class BeegoInputRequestBodySource extends UntrustedFlowSource::Range {
+  private class BeegoInputRequestBodySource extends RemoteFlowSource::Range {
     BeegoInputRequestBodySource() {
       exists(DataFlow::FieldReadNode frn | this = frn |
         frn.getField().hasQualifiedName(contextPackagePath(), "BeegoInput", "RequestBody")
@@ -116,7 +116,7 @@ module Beego {
   /**
    * `beego/context.Context` sources of untrusted data.
    */
-  private class BeegoContextSource extends UntrustedFlowSource::Range {
+  private class BeegoContextSource extends RemoteFlowSource::Range {
     BeegoContextSource() {
       exists(Method m | m.hasQualifiedName(contextPackagePath(), "Context", "GetCookie") |
         this = m.getACall().getResult()

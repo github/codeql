@@ -179,7 +179,7 @@ class SinkCallable extends DataFlow::MethodNode {
     exists(string type, string path, string method |
       method = path.regexpCapture("(Method\\[[^\\]]+\\]).*", 1) and
       Util::pathToMethod(this, type, method) and
-      sinkModel(type, path, _)
+      sinkModel(type, path, _, _)
     )
   }
 }
@@ -192,7 +192,7 @@ class SourceCallable extends DataFlow::CallableNode {
     exists(string type, string path, string method |
       method = path.regexpCapture("(Method\\[[^\\]]+\\]).*", 1) and
       Util::pathToMethod(this, type, method) and
-      sourceModel(type, path, _)
+      sourceModel(type, path, _, _)
     )
   }
 }
@@ -204,7 +204,7 @@ class SummaryCallable extends DataFlow::CallableNode {
   SummaryCallable() {
     exists(string type, string path |
       Util::pathToMethod(this, type, path) and
-      summaryModel(type, path, _, _, _)
+      summaryModel(type, path, _, _, _, _)
     )
   }
 }

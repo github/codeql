@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Semmle.Util.Logging;
 
@@ -20,42 +19,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// assembly cache.
         /// </param>
         /// <param name="logger">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> paths, IEnumerable<string> frameworkPaths, ILogger logger)
+        public AssemblyCache(IEnumerable<AssemblyLookupLocation> paths, IEnumerable<string> frameworkPaths, ILogger logger)
         {
             this.logger = logger;
             foreach (var path in paths)
             {
-                if (File.Exists(path))
-                {
-                    dllsToIndex.Add(path);
-                    continue;
-                }
-
-                if (Directory.Exists(path))
-                {
-                    logger.LogInfo($"Finding reference DLLs in {path}...");
-                    AddReferenceDirectory(path);
-                }
-                else
-                {
-                    logger.LogInfo("AssemblyCache: Path not found: " + path);
-                }
+                dllsToIndex.AddRange(path.GetDlls(logger));
             }
             IndexReferences(frameworkPaths);
-        }
-
-        /// <summary>
-        /// Finds all assemblies nested within a directory
-        /// and adds them to its index.
-        /// (Indexing is performed at a later stage by IndexReferences()).
-        /// </summary>
-        /// <param name="dir">The directory to index.</param>
-        private void AddReferenceDirectory(string dir)
-        {
-            foreach (var dll in new DirectoryInfo(dir).EnumerateFiles("*.dll", SearchOption.AllDirectories))
-            {
-                dllsToIndex.Add(dll.FullName);
-            }
         }
 
         /// <summary>

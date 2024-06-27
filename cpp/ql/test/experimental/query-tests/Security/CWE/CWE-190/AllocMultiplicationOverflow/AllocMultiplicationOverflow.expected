@@ -1,4 +1,5 @@
 edges
+| test.cpp:22:17:22:21 | ... * ... | test.cpp:22:17:22:21 | ... * ... | provenance |  |
 | test.cpp:22:17:22:21 | ... * ... | test.cpp:23:33:23:37 | size1 | provenance |  |
 | test.cpp:37:24:37:27 | size | test.cpp:37:46:37:49 | size | provenance |  |
 | test.cpp:45:36:45:40 | ... * ... | test.cpp:37:24:37:27 | size | provenance |  |
@@ -6,6 +7,7 @@ nodes
 | test.cpp:13:33:13:37 | ... * ... | semmle.label | ... * ... |
 | test.cpp:15:31:15:35 | ... * ... | semmle.label | ... * ... |
 | test.cpp:19:34:19:38 | ... * ... | semmle.label | ... * ... |
+| test.cpp:22:17:22:21 | ... * ... | semmle.label | ... * ... |
 | test.cpp:22:17:22:21 | ... * ... | semmle.label | ... * ... |
 | test.cpp:23:33:23:37 | size1 | semmle.label | size1 |
 | test.cpp:30:18:30:32 | ... * ... | semmle.label | ... * ... |

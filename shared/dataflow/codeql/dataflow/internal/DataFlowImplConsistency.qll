@@ -86,16 +86,16 @@ module MakeConsistency<
       this instanceof ParameterNode or
       this instanceof ReturnNode or
       this = getAnOutNode(_, _) or
-      simpleLocalFlowStep(this, _) or
-      simpleLocalFlowStep(_, this) or
+      simpleLocalFlowStep(this, _, _) or
+      simpleLocalFlowStep(_, this, _) or
       jumpStep(this, _) or
       jumpStep(_, this) or
       storeStep(this, _, _) or
       storeStep(_, _, this) or
       readStep(this, _, _) or
       readStep(_, _, this) or
-      defaultAdditionalTaintStep(this, _) or
-      defaultAdditionalTaintStep(_, this)
+      defaultAdditionalTaintStep(this, _, _) or
+      defaultAdditionalTaintStep(_, this, _)
     }
   }
 
@@ -161,7 +161,7 @@ module MakeConsistency<
   }
 
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
-    simpleLocalFlowStep(n1, n2) and
+    simpleLocalFlowStep(n1, n2, _) and
     nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
@@ -187,8 +187,9 @@ module MakeConsistency<
   }
 
   query predicate unreachableNodeCCtx(Node n, DataFlowCall call, string msg) {
-    isUnreachableInCall(n, call) and
-    exists(DataFlowCallable c |
+    exists(DataFlowCallable c, NodeRegion nr |
+      isUnreachableInCall(nr, call) and
+      nr.contains(n) and
       c = nodeGetEnclosingCallable(n) and
       not viableCallable(call) = c
     ) and
@@ -247,7 +248,7 @@ module MakeConsistency<
 
   query predicate postWithInFlow(PostUpdateNode n, string msg) {
     not clearsContent(n, _) and
-    simpleLocalFlowStep(_, n) and
+    simpleLocalFlowStep(_, n, _) and
     not Input::postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
@@ -296,7 +297,7 @@ module MakeConsistency<
   }
 
   query predicate identityLocalStep(Node n, string msg) {
-    simpleLocalFlowStep(n, n) and
+    simpleLocalFlowStep(n, n, _) and
     not Input::identityLocalStepExclude(n) and
     msg = "Node steps to itself"
   }

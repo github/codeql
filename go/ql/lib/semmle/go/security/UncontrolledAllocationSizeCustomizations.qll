@@ -21,7 +21,7 @@ module UncontrolledAllocationSize {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of untrusted data, considered as a taint source for uncontrolled size allocation vulnerabilities. */
-  private class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
   /** The size argument of a memory allocation function. */
   private class AllocationSizeAsSink extends Sink instanceof AllocationSizeOverflow::AllocationSize {

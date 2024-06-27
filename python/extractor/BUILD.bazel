@@ -1,11 +1,10 @@
-load("@semmle_code//:dist.bzl", "pack_zip")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "strip_prefix")
 
 py_binary(
     name = "make-zips-py",
     srcs = [
         "make_zips.py",
         "python_tracer.py",
-        "unparse.py",
     ],
     data = [
         "LICENSE-PSF.md",
@@ -32,7 +31,7 @@ genrule(
     tools = [":make-zips-py"],
 )
 
-pack_zip(
+codeql_pkg_files(
     name = "extractor",
     srcs = [
         "LICENSE-PSF.md",  # because we distribute imp.py
@@ -45,5 +44,6 @@ pack_zip(
         ":python3src",
     ] + glob(["data/**"]),
     prefix = "tools",
-    visibility = ["//visibility:public"],
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//python:__pkg__"],
 )

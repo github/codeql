@@ -1,15 +1,29 @@
 /**
  * Models the `shelljs` library in terms of `FileSystemAccess` and `SystemCommandExecution`.
+ *
+ * https://www.npmjs.com/package/shelljs
  */
 
 import javascript
 
 module ShellJS {
+  private API::Node shellJSMember() {
+    result = API::moduleImport("shelljs")
+    or
+    result =
+      shellJSMember()
+          .getMember([
+              "exec", "cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv",
+              "rm", "cat", "head", "sort", "tail", "uniq", "grep", "sed", "to", "toEnd", "echo"
+            ])
+          .getReturn()
+  }
+
   /**
-   * Gets an import of the `shelljs` or `async-shelljs` module.
+   * Gets a function that can execute a shell command using the `shelljs` or `async-shelljs` modules.
    */
   DataFlow::SourceNode shelljs() {
-    result = DataFlow::moduleImport("shelljs") or
+    result = shellJSMember().asSource() or
     result = DataFlow::moduleImport("async-shelljs")
   }
 
@@ -39,7 +53,10 @@ module ShellJS {
 
     /** The `shelljs.exec` library modeled as a `shelljs` member. */
     private class ShellJsExec extends Range {
-      ShellJsExec() { this = DataFlow::moduleImport("shelljs.exec") }
+      ShellJsExec() {
+        this = DataFlow::moduleImport("shelljs.exec") or
+        this = shellJSMember().getMember("exec").asSource()
+      }
 
       override string getName() { result = "exec" }
     }

@@ -28,22 +28,35 @@ abstract class SensitiveNode extends DataFlow::Node {
 }
 
 /** A method call that might produce sensitive data. */
-class SensitiveCall extends SensitiveNode instanceof DataFlow::CallNode {
+abstract class SensitiveCall extends SensitiveNode { }
+
+private class SensitiveDataMethodNameCall extends SensitiveCall instanceof DataFlow::CallNode {
   SensitiveDataClassification classification;
 
-  SensitiveCall() {
+  SensitiveDataMethodNameCall() {
     classification = this.getMethodName().(SensitiveDataMethodName).getClassification()
-    or
-    // This is particularly to pick up methods with an argument like "password", which
-    // may indicate a lookup.
-    exists(string s | super.getArgument(_).asExpr().getConstantValue().isStringlikeValue(s) |
-      nameIndicatesSensitiveData(s, classification)
-    )
   }
 
   override string describe() { result = "a call to " + super.getMethodName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
+}
+
+private class SensitiveArgumentCall extends SensitiveCall instanceof DataFlow::CallNode {
+  string argName;
+
+  SensitiveArgumentCall() {
+    // This is particularly to pick up methods with an argument like "password", which may indicate
+    // a lookup.
+    super.getArgument(_).asExpr().getConstantValue().isStringlikeValue(argName) and
+    nameIndicatesSensitiveData(argName)
+  }
+
+  override string describe() { result = "a call to " + super.getMethodName() }
+
+  override SensitiveDataClassification getClassification() {
+    nameIndicatesSensitiveData(argName, result)
+  }
 }
 
 /** An access to a variable or hash value that might contain sensitive data. */
@@ -93,7 +106,7 @@ private string unprefixedVariableName(string name) { result = name.regexpReplace
 
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
-  SensitiveDataClassification classification;
+  string unprefixedName;
 
   BasicSensitiveWrite() {
     exists(string name |
@@ -111,23 +124,29 @@ private class BasicSensitiveWrite extends SensitiveWrite {
        */
 
       writesProperty(this, name) and
-      nameIndicatesSensitiveData(unprefixedVariableName(name), classification)
+      unprefixedName = unprefixedVariableName(name) and
+      nameIndicatesSensitiveData(unprefixedName)
     )
   }
 
   /** Gets a classification of the kind of sensitive data the write might handle. */
-  SensitiveDataClassification getClassification() { result = classification }
+  SensitiveDataClassification getClassification() {
+    nameIndicatesSensitiveData(unprefixedName, result)
+  }
 }
 
 /** An access to a variable or hash value that might contain sensitive data. */
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
-  SensitiveDataClassification classification;
+  string unprefixedName;
 
   BasicSensitiveVariableAccess() {
-    nameIndicatesSensitiveData(unprefixedVariableName(name), classification)
+    unprefixedName = unprefixedVariableName(name) and
+    nameIndicatesSensitiveData(unprefixedName)
   }
 
-  override SensitiveDataClassification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() {
+    nameIndicatesSensitiveData(unprefixedName, result)
+  }
 }
 
 /** A method name that suggests it may be sensitive. */
@@ -143,11 +162,11 @@ abstract class SensitiveDataMethodName extends SensitiveMethodName {
 
 /** A method name that might return sensitive credential data. */
 class CredentialsMethodName extends SensitiveDataMethodName {
-  SensitiveDataClassification classification;
+  CredentialsMethodName() { nameIndicatesSensitiveData(this) }
 
-  CredentialsMethodName() { nameIndicatesSensitiveData(this, classification) }
-
-  override SensitiveDataClassification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() {
+    nameIndicatesSensitiveData(this, result)
+  }
 }
 
 /**

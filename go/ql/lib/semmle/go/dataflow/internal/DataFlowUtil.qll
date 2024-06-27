@@ -104,7 +104,7 @@ predicate isReturnedWithError(Node node) {
  * (intra-procedural) step.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
+  simpleLocalFlowStep(nodeFrom, nodeTo, _)
   or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
@@ -118,14 +118,16 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 cached
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  basicLocalFlowStep(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  basicLocalFlowStep(nodeFrom, nodeTo) and
+  model = ""
   or
   // step through function model
-  any(FunctionModel m).flowStep(nodeFrom, nodeTo)
+  any(FunctionModel m).flowStep(nodeFrom, nodeTo) and
+  model = "FunctionModel"
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 /**

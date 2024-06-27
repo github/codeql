@@ -20,9 +20,14 @@
 <recommendation>
 
 	<p>
-		If possible, provide the dynamic arguments to the shell as an array 
+		If possible, avoid concatenating shell strings
 		to APIs such as <code>system(..)</code> to avoid interpretation by the shell.
 	</p>
+
+    <p>
+        Instead, provide the arguments to the shell command as separate arguments to the
+        API, such as <code>system("echo", arg1, arg2)</code>.
+    </p>
 
 	<p>
 		Alternatively, if the shell command must be constructed

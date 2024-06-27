@@ -126,12 +126,12 @@ private predicate relatedArgSpec(Callable c, string spec) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
-    summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _) or
-    sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _) or
-    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _)
+    summaryModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _, _) or
+    summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _, _) or
+    sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
+    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
   |
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c = interpretElement(namespace, type, subtypes, name, signature, ext, _)
   )
 }
 
@@ -192,13 +192,17 @@ module SourceSinkInterpretationInput implements
 
   class Element = J::Element;
 
-  predicate sourceElement(Element e, string output, string kind, Public::Provenance provenance) {
+  predicate sourceElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSource, string originalOutput
+      SourceOrSinkElement baseSource, string originalOutput, QlBuiltins::ExtensionId madId
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance) and
-      baseSource = interpretElement(namespace, type, subtypes, name, signature, ext) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
+        madId) and
+      model = "MaD:" + madId.toString() and
+      baseSource = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSource and output = originalOutput
         or
@@ -207,13 +211,17 @@ module SourceSinkInterpretationInput implements
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind, Public::Provenance provenance) {
+  predicate sinkElement(
+    Element e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSink, string originalInput
+      SourceOrSinkElement baseSink, string originalInput, QlBuiltins::ExtensionId madId
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance) and
-      baseSink = interpretElement(namespace, type, subtypes, name, signature, ext) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance,
+        madId) and
+      model = "MaD:" + madId.toString() and
+      baseSink = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSink and originalInput = input
         or
@@ -301,15 +309,18 @@ module Private {
      * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
      */
     predicate summaryElement(
-      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance
+      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance,
+      string model, boolean isExact
     ) {
       exists(
         string namespace, string type, boolean subtypes, string name, string signature, string ext,
-        string originalInput, string originalOutput, Callable baseCallable
+        string originalInput, string originalOutput, Callable baseCallable,
+        QlBuiltins::ExtensionId madId
       |
         summaryModel(namespace, type, subtypes, name, signature, ext, originalInput, originalOutput,
-          kind, provenance) and
-        baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext) and
+          kind, provenance, madId) and
+        model = "MaD:" + madId.toString() and
+        baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext, isExact) and
         (
           c.asCallable() = baseCallable and input = originalInput and output = originalOutput
           or
@@ -325,10 +336,12 @@ module Private {
      * Holds if a neutral model exists for `c` of kind `kind`
      * and with provenance `provenance`.
      */
-    predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
+    predicate neutralElement(
+      Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
+    ) {
       exists(string namespace, string type, string name, string signature |
         neutralModel(namespace, type, name, signature, kind, provenance) and
-        c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
+        c.asCallable() = interpretElement(namespace, type, false, name, signature, "", isExact)
       )
     }
   }

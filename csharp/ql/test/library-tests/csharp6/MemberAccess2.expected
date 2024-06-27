@@ -1,1 +1,0 @@
-| csharp6.cs:30:35:30:44 | call to method ToUpper | csharp6.cs:30:31:30:33 | access to local variable foo | Conditional |

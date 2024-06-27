@@ -518,4 +518,16 @@ namespace Expressions
     class ClassC1(object oc1) { }
 
     class ClassC2(object oc2) : ClassC1(oc2) { }
+
+    class SuppressNullableWarning
+    {
+
+        public object? Api() => new object();
+
+        public void Test(object? arg0)
+        {
+            var x = arg0!;
+            var y = Api()!;
+        }
+    }
 }

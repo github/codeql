@@ -6,8 +6,11 @@ edges
 | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | LDAPInjection.cs:28:48:28:70 | ... + ... | provenance |  |
 | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | LDAPInjection.cs:30:20:30:42 | ... + ... | provenance |  |
 | LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | provenance |  |
-| LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:12:27:12:61 | access to indexer : String | provenance |  |
+| LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:12:27:12:61 | access to indexer : String | provenance | MaD:11546 |
 | LDAPInjection.cs:12:27:12:61 | access to indexer : String | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | provenance |  |
+| LDAPInjection.cs:36:27:36:40 | access to local variable customerReader : SqlDataReader | LDAPInjection.cs:41:80:41:93 | access to local variable customerReader : SqlDataReader | provenance |  |
+| LDAPInjection.cs:36:44:36:74 | call to method ExecuteReader : SqlDataReader | LDAPInjection.cs:36:27:36:40 | access to local variable customerReader : SqlDataReader | provenance |  |
+| LDAPInjection.cs:41:80:41:93 | access to local variable customerReader : SqlDataReader | LDAPInjection.cs:41:80:41:106 | call to method GetString : String | provenance | MaD:1007 |
 | LDAPInjection.cs:41:80:41:106 | call to method GetString : String | LDAPInjection.cs:41:63:41:106 | ... + ... | provenance |  |
 nodes
 | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | semmle.label | access to local variable userName : String |
@@ -19,7 +22,10 @@ nodes
 | LDAPInjection.cs:25:53:25:77 | ... + ... | semmle.label | ... + ... |
 | LDAPInjection.cs:28:48:28:70 | ... + ... | semmle.label | ... + ... |
 | LDAPInjection.cs:30:20:30:42 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:36:27:36:40 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
+| LDAPInjection.cs:36:44:36:74 | call to method ExecuteReader : SqlDataReader | semmle.label | call to method ExecuteReader : SqlDataReader |
 | LDAPInjection.cs:41:63:41:106 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:41:80:41:93 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
 | LDAPInjection.cs:41:80:41:106 | call to method GetString : String | semmle.label | call to method GetString : String |
 subpaths
 #select
@@ -29,4 +35,4 @@ subpaths
 | LDAPInjection.cs:25:53:25:77 | ... + ... | LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:25:53:25:77 | ... + ... | This LDAP query depends on a $@. | LDAPInjection.cs:12:27:12:49 | access to property QueryString | user-provided value |
 | LDAPInjection.cs:28:48:28:70 | ... + ... | LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:28:48:28:70 | ... + ... | This LDAP query depends on a $@. | LDAPInjection.cs:12:27:12:49 | access to property QueryString | user-provided value |
 | LDAPInjection.cs:30:20:30:42 | ... + ... | LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:30:20:30:42 | ... + ... | This LDAP query depends on a $@. | LDAPInjection.cs:12:27:12:49 | access to property QueryString | user-provided value |
-| LDAPInjection.cs:41:63:41:106 | ... + ... | LDAPInjection.cs:41:80:41:106 | call to method GetString : String | LDAPInjection.cs:41:63:41:106 | ... + ... | This LDAP query depends on a $@. | LDAPInjection.cs:41:80:41:106 | call to method GetString | user-provided value |
+| LDAPInjection.cs:41:63:41:106 | ... + ... | LDAPInjection.cs:36:44:36:74 | call to method ExecuteReader : SqlDataReader | LDAPInjection.cs:41:63:41:106 | ... + ... | This LDAP query depends on a $@. | LDAPInjection.cs:36:44:36:74 | call to method ExecuteReader | user-provided value |

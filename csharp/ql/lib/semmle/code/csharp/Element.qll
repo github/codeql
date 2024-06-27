@@ -102,25 +102,8 @@ class NamedElement extends Element, @named_element {
   final predicate hasName(string name) { name = this.getName() }
 
   /**
-   * Gets the fully qualified name of this element, for example the
-   * fully qualified name of `M` on line 3 is `N.C.M` in
+   * DEPRECATED: Use `hasFullyQualifiedName` instead.
    *
-   * ```csharp
-   * namespace N {
-   *   class C {
-   *     void M(int i, string s) { }
-   *   }
-   * }
-   * ```
-   */
-  cached
-  deprecated final string getQualifiedName() {
-    exists(string qualifier, string name | this.hasQualifiedName(qualifier, name) |
-      if qualifier = "" then result = name else result = qualifier + "." + name
-    )
-  }
-
-  /**
    * Gets the fully qualified name of this element, for example the
    * fully qualified name of `M` on line 3 is `N.C.M` in
    *
@@ -135,21 +118,39 @@ class NamedElement extends Element, @named_element {
    * Unbound generic types, such as `IList<T>`, are represented as
    * ``System.Collections.Generic.IList`1``.
    */
-  cached
-  final string getFullyQualifiedName() {
+  deprecated final string getFullyQualifiedName() {
     exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
       if qualifier = "" then result = name else result = qualifier + "." + name
     )
   }
 
   /**
-   * DEPRECATED: Use `hasFullyQualifiedName` instead.
+   * INTERNAL: Do not use.
    *
-   * Holds if this element has the qualified name `qualifier`.`name`.
+   * This is intended for DEBUG ONLY.
+   * Constructing the fully qualified name for all elements in a large codebase
+   * puts severe stress on the string pool.
+   *
+   * Gets the fully qualified name of this element, for example the
+   * fully qualified name of `M` on line 3 is `N.C.M` in
+   *
+   * ```csharp
+   * namespace N {
+   *   class C {
+   *     void M(int i, string s) { }
+   *   }
+   * }
+   * ```
+   *
+   * Unbound generic types, such as `IList<T>`, are represented as
+   * ``System.Collections.Generic.IList`1``.
    */
-  cached
-  deprecated predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "" and name = this.getName()
+  bindingset[this]
+  pragma[inline_late]
+  final string getFullyQualifiedNameDebug() {
+    exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
+      if qualifier = "" then result = name else result = qualifier + "." + name
+    )
   }
 
   /** Holds if this element has the fully qualified name `qualifier`.`name`. */

@@ -77,7 +77,7 @@ class Endpoint extends Callable {
   predicate isNeutral() {
     exists(string namespace, string type, string name, string signature |
       neutralModel(namespace, type, name, signature, _, _) and
-      this = interpretElement(namespace, type, false, name, signature, "")
+      this = interpretElement(namespace, type, false, name, signature, "", _)
     )
   }
 

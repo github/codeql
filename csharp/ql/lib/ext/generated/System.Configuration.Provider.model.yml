@@ -10,7 +10,6 @@ extensions:
       - ["System.Configuration.Provider", "ProviderBase", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", False, "CopyTo", "(System.Configuration.Provider.ProviderBase[],System.Int32)", "", "Argument[this]", "Argument[0].Element", "taint", "df-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", False, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Configuration.Provider", "ProviderCollection", False, "get_SyncRoot", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

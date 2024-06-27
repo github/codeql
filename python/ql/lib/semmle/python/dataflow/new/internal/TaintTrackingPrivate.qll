@@ -24,10 +24,10 @@ private module Cached {
    * global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    localAdditionalTaintStep(nodeFrom, nodeTo)
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    localAdditionalTaintStep(nodeFrom, nodeTo, model)
     or
-    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+    any(AdditionalTaintStep a).hasStep(nodeFrom, nodeTo, model)
   }
 
   /**
@@ -36,30 +36,34 @@ private module Cached {
    * different objects.
    */
   cached
-  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    concatStep(nodeFrom, nodeTo)
-    or
-    subscriptStep(nodeFrom, nodeTo)
-    or
-    stringManipulation(nodeFrom, nodeTo)
-    or
-    containerStep(nodeFrom, nodeTo)
-    or
-    copyStep(nodeFrom, nodeTo)
-    or
-    DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
-    or
-    DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
-    or
-    DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
-    or
-    awaitStep(nodeFrom, nodeTo)
-    or
-    asyncWithStep(nodeFrom, nodeTo)
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      concatStep(nodeFrom, nodeTo)
+      or
+      subscriptStep(nodeFrom, nodeTo)
+      or
+      stringManipulation(nodeFrom, nodeTo)
+      or
+      containerStep(nodeFrom, nodeTo)
+      or
+      copyStep(nodeFrom, nodeTo)
+      or
+      DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
+      or
+      DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
+      or
+      DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
+      or
+      awaitStep(nodeFrom, nodeTo)
+      or
+      asyncWithStep(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
           .(DataFlowPrivate::FlowSummaryNode)
-          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
+          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false,
+      model)
   }
 }
 

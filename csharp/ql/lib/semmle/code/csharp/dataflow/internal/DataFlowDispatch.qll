@@ -10,8 +10,8 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
 /**
- * Gets a source declaration of callable `c` that has a body or has
- * a flow summary.
+ * Gets a source declaration of callable `c` that has a body and is
+ * defined in source.
  */
 Callable getCallableForDataFlow(Callable c) {
   result = c.getUnboundDeclaration() and
@@ -24,19 +24,6 @@ newtype TReturnKind =
   TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
   TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() }
 
-/**
- * A summarized callable where the summary should be used for dataflow analysis.
- */
-class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
-  DataFlowSummarizedCallable() {
-    not this.hasBody()
-    or
-    this.hasBody() and not this.applyGeneratedModel()
-  }
-
-  string toString() { result = super.toString() }
-}
-
 cached
 private module Cached {
   /**
@@ -47,7 +34,7 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TCallable(Callable c) { c.isUnboundDeclaration() } or
-    TSummarizedCallable(DataFlowSummarizedCallable sc) or
+    TSummarizedCallable(FlowSummary::SummarizedCallable sc) or
     TFieldOrPropertyCallable(FieldOrProperty f) or
     TCapturedVariableCallable(LocalScopeVariable v) { v.isCaptured() }
 
@@ -204,6 +191,16 @@ class DataFlowCallable extends TDataFlowCallable {
     or
     result = this.asCapturedVariable().getLocation()
   }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
+  }
 }
 
 /** A call relevant for data flow. */
@@ -247,6 +244,16 @@ abstract class DataFlowCall extends TDataFlowCall {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCall c, int startline, int startcolumn |
+        c.hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        c order by startline, startcolumn
+      )
+  }
 }
 
 /** A non-delegate C# call relevant for data flow. */
@@ -262,13 +269,19 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   override DataFlowCallable getARuntimeTarget() {
     result.asCallable() = getCallableForDataFlow(dc.getADynamicTarget())
     or
-    exists(Callable c, boolean static |
-      result.asSummarizedCallable() = c and
-      c = this.getATarget(static)
+    // Only use summarized callables with generated summaries in case
+    // we are not able to dispatch to a source declaration.
+    exists(FlowSummary::SummarizedCallable sc, boolean static |
+      result.asSummarizedCallable() = sc and
+      sc = this.getATarget(static) and
+      not (
+        sc.applyGeneratedModel() and
+        dc.getADynamicTarget().getUnboundDeclaration().getFile().fromSource()
+      )
     |
       static = false
       or
-      static = true and not c instanceof RuntimeCallable
+      static = true and not sc instanceof RuntimeCallable
     )
   }
 

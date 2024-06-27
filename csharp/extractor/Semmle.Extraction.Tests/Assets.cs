@@ -14,29 +14,28 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsJson1;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(6, dependencies.Paths.Count());
-            Assert.Equal(5, dependencies.Packages.Count());
+            Assert.Equal(6, assets.Dependencies.Paths.Count);
+            Assert.Equal(5, assets.Dependencies.Packages.Count);
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
             // Used references
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll", normalizedPaths);
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core2.dll", normalizedPaths);
             Assert.Contains("json.net/1.0.33/lib/netstandard2.0/Json.Net.dll", normalizedPaths);
             Assert.Contains("microsoft.aspnetcore.cryptography.internal/6.0.8/lib/net6.0/Microsoft.AspNetCore.Cryptography.Internal.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("castle.core", dependencies.Packages);
-            Assert.Contains("json.net", dependencies.Packages);
-            Assert.Contains("microsoft.aspnetcore.cryptography.internal", dependencies.Packages);
+            Assert.Contains("castle.core", assets.Dependencies.Packages);
+            Assert.Contains("json.net", assets.Dependencies.Packages);
+            Assert.Contains("microsoft.aspnetcore.cryptography.internal", assets.Dependencies.Packages);
             // Used frameworks
-            Assert.Contains("microsoft.netcore.app.ref", dependencies.Packages);
-            Assert.Contains("microsoft.aspnetcore.app.ref", dependencies.Packages);
+            Assert.Contains("microsoft.netcore.app.ref", assets.Dependencies.Packages);
+            Assert.Contains("microsoft.aspnetcore.app.ref", assets.Dependencies.Packages);
         }
 
         [Fact]
@@ -45,14 +44,13 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = "garbage data";
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.False(success);
-            Assert.Empty(dependencies.Paths);
+            Assert.Empty(assets.Dependencies.Paths);
         }
 
         [Fact]
@@ -61,28 +59,27 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsNet70;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(4, dependencies.Paths.Count);
-            Assert.Equal(4, dependencies.Packages.Count);
+            Assert.Equal(4, assets.Dependencies.Paths.Count);
+            Assert.Equal(4, assets.Dependencies.Packages.Count);
 
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
             // Used paths
             Assert.Contains("microsoft.netcore.app.ref", normalizedPaths);
             Assert.Contains("microsoft.aspnetcore.app.ref", normalizedPaths);
             Assert.Contains("newtonsoft.json/12.0.1/lib/netstandard2.0/Newtonsoft.Json.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json.bson/1.0.2/lib/netstandard2.0/Newtonsoft.Json.Bson.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("microsoft.netcore.app.ref", dependencies.Packages);
-            Assert.Contains("microsoft.aspnetcore.app.ref", dependencies.Packages);
-            Assert.Contains("newtonsoft.json", dependencies.Packages);
-            Assert.Contains("newtonsoft.json.bson", dependencies.Packages);
+            Assert.Contains("microsoft.netcore.app.ref", assets.Dependencies.Packages);
+            Assert.Contains("microsoft.aspnetcore.app.ref", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json.bson", assets.Dependencies.Packages);
 
         }
 
@@ -92,25 +89,24 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsNet48;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(3, dependencies.Paths.Count);
-            Assert.Equal(3, dependencies.Packages.Count);
+            Assert.Equal(3, assets.Dependencies.Paths.Count);
+            Assert.Equal(3, assets.Dependencies.Packages.Count);
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
             // Used references
             Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.2", normalizedPaths);
             Assert.Contains("newtonsoft.json/12.0.1/lib/net45/Newtonsoft.Json.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json.bson/1.0.2/lib/net45/Newtonsoft.Json.Bson.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.Packages);
-            Assert.Contains("newtonsoft.json", dependencies.Packages);
-            Assert.Contains("newtonsoft.json.bson", dependencies.Packages);
+            Assert.Contains("microsoft.netframework.referenceassemblies.net48", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json.bson", assets.Dependencies.Packages);
         }
 
         [Fact]
@@ -119,26 +115,25 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsNetstandard21;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(3, dependencies.Paths.Count);
-            Assert.Equal(3, dependencies.Packages.Count);
+            Assert.Equal(3, assets.Dependencies.Paths.Count);
+            Assert.Equal(3, assets.Dependencies.Packages.Count);
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
 
             // Used references
             Assert.Contains("netstandard.library.ref", normalizedPaths);
             Assert.Contains("newtonsoft.json/12.0.1/lib/netstandard2.0/Newtonsoft.Json.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json.bson/1.0.2/lib/netstandard2.0/Newtonsoft.Json.Bson.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("netstandard.library.ref", dependencies.Packages);
-            Assert.Contains("newtonsoft.json", dependencies.Packages);
-            Assert.Contains("newtonsoft.json.bson", dependencies.Packages);
+            Assert.Contains("netstandard.library.ref", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json.bson", assets.Dependencies.Packages);
         }
 
         [Fact]
@@ -147,17 +142,16 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsNetstandard16;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(5, dependencies.Paths.Count);
-            Assert.Equal(5, dependencies.Packages.Count);
+            Assert.Equal(5, assets.Dependencies.Paths.Count);
+            Assert.Equal(5, assets.Dependencies.Packages.Count);
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
 
             // Used references
             Assert.Contains("netstandard.library/1.6.1", normalizedPaths);
@@ -166,11 +160,11 @@ namespace Semmle.Extraction.Tests
             Assert.Contains("newtonsoft.json/12.0.1/lib/netstandard1.3/Newtonsoft.Json.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json.bson/1.0.2/lib/netstandard1.3/Newtonsoft.Json.Bson.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("netstandard.library", dependencies.Packages);
-            Assert.Contains("microsoft.csharp", dependencies.Packages);
-            Assert.Contains("microsoft.win32.primitives", dependencies.Packages);
-            Assert.Contains("newtonsoft.json", dependencies.Packages);
-            Assert.Contains("newtonsoft.json.bson", dependencies.Packages);
+            Assert.Contains("netstandard.library", assets.Dependencies.Packages);
+            Assert.Contains("microsoft.csharp", assets.Dependencies.Packages);
+            Assert.Contains("microsoft.win32.primitives", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json.bson", assets.Dependencies.Packages);
         }
 
         [Fact]
@@ -179,26 +173,25 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsNetcoreapp20;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(144, dependencies.Paths.Count);
-            Assert.Equal(3, dependencies.Packages.Count);
+            Assert.Equal(144, assets.Dependencies.Paths.Count);
+            Assert.Equal(3, assets.Dependencies.Packages.Count);
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
 
             // Used references (only some of them)
             Assert.Contains("microsoft.netcore.app/2.0.0/ref/netcoreapp2.0/Microsoft.CSharp.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json/12.0.1/lib/netstandard2.0/Newtonsoft.Json.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json.bson/1.0.2/lib/netstandard2.0/Newtonsoft.Json.Bson.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("microsoft.netcore.app", dependencies.Packages);
-            Assert.Contains("newtonsoft.json", dependencies.Packages);
-            Assert.Contains("newtonsoft.json.bson", dependencies.Packages);
+            Assert.Contains("microsoft.netcore.app", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json.bson", assets.Dependencies.Packages);
         }
 
         [Fact]
@@ -207,15 +200,14 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new LoggerStub());
             var json = assetsNetcoreapp31;
-            var dependencies = new DependencyContainer();
 
             // Execute
-            var success = assets.TryParse(json, dependencies);
+            var success = assets.TryParse(json);
 
             // Verify
             Assert.True(success);
 
-            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = assets.Dependencies.Paths.Select(FixExpectedPathOnWindows);
 
             // Used paths
             Assert.Contains("microsoft.netcore.app.ref", normalizedPaths);
@@ -223,10 +215,10 @@ namespace Semmle.Extraction.Tests
             Assert.Contains("newtonsoft.json/12.0.1/lib/netstandard2.0/Newtonsoft.Json.dll", normalizedPaths);
             Assert.Contains("newtonsoft.json.bson/1.0.2/lib/netstandard2.0/Newtonsoft.Json.Bson.dll", normalizedPaths);
             // Used packages
-            Assert.Contains("microsoft.netcore.app.ref", dependencies.Packages);
-            Assert.Contains("microsoft.aspnetcore.app.ref", dependencies.Packages);
-            Assert.Contains("newtonsoft.json", dependencies.Packages);
-            Assert.Contains("newtonsoft.json.bson", dependencies.Packages);
+            Assert.Contains("microsoft.netcore.app.ref", assets.Dependencies.Packages);
+            Assert.Contains("microsoft.aspnetcore.app.ref", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json", assets.Dependencies.Packages);
+            Assert.Contains("newtonsoft.json.bson", assets.Dependencies.Packages);
         }
 
         /// <summary>

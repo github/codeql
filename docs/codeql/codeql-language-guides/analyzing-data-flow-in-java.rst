@@ -3,7 +3,7 @@
 Analyzing data flow in Java and Kotlin
 ======================================
 
-You can use CodeQL to track the flow of data through a Java/Kotlin program to its use. 
+You can use CodeQL to track the flow of data through a Java/Kotlin program to its use.
 
 .. include:: ../reusables/kotlin-beta-note.rst
 
@@ -171,7 +171,7 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 .. pull-quote:: Note
 
    .. include:: ../reusables/path-problem.rst
-   
+
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -362,7 +362,7 @@ Exercise 4
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/java-further-reading.rst

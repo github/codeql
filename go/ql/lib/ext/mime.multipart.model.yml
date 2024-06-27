@@ -4,10 +4,10 @@ extensions:
       extensible: summaryModel
     data:
       - ["mime/multipart", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["mime/multipart", "FileHeader", True, "Open", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["mime/multipart", "Part", True, "FileName", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["mime/multipart", "Part", True, "FormName", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["mime/multipart", "Reader", True, "NextPart", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["mime/multipart", "Reader", True, "NextRawPart", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["mime/multipart", "Reader", True, "ReadForm", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["mime/multipart", "Writer", True, "WriteField", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
+      - ["mime/multipart", "FileHeader", True, "Open", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["mime/multipart", "Part", True, "FileName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["mime/multipart", "Part", True, "FormName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["mime/multipart", "Reader", True, "NextPart", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["mime/multipart", "Reader", True, "NextRawPart", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["mime/multipart", "Reader", True, "ReadForm", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["mime/multipart", "Writer", True, "WriteField", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]

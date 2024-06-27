@@ -1,9 +1,12 @@
 edges
-| test.cpp:45:18:45:23 | buffer | test.cpp:45:7:45:10 | *func | provenance |  |
-| test.cpp:74:24:74:30 | medical | test.cpp:78:24:78:27 | temp | provenance |  |
+| test.cpp:45:18:45:23 | buffer | test.cpp:47:10:47:15 | buffer | provenance |  |
+| test.cpp:47:10:47:15 | buffer | test.cpp:45:7:45:10 | *func | provenance |  |
+| test.cpp:74:24:74:30 | medical | test.cpp:77:16:77:22 | medical | provenance |  |
 | test.cpp:74:24:74:30 | medical | test.cpp:81:22:81:28 | medical | provenance |  |
+| test.cpp:77:16:77:22 | medical | test.cpp:77:16:77:22 | medical | provenance |  |
 | test.cpp:77:16:77:22 | medical | test.cpp:78:24:78:27 | temp | provenance |  |
 | test.cpp:77:16:77:22 | medical | test.cpp:81:22:81:28 | medical | provenance |  |
+| test.cpp:81:17:81:20 | call to func | test.cpp:81:17:81:20 | call to func | provenance |  |
 | test.cpp:81:17:81:20 | call to func | test.cpp:82:24:82:28 | buff5 | provenance |  |
 | test.cpp:81:22:81:28 | medical | test.cpp:45:18:45:23 | buffer | provenance |  |
 | test.cpp:81:22:81:28 | medical | test.cpp:81:17:81:20 | call to func | provenance |  |
@@ -12,11 +15,14 @@ edges
 nodes
 | test.cpp:45:7:45:10 | *func | semmle.label | *func |
 | test.cpp:45:18:45:23 | buffer | semmle.label | buffer |
+| test.cpp:47:10:47:15 | buffer | semmle.label | buffer |
 | test.cpp:57:9:57:18 | theZipcode | semmle.label | theZipcode |
 | test.cpp:74:24:74:30 | medical | semmle.label | medical |
 | test.cpp:74:24:74:30 | medical | semmle.label | medical |
 | test.cpp:77:16:77:22 | medical | semmle.label | medical |
+| test.cpp:77:16:77:22 | medical | semmle.label | medical |
 | test.cpp:78:24:78:27 | temp | semmle.label | temp |
+| test.cpp:81:17:81:20 | call to func | semmle.label | call to func |
 | test.cpp:81:17:81:20 | call to func | semmle.label | call to func |
 | test.cpp:81:22:81:28 | medical | semmle.label | medical |
 | test.cpp:82:24:82:28 | buff5 | semmle.label | buff5 |

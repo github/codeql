@@ -21,7 +21,7 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
    * Holds if the additional step from `src` to `sink` should be included in all
    * global taint flow configurations.
    */
-  predicate defaultAdditionalTaintStep(Lang::Node src, Lang::Node sink);
+  predicate defaultAdditionalTaintStep(Lang::Node src, Lang::Node sink, string model);
 
   /**
    * Holds if taint flow configurations should allow implicit reads of `c` at sinks
@@ -51,9 +51,9 @@ module TaintFlowMake<
       Config::isBarrier(node) or defaultTaintSanitizer(node)
     }
 
-    predicate isAdditionalFlowStep(DataFlowLang::Node node1, DataFlowLang::Node node2) {
-      Config::isAdditionalFlowStep(node1, node2) or
-      defaultAdditionalTaintStep(node1, node2)
+    predicate isAdditionalFlowStep(DataFlowLang::Node node1, DataFlowLang::Node node2, string model) {
+      Config::isAdditionalFlowStep(node1, node2, model) or
+      defaultAdditionalTaintStep(node1, node2, model)
     }
 
     predicate allowImplicitRead(DataFlowLang::Node node, DataFlowLang::ContentSet c) {
@@ -62,7 +62,7 @@ module TaintFlowMake<
       (
         Config::isSink(node) or
         Config::isSink(node, _) or
-        Config::isAdditionalFlowStep(node, _) or
+        Config::isAdditionalFlowStep(node, _, _) or
         Config::isAdditionalFlowStep(node, _, _, _)
       ) and
       defaultImplicitTaintRead(node, c)
@@ -76,6 +76,12 @@ module TaintFlowMake<
     private module Config0 implements DataFlowInternal::FullStateConfigSig {
       import DataFlowInternal::DefaultState<Config>
       import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -96,6 +102,12 @@ module TaintFlowMake<
   module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
     private module Config0 implements DataFlowInternal::FullStateConfigSig {
       import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {

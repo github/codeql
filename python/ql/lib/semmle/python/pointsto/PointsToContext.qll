@@ -253,7 +253,7 @@ predicate executes_in_runtime_context(Function f) {
 }
 
 private predicate maybe_main(Module m) {
-  exists(If i, Compare cmp, Name name, StrConst main | m.getAStmt() = i and i.getTest() = cmp |
+  exists(If i, Compare cmp, Name name, StringLiteral main | m.getAStmt() = i and i.getTest() = cmp |
     cmp.compares(name, any(Eq eq), main) and
     name.getId() = "__name__" and
     main.getText() = "__main__"

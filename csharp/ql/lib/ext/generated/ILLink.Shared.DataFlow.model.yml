@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["ILLink.Shared.DataFlow", "Box<T>", False, "Box", "(T)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", False, "Clone", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", False, "DefaultValueDictionary", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", False, "DefaultValueDictionary", "(TValue)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -18,6 +19,8 @@ extensions:
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>+ControlFlowBranch", False, "ControlFlowBranch", "(TBlock,System.Nullable<TBlock>,System.Collections.Immutable.ImmutableArray<TRegion>,System.Boolean)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "Maybe<T>", False, "Maybe", "(T)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "MaybeLattice<T,TValueLattice>", False, "MaybeLattice", "(TValueLattice)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["ILLink.Shared.DataFlow", "SingleValue", True, "DeepCopy", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Shared.DataFlow", "SingleValue", True, "DeepCopy", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ValueSet<TValue>+Enumerable", False, "Enumerable", "(System.Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ValueSet<TValue>+Enumerable", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ValueSet<TValue>+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -31,9 +34,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["ILLink.Shared.DataFlow", "Box<T>", "Box", "(T)", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "Box<T>", "get_Value", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "Box<T>", "set_Value", "(T)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "Equals", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "GetHashCode", "()", "summary", "df-generated"]
@@ -64,12 +64,6 @@ extensions:
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>", "TryGetEnclosingTryOrCatchOrFilter", "(TRegion,TRegion)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>", "get_Blocks", "()", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "IControlFlowGraph<TBlock,TRegion>", "get_Entry", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "get_Current", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "get_Exception", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "get_Lattice", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "set_Current", "(TValue)", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "set_Exception", "(ILLink.Shared.DataFlow.Box<TValue>)", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "IDataFlowState<TValue,TValueLattice>", "set_Lattice", "(TValueLattice)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "IDeepCopyValue<TSingleValue>", "DeepCopy", "()", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ILattice<TValue>", "Meet", "(TValue,TValue)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ILattice<TValue>", "get_Top", "()", "summary", "df-generated"]
@@ -85,7 +79,6 @@ extensions:
       - ["ILLink.Shared.DataFlow", "Maybe<T>", "op_Inequality", "(ILLink.Shared.DataFlow.Maybe<T>,ILLink.Shared.DataFlow.Maybe<T>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "MaybeLattice<T,TValueLattice>", "Meet", "(ILLink.Shared.DataFlow.Maybe<T>,ILLink.Shared.DataFlow.Maybe<T>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "MaybeLattice<T,TValueLattice>", "get_Top", "()", "summary", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "SingleValue", "DeepCopy", "()", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "SingleValue", "get_EqualityContract", "()", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "SingleValue", "op_Equality", "(ILLink.Shared.DataFlow.SingleValue,ILLink.Shared.DataFlow.SingleValue)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "SingleValue", "op_Inequality", "(ILLink.Shared.DataFlow.SingleValue,ILLink.Shared.DataFlow.SingleValue)", "summary", "df-generated"]

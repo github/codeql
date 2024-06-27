@@ -6,6 +6,7 @@
 import csharp
 private import semmle.code.csharp.serialization.Deserializers
 private import semmle.code.csharp.dataflow.TaintTracking2
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /**
@@ -16,7 +17,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for unsafe deserialization vulnerabilities.
  */
-abstract class Sink extends DataFlow::Node { }
+abstract class Sink extends ApiSinkNode { }
 
 /**
  * A data flow sink for unsafe deserialization vulnerabilities to an instance method.

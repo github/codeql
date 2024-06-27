@@ -1,4 +1,6 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import TestUtilities.InlineFlowTest
 
 predicate isBad(DataFlow::Node g, Expr e, boolean branch) {

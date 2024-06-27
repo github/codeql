@@ -9,7 +9,7 @@ import Impl as RegexTreeView
 import Impl
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(StrConst re) { result.getRegex() = re and result.isRootTerm() }
+RegExpTerm getParsedRegExp(StringLiteral re) { result.getRegex() = re and result.isRootTerm() }
 
 /**
  * An element containing a regular expression term, that is, either
@@ -230,7 +230,8 @@ module Impl implements RegexTreeViewSig {
       index > 0 and
       exists(int previousOffset | previousOffset = this.getPartOffset(index - 1) |
         result =
-          previousOffset + re.(StrConst).getImplicitlyConcatenatedPart(index - 1).getContentLength()
+          previousOffset +
+            re.(StringLiteral).getImplicitlyConcatenatedPart(index - 1).getContentLength()
       )
     }
 
@@ -240,7 +241,7 @@ module Impl implements RegexTreeViewSig {
      */
     StringPart getPart(int localOffset) {
       exists(int index, int prefixLength | index = max(int i | this.getPartOffset(i) <= start) |
-        result = re.(StrConst).getImplicitlyConcatenatedPart(index) and
+        result = re.(StringLiteral).getImplicitlyConcatenatedPart(index) and
         result.contextSize(prefixLength, _) and
         // Example:
         // re.compile('...' r"""...this..""")

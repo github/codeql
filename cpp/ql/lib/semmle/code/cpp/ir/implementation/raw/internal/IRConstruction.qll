@@ -377,6 +377,10 @@ CppType getInstructionResultType(TStageInstruction instr) {
   result = getVoidType()
 }
 
+IRType getInstructionResultIRType(Instruction instr) {
+  result = instr.getResultLanguageType().getIRType()
+}
+
 predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {
   getInstructionTranslatedElement(instr).hasInstruction(opcode, getInstructionTag(instr), _)
   or

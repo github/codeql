@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SensitiveActions
 private import semmle.code.java.frameworks.android.Layout
@@ -53,16 +54,23 @@ private class MaskCall extends MethodCall {
   }
 }
 
+/**
+ * A text field sink node.
+ */
+private class TextFieldSink extends ApiSinkNode {
+  TextFieldSink() {
+    exists(SetTextCall call |
+      this.asExpr() = call.getStringArgument() and
+      not setTextCallIsMasked(call)
+    )
+  }
+}
+
 /** A configuration for tracking sensitive information to text fields. */
 private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(SetTextCall call |
-      sink.asExpr() = call.getStringArgument() and
-      not setTextCallIsMasked(call)
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof TextFieldSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 

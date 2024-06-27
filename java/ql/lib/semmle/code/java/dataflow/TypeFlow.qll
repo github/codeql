@@ -63,12 +63,24 @@ private module Input implements TypeFlowInput<Location> {
 
   class Type = RefType;
 
+  private SrcCallable viableCallable_v1(Call c) {
+    result = viableImpl_v1(c)
+    or
+    c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration()
+  }
+
   /**
-   * Holds if `arg` is an argument for the parameter `p` in a private callable.
+   * Holds if `arg` is an argument for the parameter `p` in a sufficiently
+   * private callable that the closed-world assumption applies.
    */
   private predicate privateParamArg(Parameter p, Argument arg) {
-    p.getAnArgument() = arg and
-    p.getCallable().isPrivate()
+    exists(SrcCallable c, Call call |
+      c = p.getCallable() and
+      not c.isImplicitlyPublic() and
+      not p.isVarargs() and
+      c = viableCallable_v1(call) and
+      call.getArgument(pragma[only_bind_into](pragma[only_bind_out](p.getPosition()))) = arg
+    )
   }
 
   /**

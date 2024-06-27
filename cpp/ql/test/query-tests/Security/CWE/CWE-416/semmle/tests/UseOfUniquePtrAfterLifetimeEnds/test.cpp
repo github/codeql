@@ -204,3 +204,11 @@ void test2(bool b1, bool b2) {
   const S* s12;
   s12 = sRefRef.get(); // GOOD
 }
+
+void test_convert_to_bool() {
+  bool b = get_unique_ptr().get(); // GOOD
+
+  if(get_unique_ptr().get()) { // GOOD
+
+  }
+}

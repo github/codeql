@@ -4,7 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.Logging.EventSource", "EventSourceLoggerProvider", False, "CreateLogger", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging.EventSource", "EventSourceLoggerProvider", False, "EventSourceLoggerProvider", "(Microsoft.Extensions.Logging.EventSource.LoggingEventSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all

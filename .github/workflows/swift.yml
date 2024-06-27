@@ -6,6 +6,7 @@ on:
       - "swift/**"
       - "misc/bazel/**"
       - "misc/codegen/**"
+      - "shared/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
       - .github/actions/**
@@ -22,10 +23,12 @@ on:
       - "swift/**"
       - "misc/bazel/**"
       - "misc/codegen/**"
+      - "shared/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
       - .github/actions/**
       - codeql-workspace.yml
+      - .pre-commit-config.yaml
       - "!**/*.md"
       - "!**/*.qhelp"
     branches:
@@ -65,21 +68,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
-  integration-tests-linux:
-    if: github.repository_owner == 'github'
-    needs: build-and-test-linux
-    runs-on: ubuntu-latest-xl
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-integration-tests
-  integration-tests-macos:
-    if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
-    needs: build-and-test-macos
-    runs-on: macos-12-xl
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-integration-tests
   clang-format:
     if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest

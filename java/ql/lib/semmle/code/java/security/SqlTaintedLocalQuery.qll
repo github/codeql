@@ -12,7 +12,7 @@ private import semmle.code.java.security.Sanitizers
  * A taint-tracking configuration for reasoning about local user input that is
  * used in a SQL query.
  */
-module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
+deprecated module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
@@ -25,7 +25,9 @@ module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
+ * DEPRECATED: Use `QueryInjectionFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for local user input that is used in a SQL query.
  */
-module LocalUserInputToQueryInjectionFlow =
+deprecated module LocalUserInputToQueryInjectionFlow =
   TaintTracking::Global<LocalUserInputToQueryInjectionFlowConfig>;

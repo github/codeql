@@ -27,7 +27,7 @@ predicate summaryModelRow(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance, string row
 ) {
-  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance, _) and
   row =
     package + ";" //
       + type + ";" //
@@ -61,7 +61,7 @@ private class CallableToTest extends Callable {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) and
       this = interpretElement(namespace, type, subtypes, name, signature, ext) and
       this.isPublic() and
       getRootType(this.getDeclaringType()).(RefType).isPublic()

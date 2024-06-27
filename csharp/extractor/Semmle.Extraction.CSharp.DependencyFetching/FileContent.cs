@@ -50,6 +50,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        public bool IsAspNetCoreDetected
+        {
+            get
+            {
+                return IsNewProjectStructureUsed && UseAspNetCoreDlls;
+            }
+        }
+
         private bool useImplicitUsings = false;
 
         public bool UseImplicitUsings
@@ -176,7 +184,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 try
                 {
-                    var isPackagesConfig = file.EndsWith("packages.config", StringComparison.OrdinalIgnoreCase);
+                    var isPackagesConfig = string.Equals(FileUtils.SafeGetFileName(file, logger), "packages.config", StringComparison.OrdinalIgnoreCase);
 
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {

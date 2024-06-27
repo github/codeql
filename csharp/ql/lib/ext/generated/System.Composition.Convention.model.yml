@@ -7,7 +7,6 @@ extensions:
       - ["System.Composition.Convention", "ExportConventionBuilder", False, "AddMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["System.Composition.Convention", "ExportConventionBuilder", False, "AsContractName", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Composition.Convention", "ExportConventionBuilder", False, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
-      - ["System.Composition.Convention", "ExportConventionBuilder", False, "AsContractType", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Composition.Convention", "ExportConventionBuilder", False, "AsContractType", "(System.Type)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["System.Composition.Convention", "ExportConventionBuilder", False, "AsContractType<T>", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Convention", "ImportConventionBuilder", False, "AddMetadataConstraint", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
