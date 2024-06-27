@@ -7,18 +7,6 @@ import codeql.actions.DataFlow
 
 abstract class EnvVarInjectionSink extends DataFlow::Node { }
 
-class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
-  EnvVarInjectionFromEnvVarSink() {
-    exists(Run run, Expression expr, string var_name, string content, string value |
-      expr = run.getInScopeEnvVarExpr(var_name) and
-      writeToGitHubEnv(run, content) and
-      extractVariableAndValue(content, _, value) and
-      run.getScriptScalar() = this.asExpr() and
-      value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-    )
-  }
-}
-
 class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
   EnvVarInjectionFromFileReadSink() {
     exists(Run run, UntrustedArtifactDownloadStep step, string content, string value |
@@ -28,7 +16,32 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
       extractVariableAndValue(content, _, value) and
       // (eg: echo DATABASE_SHA=`yq '.creationMetadata.sha' codeql-database.yml` >> $GITHUB_ENV)
       value
-          .regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<", "jq\\s+", "yq\\s+"] + ".*" + ["`", "\\)"])
+          .regexpMatch(["\\$\\(", "`"] +
+              ["cat\\s+", "<", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+"] + ".*" + ["`", "\\)"])
+    )
+  }
+}
+
+/**
+ * Holds if a Run step declares an environment variable, uses it to declare env var.
+ * e.g.
+ *    env:
+ *      BODY: ${{ github.event.comment.body }}
+ *    run: |
+ *      echo "FOO=$BODY" >> $GITHUB_ENV
+ */
+class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
+  EnvVarInjectionFromEnvVarSink() {
+    exists(Run run, Expression expr, string var_name, string content, string value |
+      run.getInScopeEnvVarExpr(var_name) = expr and
+      run.getScriptScalar() = this.asExpr() and
+      writeToGitHubEnv(run, content) and
+      extractVariableAndValue(content, _, value) and
+      (
+        value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+        or
+        value.matches("$(echo %") and value.indexOf(var_name) > 0
+      )
     )
   }
 }

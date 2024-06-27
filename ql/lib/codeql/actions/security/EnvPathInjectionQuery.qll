@@ -15,7 +15,8 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
       writeToGitHubPath(run, value) and
       // (eg: echo DATABASE_SHA=`yq '.creationMetadata.sha' codeql-database.yml` >> $GITHUB_ENV)
       value
-          .regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<", "jq\\s+", "yq\\s+"] + ".*" + ["`", "\\)"])
+          .regexpMatch(["\\$\\(", "`"] +
+              ["cat\\s+", "<", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+"] + ".*" + ["`", "\\)"])
     )
   }
 }
@@ -31,7 +32,7 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
 class EnvPathInjectionFromEnvVarSink extends EnvPathInjectionSink {
   EnvPathInjectionFromEnvVarSink() {
     exists(Run run, Expression expr, string var_name, string value |
-      this.asExpr().getInScopeEnvVarExpr(var_name) = expr and
+      run.getInScopeEnvVarExpr(var_name) = expr and
       run.getScriptScalar() = this.asExpr() and
       writeToGitHubPath(run, value) and
       (
