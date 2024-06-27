@@ -7,6 +7,6 @@ private string getDirectionString(boolean d) {
   result = "lower" and d = false
 }
 
-from Expr e, Bound b, int delta, boolean upper, Reason reason
+from Expr e, Bound b, QlBuiltins::BigInt delta, boolean upper, Reason reason
 where bounded(e, b, delta, upper, reason) and e.getCompilationUnit().fromSource()
-select e, b.toString(), delta, getDirectionString(upper), reason
+select e, b.toString(), delta.toString(), getDirectionString(upper), reason
