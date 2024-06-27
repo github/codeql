@@ -97,7 +97,7 @@ predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
  * due to a conversion.
  */
 predicate exprMightOverflowNegatively(Expr expr) {
-  lowerBound(expr) < exprMinVal(expr)
+  lowerBound(expr) < exprMinVal(expr).toString().toFloat()
   or
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getAst() = expr and
@@ -123,7 +123,7 @@ predicate convertedExprMightOverflowNegatively(Expr expr) {
  * due to a conversion.
  */
 predicate exprMightOverflowPositively(Expr expr) {
-  upperBound(expr) > exprMaxVal(expr)
+  upperBound(expr) > exprMaxVal(expr).toString().toFloat()
   or
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getAst() = expr and
