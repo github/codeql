@@ -4,7 +4,7 @@ private import sharedlib.DataFlowArg
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
 private import semmle.javascript.dataflow.internal.DataFlowNode
 
-private module ConsistencyConfig implements InputSig<JSDataFlow> {
+private module ConsistencyConfig implements InputSig<Location, JSDataFlow> {
   private predicate isAmbientNode(DataFlow::Node node) {
     exists(AstNode n | n.isAmbient() |
       node = TValueNode(n) or
@@ -39,4 +39,4 @@ private module ConsistencyConfig implements InputSig<JSDataFlow> {
   }
 }
 
-module Consistency = MakeConsistency<JSDataFlow, JSTaintFlow, ConsistencyConfig>;
+module Consistency = MakeConsistency<Location, JSDataFlow, JSTaintFlow, ConsistencyConfig>;
