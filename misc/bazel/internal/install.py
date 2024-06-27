@@ -6,17 +6,21 @@ This mainly wraps around a `pkg_install` script from `rules_pkg` adding:
 * clean-up of target destination directory before a reinstall
 * installing imported zip files using a provided `--ripunzip`
 
-This also allows installing onto multiple targets (sequentially):
+This also allows installing onto multiple targets:
 * multiple --pkg-install-script and --zip-manifest options can be passed
 * --subdir can be used to change installation directory with respect to --destdir (an implicit initial --subdir=. is
   implied)
+
+Install actions are carried out in parallel.
 """
 
 import argparse
 import pathlib
 import shutil
 import subprocess
+import concurrent.futures
 import dataclasses
+import typing
 from python.runfiles import runfiles
 
 runfiles = runfiles.Create()
@@ -25,14 +29,15 @@ assert runfiles, "Installer should be run with `bazel run`"
 
 def options():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.set_defaults(actions=[ChangeDestDir('.')])
+    actions = {pathlib.Path(): []}
+    parser.set_defaults(actions=actions, current_destdir_actions=actions[pathlib.Path()])
     parser.add_argument("--destdir", type=pathlib.Path,
                         help="Base desination directory, relative to `--build-file` if provided")
-    parser.add_argument("--subdir", type=ChangeDestDir,
+    parser.add_argument("--subdir", action=ChangeDestDir,
                         help="Subdirectory of `--destdir` to use for following install actions")
-    parser.add_argument("--pkg-install-script", type=RunPackageScript, action="append", dest="actions",
+    parser.add_argument("--pkg-install-script", type=ScriptInstruction, action=AppendInstruction,
                         help="The wrapped `pkg_install` installation script rlocation")
-    parser.add_argument("--zip-manifest", type=InstallZips, action="append", dest="actions",
+    parser.add_argument("--zip-manifest", type=ZipInstruction, action=AppendInstruction,
                         help="The rlocation of a file containing newline-separated `prefix:zip_file` entries")
     parser.add_argument("--build-file",
                         help="BUILD.bazel rlocation relative to which the installation should take place")
@@ -43,86 +48,101 @@ def options():
     return parser.parse_args()
 
 
-@dataclasses.dataclass
-class Context:
-    basedir: pathlib.Path | None
-    current_destdir: pathlib.Path | None
-    is_current_destdir_initialized: bool
-    ripunzip: str | None
-    cleanup: bool
-
-    def ensure_destdir(self):
-        if not self.is_current_destdir_initialized:
-            if self.current_destdir.exists() and self.cleanup:
-                shutil.rmtree(self.current_destdir)
-                self.current_destdir.mkdir(parents=True, exist_ok=True)
-            self.is_current_destdir_initialized = True
+class ChangeDestDir(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        namespace.current_destdir_actions = namespace.actions.setdefault(values, [])
 
 
+class AppendInstruction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        namespace.current_destdir_actions.append(values)
 
 
-def initial_context(opts):
-    if opts.build_file:
-        basedir = pathlib.Path(runfiles.Rlocation(opts.build_file)).resolve().parent / opts.destdir
-    else:
-        assert opts.destdir.is_absolute(), "Provide `--build-file` to resolve destination directories"
-        basedir = opts.destdir
-    return Context(
-        basedir=basedir,
-        current_destdir=basedir,
-        is_current_destdir_initialized=False,
-        ripunzip=opts.ripunzip and runfiles.Rlocation(opts.ripunzip),
-        cleanup=opts.cleanup,
-    )
+class Task:
+    def run(self):
+        ...
 
 
-class Action:
-    def run(self, context: Context) -> None:
+class Instruction:
+    def tasks(self, target: pathlib.Path, ripunzip: str | None) -> typing.Iterable[Task]:
         ...
 
 
 @dataclasses.dataclass
-class ChangeDestDir(Action):
-    target: str
-
-    def run(self, context):
-        context.current_destdir = context.basedir / self.target
-        context.is_current_destdir_initialized = False
-
-
-@dataclasses.dataclass
-class RunPackageScript(Action):
+class ScriptInstruction(Instruction):
     script: str
 
-    def run(self, context):
-        context.ensure_destdir()
-        script = runfiles.Rlocation(self.script)
-        subprocess.run([script, "--destdir", context.current_destdir], check=True)
+    def tasks(self, target: pathlib.Path, ripunzip: str | None):
+        return (ScriptTask(pathlib.Path(runfiles.Rlocation(self.script)), target),)
 
 
 @dataclasses.dataclass
-class InstallZips(Action):
+class ScriptTask(Task):
+    script: pathlib.Path
+    target: pathlib.Path
+
+    def run(self):
+        subprocess.run([self.script, "--destdir", self.target], check=True)
+
+    def __str__(self):
+        return f"run {self.script.name} into {self.target}"
+
+
+@dataclasses.dataclass
+class ZipInstruction(Instruction):
     manifest: str
 
-    def run(self, context):
-        assert context.ripunzip, "--ripunzip must be provided if any --zip-manifest is"
-        context.ensure_destdir()
+    def tasks(self, target: pathlib.Path, ripunzip: str | None):
+        assert ripunzip, "--ripunzip must be provided when --zip-manifest is"
         manifest_file = runfiles.Rlocation(self.manifest)
         with open(manifest_file) as manifest:
             for line in manifest:
                 prefix, _, zip = line.partition(":")
                 assert zip, f"missing prefix for {prefix}, you should use prefix:zip format"
                 zip = zip.strip()
-                dest = context.current_destdir / prefix
-                dest.mkdir(parents=True, exist_ok=True)
-                subprocess.run([context.ripunzip, "unzip-file", zip, "-d", dest], check=True)
+                yield ZipTask(prefix, pathlib.Path(zip), target, ripunzip)
+
+
+@dataclasses.dataclass
+class ZipTask(Task):
+    prefix: str
+    zip: pathlib.Path
+    target: pathlib.Path
+    ripunzip: str
+
+    def run(self):
+        dest = self.target / self.prefix
+        dest.mkdir(parents=True, exist_ok=True)
+        subprocess.run([self.ripunzip, "unzip-file", self.zip, "-d", dest], check=True, stderr=subprocess.DEVNULL)
+
+    def __str__(self):
+        return f"extracted {self.zip.name} to {self.target / self.prefix}"
 
 
 def main():
     opts = options()
-    context = initial_context(opts)
-    for action in opts.actions:
-        action.run(context)
+    if opts.build_file:
+        basedir = pathlib.Path(runfiles.Rlocation(opts.build_file)).resolve().parent / opts.destdir
+    else:
+        assert opts.destdir.is_absolute(), "Provide `--build-file` to resolve destination directories"
+        basedir = opts.destdir
+    ripunzip = opts.ripunzip and runfiles.Rlocation(opts.ripunzip)
+    with concurrent.futures.ThreadPoolExecutor() as pool:
+        tasks = {}
+        for dir, actions in opts.actions.items():
+            if actions:
+                target = basedir / dir
+                if target.exists() and opts.cleanup:
+                    shutil.rmtree(target)
+                target.mkdir(parents=True, exist_ok=True)
+                tasks.update((pool.submit(t.run), t)
+                             for action in actions
+                             for t in action.tasks(target, ripunzip))
+        while tasks:
+            done, _ = concurrent.futures.wait(tasks, return_when=concurrent.futures.FIRST_COMPLETED)
+            for future in done:
+                future.result()
+                print(tasks.pop(future))
 
 
 if __name__ == '__main__':
