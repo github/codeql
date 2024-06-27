@@ -6,6 +6,7 @@ private import python
 private import semmle.python.ApiGraphs
 private import semmle.python.filters.Tests
 
+/** A class to represent scopes that the user might want to model. */
 class RelevantScope extends Scope {
   RelevantScope() {
     this.isPublic() and
