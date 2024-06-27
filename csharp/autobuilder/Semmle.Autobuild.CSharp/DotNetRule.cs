@@ -39,7 +39,7 @@ namespace Semmle.Autobuild.CSharp
 
                 if (notDotNetProject is not null)
                 {
-                    builder.Logger.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
+                    builder.Logger.LogInfo($"Not using .NET Core because of incompatible project {notDotNetProject}");
                     return BuildScript.Failure;
                 }
 

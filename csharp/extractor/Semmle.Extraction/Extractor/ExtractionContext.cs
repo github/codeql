@@ -50,7 +50,7 @@ namespace Semmle.Extraction
                     ++Errors;
                     if (Errors == maxErrors)
                     {
-                        Logger.LogInfo("  Stopping logging after {0} errors", Errors);
+                        Logger.LogInfo($"  Stopping logging after {Errors} errors");
                     }
                 }
 
