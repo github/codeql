@@ -6,8 +6,8 @@ import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisDefinit
 class CustomAddFunctionCall extends SimpleRangeAnalysisExpr, FunctionCall {
   CustomAddFunctionCall() { this.getTarget().hasGlobalName("custom_add_function") }
 
-  override float getLowerBounds() {
-    exists(float lower0, float lower1 |
+  override QlBuiltins::BigInt getLowerBounds() {
+    exists(QlBuiltins::BigInt lower0, QlBuiltins::BigInt lower1 |
       lower0 = getFullyConvertedLowerBounds(this.getArgument(0)) and
       lower1 = getFullyConvertedLowerBounds(this.getArgument(1)) and
       // Note: this rounds toward 0, not -Inf as it should
@@ -15,8 +15,8 @@ class CustomAddFunctionCall extends SimpleRangeAnalysisExpr, FunctionCall {
     )
   }
 
-  override float getUpperBounds() {
-    exists(float upper0, float upper1 |
+  override QlBuiltins::BigInt getUpperBounds() {
+    exists(QlBuiltins::BigInt upper0, QlBuiltins::BigInt upper1 |
       upper0 = getFullyConvertedUpperBounds(this.getArgument(0)) and
       upper1 = getFullyConvertedUpperBounds(this.getArgument(1)) and
       // Note: this rounds toward 0, not Inf as it should
@@ -33,9 +33,9 @@ class SelfSub extends SimpleRangeAnalysisExpr, SubExpr {
       this.getRightOperand().(VariableAccess).getTarget()
   }
 
-  override float getLowerBounds() { result = 0 }
+  override QlBuiltins::BigInt getLowerBounds() { result = 0.toBigInt() }
 
-  override float getUpperBounds() { result = 0 }
+  override QlBuiltins::BigInt getUpperBounds() { result = 0.toBigInt() }
 
   override predicate dependsOnChild(Expr child) { child = this.getAnOperand() }
 }
@@ -49,11 +49,11 @@ class SelfSub extends SimpleRangeAnalysisExpr, SubExpr {
  */
 class MagicParameterName extends SimpleRangeAnalysisDefinition {
   Parameter p;
-  float value;
+  QlBuiltins::BigInt value;
 
   MagicParameterName() {
     this.definedByParameter(p) and
-    value = p.getName().regexpCapture("magic_name_at_most_(\\d+)", 1).toFloat()
+    value = p.getName().regexpCapture("magic_name_at_most_(\\d+)", 1).toBigInt()
   }
 
   override predicate hasRangeInformationFor(StackVariable v) { v = p }
@@ -63,19 +63,19 @@ class MagicParameterName extends SimpleRangeAnalysisDefinition {
     none()
   }
 
-  override float getLowerBounds(StackVariable var) {
+  override QlBuiltins::BigInt getLowerBounds(StackVariable var) {
     var = p and
     result = typeLowerBound(p.getUnspecifiedType())
   }
 
-  override float getUpperBounds(StackVariable var) {
+  override QlBuiltins::BigInt getUpperBounds(StackVariable var) {
     var = p and
     result = value
   }
 }
 
-from VariableAccess expr, float lower, float upper
+from VariableAccess expr, QlBuiltins::BigInt lower, QlBuiltins::BigInt upper
 where
   lower = lowerBound(expr) and
   upper = upperBound(expr)
-select expr, lower, upper
+select expr, lower.toString(), upper.toString()

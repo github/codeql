@@ -401,8 +401,8 @@ void mult_rounding() {
   // are no PointlessComparison false positives in these tests because alerts
   // are suppressed when ulp() < 1, which roughly means that the number is
   // larger than 2^53.
-  if (x * y < xy) {} // always false [NOT DETECTED]
-  if (x * y > xy) {} // always false [NOT DETECTED]
+  if (x * y < xy) {} // always false
+  if (x * y > xy) {} // always false
 }
 
 void mult_overflow() {
@@ -411,7 +411,7 @@ void mult_overflow() {
   // to 64-bit unsigned.
   x = 274177UL;
   y = 67280421310721UL;
-  if (x * y == 1) {} // always true [BUG: reported as always false]
+  if (x * y == 1) {} // always true [NOT DETECTED]
 
   // This bug appears to be caused by
   // `RangeAnalysisUtils::typeUpperBound(unsigned long)` having a result of

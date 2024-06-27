@@ -19,6 +19,6 @@ where
     or
     o instanceof AssignBitwiseOperation
   )
-select o, lowerBound(o), upperBound(o), getLOp(o).getUnderlyingType(),
+select o, lowerBound(o).toString(), upperBound(o).toString(), getLOp(o).getUnderlyingType(),
   getROp(o).getUnderlyingType(), getLOp(o).getFullyConverted().getUnderlyingType(),
   getROp(o).getFullyConverted().getUnderlyingType()

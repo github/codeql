@@ -1,7 +1,7 @@
 import experimental.semmle.code.cpp.rangeanalysis.ExtendedRangeAnalysis
 
-from VariableAccess expr, float lower, float upper
+from VariableAccess expr, QlBuiltins::BigInt lower, QlBuiltins::BigInt upper
 where
   lower = lowerBound(expr) and
   upper = upperBound(expr)
-select expr, lower, upper
+select expr, lower.toString(), upper.toString()
