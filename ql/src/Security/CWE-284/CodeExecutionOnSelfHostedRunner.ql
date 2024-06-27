@@ -9,6 +9,8 @@
  * @tags actions
  *       security
  *       external/cwe/cwe-284
+ *       testing
+ *       experimental
  */
 
 import codeql.actions.security.SelfHostedQuery
