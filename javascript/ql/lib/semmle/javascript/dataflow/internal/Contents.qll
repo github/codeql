@@ -1,5 +1,7 @@
 private import javascript
 private import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
+private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
+private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
 module Private {
   import Public
@@ -16,6 +18,15 @@ module Private {
   int getAPreciseArrayIndex() { result = [0 .. getMaxPreciseArrayIndex()] }
 
   /**
+   * Holds if a MaD access path token of form `name[arg]` exists.
+   */
+  predicate isAccessPathTokenPresent(string name, string arg) {
+    arg = any(FlowSummaryPrivate::AccessPathToken tok).getAnArgument(name)
+    or
+    arg = any(ApiGraphModels::AccessPathToken tok).getAnArgument(name)
+  }
+
+  /**
    * Holds if values associated with `key` should be tracked as a individual contents of a `Map` object.
    */
   private predicate isKnownMapKey(string key) {
@@ -25,10 +36,7 @@ module Private {
       call.getArgument(0).getStringValue() = key
     )
     or
-    exists(ApiGraphModels::AccessPathToken token |
-      token.getName() = "MapValue" and
-      token.getAnArgument() = key
-    )
+    isAccessPathTokenPresent("MapValue", key)
   }
 
   /**
@@ -47,9 +55,7 @@ module Private {
       or
       this = getAPreciseArrayIndex().toString()
       or
-      exists(ApiGraphModels::AccessPathToken tok |
-        tok.getName() = "Member" and this = tok.getAnArgument()
-      )
+      isAccessPathTokenPresent("Member", this)
     }
 
     /** Gets the array index corresponding to this property name. */

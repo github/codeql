@@ -141,6 +141,10 @@ module Steps = Private::Steps<FlowSummaryStepInput>;
 
 module RenderSummarizedCallable = Private::RenderSummarizedCallable<FlowSummaryStepInput>;
 
+class AccessPath = Private::AccessPath;
+
+class AccessPathToken = Private::AccessPathToken;
+
 /**
  * Gets the textual representation of return kind `rk` used in MaD.
  *
