@@ -34,6 +34,6 @@ Go framework & library support
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_,"``github.com/golang/protobuf*``, ``google.golang.org/protobuf*``",,16,
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
-   Others,"``github.com/go-jose/go-jose/$ANYVERSION/jwt``, ``gopkg.in/square/go-jose.v2/jwt``",,8,2
+   Others,"``github.com/go-jose/go-jose/jwt``, ``gopkg.in/square/go-jose.v2/jwt``",,8,2
    Totals,,20,877,24
 
