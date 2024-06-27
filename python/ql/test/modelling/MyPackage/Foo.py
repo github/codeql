@@ -23,3 +23,13 @@ class C2(C1):
 class C3:
     def get_C2_instance():
         return C2()
+    
+    class C3nested:
+        def m5(self, x):
+            return x
+        
+def top_level_function(x, /, y, *, z):
+    return [x, y, z]
+
+def func_with_fancy_args(*args, **kwargs):
+    return args, kwargs
