@@ -183,13 +183,13 @@ namespace Semmle.Extraction
                         if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(trapCompression)}"))
                             return;
                     }
-                    logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
+                    logger.LogInfo($"Identical trap file for {TrapFile} already exists");
                     FileUtils.TryDelete(tmpFile);
                 }
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                logger.Log(Severity.Error, "Failed to move the trap file from {0} to {1} because {2}", tmpFile, TrapFile, ex);
+                logger.LogError($"Failed to move the trap file from {tmpFile} to {TrapFile} because {ex}");
             }
         }
 

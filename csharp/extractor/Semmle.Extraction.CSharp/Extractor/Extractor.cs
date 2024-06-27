@@ -38,12 +38,12 @@ namespace Semmle.Extraction.CSharp
             {
                 if (action != AnalysisAction.UpToDate)
                 {
-                    logger.Log(Severity.Info, "  {0} ({1})", source,
-                        action == AnalysisAction.Extracted
-                            ? time.ToString()
-                            : action == AnalysisAction.Excluded
-                                ? "excluded"
-                                : "up to date");
+                    var state = action == AnalysisAction.Extracted
+                        ? time.ToString()
+                        : action == AnalysisAction.Excluded
+                            ? "excluded"
+                            : "up to date";
+                    logger.LogInfo($"  {source} ({state})");
                 }
             }
 
@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CSharp
                 var compilerVersion = new CompilerVersion(options);
                 if (compilerVersion.SkipExtraction)
                 {
-                    logger.Log(Severity.Warning, "  Unrecognized compiler '{0}' because {1}", compilerVersion.SpecifiedCompiler, compilerVersion.SkipReason);
+                    logger.LogWarning($"  Unrecognized compiler '{compilerVersion.SpecifiedCompiler}' because {compilerVersion.SkipReason}");
                     return ExitCode.Ok;
                 }
 
@@ -133,14 +133,14 @@ namespace Semmle.Extraction.CSharp
                 {
                     var sb = new StringBuilder();
                     sb.Append("  Failed to parse command line: ").AppendList(" ", compilerArgs);
-                    logger.Log(Severity.Error, sb.ToString());
+                    logger.LogError(sb.ToString());
                     ++analyser.CompilationErrors;
                     return ExitCode.Failed;
                 }
 
                 if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
                 {
-                    logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
+                    logger.LogInfo("Skipping extraction since files have already been extracted");
                     return ExitCode.Ok;
                 }
 
@@ -148,14 +148,14 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
+                logger.LogError($"  Unhandled exception: {ex}");
                 return ExitCode.Errors;
             }
         }
 
         private static void AddSourceFilesFromProjects(IEnumerable<string> projectsToLoad, IList<string> compilerArguments, ILogger logger)
         {
-            logger.Log(Severity.Info, "  Loading referenced projects.");
+            logger.LogInfo("  Loading referenced projects.");
             var projects = new Queue<string>(projectsToLoad);
             var processed = new HashSet<string>();
             while (projects.Count > 0)
@@ -168,7 +168,7 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 processed.Add(fi.FullName);
-                logger.Log(Severity.Info, "  Processing referenced project: " + fi.FullName);
+                logger.LogInfo($"  Processing referenced project: {fi.FullName}");
 
                 var csProj = new CsProjFile(fi);
 
@@ -242,7 +242,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         lock (analyser)
                         {
-                            analyser.Logger.Log(Severity.Error, "  Reference '{0}' does not exist", clref.Reference);
+                            analyser.Logger.LogError($"  Reference '{clref.Reference}' does not exist");
                             ++analyser.CompilationErrors;
                         }
                     }
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         lock (analyser)
                         {
-                            analyser.Logger.Log(Severity.Error, "  Unable to resolve reference '{0}'", clref.Reference);
+                            analyser.Logger.LogError($"  Unable to resolve reference '{clref.Reference}'");
                             ++analyser.CompilationErrors;
                         }
                     }
@@ -285,9 +285,9 @@ namespace Semmle.Extraction.CSharp
                 try
                 {
                     using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    analyser.Logger.Log(Severity.Trace, $"Parsing source file: '{path}'");
+                    analyser.Logger.LogTrace($"Parsing source file: '{path}'");
                     var tree = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
-                    analyser.Logger.Log(Severity.Trace, $"Source file parsed: '{path}'");
+                    analyser.Logger.LogTrace($"Source file parsed: '{path}'");
 
                     lock (ret)
                     {
@@ -298,7 +298,7 @@ namespace Semmle.Extraction.CSharp
                 {
                     lock (analyser)
                     {
-                        analyser.Logger.Log(Severity.Error, "  Unable to open source file {0}: {1}", path, ex.Message);
+                        analyser.Logger.LogError($"  Unable to open source file {path}: {ex.Message}");
                         ++analyser.CompilationErrors;
                     }
                 }
@@ -327,7 +327,7 @@ namespace Semmle.Extraction.CSharp
 
             if (syntaxTrees.Count == 0)
             {
-                analyser.Logger.Log(Severity.Error, "  No source files");
+                analyser.Logger.LogError("  No source files");
                 ++analyser.CompilationErrors;
                 if (analyser is TracingAnalyser)
                 {
@@ -347,7 +347,7 @@ namespace Semmle.Extraction.CSharp
             }
 
             sw.Stop();
-            analyser.Logger.Log(Severity.Info, "  Models constructed in {0}", sw.Elapsed);
+            analyser.Logger.LogInfo($"  Models constructed in {sw.Elapsed}");
             var elapsed = sw.Elapsed;
 
             var currentProcess = Process.GetCurrentProcess();
@@ -369,7 +369,7 @@ namespace Semmle.Extraction.CSharp
             };
 
             analyser.LogPerformance(performance);
-            analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
+            analyser.Logger.LogInfo($"  Extraction took {sw.Elapsed}");
 
             postProcess();
 

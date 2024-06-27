@@ -203,7 +203,7 @@ namespace Semmle.Extraction
         private void EnterScope()
         {
             if (currentRecursiveDepth >= maxRecursiveDepth)
-                throw new StackOverflowException(string.Format("Maximum nesting depth of {0} exceeded", maxRecursiveDepth));
+                throw new StackOverflowException($"Maximum nesting depth of {maxRecursiveDepth} exceeded");
             ++currentRecursiveDepth;
         }
 
