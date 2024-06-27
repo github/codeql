@@ -261,7 +261,7 @@ int overeager_wraparound(unsigned int u32bound, unsigned long long u64bound) {
 
 int negative_zero(double dbl) {
   if (dbl >= 0) {
-    return dbl >= -dbl; // GOOD [FALSE POSITIVE]
+    return dbl >= -dbl; // GOOD
   }
   return 0;
 }
@@ -334,7 +334,7 @@ int nan2(double x) {
     if (x < 0.0) {
       return 100;
     }
-    else if (x >= 0.0) { // BAD [Always true]
+    else if (x >= 0.0) { // BAD [Always true] [NOT DETECTED]
       return 200;
     }
     else {

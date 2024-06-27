@@ -108,7 +108,7 @@ void randomTester() {
 }
 
 void add_100(int r) {
-  r += 100; // GOOD
+  r += 100; // GOOD [FALSE POSITIVE]
 }
 
 void randomTester2(int bound, int min, int max) {
