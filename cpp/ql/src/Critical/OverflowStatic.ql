@@ -58,7 +58,8 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.limit() >= bufaccess.bufferSize() and
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
     // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
-    not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize() and
+    not upperBound(bufaccess.getArrayOffset().getFullyConverted()) <
+      bufaccess.bufferSize().toBigInt() and
     // The upper bounds analysis must not have been widended
     not upperBoundMayBeWidened(bufaccess.getArrayOffset().getFullyConverted()) and
     msg =
@@ -103,7 +104,7 @@ class CallWithBufferSize extends FunctionCall {
     )
   }
 
-  int statedSizeValue() {
+  QlBuiltins::BigInt statedSizeValue() {
     // `upperBound(e)` defaults to `exprMaxVal(e)` when `e` isn't analyzable. So to get a meaningful
     // result in this case we pick the minimum value obtainable from dataflow and range analysis.
     result =
@@ -111,16 +112,16 @@ class CallWithBufferSize extends FunctionCall {
           .minimum(min(Expr statedSizeSrc |
               DataFlow::localExprFlow(statedSizeSrc, this.statedSizeExpr())
             |
-              statedSizeSrc.getValue().toInt()
+              statedSizeSrc.getValue().toBigInt()
             ))
   }
 }
 
 predicate wrongBufferSize(Expr error, string msg) {
-  exists(CallWithBufferSize call, int bufsize, Variable buf, int statedSize |
+  exists(CallWithBufferSize call, int bufsize, Variable buf, QlBuiltins::BigInt statedSize |
     staticBuffer(call.buffer(), buf, bufsize) and
     statedSize = call.statedSizeValue() and
-    statedSize > bufsize and
+    statedSize > bufsize.toBigInt() and
     error = call.statedSizeExpr() and
     msg =
       "Potential buffer-overflow: '" + buf.getName() + "' has size " + bufsize.toString() + " not " +

@@ -62,7 +62,7 @@ Expr exprIsLeftOrLessBase(SubExpr sub) {
       // result = e - y <= e
       result = s and
       s.getLeftOperand() = e and
-      lowerBound(s.getRightOperand().getFullyConverted()) >= 0
+      lowerBound(s.getRightOperand().getFullyConverted()) >= 0.toBigInt()
     )
     or
     exists(Expr other |
@@ -73,7 +73,7 @@ Expr exprIsLeftOrLessBase(SubExpr sub) {
       // so:
       // result = e + y <= e + 0 = e
       result.(AddExpr).hasOperands(e, other) and
-      upperBound(other.getFullyConverted()) <= 0
+      upperBound(other.getFullyConverted()) <= 0.toBigInt()
     )
     or
     exists(DivExpr d |
@@ -85,7 +85,7 @@ Expr exprIsLeftOrLessBase(SubExpr sub) {
       // result = e / y <= e / 1 = e
       result = d and
       d.getLeftOperand() = e and
-      lowerBound(d.getRightOperand().getFullyConverted()) >= 1
+      lowerBound(d.getRightOperand().getFullyConverted()) >= 1.toBigInt()
     )
     or
     exists(RShiftExpr rs |
@@ -122,20 +122,20 @@ predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
     isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
   )
   or
-  exists(DataFlow::Node other, float p, float q |
+  exists(DataFlow::Node other, QlBuiltins::BigInt p, QlBuiltins::BigInt q |
     // linear access of `other`
     exprIsSubLeftOrLess(sub, other) and
     linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
-    p <= 1 and
-    q <= 0
+    p <= 1.toBigInt() and
+    q <= 0.toBigInt()
   )
   or
-  exists(DataFlow::Node other, float p, float q |
+  exists(DataFlow::Node other, QlBuiltins::BigInt p, QlBuiltins::BigInt q |
     // linear access of `n`
     exprIsSubLeftOrLess(sub, other) and
     linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
-    p >= 1 and
-    q >= 0
+    p >= 1.toBigInt() and
+    q >= 0.toBigInt()
   )
 }
 

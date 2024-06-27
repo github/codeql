@@ -97,24 +97,24 @@ predicate isRealRange(Expr exp) {
   lowerBound(exp).toString() != "-4294967296" and
   lowerBound(exp).toString() != "-Infinity" and
   lowerBound(exp).toString() != "NaN" and
-  upperBound(exp) != 2147483647 and
-  upperBound(exp) != 268435455 and
-  upperBound(exp) != 33554431 and
-  upperBound(exp) != 8388607 and
-  upperBound(exp) != 65535 and
-  upperBound(exp) != 32767 and
-  upperBound(exp) != 255 and
-  upperBound(exp) != 127 and
-  lowerBound(exp) != -2147483648 and
-  lowerBound(exp) != -268435456 and
-  lowerBound(exp) != -33554432 and
-  lowerBound(exp) != -8388608 and
-  lowerBound(exp) != -65536 and
-  lowerBound(exp) != -32768 and
-  lowerBound(exp) != -128
+  upperBound(exp) != 2147483647.toBigInt() and
+  upperBound(exp) != 268435455.toBigInt() and
+  upperBound(exp) != 33554431.toBigInt() and
+  upperBound(exp) != 8388607.toBigInt() and
+  upperBound(exp) != 65535.toBigInt() and
+  upperBound(exp) != 32767.toBigInt() and
+  upperBound(exp) != 255.toBigInt() and
+  upperBound(exp) != 127.toBigInt() and
+  lowerBound(exp) != "-2147483648".toBigInt() and
+  lowerBound(exp) != -268435456.toBigInt() and
+  lowerBound(exp) != -33554432.toBigInt() and
+  lowerBound(exp) != -8388608.toBigInt() and
+  lowerBound(exp) != -65536.toBigInt() and
+  lowerBound(exp) != -32768.toBigInt() and
+  lowerBound(exp) != -128.toBigInt()
   or
-  lowerBound(exp) = 0 and
-  upperBound(exp) = 1
+  lowerBound(exp) = 0.toBigInt() and
+  upperBound(exp) = 1.toBigInt()
 }
 
 /** Holds if expressions are of different size or range */
@@ -128,11 +128,15 @@ predicate isDifferentSize(Expr exp1, Expr exp2, Expr exp3) {
     isRealRange(exp2) and
     isRealRange(exp3)
   ) and
-  upperBound(exp1).maximum(upperBound(exp2)) - upperBound(exp1).minimum(upperBound(exp2)) < 16 and
-  lowerBound(exp1).maximum(lowerBound(exp2)) - lowerBound(exp1).minimum(lowerBound(exp2)) < 16 and
+  upperBound(exp1).maximum(upperBound(exp2)) - upperBound(exp1).minimum(upperBound(exp2)) <
+    16.toBigInt() and
+  lowerBound(exp1).maximum(lowerBound(exp2)) - lowerBound(exp1).minimum(lowerBound(exp2)) <
+    16.toBigInt() and
   (
-    upperBound(exp1).maximum(upperBound(exp3)) - upperBound(exp1).minimum(upperBound(exp3)) > 256 or
-    lowerBound(exp1).maximum(lowerBound(exp2)) - lowerBound(exp1).minimum(lowerBound(exp2)) > 256
+    upperBound(exp1).maximum(upperBound(exp3)) - upperBound(exp1).minimum(upperBound(exp3)) >
+      256.toBigInt() or
+    lowerBound(exp1).maximum(lowerBound(exp2)) - lowerBound(exp1).minimum(lowerBound(exp2)) >
+      256.toBigInt()
   )
 }
 
@@ -146,10 +150,10 @@ predicate isDifferentResults(
     isRealRange(exp2) and
     isRealRange(exp3)
   ) and
-  exists(int i1, int i2, int i3 |
-    i1 in [lowerBound(exp1).floor() .. upperBound(exp1).floor()] and
-    i2 in [lowerBound(exp2).floor() .. upperBound(exp2).floor()] and
-    i3 in [lowerBound(exp3).floor() .. upperBound(exp3).floor()] and
+  exists(QlBuiltins::BigInt i1, QlBuiltins::BigInt i2, QlBuiltins::BigInt i3 |
+    i1 = lowerBound(exp1) + [0 .. (upperBound(exp1) - lowerBound(exp1)).toInt()].toBigInt() and
+    i2 = lowerBound(exp2) + [0 .. (upperBound(exp2) - lowerBound(exp2)).toInt()].toBigInt() and
+    i3 = lowerBound(exp3) + [0 .. (upperBound(exp3) - lowerBound(exp3)).toInt()].toBigInt() and
     (
       op1 instanceof BitwiseOrExpr and
       op2 instanceof BitwiseAndExpr and

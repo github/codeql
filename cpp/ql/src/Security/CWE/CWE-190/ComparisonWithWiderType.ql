@@ -58,7 +58,8 @@ where
     // We adjust the comparison size in the case of a signed integer type.
     // This is to exclude the sign bit from the comparison that determines if the small type's size is sufficient to hold
     // the value of the larger type determined with range analysis.
-    upperBound(conv).log2() > (getComparisonSize(small) * 8 - getComparisonSizeAdjustment(small))
+    upperBound(conv).toString().toFloat().log() / 2.log() >
+      (getComparisonSize(small) * 8 - getComparisonSizeAdjustment(small))
   ) and
   // Ignore cases where the smaller type is int or larger
   // These are still bugs, but you should need a very large string or array to

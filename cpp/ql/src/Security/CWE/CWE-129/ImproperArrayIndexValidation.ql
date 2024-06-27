@@ -46,7 +46,7 @@ predicate guardChecks(IRGuardCondition g, Expr e, boolean branch) {
 predicate offsetIsAlwaysInBounds(ArrayExpr arrayExpr, VariableAccess offsetExpr) {
   exists(ArrayType arrayType |
     arrayType = arrayExpr.getArrayBase().getUnspecifiedType() and
-    arrayType.getArraySize() > upperBound(offsetExpr.getFullyConverted())
+    arrayType.getArraySize().toBigInt() > upperBound(offsetExpr.getFullyConverted())
   )
 }
 
