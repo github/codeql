@@ -11,7 +11,9 @@ private import internal.rangeanalysis.SsaReadPositionCommon
 /**
  * Holds if `e + delta` equals `v` at `pos`.
  */
-private predicate valueFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, int delta) {
+private predicate valueFlowStepSsa(
+  SsaVariable v, SsaReadPosition pos, Expr e, QlBuiltins::BigInt delta
+) {
   ssaUpdateStep(v, e, delta) and pos.hasReadOfVar(v)
   or
   exists(Guard guard, boolean testIsTrue |
@@ -47,17 +49,17 @@ private predicate nonConstSubtraction(Expr sub, Expr larg, Expr rarg) {
 }
 
 /** Gets an expression that is the remainder modulo `mod` of `arg`. */
-private Expr modExpr(Expr arg, int mod) {
+private Expr modExpr(Expr arg, QlBuiltins::BigInt mod) {
   exists(RemExpr rem |
     result = rem and
     arg = rem.getLeftOperand() and
     rem.getRightOperand().(ConstantIntegerExpr).getIntValue() = mod and
-    mod >= 2
+    mod >= 2.toBigInt()
   )
   or
   exists(ConstantIntegerExpr c |
-    mod = 2.pow([1 .. 30]) and
-    c.getIntValue() = mod - 1 and
+    mod = 2.toBigInt().pow([1 .. 30]) and
+    c.getIntValue() = mod - 1.toBigInt() and
     result.(BitwiseAndExpr).hasOperands(arg, c)
   )
 }
@@ -66,8 +68,10 @@ private Expr modExpr(Expr arg, int mod) {
  * Gets a guard that tests whether `v` is congruent with `val` modulo `mod` on
  * its `testIsTrue` branch.
  */
-private Guard moduloCheck(SsaVariable v, int val, int mod, boolean testIsTrue) {
-  exists(Expr rem, ConstantIntegerExpr c, int r, boolean polarity |
+private Guard moduloCheck(
+  SsaVariable v, QlBuiltins::BigInt val, QlBuiltins::BigInt mod, boolean testIsTrue
+) {
+  exists(Expr rem, ConstantIntegerExpr c, QlBuiltins::BigInt r, boolean polarity |
     result.isEquality(rem, c, polarity) and
     c.getIntValue() = r and
     rem = modExpr(v.getAUse(), mod) and
@@ -75,9 +79,9 @@ private Guard moduloCheck(SsaVariable v, int val, int mod, boolean testIsTrue) {
       testIsTrue = polarity and val = r
       or
       testIsTrue = polarity.booleanNot() and
-      mod = 2 and
-      val = 1 - r and
-      (r = 0 or r = 1)
+      mod = 2.toBigInt() and
+      val = 1.toBigInt() - r and
+      (r = 0.toBigInt() or r = 1.toBigInt())
     )
   )
 }
@@ -85,7 +89,9 @@ private Guard moduloCheck(SsaVariable v, int val, int mod, boolean testIsTrue) {
 /**
  * Holds if a guard ensures that `v` at `pos` is congruent with `val` modulo `mod`.
  */
-private predicate moduloGuardedRead(SsaVariable v, SsaReadPosition pos, int val, int mod) {
+private predicate moduloGuardedRead(
+  SsaVariable v, SsaReadPosition pos, QlBuiltins::BigInt val, QlBuiltins::BigInt mod
+) {
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = moduloCheck(v, val, mod, testIsTrue) and
@@ -101,13 +107,14 @@ private predicate andmaskFactor(int mask, int factor) {
 }
 
 /** Holds if `e` is evenly divisible by `factor`. */
-private predicate evenlyDivisibleExpr(Expr e, int factor) {
-  exists(ConstantIntegerExpr c, int k | k = c.getIntValue() |
-    e.(MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
+private predicate evenlyDivisibleExpr(Expr e, QlBuiltins::BigInt factor) {
+  exists(ConstantIntegerExpr c, QlBuiltins::BigInt k | k = c.getIntValue() |
+    e.(MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2.toBigInt()
     or
-    e.(LeftShiftExpr).getRhs() = c and factor = 2.pow(k) and k > 0
+    e.(LeftShiftExpr).getRhs() = c and factor = 2.toBigInt().pow(k.toInt()) and k > 0.toBigInt()
     or
-    e.(BitwiseAndExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
+    e.(BitwiseAndExpr).getAnOperand() = c and
+    factor = max(int f | andmaskFactor(k.toInt(), f)).toBigInt()
   )
 }
 
@@ -118,31 +125,33 @@ private predicate evenlyDivisibleExpr(Expr e, int factor) {
  * the range `[0 .. mod-1]`.
  */
 bindingset[val, mod]
-private int remainder(int val, int mod) {
-  mod = 0 and result = val
+private QlBuiltins::BigInt remainder(QlBuiltins::BigInt val, QlBuiltins::BigInt mod) {
+  mod = 0.toBigInt() and result = val
   or
-  mod > 1 and result = ((val % mod) + mod) % mod
+  mod > 1.toBigInt() and result = ((val % mod) + mod) % mod
 }
 
 /**
  * Holds if `inp` is an input to `phi` and equals `phi` modulo `mod` along `edge`.
  */
 private predicate phiSelfModulus(
-  SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int mod
+  SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, QlBuiltins::BigInt mod
 ) {
-  exists(SsaBound phibound, int v, int m |
+  exists(SsaBound phibound, QlBuiltins::BigInt v, QlBuiltins::BigInt m |
     edge.phiInput(phi, inp) and
     phibound.getSsa() = phi and
     ssaModulus(inp, edge, phibound, v, m) and
     mod = m.gcd(v) and
-    mod != 1
+    mod != 1.toBigInt()
   )
 }
 
 /**
  * Holds if `b + val` modulo `mod` is a candidate congruence class for `phi`.
  */
-private predicate phiModulusInit(SsaPhiNode phi, Bound b, int val, int mod) {
+private predicate phiModulusInit(
+  SsaPhiNode phi, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod
+) {
   exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge |
     edge.phiInput(phi, inp) and
     ssaModulus(inp, edge, b, val, mod)
@@ -152,22 +161,26 @@ private predicate phiModulusInit(SsaPhiNode phi, Bound b, int val, int mod) {
 /**
  * Holds if all inputs to `phi` numbered `1` to `rix` are equal to `b + val` modulo `mod`.
  */
-private predicate phiModulusRankStep(SsaPhiNode phi, Bound b, int val, int mod, int rix) {
+private predicate phiModulusRankStep(
+  SsaPhiNode phi, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod, int rix
+) {
   rix = 0 and
   phiModulusInit(phi, b, val, mod)
   or
-  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge, int v1, int m1 |
-    mod != 1 and
+  exists(
+    SsaVariable inp, SsaReadPositionPhiInputEdge edge, QlBuiltins::BigInt v1, QlBuiltins::BigInt m1
+  |
+    mod != 1.toBigInt() and
     val = remainder(v1, mod)
   |
-    exists(int v2, int m2 |
+    exists(QlBuiltins::BigInt v2, QlBuiltins::BigInt m2 |
       rankedPhiInput(phi, inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
       ssaModulus(inp, edge, b, v2, m2) and
       mod = m1.gcd(m2).gcd(v1 - v2)
     )
     or
-    exists(int m2 |
+    exists(QlBuiltins::BigInt m2 |
       rankedPhiInput(phi, inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
       phiSelfModulus(phi, inp, edge, m2) and
@@ -179,7 +192,7 @@ private predicate phiModulusRankStep(SsaPhiNode phi, Bound b, int val, int mod, 
 /**
  * Holds if `phi` is equal to `b + val` modulo `mod`.
  */
-private predicate phiModulus(SsaPhiNode phi, Bound b, int val, int mod) {
+private predicate phiModulus(SsaPhiNode phi, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod) {
   exists(int r |
     maxPhiInputRank(phi, r) and
     phiModulusRankStep(phi, b, val, mod, r)
@@ -189,12 +202,14 @@ private predicate phiModulus(SsaPhiNode phi, Bound b, int val, int mod) {
 /**
  * Holds if `v` at `pos` is equal to `b + val` modulo `mod`.
  */
-private predicate ssaModulus(SsaVariable v, SsaReadPosition pos, Bound b, int val, int mod) {
+private predicate ssaModulus(
+  SsaVariable v, SsaReadPosition pos, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod
+) {
   phiModulus(v, b, val, mod) and pos.hasReadOfVar(v)
   or
-  b.(SsaBound).getSsa() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
+  b.(SsaBound).getSsa() = v and pos.hasReadOfVar(v) and val = 0.toBigInt() and mod = 0.toBigInt()
   or
-  exists(Expr e, int val0, int delta |
+  exists(Expr e, QlBuiltins::BigInt val0, QlBuiltins::BigInt delta |
     exprModulus(e, b, val0, mod) and
     valueFlowStepSsa(v, pos, e, delta) and
     val = remainder(val0 + delta, mod)
@@ -211,10 +226,10 @@ private predicate ssaModulus(SsaVariable v, SsaReadPosition pos, Bound b, int va
  * - `mod > 1`: `val` lies within the range `[0 .. mod-1]`.
  */
 cached
-predicate exprModulus(Expr e, Bound b, int val, int mod) {
-  e = b.getExpr(val) and mod = 0
+predicate exprModulus(Expr e, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod) {
+  e = b.getExpr(val) and mod = 0.toBigInt()
   or
-  evenlyDivisibleExpr(e, mod) and val = 0 and b instanceof ZeroBound
+  evenlyDivisibleExpr(e, mod) and val = 0.toBigInt() and b instanceof ZeroBound
   or
   exists(SsaVariable v, SsaReadPositionBlock bb |
     ssaModulus(v, bb, b, val, mod) and
@@ -222,26 +237,32 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
     getABasicBlockExpr(bb.getBlock()) = e
   )
   or
-  exists(Expr mid, int val0, int delta |
+  exists(Expr mid, QlBuiltins::BigInt val0, QlBuiltins::BigInt delta |
     exprModulus(mid, b, val0, mod) and
     valueFlowStep(e, mid, delta) and
     val = remainder(val0 + delta, mod)
   )
   or
-  exists(ConditionalExpr cond, int v1, int v2, int m1, int m2 |
+  exists(
+    ConditionalExpr cond, QlBuiltins::BigInt v1, QlBuiltins::BigInt v2, QlBuiltins::BigInt m1,
+    QlBuiltins::BigInt m2
+  |
     cond = e and
     condExprBranchModulus(cond, true, b, v1, m1) and
     condExprBranchModulus(cond, false, b, v2, m2) and
     mod = m1.gcd(m2).gcd(v1 - v2) and
-    mod != 1 and
+    mod != 1.toBigInt() and
     val = remainder(v1, mod)
   )
   or
-  exists(Bound b1, Bound b2, int v1, int v2, int m1, int m2 |
+  exists(
+    Bound b1, Bound b2, QlBuiltins::BigInt v1, QlBuiltins::BigInt v2, QlBuiltins::BigInt m1,
+    QlBuiltins::BigInt m2
+  |
     addModulus(e, true, b1, v1, m1) and
     addModulus(e, false, b2, v2, m2) and
     mod = m1.gcd(m2) and
-    mod != 1 and
+    mod != 1.toBigInt() and
     val = remainder(v1 + v2, mod)
   |
     b = b1 and b2 instanceof ZeroBound
@@ -249,22 +270,26 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
     b = b2 and b1 instanceof ZeroBound
   )
   or
-  exists(int v1, int v2, int m1, int m2 |
+  exists(
+    QlBuiltins::BigInt v1, QlBuiltins::BigInt v2, QlBuiltins::BigInt m1, QlBuiltins::BigInt m2
+  |
     subModulus(e, true, b, v1, m1) and
     subModulus(e, false, any(ZeroBound zb), v2, m2) and
     mod = m1.gcd(m2) and
-    mod != 1 and
+    mod != 1.toBigInt() and
     val = remainder(v1 - v2, mod)
   )
 }
 
 private predicate condExprBranchModulus(
-  ConditionalExpr cond, boolean branch, Bound b, int val, int mod
+  ConditionalExpr cond, boolean branch, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod
 ) {
   exprModulus(cond.getBranchExpr(branch), b, val, mod)
 }
 
-private predicate addModulus(Expr add, boolean isLeft, Bound b, int val, int mod) {
+private predicate addModulus(
+  Expr add, boolean isLeft, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod
+) {
   exists(Expr larg, Expr rarg | nonConstAddition(add, larg, rarg) |
     exprModulus(larg, b, val, mod) and isLeft = true
     or
@@ -272,7 +297,9 @@ private predicate addModulus(Expr add, boolean isLeft, Bound b, int val, int mod
   )
 }
 
-private predicate subModulus(Expr sub, boolean isLeft, Bound b, int val, int mod) {
+private predicate subModulus(
+  Expr sub, boolean isLeft, Bound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod
+) {
   exists(Expr larg, Expr rarg | nonConstSubtraction(sub, larg, rarg) |
     exprModulus(larg, b, val, mod) and isLeft = true
     or
