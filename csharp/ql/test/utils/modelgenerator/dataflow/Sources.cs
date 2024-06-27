@@ -60,7 +60,6 @@ public class NewSources
 
     public class MyConsoleReader : ValueReader
     {
-        // source=Sources;NewSources+MyConsoleReader;true;GetValue;();;ReturnValue;local;df-generated
         // neutral=Sources;NewSources+MyConsoleReader;GetValue;();summary;df-generated
         public override string GetValue()
         {
@@ -111,7 +110,6 @@ public class NewSources
 
     public class DataReaderKind1 : DataReader
     {
-        // source=Sources;NewSources+DataReaderKind1;true;Read;();;ReturnValue;source-kind-1;df-generated
         // neutral=Sources;NewSources+DataReaderKind1;Read;();summary;df-generated
         public override string Read()
         {
@@ -121,7 +119,6 @@ public class NewSources
 
     public sealed class DataReaderKind2 : DataReader
     {
-        // source=Sources;NewSources+DataReaderKind2;false;Read;();;ReturnValue;source-kind-2;df-generated
         // neutral=Sources;NewSources+DataReaderKind2;Read;();summary;df-generated
         public override string Read()
         {
@@ -131,7 +128,6 @@ public class NewSources
 
     public class C1
     {
-        // source=Sources;NewSources+C1;false;ToString;();;ReturnValue;source-kind-1;df-generated
         // neutral=Sources;NewSources+C1;ToString;();summary;df-generated
         public override string ToString()
         {
@@ -141,7 +137,6 @@ public class NewSources
 
     public sealed class C2
     {
-        // source=Sources;NewSources+C2;false;ToString;();;ReturnValue;source-kind-1;df-generated
         // neutral=Sources;NewSources+C2;ToString;();summary;df-generated
         public override string ToString()
         {
