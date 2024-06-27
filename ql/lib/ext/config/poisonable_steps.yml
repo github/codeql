@@ -10,6 +10,7 @@ extensions:
       - ["bridgecrewio/checkov-action"]
       - ["ruby/setup-ruby"]
       - ["actions/jekyll-build-pages"]
+      - ["qcastel/github-actions-maven/actions/maven"]
   - addsTo:
       pack: github/actions-all
       extensible: poisonableCommandsDataModel
