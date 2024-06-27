@@ -38,14 +38,9 @@ string computeScopePath(Scope scope) {
     result = scope.(Module).getName()
   else
     //recursive cases
-    if scope instanceof Class
+    if scope instanceof Class or scope instanceof Function
     then
-      result = computeScopePath(scope.(Class).getEnclosingScope()) + "." + scope.(Class).getName()
-    else
-      if scope instanceof Function
-      then
-        result =
-          computeScopePath(scope.(Function).getEnclosingScope()) + "." + scope.(Function).getName()
+      result = computeScopePath(scope.getEnclosingScope()) + "." + scope.getName()
       else result = "unknown: " + scope.toString()
 }
 
@@ -72,19 +67,17 @@ module FindModel<modelSig/2 model> {
    */
   bindingset[path, member]
   string possibleMemberPathPrefix(string path, string member) {
-    // functionName must be a substring of path
     exists(int index | index = path.indexOf(["Member", "Method"] + "[" + member + "]") |
       result = path.prefix(index)
     )
   }
 
   /**
-   * Holds if `(type,path)` evaluates to the given entity, when evalauted from a client of the current library.
+   * Holds if `(type,path)` identifies `scope`.
    */
   bindingset[type, path]
   predicate pathToScope(Scope scope, string type, string path) {
-    scope.getLocation().getFile() instanceof RelevantFile and
-    scope.isPublic() and // only public methods are modeled
+    scope instanceof Endpoint
     computeScopePath(scope) =
       type.replaceAll("!", "") + "." +
         path.replaceAll("Member[", "").replaceAll("]", "").replaceAll("Instance.", "") +

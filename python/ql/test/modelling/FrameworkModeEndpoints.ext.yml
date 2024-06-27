@@ -17,4 +17,4 @@ extensions:
       pack: codeql/python-all
       extensible: typeModel
     data:
-      - ["MyPackage.Foo.C2!","MyPackage","Member[Foo].Member[C3].Member[get_C2_instance].ReturnValue"]
+      - ["MyPackage.Foo.C2","MyPackage","Member[Foo].Member[C3].Member[get_C2_instance].ReturnValue"]

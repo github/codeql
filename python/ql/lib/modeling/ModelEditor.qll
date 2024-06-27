@@ -75,8 +75,8 @@ abstract class Endpoint instanceof Scope {
    * Gets a string representation of the parameters of this endpoint.
    *
    * The string follows a specific format:
-   * - Positional parameters are listed in order, separated by commas.
-   * - Keyword parameters are listed in order, separated by commas, each followed by a colon.
+   * - Normal  parameters(where arguments can be passed as either positional or keyword) are listed in order, separated by commas.
+   * - Keyword-only parameters are listed in order, separated by commas, each followed by a colon.
    * - In the future, positional-only parameters will be listed in order, separated by commas, each followed by a slash.
    */
   abstract string getParameters();
@@ -84,7 +84,7 @@ abstract class Endpoint instanceof Scope {
   /**
    * Gets a boolean that is true iff this endpoint is supported by existing modeling.
    *
-   * The check only takes Models ss Data extension models into account.
+   * The check only takes Models as Data extension models into account.
    */
   abstract boolean getSupportedStatus();
 
