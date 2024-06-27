@@ -313,6 +313,7 @@ edges
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step |
 #select
 | .github/workflows/auto_ci.yml:32:9:37:6 | Run Step | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:32:9:37:6 | Run Step | Potential unsafe checkout of untrusted code on a privileged workflow. |
+| .github/workflows/auto_ci.yml:48:9:52:2 | Run Step | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:48:9:52:2 | Run Step | Potential unsafe checkout of untrusted code on a privileged workflow. |
 | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | Potential unsafe checkout of untrusted code on a privileged workflow. |
 | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | Potential unsafe checkout of untrusted code on a privileged workflow. |
 | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | Potential unsafe checkout of untrusted code on a privileged workflow. |
