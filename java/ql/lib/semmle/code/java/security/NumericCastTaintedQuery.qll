@@ -73,10 +73,10 @@ private class SmallType extends Type {
 }
 
 private predicate smallExpr(Expr e) {
-  exists(int low, int high |
+  exists(QlBuiltins::BigInt low, QlBuiltins::BigInt high |
     bounded(e, any(ZeroBound zb), low, false, _) and
     bounded(e, any(ZeroBound zb), high, true, _) and
-    high - low < 256
+    high - low < 256.toBigInt()
   )
 }
 

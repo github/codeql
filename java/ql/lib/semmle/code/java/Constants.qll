@@ -6,7 +6,7 @@ import java
 
 signature boolean getBoolValSig(Expr e);
 
-signature int getIntValSig(Expr e);
+signature QlBuiltins::BigInt getBigIntValSig(Expr e);
 
 /**
  * Given predicates defining boolean and integer constants, this module
@@ -15,7 +15,7 @@ signature int getIntValSig(Expr e);
  *
  * The input and output predicates are expected to be mutually recursive.
  */
-module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> {
+module CalculateConstants<getBoolValSig/1 getBoolVal, getBigIntValSig/1 getBigIntVal> {
   /** Gets the value of a constant boolean expression. */
   boolean calculateBooleanValue(Expr e) {
     // No casts relevant to booleans.
@@ -23,10 +23,10 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
     result = getBoolVal(e.(LogNotExpr).getExpr()).booleanNot()
     or
     // Handle binary expressions that have integer operands and a boolean result.
-    exists(BinaryExpr b, int left, int right |
+    exists(BinaryExpr b, QlBuiltins::BigInt left, QlBuiltins::BigInt right |
       b = e and
-      left = getIntVal(b.getLeftOperand()) and
-      right = getIntVal(b.getRightOperand())
+      left = getBigIntVal(b.getLeftOperand()) and
+      right = getBigIntVal(b.getRightOperand())
     |
       (
         b instanceof LTExpr and
@@ -97,33 +97,35 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
     )
   }
 
-  /** Gets the value of a constant integer expression. */
-  int calculateIntValue(Expr e) {
-    exists(IntegralType t | e.getType() = t | t.getName().toLowerCase() != "long") and
+  /** Gets the big int value of a constant integer expression. */
+  QlBuiltins::BigInt calculateBigIntValue(Expr e) {
+    e.getType() instanceof IntegralType and
     (
-      exists(CastingExpr cast, int val | cast = e and val = getIntVal(cast.getExpr()) |
+      exists(CastingExpr cast, QlBuiltins::BigInt val |
+        cast = e and val = getBigIntVal(cast.getExpr())
+      |
         if cast.getType().hasName("byte")
-        then result = (val + 128).bitAnd(255) - 128
+        then result = (val + 128.toBigInt()).bitAnd(255.toBigInt()) - 128.toBigInt()
         else
           if cast.getType().hasName("short")
-          then result = (val + 32768).bitAnd(65535) - 32768
+          then result = (val + 32768.toBigInt()).bitAnd(65535.toBigInt()) - 32768.toBigInt()
           else
             if cast.getType().hasName("char")
-            then result = val.bitAnd(65535)
+            then result = val.bitAnd(65535.toBigInt())
             else result = val
       )
       or
-      result = getIntVal(e.(PlusExpr).getExpr())
+      result = getBigIntVal(e.(PlusExpr).getExpr())
       or
-      result = -getIntVal(e.(MinusExpr).getExpr())
+      result = -getBigIntVal(e.(MinusExpr).getExpr())
       or
-      result = getIntVal(e.(BitNotExpr).getExpr()).bitNot()
+      result = getBigIntVal(e.(BitNotExpr).getExpr()).bitNot()
       or
       // No `int` value for `LogNotExpr`.
-      exists(BinaryExpr b, int v1, int v2 |
+      exists(BinaryExpr b, QlBuiltins::BigInt v1, QlBuiltins::BigInt v2 |
         b = e and
-        v1 = getIntVal(b.getLeftOperand()) and
-        v2 = getIntVal(b.getRightOperand())
+        v1 = getBigIntVal(b.getLeftOperand()) and
+        v2 = getBigIntVal(b.getRightOperand())
       |
         b instanceof MulExpr and result = v1 * v2
         or
@@ -135,11 +137,12 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
         or
         b instanceof SubExpr and result = v1 - v2
         or
-        b instanceof LeftShiftExpr and result = v1.bitShiftLeft(v2)
+        b instanceof LeftShiftExpr and result = v1.bitShiftLeft(v2.toInt())
         or
-        b instanceof RightShiftExpr and result = v1.bitShiftRightSigned(v2)
+        b instanceof RightShiftExpr and result = v1.bitShiftRightSigned(v2.toInt())
         or
-        b instanceof UnsignedRightShiftExpr and result = v1.bitShiftRight(v2)
+        b instanceof UnsignedRightShiftExpr and
+        result = v1.toInt().bitShiftRight(v2.toInt()).toBigInt() // bitShiftRight not implemented on bigints (yet)
         or
         b instanceof AndBitwiseExpr and result = v1.bitAnd(v2)
         or
@@ -154,12 +157,12 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
       exists(ConditionalExpr ce, boolean condition |
         ce = e and
         condition = getBoolVal(ce.getCondition()) and
-        result = getIntVal(ce.getBranchExpr(condition))
+        result = getBigIntVal(ce.getBranchExpr(condition))
       )
       or
       // If a `Variable` is final, its value is its initializer, if it exists.
       exists(Variable v | e = v.getAnAccess() and v.isFinal() |
-        result = getIntVal(v.getInitializer())
+        result = getBigIntVal(v.getInitializer())
       )
     )
   }
