@@ -19,7 +19,7 @@ import semmle.code.csharp.frameworks.system.collections.Generic
 class UnsafeField extends Field {
   UnsafeField() {
     this.isStatic() and
-    not this.getAnAttribute().getType().hasQualifiedName("System", "ThreadStaticAttribute") and
+    not this.getAnAttribute().getType().hasFullyQualifiedName("System", "ThreadStaticAttribute") and
     this.getType() instanceof UsesICryptoTransform
   }
 }
@@ -47,7 +47,7 @@ class UsesICryptoTransform extends ValueOrRefType {
 
 class ICryptoTransform extends ValueOrRefType {
   ICryptoTransform() {
-    this.getABaseType*().hasQualifiedName("System.Security.Cryptography", "ICryptoTransform")
+    this.getABaseType*().hasFullyQualifiedName("System.Security.Cryptography", "ICryptoTransform")
   }
 }
 

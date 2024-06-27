@@ -23,9 +23,26 @@ module ReflectedXss {
   private class SharedXssSanitizer extends Sanitizer instanceof SharedXss::Sanitizer { }
 
   /**
+   * A request.Cookie method returns the request cookie, which is not user controlled in reflected XSS context.
+   */
+  class CookieSanitizer extends Sanitizer {
+    CookieSanitizer() {
+      exists(Method m, DataFlow::CallNode call | call = m.getACall() |
+        m.hasQualifiedName("net/http", "Request", "Cookie") and
+        this = call.getResult(0)
+      )
+    }
+  }
+
+  /**
+   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
+
+  /**
    * A third-party controllable input, considered as a flow source for reflected XSS.
    */
-  class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink instanceof SharedXss::Sink { }

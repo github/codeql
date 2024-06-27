@@ -87,16 +87,12 @@ events.cs:
 #   50|   4: [Class] Control
 #   53|     6: [Field] mouseDownEventKey
 #   53|       -1: [TypeMention] object
-#   53|       1: [AssignExpr] ... = ...
-#   53|         0: [FieldAccess] access to field mouseDownEventKey
-#   53|         1: [ObjectCreation] object creation of type Object
-#   53|           0: [TypeMention] object
+#   53|       1: [ObjectCreation] object creation of type Object
+#   53|         0: [TypeMention] object
 #   54|     7: [Field] mouseUpEventKey
 #   54|       -1: [TypeMention] object
-#   54|       1: [AssignExpr] ... = ...
-#   54|         0: [FieldAccess] access to field mouseUpEventKey
-#   54|         1: [ObjectCreation] object creation of type Object
-#   54|           0: [TypeMention] object
+#   54|       1: [ObjectCreation] object creation of type Object
+#   54|         0: [TypeMention] object
 #   57|     8: [Method] GetEventHandler
 #   57|       -1: [TypeMention] Delegate
 #-----|       2: (Parameters)

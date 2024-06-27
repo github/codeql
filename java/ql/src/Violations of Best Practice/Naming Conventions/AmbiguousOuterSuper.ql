@@ -23,7 +23,7 @@ RefType nestedSupertypePlus(RefType t) {
  * A call (without a qualifier) in a nested type
  * to an inherited method with the specified `signature`.
  */
-predicate callToInheritedMethod(RefType lexicalScope, MethodAccess ma, string signature) {
+predicate callToInheritedMethod(RefType lexicalScope, MethodCall ma, string signature) {
   not ma.getMethod().isStatic() and
   not ma.hasQualifier() and
   ma.getEnclosingCallable().getDeclaringType() = lexicalScope and
@@ -46,7 +46,7 @@ Method methodInEnclosingType(NestedType nested, string signature) {
   )
 }
 
-from MethodAccess ma, Method m, NestedType nt, string signature
+from MethodCall ma, Method m, NestedType nt, string signature
 where
   callToInheritedMethod(nt, ma, signature) and
   m = methodInEnclosingType(nt, signature) and

@@ -11,6 +11,9 @@ on:
       - "rc/*"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   check:
     name: Check query IDs

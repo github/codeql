@@ -29,7 +29,7 @@ predicate usedInHumanWrittenCode(Field f) {
 
 from Field field, ValueOrRefType widget, string prefix
 where
-  widget.getABaseType*().hasQualifiedName("System.Windows.Forms", "Control") and
+  widget.getABaseType*().hasFullyQualifiedName("System.Windows.Forms", "Control") and
   field.getType() = widget and
   field.getName().regexpMatch(prefix + "[0-9]+") and
   controlName(prefix) and

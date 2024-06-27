@@ -18,7 +18,7 @@ module Mysql2 {
 
     override MethodCall getACall() { result = any(Mysql2Connection c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }
@@ -66,7 +66,7 @@ module Mysql2 {
 
     override MethodCall getACall() { result = any(Mysql2EscapeSanitization c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }

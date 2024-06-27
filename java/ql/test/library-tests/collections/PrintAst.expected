@@ -13,7 +13,7 @@ collections/Test.java:
 #    6|           1: [TypeAccess] Integer
 #    8|     4: [BlockStmt] { ... }
 #    9|       0: [ExprStmt] <Expr>;
-#    9|         0: [MethodAccess] put(...)
+#    9|         0: [MethodCall] put(...)
 #    9|           -1: [VarAccess] m
 #    9|           0: [StringLiteral] "key"
 #    9|           1: [IntegerLiteral] 23

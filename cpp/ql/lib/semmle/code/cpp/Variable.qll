@@ -234,7 +234,16 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    * int f(int y) { return y; }
    * ```
    */
-  override string getName() { var_decls(underlyingElement(this), _, _, result, _) and result != "" }
+  override string getName() {
+    exists(string name |
+      var_decls(underlyingElement(this), _, _, name, _) and
+      (
+        name != "" and result = name
+        or
+        name = "" and result = this.getVariable().(LocalVariable).getName()
+      )
+    )
+  }
 
   /**
    * Gets the type of the variable which is being declared or defined.
@@ -400,6 +409,10 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
     or
     orphaned_variables(underlyingElement(this), unresolveElement(result))
+  }
+
+  override predicate isStatic() {
+    super.isStatic() or orphaned_variables(underlyingElement(this), _)
   }
 }
 
@@ -579,6 +592,33 @@ class TemplateVariable extends Variable {
    * Gets an instantiation of this variable template.
    */
   Variable getAnInstantiation() { result.isConstructedFrom(this) }
+}
+
+/**
+ * A variable that is an instantiation of a template. For example
+ * the instantiation `myTemplateVariable<int>` in the following code:
+ * ```
+ * template<class T>
+ * T myTemplateVariable;
+ *
+ * void caller(int i) {
+ *   myTemplateVariable<int> = i;
+ * }
+ * ```
+ */
+class VariableTemplateInstantiation extends Variable {
+  TemplateVariable tv;
+
+  VariableTemplateInstantiation() { tv.getAnInstantiation() = this }
+
+  override string getAPrimaryQlClass() { result = "VariableTemplateInstantiation" }
+
+  /**
+   * Gets the variable template from which this instantiation was instantiated.
+   *
+   * Example: For `int x<int>`, returns `T x`.
+   */
+  TemplateVariable getTemplate() { result = tv }
 }
 
 /**

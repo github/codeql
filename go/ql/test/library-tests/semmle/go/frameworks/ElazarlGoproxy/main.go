@@ -11,7 +11,7 @@ import (
 )
 
 func handler(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-	data := ctx.UserData // $ untrustedflowsource="selection of UserData"
+	data := ctx.UserData // $ remoteflowsource="selection of UserData"
 
 	// note no content type result here because we don't seem to extract the value of `ContentTypeHtml`
 	return r, goproxy.NewResponse(r, goproxy.ContentTypeHtml, http.StatusForbidden, fmt.Sprintf("<body>Bad request: %v</body>", data)) // $ headerwrite=status:403

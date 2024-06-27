@@ -1,9 +1,17 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Features, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
+        namespace Antiforgery
+        {
+            public interface IAntiforgeryValidationFeature
+            {
+                System.Exception Error { get; }
+                bool IsValid { get; }
+            }
+        }
         namespace Http
         {
             public class CookieOptions
@@ -69,6 +77,10 @@ namespace Microsoft
                 {
                     bool IsReadOnly { get; }
                     long? MaxRequestBodySize { get; set; }
+                }
+                public interface IHttpMetricsTagsFeature
+                {
+                    System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>> Tags { get; }
                 }
                 public interface IHttpRequestBodyDetectionFeature
                 {

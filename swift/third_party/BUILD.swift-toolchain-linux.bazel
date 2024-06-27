@@ -1,0 +1,61 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
+
+_strip_prefix = "usr/lib/swift"
+
+_pm_interfaces_glob = "usr/lib/swift/pm/**/*.swiftinterface"
+
+pkg_files(
+    name = "resource-dir-original",
+    srcs = glob(
+        ["usr/lib/swift/**/*"],
+        exclude = [_pm_interfaces_glob],
+    ),
+    strip_prefix = _strip_prefix,
+)
+
+# pre-compile package manager interface files as compiling them hits a mysterious crash during SIL
+_pm_interface_files = [
+    (
+        f[len(_strip_prefix) + 1:f.rindex("/")],
+        f[f.rindex("/") + 1:],
+        f[f.rindex("/") + 1:f.rindex(".")] + ".swiftmodule",
+    )
+    for f in glob([_pm_interfaces_glob])
+]
+
+[
+    [
+        genrule(
+            name = "compile-%s" % interface,
+            srcs = ["%s/%s/%s" % (_strip_prefix, dir, interface)],
+            outs = [module],
+            cmd = "$(location usr/bin/swift-frontend) -compile-module-from-interface $< -o $@ -I $$(dirname $<)",
+            tags = ["no-sandbox"],
+            tools = ["usr/bin/swift-frontend"],
+        ),
+        pkg_files(
+            name = "pkg-%s" % module,
+            srcs = [":compile-%s" % interface],
+            prefix = dir,
+        ),
+    ]
+    for dir, interface, module in _pm_interface_files
+]
+
+pkg_filegroup(
+    name = "resource-dir-files",
+    srcs = [":resource-dir-original"] + [":pkg-%s" % module for _, _, module in _pm_interface_files],
+    visibility = ["//visibility:public"],
+)
+
+pkg_zip(
+    name = "resource-dir-linux",
+    srcs = [":resource-dir-files"],
+)
+
+alias(
+    name = "swift_toolchain_linux",
+    actual = ":resource-dir-linux",
+    visibility = ["//visibility:public"],
+)

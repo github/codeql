@@ -26,7 +26,7 @@ private class PermissiveDotStr extends StringLiteral {
 /** The qualifier of a request dispatch method call. */
 private class UrlDispatchSink extends UrlRedirectSink {
   UrlDispatchSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof RequestDispatchMethod and
       this.asExpr() = ma.getQualifier()
     )
@@ -44,7 +44,7 @@ private class ServletFilterMethod extends Method {
 /** The qualifier of a servlet filter method call. */
 private class UrlFilterSink extends UrlRedirectSink {
   UrlFilterSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof ServletFilterMethod and
       this.asExpr() = ma.getQualifier()
     )
@@ -75,7 +75,7 @@ private class SpringUriInputParameterSource extends DataFlow::Node {
  */
 private class CompileRegexSink extends DataFlow::ExprNode {
   CompileRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       (
         ma.getArgument(0) = this.asExpr() and
         (
@@ -100,7 +100,7 @@ private module PermissiveDotRegexConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow2::Node node) {
     exists(
-      MethodAccess ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
+      MethodCall ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
     |
       ma.getMethod() instanceof PatternCompileMethod and
       ma.getArgument(1) = f.getAnAccess() and
@@ -129,13 +129,13 @@ module MatchRegexConfig implements DataFlow::ConfigSig {
       Guard guard, Expr se, Expr ce // used in a condition to control url redirect, which is a typical security enforcement
     |
       (
-        sink.asExpr() = ce.(MethodAccess).getQualifier() or
-        sink.asExpr() = ce.(MethodAccess).getAnArgument() or
+        sink.asExpr() = ce.(MethodCall).getQualifier() or
+        sink.asExpr() = ce.(MethodCall).getAnArgument() or
         sink.asExpr() = ce
       ) and
       (
-        DataFlow::localExprFlow(ce, guard.(MethodAccess).getQualifier()) or
-        DataFlow::localExprFlow(ce, guard.(MethodAccess).getAnArgument())
+        DataFlow::localExprFlow(ce, guard.(MethodCall).getQualifier()) or
+        DataFlow::localExprFlow(ce, guard.(MethodCall).getAnArgument())
       ) and
       (
         DataFlow::exprNode(se) instanceof UrlRedirectSink or
@@ -143,14 +143,14 @@ module MatchRegexConfig implements DataFlow::ConfigSig {
       ) and
       guard.controls(se.getBasicBlock(), true)
     ) and
-    exists(MethodAccess ma | PermissiveDotRegexFlow::flowToExpr(ma.getArgument(0)) |
+    exists(MethodCall ma | PermissiveDotRegexFlow::flowToExpr(ma.getArgument(0)) |
       // input.matches(regexPattern)
       ma.getMethod() instanceof StringMatchMethod and
       ma.getQualifier() = sink.asExpr()
       or
       // p = Pattern.compile(regexPattern); p.matcher(input)
       ma.getMethod() instanceof PatternCompileMethod and
-      exists(MethodAccess pma |
+      exists(MethodCall pma |
         pma.getMethod() instanceof PatternMatcherMethod and
         sink.asExpr() = pma.getArgument(0) and
         DataFlow::localExprFlow(ma, pma.getQualifier())
@@ -175,7 +175,7 @@ abstract class MatchRegexSink extends DataFlow::ExprNode { }
  */
 private class StringMatchRegexSink extends MatchRegexSink {
   StringMatchRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       (
         m instanceof StringMatchMethod and
         ma.getQualifier() = this.asExpr()
@@ -189,7 +189,7 @@ private class StringMatchRegexSink extends MatchRegexSink {
  */
 private class PatternMatchRegexSink extends MatchRegexSink {
   PatternMatchRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       (
         m instanceof PatternMatchMethod and
         ma.getArgument(1) = this.asExpr()
@@ -203,7 +203,7 @@ private class PatternMatchRegexSink extends MatchRegexSink {
  */
 private class PatternMatcherRegexSink extends MatchRegexSink {
   PatternMatcherRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       (
         m instanceof PatternMatcherMethod and
         ma.getArgument(0) = this.asExpr()

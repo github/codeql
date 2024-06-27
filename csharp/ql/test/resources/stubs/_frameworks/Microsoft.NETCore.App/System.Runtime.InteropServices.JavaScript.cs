@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.InteropServices.JavaScript, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Runtime
@@ -12,6 +12,7 @@ namespace System
                 {
                     public JSException(string msg) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
                 public sealed class JSExportAttribute : System.Attribute
                 {
                     public JSExportAttribute() => throw null;
@@ -20,7 +21,6 @@ namespace System
                 {
                     public static System.Runtime.InteropServices.JavaScript.JSFunctionBinding BindJSFunction(string functionName, string moduleName, System.ReadOnlySpan<System.Runtime.InteropServices.JavaScript.JSMarshalerType> signatures) => throw null;
                     public static System.Runtime.InteropServices.JavaScript.JSFunctionBinding BindManagedFunction(string fullyQualifiedName, int signatureHash, System.ReadOnlySpan<System.Runtime.InteropServices.JavaScript.JSMarshalerType> signatures) => throw null;
-                    public JSFunctionBinding() => throw null;
                     public static void InvokeJS(System.Runtime.InteropServices.JavaScript.JSFunctionBinding signature, System.Span<System.Runtime.InteropServices.JavaScript.JSMarshalerArgument> arguments) => throw null;
                 }
                 public static class JSHost
@@ -29,6 +29,7 @@ namespace System
                     public static System.Runtime.InteropServices.JavaScript.JSObject GlobalThis { get => throw null; }
                     public static System.Threading.Tasks.Task<System.Runtime.InteropServices.JavaScript.JSObject> ImportAsync(string moduleName, string moduleUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
                 public sealed class JSImportAttribute : System.Attribute
                 {
                     public JSImportAttribute(string functionName) => throw null;
@@ -36,6 +37,7 @@ namespace System
                     public string FunctionName { get => throw null; }
                     public string ModuleName { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)10240, Inherited = false, AllowMultiple = false)]
                 public sealed class JSMarshalAsAttribute<T> : System.Attribute where T : System.Runtime.InteropServices.JavaScript.JSType
                 {
                     public JSMarshalAsAttribute() => throw null;

@@ -1,6 +1,6 @@
 // NOTE: There are two copies of this file, and they must be kept identical:
 // - semmle/code/cpp/controlflow/SubBasicBlocks.qll
-// - semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll
+// - semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll [now DEPRECATED]
 //
 // The second one is a private copy of the `SubBasicBlocks` library for
 // internal use by the data flow library. Having an extra copy prevents

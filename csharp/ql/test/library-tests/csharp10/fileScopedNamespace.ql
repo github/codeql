@@ -1,7 +1,7 @@
 import csharp
 
 query predicate fileScopedNamespace(Namespace n, Member m) {
-  n.hasQualifiedName("", "MyFileScopedNamespace") and
+  n.hasFullyQualifiedName("", "MyFileScopedNamespace") and
   exists(Class c |
     c.getNamespace() = n and
     c.hasMember(m) and

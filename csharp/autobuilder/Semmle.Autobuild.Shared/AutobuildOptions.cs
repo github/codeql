@@ -11,24 +11,9 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public abstract class AutobuildOptionsShared
     {
-        protected const string lgtmPrefix = "LGTM_INDEX_";
-
-
         public int SearchDepth { get; } = 3;
         public string RootDirectory { get; }
-        public string? VsToolsVersion { get; }
-        public string? MsBuildArguments { get; }
-        public string? MsBuildPlatform { get; }
-        public string? MsBuildConfiguration { get; }
-        public string? MsBuildTarget { get; }
-        public string? DotNetArguments { get; }
         public string? DotNetVersion { get; }
-        public string? BuildCommand { get; }
-        public IEnumerable<string> Solution { get; }
-        public bool IgnoreErrors { get; }
-
-        public bool AllSolutions { get; }
-        public bool NugetRestore { get; }
         public abstract Language Language { get; }
 
         /// <summary>
@@ -38,19 +23,7 @@ namespace Semmle.Autobuild.Shared
         public AutobuildOptionsShared(IBuildActions actions)
         {
             RootDirectory = actions.GetCurrentDirectory();
-            VsToolsVersion = actions.GetEnvironmentVariable(lgtmPrefix + "VSTOOLS_VERSION");
-            MsBuildArguments = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
-            MsBuildPlatform = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_PLATFORM");
-            MsBuildConfiguration = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_CONFIGURATION");
-            MsBuildTarget = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_TARGET");
-            DotNetArguments = actions.GetEnvironmentVariable(lgtmPrefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
-            DotNetVersion = actions.GetEnvironmentVariable(lgtmPrefix + "DOTNET_VERSION");
-            BuildCommand = actions.GetEnvironmentVariable(lgtmPrefix + "BUILD_COMMAND");
-            Solution = actions.GetEnvironmentVariable(lgtmPrefix + "SOLUTION").AsListWithExpandedEnvVars(actions, Array.Empty<string>());
-
-            IgnoreErrors = actions.GetEnvironmentVariable(lgtmPrefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
-            AllSolutions = actions.GetEnvironmentVariable(lgtmPrefix + "ALL_SOLUTIONS").AsBool("all_solutions", false);
-            NugetRestore = actions.GetEnvironmentVariable(lgtmPrefix + "NUGET_RESTORE").AsBool("nuget_restore", true);
+            DotNetVersion = actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_DOTNET_VERSION");
         }
     }
 
@@ -75,7 +48,7 @@ namespace Semmle.Autobuild.Shared
                 return defaultValue;
 
             return value.
-                Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).
+                Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries).
                 Select(s => AsStringWithExpandedEnvVars(s, actions)).ToArray();
         }
 

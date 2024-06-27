@@ -322,6 +322,7 @@ module SourceNode {
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
         astNode instanceof ImportSpecifier or
+        astNode instanceof ExportNamespaceSpecifier or
         astNode instanceof ImportMetaExpr or
         astNode instanceof TaggedTemplateExpr or
         astNode instanceof Templating::PipeRefExpr or

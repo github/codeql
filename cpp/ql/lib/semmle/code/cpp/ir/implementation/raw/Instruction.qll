@@ -247,8 +247,7 @@ class Instruction extends Construction::TStageInstruction {
    * Gets the type of the result produced by this instruction. If the instruction does not produce
    * a result, its result type will be `IRVoidType`.
    */
-  cached
-  final IRType getResultIRType() { result = this.getResultLanguageType().getIRType() }
+  final IRType getResultIRType() { result = Construction::getInstructionResultIRType(this) }
 
   /**
    * Gets the type of the result produced by this instruction. If the
@@ -995,9 +994,8 @@ class ConstantInstruction extends ConstantValueInstruction {
  */
 class IntegerConstantInstruction extends ConstantInstruction {
   IntegerConstantInstruction() {
-    exists(IRType resultType |
-      resultType = this.getResultIRType() and
-      (resultType instanceof IRIntegerType or resultType instanceof IRBooleanType)
+    exists(IRType resultType | resultType = this.getResultIRType() |
+      resultType instanceof IRIntegerType or resultType instanceof IRBooleanType
     )
   }
 }
@@ -1007,6 +1005,17 @@ class IntegerConstantInstruction extends ConstantInstruction {
  */
 class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { this.getResultIRType() instanceof IRFloatingPointType }
+}
+
+/**
+ * An instruction whose result is a constant value of a pointer type.
+ */
+class PointerConstantInstruction extends ConstantInstruction {
+  PointerConstantInstruction() {
+    exists(IRType resultType | resultType = this.getResultIRType() |
+      resultType instanceof IRAddressType or resultType instanceof IRFunctionAddressType
+    )
+  }
 }
 
 /**
@@ -2124,13 +2133,6 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() { result = this.getPartialOperand().getDef() }
-
-  /**
-   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`, relative to the start address of the total operand.
-   */
-  final predicate getUpdatedInterval(int startBit, int endBit) {
-    Construction::getIntervalUpdatedByChi(this, startBit, endBit)
-  }
 
   /**
    * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.

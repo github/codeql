@@ -1,7 +1,7 @@
 import csharp
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.System
-import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.security.Sanitizers
 
 //If this leaves experimental this should probably go in semmle.code.csharp.frameworks.system.Net
@@ -68,8 +68,15 @@ private module TaintedWebClientConfig implements DataFlow::ConfigSig {
  */
 module TaintedWebClient = TaintTracking::Global<TaintedWebClientConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * A path argument to a `WebClient` method call that has an address argument.

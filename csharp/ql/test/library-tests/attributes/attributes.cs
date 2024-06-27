@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -129,4 +130,31 @@ public class MyAttributeUsage
         [param: My3Attribute(14)]
         set { p = value; }
     }
+}
+
+class Class1
+{
+    public class ParamsAttribute : Attribute
+    {
+        public ParamsAttribute(string s1, string s2, params int[] args) { }
+    }
+
+    [Params("a", "b", 1, 2, 3)]
+    public void M1() { }
+
+    [Params(s1: "a", s2: "b", 1, 2, 3)]
+    public void M2() { }
+
+    [Params(args: 1, s2: "b", s1: "a")]
+    public void M3() { }
+
+    [Params(args: new[] { 1 }, s2: "b", s1: "a")]
+    public void M4() { }
+}
+
+[Experimental("MyExperimentalClassId")]
+public class MyExperimentalClass
+{
+    [Experimental("MyExperimentalMethodId")]
+    public void MyExperimentalMethod() { }
 }

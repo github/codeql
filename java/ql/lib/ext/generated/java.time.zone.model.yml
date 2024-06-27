@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.time.zone", "ZoneRulesException", True, "ZoneRulesException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.time.zone", "ZoneRulesException", True, "ZoneRulesException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.time.zone", "ZoneRulesException", True, "ZoneRulesException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.time.zone", "ZoneOffsetTransition", "getDuration", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransition", "getInstant", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransition", "isGap", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransition", "isOverlap", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransition", "isValidOffset", "(ZoneOffset)", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransition", "toEpochSecond", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getDayOfMonthIndicator", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getDayOfWeek", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getMonth", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getTimeDefinition", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "isMidnightEndOfDay", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRules", "getDaylightSavings", "(Instant)", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRules", "isDaylightSavings", "(Instant)", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRules", "isFixedOffset", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRules", "isValidOffset", "(LocalDateTime,ZoneOffset)", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRulesProvider", "getAvailableZoneIds", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRulesProvider", "getRules", "(String,boolean)", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRulesProvider", "getVersions", "(String)", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRulesProvider", "refresh", "()", "summary", "df-generated"]
+      - ["java.time.zone", "ZoneRulesProvider", "registerProvider", "(ZoneRulesProvider)", "summary", "df-generated"]

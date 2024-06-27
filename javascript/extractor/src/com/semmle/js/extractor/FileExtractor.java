@@ -103,7 +103,7 @@ public class FileExtractor {
 
   /** Information about supported file types. */
   public static enum FileType {
-    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb") {
+    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb", ".jsp", ".dot") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new HTMLExtractor(config, state);
@@ -125,11 +125,17 @@ public class FileExtractor {
             return false;
           }
         }
+        // for DOT files we are only interrested in `.html.dot` files
+        if (FileUtil.extension(f).equalsIgnoreCase(".dot")) {
+          if (!f.getName().toLowerCase().endsWith(".html.dot")) {
+            return false;
+          }
+        }
         return super.contains(f, lcExt, config);
       }
     },
 
-    JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es") {
+    JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es", ".xsjs", ".xsjslib") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new ScriptExtractor(config, state);
@@ -178,8 +184,8 @@ public class FileExtractor {
         if (super.contains(f, lcExt, config)) return true;
 
         // detect JSON-encoded configuration files whose name starts with `.` and ends with `rc`
-        // (e.g., `.eslintrc` or `.babelrc`)
-        if (f.isFile() && f.getName().matches("\\..*rc")) {
+        // (e.g., `.eslintrc` or `.babelrc`) as well as `.xsaccess` files
+        if (f.isFile() && f.getName().matches("\\..*rc|\\.xsaccess")) {
           try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             // check whether the first two non-empty lines look like the start of a JSON object
             // (two lines because the opening brace is usually on a line by itself)

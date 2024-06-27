@@ -31,6 +31,11 @@ module ConstantSaltConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof ConstantSaltBarrier }
 
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(ConstantSaltAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }

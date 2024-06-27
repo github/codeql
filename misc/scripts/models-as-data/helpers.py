@@ -38,3 +38,16 @@ def readData(workDir, bqrsFile):
     except KeyError:
         print('Unexpected JSON output - no tuples found')
         exit(1)
+
+def insert_update(rows, key, value):
+    if key in rows:
+        rows[key] += value
+    else:
+        rows[key] = value
+
+def merge(*dicts):
+    merged = {}
+    for d in dicts:
+        for entry in d:
+            insert_update(merged, entry, d[entry])
+    return merged

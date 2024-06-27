@@ -43,8 +43,6 @@ class RegExpParent extends Locatable, @regexpparent { }
  * ```
  */
 class RegExpTerm extends Locatable, @regexpterm {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the `i`th child term of this term. */
   RegExpTerm getChild(int i) { regexpterm(result, _, this, i, _) }
 
@@ -1022,29 +1020,6 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
             .flow()
     )
   )
-}
-
-/**
- * Provides utility predicates related to regular expressions.
- */
-deprecated module RegExpPatterns {
-  /**
-   * Gets a pattern that matches common top-level domain names in lower case.
-   * DEPRECATED: use the similarly named predicate from `HostnameRegex` from the `regex` pack instead.
-   */
-  deprecated string getACommonTld() {
-    // according to ranking by http://google.com/search?q=site:.<<TLD>>
-    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
-  }
-
-  /**
-   * Gets a pattern that matches common top-level domain names in lower case.
-   * DEPRECATED: use `getACommonTld` instead
-   */
-  deprecated predicate commonTld = getACommonTld/0;
-
-  /** DEPRECATED: Alias for commonTld */
-  deprecated predicate commonTLD = commonTld/0;
 }
 
 /**

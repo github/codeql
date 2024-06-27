@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Localization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Localization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -19,6 +19,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Builder.RequestLocalizationOptions AddSupportedUICultures(params string[] uiCultures) => throw null;
                 public bool ApplyCurrentCultureToResponseHeaders { get => throw null; set { } }
                 public RequestLocalizationOptions() => throw null;
+                public bool CultureInfoUseUserOverride { get => throw null; set { } }
                 public Microsoft.AspNetCore.Localization.RequestCulture DefaultRequestCulture { get => throw null; set { } }
                 public bool FallBackToParentCultures { get => throw null; set { } }
                 public bool FallBackToParentUICultures { get => throw null; set { } }

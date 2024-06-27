@@ -77,7 +77,7 @@ jobs:
           done < "${RUNNER_TEMP}/paths.txt" >> comment_body.txt
           exit "${EXIT_CODE}"
 
-      - if: always()
+      - if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: comment

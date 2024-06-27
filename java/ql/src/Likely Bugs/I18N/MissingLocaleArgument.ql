@@ -12,7 +12,7 @@
 
 import java
 
-from MethodAccess ma, Method changecase
+from MethodCall ma, Method changecase
 where
   (
     changecase.hasName("toUpperCase") or

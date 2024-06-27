@@ -118,12 +118,14 @@ private class StdSequenceContainerData extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
  * The standard container functions `push_back` and `push_front`.
  */
-private class StdSequenceContainerPush extends TaintFunction {
+class StdSequenceContainerPush extends MemberFunction {
   StdSequenceContainerPush() {
     this.getClassAndName("push_back") instanceof Vector or
     this.getClassAndName(["push_back", "push_front"]) instanceof Deque or
@@ -131,11 +133,24 @@ private class StdSequenceContainerPush extends TaintFunction {
     this.getClassAndName(["push_back", "push_front"]) instanceof List
   }
 
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+}
+
+private class StdSequenceContainerPushModel extends StdSequenceContainerPush, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to qualifier
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -160,7 +175,7 @@ private class StdSequenceContainerFrontBack extends TaintFunction {
 /**
  * The standard container functions `insert` and `insert_after`.
  */
-private class StdSequenceContainerInsert extends TaintFunction {
+class StdSequenceContainerInsert extends MemberFunction {
   StdSequenceContainerInsert() {
     this.getClassAndName("insert") instanceof Deque or
     this.getClassAndName("insert") instanceof List or
@@ -181,7 +196,9 @@ private class StdSequenceContainerInsert extends TaintFunction {
    * Gets the index of a parameter to this function that is an iterator.
    */
   int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
+}
 
+private class StdSequenceContainerInsertModel extends StdSequenceContainerInsert, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to container itself (qualifier) and return value
     (
@@ -194,6 +211,8 @@ private class StdSequenceContainerInsert extends TaintFunction {
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -234,13 +253,15 @@ private class StdSequenceContainerAssign extends TaintFunction {
 /**
  * The standard container functions `at` and `operator[]`.
  */
-private class StdSequenceContainerAt extends TaintFunction {
+class StdSequenceContainerAt extends MemberFunction {
   StdSequenceContainerAt() {
     this.getClassAndName(["at", "operator[]"]) instanceof Array or
     this.getClassAndName(["at", "operator[]"]) instanceof Deque or
     this.getClassAndName(["at", "operator[]"]) instanceof Vector
   }
+}
 
+private class StdSequenceContainerAtModel extends StdSequenceContainerAt, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
     input.isQualifierObject() and
@@ -250,14 +271,33 @@ private class StdSequenceContainerAt extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
- * The standard vector `emplace` function.
+ * The standard `emplace` function.
  */
-class StdVectorEmplace extends TaintFunction {
-  StdVectorEmplace() { this.getClassAndName("emplace") instanceof Vector }
+class StdSequenceEmplace extends MemberFunction {
+  StdSequenceEmplace() {
+    this.getClassAndName("emplace") instanceof Vector
+    or
+    this.getClassAndName("emplace") instanceof List
+    or
+    this.getClassAndName("emplace") instanceof Deque
+  }
 
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+}
+
+private class StdSequenceEmplaceModel extends StdSequenceEmplace, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter except the position iterator to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
@@ -267,18 +307,53 @@ class StdVectorEmplace extends TaintFunction {
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+}
+
+/**
+ * The standard vector `emplace` function.
+ */
+class StdVectorEmplace extends StdSequenceEmplace {
+  StdVectorEmplace() { this.getDeclaringType() instanceof Vector }
 }
 
 /**
  * The standard vector `emplace_back` function.
  */
-class StdVectorEmplaceBack extends TaintFunction {
-  StdVectorEmplaceBack() { this.getClassAndName("emplace_back") instanceof Vector }
+class StdSequenceEmplaceBack extends MemberFunction {
+  StdSequenceEmplaceBack() {
+    this.getClassAndName("emplace_back") instanceof Vector
+    or
+    this.getClassAndName("emplace_back") instanceof List
+    or
+    this.getClassAndName("emplace_back") instanceof Deque
+  }
 
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+}
+
+private class StdSequenceEmplaceBackModel extends StdSequenceEmplaceBack, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter to qualifier
     // (here we assume taint flow from any constructor parameter to the constructed object)
     input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+}
+
+/**
+ * The standard vector `emplace_back` function.
+ */
+class StdVectorEmplaceBack extends StdSequenceEmplaceBack {
+  StdVectorEmplaceBack() { this.getDeclaringType() instanceof Vector }
 }

@@ -37,6 +37,8 @@ private module Rsa {
   class RsaEncryptCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaEncryptCall() { this = API::moduleImport("rsa").getMember("encrypt").getACall() }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 
     override DataFlow::Node getAnInput() {
@@ -54,6 +56,8 @@ private module Rsa {
   class RsaDecryptCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaDecryptCall() { this = API::moduleImport("rsa").getMember("decrypt").getACall() }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("crypto")] }
@@ -69,12 +73,14 @@ private module Rsa {
   class RsaSignCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaSignCall() { this = API::moduleImport("rsa").getMember("sign").getACall() }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
       // signature part
       result.getName() = "RSA"
       or
       // hashing part
-      exists(StrConst str, DataFlow::Node hashNameArg |
+      exists(StringLiteral str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
@@ -95,6 +101,8 @@ private module Rsa {
    */
   class RsaVerifyCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaVerifyCall() { this = API::moduleImport("rsa").getMember("verify").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
       // note that technically there is also a hashing operation going on but we don't
@@ -121,8 +129,10 @@ private module Rsa {
   {
     RsaComputeHashCall() { this = API::moduleImport("rsa").getMember("compute_hash").getACall() }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
-      exists(StrConst str, DataFlow::Node hashNameArg |
+      exists(StringLiteral str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
@@ -143,6 +153,8 @@ private module Rsa {
    */
   class RsaSignHashCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaSignHashCall() { this = API::moduleImport("rsa").getMember("sign_hash").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 

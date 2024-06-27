@@ -23,7 +23,12 @@ class Event extends DeclarationWithAccessors, @event {
 
   override ValueOrRefType getDeclaringType() { events(this, _, result, _, _) }
 
-  override DelegateType getType() { events(this, _, _, getTypeRef(result), _) }
+  override DelegateType getType() {
+    events(this, _, _, result, _)
+    or
+    not events(this, _, _, any(Type t), _) and
+    events(this, _, _, getTypeRef(result), _)
+  }
 
   /** Gets an `add` or `remove` accessor of this event, if any. */
   EventAccessor getAnEventAccessor() { result.getDeclaration() = this }

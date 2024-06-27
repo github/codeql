@@ -89,6 +89,10 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
     dispatcher.emit(static_cast<CrtpSubclass*>(this)->translateCapturedValue(e));
   }
 
+  void translateAndEmit(const swift::MacroRoleAttr& attr) {
+    dispatcher.emit(static_cast<CrtpSubclass*>(this)->translateMacroRoleAttr(attr));
+  }
+
  private:
   friend class swift::ASTVisitor<CrtpSubclass>;
 

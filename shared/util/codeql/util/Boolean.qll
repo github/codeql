@@ -5,6 +5,12 @@
  *
  * As opposed to `boolean`, this type does not require explicit binding.
  */
-class Boolean extends boolean {
+final class Boolean extends FinalBoolean {
   Boolean() { this = [true, false] }
+
+  /** Returns either "true" or "false". */
+  // reimplement to avoid explicit binding
+  string toString() { result = super.toString() }
 }
+
+final private class FinalBoolean = boolean;

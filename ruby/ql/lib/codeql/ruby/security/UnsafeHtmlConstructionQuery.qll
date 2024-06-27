@@ -23,10 +23,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof StringConstCompareBarrier or
-    node instanceof StringConstArrayInclusionCallBarrier
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
   // override to require the path doesn't have unmatched return steps
   override DataFlow::FlowFeature getAFeature() {
@@ -39,10 +36,7 @@ private module UnsafeHtmlConstructionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node instanceof StringConstCompareBarrier or
-    node instanceof StringConstArrayInclusionCallBarrier
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }

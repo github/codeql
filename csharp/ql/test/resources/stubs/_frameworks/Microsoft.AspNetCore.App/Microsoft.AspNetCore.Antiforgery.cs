@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Antiforgery, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Antiforgery, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -40,6 +40,19 @@ namespace Microsoft
             {
                 string GetAdditionalData(Microsoft.AspNetCore.Http.HttpContext context);
                 bool ValidateAdditionalData(Microsoft.AspNetCore.Http.HttpContext context, string additionalData);
+            }
+            [System.AttributeUsage((System.AttributeTargets)68)]
+            public class RequireAntiforgeryTokenAttribute : System.Attribute, Microsoft.AspNetCore.Antiforgery.IAntiforgeryMetadata
+            {
+                public RequireAntiforgeryTokenAttribute(bool required = default(bool)) => throw null;
+                public bool RequiresValidation { get => throw null; }
+            }
+        }
+        namespace Builder
+        {
+            public static partial class AntiforgeryApplicationBuilderExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseAntiforgery(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder) => throw null;
             }
         }
     }

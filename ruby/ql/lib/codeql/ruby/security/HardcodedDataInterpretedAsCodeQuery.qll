@@ -38,7 +38,7 @@ deprecated class Configuration extends DataFlow::Configuration {
     DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
     DataFlow::FlowState stateTo
   ) {
-    defaultAdditionalTaintStep(nodeFrom, nodeTo) and
+    defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and
     // This is a taint step, so the flow state becomes `taint`.
     stateFrom = [FlowState::data(), FlowState::taint()] and
     stateTo = FlowState::taint()
@@ -57,7 +57,7 @@ private module Config implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
-    defaultAdditionalTaintStep(nodeFrom, nodeTo) and
+    defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and // TODO: propagate provenance
     // This is a taint step, so the flow state becomes `taint`.
     (
       stateFrom = FlowState::Taint()

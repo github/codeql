@@ -37,14 +37,6 @@ public class Env {
 		 * Core toolchain variables
 		 */
 		/**
-		 * The location of the toolchain.
-		 *
-		 * Deprecated in favour of {@link Var#SEMMLE_DIST}, {@link Var#SEMMLE_HOME}, and
-		 * {@link Var#SEMMLE_DATA}.
-		 */
-		@Deprecated
-		ODASA_HOME,
-		/**
 		 * The location of the user's configuration files, including project configurations,
 		 * dashboard configurations, team insight configurations, licenses etc.
 		 */
@@ -82,10 +74,6 @@ public class Env {
 		 * The location where our queries are kept.
 		 */
 		ODASA_QUERIES,
-		/**
-		 * The location of the 'tools' directory
-		 */
-		ODASA_TOOLS,
 		/**
 		 * Whether we are running in 'prototyping mode'.
 		 */
@@ -198,10 +186,6 @@ public class Env {
 		 */
 		SEMMLE_PLATFORM,
 		/**
-		 * Location of platform specific tools, currently only used in universal LGTM distributions
-		 */
-		SEMMLE_PLATFORM_TOOLS,
-		/**
 		 * PATH to use to look up tooling required by macOS Relocator scripts.
 		 */
 		CODEQL_TOOL_PATH,
@@ -274,11 +258,8 @@ public class Env {
 		/**
 		 * The location of the snapshot being built.
 		 */
-		ODASA_SNAPSHOT,
-		ODASA_SNAPSHOT_NAME,
 		ODASA_SRC,
 		ODASA_DB,
-		ODASA_BUILD_ERROR_DIR,
 		TRAP_FOLDER,
 		SOURCE_ARCHIVE,
 		ODASA_OUTPUT,
@@ -287,7 +268,6 @@ public class Env {
 		/*
 		 * Layout variables
 		 */
-		ODASA_JAVA_LAYOUT,
 		ODASA_CPP_LAYOUT,
 		ODASA_CSHARP_LAYOUT,
 		ODASA_PYTHON_LAYOUT,

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class Bundle extends BaseBundle implements Cloneable, Parcelable
 {
-    public <T extends Parcelable> ArrayList<T> getParcelableArrayList(String p0){ return null; }
-    public <T extends Parcelable> SparseArray<T> getSparseParcelableArray(String p0){ return null; }
     public <T extends Parcelable> T getParcelable(String p0){ return null; }
+    public <T extends Parcelable> android.util.SparseArray<T> getSparseParcelableArray(String p0){ return null; }
+    public <T extends Parcelable> java.util.ArrayList<T> getParcelableArrayList(String p0){ return null; }
     public ArrayList<CharSequence> getCharSequenceArrayList(String p0){ return null; }
     public ArrayList<Integer> getIntegerArrayList(String p0){ return null; }
     public ArrayList<String> getStringArrayList(String p0){ return null; }

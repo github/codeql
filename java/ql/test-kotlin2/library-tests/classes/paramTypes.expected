@@ -1,0 +1,26 @@
+| classes.kt:111:9:113:9 | Local1 | 0 | classes.kt:111:22:111:23 | T1 |
+| classes.kt:119:13:121:13 | Local2 | 0 | classes.kt:119:26:119:27 | T1 |
+| classes.kt:129:17:131:17 | Local3 | 0 | classes.kt:129:30:129:31 | T1 |
+| classes.kt:138:1:148:1 | Cl0 | 0 | classes.kt:138:11:138:12 | U0 |
+| classes.kt:141:13:145:13 | Cl1 | 0 | classes.kt:141:23:141:24 | U3 |
+| classes.kt:150:1:156:1 | Cl00 | 0 | classes.kt:150:12:150:13 | U0 |
+| classes.kt:151:5:155:5 | Cl01 | 0 | classes.kt:151:16:151:17 | U1 |
+| file://<external>/C1$<no name provided>$Local3.class:0:0:0:0 | Local3<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
+| file://<external>/C1$Local1.class:0:0:0:0 | Local1<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
+| file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
+| file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
+| file://<external>/Generic.class:0:0:0:0 | Generic<String> | 0 | file://<external>/String.class:0:0:0:0 | String |
+| file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | 0 | superChain.kt:2:24:2:25 | T3 |
+| file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | 1 | file://<external>/String.class:0:0:0:0 | String |
+| file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | 0 | superChain.kt:3:24:3:25 | T5 |
+| file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | 1 | file://<external>/String.class:0:0:0:0 | String |
+| file://<external>/SuperChain2.class:0:0:0:0 | SuperChain2<T5,String> | 0 | superChain.kt:3:24:3:25 | T5 |
+| file://<external>/SuperChain2.class:0:0:0:0 | SuperChain2<T5,String> | 1 | file://<external>/String.class:0:0:0:0 | String |
+| generic_anonymous.kt:1:1:9:1 | Generic | 0 | generic_anonymous.kt:1:23:1:23 | T |
+| generic_anonymous.kt:15:1:33:1 | Outer | 0 | generic_anonymous.kt:15:13:15:14 | T0 |
+| superChain.kt:1:1:1:33 | SuperChain1 | 0 | superChain.kt:1:24:1:25 | T1 |
+| superChain.kt:1:1:1:33 | SuperChain1 | 1 | superChain.kt:1:28:1:29 | T2 |
+| superChain.kt:2:1:2:60 | SuperChain2 | 0 | superChain.kt:2:24:2:25 | T3 |
+| superChain.kt:2:1:2:60 | SuperChain2 | 1 | superChain.kt:2:28:2:29 | T4 |
+| superChain.kt:3:1:3:60 | SuperChain3 | 0 | superChain.kt:3:24:3:25 | T5 |
+| superChain.kt:3:1:3:60 | SuperChain3 | 1 | superChain.kt:3:28:3:29 | T6 |

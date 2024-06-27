@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.MemoryMappedFiles, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.IO.MemoryMappedFiles, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -29,6 +29,7 @@ namespace System
             public class MemoryMappedFile : System.IDisposable
             {
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(System.IO.FileStream fileStream, string mapName, long capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.HandleInheritability inheritability, bool leaveOpen) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(Microsoft.Win32.SafeHandles.SafeFileHandle fileHandle, string mapName, long capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.HandleInheritability inheritability, bool leaveOpen) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName) => throw null;

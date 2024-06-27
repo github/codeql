@@ -23,7 +23,7 @@ namespaces.cs:
 #-----|     3: (Base types)
 #   65|       0: [TypeMention] A
 #   69| [NamespaceDeclaration] namespace ... { ... }
-#   72|   1: [Class] A<>
+#   72|   1: [Class] A`1
 #-----|     1: (Type parameters)
 #   72|       0: [TypeParameter] T
 #   75|     5: [Class] B

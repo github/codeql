@@ -266,6 +266,7 @@ namespace Newtonsoft
             int LineNumber { get; }
             int LinePosition { get; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = false)]
         public sealed class JsonArrayAttribute : Newtonsoft.Json.JsonContainerAttribute
         {
             public bool AllowNullItems { get => throw null; set { } }
@@ -273,10 +274,12 @@ namespace Newtonsoft
             public JsonArrayAttribute(bool allowNullItems) => throw null;
             public JsonArrayAttribute(string id) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)32, AllowMultiple = false)]
         public sealed class JsonConstructorAttribute : System.Attribute
         {
             public JsonConstructorAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = false)]
         public abstract class JsonContainerAttribute : System.Attribute
         {
             protected JsonContainerAttribute() => throw null;
@@ -314,13 +317,13 @@ namespace Newtonsoft
             public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName) => throw null;
             public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName, bool writeArrayAttribute) => throw null;
             public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName, bool writeArrayAttribute, bool encodeSpecialCharacters) => throw null;
-            public static string False;
-            public static string NaN;
-            public static string NegativeInfinity;
-            public static string Null;
+            public static readonly string False;
+            public static readonly string NaN;
+            public static readonly string NegativeInfinity;
+            public static readonly string Null;
             public static void PopulateObject(string value, object target) => throw null;
             public static void PopulateObject(string value, object target, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
-            public static string PositiveInfinity;
+            public static readonly string PositiveInfinity;
             public static string SerializeObject(object value) => throw null;
             public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting) => throw null;
             public static string SerializeObject(object value, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
@@ -360,8 +363,8 @@ namespace Newtonsoft
             public static string ToString(string value, char delimiter) => throw null;
             public static string ToString(string value, char delimiter, Newtonsoft.Json.StringEscapeHandling stringEscapeHandling) => throw null;
             public static string ToString(object value) => throw null;
-            public static string True;
-            public static string Undefined;
+            public static readonly string True;
+            public static readonly string Undefined;
         }
         public abstract class JsonConverter
         {
@@ -381,6 +384,7 @@ namespace Newtonsoft
             public override sealed void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer) => throw null;
             public abstract void WriteJson(Newtonsoft.Json.JsonWriter writer, T value, Newtonsoft.Json.JsonSerializer serializer);
         }
+        [System.AttributeUsage((System.AttributeTargets)3484, AllowMultiple = false)]
         public sealed class JsonConverterAttribute : System.Attribute
         {
             public object[] ConverterParameters { get => throw null; }
@@ -392,6 +396,7 @@ namespace Newtonsoft
         {
             public JsonConverterCollection() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = false)]
         public sealed class JsonDictionaryAttribute : Newtonsoft.Json.JsonContainerAttribute
         {
             public JsonDictionaryAttribute() => throw null;
@@ -404,12 +409,14 @@ namespace Newtonsoft
             public JsonException(string message, System.Exception innerException) => throw null;
             public JsonException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
         public class JsonExtensionDataAttribute : System.Attribute
         {
             public JsonExtensionDataAttribute() => throw null;
             public bool ReadData { get => throw null; set { } }
             public bool WriteData { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
         public sealed class JsonIgnoreAttribute : System.Attribute
         {
             public JsonIgnoreAttribute() => throw null;
@@ -419,6 +426,7 @@ namespace Newtonsoft
             protected JsonNameTable() => throw null;
             public abstract string Get(char[] key, int start, int length);
         }
+        [System.AttributeUsage((System.AttributeTargets)1036, AllowMultiple = false)]
         public sealed class JsonObjectAttribute : Newtonsoft.Json.JsonContainerAttribute
         {
             public JsonObjectAttribute() => throw null;
@@ -429,6 +437,7 @@ namespace Newtonsoft
             public Newtonsoft.Json.MemberSerialization MemberSerialization { get => throw null; set { } }
             public Newtonsoft.Json.MissingMemberHandling MissingMemberHandling { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
         public sealed class JsonPropertyAttribute : System.Attribute
         {
             public JsonPropertyAttribute() => throw null;
@@ -524,6 +533,7 @@ namespace Newtonsoft
             public int LinePosition { get => throw null; }
             public string Path { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
         public sealed class JsonRequiredAttribute : System.Attribute
         {
             public JsonRequiredAttribute() => throw null;
@@ -1115,7 +1125,7 @@ namespace Newtonsoft
             public struct JEnumerable<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.IEquatable<Newtonsoft.Json.Linq.JEnumerable<T>>, Newtonsoft.Json.Linq.IJEnumerable<T> where T : Newtonsoft.Json.Linq.JToken
             {
                 public JEnumerable(System.Collections.Generic.IEnumerable<T> enumerable) => throw null;
-                public static Newtonsoft.Json.Linq.JEnumerable<T> Empty;
+                public static readonly Newtonsoft.Json.Linq.JEnumerable<T> Empty;
                 public bool Equals(Newtonsoft.Json.Linq.JEnumerable<T> other) => throw null;
                 public override bool Equals(object obj) => throw null;
                 public System.Collections.Generic.IEnumerator<T> GetEnumerator() => throw null;
@@ -1964,6 +1974,7 @@ namespace Newtonsoft
                 protected abstract string ResolvePropertyName(string name);
             }
             public delegate object ObjectConstructor<T>(params object[] args);
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class OnErrorAttribute : System.Attribute
             {
                 public OnErrorAttribute() => throw null;

@@ -8,5 +8,5 @@
 | class.swift:11:1:14:1 | Generic | 3 | class.swift:13:9:13:9 | y |
 | class.swift:11:1:14:1 | Generic | 4 | class.swift:11:7:11:7 | Generic<X, Y>.deinit() |
 | class.swift:11:1:14:1 | Generic | 5 | class.swift:11:7:11:7 | Generic<X, Y>.init() |
-| class.swift:16:1:17:1 | Baz | 0 | class.swift:16:21:16:21 | Baz.init() |
-| class.swift:16:1:17:1 | Baz | 1 | class.swift:16:7:16:7 | Baz.deinit() |
+| class.swift:16:1:17:1 | Baz | 0 | class.swift:16:7:16:7 | Baz.deinit() |
+| class.swift:16:1:17:1 | Baz | 1 | class.swift:16:21:16:21 | Baz.init() |

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Html.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Html.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -46,6 +46,10 @@ namespace Microsoft
                 public override string ToString() => throw null;
                 public string Value { get => throw null; }
                 public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
+            }
+            public interface IHtmlAsyncContent : Microsoft.AspNetCore.Html.IHtmlContent
+            {
+                System.Threading.Tasks.ValueTask WriteToAsync(System.IO.TextWriter writer);
             }
             public interface IHtmlContent
             {

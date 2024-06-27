@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -62,6 +62,7 @@ namespace Microsoft
                 string OriginalPath { get; set; }
                 string OriginalPathBase { get; set; }
                 string OriginalQueryString { get; set; }
+                virtual int OriginalStatusCode { get => throw null; }
                 virtual Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; }
             }
         }

@@ -8,11 +8,21 @@ namespace MySql.Data.MySqlClient
     {
         public MySqlCommand(string commandText) { }
 
+        public void Cancel() => throw null;
         public string CommandText { get; set; }
-
-        public IDataReader ExecuteReader() => throw null;
+        public int CommandTimeout { get; set; }
         public CommandType CommandType { get; set; }
-        public IDataParameterCollection Parameters { get; set; }
+        public IDbConnection Connection { get; set; }
+        public IDbDataParameter CreateParameter() => throw null;
+        public int ExecuteNonQuery() => throw null;
+        public IDataReader ExecuteReader() => throw null;
+        public IDataReader ExecuteReader(CommandBehavior behavior) => throw null;
+        public object ExecuteScalar() => throw null;
+        public IDataParameterCollection Parameters { get; }
+        public void Prepare() => throw null;
+        public IDbTransaction Transaction { get; set; }
+        public UpdateRowSource UpdatedRowSource { get; set; }
+        public void Dispose() => throw null;
     }
 
     public class MySqlHelper
@@ -44,7 +54,7 @@ namespace SqlClientTests
             command = new MySqlCommand(text);
             command.CommandText = text;
             new MySqlCommand(text).CommandText = text;
-            new SqlDataAdapter(text, null);
+            new SqlDataAdapter(text, string.Empty);
             MySqlHelper.ExecuteScalar("", text);
             SqlHelper.ExecuteScalar("", System.Data.CommandType.Text, text);
         }

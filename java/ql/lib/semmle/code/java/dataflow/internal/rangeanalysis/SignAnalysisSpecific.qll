@@ -6,6 +6,8 @@ module Private {
   import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
+  private import SsaReadPositionCommon
+  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
   private import Sign
   import Impl
 
@@ -168,7 +170,33 @@ module Private {
 
   predicate ssaRead = RU::ssaRead/2;
 
-  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
+  /**
+   * Holds if `guard` directly controls the position `controlled` with the
+   * value `testIsTrue`.
+   */
+  pragma[nomagic]
+  private predicate guardDirectlyControlsSsaRead(
+    Guard guard, SsaReadPosition controlled, boolean testIsTrue
+  ) {
+    guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
+    )
+  }
+
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    or
+    exists(Guard guard0, boolean testIsTrue0 |
+      GL::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
+      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    )
+  }
 }
 
 private module Impl {
@@ -200,11 +228,11 @@ private module Impl {
    * `Collection`).
    */
   predicate containerSizeAccess(Expr e) {
-    e.(MethodAccess).getMethod() instanceof StringLengthMethod
+    e.(MethodCall).getMethod() instanceof StringLengthMethod
     or
-    e.(MethodAccess).getMethod() instanceof CollectionSizeMethod
+    e.(MethodCall).getMethod() instanceof CollectionSizeMethod
     or
-    e.(MethodAccess).getMethod() instanceof MapSizeMethod
+    e.(MethodCall).getMethod() instanceof MapSizeMethod
   }
 
   /** Holds if `e` is by definition strictly positive. */
@@ -218,7 +246,7 @@ private module Impl {
     // types handled in `specificSubExprSign`.
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
-    e instanceof MethodAccess and e.getType() instanceof NumericOrCharType
+    e instanceof MethodCall and e.getType() instanceof NumericOrCharType
     or
     e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
   }
@@ -267,7 +295,7 @@ private module Impl {
 
   /** Holds if `f` can have any sign. */
   predicate fieldWithUnknownSign(Field f) {
-    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+    exists(ReflectiveGetFieldCall rfa | rfa.inferAccessedField() = f)
   }
 
   /** Holds if `f` is accessed in an increment operation. */

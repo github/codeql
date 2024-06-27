@@ -4,7 +4,8 @@ private import codeql.swift.elements.expr.Expr
 
 /**
  * A Swift autoclosure expression, that is, a closure automatically generated
- * around an argument when the parameter has the `@autoclosure` attribute. For
+ * around an argument when the parameter has the `@autoclosure` attribute or
+ * for the right-hand operand of short-circuiting logical operations. For
  * example, there is an `AutoClosureExpr` around the value `0` in:
  * ```
  * func myFunction(_ expr: @autoclosure () -> Int) {

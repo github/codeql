@@ -39,7 +39,7 @@ predicate isGetHash(Expr arg) {
 }
 
 predicate isSuspiciousPropertyName(PropertyRead pr) {
-  pr.getTarget().hasQualifiedName("System.Diagnostics", "Process", "ProcessName")
+  pr.getTarget().hasFullyQualifiedName("System.Diagnostics", "Process", "ProcessName")
 }
 
 from DataFlowFromMethodToHash::PathNode src, DataFlowFromMethodToHash::PathNode sink

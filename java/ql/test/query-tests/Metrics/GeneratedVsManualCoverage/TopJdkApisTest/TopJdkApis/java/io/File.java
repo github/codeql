@@ -16,7 +16,6 @@ public class File implements Serializable
     public File(File p0, String p1){} // manual summary
     public File(String p0){} // manual summary
     public File(String p0, String p1){} // manual summary
-    public File[] listFiles(){ return null; } // manual summary
     public Path toPath(){ return null; } // manual summary
     public String getAbsolutePath(){ return null; } // manual summary
     public String getName(){ return null; } // manual summary
@@ -26,6 +25,7 @@ public class File implements Serializable
     public boolean exists(){ return false; } // manual neutral
     public boolean isDirectory(){ return false; } // manual neutral
     public boolean isFile(){ return false; } // manual neutral
+    public File[] listFiles(){ return null; } // manual neutral
     public boolean mkdirs(){ return false; } // manual neutral
     public long length(){ return 0; } // manual neutral
 }

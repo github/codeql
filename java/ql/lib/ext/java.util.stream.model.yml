@@ -92,8 +92,11 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.util.stream", "Collectors", "joining", "", "summary", "manual"] # cannot be modeled completely without a model for `java.util.stream.Stream#collect(Collector)` as well
       - ["java.util.stream", "Collectors", "toList", "()", "summary", "manual"]
+      - ["java.util.stream", "Collectors", "toMap", "", "summary", "manual"] # specialized collectors flow
       - ["java.util.stream", "Collectors", "toSet", "()", "summary", "manual"]
+      - ["java.util.stream", "Stream", "collect", "(Collector)", "summary", "manual"] # handled separately on a case-by-case basis as it is too complex for MaD
       - ["java.util.stream", "Stream", "count", "()", "summary", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.

@@ -1,1 +1,1 @@
-| tests.cpp:38:31:38:34 | data | $@ flows an expression which might overflow. | tests.cpp:57:27:57:31 | & ... | User-provided value |
+| tests.cpp:38:25:38:34 | data | $@ flows an expression which might overflow. | tests.cpp:57:27:57:31 | fscanf output argument | value read by fscanf |

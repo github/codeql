@@ -960,8 +960,7 @@ module ExprNodes {
       exists(ConstantReadAccess array |
         array = this.getReceiver().getExpr() and
         e.(MethodCall).getMethodName() = "[]" and
-        array.getName() = "Array" and
-        array.hasGlobalScope()
+        array.getModule().getQualifiedName() = "Array"
       )
     }
   }
@@ -975,11 +974,10 @@ module ExprNodes {
     override string getAPrimaryQlClass() { result = "HashLiteralCfgNode" }
 
     HashLiteralCfgNode() {
-      exists(ConstantReadAccess array |
-        array = this.getReceiver().getExpr() and
+      exists(ConstantReadAccess hash |
+        hash = this.getReceiver().getExpr() and
         e.(MethodCall).getMethodName() = "[]" and
-        array.getName() = "Hash" and
-        array.hasGlobalScope()
+        hash.getModule().getQualifiedName() = "Hash"
       )
     }
 

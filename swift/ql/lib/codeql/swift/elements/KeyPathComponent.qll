@@ -1,6 +1,10 @@
 private import codeql.swift.generated.KeyPathComponent
 private import swift
 
+// the following QLdoc is generated: if you need to edit it, do it in the schema file
+/**
+ * A component of a `KeyPathExpr`.
+ */
 class KeyPathComponent extends Generated::KeyPathComponent {
   /**
    * Property access like `.bar` in `\Foo.bar`.

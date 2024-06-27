@@ -1,6 +1,16 @@
 | <clinit> | 1 | Test.java:20:2:20:9 | FloorWax |
 | <clinit> | 1 | Test.java:20:12:20:18 | Topping |
 | <clinit> | 1 | Test.java:20:21:20:28 | Biscuits |
+| bindingVars | 3 | Test.java:216:48:216:48 | 1 |
+| bindingVars | 5 | Test.java:218:20:218:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| bindingVars | 6 | Test.java:219:20:219:37 | "' ORDER BY PRICE" |
+| bindingVars | 7 | Test.java:220:11:220:16 | prefix |
+| bindingVars | 8 | Test.java:221:34:221:39 | prefix |
+| bindingVars | 8 | Test.java:221:34:221:48 | length(...) |
+| bindingVars | 8 | Test.java:221:34:221:53 | ... > ... |
+| bindingVars | 8 | Test.java:221:52:221:53 | 10 |
+| bindingVars | 8 | Test.java:221:81:221:91 | prefixAlias |
+| bindingVars | 8 | Test.java:221:106:221:111 | suffix |
 | checkIdentifier | 1 | Validation.java:7:12:7:16 | i |
 | checkIdentifier | 1 | Validation.java:7:16:7:16 | 0 |
 | checkIdentifier | 1 | Validation.java:7:19:7:19 | i |

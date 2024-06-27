@@ -727,5 +727,83 @@ def test_hideable():
     }
 
 
+def test_test_with():
+    @load
+    class data:
+        class Root:
+            pass
+
+        class A(Root):
+            pass
+
+        @defs.qltest.test_with(A)
+        class B(Root):
+            pass
+
+        @defs.qltest.test_with("D")
+        class C(Root):
+            pass
+
+        class D(Root):
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", derived=set("ABCD")),
+        "A": schema.Class("A", bases=["Root"]),
+        "B": schema.Class("B", bases=["Root"], test_with="A"),
+        "C": schema.Class("C", bases=["Root"], test_with="D"),
+        "D": schema.Class("D", bases=["Root"]),
+    }
+
+
+def test_test_with_unknown_string():
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.qltest.test_with("B")
+            class A(Root):
+                pass
+
+
+def test_test_with_unknown_class():
+    with pytest.raises(schema.Error):
+        class B:
+            pass
+
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.qltest.test_with(B)
+            class A(Root):
+                pass
+
+
+def test_test_with_double():
+    with pytest.raises(schema.Error):
+        class B:
+            pass
+
+        @load
+        class data:
+            class Root:
+                pass
+
+            class A(Root):
+                pass
+
+            @defs.qltest.test_with("C")
+            class B(Root):
+                pass
+
+            @defs.qltest.test_with(A)
+            class C(Root):
+                pass
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

@@ -13,6 +13,8 @@ namespace Semmle.Util
     {
         public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 
+        public static readonly char[] NewLineCharacters = ['\r', '\n'];
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -100,8 +102,7 @@ namespace Semmle.Util
         private static async Task DownloadFileAsync(string address, string filename)
         {
             using var httpClient = new HttpClient();
-            using var request = new HttpRequestMessage(HttpMethod.Get, address);
-            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
+            using var contentStream = await httpClient.GetStreamAsync(address);
             using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
             await contentStream.CopyToAsync(stream);
         }
@@ -110,7 +111,7 @@ namespace Semmle.Util
         /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
         /// </summary>
         public static void DownloadFile(string address, string fileName) =>
-           DownloadFileAsync(address, fileName).Wait();
+           DownloadFileAsync(address, fileName).GetAwaiter().GetResult();
 
         public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
         {
@@ -131,34 +132,43 @@ namespace Semmle.Util
                 var directoryName = Path.GetDirectoryName(nested);
                 if (directoryName is null)
                 {
-                    logger.Log(Severity.Warning, "Failed to get directory name from path '" + nested + "'.");
+                    logger.LogWarning("Failed to get directory name from path '" + nested + "'.");
                     throw new InvalidOperationException();
                 }
                 Directory.CreateDirectory(directoryName);
             }
             catch (PathTooLongException)
             {
-                logger.Log(Severity.Warning, "Failed to create parent directory of '" + nested + "': Path too long.");
+                logger.LogWarning("Failed to create parent directory of '" + nested + "': Path too long.");
                 throw;
             }
             return nested;
         }
 
-        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp)
+        private static readonly Lazy<string> tempFolderPath = new Lazy<string>(() =>
         {
-            shouldCleanUp = false;
-            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+            var tempPath = Path.GetTempPath();
+            var name = Guid.NewGuid().ToString("N").ToUpper();
+            var tempFolder = Path.Combine(tempPath, "GitHub", name);
+            Directory.CreateDirectory(tempFolder);
+            return tempFolder;
+        });
 
-            if (string.IsNullOrEmpty(tempFolder))
+        public static string GetTemporaryWorkingDirectory(Func<string, string?> getEnvironmentVariable, string lang, out bool shouldCleanUp)
+        {
+            var tempFolder = getEnvironmentVariable($"CODEQL_EXTRACTOR_{lang}_SCRATCH_DIR");
+            if (!string.IsNullOrEmpty(tempFolder))
             {
-                var tempPath = Path.GetTempPath();
-                var name = Guid.NewGuid().ToString("N").ToUpper();
-                tempFolder = Path.Combine(tempPath, "GitHub", name);
-                shouldCleanUp = true;
+                shouldCleanUp = false;
+                return tempFolder;
             }
 
-            return tempFolder;
+            shouldCleanUp = true;
+            return tempFolderPath.Value;
         }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp) =>
+            GetTemporaryWorkingDirectory(Environment.GetEnvironmentVariable, "CSHARP", out shouldCleanUp);
 
         public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
         {
@@ -174,6 +184,43 @@ namespace Semmle.Util
             File.Create(outputPath);
 
             return new FileInfo(outputPath);
+        }
+
+        public static string SafeGetDirectoryName(string path, ILogger logger)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(path);
+                if (dir is null)
+                {
+                    return "";
+                }
+
+                if (!dir.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    dir += Path.DirectorySeparatorChar;
+                }
+
+                return dir;
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get directory name for {path}: {ex.Message}");
+                return "";
+            }
+        }
+
+        public static string? SafeGetFileName(string path, ILogger logger)
+        {
+            try
+            {
+                return Path.GetFileName(path);
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get file name for {path}: {ex.Message}");
+                return null;
+            }
         }
     }
 }

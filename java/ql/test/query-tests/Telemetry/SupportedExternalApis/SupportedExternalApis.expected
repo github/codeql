@@ -13,4 +13,5 @@
 | java.util.Map#put(Object,Object) | 1 |
 | java.util.Map$Entry#getKey() | 1 |
 | java.util.Set#iterator() | 1 |
+| javax.servlet.http.HttpServletResponse#sendRedirect(String) | 1 |
 | org.apache.commons.io.FileUtils#deleteDirectory(File) | 1 |

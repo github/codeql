@@ -12,13 +12,18 @@ import semmle.python.dataflow.new.internal.TaintTrackingPrivate
 import semmle.python.dataflow.new.RemoteFlowSources
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
+abstract private class ValidationState extends string {
+  bindingset[this]
+  ValidationState() { any() }
+}
+
 /** A state signifying that a logical validation has not been performed. */
-class PreValidation extends DataFlow::FlowState {
+class PreValidation extends ValidationState {
   PreValidation() { this = "PreValidation" }
 }
 
 /** A state signifying that a logical validation has been performed. */
-class PostValidation extends DataFlow::FlowState {
+class PostValidation extends ValidationState {
   PostValidation() { this = "PostValidation" }
 }
 
@@ -29,7 +34,7 @@ class PostValidation extends DataFlow::FlowState {
  * to track the requirement that a logical validation has been performed before the Unicode Transformation.
  */
 private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+  class FlowState = ValidationState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof RemoteFlowSource and state instanceof PreValidation

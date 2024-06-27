@@ -8,4 +8,4 @@ extensions:
       - ["net/mail", "", False, "ReadMessage", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/mail", "AddressParser", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/mail", "AddressParser", True, "ParseList", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["net/mail", "Header", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["net/mail", "Header", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

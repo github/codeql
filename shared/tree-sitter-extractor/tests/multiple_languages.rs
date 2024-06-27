@@ -39,7 +39,7 @@ fn multiple_language_extractor() {
         languages: vec![lang_ql, lang_json],
         trap_dir,
         source_archive_dir,
-        file_list,
+        file_lists: vec![file_list],
         trap_compression: Ok(trap::Compression::Gzip),
     };
 

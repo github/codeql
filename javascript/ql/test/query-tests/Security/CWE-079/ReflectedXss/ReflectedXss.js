@@ -109,3 +109,17 @@ hapi.route({
     handler: function (request){
         return request.query.p; // NOT OK
     }});
+
+app.get("invalid/keys/:id", async (req, res) => {
+    const { keys: queryKeys } = req.query;
+    const paramKeys = req.params;
+    const keys = queryKeys || paramKeys?.keys;
+
+    const keyArray = typeof keys === 'string' ? [keys] : keys;
+    const invalidKeys = keyArray.filter(key => !whitelist.includes(key));
+
+    if (invalidKeys.length) {
+        res.status(400).send(`${invalidKeys.join(', ')} not in whitelist`);
+        return;
+    }
+});

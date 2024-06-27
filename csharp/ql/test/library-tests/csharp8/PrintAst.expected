@@ -2,18 +2,14 @@ AlternateInterpolatedStrings.cs:
 #    3| [Class] AlternateInterpolatedStrings
 #    5|   5: [Field] s1
 #    5|     -1: [TypeMention] string
-#    5|     1: [AssignExpr] ... = ...
-#    5|       0: [FieldAccess] access to field s1
-#    5|       1: [InterpolatedStringExpr] $"..."
-#    5|         0: [StringLiteralUtf16] "C:"
-#    5|         1: [IntLiteral] 12
+#    5|     1: [InterpolatedStringExpr] $"..."
+#    5|       0: [StringLiteralUtf16] "C:"
+#    5|       1: [IntLiteral] 12
 #    6|   6: [Field] s2
 #    6|     -1: [TypeMention] string
-#    6|     1: [AssignExpr] ... = ...
-#    6|       0: [FieldAccess] access to field s2
-#    6|       1: [InterpolatedStringExpr] $"..."
-#    6|         0: [StringLiteralUtf16] "C:"
-#    6|         1: [IntLiteral] 12
+#    6|     1: [InterpolatedStringExpr] $"..."
+#    6|       0: [StringLiteralUtf16] "C:"
+#    6|       1: [IntLiteral] 12
 AsyncStreams.cs:
 #    6| [Class] AsyncStreams
 #    8|   5: [Method] Items
@@ -49,7 +45,7 @@ AsyncStreams.cs:
 #   26|     4: [Method] DisposeAsync
 #   26|       -1: [TypeMention] ValueTask
 #   30| [NamespaceDeclaration] namespace ... { ... }
-#   32|   1: [Interface] IAsyncEnumerable<>
+#   32|   1: [Interface] IAsyncEnumerable`1
 #-----|     1: (Type parameters)
 #   32|       0: [TypeParameter] T
 #   34|     4: [Method] GetAsyncEnumerator
@@ -61,7 +57,7 @@ AsyncStreams.cs:
 #   34|           1: [DefaultValueExpr] default(...)
 #   34|             0: [TypeAccess] access to type CancellationToken
 #   34|               0: [TypeMention] CancellationToken
-#   37|   2: [Interface] IAsyncEnumerator<>
+#   37|   2: [Interface] IAsyncEnumerator`1
 #-----|     1: (Type parameters)
 #   37|       0: [TypeParameter] T
 #-----|     3: (Base types)
@@ -135,7 +131,7 @@ NameResolutionSuppressNullable.cs:
 #    8|             -1: [TypeMention] WaitCallback
 #    8|             0: [SuppressNullableWarningExpr] ...!
 #    8|               0: [MethodAccess] access to method M1
-#   10|   7: [Method] EnsureInitialized<>
+#   10|   8: [Method] EnsureInitialized`1
 #   10|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #   10|       0: [TypeParameter] T
@@ -295,7 +291,7 @@ NullableRefTypes.cs:
 #   48|     4: [RemoveEventAccessor] remove_P
 #-----|       2: (Parameters)
 #   48|         0: [Parameter] value
-#   51|   25: [Method] Q<>
+#   51|   26: [Method] Q`1
 #   51|     -1: [TypeMention] object
 #-----|     1: (Type parameters)
 #   51|       0: [TypeParameter] T
@@ -303,13 +299,13 @@ NullableRefTypes.cs:
 #   51|       0: [Parameter] t
 #   51|         -1: [TypeMention] T
 #   51|     4: [NullLiteral] null
-#   54|   27: [Class] Generic<,,,>
+#   54|   29: [Class] Generic`4
 #-----|     1: (Type parameters)
 #   54|       0: [TypeParameter] T1
 #   54|       1: [TypeParameter] T2
 #   54|       2: [TypeParameter] T3
 #   54|       3: [TypeParameter] T4
-#   58|   30: [Class] Generic2<,>
+#   58|   30: [Class] Generic2`2
 #-----|     1: (Type parameters)
 #   58|       0: [TypeParameter] T1
 #   58|       1: [TypeParameter] T2
@@ -319,7 +315,7 @@ NullableRefTypes.cs:
 #   65|       2: [TypeMention] MyClass
 #   65|       3: [TypeMention] IDisposable
 #   65|       4: [TypeMention] MyClass
-#   67|   32: [Method] GenericFn<>
+#   67|   33: [Method] GenericFn`1
 #   67|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   67|       0: [TypeParameter] T
@@ -700,7 +696,7 @@ StaticLocalFunctions.cs:
 #    9|             -1: [LocalFunctionAccess] access to local function J
 #    9|             0: [ParameterAccess] access to parameter x
 UnmanagedGenericStructs.cs:
-#    3| [Struct] S<,>
+#    3| [Struct] S`2
 #-----|   1: (Type parameters)
 #    3|     0: [TypeParameter] T
 #    3|     1: [TypeParameter] U

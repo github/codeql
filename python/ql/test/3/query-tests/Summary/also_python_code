@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+# although this is actually Python code, it is not included by the extractor by default.
+
+print("this is also code")
+
+print("but just dummy code")

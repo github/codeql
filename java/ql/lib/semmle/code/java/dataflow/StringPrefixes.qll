@@ -54,7 +54,7 @@ private Expr getAnInterestingPrefix(InterestingPrefix root) {
   result.(AddExpr).getAnOperand() = getAnInterestingPrefix(root)
 }
 
-private class StringBuilderAppend extends MethodAccess {
+private class StringBuilderAppend extends MethodCall {
   StringBuilderAppend() {
     this.getMethod().getDeclaringType() instanceof StringBuildingType and
     this.getMethod().hasName("append")
@@ -68,7 +68,7 @@ private class StringBuilderConstructorOrAppend extends Call {
   }
 }
 
-private Expr getQualifier(Expr e) { result = e.(MethodAccess).getQualifier() }
+private Expr getQualifier(Expr e) { result = e.(MethodCall).getQualifier() }
 
 /**
  * An extension of `StringBuilderVar` that also accounts for strings appended in StringBuilder/Buffer's constructor

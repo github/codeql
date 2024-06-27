@@ -14,6 +14,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
+  private import semmle.code.java.frameworks.android.Widget
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.guava.Guava

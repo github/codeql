@@ -1,28 +1,32 @@
+models
+| 1 | Sink: Terrapin::CommandLine!; Method[new].Argument[0]; command-injection |
+| 2 | Sink: Terrapin::CommandLine!; Method[new].Argument[1]; command-injection |
 edges
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:7:10:7:15 | #{...} |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:8:16:8:18 | cmd |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:10:14:10:16 | cmd |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:11:17:11:22 | #{...} |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:13:9:13:14 | #{...} |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:29:19:29:24 | #{...} |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:33:24:33:36 | "echo #{...}" |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:34:39:34:51 | "grep #{...}" |
-| CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:6:15:6:26 | ...[...] |
-| CommandInjection.rb:6:15:6:26 | ...[...] | CommandInjection.rb:6:9:6:11 | cmd |
-| CommandInjection.rb:46:9:46:11 | cmd | CommandInjection.rb:50:24:50:36 | "echo #{...}" |
-| CommandInjection.rb:46:15:46:20 | call to params | CommandInjection.rb:46:15:46:26 | ...[...] |
-| CommandInjection.rb:46:15:46:26 | ...[...] | CommandInjection.rb:46:9:46:11 | cmd |
-| CommandInjection.rb:54:7:54:9 | cmd | CommandInjection.rb:59:14:59:16 | cmd |
-| CommandInjection.rb:54:13:54:18 | call to params | CommandInjection.rb:54:13:54:24 | ...[...] |
-| CommandInjection.rb:54:13:54:24 | ...[...] | CommandInjection.rb:54:7:54:9 | cmd |
-| CommandInjection.rb:73:18:73:23 | number | CommandInjection.rb:74:14:74:29 | "echo #{...}" |
-| CommandInjection.rb:81:23:81:33 | blah_number | CommandInjection.rb:82:14:82:34 | "echo #{...}" |
-| CommandInjection.rb:90:20:90:25 | **args | CommandInjection.rb:91:22:91:25 | args |
-| CommandInjection.rb:91:22:91:25 | args | CommandInjection.rb:91:22:91:37 | ...[...] |
-| CommandInjection.rb:91:22:91:37 | ...[...] | CommandInjection.rb:91:14:91:39 | "echo #{...}" |
-| CommandInjection.rb:103:9:103:12 | file | CommandInjection.rb:104:16:104:28 | "cat #{...}" |
-| CommandInjection.rb:103:16:103:21 | call to params | CommandInjection.rb:103:16:103:28 | ...[...] |
-| CommandInjection.rb:103:16:103:28 | ...[...] | CommandInjection.rb:103:9:103:12 | file |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:7:10:7:15 | #{...} | provenance |  |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:8:16:8:18 | cmd | provenance |  |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:10:14:10:16 | cmd | provenance |  |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:11:17:11:22 | #{...} | provenance |  |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:13:9:13:14 | #{...} | provenance |  |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:29:19:29:24 | #{...} | provenance |  |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:33:24:33:36 | "echo #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:34:39:34:51 | "grep #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:6:15:6:26 | ...[...] | provenance |  |
+| CommandInjection.rb:6:15:6:26 | ...[...] | CommandInjection.rb:6:9:6:11 | cmd | provenance |  |
+| CommandInjection.rb:46:9:46:11 | cmd | CommandInjection.rb:50:24:50:36 | "echo #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:46:15:46:20 | call to params | CommandInjection.rb:46:15:46:26 | ...[...] | provenance |  |
+| CommandInjection.rb:46:15:46:26 | ...[...] | CommandInjection.rb:46:9:46:11 | cmd | provenance |  |
+| CommandInjection.rb:54:7:54:9 | cmd | CommandInjection.rb:59:14:59:16 | cmd | provenance |  |
+| CommandInjection.rb:54:13:54:18 | call to params | CommandInjection.rb:54:13:54:24 | ...[...] | provenance |  |
+| CommandInjection.rb:54:13:54:24 | ...[...] | CommandInjection.rb:54:7:54:9 | cmd | provenance |  |
+| CommandInjection.rb:73:18:73:23 | number | CommandInjection.rb:74:14:74:29 | "echo #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:81:23:81:33 | blah_number | CommandInjection.rb:82:14:82:34 | "echo #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:91:22:91:37 | ...[...] | CommandInjection.rb:91:14:91:39 | "echo #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:103:9:103:12 | file | CommandInjection.rb:104:16:104:28 | "cat #{...}" | provenance | AdditionalTaintStep |
+| CommandInjection.rb:103:16:103:21 | call to params | CommandInjection.rb:103:16:103:28 | ...[...] | provenance |  |
+| CommandInjection.rb:103:16:103:28 | ...[...] | CommandInjection.rb:103:9:103:12 | file | provenance |  |
+| CommandInjection.rb:111:33:111:38 | call to params | CommandInjection.rb:111:33:111:44 | ...[...] | provenance |  Sink:MaD:1 |
+| CommandInjection.rb:113:44:113:49 | call to params | CommandInjection.rb:113:44:113:54 | ...[...] | provenance |  |
+| CommandInjection.rb:113:44:113:54 | ...[...] | CommandInjection.rb:113:41:113:56 | "#{...}" | provenance | AdditionalTaintStep Sink:MaD:2 |
 nodes
 | CommandInjection.rb:6:9:6:11 | cmd | semmle.label | cmd |
 | CommandInjection.rb:6:15:6:20 | call to params | semmle.label | call to params |
@@ -47,14 +51,17 @@ nodes
 | CommandInjection.rb:74:14:74:29 | "echo #{...}" | semmle.label | "echo #{...}" |
 | CommandInjection.rb:81:23:81:33 | blah_number | semmle.label | blah_number |
 | CommandInjection.rb:82:14:82:34 | "echo #{...}" | semmle.label | "echo #{...}" |
-| CommandInjection.rb:90:20:90:25 | **args | semmle.label | **args |
 | CommandInjection.rb:91:14:91:39 | "echo #{...}" | semmle.label | "echo #{...}" |
-| CommandInjection.rb:91:22:91:25 | args | semmle.label | args |
 | CommandInjection.rb:91:22:91:37 | ...[...] | semmle.label | ...[...] |
 | CommandInjection.rb:103:9:103:12 | file | semmle.label | file |
 | CommandInjection.rb:103:16:103:21 | call to params | semmle.label | call to params |
 | CommandInjection.rb:103:16:103:28 | ...[...] | semmle.label | ...[...] |
 | CommandInjection.rb:104:16:104:28 | "cat #{...}" | semmle.label | "cat #{...}" |
+| CommandInjection.rb:111:33:111:38 | call to params | semmle.label | call to params |
+| CommandInjection.rb:111:33:111:44 | ...[...] | semmle.label | ...[...] |
+| CommandInjection.rb:113:41:113:56 | "#{...}" | semmle.label | "#{...}" |
+| CommandInjection.rb:113:44:113:49 | call to params | semmle.label | call to params |
+| CommandInjection.rb:113:44:113:54 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
 | CommandInjection.rb:7:10:7:15 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:7:10:7:15 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
@@ -69,5 +76,7 @@ subpaths
 | CommandInjection.rb:59:14:59:16 | cmd | CommandInjection.rb:54:13:54:18 | call to params | CommandInjection.rb:59:14:59:16 | cmd | This command depends on a $@. | CommandInjection.rb:54:13:54:18 | call to params | user-provided value |
 | CommandInjection.rb:74:14:74:29 | "echo #{...}" | CommandInjection.rb:73:18:73:23 | number | CommandInjection.rb:74:14:74:29 | "echo #{...}" | This command depends on a $@. | CommandInjection.rb:73:18:73:23 | number | user-provided value |
 | CommandInjection.rb:82:14:82:34 | "echo #{...}" | CommandInjection.rb:81:23:81:33 | blah_number | CommandInjection.rb:82:14:82:34 | "echo #{...}" | This command depends on a $@. | CommandInjection.rb:81:23:81:33 | blah_number | user-provided value |
-| CommandInjection.rb:91:14:91:39 | "echo #{...}" | CommandInjection.rb:90:20:90:25 | **args | CommandInjection.rb:91:14:91:39 | "echo #{...}" | This command depends on a $@. | CommandInjection.rb:90:20:90:25 | **args | user-provided value |
+| CommandInjection.rb:91:14:91:39 | "echo #{...}" | CommandInjection.rb:91:22:91:37 | ...[...] | CommandInjection.rb:91:14:91:39 | "echo #{...}" | This command depends on a $@. | CommandInjection.rb:91:22:91:37 | ...[...] | user-provided value |
 | CommandInjection.rb:104:16:104:28 | "cat #{...}" | CommandInjection.rb:103:16:103:21 | call to params | CommandInjection.rb:104:16:104:28 | "cat #{...}" | This command depends on a $@. | CommandInjection.rb:103:16:103:21 | call to params | user-provided value |
+| CommandInjection.rb:111:33:111:44 | ...[...] | CommandInjection.rb:111:33:111:38 | call to params | CommandInjection.rb:111:33:111:44 | ...[...] | This command depends on a $@. | CommandInjection.rb:111:33:111:38 | call to params | user-provided value |
+| CommandInjection.rb:113:41:113:56 | "#{...}" | CommandInjection.rb:113:44:113:49 | call to params | CommandInjection.rb:113:41:113:56 | "#{...}" | This command depends on a $@. | CommandInjection.rb:113:44:113:49 | call to params | user-provided value |

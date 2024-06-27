@@ -1,0 +1,7 @@
+1,0-1,6:            NAME           'import'
+1,7-1,8:            NAME           'a'
+1,8-1,9:            NEWLINE        '\n'
+2,0-2,6:            NAME           'import'
+2,7-2,10:           NAME           'why'
+2,10-2,11:          NEWLINE        '\n'
+3,0-3,0:            ENDMARKER      ''

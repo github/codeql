@@ -1,0 +1,20 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_library",
+)
+
+codeql_csharp_library(
+    name = "Semmle.Extraction.CSharp.DependencyFetching",
+    srcs = glob([
+        "*.cs",
+        "SourceGenerators/**/*.cs",
+    ]),
+    allow_unsafe_blocks = True,
+    internals_visible_to = ["Semmle.Extraction.Tests"],
+    nowarn = ["CA1822"],
+    visibility = ["//csharp:__subpackages__"],
+    deps = [
+        "//csharp/extractor/Semmle.Extraction",
+        "//csharp/extractor/Semmle.Util",
+    ],
+)

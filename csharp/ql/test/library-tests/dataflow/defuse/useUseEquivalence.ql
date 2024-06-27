@@ -1,7 +1,10 @@
 import csharp
+private import semmle.code.csharp.controlflow.internal.PreSsa
 
 /** "Naive" use-use implementation. */
-predicate useReaches(LocalScopeVariableRead read, LocalScopeVariable v, ControlFlow::Node cfn) {
+predicate useReaches(
+  LocalScopeVariableRead read, PreSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
+) {
   read.getTarget() = v and cfn = read.getAControlFlowNode().getASuccessor()
   or
   exists(ControlFlow::Node mid | useReaches(read, v, mid) |

@@ -1,9 +1,7 @@
 /** Provides classes and predicates to reason about cleartext storage vulnerabilities. */
 
 import java
-private import semmle.code.java.dataflow.DataFlow4
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */
@@ -65,15 +63,15 @@ private class DefaultCleartextStorageSanitizer extends CleartextStorageSanitizer
  * encryption (reversible and non-reversible) from both JDK and third parties, this class simply
  * checks method name to take a best guess to reduce false positives.
  */
-private class EncryptedSensitiveMethodAccess extends MethodAccess {
-  EncryptedSensitiveMethodAccess() {
+private class EncryptedSensitiveMethodCall extends MethodCall {
+  EncryptedSensitiveMethodCall() {
     this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%", "%digest%"])
   }
 }
 
 /** Flow configuration for encryption methods flowing to inputs of persistent storage. */
 private module EncryptedValueFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof EncryptedSensitiveMethodAccess }
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof EncryptedSensitiveMethodCall }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
 }

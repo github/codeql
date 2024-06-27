@@ -12,7 +12,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
  * (intra-procedural) step.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
+  simpleLocalFlowStep(nodeFrom, nodeTo, _)
   or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural.

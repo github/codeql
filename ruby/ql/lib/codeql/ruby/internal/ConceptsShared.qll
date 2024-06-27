@@ -40,6 +40,9 @@ module Cryptography {
     /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
     CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
 
+    /** Gets the data-flow node where the cryptographic algorithm used in this operation is configured. */
+    DataFlow::Node getInitialization() { result = super.getInitialization() }
+
     /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
     DataFlow::Node getAnInput() { result = super.getAnInput() }
 
@@ -65,6 +68,9 @@ module Cryptography {
      * extend `CryptographicOperation` instead.
      */
     abstract class Range extends DataFlow::Node {
+      /** Gets the data-flow node where the cryptographic algorithm used in this operation is configured. */
+      abstract DataFlow::Node getInitialization();
+
       /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
       abstract CryptographicAlgorithm getAlgorithm();
 

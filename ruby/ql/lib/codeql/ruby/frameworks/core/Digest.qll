@@ -18,14 +18,20 @@ private API::Node digest(Cryptography::HashingAlgorithm algo) {
 private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
 {
   Cryptography::HashingAlgorithm algo;
+  API::Node digestNode;
 
   DigestCall() {
-    this = digest(algo).getAMethodCall(["hexdigest", "base64digest", "bubblebabble"])
-    or
-    this = digest(algo).getAMethodCall("file") // it's directly hashing the contents of a file, but that's close enough for us.
-    or
-    this = digest(algo).getInstance().getAMethodCall(["digest", "update", "<<"])
+    digestNode = digest(algo) and
+    (
+      this = digestNode.getAMethodCall(["hexdigest", "base64digest", "bubblebabble"])
+      or
+      this = digestNode.getAMethodCall("file") // it's directly hashing the contents of a file, but that's close enough for us.
+      or
+      this = digestNode.getInstance().getAMethodCall(["digest", "update", "<<"])
+    )
   }
+
+  override DataFlow::Node getInitialization() { result = digestNode.asSource() }
 
   override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
 

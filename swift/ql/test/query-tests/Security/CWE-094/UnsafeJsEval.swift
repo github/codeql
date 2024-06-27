@@ -159,72 +159,72 @@ extension String {
 
 // --- tests ---
 
-func getRemoteData() -> String {
-	let url = URL(string: "http://example.com/")
-	do {
-		return try String(contentsOf: url!)
-	} catch {
-		return ""
-	}
-}
+
+
+
+
+
+
+
+
 
 func testAsync(_ sink: @escaping (String) async throws -> ()) {
 	Task {
 		let localString = "console.log('localString')"
 		let localStringFragment = "'localStringFragment'"
-		let remoteString = getRemoteData()
+		let url = URL(string: "http://example.com/")
 
 		try! await sink(localString) // GOOD: the HTML data is local
 		try! await sink(try String(contentsOf: URL(string: "http://example.com/")!)) // BAD [NOT DETECTED - TODO]: HTML contains remote input, may access local secrets
-		try! await sink(remoteString) // BAD [NOT DETECTED - TODO]
+		try! await sink(try! String(contentsOf: url!)) // BAD [NOT DETECTED - TODO]
 
 		try! await sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-		try! await sink("console.log(" + remoteString + ")") // BAD [NOT DETECTED - TODO]
+		try! await sink("console.log(" + (try! String(contentsOf: url!)) + ")") // BAD [NOT DETECTED - TODO]
 
 		let localData = Data(localString.utf8)
-		let remoteData = Data(remoteString.utf8)
+		let remoteData = Data((try! String(contentsOf: url!)).utf8)
 
 		try! await sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
 		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED - TODO]: the data is remote
 
 		try! await sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
-		try! await sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
+		try! await sink("console.log(" + String(Int(try! String(contentsOf: url!)) ?? 0) + ")") // GOOD: Primitive conversion
 
 		try! await sink("console.log(" + (localStringFragment.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
-		try! await sink("console.log(" + (remoteString.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
+		try! await sink("console.log(" + ((try! String(contentsOf: url!)).count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
 	}
 }
 
 func testSync(_ sink: @escaping (String) -> ()) {
 	let localString = "console.log('localString')"
 	let localStringFragment = "'localStringFragment'"
-	let remoteString = getRemoteData()
+	let url = URL(string: "http://example.com/")
 
 	sink(localString) // GOOD: the HTML data is local
 	sink(try! String(contentsOf: URL(string: "http://example.com/")!)) // BAD: HTML contains remote input, may access local secrets
-	sink(remoteString) // BAD
+	sink(try! String(contentsOf: url!)) // BAD
 
 	sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-	sink("console.log(" + remoteString + ")") // BAD
+	sink("console.log(" + (try! String(contentsOf: url!)) + ")") // BAD
 
 	let localData = Data(localString.utf8)
-	let remoteData = Data(remoteString.utf8)
+	let remoteData = Data((try! String(contentsOf: url!)).utf8)
 
 	sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
 	sink(String(decoding: remoteData, as: UTF8.self)) // BAD: the data is remote
 
 	sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
-	sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
+	sink("console.log(" + String(Int(try! String(contentsOf: url!)) ?? 0) + ")") // GOOD: Primitive conversion
 
 	sink("console.log(" + (localStringFragment.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
-	sink("console.log(" + (remoteString.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
+	sink("console.log(" + ((try! String(contentsOf: url!)).count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
 }
 
 func testUIWebView() {
 	let webview = UIWebView()
 
 	testAsync { string in
-		_ = await webview.stringByEvaluatingJavaScript(from: string)
+		_ = await webview.stringByEvaluatingJavaScript(from: string) // BAD [NOT DETECTED]
 	}
 }
 
@@ -232,7 +232,7 @@ func testWebView() {
 	let webview = WebView()
 
 	testAsync { string in
-		_ = await webview.stringByEvaluatingJavaScript(from: string)
+		_ = await webview.stringByEvaluatingJavaScript(from: string) // BAD [NOT DETECTED]
 	}
 }
 
@@ -240,22 +240,22 @@ func testWKWebView() {
 	let webview = WKWebView()
 
 	testAsync { string in
-		_ = try await webview.evaluateJavaScript(string)
+		_ = try await webview.evaluateJavaScript(string) // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		await webview.evaluateJavaScript(string) { _, _ in }
+		await webview.evaluateJavaScript(string) { _, _ in } // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		await webview.evaluateJavaScript(string, in: nil, in: WKContentWorld.defaultClient) { _ in }
+		await webview.evaluateJavaScript(string, in: nil, in: WKContentWorld.defaultClient) { _ in } // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		_ = try await webview.evaluateJavaScript(string, contentWorld: .defaultClient)
+		_ = try await webview.evaluateJavaScript(string, contentWorld: .defaultClient) // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		await webview.callAsyncJavaScript(string, in: nil, in: .defaultClient) { _ in () }
+		await webview.callAsyncJavaScript(string, in: nil, in: .defaultClient) { _ in () } // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		_ = try await webview.callAsyncJavaScript(string, contentWorld: WKContentWorld.defaultClient)
+		_ = try await webview.callAsyncJavaScript(string, contentWorld: WKContentWorld.defaultClient) // BAD [NOT DETECTED]
 	}
 }
 
@@ -263,10 +263,10 @@ func testWKUserContentController() {
 	let ctrl = WKUserContentController()
 
 	testSync { string in
-		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentStart, forMainFrameOnly: false))
+		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentStart, forMainFrameOnly: false)) // BAD (multiple sources)
 	}
 	testSync { string in
-		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .defaultClient))
+		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .defaultClient)) // BAD (multiple sources)
 	}
 }
 
@@ -274,10 +274,10 @@ func testJSContext() {
 	let ctx = JSContext()
 
 	testSync { string in
-		_ = ctx.evaluateScript(string)
+		_ = ctx.evaluateScript(string) // BAD (multiple sources)
 	}
 	testSync { string in
-		_ = ctx.evaluateScript(string, withSourceURL: URL(string: "https://example.com"))
+		_ = ctx.evaluateScript(string, withSourceURL: URL(string: "https://example.com")) // BAD (multiple sources)
 	}
 }
 
@@ -288,7 +288,7 @@ func testJSEvaluateScript() {
 			defer { JSStringRelease(jsstr) }
 			_ = JSEvaluateScript(
 				/*ctx:*/ OpaquePointer(bitPattern: 0),
-				/*script:*/ jsstr,
+				/*script:*/ jsstr, // BAD (multiple sources)
 				/*thisObject:*/ OpaquePointer(bitPattern: 0),
 				/*sourceURL:*/ OpaquePointer(bitPattern: 0),
 				/*startingLineNumber:*/ 0,
@@ -302,7 +302,7 @@ func testJSEvaluateScript() {
 			defer { JSStringRelease(jsstr) }
 			_ = JSEvaluateScript(
 				/*ctx:*/ OpaquePointer(bitPattern: 0),
-				/*script:*/ jsstr,
+				/*script:*/ jsstr, // BAD (multiple sources)
 				/*thisObject:*/ OpaquePointer(bitPattern: 0),
 				/*sourceURL:*/ OpaquePointer(bitPattern: 0),
 				/*startingLineNumber:*/ 0,

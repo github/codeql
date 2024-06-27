@@ -32,7 +32,7 @@ private module Input implements InputSig {
 private module Impl = Make<Input>;
 
 /** A file or folder. */
-class Container extends Locatable, Impl::Container {
+class Container extends ElementBase, Impl::Container {
   override string toString() { result = Impl::Container.super.toString() }
 }
 
@@ -47,11 +47,6 @@ class Container extends Locatable, Impl::Container {
  * To get the full path, use `getAbsolutePath`.
  */
 class Folder extends Container, Impl::Folder {
-  override Location getLocation() {
-    result.getContainer() = this and
-    result.hasLocationInfo(_, 0, 0, 0, 0)
-  }
-
   override string getAPrimaryQlClass() { result = "Folder" }
 }
 
@@ -67,7 +62,7 @@ class Folder extends Container, Impl::Folder {
  * The base name further decomposes into the _stem_ and _extension_ -- see
  * `getStem` and `getExtension`. To get the full path, use `getAbsolutePath`.
  */
-class File extends Container, Impl::File {
+class File extends Container, Locatable, Impl::File {
   override string getAPrimaryQlClass() { result = "File" }
 
   override Location getLocation() {

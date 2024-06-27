@@ -19,6 +19,6 @@ module TaintTracking {
   private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
   private import semmle.python.dataflow.new.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<PythonDataFlow, PythonTaintTracking>
+  import TaintFlowMake<Location, PythonDataFlow, PythonTaintTracking>
   import internal.tainttracking1.TaintTrackingImpl
 }

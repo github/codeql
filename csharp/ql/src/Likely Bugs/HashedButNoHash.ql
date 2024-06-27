@@ -14,12 +14,12 @@ import semmle.code.csharp.frameworks.System
 
 predicate dictionary(ConstructedType constructed) {
   exists(UnboundGenericType dict |
-    dict.hasQualifiedName("System.Collections.Generic", "Dictionary<,>") and
+    dict.hasFullyQualifiedName("System.Collections.Generic", "Dictionary`2") and
     constructed = dict.getAConstructedGeneric()
   )
 }
 
-predicate hashtable(Class c) { c.hasQualifiedName("System.Collections", "Hashtable") }
+predicate hashtable(Class c) { c.hasFullyQualifiedName("System.Collections", "Hashtable") }
 
 predicate hashstructure(Type t) { hashtable(t) or dictionary(t) }
 

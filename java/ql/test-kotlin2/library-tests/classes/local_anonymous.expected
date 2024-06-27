@@ -1,0 +1,14 @@
+anonymousObjects
+| local_anonymous.kt:5:16:7:9 | new (...) | local_anonymous.kt:5:16:7:9 | new Object(...) { ... } | anonymous | local |
+| local_anonymous.kt:29:31:35:5 | new (...) | local_anonymous.kt:29:31:35:5 | new Object(...) { ... } | anonymous | local |
+| local_anonymous.kt:40:14:44:5 | new (...) | local_anonymous.kt:40:14:44:5 | new Interface2(...) { ... } | anonymous | local |
+localFunctions
+| local_anonymous.kt:11:9:11:24 | fnLocal | local_anonymous.kt:11:9:11:24 |  | not anonymous | local |
+lambdas
+| local_anonymous.kt:16:23:16:49 | ...->... | local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | anonymous | not local |
+| local_anonymous.kt:17:23:17:49 | ...->... | local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | anonymous | not local |
+memberRefs
+| local_anonymous.kt:21:21:21:31 | ...::... | local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | anonymous | not local |
+localClasses
+| local_anonymous.kt:11:9:11:24 |  | not anonymous | local |
+| local_anonymous.kt:25:9:25:27 | LocalClass | not anonymous | local |

@@ -1,12 +1,11 @@
 # Swift on CodeQL
 
-## Warning
+> [!NOTE]
+> CodeQL analysis for Swift is currently in beta. During the beta, analysis of Swift code, and the accompanying documentation, will not be as comprehensive as for other languages.
 
-The Swift CodeQL package is an experimental and unsupported work in progress.
+## Development
 
-##
-
-## Building the Swift extractor
+### Building the Swift extractor
 
 First ensure you have Bazel installed, for example with
 
@@ -17,7 +16,14 @@ brew install bazelisk
 then from the `ql` directory run
 
 ```bash
-bazel run //swift:create-extractor-pack    # --cpu=darwin_x86_64 # Uncomment on Arm-based Macs
+bazel run //swift:create-extractor-pack
+```
+
+If you are running on macOS and you encounter errors mentioning `XXX is unavailable: introduced in macOS YY.ZZ`,
+you will need to run this from the root of your `codeql` checkout:
+
+```bash
+echo common --macos_sdk_version=$(sw_vers --productVersion) >> local.bazelrc
 ```
 
 which will install `swift/extractor-pack`.
@@ -29,8 +35,6 @@ Using `codeql ... --search-path=swift/extractor-pack` will then pick up the Swif
 set up the search path
 in [the per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file)
 .
-
-## Development
 
 ### Code generation
 

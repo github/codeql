@@ -16,7 +16,7 @@ abstract private class Summary extends SimpleSummarizedCallable {
   bindingset[this]
   Summary() { any() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     this.propagates(input, output) and preservesValue = true
   }
 

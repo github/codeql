@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Caching.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -42,6 +42,7 @@ namespace Microsoft
                 {
                     public Microsoft.Extensions.Internal.ISystemClock Clock { get => throw null; set { } }
                     public double CompactionPercentage { get => throw null; set { } }
+                    public bool CompactOnMemoryPressure { get => throw null; set { } }
                     public MemoryCacheOptions() => throw null;
                     public System.TimeSpan ExpirationScanFrequency { get => throw null; set { } }
                     public long? SizeLimit { get => throw null; set { } }

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Results, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -128,11 +128,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
-                }
-                public sealed class EmptyHttpResult : Microsoft.AspNetCore.Http.IResult
-                {
-                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
-                    public static Microsoft.AspNetCore.Http.HttpResults.EmptyHttpResult Instance { get => throw null; }
                 }
                 public sealed class FileContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
@@ -387,7 +382,9 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.IResult Accepted(string uri = default(string), object value = default(object)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Accepted<TValue>(string uri = default(string), TValue value = default(TValue)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult AcceptedAtRoute(string routeName = default(string), object routeValues = default(object), object value = default(object)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult AcceptedAtRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, object value = default(object)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult AcceptedAtRoute<TValue>(string routeName = default(string), object routeValues = default(object), TValue value = default(TValue)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult AcceptedAtRoute<TValue>(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, TValue value = default(TValue)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult BadRequest(object error = default(object)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult BadRequest<TValue>(TValue error) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Bytes(byte[] contents, string contentType = default(string), string fileDownloadName = default(string), bool enableRangeProcessing = default(bool), System.DateTimeOffset? lastModified = default(System.DateTimeOffset?), Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag = default(Microsoft.Net.Http.Headers.EntityTagHeaderValue)) => throw null;
@@ -398,12 +395,15 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.IResult Content(string content, string contentType, System.Text.Encoding contentEncoding) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Content(string content, string contentType = default(string), System.Text.Encoding contentEncoding = default(System.Text.Encoding), int? statusCode = default(int?)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Content(string content, Microsoft.Net.Http.Headers.MediaTypeHeaderValue contentType) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult Created() => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Created(string uri, object value) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Created<TValue>(string uri, TValue value) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Created(System.Uri uri, object value) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Created<TValue>(System.Uri uri, TValue value) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult CreatedAtRoute(string routeName = default(string), object routeValues = default(object), object value = default(object)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult CreatedAtRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, object value = default(object)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult CreatedAtRoute<TValue>(string routeName = default(string), object routeValues = default(object), TValue value = default(TValue)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult CreatedAtRoute<TValue>(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, TValue value = default(TValue)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Empty { get => throw null; }
                 public static Microsoft.AspNetCore.Http.IResultExtensions Extensions { get => throw null; }
                 public static Microsoft.AspNetCore.Http.IResult File(byte[] fileContents, string contentType = default(string), string fileDownloadName = default(string), bool enableRangeProcessing = default(bool), System.DateTimeOffset? lastModified = default(System.DateTimeOffset?), Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag = default(Microsoft.Net.Http.Headers.EntityTagHeaderValue)) => throw null;
@@ -411,7 +411,11 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.IResult File(string path, string contentType = default(string), string fileDownloadName = default(string), System.DateTimeOffset? lastModified = default(System.DateTimeOffset?), Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag = default(Microsoft.Net.Http.Headers.EntityTagHeaderValue), bool enableRangeProcessing = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Forbid(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), System.Collections.Generic.IList<string> authenticationSchemes = default(System.Collections.Generic.IList<string>)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Json(object data, System.Text.Json.JsonSerializerOptions options = default(System.Text.Json.JsonSerializerOptions), string contentType = default(string), int? statusCode = default(int?)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult Json(object data, System.Text.Json.Serialization.Metadata.JsonTypeInfo jsonTypeInfo, string contentType = default(string), int? statusCode = default(int?)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult Json(object data, System.Type type, System.Text.Json.Serialization.JsonSerializerContext context, string contentType = default(string), int? statusCode = default(int?)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Json<TValue>(TValue data, System.Text.Json.JsonSerializerOptions options = default(System.Text.Json.JsonSerializerOptions), string contentType = default(string), int? statusCode = default(int?)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult Json<TValue>(TValue data, System.Text.Json.Serialization.Metadata.JsonTypeInfo<TValue> jsonTypeInfo, string contentType = default(string), int? statusCode = default(int?)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult Json<TValue>(TValue data, System.Text.Json.Serialization.JsonSerializerContext context, string contentType = default(string), int? statusCode = default(int?)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult LocalRedirect(string localUrl, bool permanent = default(bool), bool preserveMethod = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult NoContent() => throw null;
                 public static Microsoft.AspNetCore.Http.IResult NotFound(object value = default(object)) => throw null;
@@ -422,6 +426,7 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.IResult Problem(Microsoft.AspNetCore.Mvc.ProblemDetails problemDetails) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult Redirect(string url, bool permanent = default(bool), bool preserveMethod = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult RedirectToRoute(string routeName = default(string), object routeValues = default(object), bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult RedirectToRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult SignIn(System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), string authenticationScheme = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult SignOut(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), System.Collections.Generic.IList<string> authenticationSchemes = default(System.Collections.Generic.IList<string>)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult StatusCode(int statusCode) => throw null;
@@ -443,7 +448,9 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.HttpResults.Accepted Accepted(System.Uri uri) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.Accepted<TValue> Accepted<TValue>(System.Uri uri, TValue value) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.AcceptedAtRoute AcceptedAtRoute(string routeName = default(string), object routeValues = default(object)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.AcceptedAtRoute AcceptedAtRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.AcceptedAtRoute<TValue> AcceptedAtRoute<TValue>(TValue value, string routeName = default(string), object routeValues = default(object)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.AcceptedAtRoute<TValue> AcceptedAtRoute<TValue>(TValue value, string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.BadRequest BadRequest() => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.BadRequest<TValue> BadRequest<TValue>(TValue error) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.FileContentHttpResult Bytes(byte[] contents, string contentType = default(string), string fileDownloadName = default(string), bool enableRangeProcessing = default(bool), System.DateTimeOffset? lastModified = default(System.DateTimeOffset?), Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag = default(Microsoft.Net.Http.Headers.EntityTagHeaderValue)) => throw null;
@@ -454,17 +461,23 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.HttpResults.ContentHttpResult Content(string content, string contentType, System.Text.Encoding contentEncoding) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.ContentHttpResult Content(string content, string contentType = default(string), System.Text.Encoding contentEncoding = default(System.Text.Encoding), int? statusCode = default(int?)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.ContentHttpResult Content(string content, Microsoft.Net.Http.Headers.MediaTypeHeaderValue contentType) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.Created Created() => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.Created Created(string uri) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.Created<TValue> Created<TValue>(string uri, TValue value) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.Created Created(System.Uri uri) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.Created<TValue> Created<TValue>(System.Uri uri, TValue value) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.CreatedAtRoute CreatedAtRoute(string routeName = default(string), object routeValues = default(object)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.CreatedAtRoute CreatedAtRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.CreatedAtRoute<TValue> CreatedAtRoute<TValue>(TValue value, string routeName = default(string), object routeValues = default(object)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.CreatedAtRoute<TValue> CreatedAtRoute<TValue>(TValue value, string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.EmptyHttpResult Empty { get => throw null; }
+                public static Microsoft.AspNetCore.Http.IResultExtensions Extensions { get => throw null; }
                 public static Microsoft.AspNetCore.Http.HttpResults.FileContentHttpResult File(byte[] fileContents, string contentType = default(string), string fileDownloadName = default(string), bool enableRangeProcessing = default(bool), System.DateTimeOffset? lastModified = default(System.DateTimeOffset?), Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag = default(Microsoft.Net.Http.Headers.EntityTagHeaderValue)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.FileStreamHttpResult File(System.IO.Stream fileStream, string contentType = default(string), string fileDownloadName = default(string), System.DateTimeOffset? lastModified = default(System.DateTimeOffset?), Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag = default(Microsoft.Net.Http.Headers.EntityTagHeaderValue), bool enableRangeProcessing = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.ForbidHttpResult Forbid(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), System.Collections.Generic.IList<string> authenticationSchemes = default(System.Collections.Generic.IList<string>)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.JsonHttpResult<TValue> Json<TValue>(TValue data, System.Text.Json.JsonSerializerOptions options = default(System.Text.Json.JsonSerializerOptions), string contentType = default(string), int? statusCode = default(int?)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.JsonHttpResult<TValue> Json<TValue>(TValue data, System.Text.Json.Serialization.Metadata.JsonTypeInfo<TValue> jsonTypeInfo, string contentType = default(string), int? statusCode = default(int?)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.JsonHttpResult<TValue> Json<TValue>(TValue data, System.Text.Json.Serialization.JsonSerializerContext context, string contentType = default(string), int? statusCode = default(int?)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.RedirectHttpResult LocalRedirect(string localUrl, bool permanent = default(bool), bool preserveMethod = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.NoContent NoContent() => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.NotFound NotFound() => throw null;
@@ -476,6 +489,7 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult Problem(Microsoft.AspNetCore.Mvc.ProblemDetails problemDetails) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.RedirectHttpResult Redirect(string url, bool permanent = default(bool), bool preserveMethod = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.RedirectToRouteHttpResult RedirectToRoute(string routeName = default(string), object routeValues = default(object), bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.RedirectToRouteHttpResult RedirectToRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.SignInHttpResult SignIn(System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), string authenticationScheme = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.SignOutHttpResult SignOut(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), System.Collections.Generic.IList<string> authenticationSchemes = default(System.Collections.Generic.IList<string>)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.StatusCodeHttpResult StatusCode(int statusCode) => throw null;

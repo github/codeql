@@ -10,5 +10,5 @@ where
   e.getEnclosingCallable() = m and
   t = e.getTarget() and
   t.getName() = "+" and
-  t.getDeclaringType().hasQualifiedName("Expressions", "OperatorCalls+Num")
+  t.getDeclaringType().hasFullyQualifiedName("Expressions", "OperatorCalls+Num")
 select m, e.getAnArgument(), t

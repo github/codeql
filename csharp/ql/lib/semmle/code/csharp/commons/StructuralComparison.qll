@@ -195,8 +195,6 @@ predicate toGvn = toGvnCached/1;
 /**
  * Holds if the control flow elements `x` and `y` are structurally equal.
  */
-pragma[inline]
-predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
-  pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
-    pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
-}
+bindingset[x, y]
+pragma[inline_late]
+predicate sameGvn(ControlFlowElement x, ControlFlowElement y) { toGvn(x) = toGvn(y) }

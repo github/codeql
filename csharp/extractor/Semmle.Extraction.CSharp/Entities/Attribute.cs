@@ -82,10 +82,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 var paramName = Symbol.AttributeConstructor?.Parameters[i].Name;
                 var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon is not null && a.NameColon.Name.Identifier.Text == paramName);
 
+                var isParamsParameter = false;
+
                 if (argSyntax is null &&                            // couldn't find named argument
                     ctorArguments?.Count > childIndex &&            // there're more arguments
                     ctorArguments[childIndex].NameColon is null)    // the argument is positional
                 {
+                    // The current argument is not named
+                    // so the previous ones were also not named
+                    // so the child index matches the parameter index.
+                    isParamsParameter = Symbol.AttributeConstructor?.Parameters[childIndex].IsParams == true;
                     argSyntax = ctorArguments[childIndex];
                 }
 
@@ -94,6 +100,28 @@ namespace Semmle.Extraction.CSharp.Entities
                     argSyntax?.Expression,
                     this,
                     childIndex++);
+
+                if (isParamsParameter &&
+                    ctorArguments is not null)
+                {
+                    // The current argument is a params argument, so we're processing all the remaining arguments:
+                    while (childIndex < ctorArguments.Count)
+                    {
+                        if (ctorArguments[childIndex].Expression is null)
+                        {
+                            // This shouldn't happen
+                            continue;
+                        }
+
+                        CreateExpressionFromArgument(
+                            constructorArgument,
+                            ctorArguments[childIndex].Expression,
+                            this,
+                            childIndex);
+
+                        childIndex++;
+                    }
+                }
             }
 
             foreach (var namedArgument in Symbol.NamedArguments)

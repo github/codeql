@@ -307,7 +307,7 @@ class SpringModelPlainMap extends SpringModel {
   SpringModelPlainMap() { this.getType() instanceof MapType }
 
   override RefType getATypeInModel() {
-    exists(MethodAccess methodCall |
+    exists(MethodCall methodCall |
       methodCall.getQualifier() = this.getAnAccess() and
       methodCall.getCallee().hasName("put")
     |
@@ -327,7 +327,7 @@ class SpringModelModel extends SpringModel {
   }
 
   override RefType getATypeInModel() {
-    exists(MethodAccess methodCall |
+    exists(MethodCall methodCall |
       methodCall.getQualifier() = this.getAnAccess() and
       methodCall.getCallee().hasName("addAttribute")
     |

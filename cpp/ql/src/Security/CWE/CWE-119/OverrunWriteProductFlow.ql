@@ -82,36 +82,20 @@ module ValidState {
    * library will perform, and visit all the places where the size argument is modified.
    * 2. Once that dataflow traversal is done, we accumulate the offsets added at each places
    * where the offset is modified (see `validStateImpl`).
-   *
-   * Because we want to guarantee that each place where we modify the offset has a `PathNode`
-   * we "flip" a boolean flow state in each `isAdditionalFlowStep`. This ensures that the node
-   * has a corresponding `PathNode`.
    */
-  private module ValidStateConfig implements DataFlow::StateConfigSig {
-    class FlowState = boolean;
+  private module ValidStateConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { hasSize(_, source, _) }
 
-    predicate isSource(DataFlow::Node source, FlowState state) {
-      hasSize(_, source, _) and
-      state = false
-    }
+    predicate isSink(DataFlow::Node sink) { isSinkPairImpl(_, _, sink, _, _) }
 
-    predicate isSink(DataFlow::Node sink, FlowState state) {
-      isSinkPairImpl(_, _, sink, _, _) and
-      state = [false, true]
-    }
-
-    predicate isAdditionalFlowStep(
-      DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-    ) {
-      isAdditionalFlowStep2(node1, node2, _) and
-      state1 = [false, true] and
-      state2 = state1.booleanNot()
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      isAdditionalFlowStep2(node1, node2, _)
     }
 
     predicate includeHiddenNodes() { any() }
   }
 
-  private import DataFlow::GlobalWithState<ValidStateConfig>
+  private import DataFlow::Global<ValidStateConfig>
 
   private predicate inLoop(PathNode n) { n.getASuccessor+() = n }
 

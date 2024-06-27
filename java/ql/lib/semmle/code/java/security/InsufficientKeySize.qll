@@ -3,32 +3,76 @@
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.security.internal.EncryptionKeySizes
+private import codeql.util.Either
+
+/** A minimum recommended key size for some algorithm. */
+abstract class MinimumKeySize extends int {
+  bindingset[this]
+  MinimumKeySize() { any() }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = super.toString() }
+}
+
+/**
+ * A class of algorithms for which a key size smaller than the recommended key
+ * size might be embedded in the algorithm name.
+ */
+abstract class AlgorithmKind extends string {
+  bindingset[this]
+  AlgorithmKind() { any() }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = super.toString() }
+}
+
+/**
+ * A key size that is greater than the tracked value and equal to the minimum
+ * recommended key size for some algorithm, or a kind of algorithm for which the
+ * tracked string indicates a too small key size.
+ */
+final class KeySizeState = Either<MinimumKeySize, AlgorithmKind>::Either;
 
 /** A source for an insufficient key size. */
 abstract class InsufficientKeySizeSource extends DataFlow::Node {
   /** Holds if this source has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
+  abstract predicate hasState(KeySizeState state);
 }
 
 /** A sink for an insufficient key size. */
 abstract class InsufficientKeySizeSink extends DataFlow::Node {
-  /** Holds if this sink has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
+  /** Holds if this sink accepts the specified `state`. */
+  final predicate hasState(KeySizeState state) {
+    state.asLeft() <= this.minimumKeySize() or this.algorithmKind(state.asRight())
+  }
+
+  /** Gets the minimum recommended key size. */
+  abstract int minimumKeySize();
+
+  /**
+   * Holds if this sink recommends a keysize that is greater than the value in a
+   * source with the given algorithm kind.
+   */
+  predicate algorithmKind(AlgorithmKind kind) { none() }
+}
+
+/** A source for an insufficient key size used in some algorithm. */
+private class IntegerLiteralSource extends InsufficientKeySizeSource {
+  private int value;
+
+  IntegerLiteralSource() { this.asExpr().(IntegerLiteral).getIntValue() = value }
+
+  override predicate hasState(KeySizeState state) {
+    state.asLeft() = min(MinimumKeySize m | value < m)
+  }
 }
 
 /** Provides models for asymmetric cryptography. */
 private module Asymmetric {
   /** Provides models for non-elliptic-curve asymmetric cryptography. */
   private module NonEllipticCurve {
-    /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
-    private class Source extends InsufficientKeySizeSource {
-      string algoName;
-
-      Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize(algoName) }
-
-      override predicate hasState(DataFlow::FlowState state) {
-        state = getMinKeySize(algoName).toString()
-      }
+    private class NonEllipticCurveKeySize extends MinimumKeySize {
+      NonEllipticCurveKeySize() { this = getMinKeySize(_) }
     }
 
     /** A sink for an insufficient key size used in RSA, DSA, and DH algorithms. */
@@ -46,9 +90,7 @@ private module Asymmetric {
         exists(Spec spec | this.asExpr() = spec.getKeySizeArg() and algoName = spec.getAlgoName())
       }
 
-      override predicate hasState(DataFlow::FlowState state) {
-        state = getMinKeySize(algoName).toString()
-      }
+      override int minimumKeySize() { result = getMinKeySize(algoName) }
     }
 
     /** Returns the minimum recommended key size for RSA, DSA, and DH algorithms. */
@@ -88,16 +130,24 @@ private module Asymmetric {
 
   /** Provides models for elliptic-curve asymmetric cryptography. */
   private module EllipticCurve {
+    private class EllipticCurveKeySize extends MinimumKeySize {
+      EllipticCurveKeySize() { this = getMinKeySize() }
+    }
+
+    private class EllipticCurveKind extends AlgorithmKind {
+      EllipticCurveKind() { this = "EC" }
+    }
+
     /** A source for an insufficient key size used in elliptic curve (EC) algorithms. */
     private class Source extends InsufficientKeySizeSource {
       Source() {
-        this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize()
-        or
         // the below is needed for cases when the key size is embedded in the curve name
         getKeySize(this.asExpr().(StringLiteral).getValue()) < getMinKeySize()
       }
 
-      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
+      override predicate hasState(KeySizeState state) {
+        state.asRight() instanceof EllipticCurveKind
+      }
     }
 
     /** A sink for an insufficient key size used in elliptic curve (EC) algorithms. */
@@ -112,7 +162,9 @@ private module Asymmetric {
         exists(Spec s | this.asExpr() = s.getKeySizeArg())
       }
 
-      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
+      override int minimumKeySize() { result = getMinKeySize() }
+
+      override predicate algorithmKind(AlgorithmKind kind) { kind instanceof EllipticCurveKind }
     }
 
     /** Returns the minimum recommended key size for elliptic curve (EC) algorithms. */
@@ -144,7 +196,7 @@ private module Asymmetric {
    * A call to the `initialize` method declared in `java.security.KeyPairGenerator`
    * or to the `init` method declared in `java.security.AlgorithmParameterGenerator`.
    */
-  private class KeyPairGenInit extends MethodAccess {
+  private class KeyPairGenInit extends MethodCall {
     KeyPairGenInit() {
       this.getMethod() instanceof KeyPairGeneratorInitMethod or
       this.getMethod() instanceof AlgoParamGeneratorInitMethod
@@ -176,11 +228,8 @@ private module Asymmetric {
 
 /** Provides models for symmetric cryptography. */
 private module Symmetric {
-  /** A source for an insufficient key size used in AES algorithms. */
-  private class Source extends InsufficientKeySizeSource {
-    Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
-
-    override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
+  private class SymmetricKeySize extends MinimumKeySize {
+    SymmetricKeySize() { this = getMinKeySize() }
   }
 
   /** A sink for an insufficient key size used in AES algorithms. */
@@ -193,14 +242,14 @@ private module Symmetric {
       )
     }
 
-    override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
+    override int minimumKeySize() { result = getMinKeySize() }
   }
 
   /** Returns the minimum recommended key size for AES algorithms. */
   private int getMinKeySize() { result = minSecureKeySizeAes() }
 
   /** A call to the `init` method declared in `javax.crypto.KeyGenerator`. */
-  private class KeyGenInit extends MethodAccess {
+  private class KeyGenInit extends MethodCall {
     KeyGenInit() { this.getMethod() instanceof KeyGeneratorInitMethod }
 
     /** Gets the `keysize` argument of this call. */

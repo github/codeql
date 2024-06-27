@@ -44,3 +44,13 @@ public class CController : BaseAnonController {
     [Authorize]
     public ActionResult Edit4(int id) { return View(); }
 }
+
+[Authorize]
+public class BaseGenController<T> : Controller {
+
+}
+
+public class SubGenController : BaseGenController<string> {
+    // GOOD - Authorize is inherited from parent class
+    public ActionResult Edit5(int id) { return View(); }
+}

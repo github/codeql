@@ -1,43 +1,3 @@
-test_getADirectStateAccess
-| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:16:9:16:18 | this.state |
-| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:17:9:17:18 | this.state |
-| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:18:9:18:18 | this.state |
-| preact.js:1:1:7:1 | class H ...     }\\n} | preact.js:2:19:2:23 | state |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:3:9:3:18 | this.state |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:5:9:5:18 | this.state |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:4:9:4:17 | cmp.state |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:6:9:6:17 | cmp.state |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:10:9:10:17 | cmp.state |
-| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:49:9:49:18 | this.state |
-| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:50:9:50:18 | this.state |
-test_ReactComponent_getInstanceMethod
-| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | getDefaultProps | es5.js:6:20:10:3 | functio ...  };\\n  } |
-| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | render | es5.js:3:11:5:3 | functio ... v>;\\n  } |
-| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | render | es5.js:19:11:21:3 | functio ... 1>;\\n  } |
-| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | render | es6.js:2:9:4:3 | () {\\n   ... v>;\\n  } |
-| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | render | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
-| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | render | importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} |
-| plainfn.js:1:1:3:1 | functio ... div>;\\n} | render | plainfn.js:1:1:3:1 | functio ... div>;\\n} |
-| plainfn.js:5:1:7:1 | functio ... iv");\\n} | render | plainfn.js:5:1:7:1 | functio ... iv");\\n} |
-| plainfn.js:9:1:12:1 | functio ... rn x;\\n} | render | plainfn.js:9:1:12:1 | functio ... rn x;\\n} |
-| plainfn.js:20:1:24:1 | functio ... n 42;\\n} | render | plainfn.js:20:1:24:1 | functio ... n 42;\\n} |
-| preact.js:1:1:7:1 | class H ...     }\\n} | render | preact.js:2:11:6:5 | (props, ... ;\\n    } |
-| probably-a-component.js:1:1:6:1 | class H ...     }\\n} | render | probably-a-component.js:2:11:5:5 | () {\\n   ... ;\\n    } |
-| props.js:13:31:17:5 | {\\n      ... }\\n    } | getDefaultProps | props.js:14:24:16:9 | () {\\n   ...       } |
-| props.js:26:5:28:5 | functio ... ;\\n    } | render | props.js:26:5:28:5 | functio ... ;\\n    } |
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | getSnapshotBeforeUpdate | rare-lifecycle-methods.js:8:28:10:5 | (prevPr ... ;\\n    } |
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | shouldComponentUpdate | rare-lifecycle-methods.js:5:26:7:5 | (nextPr ... ;\\n    } |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | componentDidUpdate | statePropertyReads.js:10:23:12:5 | (prevPr ... ;\\n    } |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | getInitialState | statePropertyWrites.js:25:20:29:5 | () { // ... ;\\n    } |
-| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | getInitialState | statePropertyWrites.js:40:20:44:3 | functio ...  };\\n  } |
-| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | render | statePropertyWrites.js:37:11:39:3 | functio ... v>;\\n  } |
-| thisAccesses.js:1:1:16:1 | class C ...     }\\n} | someInstanceMethod | thisAccesses.js:13:23:15:5 | () {\\n   ... ;\\n    } |
-| thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} | render | thisAccesses.js:19:13:24:5 | functio ... ;\\n    } |
-| thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} | someInstanceMethod | thisAccesses.js:26:25:28:5 | functio ... ;\\n    } |
-| thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} | render | thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} |
-| thisAccesses.js:38:19:45:1 | {\\n    r ...    },\\n} | render | thisAccesses.js:39:13:44:5 | functio ... ;\\n    } |
-| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | render | thisAccesses.js:59:11:62:5 | () {\\n   ... ;\\n    } |
-| thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | render | thisAccesses_importedMappers.js:5:13:14:5 | functio ... ;\\n    } |
 test_react
 | es5.js:1:13:1:17 | React |
 | es6.js:1:21:1:25 | React |
@@ -76,11 +36,62 @@ test_react
 | thisAccesses_importedMappers.js:1:8:1:12 | React |
 | thisAccesses_importedMappers.js:4:1:4:5 | React |
 | thisAccesses_importedMappers.js:6:9:6:13 | React |
-test_ReactComponent_getAPreviousStateSource
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:2:44:2:48 | state |
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:8:40:8:48 | prevState |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:7:24:7:32 | prevState |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:10:35:10:43 | prevState |
+test_JSXname
+| es5.js:4:12:4:45 | <div>He ... }</div> | es5.js:4:13:4:15 | div | div | Identifier |
+| es5.js:20:12:20:44 | <h1>Hel ... e}</h1> | es5.js:20:13:20:14 | h1 | h1 | Identifier |
+| es6.js:3:12:3:45 | <div>He ... }</div> | es6.js:3:13:3:15 | div | div | Identifier |
+| exportedComponent.jsx:2:12:2:46 | <div st ... lor}}/> | exportedComponent.jsx:2:13:2:15 | div | div | Identifier |
+| importedComponent.jsx:4:12:4:39 | <MyComp ... olor}/> | importedComponent.jsx:4:13:4:23 | MyComponent | MyComponent | Identifier |
+| plainfn.js:2:10:2:38 | <div>He ... }</div> | plainfn.js:2:11:2:13 | div | div | Identifier |
+| preact.js:5:16:5:21 | <div/> | preact.js:5:17:5:19 | div | div | Identifier |
+| probably-a-component.js:4:16:4:21 | <div/> | probably-a-component.js:4:17:4:19 | div | div | Identifier |
+| props.js:7:6:7:37 | <C prop ... JSX"}/> | props.js:7:7:7:7 | C | C | Identifier |
+| props.js:19:6:19:37 | <C prop ... JSX"}/> | props.js:19:7:19:7 | C | C | Identifier |
+| props.js:27:16:27:21 | <div/> | props.js:27:17:27:19 | div | div | Identifier |
+| props.js:32:6:32:37 | <C prop ... JSX"}/> | props.js:32:7:32:7 | C | C | Identifier |
+| statePropertyWrites.js:38:12:38:45 | <div>He ... }</div> | statePropertyWrites.js:38:13:38:15 | div | div | Identifier |
+| thisAccesses.js:23:16:23:21 | <div/> | thisAccesses.js:23:17:23:19 | div | div | Identifier |
+| thisAccesses.js:35:12:35:17 | <div/> | thisAccesses.js:35:13:35:15 | div | div | Identifier |
+| thisAccesses.js:43:16:43:21 | <div/> | thisAccesses.js:43:17:43:19 | div | div | Identifier |
+| thisAccesses.js:60:19:60:41 | <this.n ... s.name> | thisAccesses.js:60:20:60:28 | this.name | this.name | dot |
+| thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:28 | this.this | this.this | dot |
+| thisAccesses_importedMappers.js:13:16:13:21 | <div/> | thisAccesses_importedMappers.js:13:17:13:19 | div | div | Identifier |
+| use-react-router.jsx:5:17:5:87 | <Router ... Router> | use-react-router.jsx:5:18:5:23 | Router | Router | Identifier |
+| use-react-router.jsx:5:25:5:78 | <Route> ... /Route> | use-react-router.jsx:5:26:5:30 | Route | Route | Identifier |
+| use-react-router.jsx:5:32:5:70 | <Import ... ponent> | use-react-router.jsx:5:33:5:49 | ImportedComponent | ImportedComponent | Identifier |
+| useHigherOrderComponent.jsx:5:12:5:39 | <SomeCo ... "red"/> | useHigherOrderComponent.jsx:5:13:5:25 | SomeComponent | SomeComponent | Identifier |
+| useHigherOrderComponent.jsx:11:12:11:46 | <LazyLo ... lazy"/> | useHigherOrderComponent.jsx:11:13:11:31 | LazyLoadedComponent | LazyLoadedComponent | Identifier |
+| useHigherOrderComponent.jsx:17:12:17:48 | <LazyLo ... azy2"/> | useHigherOrderComponent.jsx:17:13:17:32 | LazyLoadedComponent2 | LazyLoadedComponent2 | Identifier |
+test_ReactComponent
+| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} |
+| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} |
+| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} |
+| es6.js:14:1:20:1 | class H ...     }\\n} |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} |
+| namedImport.js:3:1:3:28 | class C ... nent {} |
+| namedImport.js:5:1:5:20 | class D extends C {} |
+| plainfn.js:1:1:3:1 | functio ... div>;\\n} |
+| plainfn.js:5:1:7:1 | functio ... iv");\\n} |
+| plainfn.js:9:1:12:1 | functio ... rn x;\\n} |
+| plainfn.js:20:1:24:1 | functio ... n 42;\\n} |
+| preact.js:1:1:7:1 | class H ...     }\\n} |
+| preact.js:9:1:11:1 | class H ... nt {\\n\\n} |
+| probably-a-component.js:1:1:6:1 | class H ...     }\\n} |
+| props.js:2:5:3:5 | class C ... {\\n    } |
+| props.js:13:31:17:5 | {\\n      ... }\\n    } |
+| props.js:26:5:28:5 | functio ... ;\\n    } |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} |
+| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} |
+| thisAccesses.js:1:1:16:1 | class C ...     }\\n} |
+| thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} |
+| thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} |
+| thisAccesses.js:38:19:45:1 | {\\n    r ...    },\\n} |
+| thisAccesses.js:47:1:52:1 | class C ...     }\\n} |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} |
+| thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} |
 test_ReactComponent_ref
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} |
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | es5.js:3:11:3:10 | this |
@@ -181,19 +192,57 @@ test_ReactComponent_ref
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | thisAccesses_importedMappers.js:9:25:9:24 | this |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | thisAccesses_importedMappers.js:10:13:10:16 | this |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | thisAccesses_importedMappers.js:11:12:11:15 | this |
-test_ReactComponent_getACandidateStateSource
-| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:18:22:18:31 | { baz: 42} |
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:3:16:3:17 | {} |
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:5:38:5:46 | nextState |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:7:45:7:56 | prevState.p3 |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:8:18:8:19 | {} |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:12:18:12:19 | {} |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:16:18:16:19 | {} |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:20:18:20:19 | {} |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:31:13:33:5 | {\\n      ... 2\\n    } |
-| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | statePropertyWrites.js:41:12:43:5 | {\\n      p8: 42\\n    } |
-| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:48:18:48:18 | y |
-| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:49:22:49:22 | x |
+test_getADirectStateAccess
+| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:16:9:16:18 | this.state |
+| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:17:9:17:18 | this.state |
+| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:18:9:18:18 | this.state |
+| preact.js:1:1:7:1 | class H ...     }\\n} | preact.js:2:19:2:23 | state |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:3:9:3:18 | this.state |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:5:9:5:18 | this.state |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:4:9:4:17 | cmp.state |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:6:9:6:17 | cmp.state |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:10:9:10:17 | cmp.state |
+| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:49:9:49:18 | this.state |
+| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:50:9:50:18 | this.state |
+test_ReactComponent_getAPropRead
+| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | name | es5.js:4:24:4:38 | this.props.name |
+| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | name | es5.js:20:24:20:38 | this.props.name |
+| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | name | es6.js:3:24:3:38 | this.props.name |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | color | exportedComponent.jsx:2:32:2:42 | props.color |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | color | importedComponent.jsx:3:25:3:29 | color |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | location | importedComponent.jsx:3:32:3:39 | location |
+| plainfn.js:1:1:3:1 | functio ... div>;\\n} | name | plainfn.js:2:22:2:31 | props.name |
+| preact.js:1:1:7:1 | class H ...     }\\n} | name | preact.js:3:9:3:18 | props.name |
+| probably-a-component.js:1:1:6:1 | class H ...     }\\n} | name | probably-a-component.js:3:9:3:23 | this.props.name |
+| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | name | statePropertyWrites.js:38:24:38:38 | this.props.name |
+test_ReactComponent_getInstanceMethod
+| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | getDefaultProps | es5.js:6:20:10:3 | functio ...  };\\n  } |
+| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | render | es5.js:3:11:5:3 | functio ... v>;\\n  } |
+| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | render | es5.js:19:11:21:3 | functio ... 1>;\\n  } |
+| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | render | es6.js:2:9:4:3 | () {\\n   ... v>;\\n  } |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | render | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | render | importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} |
+| plainfn.js:1:1:3:1 | functio ... div>;\\n} | render | plainfn.js:1:1:3:1 | functio ... div>;\\n} |
+| plainfn.js:5:1:7:1 | functio ... iv");\\n} | render | plainfn.js:5:1:7:1 | functio ... iv");\\n} |
+| plainfn.js:9:1:12:1 | functio ... rn x;\\n} | render | plainfn.js:9:1:12:1 | functio ... rn x;\\n} |
+| plainfn.js:20:1:24:1 | functio ... n 42;\\n} | render | plainfn.js:20:1:24:1 | functio ... n 42;\\n} |
+| preact.js:1:1:7:1 | class H ...     }\\n} | render | preact.js:2:11:6:5 | (props, ... ;\\n    } |
+| probably-a-component.js:1:1:6:1 | class H ...     }\\n} | render | probably-a-component.js:2:11:5:5 | () {\\n   ... ;\\n    } |
+| props.js:13:31:17:5 | {\\n      ... }\\n    } | getDefaultProps | props.js:14:24:16:9 | () {\\n   ...       } |
+| props.js:26:5:28:5 | functio ... ;\\n    } | render | props.js:26:5:28:5 | functio ... ;\\n    } |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | getSnapshotBeforeUpdate | rare-lifecycle-methods.js:8:28:10:5 | (prevPr ... ;\\n    } |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | shouldComponentUpdate | rare-lifecycle-methods.js:5:26:7:5 | (nextPr ... ;\\n    } |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | componentDidUpdate | statePropertyReads.js:10:23:12:5 | (prevPr ... ;\\n    } |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | getInitialState | statePropertyWrites.js:25:20:29:5 | () { // ... ;\\n    } |
+| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | getInitialState | statePropertyWrites.js:40:20:44:3 | functio ...  };\\n  } |
+| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | render | statePropertyWrites.js:37:11:39:3 | functio ... v>;\\n  } |
+| thisAccesses.js:1:1:16:1 | class C ...     }\\n} | someInstanceMethod | thisAccesses.js:13:23:15:5 | () {\\n   ... ;\\n    } |
+| thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} | render | thisAccesses.js:19:13:24:5 | functio ... ;\\n    } |
+| thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} | someInstanceMethod | thisAccesses.js:26:25:28:5 | functio ... ;\\n    } |
+| thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} | render | thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} |
+| thisAccesses.js:38:19:45:1 | {\\n    r ...    },\\n} | render | thisAccesses.js:39:13:44:5 | functio ... ;\\n    } |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | render | thisAccesses.js:59:11:62:5 | () {\\n   ... ;\\n    } |
+| thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | render | thisAccesses_importedMappers.js:5:13:14:5 | functio ... ;\\n    } |
 test_ReactComponent_getADirectPropsSource
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | es5.js:4:24:4:33 | this.props |
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | es5.js:20:24:20:33 | this.props |
@@ -233,73 +282,24 @@ test_ReactComponent_getACandidatePropsValue
 | useHigherOrderComponent.jsx:5:33:5:37 | "red" |
 | useHigherOrderComponent.jsx:11:39:11:44 | "lazy" |
 | useHigherOrderComponent.jsx:17:40:17:46 | "lazy2" |
-test_ReactComponent
-| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} |
-| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} |
-| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} |
-| es6.js:14:1:20:1 | class H ...     }\\n} |
-| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
-| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} |
-| namedImport.js:3:1:3:28 | class C ... nent {} |
-| namedImport.js:5:1:5:20 | class D extends C {} |
-| plainfn.js:1:1:3:1 | functio ... div>;\\n} |
-| plainfn.js:5:1:7:1 | functio ... iv");\\n} |
-| plainfn.js:9:1:12:1 | functio ... rn x;\\n} |
-| plainfn.js:20:1:24:1 | functio ... n 42;\\n} |
-| preact.js:1:1:7:1 | class H ...     }\\n} |
-| preact.js:9:1:11:1 | class H ... nt {\\n\\n} |
-| probably-a-component.js:1:1:6:1 | class H ...     }\\n} |
-| props.js:2:5:3:5 | class C ... {\\n    } |
-| props.js:13:31:17:5 | {\\n      ... }\\n    } |
-| props.js:26:5:28:5 | functio ... ;\\n    } |
-| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} |
-| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} |
-| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} |
-| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} |
-| thisAccesses.js:1:1:16:1 | class C ...     }\\n} |
-| thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} |
-| thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} |
-| thisAccesses.js:38:19:45:1 | {\\n    r ...    },\\n} |
-| thisAccesses.js:47:1:52:1 | class C ...     }\\n} |
-| thisAccesses.js:54:1:63:1 | class C ...     }\\n} |
-| thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} |
-test_ReactComponent_getAPropRead
-| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | name | es5.js:4:24:4:38 | this.props.name |
-| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | name | es5.js:20:24:20:38 | this.props.name |
-| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | name | es6.js:3:24:3:38 | this.props.name |
-| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | color | exportedComponent.jsx:2:32:2:42 | props.color |
-| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | color | importedComponent.jsx:3:25:3:29 | color |
-| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | location | importedComponent.jsx:3:32:3:39 | location |
-| plainfn.js:1:1:3:1 | functio ... div>;\\n} | name | plainfn.js:2:22:2:31 | props.name |
-| preact.js:1:1:7:1 | class H ...     }\\n} | name | preact.js:3:9:3:18 | props.name |
-| probably-a-component.js:1:1:6:1 | class H ...     }\\n} | name | probably-a-component.js:3:9:3:23 | this.props.name |
-| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | name | statePropertyWrites.js:38:24:38:38 | this.props.name |
-test_JSXname
-| es5.js:4:12:4:45 | <div>He ... }</div> | es5.js:4:13:4:15 | div | div | Identifier |
-| es5.js:20:12:20:44 | <h1>Hel ... e}</h1> | es5.js:20:13:20:14 | h1 | h1 | Identifier |
-| es6.js:3:12:3:45 | <div>He ... }</div> | es6.js:3:13:3:15 | div | div | Identifier |
-| exportedComponent.jsx:2:12:2:46 | <div st ... lor}}/> | exportedComponent.jsx:2:13:2:15 | div | div | Identifier |
-| importedComponent.jsx:4:12:4:39 | <MyComp ... olor}/> | importedComponent.jsx:4:13:4:23 | MyComponent | MyComponent | Identifier |
-| plainfn.js:2:10:2:38 | <div>He ... }</div> | plainfn.js:2:11:2:13 | div | div | Identifier |
-| preact.js:5:16:5:21 | <div/> | preact.js:5:17:5:19 | div | div | Identifier |
-| probably-a-component.js:4:16:4:21 | <div/> | probably-a-component.js:4:17:4:19 | div | div | Identifier |
-| props.js:7:6:7:37 | <C prop ... JSX"}/> | props.js:7:7:7:7 | C | C | Identifier |
-| props.js:19:6:19:37 | <C prop ... JSX"}/> | props.js:19:7:19:7 | C | C | Identifier |
-| props.js:27:16:27:21 | <div/> | props.js:27:17:27:19 | div | div | Identifier |
-| props.js:32:6:32:37 | <C prop ... JSX"}/> | props.js:32:7:32:7 | C | C | Identifier |
-| statePropertyWrites.js:38:12:38:45 | <div>He ... }</div> | statePropertyWrites.js:38:13:38:15 | div | div | Identifier |
-| thisAccesses.js:23:16:23:21 | <div/> | thisAccesses.js:23:17:23:19 | div | div | Identifier |
-| thisAccesses.js:35:12:35:17 | <div/> | thisAccesses.js:35:13:35:15 | div | div | Identifier |
-| thisAccesses.js:43:16:43:21 | <div/> | thisAccesses.js:43:17:43:19 | div | div | Identifier |
-| thisAccesses.js:60:19:60:41 | <this.n ... s.name> | thisAccesses.js:60:20:60:28 | this.name | this.name | dot |
-| thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:28 | this.this | this.this | dot |
-| thisAccesses_importedMappers.js:13:16:13:21 | <div/> | thisAccesses_importedMappers.js:13:17:13:19 | div | div | Identifier |
-| use-react-router.jsx:5:17:5:87 | <Router ... Router> | use-react-router.jsx:5:18:5:23 | Router | Router | Identifier |
-| use-react-router.jsx:5:25:5:78 | <Route> ... /Route> | use-react-router.jsx:5:26:5:30 | Route | Route | Identifier |
-| use-react-router.jsx:5:32:5:70 | <Import ... ponent> | use-react-router.jsx:5:33:5:49 | ImportedComponent | ImportedComponent | Identifier |
-| useHigherOrderComponent.jsx:5:12:5:39 | <SomeCo ... "red"/> | useHigherOrderComponent.jsx:5:13:5:25 | SomeComponent | SomeComponent | Identifier |
-| useHigherOrderComponent.jsx:11:12:11:46 | <LazyLo ... lazy"/> | useHigherOrderComponent.jsx:11:13:11:31 | LazyLoadedComponent | LazyLoadedComponent | Identifier |
-| useHigherOrderComponent.jsx:17:12:17:48 | <LazyLo ... azy2"/> | useHigherOrderComponent.jsx:17:13:17:32 | LazyLoadedComponent2 | LazyLoadedComponent2 | Identifier |
+test_ReactComponent_getAPreviousStateSource
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:2:44:2:48 | state |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:8:40:8:48 | prevState |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:7:24:7:32 | prevState |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:10:35:10:43 | prevState |
+test_ReactComponent_getACandidateStateSource
+| es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:18:22:18:31 | { baz: 42} |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:3:16:3:17 | {} |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:5:38:5:46 | nextState |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:7:45:7:56 | prevState.p3 |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:8:18:8:19 | {} |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:12:18:12:19 | {} |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:16:18:16:19 | {} |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:20:18:20:19 | {} |
+| statePropertyWrites.js:1:1:34:1 | class W ...    };\\n} | statePropertyWrites.js:31:13:33:5 | {\\n      ... 2\\n    } |
+| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | statePropertyWrites.js:41:12:43:5 | {\\n      p8: 42\\n    } |
+| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:48:18:48:18 | y |
+| thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:49:22:49:22 | x |
 test_JsxName_this
 | es5.js:4:12:4:45 | <div>He ... }</div> | es5.js:4:24:4:27 | this |
 | es5.js:20:12:20:44 | <h1>Hel ... e}</h1> | es5.js:20:24:20:27 | this |

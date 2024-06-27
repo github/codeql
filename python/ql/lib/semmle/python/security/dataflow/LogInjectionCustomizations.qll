@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -71,6 +72,10 @@ module LogInjection {
     }
   }
 
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+  }
+
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
@@ -90,7 +95,7 @@ module LogInjection {
     // TODO: Consider rewriting using flow states.
     ReplaceLineBreaksSanitizer() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
-      this.getArg(0).asExpr().(StrConst).getText() in ["\r\n", "\n"]
+      this.getArg(0).asExpr().(StringLiteral).getText() in ["\r\n", "\n"]
     }
   }
 }

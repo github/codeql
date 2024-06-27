@@ -10,8 +10,8 @@ import csharp
 /** A class representing a Service */
 private class ServiceClass extends Class {
   ServiceClass() {
-    this.getBaseClass+().hasQualifiedName("ServiceStack", "Service") or
-    this.getABaseType*().getABaseInterface().hasQualifiedName("ServiceStack", "IService")
+    this.getBaseClass+().hasFullyQualifiedName("ServiceStack", "Service") or
+    this.getABaseType*().getABaseInterface().hasFullyQualifiedName("ServiceStack", "IService")
   }
 
   /** Get a method that handles incoming requests */
@@ -54,7 +54,7 @@ module XSS {
         m.canReturn(e) and
         (
           e.getType() instanceof StringType or
-          e.getType().hasQualifiedName("ServiceStack", "HttpResult")
+          e.getType().hasFullyQualifiedName("ServiceStack", "HttpResult")
         )
       )
     }

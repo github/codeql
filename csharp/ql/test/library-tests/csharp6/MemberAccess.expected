@@ -1,0 +1,11 @@
+memberAccess
+| csharp6.cs:25:79:25:89 | access to property Length | csharp6.cs:25:79:25:81 | access to local variable bar | Conditional |
+| csharp6.cs:27:73:27:83 | access to property Length | csharp6.cs:27:73:27:75 | access to local variable bar | Conditional |
+| csharp6.cs:32:38:32:70 | access to indexer | csharp6.cs:32:38:32:66 | object creation of type Dictionary<Int32,String> | Conditional |
+| csharp6.cs:32:38:32:73 | access to indexer | csharp6.cs:32:38:32:70 | access to indexer | Unconditional |
+methodCall
+| csharp6.cs:30:31:30:44 | call to method ToUpper | csharp6.cs:30:31:30:33 | access to local variable foo | Conditional |
+extensionMethodCall
+| csharp6.cs:29:35:29:44 | call to method Any<Char> | csharp6.cs:29:35:29:37 | access to local variable bar | Conditional |
+| csharp6.cs:30:31:30:66 | call to method Select<Char,Boolean> | csharp6.cs:30:31:30:44 | call to method ToUpper | Unconditional |
+| csharp6.cs:30:31:30:75 | call to method Count<Boolean> | csharp6.cs:30:31:30:66 | call to method Select<Char,Boolean> | Conditional |

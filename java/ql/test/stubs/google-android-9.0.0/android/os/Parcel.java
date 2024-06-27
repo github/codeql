@@ -24,24 +24,24 @@ public class Parcel
 {
     protected Parcel() {}
     protected void finalize(){}
-    public <T extends Parcelable> ArrayMap<String, T> createTypedArrayMap(Parcelable.Creator<T> p0){ return null; }
-    public <T extends Parcelable> List<T> readParcelableList(List<T> p0, ClassLoader p1){ return null; }
-    public <T extends Parcelable> SparseArray<T> createTypedSparseArray(Parcelable.Creator<T> p0){ return null; }
     public <T extends Parcelable> T readParcelable(ClassLoader p0){ return null; }
+    public <T extends Parcelable> android.util.ArrayMap<String, T> createTypedArrayMap(Parcelable.Creator<T> p0){ return null; }
+    public <T extends Parcelable> android.util.SparseArray<T> createTypedSparseArray(Parcelable.Creator<T> p0){ return null; }
+    public <T extends Parcelable> java.util.List<T> readParcelableList(java.util.List<T> p0, ClassLoader p1){ return null; }
     public <T extends Parcelable> void writeParcelableArray(T[] p0, int p1){}
-    public <T extends Parcelable> void writeParcelableList(List<T> p0, int p1){}
+    public <T extends Parcelable> void writeParcelableList(java.util.List<T> p0, int p1){}
     public <T extends Parcelable> void writeTypedArray(T[] p0, int p1){}
-    public <T extends Parcelable> void writeTypedArrayMap(ArrayMap<String, T> p0, int p1){}
-    public <T extends Parcelable> void writeTypedList(List<T> p0){}
+    public <T extends Parcelable> void writeTypedArrayMap(android.util.ArrayMap<String, T> p0, int p1){}
+    public <T extends Parcelable> void writeTypedList(java.util.List<T> p0){}
     public <T extends Parcelable> void writeTypedObject(T p0, int p1){}
-    public <T extends Parcelable> void writeTypedSparseArray(SparseArray<T> p0, int p1){}
-    public <T> ArrayList<T> createTypedArrayList(Parcelable.Creator<T> p0){ return null; }
-    public <T> SparseArray<T> readSparseArray(ClassLoader p0){ return null; }
+    public <T extends Parcelable> void writeTypedSparseArray(android.util.SparseArray<T> p0, int p1){}
     public <T> T readTypedObject(Parcelable.Creator<T> p0){ return null; }
     public <T> T[] createTypedArray(Parcelable.Creator<T> p0){ return null; }
+    public <T> android.util.SparseArray<T> readSparseArray(ClassLoader p0){ return null; }
+    public <T> java.util.ArrayList<T> createTypedArrayList(Parcelable.Creator<T> p0){ return null; }
     public <T> void readTypedArray(T[] p0, Parcelable.Creator<T> p1){}
-    public <T> void readTypedList(List<T> p0, Parcelable.Creator<T> p1){}
-    public <T> void writeSparseArray(SparseArray<T> p0){}
+    public <T> void readTypedList(java.util.List<T> p0, Parcelable.Creator<T> p1){}
+    public <T> void writeSparseArray(android.util.SparseArray<T> p0){}
     public ArrayList readArrayList(ClassLoader p0){ return null; }
     public ArrayList<IBinder> createBinderArrayList(){ return null; }
     public ArrayList<String> createStringArrayList(){ return null; }

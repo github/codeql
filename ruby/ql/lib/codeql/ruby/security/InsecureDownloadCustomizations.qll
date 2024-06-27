@@ -7,7 +7,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 private import codeql.ruby.frameworks.Files
 private import codeql.ruby.frameworks.core.IO
 

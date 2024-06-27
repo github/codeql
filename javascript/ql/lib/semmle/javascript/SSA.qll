@@ -488,6 +488,14 @@ class SsaDefinition extends TSsaDefinition {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   );
 
+  /** Gets the location of this element. */
+  final Location getLocation() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    )
+  }
+
   /** Gets the function or toplevel to which this definition belongs. */
   StmtContainer getContainer() { result = this.getBasicBlock().getContainer() }
 }
@@ -758,6 +766,3 @@ module Ssa {
   /** Gets the SSA variable corresponding to `d`. */
   SsaVariable variable(VarDef d) { result.getDefinition() = definition(d) }
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

@@ -33,7 +33,7 @@ predicate exclude(Method m) {
  *  - is different from `callToCheck`, and
  *  - is not a call to an excluded method.
  */
-predicate checkExpr(MethodAccess callToCheck, MethodAccess otherCall, string operation, Variable v) {
+predicate checkExpr(MethodCall callToCheck, MethodCall otherCall, string operation, Variable v) {
   not exclude(otherCall.getMethod()) and
   v.getAnAssignedValue() = callToCheck and
   otherCall != callToCheck and
@@ -47,7 +47,7 @@ predicate checkExpr(MethodAccess callToCheck, MethodAccess otherCall, string ope
 /**
  * Holds if `operation` is implicitly called on `v`, and `v` is assigned the result of `callToCheck`.
  */
-predicate implicitCheckExpr(MethodAccess callToCheck, string operation, Variable v) {
+predicate implicitCheckExpr(MethodCall callToCheck, string operation, Variable v) {
   exists(TryStmt try, LocalVariableDeclExpr decl |
     try.getAResourceDecl().getAVariable() = decl and
     decl.getVariable() = v and
@@ -62,7 +62,7 @@ predicate implicitCheckExpr(MethodAccess callToCheck, string operation, Variable
 Expr getChainedAccess(Variable v) {
   result = v.getAnAccess()
   or
-  exists(MethodAccess chainedAccess | chainedAccess.getQualifier() = getChainedAccess(v) |
+  exists(MethodCall chainedAccess | chainedAccess.getQualifier() = getChainedAccess(v) |
     designedForChaining(chainedAccess.getMethod()) and result = chainedAccess
   )
 }
@@ -70,7 +70,7 @@ Expr getChainedAccess(Variable v) {
 /**
  * The result of `ma` and a call to a method named `operation` are both assigned to the same variable.
  */
-predicate checkedFunctionCall(MethodAccess ma, string operation) {
+predicate checkedFunctionCall(MethodCall ma, string operation) {
   relevantFunctionCall(ma, _) and
   exists(Variable v | not v instanceof Field |
     v.getAnAssignedValue() = ma and
@@ -81,24 +81,24 @@ predicate checkedFunctionCall(MethodAccess ma, string operation) {
 /**
  * The method access `ma` is a call to `m` where the result is assigned.
  */
-predicate relevantFunctionCall(MethodAccess ma, Method m) {
+predicate relevantFunctionCall(MethodCall ma, Method m) {
   ma.getMethod() = m and
   exists(Variable v | v.getAnAssignedValue() = ma) and
   not okToIgnore(ma)
 }
 
-predicate okToIgnore(MethodAccess ma) { not ma.getCompilationUnit().fromSource() }
+predicate okToIgnore(MethodCall ma) { not ma.getCompilationUnit().fromSource() }
 
 predicate functionStats(Method m, string operation, int used, int total, int percentage) {
   m.getReturnType() instanceof RefType and
   // Calls to `m` where we also perform `operation`.
-  used = strictcount(MethodAccess ma | checkedFunctionCall(ma, operation) and m = ma.getMethod()) and
+  used = strictcount(MethodCall ma | checkedFunctionCall(ma, operation) and m = ma.getMethod()) and
   // Calls to `m`.
-  total = strictcount(MethodAccess ma | relevantFunctionCall(ma, m)) and
+  total = strictcount(MethodCall ma | relevantFunctionCall(ma, m)) and
   percentage = used * 100 / total
 }
 
-from MethodAccess unchecked, Method m, string operation, int percent
+from MethodCall unchecked, Method m, string operation, int percent
 where
   relevantFunctionCall(unchecked, m) and
   not checkedFunctionCall(unchecked, operation) and

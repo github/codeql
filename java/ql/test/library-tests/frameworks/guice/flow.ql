@@ -6,7 +6,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getAnArgument() and
       ma.getMethod().hasName("sink")
     ) and

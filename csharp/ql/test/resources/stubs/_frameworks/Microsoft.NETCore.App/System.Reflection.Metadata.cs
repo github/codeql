@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Reflection.Metadata, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -752,6 +752,7 @@ namespace System
                     public void OpCode(System.Reflection.Metadata.ILOpCode code) => throw null;
                     public void StoreArgument(int argumentIndex) => throw null;
                     public void StoreLocal(int slotIndex) => throw null;
+                    public System.Reflection.Metadata.Ecma335.SwitchInstructionEncoder Switch(int branchCount) => throw null;
                     public void Token(int token) => throw null;
                     public void Token(System.Reflection.Metadata.EntityHandle handle) => throw null;
                 }
@@ -1089,11 +1090,16 @@ namespace System
                     public void String() => throw null;
                     public System.Reflection.Metadata.Ecma335.SignatureTypeEncoder SZArray() => throw null;
                     public void Type(System.Reflection.Metadata.EntityHandle type, bool isValueType) => throw null;
+                    public void TypedReference() => throw null;
                     public void UInt16() => throw null;
                     public void UInt32() => throw null;
                     public void UInt64() => throw null;
                     public void UIntPtr() => throw null;
                     public void VoidPointer() => throw null;
+                }
+                public struct SwitchInstructionEncoder
+                {
+                    public void Branch(System.Reflection.Metadata.Ecma335.LabelHandle label) => throw null;
                 }
                 public enum TableIndex : byte
                 {
@@ -2946,12 +2952,14 @@ namespace System
                 ThreadTerm = 8,
                 HighEntropyVirtualAddressSpace = 32,
                 DynamicBase = 64,
+                ForceIntegrity = 128,
                 NxCompatible = 256,
                 NoIsolation = 512,
                 NoSeh = 1024,
                 NoBind = 2048,
                 AppContainer = 4096,
                 WdmDriver = 8192,
+                ControlFlowGuard = 16384,
                 TerminalServerAware = 32768,
             }
             public enum Machine : ushort

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Connections.Common, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Connections.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -40,6 +40,7 @@ namespace Microsoft
                     public NegotiationResponse() => throw null;
                     public string Error { get => throw null; set { } }
                     public string Url { get => throw null; set { } }
+                    public bool UseStatefulReconnect { get => throw null; set { } }
                     public int Version { get => throw null; set { } }
                 }
             }

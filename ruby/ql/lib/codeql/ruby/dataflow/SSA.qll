@@ -256,14 +256,16 @@ module Ssa {
    * `x` is inserted at the start of `m`.
    */
   class UninitializedDefinition extends Definition, SsaImpl::WriteDefinition {
+    private Variable v;
+
     UninitializedDefinition() {
-      exists(BasicBlock bb, int i, Variable v |
+      exists(BasicBlock bb, int i |
         this.definesAt(v, bb, i) and
         SsaImpl::uninitializedWrite(bb, i, v)
       )
     }
 
-    final override string toString() { result = "<uninitialized>" }
+    final override string toString() { result = "<uninitialized> " + v }
 
     final override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }

@@ -12,7 +12,7 @@ private import semmle.code.java.dataflow.DataFlow
  */
 class SslConnectionInit extends DataFlow::Node {
   SslConnectionInit() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       this.asExpr() = ma and
       ma.getMethod() = m
     |
@@ -30,7 +30,7 @@ class SslConnectionInit extends DataFlow::Node {
  */
 class SslConnectionCreation extends DataFlow::Node {
   SslConnectionCreation() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m instanceof BeginHandshakeMethod or
       m instanceof SslWrapMethod or
       m instanceof SslUnwrapMethod or
@@ -54,7 +54,7 @@ abstract class SslUnsafeCertTrustSanitizer extends DataFlow::Node { }
  */
 private class SslEngineServerMode extends SslUnsafeCertTrustSanitizer {
   SslEngineServerMode() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m.hasName("setUseClientMode") and
       m.getDeclaringType().getAnAncestor() instanceof SslEngine and
       ma.getMethod() = m and
@@ -68,7 +68,7 @@ private class SslEngineServerMode extends SslUnsafeCertTrustSanitizer {
  * Holds if the return value of `createSocket` is cast to `SSLSocket`
  * or the qualifier of `createSocket` is an instance of `SSLSocketFactory`.
  */
-private predicate isSslSocket(MethodAccess createSocket) {
+private predicate isSslSocket(MethodCall createSocket) {
   createSocket = any(CastExpr ce | ce.getType() instanceof SslSocket).getExpr()
   or
   createSocket.getQualifier().getType().(RefType).getAnAncestor() instanceof SslSocketFactory
@@ -78,14 +78,14 @@ private predicate isSslSocket(MethodAccess createSocket) {
  * A call to a method that enables SSL (`useSslProtocol` or `setSslContextFactory`)
  * on an instance of `com.rabbitmq.client.ConnectionFactory` that doesn't set `enableHostnameVerification`.
  */
-class RabbitMQEnableHostnameVerificationNotSet extends MethodAccess {
+class RabbitMQEnableHostnameVerificationNotSet extends MethodCall {
   RabbitMQEnableHostnameVerificationNotSet() {
     this.getMethod().hasName(["useSslProtocol", "setSslContextFactory"]) and
     this.getMethod().getDeclaringType() instanceof RabbitMQConnectionFactory and
     exists(Variable v |
       v.getType() instanceof RabbitMQConnectionFactory and
       this.getQualifier() = v.getAnAccess() and
-      not exists(MethodAccess ma |
+      not exists(MethodCall ma |
         ma.getMethod().hasName("enableHostnameVerification") and
         ma.getQualifier() = v.getAnAccess()
       )

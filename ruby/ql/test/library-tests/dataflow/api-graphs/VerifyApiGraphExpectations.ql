@@ -1,16 +1,15 @@
 import ruby
+import codeql.dataflow.internal.AccessPathSyntax
 import codeql.ruby.ast.internal.TreeSitter
-import codeql.ruby.dataflow.internal.AccessPathSyntax
-import codeql.ruby.frameworks.data.internal.ApiGraphModels
+import codeql.ruby.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 import codeql.ruby.ApiGraphs
 import TestUtilities.InlineExpectationsTest
 
-class AccessPathFromExpectation extends AccessPath::Range {
-  AccessPathFromExpectation() { hasExpectationWithValue(_, this) }
-}
+private predicate accessPathRange(string s) { hasExpectationWithValue(_, s) }
+
+import AccessPath<accessPathRange/1>
 
 API::Node evaluatePath(AccessPath path, int n) {
-  path instanceof AccessPathFromExpectation and
   n = 1 and
   exists(AccessPathToken token | token = path.getToken(0) |
     token.getName() = "Member" and
@@ -23,9 +22,9 @@ API::Node evaluatePath(AccessPath path, int n) {
     result = token.getAnArgument().(API::EntryPoint).getANode()
   )
   or
-  result = getSuccessorFromNode(evaluatePath(path, n - 1), path.getToken(n - 1))
+  result = ApiGraphModels::getSuccessorFromNode(evaluatePath(path, n - 1), path.getToken(n - 1))
   or
-  result = getSuccessorFromInvoke(evaluatePath(path, n - 1), path.getToken(n - 1))
+  result = ApiGraphModels::getSuccessorFromInvoke(evaluatePath(path, n - 1), path.getToken(n - 1))
   or
   // TODO this is a workaround, support parsing of Method['[]'] instead
   path.getToken(n - 1).getName() = "MethodBracket" and

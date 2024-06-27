@@ -83,7 +83,7 @@ private module Impl {
    */
   predicate containerSizeAccess(ExprNode e) {
     exists(Property p | p = e.getExpr().(PropertyAccess).getTarget() |
-      propertyOverrides(p, "System.Collections.Generic", "IEnumerable<>", "Count") or
+      propertyOverrides(p, "System.Collections.Generic", "IEnumerable`1", "Count") or
       propertyOverrides(p, "System.Collections", "ICollection", "Count") or
       propertyOverrides(p, "System", "String", "Length") or
       propertyOverrides(p, "System", "Array", "Length")

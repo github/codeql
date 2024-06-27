@@ -6,7 +6,7 @@ private import Declaration
 private import semmle.code.csharp.commons.QualifiedName
 
 /** A namespace. */
-class Namespace extends Declaration, @namespace {
+deprecated class Namespace extends Declaration, @namespace {
   /**
    * Gets the parent namespace, if any. For example the parent namespace of `System.IO`
    * is `System`. The parent namespace of `System` is the global namespace.
@@ -25,12 +25,18 @@ class Namespace extends Declaration, @namespace {
    * For example if the qualified name is `System.Collections.Generic`, then
    * `qualifier`=`System.Collections` and `name`=`Generic`.
    */
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string pqualifier, string pname |
-      this.getParentNamespace().hasQualifiedName(pqualifier, pname) and
-      qualifier = getQualifiedName(pqualifier, pname)
-    ) and
-    name = this.getName()
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
+    namespaceHasQualifiedName(this, qualifier, name)
+  }
+
+  /**
+   * Holds if this namespace has the qualified name `qualifier`.`name`.
+   *
+   * For example if the qualified name is `System.Collections.Generic`, then
+   * `qualifier`=`System.Collections` and `name`=`Generic`.
+   */
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    namespaceHasQualifiedName(this, qualifier, name)
   }
 
   /** Gets a textual representation of this namespace. */
@@ -51,17 +57,13 @@ class Namespace extends Declaration, @namespace {
    */
   string getFullName() {
     exists(string namespace, string name |
-      this.hasQualifiedName(namespace, name) and
+      namespaceHasQualifiedName(this, namespace, name) and
       result = getQualifiedName(namespace, name)
     )
   }
 }
 
 /** The global namespace. */
-class GlobalNamespace extends Namespace {
+deprecated class GlobalNamespace extends Namespace {
   GlobalNamespace() { this.getName() = "" }
-
-  override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "" and name = ""
-  }
 }

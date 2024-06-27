@@ -9,8 +9,9 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Taint
 
+pragma[nomagic]
 private Type stripTopLevelSpecifiersOnly(Type t) {
-  result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  result = stripTopLevelSpecifiersOnly(pragma[only_bind_out](t.(SpecifiedType).getBaseType()))
   or
   result = t and
   not t instanceof SpecifiedType

@@ -28,8 +28,8 @@ private class TracebackFunctionCall extends ExceptionInfo, DataFlow::CallCfgNode
 /** A caught exception. */
 private class CaughtException extends ExceptionInfo {
   CaughtException() {
-    this.asVar().getDefinition().(EssaNodeDefinition).getDefiningNode().getNode() =
-      any(ExceptStmt s).getName()
+    this.asExpr() = any(ExceptStmt s).getName() and
+    this.asCfgNode() = any(EssaNodeDefinition def).getDefiningNode()
   }
 }
 

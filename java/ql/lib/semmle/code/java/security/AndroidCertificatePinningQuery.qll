@@ -40,7 +40,7 @@ private predicate trustedDomainViaXml(string domainName) {
 
 /** Holds if the given domain name is trusted by an OkHttp `CertificatePinner`. */
 private predicate trustedDomainViaOkHttp(string domainName) {
-  exists(CompileTimeConstantExpr domainExpr, MethodAccess certPinnerAdd |
+  exists(CompileTimeConstantExpr domainExpr, MethodCall certPinnerAdd |
     domainExpr.getStringValue().replaceAll("*.", "") = domainName and // strip wildcard patterns like *.example.com
     certPinnerAdd.getMethod().hasQualifiedName("okhttp3", "CertificatePinner$Builder", "add") and
     DataFlow::localExprFlow(domainExpr, certPinnerAdd.getArgument(0))
@@ -59,8 +59,8 @@ predicate trustedDomain(string domainName) {
  * that uses a socket factory derived from a `TrustManager`.
  * `default` is true if the default SSL socket factory for all URLs is being set.
  */
-private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean default) {
-  exists(MethodAccess getSocketFactory, MethodAccess initSslContext |
+private predicate trustedSocketFactory(MethodCall setSocketFactory, boolean default) {
+  exists(MethodCall getSocketFactory, MethodCall initSslContext |
     exists(Method m | setSocketFactory.getMethod() = m |
       default = true and m instanceof SetDefaultConnectionFactoryMethod
       or
@@ -80,17 +80,17 @@ private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean de
  * that is trusted due to its SSL socket factory being set.
  */
 private predicate trustedUrlConnection(Expr url) {
-  exists(MethodAccess openCon |
+  exists(MethodCall openCon |
     openCon.getMethod().getASourceOverriddenMethod*() instanceof UrlOpenConnectionMethod and
     url = openCon.getQualifier() and
-    exists(MethodAccess setSocketFactory |
+    exists(MethodCall setSocketFactory |
       trustedSocketFactory(setSocketFactory, false) and
       TaintTracking::localExprTaint(openCon, setSocketFactory.getQualifier())
     )
   )
   or
   trustedSocketFactory(_, true) and
-  exists(MethodAccess open, Method m |
+  exists(MethodCall open, Method m |
     m instanceof UrlOpenConnectionMethod or m instanceof UrlOpenStreamMethod
   |
     open.getMethod().getASourceOverriddenMethod*() = m and
@@ -108,9 +108,9 @@ private class MissingPinningSink extends DataFlow::Node {
 /** Configuration for finding uses of non trusted URLs. */
 private module UntrustedUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    trustedDomain(_) and
     exists(string lit | lit = node.asExpr().(CompileTimeConstantExpr).getStringValue() |
       lit.matches("%://%") and // it's a URL
+      not lit.regexpMatch("^(classpath|file|jar):.*") and // discard non-network URIs
       not exists(string dom | trustedDomain(dom) and lit.matches("%" + dom + "%"))
     )
   }
@@ -121,16 +121,10 @@ private module UntrustedUrlConfig implements DataFlow::ConfigSig {
 private module UntrustedUrlFlow = TaintTracking::Global<UntrustedUrlConfig>;
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
-predicate missingPinning(DataFlow::Node node, string domain) {
+predicate missingPinning(MissingPinningSink node, string domain) {
   isAndroid() and
-  node instanceof MissingPinningSink and
-  (
-    not trustedDomain(_) and domain = ""
-    or
-    exists(DataFlow::Node src |
-      UntrustedUrlFlow::flow(src, node) and
-      domain = getDomain(src.asExpr())
-    )
+  exists(DataFlow::Node src | UntrustedUrlFlow::flow(src, node) |
+    if trustedDomain(_) then domain = getDomain(src.asExpr()) else domain = ""
   )
 }
 

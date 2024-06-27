@@ -3,5 +3,5 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Dynamic", "ExpandoObject", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
-      - ["System.Dynamic", "ExpandoObject", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "value", "manual"]
+      - ["System.Dynamic", "ExpandoObject", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+      - ["System.Dynamic", "ExpandoObject", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]

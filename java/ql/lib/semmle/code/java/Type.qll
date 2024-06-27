@@ -746,6 +746,13 @@ class DataClass extends Class {
  */
 class Record extends Class {
   Record() { isRecord(this) }
+
+  /**
+   * Gets the canonical constructor of this record.
+   */
+  Constructor getCanonicalConstructor() {
+    result = this.getAConstructor() and isCanonicalConstr(result)
+  }
 }
 
 /** An intersection type. */
@@ -1090,6 +1097,24 @@ class PrimitiveType extends Type, @primitive {
   override string getAPrimaryQlClass() { result = "PrimitiveType" }
 }
 
+private int getByteSize(PrimitiveType t) {
+  t.hasName("boolean") and result = 1
+  or
+  t.hasName("byte") and result = 1
+  or
+  t.hasName("char") and result = 2
+  or
+  t.hasName("short") and result = 2
+  or
+  t.hasName("int") and result = 4
+  or
+  t.hasName("float") and result = 4
+  or
+  t.hasName("long") and result = 8
+  or
+  t.hasName("double") and result = 8
+}
+
 /** The type of the `null` literal. */
 class NullType extends Type, @primitive {
   NullType() { this.hasName("<nulltype>") }
@@ -1281,6 +1306,12 @@ class IntegralType extends Type {
     |
       name = ["byte", "char", "short", "int", "long"]
     )
+  }
+
+  /** Gets the size in bytes of this numeric type. */
+  final int getByteSize() {
+    result = getByteSize(this) or
+    result = getByteSize(this.(BoxedType).getPrimitiveType())
   }
 }
 

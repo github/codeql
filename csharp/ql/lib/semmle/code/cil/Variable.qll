@@ -6,7 +6,7 @@ private import CIL
 private import dotnet
 
 /** A variable. Either a stack variable (`StackVariable`) or a field (`Field`). */
-class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variable {
+deprecated class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variable {
   /** Gets the type of this variable. */
   override Type getType() { none() }
 
@@ -28,8 +28,10 @@ class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variabl
 }
 
 /** A stack variable. Either a local variable (`LocalVariable`) or a parameter (`Parameter`). */
-class StackVariable extends Variable, @cil_stack_variable {
-  override predicate hasQualifiedName(string qualifier, string name) { none() }
+deprecated class StackVariable extends Variable, @cil_stack_variable {
+  deprecated override predicate hasQualifiedName(string qualifier, string name) { none() }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) { none() }
 }
 
 /**
@@ -37,7 +39,7 @@ class StackVariable extends Variable, @cil_stack_variable {
  *
  * Each method in CIL has a number of typed local variables, in addition to the evaluation stack.
  */
-class LocalVariable extends StackVariable, @cil_local_variable {
+deprecated class LocalVariable extends StackVariable, @cil_local_variable {
   override string toString() {
     result =
       "Local variable " + this.getIndex() + " of method " +
@@ -58,7 +60,7 @@ class LocalVariable extends StackVariable, @cil_local_variable {
 }
 
 /** A parameter of a `Method` or `FunctionPointerType`. */
-class Parameter extends DotNet::Parameter, CustomModifierReceiver, @cil_parameter {
+deprecated class Parameter extends DotNet::Parameter, CustomModifierReceiver, @cil_parameter {
   override Parameterizable getDeclaringElement() { cil_parameter(this, result, _, _) }
 
   /** Gets the index of this parameter. */
@@ -105,7 +107,7 @@ class Parameter extends DotNet::Parameter, CustomModifierReceiver, @cil_paramete
 }
 
 /** A method parameter. */
-class MethodParameter extends Parameter, StackVariable {
+deprecated class MethodParameter extends Parameter, StackVariable {
   /** Gets the method declaring this parameter. */
   override Method getMethod() { this = result.getARawParameter() }
 
@@ -130,7 +132,7 @@ class MethodParameter extends Parameter, StackVariable {
 }
 
 /** A parameter corresponding to `this`. */
-class ThisParameter extends MethodParameter {
+deprecated class ThisParameter extends MethodParameter {
   ThisParameter() {
     not this.getMethod().isStatic() and
     this.getIndex() = 0
@@ -138,7 +140,7 @@ class ThisParameter extends MethodParameter {
 }
 
 /** A field. */
-class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @cil_field {
+deprecated class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @cil_field {
   override string toString() { result = this.getName() }
 
   override string toStringWithTypes() {

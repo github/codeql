@@ -28,7 +28,7 @@ predicate localExprTaint(Expr src, Expr sink) {
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink) or
+  localAdditionalTaintStep(src, sink, _) or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
@@ -86,18 +86,24 @@ class AdditionalTaintStep extends Unit {
  * Holds if the additional step from `pred` to `succ` should be included in all
  * global taint flow configurations.
  */
-predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  referenceStep(pred, succ) or
-  elementWriteStep(pred, succ) or
-  fieldReadStep(pred, succ) or
-  elementStep(pred, succ) or
-  tupleStep(pred, succ) or
-  stringConcatStep(pred, succ) or
-  sliceStep(pred, succ) or
-  any(FunctionModel fm).taintStep(pred, succ) or
-  any(AdditionalTaintStep a).step(pred, succ) or
+predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
+  (
+    referenceStep(pred, succ) or
+    elementWriteStep(pred, succ) or
+    fieldReadStep(pred, succ) or
+    elementStep(pred, succ) or
+    tupleStep(pred, succ) or
+    stringConcatStep(pred, succ) or
+    sliceStep(pred, succ)
+  ) and
+  model = ""
+  or
+  any(FunctionModel fm).taintStep(pred, succ) and model = "FunctionModel"
+  or
+  any(AdditionalTaintStep a).step(pred, succ) and model = "AdditionalTaintStep"
+  or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
-        .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
+        .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
 }
 
 /**
@@ -134,6 +140,10 @@ predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+    succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
 /** Holds if taint flows from `pred` to `succ` via a field read. */
@@ -204,11 +214,11 @@ abstract class FunctionModel extends Function {
 }
 
 /**
- * Holds if the additional step from `src` to `sink` should be included in all
+ * Holds if the additional step from `node1` to `node2` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink)
+predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
+  localAdditionalTaintStep(node1, node2, model)
 }
 
 /**

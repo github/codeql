@@ -12,7 +12,6 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.controlflow.Nullness
 
 class StarOperator extends Operator {

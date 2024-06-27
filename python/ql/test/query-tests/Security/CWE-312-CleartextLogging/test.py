@@ -44,6 +44,37 @@ def print_password():
     x = getpass.getpass()
     print(x) # NOT OK
 
+def log_private():
+    def log1(social_security_number, ssn, className, passportNo):
+        print(social_security_number) # NOT OK
+        print(ssn) # NOT OK
+        print(className) # OK
+        print(passportNo) # NOT OK
+
+    def log2(post_code, zipCode, home_address):
+        print(post_code) # NOT OK, but NOT FOUND - "code" is treated as enxrypted and thus not sensitive
+        print(zipCode) # NOT OK, but NOT FOUND - "code" is treated as enxrypted and thus not sensitive
+        print(home_address) # NOT OK
+
+    def log3(user_latitude, user_longitude):
+        print(user_latitude) # NOT OK
+        print(user_longitude) # NOT OK
+
+    def log4(mobile_number, phoneNo):
+        print(mobile_number) # NOT OK
+        print(phoneNo) # NOT OK
+
+    def log5(creditcard, debit_card, bank_number, bank_account, accountNo, ccn, user_ccn, succNode):
+        print(creditcard) # NOT OK
+        print(debit_card) # NOT OK
+        print(bank_number) # NOT OK
+        print(bank_account) # NOT OK, but NOT FOUND - "account" is treated as having the "id" classification and thus excluded.
+        print(accountNo) # NOT OK, but NOT FOUND - "account" is treated as having the "id" classification and thus excluded.
+        print(ccn) # NOT OK
+        print(user_ccn) # NOT OK
+        print(succNode) # OK
+
+
 
 def FPs(account, account_id):
     # we assume that any account parameter is sensitive (id/username)

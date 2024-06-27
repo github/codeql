@@ -53,5 +53,5 @@ CodeQL for Visual Studio Code
 
 You can analyze CodeQL databases in Visual Studio Code using the CodeQL
 extension, which provides an enhanced environment for writing and running custom
-queries and viewing the results. For more information, see ":ref:`CodeQL
-for Visual Studio Code <codeql-for-visual-studio-code>`."
+queries and viewing the results. For more information, see "`CodeQL
+for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/>`__."

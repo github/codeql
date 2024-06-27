@@ -33,7 +33,7 @@ module GetContentIntentConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetContentIntent }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof StartActivityForResultMethod and sink.asExpr() = ma.getArgument(0)
     )
   }
@@ -50,7 +50,7 @@ module GetContentsIntentFlow = TaintTracking::Global<GetContentIntentConfig>;
 
 /** A `GET_CONTENT` `Intent` instances that is passed to `startActivityForResult`. */
 class AndroidFileIntentInput extends DataFlow::Node {
-  MethodAccess ma;
+  MethodCall ma;
 
   AndroidFileIntentInput() {
     this.asExpr() = ma.getArgument(0) and

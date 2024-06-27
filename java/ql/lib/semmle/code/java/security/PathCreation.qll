@@ -1,11 +1,13 @@
 /**
+ * DEPRECATED.
+ *
  * Models the different ways to create paths. Either by using `java.io.File`-related APIs or `java.nio.file.Path`-related APIs.
  */
 
 import java
 
-/** Models the creation of a path. */
-abstract class PathCreation extends Expr {
+/** DEPRECATED: Models the creation of a path. */
+abstract deprecated class PathCreation extends Expr {
   /**
    * Gets an input that is used in the creation of this path.
    * This excludes inputs of type `File` and `Path`.
@@ -14,7 +16,7 @@ abstract class PathCreation extends Expr {
 }
 
 /** Models the `java.nio.file.Paths.get` method. */
-private class PathsGet extends PathCreation, MethodAccess {
+deprecated private class PathsGet extends PathCreation, MethodCall {
   PathsGet() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePaths and
@@ -26,7 +28,7 @@ private class PathsGet extends PathCreation, MethodAccess {
 }
 
 /** Models the `java.nio.file.FileSystem.getPath` method. */
-private class FileSystemGetPath extends PathCreation, MethodAccess {
+deprecated private class FileSystemGetPath extends PathCreation, MethodCall {
   FileSystemGetPath() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeFileSystem and
@@ -38,7 +40,7 @@ private class FileSystemGetPath extends PathCreation, MethodAccess {
 }
 
 /** Models the `new java.io.File(...)` constructor. */
-private class FileCreation extends PathCreation, ClassInstanceExpr {
+deprecated private class FileCreation extends PathCreation, ClassInstanceExpr {
   FileCreation() { this.getConstructedType() instanceof TypeFile }
 
   override Expr getAnInput() {
@@ -49,7 +51,7 @@ private class FileCreation extends PathCreation, ClassInstanceExpr {
 }
 
 /** Models the `java.nio.file.Path.resolveSibling` method. */
-private class PathResolveSiblingCreation extends PathCreation, MethodAccess {
+deprecated private class PathResolveSiblingCreation extends PathCreation, MethodCall {
   PathResolveSiblingCreation() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePath and
@@ -65,7 +67,7 @@ private class PathResolveSiblingCreation extends PathCreation, MethodAccess {
 }
 
 /** Models the `java.nio.file.Path.resolve` method. */
-private class PathResolveCreation extends PathCreation, MethodAccess {
+deprecated private class PathResolveCreation extends PathCreation, MethodCall {
   PathResolveCreation() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePath and
@@ -81,7 +83,7 @@ private class PathResolveCreation extends PathCreation, MethodAccess {
 }
 
 /** Models the `java.nio.file.Path.of` method. */
-private class PathOfCreation extends PathCreation, MethodAccess {
+deprecated private class PathOfCreation extends PathCreation, MethodCall {
   PathOfCreation() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePath and
@@ -93,7 +95,7 @@ private class PathOfCreation extends PathCreation, MethodAccess {
 }
 
 /** Models the `new java.io.FileWriter(...)` constructor. */
-private class FileWriterCreation extends PathCreation, ClassInstanceExpr {
+deprecated private class FileWriterCreation extends PathCreation, ClassInstanceExpr {
   FileWriterCreation() { this.getConstructedType().hasQualifiedName("java.io", "FileWriter") }
 
   override Expr getAnInput() {
@@ -104,7 +106,7 @@ private class FileWriterCreation extends PathCreation, ClassInstanceExpr {
 }
 
 /** Models the `new java.io.FileReader(...)` constructor. */
-private class FileReaderCreation extends PathCreation, ClassInstanceExpr {
+deprecated private class FileReaderCreation extends PathCreation, ClassInstanceExpr {
   FileReaderCreation() { this.getConstructedType().hasQualifiedName("java.io", "FileReader") }
 
   override Expr getAnInput() {
@@ -115,7 +117,7 @@ private class FileReaderCreation extends PathCreation, ClassInstanceExpr {
 }
 
 /** Models the `new java.io.FileInputStream(...)` constructor. */
-private class FileInputStreamCreation extends PathCreation, ClassInstanceExpr {
+deprecated private class FileInputStreamCreation extends PathCreation, ClassInstanceExpr {
   FileInputStreamCreation() {
     this.getConstructedType().hasQualifiedName("java.io", "FileInputStream")
   }
@@ -128,7 +130,7 @@ private class FileInputStreamCreation extends PathCreation, ClassInstanceExpr {
 }
 
 /** Models the `new java.io.FileOutputStream(...)` constructor. */
-private class FileOutputStreamCreation extends PathCreation, ClassInstanceExpr {
+deprecated private class FileOutputStreamCreation extends PathCreation, ClassInstanceExpr {
   FileOutputStreamCreation() {
     this.getConstructedType().hasQualifiedName("java.io", "FileOutputStream")
   }

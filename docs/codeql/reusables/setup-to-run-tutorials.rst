@@ -1,1 +1,1 @@
-For information about installing the CodeQL extension for Visual Studio code, see ":ref:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`."
+For information about installing the CodeQL extension for Visual Studio code, see `Installing CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ in the GitHub documentation.

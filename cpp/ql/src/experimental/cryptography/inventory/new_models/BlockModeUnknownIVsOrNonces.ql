@@ -4,7 +4,6 @@
  * @kind problem
  * @id cpp/quantum-readiness/cbom/unkown-iv-sources
  * @problem.severity error
- * @precision high
  * @tags cbom
  *       cryptography
  */

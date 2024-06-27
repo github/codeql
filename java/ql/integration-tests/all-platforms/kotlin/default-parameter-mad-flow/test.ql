@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getCallee().getName() = "source"
+    n.asExpr().(MethodCall).getCallee().getName() = "source"
     or
     sourceNode(n, "kotlinMadFlowTest")
   }

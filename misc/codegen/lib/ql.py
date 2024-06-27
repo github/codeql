@@ -44,6 +44,7 @@ class Property:
     doc_plural: Optional[str] = None
     synth: bool = False
     type_is_hideable: bool = False
+    internal: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -81,10 +82,6 @@ class Property:
         return self.prev_child is not None
 
     @property
-    def has_description(self) -> bool:
-        return bool(self.description)
-
-    @property
     def is_indexed(self) -> bool:
         return self.is_repeated and not self.is_unordered
 
@@ -112,7 +109,7 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
-    ql_internal: bool = False
+    internal: bool = False
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
 
@@ -141,10 +138,6 @@ class Class:
     def last_base(self) -> str:
         return self.bases[-1].base if self.bases else ""
 
-    @property
-    def has_doc(self) -> bool:
-        return bool(self.doc) or self.ql_internal
-
 
 @dataclass
 class SynthUnderlyingAccessor:
@@ -166,10 +159,16 @@ class Stub:
     base_import: str
     import_prefix: str
     synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
+    internal: bool = False
+    doc: List[str] = field(default_factory=list)
 
     @property
     def has_synth_accessors(self) -> bool:
         return bool(self.synth_accessors)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc) or self.internal
 
 
 @dataclass

@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/go-chi/chi` package.
+ * Provides classes for working with remote flow sources from the `github.com/go-chi/chi` package.
  */
 
 import go
@@ -9,18 +9,18 @@ private module Chi {
   string packagePath() { result = package("github.com/go-chi/chi", "") }
 
   /**
-   * Functions that extract URL parameters, considered as a source of untrusted flow.
+   * Functions that extract URL parameters, considered as a source of remote flow.
    */
-  private class UserControlledFunction extends UntrustedFlowSource::Range, DataFlow::CallNode {
+  private class UserControlledFunction extends RemoteFlowSource::Range, DataFlow::CallNode {
     UserControlledFunction() {
       this.getTarget().hasQualifiedName(packagePath(), ["URLParam", "URLParamFromCtx"])
     }
   }
 
   /**
-   * Methods that extract URL parameters, considered as a source of untrusted flow.
+   * Methods that extract URL parameters, considered as a source of remote flow.
    */
-  private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
+  private class UserControlledRequestMethod extends RemoteFlowSource::Range,
     DataFlow::MethodCallNode
   {
     UserControlledRequestMethod() {

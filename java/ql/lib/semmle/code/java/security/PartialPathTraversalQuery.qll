@@ -19,7 +19,7 @@ deprecated class PartialPathTraversalFromRemoteConfig extends TaintTracking::Con
   override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node node) {
-    any(PartialPathTraversalMethodAccess ma).getQualifier() = node.asExpr()
+    any(PartialPathTraversalMethodCall ma).getQualifier() = node.asExpr()
   }
 }
 
@@ -32,7 +32,7 @@ module PartialPathTraversalFromRemoteConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node node) {
-    any(PartialPathTraversalMethodAccess ma).getQualifier() = node.asExpr()
+    any(PartialPathTraversalMethodCall ma).getQualifier() = node.asExpr()
   }
 }
 

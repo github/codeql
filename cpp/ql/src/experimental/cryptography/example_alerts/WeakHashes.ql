@@ -9,7 +9,6 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow as ASTDataFlow
 import experimental.cryptography.Concepts
 
 from HashAlgorithm alg, Expr confSink, string msg

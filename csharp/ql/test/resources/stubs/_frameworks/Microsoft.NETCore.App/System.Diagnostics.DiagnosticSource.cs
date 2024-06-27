@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Diagnostics
@@ -270,8 +270,11 @@ namespace System
             public virtual void OnActivityExport(System.Diagnostics.Activity activity, object payload) => throw null;
             public virtual void OnActivityImport(System.Diagnostics.Activity activity, object payload) => throw null;
             public System.Diagnostics.Activity StartActivity(System.Diagnostics.Activity activity, object args) => throw null;
+            public System.Diagnostics.Activity StartActivity<T>(System.Diagnostics.Activity activity, T args) => throw null;
             public void StopActivity(System.Diagnostics.Activity activity, object args) => throw null;
+            public void StopActivity<T>(System.Diagnostics.Activity activity, T args) => throw null;
             public abstract void Write(string name, object value);
+            public void Write<T>(string name, T value) => throw null;
         }
         public abstract class DistributedContextPropagator
         {
@@ -311,20 +314,27 @@ namespace System
                 public void Record(T value, params System.Collections.Generic.KeyValuePair<string, object>[] tags) => throw null;
                 internal Histogram() : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) { }
             }
+            public interface IMeterFactory : System.IDisposable
+            {
+                System.Diagnostics.Metrics.Meter Create(System.Diagnostics.Metrics.MeterOptions options);
+            }
             public abstract class Instrument
             {
                 protected Instrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) => throw null;
+                protected Instrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) => throw null;
                 public string Description { get => throw null; }
                 public bool Enabled { get => throw null; }
                 public virtual bool IsObservable { get => throw null; }
                 public System.Diagnostics.Metrics.Meter Meter { get => throw null; }
                 public string Name { get => throw null; }
                 protected void Publish() => throw null;
+                public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; }
                 public string Unit { get => throw null; }
             }
             public abstract class Instrument<T> : System.Diagnostics.Metrics.Instrument where T : struct
             {
                 protected Instrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
+                protected Instrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
                 protected void RecordMeasurement(T measurement) => throw null;
                 protected void RecordMeasurement(T measurement, System.Collections.Generic.KeyValuePair<string, object> tag) => throw null;
                 protected void RecordMeasurement(T measurement, System.Collections.Generic.KeyValuePair<string, object> tag1, System.Collections.Generic.KeyValuePair<string, object> tag2) => throw null;
@@ -345,22 +355,43 @@ namespace System
             public class Meter : System.IDisposable
             {
                 public System.Diagnostics.Metrics.Counter<T> CreateCounter<T>(string name, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.Counter<T> CreateCounter<T>(string name, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.Histogram<T> CreateHistogram<T>(string name, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.Histogram<T> CreateHistogram<T>(string name, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableCounter<T> CreateObservableCounter<T>(string name, System.Func<T> observeValue, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableCounter<T> CreateObservableCounter<T>(string name, System.Func<T> observeValue, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableCounter<T> CreateObservableCounter<T>(string name, System.Func<System.Diagnostics.Metrics.Measurement<T>> observeValue, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableCounter<T> CreateObservableCounter<T>(string name, System.Func<System.Diagnostics.Metrics.Measurement<T>> observeValue, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableCounter<T> CreateObservableCounter<T>(string name, System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>>> observeValues, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableCounter<T> CreateObservableCounter<T>(string name, System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>>> observeValues, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableGauge<T> CreateObservableGauge<T>(string name, System.Func<T> observeValue, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableGauge<T> CreateObservableGauge<T>(string name, System.Func<T> observeValue, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableGauge<T> CreateObservableGauge<T>(string name, System.Func<System.Diagnostics.Metrics.Measurement<T>> observeValue, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableGauge<T> CreateObservableGauge<T>(string name, System.Func<System.Diagnostics.Metrics.Measurement<T>> observeValue, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableGauge<T> CreateObservableGauge<T>(string name, System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>>> observeValues, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableGauge<T> CreateObservableGauge<T>(string name, System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>>> observeValues, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableUpDownCounter<T> CreateObservableUpDownCounter<T>(string name, System.Func<T> observeValue, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableUpDownCounter<T> CreateObservableUpDownCounter<T>(string name, System.Func<T> observeValue, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableUpDownCounter<T> CreateObservableUpDownCounter<T>(string name, System.Func<System.Diagnostics.Metrics.Measurement<T>> observeValue, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableUpDownCounter<T> CreateObservableUpDownCounter<T>(string name, System.Func<System.Diagnostics.Metrics.Measurement<T>> observeValue, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.ObservableUpDownCounter<T> CreateObservableUpDownCounter<T>(string name, System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>>> observeValues, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.ObservableUpDownCounter<T> CreateObservableUpDownCounter<T>(string name, System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>>> observeValues, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
                 public System.Diagnostics.Metrics.UpDownCounter<T> CreateUpDownCounter<T>(string name, string unit = default(string), string description = default(string)) where T : struct => throw null;
+                public System.Diagnostics.Metrics.UpDownCounter<T> CreateUpDownCounter<T>(string name, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) where T : struct => throw null;
+                public Meter(System.Diagnostics.Metrics.MeterOptions options) => throw null;
                 public Meter(string name) => throw null;
                 public Meter(string name, string version) => throw null;
+                public Meter(string name, string version, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags, object scope = default(object)) => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
                 public void Dispose() => throw null;
                 public string Name { get => throw null; }
+                public object Scope { get => throw null; }
+                public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; }
                 public string Version { get => throw null; }
+            }
+            public static partial class MeterFactoryExtensions
+            {
+                public static System.Diagnostics.Metrics.Meter Create(this System.Diagnostics.Metrics.IMeterFactory meterFactory, string name, string version = default(string), System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags = default(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>)) => throw null;
             }
             public sealed class MeterListener : System.IDisposable
             {
@@ -373,6 +404,14 @@ namespace System
                 public void RecordObservableInstruments() => throw null;
                 public void SetMeasurementEventCallback<T>(System.Diagnostics.Metrics.MeasurementCallback<T> measurementCallback) where T : struct => throw null;
                 public void Start() => throw null;
+            }
+            public class MeterOptions
+            {
+                public MeterOptions(string name) => throw null;
+                public string Name { get => throw null; set { } }
+                public object Scope { get => throw null; set { } }
+                public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; set { } }
+                public string Version { get => throw null; set { } }
             }
             public sealed class ObservableCounter<T> : System.Diagnostics.Metrics.ObservableInstrument<T> where T : struct
             {
@@ -387,6 +426,7 @@ namespace System
             public abstract class ObservableInstrument<T> : System.Diagnostics.Metrics.Instrument where T : struct
             {
                 protected ObservableInstrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
+                protected ObservableInstrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
                 public override bool IsObservable { get => throw null; }
                 protected abstract System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>> Observe();
             }

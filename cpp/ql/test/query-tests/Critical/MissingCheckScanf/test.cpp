@@ -429,3 +429,47 @@ void scan_and_static_variable() {
 	scanf("%d", &i);
 	use(i);  // GOOD: static variables are always 0-initialized
 }
+
+void bad_check() {
+	{
+		int i = 0;
+		if (scanf("%d", &i) != 0) {
+			return;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
+	}
+	{
+		int i = 0;
+		int r = scanf("%d", &i);
+		if (!r) {
+			return;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
+	}
+}
+
+#define EOF (-1)
+
+void disjunct_boolean_condition(const char* modifier_data) {
+	long value;
+	auto rc = sscanf(modifier_data, "%lx", &value);
+
+	if((rc == EOF) || (rc == 0)) {
+		return;
+	}
+	use(value); // GOOD
+}
+
+void check_for_negative_test() {
+	int res;
+	int value;
+
+	res = scanf("%d", &value); // GOOD
+	if(res == 0) {
+		return;
+	}
+	if (res < 0) {
+		return;
+	}
+	use(value);
+}

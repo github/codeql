@@ -293,10 +293,10 @@ private module Fiber {
   }
 
   /**
-   * Provides models of untrusted flow sources.
+   * Provides models of remote flow sources.
    */
-  private class UntrustedFlowSources extends UntrustedFlowSource::Range {
-    UntrustedFlowSources() {
+  private class RemoteFlowSources extends RemoteFlowSource::Range {
+    RemoteFlowSources() {
       // Methods on types of package: github.com/gofiber/fiber@v1.14.6
       exists(string receiverName, string methodName, Method mtd, FunctionOutput out |
         this = out.getExitNode(mtd.getACall()) and

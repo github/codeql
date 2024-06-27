@@ -53,6 +53,8 @@ class SwiftVisitor : private SwiftDispatcher {
     declTranslator.translateAndEmit(*capture);
   }
 
+  void visit(const swift::MacroRoleAttr* attr) override { declTranslator.translateAndEmit(*attr); }
+
   DeclTranslator declTranslator{*this};
   ExprTranslator exprTranslator{*this};
   StmtTranslator stmtTranslator{*this};

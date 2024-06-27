@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Hosting.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Hosting.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -34,6 +34,7 @@ namespace Microsoft
                 public static bool IsProduction(this Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) => throw null;
                 public static bool IsStaging(this Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = true)]
             public sealed class HostingStartupAttribute : System.Attribute
             {
                 public HostingStartupAttribute(System.Type hostingStartupType) => throw null;
@@ -113,6 +114,8 @@ namespace Microsoft
                 public static readonly string EnvironmentKey;
                 public static readonly string HostingStartupAssembliesKey;
                 public static readonly string HostingStartupExcludeAssembliesKey;
+                public static readonly string HttpPortsKey;
+                public static readonly string HttpsPortsKey;
                 public static readonly string PreferHostingUrlsKey;
                 public static readonly string PreventHostingStartupKey;
                 public static readonly string ServerUrlsKey;

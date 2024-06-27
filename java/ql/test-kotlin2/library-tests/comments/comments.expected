@@ -1,0 +1,41 @@
+comments
+| comments.kt:1:1:1:36 | /** Kdoc owned by CompilationUnit */ | /** Kdoc owned by CompilationUnit */ |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | /**\n     * Members of this group.\n     */ |
+| comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ |
+| comments.kt:24:9:24:25 | // A line comment | // A line comment |
+| comments.kt:28:5:30:6 | /*\n    A block comment\n    */ | /*\n    A block comment\n    */ |
+| comments.kt:35:5:35:34 | /** Medium is in the middle */ | /** Medium is in the middle */ |
+| comments.kt:37:5:37:23 | /** This is high */ | /** This is high */ |
+| comments.kt:42:5:44:7 | /**\n     * A variable.\n     */ | /**\n     * A variable.\n     */ |
+| comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ | /**\n * A type alias comment\n */ |
+| comments.kt:54:5:56:7 | /**\n     * An init block comment\n     */ | /**\n     * An init block comment\n     */ |
+| comments.kt:61:5:63:7 | /**\n     * A prop comment\n     */ | /**\n     * A prop comment\n     */ |
+| comments.kt:65:9:67:11 | /**\n         * An accessor comment\n         */ | /**\n         * An accessor comment\n         */ |
+| comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ | /**\n         * An anonymous function comment\n         */ |
+| comments.kt:79:9:81:11 | /**\n         * A local function comment\n         */ | /**\n         * A local function comment\n         */ |
+| comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | /**\n         * An anonymous object comment\n         */ |
+commentOwners
+| comments.kt:1:1:1:36 | /** Kdoc owned by CompilationUnit */ | comments.kt:0:0:0:0 | comments |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | getMembers$private |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
+| comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | comments.kt:23:5:26:5 | add |
+| comments.kt:61:5:63:7 | /**\n     * A prop comment\n     */ | comments.kt:64:5:68:17 | prop |
+| comments.kt:65:9:67:11 | /**\n         * An accessor comment\n         */ | comments.kt:68:9:68:17 | getProp |
+| comments.kt:79:9:81:11 | /**\n         * A local function comment\n         */ | comments.kt:82:9:82:24 | localFn |
+| comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | comments.kt:87:15:92:5 | new X(...) { ... } |
+commentNoOwners
+| comments.kt:24:9:24:25 | // A line comment |
+| comments.kt:28:5:30:6 | /*\n    A block comment\n    */ |
+| comments.kt:35:5:35:34 | /** Medium is in the middle */ |
+| comments.kt:37:5:37:23 | /** This is high */ |
+| comments.kt:42:5:44:7 | /**\n     * A variable.\n     */ |
+| comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ |
+| comments.kt:54:5:56:7 | /**\n     * An init block comment\n     */ |
+| comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ |
+commentSections
+commentSectionContents
+commentSectionNames
+commentSectionSubjectNames

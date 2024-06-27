@@ -13,27 +13,56 @@
 | arguments.cs:33:17:33:17 | o | arguments.cs:38:12:38:12 | 0 |
 | arguments.cs:33:17:33:17 | o | arguments.cs:39:27:39:27 | 0 |
 | arguments.cs:33:17:33:17 | o | arguments.cs:40:41:40:41 | 0 |
+| arguments.cs:33:17:33:17 | o | arguments.cs:42:12:42:12 | 0 |
+| arguments.cs:33:33:33:36 | args | arguments.cs:35:15:35:15 | 1 |
+| arguments.cs:33:33:33:36 | args | arguments.cs:35:18:35:18 | 2 |
 | arguments.cs:33:33:33:36 | args | arguments.cs:36:15:36:32 | array creation of type Int32[] |
+| arguments.cs:33:33:33:36 | args | arguments.cs:37:18:37:18 | 1 |
 | arguments.cs:33:33:33:36 | args | arguments.cs:38:15:38:18 | access to parameter args |
 | arguments.cs:33:33:33:36 | args | arguments.cs:39:18:39:21 | access to parameter args |
 | arguments.cs:33:33:33:36 | args | arguments.cs:40:18:40:35 | array creation of type Int32[] |
-| arguments.cs:48:21:48:23 | value | arguments.cs:54:16:54:16 | 0 |
-| arguments.cs:48:21:48:23 | value | arguments.cs:55:16:55:25 | access to indexer |
-| arguments.cs:48:21:48:23 | value | arguments.cs:56:31:56:31 | 5 |
-| arguments.cs:48:21:48:23 | value | arguments.cs:58:9:58:17 | ... + ... |
-| arguments.cs:50:18:50:18 | a | arguments.cs:55:21:55:21 | 1 |
-| arguments.cs:50:18:50:18 | a | arguments.cs:56:21:56:21 | 3 |
-| arguments.cs:50:18:50:18 | a | arguments.cs:59:14:59:14 | 8 |
-| arguments.cs:50:18:50:18 | a | arguments.cs:59:14:59:14 | 8 |
-| arguments.cs:50:18:50:18 | a | arguments.cs:60:14:60:15 | 10 |
-| arguments.cs:50:18:50:18 | a | arguments.cs:60:14:60:15 | 10 |
-| arguments.cs:50:18:50:18 | a | arguments.cs:62:21:62:22 | 15 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:55:24:55:24 | 2 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:56:24:56:24 | 4 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:59:17:59:17 | 9 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:59:17:59:17 | 9 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:60:18:60:19 | 11 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:60:18:60:19 | 11 |
-| arguments.cs:50:25:50:25 | b | arguments.cs:62:25:62:26 | 16 |
-| arguments.cs:50:44:50:46 | value | arguments.cs:56:34:56:34 | 6 |
-| arguments.cs:50:44:50:46 | value | arguments.cs:60:9:60:26 | ... + ... |
+| arguments.cs:33:33:33:36 | args | arguments.cs:42:15:42:16 | (...) ... |
+| arguments.cs:33:33:33:36 | args | arguments.cs:42:19:42:20 | (...) ... |
+| arguments.cs:45:29:45:32 | args | arguments.cs:47:12:47:32 | array creation of type Object[] |
+| arguments.cs:45:29:45:32 | args | arguments.cs:47:35:47:38 | null |
+| arguments.cs:50:21:50:23 | value | arguments.cs:56:16:56:16 | 0 |
+| arguments.cs:50:21:50:23 | value | arguments.cs:57:16:57:25 | access to indexer |
+| arguments.cs:50:21:50:23 | value | arguments.cs:58:31:58:31 | 5 |
+| arguments.cs:50:21:50:23 | value | arguments.cs:60:9:60:17 | ... + ... |
+| arguments.cs:52:18:52:18 | a | arguments.cs:57:21:57:21 | 1 |
+| arguments.cs:52:18:52:18 | a | arguments.cs:58:21:58:21 | 3 |
+| arguments.cs:52:18:52:18 | a | arguments.cs:61:14:61:14 | 8 |
+| arguments.cs:52:18:52:18 | a | arguments.cs:61:14:61:14 | 8 |
+| arguments.cs:52:18:52:18 | a | arguments.cs:62:14:62:15 | 10 |
+| arguments.cs:52:18:52:18 | a | arguments.cs:62:14:62:15 | 10 |
+| arguments.cs:52:18:52:18 | a | arguments.cs:64:21:64:22 | 15 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:57:24:57:24 | 2 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:58:24:58:24 | 4 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:61:17:61:17 | 9 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:61:17:61:17 | 9 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:62:18:62:19 | 11 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:62:18:62:19 | 11 |
+| arguments.cs:52:25:52:25 | b | arguments.cs:64:25:64:26 | 16 |
+| arguments.cs:52:44:52:46 | value | arguments.cs:58:34:58:34 | 6 |
+| arguments.cs:52:44:52:46 | value | arguments.cs:62:9:62:26 | ... + ... |
+| arguments.cs:73:20:73:20 | o | arguments.cs:75:12:75:12 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:76:12:76:12 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:77:12:77:12 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:78:27:78:27 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:80:20:80:20 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:81:20:81:20 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:83:20:83:20 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:84:20:84:20 | 0 |
+| arguments.cs:73:20:73:20 | o | arguments.cs:85:20:85:20 | 0 |
+| arguments.cs:73:34:73:37 | args | arguments.cs:75:15:75:21 | access to array element |
+| arguments.cs:73:34:73:37 | args | arguments.cs:75:24:75:30 | access to array element |
+| arguments.cs:73:34:73:37 | args | arguments.cs:76:15:76:42 | array creation of type T[] |
+| arguments.cs:73:34:73:37 | args | arguments.cs:77:15:77:18 | access to parameter args |
+| arguments.cs:73:34:73:37 | args | arguments.cs:78:18:78:21 | access to parameter args |
+| arguments.cs:73:34:73:37 | args | arguments.cs:80:23:80:25 | 1.1 |
+| arguments.cs:73:34:73:37 | args | arguments.cs:80:28:80:30 | 2.2 |
+| arguments.cs:73:34:73:37 | args | arguments.cs:81:23:81:47 | array creation of type Double[] |
+| arguments.cs:73:34:73:37 | args | arguments.cs:83:23:83:23 | (...) ... |
+| arguments.cs:73:34:73:37 | args | arguments.cs:83:26:83:26 | (...) ... |
+| arguments.cs:73:34:73:37 | args | arguments.cs:84:23:84:43 | array creation of type Double[] |
+| arguments.cs:73:34:73:37 | args | arguments.cs:85:23:85:43 | array creation of type Double[] |

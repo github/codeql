@@ -7,7 +7,7 @@ import csharp
 from MemberConstant c
 where
   c.getName() = "Z" and
-  c.getDeclaringType().hasQualifiedName("Constants", "B") and
+  c.getDeclaringType().hasFullyQualifiedName("Constants", "B") and
   c.getType() instanceof IntType and
   c.getInitializer() instanceof BinaryOperation and
   c.isPublic() and

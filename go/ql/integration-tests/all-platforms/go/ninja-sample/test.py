@@ -1,5 +1,3 @@
-import sys
+from go_integration_test import *
 
-from create_database_utils import *
-
-run_codeql_database_create([], lang="go")
+go_integration_test()

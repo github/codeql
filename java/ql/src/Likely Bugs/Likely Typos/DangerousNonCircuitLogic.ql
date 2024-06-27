@@ -18,7 +18,7 @@ import java
 class DangerousExpression extends Expr {
   DangerousExpression() {
     exists(Expr e | this = e.getParent*() |
-      e instanceof MethodAccess or
+      e instanceof MethodCall or
       e instanceof ArrayAccess or
       exists(e.(FieldAccess).getQualifier())
     )

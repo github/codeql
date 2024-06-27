@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.frameworks.system.Xml
 import XmlInjection::PathGraph
 
@@ -20,12 +20,15 @@ import XmlInjection::PathGraph
  * A taint-tracking configuration for untrusted user input used in XML.
  */
 module XmlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasName("WriteRaw") and
-      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml", "XmlWriter")
+      mc.getTarget()
+          .getDeclaringType()
+          .getABaseType*()
+          .hasFullyQualifiedName("System.Xml", "XmlWriter")
     |
       mc.getArgument(0) = sink.asExpr()
     )
@@ -37,7 +40,7 @@ module XmlInjectionConfig implements DataFlow::ConfigSig {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Security", "SecurityElement")
+          .hasFullyQualifiedName("System.Security", "SecurityElement")
     |
       mc = node.asExpr()
     )

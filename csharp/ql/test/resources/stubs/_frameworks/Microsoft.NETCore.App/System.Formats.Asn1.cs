@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Formats.Asn1, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Formats.Asn1, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Formats
@@ -90,6 +90,7 @@ namespace System
             }
             public class AsnReader
             {
+                public System.Formats.Asn1.AsnReader Clone() => throw null;
                 public AsnReader(System.ReadOnlyMemory<byte> data, System.Formats.Asn1.AsnEncodingRules ruleSet, System.Formats.Asn1.AsnReaderOptions options = default(System.Formats.Asn1.AsnReaderOptions)) => throw null;
                 public bool HasData { get => throw null; }
                 public System.ReadOnlyMemory<byte> PeekContentBytes() => throw null;

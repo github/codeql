@@ -132,3 +132,13 @@ void test5()
 	myOutputFn4(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
 	myOutputFn5(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
 }
+
+void RtlZeroMemory(void* dst, size_t len);
+
+void test_clear_memory(char *username) {
+	char* secret = getenv("SECRET_TOKEN");
+
+	printf("%s", secret); // BAD
+	RtlZeroMemory(secret, 1024);
+	printf("%s", secret); // GOOD
+}

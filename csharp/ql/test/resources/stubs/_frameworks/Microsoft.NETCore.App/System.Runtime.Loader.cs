@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.Loader, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.Loader, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -10,6 +10,7 @@ namespace System
             {
                 public static unsafe bool TryGetRawMetadata(this System.Reflection.Assembly assembly, out byte* blob, out int length) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
             public sealed class MetadataUpdateHandlerAttribute : System.Attribute
             {
                 public MetadataUpdateHandlerAttribute(System.Type handlerType) => throw null;
@@ -26,10 +27,12 @@ namespace System
     {
         namespace CompilerServices
         {
+            [System.AttributeUsage((System.AttributeTargets)12, AllowMultiple = false)]
             public sealed class CreateNewOnMetadataUpdateAttribute : System.Attribute
             {
                 public CreateNewOnMetadataUpdateAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)12, AllowMultiple = false, Inherited = false)]
             public class MetadataUpdateOriginalTypeAttribute : System.Attribute
             {
                 public MetadataUpdateOriginalTypeAttribute(System.Type originalType) => throw null;

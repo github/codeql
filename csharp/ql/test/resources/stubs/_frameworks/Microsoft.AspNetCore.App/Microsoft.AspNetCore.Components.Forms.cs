@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Forms, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -26,6 +26,8 @@ namespace Microsoft
                     public bool IsModified() => throw null;
                     public bool IsModified(in Microsoft.AspNetCore.Components.Forms.FieldIdentifier fieldIdentifier) => throw null;
                     public bool IsModified(System.Linq.Expressions.Expression<System.Func<object>> accessor) => throw null;
+                    public bool IsValid(in Microsoft.AspNetCore.Components.Forms.FieldIdentifier fieldIdentifier) => throw null;
+                    public bool IsValid(System.Linq.Expressions.Expression<System.Func<object>> accessor) => throw null;
                     public void MarkAsUnmodified(in Microsoft.AspNetCore.Components.Forms.FieldIdentifier fieldIdentifier) => throw null;
                     public void MarkAsUnmodified() => throw null;
                     public object Model { get => throw null; }
@@ -35,6 +37,7 @@ namespace Microsoft
                     public event System.EventHandler<Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs> OnValidationRequested;
                     public event System.EventHandler<Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs> OnValidationStateChanged;
                     public Microsoft.AspNetCore.Components.Forms.EditContextProperties Properties { get => throw null; }
+                    public bool ShouldUseFieldIdentifiers { get => throw null; set { } }
                     public bool Validate() => throw null;
                 }
                 public static partial class EditContextDataAnnotationsExtensions

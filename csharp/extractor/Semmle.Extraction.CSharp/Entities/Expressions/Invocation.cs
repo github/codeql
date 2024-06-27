@@ -20,6 +20,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Invocation(info).TryPopulate();
 
+        private bool IsEventDelegateCall() => Kind == ExprKind.DELEGATE_INVOCATION && Context.GetModel(Syntax.Expression).GetSymbolInfo(Syntax.Expression).Symbol?.Kind == SymbolKind.Event;
+
+        private bool IsExplicitDelegateInvokeCall() => Kind == ExprKind.DELEGATE_INVOCATION && Context.GetModel(Syntax.Expression).GetSymbolInfo(Syntax.Expression).Symbol is IMethodSymbol m && m.MethodKind == MethodKind.DelegateInvoke;
+
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (IsNameof(Syntax))
@@ -33,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var target = TargetSymbol;
             switch (Syntax.Expression)
             {
-                case MemberAccessExpressionSyntax memberAccess:
+                case MemberAccessExpressionSyntax memberAccess when Kind == ExprKind.METHOD_INVOCATION || IsEventDelegateCall() || IsExplicitDelegateInvokeCall():
                     memberName = memberAccess.Name.Identifier.Text;
                     if (Syntax.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
                         // Qualified method call; `x.M()`
@@ -48,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     Create(Context, FindConditionalQualifier(memberBinding), this, child++);
                     MakeConditional(trapFile);
                     break;
-                case SimpleNameSyntax simpleName when (Kind == ExprKind.METHOD_INVOCATION):
+                case SimpleNameSyntax simpleName when Kind == ExprKind.METHOD_INVOCATION:
                     // Unqualified method call; `M()`
                     memberName = simpleName.Identifier.Text;
                     if (target is not null && !target.IsStatic)
@@ -129,7 +133,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         .Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count)
                         .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
 
-                    return Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone) ?
+                    return Context.ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone) ?
                         candidates.FirstOrDefault() :
                         candidates.SingleOrDefault();
                 }

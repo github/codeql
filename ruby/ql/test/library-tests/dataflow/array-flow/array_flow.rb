@@ -1642,3 +1642,50 @@ def m137
     # unknown read
     sink(a[1.0]) # $ hasValueFlow=137.1 $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
 end
+
+def m138(i)
+    a = Array[0, source(138), 2]
+    sink(a[0])
+    sink(a[1]) # $ hasValueFlow=138
+    sink(a[2])
+    sink(a[i]) # $ hasValueFlow=138
+end
+
+class M139
+    class Array
+        def self.[]
+            ::Array.new
+        end
+    end
+
+    def m139(i)
+        a = Array[0, source(139.1), 2]
+        sink(a[0])
+        sink(a[1])
+        sink(a[2])
+        sink(a[i])
+
+        a2 = ::Array[0, source(139.2), 2]
+        sink(a2[0])
+        sink(a2[1]) # $ hasValueFlow=139.2
+        sink(a2[2])
+        sink(a2[i]) # $ hasValueFlow=139.2
+    end
+end
+
+def m139
+    a = [0, 1, source(139.1)]
+    b = a.map do |x|
+        x
+    end
+    sink b[2] # $ hasValueFlow=139.1
+end
+
+def m140
+    a = [0, 1, source(140.1), source(140.2)]
+    x, y, z, w = a
+    sink x
+    sink y
+    sink z # $ hasValueFlow=140.1
+    sink w # $ hasValueFlow=140.2
+end

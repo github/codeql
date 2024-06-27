@@ -6,15 +6,17 @@ import semmle.code.java.frameworks.android.ContentProviders
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class LocalDatabaseCleartextStorageSink extends CleartextStorageSink {
   LocalDatabaseCleartextStorageSink() { localDatabaseInput(_, this.asExpr()) }
 }
 
 /** The creation of an object that can be used to store data in a local database. */
-class LocalDatabaseOpenMethodAccess extends Storable, Call {
-  LocalDatabaseOpenMethodAccess() {
-    exists(Method m | this.(MethodAccess).getMethod() = m |
+class LocalDatabaseOpenMethodCall extends Storable, Call {
+  LocalDatabaseOpenMethodCall() {
+    exists(Method m | this.(MethodCall).getMethod() = m |
       m.getDeclaringType().getASupertype*() instanceof TypeSQLiteOpenHelper and
       m.hasName("getWritableDatabase")
       or
@@ -42,6 +44,9 @@ class LocalDatabaseOpenMethodAccess extends Storable, Call {
     )
   }
 }
+
+/** DEPRECATED: Alias for `LocalDatabaseOpenMethodCall`. */
+deprecated class LocalDatabaseOpenMethodAccess = LocalDatabaseOpenMethodCall;
 
 /** A method that is both a database input and a database store. */
 private class LocalDatabaseInputStoreMethod extends Method {
@@ -77,7 +82,7 @@ private predicate localDatabaseInput(DataFlow::Node database, Argument input) {
  * either through the use of prepared statements, via the `ContentValues` class, or
  * directly executing a raw SQL query.
  */
-private predicate localDatabaseStore(DataFlow::Node database, MethodAccess store) {
+private predicate localDatabaseStore(DataFlow::Node database, MethodCall store) {
   exists(Method m | store.getMethod() = m |
     m instanceof LocalDatabaseInputStoreMethod and
     database.asExpr() = store.getQualifier()
@@ -93,15 +98,24 @@ private predicate localDatabaseStore(DataFlow::Node database, MethodAccess store
   )
 }
 
-private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof LocalDatabaseOpenMethodAccess
-  }
+/**
+ * A local database open method call source node.
+ */
+private class LocalDatabaseOpenMethodCallSource extends ApiSourceNode {
+  LocalDatabaseOpenMethodCallSource() { this.asExpr() instanceof LocalDatabaseOpenMethodCall }
+}
 
-  predicate isSink(DataFlow::Node sink) {
-    localDatabaseInput(sink, _) or
-    localDatabaseStore(sink, _)
-  }
+/**
+ * A local database sink node.
+ */
+private class LocalDatabaseSink extends ApiSinkNode {
+  LocalDatabaseSink() { localDatabaseInput(this, _) or localDatabaseStore(this, _) }
+}
+
+private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalDatabaseOpenMethodCallSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof LocalDatabaseSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Adds a step for tracking databases through field flow, that is, a database is opened and

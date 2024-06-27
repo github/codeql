@@ -81,6 +81,7 @@ test_Module_exports
 | export-in-mjs.mjs:1:1:1:34 | <toplevel> | exported_from_mjs | export-in-mjs.mjs:1:32:1:33 | 42 |
 | f.ts:1:1:6:0 | <toplevel> | foo | f.ts:5:8:5:24 | function foo() {} |
 | m/c.js:1:1:6:0 | <toplevel> | h | b.js:5:10:5:10 | f |
+| reExportNamespace.js:1:1:2:0 | <toplevel> | ns | reExportNamespace.js:1:8:1:14 | * as ns |
 | tst.html:4:23:8:0 | <toplevel> | y | tst.html:7:20:7:21 | 42 |
 test_NamedImportSpecifier
 | d.js:1:10:1:21 | default as g |
@@ -149,4 +150,5 @@ test_getSourceNode
 | export-in-mjs.mjs:1:1:1:34 | export  ... s = 42; | exported_from_mjs | export-in-mjs.mjs:1:32:1:33 | 42 |
 | f.ts:5:1:5:24 | export  ... oo() {} | foo | f.ts:5:8:5:24 | function foo() {} |
 | m/c.js:5:1:5:30 | export  ... '../b'; | h | b.js:5:10:5:10 | f |
+| reExportNamespace.js:1:1:1:26 | export  ...  "./a"; | ns | reExportNamespace.js:1:8:1:14 | * as ns |
 | tst.html:7:3:7:22 | export const y = 42; | y | tst.html:7:20:7:21 | 42 |

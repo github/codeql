@@ -48,7 +48,7 @@ namespace Semmle.Extraction
 
             writerLazy = new Lazy<StreamWriter>(() =>
             {
-                var tempPath = trap ?? Path.GetTempPath();
+                var tempPath = trap ?? FileUtils.GetTemporaryWorkingDirectory(out var _);
 
                 do
                 {
@@ -183,13 +183,13 @@ namespace Semmle.Extraction
                         if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(trapCompression)}"))
                             return;
                     }
-                    logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
+                    logger.LogInfo($"Identical trap file for {TrapFile} already exists");
                     FileUtils.TryDelete(tmpFile);
                 }
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                logger.Log(Severity.Error, "Failed to move the trap file from {0} to {1} because {2}", tmpFile, TrapFile, ex);
+                logger.LogError($"Failed to move the trap file from {tmpFile} to {TrapFile} because {ex}");
             }
         }
 
@@ -227,7 +227,7 @@ namespace Semmle.Extraction
             {
                 // If this happened, it was probably because the same file was compiled multiple times.
                 // In any case, this is not a fatal error.
-                logger.Log(Severity.Warning, "Problem archiving " + dest + ": " + ex);
+                logger.LogWarning("Problem archiving " + dest + ": " + ex);
             }
         }
 

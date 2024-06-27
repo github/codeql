@@ -73,7 +73,7 @@ void tests(FILE *log, myStruct &s)
 		fprintf(log, "buf = %s\n", buf); // BAD
 		
 		strcpy(buf, s.password_hash);
-		fprintf(log, "buf = %s\n", buf); // GOOD [FALSE POSITIVE]
+		fprintf(log, "buf = %s\n", buf); // GOOD
 	}
 
 	{

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.OutputCaching, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -23,6 +23,11 @@ namespace Microsoft
                 public bool VaryByHost { get => throw null; set { } }
                 public System.Collections.Generic.IDictionary<string, string> VaryByValues { get => throw null; }
             }
+            public interface IOutputCacheBufferStore : Microsoft.AspNetCore.OutputCaching.IOutputCacheStore
+            {
+                System.Threading.Tasks.ValueTask SetAsync(string key, System.Buffers.ReadOnlySequence<byte> value, System.ReadOnlyMemory<string> tags, System.TimeSpan validFor, System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.ValueTask<bool> TryGetAsync(string key, System.IO.Pipelines.PipeWriter destination, System.Threading.CancellationToken cancellationToken);
+            }
             public interface IOutputCacheFeature
             {
                 Microsoft.AspNetCore.OutputCaching.OutputCacheContext Context { get; }
@@ -39,12 +44,14 @@ namespace Microsoft
                 System.Threading.Tasks.ValueTask<byte[]> GetAsync(string key, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.ValueTask SetAsync(string key, byte[] value, string[] tags, System.TimeSpan validFor, System.Threading.CancellationToken cancellationToken);
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public sealed class OutputCacheAttribute : System.Attribute
             {
                 public OutputCacheAttribute() => throw null;
                 public int Duration { get => throw null; set { } }
                 public bool NoStore { get => throw null; set { } }
                 public string PolicyName { get => throw null; set { } }
+                public string[] Tags { get => throw null; set { } }
                 public string[] VaryByHeaderNames { get => throw null; set { } }
                 public string[] VaryByQueryKeys { get => throw null; set { } }
                 public string[] VaryByRouteValueNames { get => throw null; set { } }

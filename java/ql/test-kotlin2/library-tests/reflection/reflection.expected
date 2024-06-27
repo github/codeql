@@ -1,0 +1,639 @@
+variableInitializerType
+| reflection.kt:7:9:7:54 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Ccc,Integer,Double> | true |
+| reflection.kt:7:9:7:54 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:10:9:10:42 | KProperty1<C,Integer> x0 | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | true |
+| reflection.kt:10:9:10:42 | KProperty1<C,Integer> x0 | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:13:9:13:53 | Getter<C,Integer> x3 | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/Function1.class:0:0:0:0 | Function1<C,Integer> | true |
+| reflection.kt:13:9:13:53 | Getter<C,Integer> x3 | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty$Getter.class:0:0:0:0 | Getter<Integer> | true |
+| reflection.kt:14:9:14:44 | KFunction<Integer> x4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Integer> | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<C,Integer> | true |
+| reflection.kt:14:9:14:44 | KFunction<Integer> x4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Integer> | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:15:9:15:41 | KProperty0<Integer> x5 | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | true |
+| reflection.kt:15:9:15:41 | KProperty0<Integer> x5 | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:17:9:17:49 | KMutableProperty1<C,Integer> y0 | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | true |
+| reflection.kt:17:9:17:49 | KMutableProperty1<C,Integer> y0 | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:20:9:20:60 | Setter<C,Integer> y3 | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Unit> | true |
+| reflection.kt:20:9:20:60 | Setter<C,Integer> y3 | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty$Setter.class:0:0:0:0 | Setter<Integer> | true |
+| reflection.kt:21:9:21:50 | KFunction<Unit> y4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Unit> | true |
+| reflection.kt:21:9:21:50 | KFunction<Unit> y4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:22:9:22:48 | KMutableProperty0<Integer> y5 | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | true |
+| reflection.kt:22:9:22:48 | KMutableProperty0<Integer> y5 | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:24:9:24:91 | KProperty2<C,Integer,Integer> prop | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Integer> | true |
+| reflection.kt:24:9:24:91 | KProperty2<C,Integer,Integer> prop | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty.class:0:0:0:0 | KProperty<Integer> | true |
+| reflection.kt:116:9:116:44 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Integer,Unit> | true |
+| reflection.kt:116:9:116:44 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+invocation
+| reflection.kt:8:17:8:24 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:11:23:11:33 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:12:26:12:32 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:13:45:13:53 | getGetter(...) | file://<external>/KProperty1.class:0:0:0:0 | getGetter |
+| reflection.kt:14:38:14:44 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:18:24:18:37 | set(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
+| reflection.kt:19:26:19:32 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:20:52:20:60 | getSetter(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | getSetter |
+| reflection.kt:21:44:21:50 | set(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
+| reflection.kt:24:21:24:37 | getMembers(...) | file://<external>/KClass.class:0:0:0:0 | getMembers |
+| reflection.kt:24:48:24:54 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:25:18:25:33 | get(...) | file://<external>/KProperty2.class:0:0:0:0 | get |
+| reflection.kt:50:13:50:39 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:51:13:51:34 | get(...) | file://<external>/KProperty0.class:0:0:0:0 | get |
+functionReferences
+| reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | reflection.kt:29:9:29:33 | m |
+| reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | invoke | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:21:44:21:50 | ...::... | reflection.kt:21:44:21:50 | invoke | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
+| reflection.kt:60:17:60:32 | ...::... | reflection.kt:60:17:60:32 | invoke | file://<external>/Class1$Generic.class:0:0:0:0 | m1 |
+| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | invoke | file://<external>/Class1$Generic.class:0:0:0:0 | m1 |
+| reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | reflection.kt:54:1:54:52 | ext1 |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | reflection.kt:54:1:54:52 | ext1 |
+| reflection.kt:64:17:64:34 | ...::... | reflection.kt:64:17:64:34 | invoke | reflection.kt:56:1:56:48 | ext2 |
+| reflection.kt:65:17:65:36 | ...::... | reflection.kt:65:17:65:36 | invoke | reflection.kt:56:1:56:48 | ext2 |
+| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | invoke | file://<external>/Class2$Inner.class:0:0:0:0 | Inner<String> |
+| reflection.kt:97:14:97:21 | ...::... | reflection.kt:97:14:97:21 | invoke | file://<external>/Class2.class:0:0:0:0 | Class2<String> |
+| reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | invoke | reflection.kt:94:1:94:24 | fn |
+| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | file://<external>/Class2$Inner.class:0:0:0:0 | Inner<String> |
+| reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | reflection.kt:115:9:115:27 | fn1 |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | fn1 |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | invoke | reflection.kt:134:21:134:40 | takesOptionalParam |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | takesOptionalParam |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | invoke | reflection.kt:145:32:145:70 | takesOptionalParam |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | extTakesOptionalParam |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | extTakesOptionalParam |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | <init> |
+propertyGetReferences
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | reflection.kt:33:9:33:23 | getP0 |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | reflection.kt:33:9:33:23 | getP0 |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | get | reflection.kt:34:9:34:23 | getP1 |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | reflection.kt:34:9:34:23 | getP1 |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | get | reflection.kt:47:5:47:28 | getLastChar |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | get | reflection.kt:47:5:47:28 | getLastChar |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | file://<external>/Class1$Generic.class:0:0:0:0 | getP2 |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | get | file://<external>/Class1$Generic.class:0:0:0:0 | getP2 |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | get | file://<external>/IntCompanionObject.class:0:0:0:0 | getMAX_VALUE |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | get | reflection.kt:105:18:105:31 | getProp1 |
+propertyFieldReferences
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | get | file:///modules/java.base/java/lang/Integer.class:0:0:0:0 | MAX_VALUE |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | get | file:///modules/java.desktop/java/awt/Rectangle.class:0:0:0:0 | height |
+propertySetReferences
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | set | reflection.kt:34:9:34:23 | setP1 |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | set | reflection.kt:34:9:34:23 | setP1 |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | file://<external>/Class1$Generic.class:0:0:0:0 | setP2 |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | file://<external>/Class1$Generic.class:0:0:0:0 | setP2 |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | set | reflection.kt:105:18:105:31 | setProp1 |
+callsInsideInvocationMethods
+| reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | reflection.kt:7:49:7:54 | invoke | reflection.kt:7:49:7:54 | m(...) | Reflection$Ccc.m |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | reflection.kt:10:38:10:42 | get | reflection.kt:10:38:10:42 | getP0(...) | Reflection$C.getP0 |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | reflection.kt:10:38:10:42 | invoke | reflection.kt:10:38:10:42 | get(...) | <anonymous class>.get |
+| reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | reflection.kt:14:38:14:44 | invoke | reflection.kt:14:38:14:44 | get(...) | kotlin.reflect.KProperty1<C,Integer>.get |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | reflection.kt:15:35:15:41 | get | reflection.kt:15:35:15:41 | getP0(...) | Reflection$C.getP0 |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | reflection.kt:15:35:15:41 | invoke | reflection.kt:15:35:15:41 | get(...) | <anonymous class>.get |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | reflection.kt:17:45:17:49 | get | reflection.kt:17:45:17:49 | getP1(...) | Reflection$C.getP1 |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | reflection.kt:17:45:17:49 | invoke | reflection.kt:17:45:17:49 | get(...) | <anonymous class>.get |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | reflection.kt:17:45:17:49 | set | reflection.kt:17:45:17:49 | setP1(...) | Reflection$C.setP1 |
+| reflection.kt:21:44:21:50 | ...::... | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | reflection.kt:21:44:21:50 | invoke | reflection.kt:21:44:21:50 | set(...) | kotlin.reflect.KMutableProperty1<C,Integer>.set |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:22:42:22:48 | get | reflection.kt:22:42:22:48 | getP1(...) | Reflection$C.getP1 |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:22:42:22:48 | invoke | reflection.kt:22:42:22:48 | get(...) | <anonymous class>.get |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:22:42:22:48 | set | reflection.kt:22:42:22:48 | setP1(...) | Reflection$C.setP1 |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | new KProperty1<String,Character>(...) { ... } | reflection.kt:50:13:50:28 | get | reflection.kt:50:13:50:28 | getLastChar(...) | ReflectionKt.getLastChar |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | new KProperty1<String,Character>(...) { ... } | reflection.kt:50:13:50:28 | invoke | reflection.kt:50:13:50:28 | get(...) | <anonymous class>.get |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | new KProperty0<Character>(...) { ... } | reflection.kt:51:13:51:28 | get | reflection.kt:51:13:51:28 | getLastChar(...) | ReflectionKt.getLastChar |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | new KProperty0<Character>(...) { ... } | reflection.kt:51:13:51:28 | invoke | reflection.kt:51:13:51:28 | get(...) | <anonymous class>.get |
+| reflection.kt:60:17:60:32 | ...::... | reflection.kt:60:17:60:32 | new Function2<Generic<Integer>,Integer,String>(...) { ... } | reflection.kt:60:17:60:32 | invoke | reflection.kt:60:17:60:32 | m1(...) | Class1$Generic<Integer>.m1 |
+| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | new Function1<Integer,String>(...) { ... } | reflection.kt:61:17:61:34 | invoke | reflection.kt:61:17:61:34 | m1(...) | Class1$Generic<Integer>.m1 |
+| reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | new Function1<Generic<Integer>,String>(...) { ... } | reflection.kt:62:17:62:34 | invoke | reflection.kt:62:17:62:34 | ext1(...) | ReflectionKt.ext1 |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | new Function0<String>(...) { ... } | reflection.kt:63:17:63:36 | invoke | reflection.kt:63:17:63:36 | ext1(...) | ReflectionKt.ext1 |
+| reflection.kt:64:17:64:34 | ...::... | reflection.kt:64:17:64:34 | new Function1<Generic<Integer>,String>(...) { ... } | reflection.kt:64:17:64:34 | invoke | reflection.kt:64:17:64:34 | ext2(...) | ReflectionKt.ext2 |
+| reflection.kt:65:17:65:36 | ...::... | reflection.kt:65:17:65:36 | new Function0<String>(...) { ... } | reflection.kt:65:17:65:36 | invoke | reflection.kt:65:17:65:36 | ext2(...) | ReflectionKt.ext2 |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | reflection.kt:67:17:67:32 | get | reflection.kt:67:17:67:32 | getP2(...) | Class1$Generic<Integer>.getP2 |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | reflection.kt:67:17:67:32 | invoke | reflection.kt:67:17:67:32 | get(...) | <anonymous class>.get |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | reflection.kt:67:17:67:32 | set | reflection.kt:67:17:67:32 | setP2(...) | Class1$Generic<Integer>.setP2 |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:68:17:68:34 | get | reflection.kt:68:17:68:34 | getP2(...) | Class1$Generic<Integer>.getP2 |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:68:17:68:34 | invoke | reflection.kt:68:17:68:34 | get(...) | <anonymous class>.get |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:68:17:68:34 | set | reflection.kt:68:17:68:34 | setP2(...) | Class1$Generic<Integer>.setP2 |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | new KProperty0<Integer>(...) { ... } | reflection.kt:70:17:70:30 | get | reflection.kt:70:17:70:30 | getMAX_VALUE(...) | kotlin.jvm.internal.IntCompanionObject.getMAX_VALUE |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | new KProperty0<Integer>(...) { ... } | reflection.kt:70:17:70:30 | invoke | reflection.kt:70:17:70:30 | get(...) | <anonymous class>.get |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | new KProperty0<Integer>(...) { ... } | reflection.kt:71:17:71:34 | invoke | reflection.kt:71:17:71:34 | get(...) | <anonymous class>.get |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:72:17:72:35 | invoke | reflection.kt:72:17:72:35 | get(...) | <anonymous class>.get |
+| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | new Function1<String,Inner<String>>(...) { ... } | reflection.kt:90:18:90:24 | invoke | reflection.kt:90:18:90:24 | new Inner<String>(...) | Class2$Inner<String>.Inner<String> |
+| reflection.kt:97:14:97:21 | ...::... | reflection.kt:97:14:97:21 | new Function1<String,Class2<String>>(...) { ... } | reflection.kt:97:14:97:21 | invoke | reflection.kt:97:14:97:21 | new Class2<String>(...) | Class2<String>.Class2<String> |
+| reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | new Function1<String,Unit>(...) { ... } | reflection.kt:98:14:98:17 | invoke | reflection.kt:98:14:98:17 | fn(...) | ReflectionKt.fn |
+| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | new Function1<String,Inner<String>>(...) { ... } | reflection.kt:99:14:99:29 | invoke | reflection.kt:99:14:99:29 | new Inner<String>(...) | Class2<Integer>$Inner<String>.Inner<String> |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | get | reflection.kt:109:17:109:27 | getProp1(...) | Base1.getProp1 |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | invoke | reflection.kt:109:17:109:27 | get(...) | <anonymous class>.get |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | set | reflection.kt:109:17:109:27 | setProp1(...) | Base1.setProp1 |
+| reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | reflection.kt:116:40:116:44 | invoke | reflection.kt:116:40:116:44 | fn1(...) | LocalFn$.fn1 |
+| reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | reflection.kt:116:40:116:44 | invoke | reflection.kt:116:40:116:44 | new (...) | LocalFn$. |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | fn1(...) | ReflectionKt$.fn1 |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | new (...) | ReflectionKt$. |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:134:21:134:40 | invoke | reflection.kt:134:21:134:40 | new (...) | ReflectionKt$. |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:134:21:134:40 | invoke | reflection.kt:134:21:134:40 | takesOptionalParam(...) | ReflectionKt$.takesOptionalParam |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | new (...) | ReflectionKt$. |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | takesOptionalParam(...) | ReflectionKt$.takesOptionalParam |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | new Function2<MemberOptionalsTest,Integer,Integer>(...) { ... } | reflection.kt:145:32:145:70 | invoke | reflection.kt:145:32:145:70 | new (...) | ReflectionKt$. |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | new Function2<MemberOptionalsTest,Integer,Integer>(...) { ... } | reflection.kt:145:32:145:70 | invoke | reflection.kt:145:32:145:70 | takesOptionalParam(...) | ReflectionKt$.takesOptionalParam |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | extTakesOptionalParam(...) | ReflectionKt$.extTakesOptionalParam |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | new (...) | ReflectionKt$. |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | extTakesOptionalParam(...) | ReflectionKt$.extTakesOptionalParam |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | new (...) | ReflectionKt$. |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | <init>(...) | ReflectionKt$.<init> |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | new (...) | ReflectionKt$. |
+fieldAccessInsideInvocationMethods
+| reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | reflection.kt:14:38:14:44 | invoke | reflection.kt:14:38:14:44 | this.<dispatchReceiver> |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | reflection.kt:15:35:15:41 | get | reflection.kt:15:35:15:41 | this.<dispatchReceiver> |
+| reflection.kt:21:44:21:50 | ...::... | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | reflection.kt:21:44:21:50 | invoke | reflection.kt:21:44:21:50 | this.<dispatchReceiver> |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:22:42:22:48 | get | reflection.kt:22:42:22:48 | this.<dispatchReceiver> |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:22:42:22:48 | set | reflection.kt:22:42:22:48 | this.<dispatchReceiver> |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | new KProperty0<Character>(...) { ... } | reflection.kt:51:13:51:28 | get | reflection.kt:51:13:51:28 | this.<extensionReceiver> |
+| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | new Function1<Integer,String>(...) { ... } | reflection.kt:61:17:61:34 | invoke | reflection.kt:61:17:61:34 | this.<dispatchReceiver> |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | new Function0<String>(...) { ... } | reflection.kt:63:17:63:36 | invoke | reflection.kt:63:17:63:36 | this.<extensionReceiver> |
+| reflection.kt:65:17:65:36 | ...::... | reflection.kt:65:17:65:36 | new Function0<String>(...) { ... } | reflection.kt:65:17:65:36 | invoke | reflection.kt:65:17:65:36 | this.<extensionReceiver> |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:68:17:68:34 | get | reflection.kt:68:17:68:34 | this.<dispatchReceiver> |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:68:17:68:34 | set | reflection.kt:68:17:68:34 | this.<dispatchReceiver> |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | new KProperty0<Integer>(...) { ... } | reflection.kt:70:17:70:30 | get | reflection.kt:70:17:70:30 | this.<dispatchReceiver> |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | new KProperty0<Integer>(...) { ... } | reflection.kt:71:17:71:34 | get | reflection.kt:71:17:71:34 | MAX_VALUE |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:72:17:72:35 | get | reflection.kt:72:17:72:35 | this.<dispatchReceiver> |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:72:17:72:35 | get | reflection.kt:72:17:72:35 | this.<dispatchReceiver>.height |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:72:17:72:35 | set | reflection.kt:72:17:72:35 | this.<dispatchReceiver> |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:72:17:72:35 | set | reflection.kt:72:17:72:35 | this.<dispatchReceiver>.height |
+| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | new Function1<String,Inner<String>>(...) { ... } | reflection.kt:90:18:90:24 | invoke | reflection.kt:90:18:90:24 | this.<dispatchReceiver> |
+| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | new Function1<String,Inner<String>>(...) { ... } | reflection.kt:99:14:99:29 | invoke | reflection.kt:99:14:99:29 | this.<dispatchReceiver> |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | get | reflection.kt:109:17:109:27 | this.<dispatchReceiver> |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | set | reflection.kt:109:17:109:27 | this.<dispatchReceiver> |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | this.<extensionReceiver> |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | this.<extensionReceiver> |
+modifiers
+| reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | override |
+| reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | public |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | override |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | public |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | invoke | override |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | invoke | public |
+| reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | invoke | override |
+| reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | invoke | public |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | override |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | public |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | invoke | override |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | invoke | public |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | get | override |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | get | public |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | invoke | override |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | invoke | public |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | set | override |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | set | public |
+| reflection.kt:21:44:21:50 | ...::... | reflection.kt:21:44:21:50 | invoke | override |
+| reflection.kt:21:44:21:50 | ...::... | reflection.kt:21:44:21:50 | invoke | public |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | override |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | public |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | invoke | override |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | invoke | public |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | set | override |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | set | public |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | get | override |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | get | public |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | invoke | override |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | invoke | public |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | get | override |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | get | public |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | invoke | override |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | invoke | public |
+| reflection.kt:60:17:60:32 | ...::... | reflection.kt:60:17:60:32 | invoke | override |
+| reflection.kt:60:17:60:32 | ...::... | reflection.kt:60:17:60:32 | invoke | public |
+| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | invoke | override |
+| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | invoke | public |
+| reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | override |
+| reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | public |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | override |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | public |
+| reflection.kt:64:17:64:34 | ...::... | reflection.kt:64:17:64:34 | invoke | override |
+| reflection.kt:64:17:64:34 | ...::... | reflection.kt:64:17:64:34 | invoke | public |
+| reflection.kt:65:17:65:36 | ...::... | reflection.kt:65:17:65:36 | invoke | override |
+| reflection.kt:65:17:65:36 | ...::... | reflection.kt:65:17:65:36 | invoke | public |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | override |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | public |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | invoke | override |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | invoke | public |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | override |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | public |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | get | override |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | get | public |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | invoke | override |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | invoke | public |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | override |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | public |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | get | override |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | get | public |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | invoke | override |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | invoke | public |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | get | override |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | get | public |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | invoke | override |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | invoke | public |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | get | override |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | get | public |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | invoke | override |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | invoke | public |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | set | override |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | set | public |
+| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | invoke | override |
+| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | invoke | public |
+| reflection.kt:97:14:97:21 | ...::... | reflection.kt:97:14:97:21 | invoke | override |
+| reflection.kt:97:14:97:21 | ...::... | reflection.kt:97:14:97:21 | invoke | public |
+| reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | invoke | override |
+| reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | invoke | public |
+| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | override |
+| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | public |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | get | override |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | get | public |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | invoke | override |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | invoke | public |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | set | override |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | set | public |
+| reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | override |
+| reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | public |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | override |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | public |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | invoke | override |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | invoke | public |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | invoke | override |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | invoke | public |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | invoke | override |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | invoke | public |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | invoke | override |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | invoke | public |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | override |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | public |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | override |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | public |
+compGenerated
+| file://<external>/AccessFlag$Location.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/AccessFlag.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/CharProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/CharProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/CharRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/Character$UnicodeScript.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ChronoField.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ChronoUnit.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/ClassFileFormatVersion.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Collector$Characteristics.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ConstantPool$Tag.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Continuation$Pinned.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Continuation$PreemptStatus.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/DateTimeFormatterBuilder$SettingsParser.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/DayOfWeek.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/DirectMethodHandleDesc$Kind.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ElementType.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/EnumEntries.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | getFirst | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | getLast | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | reversed | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/FormatStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Future$State.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IntRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IsoEra.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/KTypeProjection.class:0:0:0:0 | contravariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/KTypeProjection.class:0:0:0:0 | copy$default | Forwarder for Kotlin calls that need default arguments filling in |
+| file://<external>/KTypeProjection.class:0:0:0:0 | covariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/KTypeProjection.class:0:0:0:0 | invariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/LambdaForm$BasicType.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/LambdaForm$Kind.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/LinkOption.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Locale$Category.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Locale$FilteringMode.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Locale$IsoCountryCode.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/LongProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/LongProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/LongRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/LongRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/MethodHandleImpl$ArrayAccess.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/MethodHandleImpl$Intrinsic.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/MethodHandles$Lookup$ClassOption.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Exports$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Opens$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Requires$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Month.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ObjectInputFilter$Status.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/PreviewFeature$Feature.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Proxy$Type.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ResolverStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/RetentionPolicy.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/SignStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/StackWalker$ExtendedOption.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/StackWalker$Option.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/String.class:0:0:0:0 | isEmpty | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/TextStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Thread$State.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/TimeUnit.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/VarHandle$AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/VarHandle$AccessType.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Wrapper.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ZoneOffsetTransitionRule$TimeDefinition.class:0:0:0:0 | getEntries | Default property accessor |
+| reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:24:46:24:64 | new Function1<KCallable<?>,Boolean>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:33:9:33:23 | getP0 | Default property accessor |
+| reflection.kt:34:9:34:23 | getP1 | Default property accessor |
+| reflection.kt:34:9:34:23 | setP1 | Default property accessor |
+| reflection.kt:50:13:50:28 | new KProperty1<String,Character>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:51:13:51:28 | new KProperty0<Character>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:60:17:60:32 | new Function2<Generic<Integer>,Integer,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:61:17:61:34 | new Function1<Integer,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:62:17:62:34 | new Function1<Generic<Integer>,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:63:17:63:36 | new Function0<String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:64:17:64:34 | new Function1<Generic<Integer>,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:65:17:65:36 | new Function0<String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:67:17:67:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:70:17:70:30 | new KProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:71:17:71:34 | new KProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:83:17:83:28 | getValue | Default property accessor |
+| reflection.kt:90:18:90:24 | new Function1<String,Inner<String>>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:97:14:97:21 | new Function1<String,Class2<String>>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:98:14:98:17 | new Function1<String,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:99:14:99:29 | new Function1<String,Inner<String>>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:105:18:105:31 | getProp1 | Default property accessor |
+| reflection.kt:105:18:105:31 | setProp1 | Default property accessor |
+| reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:115:9:115:27 |  | The class around a local function, a lambda, or a function reference |
+| reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:126:9:126:13 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:131:1:131:50 | takesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:134:21:134:40 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:134:21:134:40 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:140:5:140:54 | takesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:144:21:144:41 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:145:32:145:70 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:145:32:145:70 | new Function2<MemberOptionalsTest,Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:150:1:150:60 | extTakesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:153:21:153:44 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:154:33:154:61 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:157:26:157:45 | ConstructorOptional | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:162:25:162:45 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | The class around a local function, a lambda, or a function reference |
+propertyReferenceOverrides
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | kotlin.reflect.KProperty1<C,Integer>.get(Reflection.C) |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | invoke | kotlin.jvm.functions.Function1<C,Integer>.invoke(Reflection.C) |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | get | kotlin.reflect.KProperty1<C,Integer>.get(Reflection.C) |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | invoke | kotlin.jvm.functions.Function1<C,Integer>.invoke(Reflection.C) |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | get | kotlin.reflect.KProperty1<String,Character>.get(java.lang.String) |
+| reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | invoke | kotlin.jvm.functions.Function1<String,Character>.invoke(java.lang.String) |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | get | kotlin.reflect.KProperty0<Character>.get() |
+| reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | invoke | kotlin.jvm.functions.Function0<Character>.invoke() |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | kotlin.reflect.KProperty1<Generic<Integer>,Integer>.get(Class1.Generic) |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | invoke | kotlin.jvm.functions.Function1<Generic<Integer>,Integer>.invoke(Class1.Generic) |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | kotlin.reflect.KMutableProperty1<Generic<Integer>,Integer>.set(Class1.Generic,java.lang.Integer) |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | kotlin.reflect.KMutableProperty0<Integer>.set(java.lang.Integer) |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | get | kotlin.reflect.KProperty0<Integer>.get() |
+| reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | invoke | kotlin.jvm.functions.Function0<Integer>.invoke() |
+notImplementedInterfaceMembers
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KProperty1<C,Integer>.getDelegate(Reflection.C) |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KProperty1<C,Integer>.getGetter() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:10:38:10:42 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:15:35:15:41 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KMutableProperty1<C,Integer>.getSetter() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KMutableProperty1<C,Integer>.set(Reflection.C,java.lang.Integer) |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KMutableProperty<Integer>.getSetter() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KProperty1<C,Integer>.getDelegate(Reflection.C) |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KProperty1<C,Integer>.getGetter() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:17:45:17:49 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.getSetter() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.set(java.lang.Integer) |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KMutableProperty<Integer>.getSetter() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:22:42:22:48 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.call(java.lang.Object[]) |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.callBy(java.util.Map) |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.getName() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.getParameters() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.getReturnType() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.getTypeParameters() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.getVisibility() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.isAbstract() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.isFinal() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.isOpen() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KCallable<Character>.isSuspend() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KProperty1<String,Character>.getDelegate(java.lang.String) |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KProperty1<String,Character>.getGetter() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KProperty<Character>.getGetter() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KProperty<Character>.isConst() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KProperty<Character>.isLateinit() |
+| reflection.kt:50:13:50:28 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.call(java.lang.Object[]) |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.callBy(java.util.Map) |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.getName() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.getParameters() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.getReturnType() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.getTypeParameters() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.getVisibility() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.isAbstract() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.isFinal() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.isOpen() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KCallable<Character>.isSuspend() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KProperty0<Character>.getDelegate() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KProperty0<Character>.getGetter() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KProperty<Character>.getGetter() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KProperty<Character>.isConst() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KProperty<Character>.isLateinit() |
+| reflection.kt:51:13:51:28 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KMutableProperty1<Generic<Integer>,Integer>.getSetter() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KMutableProperty<Integer>.getSetter() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KProperty1<Generic<Integer>,Integer>.getDelegate(Class1.Generic) |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KProperty1<Generic<Integer>,Integer>.getGetter() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:67:17:67:32 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.getSetter() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KMutableProperty<Integer>.getSetter() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:68:17:68:34 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:70:17:70:30 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:71:17:71:34 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.getSetter() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.set(java.lang.Integer) |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KMutableProperty<Integer>.getSetter() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:72:17:72:35 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.call(java.lang.Object[]) |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.callBy(java.util.Map) |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.getName() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.getParameters() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.getReturnType() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.getTypeParameters() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.getVisibility() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.isAbstract() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.isFinal() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.isOpen() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KCallable<Integer>.isSuspend() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.getSetter() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KMutableProperty0<Integer>.set(java.lang.Integer) |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KMutableProperty<Integer>.getSetter() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KProperty0<Integer>.getDelegate() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KProperty0<Integer>.getGetter() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KProperty<Integer>.getGetter() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KProperty<Integer>.isConst() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KProperty<Integer>.isLateinit() |
+| reflection.kt:109:17:109:27 | ...::... | kotlin.reflect.KProperty<Object>.getGetter() |

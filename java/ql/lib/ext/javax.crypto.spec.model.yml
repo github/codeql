@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.crypto.spec", "IvParameterSpec", True, "IvParameterSpec", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "GCMParameterSpec", True, "GCMParameterSpec", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "RC2ParameterSpec", True, "RC2ParameterSpec", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "RC5ParameterSpec", True, "RC5ParameterSpec", "", "", "Argument[3]", "Argument[this]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.crypto.spec", "DESKeySpec", False, "DESKeySpec", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DESKeySpec", False, "DESKeySpec", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DESKeySpec", False, "isParityAdjusted", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DESKeySpec", False, "isWeak", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DESedeKeySpec", False, "DESedeKeySpec", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DESedeKeySpec", False, "DESedeKeySpec", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DESedeKeySpec", False, "isParityAdjusted", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "DHPrivateKeySpec", False, "DHPrivateKeySpec", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "", "", "Argument[1]", "encryption-salt", "manual"]
+      - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "(char[],byte[],int)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "(char[],byte[],int,int)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["javax.crypto.spec", "PBEParameterSpec", False, "PBEParameterSpec", "", "", "Argument[0]", "encryption-salt", "manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],String)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],int,int,String)", "", "Argument[0]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],String)", "summary", "df-manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],int,int,String)", "summary", "df-manual"]

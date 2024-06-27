@@ -37,7 +37,7 @@ class BytecodeLoader extends RefType {
 }
 
 /** Holds if a Jython expression if evaluated, compiled or executed. */
-predicate runsCode(MethodAccess ma, Expr sink) {
+predicate runsCode(MethodCall ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof InterpretExprMethod and
     sink = ma.getArgument(0)
@@ -56,7 +56,7 @@ class LoadClassMethod extends Method {
  * Holds if `ma` is a call to a class-loading method, and `sink` is the byte array
  * representing the class to be loaded.
  */
-predicate loadsClass(MethodAccess ma, Expr sink) {
+predicate loadsClass(MethodCall ma, Expr sink) {
   exists(Method m, int i | m = ma.getMethod() |
     m instanceof LoadClassMethod and
     m.getParameter(i).getType() instanceof Array and // makeClass(java.lang.String name, byte[] data, ...)
@@ -78,7 +78,7 @@ class PyCompileMethod extends Method {
 }
 
 /** Holds if source code is compiled with `PyCompileMethod`. */
-predicate compile(MethodAccess ma, Expr sink) {
+predicate compile(MethodCall ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof PyCompileMethod and
     sink = ma.getArgument(0)
@@ -87,7 +87,7 @@ predicate compile(MethodAccess ma, Expr sink) {
 
 /** An expression loaded by Jython. */
 class CodeInjectionSink extends DataFlow::ExprNode {
-  MethodAccess methodAccess;
+  MethodCall methodAccess;
 
   CodeInjectionSink() {
     runsCode(methodAccess, this.getExpr()) or
@@ -95,7 +95,7 @@ class CodeInjectionSink extends DataFlow::ExprNode {
     compile(methodAccess, this.getExpr())
   }
 
-  MethodAccess getMethodAccess() { result = methodAccess }
+  MethodCall getMethodCall() { result = methodAccess }
 }
 
 /**
@@ -116,5 +116,5 @@ module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
 
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
 where CodeInjectionFlow::flowPath(source, sink)
-select sink.getNode().(CodeInjectionSink).getMethodAccess(), source, sink, "Jython evaluate $@.",
+select sink.getNode().(CodeInjectionSink).getMethodCall(), source, sink, "Jython evaluate $@.",
   source.getNode(), "user input"

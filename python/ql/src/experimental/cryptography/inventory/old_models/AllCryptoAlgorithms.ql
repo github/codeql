@@ -4,7 +4,6 @@
  * @kind problem
  * @id py/quantum-readiness/cbom/classic-model/all-cryptographic-algorithms
  * @problem.severity error
- * @precision high
  * @tags cbom
  *       cryptography
  */

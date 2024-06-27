@@ -1,5 +1,5 @@
 /**
- * @name Creating biased random numbers from a cryptographically secure source.
+ * @name Creating biased random numbers from a cryptographically secure source
  * @description Some mathematical operations on random numbers can cause bias in
  *              the results and compromise security.
  * @kind problem

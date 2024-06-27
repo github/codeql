@@ -16,7 +16,7 @@ class HudsonWebMethod extends Method {
 private class HudsonUtilXssSanitizer extends XssSanitizer {
   HudsonUtilXssSanitizer() {
     this.asExpr()
-        .(MethodAccess)
+        .(MethodCall)
         .getMethod()
         // Not including xmlEscape because it only accounts for >, <, and &.
         // It does not account for ", or ', which makes it an incomplete XSS sanitizer.

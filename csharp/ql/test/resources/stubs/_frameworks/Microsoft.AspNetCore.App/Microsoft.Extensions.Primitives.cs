@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -35,6 +35,16 @@ namespace Microsoft
                 bool ActiveChangeCallbacks { get; }
                 bool HasChanged { get; }
                 System.IDisposable RegisterChangeCallback(System.Action<object> callback, object state);
+            }
+            public struct InplaceStringBuilder
+            {
+                public void Append(Microsoft.Extensions.Primitives.StringSegment segment) => throw null;
+                public void Append(char c) => throw null;
+                public void Append(string value) => throw null;
+                public void Append(string value, int offset, int count) => throw null;
+                public int Capacity { get => throw null; set { } }
+                public InplaceStringBuilder(int capacity) => throw null;
+                public override string ToString() => throw null;
             }
             public struct StringSegment : System.IEquatable<Microsoft.Extensions.Primitives.StringSegment>, System.IEquatable<string>
             {

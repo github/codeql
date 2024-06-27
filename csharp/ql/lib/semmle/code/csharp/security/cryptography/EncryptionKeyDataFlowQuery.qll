@@ -5,11 +5,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
 
-/** Array of type Byte */
-deprecated class ByteArray extends ArrayType {
-  ByteArray() { this.getElementType() instanceof ByteType }
-}
-
 /** Abstract class for all sources of keys */
 abstract class KeySource extends DataFlow::Node { }
 

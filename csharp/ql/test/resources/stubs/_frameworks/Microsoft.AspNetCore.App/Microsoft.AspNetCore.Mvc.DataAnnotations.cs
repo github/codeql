@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -53,6 +53,7 @@ namespace Microsoft
                     public abstract System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationAttribute> GetValidationAttributes();
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)132, AllowMultiple = false, Inherited = true)]
             public sealed class HiddenInputAttribute : System.Attribute
             {
                 public HiddenInputAttribute() => throw null;

@@ -18,6 +18,6 @@ where
   usage = aUsage(endpoint) and
   type = supportedType(endpoint) and
   classification = methodClassification(usage)
-select usage, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getName(),
+select usage, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getEndpointName(),
   endpoint.getParameterTypes(), supported, endpoint.dllName(), endpoint.dllVersion(), type,
   classification

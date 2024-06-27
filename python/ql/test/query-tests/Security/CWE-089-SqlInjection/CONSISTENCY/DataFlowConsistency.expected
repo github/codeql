@@ -1,0 +1,6 @@
+storeStepIsLocal
+| sql_injection.py:10:1:10:25 | [orm-model] Class User | sql_injection.py:18:9:18:80 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| sql_injection.py:10:1:10:25 | [orm-model] Class User | sql_injection.py:24:9:24:97 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| sql_injection.py:10:1:10:25 | [orm-model] Class User | sql_injection.py:25:9:25:84 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| sql_injection.py:10:1:10:25 | [orm-model] Class User | sql_injection.py:26:9:26:86 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| sql_injection.py:10:1:10:25 | [orm-model] Class User | sql_injection.py:40:9:40:82 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |

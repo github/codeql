@@ -4,7 +4,7 @@ cached
 newtype TControlFlowElement =
   TAstElement(AstNode n) or
   TFuncDeclElement(Function func) { func.hasBody() } or
-  TClosureElement(ExplicitClosureExpr clos) or
+  TClosureElement(ClosureExpr clos) { isNormalAutoClosureOrExplicitClosure(clos) } or
   TPropertyGetterElement(Decl accessor, Expr ref) { isPropertyGetterElement(accessor, ref) } or
   TPropertySetterElement(Accessor accessor, AssignExpr assign) {
     isPropertySetterElement(accessor, assign)
@@ -39,6 +39,15 @@ predicate isPropertyGetterElement(Accessor accessor, Expr ref) {
 
 predicate isPropertyGetterElement(PropertyGetterElement pge, Accessor accessor, Expr ref) {
   pge = TPropertyGetterElement(accessor, ref)
+}
+
+predicate isNormalAutoClosureOrExplicitClosure(ClosureExpr clos) {
+  // short-circuiting operators have a `BinaryExpr` as the parent of the `AutoClosureExpr`,
+  // so we exclude them by checking for a `CallExpr`.
+  clos instanceof AutoClosureExpr and
+  exists(CallExpr call | call.getAnArgument().getExpr() = clos)
+  or
+  clos instanceof ExplicitClosureExpr
 }
 
 private predicate hasDirectToImplementationSemantics(Expr e) {
@@ -194,14 +203,18 @@ class KeyPathElement extends ControlFlowElement, TKeyPathElement {
   override string toString() { result = expr.toString() }
 }
 
+/**
+ * A control flow element representing a closure in its role as a control flow
+ * scope.
+ */
 class ClosureElement extends ControlFlowElement, TClosureElement {
-  ExplicitClosureExpr expr;
+  ClosureExpr expr;
 
   ClosureElement() { this = TClosureElement(expr) }
 
   override Location getLocation() { result = expr.getLocation() }
 
-  ExplicitClosureExpr getAst() { result = expr }
+  ClosureExpr getAst() { result = expr }
 
   override string toString() { result = expr.toString() }
 }

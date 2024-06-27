@@ -8,6 +8,18 @@ class SemLocation instanceof Location {
    */
   string toString() { result = super.toString() }
 
+  /** Gets the 1-based line number (inclusive) where this location starts. */
+  int getStartLine() { result = super.getStartLine() }
+
+  /** Gets the 1-based column number (inclusive) where this location starts. */
+  int getStartColumn() { result = super.getStartColumn() }
+
+  /** Gets the 1-based line number (inclusive) where this location ends. */
+  int getEndLine() { result = super.getEndLine() }
+
+  /** Gets the 1-based column number (inclusive) where this location ends. */
+  int getEndColumn() { result = super.getEndColumn() }
+
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to

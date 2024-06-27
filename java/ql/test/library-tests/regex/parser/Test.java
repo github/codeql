@@ -18,7 +18,9 @@ class Test {
         "a||b|c(d|e|)f|g+",
         "\\018\\033\\0377\\0777\u1337+",
         "[|]+",
-        "(a(a(a(a(a(a((((c))))a))))))((((((b(((((d)))))b)b)b)b)b)b)+"
+        "(a(a(a(a(a(a((((c))))a))))))((((((b(((((d)))))b)b)b)b)b)b)+",
+        "(?idmsuxU-idmsuxU)a+(?-idmsuxU)b+(?idmsuxU:c)d+(?-idmsuxU:e)f+(?idmsuxU:)g+",
+        "(?idms-iuxU)a+",
     };
 
     void test() {

@@ -38,14 +38,16 @@ namespace Semmle.Extraction.CSharp
             {
                 if (action != AnalysisAction.UpToDate)
                 {
-                    logger.Log(Severity.Info, "  {0} ({1})", source,
-                        action == AnalysisAction.Extracted
-                            ? time.ToString()
-                            : action == AnalysisAction.Excluded
-                                ? "excluded"
-                                : "up to date");
+                    var state = action == AnalysisAction.Extracted
+                        ? time.ToString()
+                        : action == AnalysisAction.Excluded
+                            ? "excluded"
+                            : "up to date";
+                    logger.LogInfo($"  {source} ({state})");
                 }
             }
+
+            public void Started(int item, int total, string source) { }
 
             public void MissingNamespace(string @namespace) { }
 
@@ -91,18 +93,12 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var analyzerStopwatch = new Stopwatch();
+            analyzerStopwatch.Start();
 
             var options = Options.CreateWithEnvironment(args);
-            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
 
             using var logger = MakeLogger(options.Verbosity, options.Console);
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
 
             try
             {
@@ -112,16 +108,23 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 var compilerVersion = new CompilerVersion(options);
-
                 if (compilerVersion.SkipExtraction)
                 {
-                    logger.Log(Severity.Warning, "  Unrecognized compiler '{0}' because {1}", compilerVersion.SpecifiedCompiler, compilerVersion.SkipReason);
+                    logger.LogWarning($"  Unrecognized compiler '{compilerVersion.SpecifiedCompiler}' because {compilerVersion.SkipReason}");
                     return ExitCode.Ok;
                 }
 
+                var workingDirectory = Directory.GetCurrentDirectory();
+                var compilerArgs = options.CompilerArguments.ToArray();
+
+                var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+                var pathTransformer = new PathTransformer(canonicalPathCache);
+
+                using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, pathTransformer, canonicalPathCache, options.AssemblySensitiveTrap);
+
                 var compilerArguments = CSharpCommandLineParser.Default.Parse(
                     compilerVersion.ArgsWithResponse,
-                    Entities.Compilation.Settings.Cwd,
+                    workingDirectory,
                     compilerVersion.FrameworkPath,
                     compilerVersion.AdditionalReferenceDirectories
                     );
@@ -129,30 +132,30 @@ namespace Semmle.Extraction.CSharp
                 if (compilerArguments is null)
                 {
                     var sb = new StringBuilder();
-                    sb.Append("  Failed to parse command line: ").AppendList(" ", Entities.Compilation.Settings.Args);
-                    logger.Log(Severity.Error, sb.ToString());
+                    sb.Append("  Failed to parse command line: ").AppendList(" ", compilerArgs);
+                    logger.LogError(sb.ToString());
                     ++analyser.CompilationErrors;
                     return ExitCode.Failed;
                 }
 
                 if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
                 {
-                    logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
+                    logger.LogInfo("Skipping extraction since files have already been extracted");
                     return ExitCode.Ok;
                 }
 
-                return AnalyseTracing(analyser, compilerArguments, options, canonicalPathCache, stopwatch);
+                return AnalyseTracing(workingDirectory, compilerArgs, analyser, compilerArguments, options, analyzerStopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
+                logger.LogError($"  Unhandled exception: {ex}");
                 return ExitCode.Errors;
             }
         }
 
         private static void AddSourceFilesFromProjects(IEnumerable<string> projectsToLoad, IList<string> compilerArguments, ILogger logger)
         {
-            logger.Log(Severity.Info, "  Loading referenced projects.");
+            logger.LogInfo("  Loading referenced projects.");
             var projects = new Queue<string>(projectsToLoad);
             var processed = new HashSet<string>();
             while (projects.Count > 0)
@@ -165,7 +168,7 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 processed.Add(fi.FullName);
-                logger.Log(Severity.Info, "  Processing referenced project: " + fi.FullName);
+                logger.LogInfo($"  Processing referenced project: {fi.FullName}");
 
                 var csProj = new CsProjFile(fi);
 
@@ -223,7 +226,7 @@ namespace Semmle.Extraction.CSharp
         /// The resolved references will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        private static IEnumerable<Action> ResolveReferences(Microsoft.CodeAnalysis.CommandLineArguments args, Analyser analyser, CanonicalPathCache canonicalPathCache, BlockingCollection<MetadataReference> ret)
+        private static IEnumerable<Action> ResolveReferences(Microsoft.CodeAnalysis.CommandLineArguments args, Analyser analyser, BlockingCollection<MetadataReference> ret)
         {
             var referencePaths = new Lazy<string[]>(() => FixedReferencePaths(args).ToArray());
             return args.MetadataReferences.Select<CommandLineReference, Action>(clref => () =>
@@ -232,14 +235,14 @@ namespace Semmle.Extraction.CSharp
                 {
                     if (File.Exists(clref.Reference))
                     {
-                        var reference = MakeReference(clref, canonicalPathCache.GetCanonicalPath(clref.Reference));
+                        var reference = MakeReference(clref, analyser.PathCache.GetCanonicalPath(clref.Reference));
                         ret.Add(reference);
                     }
                     else
                     {
                         lock (analyser)
                         {
-                            analyser.Logger.Log(Severity.Error, "  Reference '{0}' does not exist", clref.Reference);
+                            analyser.Logger.LogError($"  Reference '{clref.Reference}' does not exist");
                             ++analyser.CompilationErrors;
                         }
                     }
@@ -249,7 +252,7 @@ namespace Semmle.Extraction.CSharp
                     var composed = referencePaths.Value
                         .Select(path => Path.Combine(path, clref.Reference))
                         .Where(path => File.Exists(path))
-                        .Select(path => canonicalPathCache.GetCanonicalPath(path))
+                        .Select(path => analyser.PathCache.GetCanonicalPath(path))
                         .FirstOrDefault();
 
                     if (composed is not null)
@@ -261,7 +264,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         lock (analyser)
                         {
-                            analyser.Logger.Log(Severity.Error, "  Unable to resolve reference '{0}'", clref.Reference);
+                            analyser.Logger.LogError($"  Unable to resolve reference '{clref.Reference}'");
                             ++analyser.CompilationErrors;
                         }
                     }
@@ -282,15 +285,20 @@ namespace Semmle.Extraction.CSharp
                 try
                 {
                     using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    var st = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.LogTrace($"Parsing source file: '{path}'");
+                    var tree = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.LogTrace($"Source file parsed: '{path}'");
+
                     lock (ret)
-                        ret.Add(st);
+                    {
+                        ret.Add(tree);
+                    }
                 }
                 catch (IOException ex)
                 {
                     lock (analyser)
                     {
-                        analyser.Logger.Log(Severity.Error, "  Unable to open source file {0}: {1}", path, ex.Message);
+                        analyser.Logger.LogError($"  Unable to open source file {path}: {ex.Message}");
                         ++analyser.CompilationErrors;
                     }
                 }
@@ -302,7 +310,6 @@ namespace Semmle.Extraction.CSharp
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
             Action<CSharpCompilation, CommonOptions> initializeAnalyser,
-            Action<Entities.PerformanceMetrics> logPerformance,
             Action postProcess)
         {
             using var references = new BlockingCollection<MetadataReference>();
@@ -320,7 +327,7 @@ namespace Semmle.Extraction.CSharp
 
             if (syntaxTrees.Count == 0)
             {
-                analyser.Logger.Log(Severity.Error, "  No source files");
+                analyser.Logger.LogError("  No source files");
                 ++analyser.CompilationErrors;
                 if (analyser is TracingAnalyser)
                 {
@@ -340,7 +347,7 @@ namespace Semmle.Extraction.CSharp
             }
 
             sw.Stop();
-            analyser.Logger.Log(Severity.Info, "  Models constructed in {0}", sw.Elapsed);
+            analyser.Logger.LogInfo($"  Models constructed in {sw.Elapsed}");
             var elapsed = sw.Elapsed;
 
             var currentProcess = Process.GetCurrentProcess();
@@ -361,8 +368,8 @@ namespace Semmle.Extraction.CSharp
                 PeakWorkingSet = currentProcess.PeakWorkingSet64
             };
 
-            logPerformance(performance);
-            analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
+            analyser.LogPerformance(performance);
+            analyser.Logger.LogInfo($"  Extraction took {sw.Elapsed}");
 
             postProcess();
 
@@ -370,14 +377,15 @@ namespace Semmle.Extraction.CSharp
         }
 
         private static ExitCode AnalyseTracing(
+            string cwd,
+            string[] args,
             TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
             Options options,
-            CanonicalPathCache canonicalPathCache,
             Stopwatch stopwatch)
         {
             return Analyse(stopwatch, analyser, options,
-                references => ResolveReferences(compilerArguments, analyser, canonicalPathCache, references),
+                references => ResolveReferences(compilerArguments, analyser, references),
                 (analyser, syntaxTrees) =>
                 {
                     var paths = compilerArguments.SourceFiles
@@ -386,11 +394,11 @@ namespace Semmle.Extraction.CSharp
 
                     if (compilerArguments.GeneratedFilesOutputDirectory is not null)
                     {
-                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", SearchOption.AllDirectories));
+                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
                     }
 
                     return ReadSyntaxTrees(
-                        paths.Select(canonicalPathCache.GetCanonicalPath),
+                        paths.Select(analyser.PathCache.GetCanonicalPath).ToHashSet(),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,
@@ -414,8 +422,7 @@ namespace Semmle.Extraction.CSharp
                             .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
-                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
-                performance => analyser.LogPerformance(performance),
+                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation, cwd, args),
                 () => { });
         }
 

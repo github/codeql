@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -19,9 +19,11 @@ namespace Microsoft
                     public HealthCheckRegistration(string name, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck instance, Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus? failureStatus, System.Collections.Generic.IEnumerable<string> tags, System.TimeSpan? timeout) => throw null;
                     public HealthCheckRegistration(string name, System.Func<System.IServiceProvider, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck> factory, Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus? failureStatus, System.Collections.Generic.IEnumerable<string> tags) => throw null;
                     public HealthCheckRegistration(string name, System.Func<System.IServiceProvider, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck> factory, Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus? failureStatus, System.Collections.Generic.IEnumerable<string> tags, System.TimeSpan? timeout) => throw null;
+                    public System.TimeSpan? Delay { get => throw null; set { } }
                     public System.Func<System.IServiceProvider, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck> Factory { get => throw null; set { } }
                     public Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus FailureStatus { get => throw null; set { } }
                     public string Name { get => throw null; set { } }
+                    public System.TimeSpan? Period { get => throw null; set { } }
                     public System.Collections.Generic.ISet<string> Tags { get => throw null; }
                     public System.TimeSpan Timeout { get => throw null; set { } }
                 }

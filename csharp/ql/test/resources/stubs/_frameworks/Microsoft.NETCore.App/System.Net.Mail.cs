@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Mail, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Net.Mail, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Net
@@ -179,8 +179,8 @@ namespace System
                 public void SendAsyncCancel() => throw null;
                 public event System.Net.Mail.SendCompletedEventHandler SendCompleted;
                 public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message) => throw null;
-                public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body) => throw null;
                 public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body) => throw null;
                 public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Net.ServicePoint ServicePoint { get => throw null; }
                 public string TargetName { get => throw null; set { } }
@@ -198,7 +198,7 @@ namespace System
                 SpecifiedPickupDirectory = 1,
                 PickupDirectoryFromIis = 2,
             }
-            public class SmtpException : System.Exception, System.Runtime.Serialization.ISerializable
+            public class SmtpException : System.Exception
             {
                 public SmtpException() => throw null;
                 public SmtpException(System.Net.Mail.SmtpStatusCode statusCode) => throw null;
@@ -207,10 +207,9 @@ namespace System
                 public SmtpException(string message) => throw null;
                 public SmtpException(string message, System.Exception innerException) => throw null;
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public System.Net.Mail.SmtpStatusCode StatusCode { get => throw null; set { } }
             }
-            public class SmtpFailedRecipientException : System.Net.Mail.SmtpException, System.Runtime.Serialization.ISerializable
+            public class SmtpFailedRecipientException : System.Net.Mail.SmtpException
             {
                 public SmtpFailedRecipientException() => throw null;
                 public SmtpFailedRecipientException(System.Net.Mail.SmtpStatusCode statusCode, string failedRecipient) => throw null;
@@ -221,9 +220,8 @@ namespace System
                 public SmtpFailedRecipientException(string message, string failedRecipient, System.Exception innerException) => throw null;
                 public string FailedRecipient { get => throw null; }
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             }
-            public class SmtpFailedRecipientsException : System.Net.Mail.SmtpFailedRecipientException, System.Runtime.Serialization.ISerializable
+            public class SmtpFailedRecipientsException : System.Net.Mail.SmtpFailedRecipientException
             {
                 public SmtpFailedRecipientsException() => throw null;
                 protected SmtpFailedRecipientsException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -231,7 +229,6 @@ namespace System
                 public SmtpFailedRecipientsException(string message, System.Exception innerException) => throw null;
                 public SmtpFailedRecipientsException(string message, System.Net.Mail.SmtpFailedRecipientException[] innerExceptions) => throw null;
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public System.Net.Mail.SmtpFailedRecipientException[] InnerExceptions { get => throw null; }
             }
             public enum SmtpStatusCode
@@ -303,25 +300,59 @@ namespace System
             {
                 public static class Application
                 {
+                    public const string FormUrlEncoded = default;
                     public const string Json = default;
+                    public const string JsonPatch = default;
+                    public const string JsonSequence = default;
+                    public const string Manifest = default;
                     public const string Octet = default;
                     public const string Pdf = default;
+                    public const string ProblemJson = default;
+                    public const string ProblemXml = default;
                     public const string Rtf = default;
                     public const string Soap = default;
+                    public const string Wasm = default;
                     public const string Xml = default;
+                    public const string XmlDtd = default;
+                    public const string XmlPatch = default;
                     public const string Zip = default;
+                }
+                public static class Font
+                {
+                    public const string Collection = default;
+                    public const string Otf = default;
+                    public const string Sfnt = default;
+                    public const string Ttf = default;
+                    public const string Woff = default;
+                    public const string Woff2 = default;
                 }
                 public static class Image
                 {
+                    public const string Avif = default;
+                    public const string Bmp = default;
                     public const string Gif = default;
+                    public const string Icon = default;
                     public const string Jpeg = default;
+                    public const string Png = default;
+                    public const string Svg = default;
                     public const string Tiff = default;
+                    public const string Webp = default;
+                }
+                public static class Multipart
+                {
+                    public const string ByteRanges = default;
+                    public const string FormData = default;
                 }
                 public static class Text
                 {
+                    public const string Css = default;
+                    public const string Csv = default;
                     public const string Html = default;
+                    public const string JavaScript = default;
+                    public const string Markdown = default;
                     public const string Plain = default;
                     public const string RichText = default;
+                    public const string Rtf = default;
                     public const string Xml = default;
                 }
             }

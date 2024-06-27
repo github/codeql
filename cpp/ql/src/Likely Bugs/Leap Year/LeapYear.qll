@@ -345,6 +345,8 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
     )
   }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from anything on the RHS of an assignment to a time/date structure to that
     // assignment.

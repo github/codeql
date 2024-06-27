@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
 predicate isTestSink(DataFlow::Node n) {
-  exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
 module RemoteValueConfig implements DataFlow::ConfigSig {

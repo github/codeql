@@ -5,7 +5,8 @@
 
 import csharp
 private import semmle.code.csharp.dataflow.DataFlow2
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 
@@ -17,7 +18,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for untrusted user input used in dangerous regular expression operations.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for untrusted user input used in dangerous regular expression operations.
@@ -55,8 +56,15 @@ private module ReDoSConfig implements DataFlow::ConfigSig {
  */
 module ReDoS = TaintTracking::Global<ReDoSConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * An expression that represents a regular expression with potential exponential behavior.

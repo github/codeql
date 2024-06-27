@@ -5,6 +5,8 @@
 Running CodeQL queries at scale with multi-repository variant analysis
 ======================================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 .. include:: ../reusables/beta-note-mrva.rst
 
 About multi-repository variant analysis

@@ -1,6 +1,6 @@
 private import swift
 private import Completion
-private import ControlFlowGraphImplShared
+private import ControlFlowGraphImplSpecific::CfgImpl
 private import ControlFlowElements
 
 abstract class AstControlFlowTree extends ControlFlowTree {

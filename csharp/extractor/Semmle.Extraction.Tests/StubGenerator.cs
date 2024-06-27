@@ -42,7 +42,7 @@ public const string MyField2 = default;
         // Setup
         const string source = @"
 public class MyTest {
-    public int M1(string arg1) { return 0;}
+    public int M1(string arg1) { return 0; }
 }";
 
         // Execute
@@ -51,6 +51,46 @@ public class MyTest {
         // Verify
         const string expected = @"public class MyTest {
 public int M1(string arg1) => throw null;
+}
+";
+        Assert.Equal(expected, stub);
+    }
+
+    [Fact]
+    public void StubGeneratorRefReadonlyParameterTest()
+    {
+        // Setup
+        const string source = @"
+public class MyTest {
+    public int M1(ref readonly Guid guid) { return 0; }
+}";
+
+        // Execute
+        var stub = GenerateStub(source);
+
+        // Verify
+        const string expected = @"public class MyTest {
+public int M1(ref readonly Guid guid) => throw null;
+}
+";
+        Assert.Equal(expected, stub);
+    }
+
+    [Fact]
+    public void StubGeneratorEscapeMethodName()
+    {
+        // Setup
+        const string source = @"
+public class MyTest {
+    public int @default() { return 0; }
+}";
+
+        // Execute
+        var stub = GenerateStub(source);
+
+        // Verify
+        const string expected = @"public class MyTest {
+public int @default() => throw null;
 }
 ";
         Assert.Equal(expected, stub);

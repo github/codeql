@@ -1,6 +1,3 @@
-| CapturesDisposable(MyType, MyType) | 0 |
-| Dispose(IDisposable) | 0 |
-| DisposesParameter(IDisposable, IDisposable) | 0 |
-| System.Void DisposalTests.Class1.CapturesDisposable(DisposalTests.MyType,DisposalTests.MyType) | 0 |
-| System.Void DisposalTests.Class1.Dispose(System.IDisposable) | 0 |
-| System.Void DisposalTests.Class1.DisposesParameter(System.IDisposable,System.IDisposable) | 0 |
+| Disposal(IDisposable, object, TextWriter, IDisposable) | 0 |
+| Disposal(IDisposable, object, TextWriter, IDisposable) | 1 |
+| Disposal(IDisposable, object, TextWriter, IDisposable) | 2 |

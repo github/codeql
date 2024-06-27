@@ -5,8 +5,8 @@
  */
 
 private import codeql.Locations
-private import codeql.ruby.typetracking.TypeTracker
-private import TypeTrackerSpecific
+private import codeql.ruby.DataFlow
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 
 /**
  * The signature to use when instantiating `ApiGraphShared`.
@@ -37,14 +37,14 @@ signature module ApiGraphSharedSig {
    *
    * This node will have outgoing epsilon edges to its type-tracking successors.
    */
-  ApiNode getForwardNode(TypeTrackingNode node, TypeTracker t);
+  ApiNode getForwardNode(DataFlow::LocalSourceNode node, TypeTracker t);
 
   /**
    * Gets the backward node with the given type-tracking state.
    *
    * This node will have outgoing epsilon edges to its type-tracking predecessors.
    */
-  ApiNode getBackwardNode(TypeTrackingNode node, TypeTracker t);
+  ApiNode getBackwardNode(DataFlow::LocalSourceNode node, TypeTracker t);
 
   /**
    * Gets the sink node corresponding to `node`.
@@ -55,7 +55,7 @@ signature module ApiGraphSharedSig {
    *
    * Sink nodes have outgoing epsilon edges to the backward nodes corresponding to their local sources.
    */
-  ApiNode getSinkNode(Node node);
+  ApiNode getSinkNode(DataFlow::Node node);
 
   /**
    * Holds if a language-specific epsilon edge `pred -> succ` should be generated.
@@ -72,7 +72,9 @@ module ApiGraphShared<ApiGraphSharedSig S> {
   /** Gets a local source of `node`. */
   bindingset[node]
   pragma[inline_late]
-  TypeTrackingNode getALocalSourceStrict(Node node) { result = node.getALocalSource() }
+  DataFlow::LocalSourceNode getALocalSourceStrict(DataFlow::Node node) {
+    result = node.getALocalSource()
+  }
 
   cached
   private module Cached {
@@ -85,23 +87,21 @@ module ApiGraphShared<ApiGraphSharedSig S> {
     cached
     predicate epsilonEdge(ApiNode pred, ApiNode succ) {
       exists(
-        StepSummary summary, TypeTrackingNode predNode, TypeTracker predState,
-        TypeTrackingNode succNode, TypeTracker succState
+        StepSummary summary, DataFlow::LocalSourceNode predNode, TypeTracker predState,
+        DataFlow::LocalSourceNode succNode, TypeTracker succState
       |
-        StepSummary::stepCall(predNode, succNode, summary)
-        or
-        StepSummary::stepNoCall(predNode, succNode, summary)
+        step(predNode, succNode, summary)
       |
         pred = getForwardNode(predNode, predState) and
-        succState = StepSummary::append(predState, summary) and
+        succState = append(predState, summary) and
         succ = getForwardNode(succNode, succState)
         or
         succ = getBackwardNode(predNode, predState) and // swap order for backward flow
-        succState = StepSummary::append(predState, summary) and
+        succState = append(predState, summary) and
         pred = getBackwardNode(succNode, succState) // swap order for backward flow
       )
       or
-      exists(Node sink, TypeTrackingNode localSource |
+      exists(DataFlow::Node sink, DataFlow::LocalSourceNode localSource |
         pred = getSinkNode(sink) and
         localSource = getALocalSourceStrict(sink) and
         succ = getBackwardStartNode(localSource)
@@ -121,39 +121,39 @@ module ApiGraphShared<ApiGraphSharedSig S> {
 
     /** Gets the API node to use when starting forward flow from `source` */
     cached
-    ApiNode forwardStartNode(TypeTrackingNode source) {
-      result = getForwardNode(source, TypeTracker::end(false))
+    ApiNode forwardStartNode(DataFlow::LocalSourceNode source) {
+      result = getForwardNode(source, noContentTypeTracker(false))
     }
 
     /** Gets the API node to use when starting backward flow from `sink` */
     cached
-    ApiNode backwardStartNode(TypeTrackingNode sink) {
+    ApiNode backwardStartNode(DataFlow::LocalSourceNode sink) {
       // There is backward flow A->B iff there is forward flow B->A.
       // The starting point of backward flow corresponds to the end of a forward flow, and vice versa.
-      result = getBackwardNode(sink, TypeTracker::end(_))
+      result = getBackwardNode(sink, noContentTypeTracker(_))
     }
 
     /** Gets `node` as a data flow source. */
     cached
-    TypeTrackingNode asSourceCached(ApiNode node) { node = forwardEndNode(result) }
+    DataFlow::LocalSourceNode asSourceCached(ApiNode node) { node = forwardEndNode(result) }
 
     /** Gets `node` as a data flow sink. */
     cached
-    Node asSinkCached(ApiNode node) { node = getSinkNode(result) }
+    DataFlow::Node asSinkCached(ApiNode node) { node = getSinkNode(result) }
   }
 
   private import Cached
 
   /** Gets an API node corresponding to the end of forward-tracking to `localSource`. */
   pragma[nomagic]
-  private ApiNode forwardEndNode(TypeTrackingNode localSource) {
-    result = getForwardNode(localSource, TypeTracker::end(_))
+  private ApiNode forwardEndNode(DataFlow::LocalSourceNode localSource) {
+    result = getForwardNode(localSource, noContentTypeTracker(_))
   }
 
   /** Gets an API node corresponding to the end of backtracking to `localSource`. */
   pragma[nomagic]
-  private ApiNode backwardEndNode(TypeTrackingNode localSource) {
-    result = getBackwardNode(localSource, TypeTracker::end(false))
+  private ApiNode backwardEndNode(DataFlow::LocalSourceNode localSource) {
+    result = getBackwardNode(localSource, noContentTypeTracker(false))
   }
 
   /** Gets a node reachable from `node` by zero or more epsilon edges, including `node` itself. */
@@ -164,18 +164,18 @@ module ApiGraphShared<ApiGraphSharedSig S> {
   /** Gets `node` as a data flow sink. */
   bindingset[node]
   pragma[inline_late]
-  Node asSinkInline(ApiNode node) { result = asSinkCached(node) }
+  DataFlow::Node asSinkInline(ApiNode node) { result = asSinkCached(node) }
 
   /** Gets `node` as a data flow source. */
   bindingset[node]
   pragma[inline_late]
-  TypeTrackingNode asSourceInline(ApiNode node) { result = asSourceCached(node) }
+  DataFlow::LocalSourceNode asSourceInline(ApiNode node) { result = asSourceCached(node) }
 
   /** Gets a value reachable from `source`. */
   bindingset[source]
   pragma[inline_late]
-  Node getAValueReachableFromSourceInline(ApiNode source) {
-    exists(TypeTrackingNode src |
+  DataFlow::Node getAValueReachableFromSourceInline(ApiNode source) {
+    exists(DataFlow::LocalSourceNode src |
       src = asSourceInline(getAnEpsilonSuccessorInline(source)) and
       src.flowsTo(pragma[only_bind_into](result))
     )
@@ -184,8 +184,8 @@ module ApiGraphShared<ApiGraphSharedSig S> {
   /** Gets a value that can reach `sink`. */
   bindingset[sink]
   pragma[inline_late]
-  Node getAValueReachingSinkInline(ApiNode sink) {
-    result = asSinkInline(getAnEpsilonSuccessorInline(sink))
+  DataFlow::Node getAValueReachingSinkInline(ApiNode sink) {
+    backwardStartNode(result) = getAnEpsilonSuccessorInline(sink)
   }
 
   /**
@@ -195,7 +195,7 @@ module ApiGraphShared<ApiGraphSharedSig S> {
    */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getForwardStartNode(Node node) { result = forwardStartNode(node) }
+  ApiNode getForwardStartNode(DataFlow::Node node) { result = forwardStartNode(node) }
 
   /**
    * Gets the starting point of backtracking from `node`.
@@ -204,7 +204,7 @@ module ApiGraphShared<ApiGraphSharedSig S> {
    */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getBackwardStartNode(Node node) { result = backwardStartNode(node) }
+  ApiNode getBackwardStartNode(DataFlow::Node node) { result = backwardStartNode(node) }
 
   /**
    * Gets a possible ending point of forward-tracking at `node`.
@@ -216,7 +216,7 @@ module ApiGraphShared<ApiGraphSharedSig S> {
    */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getForwardEndNode(Node node) { result = forwardEndNode(node) }
+  ApiNode getForwardEndNode(DataFlow::Node node) { result = forwardEndNode(node) }
 
   /**
    * Gets a possible ending point backtracking to `node`.
@@ -228,7 +228,7 @@ module ApiGraphShared<ApiGraphSharedSig S> {
    */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getBackwardEndNode(Node node) { result = backwardEndNode(node) }
+  ApiNode getBackwardEndNode(DataFlow::Node node) { result = backwardEndNode(node) }
 
   /**
    * Gets a possible eding point of forward or backward tracking at `node`.
@@ -237,19 +237,19 @@ module ApiGraphShared<ApiGraphSharedSig S> {
    */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getForwardOrBackwardEndNode(Node node) {
+  ApiNode getForwardOrBackwardEndNode(DataFlow::Node node) {
     result = getForwardEndNode(node) or result = getBackwardEndNode(node)
   }
 
   /** Gets an API node for tracking forward starting at `node`. This is the implementation of `DataFlow::LocalSourceNode.track()` */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getNodeForForwardTracking(Node node) { result = forwardStartNode(node) }
+  ApiNode getNodeForForwardTracking(DataFlow::Node node) { result = forwardStartNode(node) }
 
   /** Gets an API node for backtracking starting at `node`. The implementation of `DataFlow::Node.backtrack()`. */
   bindingset[node]
   pragma[inline_late]
-  ApiNode getNodeForBacktracking(Node node) {
+  ApiNode getNodeForBacktracking(DataFlow::Node node) {
     result = getBackwardStartNode(getALocalSourceStrict(node))
   }
 

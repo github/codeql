@@ -4,6 +4,7 @@
  * @description The total number of lines of JavaScript or TypeScript code across all files checked into the repository, except in `node_modules`. This is a useful metric of the size of a database. For all files that were seen during extraction, this query counts the lines of code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
+ *       telemetry
  */
 
 import javascript
