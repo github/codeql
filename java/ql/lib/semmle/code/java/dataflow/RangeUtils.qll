@@ -9,7 +9,7 @@ private import semmle.code.java.Constants
 private import semmle.code.java.dataflow.RangeAnalysis
 private import codeql.rangeanalysis.internal.RangeUtils
 
-private module U = MakeUtils<Sem, IntDelta>;
+private module U = MakeUtils<Sem>;
 
 private predicate backEdge = U::backEdge/3;
 
@@ -83,8 +83,8 @@ private predicate arrayLengthDef(FieldRead arrlen, ArrayCreationExpr def) {
 
 /** An expression that always has the same integer value. */
 pragma[nomagic]
-private predicate constantIntegerExpr(Expr e, int val) {
-  e.(CompileTimeConstantExpr).getIntValue() = val
+private predicate constantIntegerExpr(Expr e, QlBuiltins::BigInt val) {
+  e.(CompileTimeConstantExpr).getBigIntValue() = val
   or
   exists(SsaExplicitUpdate v, Expr src |
     e = v.getAUse() and
@@ -94,18 +94,18 @@ private predicate constantIntegerExpr(Expr e, int val) {
   or
   exists(ArrayCreationExpr a |
     arrayLengthDef(e, a) and
-    a.getFirstDimensionSize() = val
+    a.getFirstDimensionSize().toBigInt() = val
   )
   or
   exists(Field a, FieldRead arrlen |
     a.isFinal() and
-    a.getInitializer().(ArrayCreationExpr).getFirstDimensionSize() = val and
+    a.getInitializer().(ArrayCreationExpr).getFirstDimensionSize().toBigInt() = val and
     arrlen.getField() instanceof ArrayLengthField and
     arrlen.getQualifier() = a.getAnAccess() and
     e = arrlen
   )
   or
-  CalcConstants::calculateIntValue(e) = val
+  CalcConstants::calculateBigIntValue(e) = val
 }
 
 pragma[nomagic]
@@ -134,16 +134,16 @@ private predicate constantStringExpr(Expr e, string val) {
 
 private boolean getBoolValue(Expr e) { constantBooleanExpr(e, result) }
 
-private int getIntValue(Expr e) { constantIntegerExpr(e, result) }
+private QlBuiltins::BigInt getBigIntValue(Expr e) { constantIntegerExpr(e, result) }
 
-private module CalcConstants = CalculateConstants<getBoolValue/1, getIntValue/1>;
+private module CalcConstants = CalculateConstants<getBoolValue/1, getBigIntValue/1>;
 
 /** An expression that always has the same integer value. */
 class ConstantIntegerExpr extends Expr {
   ConstantIntegerExpr() { constantIntegerExpr(this, _) }
 
   /** Gets the integer value of this expression. */
-  int getIntValue() { constantIntegerExpr(this, result) }
+  QlBuiltins::BigInt getIntValue() { constantIntegerExpr(this, result) }
 }
 
 /** An expression that always has the same boolean value. */
@@ -165,10 +165,10 @@ class ConstantStringExpr extends Expr {
 /**
  * Holds if `e1 + delta` equals `e2`.
  */
-predicate additionalValueFlowStep(Expr e2, Expr e1, int delta) {
+predicate additionalValueFlowStep(Expr e2, Expr e1, QlBuiltins::BigInt delta) {
   exists(ArrayCreationExpr a |
     arrayLengthDef(e2, a) and
     a.getDimension(0) = e1 and
-    delta = 0
+    delta = 0.toBigInt()
   )
 }
