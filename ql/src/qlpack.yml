@@ -5,7 +5,6 @@ version: 0.1.7
 groups: [actions, queries]
 suites: codeql-suites
 extractor: javascript
-dbscheme: semmlecode.javascript.dbscheme
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
   github/actions-all: ${workspace}

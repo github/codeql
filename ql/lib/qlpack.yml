@@ -9,6 +9,7 @@ dependencies:
   codeql/controlflow: ^1.0.1
   codeql/dataflow: ^1.0.1
 extractor: javascript
+dbscheme: semmlecode.javascript.dbscheme
 groups: javascript
 dataExtensions:
   - ext/manual/*.model.yml

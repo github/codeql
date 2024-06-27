@@ -84,6 +84,11 @@ class DataFlowCall instanceof Cfg::Node {
 
   /** Gets a best-effort total ordering. */
   int totalorder() { none() }
+
+  /** Gets the location of this call. */
+  Location getLocation() {
+    result = this.getLocation()
+  }
 }
 
 /**
@@ -113,6 +118,11 @@ class DataFlowCallable instanceof Cfg::CfgScope {
 
   /** Gets a best-effort total ordering. */
   int totalorder() { none() }
+
+   /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.getLocation()
+  }
 }
 
 newtype TReturnKind = TNormalReturn()
