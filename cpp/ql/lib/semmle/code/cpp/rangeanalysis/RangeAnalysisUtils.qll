@@ -235,9 +235,9 @@ predicate eqZeroWithNegate(Expr cmp, Expr a, boolean isEQ, boolean branch) {
  * number. This takes into account the associativity, commutativity and
  * distributivity of arithmetic operations.
  */
-predicate linearAccess(Expr expr, VariableAccess v, float p, float q) {
+predicate linearAccess(Expr expr, VariableAccess v, QlBuiltins::BigInt p, QlBuiltins::BigInt q) {
   // Exclude 0 and NaN.
-  (p < 0 or p > 0) and
+  (p < 0.toBigInt() or p > 0.toBigInt()) and
   linearAccessImpl(expr, v, p, q)
 }
 
@@ -246,34 +246,36 @@ predicate linearAccess(Expr expr, VariableAccess v, float p, float q) {
  * This takes into account the associativity, commutativity and
  * distributivity of arithmetic operations.
  */
-private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
+private predicate linearAccessImpl(
+  Expr expr, VariableAccess v, QlBuiltins::BigInt p, QlBuiltins::BigInt q
+) {
   // Base case
-  expr = v and p = 1.0 and q = 0.0
+  expr = v and p = 1.toBigInt() and q = 0.toBigInt()
   or
-  expr.(ReferenceDereferenceExpr).getExpr() = v and p = 1.0 and q = 0.0
+  expr.(ReferenceDereferenceExpr).getExpr() = v and p = 1.toBigInt() and q = 0.toBigInt()
   or
   // a+(p*v+b) == p*v + (a+b)
-  exists(AddExpr addExpr, float a, float b |
+  exists(AddExpr addExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b |
     addExpr.getLeftOperand().isConstant() and
-    a = addExpr.getLeftOperand().getFullyConverted().getValue().toFloat() and
+    a = parseAsBigInt(addExpr.getLeftOperand().getFullyConverted().getValue()) and
     linearAccess(addExpr.getRightOperand(), v, p, b) and
     expr = addExpr and
     q = a + b
   )
   or
   // (p*v+a)+b == p*v + (a+b)
-  exists(AddExpr addExpr, float a, float b |
+  exists(AddExpr addExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b |
     addExpr.getRightOperand().isConstant() and
-    b = addExpr.getRightOperand().getFullyConverted().getValue().toFloat() and
+    b = parseAsBigInt(addExpr.getRightOperand().getFullyConverted().getValue()) and
     linearAccess(addExpr.getLeftOperand(), v, p, a) and
     expr = addExpr and
     q = a + b
   )
   or
   // a-(m*v+b) == -m*v + (a-b)
-  exists(SubExpr subExpr, float a, float b, float m |
+  exists(SubExpr subExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b, QlBuiltins::BigInt m |
     subExpr.getLeftOperand().isConstant() and
-    a = subExpr.getLeftOperand().getFullyConverted().getValue().toFloat() and
+    a = parseAsBigInt(subExpr.getLeftOperand().getFullyConverted().getValue()) and
     linearAccess(subExpr.getRightOperand(), v, m, b) and
     expr = subExpr and
     p = -m and
@@ -281,9 +283,9 @@ private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q
   )
   or
   // (p*v+a)-b == p*v + (a-b)
-  exists(SubExpr subExpr, float a, float b |
+  exists(SubExpr subExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b |
     subExpr.getRightOperand().isConstant() and
-    b = subExpr.getRightOperand().getFullyConverted().getValue().toFloat() and
+    b = parseAsBigInt(subExpr.getRightOperand().getFullyConverted().getValue()) and
     linearAccess(subExpr.getLeftOperand(), v, p, a) and
     expr = subExpr and
     q = a - b
@@ -314,7 +316,7 @@ private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q
   )
   or
   // -(a*v+b) == -a*v + (-b)
-  exists(UnaryMinusExpr unaryMinusExpr, float a, float b |
+  exists(UnaryMinusExpr unaryMinusExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b |
     linearAccess(unaryMinusExpr.getOperand().getFullyConverted(), v, a, b) and
     expr = unaryMinusExpr and
     p = -a and
@@ -322,9 +324,9 @@ private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q
   )
   or
   // m*(a*v+b) == (m*a)*v + (m*b)
-  exists(MulExpr mulExpr, float a, float b, float m |
+  exists(MulExpr mulExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b, QlBuiltins::BigInt m |
     mulExpr.getLeftOperand().isConstant() and
-    m = mulExpr.getLeftOperand().getFullyConverted().getValue().toFloat() and
+    m = parseAsBigInt(mulExpr.getLeftOperand().getFullyConverted().getValue()) and
     linearAccess(mulExpr.getRightOperand(), v, a, b) and
     expr = mulExpr and
     p = m * a and
@@ -332,9 +334,9 @@ private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q
   )
   or
   // (a*v+b)*m == (m*a)*v + (m*b)
-  exists(MulExpr mulExpr, float a, float b, float m |
+  exists(MulExpr mulExpr, QlBuiltins::BigInt a, QlBuiltins::BigInt b, QlBuiltins::BigInt m |
     mulExpr.getRightOperand().isConstant() and
-    m = mulExpr.getRightOperand().getFullyConverted().getValue().toFloat() and
+    m = parseAsBigInt(mulExpr.getRightOperand().getFullyConverted().getValue()) and
     linearAccess(mulExpr.getLeftOperand(), v, a, b) and
     expr = mulExpr and
     p = m * a and
@@ -368,13 +370,13 @@ predicate cmpWithLinearBound(
   RelationDirection direction, // Is this a lower or an upper bound?
   boolean branch // Which control-flow branch is this bound valid on?
 ) {
-  exists(Expr lhs, float p, RelationDirection dir |
+  exists(Expr lhs, QlBuiltins::BigInt p, RelationDirection dir |
     linearAccess(lhs, v, p, _) and
     relOpWithSwapAndNegate(guard, lhs, _, dir, _, branch) and
     (
-      p > 0 and direction = dir
+      p > 0.toBigInt() and direction = dir
       or
-      p < 0 and direction = negateDirection(dir)
+      p < 0.toBigInt() and direction = negateDirection(dir)
     )
   )
   or
@@ -391,23 +393,23 @@ predicate cmpWithLinearBound(
  * For example, if `t` is a signed 32-bit type then holds if `lb` is
  * `-2^31` and `ub` is `2^31 - 1`.
  */
-private predicate typeBounds(ArithmeticType t, float lb, float ub) {
-  exists(IntegralType integralType, float limit |
-    integralType = t and limit = 2.pow(8 * integralType.getSize())
+private predicate typeBounds(ArithmeticType t, QlBuiltins::BigInt lb, QlBuiltins::BigInt ub) {
+  exists(IntegralType integralType, QlBuiltins::BigInt limit |
+    integralType = t and limit = 2.toBigInt().pow(8 * integralType.getSize())
   |
     if integralType instanceof BoolType
-    then lb = 0 and ub = 1
+    then lb = 0.toBigInt() and ub = 1.toBigInt()
     else
       if integralType.isSigned()
       then (
-        lb = -(limit / 2) and ub = (limit / 2) - 1
+        lb = -(limit / 2.toBigInt()) and ub = (limit / 2.toBigInt()) - 1.toBigInt()
       ) else (
-        lb = 0 and ub = limit - 1
+        lb = 0.toBigInt() and ub = limit - 1.toBigInt()
       )
   )
   or
   // This covers all floating point types. The range is (-Inf, +Inf).
-  t instanceof FloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
+  t instanceof FloatingPointType and lb = -infinityAsBigInt() and ub = infinityAsBigInt()
 }
 
 private Type stripReference(Type t) {
@@ -423,7 +425,7 @@ Type getVariableRangeType(StackVariable v) { result = stripReference(v.getUnspec
  * For example, if `t` is a signed 32-bit type then the result is
  * `-2^31`.
  */
-float typeLowerBound(Type t) { typeBounds(stripReference(t), result, _) }
+QlBuiltins::BigInt typeLowerBound(Type t) { typeBounds(stripReference(t), result, _) }
 
 /**
  * Gets the upper bound for the unspecified type `t`.
@@ -431,7 +433,7 @@ float typeLowerBound(Type t) { typeBounds(stripReference(t), result, _) }
  * For example, if `t` is a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float typeUpperBound(Type t) { typeBounds(stripReference(t), _, result) }
+QlBuiltins::BigInt typeUpperBound(Type t) { typeBounds(stripReference(t), _, result) }
 
 /**
  * Gets the minimum value that this expression could represent, based on
@@ -444,7 +446,7 @@ float typeUpperBound(Type t) { typeBounds(stripReference(t), _, result) }
  * `exprMinVal(expr)` you will normally want to call
  * `exprMinVal(expr.getFullyConverted())`.
  */
-float exprMinVal(Expr expr) { result = typeLowerBound(expr.getUnspecifiedType()) }
+QlBuiltins::BigInt exprMinVal(Expr expr) { result = typeLowerBound(expr.getUnspecifiedType()) }
 
 /**
  * Gets the maximum value that this expression could represent, based on
@@ -457,7 +459,7 @@ float exprMinVal(Expr expr) { result = typeLowerBound(expr.getUnspecifiedType())
  * `exprMaxVal(expr)` you will normally want to call
  * `exprMaxVal(expr.getFullyConverted())`.
  */
-float exprMaxVal(Expr expr) { result = typeUpperBound(expr.getUnspecifiedType()) }
+QlBuiltins::BigInt exprMaxVal(Expr expr) { result = typeUpperBound(expr.getUnspecifiedType()) }
 
 /**
  * Gets the minimum value that this variable could represent, based on
@@ -466,7 +468,7 @@ float exprMaxVal(Expr expr) { result = typeUpperBound(expr.getUnspecifiedType())
  * For example, if `v` has a signed 32-bit type then the result is
  * `-2^31`.
  */
-float varMinVal(Variable v) { result = typeLowerBound(v.getUnspecifiedType()) }
+QlBuiltins::BigInt varMinVal(Variable v) { result = typeLowerBound(v.getUnspecifiedType()) }
 
 /**
  * Gets the maximum value that this variable could represent, based on
@@ -475,4 +477,67 @@ float varMinVal(Variable v) { result = typeLowerBound(v.getUnspecifiedType()) }
  * For example, if `v` has a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float varMaxVal(Variable v) { result = typeUpperBound(v.getUnspecifiedType()) }
+QlBuiltins::BigInt varMaxVal(Variable v) { result = typeUpperBound(v.getUnspecifiedType()) }
+
+/**
+ * Magic number larger than the largest positive finite double.
+ */
+QlBuiltins::BigInt infinityAsBigInt() { result = 1.toBigInt().bitShiftLeft(1024) }
+
+bindingset[s]
+QlBuiltins::BigInt parseAsBigInt(string s) {
+  result = s.toBigInt()
+  or
+  s.toFloat() = 1.0 / 0.0 and result = infinityAsBigInt()
+  or
+  s.toFloat() = -(1.0 / 0.0) and result = -infinityAsBigInt()
+  or
+  exists(QlBuiltins::BigInt coeff, int base10exp | parseFiniteAsBigInt(s, coeff, base10exp) |
+    if base10exp < 0
+    then result = coeff / 10.toBigInt().pow(-base10exp)
+    else result = coeff * 10.toBigInt().pow(base10exp)
+  )
+}
+
+bindingset[s]
+private predicate parseFiniteAsBigInt(string s, QlBuiltins::BigInt coeff, int base10exp) {
+  exists(string t | s = "+" + t | parseUnsignedAsBigInt(t, coeff, base10exp))
+  or
+  exists(string t | s = "-" + t | parseUnsignedAsBigInt(t, -coeff, base10exp))
+  or
+  parseUnsignedAsBigInt(s, coeff, base10exp)
+}
+
+bindingset[s]
+private predicate parseUnsignedAsBigInt(string s, QlBuiltins::BigInt coeff, int base10exp) {
+  exists(string beforeE, int base10expAfterE, int base10expBeforeE |
+    beforeE = s.toUpperCase().splitAt("E", 0) and
+    base10expAfterE = parseSignedInt(s.toUpperCase().splitAt("E", 1)) and
+    parseUnsignedDecimalAsBigInt(beforeE, coeff, base10expBeforeE) and
+    base10exp = base10expBeforeE + base10expAfterE
+  )
+  or
+  exists(string beforeDot, string afterDot |
+    beforeDot = s.splitAt(".", 0) and
+    afterDot = s.splitAt(".", 1) and
+    coeff = (beforeDot + afterDot).toBigInt() and
+    base10exp = -afterDot.length()
+  )
+}
+
+bindingset[s]
+private predicate parseUnsignedDecimalAsBigInt(string s, QlBuiltins::BigInt coeff, int base10exp) {
+  exists(string beforeDot, string afterDot |
+    beforeDot = s.splitAt(".", 0) and
+    afterDot = s.splitAt(".", 1) and
+    coeff = (beforeDot + afterDot).toBigInt() and
+    base10exp = -afterDot.length()
+  )
+}
+
+bindingset[s]
+private int parseSignedInt(string s) {
+  exists(string t | s = "+" + t | result = t.toInt())
+  or
+  result = s.toInt()
+}

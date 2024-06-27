@@ -60,37 +60,37 @@ private import NanAnalysis
  * bounds to the set if it helps on specific examples and does not make
  * performance dramatically worse on large codebases, such as libreoffice.
  */
-private float wideningLowerBounds(ArithmeticType t) {
-  result = 2.0 or
-  result = 1.0 or
-  result = 0.0 or
-  result = -1.0 or
-  result = -2.0 or
-  result = -8.0 or
-  result = -16.0 or
-  result = -128.0 or
-  result = -256.0 or
-  result = -32768.0 or
-  result = -65536.0 or
+private QlBuiltins::BigInt wideningLowerBounds(ArithmeticType t) {
+  result = 2.toBigInt() or
+  result = 1.toBigInt() or
+  result = 0.toBigInt() or
+  result = -1.toBigInt() or
+  result = -2.toBigInt() or
+  result = -8.toBigInt() or
+  result = -16.toBigInt() or
+  result = -128.toBigInt() or
+  result = -256.toBigInt() or
+  result = -32768.toBigInt() or
+  result = -65536.toBigInt() or
   result = typeLowerBound(t) or
-  result = -(1.0 / 0.0) // -Inf
+  result = -infinityAsBigInt() // -Inf
 }
 
 /** See comment for `wideningLowerBounds`, above. */
-private float wideningUpperBounds(ArithmeticType t) {
-  result = -2.0 or
-  result = -1.0 or
-  result = 0.0 or
-  result = 1.0 or
-  result = 2.0 or
-  result = 7.0 or
-  result = 15.0 or
-  result = 127.0 or
-  result = 255.0 or
-  result = 32767.0 or
-  result = 65535.0 or
+private QlBuiltins::BigInt wideningUpperBounds(ArithmeticType t) {
+  result = -2.toBigInt() or
+  result = -1.toBigInt() or
+  result = 0.toBigInt() or
+  result = 1.toBigInt() or
+  result = 2.toBigInt() or
+  result = 7.toBigInt() or
+  result = 15.toBigInt() or
+  result = 127.toBigInt() or
+  result = 255.toBigInt() or
+  result = 32767.toBigInt() or
+  result = 65535.toBigInt() or
   result = typeUpperBound(t) or
-  result = 1.0 / 0.0 // +Inf
+  result = infinityAsBigInt() // +Inf
 }
 
 /**
@@ -165,19 +165,24 @@ float safeFloor(float v) {
 
 /** A `MulExpr` where exactly one operand is constant. */
 private class MulByConstantExpr extends MulExpr {
-  float constant;
+  float floatConstant;
+  QlBuiltins::BigInt bigIntConstant;
   Expr operand;
 
   MulByConstantExpr() {
     exists(Expr constantExpr |
       this.hasOperands(constantExpr, operand) and
-      constant = getValue(constantExpr.getFullyConverted()).toFloat() and
+      floatConstant = getValue(constantExpr.getFullyConverted()).toFloat() and
+      bigIntConstant = parseAsBigInt(getValue(constantExpr.getFullyConverted())) and
       not exists(getValue(operand.getFullyConverted()).toFloat())
     )
   }
 
   /** Gets the value of the constant operand. */
-  float getConstant() { result = constant }
+  float getFloatConstant() { result = floatConstant }
+
+  /** Gets the value of the constant operand. */
+  QlBuiltins::BigInt getBigIntConstant() { result = bigIntConstant }
 
   /** Gets the non-constant operand. */
   Expr getOperand() { result = operand }
@@ -198,10 +203,10 @@ private class UnsignedMulExpr extends MulExpr {
  * This is typically `"-1"`, but this is not guaranteed to be the case on all
  * systems.
  */
-private int getEofValue() {
+private QlBuiltins::BigInt getEofValue() {
   exists(MacroInvocation mi |
     mi.getMacroName() = "EOF" and
-    result = unique( | | mi.getExpr().getValue().toInt())
+    result = unique( | | mi.getExpr().getValue().toBigInt())
   )
 }
 
@@ -227,48 +232,58 @@ private class AnalyzableCallToGetc extends CallToGetc {
  * Holds if `expr` is effectively a multiplication of `operand` with the
  * positive constant `positive`.
  */
-private predicate effectivelyMultipliesByPositive(Expr expr, Expr operand, float positive) {
+private predicate effectivelyMultipliesByPositive(
+  Expr expr, Expr operand, QlBuiltins::BigInt positive
+) {
   operand = expr.(MulByConstantExpr).getOperand() and
-  positive = expr.(MulByConstantExpr).getConstant() and
-  positive >= 0.0 // includes positive zero
+  positive = expr.(MulByConstantExpr).getBigIntConstant() and
+  expr.(MulByConstantExpr).getFloatConstant() >= 0.0 // includes positive zero
   or
   operand = expr.(UnaryPlusExpr).getOperand() and
-  positive = 1.0
+  positive = 1.toBigInt()
   or
   operand = expr.(CommaExpr).getRightOperand() and
-  positive = 1.0
+  positive = 1.toBigInt()
   or
   operand = expr.(StmtExpr).getResultExpr() and
-  positive = 1.0
+  positive = 1.toBigInt()
 }
 
 /**
  * Holds if `expr` is effectively a multiplication of `operand` with the
  * negative constant `negative`.
  */
-private predicate effectivelyMultipliesByNegative(Expr expr, Expr operand, float negative) {
+private predicate effectivelyMultipliesByNegative(
+  Expr expr, Expr operand, QlBuiltins::BigInt negative
+) {
   operand = expr.(MulByConstantExpr).getOperand() and
-  negative = expr.(MulByConstantExpr).getConstant() and
-  negative < 0.0 // includes negative zero
+  negative = expr.(MulByConstantExpr).getBigIntConstant() and
+  expr.(MulByConstantExpr).getFloatConstant() < 0.0 // includes negative zero
   or
   operand = expr.(UnaryMinusExpr).getOperand() and
-  negative = -1.0
+  negative = -1.toBigInt()
 }
 
 private class AssignMulByConstantExpr extends AssignMulExpr {
-  float constant;
+  float floatConstant;
+  QlBuiltins::BigInt bigIntConstant;
 
-  AssignMulByConstantExpr() { constant = getValue(this.getRValue().getFullyConverted()).toFloat() }
+  AssignMulByConstantExpr() {
+    floatConstant = getValue(this.getRValue().getFullyConverted()).toFloat() and
+    bigIntConstant = parseAsBigInt(getValue(this.getRValue().getFullyConverted()))
+  }
 
-  float getConstant() { result = constant }
+  float getFloatConstant() { result = floatConstant }
+
+  QlBuiltins::BigInt getBigIntConstant() { result = bigIntConstant }
 }
 
 private class AssignMulByPositiveConstantExpr extends AssignMulByConstantExpr {
-  AssignMulByPositiveConstantExpr() { constant >= 0.0 }
+  AssignMulByPositiveConstantExpr() { floatConstant >= 0.0 }
 }
 
 private class AssignMulByNegativeConstantExpr extends AssignMulByConstantExpr {
-  AssignMulByNegativeConstantExpr() { constant < 0.0 }
+  AssignMulByNegativeConstantExpr() { floatConstant < 0.0 }
 }
 
 private class UnsignedAssignMulExpr extends AssignMulExpr {
@@ -571,55 +586,6 @@ private predicate analyzableDef(RangeSsaDefinition def, StackVariable v) {
   def.(SimpleRangeAnalysisDefinition).hasRangeInformationFor(v)
 }
 
-/**
- * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
- * needed on the lesser side of a floating-point comparison or on both sides of
- * a floating point equality because QL does not follow IEEE in floating-point
- * comparisons but instead defines -0.0 to be less than and distinct from 0.0.
- */
-bindingset[x]
-private float normalizeFloatUp(float x) { result = x + 0.0 }
-
-/**
- * Computes `x + y`, rounded towards +Inf. This is the general case where both
- * `x` and `y` may be large numbers.
- */
-bindingset[x, y]
-private float addRoundingUp(float x, float y) {
-  if normalizeFloatUp((x + y) - x) < y or normalizeFloatUp((x + y) - y) < x
-  then result = (x + y).nextUp()
-  else result = (x + y)
-}
-
-/**
- * Computes `x + y`, rounded towards -Inf. This is the general case where both
- * `x` and `y` may be large numbers.
- */
-bindingset[x, y]
-private float addRoundingDown(float x, float y) {
-  if (x + y) - x > normalizeFloatUp(y) or (x + y) - y > normalizeFloatUp(x)
-  then result = (x + y).nextDown()
-  else result = (x + y)
-}
-
-/**
- * Computes `x + small`, rounded towards +Inf, where `small` is a small
- * constant.
- */
-bindingset[x, small]
-private float addRoundingUpSmall(float x, float small) {
-  if (x + small) - x < small then result = (x + small).nextUp() else result = (x + small)
-}
-
-/**
- * Computes `x + small`, rounded towards -Inf, where `small` is a small
- * constant.
- */
-bindingset[x, small]
-private float addRoundingDownSmall(float x, float small) {
-  if (x + small) - x > small then result = (x + small).nextDown() else result = (x + small)
-}
-
 private predicate lowerBoundableExpr(Expr expr) {
   analyzableExpr(expr) and
   getUpperBoundsImpl(expr) <= exprMaxVal(expr) and
@@ -643,22 +609,22 @@ private predicate lowerBoundableExpr(Expr expr) {
  * Note: most callers should use `getFullyConvertedLowerBounds` rather than
  * this predicate.
  */
-private float getTruncatedLowerBounds(Expr expr) {
+private QlBuiltins::BigInt getTruncatedLowerBounds(Expr expr) {
   // If the expression evaluates to a constant, then there is no
   // need to call getLowerBoundsImpl.
   analyzableExpr(expr) and
-  result = getValue(expr).toFloat()
+  result = parseAsBigInt(getValue(expr))
   or
   // Some of the bounds computed by getLowerBoundsImpl might
   // overflow, so we replace invalid bounds with exprMinVal.
-  exists(float newLB | newLB = normalizeFloatUp(getLowerBoundsImpl(expr)) |
+  exists(QlBuiltins::BigInt newLB | newLB = getLowerBoundsImpl(expr) |
     if exprMinVal(expr) <= newLB and newLB <= exprMaxVal(expr)
     then
       // Apply widening where we might get a combinatorial explosion.
       if isRecursiveBinary(expr)
       then
         result =
-          max(float widenLB |
+          max(QlBuiltins::BigInt widenLB |
             widenLB = wideningLowerBounds(expr.getUnspecifiedType()) and
             not widenLB > newLB
           )
@@ -671,7 +637,7 @@ private float getTruncatedLowerBounds(Expr expr) {
   // lower bound is exprMinVal.
   analyzableExpr(expr) and
   exprMightOverflowPositively(expr) and
-  not result = getValue(expr).toFloat() and
+  not result = parseAsBigInt(getValue(expr)) and
   result = exprMinVal(expr)
   or
   // The expression is not analyzable, so its lower bound is
@@ -699,25 +665,25 @@ private float getTruncatedLowerBounds(Expr expr) {
  * Note: most callers should use `getFullyConvertedUpperBounds` rather than
  * this predicate.
  */
-private float getTruncatedUpperBounds(Expr expr) {
+private QlBuiltins::BigInt getTruncatedUpperBounds(Expr expr) {
   if analyzableExpr(expr)
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getUpperBoundsImpl.
-    if exists(getValue(expr).toFloat())
-    then result = getValue(expr).toFloat()
+    if exists(parseAsBigInt(getValue(expr)))
+    then result = parseAsBigInt(getValue(expr))
     else (
       // Some of the bounds computed by `getUpperBoundsImpl`
       // might overflow, so we replace invalid bounds with
       // `exprMaxVal`.
-      exists(float newUB | newUB = normalizeFloatUp(getUpperBoundsImpl(expr)) |
+      exists(QlBuiltins::BigInt newUB | newUB = getUpperBoundsImpl(expr) |
         if exprMinVal(expr) <= newUB and newUB <= exprMaxVal(expr)
         then
           // Apply widening where we might get a combinatorial explosion.
           if isRecursiveBinary(expr)
           then
             result =
-              min(float widenUB |
+              min(QlBuiltins::BigInt widenUB |
                 widenUB = wideningUpperBounds(expr.getUnspecifiedType()) and
                 not widenUB < newUB
               )
@@ -739,15 +705,15 @@ private float getTruncatedUpperBounds(Expr expr) {
 }
 
 /** Only to be called by `getTruncatedLowerBounds`. */
-private float getLowerBoundsImpl(Expr expr) {
+private QlBuiltins::BigInt getLowerBoundsImpl(Expr expr) {
   (
-    exists(Expr operand, float operandLow, float positive |
+    exists(Expr operand, QlBuiltins::BigInt operandLow, QlBuiltins::BigInt positive |
       effectivelyMultipliesByPositive(expr, operand, positive) and
       operandLow = getFullyConvertedLowerBounds(operand) and
       result = positive * operandLow
     )
     or
-    exists(Expr operand, float operandHigh, float negative |
+    exists(Expr operand, QlBuiltins::BigInt operandHigh, QlBuiltins::BigInt negative |
       effectivelyMultipliesByNegative(expr, operand, negative) and
       operandHigh = getFullyConvertedUpperBounds(operand) and
       result = negative * operandHigh
@@ -766,7 +732,7 @@ private float getLowerBoundsImpl(Expr expr) {
       //
       //    max (minimum{X}, minimum{Y})
       //  = minimum { max(x,y) | x in X, y in Y }
-      exists(float x, float y |
+      exists(QlBuiltins::BigInt x, QlBuiltins::BigInt y |
         x = getFullyConvertedLowerBounds(maxExpr.getLeftOperand()) and
         y = getFullyConvertedLowerBounds(maxExpr.getRightOperand()) and
         if x >= y then result = x else result = y
@@ -778,7 +744,7 @@ private float getLowerBoundsImpl(Expr expr) {
       expr = condExpr and
       // Use `boolConversionUpperBound` to determine whether the condition
       // might evaluate to `true`.
-      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
+      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1.toBigInt() and
       result = getFullyConvertedLowerBounds(condExpr.getThen())
     )
     or
@@ -787,25 +753,25 @@ private float getLowerBoundsImpl(Expr expr) {
       expr = condExpr and
       // Use `boolConversionLowerBound` to determine whether the condition
       // might evaluate to `false`.
-      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
+      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0.toBigInt() and
       result = getFullyConvertedLowerBounds(condExpr.getElse())
     )
     or
-    exists(AddExpr addExpr, float xLow, float yLow |
+    exists(AddExpr addExpr, QlBuiltins::BigInt xLow, QlBuiltins::BigInt yLow |
       expr = addExpr and
       xLow = getFullyConvertedLowerBounds(addExpr.getLeftOperand()) and
       yLow = getFullyConvertedLowerBounds(addExpr.getRightOperand()) and
-      result = addRoundingDown(xLow, yLow)
+      result = xLow + yLow
     )
     or
-    exists(SubExpr subExpr, float xLow, float yHigh |
+    exists(SubExpr subExpr, QlBuiltins::BigInt xLow, QlBuiltins::BigInt yHigh |
       expr = subExpr and
       xLow = getFullyConvertedLowerBounds(subExpr.getLeftOperand()) and
       yHigh = getFullyConvertedUpperBounds(subExpr.getRightOperand()) and
-      result = addRoundingDown(xLow, -yHigh)
+      result = xLow - yHigh
     )
     or
-    exists(UnsignedMulExpr mulExpr, float xLow, float yLow |
+    exists(UnsignedMulExpr mulExpr, QlBuiltins::BigInt xLow, QlBuiltins::BigInt yLow |
       expr = mulExpr and
       xLow = getFullyConvertedLowerBounds(mulExpr.getLeftOperand()) and
       yLow = getFullyConvertedLowerBounds(mulExpr.getRightOperand()) and
@@ -817,49 +783,49 @@ private float getLowerBoundsImpl(Expr expr) {
       result = getFullyConvertedLowerBounds(assign.getRValue())
     )
     or
-    exists(AssignAddExpr addExpr, float xLow, float yLow |
+    exists(AssignAddExpr addExpr, QlBuiltins::BigInt xLow, QlBuiltins::BigInt yLow |
       expr = addExpr and
       xLow = getFullyConvertedLowerBounds(addExpr.getLValue()) and
       yLow = getFullyConvertedLowerBounds(addExpr.getRValue()) and
-      result = addRoundingDown(xLow, yLow)
+      result = xLow + yLow
     )
     or
-    exists(AssignSubExpr subExpr, float xLow, float yHigh |
+    exists(AssignSubExpr subExpr, QlBuiltins::BigInt xLow, QlBuiltins::BigInt yHigh |
       expr = subExpr and
       xLow = getFullyConvertedLowerBounds(subExpr.getLValue()) and
       yHigh = getFullyConvertedUpperBounds(subExpr.getRValue()) and
-      result = addRoundingDown(xLow, -yHigh)
+      result = xLow - yHigh
     )
     or
-    exists(UnsignedAssignMulExpr mulExpr, float xLow, float yLow |
+    exists(UnsignedAssignMulExpr mulExpr, QlBuiltins::BigInt xLow, QlBuiltins::BigInt yLow |
       expr = mulExpr and
       xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
       yLow = getFullyConvertedLowerBounds(mulExpr.getRValue()) and
       result = xLow * yLow
     )
     or
-    exists(AssignMulByPositiveConstantExpr mulExpr, float xLow |
+    exists(AssignMulByPositiveConstantExpr mulExpr, QlBuiltins::BigInt xLow |
       expr = mulExpr and
       xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
-      result = xLow * mulExpr.getConstant()
+      result = xLow * mulExpr.getBigIntConstant()
     )
     or
-    exists(AssignMulByNegativeConstantExpr mulExpr, float xHigh |
+    exists(AssignMulByNegativeConstantExpr mulExpr, QlBuiltins::BigInt xHigh |
       expr = mulExpr and
       xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
-      result = xHigh * mulExpr.getConstant()
+      result = xHigh * mulExpr.getBigIntConstant()
     )
     or
-    exists(PrefixIncrExpr incrExpr, float xLow |
+    exists(PrefixIncrExpr incrExpr, QlBuiltins::BigInt xLow |
       expr = incrExpr and
       xLow = getFullyConvertedLowerBounds(incrExpr.getOperand()) and
-      result = xLow + 1
+      result = xLow + 1.toBigInt()
     )
     or
-    exists(PrefixDecrExpr decrExpr, float xLow |
+    exists(PrefixDecrExpr decrExpr, QlBuiltins::BigInt xLow |
       expr = decrExpr and
       xLow = getFullyConvertedLowerBounds(decrExpr.getOperand()) and
-      result = addRoundingDownSmall(xLow, -1)
+      result = xLow - 1.toBigInt()
     )
     or
     // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their
@@ -877,19 +843,21 @@ private float getLowerBoundsImpl(Expr expr) {
     or
     exists(RemExpr remExpr | expr = remExpr |
       // If both inputs are positive then the lower bound is zero.
-      result = 0
+      result = 0.toBigInt()
       or
       // If either input could be negative then the output could be
       // negative. If so, the lower bound of `x%y` is `-abs(y) + 1`, which is
       // equal to `min(-y + 1,y - 1)`.
-      exists(float childLB |
+      exists(QlBuiltins::BigInt childLB |
         childLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
-        not childLB >= 0
+        not childLB >= 0.toBigInt()
       |
-        result = getFullyConvertedLowerBounds(remExpr.getRightOperand()) - 1
+        result = getFullyConvertedLowerBounds(remExpr.getRightOperand()) - 1.toBigInt()
         or
-        exists(float rhsUB | rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand()) |
-          result = -rhsUB + 1
+        exists(QlBuiltins::BigInt rhsUB |
+          rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand())
+        |
+          result = -rhsUB + 1.toBigInt()
         )
       )
     )
@@ -921,15 +889,15 @@ private float getLowerBoundsImpl(Expr expr) {
     // unsigned `&` (tighter bounds may exist)
     exists(UnsignedBitwiseAndExpr andExpr |
       andExpr = expr and
-      result = 0.0
+      result = 0.toBigInt()
     )
     or
     // `>>` by a constant
-    exists(RShiftExpr rsExpr, float left, int right |
+    exists(RShiftExpr rsExpr, QlBuiltins::BigInt left, int right |
       rsExpr = expr and
       left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
       right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-      result = safeFloor(left / 2.pow(right))
+      result = left / 2.toBigInt().pow(right)
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
   ) and
@@ -943,15 +911,15 @@ private float getLowerBoundsImpl(Expr expr) {
 }
 
 /** Only to be called by `getTruncatedUpperBounds`. */
-private float getUpperBoundsImpl(Expr expr) {
+private QlBuiltins::BigInt getUpperBoundsImpl(Expr expr) {
   (
-    exists(Expr operand, float operandHigh, float positive |
+    exists(Expr operand, QlBuiltins::BigInt operandHigh, QlBuiltins::BigInt positive |
       effectivelyMultipliesByPositive(expr, operand, positive) and
       operandHigh = getFullyConvertedUpperBounds(operand) and
       result = positive * operandHigh
     )
     or
-    exists(Expr operand, float operandLow, float negative |
+    exists(Expr operand, QlBuiltins::BigInt operandLow, QlBuiltins::BigInt negative |
       effectivelyMultipliesByNegative(expr, operand, negative) and
       operandLow = getFullyConvertedLowerBounds(operand) and
       result = negative * operandLow
@@ -970,7 +938,7 @@ private float getUpperBoundsImpl(Expr expr) {
       //
       //    min (maximum{X}, maximum{Y})
       //  = maximum { min(x,y) | x in X, y in Y }
-      exists(float x, float y |
+      exists(QlBuiltins::BigInt x, QlBuiltins::BigInt y |
         x = getFullyConvertedUpperBounds(minExpr.getLeftOperand()) and
         y = getFullyConvertedUpperBounds(minExpr.getRightOperand()) and
         if x <= y then result = x else result = y
@@ -982,7 +950,7 @@ private float getUpperBoundsImpl(Expr expr) {
       expr = condExpr and
       // Use `boolConversionUpperBound` to determine whether the condition
       // might evaluate to `true`.
-      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
+      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1.toBigInt() and
       result = getFullyConvertedUpperBounds(condExpr.getThen())
     )
     or
@@ -991,25 +959,25 @@ private float getUpperBoundsImpl(Expr expr) {
       expr = condExpr and
       // Use `boolConversionLowerBound` to determine whether the condition
       // might evaluate to `false`.
-      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
+      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0.toBigInt() and
       result = getFullyConvertedUpperBounds(condExpr.getElse())
     )
     or
-    exists(AddExpr addExpr, float xHigh, float yHigh |
+    exists(AddExpr addExpr, QlBuiltins::BigInt xHigh, QlBuiltins::BigInt yHigh |
       expr = addExpr and
       xHigh = getFullyConvertedUpperBounds(addExpr.getLeftOperand()) and
       yHigh = getFullyConvertedUpperBounds(addExpr.getRightOperand()) and
-      result = addRoundingUp(xHigh, yHigh)
+      result = xHigh + yHigh
     )
     or
-    exists(SubExpr subExpr, float xHigh, float yLow |
+    exists(SubExpr subExpr, QlBuiltins::BigInt xHigh, QlBuiltins::BigInt yLow |
       expr = subExpr and
       xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
       yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
-      result = addRoundingUp(xHigh, -yLow)
+      result = xHigh - yLow
     )
     or
-    exists(UnsignedMulExpr mulExpr, float xHigh, float yHigh |
+    exists(UnsignedMulExpr mulExpr, QlBuiltins::BigInt xHigh, QlBuiltins::BigInt yHigh |
       expr = mulExpr and
       xHigh = getFullyConvertedUpperBounds(mulExpr.getLeftOperand()) and
       yHigh = getFullyConvertedUpperBounds(mulExpr.getRightOperand()) and
@@ -1021,49 +989,49 @@ private float getUpperBoundsImpl(Expr expr) {
       result = getFullyConvertedUpperBounds(assign.getRValue())
     )
     or
-    exists(AssignAddExpr addExpr, float xHigh, float yHigh |
+    exists(AssignAddExpr addExpr, QlBuiltins::BigInt xHigh, QlBuiltins::BigInt yHigh |
       expr = addExpr and
       xHigh = getFullyConvertedUpperBounds(addExpr.getLValue()) and
       yHigh = getFullyConvertedUpperBounds(addExpr.getRValue()) and
-      result = addRoundingUp(xHigh, yHigh)
+      result = xHigh + yHigh
     )
     or
-    exists(AssignSubExpr subExpr, float xHigh, float yLow |
+    exists(AssignSubExpr subExpr, QlBuiltins::BigInt xHigh, QlBuiltins::BigInt yLow |
       expr = subExpr and
       xHigh = getFullyConvertedUpperBounds(subExpr.getLValue()) and
       yLow = getFullyConvertedLowerBounds(subExpr.getRValue()) and
-      result = addRoundingUp(xHigh, -yLow)
+      result = xHigh - yLow
     )
     or
-    exists(UnsignedAssignMulExpr mulExpr, float xHigh, float yHigh |
+    exists(UnsignedAssignMulExpr mulExpr, QlBuiltins::BigInt xHigh, QlBuiltins::BigInt yHigh |
       expr = mulExpr and
       xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
       yHigh = getFullyConvertedUpperBounds(mulExpr.getRValue()) and
       result = xHigh * yHigh
     )
     or
-    exists(AssignMulByPositiveConstantExpr mulExpr, float xHigh |
+    exists(AssignMulByPositiveConstantExpr mulExpr, QlBuiltins::BigInt xHigh |
       expr = mulExpr and
       xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
-      result = xHigh * mulExpr.getConstant()
+      result = xHigh * mulExpr.getBigIntConstant()
     )
     or
-    exists(AssignMulByNegativeConstantExpr mulExpr, float xLow |
+    exists(AssignMulByNegativeConstantExpr mulExpr, QlBuiltins::BigInt xLow |
       expr = mulExpr and
       xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
-      result = xLow * mulExpr.getConstant()
+      result = xLow * mulExpr.getBigIntConstant()
     )
     or
-    exists(PrefixIncrExpr incrExpr, float xHigh |
+    exists(PrefixIncrExpr incrExpr, QlBuiltins::BigInt xHigh |
       expr = incrExpr and
       xHigh = getFullyConvertedUpperBounds(incrExpr.getOperand()) and
-      result = addRoundingUpSmall(xHigh, 1)
+      result = xHigh + 1.toBigInt()
     )
     or
-    exists(PrefixDecrExpr decrExpr, float xHigh |
+    exists(PrefixDecrExpr decrExpr, QlBuiltins::BigInt xHigh |
       expr = decrExpr and
       xHigh = getFullyConvertedUpperBounds(decrExpr.getOperand()) and
-      result = xHigh - 1
+      result = xHigh - 1.toBigInt()
     )
     or
     // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their operand.
@@ -1079,20 +1047,20 @@ private float getUpperBoundsImpl(Expr expr) {
       result = getFullyConvertedUpperBounds(decrExpr.getOperand())
     )
     or
-    exists(RemExpr remExpr, float rhsUB |
+    exists(RemExpr remExpr, QlBuiltins::BigInt rhsUB |
       expr = remExpr and
       rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand())
     |
-      result = rhsUB - 1
+      result = rhsUB - 1.toBigInt()
       or
       // If the right hand side could be negative then we need to take its
       // absolute value. Since `abs(x) = max(-x,x)` this is equivalent to
       // adding `-rhsLB` to the set of upper bounds.
-      exists(float rhsLB |
+      exists(QlBuiltins::BigInt rhsLB |
         rhsLB = getFullyConvertedLowerBounds(remExpr.getRightOperand()) and
-        not rhsLB >= 0
+        not rhsLB >= 0.toBigInt()
       |
-        result = -rhsLB + 1
+        result = 1.toBigInt() - rhsLB
       )
     )
     or
@@ -1121,7 +1089,7 @@ private float getUpperBoundsImpl(Expr expr) {
     )
     or
     // unsigned `&` (tighter bounds may exist)
-    exists(UnsignedBitwiseAndExpr andExpr, float left, float right |
+    exists(UnsignedBitwiseAndExpr andExpr, QlBuiltins::BigInt left, QlBuiltins::BigInt right |
       andExpr = expr and
       left = getFullyConvertedUpperBounds(andExpr.getLeftOperand()) and
       right = getFullyConvertedUpperBounds(andExpr.getRightOperand()) and
@@ -1129,11 +1097,11 @@ private float getUpperBoundsImpl(Expr expr) {
     )
     or
     // `>>` by a constant
-    exists(RShiftExpr rsExpr, float left, int right |
+    exists(RShiftExpr rsExpr, QlBuiltins::BigInt left, int right |
       rsExpr = expr and
       left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
       right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-      result = safeFloor(left / 2.pow(right))
+      result = left / 2.toBigInt().pow(right)
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
   ) and
@@ -1170,55 +1138,55 @@ private predicate exprIsUsedAsBool(Expr expr) {
  * Gets the lower bound of the conversion `(bool)expr`. If we can prove that
  * the value of `expr` is never 0 then `lb = 1`. Otherwise `lb = 0`.
  */
-private float boolConversionLowerBound(Expr expr) {
+private QlBuiltins::BigInt boolConversionLowerBound(Expr expr) {
   // Case 1: if the range for `expr` includes the value 0,
   // then `result = 0`.
   exprIsUsedAsBool(expr) and
-  exists(float lb | lb = getTruncatedLowerBounds(expr) and not lb > 0) and
-  exists(float ub | ub = getTruncatedUpperBounds(expr) and not ub < 0) and
-  result = 0
+  exists(QlBuiltins::BigInt lb | lb = getTruncatedLowerBounds(expr) and not lb > 0.toBigInt()) and
+  exists(QlBuiltins::BigInt ub | ub = getTruncatedUpperBounds(expr) and not ub < 0.toBigInt()) and
+  result = 0.toBigInt()
   or
   // Case 2a: if the range for `expr` does not include the value 0,
   // then `result = 1`.
-  exprIsUsedAsBool(expr) and getTruncatedLowerBounds(expr) > 0 and result = 1
+  exprIsUsedAsBool(expr) and getTruncatedLowerBounds(expr) > 0.toBigInt() and result = 1.toBigInt()
   or
   // Case 2b: if the range for `expr` does not include the value 0,
   // then `result = 1`.
-  exprIsUsedAsBool(expr) and getTruncatedUpperBounds(expr) < 0 and result = 1
+  exprIsUsedAsBool(expr) and getTruncatedUpperBounds(expr) < 0.toBigInt() and result = 1.toBigInt()
   or
   // Case 3: the type of `expr` is not arithmetic. For example, it might
   // be a pointer.
-  exprIsUsedAsBool(expr) and not exists(exprMinVal(expr)) and result = 0
+  exprIsUsedAsBool(expr) and not exists(exprMinVal(expr)) and result = 0.toBigInt()
 }
 
 /**
  * Gets the upper bound of the conversion `(bool)expr`. If we can prove that
  * the value of `expr` is always 0 then `ub = 0`. Otherwise `ub = 1`.
  */
-private float boolConversionUpperBound(Expr expr) {
+private QlBuiltins::BigInt boolConversionUpperBound(Expr expr) {
   // Case 1a: if the upper bound of the operand is <= 0, then the upper
   // bound might be 0.
-  exprIsUsedAsBool(expr) and getTruncatedUpperBounds(expr) <= 0 and result = 0
+  exprIsUsedAsBool(expr) and getTruncatedUpperBounds(expr) <= 0.toBigInt() and result = 0.toBigInt()
   or
   // Case 1b: if the upper bound of the operand is not <= 0, then the upper
   // bound is 1.
   exprIsUsedAsBool(expr) and
-  exists(float ub | ub = getTruncatedUpperBounds(expr) and not ub <= 0) and
-  result = 1
+  exists(QlBuiltins::BigInt ub | ub = getTruncatedUpperBounds(expr) and not ub <= 0.toBigInt()) and
+  result = 1.toBigInt()
   or
   // Case 2a: if the lower bound of the operand is >= 0, then the upper
   // bound might be 0.
-  exprIsUsedAsBool(expr) and getTruncatedLowerBounds(expr) >= 0 and result = 0
+  exprIsUsedAsBool(expr) and getTruncatedLowerBounds(expr) >= 0.toBigInt() and result = 0.toBigInt()
   or
   // Case 2b: if the lower bound of the operand is not >= 0, then the upper
   // bound is 1.
   exprIsUsedAsBool(expr) and
-  exists(float lb | lb = getTruncatedLowerBounds(expr) and not lb >= 0) and
-  result = 1
+  exists(QlBuiltins::BigInt lb | lb = getTruncatedLowerBounds(expr) and not lb >= 0.toBigInt()) and
+  result = 1.toBigInt()
   or
   // Case 3: the type of `expr` is not arithmetic. For example, it might
   // be a pointer.
-  exprIsUsedAsBool(expr) and not exists(exprMaxVal(expr)) and result = 1
+  exprIsUsedAsBool(expr) and not exists(exprMaxVal(expr)) and result = 1.toBigInt()
 }
 
 /**
@@ -1235,8 +1203,11 @@ private float boolConversionUpperBound(Expr expr) {
  * In this example, the lower bound of x is 0, but we can
  * use the guard to deduce that the lower bound is 2 inside the block.
  */
-private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
-  exists(VariableAccess access, Expr guard, boolean branch, float defLB, float guardLB |
+private QlBuiltins::BigInt getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
+  exists(
+    VariableAccess access, Expr guard, boolean branch, QlBuiltins::BigInt defLB,
+    QlBuiltins::BigInt guardLB
+  |
     phi.isGuardPhi(v, access, guard, branch) and
     lowerBoundFromGuard(guard, access, guardLB, branch) and
     defLB = getFullyConvertedLowerBounds(access)
@@ -1245,10 +1216,10 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
     if guardLB > defLB then result = guardLB else result = defLB
   )
   or
-  exists(VariableAccess access, float neConstant, float lower |
+  exists(VariableAccess access, QlBuiltins::BigInt neConstant, QlBuiltins::BigInt lower |
     isNEPhi(v, phi, access, neConstant) and
     lower = getTruncatedLowerBounds(access) and
-    if lower = neConstant then result = lower + 1 else result = lower
+    if lower = neConstant then result = lower + 1.toBigInt() else result = lower
   )
   or
   exists(VariableAccess access |
@@ -1260,8 +1231,11 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
 }
 
 /** See comment for `getPhiLowerBounds`, above. */
-private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
-  exists(VariableAccess access, Expr guard, boolean branch, float defUB, float guardUB |
+private QlBuiltins::BigInt getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
+  exists(
+    VariableAccess access, Expr guard, boolean branch, QlBuiltins::BigInt defUB,
+    QlBuiltins::BigInt guardUB
+  |
     phi.isGuardPhi(v, access, guard, branch) and
     upperBoundFromGuard(guard, access, guardUB, branch) and
     defUB = getFullyConvertedUpperBounds(access)
@@ -1270,10 +1244,10 @@ private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
     if guardUB < defUB then result = guardUB else result = defUB
   )
   or
-  exists(VariableAccess access, float neConstant, float upper |
+  exists(VariableAccess access, QlBuiltins::BigInt neConstant, QlBuiltins::BigInt upper |
     isNEPhi(v, phi, access, neConstant) and
     upper = getTruncatedUpperBounds(access) and
-    if upper = neConstant then result = upper - 1 else result = upper
+    if upper = neConstant then result = upper - 1.toBigInt() else result = upper
   )
   or
   exists(VariableAccess access |
@@ -1285,7 +1259,7 @@ private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
 }
 
 /** Only to be called by `getDefLowerBounds`. */
-private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
+private QlBuiltins::BigInt getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedLowerBounds(expr))
   or
@@ -1296,18 +1270,18 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
     result = getTruncatedLowerBounds(assignOp)
   )
   or
-  exists(IncrementOperation incr, float newLB |
+  exists(IncrementOperation incr, QlBuiltins::BigInt newLB |
     def = incr and
     incr.getOperand() = v.getAnAccess() and
     newLB = getFullyConvertedLowerBounds(incr.getOperand()) and
-    result = newLB + 1
+    result = newLB + 1.toBigInt()
   )
   or
-  exists(DecrementOperation decr, float newLB |
+  exists(DecrementOperation decr, QlBuiltins::BigInt newLB |
     def = decr and
     decr.getOperand() = v.getAnAccess() and
     newLB = getFullyConvertedLowerBounds(decr.getOperand()) and
-    result = addRoundingDownSmall(newLB, -1)
+    result = newLB - 1.toBigInt()
   )
   or
   // Phi nodes.
@@ -1321,7 +1295,7 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
 }
 
 /** Only to be called by `getDefUpperBounds`. */
-private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
+private QlBuiltins::BigInt getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedUpperBounds(expr))
   or
@@ -1332,18 +1306,18 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
     result = getTruncatedUpperBounds(assignOp)
   )
   or
-  exists(IncrementOperation incr, float newUB |
+  exists(IncrementOperation incr, QlBuiltins::BigInt newUB |
     def = incr and
     incr.getOperand() = v.getAnAccess() and
     newUB = getFullyConvertedUpperBounds(incr.getOperand()) and
-    result = addRoundingUpSmall(newUB, 1)
+    result = newUB + 1.toBigInt()
   )
   or
-  exists(DecrementOperation decr, float newUB |
+  exists(DecrementOperation decr, QlBuiltins::BigInt newUB |
     def = decr and
     decr.getOperand() = v.getAnAccess() and
     newUB = getFullyConvertedUpperBounds(decr.getOperand()) and
-    result = newUB - 1
+    result = newUB - 1.toBigInt()
   )
   or
   // Phi nodes.
@@ -1361,7 +1335,9 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
  * unanalyzable definitions (such as function parameters) and make their
  * bounds unknown.
  */
-private predicate unanalyzableDefBounds(RangeSsaDefinition def, StackVariable v, float lb, float ub) {
+private predicate unanalyzableDefBounds(
+  RangeSsaDefinition def, StackVariable v, QlBuiltins::BigInt lb, QlBuiltins::BigInt ub
+) {
   v = def.getAVariable() and
   not analyzableDef(def, v) and
   lb = varMinVal(v) and
@@ -1393,8 +1369,10 @@ predicate nonNanGuardedVariable(Expr guard, VariableAccess v, boolean branch) {
  * predicate uses the bounds information for `r` to compute a lower bound
  * for `v`.
  */
-private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, boolean branch) {
-  exists(float childLB, RelationStrictness strictness |
+private predicate lowerBoundFromGuard(
+  Expr guard, VariableAccess v, QlBuiltins::BigInt lb, boolean branch
+) {
+  exists(QlBuiltins::BigInt childLB, RelationStrictness strictness |
     boundFromGuard(guard, v, childLB, true, strictness, branch)
   |
     if nonNanGuardedVariable(guard, v, branch)
@@ -1403,7 +1381,7 @@ private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, bo
         strictness = Nonstrict() or
         not getVariableRangeType(v.getTarget()) instanceof IntegralType
       then lb = childLB
-      else lb = childLB + 1
+      else lb = childLB + 1.toBigInt()
     else lb = varMinVal(v.getTarget())
   )
 }
@@ -1413,8 +1391,10 @@ private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, bo
  * predicate uses the bounds information for `r` to compute a upper bound
  * for `v`.
  */
-private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, boolean branch) {
-  exists(float childUB, RelationStrictness strictness |
+private predicate upperBoundFromGuard(
+  Expr guard, VariableAccess v, QlBuiltins::BigInt ub, boolean branch
+) {
+  exists(QlBuiltins::BigInt childUB, RelationStrictness strictness |
     boundFromGuard(guard, v, childUB, false, strictness, branch)
   |
     if nonNanGuardedVariable(guard, v, branch)
@@ -1423,7 +1403,7 @@ private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, bo
         strictness = Nonstrict() or
         not getVariableRangeType(v.getTarget()) instanceof IntegralType
       then ub = childUB
-      else ub = childUB - 1
+      else ub = childUB - 1.toBigInt()
     else ub = varMaxVal(v.getTarget())
   )
 }
@@ -1433,25 +1413,25 @@ private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, bo
  * `linearBoundFromGuard`.
  */
 private predicate boundFromGuard(
-  Expr guard, VariableAccess v, float boundValue, boolean isLowerBound,
+  Expr guard, VariableAccess v, QlBuiltins::BigInt boundValue, boolean isLowerBound,
   RelationStrictness strictness, boolean branch
 ) {
-  exists(float p, float q, float r, boolean isLB |
+  exists(QlBuiltins::BigInt p, QlBuiltins::BigInt q, QlBuiltins::BigInt r, boolean isLB |
     linearBoundFromGuard(guard, v, p, q, r, isLB, strictness, branch) and
     boundValue = (r - q) / p
   |
     // If the multiplier is negative then the direction of the comparison
     // needs to be flipped.
-    p > 0 and isLowerBound = isLB
+    p > 0.toBigInt() and isLowerBound = isLB
     or
-    p < 0 and isLowerBound = isLB.booleanNot()
+    p < 0.toBigInt() and isLowerBound = isLB.booleanNot()
   )
   or
   // When `!e` is true, we know that `0 <= e <= 0`
-  exists(float p, float q, Expr e |
+  exists(QlBuiltins::BigInt p, QlBuiltins::BigInt q, Expr e |
     linearAccess(e, v, p, q) and
     eqZeroWithNegate(guard, e, true, branch) and
-    boundValue = (0.0 - q) / p and
+    boundValue = -q / p and
     isLowerBound = [false, true] and
     strictness = Nonstrict()
   )
@@ -1463,8 +1443,8 @@ private predicate boundFromGuard(
  * lower or upper bound for `v`.
  */
 private predicate linearBoundFromGuard(
-  ComparisonOperation guard, VariableAccess v, float p, float q, float boundValue,
-  boolean isLowerBound, // Is this a lower or an upper bound?
+  ComparisonOperation guard, VariableAccess v, QlBuiltins::BigInt p, QlBuiltins::BigInt q,
+  QlBuiltins::BigInt boundValue, boolean isLowerBound, // Is this a lower or an upper bound?
   RelationStrictness strictness, boolean branch // Which control-flow branch is this bound valid on?
 ) {
   // For the comparison x < RHS, we create two bounds:
@@ -1500,14 +1480,14 @@ private predicate linearBoundFromGuard(
 }
 
 /** Utility for `linearBoundFromGuard`. */
-private predicate getBounds(Expr expr, float boundValue, boolean isLowerBound) {
+private predicate getBounds(Expr expr, QlBuiltins::BigInt boundValue, boolean isLowerBound) {
   isLowerBound = true and boundValue = getFullyConvertedLowerBounds(expr)
   or
   isLowerBound = false and boundValue = getFullyConvertedUpperBounds(expr)
 }
 
 /** Utility for `linearBoundFromGuard`. */
-private predicate exprTypeBounds(Expr expr, float boundValue, boolean isLowerBound) {
+private predicate exprTypeBounds(Expr expr, QlBuiltins::BigInt boundValue, boolean isLowerBound) {
   isLowerBound = true and boundValue = exprMinVal(expr.getFullyConverted())
   or
   isLowerBound = false and boundValue = exprMaxVal(expr.getFullyConverted())
@@ -1519,25 +1499,26 @@ private predicate exprTypeBounds(Expr expr, float boundValue, boolean isLowerBou
  * Only integral types are supported.
  */
 private predicate isNEPhi(
-  Variable v, RangeSsaDefinition phi, VariableAccess access, float neConstant
+  Variable v, RangeSsaDefinition phi, VariableAccess access, QlBuiltins::BigInt neConstant
 ) {
   exists(
-    ComparisonOperation cmp, boolean branch, Expr linearExpr, Expr rExpr, float p, float q, float r
+    ComparisonOperation cmp, boolean branch, Expr linearExpr, Expr rExpr, QlBuiltins::BigInt p,
+    QlBuiltins::BigInt q, QlBuiltins::BigInt r
   |
     phi.isGuardPhi(v, access, cmp, branch) and
     eqOpWithSwapAndNegate(cmp, linearExpr, rExpr, false, branch) and
     v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!=` is too imprecise
-    r = getValue(rExpr).toFloat() and
+    r = parseAsBigInt(getValue(rExpr)) and
     linearAccess(linearExpr, access, p, q) and
     neConstant = (r - q) / p
   )
   or
-  exists(Expr op, boolean branch, Expr linearExpr, float p, float q |
+  exists(Expr op, boolean branch, Expr linearExpr, QlBuiltins::BigInt p, QlBuiltins::BigInt q |
     phi.isGuardPhi(v, access, op, branch) and
     eqZeroWithNegate(op, linearExpr, false, branch) and
     v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!` is too imprecise
     linearAccess(linearExpr, access, p, q) and
-    neConstant = (0.0 - q) / p
+    neConstant = -q / p
   )
 }
 
@@ -1563,7 +1544,7 @@ private predicate isUnsupportedGuardPhi(Variable v, RangeSsaDefinition phi, Vari
  * An upper bound can only be found, if a guard phi node can be found, and the
  * expression has only one immediate predecessor.
  */
-private float getGuardedUpperBound(VariableAccess guardedAccess) {
+private QlBuiltins::BigInt getGuardedUpperBound(VariableAccess guardedAccess) {
   exists(
     RangeSsaDefinition def, StackVariable v, VariableAccess guardVa, Expr guard, boolean branch
   |
@@ -1577,7 +1558,7 @@ private float getGuardedUpperBound(VariableAccess guardedAccess) {
     // that there is one predecessor, albeit somewhat conservative.
     exists(unique(BasicBlock b | b = def.(BasicBlock).getAPredecessor())) and
     guardedAccess = def.getAUse(v) and
-    result = max(float ub | upperBoundFromGuard(guard, guardVa, ub, branch)) and
+    result = max(QlBuiltins::BigInt ub | upperBoundFromGuard(guard, guardVa, ub, branch)) and
     not convertedExprMightOverflow(guard.getAChild+())
   )
 }
@@ -1597,10 +1578,10 @@ private module SimpleRangeAnalysisCached {
    *    `lowerBound(expr.getFullyConverted())`
    */
   cached
-  float lowerBound(Expr expr) {
+  QlBuiltins::BigInt lowerBound(Expr expr) {
     // Combine the lower bounds returned by getTruncatedLowerBounds into a
     // single minimum value.
-    result = min(float lb | lb = getTruncatedLowerBounds(expr) | lb)
+    result = min(QlBuiltins::BigInt lb | lb = getTruncatedLowerBounds(expr) | lb)
   }
 
   /**
@@ -1616,7 +1597,7 @@ private module SimpleRangeAnalysisCached {
    *    `upperBound(expr.getFullyConverted())`
    */
   cached
-  float upperBound(Expr expr) {
+  QlBuiltins::BigInt upperBound(Expr expr) {
     // Combine the upper bounds returned by getTruncatedUpperBounds and
     // getGuardedUpperBound into a single maximum value
     result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
@@ -1776,14 +1757,14 @@ module SimpleRangeAnalysisInternal {
   /**
    * Gets the truncated lower bounds of the fully converted expression.
    */
-  float getFullyConvertedLowerBounds(Expr expr) {
+  QlBuiltins::BigInt getFullyConvertedLowerBounds(Expr expr) {
     result = getTruncatedLowerBounds(expr.getFullyConverted())
   }
 
   /**
    * Gets the truncated upper bounds of the fully converted expression.
    */
-  float getFullyConvertedUpperBounds(Expr expr) {
+  QlBuiltins::BigInt getFullyConvertedUpperBounds(Expr expr) {
     result = getTruncatedUpperBounds(expr.getFullyConverted())
   }
 
@@ -1792,8 +1773,8 @@ module SimpleRangeAnalysisInternal {
    * done by `getDefLowerBoundsImpl`, but this is where widening is applied
    * to prevent the analysis from exploding due to a recursive definition.
    */
-  float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
-    exists(float newLB, float truncatedLB |
+  QlBuiltins::BigInt getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
+    exists(QlBuiltins::BigInt newLB, QlBuiltins::BigInt truncatedLB |
       newLB = getDefLowerBoundsImpl(def, v) and
       if varMinVal(v) <= newLB and newLB <= varMaxVal(v)
       then truncatedLB = newLB
@@ -1807,7 +1788,7 @@ module SimpleRangeAnalysisInternal {
         // down to one of a limited set of values to prevent the
         // recursion from exploding.
         result =
-          max(float widenLB |
+          max(QlBuiltins::BigInt widenLB |
             widenLB = wideningLowerBounds(getVariableRangeType(v)) and
             not widenLB > truncatedLB
           |
@@ -1822,8 +1803,8 @@ module SimpleRangeAnalysisInternal {
   }
 
   /** See comment for `getDefLowerBounds`, above. */
-  float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
-    exists(float newUB, float truncatedUB |
+  QlBuiltins::BigInt getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
+    exists(QlBuiltins::BigInt newUB, QlBuiltins::BigInt truncatedUB |
       newUB = getDefUpperBoundsImpl(def, v) and
       if varMinVal(v) <= newUB and newUB <= varMaxVal(v)
       then truncatedUB = newUB
@@ -1837,7 +1818,7 @@ module SimpleRangeAnalysisInternal {
         // up to one of a fixed set of values to prevent the recursion
         // from exploding.
         result =
-          min(float widenUB |
+          min(QlBuiltins::BigInt widenUB |
             widenUB = wideningUpperBounds(getVariableRangeType(v)) and
             not widenUB < truncatedUB
           |

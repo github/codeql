@@ -2,14 +2,14 @@ private import cpp
 private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
-float evaluateConstantExpr(Expr e) {
-  result = e.getValue().toFloat()
+QlBuiltins::BigInt evaluateConstantExpr(Expr e) {
+  result = parseAsBigInt(e.getValue())
   or
   // This handles when a constant value is put into a variable
   // and the variable is used later
   exists(SsaDefinition defn, StackVariable sv |
     defn.getAUse(sv) = e and
-    result = defn.getDefiningValue(sv).getValue().toFloat()
+    result = parseAsBigInt(defn.getDefiningValue(sv).getValue())
   )
 }
 
@@ -18,16 +18,18 @@ float evaluateConstantExpr(Expr e) {
 // architecture where the shift value is masked with 0b00011111, but we can't
 // assume the architecture).
 bindingset[val]
-private predicate isValidShiftExprShift(float val, Expr l) {
-  val >= 0 and
+private predicate isValidShiftExprShift(QlBuiltins::BigInt val, Expr l) {
+  val >= 0.toBigInt() and
   // We use getFullyConverted because the spec says to use the *promoted* left operand
-  val < (l.getFullyConverted().getUnderlyingType().getSize() * 8)
+  val < (l.getFullyConverted().getUnderlyingType().getSize() * 8).toBigInt()
 }
 
 bindingset[val, shift, max_val]
-private predicate canLShiftOverflow(int val, int shift, int max_val) {
+private predicate canLShiftOverflow(
+  QlBuiltins::BigInt val, QlBuiltins::BigInt shift, QlBuiltins::BigInt max_val
+) {
   // val << shift = val * 2^shift > max_val => val > max_val/2^shift = max_val >> b
-  val > max_val.bitShiftRight(shift)
+  val > max_val.bitShiftRightSigned(shift.toInt())
 }
 
 /**
@@ -65,7 +67,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
         exists(evaluateConstantExpr(l)) and not exists(evaluateConstantExpr(r))
         or
         // If the right operand is a constant, check if it is a valid shift expression
-        exists(float constROp |
+        exists(QlBuiltins::BigInt constROp |
           constROp = evaluateConstantExpr(r) and isValidShiftExprShift(constROp, l)
         )
       )
@@ -82,8 +84,11 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
     result = this.(AssignRShiftExpr).getRValue()
   }
 
-  override float getLowerBounds() {
-    exists(int lLower, int lUpper, int rLower, int rUpper |
+  override QlBuiltins::BigInt getLowerBounds() {
+    exists(
+      QlBuiltins::BigInt lLower, QlBuiltins::BigInt lUpper, QlBuiltins::BigInt rLower,
+      QlBuiltins::BigInt rUpper
+    |
       lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
       lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
@@ -92,7 +97,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
       rLower <= rUpper
     |
       if
-        lLower < 0
+        lLower < 0.toBigInt()
         or
         not (
           isValidShiftExprShift(rLower, this.getLeftOperand()) and
@@ -105,12 +110,15 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
         result = exprMinVal(this)
       else
         // We can get the smallest value by shifting the smallest bound by the largest bound
-        result = lLower.bitShiftRight(rUpper)
+        result = lLower.bitShiftRightSigned(rUpper.toInt())
     )
   }
 
-  override float getUpperBounds() {
-    exists(int lLower, int lUpper, int rLower, int rUpper |
+  override QlBuiltins::BigInt getUpperBounds() {
+    exists(
+      QlBuiltins::BigInt lLower, QlBuiltins::BigInt lUpper, QlBuiltins::BigInt rLower,
+      QlBuiltins::BigInt rUpper
+    |
       lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
       lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
@@ -119,7 +127,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
       rLower <= rUpper
     |
       if
-        lLower < 0
+        lLower < 0.toBigInt()
         or
         not (
           isValidShiftExprShift(rLower, this.getLeftOperand()) and
@@ -132,7 +140,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
         result = exprMaxVal(this)
       else
         // We can get the largest value by shifting the largest bound by the smallest bound
-        result = lUpper.bitShiftRight(rLower)
+        result = lUpper.bitShiftRightSigned(rLower.toInt())
     )
   }
 
@@ -178,7 +186,7 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
         exists(evaluateConstantExpr(l)) and not exists(evaluateConstantExpr(r))
         or
         // If the right operand is a constant, check if it is a valid shift expression
-        exists(float constROp |
+        exists(QlBuiltins::BigInt constROp |
           constROp = evaluateConstantExpr(r) and isValidShiftExprShift(constROp, l)
         )
       )
@@ -195,8 +203,11 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
     result = this.(AssignLShiftExpr).getRValue()
   }
 
-  override float getLowerBounds() {
-    exists(int lLower, int lUpper, int rLower, int rUpper |
+  override QlBuiltins::BigInt getLowerBounds() {
+    exists(
+      QlBuiltins::BigInt lLower, QlBuiltins::BigInt lUpper, QlBuiltins::BigInt rLower,
+      QlBuiltins::BigInt rUpper
+    |
       lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
       lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
@@ -205,7 +216,7 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
       rLower <= rUpper
     |
       if
-        lLower < 0
+        lLower < 0.toBigInt()
         or
         not (
           isValidShiftExprShift(rLower, this.getLeftOperand()) and
@@ -222,12 +233,15 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
         // If necessary, we may be able to improve this bound in the future
         if canLShiftOverflow(lUpper, rUpper, exprMaxVal(this))
         then result = exprMinVal(this)
-        else result = lLower.bitShiftLeft(rLower)
+        else result = lLower.bitShiftLeft(rLower.toInt())
     )
   }
 
-  override float getUpperBounds() {
-    exists(int lLower, int lUpper, int rLower, int rUpper |
+  override QlBuiltins::BigInt getUpperBounds() {
+    exists(
+      QlBuiltins::BigInt lLower, QlBuiltins::BigInt lUpper, QlBuiltins::BigInt rLower,
+      QlBuiltins::BigInt rUpper
+    |
       lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
       lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
@@ -236,7 +250,7 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
       rLower <= rUpper
     |
       if
-        lLower < 0
+        lLower < 0.toBigInt()
         or
         not (
           isValidShiftExprShift(rLower, this.getLeftOperand()) and
@@ -253,7 +267,7 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
         // If necessary, we may be able to improve this bound in the future
         if canLShiftOverflow(lUpper, rUpper, exprMaxVal(this))
         then result = exprMaxVal(this)
-        else result = lUpper.bitShiftLeft(rUpper)
+        else result = lUpper.bitShiftLeft(rUpper.toInt())
     )
   }
 

@@ -6,10 +6,10 @@ import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
 /** Gets the lower bound of the fully converted expression. */
-private float lowerBoundFC(Expr expr) { result = lowerBound(expr.getFullyConverted()) }
+private QlBuiltins::BigInt lowerBoundFC(Expr expr) { result = lowerBound(expr.getFullyConverted()) }
 
 /** Gets the upper bound of the fully converted expression. */
-private float upperBoundFC(Expr expr) { result = upperBound(expr.getFullyConverted()) }
+private QlBuiltins::BigInt upperBoundFC(Expr expr) { result = upperBound(expr.getFullyConverted()) }
 
 /**
  * Describes which side of a pointless comparison is known to be smaller.
@@ -33,7 +33,9 @@ newtype SmallSide =
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private predicate alwaysLT(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysLT(
+  ComparisonOperation cmp, QlBuiltins::BigInt left, QlBuiltins::BigInt right, SmallSide ss
+) {
   ss = LeftIsSmaller() and
   left = upperBoundFC(cmp.getLeftOperand()) and
   right = lowerBoundFC(cmp.getRightOperand()) and
@@ -49,19 +51,13 @@ private predicate alwaysLT(ComparisonOperation cmp, float left, float right, Sma
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private predicate alwaysLE(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysLE(
+  ComparisonOperation cmp, QlBuiltins::BigInt left, QlBuiltins::BigInt right, SmallSide ss
+) {
   ss = LeftIsSmaller() and
   left = upperBoundFC(cmp.getLeftOperand()) and
   right = lowerBoundFC(cmp.getRightOperand()) and
-  left <= right and
-  // Range analysis is not able to precisely represent large 64 bit numbers,
-  // because it stores the range as a `float`, which only has a 53 bit mantissa.
-  // For example, the number `2^64-1` is rounded to `2^64`. This means that we
-  // cannot trust the result if the numbers are large. Note: there is only
-  // a risk of a rounding error causing an incorrect result if `left == right`.
-  // If `left` is strictly less than `right` then there is enough of a gap
-  // that we don't need to worry about rounding errors.
-  left.ulp() <= 1
+  left <= right
 }
 
 /**
@@ -73,7 +69,9 @@ private predicate alwaysLE(ComparisonOperation cmp, float left, float right, Sma
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private predicate alwaysGT(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysGT(
+  ComparisonOperation cmp, QlBuiltins::BigInt left, QlBuiltins::BigInt right, SmallSide ss
+) {
   ss = RightIsSmaller() and
   left = lowerBoundFC(cmp.getLeftOperand()) and
   right = upperBoundFC(cmp.getRightOperand()) and
@@ -89,19 +87,13 @@ private predicate alwaysGT(ComparisonOperation cmp, float left, float right, Sma
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private predicate alwaysGE(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysGE(
+  ComparisonOperation cmp, QlBuiltins::BigInt left, QlBuiltins::BigInt right, SmallSide ss
+) {
   ss = RightIsSmaller() and
   left = lowerBoundFC(cmp.getLeftOperand()) and
   right = upperBoundFC(cmp.getRightOperand()) and
-  left >= right and
-  // Range analysis is not able to precisely represent large 64 bit numbers,
-  // because it stores the range as a `float`, which only has a 53 bit mantissa.
-  // For example, the number 2^64-1 is rounded to 2^64. This means that we
-  // cannot trust the result if the numbers are large. Note: there is only
-  // a risk of a rounding error causing an incorrect result if `left == right`.
-  // If `left` is strictly less than `right` then there is enough of a gap
-  // that we don't need to worry about rounding errors.
-  left.ulp() <= 1
+  left >= right
 }
 
 /**
@@ -123,7 +115,8 @@ private predicate alwaysGE(ComparisonOperation cmp, float left, float right, Sma
  * `pointlessComparison(x < y, 9, 7, false, RightIsSmaller)` holds.
  */
 predicate pointlessComparison(
-  ComparisonOperation cmp, float left, float right, boolean value, SmallSide ss
+  ComparisonOperation cmp, QlBuiltins::BigInt left, QlBuiltins::BigInt right, boolean value,
+  SmallSide ss
 ) {
   alwaysLT(cmp.(LTExpr), left, right, ss) and value = true
   or
@@ -164,7 +157,8 @@ predicate pointlessComparison(
  *   }
  */
 predicate reachablePointlessComparison(
-  ComparisonOperation cmp, float left, float right, boolean value, SmallSide ss
+  ComparisonOperation cmp, QlBuiltins::BigInt left, QlBuiltins::BigInt right, boolean value,
+  SmallSide ss
 ) {
   pointlessComparison(cmp, left, right, value, ss) and
   // Reachable according to control flow analysis.
