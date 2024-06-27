@@ -92,7 +92,7 @@ public class Sources {
   }
 
   public class DataReaderKind1 extends DataReader {
-    // source=p;Sources$DataReader;true;read;();;ReturnValue;test-source;df-generated
+    // source=p;Sources$DataReaderKind1;true;read;();;ReturnValue;test-source;df-generated
     // neutral=p;Sources$DataReaderKind1;read;();summary;df-generated
     @Override
     public String read() {
@@ -101,7 +101,7 @@ public class Sources {
   }
 
   public class DataReaderKind2 extends DataReader {
-    // source=p;Sources$DataReader;true;read;();;ReturnValue;test-source2;df-generated
+    // source=p;Sources$DataReaderKind2;true;read;();;ReturnValue;test-source2;df-generated
     // neutral=p;Sources$DataReaderKind2;read;();summary;df-generated
     @Override
     public String read() {

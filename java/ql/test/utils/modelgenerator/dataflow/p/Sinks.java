@@ -88,7 +88,7 @@ public class Sinks {
   }
 
   public class DataWriterKind1 extends DataWriter {
-    // sink=p;Sinks$DataWriter;true;write;(String);;Argument[0];test-sink;df-generated
+    // sink=p;Sinks$DataWriterKind1;true;write;(String);;Argument[0];test-sink;df-generated
     // neutral=p;Sinks$DataWriterKind1;write;(String);summary;df-generated
     @Override
     public void write(String s) {
@@ -97,7 +97,7 @@ public class Sinks {
   }
 
   public class DataWriterKind2 extends DataWriter {
-    // sink=p;Sinks$DataWriter;true;write;(String);;Argument[0];test-sink2;df-generated
+    // sink=p;Sinks$DataWriterKind2;true;write;(String);;Argument[0];test-sink2;df-generated
     // neutral=p;Sinks$DataWriterKind2;write;(String);summary;df-generated
     @Override
     public void write(String s) {
