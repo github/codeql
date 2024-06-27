@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: github/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["mikefarah/yq", "*", "input.cmd", "code-injection", "manual"]
+
