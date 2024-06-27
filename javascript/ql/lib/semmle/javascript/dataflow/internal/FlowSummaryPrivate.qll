@@ -139,6 +139,8 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
 
 module Steps = Private::Steps<FlowSummaryStepInput>;
 
+module RenderSummarizedCallable = Private::RenderSummarizedCallable<FlowSummaryStepInput>;
+
 /**
  * Gets the textual representation of return kind `rk` used in MaD.
  *
