@@ -9,6 +9,6 @@
 import modeling.ModelEditor
 
 from Endpoint endpoint
-select endpoint, endpoint.getNamespace(), endpoint.getType(), endpoint.getName(),
+select endpoint, endpoint.getNamespace(), endpoint.getClass(), endpoint.getFunctionName(),
   endpoint.getParameters(), endpoint.getSupportedStatus(), endpoint.getFileName(),
   endpoint.getSupportedType(), endpoint.getKind()

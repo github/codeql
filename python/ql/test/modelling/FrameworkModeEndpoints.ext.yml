@@ -3,14 +3,18 @@ extensions:
       pack: codeql/python-all
       extensible: sourceModel
     data:
+      # Test short form of type column
       - ["MyPackage.Foo.C1","Member[m1].ReturnValue","remote"]
+      # Test long form of type column
       - ["MyPackage","Member[Foo].Member[C1].Instance.Member[m2].ReturnValue","remote"]
 
   - addsTo:
       pack: codeql/python-all
       extensible: summaryModel
     data:
+      # Test short form of type column
       - ["MyPackage.Foo.C1!","Member[m3]","Argument[0]","ReturnValue","value"]
+      # Test long form of type column
       - ["MyPackage","Member[Foo].Member[C1].Member[m4]","Argument[0]","ReturnValue","value"]
 
   - addsTo:

@@ -4,30 +4,20 @@
 
 private import python
 private import semmle.python.ApiGraphs
+private import semmle.python.filters.Tests
 
-/**
- * A file that probably contains tests.
- */
-class TestFile extends File {
-  TestFile() {
-    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
-    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+class RelevantScope extends Scope {
+  RelevantScope() {
+    this.isPublic() and
+    not this instanceof TestScope and
+    exists(this.getLocation().getFile().getRelativePath())
   }
-}
-
-/**
- * A file that is relevant in the context of library modeling.
- *
- * In practice, this means a file that is not part of test code.
- */
-class RelevantFile extends File {
-  RelevantFile() { not this instanceof TestFile and not this.inStdlib() }
 }
 
 /**
  * Gets the dotted path of a scope.
  */
-string computeScopePath(Scope scope) {
+string computeScopePath(RelevantScope scope) {
   // base case
   if scope instanceof Module
   then
@@ -39,9 +29,8 @@ string computeScopePath(Scope scope) {
   else
     //recursive cases
     if scope instanceof Class or scope instanceof Function
-    then
-      result = computeScopePath(scope.getEnclosingScope()) + "." + scope.getName()
-      else result = "unknown: " + scope.toString()
+    then result = computeScopePath(scope.getEnclosingScope()) + "." + scope.getName()
+    else result = "unknown: " + scope.toString()
 }
 
 signature predicate modelSig(string type, string path);
@@ -55,7 +44,7 @@ module FindModel<modelSig/2 model> {
   /**
    * Holds if the given scope has a model as identified by the provided predicate `model`.
    */
-  predicate hasModel(Scope scope) {
+  predicate hasModel(RelevantScope scope) {
     exists(string type, string path, string searchPath | model(type, path) |
       searchPath = possibleMemberPathPrefix(path, scope.getName()) and
       pathToScope(scope, type, searchPath)
@@ -76,8 +65,7 @@ module FindModel<modelSig/2 model> {
    * Holds if `(type,path)` identifies `scope`.
    */
   bindingset[type, path]
-  predicate pathToScope(Scope scope, string type, string path) {
-    scope instanceof Endpoint
+  predicate pathToScope(RelevantScope scope, string type, string path) {
     computeScopePath(scope) =
       type.replaceAll("!", "") + "." +
         path.replaceAll("Member[", "").replaceAll("]", "").replaceAll("Instance.", "") +

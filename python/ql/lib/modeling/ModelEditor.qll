@@ -22,14 +22,12 @@ class EndpointKind extends string {
  *
  * See `EndPointKind` for the possible kinds of elements.
  */
-abstract class Endpoint instanceof Scope {
+abstract class Endpoint instanceof Util::RelevantScope {
   string namespace;
   string type;
   string name;
 
   Endpoint() {
-    this.isPublic() and
-    this.getLocation().getFile() instanceof Util::RelevantFile and
     exists(string scopePath, string path, int pathIndex |
       scopePath = Util::computeScopePath(this) and
       pathIndex = scopePath.indexOf(".", 0, 0)
@@ -62,14 +60,14 @@ abstract class Endpoint instanceof Scope {
   Location getLocation() { result = super.getLocation() }
 
   /** Gets the name of the class in which this endpoint is found, or the empty string if it is not found inside a class. */
-  string getType() { result = type }
+  string getClass() { result = type }
 
   /**
    * Gets the name of the endpoint if it is not a class, or the empty string if it is a class
    *
    * If this endpoint is a class, the class name can be obtained via `getType`.
    */
-  string getName() { result = name }
+  string getFunctionName() { result = name }
 
   /**
    * Gets a string representation of the parameters of this endpoint.
@@ -234,9 +232,9 @@ class FunctionEndpoint extends Endpoint instanceof Function {
  * A class from source code.
  */
 class ClassEndpoint extends Endpoint instanceof Class {
-  override string getType() { result = type + "." + name }
+  override string getClass() { result = type + "." + name }
 
-  override string getName() { result = "" }
+  override string getFunctionName() { result = "" }
 
   override string getParameters() { result = "" }
 
