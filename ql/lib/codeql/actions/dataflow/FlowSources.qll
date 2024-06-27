@@ -20,136 +20,6 @@ abstract class RemoteFlowSource extends SourceNode {
   override string getThreatModel() { result = "remote" }
 }
 
-private string titleEvent() {
-  result =
-    [
-      "github\\.event\\.issue\\.title", // issue
-      "github\\.event\\.pull_request\\.title", // pull request
-      "github\\.event\\.discussion\\.title", // discussion
-      "github\\.event\\.pages\\[[0-9]+\\]\\.page_name",
-      "github\\.event\\.pages\\[[0-9]+\\]\\.title", "github\\.event\\.workflow_run\\.display_title",
-    ]
-}
-
-private string urlEvent() { result = "github\\.event\\.pull_request\\.head\\.repo\\.homepage" }
-
-private string textEvent() {
-  result =
-    [
-      "github\\.event\\.issue\\.body", // body
-      "github\\.event\\.pull_request\\.body", // body
-      "github\\.event\\.discussion\\.body", // body
-      "github\\.event\\.review\\.body", // body
-      "github\\.event\\.comment\\.body", // body
-      "github\\.event\\.commits\\[[0-9]+\\]\\.message", // messsage
-      "github\\.event\\.head_commit\\.message", // message
-      "github\\.event\\.workflow_run\\.head_commit\\.message", // message
-      "github\\.event\\.pull_request\\.head\\.repo\\.description", // description
-      "github\\.event\\.workflow_run\\.head_repository\\.description", // description
-      "github\\.event\\.client_payload\\[[0-9]+\\]", // payload
-      "github\\.event\\.client_payload", // payload
-    ]
-}
-
-private string branchEvent() {
-  // branch
-  // https://docs.github.com/en/get-started/using-git/dealing-with-special-characters-in-branch-and-tag-names
-  // - They can include slash / for hierarchical (directory) grouping, but no slash-separated component can begin with a dot . or end with the sequence .lock.
-  // - They must contain at least one /
-  // - They cannot have two consecutive dots .. anywhere.
-  // - They cannot have ASCII control characters (i.e. bytes whose values are lower than \040, or \177 DEL), space, tilde ~, caret ^, or colon : anywhere.
-  // - They cannot have question-mark ?, asterisk *, or open bracket [ anywhere.
-  // - They cannot begin or end with a slash / or contain multiple consecutive slashes
-  // - They cannot end with a dot .
-  // - They cannot contain a sequence @{
-  // - They cannot be the single character @
-  // - They cannot contain a \
-  // eg: zzz";echo${IFS}"hello";# would be a valid branch name
-  result =
-    [
-      "github\\.event\\.pull_request\\.head\\.repo\\.default_branch",
-      "github\\.event\\.pull_request\\.head\\.ref", "github\\.event\\.workflow_run\\.head_branch",
-      "github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.ref",
-      "github\\.event\\.merge_group\\.head_ref",
-    ]
-}
-
-private string labelEvent() {
-  // - They cannot contain a escaping \
-  result = ["github\\.event\\.pull_request\\.head\\.label",]
-}
-
-private string emailEvent() {
-  // `echo${IFS}hello`@domain.com
-  result =
-    [
-      "github\\.event\\.head_commit\\.author\\.email",
-      "github\\.event\\.head_commit\\.committer\\.email",
-      "github\\.event\\.commits\\[[0-9]+\\]\\.author\\.email",
-      "github\\.event\\.commits\\[[0-9]+\\]\\.committer\\.email",
-      "github\\.event\\.merge_group\\.committer\\.email",
-      "github\\.event\\.workflow_run\\.head_commit\\.author\\.email",
-      "github\\.event\\.workflow_run\\.head_commit\\.committer\\.email",
-    ]
-}
-
-private string usernameEvent() {
-  // All characters must be either a hyphen (-) or alphanumeric
-  result =
-    [
-      "github\\.event\\.head_commit\\.author\\.name",
-      "github\\.event\\.head_commit\\.committer\\.name",
-      "github\\.event\\.commits\\[[0-9]+\\]\\.author\\.name",
-      "github\\.event\\.commits\\[[0-9]+\\]\\.committer\\.name",
-      "github\\.event\\.merge_group\\.committer\\.name",
-      "github\\.event\\.workflow_run\\.head_commit\\.author\\.name",
-      "github\\.event\\.workflow_run\\.head_commit\\.committer\\.name",
-    ]
-}
-
-private string pathEvent() {
-  result =
-    [
-      "github\\.event\\.workflow\\.path", "github\\.event\\.workflow_run\\.path",
-      "github\\.event\\.workflow_run\\.referenced_workflows\\.path",
-    ]
-}
-
-private string jsonEvent() {
-  result =
-    [
-      "github", "github\\.event", "github\\.event\\.client_payload", "github\\.event\\.comment",
-      "github\\.event\\.commits", "github\\.event\\.discussion", "github\\.event\\.head_commit",
-      "github\\.event\\.head_commit\\.author", "github\\.event\\.head_commit\\.committer",
-      "github\\.event\\.issue", "github\\.event\\.merge_group",
-      "github\\.event\\.merge_group\\.committer", "github\\.event\\.pull_request",
-      "github\\.event\\.pull_request\\.head", "github\\.event\\.pull_request\\.head\\.repo",
-      "github\\.event\\.pages", "github\\.event\\.review", "github\\.event\\.workflow",
-      "github\\.event\\.workflow_run", "github\\.event\\.workflow_run\\.head_branch",
-      "github\\.event\\.workflow_run\\.head_commit",
-      "github\\.event\\.workflow_run\\.head_commit\\.author",
-      "github\\.event\\.workflow_run\\.head_commit\\.committer",
-      "github\\.event\\.workflow_run\\.head_repository",
-      "github\\.event\\.workflow_run\\.pull_requests",
-    ]
-  or
-  result = titleEvent()
-  or
-  result = urlEvent()
-  or
-  result = textEvent()
-  or
-  result = branchEvent()
-  or
-  result = labelEvent()
-  or
-  result = emailEvent()
-  or
-  result = usernameEvent()
-  or
-  result = pathEvent()
-}
-
 class GitHubCtxSource extends RemoteFlowSource {
   string flag;
 
@@ -184,23 +54,8 @@ class GitHubEventCtxSource extends RemoteFlowSource {
         or
         exists(e.getEnclosingCompositeAction())
       ) and
-      (
-        regexp = titleEvent() and flag = "title"
-        or
-        regexp = urlEvent() and flag = "url"
-        or
-        regexp = textEvent() and flag = "text"
-        or
-        regexp = branchEvent() and flag = "branch"
-        or
-        regexp = labelEvent() and flag = "label"
-        or
-        regexp = emailEvent() and flag = "email"
-        or
-        regexp = usernameEvent() and flag = "username"
-        or
-        regexp = pathEvent() and flag = "filename"
-      ) and
+      untrustedEventPropertiesDataModel(regexp, flag) and
+      not flag = "json" and
       normalizeExpr(context).regexpMatch("(?i)\\s*" + wrapRegexp(regexp) + ".*")
     )
   }
@@ -212,9 +67,10 @@ class GitHubEventJsonSource extends RemoteFlowSource {
   string flag;
 
   GitHubEventJsonSource() {
-    exists(Expression e, string context |
+    exists(Expression e, string context, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
+      untrustedEventPropertiesDataModel(regexp, _) and
       (
         // only contexts for the triggering events are considered tainted.
         // eg: for `pull_request`, we only consider `github.event.pull_request`
@@ -223,7 +79,7 @@ class GitHubEventJsonSource extends RemoteFlowSource {
             context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         ) and
-        normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(jsonEvent()) + ".*")
+        normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
         or
         // github.event is taintes for all triggers
         contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and

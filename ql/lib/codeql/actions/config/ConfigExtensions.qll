@@ -39,3 +39,8 @@ extensible predicate poisonableLocalScriptsDataModel(string regexp, int group);
  */
 extensible predicate poisonableActionsDataModel(string action);
 
+/**
+ * Holds for event properties that can be user-controlled.
+ */
+extensible predicate untrustedEventPropertiesDataModel(string property, string kind);
+

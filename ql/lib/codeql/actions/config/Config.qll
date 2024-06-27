@@ -72,3 +72,13 @@ predicate poisonableLocalScriptsDataModel(string regexp, int group) {
 predicate poisonableActionsDataModel(string action) {
   Extensions::poisonableActionsDataModel(action)
 }
+
+/**
+ * MaD models for for event properties that can be user-controlled.
+ * Fields:
+ *    - property: event property
+ *    - kind: property kind
+ */
+predicate untrustedEventPropertiesDataModel(string property, string kind) {
+  Extensions::untrustedEventPropertiesDataModel(property, kind)
+}
