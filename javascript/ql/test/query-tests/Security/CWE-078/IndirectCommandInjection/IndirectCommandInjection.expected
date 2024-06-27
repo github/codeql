@@ -74,16 +74,16 @@ edges
 | command-line-parameter-command-injection.js:76:15:76:26 | process.argv | command-line-parameter-command-injection.js:76:15:76:35 | process ... lice(2) | provenance |  |
 | command-line-parameter-command-injection.js:76:15:76:35 | process ... lice(2) | command-line-parameter-command-injection.js:76:8:76:35 | argv | provenance |  |
 | command-line-parameter-command-injection.js:79:22:79:35 | minimist(argv) | command-line-parameter-command-injection.js:79:10:79:39 | "cmd.sh ... gv).foo | provenance |  |
-| command-line-parameter-command-injection.js:79:31:79:34 | argv | command-line-parameter-command-injection.js:79:22:79:35 | minimist(argv) | provenance |  |
+| command-line-parameter-command-injection.js:79:31:79:34 | argv | command-line-parameter-command-injection.js:79:22:79:35 | minimist(argv) | provenance | Config |
 | command-line-parameter-command-injection.js:82:22:82:50 | subarg( ... ice(2)) | command-line-parameter-command-injection.js:82:10:82:54 | "cmd.sh ... 2)).foo | provenance |  |
 | command-line-parameter-command-injection.js:82:29:82:40 | process.argv | command-line-parameter-command-injection.js:82:29:82:49 | process ... lice(2) | provenance |  |
-| command-line-parameter-command-injection.js:82:29:82:49 | process ... lice(2) | command-line-parameter-command-injection.js:82:22:82:50 | subarg( ... ice(2)) | provenance |  |
+| command-line-parameter-command-injection.js:82:29:82:49 | process ... lice(2) | command-line-parameter-command-injection.js:82:22:82:50 | subarg( ... ice(2)) | provenance | Config |
 | command-line-parameter-command-injection.js:85:22:85:55 | yargsPa ... ice(2)) | command-line-parameter-command-injection.js:85:10:85:59 | "cmd.sh ... 2)).foo | provenance |  |
 | command-line-parameter-command-injection.js:85:34:85:45 | process.argv | command-line-parameter-command-injection.js:85:34:85:54 | process ... lice(2) | provenance |  |
-| command-line-parameter-command-injection.js:85:34:85:54 | process ... lice(2) | command-line-parameter-command-injection.js:85:22:85:55 | yargsPa ... ice(2)) | provenance |  |
+| command-line-parameter-command-injection.js:85:34:85:54 | process ... lice(2) | command-line-parameter-command-injection.js:85:22:85:55 | yargsPa ... ice(2)) | provenance | Config |
 | command-line-parameter-command-injection.js:88:6:88:37 | flags | command-line-parameter-command-injection.js:89:22:89:26 | flags | provenance |  |
 | command-line-parameter-command-injection.js:88:14:88:37 | args.pa ... s.argv) | command-line-parameter-command-injection.js:88:6:88:37 | flags | provenance |  |
-| command-line-parameter-command-injection.js:88:25:88:36 | process.argv | command-line-parameter-command-injection.js:88:14:88:37 | args.pa ... s.argv) | provenance |  |
+| command-line-parameter-command-injection.js:88:25:88:36 | process.argv | command-line-parameter-command-injection.js:88:14:88:37 | args.pa ... s.argv) | provenance | Config |
 | command-line-parameter-command-injection.js:89:22:89:26 | flags | command-line-parameter-command-injection.js:89:10:89:30 | "cmd.sh ... ags.foo | provenance |  |
 | command-line-parameter-command-injection.js:91:6:91:38 | flags | command-line-parameter-command-injection.js:92:22:92:26 | flags | provenance |  |
 | command-line-parameter-command-injection.js:91:14:91:38 | require ... .spec}) | command-line-parameter-command-injection.js:91:6:91:38 | flags | provenance |  |

@@ -25,6 +25,7 @@ flow
 | app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
 | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
 | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
 | projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
 | projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
