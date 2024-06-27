@@ -16,6 +16,7 @@
 import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
+import codeql.actions.security.ControlChecks
 
 from LocalJob j, PRHeadCheckoutStep checkout
 where

@@ -12,6 +12,7 @@
  */
 
 import codeql.actions.security.UntrustedCheckoutQuery
+import codeql.actions.security.ControlChecks
 
 from LocalJob job, LabelControlCheck check, MutableRefCheckoutStep checkout, Event event
 where

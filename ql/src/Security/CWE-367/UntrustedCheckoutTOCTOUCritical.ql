@@ -14,6 +14,7 @@
 import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
+import codeql.actions.security.ControlChecks
 
 from ControlCheck check, MutableRefCheckoutStep checkout
 where
