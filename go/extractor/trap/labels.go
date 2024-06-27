@@ -3,6 +3,7 @@ package trap
 import (
 	"fmt"
 	"go/types"
+	"log"
 
 	"github.com/github/codeql-go/extractor/util"
 )
@@ -119,15 +120,12 @@ func (l *Labeler) ScopeID(scope *types.Scope, pkg *types.Package) Label {
 func (l *Labeler) LookupObjectID(object types.Object, typelbl Label) (Label, bool) {
 	label, exists := l.objectLabels[object]
 	if !exists {
-		if object.Parent() == nil {
-			// blank identifiers and the pseudo-package `.` (from `import . "..."` imports) can only be referenced
-			// once, so we can use a fresh label for them
-			if object.Name() == "_" || object.Name() == "." {
-				label = l.FreshID()
-				l.objectLabels[object] = label
-				return label, false
-			}
-			label = InvalidLabel
+		// blank identifiers and the pseudo-package `.` (from `import . "..."` imports) do not have
+		// a parent scope, so we have to deal with them separately. They can only be referenced
+		// once, so we can use a fresh label for them.
+		if object.Parent() == nil && (object.Name() == "_" || object.Name() == ".") {
+			label = l.FreshID()
+			l.objectLabels[object] = label
 		} else {
 			label, exists = l.ScopedObjectID(object, func() Label { return typelbl })
 		}
@@ -147,20 +145,25 @@ func (l *Labeler) LookupObjectID(object types.Object, typelbl Label) (Label, boo
 func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label) (Label, bool) {
 	label, exists := l.objectLabels[object]
 	if !exists {
-		scope := object.Parent()
-		if scope == nil {
-			panic(fmt.Sprintf("Object has no scope: %v :: %v.\n", object,
-				l.tw.Package.Fset.Position(object.Pos())))
+		if meth := findMethodWithGivenReceiver(object); meth != nil {
+			// associate method receiver objects to special keys, because those can be
+			// referenced from other files via their method
+			methlbl, _ := l.MethodID(meth, getTypeLabel())
+			label, _ = l.ReceiverObjectID(object, methlbl)
 		} else {
-			if meth := findMethodWithGivenReceiver(object); meth != nil {
-				// associate method receiver objects to special keys, because those can be
-				// referenced from other files via their method
-				methlbl, _ := l.MethodID(meth, getTypeLabel())
-				label, _ = l.ReceiverObjectID(object, methlbl)
+			scope := object.Parent()
+			var scopeLbl Label
+			if scope == nil {
+				// Something has gone wrong if we get here, but we can't panic because
+				// we want extraction to be deterministic, to avoid alerts appearing and
+				// disappearing.
+				log.Printf("Error: Object has no scope: %v :: %v.\n", object,
+					l.tw.Package.Fset.Position(object.Pos()))
+				scopeLbl = l.FreshID()
 			} else {
-				scopeLbl := l.ScopeID(scope, object.Pkg())
-				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
+				scopeLbl = l.ScopeID(scope, object.Pkg())
 			}
+			label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
 		}
 		l.objectLabels[object] = label
 	}
