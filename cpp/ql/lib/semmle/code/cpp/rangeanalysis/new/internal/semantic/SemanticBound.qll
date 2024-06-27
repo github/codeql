@@ -17,7 +17,7 @@ class SemBound instanceof Specific::Bound {
 
   final SemLocation getLocation() { result = super.getLocation() }
 
-  final SemExpr getExpr(int delta) { result = Specific::getBoundExpr(this, delta) }
+  final SemExpr getExpr(QlBuiltins::BigInt delta) { result = Specific::getBoundExpr(this, delta) }
 }
 
 /**

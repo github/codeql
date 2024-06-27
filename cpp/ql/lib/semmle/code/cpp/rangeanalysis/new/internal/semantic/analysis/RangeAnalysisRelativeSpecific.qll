@@ -3,12 +3,11 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import RangeAnalysisImpl
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 private import codeql.rangeanalysis.RangeAnalysis
 
-module CppLangImplRelative implements LangSig<Sem, FloatDelta> {
+module CppLangImplRelative implements LangSig<Sem> {
   /**
    * Ignore the bound on this expression.
    *
@@ -16,15 +15,17 @@ module CppLangImplRelative implements LangSig<Sem, FloatDelta> {
    * removed once we have the new implementation matching the old results exactly.
    */
   predicate ignoreExprBound(SemExpr e) {
-    exists(boolean upper, float delta, ConstantBounds::SemZeroBound b, float lb, float ub |
+    exists(
+      boolean upper, QlBuiltins::BigInt delta, ConstantBounds::SemZeroBound b, float lb, float ub
+    |
       ConstantStage::semBounded(e, b, delta, upper, _) and
       typeBounds(e.getSemType(), lb, ub) and
       (
         upper = false and
-        delta < lb
+        delta < lb.toString().toBigInt()
         or
         upper = true and
-        delta > ub
+        delta > ub.toString().toBigInt()
       )
     )
   }
@@ -51,12 +52,14 @@ module CppLangImplRelative implements LangSig<Sem, FloatDelta> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }
+  predicate hasConstantBound(SemExpr e, QlBuiltins::BigInt bound, boolean upper) { none() }
 
   /**
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate additionalBoundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) { none() }
+  predicate additionalBoundFlowStep(SemExpr e2, SemExpr e1, QlBuiltins::BigInt delta, boolean upper) {
+    none()
+  }
 
   predicate includeConstantBounds() { none() }
 

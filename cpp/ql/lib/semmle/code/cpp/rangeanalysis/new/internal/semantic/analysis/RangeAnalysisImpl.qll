@@ -1,6 +1,5 @@
 private import RangeAnalysisConstantSpecific
 private import RangeAnalysisRelativeSpecific
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExpr
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticCFG
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticGuard
@@ -11,6 +10,7 @@ private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticType 
 private import SemanticType
 private import codeql.rangeanalysis.RangeAnalysis
 private import ConstantAnalysis as ConstantAnalysis
+private import FloatDelta
 
 module Sem implements Semantic {
   class Expr = SemExpr;
@@ -97,7 +97,7 @@ module Sem implements Semantic {
 
   class SsaExplicitUpdate = SemSsaExplicitUpdate;
 
-  predicate additionalValueFlowStep(SemExpr dest, SemExpr src, int delta) { none() }
+  predicate additionalValueFlowStep(SemExpr dest, SemExpr src, QlBuiltins::BigInt delta) { none() }
 
   predicate conversionCannotOverflow(Type fromType, Type toType) {
     SemanticType::conversionCannotOverflow(fromType, toType)
@@ -106,10 +106,10 @@ module Sem implements Semantic {
 
 module SignAnalysis implements SignAnalysisSig<Sem> {
   private import SignAnalysisCommon as SA
-  import SA::SignAnalysis<FloatDelta>
+  import SA::SignAnalysis
 }
 
-module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
+module ConstantBounds implements BoundSig<SemLocation, Sem> {
   class SemBound instanceof SemanticBound::SemBound {
     SemBound() {
       this instanceof SemanticBound::SemZeroBound
@@ -121,7 +121,7 @@ module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
 
     SemLocation getLocation() { result = super.getLocation() }
 
-    SemExpr getExpr(float delta) { result = super.getExpr(delta) }
+    SemExpr getExpr(QlBuiltins::BigInt delta) { result = super.getExpr(delta) }
   }
 
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
@@ -131,7 +131,7 @@ module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   }
 }
 
-module RelativeBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
+module RelativeBounds implements BoundSig<SemLocation, Sem> {
   class SemBound instanceof SemanticBound::SemBound {
     SemBound() { not this instanceof SemanticBound::SemZeroBound }
 
@@ -139,7 +139,7 @@ module RelativeBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
 
     SemLocation getLocation() { result = super.getLocation() }
 
-    SemExpr getExpr(float delta) { result = super.getExpr(delta) }
+    SemExpr getExpr(QlBuiltins::BigInt delta) { result = super.getExpr(delta) }
   }
 
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
@@ -149,13 +149,13 @@ module RelativeBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   }
 }
 
-module AllBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
+module AllBounds implements BoundSig<SemLocation, Sem> {
   class SemBound instanceof SemanticBound::SemBound {
     string toString() { result = super.toString() }
 
     SemLocation getLocation() { result = super.getLocation() }
 
-    SemExpr getExpr(float delta) { result = super.getExpr(delta) }
+    SemExpr getExpr(QlBuiltins::BigInt delta) { result = super.getExpr(delta) }
   }
 
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
@@ -169,16 +169,16 @@ private module ModulusAnalysisInstantiated implements ModulusAnalysisSig<Sem> {
   class ModBound = AllBounds::SemBound;
 
   private import codeql.rangeanalysis.ModulusAnalysis as MA
-  import MA::ModulusAnalysis<SemLocation, Sem, FloatDelta, AllBounds>
+  import MA::ModulusAnalysis<SemLocation, Sem, AllBounds>
 }
 
 module ConstantStage =
-  RangeStage<SemLocation, Sem, FloatDelta, AllBounds, FloatOverflow, CppLangImplConstant,
-    SignAnalysis, ModulusAnalysisInstantiated>;
+  RangeStage<SemLocation, Sem, AllBounds, FloatOverflow, CppLangImplConstant, SignAnalysis,
+    ModulusAnalysisInstantiated>;
 
 module RelativeStage =
-  RangeStage<SemLocation, Sem, FloatDelta, AllBounds, FloatOverflow, CppLangImplRelative,
-    SignAnalysis, ModulusAnalysisInstantiated>;
+  RangeStage<SemLocation, Sem, AllBounds, FloatOverflow, CppLangImplRelative, SignAnalysis,
+    ModulusAnalysisInstantiated>;
 
 private newtype TSemReason =
   TSemNoReason() or
@@ -204,7 +204,7 @@ import Public
 
 module Public {
   predicate semBounded(
-    SemExpr e, SemanticBound::SemBound b, float delta, boolean upper, SemReason reason
+    SemExpr e, SemanticBound::SemBound b, QlBuiltins::BigInt delta, boolean upper, SemReason reason
   ) {
     ConstantStage::semBounded(e, b, delta, upper, constantReason(reason))
     or
