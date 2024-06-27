@@ -33,33 +33,33 @@ private module Impl {
   }
 
   /** Holds if SSA definition `def` equals `e + delta`. */
-  predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, int delta) {
+  predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, QlBuiltins::BigInt delta) {
     exists(ControlFlow::Node cfn | cfn = def.getControlFlowNode() |
-      e = cfn.(ExprNode::Assignment).getRValue() and delta = 0
+      e = cfn.(ExprNode::Assignment).getRValue() and delta = 0.toBigInt()
       or
-      e = cfn.(ExprNode::PostIncrExpr).getOperand() and delta = 1
+      e = cfn.(ExprNode::PostIncrExpr).getOperand() and delta = 1.toBigInt()
       or
-      e = cfn.(ExprNode::PreIncrExpr).getOperand() and delta = 1
+      e = cfn.(ExprNode::PreIncrExpr).getOperand() and delta = 1.toBigInt()
       or
-      e = cfn.(ExprNode::PostDecrExpr).getOperand() and delta = -1
+      e = cfn.(ExprNode::PostDecrExpr).getOperand() and delta = -1.toBigInt()
       or
-      e = cfn.(ExprNode::PreDecrExpr).getOperand() and delta = -1
+      e = cfn.(ExprNode::PreDecrExpr).getOperand() and delta = -1.toBigInt()
     )
   }
 
   /** Holds if `e1 + delta` equals `e2`. */
-  predicate valueFlowStep(ExprNode e2, ExprNode e1, int delta) {
-    e2.(ExprNode::AssignExpr).getRValue() = e1 and delta = 0
+  predicate valueFlowStep(ExprNode e2, ExprNode e1, QlBuiltins::BigInt delta) {
+    e2.(ExprNode::AssignExpr).getRValue() = e1 and delta = 0.toBigInt()
     or
-    e2.(ExprNode::UnaryPlusExpr).getOperand() = e1 and delta = 0
+    e2.(ExprNode::UnaryPlusExpr).getOperand() = e1 and delta = 0.toBigInt()
     or
-    e2.(ExprNode::PostIncrExpr).getOperand() = e1 and delta = 0
+    e2.(ExprNode::PostIncrExpr).getOperand() = e1 and delta = 0.toBigInt()
     or
-    e2.(ExprNode::PostDecrExpr).getOperand() = e1 and delta = 0
+    e2.(ExprNode::PostDecrExpr).getOperand() = e1 and delta = 0.toBigInt()
     or
-    e2.(ExprNode::PreIncrExpr).getOperand() = e1 and delta = 1
+    e2.(ExprNode::PreIncrExpr).getOperand() = e1 and delta = 1.toBigInt()
     or
-    e2.(ExprNode::PreDecrExpr).getOperand() = e1 and delta = -1
+    e2.(ExprNode::PreDecrExpr).getOperand() = e1 and delta = -1.toBigInt()
     or
     exists(ConstantIntegerExpr x |
       e2.(ExprNode::AddExpr).getAnOperand() = e1 and
@@ -77,7 +77,7 @@ private module Impl {
     // Conditional expressions with only one branch can happen either
     // because of pruning or because of Boolean splitting. In such cases
     // the conditional expression has the same value as the branch.
-    delta = 0 and
+    delta = 0.toBigInt() and
     e2 =
       any(ExprNode::ConditionalExpr ce |
         e1 = ce.getTrueExpr() and
@@ -112,7 +112,7 @@ private module Impl {
   }
 
   private Guard eqFlowCondAbs(
-    Definition def, ExprNode e, int delta, boolean isEq, G::AbstractValue v
+    Definition def, ExprNode e, QlBuiltins::BigInt delta, boolean isEq, G::AbstractValue v
   ) {
     exists(boolean eqpolarity |
       result.isEquality(ssaRead(def, delta), e, eqpolarity) and
@@ -131,7 +131,9 @@ private module Impl {
    * - `isEq = true`  : `def == e + delta`
    * - `isEq = false` : `def != e + delta`
    */
-  Guard eqFlowCond(Definition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
+  Guard eqFlowCond(
+    Definition def, ExprNode e, QlBuiltins::BigInt delta, boolean isEq, boolean testIsTrue
+  ) {
     exists(BooleanValue v |
       result = eqFlowCondAbs(def, e, delta, isEq, v) and
       testIsTrue = v.getValue()
