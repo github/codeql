@@ -10681,6 +10681,10 @@ ir.cpp:
 #  960|       getExpr(): [NewArrayExpr] new[]
 #  960|           Type = [IntPointerType] int *
 #  960|           ValueCategory = prvalue
+#  960|         getExtent(): [Literal] 10
+#  960|             Type = [IntType] int
+#  960|             Value = [Literal] 10
+#  960|             ValueCategory = prvalue
 #  961|     getStmt(1): [ExprStmt] ExprStmt
 #  961|       getExpr(): [NewArrayExpr] new[]
 #  961|           Type = [IntPointerType] int *
@@ -10747,6 +10751,10 @@ ir.cpp:
 #  965|               Type = [FloatType] float
 #  965|               Value = [Literal] 1.0
 #  965|               ValueCategory = prvalue
+#  965|         getExtent(): [Literal] 10
+#  965|             Type = [IntType] int
+#  965|             Value = [Literal] 10
+#  965|             ValueCategory = prvalue
 #  966|     getStmt(6): [ExprStmt] ExprStmt
 #  966|       getExpr(): [NewArrayExpr] new[]
 #  966|           Type = [PointerType] DefaultCtorWithDefaultParam *

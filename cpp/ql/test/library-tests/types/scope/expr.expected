@@ -28,7 +28,9 @@
 | scope.cpp:24:13:24:28 | (int)... | scope.cpp:6:6:6:7 | g1 |
 | scope.cpp:24:13:24:28 | sizeof(int[800]) | scope.cpp:6:6:6:7 | g1 |
 | scope.cpp:24:24:24:26 | 800 | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:25:14:25:25 | 900 | scope.cpp:6:6:6:7 | g1 |
 | scope.cpp:25:14:25:25 | new[] | scope.cpp:6:6:6:7 | g1 |
 | scope.cpp:25:22:25:24 | 900 | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:26:14:26:26 | 1000 | scope.cpp:6:6:6:7 | g1 |
 | scope.cpp:26:14:26:26 | new[] | scope.cpp:6:6:6:7 | g1 |
 | scope.cpp:26:22:26:25 | 1000 | scope.cpp:6:6:6:7 | g1 |
