@@ -18,7 +18,7 @@ extensions:
       # See
       #  - https://docs.python.org/3/glossary.html#term-mapping 
       #  - https://docs.python.org/3/library/stdtypes.html#dict.get
-      - ["_collections_abc.Mapping", "Member[get]", "Argument[1,default:]", "ReturnValue", "taint"]
+      - ["collections.abc.Mapping", "Member[get]", "Argument[1,default:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser
       - ["argparse.ArgumentParser", "Member[_parse_known_args,_read_args_from_files]", "Argument[0,arg_strings:]", "ReturnValue", "taint"]
       - ["argparse.ArgumentParser", "Member[parse_args,parse_known_args]", "Argument[0,args:]", "ReturnValue", "taint"]
@@ -88,7 +88,7 @@ extensions:
       # See https://docs.python.org/3/library/shlex.html#shlex.quote
       - ["shlex", "Member[quote]", "Argument[0,s:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/shutil.html#shutil.rmtree
-      - ["shutil", "Member[rmtree]", "Argument[0,path:]", "Argument[2,onerror:,onexc:].Argument[1]", "taint"]
+      - ["shutil", "Member[rmtree]", "Argument[0,path:]", "Argument[2,onerror:,onexc:].Parameter[1]", "taint"]
       # See https://docs.python.org/3/library/shutil.html#shutil.which
       - ["shutil", "Member[which]", "Argument[0,cmd:,2,path:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/subprocess.html#subprocess.Popen
