@@ -71,7 +71,6 @@ extensions:
       - ["System.ServiceProcess", "ServiceControllerPermissionEntryCollection", "get_Item", "(System.Int32)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermissionEntryCollection", "set_Item", "(System.Int32,System.ServiceProcess.ServiceControllerPermissionEntry)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceProcessDescriptionAttribute", "ServiceProcessDescriptionAttribute", "(System.String)", "summary", "df-generated"]
-      - ["System.ServiceProcess", "ServiceProcessDescriptionAttribute", "get_Description", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "SessionChangeDescription", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.ServiceProcess", "SessionChangeDescription", "Equals", "(System.ServiceProcess.SessionChangeDescription)", "summary", "df-generated"]
       - ["System.ServiceProcess", "SessionChangeDescription", "GetHashCode", "()", "summary", "df-generated"]

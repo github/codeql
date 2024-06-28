@@ -15,4 +15,3 @@ extensions:
       - ["System.Timers", "Timer", "Timer", "(System.Double)", "summary", "df-generated"]
       - ["System.Timers", "Timer", "Timer", "(System.TimeSpan)", "summary", "df-generated"]
       - ["System.Timers", "TimersDescriptionAttribute", "TimersDescriptionAttribute", "(System.String)", "summary", "df-generated"]
-      - ["System.Timers", "TimersDescriptionAttribute", "get_Description", "()", "summary", "df-generated"]

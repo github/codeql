@@ -6,8 +6,10 @@ extensions:
     data:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", False, "PushDataFrame", "(TFrame)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear+FrameData", False, "get_Stem", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", False, "CalculateStem", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", False, "CalculateStem", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRagged+FrameData", False, "get_Stem", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRagged", False, "CalculateStem", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRagged", False, "CalculateStem", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all

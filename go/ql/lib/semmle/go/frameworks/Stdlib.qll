@@ -44,30 +44,6 @@ import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
 import semmle.go.frameworks.stdlib.Unsafe
 
-/**
- * A model of the built-in `append` function, which propagates taint from its arguments to its
- * result.
- */
-private class AppendFunction extends TaintTracking::FunctionModel {
-  AppendFunction() { this = Builtin::append() }
-
-  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-    inp.isParameter(_) and outp.isResult()
-  }
-}
-
-/**
- * A model of the built-in `copy` function, which propagates taint from its second argument
- * to its first.
- */
-private class CopyFunction extends TaintTracking::FunctionModel {
-  CopyFunction() { this = Builtin::copy() }
-
-  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-    inp.isParameter(1) and outp.isParameter(0)
-  }
-}
-
 /** Provides a class for modeling functions which convert strings into integers. */
 module IntegerParser {
   /**

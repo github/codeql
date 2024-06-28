@@ -1,6 +1,6 @@
 {
   "markdownMessage": "A Maven process was aborted because it didn't write to the console for 5 seconds. Consider either lenghtening the timeout if appropriate by setting CODEQL_EXTRACTOR_JAVA_BUILDLESS_CHILD_PROCESS_IDLE_TIMEOUT to a higher value or zero for no timeout, or else investigate why Maven timed out. Java analysis will continue, but the analysis may be of reduced quality.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/buildless/maven-timed-out",
@@ -14,7 +14,7 @@
 }
 {
   "markdownMessage": "Build tool(s) should have been able to provide a recommended classpath but the attempt failed. Extraction will continue, but external dependencies will be inferred from the Java package names used. Consider troubleshooting the build tool error or using a build mode other than 'none'.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/buildless/classpath-from-tool-failed",
@@ -84,7 +84,7 @@
 }
 {
   "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.2:graph` failed. This means precise dependency information will be unavailable, and so dependencies will be guessed based on Java package names. Consider investigating why this plugin fails to run.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/buildless/depgraph-maven-plugin-failed",

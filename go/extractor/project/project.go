@@ -3,6 +3,7 @@ package project
 import (
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -36,6 +37,27 @@ type GoModule struct {
 	Module *modfile.File // The parsed contents of the `go.mod` file
 }
 
+// Tries to find the Go toolchain version required for this module.
+func (module *GoModule) RequiredGoVersion() util.SemVer {
+	if module.Module != nil && module.Module.Toolchain != nil {
+		return util.NewSemVer(module.Module.Toolchain.Name)
+	} else if module.Module != nil && module.Module.Go != nil {
+		return util.NewSemVer(module.Module.Go.Version)
+	} else {
+		return tryReadGoDirective(module.Path)
+	}
+}
+
+// Runs `go mod tidy` for this module.
+func (module *GoModule) Tidy() *exec.Cmd {
+	return toolchain.TidyModule(filepath.Dir(module.Path))
+}
+
+// Runs `go mod vendor -e` for this module.
+func (module *GoModule) Vendor() *exec.Cmd {
+	return toolchain.VendorModule(filepath.Dir(module.Path))
+}
+
 // Represents information about a Go project workspace: this may either be a folder containing
 // a `go.work` file or a collection of `go.mod` files.
 type GoWorkspace struct {
@@ -45,6 +67,8 @@ type GoWorkspace struct {
 	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
 	ModMode       ModMode                 // A value indicating which module mode to use for this workspace
 	Extracted     bool                    // A value indicating whether this workspace was extracted successfully
+
+	ShouldInstallDependencies bool // A value indicating whether dependencies should be installed for this module
 }
 
 // Represents a nullable version string.
@@ -54,24 +78,23 @@ type GoVersionInfo = util.SemVer
 // 1. The Go version specified in the `go.work` file, if any.
 // 2. The greatest Go version specified in any `go.mod` file, if any.
 func (workspace *GoWorkspace) RequiredGoVersion() util.SemVer {
-	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
-		// If we have parsed a `go.work` file, return the version number from it.
+	// If we have parsed a `go.work` file, we prioritise versions from it over those in individual `go.mod`
+	// files. We are interested in toolchain versions, so if there is an explicit toolchain declaration in
+	// a `go.work` file, we use that. Otherwise, we fall back to the language version in the `go.work` file
+	// and use that as toolchain version. If we didn't parse a `go.work` file, then we try to find the
+	// greatest version contained in `go.mod` files.
+	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Toolchain != nil {
+		return util.NewSemVer(workspace.WorkspaceFile.Toolchain.Name)
+	} else if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
 		return util.NewSemVer(workspace.WorkspaceFile.Go.Version)
 	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
 		var greatestVersion util.SemVer = nil
 		for _, module := range workspace.Modules {
-			if module.Module != nil && module.Module.Go != nil {
-				// If we have parsed the file, retrieve the version number we have already obtained.
-				modVersion := util.NewSemVer(module.Module.Go.Version)
-				if greatestVersion == nil || modVersion.IsNewerThan(greatestVersion) {
-					greatestVersion = modVersion
-				}
-			} else {
-				modVersion := tryReadGoDirective(module.Path)
-				if modVersion != nil && (greatestVersion == nil || modVersion.IsNewerThan(greatestVersion)) {
-					greatestVersion = modVersion
-				}
+			modVersion := module.RequiredGoVersion()
+
+			if modVersion != nil && (greatestVersion == nil || modVersion.IsNewerThan(greatestVersion)) {
+				greatestVersion = modVersion
 			}
 		}
 
@@ -434,6 +457,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	}
 
 	goModDirs := util.GetParentDirs(goModPaths)
+	newGoModDirs := []string{}
 	straySourceFiles := util.GoFilesOutsideDirs(".", goModDirs...)
 	if len(straySourceFiles) > 0 {
 		if emitDiagnostics {
@@ -450,6 +474,27 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			for _, component := range components {
 				path = filepath.Join(path, component)
 
+				// If this path is already covered by a new `go.mod` file we will initialise,
+				// then we don't need a more deeply-nested one. Keeping a separate list of
+				// `go.mod` files we are initialising in `newGoModDirs` allows us to descend as
+				// deep as we need to into the directory structure to place new `go.mod` files
+				// that don't conflict with pre-existing ones, but means we won't descend past
+				// the ones we are initialising ourselves. E.g. consider the following layout:
+				//
+				// - pre-existing/go.mod
+				// - no-go-mod/main.go
+				// - no-go-mod/sub-dir/foo.go
+				//
+				// Here, we want to initialise a `go.mod` in `no-go-mod/` only. This works fine
+				// without the `newGoModDirs` check below. However, if we added `no-go-mod/` to
+				// `goModDirs`, we would recurse all the way into `no-go-mod/sub-dir/` and
+				// initialise another `go.mod` file there, which we do not want. If we were to
+				// add an `else` branch to the `goModDirs` check, then we wouldn't be able to
+				// descend into `no-go-mod/` for the `go.mod` file we want.
+				if startsWithAnyOf(path, newGoModDirs) {
+					break
+				}
+
 				// Try to initialize a `go.mod` file automatically for the stray source files if
 				// doing so would not place it in a parent directory of an existing `go.mod` file.
 				if !startsWithAnyOf(path, goModDirs) {
@@ -458,7 +503,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 						DepMode: GoGetNoModules,
 						ModMode: ModUnset,
 					})
-					goModDirs = append(goModDirs, path)
+					newGoModDirs = append(newGoModDirs, path)
 					break
 				}
 			}

@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["ILLink.Shared.DataFlow", "Box<T>", False, "Box", "(T)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", False, "Clone", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", False, "DefaultValueDictionary", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", False, "DefaultValueDictionary", "(TValue)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -33,7 +34,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["ILLink.Shared.DataFlow", "Box<T>", "Box", "(T)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "Equals", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "GetHashCode", "()", "summary", "df-generated"]

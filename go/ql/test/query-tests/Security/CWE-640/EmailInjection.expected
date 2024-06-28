@@ -1,23 +1,23 @@
 edges
-| EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get | provenance | MaD:655 |
+| EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get | provenance | MaD:658 |
 | EmailBad.go:9:10:9:29 | call to Get | EmailBad.go:12:56:12:67 | type conversion | provenance |  |
-| main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion | provenance | Src:MaD:673  |
-| main.go:37:21:37:31 | call to Referer | main.go:41:25:41:38 | untrustedInput | provenance | Src:MaD:673  |
-| main.go:41:25:41:38 | untrustedInput | main.go:40:3:40:7 | definition of write | provenance | MaD:552 |
-| main.go:46:21:46:31 | call to Referer | main.go:52:46:52:59 | untrustedInput | provenance | Src:MaD:673  |
-| main.go:46:21:46:31 | call to Referer | main.go:53:52:53:65 | untrustedInput | provenance | Src:MaD:673  |
-| main.go:58:21:58:31 | call to Referer | main.go:60:47:60:60 | untrustedInput | provenance | Src:MaD:673  |
+| main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion | provenance | Src:MaD:676  |
+| main.go:37:21:37:31 | call to Referer | main.go:41:25:41:38 | untrustedInput | provenance | Src:MaD:676  |
+| main.go:41:25:41:38 | untrustedInput | main.go:40:3:40:7 | definition of write | provenance | MaD:555 |
+| main.go:46:21:46:31 | call to Referer | main.go:52:46:52:59 | untrustedInput | provenance | Src:MaD:676  |
+| main.go:46:21:46:31 | call to Referer | main.go:53:52:53:65 | untrustedInput | provenance | Src:MaD:676  |
+| main.go:58:21:58:31 | call to Referer | main.go:60:47:60:60 | untrustedInput | provenance | Src:MaD:676  |
 | main.go:60:14:60:61 | call to NewContent | main.go:63:16:63:22 | content | provenance |  |
-| main.go:60:47:60:60 | untrustedInput | main.go:60:14:60:61 | call to NewContent | provenance | MaD:384 |
-| main.go:68:21:68:31 | call to Referer | main.go:74:47:74:60 | untrustedInput | provenance | Src:MaD:673  |
+| main.go:60:47:60:60 | untrustedInput | main.go:60:14:60:61 | call to NewContent | provenance | MaD:387 |
+| main.go:68:21:68:31 | call to Referer | main.go:74:47:74:60 | untrustedInput | provenance | Src:MaD:676  |
 | main.go:74:14:74:61 | call to NewContent | main.go:76:50:76:56 | content | provenance |  |
 | main.go:74:14:74:61 | call to NewContent | main.go:76:59:76:65 | content | provenance |  |
 | main.go:74:14:74:61 | call to NewContent | main.go:77:16:77:22 | content | provenance |  |
-| main.go:74:47:74:60 | untrustedInput | main.go:74:14:74:61 | call to NewContent | provenance | MaD:384 |
-| main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput | provenance | Src:MaD:673  |
-| main.go:82:21:82:31 | call to Referer | main.go:91:48:91:61 | untrustedInput | provenance | Src:MaD:673  |
+| main.go:74:47:74:60 | untrustedInput | main.go:74:14:74:61 | call to NewContent | provenance | MaD:387 |
+| main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput | provenance | Src:MaD:676  |
+| main.go:82:21:82:31 | call to Referer | main.go:91:48:91:61 | untrustedInput | provenance | Src:MaD:676  |
 | main.go:91:15:91:62 | call to NewContent | main.go:93:16:93:23 | content2 | provenance |  |
-| main.go:91:48:91:61 | untrustedInput | main.go:91:15:91:62 | call to NewContent | provenance | MaD:384 |
+| main.go:91:48:91:61 | untrustedInput | main.go:91:15:91:62 | call to NewContent | provenance | MaD:387 |
 nodes
 | EmailBad.go:9:10:9:17 | selection of Header | semmle.label | selection of Header |
 | EmailBad.go:9:10:9:29 | call to Get | semmle.label | call to Get |

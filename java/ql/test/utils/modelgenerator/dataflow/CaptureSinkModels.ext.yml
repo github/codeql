@@ -1,0 +1,14 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - [ "p", "Sinks", False, "sink", "(Object)", "", "Argument[0]", "test-sink", "manual" ]
+      - [ "p", "Sinks", False, "manualSinkAlreadyDefined", "(Object)", "", "Argument[0]", "test-sink", "manual" ]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - [ "p", "Sinks", "hasManualSinkNeutral", "(Object)", "sink", "manual"]

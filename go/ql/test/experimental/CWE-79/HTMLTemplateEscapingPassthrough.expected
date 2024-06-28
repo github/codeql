@@ -1,28 +1,28 @@
 edges
 | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | HTMLTemplateEscapingPassthrough.go:36:40:36:40 | a | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:35:23:35:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:35:23:35:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | HTMLTemplateEscapingPassthrough.go:41:40:41:40 | a | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:40:19:40:33 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:40:19:40:33 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | HTMLTemplateEscapingPassthrough.go:47:41:47:41 | c | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:46:29:46:43 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:46:29:46:43 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | HTMLTemplateEscapingPassthrough.go:51:44:51:44 | d | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:50:23:50:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:50:23:50:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | HTMLTemplateEscapingPassthrough.go:55:44:55:44 | e | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:54:26:54:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:54:26:54:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | HTMLTemplateEscapingPassthrough.go:59:38:59:38 | b | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:58:24:58:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:58:24:58:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | HTMLTemplateEscapingPassthrough.go:63:44:63:44 | f | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:62:27:62:41 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:62:27:62:41 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | HTMLTemplateEscapingPassthrough.go:67:38:67:38 | g | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:66:24:66:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | provenance | Src:MaD:674  |
-| HTMLTemplateEscapingPassthrough.go:75:17:75:31 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:76:38:76:44 | escaped | provenance | Src:MaD:674  |
-| HTMLTemplateEscapingPassthrough.go:81:10:81:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:84:38:84:40 | src | provenance | Src:MaD:674  |
-| HTMLTemplateEscapingPassthrough.go:89:10:89:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | provenance | Src:MaD:674  |
+| HTMLTemplateEscapingPassthrough.go:66:24:66:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | provenance | Src:MaD:677  |
+| HTMLTemplateEscapingPassthrough.go:75:17:75:31 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:76:38:76:44 | escaped | provenance | Src:MaD:677  |
+| HTMLTemplateEscapingPassthrough.go:81:10:81:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:84:38:84:40 | src | provenance | Src:MaD:677  |
+| HTMLTemplateEscapingPassthrough.go:89:10:89:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | provenance | Src:MaD:677  |
 | HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion | HTMLTemplateEscapingPassthrough.go:92:38:92:46 | converted | provenance |  |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString | HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion | provenance |  |
-| HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString | provenance | MaD:522 |
+| HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString | provenance | MaD:525 |
 nodes
 | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | semmle.label | call to UserAgent |

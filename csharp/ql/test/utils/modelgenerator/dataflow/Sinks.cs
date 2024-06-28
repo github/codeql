@@ -12,6 +12,10 @@ public class NewSinks
     public string TaintedProp { get; set; }
     public string PrivateSetTaintedProp { get; private set; }
 
+    // Sink defined in the extensible file next to the test.
+    // neutral=Sinks;NewSinks;Sink;(System.Object);summary;df-generated
+    public void Sink(object o) => throw null;
+
     // New sink
     // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
     // neutral=Sinks;NewSinks;WrapResponseWrite;(System.Object);summary;df-generated
@@ -77,5 +81,45 @@ public class NewSinks
     {
         var response = new HttpResponse();
         response.WriteFile(PrivateSetTaintedProp);
+    }
+
+    // Not a new sink because a simple type is used in an intermediate step
+    // neutral=Sinks;NewSinks;WrapResponseWriteFileSimpleType;(System.String);summary;df-generated
+    public void WrapResponseWriteFileSimpleType(string s)
+    {
+        var r = s == "hello";
+        Sink(r);
+    }
+
+    // Not a new sink as this callable has been manually modelled
+    // as sink neutral.
+    // neutral=Sinks;NewSinks;ManualSinkNeutral;(System.Object);summary;df-generated
+    public void ManualSinkNeutral(object o)
+    {
+        Sink(o);
+    }
+
+    // Not a new sink as this callable already has a manual sink.
+    // neutral=Sinks;NewSinks;ManualSinkAlreadyDefined;(System.Object);summary;df-generated
+    public void ManualSinkAlreadyDefined(object o)
+    {
+        Sink(o);
+    }
+}
+
+public class CompoundSinks
+{
+    // neutral=Sinks;CompoundSinks;WrapNewSinkProp;(Sinks.NewSinks);summary;df-generated
+    // sink=Sinks;CompoundSinks;false;WrapNewSinkProp;(Sinks.NewSinks);;Argument[0];html-injection;df-generated
+    public void WrapNewSinkProp(NewSinks ns)
+    {
+        ns.WrapPropResponseWriteFile();
+    }
+
+    // neutral=Sinks;CompoundSinks;WrapNewSinkField;(Sinks.NewSinks);summary;df-generated
+    // sink=Sinks;CompoundSinks;false;WrapNewSinkField;(Sinks.NewSinks);;Argument[0];html-injection;df-generated
+    public void WrapNewSinkField(NewSinks ns)
+    {
+        ns.WrapFieldResponseWriteFile();
     }
 }

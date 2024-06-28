@@ -1,45 +1,45 @@
 edges
-| ReflectedXss.go:11:15:11:20 | selection of Form | ReflectedXss.go:11:15:11:36 | call to Get | provenance | MaD:742 |
+| ReflectedXss.go:11:15:11:20 | selection of Form | ReflectedXss.go:11:15:11:36 | call to Get | provenance | MaD:745 |
 | ReflectedXss.go:11:15:11:36 | call to Get | ReflectedXss.go:14:44:14:51 | username | provenance |  |
-| contenttype.go:11:11:11:16 | selection of Form | contenttype.go:11:11:11:28 | call to Get | provenance | MaD:742 |
+| contenttype.go:11:11:11:16 | selection of Form | contenttype.go:11:11:11:28 | call to Get | provenance | MaD:745 |
 | contenttype.go:11:11:11:28 | call to Get | contenttype.go:17:11:17:22 | type conversion | provenance |  |
-| contenttype.go:49:11:49:16 | selection of Form | contenttype.go:49:11:49:28 | call to Get | provenance | MaD:742 |
+| contenttype.go:49:11:49:16 | selection of Form | contenttype.go:49:11:49:28 | call to Get | provenance | MaD:745 |
 | contenttype.go:49:11:49:28 | call to Get | contenttype.go:53:34:53:37 | data | provenance |  |
-| contenttype.go:63:10:63:28 | call to FormValue | contenttype.go:64:52:64:55 | data | provenance | Src:MaD:670  |
-| contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data | provenance | Src:MaD:670  |
-| contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data | provenance | Src:MaD:670  |
-| contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | provenance | Src:MaD:670  |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file | provenance | Src:MaD:669  |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename | provenance | Src:MaD:669  |
+| contenttype.go:63:10:63:28 | call to FormValue | contenttype.go:64:52:64:55 | data | provenance | Src:MaD:673  |
+| contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data | provenance | Src:MaD:673  |
+| contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data | provenance | Src:MaD:673  |
+| contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | provenance | Src:MaD:673  |
+| reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file | provenance | Src:MaD:672  |
+| reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename | provenance | Src:MaD:672  |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
-| reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | provenance | MaD:540 |
-| reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | MaD:245 |
+| reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | provenance | MaD:543 |
+| reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | MaD:248 |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion | provenance |  |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | provenance |  |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | FunctionModel |
-| reflectedxsstest.go:34:17:34:61 | []type{args} [array] | reflectedxsstest.go:34:17:34:61 | call to Sprintf | provenance | MaD:245 |
+| reflectedxsstest.go:34:17:34:61 | []type{args} [array] | reflectedxsstest.go:34:17:34:61 | call to Sprintf | provenance | MaD:248 |
 | reflectedxsstest.go:34:17:34:61 | call to Sprintf | reflectedxsstest.go:34:10:34:62 | type conversion | provenance |  |
 | reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | []type{args} [array] | provenance |  |
 | reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | call to Sprintf | provenance | FunctionModel |
-| reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:39:16:39:21 | reader | provenance | Src:MaD:671  |
+| reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:39:16:39:21 | reader | provenance | Src:MaD:674  |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:40:14:40:17 | part | provenance |  |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:42:2:42:5 | part | provenance |  |
-| reflectedxsstest.go:39:16:39:21 | reader | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | provenance | MaD:630 |
-| reflectedxsstest.go:40:14:40:17 | part | reflectedxsstest.go:40:14:40:28 | call to FileName | provenance | MaD:628 |
+| reflectedxsstest.go:39:16:39:21 | reader | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | provenance | MaD:633 |
+| reflectedxsstest.go:40:14:40:17 | part | reflectedxsstest.go:40:14:40:28 | call to FileName | provenance | MaD:631 |
 | reflectedxsstest.go:40:14:40:28 | call to FileName | reflectedxsstest.go:44:46:44:53 | partName | provenance |  |
 | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | reflectedxsstest.go:45:10:45:18 | byteSlice | provenance |  |
-| reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | provenance | MaD:553 |
-| reflectedxsstest.go:44:17:44:54 | []type{args} [array] | reflectedxsstest.go:44:17:44:54 | call to Sprintf | provenance | MaD:245 |
+| reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | provenance | MaD:556 |
+| reflectedxsstest.go:44:17:44:54 | []type{args} [array] | reflectedxsstest.go:44:17:44:54 | call to Sprintf | provenance | MaD:248 |
 | reflectedxsstest.go:44:17:44:54 | call to Sprintf | reflectedxsstest.go:44:10:44:55 | type conversion | provenance |  |
 | reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | []type{args} [array] | provenance |  |
 | reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | call to Sprintf | provenance | FunctionModel |
-| reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query | provenance | MaD:735 |
+| reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query | provenance | MaD:738 |
 | reflectedxsstest.go:51:14:51:26 | call to Query | reflectedxsstest.go:54:11:54:21 | type conversion | provenance |  |
-| tst.go:14:15:14:20 | selection of Form | tst.go:14:15:14:36 | call to Get | provenance | MaD:742 |
+| tst.go:14:15:14:20 | selection of Form | tst.go:14:15:14:36 | call to Get | provenance | MaD:745 |
 | tst.go:14:15:14:36 | call to Get | tst.go:18:32:18:32 | a | provenance |  |
 | tst.go:18:19:18:38 | call to Join | tst.go:18:12:18:39 | type conversion | provenance |  |
-| tst.go:18:32:18:32 | a | tst.go:18:19:18:38 | call to Join | provenance | MaD:834 |
-| tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:34 | call to Get | provenance | MaD:742 |
+| tst.go:18:32:18:32 | a | tst.go:18:19:18:38 | call to Join | provenance | MaD:837 |
+| tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:34 | call to Get | provenance | MaD:745 |
 | tst.go:48:14:48:34 | call to Get | tst.go:53:12:53:26 | type conversion | provenance |  |
 | websocketXss.go:30:7:30:10 | definition of xnet | websocketXss.go:32:24:32:27 | xnet | provenance |  |
 | websocketXss.go:34:3:34:7 | definition of xnet2 | websocketXss.go:36:24:36:28 | xnet2 | provenance |  |

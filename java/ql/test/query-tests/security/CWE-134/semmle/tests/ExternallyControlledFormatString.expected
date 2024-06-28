@@ -1,12 +1,12 @@
 edges
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty | provenance | Src:MaD:42702  |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:21:23:21:34 | userProperty | provenance | Src:MaD:42702  Sink:MaD:42567 |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:23:23:23:34 | userProperty | provenance | Src:MaD:42702  Sink:MaD:42570 |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:25:28:25:39 | userProperty | provenance | Src:MaD:42702  |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:27:44:27:55 | userProperty | provenance | Src:MaD:42702  |
-| Test.java:33:30:33:74 | getParameter(...) : String | Test.java:34:20:34:32 | userParameter : String | provenance | Src:MaD:44678  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty | provenance | Src:MaD:42708  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:21:23:21:34 | userProperty | provenance | Src:MaD:42708  Sink:MaD:42573 |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:23:23:23:34 | userProperty | provenance | Src:MaD:42708  Sink:MaD:42576 |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:25:28:25:39 | userProperty | provenance | Src:MaD:42708  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:27:44:27:55 | userProperty | provenance | Src:MaD:42708  |
+| Test.java:33:30:33:74 | getParameter(...) : String | Test.java:34:20:34:32 | userParameter : String | provenance | Src:MaD:44686  |
 | Test.java:34:20:34:32 | userParameter : String | Test.java:37:31:37:43 | format : String | provenance |  |
-| Test.java:37:31:37:43 | format : String | Test.java:39:25:39:30 | format | provenance |  Sink:MaD:42567 |
+| Test.java:37:31:37:43 | format : String | Test.java:39:25:39:30 | format | provenance |  Sink:MaD:42573 |
 nodes
 | Test.java:17:27:17:60 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:19:19:19:30 | userProperty | semmle.label | userProperty |

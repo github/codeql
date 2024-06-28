@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Sources", "NewSources", False, "ManualSourceAlreadyDefined", "()", "", "ReturnValue", "test-source", "manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Sources", "NewSources", "ManualNeutralSource", "()", "source", "manual"]

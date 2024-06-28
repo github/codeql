@@ -13,7 +13,6 @@ extensions:
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger", "IsEnabled", "(Microsoft.Extensions.Logging.LogLevel)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger", "get_Instance", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLogger<T>", "IsEnabled", "(Microsoft.Extensions.Logging.LogLevel)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "AddProvider", "(Microsoft.Extensions.Logging.ILoggerProvider)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "get_Instance", "()", "summary", "df-generated"]

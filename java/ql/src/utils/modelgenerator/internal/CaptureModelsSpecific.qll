@@ -58,9 +58,19 @@ private J::Callable liftedImpl(J::Callable m) {
   not exists(getARelevantOverride(result))
 }
 
-private predicate hasManualModel(Callable api) {
+private predicate hasManualSummaryModel(Callable api) {
   api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
   api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
+}
+
+private predicate hasManualSourceModel(Callable api) {
+  api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel()).asCallable()
+}
+
+private predicate hasManualSinkModel(Callable api) {
+  api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel()).asCallable()
 }
 
 /**
@@ -70,6 +80,28 @@ private predicate hasManualModel(Callable api) {
  */
 predicate isUninterestingForDataFlowModels(Callable api) {
   api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
+}
+
+/**
+ * A class of callables that are potentially relevant for generating summary and
+ * neutral models.
+ */
+class SummaryTargetApi extends TargetApiBase {
+  SummaryTargetApi() { not hasManualSummaryModel(this.lift()) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating sink models.
+ */
+class SinkTargetApi extends TargetApiBase {
+  SinkTargetApi() { not hasManualSinkModel(this.lift()) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating source models.
+ */
+class SourceTargetApi extends TargetApiBase {
+  SourceTargetApi() { not hasManualSourceModel(this.lift()) }
 }
 
 /**
@@ -86,13 +118,10 @@ predicate isUninterestingForTypeBasedFlowModels(Callable api) { none() }
  * In the Standard library and 3rd party libraries it is the callables (or callables that have a
  * super implementation) that can be called from outside the library itself.
  */
-class TargetApiSpecific extends Callable {
+class TargetApiBase extends Callable {
   private Callable lift;
 
-  TargetApiSpecific() {
-    lift = liftedImpl(this) and
-    not hasManualModel(lift)
-  }
+  TargetApiBase() { lift = liftedImpl(this) }
 
   /**
    * Gets the callable that a model will be lifted to.
@@ -110,51 +139,23 @@ private string isExtensible(Callable c) {
 }
 
 /**
- * Returns the appropriate type name for the model.
+ * Holds if the callable `c` is in package `package`
+ * and is a member of `type`.
  */
-private string typeAsModel(Callable c) {
-  exists(RefType type | type = c.getDeclaringType() |
-    result =
-      type.getCompilationUnit().getPackage().getName() + ";" +
-        type.getErasure().(J::RefType).nestedName()
+private predicate qualifiedName(Callable c, string package, string type) {
+  exists(RefType t | t = c.getDeclaringType() |
+    package = t.getCompilationUnit().getPackage().getName() and
+    type = t.getErasure().(J::RefType).nestedName()
   )
 }
 
-private predicate partialModel(
-  Callable api, string type, string extensible, string name, string parameters
+predicate partialModel(
+  Callable api, string package, string type, string extensible, string name, string parameters
 ) {
-  type = typeAsModel(api) and
+  qualifiedName(api, package, type) and
   extensible = isExtensible(api) and
   name = api.getName() and
   parameters = ExternalFlow::paramsString(api)
-}
-
-/**
- * Computes the first 6 columns for MaD rows.
- */
-string asPartialModel(TargetApiSpecific api) {
-  exists(string type, string extensible, string name, string parameters |
-    partialModel(api.lift(), type, extensible, name, parameters) and
-    result =
-      type + ";" //
-        + extensible + ";" //
-        + name + ";" //
-        + parameters + ";" //
-        + /* ext + */ ";" //
-  )
-}
-
-/**
- * Computes the first 4 columns for neutral MaD rows.
- */
-string asPartialNeutralModel(TargetApiSpecific api) {
-  exists(string type, string name, string parameters |
-    partialModel(api, type, _, name, parameters) and
-    result =
-      type + ";" //
-        + name + ";" //
-        + parameters + ";" //
-  )
 }
 
 predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
@@ -184,6 +185,14 @@ predicate isRelevantType(J::Type t) {
     not t.(ContainerFlow::CollectionType).getElementType() instanceof J::BoxedType or
     isPrimitiveTypeUsedForBulkData(t.(ContainerFlow::CollectionType).getElementType())
   )
+}
+
+/**
+ * Gets the underlying type of the content `c`.
+ */
+J::Type getUnderlyingContentType(DataFlow::Content c) {
+  result = c.(DataFlow::FieldContent).getField().getType() or
+  result = c.(DataFlow::SyntheticFieldContent).getField().getType()
 }
 
 /**
@@ -242,15 +251,6 @@ predicate sinkModelSanitizer(DataFlow::Node node) {
   )
 }
 
-private class ManualNeutralSinkCallable extends Callable {
-  ManualNeutralSinkCallable() {
-    this =
-      any(FlowSummaryImpl::Public::NeutralCallable nc |
-        nc.hasManualModel() and nc.getKind() = "sink"
-      ).asCallable()
-  }
-}
-
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
@@ -259,16 +259,18 @@ predicate apiSource(DataFlow::Node source) {
     source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
     source instanceof DataFlow::ParameterNode
   ) and
-  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
-    exists(liftedImpl(enclosing)) and
-    not enclosing instanceof ManualNeutralSinkCallable and
-    exists(J::RefType t |
-      t = enclosing.getDeclaringType().getAnAncestor() and
-      not t instanceof J::TypeObject and
-      t.isPublic()
-    )
+  exists(J::RefType t |
+    t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
+    not t instanceof J::TypeObject and
+    t.isPublic()
   )
 }
+
+/**
+ * Holds if it is not relevant to generate a source model for `api`, even
+ * if flow is detected from a node within `source` to a sink within `api`.
+ */
+predicate irrelevantSourceSinkApi(Callable source, SourceTargetApi api) { none() }
 
 /**
  * Gets the MaD input string representation of `source`.

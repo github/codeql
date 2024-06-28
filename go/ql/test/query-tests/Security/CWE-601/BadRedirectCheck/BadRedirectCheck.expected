@@ -12,8 +12,8 @@ edges
 | main.go:68:17:68:24 | argument corresponding to redirect | main.go:73:20:73:27 | redirect | provenance |  |
 | main.go:68:17:68:24 | definition of redirect | main.go:73:20:73:27 | redirect | provenance |  |
 | main.go:73:9:73:28 | call to Clean | main.go:77:25:77:39 | call to getTarget1 | provenance |  |
-| main.go:73:20:73:27 | redirect | main.go:73:9:73:28 | call to Clean | provenance | MaD:761 |
-| main.go:73:20:73:27 | redirect | main.go:73:9:73:28 | call to Clean | provenance | MaD:761 |
+| main.go:73:20:73:27 | redirect | main.go:73:9:73:28 | call to Clean | provenance | MaD:764 |
+| main.go:73:20:73:27 | redirect | main.go:73:9:73:28 | call to Clean | provenance | MaD:764 |
 | main.go:76:19:76:21 | argument corresponding to url | main.go:77:36:77:38 | url | provenance |  |
 | main.go:77:36:77:38 | url | main.go:68:17:68:24 | definition of redirect | provenance |  |
 | main.go:77:36:77:38 | url | main.go:77:25:77:39 | call to getTarget1 | provenance |  |

@@ -128,9 +128,9 @@ namespace Semmle.Autobuild.Shared
 
                 command.Argument("/t:" + target);
                 if (platform is not null)
-                    command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
+                    command.Argument($"/p:Platform=\"{platform}\"");
                 if (configuration is not null)
-                    command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
+                    command.Argument($"/p:Configuration=\"{configuration}\"");
 
                 // append the build script which invokes msbuild to the overall build script `ret`;
                 // we insert a check that building the current project or solution was successful:

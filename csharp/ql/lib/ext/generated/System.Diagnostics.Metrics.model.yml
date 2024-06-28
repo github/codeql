@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Diagnostics.Metrics", "Instrument", False, "Instrument", "(System.Diagnostics.Metrics.Meter,System.String,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[4].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", False, "Measurement", "(T,System.Collections.Generic.KeyValuePair<System.String,System.Object>[])", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", False, "Measurement", "(T,System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", False, "get_Tags", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -28,7 +29,6 @@ extensions:
       - ["System.Diagnostics.Metrics", "Histogram<T>", "Record", "(T,System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "IMeterFactory", "Create", "(System.Diagnostics.Metrics.MeterOptions)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Instrument", "Instrument", "(System.Diagnostics.Metrics.Meter,System.String,System.String,System.String)", "summary", "df-generated"]
-      - ["System.Diagnostics.Metrics", "Instrument", "Instrument", "(System.Diagnostics.Metrics.Meter,System.String,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Instrument", "Publish", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Instrument", "get_Description", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Instrument", "get_Enabled", "()", "summary", "df-generated"]

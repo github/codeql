@@ -1,4 +1,7 @@
 | file://:0:0:0:0 | short __attribute((__may_alias__)) | type_attributes.c:25:30:25:42 | may_alias |
+| type_attributes2.cpp:5:14:5:20 | a_class | type_attributes2.cpp:5:7:5:12 | visibility |
+| type_attributes2.cpp:5:14:5:20 | a_class | type_attributes2.h:3:7:3:12 | visibility |
+| type_attributes2.cpp:5:14:5:20 | a_class | type_attributes2.h:3:7:3:12 | visibility |
 | type_attributes.c:5:36:5:51 | my_packed_struct | type_attributes.c:5:23:5:32 | packed |
 | type_attributes.c:10:54:10:54 | (unnamed class/struct/union) | type_attributes.c:10:30:10:50 | transparent_union |
 | type_attributes.c:16:54:16:54 | (unnamed class/struct/union) | type_attributes.c:16:30:16:50 | transparent_union |

@@ -6,7 +6,7 @@ edges
 | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | LDAPInjection.cs:28:48:28:70 | ... + ... | provenance |  |
 | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | LDAPInjection.cs:30:20:30:42 | ... + ... | provenance |  |
 | LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | provenance |  |
-| LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:12:27:12:61 | access to indexer : String | provenance | MaD:11390 |
+| LDAPInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:12:27:12:61 | access to indexer : String | provenance | MaD:11546 |
 | LDAPInjection.cs:12:27:12:61 | access to indexer : String | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | provenance |  |
 | LDAPInjection.cs:36:27:36:40 | access to local variable customerReader : SqlDataReader | LDAPInjection.cs:41:80:41:93 | access to local variable customerReader : SqlDataReader | provenance |  |
 | LDAPInjection.cs:36:44:36:74 | call to method ExecuteReader : SqlDataReader | LDAPInjection.cs:36:27:36:40 | access to local variable customerReader : SqlDataReader | provenance |  |

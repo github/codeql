@@ -5,7 +5,7 @@ alias(
         "@platforms//os:windows": ["@platforms//:incompatible"],
         "//conditions:default": [],
     }),
-    visibility = ["//swift:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 [

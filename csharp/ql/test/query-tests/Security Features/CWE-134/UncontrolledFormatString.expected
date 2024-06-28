@@ -4,11 +4,11 @@ edges
 | UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | provenance |  |
 | UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | provenance |  |
 | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | provenance |  |
-| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | provenance | MaD:11390 |
+| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | provenance | MaD:11546 |
 | UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | provenance |  |
 | UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | provenance |  |
 | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | provenance |  |
-| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | provenance | MaD:11390 |
+| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | provenance | MaD:11546 |
 | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | provenance |  |
 nodes
 | ConsoleUncontrolledFormatString.cs:8:13:8:18 | access to local variable format : String | semmle.label | access to local variable format : String |

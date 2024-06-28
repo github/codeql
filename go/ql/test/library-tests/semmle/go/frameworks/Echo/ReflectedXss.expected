@@ -8,28 +8,28 @@ edges
 | test.go:51:2:51:30 | ... := ...[0] | test.go:52:16:52:37 | index expression | provenance |  |
 | test.go:57:2:57:46 | ... := ...[0] | test.go:58:13:58:22 | fileHeader | provenance |  |
 | test.go:58:2:58:29 | ... := ...[0] | test.go:60:2:60:5 | file | provenance |  |
-| test.go:58:13:58:22 | fileHeader | test.go:58:2:58:29 | ... := ...[0] | provenance | MaD:627 |
+| test.go:58:13:58:22 | fileHeader | test.go:58:2:58:29 | ... := ...[0] | provenance | MaD:630 |
 | test.go:59:2:59:7 | definition of buffer | test.go:61:20:61:25 | buffer | provenance |  |
-| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:553 |
+| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:556 |
 | test.go:66:2:66:31 | ... := ...[0] | test.go:67:16:67:41 | index expression | provenance |  |
 | test.go:72:2:72:31 | ... := ...[0] | test.go:74:13:74:22 | fileHeader | provenance |  |
 | test.go:74:2:74:29 | ... := ...[0] | test.go:76:2:76:5 | file | provenance |  |
-| test.go:74:13:74:22 | fileHeader | test.go:74:2:74:29 | ... := ...[0] | provenance | MaD:627 |
+| test.go:74:13:74:22 | fileHeader | test.go:74:2:74:29 | ... := ...[0] | provenance | MaD:630 |
 | test.go:75:2:75:7 | definition of buffer | test.go:77:20:77:25 | buffer | provenance |  |
-| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:553 |
+| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:556 |
 | test.go:82:2:82:32 | ... := ...[0] | test.go:83:16:83:24 | selection of Value | provenance |  |
 | test.go:88:13:88:25 | call to Cookies | test.go:89:16:89:31 | selection of Value | provenance |  |
 | test.go:99:11:99:15 | &... | test.go:100:16:100:21 | selection of s | provenance |  |
 | test.go:112:17:112:19 | definition of ctx | test.go:114:16:114:18 | ctx | provenance |  |
-| test.go:113:21:113:42 | call to Param | test.go:112:17:112:19 | definition of ctx | provenance | MaD:358 |
-| test.go:114:16:114:18 | ctx | test.go:114:16:114:33 | call to Get | provenance | MaD:357 |
+| test.go:113:21:113:42 | call to Param | test.go:112:17:112:19 | definition of ctx | provenance | MaD:361 |
+| test.go:114:16:114:18 | ctx | test.go:114:16:114:33 | call to Get | provenance | MaD:360 |
 | test.go:114:16:114:33 | call to Get | test.go:114:16:114:42 | type assertion | provenance |  |
 | test.go:124:11:124:32 | call to Param | test.go:125:16:125:20 | param | provenance |  |
 | test.go:130:11:130:32 | call to Param | test.go:131:20:131:32 | type conversion | provenance |  |
 | test.go:136:11:136:32 | call to Param | test.go:137:29:137:41 | type conversion | provenance |  |
 | test.go:148:11:148:32 | call to Param | test.go:149:30:149:34 | param | provenance |  |
 | test.go:149:12:149:35 | call to NewReader | test.go:150:31:150:36 | reader | provenance |  |
-| test.go:149:30:149:34 | param | test.go:149:12:149:35 | call to NewReader | provenance | MaD:836 |
+| test.go:149:30:149:34 | param | test.go:149:12:149:35 | call to NewReader | provenance | MaD:839 |
 | test.go:164:11:164:32 | call to Param | test.go:165:23:165:35 | type conversion | provenance |  |
 nodes
 | test.go:15:11:15:32 | call to Param | semmle.label | call to Param |

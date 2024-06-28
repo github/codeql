@@ -61,10 +61,6 @@
     "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
     "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
   ],
-  "Model as Data Generation Java/C# - CaptureModelsPrinting": [
-    "java/ql/src/utils/modelgenerator/internal/CaptureModelsPrinting.qll",
-    "csharp/ql/src/utils/modelgenerator/internal/CaptureModelsPrinting.qll"
-  ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
@@ -184,11 +180,6 @@
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
-  ],
-  "C++ IR ValueNumberingImports": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ],
   "IR SSA SSAConstruction": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",

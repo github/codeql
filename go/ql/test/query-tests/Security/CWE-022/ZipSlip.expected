@@ -7,9 +7,9 @@ edges
 | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
 | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:12:24:12:29 | selection of Name | provenance |  |
 | ZipSlip.go:12:3:12:30 | ... := ...[0] | ZipSlip.go:14:20:14:20 | p | provenance |  |
-| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] | provenance | MaD:747 |
+| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] | provenance | MaD:750 |
 | tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:23:16:33 | selection of Name | provenance |  |
-| tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir | provenance | MaD:762 |
+| tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir | provenance | MaD:765 |
 | tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | provenance |  |
 nodes
 | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |

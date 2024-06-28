@@ -41,7 +41,6 @@ extensions:
       - ["Internal.IL", "EcmaMethodDebugInformation", "get_IsStateMachineMoveNextMethod", "()", "summary", "df-generated"]
       - ["Internal.IL", "EcmaMethodIL", "get_IsInitLocals", "()", "summary", "df-generated"]
       - ["Internal.IL", "EcmaMethodIL", "get_MaxStack", "()", "summary", "df-generated"]
-      - ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.GenericParameterDesc)", "summary", "df-generated"]
       - ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureMethodVariable)", "summary", "df-generated"]
       - ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureTypeVariable)", "summary", "df-generated"]
       - ["Internal.IL", "ILDisassembler", "AppendOffset", "(System.Text.StringBuilder,System.Int32)", "summary", "df-generated"]

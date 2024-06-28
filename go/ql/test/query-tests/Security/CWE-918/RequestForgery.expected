@@ -1,12 +1,12 @@
 edges
-| RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:14:11:14:17 | tainted | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:18:12:18:18 | tainted | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:21:34:21:40 | tainted | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:24:66:24:72 | tainted | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:27:11:27:29 | ...+... | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:29:11:29:40 | ...+... | provenance | Src:MaD:670  |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:36:11:36:17 | tainted | provenance | Src:MaD:670  |
+| RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:14:11:14:17 | tainted | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:18:12:18:18 | tainted | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:21:34:21:40 | tainted | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:24:66:24:72 | tainted | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:27:11:27:29 | ...+... | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:29:11:29:40 | ...+... | provenance | Src:MaD:673  |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:36:11:36:17 | tainted | provenance | Src:MaD:673  |
 | tst.go:35:2:35:2 | definition of u [pointer] | tst.go:36:2:36:2 | u [pointer] | provenance |  |
 | tst.go:36:2:36:2 | implicit dereference | tst.go:35:2:35:2 | definition of u [pointer] | provenance |  |
 | tst.go:36:2:36:2 | implicit dereference | tst.go:36:2:36:2 | u | provenance |  |
@@ -17,16 +17,16 @@ edges
 | tst.go:36:2:36:2 | u [pointer] | tst.go:36:2:36:2 | implicit dereference | provenance |  |
 | tst.go:36:11:36:17 | tainted | tst.go:36:2:36:2 | u | provenance | Config |
 | tst.go:36:11:36:17 | tainted | tst.go:37:11:37:11 | u | provenance | Config |
-| tst.go:37:11:37:11 | u | tst.go:37:11:37:20 | call to String | provenance | MaD:235 |
-| websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:88:21:88:31 | call to Referer | websocket.go:91:31:91:44 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:107:21:107:31 | call to Referer | websocket.go:110:15:110:28 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:126:21:126:31 | call to Referer | websocket.go:129:38:129:51 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:154:21:154:31 | call to Referer | websocket.go:155:31:155:44 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:160:21:160:31 | call to Referer | websocket.go:162:31:162:44 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:195:21:195:31 | call to Referer | websocket.go:197:18:197:31 | untrustedInput | provenance | Src:MaD:673  |
-| websocket.go:202:21:202:31 | call to Referer | websocket.go:204:11:204:24 | untrustedInput | provenance | Src:MaD:673  |
+| tst.go:37:11:37:11 | u | tst.go:37:11:37:20 | call to String | provenance | MaD:238 |
+| websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:88:21:88:31 | call to Referer | websocket.go:91:31:91:44 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:107:21:107:31 | call to Referer | websocket.go:110:15:110:28 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:126:21:126:31 | call to Referer | websocket.go:129:38:129:51 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:154:21:154:31 | call to Referer | websocket.go:155:31:155:44 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:160:21:160:31 | call to Referer | websocket.go:162:31:162:44 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:195:21:195:31 | call to Referer | websocket.go:197:18:197:31 | untrustedInput | provenance | Src:MaD:676  |
+| websocket.go:202:21:202:31 | call to Referer | websocket.go:204:11:204:24 | untrustedInput | provenance | Src:MaD:676  |
 nodes
 | RequestForgery.go:8:12:8:34 | call to FormValue | semmle.label | call to FormValue |
 | RequestForgery.go:11:24:11:65 | ...+... | semmle.label | ...+... |

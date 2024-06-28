@@ -1,44 +1,44 @@
 edges
-| builtin.go:19:12:19:34 | call to FormValue | builtin.go:22:21:22:62 | ...+... | provenance | Src:MaD:670  |
-| builtin.go:83:21:83:31 | call to Referer | builtin.go:88:27:88:40 | untrustedInput | provenance | Src:MaD:673  |
-| builtin.go:97:21:97:31 | call to Referer | builtin.go:101:36:101:49 | untrustedInput | provenance | Src:MaD:673  |
-| builtin.go:111:21:111:31 | call to Referer | builtin.go:114:15:114:28 | untrustedInput | provenance | Src:MaD:673  |
-| builtin.go:129:21:129:31 | call to Referer | builtin.go:132:38:132:51 | untrustedInput | provenance | Src:MaD:673  |
+| builtin.go:19:12:19:34 | call to FormValue | builtin.go:22:21:22:62 | ...+... | provenance | Src:MaD:673  |
+| builtin.go:83:21:83:31 | call to Referer | builtin.go:88:27:88:40 | untrustedInput | provenance | Src:MaD:676  |
+| builtin.go:97:21:97:31 | call to Referer | builtin.go:101:36:101:49 | untrustedInput | provenance | Src:MaD:676  |
+| builtin.go:111:21:111:31 | call to Referer | builtin.go:114:15:114:28 | untrustedInput | provenance | Src:MaD:676  |
+| builtin.go:129:21:129:31 | call to Referer | builtin.go:132:38:132:51 | untrustedInput | provenance | Src:MaD:676  |
 | new-tests.go:26:26:26:30 | &... | new-tests.go:31:48:31:56 | selection of word | provenance |  |
 | new-tests.go:26:26:26:30 | &... | new-tests.go:32:48:32:56 | selection of safe | provenance |  |
 | new-tests.go:26:26:26:30 | &... | new-tests.go:35:49:35:57 | selection of word | provenance |  |
-| new-tests.go:31:11:31:57 | []type{args} [array] | new-tests.go:31:11:31:57 | call to Sprintf | provenance | MaD:245 |
+| new-tests.go:31:11:31:57 | []type{args} [array] | new-tests.go:31:11:31:57 | call to Sprintf | provenance | MaD:248 |
 | new-tests.go:31:48:31:56 | selection of word | new-tests.go:31:11:31:57 | []type{args} [array] | provenance |  |
 | new-tests.go:31:48:31:56 | selection of word | new-tests.go:31:11:31:57 | call to Sprintf | provenance | FunctionModel |
-| new-tests.go:32:11:32:57 | []type{args} [array] | new-tests.go:32:11:32:57 | call to Sprintf | provenance | MaD:245 |
+| new-tests.go:32:11:32:57 | []type{args} [array] | new-tests.go:32:11:32:57 | call to Sprintf | provenance | MaD:248 |
 | new-tests.go:32:48:32:56 | selection of safe | new-tests.go:32:11:32:57 | []type{args} [array] | provenance |  |
 | new-tests.go:32:48:32:56 | selection of safe | new-tests.go:32:11:32:57 | call to Sprintf | provenance | FunctionModel |
-| new-tests.go:35:12:35:58 | []type{args} [array] | new-tests.go:35:12:35:58 | call to Sprintf | provenance | MaD:245 |
+| new-tests.go:35:12:35:58 | []type{args} [array] | new-tests.go:35:12:35:58 | call to Sprintf | provenance | MaD:248 |
 | new-tests.go:35:49:35:57 | selection of word | new-tests.go:35:12:35:58 | []type{args} [array] | provenance |  |
 | new-tests.go:35:49:35:57 | selection of word | new-tests.go:35:12:35:58 | call to Sprintf | provenance | FunctionModel |
 | new-tests.go:39:18:39:30 | call to Param | new-tests.go:47:11:47:46 | ...+... | provenance |  |
 | new-tests.go:49:18:49:30 | call to Query | new-tests.go:50:11:50:46 | ...+... | provenance |  |
 | new-tests.go:62:2:62:39 | ... := ...[0] | new-tests.go:63:17:63:23 | reqBody | provenance |  |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:62:2:62:39 | ... := ...[0] | provenance | MaD:540 |
-| new-tests.go:63:17:63:23 | reqBody | new-tests.go:63:26:63:30 | &... | provenance | MaD:184 |
+| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:62:2:62:39 | ... := ...[0] | provenance | MaD:543 |
+| new-tests.go:63:17:63:23 | reqBody | new-tests.go:63:26:63:30 | &... | provenance | MaD:187 |
 | new-tests.go:63:26:63:30 | &... | new-tests.go:68:48:68:56 | selection of word | provenance |  |
 | new-tests.go:63:26:63:30 | &... | new-tests.go:69:48:69:56 | selection of safe | provenance |  |
 | new-tests.go:63:26:63:30 | &... | new-tests.go:74:49:74:57 | selection of word | provenance |  |
-| new-tests.go:68:11:68:57 | []type{args} [array] | new-tests.go:68:11:68:57 | call to Sprintf | provenance | MaD:245 |
+| new-tests.go:68:11:68:57 | []type{args} [array] | new-tests.go:68:11:68:57 | call to Sprintf | provenance | MaD:248 |
 | new-tests.go:68:48:68:56 | selection of word | new-tests.go:68:11:68:57 | []type{args} [array] | provenance |  |
 | new-tests.go:68:48:68:56 | selection of word | new-tests.go:68:11:68:57 | call to Sprintf | provenance | FunctionModel |
-| new-tests.go:69:11:69:57 | []type{args} [array] | new-tests.go:69:11:69:57 | call to Sprintf | provenance | MaD:245 |
+| new-tests.go:69:11:69:57 | []type{args} [array] | new-tests.go:69:11:69:57 | call to Sprintf | provenance | MaD:248 |
 | new-tests.go:69:48:69:56 | selection of safe | new-tests.go:69:11:69:57 | []type{args} [array] | provenance |  |
 | new-tests.go:69:48:69:56 | selection of safe | new-tests.go:69:11:69:57 | call to Sprintf | provenance | FunctionModel |
-| new-tests.go:74:12:74:58 | []type{args} [array] | new-tests.go:74:12:74:58 | call to Sprintf | provenance | MaD:245 |
+| new-tests.go:74:12:74:58 | []type{args} [array] | new-tests.go:74:12:74:58 | call to Sprintf | provenance | MaD:248 |
 | new-tests.go:74:49:74:57 | selection of word | new-tests.go:74:12:74:58 | []type{args} [array] | provenance |  |
 | new-tests.go:74:49:74:57 | selection of word | new-tests.go:74:12:74:58 | call to Sprintf | provenance | FunctionModel |
-| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:78:18:78:32 | call to Query | provenance | MaD:735 |
-| new-tests.go:78:18:78:32 | call to Query | new-tests.go:78:18:78:46 | call to Get | provenance | MaD:742 |
+| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:78:18:78:32 | call to Query | provenance | MaD:738 |
+| new-tests.go:78:18:78:32 | call to Query | new-tests.go:78:18:78:46 | call to Get | provenance | MaD:745 |
 | new-tests.go:78:18:78:46 | call to Get | new-tests.go:79:11:79:46 | ...+... | provenance |  |
 | new-tests.go:81:18:81:67 | call to TrimPrefix | new-tests.go:82:11:82:46 | ...+... | provenance |  |
 | new-tests.go:81:37:81:43 | selection of URL | new-tests.go:81:37:81:48 | selection of Path | provenance |  |
-| new-tests.go:81:37:81:48 | selection of Path | new-tests.go:81:18:81:67 | call to TrimPrefix | provenance | MaD:858 |
+| new-tests.go:81:37:81:48 | selection of Path | new-tests.go:81:18:81:67 | call to TrimPrefix | provenance | MaD:861 |
 | new-tests.go:86:10:86:20 | call to Vars | new-tests.go:88:11:88:46 | ...+... | provenance |  |
 | new-tests.go:95:18:95:45 | call to URLParam | new-tests.go:96:11:96:46 | ...+... | provenance |  |
 nodes
