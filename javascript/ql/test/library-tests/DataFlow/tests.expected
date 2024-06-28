@@ -16,12 +16,14 @@ basicBlock
 | arguments.js:1:1:12:4 | exceptional return of (functi ... );\\n})() | arguments.js:1:1:1:0 | entry node of <toplevel> |
 | arguments.js:1:2:1:1 | this | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:1:2:12:1 | 'arguments' object of anonymous function | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
+| arguments.js:1:2:12:1 | [function self-reference] functio ... , 3);\\n} | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:1:2:12:1 | exceptional return of anonymous function | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:1:0 | entry node of <toplevel> |
 | arguments.js:1:2:12:1 | return of anonymous function | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:2:5:2:4 | this | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:2:5 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:2:5:10:5 | [function self-reference] functio ... ;\\n    } | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | exceptional return of function f | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | functio ... ;\\n    } | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:2:5:10:5 | return of function f | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
@@ -69,6 +71,7 @@ basicBlock
 | eval.js:1:1:1:0 | this | eval.js:1:1:1:0 | entry node of <toplevel> |
 | eval.js:1:1:1:0 | this | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:1:1:5:1 | 'arguments' object of function k | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
+| eval.js:1:1:5:1 | [function self-reference] functio ... eval`\\n} | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:1:1:5:1 | exceptional return of function k | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:1:1:5:1 | functio ... eval`\\n} | eval.js:1:1:1:0 | entry node of <toplevel> |
 | eval.js:1:1:5:1 | return of function k | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
@@ -89,6 +92,7 @@ basicBlock
 | sources.js:1:6:1:6 | x | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:6 | x | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:11 | 'arguments' object of anonymous function | sources.js:1:6:1:5 | entry node of x => x |
+| sources.js:1:6:1:11 | [function self-reference] x => x | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:11 | exceptional return of anonymous function | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:11 | return of anonymous function | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:11 | x => x | sources.js:1:1:1:0 | entry node of <toplevel> |
@@ -98,6 +102,7 @@ basicBlock
 | sources.js:3:1:5:6 | exceptional return of (functi ... \\n})(23) | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:3:2:3:1 | this | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:3:2:5:1 | 'arguments' object of anonymous function | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
+| sources.js:3:2:5:1 | [function self-reference] functio ... x+19;\\n} | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:3:2:5:1 | exceptional return of anonymous function | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:3:2:5:1 | functio ... x+19;\\n} | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:3:2:5:1 | return of anonymous function | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
@@ -110,6 +115,7 @@ basicBlock
 | sources.js:7:1:7:3 | /x/ | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:9:1:9:0 | this | sources.js:9:1:9:0 | entry node of functio ... ey; }\\n} |
 | sources.js:9:1:12:1 | 'arguments' object of function foo | sources.js:9:1:9:0 | entry node of functio ... ey; }\\n} |
+| sources.js:9:1:12:1 | [function self-reference] functio ... ey; }\\n} | sources.js:9:1:9:0 | entry node of functio ... ey; }\\n} |
 | sources.js:9:1:12:1 | exceptional return of function foo | sources.js:12:2:12:1 | exit node of functio ... ey; }\\n} |
 | sources.js:9:1:12:1 | functio ... ey; }\\n} | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:9:1:12:1 | return of function foo | sources.js:12:2:12:1 | exit node of functio ... ey; }\\n} |
@@ -147,6 +153,7 @@ basicBlock
 | tst2.ts:7:1:7:0 | A | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
 | tst2.ts:7:1:7:0 | this | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
 | tst2.ts:7:1:9:1 | 'arguments' object of function setX | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
+| tst2.ts:7:1:9:1 | [function self-reference] functio ... = 23;\\n} | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
 | tst2.ts:7:1:9:1 | exceptional return of function setX | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
 | tst2.ts:7:1:9:1 | functio ... = 23;\\n} | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:7:1:9:1 | return of function setX | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
@@ -170,6 +177,7 @@ basicBlock
 | tst2.ts:13:39:13:38 | 'arguments' object of default constructor of class StringList | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | (...arg ... rgs); } | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:13:39:13:38 | ...args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
+| tst2.ts:13:39:13:38 | [function self-reference] (...arg ... rgs); } | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
@@ -236,6 +244,7 @@ basicBlock
 | tst.js:16:1:20:9 | exceptional return of (functi ... ("arg") | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:16:2:16:1 | this | tst.js:16:2:16:1 | entry node of functio ... n "";\\n} |
 | tst.js:16:2:20:1 | 'arguments' object of function f | tst.js:16:2:16:1 | entry node of functio ... n "";\\n} |
+| tst.js:16:2:20:1 | [function self-reference] functio ... n "";\\n} | tst.js:16:2:16:1 | entry node of functio ... n "";\\n} |
 | tst.js:16:2:20:1 | exceptional return of function f | tst.js:20:2:20:1 | exit node of functio ... n "";\\n} |
 | tst.js:16:2:20:1 | functio ... n "";\\n} | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:16:2:20:1 | return of function f | tst.js:20:2:20:1 | exit node of functio ... n "";\\n} |
@@ -271,12 +280,14 @@ basicBlock
 | tst.js:28:2:28:1 | x | tst.js:28:2:28:1 | entry node of () =>\\n  x |
 | tst.js:28:2:29:3 | 'arguments' object of anonymous function | tst.js:28:2:28:1 | entry node of () =>\\n  x |
 | tst.js:28:2:29:3 | () =>\\n  x | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:28:2:29:3 | [function self-reference] () =>\\n  x | tst.js:28:2:28:1 | entry node of () =>\\n  x |
 | tst.js:28:2:29:3 | exceptional return of anonymous function | tst.js:28:2:28:1 | entry node of () =>\\n  x |
 | tst.js:28:2:29:3 | return of anonymous function | tst.js:28:2:28:1 | entry node of () =>\\n  x |
 | tst.js:29:3:29:3 | x | tst.js:28:2:28:1 | entry node of () =>\\n  x |
 | tst.js:32:1:32:0 | this | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:32:1:32:0 | x | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:32:1:34:1 | 'arguments' object of function g | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
+| tst.js:32:1:34:1 | [function self-reference] functio ... ables\\n} | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:32:1:34:1 | exceptional return of function g | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:32:1:34:1 | functio ... ables\\n} | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:32:1:34:1 | return of function g | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
@@ -302,6 +313,7 @@ basicBlock
 | tst.js:39:4:39:3 | this | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:39:4:41:3 | 'arguments' object of method m | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:39:4:41:3 | () {\\n    this;\\n  } | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:39:4:41:3 | [function self-reference] () {\\n    this;\\n  } | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:39:4:41:3 | exceptional return of method m | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:39:4:41:3 | return of method m | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:40:5:40:8 | this | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
@@ -327,6 +339,7 @@ basicBlock
 | tst.js:50:14:50:13 | this | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | 'arguments' object of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | () {\\n   ... et`\\n  } | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:50:14:53:3 | [function self-reference] () {\\n   ... et`\\n  } | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | exceptional return of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | return of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:9 | super | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
@@ -353,6 +366,7 @@ basicBlock
 | tst.js:62:4:62:4 | g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:64:1:64:0 | this | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
 | tst.js:64:1:67:1 | 'arguments' object of function h | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
+| tst.js:64:1:67:1 | [function self-reference] functio ... lysed\\n} | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
 | tst.js:64:1:67:1 | exceptional return of function h | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:64:1:67:1 | return of function h | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
@@ -377,6 +391,7 @@ basicBlock
 | tst.js:69:11:69:12 | 23 | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:71:1:71:0 | this | tst.js:71:1:71:0 | entry node of async f ... lysed\\n} |
 | tst.js:71:1:73:1 | 'arguments' object of function k | tst.js:71:1:71:0 | entry node of async f ... lysed\\n} |
+| tst.js:71:1:73:1 | [function self-reference] async f ... lysed\\n} | tst.js:71:1:71:0 | entry node of async f ... lysed\\n} |
 | tst.js:71:1:73:1 | async f ... lysed\\n} | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:71:1:73:1 | exceptional return of function k | tst.js:71:1:71:0 | entry node of async f ... lysed\\n} |
 | tst.js:71:1:73:1 | return of function k | tst.js:71:1:71:0 | entry node of async f ... lysed\\n} |
@@ -420,6 +435,7 @@ basicBlock
 | tst.js:87:1:96:2 | exceptional return of (functi ... r: 0\\n}) | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:87:2:87:1 | this | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:87:2:92:1 | 'arguments' object of anonymous function | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
+| tst.js:87:2:92:1 | [function self-reference] functio ...  + z;\\n} | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:87:2:92:1 | exceptional return of anonymous function | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:87:2:92:1 | functio ...  + z;\\n} | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:87:2:92:1 | return of anonymous function | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
@@ -474,6 +490,7 @@ basicBlock
 | tst.js:98:1:103:17 | exceptional return of (functi ... 3, 0 ]) | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:98:2:98:1 | this | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:98:2:103:1 | 'arguments' object of anonymous function | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
+| tst.js:98:2:103:1 | [function self-reference] functio ...  + z;\\n} | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:98:2:103:1 | exceptional return of anonymous function | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:98:2:103:1 | functio ...  + z;\\n} | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:98:2:103:1 | return of anonymous function | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
@@ -516,6 +533,7 @@ basicBlock
 | tst.js:107:1:113:2 | (functi ... v2c;\\n}) | tst.js:107:1:113:3 | (functi ... 2c;\\n}); |
 | tst.js:107:2:107:1 | this | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:107:2:113:1 | 'arguments' object of anonymous function | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:107:2:113:1 | [function self-reference] functio ...  v2c;\\n} | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:107:2:113:1 | exceptional return of anonymous function | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:107:2:113:1 | functio ...  v2c;\\n} | tst.js:107:1:113:3 | (functi ... 2c;\\n}); |
 | tst.js:107:2:113:1 | return of anonymous function | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
@@ -998,6 +1016,7 @@ flowStep
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | implicit 'this' argument of super(...args) |
 | tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:1:1:1 | x | tst.js:3:5:3:5 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -1078,6 +1097,7 @@ flowStep
 | tst.js:46:10:46:11 | "" | tst.js:46:1:46:11 | global = "" |
 | tst.js:49:1:54:1 | A | tst.js:55:1:55:1 | A |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:1:54:1 | A |
+| tst.js:50:14:50:13 | this | tst.js:51:5:51:13 | implicit 'this' argument of super(42) |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:11:64:11 | h |
 | tst.js:64:11:64:11 | h | tst.js:68:12:68:12 | h |
 | tst.js:68:5:68:14 | iter | tst.js:69:1:69:4 | iter |
@@ -1442,7 +1462,6 @@ incomplete
 | tst.js:117:10:117:24 | exceptional return of Object.seal(x1) | call |
 | tst.js:117:22:117:23 | x1 | global |
 noBasicBlock
-| file://:0:0:0:0 | global access path |
 | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs |
 | tst.js:1:20:1:23 | 'fs' |

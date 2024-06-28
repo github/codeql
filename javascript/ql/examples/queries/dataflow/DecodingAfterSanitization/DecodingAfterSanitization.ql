@@ -9,23 +9,25 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
-class DecodingAfterSanitization extends TaintTracking::Configuration {
-  DecodingAfterSanitization() { this = "DecodingAfterSanitization" }
+module DecodingAfterSanitizationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    node.(DataFlow::CallNode).getCalleeName() = "escapeHtml"
+  }
 
-  override predicate isSource(Node node) { node.(CallNode).getCalleeName() = "escapeHtml" }
-
-  override predicate isSink(Node node) {
-    exists(CallNode call |
+  predicate isSink(DataFlow::Node node) {
+    exists(DataFlow::CallNode call |
       call.getCalleeName().matches("decodeURI%") and
       node = call.getArgument(0)
     )
   }
 }
 
-from DecodingAfterSanitization cfg, PathNode source, PathNode sink
-where cfg.hasFlowPath(source, sink)
+module DecodingAfterSanitizationFlow = TaintTracking::Global<DecodingAfterSanitizationConfig>;
+
+import DecodingAfterSanitizationFlow::PathGraph
+
+from DecodingAfterSanitizationFlow::PathNode source, DecodingAfterSanitizationFlow::PathNode sink
+where DecodingAfterSanitizationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "URI decoding invalidates the HTML sanitization performed $@.",
   source.getNode(), "here"

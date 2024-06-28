@@ -1,122 +1,56 @@
-nodes
-| example_bypass.js:6:9:6:19 | req.cookies |
-| example_bypass.js:6:9:6:19 | req.cookies |
-| example_bypass.js:6:9:6:34 | req.coo ... nUserId |
-| example_bypass.js:6:9:6:34 | req.coo ... nUserId |
-| example_bypass.js:6:40:6:56 | req.params.userId |
-| example_bypass.js:6:40:6:56 | req.params.userId |
-| example_bypass.js:6:40:6:56 | req.params.userId |
-| example_bypass.js:17:46:17:62 | req.params.userId |
-| example_bypass.js:17:46:17:62 | req.params.userId |
-| example_bypass.js:17:46:17:62 | req.params.userId |
-| tst.js:9:8:9:26 | req.params.shutDown |
-| tst.js:9:8:9:26 | req.params.shutDown |
-| tst.js:9:8:9:26 | req.params.shutDown |
-| tst.js:13:9:13:19 | req.cookies |
-| tst.js:13:9:13:19 | req.cookies |
-| tst.js:13:9:13:30 | req.coo ... inThing |
-| tst.js:13:9:13:30 | req.coo ... inThing |
-| tst.js:27:9:27:37 | v3 |
-| tst.js:27:14:27:37 | id(req. ... okieId) |
-| tst.js:27:17:27:27 | req.cookies |
-| tst.js:27:17:27:27 | req.cookies |
-| tst.js:27:17:27:36 | req.cookies.cookieId |
-| tst.js:28:9:28:10 | v3 |
-| tst.js:28:9:28:10 | v3 |
-| tst.js:33:13:33:23 | req.cookies |
-| tst.js:33:13:33:23 | req.cookies |
-| tst.js:33:13:33:32 | req.cookies.cookieId |
-| tst.js:33:13:33:32 | req.cookies.cookieId |
-| tst.js:38:9:38:19 | req.cookies |
-| tst.js:38:9:38:19 | req.cookies |
-| tst.js:38:9:38:28 | req.cookies.cookieId |
-| tst.js:38:9:38:28 | req.cookies.cookieId |
-| tst.js:44:8:44:23 | req.params.login |
-| tst.js:44:8:44:23 | req.params.login |
-| tst.js:44:8:44:23 | req.params.login |
-| tst.js:57:8:57:23 | req.params.login |
-| tst.js:57:8:57:23 | req.params.login |
-| tst.js:57:8:57:23 | req.params.login |
-| tst.js:61:9:61:19 | req.cookies |
-| tst.js:61:9:61:19 | req.cookies |
-| tst.js:61:9:61:28 | req.cookies.cookieId |
-| tst.js:61:9:61:28 | req.cookies.cookieId |
-| tst.js:61:34:61:53 | req.params.requestId |
-| tst.js:61:34:61:53 | req.params.requestId |
-| tst.js:61:34:61:53 | req.params.requestId |
-| tst.js:65:14:65:24 | req.cookies |
-| tst.js:65:14:65:24 | req.cookies |
-| tst.js:65:14:65:33 | req.cookies.cookieId |
-| tst.js:65:14:65:33 | req.cookies.cookieId |
-| tst.js:65:39:65:58 | req.params.requestId |
-| tst.js:65:39:65:58 | req.params.requestId |
-| tst.js:65:39:65:58 | req.params.requestId |
-| tst.js:78:9:78:19 | req.cookies |
-| tst.js:78:9:78:19 | req.cookies |
-| tst.js:78:9:78:28 | req.cookies.cookieId |
-| tst.js:78:9:78:28 | req.cookies.cookieId |
-| tst.js:78:9:78:41 | req.coo ... secret" |
-| tst.js:78:9:78:41 | req.coo ... secret" |
-| tst.js:91:10:91:17 | req.body |
-| tst.js:91:10:91:17 | req.body |
-| tst.js:91:10:91:17 | req.body |
-| tst.js:98:13:98:32 | req.query.vulnerable |
-| tst.js:98:13:98:32 | req.query.vulnerable |
-| tst.js:98:13:98:32 | req.query.vulnerable |
-| tst.js:105:13:105:32 | req.query.vulnerable |
-| tst.js:105:13:105:32 | req.query.vulnerable |
-| tst.js:105:13:105:32 | req.query.vulnerable |
-| tst.js:113:13:113:32 | req.query.vulnerable |
-| tst.js:113:13:113:32 | req.query.vulnerable |
-| tst.js:113:13:113:32 | req.query.vulnerable |
 edges
-| example_bypass.js:6:9:6:19 | req.cookies | example_bypass.js:6:9:6:34 | req.coo ... nUserId |
-| example_bypass.js:6:9:6:19 | req.cookies | example_bypass.js:6:9:6:34 | req.coo ... nUserId |
-| example_bypass.js:6:9:6:19 | req.cookies | example_bypass.js:6:9:6:34 | req.coo ... nUserId |
-| example_bypass.js:6:9:6:19 | req.cookies | example_bypass.js:6:9:6:34 | req.coo ... nUserId |
-| example_bypass.js:6:40:6:56 | req.params.userId | example_bypass.js:6:40:6:56 | req.params.userId |
-| example_bypass.js:17:46:17:62 | req.params.userId | example_bypass.js:17:46:17:62 | req.params.userId |
-| tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown |
-| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
-| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
-| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
-| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
-| tst.js:27:9:27:37 | v3 | tst.js:28:9:28:10 | v3 |
-| tst.js:27:9:27:37 | v3 | tst.js:28:9:28:10 | v3 |
-| tst.js:27:14:27:37 | id(req. ... okieId) | tst.js:27:9:27:37 | v3 |
-| tst.js:27:17:27:27 | req.cookies | tst.js:27:17:27:36 | req.cookies.cookieId |
-| tst.js:27:17:27:27 | req.cookies | tst.js:27:17:27:36 | req.cookies.cookieId |
-| tst.js:27:17:27:36 | req.cookies.cookieId | tst.js:27:14:27:37 | id(req. ... okieId) |
-| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
-| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
-| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
-| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
-| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
-| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
-| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
-| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
-| tst.js:44:8:44:23 | req.params.login | tst.js:44:8:44:23 | req.params.login |
-| tst.js:57:8:57:23 | req.params.login | tst.js:57:8:57:23 | req.params.login |
-| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
-| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
-| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
-| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
-| tst.js:61:34:61:53 | req.params.requestId | tst.js:61:34:61:53 | req.params.requestId |
-| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
-| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
-| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
-| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
-| tst.js:65:39:65:58 | req.params.requestId | tst.js:65:39:65:58 | req.params.requestId |
-| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
-| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
-| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
-| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
-| tst.js:78:9:78:28 | req.cookies.cookieId | tst.js:78:9:78:41 | req.coo ... secret" |
-| tst.js:78:9:78:28 | req.cookies.cookieId | tst.js:78:9:78:41 | req.coo ... secret" |
-| tst.js:91:10:91:17 | req.body | tst.js:91:10:91:17 | req.body |
-| tst.js:98:13:98:32 | req.query.vulnerable | tst.js:98:13:98:32 | req.query.vulnerable |
-| tst.js:105:13:105:32 | req.query.vulnerable | tst.js:105:13:105:32 | req.query.vulnerable |
-| tst.js:113:13:113:32 | req.query.vulnerable | tst.js:113:13:113:32 | req.query.vulnerable |
+| example_bypass.js:6:9:6:19 | req.cookies | example_bypass.js:6:9:6:34 | req.coo ... nUserId | provenance |  |
+| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing | provenance |  |
+| tst.js:24:17:24:17 | v | tst.js:25:16:25:16 | v | provenance |  |
+| tst.js:27:9:27:37 | v3 | tst.js:28:9:28:10 | v3 | provenance |  |
+| tst.js:27:14:27:37 | id(req. ... okieId) | tst.js:27:9:27:37 | v3 | provenance |  |
+| tst.js:27:17:27:27 | req.cookies | tst.js:27:17:27:36 | req.cookies.cookieId | provenance |  |
+| tst.js:27:17:27:36 | req.cookies.cookieId | tst.js:24:17:24:17 | v | provenance |  |
+| tst.js:27:17:27:36 | req.cookies.cookieId | tst.js:27:14:27:37 | id(req. ... okieId) | provenance |  |
+| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId | provenance |  |
+| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId | provenance |  |
+| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId | provenance |  |
+| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId | provenance |  |
+| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId | provenance |  |
+| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId | provenance |  |
+| tst.js:78:9:78:28 | req.cookies.cookieId | tst.js:78:9:78:41 | req.coo ... secret" | provenance | Config |
+nodes
+| example_bypass.js:6:9:6:19 | req.cookies | semmle.label | req.cookies |
+| example_bypass.js:6:9:6:34 | req.coo ... nUserId | semmle.label | req.coo ... nUserId |
+| example_bypass.js:6:40:6:56 | req.params.userId | semmle.label | req.params.userId |
+| example_bypass.js:17:46:17:62 | req.params.userId | semmle.label | req.params.userId |
+| tst.js:9:8:9:26 | req.params.shutDown | semmle.label | req.params.shutDown |
+| tst.js:13:9:13:19 | req.cookies | semmle.label | req.cookies |
+| tst.js:13:9:13:30 | req.coo ... inThing | semmle.label | req.coo ... inThing |
+| tst.js:24:17:24:17 | v | semmle.label | v |
+| tst.js:25:16:25:16 | v | semmle.label | v |
+| tst.js:27:9:27:37 | v3 | semmle.label | v3 |
+| tst.js:27:14:27:37 | id(req. ... okieId) | semmle.label | id(req. ... okieId) |
+| tst.js:27:17:27:27 | req.cookies | semmle.label | req.cookies |
+| tst.js:27:17:27:36 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:28:9:28:10 | v3 | semmle.label | v3 |
+| tst.js:33:13:33:23 | req.cookies | semmle.label | req.cookies |
+| tst.js:33:13:33:32 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:38:9:38:19 | req.cookies | semmle.label | req.cookies |
+| tst.js:38:9:38:28 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:44:8:44:23 | req.params.login | semmle.label | req.params.login |
+| tst.js:57:8:57:23 | req.params.login | semmle.label | req.params.login |
+| tst.js:61:9:61:19 | req.cookies | semmle.label | req.cookies |
+| tst.js:61:9:61:28 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:61:34:61:53 | req.params.requestId | semmle.label | req.params.requestId |
+| tst.js:65:14:65:24 | req.cookies | semmle.label | req.cookies |
+| tst.js:65:14:65:33 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:65:39:65:58 | req.params.requestId | semmle.label | req.params.requestId |
+| tst.js:78:9:78:19 | req.cookies | semmle.label | req.cookies |
+| tst.js:78:9:78:28 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:78:9:78:28 | req.cookies.cookieId | semmle.label | req.cookies.cookieId |
+| tst.js:78:9:78:41 | req.coo ... secret" | semmle.label | req.coo ... secret" |
+| tst.js:91:10:91:17 | req.body | semmle.label | req.body |
+| tst.js:98:13:98:32 | req.query.vulnerable | semmle.label | req.query.vulnerable |
+| tst.js:105:13:105:32 | req.query.vulnerable | semmle.label | req.query.vulnerable |
+| tst.js:113:13:113:32 | req.query.vulnerable | semmle.label | req.query.vulnerable |
+subpaths
+| tst.js:27:17:27:36 | req.cookies.cookieId | tst.js:24:17:24:17 | v | tst.js:25:16:25:16 | v | tst.js:27:14:27:37 | id(req. ... okieId) |
 #select
 | tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown | This condition guards a sensitive $@, but a $@ controls it. | tst.js:10:9:10:22 | process.exit() | action | tst.js:9:8:9:26 | req.params.shutDown | user-provided value |
 | tst.js:13:9:13:30 | req.coo ... inThing | tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing | This condition guards a sensitive $@, but a $@ controls it. | tst.js:14:9:14:17 | o.login() | action | tst.js:13:9:13:19 | req.cookies | user-provided value |

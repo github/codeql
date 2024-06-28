@@ -1,81 +1,76 @@
-nodes
-| tst.js:5:9:5:27 | foo |
-| tst.js:5:15:5:27 | req.query.foo |
-| tst.js:5:15:5:27 | req.query.foo |
-| tst.js:6:5:6:7 | foo |
-| tst.js:6:5:6:7 | foo |
-| tst.js:8:5:8:7 | foo |
-| tst.js:8:5:8:7 | foo |
-| tst.js:11:9:11:11 | foo |
-| tst.js:11:9:11:11 | foo |
-| tst.js:14:16:14:18 | bar |
-| tst.js:15:9:15:11 | bar |
-| tst.js:15:9:15:11 | bar |
-| tst.js:17:7:17:9 | foo |
-| tst.js:27:5:27:7 | foo |
-| tst.js:27:5:27:7 | foo |
-| tst.js:28:5:28:7 | foo |
-| tst.js:28:5:28:7 | foo |
-| tst.js:45:9:45:35 | foo |
-| tst.js:45:15:45:35 | ctx.req ... ery.foo |
-| tst.js:45:15:45:35 | ctx.req ... ery.foo |
-| tst.js:46:5:46:7 | foo |
-| tst.js:46:5:46:7 | foo |
-| tst.js:77:25:77:38 | req.query.path |
-| tst.js:77:25:77:38 | req.query.path |
-| tst.js:80:23:80:23 | p |
-| tst.js:81:9:81:9 | p |
-| tst.js:81:9:81:9 | p |
-| tst.js:82:9:82:9 | p |
-| tst.js:82:9:82:9 | p |
-| tst.js:90:5:90:12 | data.foo |
-| tst.js:90:5:90:12 | data.foo |
-| tst.js:90:5:90:12 | data.foo |
-| tst.js:92:9:92:16 | data.foo |
-| tst.js:92:9:92:16 | data.foo |
-| tst.js:92:9:92:16 | data.foo |
-| tst.js:98:9:98:16 | data.foo |
-| tst.js:98:9:98:16 | data.foo |
-| tst.js:98:9:98:16 | data.foo |
-| tst.js:103:9:103:29 | data |
-| tst.js:103:16:103:29 | req.query.data |
-| tst.js:103:16:103:29 | req.query.data |
-| tst.js:104:5:104:8 | data |
-| tst.js:104:5:104:8 | data |
 edges
-| tst.js:5:9:5:27 | foo | tst.js:6:5:6:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:6:5:6:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:8:5:8:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:8:5:8:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:11:9:11:11 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:11:9:11:11 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:17:7:17:9 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:27:5:27:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:27:5:27:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:28:5:28:7 | foo |
-| tst.js:5:9:5:27 | foo | tst.js:28:5:28:7 | foo |
-| tst.js:5:15:5:27 | req.query.foo | tst.js:5:9:5:27 | foo |
-| tst.js:5:15:5:27 | req.query.foo | tst.js:5:9:5:27 | foo |
-| tst.js:14:16:14:18 | bar | tst.js:15:9:15:11 | bar |
-| tst.js:14:16:14:18 | bar | tst.js:15:9:15:11 | bar |
-| tst.js:17:7:17:9 | foo | tst.js:14:16:14:18 | bar |
-| tst.js:45:9:45:35 | foo | tst.js:46:5:46:7 | foo |
-| tst.js:45:9:45:35 | foo | tst.js:46:5:46:7 | foo |
-| tst.js:45:15:45:35 | ctx.req ... ery.foo | tst.js:45:9:45:35 | foo |
-| tst.js:45:15:45:35 | ctx.req ... ery.foo | tst.js:45:9:45:35 | foo |
-| tst.js:77:25:77:38 | req.query.path | tst.js:80:23:80:23 | p |
-| tst.js:77:25:77:38 | req.query.path | tst.js:80:23:80:23 | p |
-| tst.js:80:23:80:23 | p | tst.js:81:9:81:9 | p |
-| tst.js:80:23:80:23 | p | tst.js:81:9:81:9 | p |
-| tst.js:80:23:80:23 | p | tst.js:82:9:82:9 | p |
-| tst.js:80:23:80:23 | p | tst.js:82:9:82:9 | p |
-| tst.js:90:5:90:12 | data.foo | tst.js:90:5:90:12 | data.foo |
-| tst.js:92:9:92:16 | data.foo | tst.js:92:9:92:16 | data.foo |
-| tst.js:98:9:98:16 | data.foo | tst.js:98:9:98:16 | data.foo |
-| tst.js:103:9:103:29 | data | tst.js:104:5:104:8 | data |
-| tst.js:103:9:103:29 | data | tst.js:104:5:104:8 | data |
-| tst.js:103:16:103:29 | req.query.data | tst.js:103:9:103:29 | data |
-| tst.js:103:16:103:29 | req.query.data | tst.js:103:9:103:29 | data |
+| tst.js:5:9:5:27 | foo | tst.js:6:5:6:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:6:5:6:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:8:5:8:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:8:5:8:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:17:7:17:9 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:21:5:21:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:22:5:22:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:23:5:23:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:25:5:25:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:27:5:27:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:27:5:27:7 | foo | provenance |  |
+| tst.js:5:9:5:27 | foo | tst.js:28:5:28:7 | foo | provenance |  |
+| tst.js:5:15:5:27 | req.query.foo | tst.js:5:9:5:27 | foo | provenance |  |
+| tst.js:6:5:6:7 | foo | tst.js:8:5:8:7 | foo | provenance |  |
+| tst.js:6:5:6:7 | foo | tst.js:8:5:8:7 | foo | provenance |  |
+| tst.js:8:5:8:7 | foo | tst.js:10:5:12:5 | functio ... K\\n    } [foo] | provenance |  |
+| tst.js:8:5:8:7 | foo | tst.js:17:7:17:9 | foo | provenance |  |
+| tst.js:10:5:12:5 | functio ... K\\n    } [foo] | tst.js:10:14:10:14 | f [foo] | provenance |  |
+| tst.js:10:5:12:5 | functio ... K\\n    } [foo] | tst.js:11:9:11:11 | foo | provenance |  |
+| tst.js:10:14:10:14 | f [foo] | tst.js:39:12:39:12 | f [foo] | provenance |  |
+| tst.js:14:16:14:18 | bar | tst.js:15:9:15:11 | bar | provenance |  |
+| tst.js:17:7:17:9 | foo | tst.js:14:16:14:18 | bar | provenance |  |
+| tst.js:17:7:17:9 | foo | tst.js:21:5:21:7 | foo | provenance |  |
+| tst.js:21:5:21:7 | foo | tst.js:22:5:22:7 | foo | provenance |  |
+| tst.js:22:5:22:7 | foo | tst.js:23:5:23:7 | foo | provenance |  |
+| tst.js:23:5:23:7 | foo | tst.js:25:5:25:7 | foo | provenance |  |
+| tst.js:25:5:25:7 | foo | tst.js:27:5:27:7 | foo | provenance |  |
+| tst.js:25:5:25:7 | foo | tst.js:27:5:27:7 | foo | provenance |  |
+| tst.js:27:5:27:7 | foo | tst.js:28:5:28:7 | foo | provenance |  |
+| tst.js:39:12:39:12 | f [foo] | tst.js:11:9:11:11 | foo | provenance |  |
+| tst.js:45:9:45:35 | foo | tst.js:46:5:46:7 | foo | provenance |  |
+| tst.js:45:15:45:35 | ctx.req ... ery.foo | tst.js:45:9:45:35 | foo | provenance |  |
+| tst.js:77:25:77:38 | req.query.path | tst.js:80:23:80:23 | p | provenance |  |
+| tst.js:80:23:80:23 | p | tst.js:81:9:81:9 | p | provenance |  |
+| tst.js:80:23:80:23 | p | tst.js:82:9:82:9 | p | provenance |  |
+| tst.js:103:9:103:29 | data | tst.js:104:5:104:8 | data | provenance |  |
+| tst.js:103:16:103:29 | req.query.data | tst.js:103:9:103:29 | data | provenance |  |
+nodes
+| tst.js:5:9:5:27 | foo | semmle.label | foo |
+| tst.js:5:15:5:27 | req.query.foo | semmle.label | req.query.foo |
+| tst.js:6:5:6:7 | foo | semmle.label | foo |
+| tst.js:6:5:6:7 | foo | semmle.label | foo |
+| tst.js:8:5:8:7 | foo | semmle.label | foo |
+| tst.js:8:5:8:7 | foo | semmle.label | foo |
+| tst.js:10:5:12:5 | functio ... K\\n    } [foo] | semmle.label | functio ... K\\n    } [foo] |
+| tst.js:10:14:10:14 | f [foo] | semmle.label | f [foo] |
+| tst.js:11:9:11:11 | foo | semmle.label | foo |
+| tst.js:14:16:14:18 | bar | semmle.label | bar |
+| tst.js:15:9:15:11 | bar | semmle.label | bar |
+| tst.js:17:7:17:9 | foo | semmle.label | foo |
+| tst.js:21:5:21:7 | foo | semmle.label | foo |
+| tst.js:22:5:22:7 | foo | semmle.label | foo |
+| tst.js:23:5:23:7 | foo | semmle.label | foo |
+| tst.js:25:5:25:7 | foo | semmle.label | foo |
+| tst.js:27:5:27:7 | foo | semmle.label | foo |
+| tst.js:27:5:27:7 | foo | semmle.label | foo |
+| tst.js:28:5:28:7 | foo | semmle.label | foo |
+| tst.js:39:12:39:12 | f [foo] | semmle.label | f [foo] |
+| tst.js:45:9:45:35 | foo | semmle.label | foo |
+| tst.js:45:15:45:35 | ctx.req ... ery.foo | semmle.label | ctx.req ... ery.foo |
+| tst.js:46:5:46:7 | foo | semmle.label | foo |
+| tst.js:77:25:77:38 | req.query.path | semmle.label | req.query.path |
+| tst.js:80:23:80:23 | p | semmle.label | p |
+| tst.js:81:9:81:9 | p | semmle.label | p |
+| tst.js:82:9:82:9 | p | semmle.label | p |
+| tst.js:90:5:90:12 | data.foo | semmle.label | data.foo |
+| tst.js:92:9:92:16 | data.foo | semmle.label | data.foo |
+| tst.js:98:9:98:16 | data.foo | semmle.label | data.foo |
+| tst.js:103:9:103:29 | data | semmle.label | data |
+| tst.js:103:16:103:29 | req.query.data | semmle.label | req.query.data |
+| tst.js:104:5:104:8 | data | semmle.label | data |
+subpaths
 #select
 | tst.js:6:5:6:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:6:5:6:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
 | tst.js:8:5:8:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:8:5:8:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |

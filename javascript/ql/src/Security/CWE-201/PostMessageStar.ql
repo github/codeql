@@ -15,9 +15,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.PostMessageStarQuery
-import DataFlow::PathGraph
+import PostMessageStarFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PostMessageStarFlow::PathNode source, PostMessageStarFlow::PathNode sink
+where PostMessageStarFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ is sent to another window without origin restriction.",
   source.getNode(), "Sensitive data"

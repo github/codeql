@@ -12,19 +12,41 @@ import InsecureDownloadCustomizations::InsecureDownload
 /**
  * A taint tracking configuration for download of sensitive file through insecure connection.
  */
-class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "InsecureDownload" }
+module InsecureDownloadConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
     source.(Source).getALabel() = label
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     sink.(Sink).getALabel() = label
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * Taint tracking for download of sensitive file through insecure connection.
+ */
+module InsecureDownload = DataFlow::GlobalWithState<InsecureDownloadConfig>;
+
+/**
+ * DEPRECATED. Use the `InsecureDownload` module instead.
+ */
+deprecated class Configuration extends DataFlow::Configuration {
+  Configuration() { this = "InsecureDownload" }
+
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    InsecureDownloadConfig::isSource(source, label)
+  }
+
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    InsecureDownloadConfig::isSink(sink, label)
   }
 
   override predicate isBarrier(DataFlow::Node node) {
     super.isBarrier(node) or
-    node instanceof Sanitizer
+    InsecureDownloadConfig::isBarrier(node)
   }
 }

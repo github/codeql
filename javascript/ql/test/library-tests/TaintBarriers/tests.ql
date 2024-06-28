@@ -16,5 +16,7 @@ query predicate sanitizingGuard(TaintTracking::SanitizerGuardNode g, Expr e, boo
 }
 
 query predicate taintedSink(DataFlow::Node source, DataFlow::Node sink) {
-  exists(ExampleConfiguration cfg | cfg.hasFlow(source, sink))
+  TestFlow::flow(source, sink)
 }
+
+import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, ExampleConfiguration>

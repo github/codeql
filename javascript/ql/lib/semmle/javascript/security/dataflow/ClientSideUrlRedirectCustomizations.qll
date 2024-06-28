@@ -50,6 +50,16 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * Holds if `node` extracts a part of a URL that does not contain the suffix.
+   */
+  pragma[inline]
+  predicate isPrefixExtraction(DataFlow::MethodCallNode node) {
+    // Block flow through prefix-extraction `substring(0, ...)` and `split("#")[0]`
+    node.getMethodName() = [StringOps::substringMethodName(), "split"] and
+    not untrustedUrlSubstring(_, node)
+  }
+
+  /**
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */

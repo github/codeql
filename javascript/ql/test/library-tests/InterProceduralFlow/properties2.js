@@ -14,7 +14,7 @@ function setP(base, rhs) {
 
 var o = {};
 setP(o, source);
-var sink3 = o.p;  // flow from `source` not yet detected
+var sink3 = o.p;
 var sink4 = o.q;
 
 var o2 = {};

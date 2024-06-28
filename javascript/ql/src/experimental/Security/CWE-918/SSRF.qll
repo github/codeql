@@ -2,42 +2,48 @@ import javascript
 import semmle.javascript.security.dataflow.RequestForgeryCustomizations
 import semmle.javascript.security.dataflow.UrlConcatenation
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "SSRF" }
+module SsrfConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RequestForgery::Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RequestForgery::Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgery::Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgery::Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof RequestForgery::Sanitizer
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof RequestForgery::Sanitizer or node = Guards::getABarrierNode()
   }
 
   private predicate hasSanitizingSubstring(DataFlow::Node nd) {
     nd.getStringValue().regexpMatch(".*[?#].*")
     or
-    this.hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+    hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
     or
-    this.hasSanitizingSubstring(nd.getAPredecessor())
+    hasSanitizingSubstring(nd.getAPredecessor())
   }
 
   private predicate strictSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
     exists(DataFlow::Node operator, int n |
       StringConcatenation::taintStep(source, sink, operator, n) and
-      this.hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+      hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
     )
   }
 
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    this.strictSanitizingPrefixEdge(node, _)
-  }
+  predicate isBarrierOut(DataFlow::Node node) { strictSanitizingPrefixEdge(node, _) }
 
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {
+  private predicate isBarrierGuard(DataFlow::BarrierGuardNode nd) {
     nd instanceof IntegerCheck or
     nd instanceof ValidatorCheck or
     nd instanceof TernaryOperatorSanitizerGuard
   }
+
+  private module Guards = DataFlow::MakeLegacyBarrierGuard<isBarrierGuard/1>;
+}
+
+module SsrfFlow = TaintTracking::Global<SsrfConfig>;
+
+/**
+ * DEPRECATED. Use the `SsrfFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "SSRF" }
 }
 
 /**
@@ -104,7 +110,9 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
     not this.asExpr() instanceof LogicalBinaryExpr
   }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  predicate blocksExpr(boolean outcome, Expr e) {
     not this.asExpr() instanceof LogNotExpr and
     originalGuard.sanitizes(outcome, e)
     or
@@ -126,7 +134,9 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
 class IntegerCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
   IntegerCheck() { this = DataFlow::globalVarRef("Number").getAMemberCall("isInteger") }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and
     e = this.getArgument(0).asExpr()
   }
@@ -149,7 +159,9 @@ class ValidatorCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNo
     )
   }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and
     e = this.getArgument(0).asExpr()
   }

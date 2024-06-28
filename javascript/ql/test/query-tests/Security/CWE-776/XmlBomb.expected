@@ -1,60 +1,30 @@
-nodes
-| closure.js:2:7:2:36 | src |
-| closure.js:2:13:2:36 | documen ... .search |
-| closure.js:2:13:2:36 | documen ... .search |
-| closure.js:4:24:4:26 | src |
-| closure.js:4:24:4:26 | src |
-| domparser.js:2:7:2:36 | src |
-| domparser.js:2:13:2:36 | documen ... .search |
-| domparser.js:2:13:2:36 | documen ... .search |
-| domparser.js:6:37:6:39 | src |
-| domparser.js:6:37:6:39 | src |
-| domparser.js:11:55:11:57 | src |
-| domparser.js:11:55:11:57 | src |
-| domparser.js:14:57:14:59 | src |
-| domparser.js:14:57:14:59 | src |
-| expat.js:6:16:6:36 | req.par ... e-xml") |
-| expat.js:6:16:6:36 | req.par ... e-xml") |
-| expat.js:6:16:6:36 | req.par ... e-xml") |
-| jquery.js:2:7:2:36 | src |
-| jquery.js:2:13:2:36 | documen ... .search |
-| jquery.js:2:13:2:36 | documen ... .search |
-| jquery.js:5:14:5:16 | src |
-| jquery.js:5:14:5:16 | src |
-| libxml.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
-| libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
-| libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
-| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
-| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
-| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
 edges
-| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src |
-| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src |
-| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src |
-| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src |
-| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src |
-| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src |
-| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src |
-| expat.js:6:16:6:36 | req.par ... e-xml") | expat.js:6:16:6:36 | req.par ... e-xml") |
-| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src |
-| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src |
-| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src |
-| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src |
-| libxml.js:6:21:6:41 | req.par ... e-xml") | libxml.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.noent.js:6:21:6:41 | req.par ... e-xml") | libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
-| libxml.sax.js:6:22:6:42 | req.par ... e-xml") | libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
-| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
+| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src | provenance |  |
+| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src | provenance |  |
+| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src | provenance |  |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src | provenance |  |
+| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src | provenance |  |
+| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src | provenance |  |
+nodes
+| closure.js:2:7:2:36 | src | semmle.label | src |
+| closure.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
+| closure.js:4:24:4:26 | src | semmle.label | src |
+| domparser.js:2:7:2:36 | src | semmle.label | src |
+| domparser.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
+| domparser.js:6:37:6:39 | src | semmle.label | src |
+| domparser.js:11:55:11:57 | src | semmle.label | src |
+| domparser.js:14:57:14:59 | src | semmle.label | src |
+| expat.js:6:16:6:36 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
+| jquery.js:2:7:2:36 | src | semmle.label | src |
+| jquery.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
+| jquery.js:5:14:5:16 | src | semmle.label | src |
+| libxml.js:6:21:6:41 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
+| libxml.noent.js:6:21:6:41 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
+| libxml.sax.js:6:22:6:42 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
+| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
+subpaths
 #select
 | closure.js:4:24:4:26 | src | closure.js:2:13:2:36 | documen ... .search | closure.js:4:24:4:26 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | closure.js:2:13:2:36 | documen ... .search | user-provided value |
 | domparser.js:6:37:6:39 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:6:37:6:39 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |

@@ -2,26 +2,44 @@ import javascript
 
 DataFlow::CallNode getACall(string name) { result.getCalleeName() = name }
 
-class BasicConfig extends DataFlow::Configuration {
-  BasicConfig() { this = "BasicConfig" }
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node = getACall("source") }
 
-  override predicate isSource(DataFlow::Node node) { node = getACall("source") }
+  predicate isSink(DataFlow::Node node) { node = getACall("sink").getAnArgument() }
 
-  override predicate isSink(DataFlow::Node node) { node = getACall("sink").getAnArgument() }
-
-  override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
+  additional predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
     node instanceof BasicBarrierGuard
   }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node = DataFlow::MakeLegacyBarrierGuard<isBarrierGuard/1>::getABarrierNode()
+  }
 }
+
+module TestFlow = DataFlow::Global<TestConfig>;
 
 class BasicBarrierGuard extends DataFlow::BarrierGuardNode, DataFlow::CallNode {
   BasicBarrierGuard() { this = getACall("isSafe") }
 
-  override predicate blocks(boolean outcome, Expr e) {
+  override predicate blocks(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and e = this.getArgument(0).asExpr()
   }
 }
 
-from BasicConfig cfg, DataFlow::Node src, DataFlow::Node sink
-where cfg.hasFlow(src, sink)
-select src, sink
+class LegacyConfig extends DataFlow::Configuration {
+  LegacyConfig() { this = "LegacyConfig" }
+
+  override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
+
+  override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
+
+  override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
+    TestConfig::isBarrierGuard(node)
+  }
+}
+
+import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+
+query predicate flow = TestFlow::flow/2;

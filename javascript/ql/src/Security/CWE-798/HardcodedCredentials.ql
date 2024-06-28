@@ -15,14 +15,14 @@
 
 import javascript
 import semmle.javascript.security.dataflow.HardcodedCredentialsQuery
-import DataFlow::PathGraph
+import HardcodedCredentials::PathGraph
 
 bindingset[s]
 predicate looksLikeATemplate(string s) { s.regexpMatch(".*((\\{\\{.*\\}\\})|(<.*>)|(\\(.*\\))).*") }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string value
+from HardcodedCredentials::PathNode source, HardcodedCredentials::PathNode sink, string value
 where
-  cfg.hasFlowPath(source, sink) and
+  HardcodedCredentials::flowPath(source, sink) and
   // use source value in message if it's available
   if source.getNode().asExpr() instanceof ConstantString
   then

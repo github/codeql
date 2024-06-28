@@ -15,9 +15,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.StackTraceExposureQuery
-import DataFlow::PathGraph
+import StackTraceExposureFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from StackTraceExposureFlow::PathNode source, StackTraceExposureFlow::PathNode sink
+where StackTraceExposureFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This information exposed to the user depends on $@.",
   source.getNode(), "stack trace information"

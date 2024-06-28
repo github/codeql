@@ -14,9 +14,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ImproperCodeSanitizationQuery
-import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
+import ImproperCodeSanitizationFlow::PathGraph
 
 /**
  * Gets a type-tracked instance of `RemoteFlowSource` using type-tracker `t`.
@@ -60,9 +60,9 @@ private DataFlow::Node endsInCodeInjectionSink() {
   result = endsInCodeInjectionSink(DataFlow::TypeBackTracker::end())
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from ImproperCodeSanitizationFlow::PathNode source, ImproperCodeSanitizationFlow::PathNode sink
 where
-  cfg.hasFlowPath(source, sink) and
+  ImproperCodeSanitizationFlow::flowPath(source, sink) and
   // Basic detection of duplicate results with `js/code-injection`.
   not (
     sink.getNode().(StringOps::ConcatenationLeaf).getRoot() = endsInCodeInjectionSink() and

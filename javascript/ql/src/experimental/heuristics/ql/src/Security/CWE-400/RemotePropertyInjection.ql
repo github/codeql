@@ -15,10 +15,12 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RemotePropertyInjectionQuery
-import DataFlow::PathGraph
+import RemotePropertyInjectionFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from RemotePropertyInjectionFlow::PathNode source, RemotePropertyInjectionFlow::PathNode sink
+where
+  RemotePropertyInjectionFlow::flowPath(source, sink) and
+  source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink, sink.getNode().(Sink).getMessage() + " depends on a $@.",
   source.getNode(), "user-provided value"

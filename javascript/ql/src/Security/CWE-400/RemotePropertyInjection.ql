@@ -14,9 +14,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RemotePropertyInjectionQuery
-import DataFlow::PathGraph
+import RemotePropertyInjectionFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from RemotePropertyInjectionFlow::PathNode source, RemotePropertyInjectionFlow::PathNode sink
+where RemotePropertyInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, sink.getNode().(Sink).getMessage() + " depends on a $@.",
   source.getNode(), "user-provided value"

@@ -14,10 +14,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.InsecureRandomnessQuery
-import DataFlow::PathGraph
+import InsecureRandomnessFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from InsecureRandomnessFlow::PathNode source, InsecureRandomnessFlow::PathNode sink
+where InsecureRandomnessFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This uses a cryptographically insecure random number generated at $@ in a security context.",
   source.getNode(), source.getNode().toString()
