@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Compilation : CachedEntity<object>
     {
-        internal readonly ConcurrentDictionary<string, int> messageCounts = new();
+        internal readonly ConcurrentDictionary<string, int> messageCounts = [];
 
         private readonly string cwd;
         private readonly string[] args;

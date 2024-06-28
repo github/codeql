@@ -538,7 +538,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             TryChangeProjectFile(tempDir, PackageReferenceVersion(), $"Version=\"{newVersion}\"", "package reference version");
         }
 
-        private bool TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
+        private void TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
         {
             try
             {
@@ -548,7 +548,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (csprojs.Length != 1)
                 {
                     logger.LogError($"Could not find the .csproj file in {projectDir.FullName}, count = {csprojs.Length}");
-                    return false;
+                    return;
                 }
 
                 var csproj = csprojs[0];
@@ -557,18 +557,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (matches.Count == 0)
                 {
                     logger.LogError($"Could not find the {patternName} in {csproj.FullName}");
-                    return false;
+                    return;
                 }
 
                 content = pattern.Replace(content, replacement, 1);
                 File.WriteAllText(csproj.FullName, content);
-                return true;
             }
             catch (Exception exc)
             {
                 logger.LogError($"Failed to change the {patternName} in {projectDir.FullName}: {exc}");
             }
-            return false;
         }
 
         private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
@@ -644,7 +642,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             (explicitFeeds, var allFeeds) = GetAllFeeds();
 
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
-                .ToHashSet() ?? [];
+                .ToHashSet();
 
             if (excludedFeeds.Count > 0)
             {
@@ -779,7 +777,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), sb.ToString(), subfolderName);
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), sb.ToString(), subfolderName);
         }
     }
 }

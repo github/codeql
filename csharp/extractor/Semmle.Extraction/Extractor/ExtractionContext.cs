@@ -65,7 +65,7 @@ namespace Semmle.Extraction
 
         // Roslyn framework has no apparent mechanism to associate assemblies with their files.
         // So this lookup table needs to be populated.
-        private readonly Dictionary<string, string> referenceFilenames = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> referenceFilenames = [];
 
         public void SetAssemblyFile(string assembly, string file)
         {

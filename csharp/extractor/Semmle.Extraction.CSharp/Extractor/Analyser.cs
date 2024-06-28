@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
                         var def = reader.GetAssemblyDefinition();
-                        assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
+                        assemblyIdentity = $"{reader.GetString(def.Name)} {def.Version}";
                     }
                     ExtractionContext.SetAssemblyFile(assemblyIdentity, refPath);
 
@@ -346,7 +346,7 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public void LogExtractorInfo()
         {
-            Logger.LogInfo($"  Extractor: {Environment.GetCommandLineArgs().First()}");
+            Logger.LogInfo($"  Extractor: {Environment.GetCommandLineArgs()[0]}");
             Logger.LogInfo($"  Extractor version: {Version}");
             Logger.LogInfo($"  Current working directory: {Directory.GetCurrentDirectory()}");
         }
