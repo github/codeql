@@ -249,6 +249,11 @@ extensions:
       - ["System.IO", "UnmanagedMemoryStream", False, "UnmanagedMemoryStream", "(System.Runtime.InteropServices.SafeBuffer,System.Int64,System.Int64,System.IO.FileAccess)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["System.IO", "Path", False, "GetTempPath", "()", "", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.IO", "BinaryReader", "BinaryReader", "(System.IO.Stream)", "summary", "df-generated"]
