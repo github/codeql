@@ -1,22 +1,26 @@
 private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
-import codeql.actions.dataflow.FlowSources
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.dataflow.FlowSteps
 import codeql.actions.DataFlow
+import codeql.actions.dataflow.FlowSources
 
 abstract class EnvPathInjectionSink extends DataFlow::Node { }
 
+/**
+ * Holds if a Run step declares a PATH environment variable with contents from a local file.
+ * e.g.
+ *    run: |
+ *      cat foo.txt >> $GITHUB_PATH
+ */
 class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
   EnvPathInjectionFromFileReadSink() {
     exists(Run run, UntrustedArtifactDownloadStep step, string value |
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
       writeToGitHubPath(run, value) and
-      // (eg: echo DATABASE_SHA=`yq '.creationMetadata.sha' codeql-database.yml` >> $GITHUB_ENV)
-      value
-          .regexpMatch(["\\$\\(", "`"] +
-              ["cat\\s+", "<", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+"] + ".*" + ["`", "\\)"])
+      outputsPartialFileContent(value)
     )
   }
 }
@@ -31,15 +35,10 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
  */
 class EnvPathInjectionFromEnvVarSink extends EnvPathInjectionSink {
   EnvPathInjectionFromEnvVarSink() {
-    exists(Run run, Expression expr, string var_name, string value |
-      run.getInScopeEnvVarExpr(var_name) = expr and
-      run.getScriptScalar() = this.asExpr() and
-      writeToGitHubPath(run, value) and
-      (
-        value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-        or
-        value.matches("$(echo %") and value.indexOf(var_name) > 0
-      )
+    exists(Run run, string var_name |
+      envToRunFlow("GITHUB_PATH", var_name, run, _) and
+      exists(run.getInScopeEnvVarExpr(var_name)) and
+      run.getScriptScalar() = this.asExpr()
     )
   }
 }

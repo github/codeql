@@ -54,10 +54,10 @@ extensions:
       extensible: poisonableLocalScriptsDataModel
     data:
       # TODO: It could also be in the form of `dir/cmd`
-      - ["(^|;\\s*|\\s+)(\\.\\/)(.*)(\\s+|;|$)", 3]
-      - ["(^|;\\s*|\\s+)(source|sh|bash|zsh|fish)\\s+(.*)(\\s+|;|$)", 3]
-      - ["(^|;\\s*|\\s+)(node)\\s+(.*)(\\.js|\\.ts)(\\s+|;|$)", 3]
-      - ["(^|;\\s*|\\s+)(python)\\s+(.*)\\.py(\\s+|;|$)", 3]
-      - ["(^|;\\s*|\\s+)(ruby)\\s+(.*)\\.rb(\\s+|;|$)", 3]
-      - ["(^|;\\s*|\\s+)(go)\\s+(.*)\\.go(\\s+|;|$)", 3]
+      - ["(\\.\\/)(.*)(\\s+|;|$)", 3]
+      - ["(source|sh|bash|zsh|fish)\\s+(.*)(\\s+|;|$)", 3]
+      - ["(node)\\s+(.*)(\\.js|\\.ts)(\\s+|;|$)", 3]
+      - ["(python)\\s+(.*)\\.py(\\s+|;|$)", 3]
+      - ["(ruby)\\s+(.*)\\.rb(\\s+|;|$)", 3]
+      - ["(go)\\s+(.*)\\.go(\\s+|;|$)", 3]
 

@@ -11,6 +11,9 @@ edges
 | .github/workflows/test4.yml:57:27:57:64 | github.event.pull_request.title | .github/workflows/test4.yml:55:14:55:70 | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV | provenance |  |
 | .github/workflows/test4.yml:60:19:60:56 | github.event.pull_request.title | .github/workflows/test4.yml:58:14:58:94 | echo ISSUE_KEY=$(echo "${TITLE}" \| grep -oP 'ISPN-(?P<id>[0-9]+)') >> $GITHUB_ENV | provenance |  |
 | .github/workflows/test5.yml:10:9:30:6 | Uses Step | .github/workflows/test5.yml:33:14:36:62 | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n | provenance |  |
+| .github/workflows/test6.yml:11:19:11:56 | github.event.pull_request.title | .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | provenance |  |
+| .github/workflows/test6.yml:16:19:16:56 | github.event.pull_request.title | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | provenance |  |
+| .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | provenance |  |
 nodes
 | .github/workflows/test2.yml:12:9:41:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | semmle.label | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n |
@@ -36,5 +39,11 @@ nodes
 | .github/workflows/test4.yml:60:19:60:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test5.yml:10:9:30:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test5.yml:33:14:36:62 | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n | semmle.label | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n |
+| .github/workflows/test6.yml:11:19:11:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | semmle.label | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n |
+| .github/workflows/test6.yml:16:19:16:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | semmle.label | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n |
+| .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | semmle.label | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n |
 subpaths
 #select

@@ -1,12 +1,20 @@
 private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
-import codeql.actions.dataflow.FlowSources
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.dataflow.FlowSteps
 import codeql.actions.DataFlow
+import codeql.actions.dataflow.FlowSources
 
 abstract class EnvVarInjectionSink extends DataFlow::Node { }
 
+/**
+ * Holds if a Run step declares an environment variable with contents from a local file.
+ * e.g.
+ *    run: |
+ *      echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV
+ *      echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV
+ */
 class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
   EnvVarInjectionFromFileReadSink() {
     exists(Run run, UntrustedArtifactDownloadStep step, string content, string value |
@@ -14,10 +22,7 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
       step.getAFollowingStep() = run and
       writeToGitHubEnv(run, content) and
       extractVariableAndValue(content, _, value) and
-      // (eg: echo DATABASE_SHA=`yq '.creationMetadata.sha' codeql-database.yml` >> $GITHUB_ENV)
-      value
-          .regexpMatch(["\\$\\(", "`"] +
-              ["cat\\s+", "<", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+"] + ".*" + ["`", "\\)"])
+      outputsPartialFileContent(value)
     )
   }
 }
@@ -32,16 +37,10 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
  */
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
-    exists(Run run, Expression expr, string var_name, string content, string value |
-      run.getInScopeEnvVarExpr(var_name) = expr and
-      run.getScriptScalar() = this.asExpr() and
-      writeToGitHubEnv(run, content) and
-      extractVariableAndValue(content, _, value) and
-      (
-        value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-        or
-        value.matches("$(echo %") and value.indexOf(var_name) > 0
-      )
+    exists(Run run, string var_name |
+      envToRunFlow("GITHUB_ENV", var_name, run, _) and
+      exists(run.getInScopeEnvVarExpr(var_name)) and
+      run.getScriptScalar() = this.asExpr()
     )
   }
 }

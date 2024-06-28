@@ -235,3 +235,14 @@ predicate inNonPrivilegedJob(AstNode node) {
     not j.isPrivilegedExternallyTriggerable()
   )
 }
+
+bindingset[snippet]
+predicate outputsPartialFileContent(string snippet) {
+  // e.g.
+  // echo FOO=`yq '.foo' foo.yml` >> $GITHUB_ENV
+  // echo "FOO=$(<foo.txt)" >> $GITHUB_ENV
+  // yq '.foo' foo.yml >> $GITHUB_PATH
+  // cat foo.txt >> $GITHUB_PATH
+  snippet
+      .regexpMatch(["(\\$\\(|`)<.*", ".*(\\b|^|\\s+)" + ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"] + ".*"])
+}

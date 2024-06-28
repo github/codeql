@@ -18,7 +18,7 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   PoisonableCommandStep() {
     exists(string regexp |
       poisonableCommandsDataModel(regexp) and
-      exists(this.getScript().splitAt("\n").trim().regexpFind("([^a-z]|^)" + regexp, _, _))
+      exists(this.getScript().splitAt("\n").trim().regexpFind("(^|\\b|\\s+)" + regexp, _, _))
     )
   }
 }
@@ -29,7 +29,7 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   LocalScriptExecutionRunStep() {
     exists(string line, string regexp, int group | line = this.getScript().splitAt("\n").trim() |
       poisonableLocalScriptsDataModel(regexp, group) and
-      cmd = line.regexpCapture(regexp, group)
+      cmd = line.regexpCapture("(^|\\b|\\s+)" + regexp, group)
     )
   }
 
@@ -40,16 +40,12 @@ class LocalActionUsesStep extends PoisonableStep, UsesStep {
   LocalActionUsesStep() { this.getCallee().matches("./%") }
 }
 
-class EnvVarInjectionRunStep extends PoisonableStep, Run {
-  EnvVarInjectionRunStep() {
-    exists(string content, string value |
-      // Heuristic:
-      // Run step with env var definition based on file content.
-      // eg: `echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV`
-      // eg: `echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV`
+class EnvVarInjectionFromFileReadRunStep extends PoisonableStep, Run {
+  EnvVarInjectionFromFileReadRunStep() {
+    exists(string content, string value|
       writeToGitHubEnv(this, content) and
       extractVariableAndValue(content, _, value) and
-      value.matches("%" + ["ls ", "cat ", "jq ", "$(<"] + "%")
+      outputsPartialFileContent(value)
     )
   }
 }

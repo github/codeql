@@ -24,6 +24,60 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
+ * Holds if an env var is passed to a Run step and this Run step, writes its value to a special workflow file.
+ *   - file is the name of the special workflow file: GITHUB_ENV, GITHUB_OUTPUT, GITHUB_PATH
+ *   - var_name is the name of the env var
+ *   - run is the Run step
+ *   - key is the name assigned in the special workflow file.
+ *     e.g. FOO for `echo "FOO=$BODY" >> $GITHUB_ENV`
+ *     e.g. FOO for `echo "FOO=$(echo $BODY)" >> $GITHUB_OUTPUT`
+ *     e.g. path (special name) for `echo "$BODY" >> $GITHUB_PATH`
+ */
+bindingset[var_name]
+predicate envToRunFlow(string file, string var_name, Run run, string key) {
+  exists(string content, string value |
+    (
+      file = "GITHUB_ENV" and
+      writeToGitHubEnv(run, content) and
+      extractVariableAndValue(content, key, value)
+      or
+      file = "GITHUB_OUTPUT" and
+      writeToGitHubOutput(run, content) and
+      extractVariableAndValue(content, key, value)
+      or
+      file = "GITHUB_PATH" and
+      writeToGitHubPath(run, content) and
+      key = "path" and
+      value = content
+    ) and
+    (
+      // e.g. echo "FOO=$BODY" >> $GITHUB_ENV
+      // e.g. echo "FOO=${BODY}" >> $GITHUB_ENV
+      value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+      or
+      // e.g. echo "FOO=$(echo $BODY)" >> $GITHUB_ENV
+      value.matches("$(echo %") and value.indexOf(var_name) > 0
+      or
+      // e.g.
+      // FOO=$(echo $BODY)
+      // echo "FOO=$FOO" >> $GITHUB_ENV
+      exists(string line, string var2_name, string var2_value |
+        run.getScript().splitAt("\n") = line
+      |
+        var2_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
+        var2_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
+        var2_value.matches("%$" + ["", "{", "ENV{"] + var_name + "%") and
+        (
+          value.matches("%$" + ["", "{", "ENV{"] + var2_name + "%")
+          or
+          value.matches("$(echo %") and value.indexOf(var2_name) > 0
+        )
+      )
+    )
+  )
+}
+
+/**
  * Holds if a Run step declares an environment variable, uses it in its script to set another env var.
  * e.g.
  *    env:
@@ -32,20 +86,10 @@ class AdditionalTaintStep extends Unit {
  *      echo "foo=$(echo $BODY)" >> $GITHUB_ENV
  */
 predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Run run, string var_name, string content, string value |
+  exists(Run run, string var_name |
     run.getInScopeEnvVarExpr(var_name) = pred.asExpr() and
-    succ.asExpr() = run.getScriptScalar()
-  |
-    (
-      writeToGitHubEnv(run, content) or
-      writeToGitHubOutput(run, content)
-    ) and
-    extractVariableAndValue(content, _, value) and
-    value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-    or
-    writeToGitHubPath(run, content) and
-    value = content and
-    value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+    succ.asExpr() = run.getScriptScalar() and
+    envToRunFlow(["GITHUB_ENV", "GITHUB_PATH"], var_name, run, _)
   )
 }
 
@@ -63,16 +107,26 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
  *      echo "::set-output name=step-output::$BODY"
  */
 predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string var_name, string content, string key, string value |
-    writeToGitHubOutput(run, content) and
-    extractVariableAndValue(content, key, value) and
-    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getInScopeEnvVarExpr(var_name) and
+  exists(Run run, string var_name, string key |
+    run.getInScopeEnvVarExpr(var_name) = pred.asExpr() and
     succ.asExpr() = run and
-    value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+    envToRunFlow("GITHUB_OUTPUT", var_name, run, key) and
+    c = any(DataFlow::FieldContent ct | ct.getName() = key)
   )
 }
 
+// predicate dISABLEDenvToOutputStoreStep(
+//   DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
+// ) {
+//   exists(Run run, string var_name, string content, string key, string value |
+//     writeToGitHubOutput(run, content) and
+//     extractVariableAndValue(content, key, value) and
+//     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
+//     pred.asExpr() = run.getInScopeEnvVarExpr(var_name) and
+//     succ.asExpr() = run and
+//     value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+//   )
+// }
 predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(Run run, string var_name, string content, string key, string value |
     writeToGitHubEnv(run, content) and
