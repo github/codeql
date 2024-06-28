@@ -123,25 +123,25 @@ private module ExperimentalPrivateDjango {
               result in [this.getArg(1), this.getArgByName("value")]
             }
 
-            override boolean getSecureFlag() {
+            override predicate hasSecureFlag(boolean b) {
               if
                 DataFlow::exprNode(any(True t))
                     .(DataFlow::LocalSourceNode)
                     .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
-              then result = true
-              else result = false
+              then b = true
+              else b = false
             }
 
-            override boolean getHttpOnlyFlag() {
+            override predicate hasHttpOnlyFlag(boolean b) {
               if
                 DataFlow::exprNode(any(True t))
                     .(DataFlow::LocalSourceNode)
                     .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
-              then result = true
-              else result = false
+              then b = true
+              else b = false
             }
 
-            override boolean getSameSiteFlag() {
+            override predicate hasSameSiteFlag(boolean b) {
               if
                 exists(StringLiteral str |
                   str.getText() in ["Strict", "Lax"] and
@@ -149,8 +149,8 @@ private module ExperimentalPrivateDjango {
                       .(DataFlow::LocalSourceNode)
                       .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
                 )
-              then result = true
-              else result = false
+              then b = true
+              else b = false
             }
 
             override DataFlow::Node getHeaderArg() { none() }

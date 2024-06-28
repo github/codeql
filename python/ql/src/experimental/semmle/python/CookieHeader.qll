@@ -38,7 +38,7 @@ class CookieHeader extends Http::Server::CookieWrite::Range instanceof Http::Ser
     )
   }
 
-  override boolean getSecureFlag() {
+  override predicate hasSecureFlag(boolean b) {
     if
       exists(StringLiteral str |
         str.getText().regexpMatch(".*; *Secure;.*") and
@@ -46,11 +46,11 @@ class CookieHeader extends Http::Server::CookieWrite::Range instanceof Http::Ser
             .(DataFlow::LocalSourceNode)
             .flowsTo(this.(Http::Server::ResponseHeaderWrite).getValueArg())
       )
-    then result = true
-    else result = false
+    then b = true
+    else b = false
   }
 
-  override boolean getHttpOnlyFlag() {
+  override predicate hasHttpOnlyFlag(boolean b) {
     if
       exists(StringLiteral str |
         str.getText().regexpMatch(".*; *HttpOnly;.*") and
@@ -58,11 +58,11 @@ class CookieHeader extends Http::Server::CookieWrite::Range instanceof Http::Ser
             .(DataFlow::LocalSourceNode)
             .flowsTo(this.(Http::Server::ResponseHeaderWrite).getValueArg())
       )
-    then result = true
-    else result = false
+    then b = true
+    else b = false
   }
 
-  override boolean getSameSiteFlag() {
+  override predicate hasSameSiteFlag(boolean b) {
     if
       exists(StringLiteral str |
         str.getText().regexpMatch(".*; *SameSite=(Strict|Lax);.*") and
@@ -70,8 +70,8 @@ class CookieHeader extends Http::Server::CookieWrite::Range instanceof Http::Ser
             .(DataFlow::LocalSourceNode)
             .flowsTo(this.(Http::Server::ResponseHeaderWrite).getValueArg())
       )
-    then result = true
-    else result = false
+    then b = true
+    else b = false
   }
 
   override DataFlow::Node getNameArg() {

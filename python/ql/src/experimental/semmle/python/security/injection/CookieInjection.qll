@@ -12,13 +12,13 @@ class CookieSink extends DataFlow::Node {
     exists(Http::Server::CookieWrite cookie |
       this in [cookie.getNameArg(), cookie.getValueArg(), cookie.getHeaderArg()] and
       (
-        cookie.getSecureFlag() = false and
+        cookie.hasSecureFlag(false) and
         flag = "secure"
         or
-        cookie.getHttpOnlyFlag() = false and
+        cookie.hasHttpOnlyFlag(false) and
         flag = "httponly"
         or
-        cookie.getSameSiteFlag() = false and
+        cookie.hasSameSiteFlag(false) and
         flag = "samesite"
       )
     )

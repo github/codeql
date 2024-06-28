@@ -21,12 +21,12 @@ import experimental.semmle.python.CookieHeader
 
 from Http::Server::CookieWrite cookie, string alert
 where
-  cookie.getSecureFlag() = false and
+  cookie.hasSecureFlag(false) and
   alert = "secure"
   or
-  cookie.getHttpOnlyFlag() = false and
+  cookie.hasHttpOnlyFlag(false) and
   alert = "httponly"
   or
-  cookie.getSameSiteFlag() = false and
+  cookie.hasSameSiteFlag(false) and
   alert = "samesite"
 select cookie, "Cookie is added without the '" + alert + "' flag properly set."

@@ -1205,19 +1205,19 @@ module Http {
       DataFlow::Node getValueArg() { result = super.getValueArg() }
 
       /**
-       * Gets the value of the `Secure` flag of the cookie, if known.
+       * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
        */
-      boolean getSecureFlag() { result = super.getSecureFlag() }
+      predicate hasSecureFlag(boolean b) { super.hasSecureFlag(b) }
 
       /**
-       * Gets the value of the `HttpOnly` flag of the cookie, if known
+       * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
        */
-      boolean getHttpOnlyFlag() { result = super.getHttpOnlyFlag() }
+      predicate hasHttpOnlyFlag(boolean b) { super.hasHttpOnlyFlag(b) }
 
       /**
-       * Gets the value of the `SameSite` flag of the cookie, if known.
+       * Holds if the `SameSite` flag of the cookie is known to have a value of `b`.
        */
-      boolean getSameSiteFlag() { result = super.getSameSiteFlag() }
+      predicate hasSameSiteFlag(boolean b) { super.hasSameSiteFlag(b) }
     }
 
     /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -1248,19 +1248,19 @@ module Http {
         abstract DataFlow::Node getValueArg();
 
         /**
-         * Gets the value of the `Secure` flag of the cookie, if known.
+         * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
          */
-        boolean getSecureFlag() { none() }
+        predicate hasSecureFlag(boolean b) { none() }
 
         /**
-         * Gets the value of the `HttpOnly` flag of the cookie, if known
+         * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
          */
-        boolean getHttpOnlyFlag() { none() }
+        predicate hasHttpOnlyFlag(boolean b) { none() }
 
         /**
-         * Gets the value of the `SameSite` flag of the cookie, if known.
+         * Holds if the `SameSite` flag of the cookie is known to have a value of `b`.
          */
-        boolean getSameSiteFlag() { none() }
+        predicate hasSameSiteFlag(boolean b) { none() }
       }
     }
 
