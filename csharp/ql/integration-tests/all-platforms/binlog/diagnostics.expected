@@ -26,3 +26,17 @@
     "telemetry": true
   }
 }
+{
+  "markdownMessage": "C# was extracted with the experimental 'binlog' option.",
+  "severity": "note",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/buildless/binlog",
+    "name": "C# was extracted with the experimental 'binlog' option"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

@@ -116,6 +116,20 @@ namespace Semmle.Autobuild.CSharp
                     markdownMessage: "C# was extracted with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
                     severity: DiagnosticMessage.TspSeverity.Note
                 ));
+
+                // For the time being we are adding an additional message regarding the binlog usage. In the future, we might want to remove the buildless messages altogether when the binlog option is specified.
+                if (actions.GetEnvironmentVariable(CSharpAutobuildOptions.ExtractorOptionBinlog) is not null)
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/binlog",
+                        "C# was extracted with the experimental 'binlog' option",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# was extracted with the experimental 'binlog' option.",
+                        severity: DiagnosticMessage.TspSeverity.Note
+                    ));
+                }
+
                 return 0;
             });
         }
