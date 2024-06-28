@@ -1762,7 +1762,9 @@ class MidPathNode extends PathNode, MkMidNode {
   predicate isHidden() { PathNode::shouldNodeBeHidden(nd) }
 }
 
+/** Companion module to the `PathNode` class. */
 module PathNode {
+  /** Holds if `nd` should be hidden in data flow paths. */
   predicate shouldNodeBeHidden(DataFlow::Node nd) {
     // Skip phi, refinement, and capture nodes
     nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof

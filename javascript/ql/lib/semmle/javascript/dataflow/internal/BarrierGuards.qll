@@ -187,7 +187,7 @@ module MakeStateBarrierGuard<
     abstract predicate blocksExpr(boolean outcome, Expr test, FlowState state);
   }
 
-  class ExplicitBarrierGuard extends BarrierGuard instanceof BaseGuard {
+  private class ExplicitBarrierGuard extends BarrierGuard instanceof BaseGuard {
     override predicate blocksExpr(boolean outcome, Expr test, FlowState state) {
       BaseGuard.super.blocksExpr(outcome, test, state)
     }

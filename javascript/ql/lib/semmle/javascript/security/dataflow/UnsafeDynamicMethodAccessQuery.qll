@@ -43,6 +43,7 @@ module UnsafeDynamicMethodAccessConfig implements DataFlow::StateConfigSig {
     label.isTaint()
   }
 
+  /** An additional flow step for use in both this configuration and the legacy configuration. */
   additional predicate additionalFlowStep(
     DataFlow::Node src, DataFlow::FlowLabel srclabel, DataFlow::Node dst,
     DataFlow::FlowLabel dstlabel

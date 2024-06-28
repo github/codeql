@@ -12,6 +12,11 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
   SummarizedCallable() { any() }
 
   // TODO: rename 'propagatesFlowExt' and/or override 'propagatesFlow' directly
+  /**
+   * Holds if data may flow from `input` to `output` through this callable.
+   *
+   * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
+   */
   pragma[nomagic]
   predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
 

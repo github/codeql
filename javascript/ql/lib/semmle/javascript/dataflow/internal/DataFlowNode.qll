@@ -112,11 +112,9 @@ private class TEarlyStageNode =
  *   These module systems must therefore use `EarlyStageNode` instead of `DataFlow::Node`.
  */
 class EarlyStageNode extends TEarlyStageNode {
+  /** Gets a string representation of this data flow node. */
   string toString() { result = this.(DataFlow::Node).toString() }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.(DataFlow::Node).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  /** Gets the location of this data flow node. */
+  Location getLocation() { result = this.(DataFlow::Node).getLocation() }
 }
