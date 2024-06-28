@@ -185,7 +185,8 @@ namespace Semmle.Extraction.CSharp
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var sourcePath = tree.FilePath;
+                var sourcePath = BinaryLogExtractionContext.GetAdjustedPath(ExtractionContext, tree.FilePath) ?? tree.FilePath;
+
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
                 var trapPath = transformedSourcePath.GetTrapPath(Logger, options.TrapCompression);
