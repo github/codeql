@@ -76,13 +76,23 @@ extensions:
       # See https://docs.python.org/3/library/os.html#os.PathLike.__fspath__
       - ["pathlib.PurePath", "Member[__fspath__]", "Argument[self]", "ReturnValue", "taint"]
       # See
+      #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.get
+      #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.get_nowait
+      - ["queue.Queue", "Member[get,get_nowait]", "Argument[self].ListElement", "ReturnValue", "value"]
+      - ["queue.Queue", "Member[get,get_nowait]", "Argument[self]", "ReturnValue", "taint"]
+      # See
       #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.put
       #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.put_nowait
+      - ["queue.Queue", "Member[put,put_nowait]", "Argument[0,item:]", "Argument[self].ListElement", "value"]
       - ["queue.Queue", "Member[put,put_nowait]", "Argument[0,item:]", "Argument[self]", "taint"]
       # See 
       #  - https://docs.python.org/3/library/random.html#random.choice
       #  - https://docs.python.org/3/library/random.html#module-random
+      - ["random", "Member[choice]", "Argument[0,seq:].ListElement", "ReturnValue", "value"]
+      - ["random", "Member[choice]", "Argument[0,seq:].SetElement", "ReturnValue", "value"]
       - ["random", "Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
+      - ["random.Random", "Member[choice]", "Argument[0,seq:].ListElement", "ReturnValue", "value"]
+      - ["random.Random", "Member[choice]", "Argument[0,seq:].SetElement", "ReturnValue", "value"]
       - ["random.Random", "Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/shlex.html#shlex.quote
       - ["shlex", "Member[quote]", "Argument[0,s:]", "ReturnValue", "taint"]
