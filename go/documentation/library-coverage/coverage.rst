@@ -12,6 +12,7 @@ Go framework & library support
    `Echo <https://echo.labstack.com/>`_,``github.com/labstack/echo*``,,2,
    `Fosite <https://github.com/ory/fosite>`_,``github.com/ory/fosite*``,,,2
    `Gin <https://github.com/gin-gonic/gin>`_,``github.com/gin-gonic/gin*``,,2,
+   `Go JOSE <https://github.com/go-jose/go-jose>`_,"``github.com/go-jose/go-jose*``, ``github.com/square/go-jose*``, ``gopkg.in/square/go-jose*``",,8,2
    `Go kit <https://gokit.io/>`_,``github.com/go-kit/kit*``,,,1
    `Iris <https://www.iris-go.com/>`_,``github.com/kataras/iris*``,,,1
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
@@ -34,6 +35,5 @@ Go framework & library support
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_,"``github.com/golang/protobuf*``, ``google.golang.org/protobuf*``",,16,
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
-   Others,"``github.com/go-jose/go-jose/jwt``, ``gopkg.in/square/go-jose.v2/jwt``",,8,2
    Totals,,20,877,24
 
