@@ -1,6 +1,6 @@
 /**
  * @name Uncontrolled file decompression
- * @description Uncontrolled data that flows into decompression library APIs without checking the compression rate is dangerous
+ * @description Decompressing user-controlled files without checking the compression ratio may allow attackers to perform denial-of-service attacks.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
@@ -20,13 +20,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   class FlowState = DecompressionState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    (
-      source instanceof RemoteFlowSource
-      or
-      source instanceof FormRemoteFlowSource
-      or
-      source instanceof FileUploadRemoteFlowSource
-    ) and
+    source instanceof RemoteFlowSource and
     (
       state instanceof ZipFile
       or

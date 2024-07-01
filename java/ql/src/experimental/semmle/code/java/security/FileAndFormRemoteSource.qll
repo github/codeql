@@ -1,9 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-
-abstract class FormRemoteFlowSource extends DataFlow::Node { }
-
-abstract class FileUploadRemoteFlowSource extends DataFlow::Node { }
+import semmle.code.java.dataflow.FlowSources
 
 class CommonsFileUploadAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
@@ -30,7 +27,7 @@ module ApacheCommonsFileUpload {
       }
     }
 
-    class ServletFileUpload extends FileUploadRemoteFlowSource {
+    class ServletFileUpload extends RemoteFlowSource {
       ServletFileUpload() {
         exists(MethodAccess ma |
           ma.getReceiverType() instanceof TypeServletFileUpload and
@@ -38,9 +35,11 @@ module ApacheCommonsFileUpload {
           this.asExpr() = ma
         )
       }
+
+      override string getSourceType() { result = "Apache Commons Fileupload" }
     }
 
-    private class FileItemRemoteSource extends FileUploadRemoteFlowSource {
+    private class FileItemRemoteSource extends RemoteFlowSource {
       FileItemRemoteSource() {
         exists(MethodAccess ma |
           ma.getReceiverType() instanceof TypeFileUpload and
@@ -51,9 +50,11 @@ module ApacheCommonsFileUpload {
           this.asExpr() = ma
         )
       }
+
+      override string getSourceType() { result = "Apache Commons Fileupload" }
     }
 
-    private class FileItemStreamRemoteSource extends FileUploadRemoteFlowSource {
+    private class FileItemStreamRemoteSource extends RemoteFlowSource {
       FileItemStreamRemoteSource() {
         exists(MethodAccess ma |
           ma.getReceiverType() instanceof TypeFileItemStream and
@@ -61,6 +62,8 @@ module ApacheCommonsFileUpload {
           this.asExpr() = ma
         )
       }
+
+      override string getSourceType() { result = "Apache Commons Fileupload" }
     }
   }
 
@@ -98,7 +101,7 @@ module ServletRemoteMultiPartSources {
     TypePart() { this.hasQualifiedName(["javax.servlet.http", "jakarta.servlet.http"], "Part") }
   }
 
-  private class ServletPartCalls extends FormRemoteFlowSource {
+  private class ServletPartCalls extends RemoteFlowSource {
     ServletPartCalls() {
       exists(MethodAccess ma |
         ma.getReceiverType() instanceof TypePart and
@@ -110,5 +113,7 @@ module ServletRemoteMultiPartSources {
         this.asExpr() = ma
       )
     }
+
+    override string getSourceType() { result = "Javax Servlet Http" }
   }
 }
