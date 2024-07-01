@@ -829,9 +829,15 @@ Function findFunctionAccordingToMro(Class cls, string name) {
   result = cls.getAMethod() and
   result.getName() = name
   or
-  not cls.getAMethod().getName() = name and
+  not class_has_method(cls, name) and
   result = findFunctionAccordingToMro(getNextClassInMro(cls), name)
 }
+
+/**
+ * Join-order helper for `findFunctionAccordingToMro` and `findFunctionAccordingToMroKnownStartingClass`.
+ */
+pragma[nomagic]
+private predicate class_has_method(Class cls, string name) { cls.getAMethod().getName() = name }
 
 /**
  * Gets a class that, from an approximated MRO calculation, might be the next class
@@ -860,7 +866,7 @@ private Function findFunctionAccordingToMroKnownStartingClass(
   result.getName() = name and
   cls = getADirectSuperclass*(startingClass)
   or
-  not cls.getAMethod().getName() = name and
+  not class_has_method(cls, name) and
   result =
     findFunctionAccordingToMroKnownStartingClass(getNextClassInMroKnownStartingClass(cls,
         startingClass), startingClass, name)
