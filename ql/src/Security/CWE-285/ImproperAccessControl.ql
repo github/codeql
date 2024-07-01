@@ -14,7 +14,7 @@
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.ControlChecks
 
-from LocalJob job, LabelControlCheck check, MutableRefCheckoutStep checkout, Event event
+from LocalJob job, LabelCheck check, MutableRefCheckoutStep checkout, Event event
 where
   job = checkout.getEnclosingJob() and
   job.isPrivileged() and

@@ -24,12 +24,12 @@ where
   j.getAStep() = checkout and
   // the checkout is NOT followed by a known poisonable step
   not checkout.getAFollowingStep() instanceof PoisonableStep and
-  // the checkout is not controlled by an access check
-  not exists(ControlCheck check | check.dominates(checkout)) and
   // the checkout occurs in a privileged context
   (
     inPrivilegedCompositeAction(checkout)
     or
     inPrivilegedExternallyTriggerableJob(checkout)
-  )
-select checkout, "Potential unsafe checkout of untrusted pull request on privileged workflow."
+  ) and
+  // the checkout is not controlled by an access check
+  not exists(ControlCheck check | check.dominates(checkout))
+select checkout, "Potential execution of untrusted code on a privileged workflow."

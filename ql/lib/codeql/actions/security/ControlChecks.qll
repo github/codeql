@@ -1,17 +1,49 @@
 import actions
 
 /** An If node that contains an actor, user or label check */
-abstract class ControlCheck extends If {
+abstract class ControlCheck extends AstNode {
+  ControlCheck() {
+    this instanceof If or
+    this instanceof Environment or
+    this instanceof UsesStep
+  }
+
   predicate dominates(Step step) {
-    step.getIf() = this or
-    step.getEnclosingJob().getIf() = this or
-    step.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
-    step.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+    this instanceof If and
+    (
+      step.getIf() = this or
+      step.getEnclosingJob().getIf() = this or
+      step.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
+      step.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+    )
+    or
+    this instanceof Environment and
+    (
+      step.getEnclosingJob().getEnvironment() = this
+      or
+      step.getEnclosingJob().getANeededJob().getEnvironment() = this
+    )
+    or
+    this.(UsesStep).getAFollowingStep() = step
   }
 }
 
-class LabelControlCheck extends ControlCheck {
-  LabelControlCheck() {
+abstract class AssociationCheck extends ControlCheck { }
+
+abstract class ActorCheck extends ControlCheck { }
+
+abstract class RepositoryCheck extends ControlCheck { }
+
+abstract class LabelCheck extends ControlCheck { }
+
+abstract class PermissionCheck extends ControlCheck { }
+
+class EnvironmentCheck extends ControlCheck instanceof Environment {
+  EnvironmentCheck() { any() }
+}
+
+class LabelIfCheck extends LabelCheck instanceof If {
+  LabelIfCheck() {
     // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
     // eg: github.event.label.name == 'safe to test'
     exists(
@@ -23,8 +55,8 @@ class LabelControlCheck extends ControlCheck {
   }
 }
 
-class ActorControlCheck extends ControlCheck {
-  ActorControlCheck() {
+class ActorIfCheck extends ActorCheck instanceof If {
+  ActorIfCheck() {
     // eg: github.actor == 'dependabot[bot]'
     // eg: github.triggering_actor == 'CI Agent'
     // eg: github.event.pull_request.user.login == 'mybot'
@@ -39,8 +71,8 @@ class ActorControlCheck extends ControlCheck {
   }
 }
 
-class RepositoryControlCheck extends ControlCheck {
-  RepositoryControlCheck() {
+class RepositoryIfCheck extends RepositoryCheck instanceof If {
+  RepositoryIfCheck() {
     // eg: github.repository == 'test/foo'
     exists(
       normalizeExpr(this.getCondition())
@@ -49,8 +81,8 @@ class RepositoryControlCheck extends ControlCheck {
   }
 }
 
-class AssociationControlCheck extends ControlCheck {
-  AssociationControlCheck() {
+class AssociationIfCheck extends AssociationCheck instanceof If {
+  AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
     exists(
       normalizeExpr(this.getCondition())
@@ -63,3 +95,18 @@ class AssociationControlCheck extends ControlCheck {
   }
 }
 
+class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
+  AssociationActionCheck() {
+    this.getCallee() = "TheModdingInquisition/actions-team-membership" and
+    not exists(this.getArgument("exit"))
+    or
+    this.getArgument("exit") = "true"
+  }
+}
+
+class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
+  PermissionActionCheck() {
+    this.getCallee() = "lannonbr/repo-permission-check-action" and
+    not this.getArgument("permission") = ["write", "admin"]
+  }
+}

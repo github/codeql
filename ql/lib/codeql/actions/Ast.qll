@@ -198,6 +198,8 @@ abstract class Job extends AstNode instanceof JobImpl {
 
   If getIf() { result = super.getIf() }
 
+  Environment getEnvironment() { result = super.getEnvironment() }
+
   Permissions getPermissions() { result = super.getPermissions() }
 
   Event getATriggerEvent() { result = super.getATriggerEvent() }
@@ -240,6 +242,15 @@ class If extends AstNode instanceof IfImpl {
   Expression getConditionExpr() { result = super.getConditionExpr() }
 
   string getConditionStyle() { result = super.getConditionStyle() }
+}
+
+/**
+ * An Environemnt node representing a deployment environment.
+ */
+class Environment extends AstNode instanceof EnvironmentImpl {
+  string getName() { result = super.getName() }
+
+  Expression getNameExpr() { result = super.getNameExpr() }
 }
 
 abstract class Uses extends AstNode instanceof UsesImpl {

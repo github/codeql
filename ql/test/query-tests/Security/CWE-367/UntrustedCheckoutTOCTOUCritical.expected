@@ -1,2 +1,25 @@
-| .github/workflows/comment.yml:37:9:41:6 | Uses Step | The checked-out code can be changed after the authorization check o step $@. | .github/workflows/comment.yml:10:9:10:188 | ${{ git ... s ') }} | ${{ git ... s ') }} |
-| .github/workflows/label.yml:13:9:17:6 | Uses Step | The checked-out code can be changed after the authorization check o step $@. | .github/workflows/label.yml:11:9:11:73 | contain ... -test') | contain ... -test') |
+edges
+| .github/workflows/actor.yml:17:9:20:6 | Uses Step | .github/workflows/actor.yml:20:9:21:16 | Run Step |
+| .github/workflows/comment.yml:15:9:30:6 | Uses Step: issue | .github/workflows/comment.yml:30:9:34:6 | Uses Step |
+| .github/workflows/comment.yml:15:9:30:6 | Uses Step: issue | .github/workflows/comment.yml:34:9:37:6 | Run Step |
+| .github/workflows/comment.yml:15:9:30:6 | Uses Step: issue | .github/workflows/comment.yml:37:9:41:6 | Uses Step |
+| .github/workflows/comment.yml:15:9:30:6 | Uses Step: issue | .github/workflows/comment.yml:41:9:41:43 | Run Step |
+| .github/workflows/comment.yml:30:9:34:6 | Uses Step | .github/workflows/comment.yml:34:9:37:6 | Run Step |
+| .github/workflows/comment.yml:30:9:34:6 | Uses Step | .github/workflows/comment.yml:37:9:41:6 | Uses Step |
+| .github/workflows/comment.yml:30:9:34:6 | Uses Step | .github/workflows/comment.yml:41:9:41:43 | Run Step |
+| .github/workflows/comment.yml:34:9:37:6 | Run Step | .github/workflows/comment.yml:37:9:41:6 | Uses Step |
+| .github/workflows/comment.yml:34:9:37:6 | Run Step | .github/workflows/comment.yml:41:9:41:43 | Run Step |
+| .github/workflows/comment.yml:37:9:41:6 | Uses Step | .github/workflows/comment.yml:41:9:41:43 | Run Step |
+| .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:22:10:27:7 | Uses Step |
+| .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:27:10:30:7 | Run Step |
+| .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step |
+| .github/workflows/deployment.yml:22:10:27:7 | Uses Step | .github/workflows/deployment.yml:27:10:30:7 | Run Step |
+| .github/workflows/deployment.yml:22:10:27:7 | Uses Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step |
+| .github/workflows/deployment.yml:27:10:30:7 | Run Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step |
+| .github/workflows/label.yml:13:9:17:6 | Uses Step | .github/workflows/label.yml:17:9:17:41 | Run Step |
+| .github/workflows/label_actor.yml:13:9:17:6 | Uses Step | .github/workflows/label_actor.yml:17:9:17:41 | Run Step |
+#select
+| .github/workflows/comment.yml:41:9:41:43 | Run Step | .github/workflows/comment.yml:37:9:41:6 | Uses Step | .github/workflows/comment.yml:41:9:41:43 | Run Step | Insufficient protection against execution of untrusted code on a privileged workflow on check $@. | .github/workflows/comment.yml:10:9:10:188 | ${{ git ... s ') }} | ${{ git ... s ') }} |
+| .github/workflows/deployment.yml:27:10:30:7 | Run Step | .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:27:10:30:7 | Run Step | Insufficient protection against execution of untrusted code on a privileged workflow on check $@. | .github/workflows/deployment.yml:13:19:13:27 | Public CI | Public CI |
+| .github/workflows/deployment.yml:30:10:31:53 | Run Step | .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step | Insufficient protection against execution of untrusted code on a privileged workflow on check $@. | .github/workflows/deployment.yml:13:19:13:27 | Public CI | Public CI |
+| .github/workflows/label.yml:17:9:17:41 | Run Step | .github/workflows/label.yml:13:9:17:6 | Uses Step | .github/workflows/label.yml:17:9:17:41 | Run Step | Insufficient protection against execution of untrusted code on a privileged workflow on check $@. | .github/workflows/label.yml:11:9:11:73 | contain ... -test') | contain ... -test') |

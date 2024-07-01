@@ -82,6 +82,7 @@ private newtype TAstNode =
     exists(YamlMapping m | m.lookup("steps").(YamlSequence).getElementNode(_) = n)
   } or
   TIfNode(YamlValue n) { exists(YamlMapping m | m.lookup("if") = n) } or
+  TEnvironmentNode(YamlValue n) { exists(YamlMapping m | m.lookup("environment") = n) } or
   TEnvNode(YamlMapping n) { exists(YamlMapping m | m.lookup("env") = n) } or
   TScalarValueNode(YamlScalar n) {
     exists(YamlMapping m | m.maps(_, n) or m.lookup(_).(YamlSequence).getElementNode(_) = n)
@@ -793,6 +794,9 @@ class JobImpl extends AstNodeImpl, TJobNode {
   /** Gets the condition that must be satisfied for this job to run. */
   IfImpl getIf() { result.getNode() = n.lookup("if") }
 
+  /** Gets the deployment environment to run the job on. */
+  EnvironmentImpl getEnvironment() { result.getNode() = n.lookup("environment") }
+
   /** Gets the permissions for this job. */
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
 
@@ -974,6 +978,30 @@ class StepImpl extends AstNodeImpl, TStepNode {
       i < j
     )
   }
+}
+
+class EnvironmentImpl extends AstNodeImpl, TEnvironmentNode {
+  YamlValue n;
+
+  EnvironmentImpl() { this = TEnvironmentNode(n) }
+
+  override string toString() { result = n.toString() }
+
+  override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
+
+  override AstNodeImpl getParentNode() { result.getAChildNode() = this }
+
+  override string getAPrimaryQlClass() { result = "EnvironmentImpl" }
+
+  override Location getLocation() { result = n.getLocation() }
+
+  override YamlScalar getNode() { result = n }
+
+  /** Gets the environment name. */
+  string getName() { result = n.(YamlScalar).getValue() }
+
+  /** Gets the environmen name. */
+  ExpressionImpl getNameExpr() { result.getParentNode().getNode() = n }
 }
 
 class IfImpl extends AstNodeImpl, TIfNode {
