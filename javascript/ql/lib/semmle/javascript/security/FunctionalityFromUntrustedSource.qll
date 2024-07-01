@@ -1,3 +1,7 @@
+/**
+ * Provides classes for finding functionality that is loaded from untrusted sources and used in script or frame elements.
+ */
+
 import javascript
 
 /** A location that adds a reference to an untrusted source. */
@@ -9,6 +13,7 @@ abstract class AddsUntrustedUrl extends Locatable {
   abstract string getUrl();
 }
 
+/** Looks for static creation of an element and source. */
 module StaticCreation {
   /** Holds if `host` is an alias of localhost. */
   bindingset[host]
@@ -78,6 +83,7 @@ module StaticCreation {
   }
 }
 
+/** Looks for dyanmic creation of an element and source. */
 module DynamicCreation {
   /** Holds if `call` creates a tag of kind `name`. */
   predicate isCreateElementNode(DataFlow::CallNode call, string name) {
@@ -85,6 +91,7 @@ module DynamicCreation {
     call.getArgument(0).getStringValue().toLowerCase() = name
   }
 
+  /** Get the right-hand side of an assignment to a named attribute. */
   DataFlow::Node getAttributeAssignmentRhs(DataFlow::CallNode createCall, string name) {
     result = createCall.getAPropertyWrite(name).getRhs()
     or
@@ -103,6 +110,7 @@ module DynamicCreation {
     not exists(getAttributeAssignmentRhs(createCall, "integrity"))
   }
 
+  /** Holds if `t` tracks a URL that is loaded from an untrusted source. */
   DataFlow::Node urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker t) {
     t.start() and result.getStringValue().regexpMatch("(?i)http:.*")
     or
@@ -126,6 +134,7 @@ module DynamicCreation {
     )
   }
 
+  /** Holds a dataflow node is traked from an untrusted source. */
   DataFlow::Node urlTrackedFromUnsafeSourceLiteral() {
     result = urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker::end())
   }
@@ -144,6 +153,7 @@ module DynamicCreation {
     )
   }
 
+  /** A script or iframe element that refers to untrusted content. */
   class IframeOrScriptSrcAssignment extends AddsUntrustedUrl {
     string name;
 
