@@ -230,7 +230,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                             Argument("-ExecutionPolicy").
                             Argument("unrestricted").
                             Argument("-Command").
-                            Argument("\"" + psCommand + "\"").
+                            Argument($"\"{psCommand}\"").
                             Script;
 
                         return GetInstall("pwsh") | GetInstall("powershell");
