@@ -7,4 +7,7 @@ if [ "$CODEQL_PLATFORM" != "linux64" ] && [ "$CODEQL_PLATFORM" != "osx64" ] ; th
     exit 1
 fi
 
+export CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS=true
+export CODEQL_EXTRACTOR_CSHARP_STANDALONE_EXTRACT_WEB_VIEWS=true
+
 "$CODEQL_EXTRACTOR_CSHARP_ROOT/tools/$CODEQL_PLATFORM/Semmle.Autobuild.CSharp" || exit $?
