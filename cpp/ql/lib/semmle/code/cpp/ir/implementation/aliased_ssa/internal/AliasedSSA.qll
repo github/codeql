@@ -246,7 +246,16 @@ abstract class AllocationMemoryLocation extends MemoryLocation {
   final override VirtualVariable getVirtualVariable() {
     if allocationEscapes(var)
     then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false)
-    else result.(AllocationMemoryLocation).getAllocation() = var
+    else (
+      // It may be that the grouped memory location contains an escaping
+      // allocation. In that case, the virtual variable is still the memory
+      // location that represents all aliased memory. Thus, we need to
+      // call `getVirtualVariable` on the grouped memory location.
+      result = getGroupedMemoryLocation(var, false, false).getVirtualVariable()
+      or
+      not exists(getGroupedMemoryLocation(var, false, false)) and
+      result.(AllocationMemoryLocation).getAnAllocation() = var
+    )
   }
 
   final override IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
