@@ -1,1 +1,1 @@
-experimental/Security/CWE/CWE-522-DecompressionBombs/DecompressionBombFlowState.ql
+experimental/Security/CWE/CWE-522-DecompressionBombs/DecompressionBomb.ql

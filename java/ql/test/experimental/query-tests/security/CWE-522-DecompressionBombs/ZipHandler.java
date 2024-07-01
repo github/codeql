@@ -1,5 +1,3 @@
-package com.Bombs;
-
 import java.io.*;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
