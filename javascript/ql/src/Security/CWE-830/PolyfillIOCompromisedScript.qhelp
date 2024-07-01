@@ -65,7 +65,7 @@
 			subresource integrity is recommended, as in the next example.
 		</p>
 
-		<sample src="polyfill-cloudflare-check.html" />
+		<sample src="polyfill-check.html" />
 	</example>
 
 	<references>
