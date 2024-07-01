@@ -7,3 +7,5 @@
 | Test.qll:127:5:129:9 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:125:16:125:20 | a | variable a |
 | Test.qll:132:5:134:9 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:125:16:125:20 | a | variable a |
 | Test.qll:164:5:166:35 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:161:3:161:11 | field | field field |
+| Test.qll:170:5:172:72 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:169:13:169:21 | this | this variable |
+| Test.qll:178:5:182:60 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:177:10:177:16 | this | this variable |
