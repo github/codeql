@@ -41,7 +41,8 @@ newtype TInstruction =
   } or
   TAliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
     AliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
-  }
+  } or
+  TAliasedSsaInitializeGroupInstruction(AliasedSsa::Ssa::VariableGroup vg)
 
 /**
  * Provides wrappers for the constructors of each branch of `TInstruction` that is used by the
@@ -102,5 +103,13 @@ module AliasedSsaInstructions {
 
   TUnreachedInstruction unreachedInstruction(IRFunctionBase irFunc) {
     result = TAliasedSsaUnreachedInstruction(irFunc)
+  }
+
+  class VariableGroup = AliasedSsa::Ssa::VariableGroup;
+
+  class TInitializeGroupInstruction = TAliasedSsaInitializeGroupInstruction;
+
+  TInitializeGroupInstruction initializeGroup(VariableGroup vg) {
+    result = TAliasedSsaInitializeGroupInstruction(vg)
   }
 }

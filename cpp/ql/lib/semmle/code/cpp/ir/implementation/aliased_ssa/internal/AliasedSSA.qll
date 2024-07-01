@@ -8,6 +8,7 @@ private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import AliasConfiguration
+private import codeql.util.Boolean
 
 private class IntValue = Ints::IntValue;
 
@@ -57,6 +58,86 @@ private predicate hasOperandMemoryAccess(
   else endBitOffset = Ints::unknown()
 }
 
+private Allocation getAnAllocation(AddressOperand address) {
+  hasResultMemoryAccess(address, _, result, _, _, _, _, _, true) or
+  hasOperandMemoryAccess(address, _, result, _, _, _, _, _, true)
+}
+
+private module AllocationSet0 =
+  QlBuiltins::InternSets<AddressOperand, Allocation, getAnAllocation/1>;
+
+/**
+ * A set of allocations containing at least 2 elements.
+ */
+private class NonSingletonSets extends AllocationSet0::Set {
+  NonSingletonSets() { strictcount(Allocation var | this.contains(var)) > 1 }
+
+  /** Gets an allocation from this set. */
+  Allocation getAnAllocation() { this.contains(result) }
+
+  /** Gets the string representation of this set. */
+  string toString() { result = "{" + strictconcat(this.getAnAllocation().toString(), ", ") + "}" }
+}
+
+/** Holds the instersection of `s1` and `s2` is non-empty. */
+private predicate hasOverlappingElement(NonSingletonSets s1, NonSingletonSets s2) {
+  exists(Allocation var |
+    s1.contains(var) and
+    s2.contains(var)
+  )
+}
+
+private module AllocationSet =
+  QlBuiltins::EquivalenceRelation<NonSingletonSets, hasOverlappingElement/2>;
+
+/**
+ * An equivalence class of a set of allocations.
+ *
+ * Any `VariableGroup` will be completely disjunct from any other
+ * `VariableGroup`.
+ */
+class VariableGroup extends AllocationSet::EquivalenceClass {
+  /** Gets the location of this set. */
+  final Location getLocation() { result = this.getIRFunction().getLocation() }
+
+  /** Gets the enclosing `IRFunction` of this set. */
+  final IRFunction getIRFunction() {
+    result = unique( | | this.getAnAllocation().getEnclosingIRFunction())
+  }
+
+  /** Gets the type of elements contained in this set. */
+  final Language::LanguageType getType() {
+    strictcount(Language::LanguageType langType |
+      exists(Allocation var | var = this.getAnAllocation() |
+        hasResultMemoryAccess(_, _, var, _, langType, _, _, _, true) or
+        hasOperandMemoryAccess(_, _, var, _, langType, _, _, _, true)
+      )
+    ) = 1 and
+    exists(Allocation var | var = this.getAnAllocation() |
+      hasResultMemoryAccess(_, _, var, _, result, _, _, _, true) or
+      hasOperandMemoryAccess(_, _, var, _, result, _, _, _, true)
+    )
+    or
+    strictcount(Language::LanguageType langType |
+      exists(Allocation var | var = this.getAnAllocation() |
+        hasResultMemoryAccess(_, _, var, _, langType, _, _, _, true) or
+        hasOperandMemoryAccess(_, _, var, _, langType, _, _, _, true)
+      )
+    ) > 1 and
+    result = any(IRUnknownType type).getCanonicalLanguageType()
+  }
+
+  /** Gets an allocation of this set. */
+  final Allocation getAnAllocation() {
+    exists(AllocationSet0::Set set |
+      this = AllocationSet::getEquivalenceClass(set) and
+      set.contains(result)
+    )
+  }
+
+  string toString() { result = "{" + strictconcat(this.getAnAllocation().toString(), ", ") + "}" }
+}
+
 private newtype TMemoryLocation =
   TVariableMemoryLocation(
     Allocation var, IRType type, Language::LanguageType languageType, IntValue startBitOffset,
@@ -83,6 +164,7 @@ private newtype TMemoryLocation =
     ) and
     (isMayAccess = false or isMayAccess = true)
   } or
+  TGroupedMemoryLocation(VariableGroup vg, Boolean isMayAccess, Boolean isAll) or
   TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
     isMayAccess = false or isMayAccess = true
   } or
@@ -126,7 +208,9 @@ abstract class MemoryLocation extends TMemoryLocation {
   /**
    * Gets an allocation associated with this `MemoryLocation`.
    *
-   * This always returns zero or one result.
+   * This returns zero or one results in all cases except when `this` is an
+   * instance of `GroupedMemoryLocation`. When `this` is an instance of
+   * `GroupedMemoryLocation` this predicate always returns two or more results.
    */
   Allocation getAnAllocation() { none() }
 
@@ -259,6 +343,73 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
   }
 }
 
+/**
+ * A group of allocations represented as a single memory location.
+ *
+ * If `isAll()` holds then this memory location represents all the enclosing
+ * allocations, and if `isSome()` holds then this memory location represents
+ * one or more of the enclosing allocations.
+ *
+ * For example, consider the following snippet:
+ * ```
+ * int* p;
+ * int a, b;
+ * if(b) {
+ *   p = &a;
+ * } else {
+ *   p = &b;
+ * }
+ * *p = 42;
+ * ```
+ *
+ * The write memory location associated with the write to `*p` writes to a
+ * grouped memory location representing the _some_ allocation in the set
+ * `{a, b}`, and the subsequent `Chi` instruction merges the new value of
+ * `{a, b}` into a memory location that represents _all_ of the allocations
+ * in the set.
+ */
+class GroupedMemoryLocation extends TGroupedMemoryLocation, MemoryLocation {
+  VariableGroup vg;
+  boolean isMayAccess;
+  boolean isAll;
+
+  GroupedMemoryLocation() { this = TGroupedMemoryLocation(vg, isMayAccess, isAll) }
+
+  final override Location getLocation() { result = vg.getLocation() }
+
+  final override IRFunction getIRFunction() { result = vg.getIRFunction() }
+
+  final override predicate isMayAccess() { isMayAccess = true }
+
+  final override string getUniqueId() {
+    if this.isAll()
+    then result = "All{" + strictconcat(vg.getAnAllocation().getUniqueId(), ", ") + "}"
+    else result = "Some{" + strictconcat(vg.getAnAllocation().getUniqueId(), ", ") + "}"
+  }
+
+  final override string toStringInternal() { result = this.getUniqueId() }
+
+  final override Language::LanguageType getType() { result = vg.getType() }
+
+  final override VirtualVariable getVirtualVariable() {
+    if allocationEscapes(this.getAnAllocation())
+    then result = TAllAliasedMemory(vg.getIRFunction(), false)
+    else result = TGroupedMemoryLocation(vg, false, true)
+  }
+
+  /** Gets an allocation of this memory location. */
+  override Allocation getAnAllocation() { result = vg.getAnAllocation() }
+
+  /** Gets the set of allocations associated with this memory location. */
+  VariableGroup getGroup() { result = vg }
+
+  /** Holds if this memory location represents all the enclosing allocations. */
+  predicate isAll() { isAll = true }
+
+  /** Holds if this memory location represents one or more of the enclosing allocations. */
+  predicate isSome() { isAll = false }
+}
+
 class EntireAllocationMemoryLocation extends TEntireAllocationMemoryLocation,
   AllocationMemoryLocation
 {
@@ -291,6 +442,14 @@ class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
     type = var.getIRType() and
     this.coversEntireVariable() and
     not this.isMayAccess()
+  }
+}
+
+class GroupedVirtualVariable extends GroupedMemoryLocation, VirtualVariable {
+  GroupedVirtualVariable() {
+    forex(Allocation var | var = this.getAnAllocation() | not allocationEscapes(var)) and
+    not this.isMayAccess() and
+    this.isAll()
   }
 }
 
