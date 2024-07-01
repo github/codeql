@@ -45,7 +45,8 @@ private module Cached {
   }
 
   class TStageInstruction =
-    TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
+    TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction or
+        TInitializeGroupInstruction;
 
   /**
    * If `oldInstruction` is a `Phi` instruction that has exactly one reachable predecessor block,
@@ -77,6 +78,8 @@ private module Cached {
     )
     or
     instr instanceof TChiInstruction
+    or
+    instr instanceof TInitializeGroupInstruction
     or
     instr instanceof TUnreachedInstruction
   }
@@ -123,7 +126,8 @@ private module Cached {
   predicate hasModeledMemoryResult(Instruction instruction) {
     canModelResultForOldInstruction(getOldInstruction(instruction)) or
     instruction instanceof PhiInstruction or // Phis always have modeled results
-    instruction instanceof ChiInstruction // Chis always have modeled results
+    instruction instanceof ChiInstruction or // Chis always have modeled results
+    instruction instanceof InitializeGroupInstruction // Group initializers always have modeled results
   }
 
   cached
@@ -414,6 +418,11 @@ private module Cached {
     exists(IRFunctionBase irFunc |
       instr = unreachedInstruction(irFunc) and result = irFunc.getFunction()
     )
+    or
+    exists(Alias::VariableGroup vg |
+      instr = initializeGroup(vg) and
+      result = vg.getIRFunction().getFunction()
+    )
   }
 
   cached
@@ -429,6 +438,11 @@ private module Cached {
       instr = chiInstruction(primaryInstr) and
       hasChiNode(vvar, primaryInstr) and
       result = vvar.getType()
+    )
+    or
+    exists(Alias::VariableGroup vg |
+      instr = initializeGroup(vg) and
+      result = vg.getType()
     )
     or
     instr = reusedPhiInstruction(_) and
@@ -456,6 +470,8 @@ private module Cached {
     or
     instr = chiInstruction(_) and opcode instanceof Opcode::Chi
     or
+    instr = initializeGroup(_) and opcode instanceof Opcode::InitializeGroup
+    or
     instr = unreachedInstruction(_) and opcode instanceof Opcode::Unreached
   }
 
@@ -470,6 +486,11 @@ private module Cached {
     or
     exists(OldInstruction primaryInstr |
       instr = chiInstruction(primaryInstr) and result = primaryInstr.getEnclosingIRFunction()
+    )
+    or
+    exists(Alias::VariableGroup vg |
+      instr = initializeGroup(vg) and
+      result = vg.getIRFunction()
     )
     or
     instr = unreachedInstruction(result)
@@ -1066,4 +1087,6 @@ module Ssa {
   predicate hasChiInstruction = Cached::hasChiInstructionCached/1;
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
+
+  class VariableGroup = Alias::VariableGroup;
 }
