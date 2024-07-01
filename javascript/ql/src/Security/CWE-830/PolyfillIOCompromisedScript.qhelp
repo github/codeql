@@ -6,13 +6,13 @@
 		<p>
 		    Polyfill.io was a popular JavaScript polyflll Content Delivery Network (CDN),
 			used to support new web browser standards on older browsers.
-		<p>
+		</p>
 
 		<p>
 		    In February 2024 the domain was sold, and in June 2024 it was widely publicised that the domain
 		    had been used to serve malicious scripts. It was taken down later in that month, leaving a window
 			where sites that used the service could have been compromised.
-		<p>
+		</p>
 
 		<p>
 			Including a resource from an untrusted source or using an untrusted channel may
