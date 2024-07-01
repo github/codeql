@@ -642,6 +642,43 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       )
     )
     or
+    exists(GroupedMemoryLocation group |
+      group = def and
+      def.getVirtualVariable() = use.getVirtualVariable()
+    |
+      (
+        use instanceof UnknownMemoryLocation or
+        use instanceof AllAliasedMemory
+      ) and
+      result instanceof MayPartiallyOverlap
+      or
+      group.isAll() and
+      (
+        group.getAnAllocation() =
+          [
+            use.(EntireAllocationMemoryLocation).getAnAllocation(),
+            use.(VariableMemoryLocation).getAnAllocation()
+          ]
+        or
+        use.(GroupedMemoryLocation).isSome()
+      ) and
+      result instanceof MustTotallyOverlap
+      or
+      group.isAll() and
+      use.(GroupedMemoryLocation).isAll() and
+      result instanceof MustExactlyOverlap
+      or
+      group.isSome() and
+      (
+        use instanceof EntireAllocationMemoryLocation
+        or
+        use instanceof VariableMemoryLocation
+        or
+        use instanceof GroupedMemoryLocation
+      ) and
+      result instanceof MayPartiallyOverlap
+    )
+    or
     exists(VariableMemoryLocation defVariableLocation |
       defVariableLocation = def and
       (
@@ -651,7 +688,8 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
         (
           use instanceof UnknownMemoryLocation or
           use instanceof AllAliasedMemory or
-          use instanceof EntireAllocationMemoryLocation
+          use instanceof EntireAllocationMemoryLocation or
+          use instanceof GroupedMemoryLocation
         ) and
         result instanceof MayPartiallyOverlap
         or
