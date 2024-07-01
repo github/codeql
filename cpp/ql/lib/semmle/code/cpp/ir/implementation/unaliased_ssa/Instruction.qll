@@ -2143,6 +2143,33 @@ class ChiInstruction extends Instruction {
 }
 
 /**
+ * An instruction that initializes a set of allocations that are each assigned
+ * the same "virtual variable".
+ *
+ * As an example, consider the following snippet:
+ * ```
+ * int a;
+ * int b;
+ * int* p;
+ * if(b) {
+ *   p = &a;
+ * } else {
+ *   p = &b;
+ * }
+ * *p = 5;
+ * int x = a;
+ * ```
+ *
+ * Since both the address of `a` and `b` reach `p` at `*p = 5` the IR alias
+ * analysis will create a region that contains both `a` and `b`. The region
+ * containing both `a` and `b` are initialized by an `InitializeGroup`
+ * instruction in the entry block of the enclosing function.
+ */
+class InitializeGroupInstruction extends Instruction {
+  InitializeGroupInstruction() { this.getOpcode() instanceof Opcode::InitializeGroup }
+}
+
+/**
  * An instruction representing unreachable code.
  *
  * This instruction is inserted in place of the original target instruction of a `ConditionalBranch`
