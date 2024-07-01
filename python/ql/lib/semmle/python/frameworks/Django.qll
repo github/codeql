@@ -2274,6 +2274,36 @@ module PrivateDjango {
 
           override predicate valueAllowsNewline() { none() }
         }
+
+        /**
+         * A dict-like write to an item of an HTTP response, which is treated as a header write,
+         * such as `response[headerName] = value`
+         */
+        class DjangoResponseSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseSubscriptWrite() {
+            exists(SubscriptNode subscript |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              subscript.getObject() =
+                DjangoImpl::DjangoHttp::Response::HttpResponse::instance().asCfgNode() and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
+        }
       }
     }
 
