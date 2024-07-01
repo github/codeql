@@ -2,7 +2,12 @@ missingOperand
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
+| ir.cpp:2670:3:2670:9 | Phi: call to use_int | Instruction 'Phi: call to use_int' is missing an operand for predecessor block 'EnterFunction: phi_with_single_input_at_merge' in function '$@'. | ir.cpp:2663:13:2663:42 | void phi_with_single_input_at_merge(bool) | void phi_with_single_input_at_merge(bool) |
 missingOperandType
+| ir.cpp:2602:19:2602:23 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2618:6:2618:21 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:2618:6:2618:21 | void escaping_pointer(bool) | void escaping_pointer(bool) |
+| ir.cpp:2639:13:2639:43 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2684:6:2684:9 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:2684:6:2684:9 | void test(bool) | void test(bool) |
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
@@ -23,6 +28,34 @@ useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
+| ir.cpp:2602:19:2602:23 | Chi: merge | Instruction 'Chi: merge' should not be marked as having a conflated result in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2602:36:2602:36 | Chi: a | Instruction 'Chi: a' should not be marked as having a conflated result in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2604:14:2604:14 | Chi: definition of b | Instruction 'Chi: definition of b' should not be marked as having a conflated result in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2607:10:2607:19 | Chi: call to predicateA | Instruction 'Chi: call to predicateA' should not be marked as having a conflated result in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2607:10:2607:19 | Phi: call to predicateA | Instruction 'Phi: call to predicateA' should not be marked as having a conflated result in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2609:5:2609:10 | Chi: ... = ... | Instruction 'Chi: ... = ...' should not be marked as having a conflated result in function '$@'. | ir.cpp:2602:19:2602:23 | Recursive* merge(Recursive*) | Recursive* merge(Recursive*) |
+| ir.cpp:2618:6:2618:21 | Chi: escaping_pointer | Instruction 'Chi: escaping_pointer' should not be marked as having a conflated result in function '$@'. | ir.cpp:2618:6:2618:21 | void escaping_pointer(bool) | void escaping_pointer(bool) |
+| ir.cpp:2621:7:2621:8 | Chi: definition of l1 | Instruction 'Chi: definition of l1' should not be marked as having a conflated result in function '$@'. | ir.cpp:2618:6:2618:21 | void escaping_pointer(bool) | void escaping_pointer(bool) |
+| ir.cpp:2621:11:2621:12 | Chi: definition of l2 | Instruction 'Chi: definition of l2' should not be marked as having a conflated result in function '$@'. | ir.cpp:2618:6:2618:21 | void escaping_pointer(bool) | void escaping_pointer(bool) |
+| ir.cpp:2630:3:2630:15 | Chi: call to use_const_int | Instruction 'Chi: call to use_const_int' should not be marked as having a conflated result in function '$@'. | ir.cpp:2618:6:2618:21 | void escaping_pointer(bool) | void escaping_pointer(bool) |
+| ir.cpp:2639:13:2639:43 | Chi: needs_chi_for_initialize_groups | Instruction 'Chi: needs_chi_for_initialize_groups' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2641:7:2641:16 | Chi: call to predicateA | Instruction 'Chi: call to predicateA' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2643:32:2643:37 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2643:32:2643:37 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2646:25:2646:30 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2646:25:2646:30 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2648:5:2648:26 | Chi: call to use_const_void_pointer | Instruction 'Chi: call to use_const_void_pointer' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2648:5:2648:26 | Phi: call to use_const_void_pointer | Instruction 'Phi: call to use_const_void_pointer' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2652:32:2652:37 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2652:32:2652:37 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2655:25:2655:30 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2655:25:2655:30 | Chi: call to malloc | Instruction 'Chi: call to malloc' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2657:5:2657:26 | Chi: call to use_const_void_pointer | Instruction 'Chi: call to use_const_void_pointer' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2657:5:2657:26 | Phi: call to use_const_void_pointer | Instruction 'Phi: call to use_const_void_pointer' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2659:1:2659:1 | Phi: return ... | Instruction 'Phi: return ...' should not be marked as having a conflated result in function '$@'. | ir.cpp:2639:13:2639:43 | void needs_chi_for_initialize_groups() | void needs_chi_for_initialize_groups() |
+| ir.cpp:2684:6:2684:9 | Chi: test | Instruction 'Chi: test' should not be marked as having a conflated result in function '$@'. | ir.cpp:2684:6:2684:9 | void test(bool) | void test(bool) |
+| ir.cpp:2686:3:2686:29 | Chi: call to use | Instruction 'Chi: call to use' should not be marked as having a conflated result in function '$@'. | ir.cpp:2684:6:2684:9 | void test(bool) | void test(bool) |
+| ir.cpp:2686:3:2686:29 | Chi: call to use | Instruction 'Chi: call to use' should not be marked as having a conflated result in function '$@'. | ir.cpp:2684:6:2684:9 | void test(bool) | void test(bool) |
 invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
