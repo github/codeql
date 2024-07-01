@@ -17,6 +17,7 @@ private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
+private import semmle.code.csharp.internal.Location
 private import codeql.util.Unit
 private import codeql.util.Boolean
 
@@ -94,7 +95,7 @@ private DataFlowCallable getEnclosingStaticFieldOrProperty(Expr e) {
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = this.getControlFlowNodeImpl().getEnclosingCallable()
+    result.getAControlFlowNode() = this.getControlFlowNodeImpl()
     or
     result = getEnclosingStaticFieldOrProperty(this.asExpr())
   }
@@ -143,9 +144,7 @@ abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctio
     else inSameCallable = false
   }
 
-  override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = cfn.getEnclosingCallable()
-  }
+  override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
   override Type getTypeImpl() { none() }
 
@@ -173,8 +172,6 @@ private module ThisFlow {
 
   /** Holds if `n` is a `this` access at control flow node `cfn`. */
   private predicate thisAccess(Node n, ControlFlow::Node cfn) {
-    n.(InstanceParameterNode).getCallable() = cfn.(ControlFlow::Nodes::EntryNode).getCallable()
-    or
     thisAccessExpr(n.asExprAtNode(cfn))
     or
     cfn = n.(InstanceParameterAccessPreNode).getUnderlyingControlFlowNode()
@@ -186,6 +183,20 @@ private module ThisFlow {
     exists(Parameter p | n.(PrimaryConstructorThisAccessPreNode).getParameter() = p |
       bb.getCallable() = p.getCallable() and
       i = p.getPosition() + 1
+    )
+    or
+    exists(DataFlowCallable c, ControlFlow::BasicBlocks::EntryBlock entry |
+      n.(InstanceParameterNode).isParameterOf(c, _) and
+      exists(ControlFlow::Node succ |
+        succ = c.getAControlFlowNode() and
+        succ = entry.getFirstNode().getASuccessor() and
+        // In case `c` has multiple bodies, we want each body to gets its own implicit
+        // entry definition. In case `c` doesn't have multiple bodies, the line below
+        // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+        // will be in the entry block.
+        bb = succ.getBasicBlock() and
+        i = -1
+      )
     )
   }
 
@@ -341,7 +352,7 @@ module VariableCapture {
 
     private class CapturedThisParameter extends CapturedParameter, TCapturedThis {
       override InstanceParameterNode getParameterNode() {
-        result = TInstanceParameterNode(this.asThis())
+        result = TInstanceParameterNode(this.asThis(), _)
       }
     }
 
@@ -774,11 +785,12 @@ module LocalFlow {
    * Holds if the value of `node2` is given by `node1`.
    */
   predicate localMustFlowStep(Node node1, Node node2) {
-    exists(Callable c, Expr e |
-      node1.(InstanceParameterNode).getCallable() = c and
-      node2.asExpr() = e and
-      (e instanceof ThisAccess or e instanceof BaseAccess) and
-      c = e.getEnclosingCallable()
+    exists(DataFlowCallable c, Expr e |
+      node1.(InstanceParameterNode).getEnclosingCallableImpl() = c and
+      node2.getControlFlowNode() = c.getAControlFlowNode() and
+      node2.asExpr() = e
+    |
+      e instanceof ThisAccess or e instanceof BaseAccess
     )
     or
     hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
@@ -1068,14 +1080,18 @@ private Gvn::GvnType getANonTypeParameterSubTypeRestricted(RelevantGvnType t) {
 
 /** A callable with an implicit `this` parameter. */
 private class InstanceCallable extends Callable {
+  private Location l;
+
   InstanceCallable() {
-    this = any(DataFlowCallable dfc).asCallable() and
+    this = any(DataFlowCallable dfc).asCallable(l) and
     not this.(Modifiable).isStatic() and
     // local functions and delegate capture `this` and should therefore
     // not have a `this` parameter
     not this instanceof LocalFunction and
     not this instanceof AnonymousFunctionExpr
   }
+
+  Location getARelevantLocation() { result = l }
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -1099,15 +1115,14 @@ private module Cached {
     TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof Expr } or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) {
       // Handled by `TExplicitParameterNode` below
-      not def instanceof Ssa::ImplicitParameterDefinition
+      not def instanceof Ssa::ImplicitParameterDefinition and
+      def.getBasicBlock() = any(DataFlowCallable c).getAControlFlowNode().getBasicBlock()
     } or
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlow::Node cfn) {
       cfn = def.getExpr().getAControlFlowNode()
     } or
-    TExplicitParameterNode(Parameter p) {
-      p = any(DataFlowCallable dfc).asCallable().getAParameter()
-    } or
-    TInstanceParameterNode(InstanceCallable c) or
+    TExplicitParameterNode(Parameter p, DataFlowCallable c) { p = c.asCallable(_).getAParameter() } or
+    TInstanceParameterNode(InstanceCallable c, Location l) { l = c.getARelevantLocation() } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
     TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn, Boolean isPostUpdate) {
       cfn.getAstNode() instanceof LocalFunctionStmt
@@ -1152,8 +1167,8 @@ private module Cached {
     TInstanceParameterAccessNode(ControlFlow::Node cfn, Boolean isPostUpdate) {
       cfn = getAPrimaryConstructorParameterCfn(_)
     } or
-    TPrimaryConstructorThisAccessNode(Parameter p, Boolean isPostUpdate) {
-      p.getCallable() instanceof PrimaryConstructor
+    TPrimaryConstructorThisAccessNode(Parameter p, Boolean isPostUpdate, DataFlowCallable c) {
+      p = c.asCallable(_).(PrimaryConstructor).getAParameter()
     } or
     TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
@@ -1246,7 +1261,7 @@ predicate nodeIsHidden(Node n) {
   n =
     TInstanceParameterNode(any(Callable c |
         not c.fromSource() or c instanceof FlowSummary::SummarizedCallable
-      ))
+      ), _)
   or
   n instanceof YieldReturnNode
   or
@@ -1283,7 +1298,7 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
   SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = def.getEnclosingCallable()
+    result.getAControlFlowNode().getBasicBlock() = def.getBasicBlock()
   }
 
   override Type getTypeImpl() { result = def.getSourceVariable().getType() }
@@ -1313,9 +1328,7 @@ class AssignableDefinitionNodeImpl extends NodeImpl, TAssignableDefinitionNode {
     cfn = cfn_
   }
 
-  override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = cfn_.getEnclosingCallable()
-  }
+  override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn_ }
 
   override Type getTypeImpl() { result = def.getTarget().getType() }
 
@@ -1338,32 +1351,93 @@ abstract class ParameterNodeImpl extends NodeImpl {
   abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
 }
 
+private module NearestLocationInputParamAfterCallable implements NearestLocationInputSig {
+  class C = Parameter;
+
+  predicate relevantLocations(Parameter p, Location l1, Location l2) {
+    exists(DataFlowCallable c |
+      c.asCallable(l1).getParameter(_) = p and
+      l2 = [p.getLocation(), getASourceLocation(p)]
+    )
+  }
+}
+
 private module ParameterNodes {
+  pragma[nomagic]
+  private predicate ssaParamDef(Ssa::ImplicitParameterDefinition ssaDef, Parameter p, Location l) {
+    p = ssaDef.getParameter() and
+    l = ssaDef.getLocation()
+  }
+
+  private module NearestLocationInputParamBeforeCallable implements NearestLocationInputSig {
+    class C = Parameter;
+
+    predicate relevantLocations(Parameter p, Location l1, Location l2) {
+      exists(DataFlowCallable c |
+        c.asCallable(l2).getParameter(_) = p and
+        l1 = [p.getLocation(), getASourceLocation(p)]
+      )
+    }
+  }
+
   /**
    * The value of an explicit parameter at function entry, viewed as a node in a data
    * flow graph.
    */
   class ExplicitParameterNode extends ParameterNodeImpl, TExplicitParameterNode {
     private Parameter parameter;
+    private DataFlowCallable callable;
 
-    ExplicitParameterNode() { this = TExplicitParameterNode(parameter) }
+    ExplicitParameterNode() { this = TExplicitParameterNode(parameter, callable) }
+
+    Parameter getParameter() { result = parameter }
+
+    pragma[nomagic]
+    private Location getNearestParameterLocation() {
+      exists(Location cloc | exists(callable.asCallable(cloc)) |
+        // typical scenario: parameter is syntactically after the callable
+        NearestLocation<NearestLocationInputParamAfterCallable>::nearestLocation(parameter, cloc,
+          result)
+        or
+        // atypical scenario: parameter is syntactically before the callable, for example
+        // `int this[int x] { get => x }`, where the parameter `x` is syntactically
+        // before the the callable `get_Item`
+        NearestLocation<NearestLocationInputParamBeforeCallable>::nearestLocation(parameter, result,
+          cloc)
+      )
+    }
+
+    pragma[nomagic]
+    private Location getParameterLocation(Parameter p) {
+      p = parameter and
+      (
+        result = this.getNearestParameterLocation()
+        or
+        not exists(this.getNearestParameterLocation()) and
+        result = parameter.getLocation()
+      )
+    }
 
     /** Gets the SSA definition corresponding to this parameter, if any. */
-    Ssa::ImplicitParameterDefinition getSsaDefinition() { result.getParameter() = parameter }
+    Ssa::ImplicitParameterDefinition getSsaDefinition() {
+      exists(Parameter p, Location l |
+        l = this.getParameterLocation(p) and
+        ssaParamDef(result, p, l)
+      )
+    }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c.asCallable().getParameter(pos.getPosition()) = parameter
+      c = callable and
+      c.asCallable(_).getParameter(pos.getPosition()) = parameter
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = parameter.getCallable()
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { this.isParameterOf(result, _) }
 
     override Type getTypeImpl() { result = parameter.getType() }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override Location getLocationImpl() { result = parameter.getLocation() }
+    override Location getLocationImpl() { result = this.getParameterLocation(_) }
 
     override string toStringImpl() { result = parameter.toString() }
   }
@@ -1371,23 +1445,24 @@ private module ParameterNodes {
   /** An implicit instance (`this`) parameter. */
   class InstanceParameterNode extends ParameterNodeImpl, TInstanceParameterNode {
     private Callable callable;
+    private Location location;
 
-    InstanceParameterNode() { this = TInstanceParameterNode(callable) }
+    InstanceParameterNode() { this = TInstanceParameterNode(callable, location) }
 
     /** Gets the callable containing this implicit instance parameter. */
-    Callable getCallable() { result = callable }
+    Callable getCallable(Location loc) { result = callable and location = loc }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      callable = c.asCallable() and pos.isThisParameter()
+      callable = c.asCallable(location) and pos.isThisParameter()
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = callable }
+    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable(location) = callable }
 
     override Type getTypeImpl() { result = callable.getDeclaringType() }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override Location getLocationImpl() { result = callable.getLocation() }
+    override Location getLocationImpl() { result = location }
 
     override string toStringImpl() { result = "this" }
   }
@@ -1407,12 +1482,12 @@ private module ParameterNodes {
     final Callable getCallable() { result = callable }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      callable = c.asCallable() and pos.isDelegateSelf()
+      callable = c.asCallable(_) and pos.isDelegateSelf()
     }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = callable }
+    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable(_) = callable }
 
     override Location getLocationImpl() { result = callable.getLocation() }
 
@@ -1526,7 +1601,7 @@ private module ArgumentNodes {
     override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getAControlFlowNode() = cfn
       or
       result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
@@ -1567,7 +1642,7 @@ private module ArgumentNodes {
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = callCfn.getEnclosingCallable()
+      result.getAControlFlowNode() = callCfn
       or
       result = getEnclosingStaticFieldOrProperty(callCfn.getAstNode())
     }
@@ -1654,9 +1729,7 @@ private module ReturnNodes {
 
     override NormalReturnKind getKind() { any() }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = yrs.getEnclosingCallable()
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
     override Type getTypeImpl() { result = yrs.getEnclosingCallable().getReturnType() }
 
@@ -1680,9 +1753,7 @@ private module ReturnNodes {
 
     override NormalReturnKind getKind() { any() }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = expr.getEnclosingCallable()
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
     override Type getTypeImpl() { result = expr.getEnclosingCallable().getReturnType() }
 
@@ -1867,9 +1938,7 @@ abstract private class InstanceParameterAccessNode extends NodeImpl, TInstancePa
     exists(ParameterAccess pa | cfn = getAPrimaryConstructorParameterCfn(pa) and pa.getTarget() = p)
   }
 
-  override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = cfn.getEnclosingCallable()
-  }
+  override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
   override Type getTypeImpl() { result = cfn.getEnclosingCallable().getDeclaringType() }
 
@@ -1912,16 +1981,22 @@ abstract private class PrimaryConstructorThisAccessNode extends NodeImpl,
 {
   Parameter p;
   boolean isPostUpdate;
+  DataFlowCallable callable;
 
-  PrimaryConstructorThisAccessNode() { this = TPrimaryConstructorThisAccessNode(p, isPostUpdate) }
+  PrimaryConstructorThisAccessNode() {
+    this = TPrimaryConstructorThisAccessNode(p, isPostUpdate, callable)
+  }
 
-  override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = p.getCallable() }
+  override DataFlowCallable getEnclosingCallableImpl() { result = callable }
 
   override Type getTypeImpl() { result = p.getCallable().getDeclaringType() }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { none() }
 
-  override Location getLocationImpl() { result = p.getLocation() }
+  override Location getLocationImpl() {
+    NearestLocation<NearestLocationInputParamAfterCallable>::nearestLocation(p,
+      pragma[only_bind_out](callable).getLocation(), result)
+  }
 
   override string toStringImpl() { result = "this" }
 
@@ -1954,7 +2029,7 @@ class CaptureNode extends NodeImpl, TCaptureNode {
   VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = cn.getEnclosingCallable()
+    result.getAControlFlowNode().getBasicBlock() = cn.getBasicBlock()
   }
 
   override Type getTypeImpl() {
@@ -2188,9 +2263,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   primaryConstructorParameterStore(node1, c, node2)
   or
-  exists(Parameter p |
-    node1 = TExplicitParameterNode(p) and
-    node2 = TPrimaryConstructorThisAccessNode(p, true) and
+  exists(Parameter p, DataFlowCallable callable |
+    node1 = TExplicitParameterNode(p, callable) and
+    node2 = TPrimaryConstructorThisAccessNode(p, true, callable) and
     if p.getCallable().getDeclaringType() instanceof RecordType
     then c.(PropertyContent).getProperty().getName() = p.getName()
     else c.(PrimaryConstructorParameterContent).getParameter() = p
@@ -2605,7 +2680,7 @@ module PostUpdateNodes {
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getAControlFlowNode() = cfn
       or
       result = getEnclosingStaticFieldOrProperty(oc)
     }
@@ -2638,7 +2713,7 @@ module PostUpdateNodes {
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getAControlFlowNode() = cfn
       or
       result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
@@ -2681,7 +2756,7 @@ module PostUpdateNodes {
     PrimaryConstructorThisAccessPostUpdateNode() { isPostUpdate = true }
 
     override PrimaryConstructorThisAccessPreNode getPreUpdateNode() {
-      result = TPrimaryConstructorThisAccessNode(p, false)
+      result = TPrimaryConstructorThisAccessNode(p, false, callable)
     }
 
     override string toStringImpl() { result = "[post] this" }
@@ -2776,7 +2851,7 @@ class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  lambdaCreationExpr(creation.asExpr(), c.asCallable()) and
+  lambdaCreationExpr(creation.asExpr(), c.asCallable(_)) and
   exists(kind)
 }
 

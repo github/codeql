@@ -241,7 +241,7 @@ string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
  * Gets the enclosing callable of `ret`.
  */
 Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
-  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable(_)
 }
 
 /**
