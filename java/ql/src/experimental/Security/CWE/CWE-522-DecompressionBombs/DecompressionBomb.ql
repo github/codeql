@@ -15,37 +15,19 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import experimental.semmle.code.java.security.FileAndFormRemoteSource
 import experimental.semmle.code.java.security.DecompressionBomb::DecompressionBomb
+import semmle.code.java.dataflow.TaintTracking
 
-module DecompressionBombsConfig implements DataFlow::StateConfigSig {
-  class FlowState = DecompressionState;
+module DecompressionBombsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  predicate isSource(DataFlow::Node source, FlowState state) {
-    source instanceof RemoteFlowSource and
-    (
-      state instanceof ZipFile
-      or
-      state instanceof Zip4j
-      or
-      state instanceof Inflator
-      or
-      state instanceof ApacheCommons
-      or
-      state instanceof XerialSnappy
-      or
-      state instanceof UtilZip
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  predicate isSink(DataFlow::Node sink, FlowState state) { any(Sink s).sink(sink, state) }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
-  ) {
-    any(AdditionalStep ads).step(nodeFrom, stateFrom, nodeTo, stateTo)
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(AdditionalStep ads).step(nodeFrom, nodeTo)
   }
 }
 
-module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
+module DecompressionBombsFlow = TaintTracking::Global<DecompressionBombsConfig>;
 
 import DecompressionBombsFlow::PathGraph
 

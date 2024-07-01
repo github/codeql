@@ -1,5 +1,5 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking
 
 module DecompressionBomb {
   newtype DecompressionState =
@@ -15,9 +15,7 @@ module DecompressionBomb {
    *
    * Extend this class for creating new decompression bomb sinks
    */
-  class Sink extends Unit {
-    abstract predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state);
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * The Additional flow steps that help to create a dataflow or taint tracking query
@@ -25,10 +23,7 @@ module DecompressionBomb {
    * Extend this class for creating new additional taint steps
    */
   class AdditionalStep extends Unit {
-    abstract predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    );
+    abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
   }
 }
 
@@ -46,34 +41,6 @@ module XerialSnappy {
   }
 
   /**
-   * Gets `n1` and `n2` which `SnappyInputStream n2 = new SnappyInputStream(n1)` or
-   * `n1.read(n2)`,
-   *  second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-   *  that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-   */
-  private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-    override predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    ) {
-      exists(Call call |
-        // Constructors
-        call.getCallee().getDeclaringType() = any(TypeInputStream t) and
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-        or
-        // Method calls
-        call.(MethodCall).getReceiverType() = any(TypeInputStream t) and
-        call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        call.getQualifier() = n1.asExpr() and
-        call = n2.asExpr()
-      ) and
-      stateFrom instanceof DecompressionBomb::XerialSnappy and
-      stateTo instanceof DecompressionBomb::XerialSnappy
-    }
-  }
-
-  /**
    * The methods that read bytes and belong to `SnappyInputStream` Types
    */
   class ReadInputStreamCall extends MethodCall {
@@ -84,9 +51,12 @@ module XerialSnappy {
   }
 
   class Sink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(ReadInputStreamCall r) and
-      state instanceof DecompressionBomb::XerialSnappy
+    Sink() {
+      this.asExpr() = any(ReadInputStreamCall r).getQualifier()
+      or
+      exists(ConstructorCall call | call.getConstructedType() instanceof TypeInputStream |
+        this.asExpr() = call.getArgument(0)
+      )
     }
   }
 }
@@ -163,34 +133,6 @@ module ApacheCommons {
     }
 
     /**
-     * Gets `n1` and `n2` which `*CompressorInputStream n2 = new *CompressorInputStream(n2)` or
-     * `n2 = inputStream.read(n1)` or `n1.read(n2)`,
-     *  second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-     *  that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-     */
-    private class CompressorsAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-      override predicate step(
-        DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-        DecompressionBomb::DecompressionState stateTo
-      ) {
-        exists(Call call |
-          // Constructors
-          call.getCallee().getDeclaringType() = any(TypeCompressors t) and
-          call.getArgument(0) = n1.asExpr() and
-          call = n2.asExpr()
-          or
-          // Method calls
-          call.(MethodCall).getReceiverType() = any(TypeCompressors t) and
-          call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-          call.getQualifier() = n1.asExpr() and
-          call = n2.asExpr()
-        ) and
-        stateFrom instanceof DecompressionBomb::ApacheCommons and
-        stateTo instanceof DecompressionBomb::ApacheCommons
-      }
-    }
-
-    /**
      * The methods that read bytes and belong to `*CompressorInputStream` Types
      */
     class ReadInputStreamCall extends MethodCall {
@@ -201,9 +143,12 @@ module ApacheCommons {
     }
 
     class Sink extends DecompressionBomb::Sink {
-      override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-        sink.asExpr() = any(ReadInputStreamCall r) and
-        state instanceof DecompressionBomb::ApacheCommons
+      Sink() {
+        this.asExpr() = any(ReadInputStreamCall r).getQualifier()
+        or
+        exists(ConstructorCall call | call.getConstructedType() instanceof TypeCompressors |
+          this.asExpr() = call.getArgument(0)
+        )
       }
     }
   }
@@ -233,34 +178,6 @@ module ApacheCommons {
     }
 
     /**
-     * Gets `n1` and `n2` which `*ArchiveInputStream n2 = new *ArchiveInputStream(n2)` or
-     * `n2 = inputStream.read(n2)` or `n1.read(n2)`,
-     *  second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-     *  that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-     */
-    private class ArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-      override predicate step(
-        DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-        DecompressionBomb::DecompressionState stateTo
-      ) {
-        exists(Call call |
-          // Constructors
-          call.getCallee().getDeclaringType() = any(TypeArchivers t) and
-          call.getArgument(0) = n1.asExpr() and
-          call = n2.asExpr()
-          or
-          // Method calls
-          call.(MethodCall).getReceiverType() = any(TypeArchivers t) and
-          call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-          call.getQualifier() = n1.asExpr() and
-          call = n2.asExpr()
-        ) and
-        stateFrom instanceof DecompressionBomb::ApacheCommons and
-        stateTo instanceof DecompressionBomb::ApacheCommons
-      }
-    }
-
-    /**
      * The methods that read bytes and belong to `*ArchiveInputStream` Types
      */
     class ReadInputStreamCall extends MethodCall {
@@ -271,9 +188,12 @@ module ApacheCommons {
     }
 
     class Sink extends DecompressionBomb::Sink {
-      override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-        sink.asExpr() = any(ReadInputStreamCall r) and
-        state instanceof DecompressionBomb::ApacheCommons
+      Sink() {
+        this.asExpr() = any(ReadInputStreamCall r).getQualifier()
+        or
+        exists(ConstructorCall call | call.getConstructedType() instanceof TypeArchivers |
+          this.asExpr() = call.getArgument(0)
+        )
       }
     }
   }
@@ -303,44 +223,6 @@ module ApacheCommons {
     }
 
     /**
-     * Gets `n1` and `n2` which `CompressorInputStream n2 = new CompressorStreamFactory().createCompressorInputStream(n1)`
-     * or `ArchiveInputStream n2 = new ArchiveStreamFactory().createArchiveInputStream(n1)` or
-     * `n1.read(n2)`,
-     * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-     * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-     */
-    private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
-    {
-      override predicate step(
-        DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-        DecompressionBomb::DecompressionState stateTo
-      ) {
-        exists(Call call |
-          // Constructors
-          (
-            call.getCallee().getDeclaringType() = any(TypeCompressors t)
-            or
-            call.getCallee().getDeclaringType() = any(TypeArchivers t)
-          ) and
-          call.getArgument(0) = n1.asExpr() and
-          call = n2.asExpr()
-          or
-          // Method calls
-          (
-            call.(MethodCall).getReceiverType() = any(TypeArchiveInputStream t)
-            or
-            call.(MethodCall).getReceiverType() = any(TypeCompressorInputStream t)
-          ) and
-          call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-          call.getQualifier() = n1.asExpr() and
-          call = n2.asExpr()
-        ) and
-        stateFrom instanceof DecompressionBomb::ApacheCommons and
-        stateTo instanceof DecompressionBomb::ApacheCommons
-      }
-    }
-
-    /**
      * The methods that read bytes and belong to `CompressorInputStream` or `ArchiveInputStream` Types
      */
     class ReadInputStreamCall extends MethodCall {
@@ -355,9 +237,15 @@ module ApacheCommons {
     }
 
     class Sink extends DecompressionBomb::Sink {
-      override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-        sink.asExpr() = any(ReadInputStreamCall r) and
-        state instanceof DecompressionBomb::ApacheCommons
+      Sink() {
+        this.asExpr() = any(ReadInputStreamCall r).getQualifier()
+        or
+        exists(ConstructorCall call |
+          call.getConstructedType() instanceof TypeCompressors or
+          call.getConstructedType() instanceof TypeArchivers
+        |
+          this.asExpr() = call.getArgument(0)
+        )
       }
     }
   }
@@ -387,36 +275,12 @@ module Zip4j {
   }
 
   class Sink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(ReadInputStreamCall r) and
-      state instanceof DecompressionBomb::Zip4j
-    }
-  }
-
-  /**
-   * Gets `n1` and `n2` which `ZipInputStream n2 = new ZipInputStream(n1)` or `n2 = zipInputStream.read(n1)` or `n1.read(n2)`,
-   * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-   * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-   */
-  private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-    override predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    ) {
-      exists(Call call |
-        // Constructors
-        call.getCallee().getDeclaringType() = any(TypeZipInputStream t) and
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-        or
-        // Method calls
-        call.(MethodCall).getReceiverType() = any(TypeZipInputStream t) and
-        call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        call.getQualifier() = n1.asExpr() and
-        call = n2.asExpr()
-      ) and
-      stateFrom instanceof DecompressionBomb::Zip4j and
-      stateTo instanceof DecompressionBomb::Zip4j
+    Sink() {
+      this.asExpr() = any(ReadInputStreamCall r).getQualifier()
+      or
+      exists(ConstructorCall call | call.getConstructedType() instanceof TypeZipInputStream |
+        this.asExpr() = call.getArgument(0)
+      )
     }
   }
 }
@@ -447,37 +311,12 @@ module Zip {
   }
 
   class ReadInputStreamSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(ReadInputStreamCall r) and
-      state instanceof DecompressionBomb::UtilZip
-    }
-  }
-
-  /**
-   * Gets `n1` and `n2` which `*InputStream n2 = new *InputStream(n1)` or
-   * `n2 = data.read(n1, 0, BUFFER)` or `n1.read(n2, 0, BUFFER)`,
-   * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-   * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-   */
-  private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-    override predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    ) {
-      exists(Call call |
-        // Constructors
-        call.getCallee().getDeclaringType() = any(TypeInputStream t) and
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-        or
-        // Method calls
-        call.(MethodCall).getReceiverType() = any(TypeInputStream t) and
-        call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        call.getQualifier() = n1.asExpr() and
-        call = n2.asExpr()
-      ) and
-      stateFrom instanceof DecompressionBomb::UtilZip and
-      stateTo instanceof DecompressionBomb::UtilZip
+    ReadInputStreamSink() {
+      this.asExpr() = any(ReadInputStreamCall r).getQualifier()
+      or
+      exists(ConstructorCall call | call.getConstructedType() instanceof TypeInputStream |
+        this.asExpr() = call.getArgument(0)
+      )
     }
   }
 
@@ -488,100 +327,32 @@ module Zip {
     TypeInflator() { this.hasQualifiedName("java.util.zip", "Inflater") }
   }
 
-  /**
-   * Gets `n1` and `n2` which `Inflater inflater_As_n2 = new Inflater(); inflater_As_n2 = inflater.setInput(n1)` or `n1.inflate(n2)` or
-   * `n2 = inflater.inflate(n1)`,
-   * third one is added because of sanitizer, we want to compare return value of each `read` or similar method
-   * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
-   */
-  private class InflatorAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-    override predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    ) {
-      // n1.inflate(n2)
-      (
-        exists(MethodCall ma |
-          ma.getReceiverType() instanceof TypeInflator and
-          ma.getArgument(0) = n2.asExpr() and
-          ma.getQualifier() = n1.asExpr() and
-          ma.getCallee().hasName("inflate")
-        )
-        or
-        // n2 = inflater.inflate(n1)
-        exists(MethodCall ma |
-          ma.getReceiverType() instanceof TypeInflator and
-          ma = n2.asExpr() and
-          ma.getArgument(0) = n1.asExpr() and
-          ma.getCallee().hasName("inflate")
-        )
-        or
-        // Inflater inflater = new Inflater();
-        // inflater_As_n2 = inflater.setInput(n1)
-        exists(MethodCall ma |
-          ma.getReceiverType() instanceof TypeInflator and
-          n1.asExpr() = ma.getArgument(0) and
-          n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier() and
-          ma.getCallee().hasName("setInput")
-        )
-      ) and
-      stateFrom instanceof DecompressionBomb::Inflator and
-      stateTo instanceof DecompressionBomb::Inflator
-    }
-  }
-
-  /**
-   * The methods that read bytes and belong to `Inflater` Type
-   */
-  class InflateCall extends MethodCall {
-    InflateCall() {
-      this.getReceiverType() instanceof TypeInflator and
-      this.getCallee().hasName("inflate")
-    }
-  }
-
   class InflateSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
-      sink.asExpr() = any(InflateCall r) and
-      state instanceof DecompressionBomb::Inflator
+    InflateSink() {
+      exists(MethodCall ma |
+        ma.getReceiverType() instanceof TypeInflator and
+        ma.getCallee().hasName("inflate") and
+        ma.getArgument(0) = this.asExpr()
+        or
+        ma.getReceiverType() instanceof TypeInflator and
+        ma.getMethod().hasName("setInput") and
+        ma.getArgument(0) = this.asExpr()
+      )
     }
   }
 
   class ZipFileSink extends DecompressionBomb::Sink {
-    override predicate sink(DataFlow::Node sink, DecompressionBomb::DecompressionState state) {
+    ZipFileSink() {
       exists(MethodCall call |
         call.getCallee().getDeclaringType() instanceof TypeZipFile and
         call.getCallee().hasName("getInputStream") and
-        sink.asExpr() = call
-      ) and
-      state instanceof DecompressionBomb::ZipFile
-    }
-  }
-
-  /**
-   * Gets `n1` and `n2` which `InputStream n2 = zipFile.getInputStream(n1)`
-   */
-  private class ZipFileAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
-    override predicate step(
-      DataFlow::Node n1, DecompressionBomb::DecompressionState stateFrom, DataFlow::Node n2,
-      DecompressionBomb::DecompressionState stateTo
-    ) {
-      (
-        exists(ConstructorCall call |
-          call.getConstructedType() instanceof TypeZipFile and
-          n1.asExpr() = call.getAnArgument() and
-          n2.asExpr() = call
-        )
-        or
-        exists(MethodCall call |
-          call.getCallee().getDeclaringType().hasQualifiedName("java.util.zip", "ZipFile") and
-          call.getCallee().hasName("getInputStream") and
-          n1.asExpr() = call.getQualifier() and
-          n2.asExpr() = call
-        )
-      ) and
-      stateFrom instanceof DecompressionBomb::ZipFile and
-      stateTo instanceof DecompressionBomb::ZipFile
+        call.getQualifier() = this.asExpr()
+      )
+      or
+      exists(ConstructorCall call |
+        call.getConstructedType() instanceof TypeZipFile and
+        call.getAnArgument() = this.asExpr()
+      )
     }
   }
 
