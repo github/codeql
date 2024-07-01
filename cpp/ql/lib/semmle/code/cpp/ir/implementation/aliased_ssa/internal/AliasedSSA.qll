@@ -406,6 +406,22 @@ class GroupedMemoryLocation extends TGroupedMemoryLocation, MemoryLocation {
   predicate isSome() { isAll = false }
 }
 
+private GroupedMemoryLocation getGroupedMemoryLocation(
+  Allocation alloc, boolean isMayAccess, boolean isAll
+) {
+  result.getAnAllocation() = alloc and
+  (
+    isMayAccess = true and result.isMayAccess()
+    or
+    isMayAccess = false and not result.isMayAccess()
+  ) and
+  (
+    isAll = true and result.isAll()
+    or
+    isAll = false and result.isSome()
+  )
+}
+
 class EntireAllocationMemoryLocation extends TEntireAllocationMemoryLocation,
   AllocationMemoryLocation
 {
@@ -755,13 +771,24 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
     (
       (
         isIndirectOrBufferMemoryAccess(kind) and
-        if hasResultMemoryAccess(instr, _, _, _, _, _, _)
+        if hasResultMemoryAccess(_, instr, _, _, _, _, _, _, _)
         then
-          exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
-            hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
-                unbindBool(isMayAccess))
+          exists(
+            Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset,
+            boolean grouped
+          |
+            hasResultMemoryAccess(_, instr, var, type, _, startBitOffset, endBitOffset, isMayAccess,
+              grouped)
+          |
+            // If the instruction is only associated with one allocation we assign it a `VariableMemoryLocation`
+            if grouped = false
+            then
+              result =
+                TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
+                  unbindBool(isMayAccess))
+            else
+              // And otherwise we assign it a memory location that groups all the relevant memory locations into one.
+              result = getGroupedMemoryLocation(var, unbindBool(isMayAccess), false)
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
@@ -788,12 +815,23 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     (
       (
         isIndirectOrBufferMemoryAccess(kind) and
-        if hasOperandMemoryAccess(operand, _, _, _, _, _, _)
+        if hasOperandMemoryAccess(_, operand, _, _, _, _, _, _, _)
         then
-          exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
-            hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+          exists(
+            Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset,
+            boolean grouped
+          |
+            hasOperandMemoryAccess(_, operand, var, type, _, startBitOffset, endBitOffset,
+              isMayAccess, grouped)
+          |
+            // If the operand is only associated with one memory location we assign it a `VariableMemoryLocation`
+            if grouped = false
+            then
+              result =
+                TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+            else
+              // And otherwise we assign it a memory location that groups all relevant memory locations into one.
+              result = getGroupedMemoryLocation(var, isMayAccess, false)
           )
         else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
       )
