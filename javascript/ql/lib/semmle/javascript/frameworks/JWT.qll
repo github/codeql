@@ -57,18 +57,6 @@ private module JsonWebToken {
  */
 private module Jose {
   /**
-   * A taint-step for `succ = await jose.importSPKI(pred, 'RS256')`.
-   */
-  private class ImportSpkiStep extends TaintTracking::SharedTaintStep, DataFlow::SharedFlowStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(API::Node n | n = API::moduleImport("jose").getMember("importSPKI") |
-        pred = n.getACall().getArgument(0) and
-        succ = n.getReturn().getPromised().asSource()
-      )
-    }
-  }
-
-  /**
    * A taint-step for `succ = jose.base64url.encode(pred)` or `succ = jose.base64url.decode(pred)`.
    */
   private class Base64urlStep extends TaintTracking::SharedTaintStep, DataFlow::SharedFlowStep {
@@ -83,10 +71,12 @@ private module Jose {
   }
 
   /**
-   * The asymmetric key or symmetric secret for a JWT as a `CredentialsNode`.
+   * The asymmetric key or symmetric secret for verifying a JWT as a `CredentialsNode`.
    */
-  private class JwtKey extends CredentialsNode {
-    JwtKey() { this = API::moduleImport("jose").getMember("jwtVerify").getParameter(1).asSink() }
+  private class JwtVerifyKey extends CredentialsNode {
+    JwtVerifyKey() {
+      this = API::moduleImport("jose").getMember("jwtVerify").getParameter(1).asSink()
+    }
 
     override string getCredentialsKind() { result = "key" }
   }

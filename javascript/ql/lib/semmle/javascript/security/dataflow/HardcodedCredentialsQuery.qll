@@ -35,5 +35,24 @@ class Configuration extends DataFlow::Configuration {
       trg = bufferFrom and
       src = bufferFrom.getArgument(0)
     )
+    or
+    exists(API::Node n |
+      n = API::moduleImport("jose").getMember(["importSPKI", "importPKCS8", "importX509"])
+    |
+      src = n.getACall().getArgument(0) and
+      trg = n.getReturn().getPromised().asSource()
+    )
+    or
+    exists(API::Node n |
+      n = API::moduleImport("jose").getMember(["importSPKI", "importPKCS8", "importX509"])
+    |
+      src = n.getACall().getArgument(0) and
+      trg = n.getReturn().getPromised().asSource()
+    )
+    or
+    exists(API::Node n | n = API::moduleImport("jose").getMember("importJWK") |
+      src = n.getParameter(0).getMember(["x", "y", "n"]).asSink() and
+      trg = n.getReturn().getPromised().asSource()
+    )
   }
 }
