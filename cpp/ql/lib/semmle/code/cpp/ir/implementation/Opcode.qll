@@ -89,6 +89,7 @@ private newtype TOpcode =
   TSizedBufferMayWriteSideEffect() or
   TInitializeDynamicAllocation() or
   TChi() or
+  TInitializeGroup() or
   TInlineAsm() or
   TUnreached() or
   TNewObj()
@@ -1235,6 +1236,17 @@ module Opcode {
     final override MemoryAccessKind getWriteMemoryAccess() {
       result instanceof ChiTotalMemoryAccess
     }
+  }
+
+  /**
+   * The `Opcode` for a `InitializeGroup`.
+   *
+   * See the `InitializeGroupInstruction` documentation for more details.
+   */
+  class InitializeGroup extends Opcode, TInitializeGroup {
+    final override string toString() { result = "InitializeGroup" }
+
+    override GroupedMemoryAccess getWriteMemoryAccess() { any() }
   }
 
   /**
