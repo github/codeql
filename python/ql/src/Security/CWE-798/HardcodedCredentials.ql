@@ -81,7 +81,10 @@ class HardcodedValueSource extends DataFlow::Node {
 
 class CredentialSink extends DataFlow::Node {
   CredentialSink() {
-    this = ModelOutput::getASinkNode("credentials-hardcoded").asSink()
+    exists(string s | s.matches("credentials-%") |
+      // Actual sink-type will be things like `credentials-password` or `credentials-username`
+      this = ModelOutput::getASinkNode(s).asSink()
+    )
     or
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
