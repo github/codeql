@@ -1,0 +1,28 @@
+edges
+| weak_hashing.rb:3:1:3:8 | password | weak_hashing.rb:6:1:6:1 | x | provenance |  |
+| weak_hashing.rb:3:1:3:8 | password | weak_hashing.rb:10:23:10:30 | password | provenance |  |
+| weak_hashing.rb:3:1:3:8 | password | weak_hashing.rb:11:32:11:39 | password | provenance |  |
+| weak_hashing.rb:4:1:4:8 | username | weak_hashing.rb:12:23:12:30 | username | provenance |  |
+| weak_hashing.rb:6:1:6:1 | x | weak_hashing.rb:13:23:13:23 | x | provenance |  |
+| weak_hashing.rb:30:25:30:38 | password_param | weak_hashing.rb:32:25:32:38 | password_param | provenance |  |
+nodes
+| weak_hashing.rb:3:1:3:8 | password | semmle.label | password |
+| weak_hashing.rb:4:1:4:8 | username | semmle.label | username |
+| weak_hashing.rb:6:1:6:1 | x | semmle.label | x |
+| weak_hashing.rb:10:23:10:30 | password | semmle.label | password |
+| weak_hashing.rb:11:32:11:39 | password | semmle.label | password |
+| weak_hashing.rb:12:23:12:30 | username | semmle.label | username |
+| weak_hashing.rb:13:23:13:23 | x | semmle.label | x |
+| weak_hashing.rb:24:23:24:36 | call to get_password | semmle.label | call to get_password |
+| weak_hashing.rb:28:23:28:42 | ...[...] | semmle.label | ...[...] |
+| weak_hashing.rb:30:25:30:38 | password_param | semmle.label | password_param |
+| weak_hashing.rb:32:25:32:38 | password_param | semmle.label | password_param |
+subpaths
+#select
+| weak_hashing.rb:10:23:10:30 | password | weak_hashing.rb:3:1:3:8 | password | weak_hashing.rb:10:23:10:30 | password | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | weak_hashing.rb:3:1:3:8 | password | Sensitive data (password) |
+| weak_hashing.rb:11:32:11:39 | password | weak_hashing.rb:3:1:3:8 | password | weak_hashing.rb:11:32:11:39 | password | $@ is used in a hashing algorithm (SHA1) that is insecure for password hashing, since it is not a computationally expensive hash function. | weak_hashing.rb:3:1:3:8 | password | Sensitive data (password) |
+| weak_hashing.rb:12:23:12:30 | username | weak_hashing.rb:4:1:4:8 | username | weak_hashing.rb:12:23:12:30 | username | $@ is used in a hashing algorithm (MD5) that is insecure. | weak_hashing.rb:4:1:4:8 | username | Sensitive data (id) |
+| weak_hashing.rb:13:23:13:23 | x | weak_hashing.rb:3:1:3:8 | password | weak_hashing.rb:13:23:13:23 | x | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | weak_hashing.rb:3:1:3:8 | password | Sensitive data (password) |
+| weak_hashing.rb:24:23:24:36 | call to get_password | weak_hashing.rb:24:23:24:36 | call to get_password | weak_hashing.rb:24:23:24:36 | call to get_password | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | weak_hashing.rb:24:23:24:36 | call to get_password | Sensitive data (password) |
+| weak_hashing.rb:28:23:28:42 | ...[...] | weak_hashing.rb:28:23:28:42 | ...[...] | weak_hashing.rb:28:23:28:42 | ...[...] | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | weak_hashing.rb:28:23:28:42 | ...[...] | Sensitive data (password) |
+| weak_hashing.rb:32:25:32:38 | password_param | weak_hashing.rb:30:25:30:38 | password_param | weak_hashing.rb:32:25:32:38 | password_param | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | weak_hashing.rb:30:25:30:38 | password_param | Sensitive data (password) |
