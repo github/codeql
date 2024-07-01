@@ -697,6 +697,14 @@ private import DefUse
  * potentially very sparse.
  */
 module DefUse {
+  bindingset[index, block]
+  pragma[inline_late]
+  private int getNonChiOffset(int index, OldBlock block) { result = 2 * index }
+
+  bindingset[index, block]
+  pragma[inline_late]
+  private int getChiOffset(int index, OldBlock block) { result = getNonChiOffset(index, block) + 1 }
+
   /**
    * Gets the `Instruction` for the definition at offset `defOffset` in block `defBlock`.
    */
@@ -709,7 +717,7 @@ module DefUse {
       oldOffset >= 0
     |
       // An odd offset corresponds to the `Chi` instruction.
-      defOffset = oldOffset * 2 + 1 and
+      defOffset = getChiOffset(oldOffset, defBlock) and
       result = getChi(oldInstr) and
       (
         defLocation = Alias::getResultMemoryLocation(oldInstr) or
@@ -718,7 +726,7 @@ module DefUse {
       actualDefLocation = defLocation.getVirtualVariable()
       or
       // An even offset corresponds to the original instruction.
-      defOffset = oldOffset * 2 and
+      defOffset = getNonChiOffset(oldOffset, defBlock) and
       result = getNewInstruction(oldInstr) and
       (
         defLocation = Alias::getResultMemoryLocation(oldInstr) or
@@ -871,8 +879,8 @@ module DefUse {
       block.getInstruction(index) = def and
       overlap = Alias::getOverlap(defLocation, useLocation) and
       if overlap instanceof MayPartiallyOverlap
-      then offset = (index * 2) + 1 // The use will be connected to the definition on the `Chi` instruction.
-      else offset = index * 2 // The use will be connected to the definition on the original instruction.
+      then offset = getChiOffset(index, block) // The use will be connected to the definition on the `Chi` instruction.
+      else offset = getNonChiOffset(index, block) // The use will be connected to the definition on the original instruction.
     )
   }
 
@@ -933,10 +941,11 @@ module DefUse {
       block.getInstruction(index) = use and
       (
         // A direct use of the location.
-        useLocation = Alias::getOperandMemoryLocation(use.getAnOperand()) and offset = index * 2
+        useLocation = Alias::getOperandMemoryLocation(use.getAnOperand()) and
+        offset = getNonChiOffset(index, block)
         or
         // A `Chi` instruction will include a use of the virtual variable.
-        hasChiNode(useLocation, use) and offset = (index * 2) + 1
+        hasChiNode(useLocation, use) and offset = getChiOffset(index, block)
       )
     )
   }
