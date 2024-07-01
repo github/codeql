@@ -19,7 +19,10 @@ CodeQL 2.17.4 runs a total of 414 security queries when configured with the Defa
 CodeQL CLI
 ----------
 
-There are no user-facing CLI changes in this release.
+New Features
+~~~~~~~~~~~~
+
+*   CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
 
 Query Packs
 -----------
