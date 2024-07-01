@@ -28,7 +28,7 @@ def setting_cookie(request):
     resp = Response() # $ HttpResponse
     resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
     resp.set_cookie(key="key4", value="value") # $ CookieWrite CookieName="key4" CookieValue="value"
-    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.headers["Set-Cookie"] = "key2=value2" # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2"
     resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
     resp.delete_cookie("key4") # $ CookieWrite CookieName="key4"
     resp.delete_cookie(key="key4") # $ CookieWrite CookieName="key4"

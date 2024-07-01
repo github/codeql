@@ -51,56 +51,6 @@ module HttpHeaderInjection {
     }
   }
 
-  /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
-  // TODO: We could instead consider bulk writes as sinks with an implicit read step of DictionaryKey/DictionaryValue content as needed.
-  private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
-  {
-    KeyValuePair item;
-
-    HeaderBulkWriteDictLiteral() {
-      exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
-        item = dict.getAnItem()
-      )
-    }
-
-    override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
-
-    override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
-
-    override predicate nameAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
-    }
-
-    override predicate valueAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
-    }
-  }
-
-  /** A tuple in a list for a bulk header update, considered as a single header update. */
-  // TODO: We could instead consider bulk writes as sinks with implicit read steps as needed.
-  private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
-  {
-    Tuple item;
-
-    HeaderBulkWriteListLiteral() {
-      exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
-        item = list.getAnElt()
-      )
-    }
-
-    override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
-
-    override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
-
-    override predicate nameAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
-    }
-
-    override predicate valueAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
-    }
-  }
-
   /**
    * A call to replace line breaks, considered as a sanitizer.
    */

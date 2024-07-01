@@ -1134,6 +1134,54 @@ module Http {
       }
     }
 
+    /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      KeyValuePair item;
+
+      HeaderBulkWriteDictLiteral() {
+        exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
+          item = dict.getAnItem()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /** A tuple in a list for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      Tuple item;
+
+      HeaderBulkWriteListLiteral() {
+        exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
+          item = list.getAnElt()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
     /**
      * A data-flow node that sets a cookie in an HTTP response.
      *
@@ -1184,6 +1232,27 @@ module Http {
          */
         abstract DataFlow::Node getValueArg();
       }
+    }
+
+    /** A write to a `Set-Cookie` header that sets a cookie directly. */
+    private class CookieHeaderWrite extends CookieWrite::Range instanceof Http::Server::ResponseHeaderWrite
+    {
+      CookieHeaderWrite() {
+        exists(StringLiteral str |
+          str.getText().toLowerCase() = "set-cookie" and
+          DataFlow::exprNode(str)
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
+        )
+      }
+
+      override DataFlow::Node getNameArg() { none() }
+
+      override DataFlow::Node getHeaderArg() {
+        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+      }
+
+      override DataFlow::Node getValueArg() { none() }
     }
 
     /**

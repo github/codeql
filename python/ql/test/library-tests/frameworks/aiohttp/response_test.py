@@ -96,7 +96,7 @@ async def streaming_response(request): # $ requestHandler
 async def setting_cookie(request): # $ requestHandler
     resp = web.Response(text="foo") # $ HttpResponse mimetype=text/plain responseBody="foo"
     resp.cookies["key"] = "value" # $ CookieWrite CookieName="key" CookieValue="value"
-    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.headers["Set-Cookie"] = "key2=value2" # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2"
     resp.set_cookie("key3", "value3") # $ CookieWrite CookieName="key3" CookieValue="value3"
     resp.set_cookie(name="key3", value="value3") # $ CookieWrite CookieName="key3" CookieValue="value3"
     resp.del_cookie("key4") # $ CookieWrite CookieName="key4"
