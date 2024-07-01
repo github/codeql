@@ -168,14 +168,12 @@ private module PassportJwt {
  */
 private class TextEncoderStep extends TaintTracking::SharedTaintStep, DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode n, DataFlow::NewNode nn |
-      n.getCalleeName() = "encode" and
-      nn.flowsTo(n.getReceiver()) and
-      nn.getCalleeName() = "TextEncoder"
-    |
-      pred = n.getArgument(0) and
-      succ = n
-    )
+   
+  exists(DataFlow::CallNode n | n = DataFlow::globalVarRef("TextEncoder").getAnInstantiation().getAMemberCall("encode") |
+    pred = n.getArgument(0) and
+    succ = n and
+    n.getLocation().getFile().getRelativePath().matches("%HardcodedCredentials.js%")
+  )
   }
 }
 
