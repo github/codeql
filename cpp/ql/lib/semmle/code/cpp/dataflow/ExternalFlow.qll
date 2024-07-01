@@ -14,11 +14,17 @@
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
  * 1. The `namespace` column selects a namespace.
- * 2. The `type` column selects a type within that namespace.
+ * 2. The `type` column selects a type within that namespace. This column can
+ *    introduce template names that can be mentioned in the `signature` column.
+ *    For example, `vector<T,Allocator>` introduces the template names `T` and
+ *    `Allocator`.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
+ *    Like the `type` column, this column can introduce template names that can
+ *    be mentioned in the `signature` column. For example, `insert<InputIt>`
+ *    introduces the template name `InputIt`.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
  *    signature is a comma-separated list of types enclosed in parentheses. The
@@ -44,6 +50,9 @@
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
  *      value.
+ *    The special symbol `@` can be used to specify an arbitrary (but fixed)
+ *    number of indirections. For example, the `input` column `Argument[*@0]`
+ *    indicates one or more indirections of the 0th argument.
  *
  *    An `output` can be either:
  *    - "": Selects a read of a selected field.
@@ -65,6 +74,17 @@
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
  *      value.
+ *    The special symbol `@` can be used to specify an arbitrary (but fixed)
+ *    number of indirections. For example, the `output` column
+ *    `ReturnValue[*@0]` indicates one or more indirections of the return
+ *    value.
+ *    Note: The symbol `@` only ever takes a single value across a row. Thus,
+ *    the (`input`, `output`) pair `("Argument[*@0]", "ReturnValue[@]")`
+ *    represents:
+ *    - flow from the _first_ indirection of the 0th argument to the return
+ *    value, and
+ *    - flow from the _second_ indirection of the 0th argument to the first
+ *    indirection of the return value, etc.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
