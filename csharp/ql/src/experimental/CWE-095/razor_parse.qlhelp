@@ -1,0 +1,19 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds public <code>ActualResults</code> methods that have user controlled parameters that could contain malicious code that
+is parsed by <code>RazorEngine.Parse()</code> leading to a Server-Side Template Injection vulnerability.
+
+</overview>
+<recommendation>
+<p>Do not use the class RazorEngine. If not possible, do not parse user input into the template.</p>
+
+</recommendation>
+<references>
+  <li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.web.razor.parser.razorparser.parse?view=aspnet-webpages-3.2">RazorParser</a>.</li>
+  <li><a href="https://clement.notin.org/blog/2020/04/15/Server-Side-Template-Injection-(SSTI)-in-ASP.NET-Razor/">RazorEngine Injection ASP.NET</a>.</li>
+
+</references>
+</qhelp>
