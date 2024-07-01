@@ -12,7 +12,7 @@ import javascript
 abstract class CredentialsNode extends DataFlow::Node {
   /**
    * Gets a description of the kind of credential this expression is used as,
-   * such as `"user name"`, `"password"`, `"key"`.
+   * such as `"user name"`, `"password"`, `"key"`, `"jwt key"`.
    */
   abstract string getCredentialsKind();
 }

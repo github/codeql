@@ -268,7 +268,7 @@ module NextJS {
         this = API::moduleImport("next-auth").getParameter(0).getMember("secret").asSink()
       }
 
-      override string getCredentialsKind() { result = "key" }
+      override string getCredentialsKind() { result = "jwt key" }
     }
   }
 }

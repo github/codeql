@@ -48,7 +48,7 @@ private module JsonWebToken {
         API::moduleImport("jsonwebtoken").getMember(["sign", "verify"]).getParameter(1).asSink()
     }
 
-    override string getCredentialsKind() { result = "key" }
+    override string getCredentialsKind() { result = "jwt key" }
   }
 }
 
@@ -64,7 +64,7 @@ private module Jose {
       this = API::moduleImport("jose").getMember("jwtVerify").getParameter(1).asSink()
     }
 
-    override string getCredentialsKind() { result = "key" }
+    override string getCredentialsKind() { result = "jwt key" }
   }
 }
 
@@ -78,7 +78,7 @@ private module JwtSimple {
   private class JwtKey extends CredentialsNode {
     JwtKey() { this = API::moduleImport("jwt-simple").getMember("decode").getParameter(1).asSink() }
 
-    override string getCredentialsKind() { result = "key" }
+    override string getCredentialsKind() { result = "jwt key" }
   }
 }
 
@@ -94,7 +94,7 @@ private module KoaJwt {
       this = API::moduleImport("koa-jwt").getParameter(0).getMember("secret").asSink()
     }
 
-    override string getCredentialsKind() { result = "key" }
+    override string getCredentialsKind() { result = "jwt key" }
   }
 }
 
@@ -115,7 +115,7 @@ private module ExpressJwt {
             .asSink()
     }
 
-    override string getCredentialsKind() { result = "key" }
+    override string getCredentialsKind() { result = "jwt key" }
   }
 }
 
@@ -145,6 +145,6 @@ private module PassportJwt {
             .asSink()
     }
 
-    override string getCredentialsKind() { result = "key" }
+    override string getCredentialsKind() { result = "jwt key" }
   }
 }
