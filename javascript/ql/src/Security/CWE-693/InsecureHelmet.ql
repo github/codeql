@@ -7,8 +7,8 @@
  * @precision high
  * @id js/insecure-helmet-configuration
  * @tags security
- *        cwe-693
- *        cwe-1021
+ *        external/cwe/cwe-693
+ *        external/cwe/cwe-1021
  */
 
 import javascript
