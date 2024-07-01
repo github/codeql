@@ -57,5 +57,14 @@
         <li>
             <a href="https://helmetjs.github.io/">helmet.js website</a>
         </li>
+        <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content Security Policy (CSP) | MDN</a>
+        </li>
+        <li>
+            <a href="https://infosec.mozilla.org/guidelines/web_security">Mozilla Web Security Guidelines</a>
+        </li>
+        <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Security#protect_against_clickjacking">Protect against clickjacking | MDN</a>
+
     </references>
 </qhelp>
