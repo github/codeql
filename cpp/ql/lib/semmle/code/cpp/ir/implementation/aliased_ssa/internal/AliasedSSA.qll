@@ -16,38 +16,45 @@ private predicate isIndirectOrBufferMemoryAccess(MemoryAccessKind kind) {
   kind instanceof BufferMemoryAccess
 }
 
-private predicate hasResultMemoryAccess(
-  Instruction instr, Allocation var, IRType type, Language::LanguageType languageType,
-  IntValue startBitOffset, IntValue endBitOffset, boolean isMayAccess
+private predicate hasMemoryAccess(
+  AddressOperand addrOperand, Allocation var, IntValue startBitOffset, boolean grouped
 ) {
-  exists(AddressOperand addrOperand |
-    addrOperand = instr.getResultAddressOperand() and
-    addressOperandAllocationAndOffset(addrOperand, var, startBitOffset) and
-    languageType = instr.getResultLanguageType() and
-    type = languageType.getIRType() and
-    isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
-    (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
-    then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
-    else endBitOffset = Ints::unknown()
-  )
+  addressOperandAllocationAndOffset(addrOperand, var, startBitOffset) and
+  if strictcount(Allocation alloc | addressOperandAllocationAndOffset(addrOperand, alloc, _)) > 1
+  then grouped = true
+  else grouped = false
+}
+
+private predicate hasResultMemoryAccess(
+  AddressOperand address, Instruction instr, Allocation var, IRType type,
+  Language::LanguageType languageType, IntValue startBitOffset, IntValue endBitOffset,
+  boolean isMayAccess, boolean grouped
+) {
+  address = instr.getResultAddressOperand() and
+  hasMemoryAccess(address, var, startBitOffset, grouped) and
+  languageType = instr.getResultLanguageType() and
+  type = languageType.getIRType() and
+  isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
+  (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  if exists(type.getByteSize())
+  then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
+  else endBitOffset = Ints::unknown()
 }
 
 private predicate hasOperandMemoryAccess(
-  MemoryOperand operand, Allocation var, IRType type, Language::LanguageType languageType,
-  IntValue startBitOffset, IntValue endBitOffset, boolean isMayAccess
+  AddressOperand address, MemoryOperand operand, Allocation var, IRType type,
+  Language::LanguageType languageType, IntValue startBitOffset, IntValue endBitOffset,
+  boolean isMayAccess, boolean grouped
 ) {
-  exists(AddressOperand addrOperand |
-    addrOperand = operand.getAddressOperand() and
-    addressOperandAllocationAndOffset(addrOperand, var, startBitOffset) and
-    languageType = operand.getLanguageType() and
-    type = languageType.getIRType() and
-    isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
-    (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
-    then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
-    else endBitOffset = Ints::unknown()
-  )
+  address = operand.getAddressOperand() and
+  hasMemoryAccess(address, var, startBitOffset, grouped) and
+  languageType = operand.getLanguageType() and
+  type = languageType.getIRType() and
+  isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
+  (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  if exists(type.getByteSize())
+  then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
+  else endBitOffset = Ints::unknown()
 }
 
 private newtype TMemoryLocation =
@@ -56,9 +63,9 @@ private newtype TMemoryLocation =
     IntValue endBitOffset, boolean isMayAccess
   ) {
     (
-      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      hasResultMemoryAccess(_, _, var, type, _, startBitOffset, endBitOffset, isMayAccess, false)
       or
-      hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      hasOperandMemoryAccess(_, _, var, type, _, startBitOffset, endBitOffset, isMayAccess, false)
       or
       // For a stack variable, always create a memory location for the entire variable.
       var.isAlwaysAllocatedOnStack() and
@@ -211,13 +218,13 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
   final override Language::LanguageType getType() {
     if
       strictcount(Language::LanguageType accessType |
-        hasResultMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset, _) or
-        hasOperandMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset, _)
+        hasResultMemoryAccess(_, _, var, type, accessType, startBitOffset, endBitOffset, _, false) or
+        hasOperandMemoryAccess(_, _, var, type, accessType, startBitOffset, endBitOffset, _, false)
       ) = 1
     then
       // All of the accesses have the same `LanguageType`, so just use that.
-      hasResultMemoryAccess(_, var, type, result, startBitOffset, endBitOffset, _) or
-      hasOperandMemoryAccess(_, var, type, result, startBitOffset, endBitOffset, _)
+      hasResultMemoryAccess(_, _, var, type, result, startBitOffset, endBitOffset, _, false) or
+      hasOperandMemoryAccess(_, _, var, type, result, startBitOffset, endBitOffset, _, false)
     else
       // There is no single type for all accesses, so just use the canonical one for this `IRType`.
       result = type.getCanonicalLanguageType()
