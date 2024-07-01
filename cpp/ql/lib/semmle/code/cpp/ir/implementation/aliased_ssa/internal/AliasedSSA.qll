@@ -157,23 +157,14 @@ private newtype TMemoryLocation =
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
-  TEntireAllocationMemoryLocation(Allocation var, boolean isMayAccess) {
-    (
-      var instanceof IndirectParameterAllocation or
-      var instanceof DynamicAllocation
-    ) and
-    (isMayAccess = false or isMayAccess = true)
+  TEntireAllocationMemoryLocation(Allocation var, Boolean isMayAccess) {
+    var instanceof IndirectParameterAllocation or
+    var instanceof DynamicAllocation
   } or
   TGroupedMemoryLocation(VariableGroup vg, Boolean isMayAccess, Boolean isAll) or
-  TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
-  } or
-  TAllNonLocalMemory(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
-  } or
-  TAllAliasedMemory(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
-  }
+  TUnknownMemoryLocation(IRFunction irFunc, Boolean isMayAccess) or
+  TAllNonLocalMemory(IRFunction irFunc, Boolean isMayAccess) or
+  TAllAliasedMemory(IRFunction irFunc, Boolean isMayAccess)
 
 /**
  * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
@@ -249,12 +240,8 @@ abstract class AllocationMemoryLocation extends MemoryLocation {
   Allocation var;
   boolean isMayAccess;
 
-  AllocationMemoryLocation() {
-    this instanceof TMemoryLocation and
-    isMayAccess = false
-    or
-    isMayAccess = true // Just ensures that `isMayAccess` is bound.
-  }
+  bindingset[isMayAccess]
+  AllocationMemoryLocation() { any() }
 
   final override VirtualVariable getVirtualVariable() {
     if allocationEscapes(var)
