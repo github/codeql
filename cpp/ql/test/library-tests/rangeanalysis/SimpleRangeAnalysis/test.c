@@ -482,7 +482,7 @@ unsigned long mult_overflow() {
 unsigned long mult_lower_bound(unsigned int ui, unsigned long ul) {
   if (ui >= 10) {
     unsigned long result = (unsigned long)ui * ui;
-    return result; // BUG: upper bound should be >= 18446744065119617025
+    return result; // = 18446744065119617025UL
   }
   if (ul >= 10) {
     unsigned long result = ul * ul;
