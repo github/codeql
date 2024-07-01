@@ -35,7 +35,7 @@ deprecated module Ssa {
     }
 
     /** Gets the location of this SSA definition. */
-    Location getLocation() { result = this.getVariableUpdate().getLocation() }
+    override Location getLocation() { result = this.getVariableUpdate().getLocation() }
   }
 
   /** A phi node. */

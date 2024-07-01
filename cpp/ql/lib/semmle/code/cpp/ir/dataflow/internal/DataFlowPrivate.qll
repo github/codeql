@@ -1809,7 +1809,7 @@ module IteratorFlow {
      * Holds if `(bb, i)` contains a write to an iterator that may have been obtained
      * by calling `begin` (or related functions) on the variable `v`.
      */
-    predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       certain = false and
       exists(GetsIteratorCall beginCall, Instruction writeToDeref, IRBlock bbQual, int iQual |
         isIteratorStoreInstruction(beginCall, writeToDeref) and
@@ -1820,7 +1820,7 @@ module IteratorFlow {
     }
 
     /** Holds if `(bb, i)` reads the container variable `v`. */
-    predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       Ssa::variableRead(bb, i, v, certain)
     }
   }

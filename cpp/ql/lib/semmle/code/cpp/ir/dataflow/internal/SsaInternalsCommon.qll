@@ -757,13 +757,19 @@ import Cached
  * between the SSA pruning stage, and the final SSA stage.
  */
 module InputSigCommon {
-  class BasicBlock = IRBlock;
+  class BasicBlock extends IRBlock {
+    ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
+
+    int length() { result = this.getInstructionCount() }
+  }
+
+  class ControlFlowNode = Instruction;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends IRBlock {
+  class ExitBasicBlock extends BasicBlock {
     ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
   }
 }

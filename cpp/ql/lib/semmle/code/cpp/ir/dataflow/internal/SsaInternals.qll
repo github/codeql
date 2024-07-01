@@ -981,7 +981,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    * Holds if the `i`'th write in block `bb` writes to the variable `v`.
    * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
    */
-  predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
     (
       exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
@@ -999,7 +999,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    * Holds if the `i`'th read in block `bb` reads to the variable `v`.
    * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
    */
-  predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
     )
