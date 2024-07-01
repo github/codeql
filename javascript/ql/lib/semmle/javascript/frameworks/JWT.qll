@@ -57,20 +57,6 @@ private module JsonWebToken {
  */
 private module Jose {
   /**
-   * A taint-step for `succ = jose.base64url.encode(pred)` or `succ = jose.base64url.decode(pred)`.
-   */
-  private class Base64urlStep extends TaintTracking::SharedTaintStep, DataFlow::SharedFlowStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(API::Node n |
-        n = API::moduleImport("jose").getMember("base64url").getMember(["decode", "encode"])
-      |
-        pred = n.getACall().getArgument(0) and
-        succ = n.getACall()
-      )
-    }
-  }
-
-  /**
    * The asymmetric key or symmetric secret for verifying a JWT as a `CredentialsNode`.
    */
   private class JwtVerifyKey extends CredentialsNode {
@@ -160,31 +146,5 @@ private module PassportJwt {
     }
 
     override string getCredentialsKind() { result = "key" }
-  }
-}
-
-/**
- * A taint-step for `succ = new TextEncoder().encode(pred)`.
- */
-private class TextEncoderStep extends TaintTracking::SharedTaintStep, DataFlow::SharedFlowStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-   
-  exists(DataFlow::CallNode n | n = DataFlow::globalVarRef("TextEncoder").getAnInstantiation().getAMemberCall("encode") |
-    pred = n.getArgument(0) and
-    succ = n and
-    n.getLocation().getFile().getRelativePath().matches("%HardcodedCredentials.js%")
-  )
-  }
-}
-
-/**
- * A taint-step for `succ = Buffer.from(pred, "base64")`.
- */
-private class BufferFromStep extends TaintTracking::SharedTaintStep, DataFlow::SharedFlowStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode n | n = DataFlow::globalVarRef("Buffer").getAMemberCall("from") |
-      pred = n.getArgument(0) and
-      succ = [n, n.getAChainedMethodCall(["toString", "toJSON"])]
-    )
   }
 }
