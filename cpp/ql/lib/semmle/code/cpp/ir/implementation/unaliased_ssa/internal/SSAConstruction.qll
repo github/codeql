@@ -15,6 +15,43 @@ private class OldInstruction = Reachability::ReachableInstruction;
 
 import Cached
 
+/**
+ * Holds if `instruction` is the first instruction that may be followed by
+ * an `InitializeGroup` instruction, and the enclosing function of
+ * `instruction` is `func`.
+ */
+private predicate isFirstInstructionBeforeInitializeGroup(Instruction instruction, IRFunction func) {
+  instruction = getChi(any(OldIR::InitializeNonLocalInstruction init)) and
+  func = instruction.getEnclosingIRFunction()
+}
+
+/** Gets the `i`'th `InitializeGroup` instruction in `func`. */
+private InitializeGroupInstruction getInitGroupInstruction(int i, IRFunction func) {
+  exists(Alias::VariableGroup vg |
+    vg.getIRFunction() = func and
+    vg.getInitializationOrder() = i and
+    result = initializeGroup(vg)
+  )
+}
+
+/**
+ * Holds if `instruction` is the last instruction in the chain of `InitializeGroup`
+ * instructions in `func`. The chain of instructions may be empty in which case
+ * `instruction` satisfies
+ * ```
+ * isFirstInstructionBeforeInitializeGroup(instruction, func)
+ * ```
+ */
+predicate isLastInstructionForInitializeGroups(Instruction instruction, IRFunction func) {
+  exists(int i |
+    instruction = getInitGroupInstruction(i, func) and
+    not exists(getInitGroupInstruction(i + 1, func))
+  )
+  or
+  isFirstInstructionBeforeInitializeGroup(instruction, func) and
+  not exists(getInitGroupInstruction(0, func))
+}
+
 cached
 private module Cached {
   cached
@@ -45,7 +82,8 @@ private module Cached {
   }
 
   class TStageInstruction =
-    TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
+    TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction or
+        TInitializeGroupInstruction;
 
   /**
    * If `oldInstruction` is a `Phi` instruction that has exactly one reachable predecessor block,
@@ -77,6 +115,8 @@ private module Cached {
     )
     or
     instr instanceof TChiInstruction
+    or
+    instr instanceof TInitializeGroupInstruction
     or
     instr instanceof TUnreachedInstruction
   }
@@ -123,7 +163,8 @@ private module Cached {
   predicate hasModeledMemoryResult(Instruction instruction) {
     canModelResultForOldInstruction(getOldInstruction(instruction)) or
     instruction instanceof PhiInstruction or // Phis always have modeled results
-    instruction instanceof ChiInstruction // Chis always have modeled results
+    instruction instanceof ChiInstruction or // Chis always have modeled results
+    instruction instanceof InitializeGroupInstruction // Group initializers always have modeled results
   }
 
   cached
@@ -143,7 +184,7 @@ private module Cached {
     // conflated if it's associated with a conflated location.
     exists(Alias::MemoryLocation location |
       instruction = getPhi(_, location) and
-      not exists(location.getAllocation())
+      not exists(location.getAnAllocation())
     )
   }
 
@@ -264,7 +305,12 @@ private module Cached {
   }
 
   cached
-  IRVariable getAnInitializeGroupVariable(InitializeGroupInstruction instr) { none() }
+  IRVariable getAnInitializeGroupVariable(InitializeGroupInstruction init) {
+    exists(Alias::VariableGroup vg |
+      init = initializeGroup(vg) and
+      result = vg.getAnAllocation().getABaseInstruction().(VariableInstruction).getIRVariable()
+    )
+  }
 
   /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
@@ -347,14 +393,28 @@ private module Cached {
     )
   }
 
-  /*
-   * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
-   * that node is its successor in the new successor relation, and the Chi node's successors are
-   * the new instructions generated from the successors of the old instruction
-   */
+  private InitializeGroupInstruction firstInstructionToInitializeGroup(
+    Instruction instruction, EdgeKind kind
+  ) {
+    exists(IRFunction func |
+      isFirstInstructionBeforeInitializeGroup(instruction, func) and
+      result = getInitGroupInstruction(0, func) and
+      kind instanceof GotoEdge
+    )
+  }
 
-  cached
-  Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
+  private Instruction getNextInitializeGroupInstruction(Instruction instruction, EdgeKind kind) {
+    exists(int i, IRFunction func |
+      func = instruction.getEnclosingIRFunction() and
+      instruction = getInitGroupInstruction(i, func) and
+      result = getInitGroupInstruction(i + 1, func) and
+      kind instanceof GotoEdge
+    )
+  }
+
+  private Instruction getInstructionSuccessorAfterInitializeGroup0(
+    Instruction instruction, EdgeKind kind
+  ) {
     if hasChiNode(_, getOldInstruction(instruction))
     then
       result = getChi(getOldInstruction(instruction)) and
@@ -372,6 +432,35 @@ private module Cached {
           else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
       )
+  }
+
+  private Instruction getInstructionSuccessorAfterInitializeGroup(
+    Instruction instruction, EdgeKind kind
+  ) {
+    exists(IRFunction func, Instruction firstBeforeInitializeGroup |
+      isLastInstructionForInitializeGroups(instruction, func) and
+      isFirstInstructionBeforeInitializeGroup(firstBeforeInitializeGroup, func) and
+      result = getInstructionSuccessorAfterInitializeGroup0(firstBeforeInitializeGroup, kind)
+    )
+  }
+
+  /**
+   * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
+   * that node is its successor in the new successor relation, and the Chi node's successors are
+   * the new instructions generated from the successors of the old instruction.
+   *
+   * Furthermore, the entry block is augmented with `InitializeGroup` instructions.
+   */
+  cached
+  Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
+    result = firstInstructionToInitializeGroup(instruction, kind)
+    or
+    result = getNextInitializeGroupInstruction(instruction, kind)
+    or
+    result = getInstructionSuccessorAfterInitializeGroup(instruction, kind)
+    or
+    not isFirstInstructionBeforeInitializeGroup(instruction, _) and
+    result = getInstructionSuccessorAfterInitializeGroup0(instruction, kind)
   }
 
   cached
@@ -409,6 +498,11 @@ private module Cached {
     exists(IRFunctionBase irFunc |
       instr = unreachedInstruction(irFunc) and result = irFunc.getFunction()
     )
+    or
+    exists(Alias::VariableGroup vg |
+      instr = initializeGroup(vg) and
+      result = vg.getIRFunction().getFunction()
+    )
   }
 
   cached
@@ -424,6 +518,11 @@ private module Cached {
       instr = chiInstruction(primaryInstr) and
       hasChiNode(vvar, primaryInstr) and
       result = vvar.getType()
+    )
+    or
+    exists(Alias::VariableGroup vg |
+      instr = initializeGroup(vg) and
+      result = vg.getType()
     )
     or
     instr = reusedPhiInstruction(_) and
@@ -451,6 +550,8 @@ private module Cached {
     or
     instr = chiInstruction(_) and opcode instanceof Opcode::Chi
     or
+    instr = initializeGroup(_) and opcode instanceof Opcode::InitializeGroup
+    or
     instr = unreachedInstruction(_) and opcode instanceof Opcode::Unreached
   }
 
@@ -465,6 +566,11 @@ private module Cached {
     or
     exists(OldInstruction primaryInstr |
       instr = chiInstruction(primaryInstr) and result = primaryInstr.getEnclosingIRFunction()
+    )
+    or
+    exists(Alias::VariableGroup vg |
+      instr = initializeGroup(vg) and
+      result = vg.getIRFunction()
     )
     or
     instr = unreachedInstruction(result)
@@ -671,6 +777,20 @@ private import DefUse
  * potentially very sparse.
  */
 module DefUse {
+  bindingset[index, block]
+  pragma[inline_late]
+  private int getNonChiOffset(int index, OldBlock block) {
+    exists(IRFunction func | func = block.getEnclosingIRFunction() |
+      if getNewBlock(block) = func.getEntryBlock()
+      then result = 2 * (index + count(VariableGroup vg | vg.getIRFunction() = func))
+      else result = 2 * index
+    )
+  }
+
+  bindingset[index, block]
+  pragma[inline_late]
+  private int getChiOffset(int index, OldBlock block) { result = getNonChiOffset(index, block) + 1 }
+
   /**
    * Gets the `Instruction` for the definition at offset `defOffset` in block `defBlock`.
    */
@@ -678,12 +798,9 @@ module DefUse {
     OldBlock defBlock, int defOffset, Alias::MemoryLocation defLocation,
     Alias::MemoryLocation actualDefLocation
   ) {
-    exists(OldInstruction oldInstr, int oldOffset |
-      oldInstr = defBlock.getInstruction(oldOffset) and
-      oldOffset >= 0
-    |
+    exists(OldInstruction oldInstr, int oldOffset | oldInstr = defBlock.getInstruction(oldOffset) |
       // An odd offset corresponds to the `Chi` instruction.
-      defOffset = oldOffset * 2 + 1 and
+      defOffset = getChiOffset(oldOffset, defBlock) and
       result = getChi(oldInstr) and
       (
         defLocation = Alias::getResultMemoryLocation(oldInstr) or
@@ -692,7 +809,7 @@ module DefUse {
       actualDefLocation = defLocation.getVirtualVariable()
       or
       // An even offset corresponds to the original instruction.
-      defOffset = oldOffset * 2 and
+      defOffset = getNonChiOffset(oldOffset, defBlock) and
       result = getNewInstruction(oldInstr) and
       (
         defLocation = Alias::getResultMemoryLocation(oldInstr) or
@@ -705,6 +822,26 @@ module DefUse {
     hasDefinition(_, defLocation, defBlock, defOffset) and
     result = getPhi(defBlock, defLocation) and
     actualDefLocation = defLocation
+    or
+    exists(
+      Alias::VariableGroup vg, int index, InitializeGroupInstruction initGroup,
+      Alias::GroupedMemoryLocation gml
+    |
+      // Add 3 to account for the function prologue:
+      // v1(void)    = EnterFunction
+      // m1(unknown) = AliasedDefinition
+      // m2(unknown) = InitializeNonLocal
+      index = 3 + vg.getInitializationOrder() and
+      not gml.isMayAccess() and
+      gml.isSome() and
+      gml.getGroup() = vg and
+      vg.getIRFunction().getEntryBlock() = defBlock and
+      initGroup = initializeGroup(vg) and
+      (defLocation = gml or defLocation = gml.getVirtualVariable()) and
+      result = initGroup and
+      defOffset = 2 * index and
+      actualDefLocation = defLocation
+    )
   }
 
   /**
@@ -845,8 +982,18 @@ module DefUse {
       block.getInstruction(index) = def and
       overlap = Alias::getOverlap(defLocation, useLocation) and
       if overlap instanceof MayPartiallyOverlap
-      then offset = (index * 2) + 1 // The use will be connected to the definition on the `Chi` instruction.
-      else offset = index * 2 // The use will be connected to the definition on the original instruction.
+      then offset = getChiOffset(index, block) // The use will be connected to the definition on the `Chi` instruction.
+      else offset = getNonChiOffset(index, block) // The use will be connected to the definition on the original instruction.
+    )
+    or
+    exists(InitializeGroupInstruction initGroup, int index, VariableGroup vg |
+      initGroup.getEnclosingIRFunction().getEntryBlock() = getNewBlock(block) and
+      vg = defLocation.(Alias::GroupedMemoryLocation).getGroup() and
+      // EnterFunction + AliasedDefinition + InitializeNonLocal + index
+      index = 3 + vg.getInitializationOrder() and
+      initGroup = initializeGroup(vg) and
+      exists(Alias::getOverlap(defLocation, useLocation)) and
+      offset = 2 * index
     )
   }
 
@@ -907,10 +1054,11 @@ module DefUse {
       block.getInstruction(index) = use and
       (
         // A direct use of the location.
-        useLocation = Alias::getOperandMemoryLocation(use.getAnOperand()) and offset = index * 2
+        useLocation = Alias::getOperandMemoryLocation(use.getAnOperand()) and
+        offset = getNonChiOffset(index, block)
         or
         // A `Chi` instruction will include a use of the virtual variable.
-        hasChiNode(useLocation, use) and offset = (index * 2) + 1
+        hasChiNode(useLocation, use) and offset = getChiOffset(index, block)
       )
     )
   }
@@ -1061,4 +1209,6 @@ module Ssa {
   predicate hasChiInstruction = Cached::hasChiInstructionCached/1;
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
+
+  class VariableGroup = Alias::VariableGroup;
 }
