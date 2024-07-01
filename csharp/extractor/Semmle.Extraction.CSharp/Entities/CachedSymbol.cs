@@ -144,50 +144,5 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation => Context.Defines(Symbol);
 
         public Extraction.Entities.Location Location => Context.CreateLocation(ReportingLocation);
-
-        protected void PopulateMetadataHandle(TextWriter trapFile)
-        {
-            var handle = MetadataHandle;
-
-            if (handle.HasValue)
-                trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
-        }
-
-        private static System.Reflection.PropertyInfo? GetPropertyInfo(object o, string name)
-        {
-            return o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
-        }
-
-        public Handle? MetadataHandle
-        {
-            get
-            {
-                var handleProp = GetPropertyInfo(Symbol, "Handle");
-                object handleObj = Symbol;
-
-                if (handleProp is null)
-                {
-                    var underlyingSymbolProp = GetPropertyInfo(Symbol, "UnderlyingSymbol");
-                    if (underlyingSymbolProp?.GetValue(Symbol) is object underlying)
-                    {
-                        handleProp = GetPropertyInfo(underlying, "Handle");
-                        handleObj = underlying;
-                    }
-                }
-
-                if (handleProp is not null)
-                {
-                    switch (handleProp.GetValue(handleObj))
-                    {
-                        case MethodDefinitionHandle md: return md;
-                        case TypeDefinitionHandle td: return td;
-                        case PropertyDefinitionHandle pd: return pd;
-                        case FieldDefinitionHandle fd: return fd;
-                    }
-                }
-
-                return null;
-            }
-        }
     }
 }

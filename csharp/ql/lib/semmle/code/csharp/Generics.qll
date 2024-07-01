@@ -103,33 +103,6 @@ class ConstructedGeneric extends Generic {
   final int getNumberOfTypeArguments() { result = count(int i | exists(this.getTypeArgument(i))) }
 }
 
-/**
- * INTERNAL: Do not use.
- *
- * Constructs the label suffix for a generic method or type.
- */
-deprecated string getGenericsLabel(Generic g) {
-  result = "`" + g.(UnboundGeneric).getNumberOfTypeParameters()
-  or
-  result = "<" + typeArgs(g) + ">"
-}
-
-pragma[noinline]
-deprecated private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
-  result = generic.getTypeArgument(p).getLabel()
-}
-
-language[monotonicAggregates]
-pragma[nomagic]
-deprecated private string typeArgs(ConstructedGeneric generic) {
-  result =
-    concat(int p |
-      p in [0 .. generic.getNumberOfTypeArguments() - 1]
-    |
-      getTypeArgumentLabel(generic, p), ","
-    )
-}
-
 /** Gets the type arguments as a comma-separated string. */
 language[monotonicAggregates]
 private string getTypeArgumentsToString(ConstructedGeneric cg) {
@@ -263,8 +236,6 @@ class TypeParameter extends Type, @type_parameter {
 
   /** Gets the index of this type parameter. For example the index of `U` in `Func<T,U>` is 1. */
   override int getIndex() { type_parameters(this, result, _, _) }
-
-  deprecated final override string getLabel() { result = "!" + this.getIndex() }
 
   override string getUndecoratedName() { result = "!" + this.getIndex() }
 

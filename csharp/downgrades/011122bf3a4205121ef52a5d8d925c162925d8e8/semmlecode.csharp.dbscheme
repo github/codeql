@@ -1457,3 +1457,643 @@ asp_tag_name(
   unique int tag: @asp_open_tag ref,
   string name: string ref);
 asp_tag_isempty(int tag: @asp_open_tag ref);
+
+/* Common Intermediate Language - CIL */
+
+case @cil_instruction.opcode of
+  0 = @cil_nop
+| 1 = @cil_break
+| 2 = @cil_ldarg_0
+| 3 = @cil_ldarg_1
+| 4 = @cil_ldarg_2
+| 5 = @cil_ldarg_3
+| 6 = @cil_ldloc_0
+| 7 = @cil_ldloc_1
+| 8 = @cil_ldloc_2
+| 9 = @cil_ldloc_3
+| 10 = @cil_stloc_0
+| 11 = @cil_stloc_1
+| 12 = @cil_stloc_2
+| 13 = @cil_stloc_3
+| 14 = @cil_ldarg_s
+| 15 = @cil_ldarga_s
+| 16 = @cil_starg_s
+| 17 = @cil_ldloc_s
+| 18 = @cil_ldloca_s
+| 19 = @cil_stloc_s
+| 20 = @cil_ldnull
+| 21 = @cil_ldc_i4_m1
+| 22 = @cil_ldc_i4_0
+| 23 = @cil_ldc_i4_1
+| 24 = @cil_ldc_i4_2
+| 25 = @cil_ldc_i4_3
+| 26 = @cil_ldc_i4_4
+| 27 = @cil_ldc_i4_5
+| 28 = @cil_ldc_i4_6
+| 29 = @cil_ldc_i4_7
+| 30 = @cil_ldc_i4_8
+| 31 = @cil_ldc_i4_s
+| 32 = @cil_ldc_i4
+| 33 = @cil_ldc_i8
+| 34 = @cil_ldc_r4
+| 35 = @cil_ldc_r8
+| 37 = @cil_dup
+| 38 = @cil_pop
+| 39 = @cil_jmp
+| 40 = @cil_call
+| 41 = @cil_calli
+| 42 = @cil_ret
+| 43 = @cil_br_s
+| 44 = @cil_brfalse_s
+| 45 = @cil_brtrue_s
+| 46 = @cil_beq_s
+| 47 = @cil_bge_s
+| 48 = @cil_bgt_s
+| 49 = @cil_ble_s
+| 50 = @cil_blt_s
+| 51 = @cil_bne_un_s
+| 52 = @cil_bge_un_s
+| 53 = @cil_bgt_un_s
+| 54 = @cil_ble_un_s
+| 55 = @cil_blt_un_s
+| 56 = @cil_br
+| 57 = @cil_brfalse
+| 58 = @cil_brtrue
+| 59 = @cil_beq
+| 60 = @cil_bge
+| 61 = @cil_bgt
+| 62 = @cil_ble
+| 63 = @cil_blt
+| 64 = @cil_bne_un
+| 65 = @cil_bge_un
+| 66 = @cil_bgt_un
+| 67 = @cil_ble_un
+| 68 = @cil_blt_un
+| 69 = @cil_switch
+| 70 = @cil_ldind_i1
+| 71 = @cil_ldind_u1
+| 72 = @cil_ldind_i2
+| 73 = @cil_ldind_u2
+| 74 = @cil_ldind_i4
+| 75 = @cil_ldind_u4
+| 76 = @cil_ldind_i8
+| 77 = @cil_ldind_i
+| 78 = @cil_ldind_r4
+| 79 = @cil_ldind_r8
+| 80 = @cil_ldind_ref
+| 81 = @cil_stind_ref
+| 82 = @cil_stind_i1
+| 83 = @cil_stind_i2
+| 84 = @cil_stind_i4
+| 85 = @cil_stind_i8
+| 86 = @cil_stind_r4
+| 87 = @cil_stind_r8
+| 88 = @cil_add
+| 89 = @cil_sub
+| 90 = @cil_mul
+| 91 = @cil_div
+| 92 = @cil_div_un
+| 93 = @cil_rem
+| 94 = @cil_rem_un
+| 95 = @cil_and
+| 96 = @cil_or
+| 97 = @cil_xor
+| 98 = @cil_shl
+| 99 = @cil_shr
+| 100 = @cil_shr_un
+| 101 = @cil_neg
+| 102 = @cil_not
+| 103 = @cil_conv_i1
+| 104 = @cil_conv_i2
+| 105 = @cil_conv_i4
+| 106 = @cil_conv_i8
+| 107 = @cil_conv_r4
+| 108 = @cil_conv_r8
+| 109 = @cil_conv_u4
+| 110 = @cil_conv_u8
+| 111 = @cil_callvirt
+| 112 = @cil_cpobj
+| 113 = @cil_ldobj
+| 114 = @cil_ldstr
+| 115 = @cil_newobj
+| 116 = @cil_castclass
+| 117 = @cil_isinst
+| 118 = @cil_conv_r_un
+| 121 = @cil_unbox
+| 122 = @cil_throw
+| 123 = @cil_ldfld
+| 124 = @cil_ldflda
+| 125 = @cil_stfld
+| 126 = @cil_ldsfld
+| 127 = @cil_ldsflda
+| 128 = @cil_stsfld
+| 129 = @cil_stobj
+| 130 = @cil_conv_ovf_i1_un
+| 131 = @cil_conv_ovf_i2_un
+| 132 = @cil_conv_ovf_i4_un
+| 133 = @cil_conv_ovf_i8_un
+| 134 = @cil_conv_ovf_u1_un
+| 135 = @cil_conv_ovf_u2_un
+| 136 = @cil_conv_ovf_u4_un
+| 137 = @cil_conv_ovf_u8_un
+| 138 = @cil_conv_ovf_i_un
+| 139 = @cil_conv_ovf_u_un
+| 140 = @cil_box
+| 141 = @cil_newarr
+| 142 = @cil_ldlen
+| 143 = @cil_ldelema
+| 144 = @cil_ldelem_i1
+| 145 = @cil_ldelem_u1
+| 146 = @cil_ldelem_i2
+| 147 = @cil_ldelem_u2
+| 148 = @cil_ldelem_i4
+| 149 = @cil_ldelem_u4
+| 150 = @cil_ldelem_i8
+| 151 = @cil_ldelem_i
+| 152 = @cil_ldelem_r4
+| 153 = @cil_ldelem_r8
+| 154 = @cil_ldelem_ref
+| 155 = @cil_stelem_i
+| 156 = @cil_stelem_i1
+| 157 = @cil_stelem_i2
+| 158 = @cil_stelem_i4
+| 159 = @cil_stelem_i8
+| 160 = @cil_stelem_r4
+| 161 = @cil_stelem_r8
+| 162 = @cil_stelem_ref
+| 163 = @cil_ldelem
+| 164 = @cil_stelem
+| 165 = @cil_unbox_any
+| 179 = @cil_conv_ovf_i1
+| 180 = @cil_conv_ovf_u1
+| 181 = @cil_conv_ovf_i2
+| 182 = @cil_conv_ovf_u2
+| 183 = @cil_conv_ovf_i4
+| 184 = @cil_conv_ovf_u4
+| 185 = @cil_conv_ovf_i8
+| 186 = @cil_conv_ovf_u8
+| 194 = @cil_refanyval
+| 195 = @cil_ckinfinite
+| 198 = @cil_mkrefany
+| 208 = @cil_ldtoken
+| 209 = @cil_conv_u2
+| 210 = @cil_conv_u1
+| 211 = @cil_conv_i
+| 212 = @cil_conv_ovf_i
+| 213 = @cil_conv_ovf_u
+| 214 = @cil_add_ovf
+| 215 = @cil_add_ovf_un
+| 216 = @cil_mul_ovf
+| 217 = @cil_mul_ovf_un
+| 218 = @cil_sub_ovf
+| 219 = @cil_sub_ovf_un
+| 220 = @cil_endfinally
+| 221 = @cil_leave
+| 222 = @cil_leave_s
+| 223 = @cil_stind_i
+| 224 = @cil_conv_u
+| 65024 = @cil_arglist
+| 65025 = @cil_ceq
+| 65026 = @cil_cgt
+| 65027 = @cil_cgt_un
+| 65028 = @cil_clt
+| 65029 = @cil_clt_un
+| 65030 = @cil_ldftn
+| 65031 = @cil_ldvirtftn
+| 65033 = @cil_ldarg
+| 65034 = @cil_ldarga
+| 65035 = @cil_starg
+| 65036 = @cil_ldloc
+| 65037 = @cil_ldloca
+| 65038 = @cil_stloc
+| 65039 = @cil_localloc
+| 65041 = @cil_endfilter
+| 65042 = @cil_unaligned
+| 65043 = @cil_volatile
+| 65044 = @cil_tail
+| 65045 = @cil_initobj
+| 65046 = @cil_constrained
+| 65047 = @cil_cpblk
+| 65048 = @cil_initblk
+| 65050 = @cil_rethrow
+| 65052 = @cil_sizeof
+| 65053 = @cil_refanytype
+| 65054 = @cil_readonly
+;
+
+// CIL ignored instructions
+
+@cil_ignore = @cil_nop | @cil_break | @cil_volatile | @cil_unaligned;
+
+// CIL local/parameter/field access
+
+@cil_ldarg_any = @cil_ldarg_0 | @cil_ldarg_1 | @cil_ldarg_2 | @cil_ldarg_3 | @cil_ldarg_s | @cil_ldarga_s | @cil_ldarg | @cil_ldarga;
+@cil_starg_any = @cil_starg | @cil_starg_s;
+
+@cil_ldloc_any = @cil_ldloc_0 | @cil_ldloc_1 | @cil_ldloc_2 | @cil_ldloc_3 | @cil_ldloc_s | @cil_ldloca_s | @cil_ldloc | @cil_ldloca;
+@cil_stloc_any = @cil_stloc_0 | @cil_stloc_1 | @cil_stloc_2 | @cil_stloc_3 | @cil_stloc_s | @cil_stloc;
+
+@cil_ldfld_any = @cil_ldfld | @cil_ldsfld | @cil_ldsflda | @cil_ldflda;
+@cil_stfld_any = @cil_stfld | @cil_stsfld;
+
+@cil_local_access = @cil_stloc_any | @cil_ldloc_any;
+@cil_arg_access = @cil_starg_any | @cil_ldarg_any;
+@cil_read_access = @cil_ldloc_any | @cil_ldarg_any | @cil_ldfld_any;
+@cil_write_access = @cil_stloc_any | @cil_starg_any | @cil_stfld_any;
+
+@cil_stack_access = @cil_local_access | @cil_arg_access;
+@cil_field_access = @cil_ldfld_any | @cil_stfld_any;
+
+@cil_access = @cil_read_access | @cil_write_access;
+
+// CIL constant/literal instructions
+
+@cil_ldc_i = @cil_ldc_i4_any | @cil_ldc_i8;
+
+@cil_ldc_i4_any = @cil_ldc_i4_m1 | @cil_ldc_i4_0 | @cil_ldc_i4_1 | @cil_ldc_i4_2 | @cil_ldc_i4_3 |
+  @cil_ldc_i4_4 | @cil_ldc_i4_5 | @cil_ldc_i4_6 | @cil_ldc_i4_7 | @cil_ldc_i4_8 | @cil_ldc_i4_s | @cil_ldc_i4;
+
+@cil_ldc_r = @cil_ldc_r4 | @cil_ldc_r8;
+
+@cil_literal = @cil_ldnull | @cil_ldc_i | @cil_ldc_r | @cil_ldstr;
+
+// Control flow
+
+@cil_conditional_jump = @cil_binary_jump | @cil_unary_jump;
+@cil_binary_jump = @cil_beq_s | @cil_bge_s | @cil_bgt_s | @cil_ble_s | @cil_blt_s |
+    @cil_bne_un_s | @cil_bge_un_s | @cil_bgt_un_s | @cil_ble_un_s | @cil_blt_un_s |
+    @cil_beq | @cil_bge | @cil_bgt | @cil_ble | @cil_blt |
+    @cil_bne_un | @cil_bge_un | @cil_bgt_un | @cil_ble_un | @cil_blt_un;
+@cil_unary_jump = @cil_brfalse_s | @cil_brtrue_s | @cil_brfalse | @cil_brtrue | @cil_switch;
+@cil_unconditional_jump = @cil_br | @cil_br_s | @cil_leave_any;
+@cil_leave_any = @cil_leave | @cil_leave_s;
+@cil_jump = @cil_unconditional_jump | @cil_conditional_jump;
+
+// CIL call instructions
+
+@cil_call_any = @cil_jmp | @cil_call | @cil_calli | @cil_tail | @cil_callvirt | @cil_newobj;
+
+// CIL expression instructions
+
+@cil_expr = @cil_literal | @cil_binary_expr | @cil_unary_expr | @cil_call_any | @cil_read_access |
+  @cil_newarr | @cil_ldtoken | @cil_sizeof |
+  @cil_ldftn | @cil_ldvirtftn | @cil_localloc | @cil_mkrefany | @cil_refanytype | @cil_arglist | @cil_dup;
+
+@cil_unary_expr =
+  @cil_conversion_operation | @cil_unary_arithmetic_operation | @cil_unary_bitwise_operation|
+  @cil_ldlen | @cil_isinst | @cil_box | @cil_ldobj | @cil_castclass | @cil_unbox_any |
+  @cil_ldind | @cil_unbox;
+
+@cil_conversion_operation =
+  @cil_conv_i1 | @cil_conv_i2 | @cil_conv_i4 | @cil_conv_i8 |
+  @cil_conv_u1 | @cil_conv_u2 | @cil_conv_u4 | @cil_conv_u8 |
+  @cil_conv_ovf_i | @cil_conv_ovf_i_un | @cil_conv_ovf_i1 | @cil_conv_ovf_i1_un |
+  @cil_conv_ovf_i2 | @cil_conv_ovf_i2_un | @cil_conv_ovf_i4 | @cil_conv_ovf_i4_un |
+  @cil_conv_ovf_i8 | @cil_conv_ovf_i8_un | @cil_conv_ovf_u | @cil_conv_ovf_u_un |
+  @cil_conv_ovf_u1 | @cil_conv_ovf_u1_un | @cil_conv_ovf_u2 | @cil_conv_ovf_u2_un |
+  @cil_conv_ovf_u4 | @cil_conv_ovf_u4_un | @cil_conv_ovf_u8 | @cil_conv_ovf_u8_un |
+  @cil_conv_r4 | @cil_conv_r8 | @cil_conv_ovf_u2 | @cil_conv_ovf_u2_un |
+  @cil_conv_i | @cil_conv_u | @cil_conv_r_un;
+
+@cil_ldind = @cil_ldind_i | @cil_ldind_i1 | @cil_ldind_i2 | @cil_ldind_i4 | @cil_ldind_i8 |
+  @cil_ldind_r4 | @cil_ldind_r8 | @cil_ldind_ref | @cil_ldind_u1 | @cil_ldind_u2 | @cil_ldind_u4;
+
+@cil_stind = @cil_stind_i | @cil_stind_i1 | @cil_stind_i2 | @cil_stind_i4 | @cil_stind_i8 |
+  @cil_stind_r4 | @cil_stind_r8 | @cil_stind_ref;
+
+@cil_bitwise_operation = @cil_binary_bitwise_operation | @cil_unary_bitwise_operation;
+
+@cil_binary_bitwise_operation = @cil_and | @cil_or | @cil_xor | @cil_shr | @cil_shr | @cil_shr_un | @cil_shl;
+
+@cil_binary_arithmetic_operation = @cil_add | @cil_sub | @cil_mul | @cil_div | @cil_div_un |
+  @cil_rem | @cil_rem_un | @cil_add_ovf | @cil_add_ovf_un | @cil_mul_ovf | @cil_mul_ovf_un |
+  @cil_sub_ovf | @cil_sub_ovf_un;
+
+@cil_unary_bitwise_operation = @cil_not;
+
+@cil_binary_expr = @cil_binary_arithmetic_operation | @cil_binary_bitwise_operation | @cil_read_array | @cil_comparison_operation;
+
+@cil_unary_arithmetic_operation = @cil_neg;
+
+@cil_comparison_operation = @cil_cgt_un | @cil_ceq | @cil_cgt | @cil_clt | @cil_clt_un;
+
+// Elements that retrieve an address of something
+@cil_read_ref = @cil_ldloca_s | @cil_ldarga_s | @cil_ldflda | @cil_ldsflda | @cil_ldelema;
+
+// CIL array instructions
+
+@cil_read_array =
+  @cil_ldelem | @cil_ldelema | @cil_ldelem_i1 | @cil_ldelem_ref | @cil_ldelem_i |
+  @cil_ldelem_i1 | @cil_ldelem_i2 | @cil_ldelem_i4 | @cil_ldelem_i8 | @cil_ldelem_r4 |
+  @cil_ldelem_r8 | @cil_ldelem_u1 | @cil_ldelem_u2 | @cil_ldelem_u4;
+
+@cil_write_array = @cil_stelem | @cil_stelem_ref |
+  @cil_stelem_i | @cil_stelem_i1 | @cil_stelem_i2 | @cil_stelem_i4 | @cil_stelem_i8 |
+  @cil_stelem_r4 | @cil_stelem_r8;
+
+@cil_throw_any = @cil_throw | @cil_rethrow;
+
+#keyset[impl, index]
+cil_instruction(
+  unique int id: @cil_instruction,
+  int opcode: int ref,
+  int index: int ref,
+  int impl: @cil_method_implementation ref);
+
+cil_jump(
+  unique int instruction: @cil_jump ref,
+  int target: @cil_instruction ref);
+
+cil_access(
+  unique int instruction: @cil_instruction ref,
+  int target: @cil_accessible ref);
+
+cil_value(
+  unique int instruction: @cil_literal ref,
+  string value: string ref);
+
+#keyset[instruction, index]
+cil_switch(
+  int instruction: @cil_switch ref,
+  int index: int ref,
+  int target: @cil_instruction ref);
+
+cil_instruction_location(
+  unique int id: @cil_instruction ref,
+  int loc: @location ref);
+
+cil_type_location(
+  int id: @cil_type ref,
+  int loc: @location ref);
+
+cil_method_location(
+  int id: @cil_method ref,
+  int loc: @location ref);
+
+@cil_namespace = @namespace;
+
+@cil_type_container = @cil_type | @cil_namespace | @cil_method;
+
+case @cil_type.kind of
+  0 = @cil_valueorreftype
+| 1 = @cil_typeparameter
+| 2 = @cil_array_type
+| 3 = @cil_pointer_type
+| 4 = @cil_function_pointer_type
+;
+
+cil_type(
+  unique int id: @cil_type,
+  string name: string ref,
+  int kind: int ref,
+  int parent: @cil_type_container ref,
+  int sourceDecl: @cil_type ref);
+
+cil_pointer_type(
+  unique int id: @cil_pointer_type ref,
+  int pointee: @cil_type ref);
+
+cil_array_type(
+  unique int id: @cil_array_type ref,
+  int element_type: @cil_type ref,
+  int rank: int ref);
+
+cil_function_pointer_return_type(
+  unique int id: @cil_function_pointer_type ref,
+  int return_type: @cil_type ref);
+
+cil_method(
+  unique int id: @cil_method,
+  string name: string ref,
+  int parent: @cil_type ref,
+  int return_type: @cil_type ref);
+
+cil_method_source_declaration(
+  unique int method: @cil_method ref,
+  int source: @cil_method ref);
+
+cil_method_implementation(
+  unique int id: @cil_method_implementation,
+  int method: @cil_method ref,
+  int location: @assembly ref);
+
+cil_implements(
+  int id: @cil_method ref,
+  int decl: @cil_method ref);
+
+#keyset[parent, name]
+cil_field(
+  unique int id: @cil_field,
+  int parent: @cil_type ref,
+  string name: string ref,
+  int field_type: @cil_type ref);
+
+@cil_element = @cil_instruction | @cil_declaration | @cil_handler | @cil_attribute | @cil_namespace;
+@cil_named_element = @cil_declaration | @cil_namespace;
+@cil_declaration = @cil_variable | @cil_method | @cil_type | @cil_member;
+@cil_accessible = @cil_declaration;
+@cil_variable = @cil_field | @cil_stack_variable;
+@cil_stack_variable = @cil_local_variable | @cil_parameter;
+@cil_member = @cil_method | @cil_type | @cil_field | @cil_property | @cil_event;
+@cil_custom_modifier_receiver = @cil_method | @cil_property | @cil_parameter | @cil_field | @cil_function_pointer_type;
+@cil_parameterizable = @cil_method | @cil_function_pointer_type;
+@cil_has_type_annotation = @cil_stack_variable | @cil_property | @cil_field | @cil_method | @cil_function_pointer_type;
+
+#keyset[parameterizable, index]
+cil_parameter(
+  unique int id: @cil_parameter,
+  int parameterizable: @cil_parameterizable ref,
+  int index: int ref,
+  int param_type: @cil_type ref);
+
+cil_parameter_in(unique int id: @cil_parameter ref);
+cil_parameter_out(unique int id: @cil_parameter ref);
+
+cil_setter(unique int prop: @cil_property ref,
+  int method: @cil_method ref);
+
+#keyset[id, modifier]
+cil_custom_modifiers(
+  int id: @cil_custom_modifier_receiver ref,
+  int modifier: @cil_type ref,
+  int kind: int ref); // modreq: 1, modopt: 0
+
+cil_type_annotation(
+  int id: @cil_has_type_annotation ref,
+  int annotation: int ref);
+
+cil_getter(unique int prop: @cil_property ref,
+  int method: @cil_method ref);
+
+cil_adder(unique int event: @cil_event ref,
+  int method: @cil_method ref);
+
+cil_remover(unique int event: @cil_event ref, int method: @cil_method ref);
+
+cil_raiser(unique int event: @cil_event ref, int method: @cil_method ref);
+
+cil_property(
+  unique int id: @cil_property,
+  int parent: @cil_type ref,
+  string name: string ref,
+  int property_type: @cil_type ref);
+
+#keyset[parent, name]
+cil_event(unique int id: @cil_event,
+  int parent: @cil_type ref,
+  string name: string ref,
+  int event_type: @cil_type ref);
+
+#keyset[impl, index]
+cil_local_variable(
+  unique int id: @cil_local_variable,
+  int impl: @cil_method_implementation ref,
+  int index: int ref,
+  int var_type: @cil_type ref);
+
+cil_function_pointer_calling_conventions(
+  int id: @cil_function_pointer_type ref,
+  int kind: int ref);
+
+// CIL handlers (exception handlers etc).
+
+case @cil_handler.kind of
+  0 = @cil_catch_handler
+| 1 = @cil_filter_handler
+| 2 = @cil_finally_handler
+| 4 = @cil_fault_handler
+;
+
+#keyset[impl, index]
+cil_handler(
+  unique int id: @cil_handler,
+  int impl: @cil_method_implementation ref,
+  int index: int ref,
+  int kind: int ref,
+  int try_start: @cil_instruction ref,
+  int try_end: @cil_instruction ref,
+  int handler_start: @cil_instruction ref);
+
+cil_handler_filter(
+  unique int id: @cil_handler ref,
+  int filter_start: @cil_instruction ref);
+
+cil_handler_type(
+  unique int id: @cil_handler ref,
+  int catch_type: @cil_type ref);
+
+@cil_controlflow_node = @cil_entry_point | @cil_instruction;
+
+@cil_entry_point = @cil_method_implementation | @cil_handler;
+
+@cil_dataflow_node = @cil_instruction | @cil_variable | @cil_method;
+
+cil_method_stack_size(
+  unique int method: @cil_method_implementation ref,
+  int size: int ref);
+
+// CIL modifiers
+
+cil_public(int id: @cil_member ref);
+cil_private(int id: @cil_member ref);
+cil_protected(int id: @cil_member ref);
+cil_internal(int id: @cil_member ref);
+cil_static(int id: @cil_member ref);
+cil_sealed(int id: @cil_member ref);
+cil_virtual(int id: @cil_method ref);
+cil_abstract(int id: @cil_member ref);
+cil_class(int id: @cil_type ref);
+cil_interface(int id: @cil_type ref);
+cil_security(int id: @cil_member ref);
+cil_requiresecobject(int id: @cil_method ref);
+cil_specialname(int id: @cil_method ref);
+cil_newslot(int id: @cil_method ref);
+
+cil_base_class(unique int id: @cil_type ref, int base: @cil_type ref);
+cil_base_interface(int id: @cil_type ref, int base: @cil_type ref);
+cil_enum_underlying_type(unique int id: @cil_type ref, int underlying: @cil_type ref);
+
+#keyset[unbound, index]
+cil_type_parameter(
+  int unbound: @cil_member ref,
+  int index: int ref,
+  int param: @cil_typeparameter ref);
+
+#keyset[bound, index]
+cil_type_argument(
+  int bound: @cil_member ref,
+  int index: int ref,
+  int t: @cil_type ref);
+
+// CIL type parameter constraints
+
+cil_typeparam_covariant(int tp: @cil_typeparameter ref);
+cil_typeparam_contravariant(int tp: @cil_typeparameter ref);
+cil_typeparam_class(int tp: @cil_typeparameter ref);
+cil_typeparam_struct(int tp: @cil_typeparameter ref);
+cil_typeparam_new(int tp: @cil_typeparameter ref);
+cil_typeparam_constraint(int tp: @cil_typeparameter ref, int supertype: @cil_type ref);
+
+// CIL attributes
+
+cil_attribute(
+  unique int attributeid: @cil_attribute,
+  int element: @cil_declaration ref,
+  int constructor: @cil_method ref);
+
+#keyset[attribute_id, param]
+cil_attribute_named_argument(
+  int attribute_id: @cil_attribute ref,
+  string param: string ref,
+  string value: string ref);
+
+#keyset[attribute_id, index]
+cil_attribute_positional_argument(
+  int attribute_id: @cil_attribute ref,
+  int index: int ref,
+  string value: string ref);
+
+
+// Common .Net data model covering both C# and CIL
+
+// Common elements
+@dotnet_element = @element | @cil_element;
+@dotnet_named_element = @named_element | @cil_named_element;
+@dotnet_callable = @callable | @cil_method;
+@dotnet_variable = @variable | @cil_variable;
+@dotnet_field = @field | @cil_field;
+@dotnet_parameter = @parameter | @cil_parameter;
+@dotnet_declaration = @declaration | @cil_declaration;
+@dotnet_member = @member | @cil_member;
+@dotnet_event = @event | @cil_event;
+@dotnet_property = @property | @cil_property | @indexer;
+@dotnet_parameterizable = @parameterizable | @cil_parameterizable;
+
+// Common types
+@dotnet_type = @type | @cil_type;
+@dotnet_call = @call | @cil_call_any;
+@dotnet_throw = @throw_element | @cil_throw_any;
+@dotnet_valueorreftype = @cil_valueorreftype | @value_or_ref_type | @cil_array_type | @void_type;
+@dotnet_typeparameter = @type_parameter | @cil_typeparameter;
+@dotnet_array_type = @array_type | @cil_array_type;
+@dotnet_pointer_type = @pointer_type | @cil_pointer_type;
+@dotnet_type_parameter = @type_parameter | @cil_typeparameter;
+@dotnet_generic = @dotnet_valueorreftype | @dotnet_callable;
+
+// Attributes
+@dotnet_attribute = @attribute | @cil_attribute;
+
+// Expressions
+@dotnet_expr = @expr | @cil_expr;
+
+// Literals
+@dotnet_literal = @literal_expr | @cil_literal;
+@dotnet_string_literal = @string_literal_expr | @cil_ldstr;
+@dotnet_int_literal = @integer_literal_expr | @cil_ldc_i;
+@dotnet_float_literal = @float_literal_expr | @cil_ldc_r;
+@dotnet_null_literal = @null_literal_expr | @cil_ldnull;
+
+@metadata_entity = @cil_method | @cil_type | @cil_field | @cil_property | @field | @property |
+    @callable | @value_or_ref_type | @void_type;
+
+metadata_handle(int entity : @metadata_entity ref, int location: @assembly ref, int handle: int ref)
