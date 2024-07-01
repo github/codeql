@@ -5,7 +5,6 @@ Basic query for Swift code
 
 Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
 
-.. include:: ../reusables/swift-beta-note.rst
 .. include:: ../reusables/vs-code-basic-instructions/setup-to-run-queries.rst
 
 About the query
