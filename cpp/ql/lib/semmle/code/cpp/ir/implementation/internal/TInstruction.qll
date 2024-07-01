@@ -31,6 +31,7 @@ newtype TInstruction =
   TUnaliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
     UnaliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
   } or
+  TUnaliasedSsaInitializeGroupInstruction(UnaliasedSsa::Ssa::VariableGroup vg) or
   TAliasedSsaPhiInstruction(
     TRawInstruction blockStartInstr, AliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
@@ -72,6 +73,16 @@ module UnaliasedSsaInstructions {
   TUnreachedInstruction unreachedInstruction(IRFunctionBase irFunc) {
     result = TUnaliasedSsaUnreachedInstruction(irFunc)
   }
+
+  class VariableGroup = UnaliasedSsa::Ssa::VariableGroup;
+
+  class TInitializeGroupInstruction = TUnaliasedSsaInitializeGroupInstruction;
+
+  class TRawOrInitializeGroupInstruction = TRawInstruction or TInitializeGroupInstruction;
+
+  // This really should just be `TUnaliasedSsaInitializeGroupInstruction`, but that makes the
+  // compiler realize that certain expressions in `SSAConstruction` are unsatisfiable.
+  TRawOrInitializeGroupInstruction initializeGroup(VariableGroup vg) { none() }
 }
 
 /**
