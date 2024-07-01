@@ -646,6 +646,8 @@ private module Cached {
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
     or
+    LocalFlow::localFlowSsaInputFromRead(_, nodeFrom, nodeTo)
+    or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
