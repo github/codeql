@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+		    Polyfill.io was a popular JavaScript polyflll Content Delivery Network (CDN),
+			used to support new web browser standards on older browsers.
+		<p>
+
+		<p>
+		    In February 2024 the domain was sold, and in June 2024 it was widely publicised that the domain
+		    had been used to serve malicious scripts. It was taken down later in that month, leaving a window
+			where sites that used the service could have been compromised.
+		<p>
+
+		<p>
+			Including a resource from an untrusted source or using an untrusted channel may
+			allow an attacker to include arbitrary code in the response.
+			When including an external resource (for example, a <code>script</code> element or an
+			<code>iframe</code> element) on a page, it is important to ensure that the received
+			data is not malicious.
+		</p>
+
+		<p>
+			Even when <code>https</code> is used, an attacker might still compromise the server.
+			When you use a <code>script</code> element, you should check for subresource integrity -
+			that is, you can check the contents of the data received by supplying a cryptographic
+			digest of the expected sources to the <code>script</code> element. The script will only
+			load sources that match the digest and an attacker will be unable to modify the script
+			even when the server is compromised.
+		</p>
+
+		<p>
+			Subresource integrity checking is commonly recommended when importing a fixed version of
+			a library - for example, from a CDN (content-delivery network). Then, the fixed digest
+			of that version of the library can easily be added to the <code>script</code> element's
+			<code>integrity</code> attribute.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+			To help mitigate the risk of including a compromised script, consider whether you need to
+			use a polyfill at all, can use a different polyfill CDN service,
+			or could host an uncompromised version of the polyfill yourself.
+		</p>
+
+		<p>
+			When using a <code>script</code> element to load a script, it is important to use an
+			<code>https</code> URL and to check subresource integrity.
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example loads the Polyfill.io library from the <code>polyfill.io</code> CDN without 
+			checking subresource integrity. This use is open to malicious scripts being served by the CDN.
+		</p>
+
+		<sample src="polyfill-nocheck.html" />
+
+		<p>
+			Instead, loading the Polyfill library from a trusted CDN, and checking
+			subresource integrity is recommended, as in the next example.
+		</p>
+
+		<sample src="polyfill-cloudflare-check.html" />
+	</example>
+
+	<references>
+		<li>Sansec: <a href="https://sansec.io/research/polyfill-supply-chain-attack">Polyfill supply chain attack hits 100K+ sites</a></li>
+		<li>Cloudflare: <a href="https://cdnjs.cloudflare.com/polyfill">Upgrade the web. Automatically. Delivers only the polyfills required by the user's web browser.</a></li>
+		<li>Fastly: <a href="https://community.fastly.com/t/new-options-for-polyfill-io-users/2540">New options for Polyfill.io users</a></li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Polyfill_(programming)">Polyfill (programming)</a></li>
+	</references>
+</qhelp>

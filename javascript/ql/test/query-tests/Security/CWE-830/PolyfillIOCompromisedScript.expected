@@ -1,0 +1,1 @@
+| polyfill-nocheck.html:4:9:4:98 | <script>...</> | Script loaded from compromised content delivery network with no integrity check |
