@@ -15,4 +15,4 @@ import semmle.javascript.security.FunctionalityFromUntrustedSource
 
 from AddsUntrustedUrl s
 where s.getUrl().regexpMatch("^(?i)https?://(cdn\\.)?polyfill\\.io/.*")
-select s, "Script loaded from known-compromised content delivery network with no integrity check"
+select s, "Script loaded from known-compromised content delivery network with no integrity check."
