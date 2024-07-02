@@ -1194,12 +1194,25 @@ string getASimpleReferenceExpression(string s, int offset) {
         .regexpCapture("([A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)", 1)
 }
 
+bindingset[s]
+string getAJsonReferenceExpression(string s, int offset) {
+  // We use `regexpFind` to obtain *all* matches of `${{...}}`,
+  // not just the last (greedy match) or first (reluctant match).
+  result =
+    s.trim()
+        .regexpFind("(?i)fromjson\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\).*", _, offset)
+        .regexpCapture("(?i)fromjson\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\).*", 1)
+}
+
 /**
  * A ${{}} expression accessing a context variable such as steps, needs, jobs, env, inputs, or matrix.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  */
 abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
-  SimpleReferenceExpressionImpl() { exists(getASimpleReferenceExpression(expression, _)) }
+  SimpleReferenceExpressionImpl() {
+    exists(getASimpleReferenceExpression(expression, _)) or
+    exists(getAJsonReferenceExpression(expression, _))
+  }
 
   abstract string getFieldName();
 
@@ -1236,8 +1249,17 @@ class SecretsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   SecretsExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(secretsCtxRegex()) and
-    fieldName = normalizeExpr(expression).regexpCapture(secretsCtxRegex(), 1)
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression)
+      ) and
+      expr.regexpMatch(secretsCtxRegex()) and
+      fieldName = expr.regexpCapture(secretsCtxRegex(), 1)
+    )
   }
 
   override string getFieldName() { result = fieldName }
@@ -1255,9 +1277,18 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   StepsExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(stepsCtxRegex()) and
-    stepId = normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 1) and
-    fieldName = normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 2)
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression)
+      ) and
+      expr.regexpMatch(stepsCtxRegex()) and
+      stepId = expr.regexpCapture(stepsCtxRegex(), 1) and
+      fieldName = expr.regexpCapture(stepsCtxRegex(), 2)
+    )
   }
 
   override string getFieldName() { result = fieldName }
@@ -1287,10 +1318,19 @@ class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   NeedsExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(needsCtxRegex()) and
-    fieldName = normalizeExpr(expression).regexpCapture(needsCtxRegex(), 2) and
-    neededJob.getId() = normalizeExpr(expression).regexpCapture(needsCtxRegex(), 1) and
-    neededJob.getLocation().getFile() = this.getLocation().getFile()
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression)
+      ) and
+      expr.regexpMatch(needsCtxRegex()) and
+      fieldName = expr.regexpCapture(needsCtxRegex(), 2) and
+      neededJob.getId() = expr.regexpCapture(needsCtxRegex(), 1) and
+      neededJob.getLocation().getFile() = this.getLocation().getFile()
+    )
   }
 
   override string getFieldName() { result = fieldName }
@@ -1320,9 +1360,18 @@ class JobsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   JobsExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(jobsCtxRegex()) and
-    jobId = normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 1) and
-    fieldName = normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 2)
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression)
+      ) and
+      expr.regexpMatch(jobsCtxRegex()) and
+      jobId = expr.regexpCapture(jobsCtxRegex(), 1) and
+      fieldName = expr.regexpCapture(jobsCtxRegex(), 2)
+    )
   }
 
   override string getFieldName() { result = fieldName }
@@ -1370,8 +1419,17 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   EnvExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(envCtxRegex()) and
-    fieldName = normalizeExpr(expression).regexpCapture(envCtxRegex(), 1)
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression)
+      ) and
+      expr.regexpMatch(envCtxRegex()) and
+      fieldName = expr.regexpCapture(envCtxRegex(), 1)
+    )
   }
 
   override string getFieldName() { result = fieldName }
@@ -1396,8 +1454,17 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldAccess;
 
   MatrixExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(matrixCtxRegex()) and
-    fieldAccess = normalizeExpr(expression).regexpCapture(matrixCtxRegex(), 1)
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(expression, _)) and
+        expr = normalizeExpr(expression)
+      ) and
+      expr.regexpMatch(matrixCtxRegex()) and
+      fieldAccess = expr.regexpCapture(matrixCtxRegex(), 1)
+    )
   }
 
   override string getFieldName() { result = fieldAccess }
