@@ -7,6 +7,7 @@ private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
@@ -130,7 +131,13 @@ class SinkTargetApi extends SourceOrSinkTargetApi {
  * A class of callables that are potentially relevant for generating source models.
  */
 class SourceTargetApi extends SourceOrSinkTargetApi {
-  SourceTargetApi() { not hasManualSourceModel(this) }
+  SourceTargetApi() {
+    not hasManualSourceModel(this) and
+    // Do not generate source models for overridable callables
+    // as virtual dispatch implies that too many methods
+    // will be considered sources.
+    not this.(Overridable).overridesOrImplements(_)
+  }
 }
 
 /**

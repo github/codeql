@@ -52,25 +52,38 @@ public class NewSources
         return s == "hello";
     }
 
-    public class MyConsoleReader
+    public abstract class ValueReader
     {
-        // source=Sources;NewSources+MyConsoleReader;false;ToString;();;ReturnValue;local;df-generated
-        // neutral=Sources;NewSources+MyConsoleReader;ToString;();summary;df-generated
-        public override string ToString()
+        // neutral=Sources;NewSources+ValueReader;GetValue;();summary;df-generated
+        public abstract string GetValue();
+    }
+
+    public class MyConsoleReader : ValueReader
+    {
+        // neutral=Sources;NewSources+MyConsoleReader;GetValue;();summary;df-generated
+        public override string GetValue()
         {
             return Console.ReadLine();
         }
     }
 
+    public class MyOtherReader : ValueReader
+    {
+        // neutral=Sources;NewSources+MyOtherReader;GetValue;();summary;df-generated
+        public override string GetValue()
+        {
+            return "";
+        }
+    }
 
-    public class MyContainer<T>
+    public class MyContainer<T> where T : ValueReader
     {
         public T Value { get; set; }
 
-        // summary=Sources;NewSources+MyContainer<T>;false;Read;();;Argument[this];ReturnValue;taint;df-generated
+        // neutral=Sources;NewSources+MyContainer<T>;Read;();summary;df-generated
         public string Read()
         {
-            return Value.ToString();
+            return Value.GetValue();
         }
     }
 
@@ -97,7 +110,6 @@ public class NewSources
 
     public class DataReaderKind1 : DataReader
     {
-        // source=Sources;NewSources+DataReaderKind1;true;Read;();;ReturnValue;source-kind-1;df-generated
         // neutral=Sources;NewSources+DataReaderKind1;Read;();summary;df-generated
         public override string Read()
         {
@@ -105,13 +117,31 @@ public class NewSources
         }
     }
 
-    public class DataReaderKind2 : DataReader
+    public sealed class DataReaderKind2 : DataReader
     {
-        // source=Sources;NewSources+DataReaderKind2;true;Read;();;ReturnValue;source-kind-2;df-generated
         // neutral=Sources;NewSources+DataReaderKind2;Read;();summary;df-generated
         public override string Read()
         {
             return Source2();
         }
     }
+
+    public class C1
+    {
+        // neutral=Sources;NewSources+C1;ToString;();summary;df-generated
+        public override string ToString()
+        {
+            return Source1();
+        }
+    }
+
+    public sealed class C2
+    {
+        // neutral=Sources;NewSources+C2;ToString;();summary;df-generated
+        public override string ToString()
+        {
+            return Source1();
+        }
+    }
+
 }
