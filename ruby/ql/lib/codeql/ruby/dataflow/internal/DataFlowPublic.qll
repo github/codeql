@@ -866,8 +866,6 @@ private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2)
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  private import SsaImpl as SsaImpl
-
   /**
    * Gets an implicit entry definition for a captured variable that
    * may be guarded, because a call to the capturing callable is guarded.

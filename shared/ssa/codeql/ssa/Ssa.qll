@@ -1192,6 +1192,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
     predicate ssaDefInitializesParam(WriteDefinition def, Parameter p);
+
+    /**
+     * Holds if flow should be allowed into uncertain SSA definition `def` from
+     * previous definitions or reads.
+     */
+    default predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
   }
 
   /**
@@ -1276,6 +1282,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this instanceof PhiNode
         or
         this instanceof PhiReadNode
+        or
+        DfInput::allowFlowIntoUncertainDef(this)
       }
 
       /** Holds if `def` may flow into this definition via basic block `input`. */
@@ -1544,6 +1552,31 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       def = nodeFrom.(SsaInputNode).getDefinitionExt()
     }
 
+    pragma[nomagic]
+    private DfInput::Expr getARead(Definition def) {
+      exists(SourceVariable v, BasicBlock bb, int i |
+        ssaDefReachesRead(v, def, bb, i) and
+        variableRead(bb, i, v, true) and
+        result.hasCfgNode(bb, i)
+      )
+    }
+
+    /** Holds if the value of `nodeTo` is given by `nodeFrom`. */
+    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
+      (
+        // Flow from assignment into SSA definition
+        DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
+        or
+        // Flow from parameter into entry definition
+        DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
+      ) and
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
+      or
+      // Flow from SSA definition to read
+      nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      nodeTo.(ExprNode).getExpr() = getARead(def)
+    }
+
     /** Provides the input to `BarrierGuards`. */
     signature module BarrierGuardsInputSig {
       /** A (potential) guard. */
@@ -1580,15 +1613,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * in data flow and taint tracking.
        */
       module BarrierGuard<guardChecksSig/3 guardChecks> {
-        pragma[nomagic]
-        private DfInput::Expr getARead(Definition def) {
-          exists(SourceVariable v, BasicBlock bb, int i |
-            ssaDefReachesRead(v, def, bb, i) and
-            variableRead(bb, i, v, true) and
-            result.hasCfgNode(bb, i)
-          )
-        }
-
         pragma[nomagic]
         private predicate guardChecksSsaDef(BgInput::Guard g, boolean branch, Definition def) {
           guardChecks(g, getARead(def), branch)
