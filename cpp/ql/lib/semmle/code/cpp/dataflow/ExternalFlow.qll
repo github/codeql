@@ -482,6 +482,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   )
 }
 
+/** Gets the string representation of the `i`'th parameter of `c`. */
 private string getParameterTypeName(Function c, int i) {
   result = getTypeNameWithoutClassTemplates(c, i, 0)
 }
