@@ -17,6 +17,5 @@ go_library(
         "//go/extractor/vendor/golang.org/x/tools/internal/event",
         "//go/extractor/vendor/golang.org/x/tools/internal/event/keys",
         "//go/extractor/vendor/golang.org/x/tools/internal/event/label",
-        "//go/extractor/vendor/golang.org/x/tools/internal/event/tag",
     ],
 )

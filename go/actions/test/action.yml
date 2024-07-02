@@ -26,11 +26,28 @@ runs:
       shell: bash
       run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
+    - name: Regenerate Bazel files for Dependabot PR
+      if: github.event.pull_request.user.login == 'dependabot[bot]'
+      shell: bash
+      run: |
+        bazel run //go:gazelle
+        bazel run //go:gen
+
+    - name: Push Bazel files for Dependabot PR
+      if: github.event.pull_request.user.login == 'dependabot[bot]' && runner.os == 'Linux'
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add go/extractor/vendor/**
+        git commit -m 'Update Bazel build files for Dependabot PR'
+        git push
+
     - name: Check checked-in generated code
       if: inputs.run-code-checks == 'true'
       shell: bash
       run: |
-        bazel run go:gen
+        bazel run //go:gen
         git add .
         git diff --exit-code HEAD || (
           echo "please run bazel run //go:gen"

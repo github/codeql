@@ -20,7 +20,7 @@ on:
       - misc/bazel/**
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test-linux:
@@ -30,6 +30,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+            fetch-depth: 2
+            token: ${{ secrets.GITHUB_TOKEN }}
+            ref: ${{ github.event.pull_request.head.ref || '' }}
       - name: Run tests
         uses: ./go/actions/test
         with:
