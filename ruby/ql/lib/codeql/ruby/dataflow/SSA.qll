@@ -176,9 +176,6 @@ module Ssa {
 
     override string toString() { result = this.getControlFlowNode().toString() }
 
-    /** Gets the location of this SSA definition. */
-    Location getLocation() { result = this.getControlFlowNode().getLocation() }
-
     /** Gets the scope of this SSA definition. */
     CfgScope getScope() { result = this.getBasicBlock().getScope() }
   }

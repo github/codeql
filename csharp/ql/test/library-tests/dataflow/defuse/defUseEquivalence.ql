@@ -5,11 +5,13 @@ private import semmle.code.csharp.controlflow.internal.PreSsa
 predicate defReaches(
   AssignableDefinition def, PreSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
 ) {
-  def.getTarget() = v and cfn = def.getAControlFlowNode().getASuccessor()
+  def.getTarget() = v and cfn = def.getExpr().getAControlFlowNode().getASuccessor()
   or
   exists(ControlFlow::Node mid | defReaches(def, v, mid) |
     not mid =
-      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
+      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
+          .getExpr()
+          .getAControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }

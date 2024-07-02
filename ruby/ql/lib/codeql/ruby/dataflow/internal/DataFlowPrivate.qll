@@ -72,134 +72,151 @@ CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
   not exists(getALastEvalNode(result))
 }
 
-/** An SSA definition into which another SSA definition may flow. */
-class SsaInputDefinitionExt extends SsaImpl::DefinitionExt {
-  SsaInputDefinitionExt() {
-    this instanceof Ssa::PhiNode
-    or
-    this instanceof SsaImpl::PhiReadNode
+/** Gets the SSA definition node corresponding to parameter `p`. */
+pragma[nomagic]
+SsaImpl::DefinitionExt getParameterDef(NamedParameter p) {
+  exists(BasicBlock bb, int i |
+    bb.getNode(i).getAstNode() = p.getDefiningAccess() and
+    result.definesAt(_, bb, i, _)
+  )
+}
+
+class NormalParameter extends Parameter {
+  NormalParameter() {
+    this instanceof SimpleParameter or
+    this instanceof OptionalParameter or
+    this instanceof KeywordParameter or
+    this instanceof HashSplatParameter or
+    this instanceof SplatParameter or
+    this instanceof BlockParameter
+  }
+}
+
+/** Provides logic related to SSA. */
+module SsaFlow {
+  module Input implements SsaImpl::Impl::DataFlowIntegrationInputSig {
+    class Expr extends CfgNodes::ExprCfgNode {
+      predicate hasCfgNode(SsaImpl::SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    }
+
+    /**
+     * Holds if SSA definition `def` assigns `value` to the underlying variable.
+     *
+     * This is either a direct assignment, `x = value`, or an assignment via
+     * simple pattern matching
+     *
+     * ```rb
+     * case value
+     *  in Foo => x then ...
+     *  in y => then ...
+     * end
+     * ```
+     */
+    predicate ssaDefAssigns(SsaImpl::WriteDefinition def, Expr value) {
+      def.(Ssa::WriteDefinition).assigns(value)
+      or
+      exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::AstCfgNode pattern |
+        case.getValue() = value and
+        pattern = case.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
+      |
+        def.(Ssa::WriteDefinition).getWriteAccess() =
+          [pattern, pattern.(CfgNodes::ExprNodes::AsPatternCfgNode).getVariableAccess()]
+      )
+    }
+
+    private newtype TParameter =
+      TNormalParameter(NormalParameter p) or
+      TSelfMethodParameter(MethodBase m) or
+      TSelfToplevelParameter(Toplevel t)
+
+    // We could also use `class Parameter = ParameterNodeImpl`, which would be simpler, but
+    // it makes the `TNode` construction unecessarily recursive.
+    class Parameter extends TParameter {
+      NormalParameter asParameter() { this = TNormalParameter(result) }
+
+      MethodBase asMethodSelf() { this = TSelfMethodParameter(result) }
+
+      Toplevel asToplevelSelf() { this = TSelfToplevelParameter(result) }
+
+      ParameterNodeImpl toParameterNode() {
+        result = TNormalParameterNode(this.asParameter())
+        or
+        result = TSelfMethodParameterNode(this.asMethodSelf())
+        or
+        result = TSelfToplevelParameterNode(this.asToplevelSelf())
+      }
+
+      string toString() {
+        result =
+          [
+            this.asParameter().toString(), this.asMethodSelf().toString(),
+            this.asToplevelSelf().toString()
+          ]
+      }
+
+      Location getLocation() {
+        result =
+          [
+            this.asParameter().getLocation(), this.asMethodSelf().getLocation(),
+            this.asToplevelSelf().getLocation()
+          ]
+      }
+    }
+
+    predicate ssaDefInitializesParam(SsaImpl::WriteDefinition def, Parameter p) {
+      def = getParameterDef(p.asParameter())
+      or
+      def.(Ssa::SelfDefinition).getSourceVariable().getDeclaringScope() =
+        [p.asMethodSelf().(Scope), p.asToplevelSelf()]
+    }
   }
 
-  predicate hasInputFromBlock(SsaImpl::DefinitionExt def, BasicBlock bb, int i, BasicBlock input) {
-    SsaImpl::lastRefBeforeRedefExt(def, bb, i, input, this)
+  module Impl = SsaImpl::Impl::DataFlowIntegration<Input>;
+
+  Impl::Node asNode(Node n) {
+    n = TSsaNode(result)
+    or
+    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    or
+    result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    result.(Impl::ParameterNode).getParameter().toParameterNode() = n
   }
+
+  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
+    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  }
+
+  module BarrierGuardsInput implements Impl::BarrierGuardsInputSig {
+    class Guard extends CfgNodes::AstCfgNode {
+      predicate hasCfgNode(SsaImpl::SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    }
+
+    /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+    predicate guardControlsBlock(Guard guard, SsaImpl::SsaInput::BasicBlock bb, boolean branch) {
+      exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
+        guard = conditionBlock.getLastNode() and
+        s.getValue() = branch and
+        conditionBlock.controls(bb, s)
+      )
+    }
+
+    /** Gets an immediate conditional successor of basic block `bb`, if any. */
+    SsaImpl::SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(
+      SsaImpl::SsaInput::BasicBlock bb, boolean branch
+    ) {
+      exists(SuccessorTypes::ConditionalSuccessor s |
+        result = bb.getASuccessor(s) and
+        s.getValue() = branch
+      )
+    }
+  }
+
+  module BarrierGuardsImpl = Impl::BarrierGuards<BarrierGuardsInput>;
 }
 
 /** Provides predicates related to local data flow. */
 module LocalFlow {
-  /**
-   * Holds if `nodeFrom` is a node for SSA definition `def`, which can reach `next`.
-   */
-  pragma[nomagic]
-  private predicate localFlowSsaInputFromDef(
-    SsaDefinitionExtNode nodeFrom, SsaImpl::DefinitionExt def, SsaInputNode nodeTo
-  ) {
-    exists(BasicBlock bb, int i, BasicBlock input, SsaInputDefinitionExt next |
-      next.hasInputFromBlock(def, bb, i, input) and
-      def = nodeFrom.getDefinitionExt() and
-      def.definesAt(_, bb, i, _) and
-      nodeTo = TSsaInputNode(next, input)
-    )
-  }
-
-  /**
-   * Holds if `nodeFrom` is a last read of SSA definition `def`, which
-   * can reach `nodeTo`.
-   */
-  pragma[nomagic]
-  predicate localFlowSsaInputFromRead(SsaImpl::DefinitionExt def, Node nodeFrom, SsaInputNode nodeTo) {
-    exists(
-      BasicBlock bb, int i, CfgNodes::ExprCfgNode exprFrom, BasicBlock input,
-      SsaInputDefinitionExt next
-    |
-      next.hasInputFromBlock(def, bb, i, input) and
-      exprFrom = bb.getNode(i) and
-      exprFrom.getExpr() instanceof VariableReadAccess and
-      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode().asExpr()] and
-      nodeTo = TSsaInputNode(next, input)
-    )
-  }
-
-  /** Gets the SSA definition node corresponding to parameter `p`. */
-  pragma[nomagic]
-  SsaDefinitionExtNode getParameterDefNode(NamedParameter p) {
-    exists(BasicBlock bb, int i |
-      bb.getNode(i).getAstNode() = p.getDefiningAccess() and
-      result.getDefinitionExt().definesAt(_, bb, i, _)
-    )
-  }
-
-  /**
-   * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
-   */
-  pragma[nomagic]
-  predicate localFlowSsaParamInput(ParameterNodeImpl nodeFrom, SsaDefinitionExtNode nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.getParameter())
-    or
-    nodeTo.getDefinitionExt() = nodeFrom.(SelfParameterNodeImpl).getSelfDefinition()
-  }
-
-  /**
-   * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
-   * involving SSA definition `def`.
-   */
-  predicate localSsaFlowStepUseUse(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    SsaImpl::adjacentReadPairExt(def, nodeFrom.asExpr(), nodeTo.asExpr())
-  }
-
-  /**
-   * Holds if SSA definition `def` assigns `value` to the underlying variable.
-   *
-   * This is either a direct assignment, `x = value`, or an assignment via
-   * simple pattern matching
-   *
-   * ```rb
-   * case value
-   *  in Foo => x then ...
-   *  in y => then ...
-   * end
-   * ```
-   */
-  predicate ssaDefAssigns(Ssa::WriteDefinition def, CfgNodes::ExprCfgNode value) {
-    def.assigns(value)
-    or
-    exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::AstCfgNode pattern |
-      case.getValue() = value and
-      pattern = case.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
-    |
-      def.getWriteAccess() = pattern
-      or
-      def.getWriteAccess() = pattern.(CfgNodes::ExprNodes::AsPatternCfgNode).getVariableAccess()
-    )
-  }
-
-  /**
-   * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
-   * SSA definition `def`.
-   */
-  pragma[nomagic]
-  predicate localSsaFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    // Flow from assignment into SSA definition
-    ssaDefAssigns(def, nodeFrom.asExpr()) and
-    nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
-    or
-    // Flow from SSA definition to first read
-    def = nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() and
-    SsaImpl::firstReadExt(def, nodeTo.asExpr())
-    or
-    // Flow from post-update read to next read
-    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode(), nodeTo)
-    or
-    // Flow into phi (read) SSA definition node from def
-    localFlowSsaInputFromDef(nodeFrom, def, nodeTo)
-    or
-    nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
-    def = nodeFrom.(SsaInputNode).getDefinitionExt()
-    or
-    localFlowSsaParamInput(nodeFrom, nodeTo) and
-    def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt()
-  }
-
   pragma[nomagic]
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
@@ -240,7 +257,7 @@ module LocalFlow {
         p.(KeywordParameter).getDefaultValue() = nodeFrom.asExpr().getExpr()
       )
     or
-    nodeTo.(BlockArgumentNode).getParameterNode(true) = nodeFrom
+    nodeTo.(ImplicitBlockArgumentNode).getParameterNode(true) = nodeFrom
   }
 
   predicate flowSummaryLocalStep(
@@ -253,7 +270,10 @@ module LocalFlow {
   }
 
   predicate localMustFlowStep(Node node1, Node node2) {
-    LocalFlow::localFlowSsaParamInput(node1, node2)
+    exists(SsaFlow::Input::Parameter p |
+      SsaFlow::Input::ssaDefInitializesParam(node2.(SsaDefinitionExtNode).getDefinitionExt(), p) and
+      node1 = p.toParameterNode()
+    )
     or
     exists(SsaImpl::Definition def |
       def.(Ssa::WriteDefinition).assigns(node1.asExpr()) and
@@ -267,7 +287,7 @@ module LocalFlow {
     or
     node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
     or
-    node1 = node2.(BlockArgumentNode).getParameterNode(true)
+    node1 = node2.(ImplicitBlockArgumentNode).getParameterNode(true)
     or
     node1 =
       unique(FlowSummaryNode n1 |
@@ -347,19 +367,20 @@ module VariableCapture {
     or
     exists(Ssa::Definition def |
       def.getARead() = e2 and
-      LocalFlow::ssaDefAssigns(def.getAnUltimateDefinition(), e1)
+      SsaFlow::Input::ssaDefAssigns(def.getAnUltimateDefinition(), e1)
     )
   }
 
   private module CaptureInput implements Shared::InputSig<Location> {
-    private import ruby as R
-    private import codeql.ruby.controlflow.ControlFlowGraph
+    private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
     private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
     }
+
+    class ControlFlowNode = Cfg::CfgNode;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
@@ -537,23 +558,14 @@ private module Cached {
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) { exists(n.getReturnedValueNode()) } or
-    TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
-    TSsaInputNode(SsaInputDefinitionExt def, BasicBlock input) {
-      def.hasInputFromBlock(_, _, _, input)
-    } or
+    TSsaNode(SsaFlow::Impl::SsaNode node) or
     TCapturedVariableNode(VariableCapture::CapturedVariable v) or
-    TNormalParameterNode(Parameter p) {
-      p instanceof SimpleParameter or
-      p instanceof OptionalParameter or
-      p instanceof KeywordParameter or
-      p instanceof HashSplatParameter or
-      p instanceof SplatParameter
-    } or
+    TNormalParameterNode(NormalParameter p) or
     TSelfMethodParameterNode(MethodBase m) or
     TSelfToplevelParameterNode(Toplevel t) or
     TLambdaSelfReferenceNode(Callable c) { lambdaCreationExpr(_, _, c) } or
-    TBlockParameterNode(MethodBase m) or
-    TBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
+    TImplicitBlockParameterNode(MethodBase m) { not m.getAParameter() instanceof BlockParameter } or
+    TImplicitBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
       yield = any(BlockParameterNode b).getAYieldCall()
     } or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
@@ -599,7 +611,7 @@ private module Cached {
   class TSelfParameterNode = TSelfMethodParameterNode or TSelfToplevelParameterNode;
 
   class TSourceParameterNode =
-    TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
+    TNormalParameterNode or TImplicitBlockParameterNode or TSelfParameterNode or
         TSynthHashSplatParameterNode or TSynthSplatParameterNode;
 
   cached
@@ -619,14 +631,8 @@ private module Cached {
       or
       exists(SsaImpl::DefinitionExt def |
         // captured variables are handled by the shared `VariableCapture` library
-        not def instanceof VariableCapture::CapturedSsaDefinitionExt
-      |
-        LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo)
-        or
-        LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
-        or
-        LocalFlow::localFlowSsaInputFromRead(def, nodeFrom, nodeTo) and
+        not def instanceof VariableCapture::CapturedSsaDefinitionExt and
+        SsaFlow::localFlowStep(def, nodeFrom, nodeTo) and
         not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
       )
       or
@@ -642,11 +648,7 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    LocalFlow::localSsaFlowStep(_, nodeFrom, nodeTo)
-    or
-    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
-    or
-    LocalFlow::localFlowSsaInputFromRead(_, nodeFrom, nodeTo)
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo)
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
@@ -660,11 +662,7 @@ private module Cached {
   predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    LocalFlow::localSsaFlowStep(_, nodeFrom, nodeTo)
-    or
-    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
-    or
-    LocalFlow::localFlowSsaInputFromRead(_, nodeFrom, nodeTo)
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo)
     or
     VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
     or
@@ -674,7 +672,8 @@ private module Cached {
 
   /** Holds if `n` wraps an SSA definition without ingoing flow. */
   private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
-    n.getDefinitionExt() = any(SsaImpl::WriteDefinition def | not LocalFlow::ssaDefAssigns(def, _))
+    n.getDefinitionExt() =
+      any(SsaImpl::WriteDefinition def | not SsaFlow::Input::ssaDefAssigns(def, _))
   }
 
   pragma[nomagic]
@@ -714,13 +713,13 @@ private module Cached {
     // Ensure all entry SSA definitions are local sources, except those that correspond
     // to parameters (which are themselves local sources)
     entrySsaDefinition(n) and
-    not LocalFlow::localFlowSsaParamInput(_, n)
+    not SsaFlow::Input::ssaDefInitializesParam(n.(SsaDefinitionExtNode).getDefinitionExt(), _)
     or
     isStoreTargetNode(n)
     or
     TypeTrackingInput::loadStep(_, n, _)
     or
-    n instanceof BlockArgumentNode
+    n instanceof ImplicitBlockArgumentNode
   }
 
   cached
@@ -828,8 +827,6 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SsaInputNode
   or
-  n = LocalFlow::getParameterDefNode(_)
-  or
   exists(AstNode desug |
     isDesugarNode(desug) and
     desug.isSynthesized() and
@@ -860,17 +857,29 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof CaptureNode
   or
-  n instanceof BlockArgumentNode
+  n instanceof ImplicitBlockArgumentNode
+}
+
+/** An SSA node. */
+abstract class SsaNode extends NodeImpl, TSsaNode {
+  SsaFlow::Impl::SsaNode node;
+  SsaImpl::DefinitionExt def;
+
+  SsaNode() {
+    this = TSsaNode(node) and
+    def = node.getDefinitionExt()
+  }
+
+  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+  override Location getLocationImpl() { result = node.getLocation() }
+
+  override string toStringImpl() { result = node.toString() }
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
-  SsaImpl::DefinitionExt def;
-
-  SsaDefinitionExtNode() { this = TSsaDefinitionExtNode(def) }
-
-  /** Gets the underlying SSA definition. */
-  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+class SsaDefinitionExtNode extends SsaNode {
+  override SsaFlow::Impl::SsaDefinitionExtNode node;
 
   /** Gets the underlying variable. */
   Variable getVariable() { result = def.getSourceVariable() }
@@ -880,13 +889,21 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
     not def instanceof Ssa::WriteDefinition
     or
     isDesugarNode(def.(Ssa::WriteDefinition).getWriteAccess().getExpr())
+    or
+    def = getParameterDef(_)
   }
 
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
+}
 
-  override Location getLocationImpl() { result = def.getLocation() }
+class SsaDefinitionNodeImpl extends SsaDefinitionExtNode {
+  Ssa::Definition ssaDef;
 
-  override string toStringImpl() { result = def.toString() }
+  SsaDefinitionNodeImpl() { ssaDef = def }
+
+  override Location getLocationImpl() { result = ssaDef.getLocation() }
+
+  override string toStringImpl() { result = ssaDef.toString() }
 }
 
 /**
@@ -924,20 +941,13 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
  *
  * both inputs into the phi read node after the outer condition are guarded.
  */
-class SsaInputNode extends NodeImpl, TSsaInputNode {
-  SsaImpl::DefinitionExt def;
+class SsaInputNode extends SsaNode {
+  override SsaFlow::Impl::SsaInputNode node;
   BasicBlock input;
 
-  SsaInputNode() { this = TSsaInputNode(def, input) }
-
-  /** Gets the underlying SSA definition. */
-  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+  SsaInputNode() { node.isInputInto(def, input) }
 
   override CfgScope getCfgScope() { result = input.getScope() }
-
-  override Location getLocationImpl() { result = input.getLastNode().getLocation() }
-
-  override string toStringImpl() { result = "[input] " + def }
 }
 
 /** An SSA definition for a `self` variable. */
@@ -1025,7 +1035,7 @@ private module ParameterNodes {
    * flow graph.
    */
   class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
-    private Parameter parameter;
+    Parameter parameter;
 
     NormalParameterNode() { this = TNormalParameterNode(parameter) }
 
@@ -1054,6 +1064,9 @@ private module ParameterNodes {
           // There are no positional parameters after the splat
           not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m))
         )
+        or
+        parameter = callable.getAParameter().(BlockParameter) and
+        pos.isBlock()
       )
     }
 
@@ -1161,23 +1174,31 @@ private module ParameterNodes {
    * The value of a block parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class BlockParameterNode extends ParameterNodeImpl, TBlockParameterNode {
-    private MethodBase method;
-
-    BlockParameterNode() { this = TBlockParameterNode(method) }
-
-    final MethodBase getMethod() { result = method }
-
-    override Parameter getParameter() {
-      result = method.getAParameter() and result instanceof BlockParameter
-    }
-
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c.asCfgScope() = method and pos.isBlock()
-    }
+  abstract class BlockParameterNode extends ParameterNodeImpl {
+    abstract MethodBase getMethod();
 
     CfgNodes::ExprNodes::CallCfgNode getAYieldCall() {
       this.getMethod() = result.getExpr().(YieldCall).getEnclosingMethod()
+    }
+  }
+
+  private class ExplicitBlockParameterNode extends BlockParameterNode, NormalParameterNode {
+    override BlockParameter parameter;
+
+    final override MethodBase getMethod() { result.getAParameter() = parameter }
+  }
+
+  private class ImplicitBlockParameterNode extends BlockParameterNode, TImplicitBlockParameterNode {
+    private MethodBase method;
+
+    ImplicitBlockParameterNode() { this = TImplicitBlockParameterNode(method) }
+
+    final override MethodBase getMethod() { result = method }
+
+    override Parameter getParameter() { none() }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asCfgScope() = method and pos.isBlock()
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -1451,10 +1472,10 @@ module ArgumentNodes {
     }
   }
 
-  class BlockArgumentNode extends NodeImpl, ArgumentNode, TBlockArgumentNode {
+  class ImplicitBlockArgumentNode extends NodeImpl, ArgumentNode, TImplicitBlockArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode yield;
 
-    BlockArgumentNode() { this = TBlockArgumentNode(yield) }
+    ImplicitBlockArgumentNode() { this = TImplicitBlockArgumentNode(yield) }
 
     CfgNodes::ExprNodes::CallCfgNode getYieldCall() { result = yield }
 
@@ -1892,7 +1913,7 @@ predicate jumpStep(Node pred, Node succ) {
   or
   any(AdditionalJumpStep s).step(pred, succ)
   or
-  succ.(BlockArgumentNode).getParameterNode(false) = pred
+  succ.(ImplicitBlockArgumentNode).getParameterNode(false) = pred
 }
 
 private ContentSet getArrayContent(int n) {
@@ -2240,7 +2261,7 @@ private predicate lambdaCallExpr(
  */
 predicate lambdaSourceCall(CfgNodes::ExprNodes::CallCfgNode call, LambdaCallKind kind, Node receiver) {
   kind = TYieldCallKind() and
-  call = receiver.(BlockArgumentNode).getYieldCall()
+  call = receiver.(ImplicitBlockArgumentNode).getYieldCall()
   or
   kind = TLambdaCallKind() and
   lambdaCallExpr(call, receiver.asExpr())

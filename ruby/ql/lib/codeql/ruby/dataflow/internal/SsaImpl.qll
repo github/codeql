@@ -6,16 +6,19 @@ private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
+module SsaInput implements SsaImplCommon::InputSig<Location> {
+  private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
   private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   class BasicBlock = BasicBlocks::BasicBlock;
+
+  class ControlFlowNode = Cfg::CfgNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
+  class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
 
   class SourceVariable = LocalVariable;
 
@@ -62,7 +65,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-private import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -280,15 +283,6 @@ private predicate adjacentDefSkipUncertainReads(
   SsaInput::variableRead(bb2, i2, _, true)
 }
 
-/** Same as `adjacentDefReadExt`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReadsExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
 private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
@@ -391,19 +385,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the value defined at SSA definition `def` can reach a read at `read`,
-   * without passing through any other non-pseudo read.
-   */
-  cached
-  predicate firstReadExt(DefinitionExt def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1, _) and
-      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
-  }
-
-  /**
    * Holds if the read at `read2` is a read of the same SSA definition `def`
    * as the read at `read1`, and `read2` can be reached from `read1` without
    * passing through another non-pseudo read.
@@ -421,23 +402,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the read at `read2` is a read of the same SSA definition `def`
-   * as the read at `read1`, and `read2` can be reached from `read1` without
-   * passing through another non-pseudo read.
-   */
-  cached
-  predicate adjacentReadPairExt(
-    DefinitionExt def, VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
-  ) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
-      read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
    * Holds if the read of `def` at `read` may be a last read. That is, `read`
    * can either reach another definition of the underlying source variable or
    * the end of the CFG scope, without passing through another non-pseudo read.
@@ -448,28 +412,6 @@ private module Cached {
       lastRefSkipUncertainReadsExt(def, bb, i) and
       variableReadActual(bb, i, _) and
       read = bb.getNode(i)
-    )
-  }
-
-  /**
-   * Holds if the reference to `def` at index `i` in basic block `bb` can reach
-   * another definition `next` of the same underlying source variable, without
-   * passing through another write or non-pseudo read.
-   *
-   * The reference is either a read of `def` or `def` itself.
-   */
-  cached
-  predicate lastRefBeforeRedefExt(
-    DefinitionExt def, Cfg::BasicBlock bb, int i, Cfg::BasicBlock input, DefinitionExt next
-  ) {
-    exists(LocalVariable v |
-      Impl::lastRefRedefExt(def, v, bb, i, input, next) and
-      not SsaInput::variableRead(bb, i, v, false)
-    )
-    or
-    exists(SsaInput::BasicBlock bb0, int i0 |
-      Impl::lastRefRedefExt(def, _, bb0, i0, input, next) and
-      adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
     )
   }
 
@@ -494,8 +436,7 @@ class DefinitionExt extends Impl::DefinitionExt {
 
   override string toString() { result = this.(Ssa::Definition).toString() }
 
-  /** Gets the location of this definition. */
-  Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
 }
 
 /**
@@ -506,5 +447,5 @@ class DefinitionExt extends Impl::DefinitionExt {
 class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
 
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
+  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
 }

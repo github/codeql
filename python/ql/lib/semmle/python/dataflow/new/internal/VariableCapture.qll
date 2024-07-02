@@ -24,6 +24,8 @@ private module CaptureInput implements Shared::InputSig<Location> {
   }
 
   class BasicBlock extends PY::BasicBlock {
+    int length() { result = count(int i | exists(this.getNode(i))) }
+
     Callable getEnclosingCallable() { result = this.getScope() }
 
     // Note `PY:BasicBlock` does not have a `getLocation`.
@@ -33,6 +35,8 @@ private module CaptureInput implements Shared::InputSig<Location> {
     // during debugging, so this will be serviceable.
     Location getLocation() { result = super.getNode(0).getLocation() }
   }
+
+  class ControlFlowNode = PY::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 

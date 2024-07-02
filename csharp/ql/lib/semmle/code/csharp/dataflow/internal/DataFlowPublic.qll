@@ -171,8 +171,21 @@ signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private predicate guardChecksAdj(
+    SsaFlow::BarrierGuardsInput::Guard g, SsaFlow::Input::Expr e, boolean branch
+  ) {
+    exists(AbstractValues::BooleanValue v |
+      guardChecks(g, e.getAstNode(), v) and
+      branch = v.getValue()
+    )
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
+  pragma[nomagic]
   ExprNode getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaFlow::BarrierGuardsImpl::BarrierGuard<guardChecksAdj/3>::getABarrierNode()
+    or
     exists(Guard g, Expr e, AbstractValue v |
       guardChecks(g, e, v) and
       g.controlsNode(result.getControlFlowNode(), e, v)
