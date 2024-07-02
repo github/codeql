@@ -12,4 +12,11 @@
 | MyPackage/Foo.py:34:1:34:42 | Function func_with_fancy_args | MyPackage | Foo | func_with_fancy_args | () | false | Foo.py |  | Function |
 | MyPackage/ModuleWithAll.py:2:1:2:10 | Class Foo | MyPackage | ModuleWithAll.Foo |  |  | false | ModuleWithAll.py |  | Class |
 | MyPackage/ModuleWithAll.py:3:1:3:10 | Class Bar | MyPackage | ModuleWithAll.Bar |  |  | false | ModuleWithAll.py |  | Class |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | NotPackage |  | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | NotPackage | not_in_pacakge_lib | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | not_in_pacakge_lib |  | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | not_in_pacakge_lib | not_in_pacakge_lib | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_package_script.py:5:1:5:37 | Function not_in_package_script_func | NotPackage | not_in_package_script | not_in_package_script_func | (x,y) | false | not_in_package_script.py |  | Function |
+| NotPackage/possibly_lib.py:4:1:4:28 | Function possibly_lib_func | NotPackage | possibly_lib | possibly_lib_func | (x,y) | false | possibly_lib.py |  | Function |
 | TopLevel.py:3:1:3:38 | Function top_level_function | TopLevel |  | top_level_function | (x,y,z:) | false | TopLevel.py |  | Function |
+| not-valid-package/not_in_pacakge_lib_copy.py:1:1:1:34 | Function not_in_pacakge_lib_func | not_in_pacakge_lib_copy |  | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib_copy.py |  | Function |
