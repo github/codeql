@@ -626,7 +626,22 @@ private string getSignatureParameterName(string signature, string type, string n
 }
 
 /**
- * Holds if the `i`'th name in `signature` matches the `i` name in `paramsString(func)`.
+ * Holds if the suffix containing the entries in `signature` starting at entry
+ * `i` matches the suffix containing the parameters of `func` starting at entry `i`.
+ *
+ * For example, consider the signature `(int,bool,char)` and a function:
+ * ```
+ * void f(int a, bool b, char c);
+ * ```
+ * 1. The predicate holds for `i = 2` because the suffix containing all the entries
+ * in `signature` starting at `2` is `char`, and suffix containing all the parameters
+ * of `func` starting at `2` is `char`.
+ * 2. The predicate holds for `i = 1` because the suffix containing all the entries
+ * in `signature` starting at `1` is `bool,char`, and the suffix containing all the
+ * parameters of `func` starting at `1` is `bool, char`.
+ * 3. The predicate holds for `i = 0` because the suffix containing all the entries
+ * in `signature` starting at `0` is `int,bool,char` and the suffix containing all
+ * the parameters of `func` starting at `0` is `int, bool, char`.
  *
  * When `paramsString(func)[i]` is `class:n` then the signature name is
  * compared with the `n`'th name in `type`, and when `paramsString(func)[i]`
