@@ -35,6 +35,9 @@ extensions:
       - ["npm i(nstall)?"]
       - ["npm run"]
       - ["npm ci"]
+      - ["pnpm i(nstall)?"]
+      - ["pnpm run"]
+      - ["pnpm ci"]
       - ["pre-commit"]
       - ["prettier"]
       - ["pip install -r"]
@@ -54,10 +57,10 @@ extensions:
       extensible: poisonableLocalScriptsDataModel
     data:
       # TODO: It could also be in the form of `dir/cmd`
-      - ["(\\.\\/)(.*)(\\s+|;|$)", 3]
-      - ["(source|sh|bash|zsh|fish)\\s+(.*)(\\s+|;|$)", 3]
-      - ["(node)\\s+(.*)(\\.js|\\.ts)(\\s+|;|$)", 3]
-      - ["(python)\\s+(.*)\\.py(\\s+|;|$)", 3]
-      - ["(ruby)\\s+(.*)\\.rb(\\s+|;|$)", 3]
-      - ["(go)\\s+(.*)\\.go(\\s+|;|$)", 3]
+      - ["(\\.\\/)(.*)", 3]
+      - ["(source|sh|bash|zsh|fish)\\s+(.*)", 3]
+      - ["(node)\\s+(.*)(\\.js|\\.ts)", 3]
+      - ["(python)\\s+(.*)\\.py", 3]
+      - ["(ruby)\\s+(.*)\\.rb", 3]
+      - ["(go)\\s+(.*)\\.go", 3]
 
