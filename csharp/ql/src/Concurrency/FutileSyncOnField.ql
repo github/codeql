@@ -16,7 +16,7 @@
 import csharp
 
 predicate lockedFieldUpdate(LockStmt lock, Field f, AssignableDefinition def) {
-  lock.getAChild+() = def.getAControlFlowNode().getAstNode() and
+  lock.getAChild+() = def.getExpr() and
   def.getTarget() = f
 }
 
