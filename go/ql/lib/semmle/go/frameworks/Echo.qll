@@ -10,23 +10,6 @@ private module Echo {
   private string packagePath() { result = package("github.com/labstack/echo", "") }
 
   /**
-   * Data from a `Context` interface method, considered as a source of remote flow.
-   */
-  private class EchoContextSource extends RemoteFlowSource::Range {
-    EchoContextSource() {
-      exists(DataFlow::MethodCallNode call, string methodName |
-        methodName =
-          [
-            "Param", "ParamValues", "QueryParam", "QueryParams", "QueryString", "FormValue",
-            "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"
-          ] and
-        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
-        this = call.getResult(0)
-      )
-    }
-  }
-
-  /**
    * Data from a `Context` interface method that is not generally exploitable for open-redirect attacks.
    */
   private class EchoContextRedirectUnexploitableSource extends Http::Redirect::UnexploitableSource {
@@ -35,19 +18,6 @@ private module Echo {
         methodName = ["FormValue", "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"] and
         call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
         this = call.getResult(0)
-      )
-    }
-  }
-
-  /**
-   * A call to a method on `Context` struct that unmarshals data into a target.
-   */
-  private class EchoContextBinder extends RemoteFlowSource::Range {
-    EchoContextBinder() {
-      exists(DataFlow::MethodCallNode call |
-        call.getTarget().hasQualifiedName(packagePath(), "Context", "Bind")
-      |
-        this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
   }
