@@ -407,6 +407,8 @@ predicate hasUnreachedInstruction(IRFunction func) {
   )
 }
 
+IRVariable getAnInitializeGroupVariable(InitializeGroupInstruction instr) { none() }
+
 import CachedForDebugging
 
 cached

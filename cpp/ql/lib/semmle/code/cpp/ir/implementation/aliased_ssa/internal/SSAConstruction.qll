@@ -263,6 +263,14 @@ private module Cached {
     )
   }
 
+  cached
+  IRVariable getAnInitializeGroupVariable(InitializeGroupInstruction init) {
+    exists(Alias::VariableGroup vg |
+      init = initializeGroup(vg) and
+      result = vg.getAnAllocation().getABaseInstruction().(VariableInstruction).getIRVariable()
+    )
+  }
+
   /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
