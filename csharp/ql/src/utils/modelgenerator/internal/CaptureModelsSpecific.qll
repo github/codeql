@@ -112,38 +112,41 @@ predicate isUninterestingForDataFlowModels(CS::Callable api) { isHigherOrder(api
 predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
 
 /**
- * A class of callables that are potentially relevant for generating summary and
- * neutral models.
+ * A class of callables that are potentially relevant for generating source or
+ * sink models.
  */
-class SummaryTargetApi extends TargetApiBase {
-  SummaryTargetApi() { not hasManualSummaryModel(this.lift()) }
+class SourceOrSinkTargetApi extends Callable {
+  SourceOrSinkTargetApi() { relevant(this) }
 }
 
 /**
  * A class of callables that are potentially relevant for generating sink models.
  */
-class SinkTargetApi extends TargetApiBase {
-  SinkTargetApi() { not hasManualSinkModel(this.lift()) }
+class SinkTargetApi extends SourceOrSinkTargetApi {
+  SinkTargetApi() { not hasManualSinkModel(this) }
 }
 
 /**
  * A class of callables that are potentially relevant for generating source models.
  */
-class SourceTargetApi extends TargetApiBase {
-  SourceTargetApi() { not hasManualSourceModel(this.lift()) }
+class SourceTargetApi extends SourceOrSinkTargetApi {
+  SourceTargetApi() { not hasManualSourceModel(this) }
 }
 
 /**
- * A class of callables that are potentially relevant for generating summary, source, sink
- * and neutral models.
+ * A class of callables that are potentially relevant for generating summary or
+ * neutral models.
  *
  * In the Standard library and 3rd party libraries it is the callables (or callables that have a
  * super implementation) that can be called from outside the library itself.
  */
-class TargetApiBase extends Callable {
+class SummaryTargetApi extends Callable {
   private Callable lift;
 
-  TargetApiBase() { lift = liftedImpl(this) }
+  SummaryTargetApi() {
+    lift = liftedImpl(this) and
+    not hasManualSummaryModel(lift)
+  }
 
   /**
    * Gets the callable that a model will be lifted to.

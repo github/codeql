@@ -14,7 +14,11 @@ public class NewSinks
 
     // Sink defined in the extensible file next to the test.
     // neutral=Sinks;NewSinks;Sink;(System.Object);summary;df-generated
-    public void Sink(object o) => throw null;
+    public static void Sink(object o) => throw null;
+
+    // Sink defined in the extensible file next to the test.
+    // neutral=Sinks;NewSinks;Sink2;(System.Object);summary;df-generated
+    public static void Sink2(object o) => throw null;
 
     // New sink
     // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
@@ -104,6 +108,32 @@ public class NewSinks
     public void ManualSinkAlreadyDefined(object o)
     {
         Sink(o);
+    }
+
+    public abstract class DataWriter
+    {
+        // neutral=Sinks;NewSinks+DataWriter;Write;(System.Object);summary;df-generated
+        public abstract void Write(object o);
+    }
+
+    public class DataWriterKind1 : DataWriter
+    {
+        // sink=Sinks;NewSinks+DataWriterKind1;true;Write;(System.Object);;Argument[0];test-sink;df-generated
+        // neutral=Sinks;NewSinks+DataWriterKind1;Write;(System.Object);summary;df-generated
+        public override void Write(object o)
+        {
+            Sink(o);
+        }
+    }
+
+    public class DataWriterKind2 : DataWriter
+    {
+        // sink=Sinks;NewSinks+DataWriterKind2;true;Write;(System.Object);;Argument[0];test-sink2;df-generated
+        // neutral=Sinks;NewSinks+DataWriterKind2;Write;(System.Object);summary;df-generated
+        public override void Write(object o)
+        {
+            Sink2(o);
+        }
     }
 }
 

@@ -4,6 +4,8 @@ extensions:
       extensible: sourceModel
     data:
       - ["Sources", "NewSources", False, "ManualSourceAlreadyDefined", "()", "", "ReturnValue", "test-source", "manual"]
+      - ["Sources", "NewSources", False, "Source1", "()", "", "ReturnValue", "source-kind-1", "manual"]
+      - ["Sources", "NewSources", False, "Source2", "()", "", "ReturnValue", "source-kind-2", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all

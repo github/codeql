@@ -5,6 +5,7 @@ extensions:
       extensible: sourceModel
     data:
       - [ "p", "Sources", False, "source", "()", "", "ReturnValue", "test-source", "manual" ]
+      - [ "p", "Sources", False, "source2", "()", "", "ReturnValue", "test-source2", "manual" ]
       - [ "p", "Sources", False, "manualSourceAlreadyDefined", "()", "", "ReturnValue", "test-source", "manual" ]
 
   - addsTo:
