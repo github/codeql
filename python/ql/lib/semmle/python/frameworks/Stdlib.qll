@@ -254,9 +254,13 @@ module Stdlib {
    * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
    */
   module Logger {
+    private import semmle.python.dataflow.new.internal.DataFlowDispatch as DD
+
     /** Gets a reference to the `logging.Logger` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+      or
+      result = API::moduleImport("logging").getMember("getLoggerClass").getReturn().getASubclass*()
       or
       result = ModelOutput::getATypeNode("logging.Logger~Subclass").getASubclass*()
     }
@@ -276,6 +280,13 @@ module Stdlib {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       ClassInstantiation() {
         this = subclassRef().getACall()
+        or
+        this =
+          DD::selfTracker(subclassRef()
+                .getAValueReachableFromSource()
+                .asExpr()
+                .(ClassExpr)
+                .getInnerScope())
         or
         this = API::moduleImport("logging").getMember("root").asSource()
         or
@@ -1492,6 +1503,8 @@ module StdlibPrivate {
     or
     // io.open is a special case, since it is an alias for the builtin `open`
     result = API::moduleImport("io").getMember("open")
+    or
+    result = API::moduleImport("codecs").getMember("open")
   }
 
   /**
@@ -2655,6 +2668,16 @@ module StdlibPrivate {
     }
   }
 
+  // // Codecs
+  // /** A file system access from a `pathlib.Path` method call. */
+  // private class CodecsFileAccess extends FileSystemAccess::Range, API::CallNode {
+  //   DataFlow::Node pathArgument;
+  //   CodecsFileAccess() {
+  //     this = API::moduleImport("codecs").getMember("open").getACall() and
+  //     pathArgument = this.getParameter(0, "filename").asSink()
+  //   }
+  //   override DataFlow::Node getAPathArgument() { result = pathArgument }
+  // }
   // ---------------------------------------------------------------------------
   // pathlib
   // ---------------------------------------------------------------------------
@@ -3251,8 +3274,13 @@ module StdlibPrivate {
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input in ["Argument[0]", "Argument[pattern:]"] and
-      output = "ReturnValue.Attribute[pattern]" and
-      preservesValue = true
+      (
+        output = "ReturnValue.Attribute[pattern]" and
+        preservesValue = true
+        or
+        output = "ReturnValue" and
+        preservesValue = false
+      )
     }
   }
 
@@ -3488,6 +3516,90 @@ module StdlibPrivate {
   {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       nodeTo.(UrllibParseUrlsplitCall).getUrl() = nodeFrom
+    }
+  }
+
+  /**
+   * A flow summary for `urllib.parse.urljoin`
+   *
+   * See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urljoin
+   */
+  class UrljoinSummary extends SummarizedCallable {
+    UrljoinSummary() { this = "urllib.parse.urljoin" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("urllib").getMember("parse").getMember("urljoin").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("urllib")
+            .getMember("parse")
+            .getMember("urljoin")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[0]", "Argument[base:]"] and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // fnmatch
+  // ---------------------------------------------------------------------------
+  /**
+   * A flow summary for `fnmatch.filter`
+   *
+   * See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
+   */
+  class FnmatchFilterSummary extends SummarizedCallable {
+    FnmatchFilterSummary() { this = "fnmatch.filter" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("fnmatch").getMember("filter").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("fnmatch").getMember("filter").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[0].ListElement", "Argument[names:].ListElement"] and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // optparse
+  // ---------------------------------------------------------------------------
+  /**
+   * A flow summary for `optparse.parse_args`
+   *
+   * See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
+   */
+  class OptparseParseArgsSummary extends SummarizedCallable {
+    OptparseParseArgsSummary() { this = "optparse.parse_args" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result =
+        API::moduleImport("optparse").getMember("OptionParser").getMember("parse_args").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("optparse")
+            .getMember("OptionParser")
+            .getMember("parse_args")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[1]", "Argument[args:]"] and
+      output = "ReturnValue.TupleElement[1]" and
+      preservesValue = false
     }
   }
 
@@ -4958,6 +5070,21 @@ module StdlibPrivate {
       override DataFlow::Node getAPathArgument() { result = this.getCommand() }
 
       override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+    }
+
+    /**
+     * An instance og `logging.Logger` from the `asyncio` module.
+     * See https://docs.python.org/3/library/asyncio-dev.html#logging
+     * and https://github.com/python/cpython/blob/3.12/Lib/asyncio/log.py#L7
+     */
+    private class AsyncIOLogger extends Stdlib::Logger::InstanceSource {
+      AsyncIOLogger() {
+        this =
+          API::moduleImport("asyncio")
+              .getMember("log")
+              .getMember("logger")
+              .getAValueReachableFromSource()
+      }
     }
   }
 

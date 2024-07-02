@@ -1,0 +1,102 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ["subprocess.Popen!","Subclass.Call.Argument[0,args:]", "log-injection"]
+      - ["zipfile.ZipFile","Member[extractall].Argument[0,path:]", "path-injection"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ["_collections_abc", "Member[Mapping].Subclass.Instance.Member[get]", "Argument[1,default:]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Subclass.Instance.Member[_parse_known_args]", "Argument[0,arg_strings:]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Subclass.Instance.Member[_read_args_from_files]", "Argument[0,arg_strings:]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Subclass.Instance.Member[parse_args]", "Argument[0,args:]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Subclass.Instance.Member[parse_known_args]", "Argument[0,args:]", "ReturnValue", "taint"]
+      - ["cgi", "Member[FieldStorage].Subclass.Instance.Member[getvalue]", "Argument[self]", "ReturnValue", "taint"]
+      - ["contextlib", "Member[_BaseExitStack].Subclass.Instance.Member[enter_context]", "Argument[0,cm:]", "ReturnValue", "taint"]
+      - ["copy", "Member[copy,deepcopy]", "Argument[0,x:]", "ReturnValue", "value"]
+      - ["ctypes", "Member[create_unicode_buffer]", "Argument[0,init:]", "ReturnValue", "taint"]
+      - ["distutils", "Member[util].Member[change_root]", "Argument[0,new_root:]", "ReturnValue", "taint"]
+      - ["email", "Member[header].Member[Header].Subclass.Call", "Argument[0,s:]", "ReturnValue", "taint"]
+      - ["email", "Member[utils].Member[parseaddr]", "Argument[0,addr:]", "ReturnValue", "taint"]
+      - ["fnmatch", "Member[filter]", "Argument[0,names:]", "ReturnValue", "taint"]
+      - ["functools", "Member[reduce]", "Argument[1,sequence:]", "ReturnValue", "taint"]
+      - ["getopt", "Member[getopt]", "Argument[0,args:]", "ReturnValue", "taint"]
+      - ["getopt", "Member[getopt]", "Argument[2,longopts:]", "ReturnValue", "taint"]
+      - ["gettext", "Member[gettext]", "Argument[0,message:]", "ReturnValue", "taint"]
+      - ["gzip", "Member[GzipFile].Subclass.Call", "Argument[0,filename:]", "ReturnValue", "taint"]
+      - ["html", "Member[escape]", "Argument[0,s:]", "ReturnValue", "taint"]
+      - ["html", "Member[parser].Member[HTMLParser].Subclass.Instance.Member[feed]", "Argument[0,data:]", "Argument[self]", "taint"]
+      - ["imp", "Member[find_module]", "Argument[0,name:]", "ReturnValue", "taint"]
+      - ["imp", "Member[find_module]", "Argument[1,path:]", "ReturnValue", "taint"]
+      - ["logging", "Member[getLevelName]", "Argument[0,level:]", "ReturnValue", "taint"]
+      - ["logging", "Member[LogRecord].Subclass.Instance.Member[getMessage]", "Argument[self]", "ReturnValue", "taint"]
+      - ["mimetypes", "Member[guess_type]", "Argument[0,url:]", "ReturnValue", "taint"]
+      - ["multiprocessing", "Member[connection].Member[Listener].Subclass.Call", "Argument[3,authkey:]", "ReturnValue", "taint"]
+      - ["nturl2path", "Member[pathname2url]", "Argument[0,p:]", "ReturnValue", "taint"]
+      - ["nturl2path", "Member[url2pathname]", "Argument[0,url:]", "ReturnValue", "taint"]
+      - ["optparse", "Member[OptionParser].Subclass.Instance.Member[parse_args]", "Argument[0,args:]", "ReturnValue", "taint"]
+      - ["pathlib", "Member[Path].Subclass.Instance.Member[__enter__]", "Argument[self]", "ReturnValue", "taint"]
+      - ["pathlib", "Member[PurePath].Subclass.Instance.Member[__fspath__]", "Argument[self]", "ReturnValue", "taint"]
+      - ["queue", "Member[Queue].Subclass.Instance.Member[put]", "Argument[0,item:]", "Argument[self]", "taint"]
+      - ["random", "Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
+      - ["random", "Member[Random].Subclass.Instance.Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
+      - ["re", "Member[split]", "Argument[0,pattern:]", "ReturnValue", "taint"]
+      - ["shlex", "Member[quote]", "Argument[0,s:]", "ReturnValue", "taint"]
+      - ["shutil", "Member[which]", "Argument[0,cmd:]", "ReturnValue", "taint"]
+      - ["shutil", "Member[which]", "Argument[2,path:]", "ReturnValue", "taint"]
+      - ["subprocess", "Member[Popen].Subclass.Call", "Argument[0,args:]", "ReturnValue", "taint"]
+      - ["tarfile", "Member[TarFile].Subclass.Instance.Member[open]", "Argument[0,name:]", "ReturnValue", "taint"]
+      - ["tarfile", "Member[TarFile].Subclass.Instance.Member[open]", "Argument[2,fileobj:]", "ReturnValue", "taint"]
+      - ["tempfile", "Member[mkdtemp]", "Argument[0,suffix:]", "ReturnValue", "taint"]
+      - ["tempfile", "Member[mkdtemp]", "Argument[1,prefix:]", "ReturnValue", "taint"]
+      - ["tempfile", "Member[mkdtemp]", "Argument[2,dir:]", "ReturnValue", "taint"]
+      - ["tempfile", "Member[mkstemp]", "Argument[0,suffix:]", "ReturnValue", "taint"]
+      - ["tempfile", "Member[mkstemp]", "Argument[2,dir:]", "ReturnValue", "taint"]
+      - ["textwrap", "Member[dedent]", "Argument[0,text:]", "ReturnValue", "taint"]
+      - ["traceback", "Member[StackSummary].Subclass.Instance.Member[from_list]", "Argument[0,a_list:]", "ReturnValue", "taint"]
+      - ["typing", "Member[cast]", "Argument[1,val:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[quote_plus]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[quote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[splitquery]", "Argument[0,url:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[unquote_plus]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[urlencode]", "Argument[0,query:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[urljoin]", "Argument[1,url:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[pathname2url]", "Argument[0,pathname:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[Request].Subclass.Call", "Argument[0,url:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[Request].Subclass.Instance.Member[get_full_url]", "Argument[self]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[url2pathname]", "Argument[0,pathname:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[urlretrieve]", "Argument[0,url:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["urllib2", "Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[CompleteDirs].Subclass.Instance.Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[ZipFile].Subclass.Call", "Argument[0,file:]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[ZipFile].Call", "Argument[0,file:]", "ReturnValue.Attribute[filelist].ListElement.Attribute[filename]", "value"]
+      - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[_extract_member]", "Argument[1,targetpath:]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[infolist]", "Argument[self]", "ReturnValue", "taint"]
+      - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[infolist]", "Argument[self].Attribute[filelist]", "ReturnValue", "value"]
+      - ["zipfile", "Member[ZipFile].Subclass.Instance.Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
+      - ["shutil", "Member[rmtree]", "Argument[0,path:]", "Argument[2,onerror:].Argument[1]", "taint"]
+  - addsTo:
+      pack: codeql/python-all
+      extensible: neutralModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeVariableModel
+    data: []
