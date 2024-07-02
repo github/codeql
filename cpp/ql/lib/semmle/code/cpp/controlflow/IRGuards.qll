@@ -59,8 +59,7 @@ class MatchValue extends AbstractValue, TMatchValue {
 }
 
 /**
- * A Boolean condition in the AST that guards one or more basic blocks. This includes
- * operands of logical operators but not switch statements.
+ * A Boolean condition in the AST that guards one or more basic blocks.
  */
 cached
 class GuardCondition extends Expr {
