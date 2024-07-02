@@ -143,7 +143,7 @@ private module Cached {
     // conflated if it's associated with a conflated location.
     exists(Alias::MemoryLocation location |
       instruction = getPhi(_, location) and
-      not exists(location.getAllocation())
+      not exists(location.getAnAllocation())
     )
   }
 

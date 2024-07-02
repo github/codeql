@@ -48,7 +48,7 @@ predicate canReuseSsaForVariable(IRAutomaticVariable var) {
 
 private newtype TMemoryLocation = MkMemoryLocation(Allocation var) { isVariableModeled(var) }
 
-private MemoryLocation getMemoryLocation(Allocation var) { result.getAllocation() = var }
+private MemoryLocation getMemoryLocation(Allocation var) { result.getAnAllocation() = var }
 
 class MemoryLocation extends TMemoryLocation {
   Allocation var;
@@ -57,7 +57,7 @@ class MemoryLocation extends TMemoryLocation {
 
   final string toString() { result = var.getAllocationString() }
 
-  final Allocation getAllocation() { result = var }
+  final Allocation getAnAllocation() { result = var }
 
   final Language::Location getLocation() { result = var.getLocation() }
 

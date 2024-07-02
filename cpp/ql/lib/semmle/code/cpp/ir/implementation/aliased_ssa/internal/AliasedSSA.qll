@@ -123,7 +123,12 @@ abstract class MemoryLocation extends TMemoryLocation {
 
   abstract predicate isMayAccess();
 
-  Allocation getAllocation() { none() }
+  /**
+   * Gets an allocation associated with this `MemoryLocation`.
+   *
+   * This always returns zero or one result.
+   */
+  Allocation getAnAllocation() { none() }
 
   /**
    * Holds if the location cannot be overwritten except by definition of a `MemoryLocation` for
@@ -177,7 +182,7 @@ abstract class AllocationMemoryLocation extends MemoryLocation {
 
   final override Location getLocation() { result = var.getLocation() }
 
-  final override Allocation getAllocation() { result = var }
+  final override Allocation getAnAllocation() { result = var }
 
   final override predicate isMayAccess() { isMayAccess = true }
 
@@ -453,7 +458,7 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       result instanceof MustExactlyOverlap
       or
       not use instanceof EntireAllocationMemoryLocation and
-      if def.getAllocation() = use.getAllocation()
+      if def.getAnAllocation() = use.getAnAllocation()
       then
         // EntireAllocationMemoryLocation totally overlaps any location within
         // the same allocation.
@@ -461,7 +466,7 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       else (
         // There is no overlap with a location that's known to belong to a
         // different allocation, but all other locations may partially overlap.
-        not exists(use.getAllocation()) and
+        not exists(use.getAnAllocation()) and
         result instanceof MayPartiallyOverlap
       )
     )
@@ -541,7 +546,7 @@ private predicate isCoveredOffset(Allocation var, int offsetRank, VariableMemory
   exists(int startRank, int endRank, VirtualVariable vvar |
     vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
     vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
-    var = vml.getAllocation() and
+    var = vml.getAnAllocation() and
     vvar = vml.getVirtualVariable() and
     isRelatableMemoryLocation(vml) and
     offsetRank in [startRank .. endRank]
@@ -549,7 +554,7 @@ private predicate isCoveredOffset(Allocation var, int offsetRank, VariableMemory
 }
 
 private predicate hasUnknownOffset(Allocation var, VariableMemoryLocation vml) {
-  vml.getAllocation() = var and
+  vml.getAnAllocation() = var and
   (
     vml.getStartBitOffset() = Ints::unknown() or
     vml.getEndBitOffset() = Ints::unknown()
@@ -564,9 +569,9 @@ private predicate overlappingIRVariableMemoryLocations(
     isCoveredOffset(var, offsetRank, use)
   )
   or
-  hasUnknownOffset(use.getAllocation(), def)
+  hasUnknownOffset(use.getAnAllocation(), def)
   or
-  hasUnknownOffset(def.getAllocation(), use)
+  hasUnknownOffset(def.getAnAllocation(), use)
 }
 
 private Overlap getVariableMemoryLocationOverlap(
