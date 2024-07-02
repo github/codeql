@@ -1,4 +1,3 @@
-extensions:
   # partial model of the Boost::Asio network library
 extensions:
   - addsTo:

@@ -412,6 +412,8 @@ class ArgumentPosition = Position;
 
 abstract class Position extends TPosition {
   abstract string toString();
+
+  abstract int getIndirectionIndex();
 }
 
 class DirectPosition extends Position, TDirectPosition {
@@ -421,13 +423,15 @@ class DirectPosition extends Position, TDirectPosition {
 
   override string toString() {
     index = -1 and
-    result = "this"
+    result = "this pointer"
     or
     index != -1 and
     result = index.toString()
   }
 
   int getIndex() { result = index }
+
+  final override int getIndirectionIndex() { result = 0 }
 }
 
 class IndirectionPosition extends Position, TIndirectionPosition {
@@ -438,16 +442,13 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 
   override string toString() {
     if argumentIndex = -1
-    then if indirectionIndex > 0 then result = "this indirection" else result = "this"
-    else
-      if indirectionIndex > 0
-      then result = argumentIndex.toString() + " indirection"
-      else result = argumentIndex.toString()
+    then result = repeatStars(indirectionIndex - 1) + "this"
+    else result = repeatStars(indirectionIndex) + argumentIndex.toString()
   }
 
   int getArgumentIndex() { result = argumentIndex }
 
-  int getIndirectionIndex() { result = indirectionIndex }
+  final override int getIndirectionIndex() { result = indirectionIndex }
 }
 
 newtype TPosition =
@@ -1322,7 +1323,7 @@ import IsUnreachableInCall
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
@@ -1393,7 +1394,8 @@ private predicate unionHasApproxName(Cpp::Union u, string s) { s = u.getName().c
 cached
 private newtype TContentApprox =
   TFieldApproxContent(string s) { fieldHasApproxName(_, s) } or
-  TUnionApproxContent(string s) { unionHasApproxName(_, s) }
+  TUnionApproxContent(string s) { unionHasApproxName(_, s) } or
+  TElementApproxContent()
 
 /** An approximated `Content`. */
 class ContentApprox extends TContentApprox {
@@ -1424,6 +1426,10 @@ private class UnionApproxContent extends ContentApprox, TUnionApproxContent {
   final override string toString() { result = s }
 }
 
+private class ElementApproxContent extends ContentApprox, TElementApproxContent {
+  final override string toString() { result = "ElementApprox" }
+}
+
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) {
@@ -1438,6 +1444,9 @@ ContentApprox getContentApprox(Content c) {
     u = c.(UnionContent).getUnion() and
     unionHasApproxName(u, prefix)
   )
+  or
+  c instanceof ElementContent and
+  result instanceof ElementApproxContent
 }
 
 /**
@@ -1696,6 +1705,14 @@ class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
 
 /** Gets the second-level scope containing the node `n`, if any. */
 DataFlowSecondLevelScope getSecondLevelScope(Node n) { result.getANode() = n }
+
+/**
+ * Gets the maximum number of indirections to use for `ElementContent`.
+ *
+ * This should be equal to the largest number of stars (i.e., `*`s) in any
+ * `Element` content across all of our MaD summaries, sources, and sinks.
+ */
+int getMaxElementContentIndirectionIndex() { result = 5 }
 
 /**
  * Module that defines flow through iterators.
