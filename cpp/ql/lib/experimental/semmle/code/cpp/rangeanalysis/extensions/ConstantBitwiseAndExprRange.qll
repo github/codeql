@@ -46,34 +46,37 @@ private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
     result = this.(AssignAndExpr).getRValue()
   }
 
-  override float getLowerBounds() {
+  override QlBuiltins::BigInt getLowerBounds() {
     // If an operand can have negative values, the lower bound is unconstrained.
     // Otherwise, the lower bound is zero.
-    exists(float lLower, float rLower |
+    exists(QlBuiltins::BigInt lLower, QlBuiltins::BigInt rLower |
       lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
       (
-        (lLower < 0 or rLower < 0) and
+        (lLower < 0.toBigInt() or rLower < 0.toBigInt()) and
         result = exprMinVal(this)
         or
         // This technically results in two lowerBounds when an operand range is negative, but
         // that's fine since `exprMinVal(x) <= 0`. We can't use an if statement here without
         // non-monotonic recursion issues
-        result = 0
+        result = 0.toBigInt()
       )
     )
   }
 
-  override float getUpperBounds() {
+  override QlBuiltins::BigInt getUpperBounds() {
     // If an operand can have negative values, the upper bound is unconstrained.
     // Otherwise, the upper bound is the minimum of the upper bounds of the operands
-    exists(float lLower, float lUpper, float rLower, float rUpper |
+    exists(
+      QlBuiltins::BigInt lLower, QlBuiltins::BigInt lUpper, QlBuiltins::BigInt rLower,
+      QlBuiltins::BigInt rUpper
+    |
       lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
       lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
       rUpper = getFullyConvertedUpperBounds(this.getRightOperand()) and
       (
-        (lLower < 0 or rLower < 0) and
+        (lLower < 0.toBigInt() or rLower < 0.toBigInt()) and
         result = exprMaxVal(this)
         or
         // This technically results in two upperBounds when an operand range is negative, but

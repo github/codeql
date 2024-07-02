@@ -76,20 +76,22 @@ int getEffectiveMulOperands(MulExpr me) {
  * using SimpleRangeAnalysis.
  */
 class AnalyzableExpr extends Expr {
-  float maxValue() { result = upperBound(this.getFullyConverted()) }
+  QlBuiltins::BigInt maxValue() { result = upperBound(this.getFullyConverted()) }
 
-  float minValue() { result = lowerBound(this.getFullyConverted()) }
+  QlBuiltins::BigInt minValue() { result = lowerBound(this.getFullyConverted()) }
 }
 
 class ParenAnalyzableExpr extends AnalyzableExpr, ParenthesisExpr {
-  override float maxValue() { result = this.getExpr().(AnalyzableExpr).maxValue() }
+  override QlBuiltins::BigInt maxValue() { result = this.getExpr().(AnalyzableExpr).maxValue() }
 
-  override float minValue() { result = this.getExpr().(AnalyzableExpr).minValue() }
+  override QlBuiltins::BigInt minValue() { result = this.getExpr().(AnalyzableExpr).minValue() }
 }
 
 class MulAnalyzableExpr extends AnalyzableExpr, MulExpr {
-  override float maxValue() {
-    exists(float x1, float y1, float x2, float y2 |
+  override QlBuiltins::BigInt maxValue() {
+    exists(
+      QlBuiltins::BigInt x1, QlBuiltins::BigInt y1, QlBuiltins::BigInt x2, QlBuiltins::BigInt y2
+    |
       x1 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() and
       x2 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() and
       y1 = this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue() and
@@ -98,8 +100,10 @@ class MulAnalyzableExpr extends AnalyzableExpr, MulExpr {
     )
   }
 
-  override float minValue() {
-    exists(float x1, float x2, float y1, float y2 |
+  override QlBuiltins::BigInt minValue() {
+    exists(
+      QlBuiltins::BigInt x1, QlBuiltins::BigInt x2, QlBuiltins::BigInt y1, QlBuiltins::BigInt y2
+    |
       x1 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() and
       x2 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() and
       y1 = this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue() and
@@ -110,13 +114,13 @@ class MulAnalyzableExpr extends AnalyzableExpr, MulExpr {
 }
 
 class AddAnalyzableExpr extends AnalyzableExpr, AddExpr {
-  override float maxValue() {
+  override QlBuiltins::BigInt maxValue() {
     result =
       this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() +
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue()
   }
 
-  override float minValue() {
+  override QlBuiltins::BigInt minValue() {
     result =
       this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() +
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue()
@@ -124,13 +128,13 @@ class AddAnalyzableExpr extends AnalyzableExpr, AddExpr {
 }
 
 class SubAnalyzableExpr extends AnalyzableExpr, SubExpr {
-  override float maxValue() {
+  override QlBuiltins::BigInt maxValue() {
     result =
       this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() -
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue()
   }
 
-  override float minValue() {
+  override QlBuiltins::BigInt minValue() {
     result =
       this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() -
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue()
@@ -140,7 +144,7 @@ class SubAnalyzableExpr extends AnalyzableExpr, SubExpr {
 class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
   VarAnalyzableExpr() { this.getTarget() instanceof StackVariable }
 
-  override float maxValue() {
+  override QlBuiltins::BigInt maxValue() {
     exists(SsaDefinition def, Variable v |
       def.getAUse(v) = this and
       // if there is a defining expression, use that for
@@ -152,7 +156,7 @@ class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
     )
   }
 
-  override float minValue() {
+  override QlBuiltins::BigInt minValue() {
     exists(SsaDefinition def, Variable v |
       def.getAUse(v) = this and
       if exists(def.getDefiningValue(v))
