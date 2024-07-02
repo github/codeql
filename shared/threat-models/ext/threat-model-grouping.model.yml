@@ -21,3 +21,6 @@ extensions:
       # Android threat models
       - ["android-external-storage-dir", "android"]
       - ["contentprovider", "android"]
+
+      # Threat models that are not grouped with any other threat models
+      #   "reverse-dns"
