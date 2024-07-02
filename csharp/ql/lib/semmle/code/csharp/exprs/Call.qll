@@ -528,7 +528,7 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
   final override Callable getARuntimeTarget() {
     exists(ExplicitDelegateLikeDataFlowCall call |
       this = call.getCall() and
-      result = viableCallableLambda(call, _).asCallable()
+      result = viableCallableLambda(call, _).asCallable(_)
     )
   }
 
