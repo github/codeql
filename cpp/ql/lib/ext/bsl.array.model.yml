@@ -10,3 +10,5 @@ extensions:
       - ["bsl", "array", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["bsl", "array", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["bsl", "array", True, "rcbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["bsl", "array", True, "front", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["bsl", "array", True, "back", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
