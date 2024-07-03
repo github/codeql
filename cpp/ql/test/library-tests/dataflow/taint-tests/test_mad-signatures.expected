@@ -119,6 +119,30 @@ signatureMatches
 | stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
 | stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
 | stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
 | stl.h:331:12:331:17 | insert | (const_iterator,T &&) | deque<T> | insert | 0 |
 | stl.h:331:12:331:17 | insert | (const_iterator,T &&) | deque<T> | insert | 1 |
 | stl.h:331:12:331:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 0 |
@@ -297,6 +321,14 @@ getSignatureParameterName
 | (list &&) | list | list | 0 | list && |
 | (list &&,const Allocator &) | list<T,Allocator> | list | 0 | list && |
 | (list &&,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
+| (size_type,const T &) | deque<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | deque<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | forward_list<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | forward_list<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | list<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | list<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | vector<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | vector<T,Allocator> | assign | 1 | const class:0 & |
 | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 | size_type |
 | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:0 & |
 | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 | const class:1 & |

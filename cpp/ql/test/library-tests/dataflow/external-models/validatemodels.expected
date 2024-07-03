@@ -20,6 +20,7 @@
 | Dubious signature "(forward_list &&,const Allocator &)" in summary model. |
 | Dubious signature "(list &&)" in summary model. |
 | Dubious signature "(list &&,const Allocator &)" in summary model. |
+| Dubious signature "(size_type,const T &)" in summary model. |
 | Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
 | Dubious signature "(vector &&)" in summary model. |
 | Dubious signature "(vector &&,const Allocator &)" in summary model. |
