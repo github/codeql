@@ -78,7 +78,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions
+import internal.ExternalFlowExtensions as FlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -86,6 +86,45 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+
+private predicate importPath(string package1, string package2) {
+  exists(string group |
+    FlowExtensions::importPaths(group, package1) and
+    FlowExtensions::importPaths(group, package2)
+  )
+}
+
+/**
+ * TODO: Also implement using aliases.
+ */
+predicate sourceModel = FlowExtensions::sourceModel/10;
+
+/**
+ * TODO: Also implement using aliases.
+ */
+predicate sinkModel = FlowExtensions::sinkModel/10;
+
+/**
+ * TODO: Also implement using aliases.
+ */
+predicate summaryModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+    provenance, madId)
+  or
+  exists(string alternative |
+    importPath(package, alternative) and
+    FlowExtensions::summaryModel(alternative, type, subtypes, name, signature, ext, input, output,
+      kind, provenance, madId)
+  )
+}
+
+/**
+ * TODO: Also implement using aliases.
+ */
+predicate neutralModel = FlowExtensions::neutralModel/6;
 
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
