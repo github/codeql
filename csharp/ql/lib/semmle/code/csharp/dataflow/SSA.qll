@@ -427,7 +427,7 @@ module Ssa {
     }
 
     /** Gets the location of this SSA definition. */
-    Location getLocation() { none() }
+    override Location getLocation() { none() }
   }
 
   /**

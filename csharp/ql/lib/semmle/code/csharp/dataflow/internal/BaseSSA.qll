@@ -36,13 +36,15 @@ module BaseSsa {
 
     class BasicBlock = ControlFlow::BasicBlock;
 
+    class ControlFlowNode = ControlFlow::Node;
+
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
     }
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
+    class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
 
     class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
@@ -93,7 +95,7 @@ module BaseSsa {
       not result instanceof PhiNode
     }
 
-    Location getLocation() {
+    override Location getLocation() {
       result = this.getDefinition().getLocation()
       or
       exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |

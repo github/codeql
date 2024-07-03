@@ -263,13 +263,15 @@ module VariableCapture {
 
   private module CaptureInput implements Shared::InputSig<Location> {
     private import csharp as Cs
-    private import semmle.code.csharp.controlflow.ControlFlowGraph
+    private import semmle.code.csharp.controlflow.ControlFlowGraph as Cfg
     private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = super.getCallable() }
     }
+
+    class ControlFlowNode = Cfg::ControlFlow::Node;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()

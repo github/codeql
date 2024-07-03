@@ -886,15 +886,22 @@ private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) 
 
 private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import swift as S
+  private import codeql.swift.controlflow.ControlFlowGraph as Cfg
   private import codeql.swift.controlflow.BasicBlocks as B
 
   class BasicBlock instanceof B::BasicBlock {
     string toString() { result = super.toString() }
 
+    ControlFlowNode getNode(int i) { result = super.getNode(i) }
+
+    int length() { result = super.length() }
+
     Callable getEnclosingCallable() { result = super.getScope() }
 
     Location getLocation() { result = super.getLocation() }
   }
+
+  class ControlFlowNode = Cfg::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
     result.(B::BasicBlock).immediatelyDominates(bb)
