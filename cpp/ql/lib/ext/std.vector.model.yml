@@ -3,8 +3,8 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
-      - ["std", "vector", True, "assign", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
-      - ["std", "vector", True, "assign<InputIt>", "(InputIt,InputIt)", "", "Argument[0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "vector<T,Allocator>", True, "assign", "(size_type,const T &)", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "vector", True, "assign<InputIt>", "(InputIt,InputIt)", "", "Argument[0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "vector", True, "at", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["std", "vector", True, "back", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["std", "vector", True, "begin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
