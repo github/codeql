@@ -78,7 +78,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions
+import internal.ExternalFlowExtensions as FlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -86,6 +86,82 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+
+/** Gets the prefix for a group of packages. */
+string groupPrefix() { result = "group:" }
+
+/** Gets a group that `package` is in, according to `packageGrouping`. */
+private string getGroup(string package) {
+  exists(string group |
+    FlowExtensions::packageGrouping(group, package) and
+    result = groupPrefix() + group
+  )
+}
+
+/**
+ * Holds if a source model exists for the given parameters.
+ *
+ * Note that we consider all packages in the same group.
+ */
+predicate sourceModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  FlowExtensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind,
+    provenance, madId)
+  or
+  // Also look for models that are defined for a group that `package` is part of.
+  FlowExtensions::sourceModel(getGroup(package), type, subtypes, name, signature, ext, output, kind,
+    provenance, madId)
+}
+
+/**
+ * Holds if a sink model exists for the given parameters.
+ *
+ * Note that we consider all packages in the same group.
+ */
+predicate sinkModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  FlowExtensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
+    madId)
+  or
+  // Also look for models that are defined for a group that `package` is part of.
+  FlowExtensions::sinkModel(getGroup(package), type, subtypes, name, signature, ext, input, kind,
+    provenance, madId)
+}
+
+/**
+ * Holds if a summary model exists for the given parameters.
+ *
+ * Note that we consider all packages in the same group.
+ */
+predicate summaryModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+    provenance, madId)
+  or
+  // Also look for models that are defined for a group that `package` is part of.
+  FlowExtensions::summaryModel(getGroup(package), type, subtypes, name, signature, ext, input,
+    output, kind, provenance, madId)
+}
+
+/**
+ * Holds if a neutral model exists for the given parameters.
+ *
+ * Note that we consider all packages in the same group.
+ */
+predicate neutralModel(
+  string package, string type, string name, string signature, string kind, string provenance
+) {
+  FlowExtensions::neutralModel(package, type, name, signature, kind, provenance)
+  or
+  // Also look for models that are defined for a group that `package` is part of.
+  FlowExtensions::neutralModel(getGroup(package), type, name, signature, kind, provenance)
+}
 
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
