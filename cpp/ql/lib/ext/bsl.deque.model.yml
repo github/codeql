@@ -70,3 +70,4 @@ extensions:
       - ["bsl", "deque<T>", True, "insert", "(const_iterator,size_type,const T &)", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["bsl", "deque<T>", True, "insert", "(const_iterator,T &&)", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "deque<T>", True, "insert", "(const_iterator,T &&)", "", "Argument[*@1]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["bsl", "deque<T>", True, "insert", "(const_iterator,T &&)", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]

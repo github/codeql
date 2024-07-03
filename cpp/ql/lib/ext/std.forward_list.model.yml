@@ -53,3 +53,4 @@ extensions:
       - ["std", "forward_list<T>", True, "insert_after", "(const_iterator,size_type,const T &)", "", "Argument[*@2]", "ReturnValue.Element[@]", "value", "manual"]
       - ["std", "forward_list<T>", True, "insert_after", "(const_iterator,T &&)", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "forward_list<T>", True, "insert_after", "(const_iterator,T &&)", "", "Argument[*@1]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "forward_list<T>", True, "insert_after", "(const_iterator,T &&)", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]

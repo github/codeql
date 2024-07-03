@@ -57,3 +57,4 @@ extensions:
       - ["std", "vector<T>", True, "insert", "(const_iterator,size_type,const T &)", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["std", "vector<T>", True, "insert", "(const_iterator,T &&)", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "vector<T>", True, "insert", "(const_iterator,T &&)", "", "Argument[*@1]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "vector<T>", True, "insert", "(const_iterator,T &&)", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
