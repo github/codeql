@@ -15,11 +15,67 @@ module BuildlessModel<BuildlessASTSig Sig> {
     TNamespace(string fqn) { fqn = getQualifiedName(_) } or
     TASTNode(AST::SourceElement node) { any() }
 
-  class Type extends string {
+    /*
+      Any compile-time concept that can be named.
+    */
+  class Entity extends string
+  {
+    bindingset[this] Entity() { any() }
+  }
+
+  /*
+    An entity that contains named members.
+  */
+  class Scope extends Entity
+  {
+    bindingset[this] Scope() { any() }
+
+    Member getAMember() { result = this.getAMember(_) }
+
+    abstract Member getAMember(string name);
+  }
+
+  /*
+    An entity that is a member of a scope.
+  */
+  class Member extends Entity
+  {
+    bindingset[this] Member() { any() }
+
+    abstract string getName();
+    abstract Scope getParent();
+  }
+
+  class Namespace2 extends Member, Scope
+  {
+    AST::SourceNamespace ns;
+
+    Namespace2() { this = "::" + getQualifiedName(ns) }
+
+    AST::SourceNamespace getAstNode() { result = ns }
+
+    override Namespace2 getParent() { result.getAstNode() = ns.getParent() }
+
+    override string getName() { result = ns.getName() }
+
+    override Member getAMember(string name) {
+      result = this.getMemberNamespace(name)
+      // !! Types
+    }
+
+    Namespace2 getMemberNamespace(string name) {
+      result.getParent() = this and result.getName() = name
+    }
+
+  }
+
+  class Type extends Member, Scope {
     Type() { exists(SourceTypeDeclaration t | t.getMangledName() = this) }
 
+    AST::SourceType getAstNode() { result = this.getADeclaration().getSourceNode() }
+
     // string toString() { result = "i am a type" }
-    string getName() { result = this.getADeclaration().getName() }
+    override string getName() { result = this.getADeclaration().getName() }
 
     Location getLocation() { result = this.getADefinition().getLocation() }
 
@@ -27,11 +83,23 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
     SourceTypeDefinition getADefinition() { result.getMangledName() = this }
 
-    Namespace getParentNamespace() {
-      result.getADeclaration() = this.getADeclaration().getParentNamespace()
+    override Member getAMember(string name)
+    {
+      result = getMemberType(name)
+    }
+
+    Type getMemberType(string name)
+    {
+      none()
+    }
+
+    Namespace2 getParentNamespace() {
+      result.getAstNode() = this.getADeclaration().getParentNamespace()
     }
 
     Type getParentType() { result.getADeclaration() = this.getADeclaration().getParentType() }
+
+    override Scope getParent() { result = this.getParentNamespace() or result = this.getParentType() }
 
     string getFullyQualifiedName() { result = this.getADeclaration().getFullyQualifiedName() }
 
@@ -40,6 +108,12 @@ module BuildlessModel<BuildlessASTSig Sig> {
 
   private Type lookupNameInType(Type type, string name)
   {
+    // Is the name a member of this type?
+
+    // Is the name in the same scope as the type?
+
+    // Is the name in global scope?
+
     // TODO!
     none()
   }
