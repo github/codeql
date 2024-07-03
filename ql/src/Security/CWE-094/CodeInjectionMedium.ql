@@ -24,6 +24,12 @@ where
   (
     inNonPrivilegedCompositeAction(sink.getNode().asExpr()) or
     inNonPrivilegedJob(sink.getNode().asExpr())
+  ) and
+  // exclude cases where the sink is a JS script and the expression uses toJson
+  not exists(UsesStep script |
+    script.getCallee() = "actions/github-script" and
+    script.getArgumentExpr("script") = sink.getNode().asExpr() and
+    exists(getAToJsonReferenceExpression(sink.getNode().asExpr().(Expression).getExpression(), _))
   )
 select sink.getNode(), source, sink,
   "Potential code injection in $@, which may be controlled by an external user.", sink,

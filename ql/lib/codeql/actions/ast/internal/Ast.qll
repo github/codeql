@@ -1195,13 +1195,39 @@ string getASimpleReferenceExpression(string s, int offset) {
 }
 
 bindingset[s]
+string getAFromJsonReferenceExpression(string s, int offset) {
+  // We use `regexpFind` to obtain *all* matches of `${{...}}`,
+  // not just the last (greedy match) or first (reluctant match).
+  result =
+    s.trim()
+        .regexpFind("(?i)fromjson\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          _, offset)
+        .regexpCapture("(?i)fromjson\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          1)
+}
+
+bindingset[s]
+string getAToJsonReferenceExpression(string s, int offset) {
+  // We use `regexpFind` to obtain *all* matches of `${{...}}`,
+  // not just the last (greedy match) or first (reluctant match).
+  result =
+    s.trim()
+        .regexpFind("(?i)tojson\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          _, offset)
+        .regexpCapture("(?i)tojson\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          1)
+}
+
+bindingset[s]
 string getAJsonReferenceExpression(string s, int offset) {
   // We use `regexpFind` to obtain *all* matches of `${{...}}`,
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.trim()
-        .regexpFind("(?i)fromjson\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\).*", _, offset)
-        .regexpCapture("(?i)fromjson\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\).*", 1)
+        .regexpFind("(?i)(from|to)json\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          _, offset)
+        .regexpCapture("(?i)(from|to)json\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          2)
 }
 
 /**
