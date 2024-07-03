@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: experimentalSinkModel
+      extensible: sinkModel
     data:
       - ["org.springframework.core.io","FileSystemResource",true,"FileSystemResource","(FileSystem,String)","","Argument[1]","path-injection","manual"]
       - ["org.springframework.core.io","FileSystemResource",true,"FileSystemResource","(File)","","Argument[0]","path-injection","manual"]
@@ -23,5 +23,4 @@ extensions:
       - ["org.springframework.util","FileSystemUtils",true,"deleteRecursively","(Path)","","Argument[0]","path-injection","manual"]
       - ["org.springframework.util","ResourceUtils",true,"getFile","(String)","","Argument[0]","path-injection","manual"]
       - ["org.springframework.util","FileCopyUtils",true,"copyToByteArray","(File)","","Argument[0]","path-injection","manual"]
-      - ["org.springframework.util","FileCopyUtils",true,"copyToString","(Reader)","","Argument[0]","path-injection","manual"]
       - ["org.springframework.util","FileSystemUtils",true,"copyRecursively","(File,File)","","Argument[0]","path-injection","manual"]

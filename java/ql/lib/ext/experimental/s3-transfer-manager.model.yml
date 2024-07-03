@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: experimentalSinkModel
+      extensible: sinkModel
     data:
       - ["software.amazon.awssdk.transfer.s3.model","ResumableFileUpload",true,"serializeToFile","(Path)","","Argument[0]","path-injection","manual"]
       - ["software.amazon.awssdk.transfer.s3.model","DownloadFileRequest$Builder",true,"destination","(Path)","","Argument[0]","path-injection","manual"]

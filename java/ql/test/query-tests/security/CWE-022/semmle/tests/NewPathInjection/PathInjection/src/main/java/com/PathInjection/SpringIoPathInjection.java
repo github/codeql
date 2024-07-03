@@ -43,6 +43,5 @@ public class SpringIoPathInjection {
     FileSystemUtils.deleteRecursively(filePath); // $ PathInjection
     FileCopyUtils.copy(pathFile, pathFile); // $ PathInjection
     FileCopyUtils.copyToByteArray(pathFile); // $ PathInjection
-    FileCopyUtils.copyToString(new FileReader("fa"));
   }
 }
