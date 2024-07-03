@@ -76,8 +76,20 @@ namespace Semmle.Extraction
                             throw new InvalidFilePatternException(pattern, "'**' preceeded by non-`/` character.");
                         if (HasCharAt(i + 2, c => c != '/'))
                             throw new InvalidFilePatternException(pattern, "'**' succeeded by non-`/` character");
-                        sb.Append(".*");
-                        i += 2;
+
+                        if (i + 2 < pattern.Length)
+                        {
+                            // Processing .../**/...
+                            sb.Append("(.*/|)");
+                            i += 3;
+                        }
+                        else
+                        {
+                            // Processing .../**
+                            sb.Append(".*");
+                            // There's no need to add another .* to the end outside the loop, we can return early.
+                            return sb;
+                        }
                     }
                     else
                     {
