@@ -37,3 +37,7 @@ jobs:
       with:
         script: |
           core.setOutput('issue_title', ${{ github.event.issue.title }}.replaceAll(/"/g, '\\"'));
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          core.setOutput('issue_title', ${{ toJson(github.event.issue.title) }}.replaceAll(/"/g, '\\"'));
