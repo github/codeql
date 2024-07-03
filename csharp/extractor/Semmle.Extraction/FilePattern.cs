@@ -80,15 +80,15 @@ namespace Semmle.Extraction
                         if (i + 2 < pattern.Length)
                         {
                             // Processing .../**/...
+                            //                ^^^
                             sb.Append("(.*/|)");
                             i += 3;
                         }
                         else
                         {
-                            // Processing .../**
-                            sb.Append(".*");
-                            // There's no need to add another .* to the end outside the loop, we can return early.
-                            return sb;
+                            // Processing .../** at the end of the pattern.
+                            // There's no need to add .* because it's anyways added outside the loop.
+                            break;
                         }
                     }
                     else
