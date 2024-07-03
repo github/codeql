@@ -10,3 +10,5 @@ extensions:
       - ["std", "array", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["std", "array", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["std", "array", True, "rcbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "array", True, "front", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "array", True, "back", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
