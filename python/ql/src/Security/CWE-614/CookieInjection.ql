@@ -10,7 +10,6 @@
  */
 
 import python
-import semmle.python.dataflow.new.DataFlow
 import semmle.python.security.dataflow.CookieInjectionQuery
 import CookieInjectionFlow::PathGraph
 
