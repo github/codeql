@@ -10,11 +10,13 @@ private import semmle.code.csharp.controlflow.internal.PreSsa
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
   class BasicBlock = ControlFlow::BasicBlock;
 
+  class ControlFlowNode = ControlFlow::Node;
+
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
+  class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
 
   class SourceVariable = Ssa::SourceVariable;
 
@@ -24,7 +26,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    *
    * This includes implicit writes via calls.
    */
-  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableWrite(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableWriteDirect(bb, i, v, certain)
     or
     variableWriteQualifier(bb, i, v, certain)
@@ -38,7 +40,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    *
    * This includes implicit reads via calls.
    */
-  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableReadActual(bb, i, v) and
     certain = true
     or
@@ -1089,7 +1091,7 @@ class DefinitionExt extends Impl::DefinitionExt {
   override string toString() { result = this.(Ssa::Definition).toString() }
 
   /** Gets the location of this definition. */
-  Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
 
   /** Gets the enclosing callable of this definition. */
   Callable getEnclosingCallable() { result = this.(Ssa::Definition).getEnclosingCallable() }
