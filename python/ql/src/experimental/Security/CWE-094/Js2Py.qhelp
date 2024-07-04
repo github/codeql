@@ -17,8 +17,8 @@
     <example>
         <p>In the example below, the Javascript code being evaluated is controlled by the user and
             hence leads to arbitrary code execution.</p>
-        <sample src="Js2PyBad.py" />
-        <p>This can be fixed by disabling imports before evaluating the user passed buffer.
-        <sample src="Js2PyGood.py" />
+        <sample src="Js2pyBad.py" />
+        <p>This can be fixed by disabling imports before evaluating the user passed buffer.</p>
+        <sample src="Js2pyGood.py" />
     </example>
 </qhelp>
