@@ -91,6 +91,35 @@ private module AllocationSet =
   QlBuiltins::EquivalenceRelation<NonSingletonSets, hasOverlappingElement/2>;
 
 /**
+ * Holds if `var` is created by the AST element `e`. Furthermore, the value `d`
+ * represents which branch of the `Allocation` type `var` is from.
+ */
+private predicate allocationAst(Allocation var, @element e, int d) {
+  var.(VariableAllocation).getIRVariable().getAst() = e and d = 0
+  or
+  var.(IndirectParameterAllocation).getIRVariable().getAst() = e and d = 1
+  or
+  var.(DynamicAllocation).getABaseInstruction().getAst() = e and d = 2
+}
+
+/** Holds if `x = y` and `x` is an AST element that creates an `Allocation`. */
+private predicate id(@element x, @element y) {
+  allocationAst(_, x, _) and
+  x = y
+}
+
+private predicate idOf(@element x, int y) = equivalenceRelation(id/2)(x, y)
+
+/** Gets a unique integer representation of `var`. */
+private int getUniqueAllocationId(Allocation var) {
+  exists(int r, @element e, int d |
+    allocationAst(var, e, d) and
+    idOf(e, r) and
+    result = 3 * r + d
+  )
+}
+
+/**
  * An equivalence class of a set of allocations.
  *
  * Any `VariableGroup` will be completely disjunct from any other
@@ -132,6 +161,37 @@ class VariableGroup extends AllocationSet::EquivalenceClass {
     exists(AllocationSet0::Set set |
       this = AllocationSet::getEquivalenceClass(set) and
       set.contains(result)
+    )
+  }
+
+  /** Gets a unique string representing this set. */
+  final private string getUniqueId() {
+    result = strictconcat(getUniqueAllocationId(this.getAnAllocation()).toString(), ",")
+  }
+
+  /**
+   * Gets the order that this set should be initialized in.
+   *
+   * Note: This is _not_ the order in which the _members_ of the set should be
+   * initialized. Rather, it represents the order in which the set should be
+   * initialized in relation to other sets. That is, if
+   * ```
+   * getInitializationOrder() = 2
+   * ```
+   * then this set will be initialized as the second (third) set in the
+   * enclosing function. In order words, the third `InitializeGroup`
+   * instruction in the entry block of the enclosing function will initialize
+   * this set of allocations.
+   */
+  final int getInitializationOrder() {
+    exists(IRFunction func |
+      func = this.getIRFunction() and
+      this =
+        rank[result + 1](VariableGroup vg, string uniq |
+          vg.getIRFunction() = func and uniq = vg.getUniqueId()
+        |
+          vg order by uniq
+        )
     )
   }
 
