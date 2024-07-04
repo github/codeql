@@ -15,6 +15,7 @@ import actions
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
+import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
 
@@ -23,6 +24,8 @@ where
   j.getATriggerEvent() = e and
   // job can be triggered by an external user
   e.isExternallyTriggerable() and
+  // the checkout is not controlled by an access check
+  not exists(ControlCheck check | check.protects(checkout, j.getATriggerEvent())) and
   (
     // the workflow runs in the context of the default branch
     runsOnDefaultBranch(e)
@@ -51,4 +54,4 @@ where
     // excluding privileged workflows since they can be exploited in easier circumstances
     not j.isPrivileged()
   )
-select s, checkout, s, "Potential cache poisoning in the context of the default branch" 
+select s, checkout, s, "Potential cache poisoning in the context of the default branch"

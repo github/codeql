@@ -29,7 +29,8 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   LocalScriptExecutionRunStep() {
     exists(string line, string regexp, int group | line = this.getScript().splitAt("\n").trim() |
       poisonableLocalScriptsDataModel(regexp, group) and
-      cmd = line.regexpCapture(".*(^|\\b|\\s+|\\$\\(|`)" + regexp + "(\\b|\\s+|;|\\)|`|$).*", group)
+      //cmd = line.regexpCapture(".*(^|\\b|\\s+|\\$\\(|`)" + regexp + "(\\b|\\s+|;|\\)|`|$).*", group)
+      cmd = line.regexpCapture(".*(^|;|\\$\\(|`|\\|)\\s*" + regexp + "\\s*(;|\\||\\)|`|$).*", group)
     )
   }
 
@@ -42,7 +43,7 @@ class LocalActionUsesStep extends PoisonableStep, UsesStep {
 
 class EnvVarInjectionFromFileReadRunStep extends PoisonableStep, Run {
   EnvVarInjectionFromFileReadRunStep() {
-    exists(string content, string value|
+    exists(string content, string value |
       writeToGitHubEnv(this, content) and
       extractVariableAndValue(content, _, value) and
       outputsPartialFileContent(value)

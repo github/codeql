@@ -116,6 +116,22 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
           e.getFieldName().matches("%" + ["head", "branch", "ref"] + "%")
         )
       )
+      or
+      exists(NeedsExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getNeededJobId().matches("%" + ["head", "branch", "ref"] + "%") or
+          e.getFieldName().matches("%" + ["head", "branch", "ref"] + "%")
+        )
+      )
+      or
+      exists(JsonReferenceExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getAccessPath().matches("%." + ["head", "branch", "ref"] + "%") or
+          e.getInnerExpression().matches("%." + ["head", "branch", "ref"] + "%")
+        )
+      )
     )
   }
 }
@@ -148,6 +164,22 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
         (
           e.getStepId().matches("%" + ["head", "sha", "commit"] + "%") or
           e.getFieldName().matches("%" + ["head", "sha", "commit"] + "%")
+        )
+      )
+      or
+      exists(NeedsExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getNeededJobId().matches("%" + ["head", "sha", "commit"] + "%") or
+          e.getFieldName().matches("%" + ["head", "sha", "commit"] + "%")
+        )
+      )
+      or
+      exists(JsonReferenceExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getAccessPath().matches("%." + ["head", "sha", "commit"] + "%") or
+          e.getInnerExpression().matches("%." + ["head", "sha", "commit"] + "%")
         )
       )
     )

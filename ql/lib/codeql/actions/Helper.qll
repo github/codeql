@@ -1,5 +1,6 @@
 private import codeql.actions.Ast
 private import codeql.Locations
+private import codeql.actions.security.ControlChecks
 
 bindingset[expr]
 string normalizeExpr(string expr) {
@@ -215,17 +216,24 @@ predicate inPrivilegedCompositeAction(AstNode node) {
   )
 }
 
+predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
+  exists(Job j |
+    j = node.getEnclosingJob() and
+    j.isPrivilegedExternallyTriggerable() and
+    not exists(ControlCheck check, Event e | j.getATriggerEvent() = e | check.protects(node, e))
+  )
+}
+
+predicate inPrivilegedContext(AstNode node) {
+  inPrivilegedCompositeAction(node)
+  or
+  inPrivilegedExternallyTriggerableJob(node)
+}
+
 predicate inNonPrivilegedCompositeAction(AstNode node) {
   exists(CompositeAction a |
     a = node.getEnclosingCompositeAction() and
     not a.isPrivilegedExternallyTriggerable()
-  )
-}
-
-predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
-  exists(Job j |
-    j = node.getEnclosingJob() and
-    j.isPrivilegedExternallyTriggerable()
   )
 }
 
@@ -236,6 +244,12 @@ predicate inNonPrivilegedJob(AstNode node) {
   )
 }
 
+predicate inNonPrivilegedContext(AstNode node) {
+  inNonPrivilegedCompositeAction(node)
+  or
+  inNonPrivilegedJob(node)
+}
+
 bindingset[snippet]
 predicate outputsPartialFileContent(string snippet) {
   // e.g.
@@ -244,5 +258,9 @@ predicate outputsPartialFileContent(string snippet) {
   // yq '.foo' foo.yml >> $GITHUB_PATH
   // cat foo.txt >> $GITHUB_PATH
   snippet
-      .regexpMatch(["(\\$\\(|`)<.*", ".*(\\b|^|\\s+)" + ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"] + ".*"])
+      .regexpMatch([
+          "(\\$\\(|`)<.*",
+          ".*(\\b|^|\\s+)" + ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"] +
+            ".*"
+        ])
 }

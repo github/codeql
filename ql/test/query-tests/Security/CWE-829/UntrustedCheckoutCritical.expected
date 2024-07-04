@@ -294,6 +294,16 @@ edges
 | .github/workflows/test4.yml:41:7:42:4 | Run Step | .github/workflows/test4.yml:42:7:43:4 | Run Step |
 | .github/workflows/test4.yml:41:7:42:4 | Run Step | .github/workflows/test4.yml:43:7:46:39 | Uses Step |
 | .github/workflows/test4.yml:42:7:43:4 | Run Step | .github/workflows/test4.yml:43:7:46:39 | Uses Step |
+| .github/workflows/test5.yml:13:9:28:6 | Uses Step: issue | .github/workflows/test5.yml:28:9:32:6 | Uses Step |
+| .github/workflows/test5.yml:13:9:28:6 | Uses Step: issue | .github/workflows/test5.yml:32:9:34:2 | Run Step |
+| .github/workflows/test5.yml:28:9:32:6 | Uses Step | .github/workflows/test5.yml:32:9:34:2 | Run Step |
+| .github/workflows/test5.yml:39:9:54:6 | Uses Step: issue | .github/workflows/test5.yml:54:9:58:6 | Uses Step |
+| .github/workflows/test5.yml:39:9:54:6 | Uses Step: issue | .github/workflows/test5.yml:58:9:60:2 | Run Step |
+| .github/workflows/test5.yml:54:9:58:6 | Uses Step | .github/workflows/test5.yml:58:9:60:2 | Run Step |
+| .github/workflows/test5.yml:64:9:68:6 | Uses Step | .github/workflows/test5.yml:68:9:68:43 | Run Step |
+| .github/workflows/test6.yml:19:9:39:6 | Uses Step | .github/workflows/test6.yml:39:9:43:6 | Run Step |
+| .github/workflows/test6.yml:19:9:39:6 | Uses Step | .github/workflows/test6.yml:43:9:45:52 | Run Step |
+| .github/workflows/test6.yml:39:9:43:6 | Run Step | .github/workflows/test6.yml:43:9:45:52 | Run Step |
 | .github/workflows/test.yml:13:9:14:6 | Uses Step | .github/workflows/test.yml:14:9:25:6 | Run Step |
 | .github/workflows/test.yml:13:9:14:6 | Uses Step | .github/workflows/test.yml:25:9:33:6 | Run Step |
 | .github/workflows/test.yml:13:9:14:6 | Uses Step | .github/workflows/test.yml:33:9:37:34 | Run Step |
@@ -322,5 +332,8 @@ edges
 | .github/workflows/mend.yml:29:9:33:28 | Uses Step | .github/workflows/mend.yml:22:9:29:6 | Uses Step | .github/workflows/mend.yml:29:9:33:28 | Uses Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/poc2.yml:52:9:58:24 | Run Step | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:52:9:58:24 | Run Step | Execution of untrusted code on a privileged workflow. |
+| .github/workflows/test5.yml:32:9:34:2 | Run Step | .github/workflows/test5.yml:28:9:32:6 | Uses Step | .github/workflows/test5.yml:32:9:34:2 | Run Step | Execution of untrusted code on a privileged workflow. |
+| .github/workflows/test5.yml:58:9:60:2 | Run Step | .github/workflows/test5.yml:54:9:58:6 | Uses Step | .github/workflows/test5.yml:58:9:60:2 | Run Step | Execution of untrusted code on a privileged workflow. |
+| .github/workflows/test5.yml:68:9:68:43 | Run Step | .github/workflows/test5.yml:64:9:68:6 | Uses Step | .github/workflows/test5.yml:68:9:68:43 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/untrusted_checkout.yml:20:9:22:23 | Run Step | .github/workflows/untrusted_checkout.yml:10:9:13:6 | Uses Step | .github/workflows/untrusted_checkout.yml:20:9:22:23 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/untrusted_checkout.yml:20:9:22:23 | Run Step | .github/workflows/untrusted_checkout.yml:13:9:16:6 | Uses Step | .github/workflows/untrusted_checkout.yml:20:9:22:23 | Run Step | Execution of untrusted code on a privileged workflow. |

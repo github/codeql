@@ -22,37 +22,14 @@ from LocalJob j, MutableRefCheckoutStep checkout, PoisonableStep s, ControlCheck
 where
   j = checkout.getEnclosingJob() and
   j.getAStep() = checkout and
-  // the checkout is followed by a known poisonable step
+  // the checked-out code may lead to arbitrary code execution
   checkout.getAFollowingStep() = s and
   // the checkout occurs in a privileged context
-  (
-    inPrivilegedCompositeAction(checkout)
-    or
-    inPrivilegedExternallyTriggerableJob(checkout)
-  ) and
-  // the mutable checkout step is protected by an access check
+  j.isPrivilegedExternallyTriggerable() and
+  // the mutable checkout step is protected by an Insufficient access check
   check.dominates(checkout) and
-  // the checked-out code may lead to arbitrary code execution
-  checkout.getAFollowingStep() instanceof PoisonableStep and
-  (
-    // environment gates do not depend on the triggering event
-    check instanceof EnvironmentCheck
-    or
-    // label gates do not depend on the triggering event
-    check instanceof LabelCheck
-    or
-    // actor or association gates are only bypassable for IssueOps
-    // since an attacker can wait for a privileged user to comment on an issue
-    // and then mutate the checked-out code.
-    // however, when used for pull_request_target, the check is not bypassable since
-    // the actor checked is the author of the PR
-    (
-      check instanceof AssociationCheck or
-      check instanceof ActorCheck or
-      check instanceof PermissionCheck
-    ) and
-    check.getEnclosingJob().getATriggerEvent().getName().matches("%_comment")
-  )
+  check.protects(checkout, j.getATriggerEvent()) and
+  check.protectsAgainstRefMutationAttacks() = false
 select s, checkout, s,
   "Insufficient protection against execution of untrusted code on a privileged workflow on check $@.",
   check, check.toString()

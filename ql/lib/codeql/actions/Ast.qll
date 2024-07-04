@@ -287,13 +287,21 @@ abstract class SimpleReferenceExpression extends AstNode instanceof SimpleRefere
   AstNode getTarget() { result = super.getTarget() }
 }
 
+class JsonReferenceExpression extends AstNode instanceof JsonReferenceExpressionImpl {
+  string getAccessPath() { result = super.getAccessPath() }
+
+  string getInnerExpression() { result = super.getInnerExpression() }
+}
+
 class SecretsExpression extends SimpleReferenceExpression instanceof SecretsExpressionImpl { }
 
 class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl {
   string getStepId() { result = super.getStepId() }
 }
 
-class NeedsExpression extends SimpleReferenceExpression instanceof NeedsExpressionImpl { }
+class NeedsExpression extends SimpleReferenceExpression instanceof NeedsExpressionImpl {
+  string getNeededJobId() { result = super.getNeededJobId() }
+}
 
 class JobsExpression extends SimpleReferenceExpression instanceof JobsExpressionImpl { }
 

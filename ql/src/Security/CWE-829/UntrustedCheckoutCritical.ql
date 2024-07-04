@@ -27,11 +27,5 @@ where
   // the checkout is followed by a known poisonable step
   checkout.getAFollowingStep() = s and
   // the checkout occurs in a privileged context
-  (
-    inPrivilegedCompositeAction(checkout)
-    or
-    inPrivilegedExternallyTriggerableJob(checkout)
-  ) and
-  // the checkout is not controlled by an access check
-  not exists(ControlCheck check | check.dominates(checkout))
+  inPrivilegedContext(checkout)
 select s, checkout, s, "Execution of untrusted code on a privileged workflow."

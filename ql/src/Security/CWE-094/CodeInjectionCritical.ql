@@ -17,15 +17,12 @@
 import actions
 import codeql.actions.security.CodeInjectionQuery
 import CodeInjectionFlow::PathGraph
+import codeql.actions.security.ControlChecks
 
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
 where
   CodeInjectionFlow::flowPath(source, sink) and
-  (
-    inPrivilegedCompositeAction(sink.getNode().asExpr())
-    or
-    inPrivilegedExternallyTriggerableJob(sink.getNode().asExpr())
-  ) and
+  inPrivilegedContext(sink.getNode().asExpr()) and
   // exclude cases where the sink is a JS script and the expression uses toJson
   not exists(UsesStep script |
     script.getCallee() = "actions/github-script" and

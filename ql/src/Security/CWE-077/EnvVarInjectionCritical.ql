@@ -16,25 +16,17 @@ import actions
 import codeql.actions.security.EnvVarInjectionQuery
 import EnvVarInjectionFlow::PathGraph
 
-predicate artifactToFileRead(DataFlow::Node source, DataFlow::Node sink) {
-  (
-    not source.(RemoteFlowSource).getSourceType() = "artifact"
-    or
-    source.(RemoteFlowSource).getSourceType() = "artifact" and
-    sink instanceof EnvVarInjectionFromFileReadSink
-  )
-}
-
 from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink
 where
   EnvVarInjectionFlow::flowPath(source, sink) and
-  (
-    inPrivilegedCompositeAction(sink.getNode().asExpr())
-    or
-    inPrivilegedExternallyTriggerableJob(sink.getNode().asExpr())
-  ) and
+  inPrivilegedContext(sink.getNode().asExpr()) and
   // exclude paths to file read sinks from non-artifact sources
-  artifactToFileRead(source.getNode(), sink.getNode())
+  (
+    not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
+    or
+    source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+    sink.getNode() instanceof EnvVarInjectionFromFileReadSink
+  )
 select sink.getNode(), source, sink,
   "Potential environment variable injection in $@, which may be controlled by an external user.",
   sink, sink.getNode().toString()

@@ -19,16 +19,12 @@ import EnvPathInjectionFlow::PathGraph
 from EnvPathInjectionFlow::PathNode source, EnvPathInjectionFlow::PathNode sink
 where
   EnvPathInjectionFlow::flowPath(source, sink) and
+  inNonPrivilegedContext(sink.getNode().asExpr()) and
   (
-    inNonPrivilegedCompositeAction(sink.getNode().asExpr())
+    not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
     or
-    inNonPrivilegedJob(sink.getNode().asExpr()) and
-    (
-      not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
-      or
-      source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
-      sink.getNode() instanceof EnvPathInjectionFromFileReadSink
-    )
+    source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+    sink.getNode() instanceof EnvPathInjectionFromFileReadSink
   )
 select sink.getNode(), source, sink,
   "Potential PATH environment variable injection in $@, which may be controlled by an external user.",

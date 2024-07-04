@@ -1230,6 +1230,18 @@ string getAJsonReferenceExpression(string s, int offset) {
           2)
 }
 
+bindingset[s]
+string getAJsonReferenceAccessPath(string s, int offset) {
+  // We use `regexpFind` to obtain *all* matches of `${{...}}`,
+  // not just the last (greedy match) or first (reluctant match).
+  result =
+    s.trim()
+        .regexpFind("(?i)(from|to)json\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+          _, offset)
+        .regexpCapture("(?i)(from|to)json\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\)([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*)",
+          3)
+}
+
 /**
  * A ${{}} expression accessing a context variable such as steps, needs, jobs, env, inputs, or matrix.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
@@ -1243,6 +1255,20 @@ abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
   abstract string getFieldName();
 
   abstract AstNodeImpl getTarget();
+}
+
+class JsonReferenceExpressionImpl extends ExpressionImpl {
+  string innerExpression;
+  string accessPath;
+
+  JsonReferenceExpressionImpl() {
+    innerExpression = getAJsonReferenceExpression(expression, _) and
+    accessPath = getAJsonReferenceAccessPath(expression, _)
+  }
+
+  string getInnerExpression() { result = innerExpression }
+
+  string getAccessPath() { result = accessPath }
 }
 
 private string stepsCtxRegex() {
@@ -1358,6 +1384,8 @@ class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
       neededJob.getLocation().getFile() = this.getLocation().getFile()
     )
   }
+
+  string getNeededJobId() { result = neededJob.getId() }
 
   override string getFieldName() { result = fieldName }
 
