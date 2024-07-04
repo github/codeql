@@ -2167,6 +2167,18 @@ class ChiInstruction extends Instruction {
  */
 class InitializeGroupInstruction extends Instruction {
   InitializeGroupInstruction() { this.getOpcode() instanceof Opcode::InitializeGroup }
+
+  /**
+   * Gets an `IRVariable` whose memory is initialized by this instruction, if any.
+   * Note: Allocations that are not represented as `IRVariable`s (such as
+   * dynamic allocations) are not returned by this predicate even if this
+   * instruction initializes such memory.
+   */
+  final IRVariable getAnIRVariable() { result = Construction::getAnInitializeGroupVariable(this) }
+
+  final override string getImmediateString() {
+    result = strictconcat(this.getAnIRVariable().toString(), ",")
+  }
 }
 
 /**
