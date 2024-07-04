@@ -139,7 +139,7 @@ private module SourceVariableImpl {
     ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, AssignableDefinition ad
   ) {
     ad = v.getADefinition() and
-    ad.getAControlFlowNode() = bb.getNode(i) and
+    ad.getExpr().getAControlFlowNode() = bb.getNode(i) and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = ad |
       second.getAssignment() = first.getAssignment() and
@@ -233,7 +233,7 @@ private module SourceVariableImpl {
       def.getTarget() = lv and
       lv.isRef() and
       lv = v.getAssignable() and
-      bb.getNode(i) = def.getAControlFlowNode() and
+      bb.getNode(i) = def.getExpr().getAControlFlowNode() and
       not def.getAssignment() instanceof LocalVariableDeclAndInitExpr
     )
   }
@@ -867,11 +867,14 @@ private module Cached {
   }
 
   cached
-  predicate implicitEntryDefinition(
-    ControlFlow::ControlFlow::BasicBlocks::EntryBlock bb, Ssa::SourceVariable v
-  ) {
-    exists(Callable c |
-      c = bb.getCallable() and
+  predicate implicitEntryDefinition(ControlFlow::ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
+    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
+      c = entry.getCallable() and
+      // In case `c` has multiple bodies, we want each body to gets its own implicit
+      // entry definition. In case `c` doesn't have multiple bodies, the line below
+      // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+      // will be in the entry block.
+      bb = entry.getFirstNode().getASuccessor().getBasicBlock() and
       c = v.getEnclosingCallable()
     |
       // Captured variable
@@ -883,6 +886,8 @@ private module Cached {
       or
       // Each tracked field and property has an implicit entry definition
       v instanceof PlainFieldOrPropSourceVariable
+      or
+      v.getAssignable() instanceof Parameter
     )
   }
 
