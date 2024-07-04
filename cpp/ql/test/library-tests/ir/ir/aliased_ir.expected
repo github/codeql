@@ -18581,16 +18581,17 @@ ir.cpp:
 # 2602|     v2602_1(void)                = EnterFunction            : 
 # 2602|     m2602_2(unknown)             = AliasedDefinition        : 
 # 2602|     m2602_3(unknown)             = InitializeNonLocal       : 
-# 2602|     m2602_4(unknown)             = Chi                      : total:~m?, partial:m2602_3
+# 2602|     m2602_4(unknown)             = Chi                      : total:m2602_2, partial:m2602_3
 # 2602|     m2602_5(Recursive *)         = InitializeGroup[a,b]     : 
-# 2602|     r2602_6(glval<Recursive *>)  = VariableAddress[a]       : 
-# 2602|     m2602_7(Recursive *)         = InitializeParameter[a]   : &:r2602_6
-# 2602|     r2602_8(Recursive *)         = Load[a]                  : &:r2602_6, m2602_7
-# 2602|     m2602_9(unknown)             = InitializeIndirection[a] : &:r2602_8
-# 2602|     m2602_10(unknown)            = Chi                      : total:m2602_4, partial:m2602_9
+# 2602|     m2602_6(unknown)             = Chi                      : total:m2602_4, partial:m2602_5
+# 2602|     r2602_7(glval<Recursive *>)  = VariableAddress[a]       : 
+# 2602|     m2602_8(Recursive *)         = InitializeParameter[a]   : &:r2602_7
+# 2602|     r2602_9(Recursive *)         = Load[a]                  : &:r2602_7, m2602_8
+# 2602|     m2602_10(unknown)            = InitializeIndirection[a] : &:r2602_9
+# 2602|     m2602_11(unknown)            = Chi                      : total:m2602_6, partial:m2602_10
 # 2604|     r2604_1(glval<Recursive *>)  = VariableAddress[b]       : 
 # 2604|     m2604_2(Recursive *)         = Uninitialized[b]         : &:r2604_1
-# 2604|     m2604_3(unknown)             = Chi                      : total:m2602_10, partial:m2604_2
+# 2604|     m2604_3(unknown)             = Chi                      : total:m2602_11, partial:m2604_2
 # 2605|     r2605_1(glval<Recursive **>) = VariableAddress[p]       : 
 # 2605|     r2605_2(glval<Recursive *>)  = VariableAddress[b]       : 
 # 2605|     r2605_3(Recursive **)        = CopyValue                : r2605_2
@@ -18610,14 +18611,14 @@ ir.cpp:
 
 # 2609|   Block 2
 # 2609|     r2609_1(glval<Recursive *>)  = VariableAddress[a] : 
-# 2609|     r2609_2(Recursive *)         = Load[a]            : &:r2609_1, m2602_7
+# 2609|     r2609_2(Recursive *)         = Load[a]            : &:r2609_1, m2602_8
 # 2609|     r2609_3(glval<Recursive **>) = VariableAddress[p] : 
 # 2609|     r2609_4(Recursive **)        = Load[p]            : &:r2609_3, m2607_2
 # 2609|     r2609_5(glval<Recursive *>)  = CopyValue          : r2609_4
 # 2609|     m2609_6(Recursive *)         = Store[?]           : &:r2609_5, r2609_2
 # 2609|     m2609_7(unknown)             = Chi                : total:m2607_6, partial:m2609_6
 # 2610|     r2610_1(glval<Recursive *>)  = VariableAddress[a] : 
-# 2610|     r2610_2(Recursive *)         = Load[a]            : &:r2610_1, m2602_7
+# 2610|     r2610_2(Recursive *)         = Load[a]            : &:r2610_1, m2602_8
 # 2610|     r2610_3(glval<Recursive *>)  = FieldAddress[next] : r2610_2
 # 2610|     r2610_4(Recursive **)        = CopyValue          : r2610_3
 # 2610|     r2610_5(glval<Recursive **>) = VariableAddress[p] : 
@@ -18629,31 +18630,32 @@ ir.cpp:
 # 2613|     r2613_2(glval<Recursive *>)  = VariableAddress[b]       : 
 # 2613|     r2613_3(Recursive *)         = Load[b]                  : &:r2613_2, ~m2607_6
 # 2613|     m2613_4(Recursive *)         = Store[#return]           : &:r2613_1, r2613_3
-# 2602|     v2602_11(void)               = ReturnIndirection[a]     : &:r2602_8, ~m2607_6
-# 2602|     r2602_12(glval<Recursive *>) = VariableAddress[#return] : 
-# 2602|     v2602_13(void)               = ReturnValue              : &:r2602_12, m2613_4
-# 2602|     v2602_14(void)               = AliasedUse               : ~m2607_6
-# 2602|     v2602_15(void)               = ExitFunction             : 
+# 2602|     v2602_12(void)               = ReturnIndirection[a]     : &:r2602_9, ~m2607_6
+# 2602|     r2602_13(glval<Recursive *>) = VariableAddress[#return] : 
+# 2602|     v2602_14(void)               = ReturnValue              : &:r2602_13, m2613_4
+# 2602|     v2602_15(void)               = AliasedUse               : ~m2607_6
+# 2602|     v2602_16(void)               = ExitFunction             : 
 
 # 2618| void escaping_pointer(bool)
 # 2618|   Block 0
 # 2618|     v2618_1(void)         = EnterFunction          : 
 # 2618|     m2618_2(unknown)      = AliasedDefinition      : 
 # 2618|     m2618_3(unknown)      = InitializeNonLocal     : 
-# 2618|     m2618_4(unknown)      = Chi                    : total:~m?, partial:m2618_3
+# 2618|     m2618_4(unknown)      = Chi                    : total:m2618_2, partial:m2618_3
 # 2618|     m2618_5(unknown)      = InitializeGroup[l1,l2] : 
-# 2618|     r2618_6(glval<bool>)  = VariableAddress[b]     : 
-# 2618|     m2618_7(bool)         = InitializeParameter[b] : &:r2618_6
+# 2618|     m2618_6(unknown)      = Chi                    : total:m2618_4, partial:m2618_5
+# 2618|     r2618_7(glval<bool>)  = VariableAddress[b]     : 
+# 2618|     m2618_8(bool)         = InitializeParameter[b] : &:r2618_7
 # 2620|     r2620_1(glval<int *>) = VariableAddress[data]  : 
 # 2620|     m2620_2(int *)        = Uninitialized[data]    : &:r2620_1
 # 2621|     r2621_1(glval<int>)   = VariableAddress[l1]    : 
 # 2621|     m2621_2(int)          = Uninitialized[l1]      : &:r2621_1
-# 2621|     m2621_3(unknown)      = Chi                    : total:m2618_4, partial:m2621_2
+# 2621|     m2621_3(unknown)      = Chi                    : total:m2618_6, partial:m2621_2
 # 2621|     r2621_4(glval<int>)   = VariableAddress[l2]    : 
 # 2621|     m2621_5(int)          = Uninitialized[l2]      : &:r2621_4
 # 2621|     m2621_6(unknown)      = Chi                    : total:m2621_3, partial:m2621_5
 # 2622|     r2622_1(glval<bool>)  = VariableAddress[b]     : 
-# 2622|     r2622_2(bool)         = Load[b]                : &:r2622_1, m2618_7
+# 2622|     r2622_2(bool)         = Load[b]                : &:r2622_1, m2618_8
 # 2622|     v2622_3(void)         = ConditionalBranch      : r2622_2
 #-----|   False -> Block 2
 #-----|   True -> Block 1
@@ -18683,22 +18685,24 @@ ir.cpp:
 # 2630|     m2630_8(unknown)        = Chi                            : total:m2621_6, partial:m2630_7
 # 2630|     v2630_9(void)           = ^BufferReadSideEffect[0]       : &:r2630_5, ~m2630_8
 # 2631|     v2631_1(void)           = NoOp                           : 
-# 2618|     v2618_8(void)           = ReturnVoid                     : 
-# 2618|     v2618_9(void)           = AliasedUse                     : ~m2630_8
-# 2618|     v2618_10(void)          = ExitFunction                   : 
+# 2618|     v2618_9(void)           = ReturnVoid                     : 
+# 2618|     v2618_10(void)          = AliasedUse                     : ~m2630_8
+# 2618|     v2618_11(void)          = ExitFunction                   : 
 
 # 2639| void needs_chi_for_initialize_groups()
 # 2639|   Block 0
 # 2639|     v2639_1(void)           = EnterFunction               : 
 # 2639|     m2639_2(unknown)        = AliasedDefinition           : 
 # 2639|     m2639_3(unknown)        = InitializeNonLocal          : 
-# 2639|     m2639_4(unknown)        = Chi                         : total:~m?, partial:m2639_3
+# 2639|     m2639_4(unknown)        = Chi                         : total:m2639_2, partial:m2639_3
 # 2639|     m2639_5(unknown)        = InitializeGroup             : 
-# 2639|     m2639_6(unknown)        = InitializeGroup             : 
+# 2639|     m2639_6(unknown)        = Chi                         : total:m2639_4, partial:m2639_5
+# 2639|     m2639_7(unknown)        = InitializeGroup             : 
+# 2639|     m2639_8(unknown)        = Chi                         : total:m2639_6, partial:m2639_7
 # 2641|     r2641_1(glval<unknown>) = FunctionAddress[predicateA] : 
 # 2641|     r2641_2(bool)           = Call[predicateA]            : func:r2641_1
-# 2641|     m2641_3(unknown)        = ^CallSideEffect             : ~m2639_4
-# 2641|     m2641_4(unknown)        = Chi                         : total:m2639_4, partial:m2641_3
+# 2641|     m2641_3(unknown)        = ^CallSideEffect             : ~m2639_8
+# 2641|     m2641_4(unknown)        = Chi                         : total:m2639_8, partial:m2641_3
 # 2641|     v2641_5(void)           = ConditionalBranch           : r2641_2
 #-----|   False -> Block 4
 #-----|   True -> Block 1
@@ -18798,9 +18802,9 @@ ir.cpp:
 # 2659|   Block 7
 # 2659|     m2659_1(unknown) = Phi          : from 3:~m2648_9, from 6:~m2657_9
 # 2659|     v2659_2(void)    = NoOp         : 
-# 2639|     v2639_7(void)    = ReturnVoid   : 
-# 2639|     v2639_8(void)    = AliasedUse   : ~m2659_1
-# 2639|     v2639_9(void)    = ExitFunction : 
+# 2639|     v2639_9(void)    = ReturnVoid   : 
+# 2639|     v2639_10(void)   = AliasedUse   : ~m2659_1
+# 2639|     v2639_11(void)   = ExitFunction : 
 
 # 2663| void phi_with_single_input_at_merge(bool)
 # 2663|   Block 0
@@ -18849,14 +18853,16 @@ ir.cpp:
 # 2684|     v2684_1(void)           = EnterFunction                                  : 
 # 2684|     m2684_2(unknown)        = AliasedDefinition                              : 
 # 2684|     m2684_3(unknown)        = InitializeNonLocal                             : 
-# 2684|     m2684_4(unknown)        = Chi                                            : total:~m?, partial:m2684_3
+# 2684|     m2684_4(unknown)        = Chi                                            : total:m2684_2, partial:m2684_3
 # 2684|     m2684_5(unknown)        = InitializeGroup[#string2686:22,#string2686:27] : 
-# 2684|     m2684_6(unknown)        = InitializeGroup[#string2686:22,#string2686:27] : 
-# 2684|     r2684_7(glval<bool>)    = VariableAddress[b]                             : 
-# 2684|     m2684_8(bool)           = InitializeParameter[b]                         : &:r2684_7
+# 2684|     m2684_6(unknown)        = Chi                                            : total:m2684_4, partial:m2684_5
+# 2684|     m2684_7(unknown)        = InitializeGroup[#string2686:22,#string2686:27] : 
+# 2684|     m2684_8(unknown)        = Chi                                            : total:m2684_6, partial:m2684_7
+# 2684|     r2684_9(glval<bool>)    = VariableAddress[b]                             : 
+# 2684|     m2684_10(bool)          = InitializeParameter[b]                         : &:r2684_9
 # 2686|     r2686_1(glval<unknown>) = FunctionAddress[use]                           : 
 # 2686|     r2686_2(glval<bool>)    = VariableAddress[b]                             : 
-# 2686|     r2686_3(bool)           = Load[b]                                        : &:r2686_2, m2684_8
+# 2686|     r2686_3(bool)           = Load[b]                                        : &:r2686_2, m2684_10
 # 2686|     v2686_4(void)           = ConditionalBranch                              : r2686_3
 #-----|   False -> Block 3
 #-----|   True -> Block 2
@@ -18866,12 +18872,12 @@ ir.cpp:
 # 2686|     r2686_6(glval<char *>)   = VariableAddress[#temp2686:18] : 
 # 2686|     r2686_7(char *)          = Load[#temp2686:18]            : &:r2686_6, m2686_5
 # 2686|     v2686_8(void)            = Call[use]                     : func:r2686_1, 0:r2686_7
-# 2686|     m2686_9(unknown)         = ^CallSideEffect               : ~m2684_4
-# 2686|     m2686_10(unknown)        = Chi                           : total:m2684_4, partial:m2686_9
+# 2686|     m2686_9(unknown)         = ^CallSideEffect               : ~m2684_8
+# 2686|     m2686_10(unknown)        = Chi                           : total:m2684_8, partial:m2686_9
 # 2686|     v2686_11(void)           = ^BufferReadSideEffect[0]      : &:r2686_7, ~m2686_10
 # 2686|     r2686_12(glval<unknown>) = FunctionAddress[use]          : 
 # 2686|     r2686_13(glval<bool>)    = VariableAddress[b]            : 
-# 2686|     r2686_14(bool)           = Load[b]                       : &:r2686_13, m2684_8
+# 2686|     r2686_14(bool)           = Load[b]                       : &:r2686_13, m2684_10
 # 2686|     v2686_15(void)           = ConditionalBranch             : r2686_14
 #-----|   False -> Block 6
 #-----|   True -> Block 5
@@ -18919,12 +18925,12 @@ ir.cpp:
 
 # 2687|   Block 7
 # 2687|     v2687_1(void)  = NoOp         : 
-# 2684|     v2684_9(void)  = ReturnVoid   : 
-# 2684|     v2684_10(void) = AliasedUse   : ~m2686_29
-# 2684|     v2684_11(void) = ExitFunction : 
+# 2684|     v2684_11(void) = ReturnVoid   : 
+# 2684|     v2684_12(void) = AliasedUse   : ~m2686_29
+# 2684|     v2684_13(void) = ExitFunction : 
 
 # 2684|   Block 8
-# 2684|     v2684_12(void) = Unreached : 
+# 2684|     v2684_14(void) = Unreached : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
