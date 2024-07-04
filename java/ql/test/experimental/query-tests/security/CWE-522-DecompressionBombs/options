@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/stubs
+//semmle-extractor-options: --javac-args -cp ${testdir}/

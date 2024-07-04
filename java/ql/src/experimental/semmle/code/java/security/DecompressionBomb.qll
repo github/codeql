@@ -223,6 +223,29 @@ module ApacheCommons {
     }
 
     /**
+     * Gets `n1` and `n2` which `CompressorInputStream n2 = new CompressorStreamFactory().createCompressorInputStream(n1)`
+     * or `ArchiveInputStream n2 = new ArchiveStreamFactory().createArchiveInputStream(n1)` or
+     * `n1.read(n2)`,
+     * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
+     * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
+     */
+    private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
+    {
+      override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+        exists(Call call |
+          // Constructors
+          (
+            call.getCallee().getDeclaringType() = any(TypeCompressors t)
+            or
+            call.getCallee().getDeclaringType() = any(TypeArchivers t)
+          ) and
+          call.getArgument(0) = n1.asExpr() and
+          call = n2.asExpr()
+        )
+      }
+    }
+
+    /**
      * The methods that read bytes and belong to `CompressorInputStream` or `ArchiveInputStream` Types
      */
     class ReadInputStreamCall extends MethodCall {
