@@ -43,7 +43,10 @@ newtype TInstruction =
   TAliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
     AliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
   } or
-  TAliasedSsaInitializeGroupInstruction(AliasedSsa::Ssa::VariableGroup vg)
+  TAliasedSsaInitializeGroupInstruction(AliasedSsa::Ssa::VariableGroup vg) or
+  TAliasedSsaChiAfterInitializeGroupInstruction(TAliasedSsaInitializeGroupInstruction initGroup) {
+    AliasedSsa::Ssa::hasChiNodeAfterInitializeGroup(initGroup)
+  }
 
 /**
  * Provides wrappers for the constructors of each branch of `TInstruction` that is used by the
@@ -64,7 +67,11 @@ module UnaliasedSsaInstructions {
 
   class TChiInstruction = TUnaliasedSsaChiInstruction;
 
-  TChiInstruction chiInstruction(TRawInstruction primaryInstruction) {
+  class TInitializeGroupInstruction = TUnaliasedSsaInitializeGroupInstruction;
+
+  class TRawOrInitializeGroupInstruction = TRawInstruction or TInitializeGroupInstruction;
+
+  TChiInstruction chiInstruction(TRawOrInitializeGroupInstruction primaryInstruction) {
     result = TUnaliasedSsaChiInstruction(primaryInstruction)
   }
 
@@ -75,10 +82,6 @@ module UnaliasedSsaInstructions {
   }
 
   class VariableGroup = UnaliasedSsa::Ssa::VariableGroup;
-
-  class TInitializeGroupInstruction = TUnaliasedSsaInitializeGroupInstruction;
-
-  class TRawOrInitializeGroupInstruction = TRawInstruction or TInitializeGroupInstruction;
 
   // This really should just be `TUnaliasedSsaInitializeGroupInstruction`, but that makes the
   // compiler realize that certain expressions in `SSAConstruction` are unsatisfiable.
@@ -104,10 +107,15 @@ module AliasedSsaInstructions {
     result = TUnaliasedSsaPhiInstruction(blockStartInstr, _)
   }
 
-  class TChiInstruction = TAliasedSsaChiInstruction;
+  class TChiInstruction =
+    TAliasedSsaChiInstruction or TAliasedSsaChiAfterInitializeGroupInstruction;
 
-  TChiInstruction chiInstruction(TRawInstruction primaryInstruction) {
+  class TRawOrInitialzieGroupInstruction = TRawInstruction or TAliasedSsaInitializeGroupInstruction;
+
+  TChiInstruction chiInstruction(TRawOrInitialzieGroupInstruction primaryInstruction) {
     result = TAliasedSsaChiInstruction(primaryInstruction)
+    or
+    result = TAliasedSsaChiAfterInitializeGroupInstruction(primaryInstruction)
   }
 
   class TUnreachedInstruction = TAliasedSsaUnreachedInstruction;
