@@ -712,10 +712,7 @@ module DefUse {
     OldBlock defBlock, int defOffset, Alias::MemoryLocation defLocation,
     Alias::MemoryLocation actualDefLocation
   ) {
-    exists(OldInstruction oldInstr, int oldOffset |
-      oldInstr = defBlock.getInstruction(oldOffset) and
-      oldOffset >= 0
-    |
+    exists(OldInstruction oldInstr, int oldOffset | oldInstr = defBlock.getInstruction(oldOffset) |
       // An odd offset corresponds to the `Chi` instruction.
       defOffset = getChiOffset(oldOffset, defBlock) and
       result = getChi(oldInstr) and
