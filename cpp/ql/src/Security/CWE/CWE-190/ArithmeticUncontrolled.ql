@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 8.6
- * @precision medium
+ * @precision high
  * @id cpp/uncontrolled-arithmetic
  * @tags security
  *       external/cwe/cwe-190
@@ -116,6 +116,8 @@ module UncontrolledArithConfig implements DataFlow::ConfigSig {
         op instanceof BitwiseAndExpr or
         op instanceof ComplementExpr
       ).getAnOperand*()
+    or
+    node.asExpr().getUnderlyingType() instanceof FloatingPointType
     or
     // block unintended flow to pointers
     node.asExpr().getUnspecifiedType() instanceof PointerType

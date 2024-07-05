@@ -16,8 +16,8 @@ void randomTester() {
   int i;
   for (i = 0; i < 1000; i++) {
     int r = rand();
-    
-    // BAD: The return from rand() is unbounded 
+
+    // BAD: The return from rand() is unbounded
     trySlice(r, r+100);
   }
 
@@ -44,24 +44,24 @@ void randomTester() {
     int r = rand();
     r += 100; // BAD
   }
-  
+
   {
     int r = rand() / 10;
     r += 100; // GOOD
   }
-  
+
   {
     int r = rand();
     r = r / 10;
     r += 100; // GOOD
   }
-  
+
   {
     int r = rand();
     r /= 10;
     r += 100; // GOOD
   }
-  
+
   {
     int r = rand() & 0xFF;
     r += 100; // GOOD
@@ -108,7 +108,7 @@ void randomTester() {
 }
 
 void add_100(int r) {
-  r += 100; // GOOD [FALSE POSITIVE]
+  r += 100; // GOOD
 }
 
 void randomTester2(int bound, int min, int max) {
@@ -123,13 +123,13 @@ void randomTester2(int bound, int min, int max) {
 void moreTests() {
   {
     int r = rand();
-    
+
     r = r * 100; // BAD
   }
 
   {
     int r = rand();
-    
+
     r *= 100; // BAD
   }
 
@@ -141,19 +141,19 @@ void moreTests() {
 
   {
     int r = rand();
-    
+
     r <<= 8; // BAD [NOT DETECTED]
   }
 
   {
     int r = rand();
-    
+
     r = r - 100; // GOOD
   }
 
   {
     unsigned int r = rand();
-    
+
     r = r - 100; // BAD
   }
 }

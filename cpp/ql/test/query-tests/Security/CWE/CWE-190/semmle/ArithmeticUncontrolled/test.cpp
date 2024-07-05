@@ -128,7 +128,7 @@ int test_conditional_assignment_2()
 	{
 		y = x;
 	}
-	
+
 	return y * 10; // GOOD (as y <= 100)
 }
 
@@ -142,7 +142,7 @@ int test_conditional_assignment_3()
 	{
 		y = x;
 	}
-	
+
 	return y * c; // GOOD (as y <= 100) [FALSE POSITIVE]
 }
 
@@ -168,7 +168,7 @@ void test_float()
 	{
 		int x = rand();
 		float y = x; // GOOD
-		int z = (int)y * 5; // BAD
+		int z = (int)y * 5; // BAD [NOT DETECTED]
 	}
 
 	{
