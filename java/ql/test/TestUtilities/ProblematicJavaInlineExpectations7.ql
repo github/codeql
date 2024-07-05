@@ -1,3 +1,7 @@
+/**
+ * @kind test-postprocess
+ */
+
 from int i, int j
 where
   i in [1, 2] and

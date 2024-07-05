@@ -1,3 +1,7 @@
+/**
+ * @kind test-postprocess
+ */
+
 import java
 
 external predicate queryResults(string relation, int row, int column, string data);
