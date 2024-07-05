@@ -1,0 +1,25 @@
+on: push
+
+jobs:
+  local_commands:
+    runs-on: ubuntu-latest
+    steps:
+      - run: venv/bin/activate # not supported yet
+      - run: . venv/bin/activate
+      - run: echo foo; . venv/bin/activate
+      - run: echo foo;. venv/bin/activate
+      - run: echo foo |. venv/bin/activate
+      - run: ./venv/bin/activate
+      - run: sh venv/bin/activate.sh
+      - run: echo $(sh venv/bin/activate.sh)
+      - run: echo foo; sh venv/bin/activate.sh; echo bar
+      - run: echo foo | sh venv/bin/activate.sh > output
+      - run: python venv/bin/activate.py
+      - run: echo foo; python venv/bin/activate.py
+      - run: pnpm run test:ct
+      - run: pip install nbformat && python scripts/generate_notebooks.py
+      - run: python scripts/generate_theme.py --outfile js/storybook/theme.css
+      - run: ruby scripts/generate_theme.rb --outfile js/storybook/theme.css
+      - run: bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css
+
+

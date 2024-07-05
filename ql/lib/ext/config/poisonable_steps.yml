@@ -58,6 +58,7 @@ extensions:
     data:
       # TODO: It could also be in the form of `dir/cmd`
       - ["(\\.\\/)(.*)", 3]
+      - ["(\\.\\s+)(.*)", 3] # eg: . venv/bin/activate
       - ["(source|sh|bash|zsh|fish)\\s+(.*)", 3]
       - ["(node)\\s+(.*)(\\.js|\\.ts)", 3]
       - ["(python)\\s+(.*)\\.py", 3]

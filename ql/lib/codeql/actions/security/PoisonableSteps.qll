@@ -30,7 +30,9 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
     exists(string line, string regexp, int group | line = this.getScript().splitAt("\n").trim() |
       poisonableLocalScriptsDataModel(regexp, group) and
       //cmd = line.regexpCapture(".*(^|\\b|\\s+|\\$\\(|`)" + regexp + "(\\b|\\s+|;|\\)|`|$).*", group)
-      cmd = line.regexpCapture(".*(^|;|\\$\\(|`|\\|)\\s*" + regexp + "\\s*(;|\\||\\)|`|$).*", group)
+      cmd =
+        line.regexpCapture(".*(^|;|\\$\\(|`|\\||&&)\\s*" + regexp + "\\s*(;|\\||\\)|`|-|&&|$).*",
+          group)
     )
   }
 
