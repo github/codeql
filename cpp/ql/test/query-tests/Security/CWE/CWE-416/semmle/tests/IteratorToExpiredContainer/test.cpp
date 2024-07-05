@@ -802,3 +802,29 @@ void test5(int i)
     ++i;
   } // GOOD
 }
+
+struct HasBeginAndEnd
+{
+  ~HasBeginAndEnd();
+  using value_type = int;
+  using difference_type = std::ptrdiff_t;
+  using pointer = int*;
+  using reference = int&;
+  using iterator_category = std::random_access_iterator_tag;
+  std::vector<int>::iterator begin() const;
+  std::vector<int>::iterator end() const;
+};
+
+HasBeginAndEnd getHasBeginAndEnd();
+
+bool getBool();
+
+void test6()
+{
+  while(getBool())
+  {
+    for (const int& x : getHasBeginAndEnd()) // GOOD [FALSE POSITIVE]
+    {
+    }
+  }
+}
