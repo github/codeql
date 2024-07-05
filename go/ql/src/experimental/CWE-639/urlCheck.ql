@@ -34,35 +34,37 @@ class GorillaOriginFuncSource extends RemoteFlowSource::Range {
   }
 }
 
-private class MaybeOrigin extends RemoteFlowSource {
+private class MaybeOrigin extends DataFlow::Node {
   MaybeOrigin() {
     exists(RemoteFlowSource r |
       // Any write where the variables name could suggest it has something to do with cors.
-      exists(Write w, Variable v |
-        mayBeCors(w.getLhs().getName())
-        or
-        v.getAWrite() = w and mayBeCors(v.getName())
+      exists(Write w |
+        // Take `origin` in `origin := r.Header.Get(header)` as a source.
+        mayBeCors(w.getLhs().getName()) and
+        TaintTracking::localTaint(r, w.getRhs())
       |
-        w = r.getASuccessor*().asInstruction()
+        this = r //or this.asInstruction() = w
       )
       or
-      // Any argument or a receiver whose name could suggest it has something to do with cors.
+      // Take the receiver, call or call arguments as source when any of their names match `maybeCors`
       exists(DataFlow::CallNode c, DataFlow::ArgumentNode a |
-        c.getArgument(_) = r.getASuccessor*()
-        or
-        c.getReceiver() = r.getASuccessor*() and
-        a.argumentOf(c.asExpr(), _)
-      |
+        TaintTracking::localTaint(r, a) and
+        a.argumentOf(c.asExpr(), _) and
         mayBeCors([a.getStringValue(), c.getTarget().getName()])
+      |
+        // When argument or receiver is `maybeCors` take them as origin source.
+        // When the call name is `maybeCors` take the result as origin source
+        // (this = c.getResult(_) or this = a)
+        this = r
       )
-    |
-      this = r
     )
   }
 }
 
 private module UrlFlow implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof MaybeOrigin }
+  predicate isSource(DataFlow::Node node) {
+    node instanceof MaybeOrigin or node instanceof GorillaOriginFuncSource
+  }
 
   predicate isSink(DataFlow::Node node) {
     exists(DataFlow::CallNode mc, DataFlow::ArgumentNode a |
@@ -70,9 +72,12 @@ private module UrlFlow implements DataFlow::ConfigSig {
       mc.getTarget().hasQualifiedName("strings", "HasSuffix") and
       a = mc.getArgument(1) and
       // should not match ".domain.com"
-      not a.asExpr().(StringLit).getExactValue().matches(".%") and
-      not exists(AddExpr w | w.getLeftOperand().getStringValue().matches(".%") |
-        DataFlow::localFlow(DataFlow::exprNode(w), a)
+      not (
+        a.asExpr().(StringLit).getExactValue().matches(".%")
+        or
+        exists(AddExpr w | w.getLeftOperand().getStringValue().matches(".%") |
+          DataFlow::localFlow(DataFlow::exprNode(w), a)
+        )
       )
     |
       mc.getArgument(0) = node
