@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* The C++ `SimpleRangeAnalysis` library no longer produces type bounds for expressions with floating-point types.
