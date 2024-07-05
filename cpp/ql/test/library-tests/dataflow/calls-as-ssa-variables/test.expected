@@ -1,12 +1,4 @@
 edges
-| test.cpp:27:16:27:18 | call to get | test.cpp:27:16:27:18 | call to get | provenance |  |
-| test.cpp:27:16:27:18 | call to get | test.cpp:27:16:27:18 | call to get | provenance |  |
-| test.cpp:27:16:27:20 | call to get | test.cpp:27:16:27:18 | call to get | provenance |  |
-| test.cpp:27:16:27:20 | call to get | test.cpp:27:16:27:18 | call to get | provenance |  |
 nodes
-| test.cpp:27:16:27:18 | call to get | semmle.label | call to get |
-| test.cpp:27:16:27:18 | call to get | semmle.label | call to get |
-| test.cpp:27:16:27:20 | call to get | semmle.label | call to get |
 subpaths
 #select
-| test.cpp:27:16:27:18 | call to get | test.cpp:27:16:27:20 | call to get | test.cpp:27:16:27:18 | call to get |  |
