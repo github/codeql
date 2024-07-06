@@ -823,7 +823,7 @@ void test6()
 {
   while(getBool())
   {
-    for (const int& x : getHasBeginAndEnd()) // GOOD [FALSE POSITIVE]
+    for (const int& x : getHasBeginAndEnd()) // GOOD
     {
     }
   }
