@@ -6,16 +6,6 @@ import java
 
 external predicate queryResults(string relation, int row, int column, string data);
 
-string actualLines() {
-  exists(int i |
-    queryResults("#select", i, _, _) and
-    result =
-      " | " +
-        concat(int j, string cell | queryResults("#select", i, j, cell) | cell, " | " order by j) +
-        " | "
-  )
-}
-
 predicate parsedExpectedResults(string filename, int line, string content) {
   exists(Javadoc doc |
     isEolComment(doc) and
@@ -39,9 +29,8 @@ predicate expectPass(string filename, int line) {
 }
 
 predicate parsedActualResults(string filename, int line, int colStart, int colEnd, string content) {
-  exists(string s, string posString, string lineString |
-    s = actualLines() and
-    posString = s.substring(s.indexOf("|", 0, 0) + 1, s.indexOf("|", 1, 0)).trim() and
+  exists(int i, string posString, string lineString |
+    queryResults("#select", i, 0, posString) and
     filename = posString.substring(0, posString.indexOf(":", 0, 0)) and
     lineString = posString.substring(posString.indexOf(":", 0, 0) + 1, posString.indexOf(":", 1, 0)) and
     lineString = posString.substring(posString.indexOf(":", 2, 0) + 1, posString.indexOf(":", 3, 0)) and
@@ -49,7 +38,7 @@ predicate parsedActualResults(string filename, int line, int colStart, int colEn
       posString.substring(posString.indexOf(":", 1, 0) + 1, posString.indexOf(":", 2, 0)).toInt() and
     colEnd = posString.substring(posString.indexOf(":", 3, 0) + 1, posString.length()).toInt() and
     line = lineString.toInt() and
-    content = s.substring(s.indexOf("|", 2, 0) + 1, s.indexOf("|", 3, 0)).trim()
+    queryResults("#select", i, 2, content)
   )
 }
 
