@@ -42,9 +42,17 @@ module StaticCreation {
           "code\\.jquery\\.com", //
           "cdnjs\\.cloudflare\\.com", //
           "cdnjs\\.com", //
-          "cdn\\.polyfill\\.io", // compromised
-          "polyfill\\.io", // compromised
         ] + "/.*\\.js$")
+  }
+
+  /** Holds if `url` refers to a compromised CDN, that should not be trusted. */
+  bindingset[url]
+  predicate isCompromisedCdn(string url) {
+    url.regexpMatch("(?i)^https?://" +
+        [
+          "cdn\\.polyfill\\.io", // See https://sansec.io/research/polyfill-supply-chain-attack for details
+          "polyfill\\.io",       // "
+        ] + "/.*$")
   }
 
   /** A script element that refers to untrusted content. */
@@ -57,6 +65,19 @@ module StaticCreation {
     override string getUrl() { result = super.getSourcePath() }
 
     override string getProblem() { result = "Script loaded using unencrypted connection." }
+  }
+
+  /** A script element that refers to compromised content. */
+  class CdnFromCompromisedSource extends AddsUntrustedUrl, HTML::ScriptElement {
+    CdnFromCompromisedSource() {
+      isCompromisedCdn(this.getSourcePath())
+    }
+
+    override string getUrl() { result = this.getSourcePath() }
+
+    override string getProblem() {
+      result = "Script loaded from compromised content delivery network."
+    }
   }
 
   /** A script element that refers to untrusted content. */
