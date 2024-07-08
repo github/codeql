@@ -17,7 +17,6 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.Concepts
 import semmle.python.Concepts
-import experimental.semmle.python.CookieHeader
 
 from Http::Server::CookieWrite cookie, string alert
 where

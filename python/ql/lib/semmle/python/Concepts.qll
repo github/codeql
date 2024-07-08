@@ -1250,17 +1250,70 @@ module Http {
         /**
          * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
          */
-        predicate hasSecureFlag(boolean b) { none() }
+        predicate hasSecureFlag(boolean b) {
+          exists(this.getHeaderArg()) and
+          (
+            exists(StringLiteral sl |
+              sl.getText().regexpMatch("(?i).*;\\s*secure;.*") and
+              TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = true
+            )
+            or
+            exists(StringLiteral sl |
+              not sl.getText().regexpMatch("(?i).*;\\s*secure;.*") and
+              DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = false
+            )
+          )
+        }
 
         /**
          * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
          */
-        predicate hasHttpOnlyFlag(boolean b) { none() }
+        predicate hasHttpOnlyFlag(boolean b) {
+          exists(this.getHeaderArg()) and
+          (
+            exists(StringLiteral sl |
+              sl.getText().regexpMatch("(?i).*;\\s*httponly;.*") and
+              TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = true
+            )
+            or
+            exists(StringLiteral sl |
+              not sl.getText().regexpMatch("(?i).*;\\s*httponly;.*") and
+              DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = false
+            )
+          )
+        }
 
         /**
          * Holds if the `SameSite` flag of the cookie is known to have a value of `b`.
          */
-        predicate hasSameSiteFlag(boolean b) { none() }
+        // TODO: b could be a newtype with 3 values indicating Strict,Lax,or None
+        // currently, Strict and Lax are represented with true and None is represented with false.
+        predicate hasSameSiteFlag(boolean b) {
+          exists(this.getHeaderArg()) and
+          (
+            exists(StringLiteral sl |
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax);.*") and
+              TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = true
+            )
+            or
+            exists(StringLiteral sl |
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=none;.*") and
+              TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = false
+            )
+            or
+            exists(StringLiteral sl |
+              not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none);.*") and
+              DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              b = true // Lax is the default
+            )
+          )
+        }
       }
     }
 
