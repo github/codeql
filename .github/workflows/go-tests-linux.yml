@@ -1,23 +1,10 @@
 name: "Go: Run Tests"
 on:
-  push:
-    paths:
-      - "go/**"
-      - .github/workflows/go-tests.yml
-      - .github/actions/**
-      - codeql-workspace.yml
-    branches:
-      - main
-      - "rc/*"
-  pull_request:
-    paths:
-      - "go/**"
-      - .github/workflows/go-tests.yml
-      - .github/actions/**
-      - codeql-workspace.yml
-      - MODULE.bazel
-      - .bazelrc
-      - misc/bazel/**
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -30,6 +17,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - name: Run tests
         uses: ./go/actions/test
         with:

@@ -1,15 +1,10 @@
 name: "Go: Run Tests - Other OS"
 on:
-  pull_request:
-    paths:
-      - "go/**"
-      - "!go/ql/**" # don't run other-os if only ql/ files changed
-      - .github/workflows/go-tests-other-os.yml
-      - .github/actions/**
-      - codeql-workspace.yml
-      - MODULE.bazel
-      - .bazelrc
-      - misc/bazel/**
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -21,6 +16,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - name: Run tests
         uses: ./go/actions/test
 
@@ -31,5 +28,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - name: Run tests
         uses: ./go/actions/test
