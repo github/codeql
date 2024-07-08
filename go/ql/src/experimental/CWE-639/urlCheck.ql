@@ -13,12 +13,14 @@
 import go
 
 bindingset[s]
-private predicate mayBeCors(string s) { s.toLowerCase().matches(["%origin%", "%cors%"]) }
+private predicate mayBeCors(string s) {
+  s.toLowerCase().matches(["%origin%", "%cors%"]) and not s.toLowerCase().matches(["%original%"])
+}
 
 /**
  * An argument to a Gorilla's OriginValidator Function taken as a source
  */
-class GorillaOriginFuncSource extends RemoteFlowSource::Range {
+class GorillaOriginFuncSource extends DataFlow::Node {
   GorillaOriginFuncSource() {
     exists(FuncDef f, DataFlow::CallNode c |
       // Find a func passed to `AllowedOriginValdiator` as a validator.
@@ -29,7 +31,7 @@ class GorillaOriginFuncSource extends RemoteFlowSource::Range {
       c.getTarget().hasQualifiedName("github.com/gorilla/handlers", "AllowedOriginValidator") and
       c.getArgument(0).asExpr() = f
     |
-      DataFlow::localFlow(DataFlow::parameterNode(f.getParameter(0)), this)
+      this = DataFlow::parameterNode(f.getParameter(0))
     )
   }
 }
