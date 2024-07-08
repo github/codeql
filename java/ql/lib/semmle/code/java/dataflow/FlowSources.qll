@@ -373,7 +373,7 @@ class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
   }
 }
 
-/** A node with input that may be controlled by a local user. */
+/** A node with input that comes from a reverse DNS lookup. */
 abstract class ReverseDnsUserInput extends UserInput {
   override string getThreatModel() { result = "reverse-dns" }
 }
