@@ -99,9 +99,13 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
               "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
             ] and
           // TODO: This should be read step of the head_sha or head_ref output vars
-          this.getArgument("ref").matches("%.head_ref%")
+          this.getArgument("ref").regexpMatch(".*(head_ref).*")
           or
-          step.getCallee() = ["github/branch-deploy"] and
+          step.getCallee() = "potiuk/get-workflow-origin" and
+          // TODO: This should be read step of the ref output var
+          this.getArgument("ref").matches("%." + ["sourceHeadBranch", "pullRequestNumber"])
+          or
+          step.getCallee() = "github/branch-deploy" and
           // TODO: This should be read step of the ref output var
           this.getArgument("ref").matches("%.ref%")
         ) and
@@ -149,12 +153,18 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       or
       // 3rd party actions returning the PR head sha/ref
       exists(UsesStep step |
-        step.getCallee() =
-          [
-            "eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch",
-            "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
-          ] and
-        this.getArgument("ref").regexpMatch(".*head_sha.*") and
+        (
+          step.getCallee() =
+            [
+              "eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch",
+              "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
+            ] and
+          this.getArgument("ref").regexpMatch(".*(head_sha).*")
+          or
+          step.getCallee() = "potiuk/get-workflow-origin" and
+          // TODO: This should be read step of the ref output var
+          this.getArgument("ref").matches("%." + ["sourceHeadSha", "mergeCommitSha"])
+        ) and
         DataFlow::hasLocalFlowExpr(step, this.getArgumentExpr("ref"))
       )
       or
