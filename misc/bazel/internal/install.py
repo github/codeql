@@ -11,6 +11,8 @@ import argparse
 import pathlib
 import shutil
 import subprocess
+import platform
+import time
 from python.runfiles import runfiles
 
 runfiles = runfiles.Create()
@@ -42,8 +44,20 @@ else:
 script = runfiles.Rlocation(opts.pkg_install_script)
 
 if destdir.exists() and opts.cleanup:
-    shutil.rmtree(destdir)
-
+    if platform.system() == 'Windows':
+        # On Windows we might have virus scanner still looking at the path so
+        # attempt removal a couple of times sleeping between each attempt.
+        for attempt in [1, 2]:
+            try:
+                shutil.rmtree(destdir)
+                break
+            except OSError as e:
+                if e.winerror == 32:
+                    time.sleep(attempt)
+                else:
+                    raise
+    else:
+        shutil.rmtree(destdir)
 destdir.mkdir(parents=True, exist_ok=True)
 subprocess.run([script, "--destdir", destdir], check=True)
 
