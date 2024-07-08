@@ -225,10 +225,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var nugetSourceFailures = 0;
             var assets = new Assets(logger);
+
+            var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
+
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, TargetWindows: isWindows));
                     if (res.Success)
                     {
                         successCount++;
@@ -258,6 +261,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var nugetSourceFailures = 0;
             ConcurrentBag<DependencyContainer> collectedDependencies = [];
+
+            var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
+
             var sync = new object();
             var projectGroups = projects.GroupBy(Path.GetDirectoryName);
             Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
@@ -266,7 +272,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
                     {
