@@ -13,7 +13,7 @@ namespace Semmle.Extraction
         {
             Text = msg;
             EntityText = symbol.ToString() ?? "";
-            Location = symbol.Locations.FirstOrDefault();
+            Location = symbol.Locations.BestOrDefault();
         }
 
         public InternalError(SyntaxNode node, string msg)

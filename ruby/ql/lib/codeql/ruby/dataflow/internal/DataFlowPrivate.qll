@@ -352,14 +352,15 @@ module VariableCapture {
   }
 
   private module CaptureInput implements Shared::InputSig<Location> {
-    private import ruby as R
-    private import codeql.ruby.controlflow.ControlFlowGraph
+    private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
     private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
     }
+
+    class ControlFlowNode = Cfg::CfgNode;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
@@ -645,6 +646,8 @@ private module Cached {
     LocalFlow::localSsaFlowStep(_, nodeFrom, nodeTo)
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    or
+    LocalFlow::localFlowSsaInputFromRead(_, nodeFrom, nodeTo)
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
@@ -2087,7 +2090,6 @@ private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
   or

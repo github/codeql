@@ -4,14 +4,15 @@ source https://api.nuget.org/v3/index.json
 # behave like nuget in choosing transitive dependency versions
 strategy: min
 
+nuget Basic.CompilerLog.Util
 nuget Mono.Posix.NETStandard
 nuget Newtonsoft.Json
 nuget xunit
 nuget xunit.runner.visualstudio
 nuget xunit.runner.utility
 nuget Microsoft.NET.Test.Sdk
-nuget Microsoft.CodeAnalysis.CSharp 4.8.0
-nuget Microsoft.CodeAnalysis 4.8.0
+nuget Microsoft.CodeAnalysis.CSharp 4.9.2
+nuget Microsoft.CodeAnalysis 4.9.2
 nuget Microsoft.Build 17.8.3
 nuget Microsoft.Win32.Primitives
 nuget System.Net.Primitives

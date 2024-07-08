@@ -1,6 +1,6 @@
 {
   "markdownMessage": "At least one dependency JAR suggested by the build system could not be downloaded. This means the analysis will try to satisfy the dependency with its default choice for the required external package name, which may be the wrong version or the wrong package entirely. This may lead to partial analysis of code using this dependency. See the extraction log for full details. If the cause appears to be a temporary outage, consider retrying the analysis.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "java",
     "id": "java/extractor/buildless/suggested-classpath-fetches-failed",
@@ -14,7 +14,7 @@
 }
 {
   "markdownMessage": "Buildless extraction tried and failed to fetch a jar (`https://repo1.maven.org/maven2, junit:junit:jar:9.9.9`). If a temporary network outage is likely, consider retrying the scan.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "java",
     "id": "java/extractor/buildless/jar-fetch-failed",
@@ -98,7 +98,7 @@
 }
 {
   "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.2:graph` yielded an artifact transfer exception. This means some dependency information will be unavailable, and so some dependencies will be guessed based on Java package names. Consider investigating why this plugin encountered errors retrieving dependencies.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/buildless/depgraph-maven-plugin-transfer-exception",

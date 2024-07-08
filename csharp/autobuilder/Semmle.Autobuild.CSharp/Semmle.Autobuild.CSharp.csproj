@@ -6,6 +6,7 @@
     <ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
     <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
     <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp.Standalone\Semmle.Extraction.CSharp.Standalone.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp.Driver\Semmle.Extraction.CSharp.Driver.csproj" />
     <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
     <ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
   </ItemGroup>

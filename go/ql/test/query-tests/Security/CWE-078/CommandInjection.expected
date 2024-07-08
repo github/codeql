@@ -1,27 +1,27 @@
 edges
-| ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:9:10:9:24 | call to Query | provenance | MaD:738 |
+| ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:9:10:9:24 | call to Query | provenance | MaD:808 |
 | ArgumentInjection.go:9:10:9:24 | call to Query | ArgumentInjection.go:10:31:10:34 | path | provenance |  |
-| CommandInjection2.go:13:15:13:21 | selection of URL | CommandInjection2.go:13:15:13:29 | call to Query | provenance | MaD:738 |
+| CommandInjection2.go:13:15:13:21 | selection of URL | CommandInjection2.go:13:15:13:29 | call to Query | provenance | MaD:808 |
 | CommandInjection2.go:13:15:13:29 | call to Query | CommandInjection2.go:15:67:15:75 | imageName | provenance |  |
 | CommandInjection2.go:15:34:15:88 | []type{args} [array] | CommandInjection2.go:15:34:15:88 | call to Sprintf | provenance | MaD:248 |
 | CommandInjection2.go:15:67:15:75 | imageName | CommandInjection2.go:15:34:15:88 | []type{args} [array] | provenance |  |
 | CommandInjection2.go:15:67:15:75 | imageName | CommandInjection2.go:15:34:15:88 | call to Sprintf | provenance | FunctionModel |
-| CommandInjection2.go:41:15:41:21 | selection of URL | CommandInjection2.go:41:15:41:29 | call to Query | provenance | MaD:738 |
+| CommandInjection2.go:41:15:41:21 | selection of URL | CommandInjection2.go:41:15:41:29 | call to Query | provenance | MaD:808 |
 | CommandInjection2.go:41:15:41:29 | call to Query | CommandInjection2.go:44:67:44:75 | imageName | provenance |  |
 | CommandInjection2.go:44:34:44:88 | []type{args} [array] | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | MaD:248 |
 | CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | []type{args} [array] | provenance |  |
 | CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | FunctionModel |
-| CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:9:13:9:27 | call to Query | provenance | MaD:738 |
+| CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:9:13:9:27 | call to Query | provenance | MaD:808 |
 | CommandInjection.go:9:13:9:27 | call to Query | CommandInjection.go:10:22:10:28 | cmdName | provenance |  |
-| GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:11:13:11:27 | call to Query | provenance | MaD:738 |
+| GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:11:13:11:27 | call to Query | provenance | MaD:808 |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:13:31:13:37 | tainted | provenance |  |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:14:31:14:37 | tainted | provenance |  |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:15:30:15:36 | tainted | provenance |  |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:16:35:16:41 | tainted | provenance |  |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:17:36:17:42 | tainted | provenance |  |
-| GitSubcommands.go:33:13:33:19 | selection of URL | GitSubcommands.go:33:13:33:27 | call to Query | provenance | MaD:738 |
+| GitSubcommands.go:33:13:33:19 | selection of URL | GitSubcommands.go:33:13:33:27 | call to Query | provenance | MaD:808 |
 | GitSubcommands.go:33:13:33:27 | call to Query | GitSubcommands.go:38:32:38:38 | tainted | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:9:13:9:27 | call to Query | provenance | MaD:738 |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:9:13:9:27 | call to Query | provenance | MaD:808 |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:13:25:13:31 | tainted | provenance |  |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:14:23:14:33 | slice expression | provenance |  |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:39:31:39:37 | tainted | provenance |  |
@@ -56,7 +56,7 @@ edges
 | SanitizingDoubleDash.go:69:21:69:28 | arrayLit | SanitizingDoubleDash.go:69:14:69:35 | call to append | provenance | MaD:28 |
 | SanitizingDoubleDash.go:69:21:69:28 | arrayLit [array] | SanitizingDoubleDash.go:69:14:69:35 | call to append | provenance | MaD:29 |
 | SanitizingDoubleDash.go:69:21:69:28 | arrayLit [array] | SanitizingDoubleDash.go:69:14:69:35 | call to append [array] | provenance | MaD:29 |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:92:13:92:27 | call to Query | provenance | MaD:738 |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:92:13:92:27 | call to Query | provenance | MaD:808 |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:95:25:95:31 | tainted | provenance |  |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:96:24:96:34 | slice expression | provenance |  |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:100:31:100:37 | tainted | provenance |  |

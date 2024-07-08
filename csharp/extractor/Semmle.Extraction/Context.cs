@@ -37,7 +37,7 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
-        private readonly Queue<IEntity> labelQueue = new();
+        private readonly Queue<IEntity> labelQueue = [];
 
         protected void DefineLabel(IEntity entity)
         {
@@ -203,7 +203,7 @@ namespace Semmle.Extraction
         private void EnterScope()
         {
             if (currentRecursiveDepth >= maxRecursiveDepth)
-                throw new StackOverflowException(string.Format("Maximum nesting depth of {0} exceeded", maxRecursiveDepth));
+                throw new StackOverflowException($"Maximum nesting depth of {maxRecursiveDepth} exceeded");
             ++currentRecursiveDepth;
         }
 
@@ -379,7 +379,7 @@ namespace Semmle.Extraction
         {
             if (!(optionalSymbol is null))
             {
-                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.FirstOrDefault()));
+                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.BestOrDefault()));
             }
             else if (!(optionalEntity is null))
             {

@@ -72,10 +72,16 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
   class BasicBlock instanceof J::BasicBlock {
     string toString() { result = super.toString() }
 
+    ControlFlowNode getNode(int i) { result = super.getNode(i) }
+
+    int length() { result = super.length() }
+
     Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
 
     Location getLocation() { result = super.getLocation() }
   }
+
+  class ControlFlowNode = J::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
 
@@ -371,18 +377,12 @@ string ppReprType(DataFlowType t) {
   else result = t.toString()
 }
 
-pragma[nomagic]
-private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
-  erasedHaveIntersection(t1, t2)
-}
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-bindingset[t1, t2]
-pragma[inline_late]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t1, t2) }
+pragma[nomagic]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {

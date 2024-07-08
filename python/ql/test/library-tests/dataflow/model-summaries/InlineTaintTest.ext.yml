@@ -25,3 +25,15 @@ extensions:
       - ["foo.MS_Class", "Member[instance_method]", "Argument[0]", "ReturnValue.TupleElement[1]", "value"]
       - ["foo.MS_Class", "Member[explicit_self]", "Argument[self:]", "ReturnValue", "value"]
       - ["json", "Member[MS_loads]", "Argument[0]", "ReturnValue", "taint"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ["foo.MS_Class", "foo", "Member[get_instance].ReturnValue"]
+      - ["foo.MS_Class!", "foo", "Member[get_class].ReturnValue"]
+      # Ideally this would be a consequence of the above line
+      - ["foo.MS_Class", "foo", "Member[get_class].ReturnValue.Instance"]
+      - ["foo.MS_Class", "foo.MS_Factory!", "Member[get_instance].ReturnValue"]
+      - ["foo.MS_Class", "foo.MS_Factory", "Member[make].ReturnValue"]
+      - ["foo.MS_Class", "foo.Impl.MS_Class_Impl", ""]
