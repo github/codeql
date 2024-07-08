@@ -29,7 +29,7 @@ jobs:
           key: all-queries
       - name: check formatting
         run: find shared */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 -n 3000 -P 10 codeql query format -q --check-only
-      - name: Omit DatabaseQualityDiagnostics.ql from compile checking # Remove me once CodeQL 2.18.0 is released
+      - name: Omit DatabaseQualityDiagnostics.ql from compile checking # Remove me once CodeQL 2.18.0 is released!
         run: mv java/ql/src/Telemetry/DatabaseQualityDiagnostics.ql{,.hidden}
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
