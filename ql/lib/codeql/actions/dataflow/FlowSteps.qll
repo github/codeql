@@ -217,10 +217,23 @@ predicate tjActionsChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node suc
  */
 predicate tjActionsVerifyChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(StepsExpression o |
-    pred instanceof TJActionsChangedFilesSource and
+    pred instanceof TJActionsVerifyChangedFilesSource and
     o.getTarget() = pred.asExpr() and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
     o.getFieldName() = "changed_files" and
+    succ.asExpr() = o
+  )
+}
+
+/**
+ * A read of user-controlled field of the xt0rted/slash-command-action action.
+ */
+predicate xt0rtedSlashCommandActionTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(StepsExpression o |
+    pred instanceof Xt0rtedSlashCommandSource and
+    o.getTarget() = pred.asExpr() and
+    o.getStepId() = pred.asExpr().(UsesStep).getId() and
+    o.getFieldName() = "command-arguments" and
     succ.asExpr() = o
   )
 }
@@ -231,6 +244,7 @@ class TaintSteps extends AdditionalTaintStep {
     artifactDownloadToUseStep(node1, node2) or
     dornyPathsFilterTaintStep(node1, node2) or
     tjActionsChangedFilesTaintStep(node1, node2) or
-    tjActionsVerifyChangedFilesTaintStep(node1, node2)
+    tjActionsVerifyChangedFilesTaintStep(node1, node2) or
+    xt0rtedSlashCommandActionTaintStep(node1, node2)
   }
 }

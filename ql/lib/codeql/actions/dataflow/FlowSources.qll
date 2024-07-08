@@ -222,3 +222,15 @@ class TJActionsVerifyChangedFilesSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "filename" }
 }
+
+class Xt0rtedSlashCommandSource extends RemoteFlowSource {
+  Xt0rtedSlashCommandSource() {
+    exists(UsesStep u |
+      u.getCallee() = "xt0rted/slash-command-action" and
+      u.getArgument("permission-level").toLowerCase() = ["read", "none"] and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+}
