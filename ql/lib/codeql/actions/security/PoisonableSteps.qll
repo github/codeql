@@ -23,6 +23,18 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   }
 }
 
+class JavascriptImportnUsesStep extends PoisonableStep, UsesStep {
+  JavascriptImportnUsesStep() {
+    exists(string script, string line, string import_stmt |
+      this.getCallee() = "actions/github-script" and
+      script = this.getArgument("script") and
+      line = script.splitAt("\n").trim() and
+      import_stmt = line.regexpCapture(".*await\\s+import\\((.*)\\).*", 1) and
+      import_stmt.regexpMatch(".*\\bgithub.workspace\\b.*")
+    )
+  }
+}
+
 class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   string cmd;
 
