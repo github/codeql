@@ -47,17 +47,20 @@ if destdir.exists() and opts.cleanup:
     if platform.system() == 'Windows':
         # On Windows we might have virus scanner still looking at the path so
         # attempt removal a couple of times sleeping between each attempt.
-        for attempt in [1, 2]:
+        for retry_delay in [1, 2, 2]:
             try:
                 shutil.rmtree(destdir)
                 break
             except OSError as e:
                 if e.winerror == 32:
-                    time.sleep(attempt)
+                    time.sleep(retry_delay)
                 else:
                     raise
+        else:
+            shutil.rmtree(destdir)
     else:
         shutil.rmtree(destdir)
+
 destdir.mkdir(parents=True, exist_ok=True)
 subprocess.run([script, "--destdir", destdir], check=True)
 
