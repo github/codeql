@@ -43,6 +43,8 @@ else:
     assert destdir.is_absolute(), "Provide `--build-file` to resolve destination directory"
 script = runfiles.Rlocation(opts.pkg_install_script)
 
+_WIN_FILE_IN_USE_ERROR_CODE = 32
+
 if destdir.exists() and opts.cleanup:
     if platform.system() == 'Windows':
         # On Windows we might have virus scanner still looking at the path so
@@ -52,7 +54,7 @@ if destdir.exists() and opts.cleanup:
                 shutil.rmtree(destdir)
                 break
             except OSError as e:
-                if e.winerror == 32:
+                if e.winerror == _WIN_FILE_IN_USE_ERROR_CODE:
                     time.sleep(retry_delay)
                 else:
                     raise
