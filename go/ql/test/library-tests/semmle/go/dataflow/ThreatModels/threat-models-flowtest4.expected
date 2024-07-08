@@ -3,8 +3,8 @@ edges
 | test.go:15:9:15:32 | call to GetCliArg | test.go:17:7:17:28 | ...+... | provenance | Src:MaD:4  |
 | test.go:21:11:21:36 | call to GetCustom | test.go:23:7:23:30 | ...+... | provenance | Src:MaD:3  |
 | test.go:27:11:27:63 | call to ExecuteQuery | test.go:28:7:28:11 | query | provenance | Src:MaD:1  |
-| test.go:32:11:32:15 | selection of URL | test.go:32:11:32:23 | call to Query | provenance | MaD:738 |
-| test.go:32:11:32:23 | call to Query | test.go:32:11:32:36 | call to Get | provenance | MaD:745 |
+| test.go:32:11:32:15 | selection of URL | test.go:32:11:32:23 | call to Query | provenance | MaD:808 |
+| test.go:32:11:32:23 | call to Query | test.go:32:11:32:36 | call to Get | provenance | MaD:815 |
 | test.go:32:11:32:36 | call to Get | test.go:34:7:34:30 | ...+... | provenance |  |
 nodes
 | test.go:9:10:9:40 | call to ReadEnvironment | semmle.label | call to ReadEnvironment |

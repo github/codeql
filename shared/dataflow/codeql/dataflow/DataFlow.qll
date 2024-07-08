@@ -142,7 +142,6 @@ signature module InputSig<LocationSig Location> {
    * steps, then it will check that the types of `n1` and `n2` are compatible.
    * If they are not, then flow will be blocked.
    */
-  bindingset[t1, t2]
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2);
 
   /**

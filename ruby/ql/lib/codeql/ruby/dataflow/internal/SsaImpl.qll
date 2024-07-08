@@ -7,15 +7,18 @@ private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
+  private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
   private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   class BasicBlock = BasicBlocks::BasicBlock;
+
+  class ControlFlowNode = Cfg::CfgNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
+  class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
 
   class SourceVariable = LocalVariable;
 
@@ -494,8 +497,7 @@ class DefinitionExt extends Impl::DefinitionExt {
 
   override string toString() { result = this.(Ssa::Definition).toString() }
 
-  /** Gets the location of this definition. */
-  Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
 }
 
 /**
@@ -506,5 +508,5 @@ class DefinitionExt extends Impl::DefinitionExt {
 class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
 
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
+  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
 }

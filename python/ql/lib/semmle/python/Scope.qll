@@ -85,9 +85,10 @@ class Scope extends Scope_ {
       this instanceof Module
       or
       exists(Module m | m = this.getEnclosingScope() and m.isPublic() |
-        /* If the module has an __all__, is this in it */
+        // The module is implicitly exported
         not exists(getAModuleExport(m))
         or
+        // The module is explicitly exported
         getAModuleExport(m) = this.getName()
       )
       or

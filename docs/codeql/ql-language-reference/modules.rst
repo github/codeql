@@ -285,9 +285,9 @@ Built-in modules
 ****************
 
 QL defines a ``QlBuiltins`` module that is always in scope.
-Currently, it defines a single parameterized sub-module
-``EquivalenceRelation``, that provides an efficient abstraction for working with
-(partial) equivalence relations in QL.
+``QlBuiltins`` defines parameterized sub-modules for working with
+(partial) equivalence relations (``EquivalenceRelation``) and sets
+(``InternSets``) in QL.
 
 Equivalence relations
 =====================
@@ -347,3 +347,80 @@ The above select clause returns the following partial equivalence relation:
 +---+---+
 | 4 | 4 |
 +---+---+
+
+Sets
+====
+
+The built-in ``InternSets`` module is parameterized by ``Key`` and ``Value`` types
+and a ``Value getAValue(Key key)`` relation. The module groups the ``Value``
+column by ``Key`` and creates a set for each group of values related by a key. 
+
+The ``InternSets`` module exports a functional ``Set getSet(Key key)`` relation
+that relates keys with the set of value related to the given key by
+``getAValue``. Sets are represented by the exported ``Set`` type which exposes
+a ``contains(Value v)`` member predicate that holds for values contained in the
+given set. `getSet(k).contains(v)` is thus equivalent to `v = getAValue(k)` as
+illustrated by the following ``InternSets`` example:
+
+.. code-block:: ql
+
+  int getAValue(int key) {
+    key = 1 and result = 1
+    or
+    key = 2 and
+    (result = 1 or result = 2)
+    or
+    key = 3 and result = 1
+    or
+    key = 4 and result = 2
+  }
+
+  module Sets = QlBuiltins::InternSets<int, int, getAValue/1>;
+
+  from int k, int v
+  where Sets::getSet(k).contains(v)
+  select k, v
+
+This evalutes to the `getAValue` relation:
+
++---+---+
+| k | v |
++===+===+
+| 1 | 1 |
++---+---+
+| 2 | 1 |
++---+---+
+| 2 | 2 |
++---+---+
+| 3 | 1 |
++---+---+
+| 4 | 2 |
++---+---+
+
+If two keys `k1` and `k2` relate to the same set of values, then `getSet(k1) = getSet(k2)`.
+For the above example, keys 1 and 3 relate to the same set of values (namely the singleton
+set containing 1) and are therefore related to the same set by ``getSet``:
+
+.. code-block:: ql
+
+  from int k1, int k2
+  where Sets::getSet(k1) = Sets::getSet(k2)
+  select k1, k2
+
+The above query therefore evalutes to:
+
++----+----+
+| k1 | k2 |
++====+====+
+| 1  | 1  |
++----+----+
+| 1  | 3  |
++----+----+
+| 2  | 2  |
++----+----+
+| 3  | 1  |
++----+----+
+| 3  | 3  |
++----+----+
+| 4  | 4  |
++----+----+

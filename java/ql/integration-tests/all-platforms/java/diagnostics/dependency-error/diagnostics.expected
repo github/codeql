@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "A dependency failed to download. Check that all dependencies are available, and [supply credentials for any private dependencies](https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md#set-up-secrets-in-github-action-workflows).\n\nRelevant output line: `Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Could not find artifact junit:junit-nonesuch:jar:4.11 in central (https://repo.maven.apache.org/maven2)`",
+  "markdownMessage": "A dependency failed to download. Check that all dependencies are available, and [supply credentials for any private dependencies](https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md#set-up-secrets-in-github-action-workflows).\n\n",
   "severity": "error",
   "source": {
     "extractorName": "java",
