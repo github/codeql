@@ -77,7 +77,6 @@ abstract class PermissionCheck extends ControlCheck {
   override boolean protectsAgainstRefMutationAttacks() { result = true }
 }
 
-
 abstract class LabelCheck extends ControlCheck {
   // does it protect injection attacks but not pwn requests?
   // pwn requests are susceptible to checkout of mutable code
@@ -108,7 +107,6 @@ class EnvironmentCheck extends ControlCheck instanceof Environment {
 }
 
 /* Specific implementations of control checks */
-
 class LabelIfCheck extends LabelCheck instanceof If {
   LabelIfCheck() {
     // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
@@ -143,7 +141,14 @@ class RepositoryIfCheck extends RepositoryCheck instanceof If {
     // eg: github.repository == 'test/foo'
     exists(
       normalizeExpr(this.getCondition())
-          .regexpFind(["\\bgithub\\.repository\\b", "\\bgithub\\.repository_owner\\b",], _, _)
+          // github.repository in a workflow_run event triggered by a pull request is the base repository
+          .regexpFind([
+              "\\bgithub\\.repository\\b", "\\bgithub\\.repository_owner\\b",
+              "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.full_name\\b",
+              "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.owner\\.name\\b",
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.full_name\\b",
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.owner\\.name\\b"
+            ], _, _)
     )
   }
 }
@@ -174,6 +179,13 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
 class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
   PermissionActionCheck() {
     this.getCallee() = "lannonbr/repo-permission-check-action" and
-    not this.getArgument("permission") = ["write", "admin"]
+    this.getArgument("permission") = ["write", "admin"]
+    or
+    this.getCallee() = "xt0rted/slash-command-action" and
+    (
+      // default permission level is write
+      not exists(this.getArgument("permission-level")) or
+      this.getArgument("permission-level") = ["write", "admin"]
+    )
   }
 }
