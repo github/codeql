@@ -1,0 +1,1 @@
+| MissingAntiForgeryTokenValidationAspNetCore.cs:7:19:7:23 | Login | Method 'Login' handles a POST request without performing CSRF token validation. |
