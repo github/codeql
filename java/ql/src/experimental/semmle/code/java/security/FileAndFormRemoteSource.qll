@@ -28,7 +28,7 @@ module ApacheCommonsFileUpload {
 
     class ServletFileUpload extends RemoteFlowSource {
       ServletFileUpload() {
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeServletFileUpload and
           ma.getCallee().hasName("parseRequest") and
           this.asExpr() = ma
@@ -40,7 +40,7 @@ module ApacheCommonsFileUpload {
 
     private class FileItemRemoteSource extends RemoteFlowSource {
       FileItemRemoteSource() {
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeFileUpload and
           ma.getCallee()
               .hasName([
@@ -55,7 +55,7 @@ module ApacheCommonsFileUpload {
 
     private class FileItemStreamRemoteSource extends RemoteFlowSource {
       FileItemStreamRemoteSource() {
-        exists(MethodAccess ma |
+        exists(MethodCall ma |
           ma.getReceiverType() instanceof TypeFileItemStream and
           ma.getCallee().hasName(["getContentType", "getFieldName", "getName", "openStream"]) and
           this.asExpr() = ma
@@ -102,7 +102,7 @@ module ServletRemoteMultiPartSources {
 
   private class ServletPartCalls extends RemoteFlowSource {
     ServletPartCalls() {
-      exists(MethodAccess ma |
+      exists(MethodCall ma |
         ma.getReceiverType() instanceof TypePart and
         ma.getCallee()
             .hasName([
