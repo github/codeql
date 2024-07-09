@@ -1,9 +1,12 @@
+/** Library to support cs/web/missing-token-validation-aspnetcore query */
+
 private import csharp
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Helpers as Helpers
 private import semmle.code.csharp.frameworks.system.web.Mvc as Mvc
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore as AspNetCore
 
+/** Defines classes used for anti-forgery tokens. */
 class AntiForgeryClass extends Class {
   AntiForgeryClass() {
     this instanceof Helpers::AntiForgeryClass or
@@ -16,7 +19,7 @@ class AntiForgeryClass extends Class {
     result = this.(AspNetCore::AntiForgeryClass).getValidateMethod()
   }
 }
-
+/** Defines the anti-forgery token attribute. */
 class ValidateAntiForgeryTokenAttribute extends Attribute {
   ValidateAntiForgeryTokenAttribute() {
     this instanceof Mvc::ValidateAntiForgeryTokenAttribute or
@@ -24,12 +27,14 @@ class ValidateAntiForgeryTokenAttribute extends Attribute {
   }
 }
 
+/** Defines a generic controller including Mvc and AspNetCore */
 class Controller extends Class {
   Controller() {
     this instanceof Mvc::Controller or
     this instanceof AspNetCore::MicrosoftAspNetCoreMvcController
   }
 
+  /** Gets a Method with a POST action */
   Method getAPostActionMethod() {
     result = this.(Mvc::Controller).getAPostActionMethod()
     or
@@ -48,6 +53,7 @@ class AntiForgeryAuthorizationFilter extends Mvc::AuthorizationFilter {
   }
 }
 
+/** Find a filter that auto-validates anti-forgery tokens. */
 class AutoValidateAntiForgeryTokenFilter extends Expr {
   AutoValidateAntiForgeryTokenFilter() {
     exists(
@@ -83,17 +89,19 @@ class AutoValidateAntiForgeryTokenFilter extends Expr {
   }
 }
 
-// Accounts for custom classes with a similar name
+/** Accounts for custom auto-validation classes with a similar name */
 class AutoValidateAntiforgeryTokenAttributeType extends Type {
   AutoValidateAntiforgeryTokenAttributeType() {
     this.getName().matches("%AutoValidateAntiforgeryTokenAttribute")
   }
 }
 
+/** The ignore anti-forgery token attribute. */
 class IgnoreAntiforgeryTokenAttribute extends Attribute {
   IgnoreAntiforgeryTokenAttribute() { this.getType().getName() = "IgnoreAntiforgeryTokenAttribute" }
 }
 
+/** The auto-validate anti-forgery token attribute. */
 class AutoValidateAntiforgeryTokenAttribute extends Attribute {
   AutoValidateAntiforgeryTokenAttribute() {
     this.getType() instanceof AutoValidateAntiforgeryTokenAttributeType
@@ -120,8 +128,10 @@ predicate hasGlobalAntiForgeryFilter() {
   exists(AutoValidateAntiForgeryTokenFilter filter)
 }
 
+/** Holds if the Method has the name "Login" */
 predicate isLoginAction(Method m) { m.getName() = "Login" }
 
+/** Holds if a Method has a CSRF attribute. */
 predicate methodHasCsrfAttribute(Method method) {
   exists(Attribute attribute |
     (
@@ -135,6 +145,7 @@ predicate methodHasCsrfAttribute(Method method) {
   )
 }
 
+/** Holds if a Controller has a CSRF attribute. */
 predicate controllerHasCsrfAttribute(Controller c) {
   exists(Attribute attribute |
     (
