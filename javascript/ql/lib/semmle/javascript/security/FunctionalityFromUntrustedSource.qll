@@ -103,7 +103,11 @@ predicate isUntrustedHostname(string hostname) {
 
 // The following predicates are extended in data extensions under javascript/ql/lib/semmle/javascript/security/domains/
 // and can be extended with custom model packs as necessary.
+
+/** Holds for hostnames defined in data extensions */
 extensible predicate isCdnDomainWithCheckingRequired(string hostname);
+
+/** Holds for domains defined in data extensions */
 extensible predicate isUntrustedDomain(string domain);
 
 /** Looks for dyanmic creation of an element and source. */
