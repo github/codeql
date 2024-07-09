@@ -1,6 +1,15 @@
 set -xe
 
-git lfs install
+# git lfs install may fail because codespaces can install its own hooks
+# let's install it manually
+for script in pre-push post-checkout post-commit post-merge; do
+  if [ -x .git/hooks/$script ]; then
+    sed -i "2i git lfs $script || exit 1" .git/hooks/$script
+  else
+    printf "#!/bin/bash\ngit lfs %s\n" $script > .git/hooks/$script
+    chmod +x .git/hooks/$script
+  fi
+done
 
 # add the workspace to the codeql search path
 mkdir -p /home/vscode/.config/codeql
