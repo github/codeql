@@ -19,6 +19,7 @@ class AntiForgeryClass extends Class {
     result = this.(AspNetCore::AntiForgeryClass).getValidateMethod()
   }
 }
+
 /** Defines the anti-forgery token attribute. */
 class ValidateAntiForgeryTokenAttribute extends Attribute {
   ValidateAntiForgeryTokenAttribute() {
