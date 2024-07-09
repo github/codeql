@@ -3,4 +3,3 @@
 | test.cpp:702:27:702:27 | call to operator[] | This object is destroyed at the end of the full-expression. |
 | test.cpp:727:23:727:23 | call to operator[] | This object is destroyed at the end of the full-expression. |
 | test.cpp:735:23:735:23 | call to operator[] | This object is destroyed at the end of the full-expression. |
-| test.cpp:826:25:826:43 | pointer to ~HasBeginAndEnd output argument | This object is destroyed at the end of the full-expression. |
