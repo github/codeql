@@ -38,8 +38,9 @@ module StaticCreation {
     // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
     // that recommend integrity-checking.
     exists(string hostname, string requiredCheckingHostname |
-      hostname = url.regexpCapture("(?i)^(?:https?:)?//([^/]+)/.*\\.js$", 1)
-      and isCdnDomainWithCheckingRequired(requiredCheckingHostname) and hostname = requiredCheckingHostname
+      hostname = url.regexpCapture("(?i)^(?:https?:)?//([^/]+)/.*\\.js$", 1) and
+      isCdnDomainWithCheckingRequired(requiredCheckingHostname) and
+      hostname = requiredCheckingHostname
     )
   }
 
@@ -87,8 +88,8 @@ module StaticCreation {
 bindingset[url]
 predicate isUrlWithUntrustedDomain(string url) {
   exists(string hostname |
-    hostname = url.regexpCapture("(?i)^(?:https?:)?//([^/]+)/.*", 1)
-    and isUntrustedHostname(hostname)
+    hostname = url.regexpCapture("(?i)^(?:https?:)?//([^/]+)/.*", 1) and
+    isUntrustedHostname(hostname)
   )
 }
 
@@ -96,14 +97,13 @@ predicate isUrlWithUntrustedDomain(string url) {
 bindingset[hostname]
 predicate isUntrustedHostname(string hostname) {
   exists(string domain |
-    (hostname = domain or hostname.matches("%." + domain)) and 
+    (hostname = domain or hostname.matches("%." + domain)) and
     isUntrustedDomain(domain)
   )
 }
 
 // The following predicates are extended in data extensions under javascript/ql/lib/semmle/javascript/security/domains/
 // and can be extended with custom model packs as necessary.
-
 /** Holds for hostnames defined in data extensions */
 extensible predicate isCdnDomainWithCheckingRequired(string hostname);
 
