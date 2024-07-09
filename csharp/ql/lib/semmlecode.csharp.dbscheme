@@ -421,7 +421,7 @@ preprocessor_directive_location(
   int loc: @location ref);
 
 preprocessor_directive_compilation(
-  unique int id: @preprocessor_directive ref,
+  int id: @preprocessor_directive ref,
   int compilation: @compilation ref);
 
 preprocessor_directive_active(
