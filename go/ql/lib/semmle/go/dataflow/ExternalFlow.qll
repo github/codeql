@@ -20,7 +20,10 @@
  * 1. The `package` column selects a package. Note that if the package does not
  *    contain a major version suffix (like "/v2") then we will match all major
  *    versions. This can be disabled by putting `fixed-version:` at the start
- *    of the package path.
+ *    of the package path. Also, instead of a package path, if this column is
+ *    "group:<groupname>" then it indicates that the row applies to all
+ *    packages in the group `<groupname>` according to the `packageGrouping`
+ *    predicate.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
