@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/decompressionBomb
