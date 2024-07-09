@@ -1,6 +1,4 @@
-import semmle.code.java.dataflow.FlowSources
 import experimental.semmle.code.java.security.FileAndFormRemoteSource
-import semmle.code.java.dataflow.TaintTracking
 import experimental.semmle.code.java.security.DecompressionBomb::DecompressionBomb
 
 module DecompressionBombsConfig implements DataFlow::ConfigSig {

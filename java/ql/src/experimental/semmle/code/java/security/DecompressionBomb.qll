@@ -2,14 +2,6 @@ import java
 private import semmle.code.java.dataflow.TaintTracking
 
 module DecompressionBomb {
-  newtype DecompressionState =
-    Zip4j() or
-    Inflator() or
-    ApacheCommons() or
-    XerialSnappy() or
-    UtilZip() or
-    ZipFile()
-
   /**
    * The Decompression bomb Sink
    *

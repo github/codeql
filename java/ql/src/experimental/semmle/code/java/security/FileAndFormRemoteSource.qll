@@ -1,5 +1,4 @@
 import java
-import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 
 class CommonsFileUploadAdditionalTaintStep extends Unit {
@@ -31,7 +30,7 @@ module ApacheCommonsFileUpload {
       ServletFileUpload() {
         exists(MethodAccess ma |
           ma.getReceiverType() instanceof TypeServletFileUpload and
-          ma.getCallee().hasName(["parseRequest"]) and
+          ma.getCallee().hasName("parseRequest") and
           this.asExpr() = ma
         )
       }
