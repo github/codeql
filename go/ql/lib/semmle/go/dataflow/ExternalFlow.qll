@@ -110,12 +110,15 @@ predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind, string provenance, QlBuiltins::ExtensionId madId
 ) {
-  FlowExtensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind,
-    provenance, madId)
-  or
-  // Also look for models that are defined for a group that `package` is part of.
-  FlowExtensions::sourceModel(getGroup(package), type, subtypes, name, signature, ext, output, kind,
-    provenance, madId)
+  exists(string p |
+    FlowExtensions::sourceModel(p, type, subtypes, name, signature, ext, output, kind, provenance,
+      madId)
+  |
+    not exists(string s | p = groupPrefix() + s) and package = p
+    or
+    // Also look for models that are defined for a group that `package` is part of.
+    p = getGroup(package)
+  )
 }
 
 /**
@@ -127,12 +130,15 @@ predicate sinkModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind, string provenance, QlBuiltins::ExtensionId madId
 ) {
-  FlowExtensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
-    madId)
-  or
-  // Also look for models that are defined for a group that `package` is part of.
-  FlowExtensions::sinkModel(getGroup(package), type, subtypes, name, signature, ext, input, kind,
-    provenance, madId)
+  exists(string p |
+    FlowExtensions::sinkModel(p, type, subtypes, name, signature, ext, input, kind, provenance,
+      madId)
+  |
+    not exists(string s | p = groupPrefix() + s) and package = p
+    or
+    // Also look for models that are defined for a group that `package` is part of.
+    p = getGroup(package)
+  )
 }
 
 /**
@@ -144,12 +150,15 @@ predicate summaryModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
 ) {
-  FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-    provenance, madId)
-  or
-  // Also look for models that are defined for a group that `package` is part of.
-  FlowExtensions::summaryModel(getGroup(package), type, subtypes, name, signature, ext, input,
-    output, kind, provenance, madId)
+  exists(string p |
+    FlowExtensions::summaryModel(p, type, subtypes, name, signature, ext, input, output, kind,
+      provenance, madId)
+  |
+    not exists(string s | p = groupPrefix() + s) and package = p
+    or
+    // Also look for models that are defined for a group that `package` is part of.
+    p = getGroup(package)
+  )
 }
 
 /**
@@ -160,10 +169,12 @@ predicate summaryModel(
 predicate neutralModel(
   string package, string type, string name, string signature, string kind, string provenance
 ) {
-  FlowExtensions::neutralModel(package, type, name, signature, kind, provenance)
-  or
-  // Also look for models that are defined for a group that `package` is part of.
-  FlowExtensions::neutralModel(getGroup(package), type, name, signature, kind, provenance)
+  exists(string p | FlowExtensions::neutralModel(p, type, name, signature, kind, provenance) |
+    not exists(string s | p = groupPrefix() + s) and package = p
+    or
+    // Also look for models that are defined for a group that `package` is part of.
+    p = getGroup(package)
+  )
 }
 
 /**
