@@ -2186,6 +2186,48 @@ module PrivateDjango {
           override DataFlow::Node getValueArg() {
             result in [this.getArg(1), this.getArgByName("value")]
           }
+
+          override predicate hasSecureFlag(boolean b) {
+            super.hasSecureFlag(b)
+            or
+            exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
+              DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+              b = bool.booleanValue()
+            )
+            or
+            not exists(this.getArgByName("secure")) and
+            b = false
+          }
+
+          override predicate hasHttpOnlyFlag(boolean b) {
+            super.hasHttpOnlyFlag(b)
+            or
+            exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
+              DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+              b = bool.booleanValue()
+            )
+            or
+            not exists(this.getArgByName("httponly")) and
+            b = false
+          }
+
+          override predicate hasSameSiteFlag(boolean b) {
+            super.hasHttpOnlyFlag(b)
+            or
+            exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
+              DataFlow::localFlow(DataFlow::exprNode(str), arg) and
+              (
+                str.getText().toLowerCase() = ["strict", "lax"] and
+                b = true
+                or
+                str.getText().toLowerCase() = "none" and
+                b = false
+              )
+            )
+            or
+            not exists(this.getArgByName("samesite")) and
+            b = true // Lax is the default
+          }
         }
 
         /**
