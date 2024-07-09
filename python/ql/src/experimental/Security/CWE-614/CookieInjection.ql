@@ -13,7 +13,6 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.Concepts
-import experimental.semmle.python.CookieHeader
 import experimental.semmle.python.security.injection.CookieInjection
 import CookieInjectionFlow::PathGraph
 
