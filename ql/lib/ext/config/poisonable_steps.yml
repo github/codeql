@@ -2,7 +2,6 @@ extensions:
   - addsTo:
       pack: github/actions-all
       extensible: poisonableActionsDataModel
-    # source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L16
     # source: https://boostsecurityio.github.io/lotp/
     data:
       - ["pre-commit/action"]
@@ -14,40 +13,46 @@ extensions:
   - addsTo:
       pack: github/actions-all
       extensible: poisonableCommandsDataModel
-    # source: https://github.com/boostsecurityio/poutine/blob/main/opa/rego/rules/untrusted_checkout_exec.rego#L23
     # source: https://boostsecurityio.github.io/lotp/
     data:
-      - ["ant "]
-      - ["bundle "]
-      - ["cargo "]
-      - ["checkov "]
-      - ["eslint "]
-      - ["go generate"]
-      - ["go run"]
-      - ["gomplate "]
-      - ["gradle "]
-      - ["java -jar"]
-      - ["make "]
+      - ["ant"]
+      - ["awk\\s+-f"]
+      - ["bundle"]
+      - ["cargo"]
+      - ["checkov"]
+      - ["eslint"]
+      - ["gcloud\\s+builds submit"]
+      - ["golangci-lint"]
+      - ["gomplate"]
+      - ["goreleaser"]
+      - ["gradle"]
+      - ["java\\s+-jar"]
+      - ["make"]
+      - ["mdformat"]
       - ["mkdocs"]
       - ["msbuild"]
       - ["mvn"]
       - ["mypy"]
-      - ["npm [a-z]"]
-      - ["pnpm [a-z]"]
+      - ["(p)?npm\\s+[a-z]"]
       - ["pre-commit"]
       - ["prettier"]
-      - ["pip install -r"]
-      - ["pip install --requirement"]
+      - ["phpstan"]
+      - ["pip\\s+install\\s+-r"]
+      - ["pip\\s+install\\s+--requirement"]
       - ["poetry"]
       - ["pylint"]
       - ["pytest"]
-      - ["rake "]
-      - ["rails db:create"]
-      - ["rails assets:precompile"]
-      - ["rubocop "]
-      - ["terraform "]
+      - ["rake"]
+      - ["rails\\s+db:create"]
+      - ["rails\\s+assets:precompile"]
+      - ["rubocop"]
+      - ["sed\\s+-e"]
+      - ["sed\\s+-f"]
+      - ["stylelint"]
+      - ["terraform"]
       - ["tflint"]
-      - ["yarn "]
+      - ["yarn"]
+      - ["webpack"]
   - addsTo:
       pack: github/actions-all
       extensible: poisonableLocalScriptsDataModel
@@ -59,5 +64,6 @@ extensions:
       - ["(node)\\s+(.*)(\\.js|\\.ts)", 3]
       - ["(python)\\s+(.*)\\.py", 3]
       - ["(ruby)\\s+(.*)\\.rb", 3]
-      - ["(go)\\s+(.*)\\.go", 3]
+      - ["(go)\\s+(generate|run)\\s+(.*)\\.go", 4]
+      - ["(dotnet)\\s+(.*)\\.csproj", 3]
 

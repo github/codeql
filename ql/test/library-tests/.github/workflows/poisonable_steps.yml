@@ -27,3 +27,14 @@ jobs:
       - run: ruby scripts/generate_theme.rb --outfile js/storybook/theme.css
       - run: bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css
       - run: xvfb-run ./mvnw clean package
+      - run: echo "foo" && npm i && echo "bar"
+      - run: echo "foo" | npm i | echo "bar"
+      - run: echo "foo" | npm i | echo "bar"
+      - run: echo "foo `npm i` bar"
+      - run: dotnet test foo/Tests.csproj -c Release
+      - run: go run foo.go
+      - run: sed -i "s|git_branch = .*|git_branch = \"$GITHUB_HEAD_REF\"|" config.json # not supported yet
+      - run: sed -f ./config.sed file.txt > foo.txt
+      - run: sed -f config file.txt > foo.txt
+      - run: echo "foo" | awk -f ./config.awk > foo.txt
+      - run: gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo

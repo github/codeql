@@ -6,20 +6,20 @@ files
 workflows
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
-| .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
+| .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 reusableWorkflows
 compositeActions
 jobs
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
-| .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
 localJobs
 | .github/workflows/expression_nodes.yml:5:5:21:47 | Job: echo-chamber |
 | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
-| .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
 extJobs
@@ -63,7 +63,18 @@ steps
 | .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step |
 | .github/workflows/test.yml:11:9:15:6 | Uses Step |
 | .github/workflows/test.yml:15:9:19:6 | Uses Step: source |
 | .github/workflows/test.yml:19:9:26:6 | Uses Step: step |
@@ -109,7 +120,18 @@ runSteps
 | .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step | python scripts/generate_theme.py --outfile js/storybook/theme.css |
 | .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step | echo "foo" && npm i && echo "bar" |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | echo "foo `npm i` bar" |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step | dotnet test foo/Tests.csproj -c Release |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step | go run foo.go |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step | sed -f ./config.sed file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step | sed -f config file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step | echo "foo" \| awk -f ./config.awk > foo.txt |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | ${{ github.event.pull_request.head.ref }} |
 | .github/workflows/test.yml:39:9:40:53 | Run Step: sink | echo ${{needs.job1.outputs.job_output}} |
@@ -191,7 +213,18 @@ runStepChildren
 | .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step | .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css |
 | .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step | .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step | .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step | .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step | .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step | .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step | .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step | .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step | .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step | .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step | .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step | .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step | .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:26:13:26:23 | simplesink1 |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | .github/workflows/test.yml:27:14:27:63 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | .github/workflows/test.yml:28:13:28:23 | simplesink2 |
@@ -344,94 +377,138 @@ parentNodes
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:1:1:89:29 | on:  |
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:9:5:89:29 | Job: Test |
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:85:9:89:29 | Run Step |
-| .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
+| .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
 | .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:5:1:8 | push |
 | .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:5:1:8 | push |
 | .github/workflows/poisonable_steps.yml:1:5:1:8 | push | .github/workflows/poisonable_steps.yml:1:5:1:8 | push |
-| .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:5:14:5:26 | ubuntu-latest | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:5:14:5:26 | ubuntu-latest | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:5:14:5:26 | ubuntu-latest | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:5:14:5:26 | ubuntu-latest | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate | .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:8:15:8:38 | actions/github-script@v7 | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:8:15:8:38 | actions/github-script@v7 | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:8:15:8:38 | actions/github-script@v7 | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:8:15:8:38 | actions/github-script@v7 | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:8:15:8:38 | actions/github-script@v7 | .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step |
-| .github/workflows/poisonable_steps.yml:10:19:12:72 | const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')\nreturn foo({ github, context, core }, body, number, sender)\n | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:10:19:12:72 | const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')\nreturn foo({ github, context, core }, body, number, sender)\n | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:10:19:12:72 | const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')\nreturn foo({ github, context, core }, body, number, sender)\n | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:10:19:12:72 | const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')\nreturn foo({ github, context, core }, body, number, sender)\n | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:10:19:12:72 | const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')\nreturn foo({ github, context, core }, body, number, sender)\n | .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step |
 | .github/workflows/poisonable_steps.yml:11:53:11:75 | github.workspace | .github/workflows/poisonable_steps.yml:10:19:12:72 | const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')\nreturn foo({ github, context, core }, body, number, sender)\n |
-| .github/workflows/poisonable_steps.yml:13:9:14:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:13:14:13:32 | . venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:13:14:13:32 | . venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:13:9:14:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:13:14:13:32 | . venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:13:14:13:32 | . venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:13:14:13:32 | . venv/bin/activate | .github/workflows/poisonable_steps.yml:13:9:14:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:14:9:15:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:14:14:14:42 | echo foo; . venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:14:14:14:42 | echo foo; . venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:14:9:15:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:14:14:14:42 | echo foo; . venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:14:14:14:42 | echo foo; . venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:14:14:14:42 | echo foo; . venv/bin/activate | .github/workflows/poisonable_steps.yml:14:9:15:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:15:9:16:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:15:14:15:41 | echo foo;. venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:15:14:15:41 | echo foo;. venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:15:9:16:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:15:14:15:41 | echo foo;. venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:15:14:15:41 | echo foo;. venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:15:14:15:41 | echo foo;. venv/bin/activate | .github/workflows/poisonable_steps.yml:15:9:16:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:16:9:17:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:16:14:16:42 | echo foo \|. venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:16:14:16:42 | echo foo \|. venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:16:9:17:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:16:14:16:42 | echo foo \|. venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:16:14:16:42 | echo foo \|. venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:16:14:16:42 | echo foo \|. venv/bin/activate | .github/workflows/poisonable_steps.yml:16:9:17:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:17:9:18:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:17:14:17:32 | ./venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:17:14:17:32 | ./venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:17:9:18:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:17:14:17:32 | ./venv/bin/activate | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:17:14:17:32 | ./venv/bin/activate | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:17:14:17:32 | ./venv/bin/activate | .github/workflows/poisonable_steps.yml:17:9:18:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:18:9:19:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:18:14:18:36 | sh venv/bin/activate.sh | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:18:14:18:36 | sh venv/bin/activate.sh | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:18:9:19:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:18:14:18:36 | sh venv/bin/activate.sh | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:18:14:18:36 | sh venv/bin/activate.sh | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:18:14:18:36 | sh venv/bin/activate.sh | .github/workflows/poisonable_steps.yml:18:9:19:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:19:14:19:44 | echo $(sh venv/bin/activate.sh) | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:19:14:19:44 | echo $(sh venv/bin/activate.sh) | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:19:14:19:44 | echo $(sh venv/bin/activate.sh) | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:19:14:19:44 | echo $(sh venv/bin/activate.sh) | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:19:14:19:44 | echo $(sh venv/bin/activate.sh) | .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:20:14:20:56 | echo foo; sh venv/bin/activate.sh; echo bar | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:20:14:20:56 | echo foo; sh venv/bin/activate.sh; echo bar | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:20:14:20:56 | echo foo; sh venv/bin/activate.sh; echo bar | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:20:14:20:56 | echo foo; sh venv/bin/activate.sh; echo bar | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:20:14:20:56 | echo foo; sh venv/bin/activate.sh; echo bar | .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:21:14:21:56 | echo foo \| sh venv/bin/activate.sh > output | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:21:14:21:56 | echo foo \| sh venv/bin/activate.sh > output | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:21:14:21:56 | echo foo \| sh venv/bin/activate.sh > output | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:21:14:21:56 | echo foo \| sh venv/bin/activate.sh > output | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:21:14:21:56 | echo foo \| sh venv/bin/activate.sh > output | .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:22:9:23:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:22:14:22:40 | python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:22:14:22:40 | python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:22:9:23:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:22:14:22:40 | python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:22:14:22:40 | python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:22:14:22:40 | python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:22:9:23:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:23:9:24:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:23:14:23:50 | echo foo; python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:23:14:23:50 | echo foo; python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:23:9:24:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:23:14:23:50 | echo foo; python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:23:14:23:50 | echo foo; python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:23:14:23:50 | echo foo; python venv/bin/activate.py | .github/workflows/poisonable_steps.yml:23:9:24:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:24:9:25:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:24:14:24:29 | pnpm run test:ct | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:24:14:24:29 | pnpm run test:ct | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:24:9:25:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:24:14:24:29 | pnpm run test:ct | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:24:14:24:29 | pnpm run test:ct | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:24:14:24:29 | pnpm run test:ct | .github/workflows/poisonable_steps.yml:24:9:25:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:25:9:26:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:25:14:25:73 | pip install nbformat && python scripts/generate_notebooks.py | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:25:14:25:73 | pip install nbformat && python scripts/generate_notebooks.py | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:25:9:26:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:25:14:25:73 | pip install nbformat && python scripts/generate_notebooks.py | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:25:14:25:73 | pip install nbformat && python scripts/generate_notebooks.py | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:25:14:25:73 | pip install nbformat && python scripts/generate_notebooks.py | .github/workflows/poisonable_steps.yml:25:9:26:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:26:14:26:78 | python scripts/generate_theme.py --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:26:9:27:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:27:9:28:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
-| .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" | .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" | .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release | .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go | .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json | .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt | .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt | .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt | .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo | .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo | .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo | .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:5:1:8 | push |
@@ -588,11 +665,11 @@ cfgNodes
 | .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/multiline.yml:85:9:89:29 | Run Step |
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/poisonable_steps.yml:1:1:29:43 | enter on: push |
-| .github/workflows/poisonable_steps.yml:1:1:29:43 | exit on: push |
-| .github/workflows/poisonable_steps.yml:1:1:29:43 | exit on: push (normal) |
-| .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
-| .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:1:1:40:74 | enter on: push |
+| .github/workflows/poisonable_steps.yml:1:1:40:74 | exit on: push |
+| .github/workflows/poisonable_steps.yml:1:1:40:74 | exit on: push (normal) |
+| .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
+| .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate |
 | .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step |
@@ -629,8 +706,30 @@ cfgNodes
 | .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step |
+| .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo |
 | .github/workflows/test.yml:1:1:40:53 | enter on: push |
 | .github/workflows/test.yml:1:1:40:53 | exit on: push |
 | .github/workflows/test.yml:1:1:40:53 | exit on: push (normal) |
@@ -709,7 +808,7 @@ dfNodes
 | .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/multiline.yml:85:9:89:29 | Run Step |
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n |
-| .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands |
+| .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands |
 | .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate |
 | .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step |
@@ -746,8 +845,30 @@ dfNodes
 | .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step |
+| .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step |
+| .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node |
 | .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value |
@@ -828,7 +949,7 @@ nodeLocations
 | .github/workflows/multiline.yml:79:14:84:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo '$ISSUE'\n  echo 'EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:79:14:84:29 | .github/workflows/multiline.yml@79:14:84:29 |
 | .github/workflows/multiline.yml:85:9:89:29 | Run Step | .github/workflows/multiline.yml:85:9:89:29 | .github/workflows/multiline.yml@85:9:89:29 |
 | .github/workflows/multiline.yml:86:14:89:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n} >> "$GITHUB_ENV"\n | .github/workflows/multiline.yml:86:14:89:29 | .github/workflows/multiline.yml@86:14:89:29 |
-| .github/workflows/poisonable_steps.yml:5:5:29:43 | Job: local_commands | .github/workflows/poisonable_steps.yml:5:5:29:43 | .github/workflows/poisonable_steps.yml@5:5:29:43 |
+| .github/workflows/poisonable_steps.yml:5:5:40:74 | Job: local_commands | .github/workflows/poisonable_steps.yml:5:5:40:74 | .github/workflows/poisonable_steps.yml@5:5:40:74 |
 | .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step | .github/workflows/poisonable_steps.yml:7:9:8:6 | .github/workflows/poisonable_steps.yml@7:9:8:6 |
 | .github/workflows/poisonable_steps.yml:7:14:7:30 | venv/bin/activate | .github/workflows/poisonable_steps.yml:7:14:7:30 | .github/workflows/poisonable_steps.yml@7:14:7:30 |
 | .github/workflows/poisonable_steps.yml:8:9:13:6 | Uses Step | .github/workflows/poisonable_steps.yml:8:9:13:6 | .github/workflows/poisonable_steps.yml@8:9:13:6 |
@@ -865,8 +986,30 @@ nodeLocations
 | .github/workflows/poisonable_steps.yml:27:14:27:76 | ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:27:14:27:76 | .github/workflows/poisonable_steps.yml@27:14:27:76 |
 | .github/workflows/poisonable_steps.yml:28:9:29:6 | Run Step | .github/workflows/poisonable_steps.yml:28:9:29:6 | .github/workflows/poisonable_steps.yml@28:9:29:6 |
 | .github/workflows/poisonable_steps.yml:28:14:28:92 | bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css | .github/workflows/poisonable_steps.yml:28:14:28:92 | .github/workflows/poisonable_steps.yml@28:14:28:92 |
-| .github/workflows/poisonable_steps.yml:29:9:29:43 | Run Step | .github/workflows/poisonable_steps.yml:29:9:29:43 | .github/workflows/poisonable_steps.yml@29:9:29:43 |
+| .github/workflows/poisonable_steps.yml:29:9:30:6 | Run Step | .github/workflows/poisonable_steps.yml:29:9:30:6 | .github/workflows/poisonable_steps.yml@29:9:30:6 |
 | .github/workflows/poisonable_steps.yml:29:14:29:42 | xvfb-run ./mvnw clean package | .github/workflows/poisonable_steps.yml:29:14:29:42 | .github/workflows/poisonable_steps.yml@29:14:29:42 |
+| .github/workflows/poisonable_steps.yml:30:9:31:6 | Run Step | .github/workflows/poisonable_steps.yml:30:9:31:6 | .github/workflows/poisonable_steps.yml@30:9:31:6 |
+| .github/workflows/poisonable_steps.yml:30:14:30:46 | echo "foo" && npm i && echo "bar" | .github/workflows/poisonable_steps.yml:30:14:30:46 | .github/workflows/poisonable_steps.yml@30:14:30:46 |
+| .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step | .github/workflows/poisonable_steps.yml:31:9:32:6 | .github/workflows/poisonable_steps.yml@31:9:32:6 |
+| .github/workflows/poisonable_steps.yml:31:14:31:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:31:14:31:44 | .github/workflows/poisonable_steps.yml@31:14:31:44 |
+| .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | .github/workflows/poisonable_steps.yml:32:9:33:6 | .github/workflows/poisonable_steps.yml@32:9:33:6 |
+| .github/workflows/poisonable_steps.yml:32:14:32:44 | echo "foo" \| npm i \| echo "bar" | .github/workflows/poisonable_steps.yml:32:14:32:44 | .github/workflows/poisonable_steps.yml@32:14:32:44 |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | .github/workflows/poisonable_steps.yml:33:9:34:6 | .github/workflows/poisonable_steps.yml@33:9:34:6 |
+| .github/workflows/poisonable_steps.yml:33:14:33:35 | echo "foo `npm i` bar" | .github/workflows/poisonable_steps.yml:33:14:33:35 | .github/workflows/poisonable_steps.yml@33:14:33:35 |
+| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step | .github/workflows/poisonable_steps.yml:34:9:35:6 | .github/workflows/poisonable_steps.yml@34:9:35:6 |
+| .github/workflows/poisonable_steps.yml:34:14:34:52 | dotnet test foo/Tests.csproj -c Release | .github/workflows/poisonable_steps.yml:34:14:34:52 | .github/workflows/poisonable_steps.yml@34:14:34:52 |
+| .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step | .github/workflows/poisonable_steps.yml:35:9:36:6 | .github/workflows/poisonable_steps.yml@35:9:36:6 |
+| .github/workflows/poisonable_steps.yml:35:14:35:26 | go run foo.go | .github/workflows/poisonable_steps.yml:35:14:35:26 | .github/workflows/poisonable_steps.yml@35:14:35:26 |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | .github/workflows/poisonable_steps.yml:36:9:37:6 | .github/workflows/poisonable_steps.yml@36:9:37:6 |
+| .github/workflows/poisonable_steps.yml:36:14:36:86 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json | .github/workflows/poisonable_steps.yml:36:14:36:86 | .github/workflows/poisonable_steps.yml@36:14:36:86 |
+| .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step | .github/workflows/poisonable_steps.yml:37:9:38:6 | .github/workflows/poisonable_steps.yml@37:9:38:6 |
+| .github/workflows/poisonable_steps.yml:37:14:37:51 | sed -f ./config.sed file.txt > foo.txt | .github/workflows/poisonable_steps.yml:37:14:37:51 | .github/workflows/poisonable_steps.yml@37:14:37:51 |
+| .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step | .github/workflows/poisonable_steps.yml:38:9:39:6 | .github/workflows/poisonable_steps.yml@38:9:39:6 |
+| .github/workflows/poisonable_steps.yml:38:14:38:45 | sed -f config file.txt > foo.txt | .github/workflows/poisonable_steps.yml:38:14:38:45 | .github/workflows/poisonable_steps.yml@38:14:38:45 |
+| .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step | .github/workflows/poisonable_steps.yml:39:9:40:6 | .github/workflows/poisonable_steps.yml@39:9:40:6 |
+| .github/workflows/poisonable_steps.yml:39:14:39:55 | echo "foo" \| awk -f ./config.awk > foo.txt | .github/workflows/poisonable_steps.yml:39:14:39:55 | .github/workflows/poisonable_steps.yml@39:14:39:55 |
+| .github/workflows/poisonable_steps.yml:40:9:40:74 | Run Step | .github/workflows/poisonable_steps.yml:40:9:40:74 | .github/workflows/poisonable_steps.yml@40:9:40:74 |
+| .github/workflows/poisonable_steps.yml:40:14:40:73 | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo | .github/workflows/poisonable_steps.yml:40:14:40:73 | .github/workflows/poisonable_steps.yml@40:14:40:73 |
 | .github/workflows/test.yml:5:5:31:2 | Job: job1 | .github/workflows/test.yml:5:5:31:2 | .github/workflows/test.yml@5:5:31:2 |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node | .github/workflows/test.yml:8:7:10:4 | .github/workflows/test.yml@8:7:10:4 |
 | .github/workflows/test.yml:8:20:8:50 | steps.step.outputs.value | .github/workflows/test.yml:8:20:8:50 | .github/workflows/test.yml@8:20:8:50 |
@@ -887,7 +1030,7 @@ nodeLocations
 scopes
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/multiline.yml:1:1:89:29 | on:  |
-| .github/workflows/poisonable_steps.yml:1:1:29:43 | on: push |
+| .github/workflows/poisonable_steps.yml:1:1:40:74 | on: push |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 sources
 | ahmadnassri/action-changed-files | * | output.files | filename | manual |

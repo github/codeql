@@ -18,7 +18,12 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   PoisonableCommandStep() {
     exists(string regexp |
       poisonableCommandsDataModel(regexp) and
-      exists(this.getScript().splitAt("\n").trim().regexpFind("(^|\\b|\\s+)" + regexp, _, _))
+      exists(
+        this.getScript()
+            .splitAt("\n")
+            .trim()
+            .regexpFind("(^|\\b|\\s+)" + regexp + "(\\s|;|\\||\\)|`|-|&&|[a-zA-Z]|$)", _, _)
+      )
     )
   }
 }
@@ -41,7 +46,6 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   LocalScriptExecutionRunStep() {
     exists(string line, string regexp, int group | line = this.getScript().splitAt("\n").trim() |
       poisonableLocalScriptsDataModel(regexp, group) and
-      //cmd = line.regexpCapture(".*(^|\\b|\\s+|\\$\\(|`)" + regexp + "(\\b|\\s+|;|\\)|`|$).*", group)
       cmd =
         line.regexpCapture(".*(^|;|\\$\\(|`|\\||&&)\\s*" + regexp + "\\s*(;|\\||\\)|`|-|&&|$).*",
           group)
