@@ -828,3 +828,33 @@ void test6()
     }
   }
 }
+
+struct PlusPlusReturnByValueIterator
+{
+  using value_type = int;
+  using difference_type = std::ptrdiff_t;
+  using pointer = int *;
+  using reference = int &;
+  using iterator_category = std::forward_iterator_tag;
+
+  PlusPlusReturnByValueIterator();
+  PlusPlusReturnByValueIterator(PlusPlusReturnByValueIterator const &);
+
+  PlusPlusReturnByValueIterator operator++();
+  bool operator==(PlusPlusReturnByValueIterator other) const;
+  bool operator!=(PlusPlusReturnByValueIterator other) const;
+  reference operator*() const;
+  pointer operator->() const;
+
+  ~PlusPlusReturnByValueIterator();
+
+  PlusPlusReturnByValueIterator begin();
+};
+
+void test7()
+{
+  PlusPlusReturnByValueIterator it;
+  it.operator++(); // GOOD [FALSE POSITIVE]
+
+  it.begin();
+}
