@@ -15,4 +15,7 @@ import javascript
 import semmle.javascript.security.FunctionalityFromUntrustedSource
 
 from AddsUntrustedUrl s
+// do not alert on explicitly untrusted domains
+// another query can alert on these, js/functionality-from-untrusted-domain
+where not isUrlWithUntrustedDomain(s.getUrl())
 select s, s.getProblem()

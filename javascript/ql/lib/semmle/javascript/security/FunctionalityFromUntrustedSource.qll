@@ -37,22 +37,10 @@ module StaticCreation {
   predicate isCdnUrlWithCheckingRequired(string url) {
     // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
     // that recommend integrity-checking.
-    url.regexpMatch("(?i)^https?://" +
-        [
-          "code\\.jquery\\.com", //
-          "cdnjs\\.cloudflare\\.com", //
-          "cdnjs\\.com", //
-        ] + "/.*\\.js$")
-  }
-
-  /** Holds if `url` refers to a compromised CDN, that should not be trusted. */
-  bindingset[url]
-  predicate isCompromisedCdn(string url) {
-    url.regexpMatch("(?i)^https?://" +
-        [
-          "cdn\\.polyfill\\.io", // See https://sansec.io/research/polyfill-supply-chain-attack for details
-          "polyfill\\.io",       // "
-        ] + "/.*$")
+    exists(string hostname, string requiredCheckingHostname |
+      hostname = url.regexpCapture("(?i)^(?:https?:)?//([^/]+)/.*\\.js$", 1)
+      and isCdnDomainWithCheckingRequired(requiredCheckingHostname) and hostname = requiredCheckingHostname
+    )
   }
 
   /** A script element that refers to untrusted content. */
@@ -67,24 +55,15 @@ module StaticCreation {
     override string getProblem() { result = "Script loaded using unencrypted connection." }
   }
 
-  /** A script element that refers to compromised content. */
-  class CdnFromCompromisedSource extends AddsUntrustedUrl, HTML::ScriptElement {
-    CdnFromCompromisedSource() {
-      isCompromisedCdn(this.getSourcePath())
-    }
-
-    override string getUrl() { result = this.getSourcePath() }
-
-    override string getProblem() {
-      result = "Script loaded from compromised content delivery network."
-    }
-  }
-
   /** A script element that refers to untrusted content. */
   class CdnScriptElementWithUntrustedContent extends AddsUntrustedUrl, HTML::ScriptElement {
     CdnScriptElementWithUntrustedContent() {
       not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
-      isCdnUrlWithCheckingRequired(this.getSourcePath())
+      (
+        isCdnUrlWithCheckingRequired(this.getSourcePath())
+        or
+        isUrlWithUntrustedDomain(super.getSourcePath())
+      )
     }
 
     override string getUrl() { result = this.getSourcePath() }
@@ -103,6 +82,29 @@ module StaticCreation {
     override string getProblem() { result = "Iframe loaded using unencrypted connection." }
   }
 }
+
+/** Holds if `url` refers to an URL that uses an untrusted domain. */
+bindingset[url]
+predicate isUrlWithUntrustedDomain(string url) {
+  exists(string hostname |
+    hostname = url.regexpCapture("(?i)^(?:https?:)?//([^/]+)/.*", 1)
+    and isUntrustedHostname(hostname)
+  )
+}
+
+/** Holds if `hostname` refers to a domain or subdomain that is untrusted. */
+bindingset[hostname]
+predicate isUntrustedHostname(string hostname) {
+  exists(string domain |
+    (hostname = domain or hostname.matches("%." + domain)) and 
+    isUntrustedDomain(domain)
+  )
+}
+
+// The following predicates are extended in data extensions under javascript/ql/lib/semmle/javascript/security/domains/
+// and can be extended with custom model packs as necessary.
+extensible predicate isCdnDomainWithCheckingRequired(string hostname);
+extensible predicate isUntrustedDomain(string domain);
 
 /** Looks for dyanmic creation of an element and source. */
 module DynamicCreation {

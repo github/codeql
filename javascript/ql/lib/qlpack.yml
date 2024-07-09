@@ -16,4 +16,5 @@ dependencies:
 dataExtensions:
   - semmle/javascript/frameworks/**/model.yml
   - semmle/javascript/frameworks/**/*.model.yml
+  - semmle/javascript/security/domains/**/*.model.yml
 warnOnImplicitThis: true

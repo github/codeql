@@ -1,0 +1,6 @@
+WARNING: Unused predicate isCdnDomainWithCheckingRequiredTest (FunctionalityFromUntrustedDomain.ql:34,11-46)
+WARNING: Unused predicate isUntrustedDomainTest (FunctionalityFromUntrustedDomain.ql:26,11-32)
+WARNING: Unused predicate isUntrustedDomainTest2 (FunctionalityFromUntrustedDomain.ql:30,11-33)
+WARNING: Unused predicate isUntrustedHostnameTest (FunctionalityFromUntrustedDomain.ql:21,11-34)
+WARNING: Unused predicate isUntrustedTest (FunctionalityFromUntrustedDomain.ql:16,11-26)
+| polyfill-nocheck.html:4:9:4:98 | <script>...</> | Content loaded from untrusted domain with no integrity check. |
