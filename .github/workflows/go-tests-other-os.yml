@@ -1,5 +1,6 @@
 name: "Go: Run Tests - Other OS"
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       ref:

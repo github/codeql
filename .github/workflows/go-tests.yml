@@ -110,20 +110,28 @@ jobs:
 
   run-linux-tests:
     name: "Go: Run Linux tests"
+    runs-on: ubuntu-latest
     needs:
       - prepare-go-tests
-    uses: ./.github/workflows/go-tests-linux.yml
-    secrets: inherit
-    with:
-      ref: ${{ needs.prepare-go-tests.outputs.ref }}
+    steps:
+      - name: Dispatch test workflow
+        shell: bash
+        run: |
+          gh workflow run "go-tests-linux.yml" --repo "${{ github.repository }}" --ref "${{ github.head_ref || github.ref_name }}" --json
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   run-other-os-tests:
     name: "Go: Run other OS tests"
+    runs-on: ubuntu-latest
     # Only run this workflow for PRs and only if something other than .ql files changed
     if: github.event_name == 'pull_request' && !(needs.prepare-go-tests.outputs.onlyQL == 'true')
     needs:
       - prepare-go-tests
-    uses: ./.github/workflows/go-tests-other-os.yml
-    secrets: inherit
-    with:
-      ref: ${{ needs.prepare-go-tests.outputs.ref }}
+    steps:
+      - name: Dispatch test workflow
+        shell: bash
+        run: |
+          gh workflow run "go-tests-other-os.yml" --repo "${{ github.repository }}" --ref "${{ github.head_ref }}" --json
+        env:
+          GH_TOKEN: ${{ github.token }}
