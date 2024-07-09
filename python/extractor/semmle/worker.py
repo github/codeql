@@ -276,14 +276,22 @@ def _extract_loop(proc_id, queue, trap_dir, archive, options, reply_queue, logge
                 except RecursionError as ex:
                     logger.error("Failed to extract %s: %s", unit, ex)
                     logger.traceback(WARN)
-                    error = recursion_error_message(ex, unit)
-                    diagnostics_writer.write(error)
+                    try:
+                        error = recursion_error_message(ex, unit)
+                        diagnostics_writer.write(error)
+                    except Exception as ex:
+                        logger.warning("Failed to write diagnostics: %s", ex)
+                        logger.traceback(WARN)
                     reply_queue.put(("FAILURE", unit, None))
                 except Exception as ex:
                     logger.error("Failed to extract %s: %s", unit, ex)
                     logger.traceback(WARN)
-                    error = internal_error_message(ex, unit)
-                    diagnostics_writer.write(error)
+                    try:
+                        error = internal_error_message(ex, unit)
+                        diagnostics_writer.write(error)
+                    except Exception as ex:
+                        logger.warning("Failed to write diagnostics: %s", ex)
+                        logger.traceback(WARN)
                     reply_queue.put(("FAILURE", unit, None))
                 else:
                     reply_queue.put(("SUCCESS", unit, None))
