@@ -1,5 +1,6 @@
 import actions
 import codeql.actions.config.Config
+import codeql.actions.Helper
 
 string defaultBranchTriggerEvent() {
   result =
@@ -9,16 +10,6 @@ string defaultBranchTriggerEvent() {
       "public", "pull_request_comment", "pull_request_target", "repository_dispatch", "schedule",
       "watch", "workflow_run"
     ]
-}
-
-string defaultBranchNames() {
-  exists(string default_branch_name |
-    repositoryDataModel(_, default_branch_name) and
-    result = default_branch_name
-  )
-  or
-  not exists(string default_branch_name | repositoryDataModel(_, default_branch_name)) and
-  result = ["main", "master"]
 }
 
 predicate runsOnDefaultBranch(Event e) {

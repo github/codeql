@@ -710,7 +710,18 @@ class EventImpl extends AstNodeImpl, TEventNode {
   /** Holds if the event can be triggered by an external actor. */
   predicate isExternallyTriggerable() {
     // the job is triggered by an event that can be triggered externally
-    externallyTriggerableEventsDataModel(this.getName())
+    // except for workflow_run which requires additional checks
+    externallyTriggerableEventsDataModel(this.getName()) and
+    not this.getName() = "workflow_run"
+    or
+    this.getName() = "workflow_run" and
+    // workflow_run cannot be externally triggered if they triggering workflow runs in the context of the default branch
+    // since an attacker can change the triggering workflow from any event to `pull_request` to trigger the workflow
+    // but in that case, the triggering workflow will run in the context of the PR head branch
+    (
+      not exists(this.getAPropertyValue("branches")) or
+      not this.getAPropertyValue("branches") = defaultBranchNames()
+    )
     or
     // the event is `workflow_call` and there is a caller workflow that can be triggered externally
     this.getName() = "workflow_call" and
