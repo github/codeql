@@ -172,4 +172,5 @@ where
   not arg.isFromUninstantiatedTemplate(_) and
   not actual.getUnspecifiedType() instanceof ErroneousType
 select arg,
-  "This format specifier for type '" + expected.getName() + "' does not match the argument type '" + actual.getUnspecifiedType().getName() + "'."
+  "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
+    actual.getUnspecifiedType().getName() + "'."
