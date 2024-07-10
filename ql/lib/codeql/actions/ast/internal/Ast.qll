@@ -720,7 +720,7 @@ class EventImpl extends AstNodeImpl, TEventNode {
     // but in that case, the triggering workflow will run in the context of the PR head branch
     (
       not exists(this.getAPropertyValue("branches")) or
-      not this.getAPropertyValue("branches") = defaultBranchNames()
+      this.getAPropertyValue("branches").matches("%*%")
     )
     or
     // the event is `workflow_call` and there is a caller workflow that can be triggered externally

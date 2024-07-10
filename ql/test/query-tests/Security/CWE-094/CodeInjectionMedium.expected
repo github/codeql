@@ -298,6 +298,7 @@ nodes
 | .github/workflows/workflow_run_branches1.yml:13:20:13:63 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/workflow_run_branches2.yml:13:20:13:63 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/workflow_run_branches3.yml:12:20:12:63 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
+| .github/workflows/workflow_run_branches4.yml:13:20:13:63 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 subpaths
 #select
 | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | Potential code injection in $@, which may be controlled by an external user. | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | ${{ github.event.pull_request.body }} |
