@@ -11,6 +11,8 @@ import argparse
 import pathlib
 import shutil
 import subprocess
+import platform
+import time
 from python.runfiles import runfiles
 
 runfiles = runfiles.Create()
@@ -41,8 +43,25 @@ else:
     assert destdir.is_absolute(), "Provide `--build-file` to resolve destination directory"
 script = runfiles.Rlocation(opts.pkg_install_script)
 
+_WIN_FILE_IN_USE_ERROR_CODE = 32
+
 if destdir.exists() and opts.cleanup:
-    shutil.rmtree(destdir)
+    if platform.system() == 'Windows':
+        # On Windows we might have virus scanner still looking at the path so
+        # attempt removal a couple of times sleeping between each attempt.
+        for retry_delay in [1, 2, 2]:
+            try:
+                shutil.rmtree(destdir)
+                break
+            except OSError as e:
+                if e.winerror == _WIN_FILE_IN_USE_ERROR_CODE:
+                    time.sleep(retry_delay)
+                else:
+                    raise
+        else:
+            shutil.rmtree(destdir)
+    else:
+        shutil.rmtree(destdir)
 
 destdir.mkdir(parents=True, exist_ok=True)
 subprocess.run([script, "--destdir", destdir], check=True)

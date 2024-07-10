@@ -6,11 +6,22 @@ private import python
 private import semmle.python.ApiGraphs
 private import semmle.python.filters.Tests
 
+/**
+ * A file that probably contains tests.
+ */
+class TestFile extends File {
+  TestFile() {
+    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
+    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+  }
+}
+
 /** A class to represent scopes that the user might want to model. */
 class RelevantScope extends Scope {
   RelevantScope() {
     this.isPublic() and
     not this instanceof TestScope and
+    not this.getLocation().getFile() instanceof TestFile and
     exists(this.getLocation().getFile().getRelativePath())
   }
 }

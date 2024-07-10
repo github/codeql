@@ -1,10 +1,22 @@
 edges
 | Builtin.go:6:2:6:2 | definition of b | Builtin.go:8:9:8:17 | type conversion | provenance |  |
 | Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b | provenance | MaD:626 |
+| Builtin.go:12:2:12:2 | definition of b | Builtin.go:17:9:17:17 | type conversion | provenance |  |
+| Builtin.go:13:2:13:15 | selection of Body | Builtin.go:12:2:12:2 | definition of b | provenance | MaD:626 |
+| Builtin.go:21:2:21:2 | definition of b | Builtin.go:24:10:24:18 | type conversion | provenance |  |
+| Builtin.go:22:2:22:15 | selection of Body | Builtin.go:21:2:21:2 | definition of b | provenance | MaD:626 |
 nodes
 | Builtin.go:6:2:6:2 | definition of b | semmle.label | definition of b |
 | Builtin.go:7:2:7:15 | selection of Body | semmle.label | selection of Body |
 | Builtin.go:8:9:8:17 | type conversion | semmle.label | type conversion |
+| Builtin.go:12:2:12:2 | definition of b | semmle.label | definition of b |
+| Builtin.go:13:2:13:15 | selection of Body | semmle.label | selection of Body |
+| Builtin.go:17:9:17:17 | type conversion | semmle.label | type conversion |
+| Builtin.go:21:2:21:2 | definition of b | semmle.label | definition of b |
+| Builtin.go:22:2:22:15 | selection of Body | semmle.label | selection of Body |
+| Builtin.go:24:10:24:18 | type conversion | semmle.label | type conversion |
 subpaths
 #select
 | Builtin.go:8:9:8:17 | type conversion | Builtin.go:7:2:7:15 | selection of Body | Builtin.go:8:9:8:17 | type conversion | Found taint flow |
+| Builtin.go:17:9:17:17 | type conversion | Builtin.go:13:2:13:15 | selection of Body | Builtin.go:17:9:17:17 | type conversion | Found taint flow |
+| Builtin.go:24:10:24:18 | type conversion | Builtin.go:22:2:22:15 | selection of Body | Builtin.go:24:10:24:18 | type conversion | Found taint flow |
