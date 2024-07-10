@@ -102,7 +102,7 @@ string groupPrefix() { result = "group:" }
  */
 bindingset[packageOrGroup]
 private string getPackage(string packageOrGroup) {
-  not exists(string s | packageOrGroup = groupPrefix() + s) and result = packageOrGroup
+  not packageOrGroup.prefix(groupPrefix().length()) = groupPrefix() and result = packageOrGroup
   or
   exists(string group |
     FlowExtensions::packageGrouping(group, result) and
