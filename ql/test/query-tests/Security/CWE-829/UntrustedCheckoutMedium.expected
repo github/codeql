@@ -6,3 +6,4 @@
 | .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/test3.yml:28:9:33:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/test4.yml:18:7:25:4 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/test8.yml:20:9:26:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
