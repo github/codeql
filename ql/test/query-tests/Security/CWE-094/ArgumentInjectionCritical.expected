@@ -1,0 +1,8 @@
+edges
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | provenance |  |
+nodes
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | semmle.label | github.event.issue.title |
+| .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | semmle.label | sed "s/FOO/$TITLE/g"\n |
+subpaths
+#select
+| .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | Potential argument injection in $@ command, which may be controlled by an external user. | .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | sed |

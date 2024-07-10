@@ -46,7 +46,6 @@ extensions:
       - ["rails\\s+db:create"]
       - ["rails\\s+assets:precompile"]
       - ["rubocop"]
-      - ["sed\\s+-e"]
       - ["sed\\s+-f"]
       - ["stylelint"]
       - ["terraform"]

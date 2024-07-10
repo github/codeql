@@ -38,7 +38,7 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
     exists(Run run, string var_name |
-      envToRunFlow("GITHUB_ENV", var_name, run, _) and
+      envToSpecialFile("GITHUB_ENV", var_name, run, _) and
       exists(run.getInScopeEnvVarExpr(var_name)) and
       run.getScriptScalar() = this.asExpr()
     )

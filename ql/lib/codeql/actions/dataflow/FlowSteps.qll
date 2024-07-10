@@ -8,6 +8,7 @@ private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.security.ArgumentInjectionQuery
 
 /**
  * A unit class for adding additional taint steps.
@@ -23,6 +24,42 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+bindingset[var_name, value]
+predicate envToRunExpr(string var_name, Run run, string value) {
+  // e.g. echo "FOO=$BODY" >> $GITHUB_ENV
+  // e.g. echo "FOO=${BODY}" >> $GITHUB_ENV
+  value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+  or
+  // e.g. echo "FOO=$(echo $BODY)" >> $GITHUB_ENV
+  value.matches("$(echo %") and value.indexOf(var_name) > 0
+  or
+  // e.g.
+  // FOO=$(echo $BODY)
+  // echo "FOO=$FOO" >> $GITHUB_ENV
+  exists(string line, string var2_name, string var2_value | run.getScript().splitAt("\n") = line |
+    var2_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
+    var2_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
+    var2_value.matches("%$" + ["", "{", "ENV{"] + var_name + "%") and
+    (
+      value.matches("%$" + ["", "{", "ENV{"] + var2_name + "%")
+      or
+      value.matches("$(echo %") and value.indexOf(var2_name) > 0
+    )
+  )
+}
+
+bindingset[var_name]
+predicate envToArgInjSink(string var_name, Run run, string command) {
+  exists(string argument, string line, string regexp, int command_group, int argument_group |
+    run.getScript().splitAt("\n") = line and
+    argumentInjectionSinks(regexp, command_group, argument_group) and
+    argument = line.regexpCapture(regexp, argument_group) and
+    command = line.regexpCapture(regexp, command_group) and
+    envToRunExpr(var_name, run, argument) and
+    exists(run.getInScopeEnvVarExpr(var_name))
+  )
+}
+
 /**
  * Holds if an env var is passed to a Run step and this Run step, writes its value to a special workflow file.
  *   - file is the name of the special workflow file: GITHUB_ENV, GITHUB_OUTPUT, GITHUB_PATH
@@ -34,7 +71,7 @@ class AdditionalTaintStep extends Unit {
  *     e.g. path (special name) for `echo "$BODY" >> $GITHUB_PATH`
  */
 bindingset[var_name]
-predicate envToRunFlow(string file, string var_name, Run run, string key) {
+predicate envToSpecialFile(string file, string var_name, Run run, string key) {
   exists(string content, string value |
     (
       file = "GITHUB_ENV" and
@@ -50,30 +87,7 @@ predicate envToRunFlow(string file, string var_name, Run run, string key) {
       key = "path" and
       value = content
     ) and
-    (
-      // e.g. echo "FOO=$BODY" >> $GITHUB_ENV
-      // e.g. echo "FOO=${BODY}" >> $GITHUB_ENV
-      value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-      or
-      // e.g. echo "FOO=$(echo $BODY)" >> $GITHUB_ENV
-      value.matches("$(echo %") and value.indexOf(var_name) > 0
-      or
-      // e.g.
-      // FOO=$(echo $BODY)
-      // echo "FOO=$FOO" >> $GITHUB_ENV
-      exists(string line, string var2_name, string var2_value |
-        run.getScript().splitAt("\n") = line
-      |
-        var2_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
-        var2_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
-        var2_value.matches("%$" + ["", "{", "ENV{"] + var_name + "%") and
-        (
-          value.matches("%$" + ["", "{", "ENV{"] + var2_name + "%")
-          or
-          value.matches("$(echo %") and value.indexOf(var2_name) > 0
-        )
-      )
-    )
+    envToRunExpr(var_name, run, value)
   )
 }
 
@@ -89,7 +103,10 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Run run, string var_name |
     run.getInScopeEnvVarExpr(var_name) = pred.asExpr() and
     succ.asExpr() = run.getScriptScalar() and
-    envToRunFlow(["GITHUB_ENV", "GITHUB_PATH"], var_name, run, _)
+    (
+      envToSpecialFile(["GITHUB_ENV", "GITHUB_PATH"], var_name, run, _) or
+      envToArgInjSink(var_name, run, _)
+    )
   )
 }
 
@@ -110,7 +127,7 @@ predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlo
   exists(Run run, string var_name, string key |
     run.getInScopeEnvVarExpr(var_name) = pred.asExpr() and
     succ.asExpr() = run and
-    envToRunFlow("GITHUB_OUTPUT", var_name, run, key) and
+    envToSpecialFile("GITHUB_OUTPUT", var_name, run, key) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key)
   )
 }

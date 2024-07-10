@@ -17,7 +17,6 @@
 import actions
 import codeql.actions.security.CodeInjectionQuery
 import CodeInjectionFlow::PathGraph
-import codeql.actions.security.ControlChecks
 
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
 where
