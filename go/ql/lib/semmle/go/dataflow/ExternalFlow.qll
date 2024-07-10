@@ -113,7 +113,8 @@ private string getPackage(string packageOrGroup) {
 /**
  * Holds if a source model exists for the given parameters.
  *
- * Note that we consider all packages in the same group.
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
  */
 predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -129,7 +130,8 @@ predicate sourceModel(
 /**
  * Holds if a sink model exists for the given parameters.
  *
- * Note that we consider all packages in the same group.
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
  */
 predicate sinkModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -144,7 +146,8 @@ predicate sinkModel(
 /**
  * Holds if a summary model exists for the given parameters.
  *
- * Note that we consider all packages in the same group.
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
  */
 predicate summaryModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -159,7 +162,8 @@ predicate summaryModel(
 /**
  * Holds if a neutral model exists for the given parameters.
  *
- * Note that we consider all packages in the same group.
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
  */
 predicate neutralModel(
   string package, string type, string name, string signature, string kind, string provenance
