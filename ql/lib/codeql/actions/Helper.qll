@@ -1,5 +1,6 @@
 private import codeql.actions.Ast
 private import codeql.Locations
+import codeql.actions.config.Config
 private import codeql.actions.security.ControlChecks
 
 bindingset[expr]
@@ -263,4 +264,11 @@ predicate outputsPartialFileContent(string snippet) {
           ".*(\\b|^|\\s+)" + ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"] +
             ".*"
         ])
+}
+
+string defaultBranchNames() {
+  repositoryDataModel(_, result)
+  or
+  not exists(string default_branch_name | repositoryDataModel(_, default_branch_name)) and
+  result = ["main", "master"]
 }
