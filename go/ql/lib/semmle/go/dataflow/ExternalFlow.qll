@@ -91,7 +91,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
 
 /** Gets the prefix for a group of packages. */
-string groupPrefix() { result = "group:" }
+private string groupPrefix() { result = "group:" }
 
 /**
  * Gets a package represented by `packageOrGroup`.
