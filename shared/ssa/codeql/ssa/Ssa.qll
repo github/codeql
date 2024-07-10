@@ -1178,6 +1178,19 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       predicate hasCfgNode(BasicBlock bb, int i);
     }
 
+    /**
+     * Gets a read of SSA defintion `def`.
+     *
+     * Override this with a cached version when applicable.
+     */
+    default Expr getARead(Definition def) {
+      exists(SourceVariable v, BasicBlock bb, int i |
+        ssaDefReachesRead(v, def, bb, i) and
+        variableRead(bb, i, v, true) and
+        result.hasCfgNode(bb, i)
+      )
+    }
+
     /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
     predicate ssaDefAssigns(WriteDefinition def, Expr value);
 
@@ -1223,15 +1236,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    */
   module DataFlowIntegration<DataFlowIntegrationInputSig DfInput> {
     private import codeql.util.Boolean
-
-    pragma[nomagic]
-    private DfInput::Expr getARead(Definition def) {
-      exists(SourceVariable v, BasicBlock bb, int i |
-        ssaDefReachesRead(v, def, bb, i) and
-        variableRead(bb, i, v, true) and
-        result.hasCfgNode(bb, i)
-      )
-    }
 
     pragma[nomagic]
     private predicate adjacentDefReachesReadExt(
@@ -1322,7 +1326,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private newtype TNode =
       TParamNode(DfInput::Parameter p) { DfInput::ssaDefInitializesParam(_, p) } or
       TExprNode(DfInput::Expr e, Boolean isPost) {
-        e = getARead(_)
+        e = DfInput::getARead(_)
         or
         DfInput::ssaDefAssigns(_, e) and
         isPost = false
@@ -1545,7 +1549,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    /** Holds if there is a local flow step from `nodeFrom` to `nodeTo`. */
+    /**
+     * Holds if there is a local flow step from `nodeFrom` to `nodeTo`.
+     *
+     * `isUseStep` is `true` when `nodeFrom` is a (post-update) read node and
+     * `nodeTo` is a read node or phi (read) node.
+     */
     predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
       (
         // Flow from assignment into SSA definition
@@ -1594,7 +1603,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       // Flow from SSA definition to read
       nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() = def and
-      nodeTo.(ExprNode).getExpr() = getARead(def)
+      nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
     }
 
     pragma[nomagic]
@@ -1603,7 +1612,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     ) {
       exists(BasicBlock bb, DfInput::Expr e |
         e = n.getExpr() and
-        getARead(def) = e and
+        DfInput::getARead(def) = e and
         DfInput::guardControlsBlock(g, bb, branch) and
         e.hasCfgNode(bb, _)
       )
