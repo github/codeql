@@ -1179,7 +1179,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Gets a read of SSA defintion `def`.
+     * Gets a read of SSA definition `def`.
      *
      * Override this with a cached version when applicable.
      */
