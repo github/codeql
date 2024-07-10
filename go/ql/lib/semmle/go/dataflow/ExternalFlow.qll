@@ -376,12 +376,30 @@ module ModelValidation {
     )
   }
 
+  private string getInvalidPackageGroup() {
+    exists(string pred, string group, string package |
+      FlowExtensions::sourceModel(package, _, _, _, _, _, _, _, _, _) and pred = "source"
+      or
+      FlowExtensions::sinkModel(package, _, _, _, _, _, _, _, _, _) and pred = "sink"
+      or
+      FlowExtensions::summaryModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "summary"
+      or
+      FlowExtensions::neutralModel(package, _, _, _, _, _) and
+      pred = "neutral"
+    |
+      package = groupPrefix() + group and
+      not FlowExtensions::packageGrouping(group, _) and
+      result = "Dubious package group \"" + package + "\" in " + pred + " model."
+    )
+  }
+
   /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        KindVal::getInvalidModelKind()
+        KindVal::getInvalidModelKind(), getInvalidPackageGroup()
       ]
   }
 }
