@@ -1748,25 +1748,6 @@ case @expr.kind of
 | 361 = @isvoid
 | 362 = @isvolatile
 | 363 = @reuseexpr
-| 364 = @istriviallycopyassignable
-| 365 = @isassignablenopreconditioncheck
-| 366 = @referencebindstotemporary
-| 367 = @issameas
-| 368 = @builtinhasattribute
-| 369 = @ispointerinterconvertiblewithclass
-| 370 = @builtinispointerinterconvertiblewithclass
-| 371 = @iscorrespondingmember
-| 372 = @builtiniscorrespondingmember
-| 373 = @isboundedarray
-| 374 = @isunboundedarray
-| 375 = @isreferenceable
-| 378 = @isnothrowconvertible
-| 379 = @referenceconstructsfromtemporary
-| 380 = @referenceconvertsfromtemporary
-| 381 = @isconvertible
-| 382 = @isvalidwinrttype
-| 383 = @iswinclass
-| 384 = @iswininterface
 ;
 
 @var_args_expr = @vastartexpr
@@ -1861,25 +1842,6 @@ case @expr.kind of
             | @isunsigned
             | @isvoid
             | @isvolatile
-            | @istriviallycopyassignable
-            | @isassignablenopreconditioncheck
-            | @referencebindstotemporary
-            | @issameas
-            | @builtinhasattribute
-            | @ispointerinterconvertiblewithclass
-            | @builtinispointerinterconvertiblewithclass
-            | @iscorrespondingmember
-            | @builtiniscorrespondingmember
-            | @isboundedarray
-            | @isunboundedarray
-            | @isreferenceable
-            | @isnothrowconvertible
-            | @referenceconstructsfromtemporary
-            | @referenceconvertsfromtemporary
-            | @isconvertible
-            | @isvalidwinrttype
-            | @iswinclass
-            | @iswininterface
             ;
 
 new_allocated_type(
