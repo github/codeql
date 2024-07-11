@@ -1800,7 +1800,7 @@ class BuiltInOperationReferenceConstructsFromTemporary extends BuiltInOperation,
  * ```
  */
 class BuiltInOperationReferenceCovertsFromTemporary extends BuiltInOperation,
-  @referenceconstructsfromtemporary
+  @referenceconvertsfromtemporary
 {
   override string toString() { result = "__reference_converts_from_temporary" }
 
