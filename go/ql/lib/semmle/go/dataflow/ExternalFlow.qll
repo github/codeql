@@ -20,7 +20,10 @@
  * 1. The `package` column selects a package. Note that if the package does not
  *    contain a major version suffix (like "/v2") then we will match all major
  *    versions. This can be disabled by putting `fixed-version:` at the start
- *    of the package path.
+ *    of the package path. Also, instead of a package path, if this column is
+ *    "group:<groupname>" then it indicates that the row applies to all
+ *    packages in the group `<groupname>` according to the `packageGrouping`
+ *    predicate.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
@@ -78,7 +81,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions
+import internal.ExternalFlowExtensions as FlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -86,6 +89,89 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+
+/** Gets the prefix for a group of packages. */
+private string groupPrefix() { result = "group:" }
+
+/**
+ * Gets a package represented by `packageOrGroup`.
+ *
+ * If `packageOrGroup` is of the form `group:<groupname>` then `result` is a
+ * package in the group `<groupname>`, as determined by `packageGrouping`.
+ * Otherwise, `result` is `packageOrGroup`.
+ */
+bindingset[packageOrGroup]
+private string getPackage(string packageOrGroup) {
+  not packageOrGroup.prefix(groupPrefix().length()) = groupPrefix() and result = packageOrGroup
+  or
+  exists(string group |
+    FlowExtensions::packageGrouping(group, result) and
+    packageOrGroup = groupPrefix() + group
+  )
+}
+
+/**
+ * Holds if a source model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate sourceModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  exists(string packageOrGroup |
+    package = getPackage(packageOrGroup) and
+    FlowExtensions::sourceModel(packageOrGroup, type, subtypes, name, signature, ext, output, kind,
+      provenance, madId)
+  )
+}
+
+/**
+ * Holds if a sink model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate sinkModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
+    FlowExtensions::sinkModel(packageOrGroup, type, subtypes, name, signature, ext, input, kind,
+      provenance, madId)
+  )
+}
+
+/**
+ * Holds if a summary model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate summaryModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
+    FlowExtensions::summaryModel(packageOrGroup, type, subtypes, name, signature, ext, input,
+      output, kind, provenance, madId)
+  )
+}
+
+/**
+ * Holds if a neutral model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate neutralModel(
+  string package, string type, string name, string signature, string kind, string provenance
+) {
+  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
+    FlowExtensions::neutralModel(packageOrGroup, type, name, signature, kind, provenance)
+  )
+}
 
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
@@ -286,12 +372,30 @@ module ModelValidation {
     )
   }
 
+  private string getInvalidPackageGroup() {
+    exists(string pred, string group, string package |
+      FlowExtensions::sourceModel(package, _, _, _, _, _, _, _, _, _) and pred = "source"
+      or
+      FlowExtensions::sinkModel(package, _, _, _, _, _, _, _, _, _) and pred = "sink"
+      or
+      FlowExtensions::summaryModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "summary"
+      or
+      FlowExtensions::neutralModel(package, _, _, _, _, _) and
+      pred = "neutral"
+    |
+      package = groupPrefix() + group and
+      not FlowExtensions::packageGrouping(group, _) and
+      result = "Dubious package group \"" + package + "\" in " + pred + " model."
+    )
+  }
+
   /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        KindVal::getInvalidModelKind()
+        KindVal::getInvalidModelKind(), getInvalidPackageGroup()
       ]
   }
 }

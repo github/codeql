@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private string[] SelectTextFileNamesByName(string name)
         {
             var ret = allNonBinary.Value.SelectFileNamesByName(name).ToArray();
-            var ending = ret.Length == 0 ? "." : $": {string.Join(", ", ret.OrderBy(s => s))}.";
+            var ending = ret.Length == 0 ? "." : $": {string.Join(", ", ret)}.";
             logger.LogInfo($"Found {ret.Length} {name} files in {SourceDir}{ending}");
             return ret;
         }
@@ -91,7 +91,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private FileInfo[] GetAllFiles()
         {
             logger.LogInfo($"Finding files in {SourceDir}...");
-            var files = SourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true });
+            var files = SourceDir
+                .GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true })
+                .OrderBy(f => f.FullName);
 
             var filteredFiles = files.Where(f =>
             {

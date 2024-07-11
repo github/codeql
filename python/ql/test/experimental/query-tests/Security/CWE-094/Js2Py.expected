@@ -1,0 +1,10 @@
+edges
+| Js2PyTest.py:9:5:9:6 | ControlFlowNode for jk | Js2PyTest.py:10:18:10:28 | ControlFlowNode for Fstring | provenance |  |
+| Js2PyTest.py:9:10:9:22 | ControlFlowNode for Attribute | Js2PyTest.py:9:5:9:6 | ControlFlowNode for jk | provenance | AdditionalTaintStep |
+nodes
+| Js2PyTest.py:9:5:9:6 | ControlFlowNode for jk | semmle.label | ControlFlowNode for jk |
+| Js2PyTest.py:9:10:9:22 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| Js2PyTest.py:10:18:10:28 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+subpaths
+#select
+| Js2PyTest.py:10:18:10:28 | ControlFlowNode for Fstring | Js2PyTest.py:9:10:9:22 | ControlFlowNode for Attribute | Js2PyTest.py:10:18:10:28 | ControlFlowNode for Fstring | This input to Js2Py depends on a $@. | Js2PyTest.py:9:10:9:22 | ControlFlowNode for Attribute | user-provided value |
