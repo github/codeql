@@ -3,12 +3,14 @@
  * @description Insecure cookies may be sent in cleartext, which makes them vulnerable to
  *              interception.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 5.0
  * @precision high
  * @id py/insecure-cookie
  * @tags security
  *       external/cwe/cwe-614
+ *       external/cwe/cwe-1004
+ *       external/cwe/cwe-1275
  */
 
 import python
