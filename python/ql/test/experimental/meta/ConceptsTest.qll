@@ -323,8 +323,8 @@ module HttpResponseHeaderWriteTest implements TestSig {
   string getARelevantTag() {
     result =
       [
-        "headerWriteNameUnsanitized", "headerWriteNameSanitized", "headerWriteValueUnsanitized",
-        "headerWriteValueSanitized", "headerWriteBulk"
+        "headerWriteNameUnsanitized", "headerWriteName", "headerWriteValueUnsanitized",
+        "headerWriteValue", "headerWriteBulk", "headerWriteBulkUnsanitized"
       ]
   }
 
@@ -339,7 +339,7 @@ module HttpResponseHeaderWriteTest implements TestSig {
         (
           if write.nameAllowsNewline()
           then tag = "headerWriteNameUnsanitized"
-          else tag = "headerWriteNameSanitized"
+          else tag = "headerWriteName"
         ) and
         value = prettyNodeForInlineTest(node)
         or
@@ -347,7 +347,7 @@ module HttpResponseHeaderWriteTest implements TestSig {
         (
           if write.valueAllowsNewline()
           then tag = "headerWriteValueUnsanitized"
-          else tag = "headerWriteValueSanitized"
+          else tag = "headerWriteValue"
         ) and
         value = prettyNodeForInlineTest(node)
       )
@@ -360,19 +360,20 @@ module HttpResponseHeaderWriteTest implements TestSig {
           tag = "headerWriteBulk" and
           value = prettyNodeForInlineTest(node)
           or
+          tag = "headerWriteBulkUnsanitized" and
           (
-            if write.nameAllowsNewline()
-            then tag = "headerWriteNameUnsanitized"
-            else tag = "headerWriteNameSanitized"
-          ) and
-          value = ""
-          or
-          (
-            if write.valueAllowsNewline()
-            then tag = "headerWriteValueUnsanitized"
-            else tag = "headerWriteValueSanitized"
-          ) and
-          value = ""
+            write.nameAllowsNewline() and
+            not write.valueAllowsNewline() and
+            value = "name"
+            or
+            not write.nameAllowsNewline() and
+            write.valueAllowsNewline() and
+            value = "value"
+            or
+            write.nameAllowsNewline() and
+            write.valueAllowsNewline() and
+            value = "name,value"
+          )
         )
       )
     )
