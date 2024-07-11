@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", False, "FlowAnnotations", "(Mono.Linker.LinkContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", True, "GetDiagnosticArgumentsForAnnotationMismatch", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -37,7 +38,6 @@ extensions:
       - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "get_EqualityContract", "()", "summary", "df-generated"]
       - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "op_Equality", "(ILLink.Shared.TrimAnalysis.ReferenceValue,ILLink.Shared.TrimAnalysis.ReferenceValue)", "summary", "df-generated"]
       - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "op_Inequality", "(ILLink.Shared.TrimAnalysis.ReferenceValue,ILLink.Shared.TrimAnalysis.ReferenceValue)", "summary", "df-generated"]
-      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "GetDiagnosticArgumentsForAnnotationMismatch", "()", "summary", "df-generated"]
       - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "get_DynamicallyAccessedMemberTypes", "()", "summary", "df-generated"]
       - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "get_EqualityContract", "()", "summary", "df-generated"]
       - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "op_Equality", "(ILLink.Shared.TrimAnalysis.ValueWithDynamicallyAccessedMembers,ILLink.Shared.TrimAnalysis.ValueWithDynamicallyAccessedMembers)", "summary", "df-generated"]

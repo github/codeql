@@ -50,6 +50,27 @@ class Location extends @location {
 
   /** Gets the 1-based column number (inclusive) where this location ends. */
   final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+
+  /** Holds if this location starts strictly before the specified location. */
+  bindingset[this, other]
+  pragma[inline_late]
+  predicate strictlyBefore(Location other) {
+    this.getFile() = other.getFile() and
+    (
+      this.getStartLine() < other.getStartLine()
+      or
+      this.getStartLine() = other.getStartLine() and this.getStartColumn() < other.getStartColumn()
+    )
+  }
+
+  /** Holds if this location starts before the specified location. */
+  bindingset[this, other]
+  pragma[inline_late]
+  predicate before(Location other) {
+    this.getStartLine() < other.getStartLine()
+    or
+    this.getStartLine() = other.getStartLine() and this.getStartColumn() <= other.getStartColumn()
+  }
 }
 
 /** An empty location. */

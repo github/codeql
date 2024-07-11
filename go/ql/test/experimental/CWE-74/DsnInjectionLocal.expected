@@ -1,6 +1,6 @@
 edges
 | Dsn.go:26:11:26:17 | selection of Args | Dsn.go:28:102:28:109 | index expression | provenance |  |
-| Dsn.go:28:11:28:110 | []type{args} [array] | Dsn.go:28:11:28:110 | call to Sprintf | provenance | MaD:245 |
+| Dsn.go:28:11:28:110 | []type{args} [array] | Dsn.go:28:11:28:110 | call to Sprintf | provenance | MaD:248 |
 | Dsn.go:28:11:28:110 | call to Sprintf | Dsn.go:29:29:29:33 | dbDSN | provenance |  |
 | Dsn.go:28:102:28:109 | index expression | Dsn.go:28:11:28:110 | []type{args} [array] | provenance |  |
 | Dsn.go:28:102:28:109 | index expression | Dsn.go:28:11:28:110 | call to Sprintf | provenance | FunctionModel |
@@ -12,7 +12,7 @@ edges
 | Dsn.go:63:9:63:11 | implicit dereference | Dsn.go:67:102:67:108 | selection of dsn | provenance |  |
 | Dsn.go:63:19:63:25 | selection of Args | Dsn.go:63:19:63:29 | slice expression | provenance |  |
 | Dsn.go:63:19:63:29 | slice expression | Dsn.go:63:9:63:11 | implicit dereference | provenance | FunctionModel |
-| Dsn.go:67:11:67:109 | []type{args} [array] | Dsn.go:67:11:67:109 | call to Sprintf | provenance | MaD:245 |
+| Dsn.go:67:11:67:109 | []type{args} [array] | Dsn.go:67:11:67:109 | call to Sprintf | provenance | MaD:248 |
 | Dsn.go:67:11:67:109 | call to Sprintf | Dsn.go:68:29:68:33 | dbDSN | provenance |  |
 | Dsn.go:67:102:67:104 | cfg [pointer] | Dsn.go:67:102:67:104 | implicit dereference | provenance |  |
 | Dsn.go:67:102:67:104 | implicit dereference | Dsn.go:63:9:63:11 | implicit dereference | provenance |  |

@@ -28,9 +28,3 @@ alias(
         kotlin_extractor_defaults.extractor_version,
     ),
 )
-
-genrule(
-    name = "default-version-printer",
-    outs = ["print-default-version.sh"],
-    cmd = "echo echo %s > $@" % kotlin_extractor_defaults.version,
-)

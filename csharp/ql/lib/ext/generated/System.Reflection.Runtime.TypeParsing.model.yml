@@ -4,12 +4,13 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", False, "AssemblyQualifiedTypeName", "(System.Reflection.Runtime.TypeParsing.NonQualifiedTypeName,System.Reflection.RuntimeAssemblyName)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", False, "AssemblyQualifiedTypeName", "(System.Reflection.Runtime.TypeParsing.NonQualifiedTypeName,System.Reflection.RuntimeAssemblyName)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Reflection.Runtime.TypeParsing", "TypeName", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", "AssemblyQualifiedTypeName", "(System.Reflection.Runtime.TypeParsing.NonQualifiedTypeName,System.Reflection.RuntimeAssemblyName)", "summary", "df-generated"]
       - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", "get_AssemblyName", "()", "summary", "df-generated"]
       - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", "get_TypeName", "()", "summary", "df-generated"]
       - ["System.Reflection.Runtime.TypeParsing", "TypeParser", "ParseTypeName", "(System.String)", "summary", "df-generated"]

@@ -1,15 +1,15 @@
-| test.cpp:21:9:21:15 | new | This allocation cannot return null. $@ is unnecessary. | test.cpp:21:9:21:15 | new | This check |
+| test.cpp:21:9:21:15 | new | This allocation cannot return null. $@ is unnecessary. | test.cpp:21:7:21:16 | ! ... | This check |
 | test.cpp:29:13:29:24 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:30:7:30:13 | ... == ... | This check |
-| test.cpp:33:13:33:24 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:34:8:34:9 | p2 | This check |
+| test.cpp:33:13:33:24 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:34:7:34:9 | ! ... | This check |
 | test.cpp:37:13:37:24 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:38:7:38:16 | ... == ... | This check |
 | test.cpp:41:13:41:24 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:42:7:42:19 | ... == ... | This check |
 | test.cpp:45:13:45:24 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:46:7:46:8 | p5 | This check |
 | test.cpp:49:8:49:19 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:50:7:50:13 | ... == ... | This check |
-| test.cpp:53:8:53:19 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:54:8:54:9 | p7 | This check |
+| test.cpp:53:8:53:19 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:54:7:54:9 | ! ... | This check |
 | test.cpp:58:8:58:19 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:59:7:59:16 | ... == ... | This check |
 | test.cpp:63:8:63:19 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:64:7:64:19 | ... != ... | This check |
 | test.cpp:69:9:69:20 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:70:7:70:14 | ... != ... | This check |
-| test.cpp:75:11:75:22 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:76:13:76:15 | p11 | This check |
+| test.cpp:75:11:75:22 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:76:12:76:15 | ! ... | This check |
 | test.cpp:92:5:92:31 | new[] | This allocation cannot throw. $@ is unnecessary. | test.cpp:97:36:98:3 | { ... } | This catch block |
 | test.cpp:93:15:93:41 | new[] | This allocation cannot throw. $@ is unnecessary. | test.cpp:97:36:98:3 | { ... } | This catch block |
 | test.cpp:96:10:96:36 | new[] | This allocation cannot throw. $@ is unnecessary. | test.cpp:97:36:98:3 | { ... } | This catch block |

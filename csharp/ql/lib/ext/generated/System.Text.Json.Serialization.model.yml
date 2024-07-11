@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Text.Json.Serialization", "JsonConverter<T>", True, "ReadAsPropertyName", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverterFactory", True, "CreateConverter", "(System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonSerializerContext", False, "JsonSerializerContext", "(System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonSerializerContext", False, "JsonSerializerContext", "(System.Text.Json.JsonSerializerOptions)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
@@ -24,7 +25,6 @@ extensions:
       - ["System.Text.Json.Serialization", "JsonConverter", "get_Type", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", "CanConvert", "(System.Type)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
-      - ["System.Text.Json.Serialization", "JsonConverter<T>", "ReadAsPropertyName", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", "Write", "(System.Text.Json.Utf8JsonWriter,T,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", "WriteAsPropertyName", "(System.Text.Json.Utf8JsonWriter,T,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", "get_HandleNull", "()", "summary", "df-generated"]

@@ -54,7 +54,7 @@ private class WildCardPermissionConstruction extends ClassInstanceExpr, Permissi
  * A configuration for tracking flow from user input to a permissions check.
  */
 module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof UserInput }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PermissionsConstruction p).getInput()

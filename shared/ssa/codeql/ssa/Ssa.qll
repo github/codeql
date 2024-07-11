@@ -15,7 +15,22 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this basic block. */
     string toString();
 
+    /** Gets the `i`th node in this basic block. */
+    ControlFlowNode getNode(int i);
+
+    /** Gets the length of this basic block. */
+    int length();
+
     /** Gets the location of this basic block. */
+    Location getLocation();
+  }
+
+  /** A control flow node. */
+  class ControlFlowNode {
+    /** Gets a textual representation of this control flow node. */
+    string toString();
+
+    /** Gets the location of this control flow node. */
     Location getLocation();
   }
 
@@ -905,6 +920,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets a textual representation of this SSA definition. */
     string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
+
+    /** Gets the location of this SSA definition. */
+    Location getLocation() {
+      exists(BasicBlock bb, int i | this.definesAt(_, bb, i) |
+        if i = -1 then result = bb.getLocation() else result = bb.getNode(i).getLocation()
+      )
+    }
   }
 
   /** An SSA definition that corresponds to a write. */
@@ -961,6 +983,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets a textual representation of this SSA definition. */
     string toString() { result = this.(Definition).toString() }
+
+    /** Gets the location of this SSA definition. */
+    Location getLocation() {
+      exists(BasicBlock bb, int i | this.definesAt(_, bb, i, _) |
+        if i = -1 then result = bb.getLocation() else result = bb.getNode(i).getLocation()
+      )
+    }
   }
 
   /**

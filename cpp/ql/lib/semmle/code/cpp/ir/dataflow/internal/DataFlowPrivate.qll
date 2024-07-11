@@ -412,6 +412,8 @@ class ArgumentPosition = Position;
 
 abstract class Position extends TPosition {
   abstract string toString();
+
+  abstract int getIndirectionIndex();
 }
 
 class DirectPosition extends Position, TDirectPosition {
@@ -421,13 +423,15 @@ class DirectPosition extends Position, TDirectPosition {
 
   override string toString() {
     index = -1 and
-    result = "this"
+    result = "this pointer"
     or
     index != -1 and
     result = index.toString()
   }
 
   int getIndex() { result = index }
+
+  final override int getIndirectionIndex() { result = 0 }
 }
 
 class IndirectionPosition extends Position, TIndirectionPosition {
@@ -438,16 +442,13 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 
   override string toString() {
     if argumentIndex = -1
-    then if indirectionIndex > 0 then result = "this indirection" else result = "this"
-    else
-      if indirectionIndex > 0
-      then result = argumentIndex.toString() + " indirection"
-      else result = argumentIndex.toString()
+    then result = repeatStars(indirectionIndex - 1) + "this"
+    else result = repeatStars(indirectionIndex) + argumentIndex.toString()
   }
 
   int getArgumentIndex() { result = argumentIndex }
 
-  int getIndirectionIndex() { result = indirectionIndex }
+  final override int getIndirectionIndex() { result = indirectionIndex }
 }
 
 newtype TPosition =
@@ -988,7 +989,7 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
-  suppressUnusedNode(n) and
+  exists(n) and
   result instanceof VoidType // stub implementation
 }
 
@@ -999,12 +1000,9 @@ string ppReprType(DataFlowType t) { none() } // stub implementation
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any() // stub implementation
+  t1 instanceof VoidType and t2 instanceof VoidType // stub implementation
 }
-
-private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -1332,7 +1330,7 @@ import IsUnreachableInCall
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
@@ -1403,7 +1401,8 @@ private predicate unionHasApproxName(Cpp::Union u, string s) { s = u.getName().c
 cached
 private newtype TContentApprox =
   TFieldApproxContent(string s) { fieldHasApproxName(_, s) } or
-  TUnionApproxContent(string s) { unionHasApproxName(_, s) }
+  TUnionApproxContent(string s) { unionHasApproxName(_, s) } or
+  TElementApproxContent()
 
 /** An approximated `Content`. */
 class ContentApprox extends TContentApprox {
@@ -1434,6 +1433,10 @@ private class UnionApproxContent extends ContentApprox, TUnionApproxContent {
   final override string toString() { result = s }
 }
 
+private class ElementApproxContent extends ContentApprox, TElementApproxContent {
+  final override string toString() { result = "ElementApprox" }
+}
+
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) {
@@ -1448,6 +1451,9 @@ ContentApprox getContentApprox(Content c) {
     u = c.(UnionContent).getUnion() and
     unionHasApproxName(u, prefix)
   )
+  or
+  c instanceof ElementContent and
+  result instanceof ElementApproxContent
 }
 
 /**
@@ -1708,6 +1714,14 @@ class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
 DataFlowSecondLevelScope getSecondLevelScope(Node n) { result.getANode() = n }
 
 /**
+ * Gets the maximum number of indirections to use for `ElementContent`.
+ *
+ * This should be equal to the largest number of stars (i.e., `*`s) in any
+ * `Element` content across all of our MaD summaries, sources, and sinks.
+ */
+int getMaxElementContentIndirectionIndex() { result = 5 }
+
+/**
  * Module that defines flow through iterators.
  * For example,
  * ```cpp
@@ -1819,7 +1833,7 @@ module IteratorFlow {
      * Holds if `(bb, i)` contains a write to an iterator that may have been obtained
      * by calling `begin` (or related functions) on the variable `v`.
      */
-    predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       certain = false and
       exists(GetsIteratorCall beginCall, Instruction writeToDeref, IRBlock bbQual, int iQual |
         isIteratorStoreInstruction(beginCall, writeToDeref) and
@@ -1830,7 +1844,7 @@ module IteratorFlow {
     }
 
     /** Holds if `(bb, i)` reads the container variable `v`. */
-    predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       Ssa::variableRead(bb, i, v, certain)
     }
   }

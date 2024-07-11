@@ -102,10 +102,14 @@ private Field getASparselyUsedChannelTypedField() {
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(ValueEntity v, Write w |
+  exists(ValueEntity v |
     not v instanceof SsaSourceVariable and
     not v instanceof Field and
-    w.writes(v, n1) and
+    (
+      any(Write w).writes(v, n1)
+      or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
+    ) and
     n2 = v.getARead()
   )
   or
@@ -218,9 +222,8 @@ string ppReprType(DataFlowType t) { none() }
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any() // stub implementation
+  t1 = TTodoDataFlowType() and t2 = TTodoDataFlowType() // stub implementation
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -243,9 +246,7 @@ predicate neverSkipInPathGraph(Node n) {
 
 class DataFlowExpr = Expr;
 
-private newtype TDataFlowType =
-  TTodoDataFlowType() or
-  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+private newtype TDataFlowType = TTodoDataFlowType()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */

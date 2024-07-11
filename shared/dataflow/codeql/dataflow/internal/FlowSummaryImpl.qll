@@ -4,7 +4,6 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
-private import DataFlowImpl
 private import AccessPathSyntax as AccessPathSyntax
 
 /**
@@ -269,6 +268,20 @@ module Make<
      */
     class NeutralSummaryCallable extends NeutralCallableFinal {
       NeutralSummaryCallable() { this.getKind() = "summary" }
+    }
+
+    /**
+     * A callable that has a neutral source model.
+     */
+    class NeutralSourceCallable extends NeutralCallableFinal {
+      NeutralSourceCallable() { this.getKind() = "source" }
+    }
+
+    /**
+     * A callable that has a neutral sink model.
+     */
+    class NeutralSinkCallable extends NeutralCallableFinal {
+      NeutralSinkCallable() { this.getKind() = "sink" }
     }
 
     /**
@@ -1738,6 +1751,37 @@ module Make<
             sinkElementRef(ref, input, kind, model) and
             interpretInput(input, input.getNumToken(), ref, node)
           )
+        }
+
+        final private class SourceOrSinkElementFinal = SourceOrSinkElement;
+
+        bindingset[this]
+        abstract private class SourceSinkModelCallableBase extends SourceOrSinkElementFinal {
+          /**
+           * Holds if there exists a manual model that applies to this.
+           */
+          final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+          /**
+           * Holds if this has provenance `p`.
+           */
+          abstract predicate hasProvenance(Provenance p);
+        }
+
+        /**
+         * A callable that has a source model.
+         */
+        abstract class SourceModelCallable extends SourceSinkModelCallableBase {
+          bindingset[this]
+          SourceModelCallable() { exists(this) }
+        }
+
+        /**
+         * A callable that has a sink model.
+         */
+        abstract class SinkModelCallable extends SourceSinkModelCallableBase {
+          bindingset[this]
+          SinkModelCallable() { exists(this) }
         }
 
         /** A source or sink relevant for testing. */

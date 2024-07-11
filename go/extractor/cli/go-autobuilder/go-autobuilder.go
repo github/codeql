@@ -168,7 +168,7 @@ func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 			beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
 
 			// run `go mod tidy -e`
-			cmd := toolchain.TidyModule(goModDir)
+			cmd := goMod.Tidy()
 			res := util.RunCmd(cmd)
 
 			if !res {
@@ -320,8 +320,7 @@ func setGopath(root string) {
 
 // Try to build the project with a build script. If that fails, return a boolean indicating
 // that we should install dependencies in the normal way.
-func buildWithoutCustomCommands(modMode project.ModMode) bool {
-	shouldInstallDependencies := false
+func buildWithoutCustomCommands(workspaces []project.GoWorkspace) {
 	// try to run a build script
 	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
 	scriptCount := len(scriptsExecuted)
@@ -335,13 +334,19 @@ func buildWithoutCustomCommands(modMode project.ModMode) bool {
 			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
 		}
 
-		shouldInstallDependencies = true
-	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Printf("Dependencies are still not resolving after executing %d build script(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		// Install dependencies for all workspaces.
+		for i, _ := range workspaces {
+			workspaces[i].ShouldInstallDependencies = true
+		}
+	} else {
+		for i, workspace := range workspaces {
+			if toolchain.DepErrors("./...", workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+				log.Printf("Dependencies are still not resolving for `%s` after executing %d build script(s), continuing to install dependencies in the normal way.\n", workspace.BaseDir, scriptCount)
 
-		shouldInstallDependencies = true
+				workspaces[i].ShouldInstallDependencies = true
+			}
+		}
 	}
-	return shouldInstallDependencies
 }
 
 // Build the project with custom commands.
@@ -428,7 +433,7 @@ func installDependencies(workspace project.GoWorkspace) {
 			path := filepath.Dir(module.Path)
 
 			if util.DirExists(filepath.Join(path, "vendor")) {
-				vendor := toolchain.VendorModule(path)
+				vendor := module.Vendor()
 				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
 				util.RunCmd(vendor)
 			}
@@ -553,23 +558,25 @@ func installDependenciesAndBuild() {
 	// Track all projects which could not be extracted successfully
 	var unsuccessfulProjects = []string{}
 
-	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
-	for i, workspace := range workspaces {
+	// Attempt to automatically fix issues with each workspace
+	for _, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
 		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
 		tryUpdateGoModAndGoSum(workspace)
+	}
 
-		// check whether an explicit dependency installation command was provided
-		inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-		shouldInstallDependencies := false
-		if inst == "" {
-			shouldInstallDependencies = buildWithoutCustomCommands(workspace.ModMode)
-		} else {
-			buildWithCustomCommands(inst)
-		}
+	// check whether an explicit dependency installation command was provided
+	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
+	if inst == "" {
+		buildWithoutCustomCommands(workspaces)
+	} else {
+		buildWithCustomCommands(inst)
+	}
 
+	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
+	for i, workspace := range workspaces {
 		if workspace.ModMode == project.ModVendor {
 			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
 			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
@@ -580,7 +587,7 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		if shouldInstallDependencies {
+		if workspace.ShouldInstallDependencies {
 			if workspace.ModMode == project.ModVendor {
 				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {

@@ -288,7 +288,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
       not expectsContent(node, _) and
       if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
-      then compatibleTypes(t, getNodeDataFlowType(node))
+      then compatibleTypesFilter(t, getNodeDataFlowType(node))
       else any()
     }
 
@@ -887,6 +887,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate nodeDataFlowType(Node n, DataFlowType t) { t = getNodeType(n) }
 
     cached
+    predicate compatibleTypesCached(DataFlowType t1, DataFlowType t2) { compatibleTypes(t1, t2) }
+
+    private predicate relevantType(DataFlowType t) { t = getNodeType(_) }
+
+    cached
+    predicate isTopType(DataFlowType t) {
+      strictcount(DataFlowType t0 | relevantType(t0)) =
+        strictcount(DataFlowType t0 | relevantType(t0) and compatibleTypesCached(t, t0))
+    }
+
+    cached
+    predicate typeStrongerThanCached(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+
+    cached
     predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
     cached
@@ -1118,7 +1132,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(ParameterPosition ppos |
         viableParam(call, ppos, p) and
         argumentPositionMatch(call, arg, ppos) and
-        compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
+        compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
         golangSpecificParamArgFilter(call, p, arg)
       )
     }
@@ -1271,10 +1285,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           then
             // normal flow through
             read = TReadStepTypesNone() and
-            compatibleTypes(getNodeDataFlowType(p), getNodeDataFlowType(node))
+            compatibleTypesFilter(getNodeDataFlowType(p), getNodeDataFlowType(node))
             or
             // getter
-            compatibleTypes(read.getContentType(), getNodeDataFlowType(node))
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(node))
           else any()
         }
 
@@ -1307,7 +1321,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
             readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
               read.getContentType()) and
             Cand::parameterValueFlowReturnCand(p, _, true) and
-            compatibleTypes(getNodeDataFlowType(p), read.getContainerType())
+            compatibleTypesFilter(getNodeDataFlowType(p), read.getContainerType())
           )
           or
           parameterValueFlow0_0(TReadStepTypesNone(), p, node, read, model)
@@ -1368,11 +1382,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           |
             // normal flow through
             read = TReadStepTypesNone() and
-            compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(out))
+            compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(out))
             or
             // getter
-            compatibleTypes(getNodeDataFlowType(arg), read.getContainerType()) and
-            compatibleTypes(read.getContentType(), getNodeDataFlowType(out))
+            compatibleTypesFilter(getNodeDataFlowType(arg), read.getContainerType()) and
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(out))
           )
         }
 
@@ -1622,7 +1636,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   bindingset[t1, t2]
   pragma[inline_late]
-  private predicate typeStrongerThan0(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+  predicate compatibleTypesFilter(DataFlowType t1, DataFlowType t2) {
+    compatibleTypesCached(t1, t2)
+  }
+
+  bindingset[t1, t2]
+  pragma[inline_late]
+  predicate typeStrongerThanFilter(DataFlowType t1, DataFlowType t2) {
+    typeStrongerThanCached(t1, t2)
+  }
 
   private predicate callEdge(DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p) {
     viableParamArg(call, p, arg) and
@@ -1703,7 +1725,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           nodeDataFlowType(arg, at) and
           nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
-          typeStrongerThan0(pt, at)
+          typeStrongerThanFilter(pt, at)
         )
         or
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
@@ -1714,7 +1736,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
-          typeStrongerThan0(at, pt)
+          typeStrongerThanFilter(at, pt)
         )
         or
         exists(ParamNode p |
@@ -1754,7 +1776,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         nodeDataFlowType(arg, at) and
         nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
-        typeStrongerThan0(at, pt)
+        typeStrongerThanFilter(at, pt)
       )
       or
       exists(ArgNode arg |
@@ -1823,8 +1845,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * stronger then compatibility is checked and `t1` is returned.
      */
     bindingset[t1, t2]
+    pragma[inline_late]
     DataFlowType getStrongestType(DataFlowType t1, DataFlowType t2) {
-      if typeStrongerThan(t2, t1) then result = t2 else (compatibleTypes(t1, t2) and result = t1)
+      if typeStrongerThanCached(t2, t1)
+      then result = t2
+      else (
+        compatibleTypesFilter(t1, t2) and result = t1
+      )
     }
 
     /**
@@ -1945,7 +1972,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(DataFlowType t1, DataFlowType t2 |
         typeFlowArgType(arg, t1, cc) and
         relevantArgParamIn(arg, p, t2) and
-        compatibleTypes(t1, t2)
+        compatibleTypesFilter(t1, t2)
       )
     }
 
@@ -1989,7 +2016,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(DataFlowType t1, DataFlowType t2 |
         typeFlowParamType(p, t1, false) and
         relevantArgParamOut(arg, p, t2) and
-        compatibleTypes(t1, t2)
+        compatibleTypesFilter(t1, t2)
       )
     }
 
