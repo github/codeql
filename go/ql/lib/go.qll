@@ -48,7 +48,6 @@ import semmle.go.frameworks.Gogf
 import semmle.go.frameworks.GoJose
 import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro
-import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.Gqlgen
 import semmle.go.frameworks.Iris
 import semmle.go.frameworks.Jwt
