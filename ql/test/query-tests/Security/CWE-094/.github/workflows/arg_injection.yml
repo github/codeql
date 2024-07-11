@@ -14,7 +14,4 @@ jobs:
       - run: sed "s/FOO/$TITLE/g"
       - run: echo "foo" | sed "s/FOO/$TITLE/g" > bar
       - run: echo $(echo "foo" | sed "s/FOO/$TITLE/g" > bar)
-
-
-
-
+      - run: awk "BEGIN {$TITLE}"

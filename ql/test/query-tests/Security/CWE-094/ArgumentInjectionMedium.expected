@@ -2,10 +2,12 @@ edges
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | provenance |  |
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | provenance |  |
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | provenance |  |
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:17:14:17:33 | awk "BEGIN {$TITLE}" | provenance |  |
 nodes
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | semmle.label | github.event.issue.title |
 | .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | semmle.label | sed "s/FOO/$TITLE/g" |
 | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | semmle.label | echo "foo" \| sed "s/FOO/$TITLE/g" > bar |
 | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | semmle.label | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) |
+| .github/workflows/arg_injection.yml:17:14:17:33 | awk "BEGIN {$TITLE}" | semmle.label | awk "BEGIN {$TITLE}" |
 subpaths
 #select
