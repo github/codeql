@@ -62,7 +62,7 @@ namespace Semmle.Autobuild.CSharp
                         ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & BuildScript.OnFailure(build, ret =>
                         {
                             FailedProjectsOrSolutions.Add(projectOrSolution);
-                        });
+                        }) & BuildScript.Create(_ => Semmle.Extraction.CSharp.Driver.Main(["--binlog", "autobuild.binlog"]));
                     }
                     return ret;
                 });
@@ -145,7 +145,8 @@ namespace Semmle.Autobuild.CSharp
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = build.RunCommand(DotNetCommand(builder.Actions, dotNetPath)).
                 Argument("build").
-                Argument("--no-incremental");
+                Argument("--no-incremental").
+                Argument("/bl:autobuild.binlog");
 
             return
                 script.QuoteArgument(projOrSln).
