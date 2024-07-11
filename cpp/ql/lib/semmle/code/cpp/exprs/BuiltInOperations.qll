@@ -1850,7 +1850,7 @@ class BuiltInOperationHasAttribute extends BuiltInOperation, @builtinhasattribut
 class BuiltInOperationIsReferenceable extends BuiltInOperation, @isreferenceable {
   override string toString() { result = "__is_referenceable" }
 
-  override string getAPrimaryQlClass() { result = "BuiltInIsReferenceable" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsReferenceable" }
 }
 
 /**
