@@ -9,5 +9,6 @@ nodes
 | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | semmle.label | echo "foo" \| sed "s/FOO/$TITLE/g" > bar |
 | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | semmle.label | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) |
 | .github/workflows/arg_injection.yml:17:14:17:33 | awk "BEGIN {$TITLE}" | semmle.label | awk "BEGIN {$TITLE}" |
+| .github/workflows/arg_injection.yml:18:14:18:86 | sed -i "s/git_branch = .*/git_branch = \\"$GITHUB_HEAD_REF\\"/" config.json | semmle.label | sed -i "s/git_branch = .*/git_branch = \\"$GITHUB_HEAD_REF\\"/" config.json |
 subpaths
 #select

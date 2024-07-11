@@ -45,6 +45,12 @@ predicate externallyTriggerableEventsDataModel(string event) {
   Extensions::externallyTriggerableEventsDataModel(event)
 }
 
+private string commandLauncher() { result = ["", "sudo\\s+", "su\\s+", "xvfb-run\\s+"] }
+
+private string commandPrefixDelimiter() { result = "(^|;|\\$\\(|`|\\||&&|\\|\\|)\\s*" }
+
+private string commandSuffixDelimiter() { result = "\\s*(;|\\||\\)|`|&&|\\|\\||$)" }
+
 /**
  * MaD models for poisonable commands
  * Fields:
@@ -54,7 +60,8 @@ predicate poisonableCommandsDataModel(string regexp) {
   exists(string sub_regexp |
     Extensions::poisonableCommandsDataModel(sub_regexp) and
     // find regexp
-    regexp = "(^|\\b|\\s+)" + sub_regexp + "(\\s|;|\\||\\)|`|-|&&|[a-zA-Z]|$)"
+    regexp =
+      commandPrefixDelimiter() + commandLauncher() + sub_regexp + "(.*?)" + commandSuffixDelimiter()
   )
 }
 
@@ -64,11 +71,13 @@ predicate poisonableCommandsDataModel(string regexp) {
  *    - regexp: Regular expression for matching poisonable local scripts
  *    - group: Script capture group number for the regular expression
  */
-predicate poisonableLocalScriptsDataModel(string regexp, int group) {
+predicate poisonableLocalScriptsDataModel(string regexp, int command_group) {
   exists(string sub_regexp |
-    Extensions::poisonableLocalScriptsDataModel(sub_regexp, group) and
+    Extensions::poisonableLocalScriptsDataModel(sub_regexp, command_group) and
     // capture regexp
-    regexp = ".*(^|;|\\$\\(|`|\\||&&|\\|\\|)\\s*" + sub_regexp + "\\s*(;|\\||\\)|`|-|&&|$|\\|\\|).*"
+    regexp =
+      ".*" + commandPrefixDelimiter() + commandLauncher() + sub_regexp + commandSuffixDelimiter() +
+        ".*"
   )
 }
 
@@ -83,7 +92,7 @@ predicate argumentInjectionSinksDataModel(string regexp, int command_group, int 
   exists(string sub_regexp |
     Extensions::argumentInjectionSinksDataModel(sub_regexp, command_group, argument_group) and
     // capture regexp
-    regexp = ".*(^|;|\\$\\(|`|\\||&&|\\|\\|)\\s*" + sub_regexp + "\\s*(;|\\||\\)|`|-|&&|$|\\|\\|).*"
+    regexp = ".*" + commandPrefixDelimiter() + sub_regexp + commandSuffixDelimiter() + ".*"
   )
 }
 

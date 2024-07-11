@@ -38,3 +38,4 @@ jobs:
       - run: sed -f config file.txt > foo.txt
       - run: echo "foo" | awk -f ./config.awk > foo.txt
       - run: gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo
+      - run: ./foo/cmd

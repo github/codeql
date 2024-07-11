@@ -39,9 +39,11 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   string cmd;
 
   LocalScriptExecutionRunStep() {
-    exists(string line, string regexp, int group | line = this.getScript().splitAt("\n").trim() |
-      poisonableLocalScriptsDataModel(regexp, group) and
-      cmd = line.regexpCapture(regexp, group)
+    exists(string line, string regexp, int command_group |
+      line = this.getScript().splitAt("\n").trim()
+    |
+      poisonableLocalScriptsDataModel(regexp, command_group) and
+      cmd = line.regexpCapture(regexp, command_group)
     )
   }
 
