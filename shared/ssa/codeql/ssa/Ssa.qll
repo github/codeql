@@ -1322,19 +1322,31 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
-    cached
-    private newtype TNode =
-      TParamNode(DfInput::Parameter p) { DfInput::ssaDefInitializesParam(_, p) } or
-      TExprNode(DfInput::Expr e, Boolean isPost) {
-        e = DfInput::getARead(_)
-        or
-        DfInput::ssaDefAssigns(_, e) and
-        isPost = false
-      } or
-      TSsaDefinitionNode(DefinitionExt def) or
-      TSsaInputNode(SsaInputDefinitionExt def, BasicBlock input) {
-        def.hasInputFromBlock(_, _, _, _, input)
+    private module Cached {
+      cached
+      newtype TNode =
+        TParamNode(DfInput::Parameter p) { DfInput::ssaDefInitializesParam(_, p) } or
+        TExprNode(DfInput::Expr e, Boolean isPost) {
+          e = DfInput::getARead(_)
+          or
+          DfInput::ssaDefAssigns(_, e) and
+          isPost = false
+        } or
+        TSsaDefinitionNode(DefinitionExt def) or
+        TSsaInputNode(SsaInputDefinitionExt def, BasicBlock input) {
+          def.hasInputFromBlock(_, _, _, _, input)
+        }
+
+      cached
+      Definition getAPhiInputDef(SsaInputNode n) {
+        exists(SsaInputDefinitionExt phi, BasicBlock bb |
+          phi.hasInputFromBlock(result, _, _, _, bb) and
+          n.isInputInto(phi, bb)
+        )
       }
+    }
+
+    private import Cached
 
     /**
      * A data flow node that we need to reference in the value step relation.
@@ -1606,46 +1618,56 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
     }
 
-    pragma[nomagic]
-    private predicate guardControlsSsaRead(
-      DfInput::Guard g, boolean branch, Definition def, ExprNode n
-    ) {
-      exists(BasicBlock bb, DfInput::Expr e |
-        e = n.getExpr() and
-        DfInput::getARead(def) = e and
-        DfInput::guardControlsBlock(g, bb, branch) and
-        e.hasCfgNode(bb, _)
-      )
-    }
-
-    pragma[nomagic]
-    private predicate guardControlsPhiInput(
-      DfInput::Guard g, boolean branch, Definition def, BasicBlock input, SsaInputDefinitionExt phi
-    ) {
-      phi.hasInputFromBlock(def, _, _, _, input) and
-      (
-        DfInput::guardControlsBlock(g, input, branch)
-        or
-        exists(int last |
-          last = input.length() - 1 and
-          g.hasCfgNode(input, last) and
-          DfInput::getAConditionalBasicBlockSuccessor(input, branch) = phi.getBasicBlock()
-        )
-      )
-    }
+    /**
+     * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+     *
+     * The expression `e` is expected to be a syntactic part of the guard `g`.
+     * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+     * the argument `x`.
+     */
+    signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, boolean branch);
 
     /**
-     * Gets a node that reads SSA defininition `def`, and which is guarded by
-     * `g` evaluating to `branch`.
+     * Provides a set of barrier nodes for a guard that validates an expression.
+     *
+     * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+     * in data flow and taint tracking.
      */
-    pragma[nomagic]
-    Node getABarrierNode(DfInput::Guard g, Definition def, boolean branch) {
-      guardControlsSsaRead(g, branch, def, result)
-      or
-      exists(BasicBlock input, SsaInputDefinitionExt phi |
-        guardControlsPhiInput(g, branch, def, input, phi) and
-        result.(SsaInputNode).isInputInto(phi, input)
-      )
+    module BarrierGuard<guardChecksSig/3 guardChecks> {
+      pragma[nomagic]
+      private predicate guardChecksSsaDef(DfInput::Guard g, Definition def, boolean branch) {
+        guardChecks(g, DfInput::getARead(def), branch)
+      }
+
+      /** Gets a node that is safely guarded by the given guard check. */
+      pragma[nomagic]
+      Node getABarrierNode() {
+        exists(DfInput::Guard g, boolean branch, Definition def, BasicBlock bb |
+          guardChecksSsaDef(g, def, branch)
+        |
+          // guard controls a read
+          exists(DfInput::Expr e |
+            e = DfInput::getARead(def) and
+            e.hasCfgNode(bb, _) and
+            DfInput::guardControlsBlock(g, bb, branch) and
+            result.(ExprNode).getExpr() = e
+          )
+          or
+          // guard controls input block to a phi node
+          exists(SsaInputDefinitionExt phi |
+            def = getAPhiInputDef(result) and
+            result.(SsaInputNode).isInputInto(phi, bb)
+          |
+            DfInput::guardControlsBlock(g, bb, branch)
+            or
+            exists(int last |
+              last = bb.length() - 1 and
+              g.hasCfgNode(bb, last) and
+              DfInput::getAConditionalBasicBlockSuccessor(bb, branch) = phi.getBasicBlock()
+            )
+          )
+        )
+      }
     }
   }
 }
