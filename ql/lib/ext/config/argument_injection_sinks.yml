@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: github/actions-all
+      extensible: argumentInjectionSinksDataModel
+    # https://gtfobins.github.io/
+    data:
+      - [".*(sed) (.*)", 1, 2]
+

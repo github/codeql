@@ -8,7 +8,6 @@ private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
-private import codeql.actions.security.ArgumentInjectionQuery
 
 /**
  * A unit class for adding additional taint steps.
@@ -52,7 +51,7 @@ bindingset[var_name]
 predicate envToArgInjSink(string var_name, Run run, string command) {
   exists(string argument, string line, string regexp, int command_group, int argument_group |
     run.getScript().splitAt("\n") = line and
-    argumentInjectionSinks(regexp, command_group, argument_group) and
+    argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
     argument = line.regexpCapture(regexp, argument_group) and
     command = line.regexpCapture(regexp, command_group) and
     envToRunExpr(var_name, run, argument) and

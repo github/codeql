@@ -46,7 +46,7 @@ predicate externallyTriggerableEventsDataModel(string event) {
 }
 
 /**
- * MaD models for poisonable commands 
+ * MaD models for poisonable commands
  * Fields:
  *    - regexp: Regular expression for matching poisonable commands
  */
@@ -74,11 +74,22 @@ predicate poisonableActionsDataModel(string action) {
 }
 
 /**
- * MaD models for for event properties that can be user-controlled.
+ * MaD models for event properties that can be user-controlled.
  * Fields:
  *    - property: event property
  *    - kind: property kind
  */
 predicate untrustedEventPropertiesDataModel(string property, string kind) {
   Extensions::untrustedEventPropertiesDataModel(property, kind)
+}
+
+/**
+ * MaD models for arguments to commands that execute the given argument.
+ * Fields:
+ *    - regexp: Regular expression for matching argument injections.
+ *    - command_group: capture group for the command.
+ *    - argument_group: capture group for the argument.
+ */
+predicate argumentInjectionSinksDataModel(string regexp, int command_group, int argument_group) {
+  Extensions::argumentInjectionSinksDataModel(regexp, command_group, argument_group)
 }

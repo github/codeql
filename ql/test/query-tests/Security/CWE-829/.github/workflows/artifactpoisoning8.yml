@@ -13,10 +13,6 @@ jobs:
             run_id: ${{github.event.workflow_run.id}}
             name: artifact
 
-      # Save PR id to output
-      - name: Save artifact data
-        id: artifact
-        run: echo "::set-output name=id::$(<artifact.txt)"
-
       - name: Use artifact
-        run: echo ${{ steps.artifact.outputs.id }} 
+        run: |
+          sed -f config foo.md > bar.md

@@ -44,3 +44,9 @@ extensible predicate poisonableActionsDataModel(string action);
  */
 extensible predicate untrustedEventPropertiesDataModel(string property, string kind);
 
+/**
+ * Holds for arguments to commands that execute the given argument
+ */
+extensible predicate argumentInjectionSinksDataModel(
+  string regexp, int command_group, int argument_group
+);

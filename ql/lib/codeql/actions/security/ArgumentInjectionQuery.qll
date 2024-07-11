@@ -10,28 +10,6 @@ abstract class ArgumentInjectionSink extends DataFlow::Node {
 }
 
 /**
- * Holds if a Run step declares an environment variable with contents from a local file.
- * e.g.
- *    run: |
- *      echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV
- *      echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV
- *class ArgumentInjectionFromFileReadSink extends ArgumentInjectionSink {
- *  ArgumentInjectionFromFileReadSink() {
- *    exists(Run run, UntrustedArtifactDownloadStep step, string content, string value |
- *      this.asExpr() = run.getScriptScalar() and
- *      step.getAFollowingStep() = run and
- *      writeToGitHubEnv(run, content) and
- *      extractVariableAndValue(content, _, value) and
- *      outputsPartialFileContent(value)
- *    )
- *  }
- *}
- */
-predicate argumentInjectionSinks(string regexp, int command_group, int argument_group) {
-  regexp = ".*(sed) (.*)" and command_group = 1 and argument_group = 2
-}
-
-/**
  * Holds if a Run step declares an environment variable, uses it as the argument to a command vulnerable to argument injection.
  * e.g.
  *    env:
@@ -53,6 +31,9 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
   override string getCommand() { result = command }
 }
 
+/**
+ * Holds if a Run step declares an environment variable, uses it as the argument to a command vulnerable to argument injection.
+ */
 class ArgumentInjectionFromMaDSink extends ArgumentInjectionSink {
   ArgumentInjectionFromMaDSink() { externallyDefinedSink(this, "argument-injection") }
 
