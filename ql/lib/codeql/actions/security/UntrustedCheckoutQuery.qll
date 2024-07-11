@@ -62,7 +62,7 @@ predicate containsHeadRef(string s) {
             // heuristics
             "\\bhead\\.ref\\b", "\\bhead_ref\\b", "\\bpr_head_ref\\b",
             // env vars
-            "\\benv\\.GITHUB_HEAD_REF\\b",
+            "GITHUB_HEAD_REF",
           ], _, _)
   )
 }

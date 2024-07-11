@@ -15,3 +15,8 @@ jobs:
       - run: echo "foo" | sed "s/FOO/$TITLE/g" > bar
       - run: echo $(echo "foo" | sed "s/FOO/$TITLE/g" > bar)
       - run: awk "BEGIN {$TITLE}"
+      - run: sed -i "s/git_branch = .*/git_branch = \"$GITHUB_HEAD_REF\"/" config.json
+      - run: |
+          # We consider | as a shell pipe so this one is not reported yet until
+          # we can better identify all the commands in a shell script
+          sed -i "s|git_branch = .*|git_branch = \"$GITHUB_HEAD_REF\"|" config.json

@@ -23,8 +23,19 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
   ArgumentInjectionFromEnvVarSink() {
     exists(Run run, string var_name |
       envToArgInjSink(var_name, run, command) and
-      exists(run.getInScopeEnvVarExpr(var_name)) and
-      run.getScriptScalar() = this.asExpr()
+      run.getScriptScalar() = this.asExpr() and
+      exists(run.getInScopeEnvVarExpr(var_name))
+    )
+    or
+    exists(
+      Run run, string line, string argument, string regexp, int argument_group, int command_group
+    |
+      run.getScript().splitAt("\n") = line and
+      run.getScriptScalar() = this.asExpr() and
+      argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
+      argument = line.regexpCapture(regexp, argument_group) and
+      command = line.regexpCapture(regexp, command_group) and
+      argument.regexpMatch(".*\\$(\\{)?(GITHUB_HEAD_REF).*")
     )
   }
 
@@ -45,7 +56,19 @@ class ArgumentInjectionFromMaDSink extends ArgumentInjectionSink {
  * that is used to construct and evaluate a code script.
  */
 private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource
+    or
+    exists(
+      Run run, string argument, string line, string regexp, int command_group, int argument_group
+    |
+      run.getScriptScalar() = source.asExpr() and
+      run.getScript().splitAt("\n") = line and
+      argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
+      argument = line.regexpCapture(regexp, argument_group) and
+      argument.regexpMatch(".*\\$(\\{)?(GITHUB_HEAD_REF).*")
+    )
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ArgumentInjectionSink }
 }
