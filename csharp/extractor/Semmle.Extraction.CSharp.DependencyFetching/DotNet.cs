@@ -69,6 +69,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += " --force";
             }
 
+            if (restoreSettings.TargetWindows)
+            {
+                args += " /p:EnableWindowsTargeting=true";
+            }
+
             return args;
         }
 

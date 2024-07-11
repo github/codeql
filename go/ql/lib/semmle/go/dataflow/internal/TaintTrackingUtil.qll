@@ -423,7 +423,7 @@ private class ClearSanitizer extends DefaultTaintSanitizer {
       arg = call.getAnArgument() and
       arg = var.getAUse() and
       arg != this and
-      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+      arg.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
     )
   }
 }

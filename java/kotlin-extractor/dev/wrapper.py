@@ -29,6 +29,7 @@ import os
 
 DEFAULT_VERSION = "2.0.0"
 
+
 def options():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("tool")
@@ -38,11 +39,15 @@ def options():
     return parser.parse_known_args()
 
 
-url_template = 'https://github.com/JetBrains/kotlin/releases/download/v{version}/kotlin-compiler-{version}.zip'
+file_template = "kotlin-compiler-{version}.zip"
+url_template = "https://github.com/JetBrains/kotlin/releases/download/v{version}/kotlin-compiler-{version}.zip"
 this_dir = pathlib.Path(__file__).resolve().parent
 version_file = this_dir / ".kotlinc_version"
 install_dir = this_dir / ".kotlinc_installed"
-windows_ripunzip = this_dir.parents[4] / "resources" / "lib" / "windows" / "ripunzip" / "ripunzip.exe"
+zips_dir = this_dir / ".kotlinc_zips"
+windows_ripunzip = (
+    this_dir.parents[4] / "resources" / "lib" / "windows" / "ripunzip" / "ripunzip.exe"
+)
 
 
 class Error(Exception):
@@ -62,16 +67,6 @@ class ZipFilePreservingPermissions(zipfile.ZipFile):
         return targetpath
 
 
-def check_version(version: str):
-    try:
-        with urllib.request.urlopen(url_template.format(version=version)) as response:
-            pass
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            raise Error(f"Version {version} not found in github.com/JetBrains/kotlin/releases") from e
-        raise
-
-
 def get_version():
     try:
         return version_file.read_text()
@@ -86,29 +81,39 @@ def install(version: str, quiet: bool):
     else:
         info_out = sys.stderr
         info = lambda *args: print(*args, file=sys.stderr)
+    file = file_template.format(version=version)
     url = url_template.format(version=version)
     if install_dir.exists():
         shutil.rmtree(install_dir)
     install_dir.mkdir()
+    zips_dir.mkdir(exist_ok=True)
+    zip = zips_dir / file
+
+    if not zip.exists():
+        info(f"downloading {url}")
+        tmp_zip = zip.with_suffix(".tmp")
+        with open(tmp_zip, "wb") as out, urllib.request.urlopen(url) as response:
+            shutil.copyfileobj(response, out)
+        tmp_zip.rename(zip)
     ripunzip = shutil.which("ripunzip")
-    if ripunzip is None and platform.system() == "Windows" and windows_ripunzip.exists():
+    if (
+        ripunzip is None
+        and platform.system() == "Windows"
+        and windows_ripunzip.exists()
+    ):
         ripunzip = windows_ripunzip
     if ripunzip:
-        info(f"downloading and extracting {url} using ripunzip")
-        subprocess.run([ripunzip, "unzip-uri", url], stdout=info_out, stderr=info_out, cwd=install_dir,
-                       check=True)
-        return
-    with io.BytesIO() as buffer:
-        info(f"downloading {url}")
-        with urllib.request.urlopen(url) as response:
-            while True:
-                bytes = response.read()
-                if not bytes:
-                    break
-                buffer.write(bytes)
-        buffer.seek(0)
-        info(f"extracting kotlin-compiler-{version}.zip")
-        with ZipFilePreservingPermissions(buffer) as archive:
+        info(f"extracting {zip} using ripunzip")
+        subprocess.run(
+            [ripunzip, "unzip-file", zip],
+            stdout=info_out,
+            stderr=info_out,
+            cwd=install_dir,
+            check=True,
+        )
+    else:
+        info(f"extracting {zip}")
+        with ZipFilePreservingPermissions(zip) as archive:
             archive.extractall(install_dir)
 
 
@@ -130,6 +135,9 @@ def clear():
     if version_file.exists():
         print(f"removing {version_file}", file=sys.stderr)
         version_file.unlink()
+    if zips_dir.exists():
+        print(f"removing {zips_dir}", file=sys.stderr)
+        shutil.rmtree(zips_dir)
 
 
 def main(opts, forwarded_opts):
@@ -140,7 +148,6 @@ def main(opts, forwarded_opts):
     if opts.select == "default":
         selected_version = DEFAULT_VERSION
     elif opts.select is not None:
-        check_version(opts.select)
         selected_version = opts.select
     else:
         selected_version = current_version or DEFAULT_VERSION
@@ -153,7 +160,10 @@ def main(opts, forwarded_opts):
         return
     if opts.version:
         if opts.tool == "kotlinc":
-            print(f"info: kotlinc-jvm {selected_version} (codeql dev wrapper)", file=sys.stderr)
+            print(
+                f"info: kotlinc-jvm {selected_version} (codeql dev wrapper)",
+                file=sys.stderr,
+            )
             return
         forwarded_opts.append("-version")
 
