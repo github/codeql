@@ -949,6 +949,16 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
    * gives nothing, as the 10 is considered part of the type.
    */
   Expr getExtent() { result = this.getChild(2) }
+
+  /**
+   * Gets the number of elements in the array, if available.
+   *
+   * For example, `new int[]{1,2,3}` has an array size of 3.
+   */
+  int getArraySize() {
+    result = this.getAllocatedType().(ArrayType).getArraySize() or
+    result = this.getInitializer().(ArrayAggregateLiteral).getArraySize()
+  }
 }
 
 private class TDeleteOrDeleteArrayExpr = @delete_expr or @delete_array_expr;
