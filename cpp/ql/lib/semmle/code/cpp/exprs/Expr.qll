@@ -952,7 +952,7 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
 
   /**
    * Gets the number of elements in the array, if available.
-   * 
+   *
    * For example, `new int[]{1,2,3}` has an array size of 3.
    */
   int getArraySize() {
