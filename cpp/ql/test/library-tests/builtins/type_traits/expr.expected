@@ -191,10 +191,10 @@
 | gcc.cpp:26:47:26:97 | __reference_constructs_from_temporary | int &&,int && | 0 |
 | gcc.cpp:26:47:26:97 | int && |  | <none> |
 | gcc.cpp:26:47:26:97 | int && |  | <none> |
-| gcc.cpp:28:45:28:91 | (no string representation) | int &&,int | 1 |
+| gcc.cpp:28:45:28:91 | __reference_converts_from_temporary | int &&,int | 1 |
 | gcc.cpp:28:45:28:91 | int |  | <none> |
 | gcc.cpp:28:45:28:91 | int && |  | <none> |
-| gcc.cpp:29:45:29:93 | (no string representation) | int &&,int && | 0 |
+| gcc.cpp:29:45:29:93 | __reference_converts_from_temporary | int &&,int && | 0 |
 | gcc.cpp:29:45:29:93 | int && |  | <none> |
 | gcc.cpp:29:45:29:93 | int && |  | <none> |
 | ms.cpp:38:41:38:45 | 0 |  | 0 |
