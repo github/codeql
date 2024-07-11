@@ -402,8 +402,8 @@ class BuiltInOperationIsConvertible extends BuiltInOperation, @isconvertible {
  * A C++ `__is_nothrow_convertible` built-in operation (used by some implementations
  * of the `<type_traits>` header).
  *
- * Returns `true` if the first type can be converted to the second type without
- * potentially rasing an exception.
+ * Returns `true` if the first type can be converted to the second type and the
+ * conversion operator has an empty exception specification.
  * ```
  * bool v = __is_nothrow_convertible(MyType, OtherType);
  * ```
@@ -678,8 +678,7 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
  * The `__is_nothrow_assignable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const D& d) nothrow`
- * assignment operator (i.e, with an empty exception specification).
+ * Returns true if there exists an assignment operator with an empty exception specification.
  * ```
  * bool v = __is_nothrow_assignable(MyType1, MyType2);
  * ```
@@ -694,8 +693,7 @@ class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowas
  * The `__is_assignable` built-in operation (used by some implementations
  * of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const D& d)` assignment
- * operator.
+ * Returns true if there exists an assignment operator.
  * ```
  * bool v = __is_assignable(MyType1, MyType2);
  * ```
@@ -710,8 +708,7 @@ class BuiltInOperationIsAssignable extends BuiltInOperation, @isassignable {
  * The `__is_assignable_no_precondition_check` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const D& d)` assignment
- * operator.
+ * Returns true if there exists an assignment operator.
  * ```
  * bool v = __is_assignable_no_precondition_check(MyType1, MyType2);
  * ```
@@ -1207,7 +1204,7 @@ class BuiltInOperationIsPointerInterconvertibleBaseOf extends BuiltInOperation,
  * A C++ `__is_pointer_interconvertible_with_class` built-in operation (used
  * by some implementations of the `<type_traits>` header).
  *
- * Returns `true` if the member pointer is pointer-interconvertible with a
+ * Returns `true` if a member pointer is pointer-interconvertible with a
  * class type.
  * ```
  * template<typename _Tp, typename _Up>
@@ -1229,7 +1226,7 @@ class BuiltInOperationIsPointerInterconvertibleWithClass extends BuiltInOperatio
  * A C++ `__builtin_is_pointer_interconvertible_with_class` built-in operation (used
  * by some implementations of the `<type_traits>` header).
  *
- * Returns `true` if the member pointer is pointer-interconvertible with a class type.
+ * Returns `true` if a member pointer is pointer-interconvertible with a class type.
  * ```
  * template<typename _Tp, typename _Up>
  * constexpr bool is_pointer_interconvertible_with_class(_Up _Tp::*mp) noexcept
@@ -1250,7 +1247,7 @@ class BuiltInOperationBuiltInIsPointerInterconvertible extends BuiltInOperation,
  * A C++ `__is_corresponding_member` built-in operation (used
  * by some implementations of the `<type_traits>` header).
  *
- * Returns `true` if the member pointers refer to corresponding
+ * Returns `true` if two member pointers refer to corresponding
  * members in the initial sequences of two class types.
  * ```
  * template<typename _Tp1, typename _Tp2, typename _Up1, typename _Up2>
@@ -1268,7 +1265,7 @@ class BuiltInOperationIsCorrespondingMember extends BuiltInOperation, @iscorresp
  * A C++ `__builtin_is_corresponding_member` built-in operation (used
  * by some implementations of the `<type_traits>` header).
  *
- * Returns `true` if the member pointers refer to corresponding
+ * Returns `true` if two member pointers refer to corresponding
  * members in the initial sequences of two class types.
  * ```
  * template<typename _Tp1, typename _Tp2, typename _Up1, typename _Up2>
@@ -1770,11 +1767,12 @@ class BuiltInIsTrivial extends BuiltInOperation, @istrivialexpr {
  * A C++ `__reference_constructs_from_temporary` built-in operation
  * (used by some implementations of the `<type_traits>` header).
  *
- * Returns `true` if a type is a trivial type.
+ * Returns `true` if a reference type `_Tp` is bound to an expression of
+ * type `_Up` in direct-initialization, and a temporary object is bound.
  * ```
- * template<typename _Tp>
+ * template<typename _Tp, typename _Up>
  *   struct reference_constructs_from_temporary
- *   : public integral_constant<bool, __reference_constructs_from_temporary(_Tp)>
+ *   : public integral_constant<bool, __reference_constructs_from_temporary(_Tp, _Up)>
  *   {};
  * ```
  */
@@ -1792,18 +1790,19 @@ class BuiltInOperationReferenceConstructsFromTemporary extends BuiltInOperation,
  * A C++ `__reference_converts_from_temporary` built-in operation
  * (used by some implementations of the `<type_traits>` header).
  *
- * Returns `true` if a type is a trivial type.
+ * Returns `true` if a reference type `_Tp` is bound to an expression of
+ * type `_Up` in copy-initialization, and a temporary object is bound.
  * ```
- * template<typename _Tp>
+ * template<typename _Tp, typename _Up>
  *   struct reference_converts_from_temporary
- *   : public integral_constant<bool, __reference_converts_from_temporary(_Tp)>
+ *   : public integral_constant<bool, __reference_converts_from_temporary(_Tp, _Up)>
  *   {};
  * ```
  */
 class BuiltInOperationReferenceCovertsFromTemporary extends BuiltInOperation,
   @referenceconstructsfromtemporary
 {
-  override string toString() { result = "__reference_constructs_from_temporary" }
+  override string toString() { result = "__reference_converts_from_temporary" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationReferenceCovertsFromTemporary" }
 }
@@ -1812,8 +1811,8 @@ class BuiltInOperationReferenceCovertsFromTemporary extends BuiltInOperation,
  * A C++ `__reference_binds_to_temporary` built-in operation (used by some
  * implementations of the `<tuple>` header).
  *
- * Returns `true` if a reference of type `Type1` bound to an expression of
- * type `Type1` binds to a temporary object.
+ * Returns `true` if a reference of type `Type1` is bound to an expression of
+ * type `Type1`, and a temporary object is bound.
  * ```
  * __reference_binds_to_temporary(Type1, Type2)
  */
@@ -1827,8 +1826,8 @@ class BuiltInOperationReferenceBindsToTemporary extends BuiltInOperation, @refer
 /**
  * A C++ `__builtin_has_attribute` built-in operation.
  *
- * Returns `true` if a type or expression has been declared with an
- * attribute.
+ * Returns `true` if a type or expression has been declared with the
+ * specified attribute.
  * ```
  * __attribute__ ((aligned(8))) int v;
  * bool has_attribute = __builtin_has_attribute(v, aligned);
