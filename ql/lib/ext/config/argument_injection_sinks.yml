@@ -4,5 +4,5 @@ extensions:
       extensible: argumentInjectionSinksDataModel
     # https://gtfobins.github.io/
     data:
-      - [".*(sed) (.*)", 1, 2]
+      - ["(sed)(.*?)", 2, 3]
 

@@ -1,8 +1,14 @@
 edges
-| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | provenance |  |
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | provenance |  |
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | provenance |  |
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | provenance |  |
 nodes
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | semmle.label | github.event.issue.title |
-| .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | semmle.label | sed "s/FOO/$TITLE/g"\n |
+| .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | semmle.label | sed "s/FOO/$TITLE/g" |
+| .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | semmle.label | echo "foo" \| sed "s/FOO/$TITLE/g" > bar |
+| .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | semmle.label | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) |
 subpaths
 #select
-| .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | Potential argument injection in $@ command, which may be controlled by an external user. | .github/workflows/arg_injection.yml:15:14:16:31 | sed "s/FOO/$TITLE/g"\n | sed |
+| .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | Potential argument injection in $@ command, which may be controlled by an external user. | .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | sed |
+| .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | Potential argument injection in $@ command, which may be controlled by an external user. | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | sed |
+| .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | Potential argument injection in $@ command, which may be controlled by an external user. | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | sed |

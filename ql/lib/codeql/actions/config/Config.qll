@@ -91,5 +91,8 @@ predicate untrustedEventPropertiesDataModel(string property, string kind) {
  *    - argument_group: capture group for the argument.
  */
 predicate argumentInjectionSinksDataModel(string regexp, int command_group, int argument_group) {
-  Extensions::argumentInjectionSinksDataModel(regexp, command_group, argument_group)
+  exists(string sub_regexp |
+    Extensions::argumentInjectionSinksDataModel(sub_regexp, command_group, argument_group) and
+    regexp = ".*(^|;|\\$\\(|`|\\||&&)\\s*" + sub_regexp + "\\s*(;|\\||\\)|`|-|&&|$).*"
+  )
 }

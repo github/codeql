@@ -10,10 +10,10 @@ jobs:
     env:
       TITLE: ${{github.event.issue.title}}
     steps:
-      - run: |
-          echo "s/FOO/$TITLE/g"
-      - run: |
-          sed "s/FOO/$TITLE/g"
+      - run: echo "s/FOO/$TITLE/g"
+      - run: sed "s/FOO/$TITLE/g"
+      - run: echo "foo" | sed "s/FOO/$TITLE/g" > bar
+      - run: echo $(echo "foo" | sed "s/FOO/$TITLE/g" > bar)
 
 
 
