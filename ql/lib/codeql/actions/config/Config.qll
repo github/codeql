@@ -51,7 +51,11 @@ predicate externallyTriggerableEventsDataModel(string event) {
  *    - regexp: Regular expression for matching poisonable commands
  */
 predicate poisonableCommandsDataModel(string regexp) {
-  Extensions::poisonableCommandsDataModel(regexp)
+  exists(string sub_regexp |
+    Extensions::poisonableCommandsDataModel(sub_regexp) and
+    // find regexp
+    regexp = "(^|\\b|\\s+)" + sub_regexp + "(\\s|;|\\||\\)|`|-|&&|[a-zA-Z]|$)"
+  )
 }
 
 /**
@@ -61,7 +65,26 @@ predicate poisonableCommandsDataModel(string regexp) {
  *    - group: Script capture group number for the regular expression
  */
 predicate poisonableLocalScriptsDataModel(string regexp, int group) {
-  Extensions::poisonableLocalScriptsDataModel(regexp, group)
+  exists(string sub_regexp |
+    Extensions::poisonableLocalScriptsDataModel(sub_regexp, group) and
+    // capture regexp
+    regexp = ".*(^|;|\\$\\(|`|\\||&&|\\|\\|)\\s*" + sub_regexp + "\\s*(;|\\||\\)|`|-|&&|$|\\|\\|).*"
+  )
+}
+
+/**
+ * MaD models for arguments to commands that execute the given argument.
+ * Fields:
+ *    - regexp: Regular expression for matching argument injections.
+ *    - command_group: capture group for the command.
+ *    - argument_group: capture group for the argument.
+ */
+predicate argumentInjectionSinksDataModel(string regexp, int command_group, int argument_group) {
+  exists(string sub_regexp |
+    Extensions::argumentInjectionSinksDataModel(sub_regexp, command_group, argument_group) and
+    // capture regexp
+    regexp = ".*(^|;|\\$\\(|`|\\||&&|\\|\\|)\\s*" + sub_regexp + "\\s*(;|\\||\\)|`|-|&&|$|\\|\\|).*"
+  )
 }
 
 /**
@@ -81,18 +104,4 @@ predicate poisonableActionsDataModel(string action) {
  */
 predicate untrustedEventPropertiesDataModel(string property, string kind) {
   Extensions::untrustedEventPropertiesDataModel(property, kind)
-}
-
-/**
- * MaD models for arguments to commands that execute the given argument.
- * Fields:
- *    - regexp: Regular expression for matching argument injections.
- *    - command_group: capture group for the command.
- *    - argument_group: capture group for the argument.
- */
-predicate argumentInjectionSinksDataModel(string regexp, int command_group, int argument_group) {
-  exists(string sub_regexp |
-    Extensions::argumentInjectionSinksDataModel(sub_regexp, command_group, argument_group) and
-    regexp = ".*(^|;|\\$\\(|`|\\||&&)\\s*" + sub_regexp + "\\s*(;|\\||\\)|`|-|&&|$).*"
-  )
 }
