@@ -4361,6 +4361,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:446:17:446:17 | a | string.cpp:446:19:446:23 | call to begin | TAINT |
 | string.cpp:446:17:446:17 | ref arg a | string.cpp:446:8:446:8 | a |  |
 | string.cpp:446:17:446:17 | ref arg a | string.cpp:447:8:447:8 | a |  |
+| string.cpp:446:17:446:25 | call to iterator | string.cpp:446:8:446:8 | ref arg a | TAINT |
+| string.cpp:446:17:446:25 | call to iterator | string.cpp:446:10:446:15 | call to insert | TAINT |
 | string.cpp:446:19:446:23 | call to begin | string.cpp:446:17:446:25 | call to iterator | TAINT |
 | string.cpp:446:32:446:34 | 120 | string.cpp:446:8:446:8 | ref arg a | TAINT |
 | string.cpp:446:32:446:34 | 120 | string.cpp:446:10:446:15 | call to insert | TAINT |
@@ -4369,6 +4371,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:449:17:449:17 | b | string.cpp:449:19:449:23 | call to begin | TAINT |
 | string.cpp:449:17:449:17 | ref arg b | string.cpp:449:8:449:8 | b |  |
 | string.cpp:449:17:449:17 | ref arg b | string.cpp:450:8:450:8 | b |  |
+| string.cpp:449:17:449:25 | call to iterator | string.cpp:449:8:449:8 | ref arg b | TAINT |
+| string.cpp:449:17:449:25 | call to iterator | string.cpp:449:10:449:15 | call to insert | TAINT |
 | string.cpp:449:19:449:23 | call to begin | string.cpp:449:17:449:25 | call to iterator | TAINT |
 | string.cpp:449:32:449:46 | call to source | string.cpp:449:8:449:8 | ref arg b | TAINT |
 | string.cpp:449:32:449:46 | call to source | string.cpp:449:10:449:15 | call to insert | TAINT |
@@ -4396,6 +4400,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:459:17:459:17 | c | string.cpp:459:19:459:21 | call to end | TAINT |
 | string.cpp:459:17:459:17 | ref arg c | string.cpp:459:8:459:8 | c |  |
 | string.cpp:459:17:459:17 | ref arg c | string.cpp:460:8:460:8 | c |  |
+| string.cpp:459:17:459:23 | call to iterator | string.cpp:459:8:459:8 | ref arg c | TAINT |
+| string.cpp:459:17:459:23 | call to iterator | string.cpp:459:10:459:15 | call to insert | TAINT |
 | string.cpp:459:19:459:21 | call to end | string.cpp:459:17:459:23 | call to iterator | TAINT |
 | string.cpp:459:26:459:27 | ref arg s1 | string.cpp:459:38:459:39 | s1 |  |
 | string.cpp:459:26:459:27 | ref arg s1 | string.cpp:465:28:465:29 | s1 |  |
@@ -4413,6 +4419,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:462:17:462:17 | d | string.cpp:462:19:462:21 | call to end | TAINT |
 | string.cpp:462:17:462:17 | ref arg d | string.cpp:462:8:462:8 | d |  |
 | string.cpp:462:17:462:17 | ref arg d | string.cpp:463:8:463:8 | d |  |
+| string.cpp:462:17:462:23 | call to iterator | string.cpp:462:8:462:8 | ref arg d | TAINT |
+| string.cpp:462:17:462:23 | call to iterator | string.cpp:462:10:462:15 | call to insert | TAINT |
 | string.cpp:462:19:462:21 | call to end | string.cpp:462:17:462:23 | call to iterator | TAINT |
 | string.cpp:462:26:462:27 | ref arg s2 | string.cpp:462:38:462:39 | s2 |  |
 | string.cpp:462:26:462:27 | ref arg s2 | string.cpp:465:8:465:9 | s2 |  |
@@ -4432,6 +4440,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:465:18:465:19 | ref arg s2 | string.cpp:465:8:465:9 | s2 |  |
 | string.cpp:465:18:465:19 | ref arg s2 | string.cpp:466:8:466:9 | s2 |  |
 | string.cpp:465:18:465:19 | s2 | string.cpp:465:21:465:23 | call to end | TAINT |
+| string.cpp:465:18:465:25 | call to iterator | string.cpp:465:8:465:9 | ref arg s2 | TAINT |
+| string.cpp:465:18:465:25 | call to iterator | string.cpp:465:11:465:16 | call to insert | TAINT |
 | string.cpp:465:21:465:23 | call to end | string.cpp:465:18:465:25 | call to iterator | TAINT |
 | string.cpp:465:28:465:29 | ref arg s1 | string.cpp:465:40:465:41 | s1 |  |
 | string.cpp:465:28:465:29 | s1 | string.cpp:465:31:465:35 | call to begin | TAINT |
