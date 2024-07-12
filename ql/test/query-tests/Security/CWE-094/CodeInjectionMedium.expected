@@ -6,6 +6,9 @@ edges
 | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] | .github/workflows/artifactpoisoning1.yml:27:67:27:92 | steps.pr.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning1.yml:22:14:22:55 | echo "::set-output name=id::$(<pr-id.txt)" | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] | provenance |  |
 | .github/workflows/artifactpoisoning2.yml:13:9:19:6 | Uses Step: pr | .github/workflows/artifactpoisoning2.yml:22:17:22:42 | steps.pr.outputs.id | provenance |  |
+| .github/workflows/artifactpoisoning3.yml:20:9:41:6 | Uses Step | .github/workflows/artifactpoisoning3.yml:43:14:51:45 | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n | provenance |  |
+| .github/workflows/artifactpoisoning3.yml:41:9:53:6 | Run Step: prepare [pr] | .github/workflows/artifactpoisoning3.yml:53:20:53:50 | steps.prepare.outputs.pr | provenance |  |
+| .github/workflows/artifactpoisoning3.yml:43:14:51:45 | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n | .github/workflows/artifactpoisoning3.yml:41:9:53:6 | Run Step: prepare [pr] | provenance |  |
 | .github/workflows/artifactpoisoning4.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance |  |
 | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | .github/workflows/artifactpoisoning4.yml:22:20:22:51 | steps.artifact.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | provenance |  |
@@ -17,6 +20,9 @@ edges
 | .github/workflows/artifactpoisoning6.yml:16:14:19:57 | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | .github/workflows/artifactpoisoning6.yml:15:9:20:6 | Run Step: artifact [pr_number] | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:23:9:28:6 | Run Step: artifact2 [pr_number] | .github/workflows/artifactpoisoning6.yml:29:20:29:59 | steps.artifact2.outputs.pr_number | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:24:14:27:57 | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | .github/workflows/artifactpoisoning6.yml:23:9:28:6 | Run Step: artifact2 [pr_number] | provenance |  |
+| .github/workflows/artifactpoisoning7.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning7.yml:16:14:28:57 | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance |  |
+| .github/workflows/artifactpoisoning7.yml:15:9:29:6 | Run Step: artifact [pr_number] | .github/workflows/artifactpoisoning7.yml:30:20:30:58 | steps.artifact.outputs.pr_number | provenance |  |
+| .github/workflows/artifactpoisoning7.yml:16:14:28:57 | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | .github/workflows/artifactpoisoning7.yml:15:9:29:6 | Run Step: artifact [pr_number] | provenance |  |
 | .github/workflows/artifactpoisoning8.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning8.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance |  |
 | .github/workflows/artifactpoisoning8.yml:17:9:21:6 | Run Step: artifact [id] | .github/workflows/artifactpoisoning8.yml:22:20:22:51 | steps.artifact.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning8.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | .github/workflows/artifactpoisoning8.yml:17:9:21:6 | Run Step: artifact [id] | provenance |  |
@@ -115,6 +121,10 @@ nodes
 | .github/workflows/artifactpoisoning1.yml:27:67:27:92 | steps.pr.outputs.id | semmle.label | steps.pr.outputs.id |
 | .github/workflows/artifactpoisoning2.yml:13:9:19:6 | Uses Step: pr | semmle.label | Uses Step: pr |
 | .github/workflows/artifactpoisoning2.yml:22:17:22:42 | steps.pr.outputs.id | semmle.label | steps.pr.outputs.id |
+| .github/workflows/artifactpoisoning3.yml:20:9:41:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning3.yml:41:9:53:6 | Run Step: prepare [pr] | semmle.label | Run Step: prepare [pr] |
+| .github/workflows/artifactpoisoning3.yml:43:14:51:45 | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n | semmle.label | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n |
+| .github/workflows/artifactpoisoning3.yml:53:20:53:50 | steps.prepare.outputs.pr | semmle.label | steps.prepare.outputs.pr |
 | .github/workflows/artifactpoisoning4.yml:9:9:17:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | semmle.label | Run Step: artifact [id] |
 | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | semmle.label | echo "::set-output name=id::$(<artifact.txt)" |
@@ -129,6 +139,10 @@ nodes
 | .github/workflows/artifactpoisoning6.yml:23:9:28:6 | Run Step: artifact2 [pr_number] | semmle.label | Run Step: artifact2 [pr_number] |
 | .github/workflows/artifactpoisoning6.yml:24:14:27:57 | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | semmle.label | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n |
 | .github/workflows/artifactpoisoning6.yml:29:20:29:59 | steps.artifact2.outputs.pr_number | semmle.label | steps.artifact2.outputs.pr_number |
+| .github/workflows/artifactpoisoning7.yml:8:9:15:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning7.yml:15:9:29:6 | Run Step: artifact [pr_number] | semmle.label | Run Step: artifact [pr_number] |
+| .github/workflows/artifactpoisoning7.yml:16:14:28:57 | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | semmle.label | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n |
+| .github/workflows/artifactpoisoning7.yml:30:20:30:58 | steps.artifact.outputs.pr_number | semmle.label | steps.artifact.outputs.pr_number |
 | .github/workflows/artifactpoisoning8.yml:9:9:17:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning8.yml:17:9:21:6 | Run Step: artifact [id] | semmle.label | Run Step: artifact [id] |
 | .github/workflows/artifactpoisoning8.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | semmle.label | echo "::set-output name=id::$(<artifact.txt)" |

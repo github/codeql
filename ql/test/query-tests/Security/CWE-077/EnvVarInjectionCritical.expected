@@ -14,6 +14,7 @@ edges
 | .github/workflows/test6.yml:11:19:11:56 | github.event.pull_request.title | .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | provenance |  |
 | .github/workflows/test6.yml:16:19:16:56 | github.event.pull_request.title | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | provenance |  |
 | .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | provenance |  |
+| .github/workflows/test7.yml:9:9:16:6 | Uses Step | .github/workflows/test7.yml:16:9:24:35 | Uses Step | provenance |  |
 nodes
 | .github/workflows/test2.yml:12:9:41:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | semmle.label | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n |
@@ -45,6 +46,8 @@ nodes
 | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | semmle.label | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n |
 | .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | semmle.label | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n |
+| .github/workflows/test7.yml:9:9:16:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test7.yml:16:9:24:35 | Uses Step | semmle.label | Uses Step |
 subpaths
 #select
 | .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | .github/workflows/test2.yml:12:9:41:6 | Uses Step | .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | Potential environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n |
@@ -62,3 +65,4 @@ subpaths
 | .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | .github/workflows/test6.yml:11:19:11:56 | github.event.pull_request.title | .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | Potential environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n |
 | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | .github/workflows/test6.yml:16:19:16:56 | github.event.pull_request.title | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | Potential environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n |
 | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | Potential environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n |
+| .github/workflows/test7.yml:16:9:24:35 | Uses Step | .github/workflows/test7.yml:9:9:16:6 | Uses Step | .github/workflows/test7.yml:16:9:24:35 | Uses Step | Potential environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test7.yml:16:9:24:35 | Uses Step | Uses Step |
