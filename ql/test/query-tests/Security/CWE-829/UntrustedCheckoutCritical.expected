@@ -1,4 +1,7 @@
 edges
+| .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step | .github/actions/dangerous-git-checkout/action.yml:11:7:12:18 | Run Step |
+| .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step |
+| .github/actions/dangerous-git-checkout/action.yml:11:7:12:18 | Run Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step |
 | .github/workflows/actor_trusted_checkout.yml:9:7:14:4 | Uses Step | .github/workflows/actor_trusted_checkout.yml:14:7:15:4 | Uses Step |
 | .github/workflows/actor_trusted_checkout.yml:9:7:14:4 | Uses Step | .github/workflows/actor_trusted_checkout.yml:15:7:19:4 | Run Step |
 | .github/workflows/actor_trusted_checkout.yml:9:7:14:4 | Uses Step | .github/workflows/actor_trusted_checkout.yml:19:7:23:4 | Uses Step |
@@ -332,6 +335,11 @@ edges
 | .github/workflows/unpinned_tags.yml:9:7:10:4 | Uses Step | .github/workflows/unpinned_tags.yml:11:7:11:61 | Uses Step |
 | .github/workflows/unpinned_tags.yml:10:7:11:4 | Uses Step | .github/workflows/unpinned_tags.yml:11:7:11:61 | Uses Step |
 | .github/workflows/untrusted_checkout2.yml:7:9:14:6 | Run Step: pr_number | .github/workflows/untrusted_checkout2.yml:14:9:19:72 | Run Step |
+| .github/workflows/untrusted_checkout3.yml:11:9:12:6 | Uses Step | .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step |
+| .github/workflows/untrusted_checkout3.yml:11:9:12:6 | Uses Step | .github/actions/dangerous-git-checkout/action.yml:11:7:12:18 | Run Step |
+| .github/workflows/untrusted_checkout3.yml:11:9:12:6 | Uses Step | .github/workflows/untrusted_checkout3.yml:12:9:13:6 | Uses Step |
+| .github/workflows/untrusted_checkout3.yml:11:9:12:6 | Uses Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step |
+| .github/workflows/untrusted_checkout3.yml:12:9:13:6 | Uses Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step |
 | .github/workflows/untrusted_checkout.yml:10:9:13:6 | Uses Step | .github/workflows/untrusted_checkout.yml:13:9:16:6 | Uses Step |
 | .github/workflows/untrusted_checkout.yml:10:9:13:6 | Uses Step | .github/workflows/untrusted_checkout.yml:16:9:20:6 | Uses Step |
 | .github/workflows/untrusted_checkout.yml:10:9:13:6 | Uses Step | .github/workflows/untrusted_checkout.yml:20:9:22:23 | Run Step |
