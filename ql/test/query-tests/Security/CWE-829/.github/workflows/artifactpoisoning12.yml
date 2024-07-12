@@ -35,6 +35,6 @@ jobs:
           ls -a sonarcloud-data
       - name: Run command
         run: 
-          ./x.py build -j$(nproc) --compiler gcc --skip-build
+          python foo/x.py
 
 
