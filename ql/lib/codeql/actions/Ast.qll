@@ -74,23 +74,13 @@ class CompositeAction extends AstNode instanceof CompositeActionImpl {
 
   Input getInput(string inputName) { result = super.getInput(inputName) }
 
-  LocalJob getACaller() { result = super.getACaller() }
+  LocalJob getACallerJob() { result = super.getACallerJob() }
+
+  UsesStep getACallerStep() { result = super.getACallerStep() }
 
   predicate isPrivileged() { super.isPrivileged() }
 
   predicate isPrivilegedExternallyTriggerable() { super.isPrivilegedExternallyTriggerable() }
-}
-
-/**
- * An `runs` mapping in a custom composite action YAML.
- * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs
- */
-class Runs extends AstNode instanceof RunsImpl {
-  CompositeAction getAction() { result = super.getAction() }
-
-  Step getAStep() { result = super.getAStep() }
-
-  Step getStep(int i) { result = super.getStep(i) }
 }
 
 /**
@@ -213,11 +203,25 @@ abstract class Job extends AstNode instanceof JobImpl {
   predicate isPrivilegedExternallyTriggerable() { super.isPrivilegedExternallyTriggerable() }
 }
 
-class LocalJob extends Job instanceof LocalJobImpl {
+abstract class StepsContainer extends AstNode instanceof StepsContainerImpl {
   Step getAStep() { result = super.getAStep() }
 
   Step getStep(int i) { result = super.getStep(i) }
 }
+
+/**
+ * An `runs` mapping in a custom composite action YAML.
+ * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs
+ */
+class Runs extends StepsContainer instanceof RunsImpl {
+  CompositeAction getAction() { result = super.getAction() }
+}
+
+/**
+ * An Actions job within a workflow which is composed of steps.
+ * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs.
+ */
+class LocalJob extends Job, StepsContainer instanceof LocalJobImpl { }
 
 /**
  * A step within an Actions job.
@@ -229,6 +233,8 @@ class Step extends AstNode instanceof StepImpl {
   Env getEnv() { result = super.getEnv() }
 
   If getIf() { result = super.getIf() }
+
+  StepsContainer getContainer() { result = super.getContainer() }
 
   Step getAFollowingStep() { result = super.getAFollowingStep() }
 }

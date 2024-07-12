@@ -301,8 +301,10 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     result.getNode().getValue() = name
   }
 
-  LocalJobImpl getACaller() {
-    exists(LocalJobImpl caller, string gwf_path, string path |
+  LocalJobImpl getACallerJob() { result = this.getACallerStep().getEnclosingJob() }
+
+  UsesStepImpl getACallerStep() {
+    exists(UsesStepImpl caller, string gwf_path, string path |
       // the workflow files may not be rooted in the parent directory of .github/workflows
       // extract the offset so we can remove it from the action path
       gwf_path =
@@ -312,8 +314,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
             .getRelativePath()
             .prefix(caller.getLocation().getFile().getRelativePath().indexOf(".github/workflows/")) and
       path = this.getLocation().getFile().getRelativePath().replaceAll(gwf_path, "") and
-      caller.getAStep().(UsesStepImpl).getCallee() =
-        path.prefix(path.indexOf(["/action.yml", "/action.yaml"])) and
+      caller.getCallee() = ["", "./"] + path.prefix(path.indexOf(["/action.yml", "/action.yaml"])) and
       result = caller
     )
   }
@@ -327,7 +328,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
 
   private predicate hasExplicitWritePermission() {
     // a calling job has an explicit write permission
-    this.getACaller().getPermissions().getAPermission().matches("%write")
+    this.getACallerJob().getPermissions().getAPermission().matches("%write")
   }
 
   /** Holds if the action is privileged. */
@@ -340,10 +341,10 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     or
     // there is a privileged caller job
     (
-      this.getACaller().isPrivileged()
+      this.getACallerJob().isPrivileged()
       or
-      not this.getACaller().isPrivileged() and
-      this.getACaller().getATriggerEvent().isPrivileged()
+      not this.getACallerJob().isPrivileged() and
+      this.getACallerJob().getATriggerEvent().isPrivileged()
     )
   }
 
@@ -351,7 +352,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   predicate isPrivilegedExternallyTriggerable() {
     // the action is externally triggerable
     exists(JobImpl caller, EventImpl event |
-      caller = this.getACaller() and
+      caller = this.getACallerJob() and
       event = caller.getATriggerEvent() and
       event.isExternallyTriggerable() and
       // the action is privileged
@@ -431,33 +432,6 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
   ExternalJobImpl getACaller() {
     result.getCallee() = this.getLocation().getFile().getRelativePath()
   }
-}
-
-class RunsImpl extends AstNodeImpl, TRunsNode {
-  YamlMapping n;
-
-  RunsImpl() { this = TRunsNode(n) }
-
-  override string toString() { result = n.toString() }
-
-  override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
-
-  override CompositeActionImpl getParentNode() { result.getAChildNode() = this }
-
-  override string getAPrimaryQlClass() { result = "RunsImpl" }
-
-  override Location getLocation() { result = n.getLocation() }
-
-  override YamlMapping getNode() { result = n }
-
-  /** Gets the action that this `runs` mapping is in. */
-  CompositeActionImpl getAction() { result = this.getParentNode() }
-
-  /** Gets any steps that are defined within this job. */
-  StepImpl getAStep() { result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(_) }
-
-  /** Gets the step at the given index within this job. */
-  StepImpl getStep(int i) { result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(i) }
 }
 
 class InputsImpl extends AstNodeImpl, TInputsNode {
@@ -946,14 +920,57 @@ class JobImpl extends AstNodeImpl, TJobNode {
   }
 }
 
-class LocalJobImpl extends JobImpl {
+abstract class StepsContainerImpl extends AstNodeImpl {
+  /** Gets any steps that are defined within this job. */
+  abstract StepImpl getAStep();
+
+  /** Gets the step at the given index within this job. */
+  abstract StepImpl getStep(int i);
+}
+
+class RunsImpl extends StepsContainerImpl, TRunsNode {
+  YamlMapping n;
+
+  RunsImpl() { this = TRunsNode(n) }
+
+  override string toString() { result = n.toString() }
+
+  override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
+
+  override CompositeActionImpl getParentNode() { result.getAChildNode() = this }
+
+  override string getAPrimaryQlClass() { result = "RunsImpl" }
+
+  override Location getLocation() { result = n.getLocation() }
+
+  override YamlMapping getNode() { result = n }
+
+  /** Gets the action that this `runs` mapping is in. */
+  CompositeActionImpl getAction() { result = this.getParentNode() }
+
+  /** Gets any steps that are defined within this job. */
+  override StepImpl getAStep() {
+    result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(_)
+  }
+
+  /** Gets the step at the given index within this job. */
+  override StepImpl getStep(int i) {
+    result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(i)
+  }
+}
+
+class LocalJobImpl extends JobImpl, StepsContainerImpl {
   LocalJobImpl() { n.maps(any(YamlString s | s.getValue() = "steps"), _) }
 
   /** Gets any steps that are defined within this job. */
-  StepImpl getAStep() { result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(_) }
+  override StepImpl getAStep() {
+    result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(_)
+  }
 
   /** Gets the step at the given index within this job. */
-  StepImpl getStep(int i) { result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(i) }
+  override StepImpl getStep(int i) {
+    result.getNode() = n.lookup("steps").(YamlSequence).getElementNode(i)
+  }
 }
 
 class StepImpl extends AstNodeImpl, TStepNode {
@@ -965,7 +982,10 @@ class StepImpl extends AstNodeImpl, TStepNode {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  override JobImpl getParentNode() { result.getAChildNode() = this }
+  override AstNodeImpl getParentNode() {
+    result.getAChildNode() = this and
+    (result instanceof LocalJobImpl or result instanceof RunsImpl)
+  }
 
   override string getAPrimaryQlClass() { result = "StepImpl" }
 
@@ -981,12 +1001,37 @@ class StepImpl extends AstNodeImpl, TStepNode {
   /** Gets the value of the `if` field in this step, if any. */
   IfImpl getIf() { result.getNode() = n.lookup("if") }
 
+  /** Gets the Runs or LocalJob that this step is in. */
+  StepsContainerImpl getContainer() { result.getNode() = n.getParentNode() }
+
   /** Gets a step that follows this step. */
   StepImpl getAFollowingStep() {
-    exists(LocalJobImpl job, int i, int j |
-      job.getStep(i) = this and
-      result = job.getStep(j) and
-      i < j
+    (
+      // next step in the same job
+      exists(LocalJobImpl job, int i, int j |
+        job.getStep(i) = this and
+        result = job.getStep(j) and
+        i < j
+      )
+      or
+      // next steps in a composite action
+      exists(RunsImpl runs, int i, int j |
+        exists(this.getEnclosingCompositeAction()) and
+        runs.getStep(i) = this and
+        result = runs.getStep(j) and
+        i < j
+      )
+      or
+      // next steps of the caller (in a composite action step)
+      result = this.getEnclosingCompositeAction().getACallerStep().getAFollowingStep()
+      or
+      // if any of the next steps is a call to a local composite actions, we should follow it
+      exists(LocalJobImpl job, int i, int j, CompositeActionImpl a |
+        job.getStep(i) = this and
+        i < j and
+        a.getACallerStep() = job.getStep(j) and
+        result = a.getRuns().getAStep()
+      )
     )
   }
 }
