@@ -18,7 +18,6 @@ import codeql.actions.security.ControlChecks
 
 from LocalJob j, MutableRefCheckoutStep checkout, ControlCheck check
 where
-  j = checkout.getEnclosingJob() and
   j.getAStep() = checkout and
   // there are no evidences that the checked-out gets executed
   not checkout.getAFollowingStep() instanceof PoisonableStep and

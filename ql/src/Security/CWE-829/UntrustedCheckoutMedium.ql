@@ -18,10 +18,8 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-from LocalJob j, PRHeadCheckoutStep checkout
+from PRHeadCheckoutStep checkout
 where
-  j = checkout.getEnclosingJob() and
-  j.getAStep() = checkout and
   // the checkout occurs in a non-privileged context
   inNonPrivilegedContext(checkout)
 select checkout, "Potential unsafe checkout of untrusted pull request on privileged workflow."

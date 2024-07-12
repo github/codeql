@@ -20,10 +20,8 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
 
-from LocalJob j, PRHeadCheckoutStep checkout, PoisonableStep s
+from PRHeadCheckoutStep checkout, PoisonableStep s
 where
-  j = checkout.getEnclosingJob() and
-  j.getAStep() = checkout and
   // the checkout is followed by a known poisonable step
   checkout.getAFollowingStep() = s and
   // the checkout occurs in a privileged context

@@ -20,7 +20,6 @@ query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
 
 from LocalJob j, MutableRefCheckoutStep checkout, PoisonableStep s, ControlCheck check
 where
-  j = checkout.getEnclosingJob() and
   j.getAStep() = checkout and
   // the checked-out code may lead to arbitrary code execution
   checkout.getAFollowingStep() = s and

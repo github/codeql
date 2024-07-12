@@ -16,7 +16,6 @@ import codeql.actions.security.ControlChecks
 
 from LocalJob job, LabelCheck check, MutableRefCheckoutStep checkout, Event event
 where
-  job = checkout.getEnclosingJob() and
   job.isPrivileged() and
   job.getATriggerEvent() = event and
   event.getName() = "pull_request_target" and

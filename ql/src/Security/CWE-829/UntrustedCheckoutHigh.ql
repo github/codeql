@@ -18,10 +18,8 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-from LocalJob j, PRHeadCheckoutStep checkout
+from PRHeadCheckoutStep checkout
 where
-  j = checkout.getEnclosingJob() and
-  j.getAStep() = checkout and
   // the checkout is NOT followed by a known poisonable step
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   // the checkout occurs in a privileged context
