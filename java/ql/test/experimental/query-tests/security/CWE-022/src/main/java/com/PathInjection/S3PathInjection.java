@@ -19,7 +19,7 @@ public class S3PathInjection {
         UploadFileRequest.builder()
             .putObjectRequest(b -> b.bucket(this.bucketName).key(this.key))
             .addTransferListener(LoggingTransferListener.create())
-            .source(Paths.get(filePathURI)) // $ PathInjection
+            .source(Paths.get(filePathURI)) // $ hasTaintFlow
             .build();
 
     FileUpload fileUpload = this.transferManager.uploadFile(uploadFileRequest);
@@ -33,7 +33,7 @@ public class S3PathInjection {
         UploadFileRequest.builder()
             .putObjectRequest(b -> b.bucket(this.bucketName).key(this.key))
             .addTransferListener(LoggingTransferListener.create())
-            .source(Paths.get(filePathURI)) // $ PathInjection
+            .source(Paths.get(filePathURI)) // $ hasTaintFlow
             .build();
 
     // Initiate the transfer
@@ -41,10 +41,10 @@ public class S3PathInjection {
     // Pause the upload
     ResumableFileUpload resumableFileUpload = upload.pause();
     // Optionally, persist the resumableFileUpload
-    resumableFileUpload.serializeToFile(Paths.get(filePathURI)); // $ PathInjection
+    resumableFileUpload.serializeToFile(Paths.get(filePathURI)); // $ hasTaintFlow
     // Retrieve the resumableFileUpload from the file
     ResumableFileUpload persistedResumableFileUpload =
-        ResumableFileUpload.fromFile(Paths.get(filePathURI)); // $ PathInjection
+        ResumableFileUpload.fromFile(Paths.get(filePathURI)); // $ hasTaintFlow
     // Resume the upload
     FileUpload resumedUpload = this.transferManager.resumeUploadFile(persistedResumableFileUpload);
     // Wait for the transfer to complete
@@ -59,7 +59,7 @@ public class S3PathInjection {
         DownloadFileRequest.builder()
             .getObjectRequest(b -> b.bucket(this.bucketName).key(this.key))
             .addTransferListener(LoggingTransferListener.create())
-            .destination(Paths.get(downloadedFileWithPath)) // $ PathInjection
+            .destination(Paths.get(downloadedFileWithPath)) // $ hasTaintFlow
             .build();
 
     // Initiate the transfer
@@ -67,10 +67,10 @@ public class S3PathInjection {
     // Pause the download
     ResumableFileDownload resumableFileDownload = download.pause();
     // Optionally, persist the resumableFileDownload
-    resumableFileDownload.serializeToFile(Paths.get(downloadedFileWithPath)); // $ PathInjection
+    resumableFileDownload.serializeToFile(Paths.get(downloadedFileWithPath)); // $ hasTaintFlow
     // Retrieve the resumableFileDownload from the file
     ResumableFileDownload persistedResumableFileDownload =
-        ResumableFileDownload.fromFile(Paths.get(downloadedFileWithPath)); // $ PathInjection
+        ResumableFileDownload.fromFile(Paths.get(downloadedFileWithPath)); // $ hasTaintFlow
     // Resume the download
     FileDownload resumedDownload =
         this.transferManager.resumeDownloadFile(persistedResumableFileDownload);
@@ -85,7 +85,7 @@ public class S3PathInjection {
     DirectoryUpload directoryUpload =
         this.transferManager.uploadDirectory(
             UploadDirectoryRequest.builder()
-                .source(Paths.get(sourceDirectory)) // $ PathInjection
+                .source(Paths.get(sourceDirectory)) // $ hasTaintFlow
                 .bucket(this.bucketName)
                 .build());
 
@@ -98,7 +98,7 @@ public class S3PathInjection {
         DownloadFileRequest.builder()
             .getObjectRequest(b -> b.bucket(this.bucketName).key(this.key))
             .addTransferListener(LoggingTransferListener.create())
-            .destination(Paths.get(downloadedFileWithPath)) // $ PathInjection
+            .destination(Paths.get(downloadedFileWithPath)) // $ hasTaintFlow
             .build();
 
     FileDownload downloadFile = this.transferManager.downloadFile(downloadFileRequest);
@@ -111,7 +111,7 @@ public class S3PathInjection {
     DirectoryDownload directoryDownload =
         this.transferManager.downloadDirectory(
             DownloadDirectoryRequest.builder()
-                .destination(Paths.get(destinationPathURI)) // $ PathInjection
+                .destination(Paths.get(destinationPathURI)) // $ hasTaintFlow
                 .bucket(this.bucketName)
                 .build());
     CompletedDirectoryDownload completedDirectoryDownload =

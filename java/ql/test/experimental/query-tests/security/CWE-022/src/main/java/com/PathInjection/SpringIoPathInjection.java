@@ -18,30 +18,30 @@ public class SpringIoPathInjection {
     Path filePath = fileStorageLocation.resolve(path).normalize();
     File pathFile = new File(path);
 
-    new UrlResource(filePath.toUri()); // $ PathInjection
-    new UrlResource(filePath.toUri().toURL()); // $ PathInjection
-    new UrlResource("file", path); // $ PathInjection
-    new UrlResource("file", path, "#"); // $ PathInjection
-    new UrlResource(path); // $ PathInjection
+    new UrlResource(filePath.toUri()); // $ hasTaintFlow
+    new UrlResource(filePath.toUri().toURL()); // $ hasTaintFlow
+    new UrlResource("file", path); // $ hasTaintFlow
+    new UrlResource("file", path, "#"); // $ hasTaintFlow
+    new UrlResource(path); // $ hasTaintFlow
 
-    new PathResource(path); // $ PathInjection
-    new PathResource(filePath); // $ PathInjection
-    new PathResource(filePath.toUri()); // $ PathInjection
+    new PathResource(path); // $ hasTaintFlow
+    new PathResource(filePath); // $ hasTaintFlow
+    new PathResource(filePath.toUri()); // $ hasTaintFlow
 
-    new FileUrlResource(filePath.toUri().toURL()); // $ PathInjection
-    new FileUrlResource(path); // $ PathInjection
+    new FileUrlResource(filePath.toUri().toURL()); // $ hasTaintFlow
+    new FileUrlResource(path); // $ hasTaintFlow
 
-    new FileSystemResource(pathFile); // $ PathInjection
-    new FileSystemResource(path); // $ PathInjection
-    new FileSystemResource(filePath); // $ PathInjection
+    new FileSystemResource(pathFile); // $ hasTaintFlow
+    new FileSystemResource(path); // $ hasTaintFlow
+    new FileSystemResource(filePath); // $ hasTaintFlow
     new FileSystemResource(
-        FileSystems.getFileSystem(URI.create("file:///")), path); // $ PathInjection
+        FileSystems.getFileSystem(URI.create("file:///")), path); // $ hasTaintFlow
 
-    FileSystemUtils.copyRecursively(filePath, filePath.resolve("/newPath")); // $ PathInjection
-    FileSystemUtils.copyRecursively(pathFile, pathFile); // $ PathInjection
-    FileSystemUtils.deleteRecursively(pathFile); // $ PathInjection
-    FileSystemUtils.deleteRecursively(filePath); // $ PathInjection
-    FileCopyUtils.copy(pathFile, pathFile); // $ PathInjection
-    FileCopyUtils.copyToByteArray(pathFile); // $ PathInjection
+    FileSystemUtils.copyRecursively(filePath, filePath.resolve("/newPath")); // $ hasTaintFlow
+    FileSystemUtils.copyRecursively(pathFile, pathFile); // $ hasTaintFlow
+    FileSystemUtils.deleteRecursively(pathFile); // $ hasTaintFlow
+    FileSystemUtils.deleteRecursively(filePath); // $ hasTaintFlow
+    FileCopyUtils.copy(pathFile, pathFile); // $ hasTaintFlow
+    FileCopyUtils.copyToByteArray(pathFile); // $ hasTaintFlow
   }
 }

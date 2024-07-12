@@ -20,19 +20,19 @@ class fileAttr implements FileAttribute<String> {
 
 public class CommonsIOPathInjection {
   public void PathInjection(Path src, File srcF) throws IOException {
-    AsynchronousFileChannel.open(src); // $ PathInjection
-    AsynchronousFileChannel.open(src, LinkOption.NOFOLLOW_LINKS); // $ PathInjection
+    AsynchronousFileChannel.open(src); // $ hasTaintFlow
+    AsynchronousFileChannel.open(src, LinkOption.NOFOLLOW_LINKS); // $ hasTaintFlow
     AsynchronousFileChannel.open(
-        src, LinkOption.NOFOLLOW_LINKS, LinkOption.NOFOLLOW_LINKS); // $ PathInjection
+        src, LinkOption.NOFOLLOW_LINKS, LinkOption.NOFOLLOW_LINKS); // $ hasTaintFlow
     ExecutorService executor = Executors.newFixedThreadPool(10);
     AsynchronousFileChannel.open(
-        src, Set.of(LinkOption.NOFOLLOW_LINKS), executor); // $ PathInjection
+        src, Set.of(LinkOption.NOFOLLOW_LINKS), executor); // $ hasTaintFlow
     AsynchronousFileChannel.open(
-        src, // $ PathInjection
+        src, // $ hasTaintFlow
         Set.of(LinkOption.NOFOLLOW_LINKS),
         executor,
         new fileAttr());
 
-    FileSystems.getFileSystem(srcF.toURI()); // $ PathInjection
+    FileSystems.getFileSystem(srcF.toURI()); // $ hasTaintFlow
   }
 }
