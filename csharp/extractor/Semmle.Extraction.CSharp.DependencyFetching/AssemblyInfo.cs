@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var sections = id.Split(new string[] { ", " }, StringSplitOptions.None);
 
-            Name = sections.First();
+            Name = sections[0];
 
             foreach (var section in sections.Skip(1))
             {

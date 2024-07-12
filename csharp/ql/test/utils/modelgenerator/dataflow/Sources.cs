@@ -4,6 +4,15 @@ namespace Sources;
 
 public class NewSources
 {
+    // Defined as source in the extensions file next to the test.
+    // neutral=Sources;NewSources;Source1;();summary;df-generated 
+    public static string Source1() => throw null;
+
+    // Defined as source in the extensions file next to the test.
+    // neutral=Sources;NewSources;Source2;();summary;df-generated
+    public static string Source2() => throw null;
+
+
     // New source
     // source=Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;local;df-generated
     // neutral=Sources;NewSources;WrapConsoleReadLine;();summary;df-generated
@@ -78,5 +87,31 @@ public class NewSources
     public string ManualSourceAlreadyDefined()
     {
         return Console.ReadLine();
+    }
+
+    public abstract class DataReader
+    {
+        // neutral=Sources;NewSources+DataReader;Read;();summary;df-generated
+        public abstract string Read();
+    }
+
+    public class DataReaderKind1 : DataReader
+    {
+        // source=Sources;NewSources+DataReaderKind1;true;Read;();;ReturnValue;source-kind-1;df-generated
+        // neutral=Sources;NewSources+DataReaderKind1;Read;();summary;df-generated
+        public override string Read()
+        {
+            return Source1();
+        }
+    }
+
+    public class DataReaderKind2 : DataReader
+    {
+        // source=Sources;NewSources+DataReaderKind2;true;Read;();;ReturnValue;source-kind-2;df-generated
+        // neutral=Sources;NewSources+DataReaderKind2;Read;();summary;df-generated
+        public override string Read()
+        {
+            return Source2();
+        }
     }
 }

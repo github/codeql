@@ -120,7 +120,7 @@ namespace Semmle.Util
             path = path.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
             if (path.Length > 1 && path[1] == ':')
-                path = path[0] + "_" + path.Substring(2);
+                path = $"{path[0]}_{path[2..]}";
 
             return path;
         }
@@ -139,14 +139,14 @@ namespace Semmle.Util
                 var directoryName = Path.GetDirectoryName(nested);
                 if (directoryName is null)
                 {
-                    logger.LogWarning("Failed to get directory name from path '" + nested + "'.");
+                    logger.LogWarning($"Failed to get directory name from path '{nested}'.");
                     throw new InvalidOperationException();
                 }
                 Directory.CreateDirectory(directoryName);
             }
             catch (PathTooLongException)
             {
-                logger.LogWarning("Failed to create parent directory of '" + nested + "': Path too long.");
+                logger.LogWarning($"Failed to create parent directory of '{nested}': Path too long.");
                 throw;
             }
             return nested;

@@ -5,6 +5,7 @@ extensions:
       extensible: sinkModel
     data:
       - [ "p", "Sinks", False, "sink", "(Object)", "", "Argument[0]", "test-sink", "manual" ]
+      - [ "p", "Sinks", False, "sink2", "(Object)", "", "Argument[0]", "test-sink2", "manual" ]
       - [ "p", "Sinks", False, "manualSinkAlreadyDefined", "(Object)", "", "Argument[0]", "test-sink", "manual" ]
 
   - addsTo:

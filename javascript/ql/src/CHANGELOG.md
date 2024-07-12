@@ -1,3 +1,9 @@
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Added a new experimental query, `js/cors-misconfiguration`, which detects misconfigured CORS HTTP headers in the `cors` and `apollo` libraries. 
+
 ## 1.0.2
 
 No user-facing changes.

@@ -72,10 +72,16 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
   class BasicBlock instanceof J::BasicBlock {
     string toString() { result = super.toString() }
 
+    ControlFlowNode getNode(int i) { result = super.getNode(i) }
+
+    int length() { result = super.length() }
+
     Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
 
     Location getLocation() { result = super.getLocation() }
   }
+
+  class ControlFlowNode = J::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
 

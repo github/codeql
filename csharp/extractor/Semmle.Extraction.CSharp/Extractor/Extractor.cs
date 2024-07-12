@@ -435,6 +435,8 @@ namespace Semmle.Extraction.CSharp
                 }
             }
 
+            syntaxTrees.Sort((a, b) => string.Compare(a.FilePath, b.FilePath, StringComparison.Ordinal));
+
             var compilation = getCompilation(syntaxTrees, references);
 
             initializeAnalyser(compilation, options);

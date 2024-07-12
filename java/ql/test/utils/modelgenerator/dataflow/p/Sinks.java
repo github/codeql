@@ -17,6 +17,10 @@ public class Sinks {
   // neutral=p;Sinks;sink;(Object);summary;df-generated
   public void sink(Object o) {}
 
+  // Defined as a sink in the model file next to the test.
+  // neutral=p;Sinks;sink2;(Object);summary;df-generated
+  public void sink2(Object o) {}
+
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection;df-generated
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];path-injection;df-generated
   // neutral=p;Sinks;copyFileToDirectory;(Path,Path,CopyOption[]);summary;df-generated
@@ -76,5 +80,28 @@ public class Sinks {
   // neutral=p;Sinks;manualSinkAlreadyDefined;(Object);summary;df-generated
   public void manualSinkAlreadyDefined(Object o) {
     sink(o);
+  }
+
+  public abstract class DataWriter {
+    // neutral=p;Sinks$DataWriter;write;(String);summary;df-generated
+    public abstract void write(String s);
+  }
+
+  public class DataWriterKind1 extends DataWriter {
+    // sink=p;Sinks$DataWriterKind1;true;write;(String);;Argument[0];test-sink;df-generated
+    // neutral=p;Sinks$DataWriterKind1;write;(String);summary;df-generated
+    @Override
+    public void write(String s) {
+      sink(s);
+    }
+  }
+
+  public class DataWriterKind2 extends DataWriter {
+    // sink=p;Sinks$DataWriterKind2;true;write;(String);;Argument[0];test-sink2;df-generated
+    // neutral=p;Sinks$DataWriterKind2;write;(String);summary;df-generated
+    @Override
+    public void write(String s) {
+      sink2(s);
+    }
   }
 }

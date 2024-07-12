@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         if (File.Exists(nugetConfigPath))
                         {
-                            var tempFolderPath = FileUtils.GetTemporaryWorkingDirectory(out var _);
+                            var tempFolderPath = FileUtils.GetTemporaryWorkingDirectory(out _);
 
                             do
                             {
@@ -188,7 +188,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var threadId = Environment.CurrentManagedThreadId;
             void onOut(string s) => logger.LogDebug(s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
-            var exitCode = pi.ReadOutput(out var _, onOut, onError);
+            var exitCode = pi.ReadOutput(out _, onOut, onError);
             if (exitCode != 0)
             {
                 logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void AddDefaultPackageSource(string nugetConfig)
         {
             logger.LogInfo("Adding default package source...");
-            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {NugetPackageRestorer.PublicNugetOrgFeed} -ConfigFile \"{nugetConfig}\"", out var _);
+            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {NugetPackageRestorer.PublicNugetOrgFeed} -ConfigFile \"{nugetConfig}\"", out _);
         }
 
         public void Dispose()

@@ -199,7 +199,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     exists(ControlFlow::BasicBlock bb, boolean isSuccessor, int i, int j |
       this.reachesBasicBlockDefinitionBase(e, def, isSuccessor, cfn, i, bb) and
       cfnDef = bb.getNode(j) and
-      def.getAControlFlowNode() = cfnDef
+      def.getExpr().getAControlFlowNode() = cfnDef
     |
       isSuccessor = true and j >= i
       or
@@ -208,7 +208,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     or
     exists(ControlFlow::BasicBlock bb |
       this.reachesBasicBlockDefinitionRec(e, def, _, cfn, bb) and
-      def.getAControlFlowNode() = cfnDef and
+      def.getExpr().getAControlFlowNode() = cfnDef and
       cfnDef = bb.getANode()
     )
   }
