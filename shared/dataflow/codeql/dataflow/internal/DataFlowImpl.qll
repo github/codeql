@@ -1068,18 +1068,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       if label1 = "" then result = label2 else result = label1
     }
 
-    pragma[noinline]
-    private predicate localFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
-      Stage1::revFlow(node2) and
-      localFlowStepEx(node1, node2, model)
-    }
-
-    pragma[noinline]
-    private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
-      Stage1::revFlow(node2) and
-      additionalLocalFlowStep(node1, node2, model)
-    }
-
     pragma[nomagic]
     private predicate viableReturnPosOutNodeCand1(DataFlowCall call, ReturnPosition pos, NodeEx out) {
       Stage1::revFlow(out) and
@@ -1376,8 +1364,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         predicate instanceofCcNoCall(CcNoCall cc);
 
-        class LocalCc;
-
         DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx);
 
         bindingset[call, ctx]
@@ -1394,13 +1380,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
         bindingset[cc]
-        LocalCc getLocalCc(Cc cc);
+        LocalCallContext getLocalCc(Cc cc);
 
         bindingset[node1, state1]
         bindingset[node2, state2]
         predicate localStep(
           NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-          Typ t, LocalCc lcc, string label
+          DataFlowType t, LocalCallContext lcc, string label
         );
 
         bindingset[node, state, t0, ap]
@@ -1503,6 +1489,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
         }
 
+        bindingset[node1, state1]
+        bindingset[node2, state2]
+        additional predicate localStep(
+          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+          Typ t, LocalCallContext lcc, string label
+        ) {
+          exists(DataFlowType type |
+            Param::localStep(node1, state1, node2, state2, preservesValue, type, lcc, label) and
+            t = getTyp(type)
+          )
+        }
+
         pragma[nomagic]
         private predicate fwdFlow0(
           NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
@@ -1517,7 +1515,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ap instanceof ApNil and
           apa = getApprox(ap)
           or
-          exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
+          exists(NodeEx mid, FlowState state0, Typ t0, LocalCallContext localCc |
             fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
             localCc = getLocalCc(cc)
           |
@@ -2532,6 +2530,173 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           callEdgeReturn(call, c, _, _, _, _, _)
         }
 
+        /** Provides a big-step relation for local flow steps. */
+        additional module LocalFlowBigStep {
+          final private class NodeExFinal = NodeEx;
+
+          /**
+           * A node where some checking is required, and hence the big-step relation
+           * is not allowed to step over.
+           */
+          private class FlowCheckNode extends NodeExFinal {
+            FlowCheckNode() {
+              revFlow(this, _, _) and
+              (
+                castNode(this.asNode()) or
+                clearsContentCached(this.asNode(), _) or
+                expectsContentCached(this.asNode(), _) or
+                neverSkipInPathGraph(this.asNode()) or
+                Config::neverSkip(this.asNode())
+              )
+            }
+          }
+
+          private predicate additionalLocalStateStep(
+            NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, DataFlowType t,
+            LocalCallContext lcc, string label
+          ) {
+            exists(ApNil nil |
+              revFlow(node1, state1, pragma[only_bind_into](nil)) and
+              revFlow(node2, state2, pragma[only_bind_into](nil)) and
+              Param::localStep(node1, state1, node2, state2, false, t, lcc, label) and
+              state1 != state2
+            )
+          }
+
+          /**
+           * Holds if `node` can be the first node in a maximal subsequence of local
+           * flow steps in a dataflow path.
+           */
+          private predicate localFlowEntry(NodeEx node, FlowState state, Ap ap) {
+            revFlow(node, state, ap) and
+            (
+              sourceNode(node, state)
+              or
+              jumpStepEx(_, node)
+              or
+              additionalJumpStep(_, node, _)
+              or
+              additionalJumpStateStep(_, _, node, state)
+              or
+              node instanceof ParamNodeEx
+              or
+              node.asNode() instanceof OutNodeExt
+              or
+              storeStepCand(_, _, _, node, _, _)
+              or
+              readStepCand(_, _, node)
+              or
+              node instanceof FlowCheckNode
+              or
+              exists(FlowState s |
+                additionalLocalStateStep(_, s, node, state, _, _, _) and
+                s != state
+              )
+            )
+          }
+
+          /**
+           * Holds if `node` can be the last node in a maximal subsequence of local
+           * flow steps in a dataflow path.
+           */
+          private predicate localFlowExit(NodeEx node, FlowState state, Ap ap) {
+            revFlow(node, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+            (
+              exists(NodeEx next, Ap apNext | revFlow(next, pragma[only_bind_into](state), apNext) |
+                jumpStepEx(node, next) and
+                apNext = ap
+                or
+                additionalJumpStep(node, next, _) and
+                apNext = ap and
+                ap instanceof ApNil
+                or
+                callEdgeArgParam(_, _, node, next, _, ap) and
+                apNext = ap
+                or
+                callEdgeReturn(_, _, node, _, next, _, ap) and
+                apNext = ap
+                or
+                storeStepCand(node, _, _, next, _, _)
+                or
+                readStepCand(node, _, next)
+              )
+              or
+              exists(NodeEx next, FlowState s |
+                revFlow(next, s, pragma[only_bind_into](ap)) and ap instanceof ApNil
+              |
+                additionalJumpStateStep(node, state, next, s)
+                or
+                additionalLocalStateStep(node, state, next, s) and
+                s != state
+              )
+              or
+              node instanceof FlowCheckNode
+              or
+              sinkNode(node, state) and
+              ap instanceof ApNil
+            )
+          }
+
+          /**
+           * Holds if the local path from `node1` to `node2` is a prefix of a maximal
+           * subsequence of local flow steps in a dataflow path.
+           *
+           * This is the transitive closure of `[additional]localFlowStep` beginning
+           * at `localFlowEntry`.
+           */
+          pragma[nomagic]
+          private predicate localFlowStepPlus(
+            NodeEx node1, FlowState state, NodeEx node2, boolean preservesValue, DataFlowType t,
+            LocalCallContext cc, string label
+          ) {
+            not inBarrier(node2, state) and
+            not outBarrier(node1, state) and
+            exists(NodeEx node0, boolean preservesValue0, DataFlowType t0, string label0, Ap ap |
+              Param::localStep(node0, state, node2, state, preservesValue0, t0, cc, label0) and
+              revFlow(node2, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+              not outBarrier(node0, state) and
+              (preservesValue = true or ap instanceof ApNil)
+            |
+              node1 = node0 and
+              localFlowEntry(node1, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+              preservesValue = preservesValue0 and
+              label = label0 and
+              t = t0 and
+              node1 != node2
+              or
+              exists(boolean preservesValue1, DataFlowType t1, string label1 |
+                localFlowStepPlus(node1, pragma[only_bind_into](state), node0, preservesValue1, t1,
+                  cc, label1) and
+                not node0 instanceof FlowCheckNode and
+                preservesValue = preservesValue0.booleanAnd(preservesValue1) and
+                label = mergeLabels(label1, label0) and
+                if preservesValue0 = true then t = t1 else t = t0
+              )
+            )
+          }
+
+          /**
+           * Holds if `node1` can step to `node2` in one or more local steps and this
+           * path can occur as a maximal subsequence of local steps in a dataflow path.
+           */
+          pragma[nomagic]
+          predicate localFlowBigStep(
+            NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+            DataFlowType t, LocalCallContext callContext, string label
+          ) {
+            exists(Ap ap |
+              localFlowStepPlus(node1, state1, node2, preservesValue, t, callContext, label) and
+              localFlowExit(node2, state1, ap) and
+              state1 = state2
+            |
+              preservesValue = true or ap instanceof ApNil
+            )
+            or
+            additionalLocalStateStep(node1, state1, node2, state2, t, callContext, label) and
+            preservesValue = false
+          }
+        }
+
         /**
          * INTERNAL: Only for debugging.
          *
@@ -2888,7 +3053,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
             TypOption argT, ApOption argAp, Typ t, Ap ap, string label, boolean isStoreStep
           ) {
-            exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
+            exists(NodeEx mid, FlowState state0, Typ t0, LocalCallContext localCc |
               pn1 = TPathNodeMid(mid, state0, cc, summaryCtx, argT, argAp, t0, ap) and
               localCc = getLocalCc(cc) and
               isStoreStep = false
@@ -3358,10 +3523,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       predicate instanceofCcNoCall(CcNoCall cc) { any() }
 
-      class LocalCc = Unit;
-
       bindingset[cc]
-      LocalCc getLocalCc(Cc cc) { any() }
+      LocalCallContext getLocalCc(Cc cc) {
+        cc = ccSomeCall() and
+        result instanceof LocalCallContextSpecificCall
+        or
+        result instanceof LocalCallContextAny
+      }
 
       DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) { none() }
 
@@ -3417,29 +3585,63 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
       import CachedCallContextSensitivity
-      import NoLocalCallContext
+      import LocalCallContext
+
+      pragma[noinline]
+      private predicate localFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
+        Stage1::revFlow(node2) and
+        localFlowStepEx(node1, node2, model)
+      }
+
+      pragma[nomagic]
+      private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
+        Stage1::revFlow(node2) and
+        additionalLocalFlowStep(node1, node2, model)
+      }
+
+      pragma[nomagic]
+      private predicate localStep(
+        NodeEx node1, NodeEx node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
+        string label
+      ) {
+        (
+          preservesValue = true and
+          localFlowStepNodeCand1(node1, node2, label) and
+          t = node1.getDataFlowType()
+          or
+          preservesValue = false and
+          additionalLocalFlowStepNodeCand1(node1, node2, label) and
+          t = node2.getDataFlowType()
+        ) and
+        lcc.relevantFor(node1.getEnclosingCallable()) and
+        not isUnreachableInCall1(node1, lcc) and
+        not isUnreachableInCall1(node2, lcc)
+      }
+
+      pragma[nomagic]
+      private predicate localStateStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        DataFlowType t, LocalCallContext lcc, string label
+      ) {
+        preservesValue = false and
+        additionalLocalStateStep(node1, state1, node2, state2) and
+        label = "Config" and
+        t = node2.getDataFlowType() and
+        lcc.relevantFor(node1.getEnclosingCallable()) and
+        not isUnreachableInCall1(node1, lcc) and
+        not isUnreachableInCall1(node2, lcc)
+      }
 
       bindingset[node1, state1]
       bindingset[node2, state2]
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc, string label
+        DataFlowType t, LocalCallContext lcc, string label
       ) {
-        (
-          preservesValue = true and
-          localFlowStepNodeCand1(node1, node2, label) and
-          state1 = state2
-          or
-          preservesValue = false and
-          additionalLocalFlowStepNodeCand1(node1, node2, label) and
-          state1 = state2
-          or
-          preservesValue = false and
-          additionalLocalStateStep(node1, state1, node2, state2) and
-          label = "Config"
-        ) and
-        exists(t) and
-        exists(lcc)
+        localStep(node1, node2, preservesValue, t, lcc, label) and
+        state1 = state2
+        or
+        localStateStep(node1, state1, node2, state2, preservesValue, t, lcc, label)
       }
 
       pragma[nomagic]
@@ -3475,192 +3677,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private module Stage2 = MkStage<Stage1>::Stage<Stage2Param>;
-
-    pragma[nomagic]
-    private predicate flowOutOfCallNodeCand2(
-      DataFlowCall call, RetNodeEx node1, ReturnKindExt kind, NodeEx node2, boolean allowsFieldFlow
-    ) {
-      flowOutOfCallNodeCand1(call, node1, kind, node2, allowsFieldFlow) and
-      Stage2::revFlow(node2) and
-      Stage2::revFlow(node1)
-    }
-
-    pragma[nomagic]
-    private predicate flowIntoCallNodeCand2(
-      DataFlowCall call, ArgNodeEx node1, ParamNodeEx node2, boolean allowsFieldFlow
-    ) {
-      flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow) and
-      Stage2::revFlow(node2) and
-      Stage2::revFlow(node1)
-    }
-
-    private module LocalFlowBigStep {
-      /**
-       * A node where some checking is required, and hence the big-step relation
-       * is not allowed to step over.
-       */
-      private class FlowCheckNode extends NodeEx {
-        FlowCheckNode() {
-          castNode(this.asNode()) or
-          clearsContentCached(this.asNode(), _) or
-          expectsContentCached(this.asNode(), _) or
-          neverSkipInPathGraph(this.asNode()) or
-          Config::neverSkip(this.asNode())
-        }
-      }
-
-      /**
-       * Holds if `node` can be the first node in a maximal subsequence of local
-       * flow steps in a dataflow path.
-       */
-      private predicate localFlowEntry(NodeEx node, FlowState state) {
-        Stage2::revFlow(node, state) and
-        (
-          sourceNode(node, state)
-          or
-          jumpStepEx(_, node)
-          or
-          additionalJumpStep(_, node, _)
-          or
-          additionalJumpStateStep(_, _, node, state)
-          or
-          node instanceof ParamNodeEx
-          or
-          node.asNode() instanceof OutNodeExt
-          or
-          Stage2::storeStepCand(_, _, _, node, _, _)
-          or
-          Stage2::readStepCand(_, _, node)
-          or
-          node instanceof FlowCheckNode
-          or
-          exists(FlowState s |
-            additionalLocalStateStep(_, s, node, state) and
-            s != state
-          )
-        )
-      }
-
-      /**
-       * Holds if `node` can be the last node in a maximal subsequence of local
-       * flow steps in a dataflow path.
-       */
-      private predicate localFlowExit(NodeEx node, FlowState state) {
-        exists(NodeEx next | Stage2::revFlow(next, state) |
-          jumpStepEx(node, next) or
-          additionalJumpStep(node, next, _) or
-          flowIntoCallNodeCand2(_, node, next, _) or
-          flowOutOfCallNodeCand2(_, node, _, next, _) or
-          Stage2::storeStepCand(node, _, _, next, _, _) or
-          Stage2::readStepCand(node, _, next)
-        )
-        or
-        exists(NodeEx next, FlowState s | Stage2::revFlow(next, s) |
-          additionalJumpStateStep(node, state, next, s)
-          or
-          additionalLocalStateStep(node, state, next, s) and
-          s != state
-        )
-        or
-        Stage2::revFlow(node, state) and
-        node instanceof FlowCheckNode
-        or
-        sinkNode(node, state)
-      }
-
-      pragma[noinline]
-      private predicate additionalLocalFlowStepNodeCand2(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, string label
-      ) {
-        additionalLocalFlowStepNodeCand1(node1, node2, label) and
-        state1 = state2 and
-        Stage2::revFlow(node1, pragma[only_bind_into](state1), false) and
-        Stage2::revFlow(node2, pragma[only_bind_into](state2), false)
-        or
-        additionalLocalStateStep(node1, state1, node2, state2) and
-        label = "Config" and
-        Stage2::revFlow(node1, state1, false) and
-        Stage2::revFlow(node2, state2, false)
-      }
-
-      /**
-       * Holds if the local path from `node1` to `node2` is a prefix of a maximal
-       * subsequence of local flow steps in a dataflow path.
-       *
-       * This is the transitive closure of `[additional]localFlowStep` beginning
-       * at `localFlowEntry`.
-       */
-      pragma[nomagic]
-      private predicate localFlowStepPlus(
-        NodeEx node1, FlowState state, NodeEx node2, boolean preservesValue, DataFlowType t,
-        LocalCallContext cc, string label
-      ) {
-        not isUnreachableInCall1(node2, cc) and
-        not inBarrier(node2, state) and
-        not outBarrier(node1, state) and
-        (
-          localFlowEntry(node1, pragma[only_bind_into](state)) and
-          (
-            localFlowStepNodeCand1(node1, node2, label) and
-            preservesValue = true and
-            t = node1.getDataFlowType() and // irrelevant dummy value
-            Stage2::revFlow(node2, pragma[only_bind_into](state))
-            or
-            additionalLocalFlowStepNodeCand2(node1, state, node2, state, label) and
-            preservesValue = false and
-            t = node2.getDataFlowType()
-          ) and
-          node1 != node2 and
-          cc.relevantFor(node1.getEnclosingCallable()) and
-          not isUnreachableInCall1(node1, cc) and
-          not outBarrier(node1, state)
-          or
-          exists(NodeEx mid, string label1, string label2 |
-            localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t, cc,
-              label1) and
-            localFlowStepNodeCand1(mid, node2, label2) and
-            not outBarrier(mid, state) and
-            not mid instanceof FlowCheckNode and
-            Stage2::revFlow(node2, pragma[only_bind_into](state)) and
-            label = mergeLabels(label1, label2)
-          )
-          or
-          exists(NodeEx mid, string label1, string label2 |
-            localFlowStepPlus(node1, state, mid, _, _, cc, label1) and
-            additionalLocalFlowStepNodeCand2(mid, state, node2, state, label2) and
-            not outBarrier(mid, state) and
-            not mid instanceof FlowCheckNode and
-            preservesValue = false and
-            t = node2.getDataFlowType() and
-            label = mergeLabels(label1, label2)
-          )
-        )
-      }
-
-      /**
-       * Holds if `node1` can step to `node2` in one or more local steps and this
-       * path can occur as a maximal subsequence of local steps in a dataflow path.
-       */
-      pragma[nomagic]
-      predicate localFlowBigStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        DataFlowType t, LocalCallContext callContext, string label
-      ) {
-        localFlowStepPlus(node1, state1, node2, preservesValue, t, callContext, label) and
-        localFlowExit(node2, state1) and
-        state1 = state2
-        or
-        additionalLocalFlowStepNodeCand2(node1, state1, node2, state2, label) and
-        state1 != state2 and
-        preservesValue = false and
-        t = node2.getDataFlowType() and
-        callContext.relevantFor(node1.getEnclosingCallable()) and
-        not isUnreachableInCall1(node1, callContext) and
-        not isUnreachableInCall1(node2, callContext)
-      }
-    }
-
-    private import LocalFlowBigStep
 
     pragma[nomagic]
     private predicate castingNodeEx(NodeEx node) {
@@ -3709,16 +3725,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import CallContextSensitivity<CallContextSensitivityInput>
-      import NoLocalCallContext
+      import LocalCallContext
 
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc, string label
-      ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _, label) and
-        exists(t) and
-        exists(lcc)
-      }
+      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
 
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
@@ -3800,16 +3809,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       import BooleanCallContext
 
-      pragma[nomagic]
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc, string label
-      ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _, label) and
-        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
-        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
-        exists(lcc)
-      }
+      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
 
       pragma[nomagic]
       private predicate clearSet(NodeEx node, ContentSet c) {
@@ -4113,14 +4113,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import LocalCallContext
 
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc, string label
-      ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
-        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
-        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
-      }
+      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
 
       bindingset[node, state, t0, ap]
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
@@ -4338,14 +4331,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import LocalCallContext
 
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc, string label
-      ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
-        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
-        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
-      }
+      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
 
       bindingset[node, state, t0, ap]
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {

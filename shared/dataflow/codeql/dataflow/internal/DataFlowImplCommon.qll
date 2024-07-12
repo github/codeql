@@ -778,23 +778,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         recordDataFlowCallSiteDispatch(call, c)
       }
 
-      module NoLocalCallContext {
-        class LocalCc = Unit;
-
-        bindingset[cc]
-        LocalCc getLocalCc(CallContext cc) { any() }
-
-        bindingset[call, c]
-        CallContextCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if recordDataFlowCallSiteDispatch(call, c)
-          then result = Input2::getSpecificCallContextCall(call, c)
-          else result = TSomeCall()
-        }
-      }
-
       module LocalCallContext {
-        class LocalCc = LocalCallContext;
-
         private UnreachableSet getUnreachable(CallContext ctx) {
           exists(UnreachableSetOption unreachable | ctx = TSpecificCall(_, _, unreachable) |
             result = unreachable.asSome()
@@ -810,7 +794,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
         bindingset[cc]
         pragma[inline_late]
-        LocalCc getLocalCc(CallContext cc) { result = getLocalCallContext(cc) }
+        LocalCallContext getLocalCc(CallContext cc) { result = getLocalCallContext(cc) }
 
         bindingset[call, c]
         CallContextCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
