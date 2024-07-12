@@ -156,24 +156,72 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
  * A downloaded artifact that gets assigned to a Run step output.
  * - uses: actions/download-artifact@v2
  * - run: echo "::set-output name=id::$(<pr-id.txt)"
+ * - run: |
+ *    foo=$(<pr-id.txt)"
+ *    echo "::set-output name=id::$foo
  */
 predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string content, string key, string value, UntrustedArtifactDownloadStep download |
-    writeToGitHubOutput(run, content) and
-    extractVariableAndValue(content, key, value) and
+  exists(Run run, UntrustedArtifactDownloadStep download, string content, string key, string value |
+    (
+      // A file is read and its content is assigned to an env var
+      // - run: |
+      //     foo=$(<pr-id.txt)"
+      //     echo "::set-output name=id::$foo
+      exists(string var_name, string line, string assignment_regexp, string file_read |
+        run.getScript().splitAt("\n") = line and
+        assignment_regexp = "([a-zA-Z0-9\\-_]+)=(.*)" and
+        var_name = line.regexpCapture(assignment_regexp, 1) and
+        file_read = line.regexpCapture(assignment_regexp, 2) and
+        outputsPartialFileContent(file_read) and
+        envToRunExpr(var_name, run, value) and
+        writeToGitHubOutput(run, content) and
+        extractVariableAndValue(content, key, value)
+      )
+      or
+      // A file is read and its content is assigned to an output
+      // - run: echo "::set-output name=id::$(<pr-id.txt)"
+      writeToGitHubOutput(run, content) and
+      extractVariableAndValue(content, key, value) and
+      outputsPartialFileContent(value)
+    ) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
-    succ.asExpr() = run and
-    value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+    succ.asExpr() = run
   )
 }
 
+/**
+ * A downloaded artifact that gets assigned to an environment variable.
+ * - run: echo "foo=$(<pr-id.txt)" >> "$GITHUB_ENV"
+ * - run: |
+ *    foo=$(<pr-id.txt)"
+ *    echo "bar=${foo}" >> "$GITHUB_ENV"
+ */
 predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(Run run, string content, string key, string value, UntrustedArtifactDownloadStep download |
-    writeToGitHubEnv(run, content) and
-    extractVariableAndValue(content, key, value) and
-    value.regexpMatch([".*\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\).*"]) and
+    (
+      // A file is read and its content is assigned to an env var
+      // - run: |
+      //     foo=$(<pr-id.txt)"
+      //     echo "bar=${foo}" >> "$GITHUB_ENV"
+      exists(string var_name, string line, string assignment_regexp, string file_read |
+        run.getScript().splitAt("\n") = line and
+        assignment_regexp = "([a-zA-Z0-9\\-_]+)=(.*)" and
+        var_name = line.regexpCapture(assignment_regexp, 1) and
+        file_read = line.regexpCapture(assignment_regexp, 2) and
+        outputsPartialFileContent(file_read) and
+        envToRunExpr(var_name, run, value) and
+        writeToGitHubEnv(run, content) and
+        extractVariableAndValue(content, key, value)
+      )
+      or
+      // A file is read and its content is assigned to an output
+      // - run: echo "foo=$(<pr-id.txt)" >> "$GITHUB_ENV"
+      writeToGitHubEnv(run, content) and
+      extractVariableAndValue(content, key, value) and
+      outputsPartialFileContent(value)
+    ) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
@@ -185,11 +233,23 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
 /**
  * A download artifact step followed by a step that may use downloaded artifacts.
  */
-predicate artifactDownloadToUseStep(DataFlow::Node pred, DataFlow::Node succ) {
+predicate artifactDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(UntrustedArtifactDownloadStep download, Run run |
     pred.asExpr() = download and
     succ.asExpr() = run.getScriptScalar() and
     download.getAFollowingStep() = run
+  )
+}
+
+/**
+ * A download artifact step followed by a envvar-injection uses step .
+ */
+predicate artifactDownloadToUsesStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(UntrustedArtifactDownloadStep download, Uses uses |
+    madSink(succ, "envvar-injection") and
+    pred.asExpr() = download and
+    succ.asExpr() = uses and
+    download.getAFollowingStep() = uses
   )
 }
 
@@ -254,7 +314,9 @@ predicate xt0rtedSlashCommandActionTaintStep(DataFlow::Node pred, DataFlow::Node
 class TaintSteps extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     envToRunStep(node1, node2) or
-    artifactDownloadToUseStep(node1, node2) or
+    artifactDownloadToRunStep(node1, node2) or
+    artifactDownloadToUsesStep(node1, node2) or
+    // 3rd party actions
     dornyPathsFilterTaintStep(node1, node2) or
     tjActionsChangedFilesTaintStep(node1, node2) or
     tjActionsVerifyChangedFilesTaintStep(node1, node2) or
