@@ -50,8 +50,6 @@ edges
 | test.go:43:2:43:43 | ... := ...[0] | test.go:44:24:44:34 | taintedNode | provenance |  |
 | test.go:43:31:43:42 | selection of Body | test.go:43:2:43:43 | ... := ...[0] | provenance | Src:MaD:15 MaD:3 |
 | test.go:44:24:44:34 | taintedNode | test.go:42:6:42:14 | definition of cleanNode | provenance | MaD:8 |
-| test.go:45:22:45:31 | &... | test.go:45:22:45:31 | &... | provenance |  |
-| test.go:45:22:45:31 | &... | test.go:45:22:45:31 | &... | provenance |  |
 | test.go:45:22:45:31 | &... | test.go:45:23:45:31 | cleanNode | provenance |  |
 | test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
 | test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
@@ -63,8 +61,6 @@ edges
 | test.go:48:2:48:44 | ... := ...[0] | test.go:49:26:49:37 | taintedNode2 | provenance |  |
 | test.go:48:32:48:43 | selection of Body | test.go:48:2:48:44 | ... := ...[0] | provenance | Src:MaD:15 MaD:3 |
 | test.go:49:26:49:37 | taintedNode2 | test.go:47:6:47:15 | definition of cleanNode2 | provenance | MaD:9 |
-| test.go:50:22:50:32 | &... | test.go:50:22:50:32 | &... | provenance |  |
-| test.go:50:22:50:32 | &... | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:50:22:50:32 | &... | test.go:50:23:50:32 | cleanNode2 | provenance |  |
 | test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
