@@ -44,12 +44,12 @@
 		</p>
 
 		<p>
-			To help mitigate future risk of including a script that could be compromised, consider whether you need to
-			use a polyfill or other library at all. Modern browsers do not require a polyfill, and other popular libraries are redundant after enhancements to HTML 5.
+			To help mitigate the risk of including a script that could be compromised in the future, consider whether you need to
+			use polyfill or another library at all. Modern browsers do not require a polyfill, and other popular libraries were made redundant by enhancements to HTML 5.
 		</p>
 
 		<p>
-			If you do need a polyfill service or library, move to using a trusted CDN.
+			If you do need a polyfill service or library, move to using a CDN that you trust.
 		</p>
 		
 		<p>
@@ -59,7 +59,7 @@
 		    
 			A dynamic service cannot be easily used with SRI. Nevertheless,
 			it is possible to list multiple acceptable SHA hashes in the <code>integrity</code> attribute,
-			such as those for the content generated for major browers used by your users.
+			such as hashes for the content required for the major browsers used by your users.
 		</p>
 
 		<p>
@@ -81,7 +81,7 @@
 		<sample src="polyfill-trusted.html" />
 
 		<p>
-			If you can investigate the most used browsers by your users, you can list the hashes of the polyfills for those browsers:
+			If you know which browsers are used by the majority of your users, you can list the hashes of the polyfills for those browsers:
 		</p>
 
 		<sample src="polyfill-sri.html" />
