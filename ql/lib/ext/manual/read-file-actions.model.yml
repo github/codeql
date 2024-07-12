@@ -31,3 +31,7 @@ extensions:
       - ["miraai/read-helm-chart-yaml", "*", "artifact", "output.*", "taint", "manual"]
       - ["dangdennis/toml-action", "*", "artifact", "output.value", "taint", "manual"]
       - ["artlaman/conventional-changelog-reader-action", "*", "artifact", "output.*", "taint", "manual"]
+      - ["romanlamsal/dotenv-concat", "*", "artifact", "output.*", "taint", "manual"]
+      - ["sammcj/dotenv-output-action", "*", "artifact", "output.*", "taint", "manual"]
+      - ["c-py/action-dotenv-to-setenv", "*", "artifact", "output.*", "taint", "manual"]
+      - ["duskmoon314/action-load-env", "*", "artifact", "output.*", "taint", "manual"]

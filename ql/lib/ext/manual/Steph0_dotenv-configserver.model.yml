@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: github/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["Steph0/dotenv-configserver", "*", "input.repository", "envvar-injection", "manual"]
