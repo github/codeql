@@ -3,11 +3,10 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import RangeAnalysisImpl
 private import codeql.rangeanalysis.RangeAnalysis
 
-module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
+module CppLangImplConstant implements LangSig<Sem> {
   /**
    * Ignore the bound on this expression.
    *
@@ -19,12 +18,14 @@ module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }
+  predicate hasConstantBound(SemExpr e, QlBuiltins::BigInt bound, boolean upper) { none() }
 
   /**
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate additionalBoundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) { none() }
+  predicate additionalBoundFlowStep(SemExpr e2, SemExpr e1, QlBuiltins::BigInt delta, boolean upper) {
+    none()
+  }
 
   predicate includeConstantBounds() { any() }
 

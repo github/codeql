@@ -7,9 +7,9 @@ private class SelfSub extends SimpleRangeAnalysisExpr, SubExpr {
       this.getRightOperand().getExplicitlyConverted().(VariableAccess).getTarget()
   }
 
-  override float getLowerBounds() { result = 0 }
+  override QlBuiltins::BigInt getLowerBounds() { result = 0.toBigInt() }
 
-  override float getUpperBounds() { result = 0 }
+  override QlBuiltins::BigInt getUpperBounds() { result = 0.toBigInt() }
 
   override predicate dependsOnChild(Expr child) { none() }
 }

@@ -13,8 +13,8 @@ private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysis
 private import Sign
 
-module SignAnalysis<DeltaSig D> {
-  private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<Sem, D>
+module SignAnalysis {
+  private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<Sem>
 
   /**
    * An SSA definition for which the analysis can compute the sign.
@@ -100,12 +100,12 @@ module SignAnalysis<DeltaSig D> {
     }
 
     final override Sign getSign() {
-      exists(int i | this.(SemConstantIntegerExpr).getIntValue() = i |
-        i < 0 and result = TNeg()
+      exists(QlBuiltins::BigInt i | this.(SemConstantIntegerExpr).getIntValue() = i |
+        i < 0.toBigInt() and result = TNeg()
         or
-        i = 0 and result = TZero()
+        i = 0.toBigInt() and result = TZero()
         or
-        i > 0 and result = TPos()
+        i > 0.toBigInt() and result = TPos()
       )
       or
       not exists(this.(SemConstantIntegerExpr).getIntValue()) and
@@ -298,12 +298,12 @@ module SignAnalysis<DeltaSig D> {
     |
       testIsTrue = true and
       comp.getLesserOperand() = lowerbound and
-      comp.getGreaterOperand() = ssaRead(v, D::fromInt(0)) and
+      comp.getGreaterOperand() = ssaRead(v, 0.toBigInt()) and
       (if comp.isStrict() then isStrict = true else isStrict = false)
       or
       testIsTrue = false and
       comp.getGreaterOperand() = lowerbound and
-      comp.getLesserOperand() = ssaRead(v, D::fromInt(0)) and
+      comp.getLesserOperand() = ssaRead(v, 0.toBigInt()) and
       (if comp.isStrict() then isStrict = false else isStrict = true)
     )
   }
@@ -322,12 +322,12 @@ module SignAnalysis<DeltaSig D> {
     |
       testIsTrue = true and
       comp.getGreaterOperand() = upperbound and
-      comp.getLesserOperand() = ssaRead(v, D::fromInt(0)) and
+      comp.getLesserOperand() = ssaRead(v, 0.toBigInt()) and
       (if comp.isStrict() then isStrict = true else isStrict = false)
       or
       testIsTrue = false and
       comp.getLesserOperand() = upperbound and
-      comp.getGreaterOperand() = ssaRead(v, D::fromInt(0)) and
+      comp.getGreaterOperand() = ssaRead(v, 0.toBigInt()) and
       (if comp.isStrict() then isStrict = false else isStrict = true)
     )
   }
@@ -343,7 +343,7 @@ module SignAnalysis<DeltaSig D> {
     exists(SemGuard guard, boolean testIsTrue, boolean polarity, SemExpr e |
       pos.hasReadOfVar(pragma[only_bind_into](v)) and
       guardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
-      e = ssaRead(pragma[only_bind_into](v), D::fromInt(0)) and
+      e = ssaRead(pragma[only_bind_into](v), 0.toBigInt()) and
       guard.isEquality(eqbound, e, polarity) and
       isEq = polarity.booleanXor(testIsTrue).booleanNot() and
       not unknownSign(eqbound)

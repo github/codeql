@@ -1,0 +1,8 @@
+edges
+| ConstantSizeArrayOffByOne.cpp:11:9:11:11 | buf | ConstantSizeArrayOffByOne.cpp:11:5:11:14 | access to array | provenance | Config |
+nodes
+| ConstantSizeArrayOffByOne.cpp:11:5:11:14 | access to array | semmle.label | access to array |
+| ConstantSizeArrayOffByOne.cpp:11:9:11:11 | buf | semmle.label | buf |
+subpaths
+#select
+| ConstantSizeArrayOffByOne.cpp:11:5:11:14 | PointerAdd: access to array | ConstantSizeArrayOffByOne.cpp:11:9:11:11 | buf | ConstantSizeArrayOffByOne.cpp:11:5:11:14 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | ConstantSizeArrayOffByOne.cpp:4:7:4:9 | buf | buf | ConstantSizeArrayOffByOne.cpp:11:5:11:18 | Store: ... = ... | write |

@@ -57,20 +57,20 @@ predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
       isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
     )
     or
-    exists(DataFlow::Node other, float p, float q |
+    exists(DataFlow::Node other, QlBuiltins::BigInt p, QlBuiltins::BigInt q |
       // linear access of `other`
       exprIsSubLeftOrLess(sub, other) and
       linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
-      p <= 1 and
-      q <= 0
+      p <= 1.toBigInt() and
+      q <= 0.toBigInt()
     )
     or
-    exists(DataFlow::Node other, float p, float q |
+    exists(DataFlow::Node other, QlBuiltins::BigInt p, QlBuiltins::BigInt q |
       // linear access of `n`
       exprIsSubLeftOrLess(sub, other) and
       linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
-      p >= 1 and
-      q >= 0
+      p >= 1.toBigInt() and
+      q >= 0.toBigInt()
     )
   )
 }

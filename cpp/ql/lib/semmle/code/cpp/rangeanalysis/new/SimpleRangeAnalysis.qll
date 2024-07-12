@@ -23,7 +23,7 @@ private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
  *
  *    `lowerBound(expr.getFullyConverted())`
  */
-float lowerBound(Expr expr) {
+QlBuiltins::BigInt lowerBound(Expr expr) {
   exists(Instruction i, ConstantBounds::SemBound b |
     i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
   |
@@ -43,7 +43,7 @@ float lowerBound(Expr expr) {
  *
  *    `upperBound(expr.getFullyConverted())`
  */
-float upperBound(Expr expr) {
+QlBuiltins::BigInt upperBound(Expr expr) {
   exists(Instruction i, ConstantBounds::SemBound b |
     i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
   |
@@ -97,7 +97,7 @@ predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
  * due to a conversion.
  */
 predicate exprMightOverflowNegatively(Expr expr) {
-  lowerBound(expr) < exprMinVal(expr)
+  lowerBound(expr) < exprMinVal(expr).toString().toBigInt()
   or
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getAst() = expr and
@@ -123,7 +123,7 @@ predicate convertedExprMightOverflowNegatively(Expr expr) {
  * due to a conversion.
  */
 predicate exprMightOverflowPositively(Expr expr) {
-  upperBound(expr) > exprMaxVal(expr)
+  upperBound(expr) > exprMaxVal(expr).toString().toBigInt()
   or
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getAst() = expr and

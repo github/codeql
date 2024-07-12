@@ -48,8 +48,8 @@ module InvalidPointerToDereferenceTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(
-      DataFlow::Node derefSource, DataFlow::Node derefSink, DataFlow::Node operation, int delta,
-      string value1, string value2
+      DataFlow::Node derefSource, DataFlow::Node derefSink, DataFlow::Node operation,
+      QlBuiltins::BigInt delta, string value1, string value2
     |
       operationIsOffBy(_, _, derefSource, derefSink, _, operation, delta) and
       location = operation.getLocation() and
@@ -65,13 +65,13 @@ module InvalidPointerToDereferenceTest implements TestSig {
         value1 = case1(derefSource, derefSink, operation)
       ) and
       (
-        delta > 0 and
+        delta > 0.toBigInt() and
         value2 = "+" + delta
         or
-        delta = 0 and
+        delta = 0.toBigInt() and
         value2 = ""
         or
-        delta < 0 and
+        delta < 0.toBigInt() and
         value2 = "-" + (-delta)
       )
     )

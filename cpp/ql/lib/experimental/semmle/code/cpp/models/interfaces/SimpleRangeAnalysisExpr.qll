@@ -21,7 +21,7 @@ abstract class SimpleRangeAnalysisExpr extends Expr {
    * `getFullyConvertedLowerBounds` and `getFullyConvertedUpperBounds` for
    * recursive calls to get the bounds of their children.
    */
-  abstract float getLowerBounds();
+  abstract QlBuiltins::BigInt getLowerBounds();
 
   /**
    * Gets the upper bound of the expression.
@@ -30,7 +30,7 @@ abstract class SimpleRangeAnalysisExpr extends Expr {
    * `getFullyConvertedLowerBounds` and `getFullyConvertedUpperBounds` for
    * recursive calls to get the bounds of their children.
    */
-  abstract float getUpperBounds();
+  abstract QlBuiltins::BigInt getUpperBounds();
 
   /**
    * Holds if the range this expression depends on the definition `srcDef` for
@@ -70,9 +70,9 @@ private class Empty extends SimpleRangeAnalysisExpr {
     this = this and none()
   }
 
-  override float getLowerBounds() { none() }
+  override QlBuiltins::BigInt getLowerBounds() { none() }
 
-  override float getUpperBounds() { none() }
+  override QlBuiltins::BigInt getUpperBounds() { none() }
 
   override predicate dependsOnChild(Expr child) { none() }
 }

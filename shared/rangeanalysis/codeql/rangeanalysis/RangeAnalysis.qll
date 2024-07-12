@@ -73,7 +73,7 @@ signature module Semantic {
   }
 
   class ConstantIntegerExpr extends Expr {
-    int getIntValue();
+    QlBuiltins::BigInt getIntValue();
   }
 
   class BinaryExpr extends Expr {
@@ -289,7 +289,7 @@ signature module Semantic {
   /**
    * Holds if the value of `dest` is known to be `src + delta`.
    */
-  predicate additionalValueFlowStep(Expr dest, Expr src, int delta);
+  predicate additionalValueFlowStep(Expr dest, Expr src, QlBuiltins::BigInt delta);
 
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
@@ -323,39 +323,21 @@ signature module SignAnalysisSig<Semantic Sem> {
 signature module ModulusAnalysisSig<Semantic Sem> {
   class ModBound;
 
-  predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
+  predicate exprModulus(Sem::Expr e, ModBound b, QlBuiltins::BigInt val, QlBuiltins::BigInt mod);
 }
 
-signature module DeltaSig {
-  bindingset[this]
-  class Delta;
-
-  bindingset[d]
-  bindingset[result]
-  float toFloat(Delta d);
-
-  bindingset[d]
-  bindingset[result]
-  int toInt(Delta d);
-
-  bindingset[n]
-  bindingset[result]
-  Delta fromInt(int n);
-
-  bindingset[f]
-  Delta fromFloat(float f);
-}
-
-signature module LangSig<Semantic Sem, DeltaSig D> {
+signature module LangSig<Semantic Sem> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(Sem::Expr e, D::Delta bound, boolean upper);
+  predicate hasConstantBound(Sem::Expr e, QlBuiltins::BigInt bound, boolean upper);
 
   /**
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate additionalBoundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper);
+  predicate additionalBoundFlowStep(
+    Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt delta, boolean upper
+  );
 
   /**
    * Ignore the bound on this expression.
@@ -372,7 +354,7 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   default predicate includeRelativeBounds() { any() }
 }
 
-signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
+signature module BoundSig<LocationSig Location, Semantic Sem> {
   /**
    * A bound that the range analysis can infer for a variable. This includes
    * constant bounds represented by the abstract value zero, SSA bounds for when
@@ -399,7 +381,7 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
      * value `delta`. For other bounds this gets expressions equal to the bound
      * and `delta = 0`.
      */
-    Sem::Expr getExpr(D::Delta delta);
+    Sem::Expr getExpr(QlBuiltins::BigInt delta);
   }
 
   class SemZeroBound extends SemBound;
@@ -409,22 +391,21 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   }
 }
 
-signature module OverflowSig<Semantic Sem, DeltaSig D> {
+signature module OverflowSig<Semantic Sem> {
   predicate semExprDoesNotOverflow(boolean positively, Sem::Expr expr);
 }
 
 module RangeStage<
-  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
-  OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
+  LocationSig Location, Semantic Sem, BoundSig<Location, Sem> Bounds,
+  OverflowSig<Sem> OverflowParam, LangSig<Sem> LangParam, SignAnalysisSig<Sem> SignAnalysis,
   ModulusAnalysisSig<Sem> ModulusAnalysisParam>
 {
   private import Bounds
   private import LangParam
-  private import D
   private import OverflowParam
   private import SignAnalysis
   private import ModulusAnalysisParam
-  private import internal.RangeUtils::MakeUtils<Sem, D>
+  private import internal.RangeUtils::MakeUtils<Sem>
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -499,7 +480,9 @@ module RangeStage<
        * condition.
        */
       cached
-      predicate semBounded(Sem::Expr e, SemBound b, D::Delta delta, boolean upper, SemReason reason) {
+      predicate semBounded(
+        Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper, SemReason reason
+      ) {
         bounded(e, b, delta, upper, _, _, reason) and
         bestBound(e, b, delta, upper)
       }
@@ -522,11 +505,11 @@ module RangeStage<
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
    */
-  private predicate bestBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
-    delta = min(D::Delta d | bounded(e, b, d, upper, _, _, _) | d order by D::toFloat(d)) and
+  private predicate bestBound(Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper) {
+    delta = min(QlBuiltins::BigInt d | bounded(e, b, d, upper, _, _, _) | d) and
     upper = true
     or
-    delta = max(D::Delta d | bounded(e, b, d, upper, _, _, _) | d order by D::toFloat(d)) and
+    delta = max(QlBuiltins::BigInt d | bounded(e, b, d, upper, _, _, _) | d) and
     upper = false
   }
 
@@ -536,7 +519,8 @@ module RangeStage<
    * - `upper = false` : `v >= e + delta` or `v > e + delta`
    */
   private predicate boundCondition(
-    Sem::RelationalExpr comp, Sem::SsaVariable v, Sem::Expr e, D::Delta delta, boolean upper
+    Sem::RelationalExpr comp, Sem::SsaVariable v, Sem::Expr e, QlBuiltins::BigInt delta,
+    boolean upper
   ) {
     comp.getLesserOperand() = ssaRead(v, delta) and
     e = comp.getGreaterOperand() and
@@ -546,14 +530,14 @@ module RangeStage<
     e = comp.getLesserOperand() and
     upper = false
     or
-    exists(Sem::SubExpr sub, Sem::ConstantIntegerExpr c, D::Delta d |
+    exists(Sem::SubExpr sub, Sem::ConstantIntegerExpr c, QlBuiltins::BigInt d |
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = true and
-      delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
+      delta = d + c.getIntValue()
       or
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
@@ -561,7 +545,7 @@ module RangeStage<
       sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = false and
-      delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
+      delta = d + c.getIntValue()
       or
       // e - (v - d) < c
       comp.getLesserOperand() = sub and
@@ -569,7 +553,7 @@ module RangeStage<
       sub.getLeftOperand() = e and
       sub.getRightOperand() = ssaRead(v, d) and
       upper = false and
-      delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
+      delta = d - c.getIntValue()
       or
       // e - (v - d) > c
       comp.getGreaterOperand() = sub and
@@ -577,7 +561,7 @@ module RangeStage<
       sub.getLeftOperand() = e and
       sub.getRightOperand() = ssaRead(v, d) and
       upper = true and
-      delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
+      delta = d - c.getIntValue()
     )
   }
 
@@ -586,9 +570,13 @@ module RangeStage<
    * fixed value modulo some `mod > 1`, such that the comparison can be
    * strengthened by `strengthen` when evaluating to `testIsTrue`.
    */
-  private predicate modulusComparison(Sem::RelationalExpr comp, boolean testIsTrue, int strengthen) {
+  private predicate modulusComparison(
+    Sem::RelationalExpr comp, boolean testIsTrue, QlBuiltins::BigInt strengthen
+  ) {
     exists(
-      ModBound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k
+      ModBound b, QlBuiltins::BigInt v1, QlBuiltins::BigInt v2, QlBuiltins::BigInt mod1,
+      QlBuiltins::BigInt mod2, QlBuiltins::BigInt mod, boolean resultIsStrict, QlBuiltins::BigInt d,
+      QlBuiltins::BigInt k
     |
       // If `x <= y` and `x =(mod) b + v1` and `y =(mod) b + v2` then
       // `0 <= y - x =(mod) v2 - v1`. By choosing `k =(mod) v2 - v1` with
@@ -599,7 +587,7 @@ module RangeStage<
       exprModulus(comp.getLesserOperand(), b, v1, mod1) and
       exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
       mod = mod1.gcd(mod2) and
-      mod != 1 and
+      mod != 1.toBigInt() and
       (testIsTrue = true or testIsTrue = false) and
       (
         if comp.isStrict()
@@ -607,9 +595,9 @@ module RangeStage<
         else resultIsStrict = testIsTrue.booleanNot()
       ) and
       (
-        resultIsStrict = true and d = 1
+        resultIsStrict = true and d = 1.toBigInt()
         or
-        resultIsStrict = false and d = 0
+        resultIsStrict = false and d = 0.toBigInt()
       ) and
       (
         testIsTrue = true and k = v2 - v1
@@ -628,11 +616,11 @@ module RangeStage<
    * - `upper = false` : `v >= e + delta`
    */
   private Sem::Guard boundFlowCond(
-    Sem::SsaVariable v, Sem::Expr e, D::Delta delta, boolean upper, boolean testIsTrue
+    Sem::SsaVariable v, Sem::Expr e, QlBuiltins::BigInt delta, boolean upper, boolean testIsTrue
   ) {
     exists(
-      Sem::RelationalExpr comp, D::Delta d1, float d2, float d3, int strengthen,
-      boolean compIsUpper, boolean resultIsStrict
+      Sem::RelationalExpr comp, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2, QlBuiltins::BigInt d3,
+      int strengthen, boolean compIsUpper, boolean resultIsStrict
     |
       comp = result.asExpr() and
       boundCondition(comp, v, e, d1, compIsUpper) and
@@ -654,17 +642,19 @@ module RangeStage<
         else strengthen = 0
       ) and
       (
-        exists(int k | modulusComparison(comp, testIsTrue, k) and d2 = strengthen * k)
+        exists(QlBuiltins::BigInt k |
+          modulusComparison(comp, testIsTrue, k) and d2 = strengthen.toBigInt() * k
+        )
         or
-        not modulusComparison(comp, testIsTrue, _) and d2 = 0
+        not modulusComparison(comp, testIsTrue, _) and d2 = 0.toBigInt()
       ) and
       // A strict inequality `x < y` can be strengthened to `x <= y - 1`.
       (
-        resultIsStrict = true and d3 = strengthen
+        resultIsStrict = true and d3 = strengthen.toBigInt()
         or
-        resultIsStrict = false and d3 = 0
+        resultIsStrict = false and d3 = 0.toBigInt()
       ) and
-      delta = D::fromFloat(D::toFloat(d1) + d2 + d3)
+      delta = d1 + d2 + d3
     )
     or
     exists(boolean testIsTrue0 |
@@ -677,11 +667,11 @@ module RangeStage<
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
     // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-    exists(Sem::SsaVariable v2, D::Delta oldDelta, float d |
+    exists(Sem::SsaVariable v2, QlBuiltins::BigInt oldDelta, QlBuiltins::BigInt d |
       // equality needs to control guard
       result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
-      delta = D::fromFloat(D::toFloat(oldDelta) + d)
+      delta = oldDelta + d
     )
   }
 
@@ -690,11 +680,11 @@ module RangeStage<
    */
   pragma[nomagic]
   private Sem::BasicBlock eqSsaCondDirectlyControls(
-    Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
+    Sem::SsaVariable v1, Sem::SsaVariable v2, QlBuiltins::BigInt delta
   ) {
-    exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
+    exists(Sem::Guard guardEq, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2, boolean eqIsTrue |
       guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
-      delta = D::toFloat(d2) - D::toFloat(d1) and
+      delta = d2 - d1 and
       guardEq.directlyControls(result, eqIsTrue)
     )
   }
@@ -735,7 +725,7 @@ module RangeStage<
    * - `upper = false` : `v >= e + delta`
    */
   private predicate boundFlowStepSsa(
-    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, boolean upper,
+    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, QlBuiltins::BigInt delta, boolean upper,
     SemReason reason
   ) {
     ssaUpdateStep(v, e, delta) and
@@ -753,7 +743,7 @@ module RangeStage<
 
   /** Holds if `v != e + delta` at `pos` and `v` is of integral type. */
   private predicate unequalFlowStepIntegralSsa(
-    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, SemReason reason
+    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, QlBuiltins::BigInt delta, SemReason reason
   ) {
     Sem::getSsaType(v) instanceof Sem::IntegerType and
     exists(Sem::Guard guard, boolean testIsTrue |
@@ -779,7 +769,9 @@ module RangeStage<
    * - `upper = true`  : `e2 <= e1 + delta`
    * - `upper = false` : `e2 >= e1 + delta`
    */
-  private predicate boundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+  private predicate boundFlowStep(
+    Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt delta, boolean upper
+  ) {
     // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
     not e2 instanceof Sem::ConstantIntegerExpr and
     (
@@ -787,7 +779,7 @@ module RangeStage<
       upper = [true, false]
       or
       e2.(SafeCastExpr).getOperand() = e1 and
-      delta = D::fromInt(0) and
+      delta = 0.toBigInt() and
       upper = [true, false]
       or
       javaCompatibility() and
@@ -799,37 +791,37 @@ module RangeStage<
         // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
         not x instanceof Sem::ConstantIntegerExpr and
         if strictlyPositiveIntegralExpr(x)
-        then upper = true and delta = D::fromInt(-1)
+        then upper = true and delta = -1.toBigInt()
         else
           if semPositive(x)
-          then upper = true and delta = D::fromInt(0)
+          then upper = true and delta = 0.toBigInt()
           else
             if strictlyNegativeIntegralExpr(x)
-            then upper = false and delta = D::fromInt(1)
+            then upper = false and delta = 1.toBigInt()
             else
               if semNegative(x)
-              then upper = false and delta = D::fromInt(0)
+              then upper = false and delta = 0.toBigInt()
               else none()
       )
       or
       e2.(Sem::RemExpr).getRightOperand() = e1 and
       semPositive(e1) and
-      delta = D::fromInt(-1) and
+      delta = -1.toBigInt() and
       upper = true
       or
       e2.(Sem::RemExpr).getLeftOperand() = e1 and
       semPositive(e1) and
-      delta = D::fromInt(0) and
+      delta = 0.toBigInt() and
       upper = true
       or
       e2.(Sem::BitAndExpr).getAnOperand() = e1 and
       semPositive(e1) and
-      delta = D::fromInt(0) and
+      delta = 0.toBigInt() and
       upper = true
       or
       e2.(Sem::BitOrExpr).getAnOperand() = e1 and
       semPositive(e2) and
-      delta = D::fromInt(0) and
+      delta = 0.toBigInt() and
       upper = false
       or
       additionalBoundFlowStep(e2, e1, delta, upper)
@@ -837,16 +829,18 @@ module RangeStage<
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
-  private predicate boundFlowStepMul(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+  private predicate boundFlowStepMul(Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt factor) {
     not e2 instanceof Sem::ConstantIntegerExpr and
-    exists(Sem::ConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
-      e2.(Sem::MulExpr).hasOperands(e1, c) and factor = D::fromInt(k)
+    exists(Sem::ConstantIntegerExpr c, QlBuiltins::BigInt k |
+      k = c.getIntValue() and k > 0.toBigInt()
+    |
+      e2.(Sem::MulExpr).hasOperands(e1, c) and factor = k
       or
       exists(Sem::ShiftLeftExpr e |
         e = e2 and
         e.getLeftOperand() = e1 and
         e.getRightOperand() = c and
-        factor = D::fromInt(2.pow(k))
+        factor = 2.toBigInt().pow(k.toInt())
       )
     )
   }
@@ -857,11 +851,11 @@ module RangeStage<
    * This conflates division, right shift, and unsigned right shift and is
    * therefore only valid for non-negative numbers.
    */
-  private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+  private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt factor) {
     not e2 instanceof Sem::ConstantIntegerExpr and
     Sem::getExprType(e2) instanceof Sem::IntegerType and
-    exists(Sem::ConstantIntegerExpr c, D::Delta k |
-      k = D::fromInt(c.getIntValue()) and D::toFloat(k) > 0
+    exists(Sem::ConstantIntegerExpr c, QlBuiltins::BigInt k |
+      k = c.getIntValue() and k > 0.toBigInt()
     |
       exists(Sem::DivExpr e |
         e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = k
@@ -871,14 +865,14 @@ module RangeStage<
         e = e2 and
         e.getLeftOperand() = e1 and
         e.getRightOperand() = c and
-        factor = D::fromInt(2.pow(D::toInt(k)))
+        factor = 2.toBigInt().pow(k.toInt())
       )
       or
       exists(Sem::ShiftRightUnsignedExpr e |
         e = e2 and
         e.getLeftOperand() = e1 and
         e.getRightOperand() = c and
-        factor = D::fromInt(2.pow(D::toInt(k)))
+        factor = 2.toBigInt().pow(k.toInt())
       )
     )
   }
@@ -889,28 +883,28 @@ module RangeStage<
    * - `upper = false` : `v >= b + delta`
    */
   private predicate boundedSsa(
-    Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, boolean upper,
-    boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    Sem::SsaVariable v, SemBound b, QlBuiltins::BigInt delta, SsaReadPosition pos, boolean upper,
+    boolean fromBackEdge, QlBuiltins::BigInt origdelta, SemReason reason
   ) {
-    exists(Sem::Expr mid, D::Delta d1, D::Delta d2, SemReason r1, SemReason r2 |
+    exists(Sem::Expr mid, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2, SemReason r1, SemReason r2 |
       boundFlowStepSsa(v, pos, mid, d1, upper, r1) and
       bounded(mid, b, d2, upper, fromBackEdge, origdelta, r2) and
       // upper = true:  v <= mid + d1 <= b + d1 + d2 = b + delta
       // upper = false: v >= mid + d1 >= b + d1 + d2 = b + delta
-      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2)) and
+      delta = d1 + d2 and
       (if r1 instanceof SemNoReason then reason = r2 else reason = r1)
     )
     or
-    exists(D::Delta d, SemReason r1, SemReason r2 |
+    exists(QlBuiltins::BigInt d, SemReason r1, SemReason r2 |
       boundedSsa(v, b, d, pos, upper, fromBackEdge, origdelta, r2)
       or
       boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
     |
       unequalIntegralSsa(v, b, d, pos, r1) and
       (
-        upper = true and delta = D::fromFloat(D::toFloat(d) - 1)
+        upper = true and delta = d - 1.toBigInt()
         or
-        upper = false and delta = D::fromFloat(D::toFloat(d) + 1)
+        upper = false and delta = d + 1.toBigInt()
       ) and
       (
         reason = r1
@@ -924,24 +918,24 @@ module RangeStage<
    * Holds if `v != b + delta` at `pos` and `v` is of integral type.
    */
   private predicate unequalIntegralSsa(
-    Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, SemReason reason
+    Sem::SsaVariable v, SemBound b, QlBuiltins::BigInt delta, SsaReadPosition pos, SemReason reason
   ) {
-    exists(Sem::Expr e, D::Delta d1, D::Delta d2 |
+    exists(Sem::Expr e, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
       bounded(e, b, d2, true, _, _, _) and
       bounded(e, b, d2, false, _, _, _) and
-      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
+      delta = d1 + d2
     )
   }
 
   /** Weakens a delta to lie in the range `[-1..1]`. */
   bindingset[delta, upper]
-  private D::Delta weakenDelta(boolean upper, D::Delta delta) {
-    delta = D::fromFloat([-1 .. 1]) and result = delta
+  private QlBuiltins::BigInt weakenDelta(boolean upper, QlBuiltins::BigInt delta) {
+    delta = ([-1 .. 1]).toBigInt() and result = delta
     or
-    upper = true and result = D::fromFloat(-1) and D::toFloat(delta) < -1
+    upper = true and result = -1.toBigInt() and delta < -1.toBigInt()
     or
-    upper = false and result = D::fromFloat(1) and D::toFloat(delta) > 1
+    upper = false and result = 1.toBigInt() and delta > 1.toBigInt()
   }
 
   /**
@@ -952,19 +946,20 @@ module RangeStage<
    */
   private predicate boundedPhiInp(
     Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, SemBound b,
-    D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    QlBuiltins::BigInt delta, boolean upper, boolean fromBackEdge, QlBuiltins::BigInt origdelta,
+    SemReason reason
   ) {
     edge.phiInput(phi, inp) and
-    exists(D::Delta d, boolean fromBackEdge0 |
+    exists(QlBuiltins::BigInt d, boolean fromBackEdge0 |
       boundedSsa(inp, b, d, edge, upper, fromBackEdge0, origdelta, reason)
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
       or
       b.(SemSsaBound).getVariable() = inp and
-      d = D::fromFloat(0) and
+      d = 0.toBigInt() and
       (upper = true or upper = false) and
       fromBackEdge0 = false and
-      origdelta = D::fromFloat(0) and
+      origdelta = 0.toBigInt() and
       reason = TSemNoReason()
     |
       if backEdge(phi, inp, edge)
@@ -972,9 +967,7 @@ module RangeStage<
         fromBackEdge = true and
         (
           fromBackEdge0 = true and
-          delta =
-            D::fromFloat(D::toFloat(weakenDelta(upper,
-                    D::fromFloat(D::toFloat(d) - D::toFloat(origdelta)))) + D::toFloat(origdelta))
+          delta = weakenDelta(upper, d - origdelta) + origdelta
           or
           fromBackEdge0 = false and delta = d
         )
@@ -995,7 +988,7 @@ module RangeStage<
   pragma[noinline]
   private predicate boundedPhiInp1(
     Sem::SsaPhiNode phi, SemBound b, boolean upper, Sem::SsaVariable inp,
-    SsaReadPositionPhiInputEdge edge, D::Delta delta
+    SsaReadPositionPhiInputEdge edge, QlBuiltins::BigInt delta
   ) {
     boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)
   }
@@ -1009,13 +1002,13 @@ module RangeStage<
   private predicate selfBoundedPhiInp(
     Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper
   ) {
-    exists(D::Delta d, SemSsaBound phibound |
+    exists(QlBuiltins::BigInt d, SemSsaBound phibound |
       phibound.getVariable() = phi and
       boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
       (
-        upper = true and D::toFloat(d) <= 0
+        upper = true and d <= 0.toBigInt()
         or
-        upper = false and D::toFloat(d) >= 0
+        upper = false and d >= 0.toBigInt()
       )
     )
   }
@@ -1028,8 +1021,8 @@ module RangeStage<
    */
   pragma[noinline]
   private predicate boundedPhiCand(
-    Sem::SsaPhiNode phi, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    Sem::SsaPhiNode phi, boolean upper, SemBound b, QlBuiltins::BigInt delta, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
   }
@@ -1039,17 +1032,18 @@ module RangeStage<
    * `inp` along `edge`.
    */
   private predicate boundedPhiCandValidForEdge(
-    Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
+    Sem::SsaPhiNode phi, SemBound b, QlBuiltins::BigInt delta, boolean upper, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason, Sem::SsaVariable inp,
+    SsaReadPositionPhiInputEdge edge
   ) {
     boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
     (
-      exists(D::Delta d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
-        upper = true and D::toFloat(d) <= D::toFloat(delta)
+      exists(QlBuiltins::BigInt d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
+        upper = true and d <= delta
       )
       or
-      exists(D::Delta d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
-        upper = false and D::toFloat(d) >= D::toFloat(delta)
+      exists(QlBuiltins::BigInt d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
+        upper = false and d >= delta
       )
       or
       selfBoundedPhiInp(phi, inp, edge, upper)
@@ -1063,8 +1057,8 @@ module RangeStage<
    */
   pragma[nomagic]
   private predicate boundedPhiRankStep(
-    Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason, int rix
+    Sem::SsaPhiNode phi, SemBound b, QlBuiltins::BigInt delta, boolean upper, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason, int rix
   ) {
     exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
       rankedPhiInput(phi, inp, edge, rix) and
@@ -1082,8 +1076,8 @@ module RangeStage<
    * - `upper = false` : `phi >= b + delta`
    */
   private predicate boundedPhi(
-    Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    Sem::SsaPhiNode phi, SemBound b, QlBuiltins::BigInt delta, boolean upper, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     exists(int r |
       maxPhiInputRank(phi, r) and
@@ -1102,7 +1096,7 @@ module RangeStage<
    * Holds if `e` has an intrinsic upper (for `upper = true`) or lower
    * (for `upper = false`) bound of `b + delta` as a base case for range analysis.
    */
-  private predicate baseBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+  private predicate baseBound(Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper) {
     includeBound(b) and
     (
       e = b.getExpr(delta) and
@@ -1112,7 +1106,7 @@ module RangeStage<
       b instanceof SemZeroBound
       or
       upper = false and
-      delta = D::fromInt(0) and
+      delta = 0.toBigInt() and
       semPositive(e.(Sem::BitAndExpr).getAnOperand()) and
       b instanceof SemZeroBound
     )
@@ -1125,28 +1119,28 @@ module RangeStage<
    * `upper = false` this means that the cast will not underflow.
    */
   private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
-    exists(D::Delta bound |
+    exists(QlBuiltins::BigInt bound |
       bounded(cast.getOperand(), any(SemZeroBound zb), bound, upper, _, _, _)
     |
-      upper = true and D::toFloat(bound) <= cast.getUpperBound()
+      upper = true and bound <= cast.getUpperBound().floor().toBigInt()
       or
-      upper = false and D::toFloat(bound) >= cast.getLowerBound()
+      upper = false and bound >= cast.getLowerBound().(int).toBigInt()
     )
   }
 
   pragma[noinline]
   private predicate boundedCastExpr(
-    NarrowingCastExpr cast, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    NarrowingCastExpr cast, SemBound b, QlBuiltins::BigInt delta, boolean upper,
+    boolean fromBackEdge, QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
   pragma[nomagic]
   private predicate initialBoundedUpper(Sem::Expr e) {
-    exists(D::Delta d |
+    exists(QlBuiltins::BigInt d |
       initialBounded(e, _, d, false, _, _, _) and
-      D::toFloat(d) >= 0
+      d >= 0.toBigInt()
     )
   }
 
@@ -1161,9 +1155,9 @@ module RangeStage<
 
   pragma[nomagic]
   private predicate initialBoundedLower(Sem::Expr e) {
-    exists(D::Delta d |
+    exists(QlBuiltins::BigInt d |
       initialBounded(e, _, d, true, _, _, _) and
-      D::toFloat(d) <= 0
+      d <= 0.toBigInt()
     )
   }
 
@@ -1177,8 +1171,8 @@ module RangeStage<
   }
 
   predicate bounded(
-    Sem::Expr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
     noOverflow(e, upper)
@@ -1219,25 +1213,13 @@ module RangeStage<
   }
 
   /**
-   * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
-   * needed on the lesser side of a floating-point comparison or on both sides of
-   * a floating point equality because QL does not follow IEEE in floating-point
-   * comparisons but instead defines -0.0 to be less than and distinct from 0.0.
-   */
-  bindingset[x]
-  private float normalizeFloatUp(float x) { result = x + 0.0 }
-
-  bindingset[x, y]
-  private float truncatingDiv(float x, float y) { result = (x - (x % y)) / y }
-
-  /**
    * Holds if `e1 + delta` is a valid bound for `e2`.
    * - `upper = true`  : `e2 <= e1 + delta`
    * - `upper = false` : `e2 >= e1 + delta`
    *
    * This is restricted to simple forward-flowing steps and disregards phi-nodes.
    */
-  private predicate preBoundStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+  private predicate preBoundStep(Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt delta, boolean upper) {
     boundFlowStep(e2, e1, delta, upper)
     or
     exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
@@ -1266,7 +1248,9 @@ module RangeStage<
   }
 
   pragma[nomagic]
-  private predicate relevantPreBoundStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+  private predicate relevantPreBoundStep(
+    Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt delta, boolean upper
+  ) {
     preBoundStep(e2, e1, delta, upper) and
     reachesBoundMergepoint(e2, upper)
   }
@@ -1290,21 +1274,21 @@ module RangeStage<
    * ...
    * ```
    */
-  private predicate preBounded(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+  private predicate preBounded(Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper) {
     baseBound(e, b, delta, upper)
     or
-    exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
+    exists(Sem::Expr mid, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2 |
       relevantPreBoundStep(e, mid, d1, upper) and
       preBounded(mid, b, d2, upper) and
-      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
+      delta = d1 + d2
     )
   }
 
-  private predicate bestPreBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
-    delta = min(D::Delta d | preBounded(e, b, d, upper) | d order by D::toFloat(d)) and
+  private predicate bestPreBound(Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper) {
+    delta = min(QlBuiltins::BigInt d | preBounded(e, b, d, upper) | d) and
     upper = true
     or
-    delta = max(D::Delta d | preBounded(e, b, d, upper) | d order by D::toFloat(d)) and
+    delta = max(QlBuiltins::BigInt d | preBounded(e, b, d, upper) | d) and
     upper = false
   }
 
@@ -1314,15 +1298,15 @@ module RangeStage<
    * - `upper = false` : `e >= b + delta`
    */
   predicate initialBounded(
-    Sem::Expr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    Sem::Expr e, SemBound b, QlBuiltins::BigInt delta, boolean upper, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     not ignoreExprBound(e) and
     // ignore poor bounds
-    not exists(D::Delta d | bestPreBound(e, b, d, upper) |
-      D::toFloat(delta) > D::toFloat(d) and upper = true
+    not exists(QlBuiltins::BigInt d | bestPreBound(e, b, d, upper) |
+      delta > d and upper = true
       or
-      D::toFloat(delta) < D::toFloat(d) and upper = false
+      delta < d and upper = false
     ) and
     (
       baseBound(e, b, delta, upper) and
@@ -1335,12 +1319,12 @@ module RangeStage<
         bb.getAnSsaRead(v) = e
       )
       or
-      exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
+      exists(Sem::Expr mid, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2 |
         boundFlowStep(e, mid, d1, upper) and
         bounded(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
         // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
         // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
-        delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
+        delta = d1 + d2
       )
       or
       exists(Sem::SsaPhiNode phi |
@@ -1348,19 +1332,19 @@ module RangeStage<
         e = phi.getAUse()
       )
       or
-      exists(Sem::Expr mid, D::Delta factor, D::Delta d |
+      exists(Sem::Expr mid, QlBuiltins::BigInt factor, QlBuiltins::BigInt d |
         boundFlowStepMul(e, mid, factor) and
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
-        delta = D::fromFloat(D::toFloat(d) * D::toFloat(factor))
+        delta = d * factor
       )
       or
-      exists(Sem::Expr mid, D::Delta factor, D::Delta d |
+      exists(Sem::Expr mid, QlBuiltins::BigInt factor, QlBuiltins::BigInt d |
         boundFlowStepDiv(e, mid, factor) and
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
-        D::toFloat(d) >= 0 and
-        delta = D::fromFloat(truncatingDiv(D::toFloat(d), D::toFloat(factor)))
+        d >= 0.toBigInt() and
+        delta = d / factor
       )
       or
       exists(NarrowingCastExpr cast |
@@ -1370,8 +1354,8 @@ module RangeStage<
       )
       or
       exists(
-        Sem::ConditionalExpr cond, D::Delta d1, D::Delta d2, boolean fbe1, boolean fbe2,
-        D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
+        Sem::ConditionalExpr cond, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2, boolean fbe1,
+        boolean fbe2, QlBuiltins::BigInt od1, QlBuiltins::BigInt od2, SemReason r1, SemReason r2
       |
         cond = e and
         boundedConditionalExpr(cond, b, upper, true, d1, fbe1, od1, r1) and
@@ -1382,28 +1366,29 @@ module RangeStage<
           delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
         )
       |
-        upper = true and delta = D::fromFloat(D::toFloat(d1).maximum(D::toFloat(d2)))
+        upper = true and delta = d1.maximum(d2)
         or
-        upper = false and delta = D::fromFloat(D::toFloat(d1).minimum(D::toFloat(d2)))
+        upper = false and delta = d1.minimum(d2)
       )
       or
       not javaCompatibility() and
-      exists(Sem::Expr mid, D::Delta d, float f |
+      exists(Sem::Expr mid, QlBuiltins::BigInt d, QlBuiltins::BigInt f |
         e.(Sem::NegateExpr).getOperand() = mid and
         b instanceof SemZeroBound and
         bounded(mid, b, d, upper.booleanNot(), fromBackEdge, origdelta, reason) and
-        f = normalizeFloatUp(-D::toFloat(d)) and
-        delta = D::fromFloat(f) and
-        if semPositive(e) then f >= 0 else any()
+        f = -d and
+        delta = f and
+        if semPositive(e) then f >= 0.toBigInt() else any()
       )
       or
       exists(
-        SemBound bLeft, SemBound bRight, D::Delta dLeft, D::Delta dRight, boolean fbeLeft,
-        boolean fbeRight, D::Delta odLeft, D::Delta odRight, SemReason rLeft, SemReason rRight
+        SemBound bLeft, SemBound bRight, QlBuiltins::BigInt dLeft, QlBuiltins::BigInt dRight,
+        boolean fbeLeft, boolean fbeRight, QlBuiltins::BigInt odLeft, QlBuiltins::BigInt odRight,
+        SemReason rLeft, SemReason rRight
       |
         boundedAddOperand(e, upper, bLeft, false, dLeft, fbeLeft, odLeft, rLeft) and
         boundedAddOperand(e, upper, bRight, true, dRight, fbeRight, odRight, rRight) and
-        delta = D::fromFloat(D::toFloat(dLeft) + D::toFloat(dRight)) and
+        delta = dLeft + dRight and
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
       |
         b = bLeft and origdelta = odLeft and reason = rLeft and bRight instanceof SemZeroBound
@@ -1412,7 +1397,9 @@ module RangeStage<
       )
       or
       not javaCompatibility() and
-      exists(D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight |
+      exists(
+        QlBuiltins::BigInt dLeft, QlBuiltins::BigInt dRight, boolean fbeLeft, boolean fbeRight
+      |
         boundedSubOperandLeft(e, upper, b, dLeft, fbeLeft, origdelta, reason) and
         boundedSubOperandRight(e, upper, dRight, fbeRight) and
         // when `upper` is `true` we have:
@@ -1425,14 +1412,15 @@ module RangeStage<
         // right <= 0 + dRight
         // left - right >= b + dLeft - (0 + dRight)
         //               = b + (dLeft - dRight)
-        delta = D::fromFloat(D::toFloat(dLeft) - D::toFloat(dRight)) and
+        delta = dLeft - dRight and
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
       )
       or
       not javaCompatibility() and
       exists(
-        Sem::RemExpr rem, D::Delta d_max, D::Delta d1, D::Delta d2, boolean fbe1, boolean fbe2,
-        D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
+        Sem::RemExpr rem, QlBuiltins::BigInt d_max, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2,
+        boolean fbe1, boolean fbe2, QlBuiltins::BigInt od1, QlBuiltins::BigInt od2, SemReason r1,
+        SemReason r2
       |
         rem = e and
         b instanceof SemZeroBound and
@@ -1441,7 +1429,7 @@ module RangeStage<
         boundedRemExpr(rem, true, d1, fbe1, od1, r1) and
         boundedRemExpr(rem, false, d2, fbe2, od2, r2) and
         (
-          if D::toFloat(d1).abs() > D::toFloat(d2).abs()
+          if (d1).abs() > (d2).abs()
           then (
             d_max = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
           ) else (
@@ -1449,19 +1437,19 @@ module RangeStage<
           )
         )
       |
-        upper = true and delta = D::fromFloat(D::toFloat(d_max).abs() - 1)
+        upper = true and delta = d_max.abs() - 1.toBigInt()
         or
-        upper = false and delta = D::fromFloat(-D::toFloat(d_max).abs() + 1)
+        upper = false and delta = -d_max.abs() + 1.toBigInt()
       )
       or
       not javaCompatibility() and
       exists(
-        D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight, D::Delta odLeft,
-        D::Delta odRight, SemReason rLeft, SemReason rRight
+        QlBuiltins::BigInt dLeft, QlBuiltins::BigInt dRight, boolean fbeLeft, boolean fbeRight,
+        QlBuiltins::BigInt odLeft, QlBuiltins::BigInt odRight, SemReason rLeft, SemReason rRight
       |
         boundedMulOperand(e, upper, true, dLeft, fbeLeft, odLeft, rLeft) and
         boundedMulOperand(e, upper, false, dRight, fbeRight, odRight, rRight) and
-        delta = D::fromFloat(D::toFloat(dLeft) * D::toFloat(dRight)) and
+        delta = ((dLeft) * (dRight)) and
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
       |
         b instanceof SemZeroBound and origdelta = odLeft and reason = rLeft
@@ -1473,16 +1461,16 @@ module RangeStage<
 
   pragma[nomagic]
   private predicate boundedConditionalExpr(
-    Sem::ConditionalExpr cond, SemBound b, boolean upper, boolean branch, D::Delta delta,
-    boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    Sem::ConditionalExpr cond, SemBound b, boolean upper, boolean branch, QlBuiltins::BigInt delta,
+    boolean fromBackEdge, QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
   pragma[nomagic]
   private predicate boundedAddOperand(
-    Sem::AddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta,
-    boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    Sem::AddExpr add, boolean upper, SemBound b, boolean isLeft, QlBuiltins::BigInt delta,
+    boolean fromBackEdge, QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     // `valueFlowStep` already handles the case where one of the operands is a constant.
     not valueFlowStep(add, _, _) and
@@ -1501,8 +1489,8 @@ module RangeStage<
    */
   pragma[nomagic]
   private predicate boundedSubOperandLeft(
-    Sem::SubExpr sub, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    Sem::SubExpr sub, boolean upper, SemBound b, QlBuiltins::BigInt delta, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     // `valueFlowStep` already handles the case where one of the operands is a constant.
     not valueFlowStep(sub, _, _) and
@@ -1518,7 +1506,7 @@ module RangeStage<
    */
   pragma[nomagic]
   private predicate boundedSubOperandRight(
-    Sem::SubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge
+    Sem::SubExpr sub, boolean upper, QlBuiltins::BigInt delta, boolean fromBackEdge
   ) {
     // `valueFlowStep` already handles the case where one of the operands is a constant.
     not valueFlowStep(sub, _, _) and
@@ -1528,8 +1516,8 @@ module RangeStage<
 
   pragma[nomagic]
   private predicate boundedRemExpr(
-    Sem::RemExpr rem, boolean upper, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
-    SemReason reason
+    Sem::RemExpr rem, boolean upper, QlBuiltins::BigInt delta, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     bounded(rem.getRightOperand(), any(SemZeroBound zb), delta, upper, fromBackEdge, origdelta,
       reason)
@@ -1626,8 +1614,8 @@ module RangeStage<
    */
   pragma[nomagic]
   private predicate boundedMulOperand(
-    Sem::MulExpr mul, boolean upper, boolean isLeft, D::Delta delta, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    Sem::MulExpr mul, boolean upper, boolean isLeft, QlBuiltins::BigInt delta, boolean fromBackEdge,
+    QlBuiltins::BigInt origdelta, SemReason reason
   ) {
     exists(boolean upperLeft, boolean upperRight, Sem::Expr left, Sem::Expr right |
       boundedMulOperandCand(mul, left, right, upper, upperLeft, upperRight)

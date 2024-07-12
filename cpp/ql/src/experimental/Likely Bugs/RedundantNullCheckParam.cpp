@@ -1,3 +1,5 @@
+#define NULL nullptr
+
 void test(char *arg1, int *arg2) {
     if (arg1[0] == 'A') {
         if (arg2 != NULL) { //maybe redundant

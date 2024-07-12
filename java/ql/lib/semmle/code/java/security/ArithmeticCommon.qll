@@ -21,14 +21,14 @@ predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
 
 private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
   exists(ComparisonExpr comp | comp = result |
-    comp.getLesserOperand() = ssaRead(v, 0) and
+    comp.getLesserOperand() = ssaRead(v, 0.toBigInt()) and
     (
       branch = true and upper = true
       or
       branch = false and upper = false
     )
     or
-    comp.getGreaterOperand() = ssaRead(v, 0) and
+    comp.getGreaterOperand() = ssaRead(v, 0.toBigInt()) and
     (
       branch = true and upper = false
       or
@@ -37,7 +37,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     or
     exists(MethodCall ma |
       ma.getMethod() instanceof MethodAbs and
-      ma.getArgument(0) = ssaRead(v, 0) and
+      ma.getArgument(0) = ssaRead(v, 0.toBigInt()) and
       (
         comp.getLesserOperand() = ma and branch = true
         or
@@ -48,7 +48,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     or
     // overflow test
     exists(AddExpr add, VarRead use, Expr pos |
-      use = ssaRead(v, 0) and
+      use = ssaRead(v, 0.toBigInt()) and
       add.hasOperands(use, pos) and
       positive(use) and
       positive(pos) and
@@ -64,12 +64,12 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     )
   )
   or
-  result.isEquality(ssaRead(v, 0), _, branch) and
+  result.isEquality(ssaRead(v, 0.toBigInt()), _, branch) and
   (upper = true or upper = false)
   or
   exists(MethodCall call, Method m, int ix |
     call = result and
-    call.getArgument(ix) = ssaRead(v, 0) and
+    call.getArgument(ix) = ssaRead(v, 0.toBigInt()) and
     call.getMethod().getSourceDeclaration() = m and
     m = customSizeGuard(ix, branch, upper)
   )

@@ -249,25 +249,33 @@ class CompileTimeConstantExpr extends Expr {
    * - values of type `long`.
    */
   cached
-  int getIntValue() {
-    exists(IntegralType t | this.getType() = t | t.getName().toLowerCase() != "long") and
+  int getIntValue() { result = this.getBigIntValue().toInt() }
+
+  /**
+   * Gets the big integer value of this expression, where possible.
+   */
+  cached
+  QlBuiltins::BigInt getBigIntValue() {
+    this.getType() instanceof IntegralType and
     (
-      result = this.(IntegerLiteral).getIntValue()
+      result = this.(IntegerLiteral).getBigIntValue()
       or
-      result = this.(CharacterLiteral).getCodePointValue()
+      result = this.(CharacterLiteral).getCodePointValue().toBigInt()
     )
     or
-    result = CalcCompileTimeConstants::calculateIntValue(this)
+    result = CalcCompileTimeConstants::calculateBigIntValue(this)
     or
-    result = this.(LiveLiteral).getValue().getIntValue()
+    result = this.(LiveLiteral).getValue().getBigIntValue()
   }
 }
 
 private boolean getBoolValue(Expr e) { result = e.(CompileTimeConstantExpr).getBooleanValue() }
 
-private int getIntValue(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
+private QlBuiltins::BigInt getBigIntValue(Expr e) {
+  result = e.(CompileTimeConstantExpr).getBigIntValue()
+}
 
-private module CalcCompileTimeConstants = CalculateConstants<getBoolValue/1, getIntValue/1>;
+private module CalcCompileTimeConstants = CalculateConstants<getBoolValue/1, getBigIntValue/1>;
 
 /** An expression parent is an element that may have an expression as its child. */
 class ExprParent extends @exprparent, Top { }
@@ -589,6 +597,9 @@ class BooleanLiteral extends Literal, @booleanliteral {
 class IntegerLiteral extends Literal, @integerliteral {
   /** Gets the int representation of this literal. */
   int getIntValue() { result = this.getValue().toInt() }
+
+  /** Gets the big int representation of this literal. */
+  QlBuiltins::BigInt getBigIntValue() { result = this.getValue().toBigInt() }
 
   override string getAPrimaryQlClass() { result = "IntegerLiteral" }
 }
