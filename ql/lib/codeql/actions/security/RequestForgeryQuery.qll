@@ -5,7 +5,7 @@ import codeql.actions.dataflow.FlowSources
 import codeql.actions.DataFlow
 
 private class RequestForgerySink extends DataFlow::Node {
-  RequestForgerySink() { externallyDefinedSink(this, "request-forgery") }
+  RequestForgerySink() { madSink(this, "request-forgery") }
 }
 
 /**

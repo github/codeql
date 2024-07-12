@@ -6,7 +6,7 @@ private import codeql.actions.security.ArtifactPoisoningQuery
 import codeql.actions.DataFlow
 
 private class SecretExfiltrationSink extends DataFlow::Node {
-  SecretExfiltrationSink() { externallyDefinedSink(this, "secret-exfiltration") }
+  SecretExfiltrationSink() { madSink(this, "secret-exfiltration") }
 }
 
 /**

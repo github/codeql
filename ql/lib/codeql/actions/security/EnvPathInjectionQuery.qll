@@ -44,7 +44,7 @@ class EnvPathInjectionFromEnvVarSink extends EnvPathInjectionSink {
 }
 
 class EnvPathInjectionFromMaDSink extends EnvPathInjectionSink {
-  EnvPathInjectionFromMaDSink() { externallyDefinedSink(this, "envpath-injection") }
+  EnvPathInjectionFromMaDSink() { madSink(this, "envpath-injection") }
 }
 
 /**

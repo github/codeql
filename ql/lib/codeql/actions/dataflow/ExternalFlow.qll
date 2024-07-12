@@ -10,7 +10,9 @@ private import actions
  *    - output arg: To node (prefixed with either `env.` or `output.`)
  *    - provenance: verification of the model
  */
-predicate actionsSourceModel(string action, string version, string output, string kind, string provenance) {
+predicate actionsSourceModel(
+  string action, string version, string output, string kind, string provenance
+) {
   Extensions::actionsSourceModel(action, version, output, kind, provenance)
 }
 
@@ -39,12 +41,17 @@ predicate actionsSummaryModel(
  *    - kind: sink kind
  *    - provenance: verification of the model
  */
-predicate actionsSinkModel(string action, string version, string input, string kind, string provenance) {
+predicate actionsSinkModel(
+  string action, string version, string input, string kind, string provenance
+) {
   Extensions::actionsSinkModel(action, version, input, kind, provenance)
 }
 
-predicate externallyDefinedSource(DataFlow::Node source, string sourceType, string fieldName) {
-  exists(Uses uses, string action, string version, string kind |
+/**
+ * Holds if source.fieldName is a MaD-defined source of a given taint kind.
+ */
+predicate madSource(DataFlow::Node source, string kind, string fieldName) {
+  exists(Uses uses, string action, string version |
     actionsSourceModel(action, version, fieldName, kind, _) and
     uses.getCallee() = action.toLowerCase() and
     (
@@ -59,36 +66,40 @@ predicate externallyDefinedSource(DataFlow::Node source, string sourceType, stri
         if fieldName.trim().matches("output.%")
         then source.asExpr() = uses
         else none()
-    ) and
-    sourceType = kind
+    )
   )
 }
 
-predicate externallyDefinedStoreStep(
-  DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
-) {
+/**
+ * Holds if the data flow from `pred` to `succ` is a MaD store step.
+ */
+predicate madStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(Uses uses, string action, string version, string input, string output |
     actionsSummaryModel(action, version, input, output, "taint", _) and
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output.", "")) and
     uses.getCallee() = action.toLowerCase() and
+    // version check
     (
       if version.trim() = "*"
       then uses.getVersion() = any(string v)
       else uses.getVersion() = version.trim()
     ) and
+    // pred provenance
     (
-      if input.trim().matches("env.%")
-      then pred.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
-      else
-        if input.trim().matches("input.%")
-        then pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
-        else none()
+      input.trim().matches("env.%") and
+      pred.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
+      or
+      input.trim().matches("input.%") and
+      pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
     ) and
     succ.asExpr() = uses
   )
 }
 
-predicate externallyDefinedSink(DataFlow::Node sink, string kind) {
+/**
+ * Holds if sink is a MaD-defined sink for a given taint kind.
+ */
+predicate madSink(DataFlow::Node sink, string kind) {
   exists(Uses uses, string action, string version, string input |
     actionsSinkModel(action, version, input, kind, _) and
     uses.getCallee() = action.toLowerCase() and

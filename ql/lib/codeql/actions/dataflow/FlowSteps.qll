@@ -23,14 +23,18 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-bindingset[var_name, value]
-predicate envToRunExpr(string var_name, Run run, string value) {
+/**
+ * Holds if and environment variable is used, directly or indirectly, in a Run's step expression.
+ * Where the expression is a string captured from the Run's script.
+ */
+bindingset[var_name, expr]
+predicate envToRunExpr(string var_name, Run run, string expr) {
   // e.g. echo "FOO=$BODY" >> $GITHUB_ENV
   // e.g. echo "FOO=${BODY}" >> $GITHUB_ENV
-  value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+  expr.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
   or
   // e.g. echo "FOO=$(echo $BODY)" >> $GITHUB_ENV
-  value.matches("$(echo %") and value.indexOf(var_name) > 0
+  expr.matches("$(echo %") and expr.indexOf(var_name) > 0
   or
   // e.g.
   // FOO=$(echo $BODY)
@@ -40,13 +44,18 @@ predicate envToRunExpr(string var_name, Run run, string value) {
     var2_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
     var2_value.matches("%$" + ["", "{", "ENV{"] + var_name + "%") and
     (
-      value.matches("%$" + ["", "{", "ENV{"] + var2_name + "%")
+      expr.matches("%$" + ["", "{", "ENV{"] + var2_name + "%")
       or
-      value.matches("$(echo %") and value.indexOf(var2_name) > 0
+      expr.matches("$(echo %") and expr.indexOf(var2_name) > 0
     )
   )
 }
 
+/**
+ * Holds if an environment variable is used, directly or indirectly, as an argument to a dangerous command
+ * in a Run step.
+ * Where the command is a string captured from the Run's script.
+ */
 bindingset[var_name]
 predicate envToArgInjSink(string var_name, Run run, string command) {
   exists(string argument, string line, string regexp, int command_group, int argument_group |
@@ -131,18 +140,6 @@ predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlo
   )
 }
 
-// predicate dISABLEDenvToOutputStoreStep(
-//   DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
-// ) {
-//   exists(Run run, string var_name, string content, string key, string value |
-//     writeToGitHubOutput(run, content) and
-//     extractVariableAndValue(content, key, value) and
-//     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-//     pred.asExpr() = run.getInScopeEnvVarExpr(var_name) and
-//     succ.asExpr() = run and
-//     value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-//   )
-// }
 predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(Run run, string var_name, string content, string key, string value |
     writeToGitHubEnv(run, content) and
@@ -180,7 +177,7 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     download.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
-    // we store the taint on the enclosing job since the may not exist an implicit env attribute
+    // we store the taint on the enclosing job since there may not be an implicit env attribute
     succ.asExpr() = run.getEnclosingJob()
   )
 }

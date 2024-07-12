@@ -22,7 +22,7 @@ private module MyConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink instanceof CodeInjectionSink and not externallyDefinedSink(sink, "code-injection")
+    sink instanceof CodeInjectionSink and not madSink(sink, "code-injection")
   }
 }
 

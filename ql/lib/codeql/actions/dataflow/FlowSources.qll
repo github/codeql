@@ -95,10 +95,10 @@ class GitHubEventJsonSource extends RemoteFlowSource {
 /**
  * A Source of untrusted data defined in a MaD specification
  */
-class ExternallyDefinedSource extends RemoteFlowSource {
+class MaDSource extends RemoteFlowSource {
   string sourceType;
 
-  ExternallyDefinedSource() { externallyDefinedSource(this, sourceType, _) }
+  MaDSource() { madSource(this, sourceType, _) }
 
   override string getSourceType() { result = sourceType }
 }

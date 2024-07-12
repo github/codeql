@@ -86,9 +86,7 @@ class DataFlowCall instanceof Cfg::Node {
   int totalorder() { none() }
 
   /** Gets the location of this call. */
-  Location getLocation() {
-    result = this.getLocation()
-  }
+  Location getLocation() { result = this.getLocation() }
 }
 
 /**
@@ -119,10 +117,8 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   /** Gets a best-effort total ordering. */
   int totalorder() { none() }
 
-   /** Gets the location of this callable. */
-  Location getLocation() {
-    result = this.getLocation()
-  }
+  /** Gets the location of this callable. */
+  Location getLocation() { result = this.getLocation() }
 }
 
 newtype TReturnKind = TNormalReturn()
@@ -225,7 +221,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(Uses astFrom, StepsExpression astTo |
-    externallyDefinedSource(nodeFrom, _, "output." + ["*", astTo.getFieldName()]) and
+    madSource(nodeFrom, _, "output." + ["*", astTo.getFieldName()]) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getTarget() = astFrom
@@ -242,7 +238,7 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  */
 predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(Uses astFrom, NeedsExpression astTo |
-    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    madSource(nodeFrom, _, "output." + astTo.getFieldName()) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getTarget() = astFrom
@@ -282,7 +278,7 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     (
-      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName())
+      madSource(nodeFrom, _, "env." + astTo.getFieldName())
       or
       astTo.getTarget() = astFrom
       or
@@ -382,7 +378,7 @@ predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   fieldStoreStep(node1, node2, c) or
-  externallyDefinedStoreStep(node1, node2, c) or
+  madStoreStep(node1, node2, c) or
   envToOutputStoreStep(node1, node2, c) or
   artifactToOutputStoreStep(node1, node2, c) or
   envToEnvStoreStep(node1, node2, c) or

@@ -7,7 +7,7 @@ import codeql.actions.DataFlow
 class CodeInjectionSink extends DataFlow::Node {
   CodeInjectionSink() {
     exists(Run e | e.getAnScriptExpr() = this.asExpr()) or
-    externallyDefinedSink(this, "code-injection")
+    madSink(this, "code-injection")
   }
 }
 

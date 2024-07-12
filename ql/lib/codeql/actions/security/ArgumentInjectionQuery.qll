@@ -46,7 +46,7 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
  * Holds if a Run step declares an environment variable, uses it as the argument to a command vulnerable to argument injection.
  */
 class ArgumentInjectionFromMaDSink extends ArgumentInjectionSink {
-  ArgumentInjectionFromMaDSink() { externallyDefinedSink(this, "argument-injection") }
+  ArgumentInjectionFromMaDSink() { madSink(this, "argument-injection") }
 
   override string getCommand() { result = "unknown" }
 }

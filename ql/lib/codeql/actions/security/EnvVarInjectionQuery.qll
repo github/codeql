@@ -46,7 +46,7 @@ class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
 }
 
 class EnvVarInjectionFromMaDSink extends EnvVarInjectionSink {
-  EnvVarInjectionFromMaDSink() { externallyDefinedSink(this, "envvar-injection") }
+  EnvVarInjectionFromMaDSink() { madSink(this, "envvar-injection") }
 }
 
 /**

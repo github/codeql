@@ -5,7 +5,7 @@ import codeql.actions.dataflow.FlowSources
 import codeql.actions.DataFlow
 
 private class CommandInjectionSink extends DataFlow::Node {
-  CommandInjectionSink() { externallyDefinedSink(this, "command-injection") }
+  CommandInjectionSink() { madSink(this, "command-injection") }
 }
 
 /**
