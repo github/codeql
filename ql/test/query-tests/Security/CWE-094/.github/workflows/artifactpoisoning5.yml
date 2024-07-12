@@ -19,5 +19,5 @@ jobs:
         with:
           path: ./artifact.txt
       - name: Use artifact
-        run: echo ${{ steps.artifact.outputs.contents }} 
+        run: echo ${{ steps.artifact.outputs.content }} 
 

@@ -9,6 +9,8 @@ edges
 | .github/workflows/artifactpoisoning4.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance |  |
 | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | .github/workflows/artifactpoisoning4.yml:22:20:22:51 | steps.artifact.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | provenance |  |
+| .github/workflows/artifactpoisoning5.yml:8:9:16:6 | Uses Step | .github/workflows/artifactpoisoning5.yml:16:9:21:6 | Uses Step: artifact [content] | provenance |  |
+| .github/workflows/artifactpoisoning5.yml:16:9:21:6 | Uses Step: artifact [content] | .github/workflows/artifactpoisoning5.yml:22:20:22:56 | steps.artifact.outputs.content | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning6.yml:16:14:19:57 | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning6.yml:24:14:27:57 | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:15:9:20:6 | Run Step: artifact [pr_number] | .github/workflows/artifactpoisoning6.yml:21:20:21:58 | steps.artifact.outputs.pr_number | provenance |  |
@@ -117,6 +119,9 @@ nodes
 | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | semmle.label | Run Step: artifact [id] |
 | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | semmle.label | echo "::set-output name=id::$(<artifact.txt)" |
 | .github/workflows/artifactpoisoning4.yml:22:20:22:51 | steps.artifact.outputs.id | semmle.label | steps.artifact.outputs.id |
+| .github/workflows/artifactpoisoning5.yml:8:9:16:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning5.yml:16:9:21:6 | Uses Step: artifact [content] | semmle.label | Uses Step: artifact [content] |
+| .github/workflows/artifactpoisoning5.yml:22:20:22:56 | steps.artifact.outputs.content | semmle.label | steps.artifact.outputs.content |
 | .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning6.yml:15:9:20:6 | Run Step: artifact [pr_number] | semmle.label | Run Step: artifact [pr_number] |
 | .github/workflows/artifactpoisoning6.yml:16:14:19:57 | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | semmle.label | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n |

@@ -1,6 +1,7 @@
+private import actions
 private import internal.ExternalFlowExtensions as Extensions
 private import codeql.actions.DataFlow
-private import actions
+private import codeql.actions.security.ArtifactPoisoningQuery
 
 /**
  * MaD sources
@@ -91,6 +92,12 @@ predicate madStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::Conte
       or
       input.trim().matches("input.%") and
       pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
+      or
+      input.trim() = "artifact" and
+      exists(UntrustedArtifactDownloadStep download |
+        pred.asExpr() = download and
+        download.getAFollowingStep() = uses
+      )
     ) and
     succ.asExpr() = uses
   )
