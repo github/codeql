@@ -1322,31 +1322,27 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
-    private module Cached {
-      cached
-      newtype TNode =
-        TParamNode(DfInput::Parameter p) { DfInput::ssaDefInitializesParam(_, p) } or
-        TExprNode(DfInput::Expr e, Boolean isPost) {
-          e = DfInput::getARead(_)
-          or
-          DfInput::ssaDefAssigns(_, e) and
-          isPost = false
-        } or
-        TSsaDefinitionNode(DefinitionExt def) or
-        TSsaInputNode(SsaInputDefinitionExt def, BasicBlock input) {
-          def.hasInputFromBlock(_, _, _, _, input)
-        }
-
-      cached
-      Definition getAPhiInputDef(SsaInputNode n) {
-        exists(SsaInputDefinitionExt phi, BasicBlock bb |
-          phi.hasInputFromBlock(result, _, _, _, bb) and
-          n.isInputInto(phi, bb)
-        )
-      }
+    cached
+    private DefinitionExt getAPhiInputDef(SsaInputDefinitionExt phi, BasicBlock bb) {
+      phi.hasInputFromBlock(result, _, _, _, bb)
     }
 
-    private import Cached
+    private newtype TNode =
+      TParamNode(DfInput::Parameter p) {
+        exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
+      } or
+      TExprNode(DfInput::Expr e, Boolean isPost) {
+        e = DfInput::getARead(_)
+        or
+        exists(DefinitionExt def |
+          DfInput::ssaDefAssigns(def, e) and
+          isPost = false
+        )
+      } or
+      TSsaDefinitionNode(DefinitionExt def) or
+      TSsaInputNode(SsaInputDefinitionExt phi, BasicBlock input) {
+        exists(getAPhiInputDef(phi, input))
+      }
 
     /**
      * A data flow node that we need to reference in the value step relation.
@@ -1626,6 +1622,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * the argument `x`.
      */
     signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, boolean branch);
+
+    pragma[nomagic]
+    private Definition getAPhiInputDef(SsaInputNode n) {
+      exists(SsaInputDefinitionExt phi, BasicBlock bb |
+        result = getAPhiInputDef(phi, bb) and
+        n.isInputInto(phi, bb)
+      )
+    }
 
     /**
      * Provides a set of barrier nodes for a guard that validates an expression.
