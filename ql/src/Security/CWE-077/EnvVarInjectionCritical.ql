@@ -14,6 +14,7 @@
 
 import actions
 import codeql.actions.security.EnvVarInjectionQuery
+import codeql.actions.dataflow.ExternalFlow
 import EnvVarInjectionFlow::PathGraph
 
 from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink
@@ -25,7 +26,10 @@ where
     not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
     or
     source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
-    sink.getNode() instanceof EnvVarInjectionFromFileReadSink
+    (
+      sink.getNode() instanceof EnvVarInjectionFromFileReadSink or
+      madSink(sink.getNode(), "envvar-injection")
+    )
   )
 select sink.getNode(), source, sink,
   "Potential environment variable injection in $@, which may be controlled by an external user.",

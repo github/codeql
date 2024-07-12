@@ -110,18 +110,22 @@ predicate madSink(DataFlow::Node sink, string kind) {
   exists(Uses uses, string action, string version, string input |
     actionsSinkModel(action, version, input, kind, _) and
     uses.getCallee() = action.toLowerCase() and
-    (
-      if input.trim().matches("env.%")
-      then sink.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
-      else
-        if input.trim().matches("input.%")
-        then sink.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
-        else none()
-    ) and
+    // version check
     (
       if version.trim() = "*"
       then uses.getVersion() = any(string v)
       else uses.getVersion() = version.trim()
+    ) and
+    // pred provenance
+    (
+      input.trim().matches("env.%") and
+      sink.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
+      or
+      input.trim().matches("input.%") and
+      sink.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
+      or
+      input.trim() = "artifact" and
+      sink.asExpr() = uses
     )
   )
 }

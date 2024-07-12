@@ -45,6 +45,19 @@ class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   }
 }
 
+/**
+ * Holds if a 3rd party action declares an environment variable with contents from an untrusted file.
+ * e.g.
+ *- name: Load .env file
+ *  uses: aarcangeli/load-dotenv@v1.0.0
+ *  with:
+ *    path: 'backend/new'
+ *    filenames: |
+ *      .env
+ *      .env.test
+ *    quiet: false
+ *    if-file-not-found: error
+ */
 class EnvVarInjectionFromMaDSink extends EnvVarInjectionSink {
   EnvVarInjectionFromMaDSink() { madSink(this, "envvar-injection") }
 }
