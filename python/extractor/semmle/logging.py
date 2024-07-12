@@ -374,7 +374,7 @@ def syntax_error_message(exception, unit):
 
 def recursion_error_message(exception, unit):
     # if unit is a BuiltinModuleExtractable, there will be no path attribute
-    l = Location(file=getattr(unit, "path", str(unit)))
+    l = Location(file=unit.path) if hasattr(unit, "path") else None
     return (DiagnosticMessage(Source("py/diagnostics/recursion-error", "Recursion error in Python extractor"), Severity.ERROR)
             .with_location(l)
             .text(exception.args[0])
@@ -385,7 +385,7 @@ def recursion_error_message(exception, unit):
 
 def internal_error_message(exception, unit):
     # if unit is a BuiltinModuleExtractable, there will be no path attribute
-    l = Location(file=getattr(unit, "path", str(unit)))
+    l = Location(file=unit.path) if hasattr(unit, "path") else None
     return (DiagnosticMessage(Source("py/diagnostics/internal-error", "Internal error in Python extractor"), Severity.ERROR)
             .with_location(l)
             .text("Internal error")
