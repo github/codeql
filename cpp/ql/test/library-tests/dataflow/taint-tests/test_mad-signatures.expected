@@ -377,7 +377,6 @@ getParameterTypeName
 | stl.h:88:25:88:33 | operator= | 0 | value_type && |
 | stl.h:91:24:91:33 | operator++ | 0 | int |
 | stl.h:91:24:91:33 | operator++ | 0 | int |
-| stl.h:139:8:139:8 | basic_string | 0 | basic_string & |
 | stl.h:148:3:148:14 | basic_string | 0 | const class:2 & |
 | stl.h:149:33:149:44 | basic_string | 0 | const class:0 * |
 | stl.h:149:33:149:44 | basic_string | 1 | const class:2 & |
