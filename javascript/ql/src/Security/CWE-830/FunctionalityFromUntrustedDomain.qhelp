@@ -32,6 +32,10 @@
 		<p>
 			Even when <code>https</code> is used, an untrustworthy operator might deliver malware.
 		</p>
+
+		<p>
+			See the `CUSTOMIZING.md` file in the source code for this query for information on how to extend the list of untrusted domains used by this query.
+		</p>
 	</overview>
 
 	<recommendation>
