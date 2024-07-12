@@ -34,7 +34,7 @@
 		</p>
 
 		<p>
-			See the `CUSTOMIZING.md` file in the source code for this query for information on how to extend the list of untrusted domains used by this query.
+			See the [`CUSTOMIZING.md`](https://github.com/github/codeql/blob/main/javascript/ql/src/Security/CWE-830/CUSTOMIZING.md) file in the source code for this query for information on how to extend the list of untrusted domains used by this query.
 		</p>
 	</overview>
 
