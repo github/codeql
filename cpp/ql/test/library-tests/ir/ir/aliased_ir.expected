@@ -18827,6 +18827,7 @@ ir.cpp:
 # 2667|     r2667_1(glval<int>)   = VariableAddress[intBuffer] : 
 # 2667|     r2667_2(int)          = Constant[8]                : 
 # 2667|     m2667_3(int)          = Store[intBuffer]           : &:r2667_1, r2667_2
+# 2667|     m2667_4(unknown)      = Chi                        : total:m2663_4, partial:m2667_3
 # 2668|     r2668_1(glval<int>)   = VariableAddress[intBuffer] : 
 # 2668|     r2668_2(int *)        = CopyValue                  : r2668_1
 # 2668|     r2668_3(glval<int *>) = VariableAddress[data]      : 
@@ -18834,15 +18835,15 @@ ir.cpp:
 #-----|   Goto -> Block 2
 
 # 2670|   Block 2
-# 2670|     m2670_1(int)            = Phi                      : from 1:m2667_3
+# 2670|     m2670_1(unknown)        = Phi                      : from 0:~m2663_4, from 1:~m2667_4
 # 2670|     m2670_2(int *)          = Phi                      : from 0:m2665_3, from 1:m2668_4
 # 2670|     r2670_3(glval<unknown>) = FunctionAddress[use_int] : 
 # 2670|     r2670_4(glval<int *>)   = VariableAddress[data]    : 
 # 2670|     r2670_5(int *)          = Load[data]               : &:r2670_4, m2670_2
 # 2670|     r2670_6(int)            = Load[?]                  : &:r2670_5, ~m2670_1
 # 2670|     v2670_7(void)           = Call[use_int]            : func:r2670_3, 0:r2670_6
-# 2670|     m2670_8(unknown)        = ^CallSideEffect          : ~m2663_4
-# 2670|     m2670_9(unknown)        = Chi                      : total:m2663_4, partial:m2670_8
+# 2670|     m2670_8(unknown)        = ^CallSideEffect          : ~m2670_1
+# 2670|     m2670_9(unknown)        = Chi                      : total:m2670_1, partial:m2670_8
 # 2671|     v2671_1(void)           = NoOp                     : 
 # 2663|     v2663_7(void)           = ReturnVoid               : 
 # 2663|     v2663_8(void)           = AliasedUse               : ~m2670_9
