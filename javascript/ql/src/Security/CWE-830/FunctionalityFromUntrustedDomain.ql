@@ -1,6 +1,6 @@
 /**
  * @name Untrusted domain used in script or other content
- * @description Use of a script or other content from an untrusted or compromised domain
+ * @description Using a resource from an untrusted or compromised domain makes your code vulnerable to receiving malicious code.
  * @kind problem
  * @security-severity 7.2
  * @problem.severity error
