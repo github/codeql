@@ -1,8 +1,8 @@
-# Functionaility from untrusted source/domain - customizations
+# Extending the library list of untrusted sources and domains
 
-You can extend the behavior of the `js/functionality-from-untrusted-source` and `js/functionality-from-untrusted-domain` queries using [CodeQL data extensions](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/).
+You can expand the list of untrusted domains in the CodeQL library used by the `js/functionality-from-untrusted-source` and `js/functionality-from-untrusted-domain` queries using [CodeQL data extensions](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/).
 
-This allows you to require Subresource Integrity (SRI) checks on specific content delivery network (CDN) hostnames, and add additional domains to warn on, respectively.
+This allows you to add additional domains to warn users about and to require Subresource Integrity (SRI) checks on specific content delivery network (CDN) hostnames.
 
 For example, this YAML model can be used inside a CodeQL model pack to alert on uses of `example.com` in imported functionality, extending the `js/functionality-from-untrusted-domain` query:
 
@@ -26,7 +26,7 @@ extensions:
       - ["cdn.example.com"]
 ```
 
-A suitable [model pack](https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack) might be:
+You would create a model pack with this information using metadata similar to that in the example below:
 
 ```yaml
 name: my-org/javascript-untrusted-functionality-model-pack
