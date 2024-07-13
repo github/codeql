@@ -17,6 +17,22 @@ module DecompressionBomb {
   class AdditionalStep extends Unit {
     abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
   }
+
+  abstract class BombReadInputStreamCall extends MethodCall { }
+
+  private class ReadInputStreamQualifierSink extends DecompressionBomb::Sink {
+    ReadInputStreamQualifierSink() { this.asExpr() = any(BombReadInputStreamCall r).getQualifier() }
+  }
+
+  abstract class BombTypeInputStream extends RefType { }
+
+  private class TypeInputStreamConstructorArgumentSink extends DecompressionBomb::Sink {
+    TypeInputStreamConstructorArgumentSink() {
+      exists(ConstructorCall call | call.getConstructedType() instanceof BombTypeInputStream |
+        this.asExpr() = call.getArgument(0)
+      )
+    }
+  }
 }
 
 /**
@@ -26,7 +42,7 @@ module XerialSnappy {
   /**
    * A type that is responsible for `SnappyInputStream` Class
    */
-  class TypeInputStream extends RefType {
+  class TypeInputStream extends DecompressionBomb::BombTypeInputStream {
     TypeInputStream() {
       this.getASupertype*().hasQualifiedName("org.xerial.snappy", "SnappyInputStream")
     }
@@ -35,7 +51,7 @@ module XerialSnappy {
   /**
    * The methods that read bytes and belong to `SnappyInputStream` Types
    */
-  class ReadInputStreamCall extends MethodCall {
+  class ReadInputStreamCall extends DecompressionBomb::BombReadInputStreamCall {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -127,7 +143,7 @@ module ApacheCommons {
     /**
      * The methods that read bytes and belong to `*CompressorInputStream` Types
      */
-    class ReadInputStreamCall extends MethodCall {
+    class ReadInputStreamCall extends DecompressionBomb::BombReadInputStreamCall {
       ReadInputStreamCall() {
         this.getReceiverType() instanceof TypeCompressors and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -172,7 +188,7 @@ module ApacheCommons {
     /**
      * The methods that read bytes and belong to `*ArchiveInputStream` Types
      */
-    class ReadInputStreamCall extends MethodCall {
+    class ReadInputStreamCall extends DecompressionBomb::BombReadInputStreamCall {
       ReadInputStreamCall() {
         this.getReceiverType() instanceof TypeArchivers and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
@@ -240,7 +256,7 @@ module ApacheCommons {
     /**
      * The methods that read bytes and belong to `CompressorInputStream` or `ArchiveInputStream` Types
      */
-    class ReadInputStreamCall extends MethodCall {
+    class ReadInputStreamCall extends DecompressionBomb::BombReadInputStreamCall {
       ReadInputStreamCall() {
         (
           this.getReceiverType() instanceof TypeArchiveInputStream
@@ -282,7 +298,7 @@ module Zip4j {
   /**
    * The methods that read bytes and belong to `CompressorInputStream` or `ArchiveInputStream` Types
    */
-  class ReadInputStreamCall extends MethodCall {
+  class ReadInputStreamCall extends DecompressionBomb::BombReadInputStreamCall {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeZipInputStream and
       this.getMethod().hasName(["read", "readNBytes", "readAllBytes"])
@@ -307,7 +323,7 @@ module Zip {
   /**
    * The Types that are responsible for `ZipInputStream`, `GZIPInputStream`, `InflaterInputStream` Classes
    */
-  class TypeInputStream extends RefType {
+  class TypeInputStream extends DecompressionBomb::BombTypeInputStream {
     TypeInputStream() {
       this.getASupertype*()
           .hasQualifiedName("java.util.zip",
@@ -318,7 +334,7 @@ module Zip {
   /**
    * The methods that read bytes and belong to `*InputStream` Types
    */
-  class ReadInputStreamCall extends MethodCall {
+  class ReadInputStreamCall extends DecompressionBomb::BombReadInputStreamCall {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
