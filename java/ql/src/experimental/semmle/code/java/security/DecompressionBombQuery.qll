@@ -12,5 +12,3 @@ module DecompressionBombsConfig implements DataFlow::ConfigSig {
 }
 
 module DecompressionBombsFlow = TaintTracking::Global<DecompressionBombsConfig>;
-
-import DecompressionBombsFlow::PathGraph

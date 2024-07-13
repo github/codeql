@@ -13,6 +13,7 @@
 
 import java
 import experimental.semmle.code.java.security.DecompressionBombQuery
+import DecompressionBombsFlow::PathGraph
 
 from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
 where DecompressionBombsFlow::flowPath(source, sink)
