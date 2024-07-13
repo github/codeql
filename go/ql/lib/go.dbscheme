@@ -1,4 +1,4 @@
-/** Auto-generated dbscheme; do not edit. */
+/** Auto-generated dbscheme; do not edit. Run `go-gen-dbscheme` or `make ql/lib/go.dbscheme` to regenerate. */
 
 
 /** Duplicate code **/
