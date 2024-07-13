@@ -6,21 +6,16 @@ import java
 private import semmle.code.xml.AndroidManifest
 
 /**
- * There is an android manifest file which defines an activity, service or
- * content provider (so it corresponds to an android application rather than a
- * library), and `file` is in a subfolder of the folder that contains it.
+ * Holds if in `file`'s directory or some parent directory there is an `AndroidManifestXmlFile`
+ * that defines at least one activity, service or contest provider, suggesting this file is
+ * part of an android application.
  */
 predicate inAndroidApplication(File file) {
   file.isSourceFile() and
-  exists(AndroidComponentXmlElement acxe, AndroidManifestXmlFile amxf |
-    amxf.getManifestElement().getApplicationElement().getAComponentElement() = acxe and
-    (
-      acxe instanceof AndroidActivityXmlElement or
-      acxe instanceof AndroidServiceXmlElement or
-      acxe instanceof AndroidProviderXmlElement
-    )
+  exists(AndroidManifestXmlFile amxf, Folder amxfDir |
+    amxf.definesAndroidApplication() and amxfDir = amxf.getParentContainer()
   |
-    file.getParentContainer+() = amxf.getParentContainer()
+    file.getParentContainer+() = amxfDir
   )
 }
 
