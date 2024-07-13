@@ -12,7 +12,7 @@ public class SnappyHandler {
         byte[] readBuffer = new byte[4096];
         try (SnappyInputStream zipInputStream = new SnappyInputStream(inputStream)) {  // $ hasTaintFlow="inputStream"
             try (OutputStream outputStream = Files.newOutputStream(Paths.get("extractedFile"))) {
-                while ((readLen = zipInputStream.read(readBuffer)) != -1) {
+                while ((readLen = zipInputStream.read(readBuffer)) != -1) { // $ hasTaintFlow="zipInputStream"
                     outputStream.write(readBuffer, 0, readLen);
                 }
             }

@@ -58,6 +58,23 @@ module XerialSnappy {
     }
   }
 
+  /**
+   * Gets `n1` and `n2` which `SnappyInputStream n2 = new SnappyInputStream(n1)` or
+   * `n1.read(n2)`,
+   *  second one is added because of sanitizer, we want to compare return value of each `read` or similar method
+   *  that whether there is a flow to a comparison between total read of decompressed stream and a constant value
+   */
+  private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
+    override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+      exists(Call call |
+        // Constructors
+        call.getCallee().getDeclaringType() = any(TypeInputStream t) and
+        call.getArgument(0) = n1.asExpr() and
+        call = n2.asExpr()
+      )
+    }
+  }
+
   class Sink extends DecompressionBomb::Sink {
     Sink() {
       this.asExpr() = any(ReadInputStreamCall r).getQualifier()
