@@ -20,7 +20,7 @@ In the following example, the decompressed file size is not checked before decom
 <sample src="example_bad.java" />  
 
 <p>  
-A better approach is shown in the following example, where a ZIP file is read within a loop and a size threshold is checked every cicle.  
+A better approach is shown in the following example, where a ZIP file is read within a loop and a size threshold is checked every cycle.  
 </p>  
 <sample src="example_good.java"/>  
 
