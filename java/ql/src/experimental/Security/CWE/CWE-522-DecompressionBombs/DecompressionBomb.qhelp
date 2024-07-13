@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Extracting Compressed files with any compression algorithm like gzip can cause a denial of service attacks.</p>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause a denial of service attack.</p>
 <p>Attackers can create a huge file by just repeating a single byte and compress it to a small file.</p>  
 
 </overview>
