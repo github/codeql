@@ -17,12 +17,12 @@
 <p>
 In the following example, the decompressed file size is not checked before decompression, exposing the application to a denial of service.  
 </p>  
-<sample src="example_bad.java" />  
+<sample src="BadExample.java" />  
 
 <p>  
 A better approach is shown in the following example, where a ZIP file is read within a loop and a size threshold is checked every cycle.  
 </p>  
-<sample src="example_good.java"/>  
+<sample src="GoodExample.java"/>  
 
 </example>
 <references>

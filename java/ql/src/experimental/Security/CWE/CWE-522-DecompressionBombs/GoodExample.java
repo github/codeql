@@ -3,7 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 
-public class Main {
+public class GoodExample {
     public static void ZipInputStreamSafe(String filename) throws IOException {
         int UncompressedSizeThreshold = 10 * 1024 * 1024; // 10MB
         int BUFFERSIZE = 256;
