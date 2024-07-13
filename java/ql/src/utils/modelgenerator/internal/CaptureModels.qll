@@ -42,20 +42,17 @@ private module Printing implements PrintingSig {
 module ModelPrinting = PrintingImpl<Printing>;
 
 /**
- * Holds if `c` is a relevant content kind, where the underlying type is relevant.
- */
-private predicate isRelevantTypeInContent(DataFlow::Content c) {
-  isRelevantType(getUnderlyingContentType(c))
-}
-
-/**
  * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
  */
 private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(DataFlow::Content f |
     DataFlowPrivate::readStep(node1, f, node2) and
-    // Partially restrict the content types used for intermediate steps.
-    (not exists(getUnderlyingContentType(f)) or isRelevantTypeInContent(f))
+    if f instanceof DataFlow::FieldContent
+    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+    else
+      if f instanceof DataFlow::SyntheticFieldContent
+      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
+      else any()
   )
   or
   exists(DataFlow::Content f | DataFlowPrivate::storeStep(node1, f, node2) |
@@ -64,11 +61,12 @@ private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2
 }
 
 /**
- * Holds if content `c` is either a field, a synthetic field or language specific
- * content of a relevant type or a container like content.
+ * Holds if content `c` is either a field or synthetic field of a relevant type
+ * or a container like content.
  */
 private predicate isRelevantContent(DataFlow::Content c) {
-  isRelevantTypeInContent(c) or
+  isRelevantType(c.(DataFlow::FieldContent).getField().getType()) or
+  isRelevantType(c.(DataFlow::SyntheticFieldContent).getField().getType()) or
   DataFlowPrivate::containerContent(c)
 }
 
@@ -260,10 +258,6 @@ module PropagateToSinkConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { sinkModelSanitizer(node) }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isRelevantTaintStep(node1, node2)
-  }
 }
 
 private module PropagateToSink = TaintTracking::Global<PropagateToSinkConfig>;
