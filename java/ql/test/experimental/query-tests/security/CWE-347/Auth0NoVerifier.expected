@@ -1,0 +1,24 @@
+edges
+| JwtNoVerifier.java:43:28:43:55 | getParameter(...) : String | JwtNoVerifier.java:44:39:44:47 | JwtToken2 : String |
+| JwtNoVerifier.java:44:39:44:47 | JwtToken2 : String | JwtNoVerifier.java:73:38:73:55 | token : String |
+| JwtNoVerifier.java:73:38:73:55 | token : String | JwtNoVerifier.java:74:37:74:41 | token : String |
+| JwtNoVerifier.java:74:26:74:42 | decode(...) : DecodedJWT | JwtNoVerifier.java:75:28:75:30 | jwt : DecodedJWT |
+| JwtNoVerifier.java:74:37:74:41 | token : String | JwtNoVerifier.java:74:26:74:42 | decode(...) : DecodedJWT |
+| JwtNoVerifier.java:75:16:75:31 | of(...) : Optional [<element>] : DecodedJWT | JwtNoVerifier.java:75:37:75:40 | item : DecodedJWT |
+| JwtNoVerifier.java:75:28:75:30 | jwt : DecodedJWT | JwtNoVerifier.java:75:16:75:31 | of(...) : Optional [<element>] : DecodedJWT |
+| JwtNoVerifier.java:75:37:75:40 | item : DecodedJWT | JwtNoVerifier.java:75:45:75:48 | item : DecodedJWT |
+| JwtNoVerifier.java:75:45:75:48 | item : DecodedJWT | JwtNoVerifier.java:75:45:75:69 | getClaim(...) |
+nodes
+| JwtNoVerifier.java:43:28:43:55 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JwtNoVerifier.java:44:39:44:47 | JwtToken2 : String | semmle.label | JwtToken2 : String |
+| JwtNoVerifier.java:73:38:73:55 | token : String | semmle.label | token : String |
+| JwtNoVerifier.java:74:26:74:42 | decode(...) : DecodedJWT | semmle.label | decode(...) : DecodedJWT |
+| JwtNoVerifier.java:74:37:74:41 | token : String | semmle.label | token : String |
+| JwtNoVerifier.java:75:16:75:31 | of(...) : Optional [<element>] : DecodedJWT | semmle.label | of(...) : Optional [<element>] : DecodedJWT |
+| JwtNoVerifier.java:75:28:75:30 | jwt : DecodedJWT | semmle.label | jwt : DecodedJWT |
+| JwtNoVerifier.java:75:37:75:40 | item : DecodedJWT | semmle.label | item : DecodedJWT |
+| JwtNoVerifier.java:75:45:75:48 | item : DecodedJWT | semmle.label | item : DecodedJWT |
+| JwtNoVerifier.java:75:45:75:69 | getClaim(...) | semmle.label | getClaim(...) |
+subpaths
+#select
+| JwtNoVerifier.java:75:45:75:69 | getClaim(...) | JwtNoVerifier.java:43:28:43:55 | getParameter(...) : String | JwtNoVerifier.java:75:45:75:69 | getClaim(...) | This parses a $@, but the signature is not verified. | JwtNoVerifier.java:43:28:43:55 | getParameter(...) | JWT |
