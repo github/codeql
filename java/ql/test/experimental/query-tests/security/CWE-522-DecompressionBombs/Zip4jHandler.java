@@ -12,7 +12,7 @@ public class Zip4jHandler {
         LocalFileHeader localFileHeader;
         int readLen;
         byte[] readBuffer = new byte[4096];
-        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { // $bomb
+        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
             while ((localFileHeader = zipInputStream.getNextEntry()) != null) {
                 File extractedFile = new File(localFileHeader.getFileName());
                 try (OutputStream outputStream = new FileOutputStream(extractedFile)) {
@@ -28,7 +28,7 @@ public class Zip4jHandler {
         LocalFileHeader localFileHeader;
         int readLen;
         byte[] readBuffer = new byte[4096];
-        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { // $bomb
+        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
             while ((localFileHeader = zipInputStream.getNextEntry()) != null) {
                 File extractedFile = new File(localFileHeader.getFileName());
                 try (OutputStream outputStream = new FileOutputStream(extractedFile)) {

@@ -35,29 +35,29 @@ import org.apache.commons.compress.compressors.z.ZCompressorInputStream;
 public class CommonsCompressHandler {
 
     static void commonsCompressArchiveInputStream(InputStream inputStream) throws ArchiveException {
-        new ArArchiveInputStream(inputStream); // $bomb
-        new ArjArchiveInputStream(inputStream); // $bomb
-        new CpioArchiveInputStream(inputStream); // $bomb
-        new JarArchiveInputStream(inputStream); // $bomb
-        new ZipArchiveInputStream(inputStream); // $bomb
+        new ArArchiveInputStream(inputStream); // $ hasTaintFlow="inputStream"
+        new ArjArchiveInputStream(inputStream); // $ hasTaintFlow="inputStream"
+        new CpioArchiveInputStream(inputStream); // $ hasTaintFlow="inputStream"
+        new JarArchiveInputStream(inputStream); // $ hasTaintFlow="inputStream"
+        new ZipArchiveInputStream(inputStream); // $ hasTaintFlow="inputStream"
     }
 
     public static void commonsCompressorInputStream(InputStream inputStream) throws IOException {
         BufferedInputStream in = new BufferedInputStream(inputStream);
         OutputStream out = Files.newOutputStream(Path.of("tmpfile"));
-        GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in); // $bomb
+        GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in); // $ hasTaintFlow="in"
         // for testing
-        new BrotliCompressorInputStream(in); // $bomb
-        new BZip2CompressorInputStream(in); // $bomb
-        new DeflateCompressorInputStream(in); // $bomb
-        new Deflate64CompressorInputStream(in); // $bomb
-        new BlockLZ4CompressorInputStream(in); // $bomb
-        new LZMACompressorInputStream(in); // $bomb
-        new Pack200CompressorInputStream(in); // $bomb
-        new SnappyCompressorInputStream(in); // $bomb
-        new XZCompressorInputStream(in); // $bomb
-        new ZCompressorInputStream(in); // $bomb
-        new ZstdCompressorInputStream(in); // $bomb
+        new BrotliCompressorInputStream(in); // $ hasTaintFlow="in"
+        new BZip2CompressorInputStream(in); // $ hasTaintFlow="in"
+        new DeflateCompressorInputStream(in); // $ hasTaintFlow="in"
+        new Deflate64CompressorInputStream(in); // $ hasTaintFlow="in"
+        new BlockLZ4CompressorInputStream(in); // $ hasTaintFlow="in"
+        new LZMACompressorInputStream(in); // $ hasTaintFlow="in"
+        new Pack200CompressorInputStream(in); // $ hasTaintFlow="in"
+        new SnappyCompressorInputStream(in); // $ hasTaintFlow="in"
+        new XZCompressorInputStream(in); // $ hasTaintFlow="in"
+        new ZCompressorInputStream(in); // $ hasTaintFlow="in"
+        new ZstdCompressorInputStream(in); // $ hasTaintFlow="in"
 
         int buffersize = 4096;
         final byte[] buffer = new byte[buffersize];
@@ -72,7 +72,7 @@ public class CommonsCompressHandler {
     static void commonsCompressArchiveInputStream2(InputStream inputStream) {
         byte[] readBuffer = new byte[4096];
         try (org.apache.commons.compress.archivers.zip.ZipArchiveInputStream zipInputStream =
-                     new org.apache.commons.compress.archivers.zip.ZipArchiveInputStream(inputStream)) { // $bomb
+                     new org.apache.commons.compress.archivers.zip.ZipArchiveInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
             ArchiveEntry entry = null;
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 if (!zipInputStream.canReadEntryData(entry)) {
@@ -104,7 +104,7 @@ public class CommonsCompressHandler {
             File f = new File("tmpfile");
             try (OutputStream outputStream = new FileOutputStream(f)) {
                 int readLen;
-                while ((readLen = zipInputStream.read(readBuffer)) != -1) {  // $bomb
+                while ((readLen = zipInputStream.read(readBuffer)) != -1) {  // $ hasTaintFlow="zipInputStream"
                     outputStream.write(readBuffer, 0, readLen);
                 }
             }
@@ -119,7 +119,7 @@ public class CommonsCompressHandler {
         int buffersize = 4096;
         final byte[] buffer = new byte[buffersize];
         int n = 0;
-        while (-1 != (n = in.read(buffer))) { // $bomb
+        while (-1 != (n = in.read(buffer))) { // $ hasTaintFlow="in"
             out.write(buffer, 0, n);
         }
         out.close();

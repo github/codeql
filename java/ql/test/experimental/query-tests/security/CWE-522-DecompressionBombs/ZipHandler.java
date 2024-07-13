@@ -24,7 +24,7 @@ public class ZipHandler {
         // FileInputStream fis = new FileInputStream(filename);
         CRC32 checkSum = new CRC32();
         CheckedInputStream gzis = new CheckedInputStream(inputStream, checkSum);
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $bomb
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $ hasTaintFlow="new BufferedInputStream(...)"
             ZipEntry entry;
             int entries = 0;
             long total = 0;
@@ -38,7 +38,7 @@ public class ZipHandler {
                 }
                 FileOutputStream fos = new FileOutputStream("/tmp/tmptmp");
                 BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-                while (total + BUFFER <= TOOBIG && (count = zis.read(data, 0, BUFFER)) != -1) { // $bomb
+                while (total + BUFFER <= TOOBIG && (count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"
                     dest.write(data, 0, count);
                     total += count;
                 }
@@ -63,7 +63,7 @@ public class ZipHandler {
         int BUFFER = 512;
         int TOOBIG = 100 * 1024 * 1024; // 100MB
         //        FileInputStream fis = new FileInputStream(filename);
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $bomb
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $ hasTaintFlow="new BufferedInputStream(...)"
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 System.out.println("Extracting: " + entry);
@@ -78,7 +78,7 @@ public class ZipHandler {
                 }
                 FileOutputStream fos = new FileOutputStream(entry.getName());
                 BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $bomb
+                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"
                     dest.write(data, 0, count);
                 }
                 dest.flush();
@@ -91,7 +91,7 @@ public class ZipHandler {
     public static void ZipInputStreamUnsafe(InputStream inputStream) throws IOException {
         int BUFFER = 512;
         //        FileInputStream fis = new FileInputStream(filename);
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $bomb
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $ hasTaintFlow="new BufferedInputStream(...)"
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 System.out.println("Extracting: " + entry);
@@ -100,7 +100,7 @@ public class ZipHandler {
                 // Write the files to the disk
                 FileOutputStream fos = new FileOutputStream(entry.getName()); 
                 BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $bomb
+                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"
                     dest.write(data, 0, count);
                 }
                 dest.flush();
@@ -112,12 +112,12 @@ public class ZipHandler {
 
     public static void GZipInputStreamUnsafe(InputStream inputStream) throws IOException {
         int BUFFER = 512;
-        try (GZIPInputStream gzis = new GZIPInputStream(inputStream)) { // $bomb
+        try (GZIPInputStream gzis = new GZIPInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
             int count;
             byte[] data = new byte[BUFFER];
             FileOutputStream fos = new FileOutputStream("/tmp/tmp");
             BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-            while ((count = gzis.read(data, 0, BUFFER)) != -1) { // $bomb
+            while ((count = gzis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="gzis"
                 dest.write(data, 0, count);
             }
             dest.flush();
@@ -127,12 +127,12 @@ public class ZipHandler {
 
     public static void InflaterInputStreamUnsafe(InputStream inputStream) throws IOException {
         int BUFFER = 512;
-        try (InflaterInputStream Izis = new InflaterInputStream(inputStream)) { // $bomb
+        try (InflaterInputStream Izis = new InflaterInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
             int count;
             byte[] data = new byte[BUFFER];
             FileOutputStream fos = new FileOutputStream("/tmp/tmp");
             BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-            while ((count = Izis.read(data, 0, BUFFER)) != -1) { // $bomb
+            while ((count = Izis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="Izis"
                 dest.write(data, 0, count);
             }
             dest.flush();
@@ -142,7 +142,7 @@ public class ZipHandler {
 
     public static void InflaterUnsafe(byte[] inputBytes) throws DataFormatException, IOException {
         Inflater inflater = new Inflater();
-        inflater.setInput(inputBytes); // $bomb
+        inflater.setInput(inputBytes); // $ hasTaintFlow="inputBytes"
         try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(inputBytes.length)) {
             byte[] buffer = new byte[1024];
             while (!inflater.finished()) {
@@ -156,7 +156,7 @@ public class ZipHandler {
     public static void ZipFile1(String zipFilePath) throws DataFormatException, IOException {
         try {
             System.out.println("zipFilePath = " + zipFilePath);
-            ZipFile zipFile = new ZipFile(zipFilePath); // $bomb
+            ZipFile zipFile = new ZipFile(zipFilePath); // $ hasTaintFlow="zipFilePath"
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
@@ -169,7 +169,7 @@ public class ZipHandler {
                 } else {
                     String destPath = "tmp" + File.separator + entry.getName();
 
-                    try (InputStream inputStream = zipFile.getInputStream(entry); // $bomb
+                    try (InputStream inputStream = zipFile.getInputStream(entry); // $ hasTaintFlow="zipFile"
                          FileOutputStream outputStream = new FileOutputStream(destPath);) {
                         int data = inputStream.read();
                         while (data != -1) {

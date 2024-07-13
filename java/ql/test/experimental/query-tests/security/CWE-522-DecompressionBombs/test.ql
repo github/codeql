@@ -1,18 +1,9 @@
 import java
 import experimental.semmle.code.java.security.DecompressionBombQuery
-import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTest
+import TaintFlowTestArgString<DecompressionBombsConfig, getArgString/2>
 
-module BombTest implements TestSig {
-  string getARelevantTag() { result = "bomb" }
-
-  predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "bomb" and
-    exists(DataFlow::Node sink | DecompressionBombsFlow::flowTo(sink) |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      value = ""
-    )
-  }
+string getArgString(DataFlow::Node src, DataFlow::Node sink) {
+  exists(src) and
+  result = "\"" + sink.toString() + "\""
 }
-
-import MakeTest<BombTest>
