@@ -10,4 +10,4 @@ extensions:
       - ["software.amazon.awssdk.transfer.s3.model","ResumableFileDownload",true,"fromFile","(Path)","","Argument[0]","path-injection","manual"]
       - ["software.amazon.awssdk.transfer.s3.model","ResumableFileDownload",true,"serializeToFile","(Path)","","Argument[0]","path-injection","manual"]
       - ["software.amazon.awssdk.transfer.s3.model","ResumableFileUpload",true,"fromFile","(Path)","","Argument[0]","path-injection","manual"]
-      - ["software.amazon.awssdk.transfer.s3.model","UploadDirectoryRequest$Builder",true,"source","(Path)","","Argument[0]","code-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","UploadDirectoryRequest$Builder",true,"source","(Path)","","Argument[0]","path-injection","manual"]
