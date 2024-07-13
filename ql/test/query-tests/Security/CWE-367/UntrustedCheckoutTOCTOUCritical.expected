@@ -1,17 +1,12 @@
 edges
 | .github/workflows/actor.yml:17:9:20:6 | Uses Step | .github/workflows/actor.yml:20:9:21:16 | Run Step |
 | .github/workflows/comment.yml:13:9:28:6 | Uses Step: issue | .github/workflows/comment.yml:28:9:32:6 | Uses Step |
-| .github/workflows/comment.yml:13:9:28:6 | Uses Step: issue | .github/workflows/comment.yml:32:9:34:2 | Run Step |
 | .github/workflows/comment.yml:28:9:32:6 | Uses Step | .github/workflows/comment.yml:32:9:34:2 | Run Step |
 | .github/workflows/comment.yml:39:9:54:6 | Uses Step: issue | .github/workflows/comment.yml:54:9:58:6 | Uses Step |
-| .github/workflows/comment.yml:39:9:54:6 | Uses Step: issue | .github/workflows/comment.yml:58:9:60:2 | Run Step |
 | .github/workflows/comment.yml:54:9:58:6 | Uses Step | .github/workflows/comment.yml:58:9:60:2 | Run Step |
 | .github/workflows/comment.yml:64:9:68:6 | Uses Step | .github/workflows/comment.yml:68:9:68:43 | Run Step |
 | .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:22:10:27:7 | Uses Step |
-| .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:27:10:30:7 | Run Step |
-| .github/workflows/deployment.yml:16:10:22:7 | Uses Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step |
 | .github/workflows/deployment.yml:22:10:27:7 | Uses Step | .github/workflows/deployment.yml:27:10:30:7 | Run Step |
-| .github/workflows/deployment.yml:22:10:27:7 | Uses Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step |
 | .github/workflows/deployment.yml:27:10:30:7 | Run Step | .github/workflows/deployment.yml:30:10:31:53 | Run Step |
 | .github/workflows/label.yml:13:9:17:6 | Uses Step | .github/workflows/label.yml:17:9:17:41 | Run Step |
 | .github/workflows/label_actor.yml:13:9:17:6 | Uses Step | .github/workflows/label_actor.yml:17:9:17:41 | Run Step |

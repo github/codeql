@@ -1002,23 +1002,43 @@ class StepImpl extends AstNodeImpl, TStepNode {
   IfImpl getIf() { result.getNode() = n.lookup("if") }
 
   /** Gets the Runs or LocalJob that this step is in. */
-  StepsContainerImpl getContainer() { result.getNode() = n.getParentNode() }
+  StepsContainerImpl getContainer() {
+    result = this.getParentNode().(RunsImpl) or
+    result = this.getParentNode().(LocalJobImpl)
+  }
+
+  StepImpl getNextStep() {
+    // if step is a uses step calling a local composite action, we should follow the called step
+    this instanceof UsesStepImpl and
+    exists(CompositeActionImpl a |
+      a.getACallerStep() = this and
+      result = a.getRuns().getStep(0)
+    )
+    or
+    // if step is the last step in a composite action, we should follow the next step in the caller
+    exists(RunsImpl runs, StepsContainerImpl caller_container, StepImpl caller, int i |
+      this.getContainer() = runs and
+      runs.getStep(count(StepImpl s | runs.getAStep() = s | s) - 1) = this and
+      runs.getEnclosingCompositeAction().getACallerStep() = caller and
+      caller.getContainer() = caller_container and
+      caller_container.getStep(i) = caller and
+      caller_container.getStep(i + 1) = result
+    )
+    or
+    // next step in the same job/runs
+    exists(int i |
+      this.getContainer().getStep(i) = this and
+      result = this.getContainer().getStep(i + 1)
+    )
+  }
 
   /** Gets a step that follows this step. */
   StepImpl getAFollowingStep() {
     (
-      // next step in the same job
-      exists(LocalJobImpl job, int i, int j |
-        job.getStep(i) = this and
-        result = job.getStep(j) and
-        i < j
-      )
-      or
-      // next steps in a composite action
-      exists(RunsImpl runs, int i, int j |
-        exists(this.getEnclosingCompositeAction()) and
-        runs.getStep(i) = this and
-        result = runs.getStep(j) and
+      // next steps in the same job/runs
+      exists(int i, int j |
+        this.getContainer().getStep(i) = this and
+        result = this.getContainer().getStep(j) and
         i < j
       )
       or
@@ -1026,10 +1046,10 @@ class StepImpl extends AstNodeImpl, TStepNode {
       result = this.getEnclosingCompositeAction().getACallerStep().getAFollowingStep()
       or
       // if any of the next steps is a call to a local composite actions, we should follow it
-      exists(LocalJobImpl job, int i, int j, CompositeActionImpl a |
-        job.getStep(i) = this and
+      exists(int i, int j, CompositeActionImpl a |
+        this.getContainer().getStep(i) = this and
+        this.getContainer().getStep(j) = a.getACallerStep() and
         i < j and
-        a.getACallerStep() = job.getStep(j) and
         result = a.getRuns().getAStep()
       )
     )

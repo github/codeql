@@ -18,7 +18,7 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
+query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
 from PRHeadCheckoutStep checkout, PoisonableStep s
 where

@@ -17,7 +17,7 @@ import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-query predicate edges(Step a, Step b) { a.getAFollowingStep() = b }
+query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
 from LocalJob j, Event e, PRHeadCheckoutStep checkout, Step s
 where
