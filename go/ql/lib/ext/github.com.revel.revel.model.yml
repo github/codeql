@@ -7,6 +7,19 @@ extensions:
       - ["revel", "github.com/robfig/revel"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:revel", "Controller", True, "Params", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "Header", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "ContentType", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "AcceptLanguages", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "Locale", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "URL", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "Form", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "MultipartForm", "", "", "", "remote", "manual"]
+      - ["group:revel", "RouteMatch", True, "Params", "", "", "", "remote", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["group:revel", "Params", True, "Bind", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
