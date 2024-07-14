@@ -23,19 +23,6 @@ module Revel {
     }
   }
 
-  private class UserControlledRequestMethod extends RemoteFlowSource::Range,
-    DataFlow::MethodCallNode
-  {
-    UserControlledRequestMethod() {
-      this.getTarget()
-          .hasQualifiedName(packagePath(), "Request",
-            [
-              "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
-              "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
-            ])
-    }
-  }
-
   private string contentTypeFromFilename(DataFlow::Node filename) {
     if filename.getStringValue().regexpMatch("(?i).*\\.html?")
     then result = "text/html"

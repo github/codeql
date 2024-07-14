@@ -18,6 +18,18 @@ extensions:
       - ["group:revel", "Request", True, "Form", "", "", "", "remote", "manual"]
       - ["group:revel", "Request", True, "MultipartForm", "", "", "", "remote", "manual"]
       - ["group:revel", "RouteMatch", True, "Params", "", "", "", "remote", "manual"]
+      - ["group:revel", "Request", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:revel", "Request", True, "FormValue", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "GetBody", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "GetForm", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:revel", "Request", True, "GetHttpHeader", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "GetMultipartForm", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:revel", "Request", True, "GetQuery", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "GetRequestURI", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "MultipartReader", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:revel", "Request", True, "PostFormValue", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "Referer", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "Request", True, "UserAgent", "", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel
