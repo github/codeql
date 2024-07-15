@@ -98,7 +98,7 @@ jobs:
           then
             echo "Regenerate Bazel files resulted in no changes"
           else
-            BAZEL_BRANCH_NAME="${{ github.head_ref }}/bazel"
+            BAZEL_BRANCH_NAME="${{ github.head_ref }}-bazel"
 
             echo "Pushing regenerated Bazel files to $BAZEL_BRANCH_NAME"
             git config user.name "github-actions[bot]"
