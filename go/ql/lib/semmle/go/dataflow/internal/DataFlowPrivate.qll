@@ -318,16 +318,6 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asFileScope().getLocation() or
     result = getCallableLocation(this.asSummarizedCallable())
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 private Location getCallableLocation(Callable c) {
@@ -361,16 +351,6 @@ class DataFlowCall extends Expr {
 
   /** Gets the location of this call. */
   Location getLocation() { result = super.getLocation() }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
-  }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
@@ -413,15 +393,6 @@ class NodeRegion instanceof BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { n.getBasicBlock() = this }
-
-  int totalOrder() {
-    this =
-      rank[result](BasicBlock b, int startline, int startcolumn |
-        b.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        b order by startline, startcolumn
-      )
-  }
 }
 
 /**

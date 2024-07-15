@@ -239,17 +239,7 @@ class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 
-class DataFlowCallable extends Function {
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
-}
+class DataFlowCallable extends Function { }
 
 class DataFlowExpr = Expr;
 
@@ -269,24 +259,12 @@ class DataFlowCall extends Expr instanceof Call {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
-  }
 }
 
 class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // stub implementation
