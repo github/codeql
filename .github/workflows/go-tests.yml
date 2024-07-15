@@ -91,6 +91,8 @@ jobs:
         id: push-bazel-files
         if: github.event.pull_request.user.login == 'dependabot[bot]'
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git add go/extractor/vendor/**
 
