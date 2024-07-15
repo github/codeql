@@ -3832,6 +3832,73 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       if hasSourceCallCtx() then cc = callContextSomeCall() else cc = callContextNone()
     }
 
+    private module Stage6Param implements MkStage<Stage5>::StageParam {
+      private module PrevStage = Stage5;
+
+      class Typ = DataFlowType;
+
+      class Ap = AccessPath;
+
+      class ApNil = AccessPathNil;
+
+      pragma[nomagic]
+      PrevStage::Ap getApprox(Ap ap) { result = ap.getApprox() }
+
+      Typ getTyp(DataFlowType t) { result = t }
+
+      bindingset[c, t, tail]
+      Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
+
+      class ApHeadContent = Content;
+
+      pragma[noinline]
+      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+
+      ApHeadContent projectToHeadContent(Content c) { result = c }
+
+      private module ApOption = Option<AccessPath>;
+
+      class ApOption = ApOption::Option;
+
+      ApOption apNone() { result.isNone() }
+
+      ApOption apSome(Ap ap) { result = ApOption::some(ap) }
+
+      import PrunedCallContextSensitivityStage5
+
+      // private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+      //   predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+      //   predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+      //   predicate reducedViableImplInCallContextCand =
+      //     Stage3Param::reducedViableImplInCallContext/3;
+      //   predicate reducedViableImplInReturnCand = Stage3Param::reducedViableImplInReturn/2;
+      // }
+      // import CallContextSensitivity<CallContextSensitivityInput>
+      // import LocalCallContext
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc
+      ) {
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, _) and
+        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
+      }
+
+      bindingset[node, state, t0, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+        strengthenType(node, t0, t) and
+        exists(state) and
+        exists(ap)
+      }
+
+      bindingset[typ, contentType]
+      predicate typecheckStore(Typ typ, DataFlowType contentType) {
+        compatibleTypesFilter(typ, contentType)
+      }
+    }
+
+    module Stage6 = MkStage<Stage5>::Stage<Stage6Param>;
+
     private newtype TPathNode =
       TPathNodeMid(
         NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t, AccessPath ap,
@@ -5066,6 +5133,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         calledges = -1 and
         tfnodes = -1 and
         tftuples = -1
+        or
+        stage = "6 Fwd (alt)" and
+        n = 70 and
+        Stage6::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "6 Rev (alt)" and
+        n = 75 and
+        Stage6::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       }
     }
 
