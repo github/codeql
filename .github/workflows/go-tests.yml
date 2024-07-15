@@ -26,16 +26,15 @@ on:
 jobs:
   prepare-go-tests:
     if: github.repository_owner == 'github'
-    name: "Go: Prepare tests"
+    name: "Prepare tests"
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     outputs:
-      # The git ref that we want to pass on to the test workflows: this will be the same as the ref
-      # this workflow runs with if we don't push any new commits, or the ref of the commit we push.
-      # It's fine for this to be unset since that causes called workflows to use the same ref
-      # that we start with.
-      ref: ${{ steps.push-bazel-files.outputs.TEST_REF }}
+      # Skip tests for this workflow run if we just created a new commit/PR to run the
+      # tests on.
+      skipTests: ${{ steps.push-bazel-files.outputs.SKIP_TESTS }}
       # We don't want to run macOS/Windows workflows if only .ql files have changed
       onlyQL: ${{ steps.only-ql-check.outputs.ONLY_QL_CHANGES }}
     steps:
@@ -99,18 +98,32 @@ jobs:
           then
             echo "Regenerate Bazel files resulted in no changes"
           else
-            echo "Pushing regenerated Bazel files"
+            BAZEL_BRANCH_NAME="${{ github.head_ref }}/bazel"
+
+            echo "Pushing regenerated Bazel files to $BAZEL_BRANCH_NAME"
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m 'Regenerate Bazel build files for Dependabot PR'
+
+            git checkout -b "$BAZEL_BRANCH_NAME"
+            git push -u origin "$BAZEL_BRANCH_NAME"
+
+            echo "Creating PR for $BAZEL_BRANCH_NAME"
+            gh pr create -B "${{ github.head_ref }}" -H "$BAZEL_BRANCH_NAME" \
+                --title "Go: Regenerate Bazel files for Dependabot PR" \
+                --body "Created automatically to update Bazel build files for a Dependabot PR"
+
+            echo "Merging PR by pushing to ${{ github.head_ref }}"
+            git checkout "${{ github.head_ref }}"
             git push
           fi
 
-          echo "TEST_REF=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "SKIP_TESTS=true" >> $GITHUB_OUTPUT
 
   run-linux-tests:
-    name: "Go: Run Linux tests"
+    name: "Run Linux tests"
     runs-on: ubuntu-latest
+    if: needs.prepare-go-tests.outputs.skipTests != 'true'
     needs:
       - prepare-go-tests
     steps:
@@ -122,10 +135,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
   run-other-os-tests:
-    name: "Go: Run other OS tests"
+    name: "Run other OS tests"
     runs-on: ubuntu-latest
     # Only run this workflow for PRs and only if something other than .ql files changed
-    if: github.event_name == 'pull_request' && !(needs.prepare-go-tests.outputs.onlyQL == 'true')
+    if: github.event_name == 'pull_request' && needs.prepare-go-tests.outputs.skipTests != 'true' && !(needs.prepare-go-tests.outputs.onlyQL == 'true')
     needs:
       - prepare-go-tests
     steps:
