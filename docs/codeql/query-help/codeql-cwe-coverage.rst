@@ -3,8 +3,6 @@ CodeQL CWE coverage
 
 You can view the full coverage of MITRE's Common Weakness Enumeration (CWE) or coverage by language for the latest release of CodeQL.
 
-.. include:: ../reusables/swift-beta-note.rst
-
 About CWEs
 ##########
 
