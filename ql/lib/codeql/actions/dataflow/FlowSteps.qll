@@ -8,6 +8,7 @@ private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.security.UntrustedCheckoutQuery
 
 /**
  * A unit class for adding additional taint steps.
@@ -161,7 +162,11 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
  *    echo "::set-output name=id::$foo
  */
 predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, UntrustedArtifactDownloadStep download, string content, string key, string value |
+  exists(Run run, Step artifact, string content, string key, string value |
+    (
+      artifact instanceof UntrustedArtifactDownloadStep or
+      artifact instanceof PRHeadCheckoutStep
+    ) and
     (
       // A file is read and its content is assigned to an env var
       // - run: |
@@ -185,7 +190,7 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
       outputsPartialFileContent(value)
     ) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    download.getAFollowingStep() = run and
+    artifact.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
     succ.asExpr() = run
   )
@@ -199,7 +204,11 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
  *    echo "bar=${foo}" >> "$GITHUB_ENV"
  */
 predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string content, string key, string value, UntrustedArtifactDownloadStep download |
+  exists(Run run, string content, string key, string value, Step artifact |
+    (
+      artifact instanceof UntrustedArtifactDownloadStep or
+      artifact instanceof PRHeadCheckoutStep
+    ) and
     (
       // A file is read and its content is assigned to an env var
       // - run: |
@@ -223,7 +232,7 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
       outputsPartialFileContent(value)
     ) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    download.getAFollowingStep() = run and
+    artifact.getAFollowingStep() = run and
     pred.asExpr() = run.getScriptScalar() and
     // we store the taint on the enclosing job since there may not be an implicit env attribute
     succ.asExpr() = run.getEnclosingJob()
@@ -234,10 +243,14 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
  * A download artifact step followed by a step that may use downloaded artifacts.
  */
 predicate artifactDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(UntrustedArtifactDownloadStep download, Run run |
-    pred.asExpr() = download and
+  exists(Step artifact, Run run |
+    (
+      artifact instanceof UntrustedArtifactDownloadStep or
+      artifact instanceof PRHeadCheckoutStep
+    ) and
+    pred.asExpr() = artifact and
     succ.asExpr() = run.getScriptScalar() and
-    download.getAFollowingStep() = run
+    artifact.getAFollowingStep() = run
   )
 }
 
@@ -245,11 +258,15 @@ predicate artifactDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
  * A download artifact step followed by a envvar-injection uses step .
  */
 predicate artifactDownloadToUsesStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(UntrustedArtifactDownloadStep download, Uses uses |
+  exists(Step artifact, Uses uses |
+    (
+      artifact instanceof UntrustedArtifactDownloadStep or
+      artifact instanceof PRHeadCheckoutStep
+    ) and
     madSink(succ, "envvar-injection") and
-    pred.asExpr() = download and
+    pred.asExpr() = artifact and
     succ.asExpr() = uses and
-    download.getAFollowingStep() = uses
+    artifact.getAFollowingStep() = uses
   )
 }
 

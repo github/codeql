@@ -12,6 +12,7 @@
  */
 
 import actions
+import codeql.actions.security.ArtifactPoisoningQuery
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
@@ -19,13 +20,17 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from LocalJob j, Event e, PRHeadCheckoutStep checkout, Step s
+from LocalJob j, Event e, Step artifact, Step s
 where
+  (
+    artifact instanceof PRHeadCheckoutStep or
+    artifact instanceof UntrustedArtifactDownloadStep
+  ) and
   j.getATriggerEvent() = e and
   // job can be triggered by an external user
   e.isExternallyTriggerable() and
   // the checkout is not controlled by an access check
-  not exists(ControlCheck check | check.protects(checkout, j.getATriggerEvent())) and
+  not exists(ControlCheck check | check.protects(artifact, j.getATriggerEvent())) and
   (
     // the workflow runs in the context of the default branch
     runsOnDefaultBranch(e)
@@ -38,8 +43,7 @@ where
     )
   ) and
   // the job checkouts untrusted code from a pull request
-  // TODO: Consider adding artifact downloads as a potential source of cache poisoning
-  j.getAStep() = checkout and
+  j.getAStep() = artifact and
   (
     // the job writes to the cache
     // (No need to follow the checkout step as the cache writing is normally done after the job completes)
@@ -49,9 +53,9 @@ where
     or
     // the job executes checked-out code
     // (The cache specific token can be leaked even for non-privileged workflows)
-    checkout.getAFollowingStep() = s and
+    artifact.getAFollowingStep() = s and
     s instanceof PoisonableStep and
     // excluding privileged workflows since they can be exploited in easier circumstances
     not j.isPrivileged()
   )
-select s, checkout, s, "Potential cache poisoning in the context of the default branch"
+select s, artifact, s, "Potential cache poisoning in the context of the default branch"

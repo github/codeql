@@ -1,4 +1,5 @@
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.security.UntrustedCheckoutQuery
 private import codeql.actions.config.Config
 private import codeql.actions.dataflow.ExternalFlow
 
@@ -108,6 +109,15 @@ class MaDSource extends RemoteFlowSource {
  */
 private class ArtifactSource extends RemoteFlowSource {
   ArtifactSource() { this.asExpr() instanceof UntrustedArtifactDownloadStep }
+
+  override string getSourceType() { result = "artifact" }
+}
+
+/**
+ * A file from an untrusted checkout.
+ */
+private class CheckoutSource extends RemoteFlowSource {
+  CheckoutSource() { this.asExpr() instanceof PRHeadCheckoutStep }
 
   override string getSourceType() { result = "artifact" }
 }
