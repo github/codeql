@@ -7,7 +7,6 @@ private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
