@@ -1,0 +1,14 @@
+on: pull_request_target
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - id: version 
+        run: |
+          echo "version=10" >> "${GITHUB_OUTPUT}"
+          ls
+      - run: echo ${{ steps.version.outputs.version }} 
+
