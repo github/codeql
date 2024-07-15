@@ -1,0 +1,15 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "aliases",
+    srcs = [
+        "aliases.go",
+        "aliases_go121.go",
+        "aliases_go122.go",
+    ],
+    importmap = "github.com/github/codeql-go/extractor/vendor/golang.org/x/tools/internal/aliases",
+    importpath = "golang.org/x/tools/internal/aliases",
+    visibility = ["//go/extractor/vendor/golang.org/x/tools:__subpackages__"],
+)

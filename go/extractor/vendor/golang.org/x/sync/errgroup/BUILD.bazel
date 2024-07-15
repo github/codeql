@@ -1,0 +1,15 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "errgroup",
+    srcs = [
+        "errgroup.go",
+        "go120.go",
+        "pre_go120.go",
+    ],
+    importmap = "github.com/github/codeql-go/extractor/vendor/golang.org/x/sync/errgroup",
+    importpath = "golang.org/x/sync/errgroup",
+    visibility = ["//visibility:public"],
+)
