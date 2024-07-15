@@ -193,7 +193,7 @@ extensions:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
         
-        if self.generateSinks or self.generateSinks or self.generateSummaries:
+        if self.generateSinks or self.generateSources or self.generateSummaries or self.generateNeutrals:
             self.save(content, ".model.yml")
 
         if self.generateTypeBasedSummaries:

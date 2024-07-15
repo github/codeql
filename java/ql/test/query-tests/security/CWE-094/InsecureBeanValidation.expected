@@ -1,5 +1,5 @@
 edges
-| InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | provenance | Src:MaD:44703  Sink:MaD:44704 |
+| InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | provenance | Src:MaD:44704  Sink:MaD:44705 |
 nodes
 | InsecureBeanValidation.java:7:28:7:40 | object : String | semmle.label | object : String |
 | InsecureBeanValidation.java:11:64:11:68 | value | semmle.label | value |
