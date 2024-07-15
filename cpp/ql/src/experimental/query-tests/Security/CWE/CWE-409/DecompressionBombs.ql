@@ -15,8 +15,6 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.commons.File
-import MiniZip
-import ZlibGzopen
 import DecompressionBomb
 
 module DecompressionTaintConfig implements DataFlow::ConfigSig {

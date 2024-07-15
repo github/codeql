@@ -1,5 +1,15 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
+import MiniZip
+import ZlibGzopen
+import ZlibInflator
+import ZlibUncompress
+import LibArchive
+import LibMiniz
+import XZ
+import ZSTD
+import Bzip2
+import Brotli
 
 /**
  * The Decompression Sink instances, extend this class to define new decompression sinks.

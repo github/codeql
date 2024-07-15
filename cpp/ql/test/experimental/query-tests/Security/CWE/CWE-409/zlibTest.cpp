@@ -50,14 +50,11 @@ namespace std {
     extern ostream cout;
 }
 
-int UnsafeInflate(int argc, char *argv[]) {
-    // original string len = 36
-    char a[50] = "Hello Hello Hello Hello Hello Hello!";
+int UnsafeInflate(char *a) {
     // placeholder for the compressed (deflated) version of "a"
     char b[50];
     // placeholder for the Uncompressed (inflated) version of "b"
     char c[50];
-
 
     // STEP 1.
     // zlib struct
@@ -117,12 +114,7 @@ void gzclose(gzFile gz_file);
 std::ostream operator<<(const std::ostream &lhs, unsigned char rhs);
 
 
-int send(int, const void *, int, int);
-
-
-int UnsafeGzread(char **argv) {
-    char *fileName;
-    send(0, fileName, 0, 0);
+int UnsafeGzread(char *fileName) {
     gzFile inFileZ = gzopen(fileName, "rb");
     if (&inFileZ == nullptr) {
         exit(0);
@@ -143,9 +135,7 @@ int UnsafeGzread(char **argv) {
 
 bool gzfread(char *str, int i, int i1, gzFile gz_file);
 
-int UnsafeGzfread(char **argv) {
-    char *fileName;
-    send(0, fileName, 0, 0);
+int UnsafeGzfread(char *fileName) {
     gzFile inFileZ = gzopen(fileName, "rb");
     if (&inFileZ == nullptr) {
         exit(0);
@@ -162,9 +152,7 @@ int UnsafeGzfread(char **argv) {
 
 char *gzgets(gzFile gz_file, char *buffer, int i);
 
-int UnsafeGzgets(char **argv) {
-    char *fileName;
-    send(0, fileName, 0, 0);
+int UnsafeGzgets(char *fileName) {
     gzFile inFileZ = gzopen(fileName, "rb");
     if (&inFileZ == nullptr) {
         exit(0);
@@ -179,4 +167,11 @@ int UnsafeGzgets(char **argv) {
         }
     }
     return 0;
+}
+
+int main(int argc, char **argv) {
+    UnsafeGzfread(argv[2]);
+    UnsafeGzgets(argv[2]);
+    UnsafeInflate(argv[2]);
+    UnsafeGzread(argv[2]);
 }
