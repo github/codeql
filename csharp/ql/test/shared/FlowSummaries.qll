@@ -10,7 +10,7 @@ class IncludeSummarizedCallable extends SummarizedCallableImplFinal {
   }
 
   /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
-  final string getCallableCsv() { result = asPartialModel(this) }
+  final string getCallableCsv() { result = getSignature(this) }
 
   predicate relevantSummary(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue

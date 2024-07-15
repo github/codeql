@@ -49,6 +49,7 @@ class SensitiveCredential extends SensitiveDataType, TCredential {
     exists(SensitiveDataClassification classification |
       not classification = SensitiveDataClassification::password() and // covered by `SensitivePassword`
       not classification = SensitiveDataClassification::id() and // not accurate enough
+      not classification = SensitiveDataClassification::private() and // covered by `SensitivePrivateInfo`
       result = HeuristicNames::maybeSensitiveRegexp(classification)
     )
     or

@@ -16,5 +16,5 @@ import TrustBoundaryFlow::PathGraph
 
 from TrustBoundaryFlow::PathNode source, TrustBoundaryFlow::PathNode sink
 where TrustBoundaryFlow::flowPath(source, sink)
-select sink.getNode(), sink, source,
-  "This servlet reads data from a remote source and writes it to a session variable."
+select sink.getNode(), source, sink,
+  "This servlet reads data from a $@ and writes it to a session variable.", source, "remote source"

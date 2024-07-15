@@ -34,12 +34,12 @@ The same query can be slightly simplified by rewriting it without :ref:`path exp
     select sink, "Sink is reached from $@.", source.getNode(), "here"
 
 If a data-flow query that you have written doesn't produce the results you expect it to, there may be a problem with your query.
-You can try to debug the potential problem by following the steps described below. 
+You can try to debug the potential problem by following the steps described below.
 
 Checking sources and sinks
 --------------------------
 
-Initially, you should make sure that the source and sink definitions contain what you expect. If either the source or sink is empty then there can never be any data flow. The easiest way to check this is using quick evaluation in CodeQL for VS Code. Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources. For more information, see :ref:`Analyzing your projects <running-a-specific-part-of-a-query-or-library>` in the CodeQL for VS Code help.
+Initially, you should make sure that the source and sink definitions contain what you expect. If either the source or sink is empty then there can never be any data flow. The easiest way to check this is using quick evaluation in CodeQL for VS Code. Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources. For more information, see `Running CodeQL queries <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries#running-a-specific-part-of-a-query-or-library>`__ in the GitHub documentation.
 
 If both source and sink definitions look good then we will need to look for missing flow steps.
 
@@ -106,9 +106,9 @@ To do quick evaluations of partial flow it is often easiest to add a predicate t
 If you are focusing on a single source then the ``src`` column is superfluous. You may of course also add other columns of interest based on ``n``, but including the enclosing callable and the distance to the source at the very least is generally recommended, as they can be useful columns to sort on to better inspect the results.
 
 
-If you see a large number of partial flow results, you can focus them in a couple of ways: 
+If you see a large number of partial flow results, you can focus them in a couple of ways:
 
-- If flow travels a long distance following an expected path, that can result in a lot of uninteresting flow being included in the exploration radius. To reduce the amount of uninteresting flow, you can replace the source definition with a suitable ``node`` that appears along the path and restart the partial flow exploration from that point. 
+- If flow travels a long distance following an expected path, that can result in a lot of uninteresting flow being included in the exploration radius. To reduce the amount of uninteresting flow, you can replace the source definition with a suitable ``node`` that appears along the path and restart the partial flow exploration from that point.
 - Creative use of barriers can be used to cut off flow paths that are uninteresting. This also reduces the number of partial flow results to explore while debugging.
 
 Further reading

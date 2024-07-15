@@ -102,10 +102,14 @@ private Field getASparselyUsedChannelTypedField() {
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(ValueEntity v, Write w |
+  exists(ValueEntity v |
     not v instanceof SsaSourceVariable and
     not v instanceof Field and
-    w.writes(v, n1) and
+    (
+      any(Write w).writes(v, n1)
+      or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
+    ) and
     n2 = v.getARead()
   )
   or
@@ -218,9 +222,8 @@ string ppReprType(DataFlowType t) { none() }
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any() // stub implementation
+  t1 = TTodoDataFlowType() and t2 = TTodoDataFlowType() // stub implementation
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -243,9 +246,7 @@ predicate neverSkipInPathGraph(Node n) {
 
 class DataFlowExpr = Expr;
 
-private newtype TDataFlowType =
-  TTodoDataFlowType() or
-  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+private newtype TDataFlowType = TTodoDataFlowType()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
@@ -310,6 +311,30 @@ class DataFlowCallable extends TDataFlowCallable {
     this.asSummarizedCallable()
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = getCallableLocation(this.asCallable()) or
+    result = this.asFileScope().getLocation() or
+    result = getCallableLocation(this.asSummarizedCallable())
+  }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
+  }
+}
+
+private Location getCallableLocation(Callable c) {
+  exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+    c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+    result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  )
 }
 
 /** A function call relevant for data flow. */
@@ -332,6 +357,19 @@ class DataFlowCall extends Expr {
     result.asCallable().getFuncDef() = this.getEnclosingFunction()
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
+  }
+
+  /** Gets the location of this call. */
+  Location getLocation() { result = super.getLocation() }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCall c, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        c order by startline, startcolumn
+      )
   }
 }
 
@@ -371,11 +409,26 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
   )
 }
 
+class NodeRegion instanceof BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { n.getBasicBlock() = this }
+
+  int totalOrder() {
+    this =
+      rank[result](BasicBlock b, int startline, int startcolumn |
+        b.hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        b order by startline, startcolumn
+      )
+  }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
-  getAFalsifiedGuard(call).dominates(n.getBasicBlock())
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
+  getAFalsifiedGuard(call).dominates(nr)
 }
 
 /**

@@ -44,7 +44,8 @@ private ControlFlow::Node getAPrimaryConstructorParameterCfn(ParameterAccess pa)
   (
     result = pa.(ParameterRead).getAControlFlowNode()
     or
-    pa = any(AssignableDefinition def | result = def.getAControlFlowNode()).getTargetAccess()
+    pa =
+      any(AssignableDefinition def | result = def.getExpr().getAControlFlowNode()).getTargetAccess()
   )
 }
 
@@ -263,13 +264,15 @@ module VariableCapture {
 
   private module CaptureInput implements Shared::InputSig<Location> {
     private import csharp as Cs
-    private import semmle.code.csharp.controlflow.ControlFlowGraph
+    private import semmle.code.csharp.controlflow.ControlFlowGraph as Cfg
     private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = super.getCallable() }
     }
+
+    class ControlFlowNode = Cfg::ControlFlow::Node;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
@@ -352,9 +355,7 @@ module VariableCapture {
 
       VariableWrite() {
         def.getTarget() = v.asLocalScopeVariable() and
-        this = def.getAControlFlowNode() and
-        // the shared variable capture library inserts implicit parameter definitions
-        not def instanceof AssignableDefinitions::ImplicitParameterDefinition
+        this = def.getExpr().getAControlFlowNode()
       }
 
       ControlFlow::Node getRhs() { LocalFlow::defAssigns(def, this, result) }
@@ -1098,13 +1099,10 @@ private module Cached {
     TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof Expr } or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) {
       // Handled by `TExplicitParameterNode` below
-      not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
-        AssignableDefinitions::ImplicitParameterDefinition
+      not def instanceof Ssa::ImplicitParameterDefinition
     } or
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlow::Node cfn) {
-      cfn = def.getAControlFlowNode() and
-      // Handled by `TExplicitParameterNode` below
-      not def instanceof AssignableDefinitions::ImplicitParameterDefinition
+      cfn = def.getExpr().getAControlFlowNode()
     } or
     TExplicitParameterNode(Parameter p) {
       p = any(DataFlowCallable dfc).asCallable().getAParameter()
@@ -1181,8 +1179,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo,
-      any(DataFlowSummarizedCallable sc))
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
   cached
@@ -1352,10 +1349,7 @@ private module ParameterNodes {
     ExplicitParameterNode() { this = TExplicitParameterNode(parameter) }
 
     /** Gets the SSA definition corresponding to this parameter, if any. */
-    Ssa::ExplicitDefinition getSsaDefinition() {
-      result.getADefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter() =
-        parameter
-    }
+    Ssa::ImplicitParameterDefinition getSsaDefinition() { result.getParameter() = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       c.asCallable().getParameter(pos.getPosition()) = parameter
@@ -2381,16 +2375,31 @@ predicate expectsContent(Node n, ContentSet c) {
   n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
+class NodeRegion instanceof ControlFlow::BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
+
+  int totalOrder() {
+    this =
+      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
+        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        b order by startline, startcolumn
+      )
+  }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, Guard guard, ControlFlow::SuccessorTypes::BooleanSuccessor bs
   |
     viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs, _)
+    guard.controlsBlock(nr, bs, _)
   )
 }
 
@@ -2469,7 +2478,7 @@ private predicate uselessTypebound(DataFlowType dt) {
     )
 }
 
-pragma[inline]
+pragma[nomagic]
 private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2) {
   exists(Gvn::GvnType t1, Gvn::GvnType t2 |
     t1 = exprNode(dt1.getADelegateCreation()).(NodeImpl).getDataFlowType().asGvnType() and
@@ -2493,7 +2502,7 @@ private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
+pragma[nomagic]
 predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
   exists(Gvn::GvnType t1, Gvn::GvnType t2 |
     t1 = dt1.asGvnType() and
@@ -2508,15 +2517,11 @@ predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
     t1.(DataFlowNullType).isConvertibleTo(t2)
     or
     t2.(DataFlowNullType).isConvertibleTo(t1)
-    or
-    t1 instanceof Gvn::TypeParameterGvnType
-    or
-    t2 instanceof Gvn::TypeParameterGvnType
-    or
-    t1 instanceof GvnUnknownType
-    or
-    t2 instanceof GvnUnknownType
   )
+  or
+  exists(dt1.asGvnType()) and uselessTypebound(dt2)
+  or
+  uselessTypebound(dt1) and exists(dt2.asGvnType())
   or
   compatibleTypesDelegateLeft(dt1, dt2)
   or

@@ -7,7 +7,7 @@ app = Flask(__name__)
 def hello():
     target = request.args.get('target', '')
     target = target.replace('\\', '')
-    if not urlparse(target).netloc:
+    if not urlparse(target).netloc and not urlparse(target).scheme:
         # relative path, safe to redirect
         return redirect(target, code=302)
     # ignore the target and redirect to the home page

@@ -1073,3 +1073,10 @@ void single_object_in_both_cases(bool b, int x, int y) {
   *p = 0;
   sink(*p); // clean
 }
+
+template<typename T>
+void indirect_sink_const_ref(const T&);
+
+void test_temp_with_conversion_from_materialization() {
+  indirect_sink_const_ref(source()); // $ ir MISSING: ast
+}

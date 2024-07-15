@@ -36,6 +36,12 @@ containerparent(
   unique int child: @container ref
 );
 
+/*- Empty location -*/
+
+empty_location(
+  int location: @location_default ref
+);
+
 /*- Source location prefix -*/
 
 /**
@@ -1239,11 +1245,13 @@ blame_ast_node_parent(
 );
 
 /*- JSON dbscheme -*/
+@json_underscore_value = @json_array | @json_object | @json_string__ | @json_token_false | @json_token_null | @json_token_number | @json_token_true
+
 #keyset[json_array, index]
 json_array_child(
   int json_array: @json_array ref,
   int index: int ref,
-  unique int child: @json_value ref
+  unique int child: @json_underscore_value ref
 );
 
 json_array_def(
@@ -1254,7 +1262,7 @@ json_array_def(
 json_document_child(
   int json_document: @json_document ref,
   int index: int ref,
-  unique int child: @json_value ref
+  unique int child: @json_underscore_value ref
 );
 
 json_document_def(
@@ -1272,24 +1280,24 @@ json_object_def(
   unique int id: @json_object
 );
 
-@json_pair_key_type = @json_string__ | @json_token_number
-
 json_pair_def(
   unique int id: @json_pair,
-  int key__: @json_pair_key_type ref,
-  int value: @json_value ref
+  int key__: @json_string__ ref,
+  int value: @json_underscore_value ref
 );
 
+@json_string_child_type = @json_token_escape_sequence | @json_token_string_content
+
+#keyset[json_string__, index]
 json_string_child(
-  unique int json_string__: @json_string__ ref,
-  unique int child: @json_token_string_content ref
+  int json_string__: @json_string__ ref,
+  int index: int ref,
+  unique int child: @json_string_child_type ref
 );
 
 json_string_def(
   unique int id: @json_string__
 );
-
-@json_value = @json_array | @json_object | @json_string__ | @json_token_false | @json_token_null | @json_token_number | @json_token_true
 
 json_tokeninfo(
   unique int id: @json_token,
@@ -1300,11 +1308,12 @@ json_tokeninfo(
 case @json_token.kind of
   0 = @json_reserved_word
 | 1 = @json_token_comment
-| 2 = @json_token_false
-| 3 = @json_token_null
-| 4 = @json_token_number
-| 5 = @json_token_string_content
-| 6 = @json_token_true
+| 2 = @json_token_escape_sequence
+| 3 = @json_token_false
+| 4 = @json_token_null
+| 5 = @json_token_number
+| 6 = @json_token_string_content
+| 7 = @json_token_true
 ;
 
 

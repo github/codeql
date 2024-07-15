@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Symbol.TypeKind == TypeKind.Error)
             {
                 UnknownType.Create(Context); // make sure this exists so we can use it in `TypeRef::getReferencedType`
-                Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
+                Context.ExtractionContext.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
 
@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 );
         }
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).BestOrDefault();
 
         private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
 

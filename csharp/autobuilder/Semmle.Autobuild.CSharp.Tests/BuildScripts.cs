@@ -215,9 +215,9 @@ namespace Semmle.Autobuild.CSharp.Tests
 
     internal class TestDiagnosticWriter : IDiagnosticsWriter
     {
-        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+        public IList<Semmle.Util.DiagnosticMessage> Diagnostics { get; } = new List<Semmle.Util.DiagnosticMessage>();
 
-        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
+        public void AddEntry(Semmle.Util.DiagnosticMessage message) => this.Diagnostics.Add(message);
 
         public void Dispose() { }
     }
@@ -544,51 +544,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             Assert.Equal(2, vcvarsfiles.Length);
         }
 
-        [Fact]
-        public void TestLinuxBuildlessExtractionSuccess()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
-        }
-
-        [Fact]
-        public void TestLinuxBuildlessExtractionFailed()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 10, 1);
-        }
-
-        [Fact]
-        public void TestLinuxBuildlessExtractionSolution()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
-        }
-
         private void TestAutobuilderScript(CSharpAutobuilder autobuilder, int expectedOutput, int commandsRun)
         {
             Assert.Equal(expectedOutput, autobuilder.GetBuildScript().Run(actions, StartCallback, EndCallback));
@@ -674,21 +629,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder(true);
-            TestAutobuilderScript(autobuilder, 0, 1);
-        }
-
-        [Fact]
-        public void TestSkipNugetBuildless()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 

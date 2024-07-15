@@ -101,6 +101,19 @@ module Flask {
   /** Gets a reference to the `flask.request` object. */
   API::Node request() {
     result = API::moduleImport(["flask", "flask_restful"]).getMember("request")
+    or
+    result = sessionInterfaceRequestParam()
+  }
+
+  /** Gets a `request` parameter of an implementation of `open_session` in a subclass of `flask.sessions.SessionInterface` */
+  private API::Node sessionInterfaceRequestParam() {
+    result =
+      API::moduleImport("flask")
+          .getMember("sessions")
+          .getMember("SessionInterface")
+          .getASubclass+()
+          .getMember("open_session")
+          .getParameter(1)
   }
 
   /**

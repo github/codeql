@@ -410,6 +410,10 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     or
     orphaned_variables(underlyingElement(this), unresolveElement(result))
   }
+
+  override predicate isStatic() {
+    super.isStatic() or orphaned_variables(underlyingElement(this), _)
+  }
 }
 
 /**

@@ -1,4 +1,4 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (partial-definition.ql:6,8-51)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (partial-definition.ql:6,8-51)
 | A.cpp:25:7:25:10 | this |
 | A.cpp:25:13:25:13 | c |
 | A.cpp:27:22:27:25 | this |
@@ -579,6 +579,8 @@ WARNING: Module DataFlow has been deprecated and may be removed in future (parti
 | simple.cpp:84:14:84:20 | this |
 | simple.cpp:92:5:92:5 | a |
 | simple.cpp:92:7:92:7 | i |
+| simple.cpp:118:5:118:5 | a |
+| simple.cpp:118:7:118:7 | i |
 | struct_init.c:15:8:15:9 | ab |
 | struct_init.c:15:12:15:12 | a |
 | struct_init.c:16:8:16:9 | ab |

@@ -25,15 +25,8 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    tracing_subscriber::fmt()
-        .with_target(false)
-        .without_time()
-        .with_level(true)
-        .with_env_filter(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
-        )
-        .init();
+    extractor::set_tracing_level("ruby");
+    tracing::info!("Extraction started");
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
     let mut main_thread_logger = diagnostics.logger();
     let num_threads = match codeql_extractor::options::num_threads() {
@@ -109,7 +102,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             if path.extension().map_or(false, |x| x == "erb") {
                 tracing::info!("scanning: {}", path.display());
                 extractor::extract(
-                    erb,
+                    &erb,
                     "erb",
                     &erb_schema,
                     &mut diagnostics_writer,
@@ -120,7 +113,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 );
 
                 let (ranges, line_breaks) = scan_erb(
-                    erb,
+                    &erb,
                     &source,
                     erb_directive_id,
                     erb_output_directive_id,
@@ -196,7 +189,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 code_ranges = vec![];
             }
             extractor::extract(
-                language,
+                &language,
                 "ruby",
                 &schema,
                 &mut diagnostics_writer,
@@ -218,7 +211,9 @@ pub fn run(options: Options) -> std::io::Result<()> {
     let path = PathBuf::from("extras");
     let mut trap_writer = trap::Writer::new();
     extractor::populate_empty_location(&mut trap_writer);
-    write_trap(&trap_dir, path, &trap_writer, trap_compression)
+    let res = write_trap(&trap_dir, path, &trap_writer, trap_compression);
+    tracing::info!("Extraction complete");
+    res
 }
 
 lazy_static! {
@@ -249,7 +244,7 @@ fn write_trap(
 }
 
 fn scan_erb(
-    erb: Language,
+    erb: &Language,
     source: &[u8],
     directive_id: u16,
     output_directive_id: u16,

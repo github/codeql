@@ -28,7 +28,7 @@ namespace Semmle.Util.Logging
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Console.Error.WriteLine("CodeQL: Couldn't initialise C# extractor output: " + ex.Message + "\n" + ex.StackTrace);
+                Console.Error.WriteLine($"CodeQL: Couldn't initialise C# extractor output: {ex.Message}\n{ex.StackTrace}");
                 Console.Error.Flush();
                 throw;
             }
@@ -41,7 +41,7 @@ namespace Semmle.Util.Logging
 
         private static string GetSeverityPrefix(Severity s)
         {
-            return "[" + s.ToString().ToUpper() + "] ";
+            return $"[{s.ToString().ToUpper()}] ";
         }
 
         public void Log(Severity s, string text, int? threadId = null)

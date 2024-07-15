@@ -214,11 +214,11 @@ abstract class FunctionModel extends Function {
 }
 
 /**
- * Holds if the additional step from `src` to `sink` should be included in all
+ * Holds if the additional step from `node1` to `node2` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
-  localAdditionalTaintStep(src, sink, model)
+predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
+  localAdditionalTaintStep(node1, node2, model)
 }
 
 /**
@@ -423,7 +423,7 @@ private class ClearSanitizer extends DefaultTaintSanitizer {
       arg = call.getAnArgument() and
       arg = var.getAUse() and
       arg != this and
-      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+      arg.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
     )
   }
 }
