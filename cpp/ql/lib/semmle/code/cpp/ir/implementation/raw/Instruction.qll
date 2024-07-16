@@ -2162,11 +2162,11 @@ class ChiInstruction extends Instruction {
  *
  * Since both the address of `a` and `b` reach `p` at `*p = 5` the IR alias
  * analysis will create a region that contains both `a` and `b`. The region
- * containing both `a` and `b` are initialized by an `InitializeGroup`
+ * containing both `a` and `b` are initialized by an `UninitializedGroup`
  * instruction in the entry block of the enclosing function.
  */
-class InitializeGroupInstruction extends Instruction {
-  InitializeGroupInstruction() { this.getOpcode() instanceof Opcode::InitializeGroup }
+class UninitializedGroupInstruction extends Instruction {
+  UninitializedGroupInstruction() { this.getOpcode() instanceof Opcode::UninitializedGroup }
 
   /**
    * Gets an `IRVariable` whose memory is initialized by this instruction, if any.
@@ -2174,7 +2174,9 @@ class InitializeGroupInstruction extends Instruction {
    * dynamic allocations) are not returned by this predicate even if this
    * instruction initializes such memory.
    */
-  final IRVariable getAnIRVariable() { result = Construction::getAnInitializeGroupVariable(this) }
+  final IRVariable getAnIRVariable() {
+    result = Construction::getAnUninitializedGroupVariable(this)
+  }
 
   final override string getImmediateString() {
     result = strictconcat(this.getAnIRVariable().toString(), ",")
