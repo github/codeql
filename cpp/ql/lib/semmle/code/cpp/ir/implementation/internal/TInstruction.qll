@@ -31,7 +31,7 @@ newtype TInstruction =
   TUnaliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
     UnaliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
   } or
-  TUnaliasedSsaInitializeGroupInstruction(UnaliasedSsa::Ssa::VariableGroup vg) or
+  TUnaliasedSsaUninitializedGroupInstruction(UnaliasedSsa::Ssa::VariableGroup vg) or
   TAliasedSsaPhiInstruction(
     TRawInstruction blockStartInstr, AliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
@@ -43,9 +43,11 @@ newtype TInstruction =
   TAliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
     AliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
   } or
-  TAliasedSsaInitializeGroupInstruction(AliasedSsa::Ssa::VariableGroup vg) or
-  TAliasedSsaChiAfterInitializeGroupInstruction(TAliasedSsaInitializeGroupInstruction initGroup) {
-    AliasedSsa::Ssa::hasChiNodeAfterInitializeGroup(initGroup)
+  TAliasedSsaUninitializedGroupInstruction(AliasedSsa::Ssa::VariableGroup vg) or
+  TAliasedSsaChiAfterUninitializedGroupInstruction(
+    TAliasedSsaUninitializedGroupInstruction initGroup
+  ) {
+    AliasedSsa::Ssa::hasChiNodeAfterUninitializedGroup(initGroup)
   }
 
 /**
@@ -67,11 +69,11 @@ module UnaliasedSsaInstructions {
 
   class TChiInstruction = TUnaliasedSsaChiInstruction;
 
-  class TInitializeGroupInstruction = TUnaliasedSsaInitializeGroupInstruction;
+  class TUninitializedGroupInstruction = TUnaliasedSsaUninitializedGroupInstruction;
 
-  class TRawOrInitializeGroupInstruction = TRawInstruction or TInitializeGroupInstruction;
+  class TRawOrUninitializedGroupInstruction = TRawInstruction or TUninitializedGroupInstruction;
 
-  TChiInstruction chiInstruction(TRawOrInitializeGroupInstruction primaryInstruction) {
+  TChiInstruction chiInstruction(TRawOrUninitializedGroupInstruction primaryInstruction) {
     result = TUnaliasedSsaChiInstruction(primaryInstruction)
   }
 
@@ -83,9 +85,9 @@ module UnaliasedSsaInstructions {
 
   class VariableGroup = UnaliasedSsa::Ssa::VariableGroup;
 
-  // This really should just be `TUnaliasedSsaInitializeGroupInstruction`, but that makes the
+  // This really should just be `TUnaliasedSsaUninitializedGroupInstruction`, but that makes the
   // compiler realize that certain expressions in `SSAConstruction` are unsatisfiable.
-  TRawOrInitializeGroupInstruction initializeGroup(VariableGroup vg) { none() }
+  TRawOrUninitializedGroupInstruction uninitializedGroup(VariableGroup vg) { none() }
 }
 
 /**
@@ -108,14 +110,15 @@ module AliasedSsaInstructions {
   }
 
   class TChiInstruction =
-    TAliasedSsaChiInstruction or TAliasedSsaChiAfterInitializeGroupInstruction;
+    TAliasedSsaChiInstruction or TAliasedSsaChiAfterUninitializedGroupInstruction;
 
-  class TRawOrInitialzieGroupInstruction = TRawInstruction or TAliasedSsaInitializeGroupInstruction;
+  class TRawOrInitialzieGroupInstruction =
+    TRawInstruction or TAliasedSsaUninitializedGroupInstruction;
 
   TChiInstruction chiInstruction(TRawOrInitialzieGroupInstruction primaryInstruction) {
     result = TAliasedSsaChiInstruction(primaryInstruction)
     or
-    result = TAliasedSsaChiAfterInitializeGroupInstruction(primaryInstruction)
+    result = TAliasedSsaChiAfterUninitializedGroupInstruction(primaryInstruction)
   }
 
   class TUnreachedInstruction = TAliasedSsaUnreachedInstruction;
@@ -126,9 +129,9 @@ module AliasedSsaInstructions {
 
   class VariableGroup = AliasedSsa::Ssa::VariableGroup;
 
-  class TInitializeGroupInstruction = TAliasedSsaInitializeGroupInstruction;
+  class TUninitializedGroupInstruction = TAliasedSsaUninitializedGroupInstruction;
 
-  TInitializeGroupInstruction initializeGroup(VariableGroup vg) {
-    result = TAliasedSsaInitializeGroupInstruction(vg)
+  TUninitializedGroupInstruction uninitializedGroup(VariableGroup vg) {
+    result = TAliasedSsaUninitializedGroupInstruction(vg)
   }
 }

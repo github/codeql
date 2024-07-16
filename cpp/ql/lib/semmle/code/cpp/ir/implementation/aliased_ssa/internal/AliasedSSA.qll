@@ -179,7 +179,7 @@ class VariableGroup extends AllocationSet::EquivalenceClass {
    * getInitializationOrder() = 2
    * ```
    * then this set will be initialized as the second (third) set in the
-   * enclosing function. In order words, the third `InitializeGroup`
+   * enclosing function. In order words, the third `UninitializedGroup`
    * instruction in the entry block of the enclosing function will initialize
    * this set of allocations.
    */

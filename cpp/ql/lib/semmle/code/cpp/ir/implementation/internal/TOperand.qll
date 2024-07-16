@@ -13,7 +13,7 @@ private import semmle.code.cpp.ir.internal.Overlap
  */
 private module Internal {
   private class TAliasedChiInstruction =
-    TAliasedSsaChiInstruction or TAliasedSsaChiAfterInitializeGroupInstruction;
+    TAliasedSsaChiInstruction or TAliasedSsaChiAfterUninitializedGroupInstruction;
 
   /**
    * An IR operand. `TOperand` is shared across all phases of the IR. There are branches of this
@@ -202,7 +202,7 @@ module AliasedSsaOperands {
   }
 
   private class TChiInstruction =
-    TAliasedSsaChiInstruction or TAliasedSsaChiAfterInitializeGroupInstruction;
+    TAliasedSsaChiInstruction or TAliasedSsaChiAfterUninitializedGroupInstruction;
 
   /**
    * Returns the Chi operand with the specified parameters.
