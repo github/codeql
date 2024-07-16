@@ -41,8 +41,62 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
 Expr exprIsLeftOrLessBase(SubExpr sub) {
   interestingSubExpr(sub, _) and // Manual magic
   exists(Expr e | globalValueNumber(e).getAnExpr() = sub.getLeftOperand() |
-    // result = sub.getLeftOperand() so result <= sub.getLeftOperand()
+    // sub = e - x
+    // result = e
+    // so:
+    // result <= e
     result = e
+    or
+    // sub = e - x
+    // result = e & y
+    // so:
+    // result = e & y <= e
+    result.(BitwiseAndExpr).getAnOperand() = e
+    or
+    exists(SubExpr s |
+      // sub = e - x
+      // result = s
+      // s = e - y
+      // y >= 0
+      // so:
+      // result = e - y <= e
+      result = s and
+      s.getLeftOperand() = e and
+      lowerBound(s.getRightOperand().getFullyConverted()) >= 0
+    )
+    or
+    exists(Expr other |
+      // sub = e - x
+      // result = a
+      // a = e + y
+      // y <= 0
+      // so:
+      // result = e + y <= e + 0 = e
+      result.(AddExpr).hasOperands(e, other) and
+      upperBound(other.getFullyConverted()) <= 0
+    )
+    or
+    exists(DivExpr d |
+      // sub = e - x
+      // result = d
+      // d = e / y
+      // y >= 1
+      // so:
+      // result = e / y <= e / 1 = e
+      result = d and
+      d.getLeftOperand() = e and
+      lowerBound(d.getRightOperand().getFullyConverted()) >= 1
+    )
+    or
+    exists(RShiftExpr rs |
+      // sub = e - x
+      // result = rs
+      // rs = e >> y
+      // so:
+      // result = e >> y <= e
+      result = rs and
+      rs.getLeftOperand() = e
+    )
   )
 }
 
