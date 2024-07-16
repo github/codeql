@@ -25,7 +25,7 @@ class AndroidManifestXmlFile extends XmlFile {
   predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
 
   /**
-   * Holds if `amxf` defines at least one activity, service or contest provider,
+   * Holds if this file defines at least one activity, service or contest provider,
    * and so it corresponds to an android application rather than a library.
    */
   predicate definesAndroidApplication() {
