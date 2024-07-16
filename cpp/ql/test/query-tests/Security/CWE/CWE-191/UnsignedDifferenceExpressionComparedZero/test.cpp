@@ -321,3 +321,18 @@ void test19() {
 		total += get_data();
 	}
 }
+
+void test20(int a, bool b, unsigned long c)
+{
+  int x = 0;
+
+  if(b) {
+    x = (a - c) / 2;
+  } else {
+    x = a - c;
+  }
+
+  if (a - c - x > 0) // GOOD [FALSE POSITIVE]
+  {
+  }
+}
