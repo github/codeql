@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for working with the Lastaflute web framework.
+ */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 
