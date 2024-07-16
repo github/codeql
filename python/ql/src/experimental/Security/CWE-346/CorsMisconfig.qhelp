@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+	This configuration can give the attacker the ability to control <code>Access-Control-Allow-Origin</code> , and also allow the inclusion of cookies on the cross-origin request,
+	(i.e. when the <code>Access-Control-Allow-Credentials</code> header is set to true) 
+	meaning that Peer B can send a request to Peer A that will include the cookies as if the request was executed by the user.
+</p>
+</overview>
+<recommendation>
+<p>
+	When configuring CORS that allow credentials passing,
+	it's best not to use user-provided values for the allowed origins response header,
+	especially if the cookies grant session permissions on the user's account.
+</p>
+</recommendation>
+<example>
+<p>		
+        the example below shows the study case. The request header
+	<code>origins</code> controls the allowed origins for such a
+	Cross-Origin request.
+</p>
+
+<sample src="insecure-cors-web.xml" />
+<references>
+	<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin">CORS, Access-Control-Allow-Origin</a>.</li>
+	<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials">CORS, Access-Control-Allow-Credentials</a>.</li>
+	<li>PortSwigger: <a href="http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html">Exploiting CORS Misconfigurations for Bitcoins and Bounties</a></li>
+	<li>W3C: <a href="https://w3c.github.io/webappsec-cors-for-developers/#resources">CORS for developers, Advice for Resource Owners</a></li>
+</references>
+</qhelp>
