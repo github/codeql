@@ -40,7 +40,10 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
  */
 Expr exprIsLeftOrLessBase(SubExpr sub) {
   interestingSubExpr(sub, _) and // Manual magic
-  result = sub.getLeftOperand()
+  exists(Expr e | globalValueNumber(e).getAnExpr() = sub.getLeftOperand() |
+    // result = sub.getLeftOperand() so result <= sub.getLeftOperand()
+    result = e
+  )
 }
 
 /**
