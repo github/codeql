@@ -189,14 +189,12 @@ private module Cached {
     // Chi instructions track virtual variables, and therefore a chi instruction is
     // conflated if it's associated with the aliased virtual variable.
     exists(Instruction input | instruction = getChi(input) |
-      instruction = getChi(input) and
       Alias::getResultMemoryLocation(input).getVirtualVariable() instanceof
         Alias::AliasedVirtualVariable
       or
       // A chi following an `UninitializedGroupInstruction` only happens when the virtual
       // variable of the grouped memory location is `{AllAliasedMemory}`.
       exists(Alias::GroupedMemoryLocation gml |
-        instruction = getChi(input) and
         input = uninitializedGroup(gml.getGroup()) and
         gml.getVirtualVariable() instanceof Alias::AliasedVirtualVariable
       )
