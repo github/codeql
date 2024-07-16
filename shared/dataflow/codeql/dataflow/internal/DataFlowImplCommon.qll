@@ -4,7 +4,6 @@ private import codeql.util.Location
 private import codeql.util.Option
 private import codeql.util.Unit
 private import codeql.util.Option
-private import codeql.util.internal.MakeSets
 
 module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
@@ -502,24 +501,21 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private module CallSetsInput implements MkSetsInputSig {
-      class Key = TCallEdge;
-
-      class Value = DataFlowCall;
-
-      DataFlowCall getAValue(TCallEdge ctxEdge) {
-        exists(DataFlowCall ctx, DataFlowCallable c |
-          ctxEdge = TMkCallEdge(ctx, c) and
-          reducedViableImplInCallContext(result, c, ctx)
-        )
-      }
-
-      int totalorder(DataFlowCall e) { result = callOrder(e) }
+    private DataFlowCall getACallWithReducedViableImpl(TCallEdge ctxEdge) {
+      exists(DataFlowCall ctx, DataFlowCallable c |
+        ctxEdge = TMkCallEdge(ctx, c) and
+        reducedViableImplInCallContext(result, c, ctx)
+      )
     }
 
-    private module CallSets = MakeSets<CallSetsInput>;
+    private module CallSets =
+      QlBuiltins::InternSets<TCallEdge, DataFlowCall, getACallWithReducedViableImpl/1>;
 
-    private module CallSetOption = Option<CallSets::ValueSet>;
+    private class CallSet0 extends CallSets::Set {
+      string toString() { result = "CallSet" }
+    }
+
+    private module CallSetOption = Option<CallSet0>;
 
     /**
      * A set of call sites for which dispatch is affected by the call context.
@@ -528,26 +524,23 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     private class CallSet = CallSetOption::Option;
 
-    private module DispatchSetsInput implements MkSetsInputSig {
-      class Key = TCallEdge;
-
-      class Value = TCallEdge;
-
-      TCallEdge getAValue(TCallEdge ctxEdge) {
-        exists(DataFlowCall ctx, DataFlowCallable c, DataFlowCall call, DataFlowCallable tgt |
-          ctxEdge = mkCallEdge(ctx, c) and
-          result = mkCallEdge(call, tgt) and
-          viableImplInCallContextExtIn(call, ctx) = tgt and
-          reducedViableImplInCallContext(call, c, ctx)
-        )
-      }
-
-      int totalorder(TCallEdge e) { result = edgeOrder(e) }
+    private TCallEdge getAReducedViableEdge(TCallEdge ctxEdge) {
+      exists(DataFlowCall ctx, DataFlowCallable c, DataFlowCall call, DataFlowCallable tgt |
+        ctxEdge = mkCallEdge(ctx, c) and
+        result = mkCallEdge(call, tgt) and
+        viableImplInCallContextExtIn(call, ctx) = tgt and
+        reducedViableImplInCallContext(call, c, ctx)
+      )
     }
 
-    private module DispatchSets = MakeSets<DispatchSetsInput>;
+    private module DispatchSets =
+      QlBuiltins::InternSets<TCallEdge, TCallEdge, getAReducedViableEdge/1>;
 
-    private module DispatchSetsOption = Option<DispatchSets::ValueSet>;
+    private class DispatchSet0 extends DispatchSets::Set {
+      string toString() { result = "DispatchSet" }
+    }
+
+    private module DispatchSetsOption = Option<DispatchSet0>;
 
     /**
      * A set of call edges that are allowed in the call context. This applies to
@@ -561,7 +554,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     private class DispatchSet = DispatchSetsOption::Option;
 
     private predicate relevantCtx(TCallEdge ctx) {
-      exists(CallSets::getValueSet(ctx)) or exists(getUnreachableSet(ctx))
+      exists(CallSets::getSet(ctx)) or exists(getUnreachableSet(ctx))
     }
 
     pragma[nomagic]
@@ -570,14 +563,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ) {
       relevantCtx(ctx) and
       (
-        CallSets::getValueSet(ctx) = calls.asSome()
+        CallSets::getSet(ctx) = calls.asSome()
         or
-        not exists(CallSets::getValueSet(ctx)) and calls.isNone()
+        not exists(CallSets::getSet(ctx)) and calls.isNone()
       ) and
       (
-        DispatchSets::getValueSet(ctx) = tgts.asSome()
+        DispatchSets::getSet(ctx) = tgts.asSome()
         or
-        not exists(DispatchSets::getValueSet(ctx)) and tgts.isNone()
+        not exists(DispatchSets::getSet(ctx)) and tgts.isNone()
       ) and
       (
         getUnreachableSet(ctx) = unreachable.asSome()
@@ -1515,40 +1508,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     newtype TCallEdge =
       TMkCallEdge(DataFlowCall call, DataFlowCallable tgt) { viableCallableExt(call) = tgt }
 
-    cached
-    int edgeOrder(TCallEdge edge) {
-      edge =
-        rank[result](TCallEdge e, DataFlowCall call, DataFlowCallable tgt |
-          e = TMkCallEdge(call, tgt)
-        |
-          e order by call.totalorder(), tgt.totalorder()
-        )
+    private NodeRegion getAnUnreachableRegion(TCallEdge edge) {
+      exists(DataFlowCall call, DataFlowCallable tgt |
+        edge = mkCallEdge(call, tgt) and
+        getNodeRegionEnclosingCallable(result) = tgt and
+        isUnreachableInCallCached(result, call)
+      )
     }
 
-    cached
-    int callOrder(DataFlowCall call) { result = call.totalorder() }
-
-    private module UnreachableSetsInput implements MkSetsInputSig {
-      class Key = TCallEdge;
-
-      class Value = NodeRegion;
-
-      NodeRegion getAValue(TCallEdge edge) {
-        exists(DataFlowCall call, DataFlowCallable tgt |
-          edge = mkCallEdge(call, tgt) and
-          getNodeRegionEnclosingCallable(result) = tgt and
-          isUnreachableInCallCached(result, call)
-        )
-      }
-
-      int totalorder(NodeRegion nr) { result = nr.totalOrder() }
-    }
-
-    private module UnreachableSets = MakeSets<UnreachableSetsInput>;
+    private module UnreachableSets =
+      QlBuiltins::InternSets<TCallEdge, NodeRegion, getAnUnreachableRegion/1>;
 
     /** A set of nodes that is unreachable in some call context. */
     cached
-    class UnreachableSet instanceof UnreachableSets::ValueSet {
+    class UnreachableSet instanceof UnreachableSets::Set {
       cached
       string toString() { result = "Unreachable" }
 
@@ -1562,7 +1535,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    UnreachableSet getUnreachableSet(TCallEdge edge) { result = UnreachableSets::getValueSet(edge) }
+    UnreachableSet getUnreachableSet(TCallEdge edge) { result = UnreachableSets::getSet(edge) }
 
     private module UnreachableSetOption = Option<UnreachableSet>;
 
@@ -1579,7 +1552,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     newtype TLocalFlowCallContext =
       TAnyLocalCall() or
-      TSpecificLocalCall(UnreachableSets::ValueSet ns)
+      TSpecificLocalCall(UnreachableSets::Set ns)
 
     cached
     newtype TReturnKindExt =
