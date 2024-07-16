@@ -159,6 +159,12 @@ extensions:
       - ["System.Diagnostics", "TraceSource", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["System.Diagnostics", "Process", False, "get_ProcessName", "()", "", "ReturnValue", "file-write", "df-generated"]
+      - ["System.Diagnostics", "Process", False, "get_ProcessName", "()", "", "ReturnValue", "file", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Diagnostics", "Activity+Enumerator<T>", "MoveNext", "()", "summary", "df-generated"]
