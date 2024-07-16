@@ -4,44 +4,8 @@
 | 0 | file://:0:0:0:0 | a[10] | refersTo.cpp:2:7:2:7 | a | direct |
 | 0 | file://:0:0:0:0 | const a | refersTo.cpp:2:7:2:7 | a | direct |
 | 0 | file://:0:0:0:0 | const a & | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | const container<a> | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | const container<a> | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | const container<a> | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | const container<a> | refersTo.cpp:11:7:11:15 | container<a> | direct |
-| 0 | file://:0:0:0:0 | const container<a> & | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | const container<a> & | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | const container<a> & | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | const container<a> & | refersTo.cpp:11:7:11:15 | container<a> |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> | refersTo.cpp:11:7:11:15 | container<a> |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> | refersTo.cpp:11:7:11:15 | container<container<a>> | direct |
-| 0 | file://:0:0:0:0 | const container<container<a>> & | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> & | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> & | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> & | refersTo.cpp:11:7:11:15 | container<a> |  |
-| 0 | file://:0:0:0:0 | const container<container<a>> & | refersTo.cpp:11:7:11:15 | container<container<a>> |  |
 | 0 | file://:0:0:0:0 | const strange | refersTo.cpp:17:7:17:13 | strange | direct |
 | 0 | file://:0:0:0:0 | const strange & | refersTo.cpp:17:7:17:13 | strange |  |
-| 0 | file://:0:0:0:0 | container<a> & | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | container<a> & | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | container<a> & | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | container<a> & | refersTo.cpp:11:7:11:15 | container<a> | direct |
-| 0 | file://:0:0:0:0 | container<a> && | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | container<a> && | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | container<a> && | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | container<a> && | refersTo.cpp:11:7:11:15 | container<a> | direct |
-| 0 | file://:0:0:0:0 | container<container<a>> & | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | container<container<a>> & | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | container<container<a>> & | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | container<container<a>> & | refersTo.cpp:11:7:11:15 | container<a> |  |
-| 0 | file://:0:0:0:0 | container<container<a>> & | refersTo.cpp:11:7:11:15 | container<container<a>> | direct |
-| 0 | file://:0:0:0:0 | container<container<a>> && | refersTo.cpp:2:7:2:7 | a |  |
-| 0 | file://:0:0:0:0 | container<container<a>> && | refersTo.cpp:10:16:10:16 | T |  |
-| 0 | file://:0:0:0:0 | container<container<a>> && | refersTo.cpp:11:7:11:15 | container<T> |  |
-| 0 | file://:0:0:0:0 | container<container<a>> && | refersTo.cpp:11:7:11:15 | container<a> |  |
-| 0 | file://:0:0:0:0 | container<container<a>> && | refersTo.cpp:11:7:11:15 | container<container<a>> | direct |
 | 0 | file://:0:0:0:0 | strange & | refersTo.cpp:17:7:17:13 | strange | direct |
 | 0 | file://:0:0:0:0 | strange && | refersTo.cpp:17:7:17:13 | strange | direct |
 | 2 | refersTo.cpp:2:7:2:7 | a | refersTo.cpp:2:7:2:7 | a |  |

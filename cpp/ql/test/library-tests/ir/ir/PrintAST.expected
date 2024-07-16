@@ -1729,30 +1729,6 @@ complex.c:
 #  144|             ValueCategory = prvalue
 #  145|     getStmt(72): [ReturnStmt] return ...
 coroutines.cpp:
-#    4| [CopyAssignmentOperator] std::coroutine_traits<co_returnable_value, int>& std::coroutine_traits<co_returnable_value, int>::operator=(std::coroutine_traits<co_returnable_value, int> const&)
-#    4|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const coroutine_traits<co_returnable_value, int> &
-#    4| [MoveAssignmentOperator] std::coroutine_traits<co_returnable_value, int>& std::coroutine_traits<co_returnable_value, int>::operator=(std::coroutine_traits<co_returnable_value, int>&&)
-#    4|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] coroutine_traits<co_returnable_value, int> &&
-#    4| [CopyAssignmentOperator] std::coroutine_traits<co_returnable_void, int>& std::coroutine_traits<co_returnable_void, int>::operator=(std::coroutine_traits<co_returnable_void, int> const&)
-#    4|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const coroutine_traits<co_returnable_void, int> &
-#    4| [MoveAssignmentOperator] std::coroutine_traits<co_returnable_void, int>& std::coroutine_traits<co_returnable_void, int>::operator=(std::coroutine_traits<co_returnable_void, int>&&)
-#    4|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] coroutine_traits<co_returnable_void, int> &&
-#    4| [CopyAssignmentOperator] std::coroutine_traits<co_returnable_void>& std::coroutine_traits<co_returnable_void>::operator=(std::coroutine_traits<co_returnable_void> const&)
-#    4|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const coroutine_traits<co_returnable_void> &
-#    4| [MoveAssignmentOperator] std::coroutine_traits<co_returnable_void>& std::coroutine_traits<co_returnable_void>::operator=(std::coroutine_traits<co_returnable_void>&&)
-#    4|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] coroutine_traits<co_returnable_void> &&
 #   12| [Constructor] void std::coroutine_handle<Promise>::coroutine_handle()
 #   12|   <params>: 
 #   13| [Constructor] void std::coroutine_handle<Promise>::coroutine_handle(std::nullptr_t)
@@ -8629,14 +8605,6 @@ ir.cpp:
 #  709|         getArgument(1): [VariableAccess] y
 #  709|             Type = [IntType] int
 #  709|             ValueCategory = prvalue(load)
-#  713| [CopyAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long> const&)
-#  713|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const Outer<long> &
-#  713| [MoveAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long>&&)
-#  713|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] Outer<long> &&
 #  715| [MemberFunction,TemplateFunction] T Outer<T>::Func<U, V>(U, V)
 #  715|   <params>: 
 #  715|     getParameter(0): [Parameter] x
@@ -11941,22 +11909,6 @@ ir.cpp:
 # 1054|           getRightOperand().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1054|               Type = [IntType] int
 # 1054|               ValueCategory = prvalue(load)
-# 1078| [CopyAssignmentOperator] std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>& std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>::operator=(std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&> const&)
-# 1078|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
-# 1078| [CopyAssignmentOperator] std::iterator<std::random_access_iterator_tag, String, std::ptrdiff_t, String*, String&>& std::iterator<std::random_access_iterator_tag, String, std::ptrdiff_t, String*, String&>::operator=(std::iterator<std::random_access_iterator_tag, String, std::ptrdiff_t, String*, String&> const&)
-# 1078|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &> &
-# 1078| [CopyAssignmentOperator] std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>& std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>::operator=(std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&> const&)
-# 1078|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
-# 1078| [CopyAssignmentOperator] std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>& std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>::operator=(std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&> const&)
-# 1078|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
 # 1081| [Constructor] void std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::iterator()
 # 1081|   <params>: 
 # 1082| [Constructor] void std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::iterator(std::iterator<Category, type, std::ptrdiff_t, type*, type&> const&)
@@ -12105,38 +12057,6 @@ ir.cpp:
 # 1105|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] output_iterator_tag &&
-# 1108| [CopyAssignmentOperator] std::vector<ClassWithDestructor>& std::vector<ClassWithDestructor>::operator=(std::vector<ClassWithDestructor> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<ClassWithDestructor> &
-# 1108| [CopyAssignmentOperator] std::vector<String>& std::vector<String>::operator=(std::vector<String> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<String> &
-# 1108| [CopyAssignmentOperator] std::vector<char>& std::vector<char>::operator=(std::vector<char> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<char> &
-# 1108| [CopyAssignmentOperator] std::vector<int>& std::vector<int>::operator=(std::vector<int> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<int> &
-# 1108| [CopyConstructor] void std::vector<ClassWithDestructor>::vector(std::vector<ClassWithDestructor> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<ClassWithDestructor> &
-# 1108| [CopyConstructor] void std::vector<String>::vector(std::vector<String> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<String> &
-# 1108| [CopyConstructor] void std::vector<char>::vector(std::vector<char> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<char> &
-# 1108| [CopyConstructor] void std::vector<int>::vector(std::vector<int> const&)
-# 1108|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const vector<int> &
 # 1109| [Constructor] void std::vector<ClassWithDestructor>::vector(ClassWithDestructor)
 # 1109|   <params>: 
 # 1109|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -17431,14 +17351,6 @@ ir.cpp:
 # 1904|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
-# 1908| [CopyAssignmentOperator] missing_declaration_entries::Bar1<int>& missing_declaration_entries::Bar1<int>::operator=(missing_declaration_entries::Bar1<int> const&)
-# 1908|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const Bar1<int> &
-# 1908| [MoveAssignmentOperator] missing_declaration_entries::Bar1<int>& missing_declaration_entries::Bar1<int>::operator=(missing_declaration_entries::Bar1<int>&&)
-# 1908|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] Bar1<int> &&
 # 1911| [MemberFunction] void* missing_declaration_entries::Bar1<T>::missing_type_decl_entry(missing_declaration_entries::Bar1<T>::pointer)
 # 1911|   <params>: 
 # 1911|     getParameter(0): [Parameter] p
@@ -17494,14 +17406,6 @@ ir.cpp:
 # 1919|             Value = [CStyleCast] 0
 # 1919|             ValueCategory = prvalue
 # 1920|     getStmt(2): [ReturnStmt] return ...
-# 1922| [CopyAssignmentOperator] missing_declaration_entries::Bar2<int>& missing_declaration_entries::Bar2<int>::operator=(missing_declaration_entries::Bar2<int> const&)
-# 1922|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const Bar2<int> &
-# 1922| [MoveAssignmentOperator] missing_declaration_entries::Bar2<int>& missing_declaration_entries::Bar2<int>::operator=(missing_declaration_entries::Bar2<int>&&)
-# 1922|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] Bar2<int> &&
 # 1924| [MemberFunction] int missing_declaration_entries::Bar2<T>::two_missing_variable_declaration_entries()
 # 1924|   <params>: 
 # 1924|   getEntryPoint(): [BlockStmt] { ... }
@@ -17644,14 +17548,6 @@ ir.cpp:
 # 1934|             Type = [ClassTemplateInstantiation,Struct] Bar2<int>
 # 1934|             ValueCategory = lvalue
 # 1935|     getStmt(2): [ReturnStmt] return ...
-# 1937| [CopyAssignmentOperator] missing_declaration_entries::Bar3<int>& missing_declaration_entries::Bar3<int>::operator=(missing_declaration_entries::Bar3<int> const&)
-# 1937|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const Bar3<int> &
-# 1937| [MoveAssignmentOperator] missing_declaration_entries::Bar3<int>& missing_declaration_entries::Bar3<int>::operator=(missing_declaration_entries::Bar3<int>&&)
-# 1937|   <params>: 
-#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] Bar3<int> &&
 # 1939| [MemberFunction] int missing_declaration_entries::Bar3<T>::two_more_missing_variable_declaration_entries()
 # 1939|   <params>: 
 # 1939|   getEntryPoint(): [BlockStmt] { ... }
