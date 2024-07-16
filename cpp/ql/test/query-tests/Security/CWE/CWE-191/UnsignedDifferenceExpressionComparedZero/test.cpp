@@ -332,7 +332,7 @@ void test20(int a, bool b, unsigned long c)
     x = a - c;
   }
 
-  if (a - c - x > 0) // GOOD [FALSE POSITIVE]
+  if (a - c - x > 0) // GOOD
   {
   }
 }
