@@ -7,7 +7,7 @@
  * @security-severity 5.0
  * @id py/cookie-injection
  * @tags security
- *       external/cwe/cwe-614
+ *       external/cwe/cwe-20
  */
 
 import python
