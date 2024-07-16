@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Constructing cookies from user input can allow an attacker to control a user's cookie. Additionally, if the cookie is set using a raw header, cookie attributes such as the <code>Secure</code> flag may be controlled by an attacker.  
+</p>
+</overview>
+
+<recommendation>
+<p>Do not use raw user input to construct cookies.</p>
+</recommendation>
+
+<example>
+<p>In the following cases, a cookie is constructed for a Flask response using user input. The first uses <code>set_cookie</code>,
+and the second sets a cookie's raw value through the <code>set-cookie</code> header.</p>
+<sample src="examples/CookieInjection.py" />
+</example>
+
+<references>
+</references>
+
+</qhelp>

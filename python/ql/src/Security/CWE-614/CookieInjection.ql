@@ -2,8 +2,9 @@
  * @name Construction of a cookie using user-supplied input.
  * @description Constructing cookies from user input may allow an attacker to perform a Cookie Poisoning attack.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
+ * @security-severity 5.0
  * @id py/cookie-injection
  * @tags security
  *       external/cwe/cwe-614
