@@ -344,19 +344,19 @@ void test21(unsigned long a)
 {
   {
     int b = a & get_int64();
-    if (a - b > 0) { } // GOOD [FALSE POSITIVE]
+    if (a - b > 0) { } // GOOD
   }
 
   {
   int b = a - get_uint32();
-  if(a - b > 0) { } // GOOD [FALSE POSITIVE]
+  if(a - b > 0) { } // GOOD
   }
 
   {
     int64_t c = get_int64();
     if(c <= 0) {
       int64_t b = (int64_t)a + c;
-      if(a - b > 0) { } // GOOD [FALSE POSITIVE]
+      if(a - b > 0) { } // GOOD
     }
     int64_t b = (int64_t)a + c;
     if(a - b > 0) { } // BAD
@@ -366,12 +366,12 @@ void test21(unsigned long a)
     unsigned c = get_uint32();
     if(c >= 1) {
       int b = a / c;
-      if(a - b > 0) { } // GOOD [FALSE POSITIVE]
+      if(a - b > 0) { } // GOOD
     }
   }
 
   {
     int b = a >> get_uint32();
-    if(a - b > 0) { } // GOOD [FALSE POSITIVE]
+    if(a - b > 0) { } // GOOD
   }
 }
