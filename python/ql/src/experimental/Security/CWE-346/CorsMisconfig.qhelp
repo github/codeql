@@ -21,7 +21,7 @@
 	Cross-Origin request.
 </p>
 
-<sample src="insecure-cors-web.xml" />
+<sample src="test.py" />
 <references>
 	<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin">CORS, Access-Control-Allow-Origin</a>.</li>
 	<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials">CORS, Access-Control-Allow-Credentials</a>.</li>
