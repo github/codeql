@@ -400,6 +400,18 @@ class CastNode extends ExprNode {
   }
 }
 
+/** Holds if `n1` is the qualifier of a call to `clone()` and `n2` is the result. */
+predicate cloneStep(Node n1, Node n2) {
+  exists(MethodCall mc |
+    mc.getMethod() instanceof CloneMethod and
+    n1 = getInstanceArgument(mc) and
+    n2.asExpr() = mc
+  )
+}
+
+bindingset[node1, node2]
+predicate validParameterAliasStep(Node node1, Node node2) { not cloneStep(node1, node2) }
+
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
   TSummarizedCallable(SummarizedCallable c) or

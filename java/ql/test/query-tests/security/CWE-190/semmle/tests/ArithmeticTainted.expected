@@ -11,8 +11,8 @@ edges
 | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | provenance | MaD:42602 |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | provenance |  |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | provenance |  |
-| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance | MaD:42783 |
-| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance | MaD:42783 |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance | MaD:42780 |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | provenance | MaD:42780 |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:32:17:32:20 | data | provenance | TaintPreservingCallable |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:40:17:40:20 | data | provenance | TaintPreservingCallable |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:50:17:50:20 | data | provenance | TaintPreservingCallable |
