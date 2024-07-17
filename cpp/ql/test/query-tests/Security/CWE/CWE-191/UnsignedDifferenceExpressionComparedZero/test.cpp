@@ -321,3 +321,57 @@ void test19() {
 		total += get_data();
 	}
 }
+
+void test20(int a, bool b, unsigned long c)
+{
+  int x = 0;
+
+  if(b) {
+    x = (a - c) / 2;
+  } else {
+    x = a - c;
+  }
+
+  if (a - c - x > 0) // GOOD
+  {
+  }
+}
+
+uint32_t get_uint32();
+int64_t get_int64();
+
+void test21(unsigned long a)
+{
+  {
+    int b = a & get_int64();
+    if (a - b > 0) { } // GOOD
+  }
+
+  {
+  int b = a - get_uint32();
+  if(a - b > 0) { } // GOOD
+  }
+
+  {
+    int64_t c = get_int64();
+    if(c <= 0) {
+      int64_t b = (int64_t)a + c;
+      if(a - b > 0) { } // GOOD
+    }
+    int64_t b = (int64_t)a + c;
+    if(a - b > 0) { } // BAD
+  }
+
+  {
+    unsigned c = get_uint32();
+    if(c >= 1) {
+      int b = a / c;
+      if(a - b > 0) { } // GOOD
+    }
+  }
+
+  {
+    int b = a >> get_uint32();
+    if(a - b > 0) { } // GOOD
+  }
+}
