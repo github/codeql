@@ -26,6 +26,6 @@ where
   cookie.hasHttpOnlyFlag(false) and
   alert = "httponly"
   or
-  cookie.hasSameSiteFlag(false) and
+  cookie.hasSameSiteAttribute(any(Http::Server::CookieWrite::SameSiteNone v)) and
   alert = "samesite"
 select cookie, "Cookie is added without the '" + alert + "' flag properly set."

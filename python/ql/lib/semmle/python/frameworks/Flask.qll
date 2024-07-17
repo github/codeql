@@ -618,22 +618,25 @@ module Flask {
       b = false
     }
 
-    override predicate hasSameSiteFlag(boolean b) {
-      super.hasHttpOnlyFlag(b)
+    override predicate hasSameSiteAttribute(Http::Server::CookieWrite::SameSiteValue v) {
+      super.hasSameSiteAttribute(v)
       or
       exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
         DataFlow::localFlow(DataFlow::exprNode(str), arg) and
         (
-          str.getText().toLowerCase() = ["strict", "lax"] and
-          b = true
+          str.getText().toLowerCase() = "strict" and
+          v instanceof Http::Server::CookieWrite::SameSiteStrict
+          or
+          str.getText().toLowerCase() = "strict" and
+          v instanceof Http::Server::CookieWrite::SameSiteLax
           or
           str.getText().toLowerCase() = "none" and
-          b = false
+          v instanceof Http::Server::CookieWrite::SameSiteNone
         )
       )
       or
       not exists(this.getArgByName("samesite")) and
-      b = true // Lax is the default
+      v instanceof Http::Server::CookieWrite::SameSiteLax // Lax is the default
     }
   }
 

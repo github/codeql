@@ -18,7 +18,7 @@ class CookieSink extends DataFlow::Node {
         cookie.hasHttpOnlyFlag(false) and
         flag = "httponly"
         or
-        cookie.hasSameSiteFlag(false) and
+        cookie.hasSameSiteAttribute(any(Http::Server::CookieWrite::SameSiteNone v)) and
         flag = "samesite"
       )
     )

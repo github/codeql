@@ -1215,9 +1215,9 @@ module Http {
       predicate hasHttpOnlyFlag(boolean b) { super.hasHttpOnlyFlag(b) }
 
       /**
-       * Holds if the `SameSite` flag of the cookie is known to have a value of `b`.
+       * Holds if the `SameSite` attribute of the cookie is known to have a value of `v`.
        */
-      predicate hasSameSiteFlag(boolean b) { super.hasSameSiteFlag(b) }
+      predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) { super.hasSameSiteAttribute(v) }
     }
 
     /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -1288,32 +1288,62 @@ module Http {
         }
 
         /**
-         * Holds if the `SameSite` flag of the cookie is known to have a value of `b`.
+         * Holds if the `SameSite` flag of the cookie is known to have a value of `v`.
          */
-        // TODO: b could be a newtype with 3 values indicating Strict,Lax,or None
-        // currently, Strict and Lax are represented with true and None is represented with false.
-        predicate hasSameSiteFlag(boolean b) {
+        predicate hasSameSiteAttribute(SameSiteValue v) {
           exists(this.getHeaderArg()) and
           (
             exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax);.*") and
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=strict;.*") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
-              b = true
+              v instanceof SameSiteStrict
+            )
+            or
+            exists(StringLiteral sl |
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=lax;.*") and
+              TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+              v instanceof SameSiteLax
             )
             or
             exists(StringLiteral sl |
               sl.getText().regexpMatch("(?i).*;\\s*samesite=none;.*") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
-              b = false
+              v instanceof SameSiteNone
             )
             or
             exists(StringLiteral sl |
               not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none);.*") and
               DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
-              b = true // Lax is the default
+              v instanceof SameSiteLax // Lax is the default
             )
           )
         }
+      }
+
+      private newtype TSameSiteValue =
+        TSameSiteStrict() or
+        TSameSiteLax() or
+        TSameSiteNone()
+
+      /** A possible value for the SameSite attribute of a cookie. */
+      class SameSiteValue extends TSameSiteValue {
+        /** Gets a string representation of this value. */
+        string toString() { none() }
+      }
+
+      /** A `Strict` value of the `SameSite` attribute. */
+      class SameSiteStrict extends SameSiteValue, TSameSiteStrict {
+        override string toString() { result = "Strict" }
+      }
+
+      /** A `Lax` value of the `SameSite` attribute. */
+      class SameSiteLax extends SameSiteValue, TSameSiteLax {
+        override string toString() { result = "Lax" }
+      }
+
+      /** A `None` value of the `SameSite` attribute. */
+      class SameSiteNone extends SameSiteValue, TSameSiteNone {
+        override string toString() { result = "None" }
       }
     }
 

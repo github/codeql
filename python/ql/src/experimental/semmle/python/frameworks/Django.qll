@@ -141,18 +141,17 @@ private module ExperimentalPrivateDjango {
               else b = false
             }
 
-            override predicate hasSameSiteFlag(boolean b) {
-              if
-                exists(StringLiteral str |
-                  str.getText() in ["Strict", "Lax"] and
-                  DataFlow::exprNode(str)
-                      .(DataFlow::LocalSourceNode)
-                      .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
-                )
-              then b = true
-              else b = false
-            }
-
+            // override predicate hasSameSiteFlag(boolean b) {
+            //   if
+            //     exists(StringLiteral str |
+            //       str.getText() in ["Strict", "Lax"] and
+            //       DataFlow::exprNode(str)
+            //           .(DataFlow::LocalSourceNode)
+            //           .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
+            //     )
+            //   then b = true
+            //   else b = false
+            // }
             override DataFlow::Node getHeaderArg() { none() }
           }
         }

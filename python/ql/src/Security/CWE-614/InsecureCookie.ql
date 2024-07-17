@@ -26,7 +26,7 @@ predicate hasProblem(Http::Server::CookieWrite cookie, string alert, int idx) {
   alert = "HttpOnly" and
   idx = 1
   or
-  cookie.hasSameSiteFlag(false) and
+  cookie.hasSameSiteAttribute(any(Http::Server::CookieWrite::SameSiteNone v)) and
   alert = "SameSite" and
   idx = 2
 }
