@@ -196,12 +196,6 @@ extensions:
       - ["System.Configuration", "UriSection", False, "get_SchemeSettings", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: sourceModel
-    data:
-      - ["System.Configuration", "ApplicationSettingsBase", False, "GetPreviousVersion", "(System.String)", "", "ReturnValue", "file-write", "df-generated"]
-      - ["System.Configuration", "ApplicationSettingsBase", False, "GetPreviousVersion", "(System.String)", "", "ReturnValue", "file", "df-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Configuration", "AppSettingsSection", "IsModified", "()", "summary", "df-generated"]
