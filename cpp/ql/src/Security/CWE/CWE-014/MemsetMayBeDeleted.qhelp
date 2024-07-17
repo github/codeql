@@ -10,11 +10,12 @@ contains sensitive data that could somehow be retrieved by an attacker.</p>
 </overview>
 <recommendation>
 
-<p>Use alternative platform-supplied functions that will not get optimized away. Examples of such
-functions include <code>memset_s</code>, <code>SecureZeroMemory</code>, and <code>bzero_explicit</code>.
-Alternatively, passing the <code>-fno-builtin-memset</code> option to the GCC/Clang compiler usually
-also prevents the optimization. Finally, you can use the public-domain <code>secure_memzero</code> function
-(see references below). This function, however, is not guaranteed to work on all platforms and compilers.</p>
+<p>Use <code>memset_s</code> (from C11) instead of <code>memset</code>, as <code>memset_s</code> will not
+get optimized away. Alternatively use platform-supplied functions such as <code>SecureZeroMemory</code> or
+<code>bzero_explicit</code> that make the same guarantee. Passing the <code>-fno-builtin-memset</code>
+option to the GCC/Clang compiler usually also prevents the optimization. Finally, you can use the
+public-domain <code>secure_memzero</code> function (see references below). This function, however, is not
+guaranteed to work on all platforms and compilers.</p>
 
 </recommendation>
 <example>
