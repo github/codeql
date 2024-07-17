@@ -627,21 +627,6 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   override predicate hasExactModel() { summaryElement(this, _, _, _, _, _, true) }
 }
 
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-  boolean exact;
-
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_, exact) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-
-  override predicate hasExactModel() { exact = true }
-}
-
 /**
  * A callable where there exists a MaD sink model that applies to it.
  */

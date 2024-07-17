@@ -1,6 +1,7 @@
 private import java
 private import DataFlowPrivate
 private import DataFlowUtil
+private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as Impl
 private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch

@@ -16,6 +16,12 @@ private import semmle.code.csharp.dataflow.internal.ExternalFlow
 module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow> {
   class SummarizedCallableBase = UnboundCallable;
 
+  predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
+    interpretNeutral(c, kind, provenance) and
+    // isExact has not been implemented yet.
+    isExact = false
+  }
+
   ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
 
   ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }
