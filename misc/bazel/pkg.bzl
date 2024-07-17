@@ -140,6 +140,9 @@ def _zipmerge_impl(ctx):
         executable = ctx.executable._zipmerge,
         inputs = depset(zips, transitive = transitive_zips),
         arguments = args,
+        execution_requirements = {
+            "no-remote-cache": "1",
+        },
     )
 
     return [
