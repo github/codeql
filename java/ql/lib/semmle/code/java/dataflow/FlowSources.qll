@@ -20,7 +20,6 @@ import semmle.code.java.frameworks.android.Android
 import semmle.code.java.frameworks.android.ExternalStorage
 import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
-private import semmle.code.java.frameworks.Lastaflute
 import semmle.code.java.frameworks.play.Play
 import semmle.code.java.frameworks.spring.SpringWeb
 import semmle.code.java.frameworks.spring.SpringController
