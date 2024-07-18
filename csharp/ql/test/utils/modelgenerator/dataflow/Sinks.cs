@@ -20,6 +20,10 @@ public class NewSinks
     // neutral=Sinks;NewSinks;Sink2;(System.Object);summary;df-generated
     public static void Sink2(object o) => throw null;
 
+    // Defined as sink neutral in the file next to the neutral summary test.
+    // MISSING NEUTRAL
+    public static void NoSink(object o) => throw null;
+
     // New sink
     // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
     // neutral=Sinks;NewSinks;WrapResponseWrite;(System.Object);summary;df-generated
