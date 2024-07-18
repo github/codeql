@@ -1,3 +1,3 @@
 import go
 
-select any(RemoteFlowSource ufs)
+select any(RemoteFlowSource rfs)
