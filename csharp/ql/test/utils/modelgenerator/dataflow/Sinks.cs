@@ -21,7 +21,7 @@ public class NewSinks
     public static void Sink2(object o) => throw null;
 
     // Defined as sink neutral in the file next to the neutral summary test.
-    // MISSING NEUTRAL
+    // neutral=Sinks;NewSinks;NoSink;(System.Object);summary;df-generated
     public static void NoSink(object o) => throw null;
 
     // New sink

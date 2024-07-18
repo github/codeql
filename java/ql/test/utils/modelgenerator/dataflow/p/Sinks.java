@@ -23,7 +23,7 @@ public class Sinks {
 
   // Defined as sink neutral file in the model file next to the
   // neutral test.
-  // MISSING NEUTRAL.
+  // neutral=p;Sinks;nosink;(Object);summary;df-generated
   public void nosink(Object o) {}
 
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection;df-generated
