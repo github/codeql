@@ -1,0 +1,56 @@
+# This workflow creates a reminder to query authors to test their queries
+# in autofix.
+name: Autofix reminder
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+on:
+  pull_request:
+    branches:
+      - main
+      - "rc/*"
+    paths:
+      - "**/*.qhelp"
+      - "**/*.ql"
+      - "**/*.qll"
+      # This workflow
+      - ".github/workflows/autofix-reminder.yml"
+
+    workflow_dispatch:
+
+jobs:
+  autofix-reminder:
+    env:
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      PR_NUMBER: ${{ github.event.number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REQUIRES_AUTOFIX_LABEL: "Autofix Validation Required"
+      DOES_NOT_REQUIRE_AUTOFIX_LABEL: "No Autofix Validation Required"
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check existing labels
+        id: label_check
+        shell: bash
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/labels" | jq -r '.[].name' > labels.txt
+
+          if grep -q -x -e "${REQUIRES_AUTOFIX_LABEL}" labels.txt || grep -q -x -e "${DOES_NOT_REQUIRE_AUTOFIX_LABEL}" labels.txt; then
+            echo "Stopping workflow due to label presence."
+            echo "should_continue=false" >> $GITHUB_OUTPUT
+          else
+            echo "Add $REQUIRES_AUTOFIX_LABEL label."
+            echo "should_continue=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add label
+        if: steps.label_check.outputs.should_continue == 'true'
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/labels" -X POST -f "labels[]=$REQUIRES_AUTOFIX_LABEL"
+
+      - name: Comment on PR
+        if: steps.label_check.outputs.should_continue == 'true'
+        run: gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -X POST --field body="This pull request updates '.ql', '.qll', or '.qhelp' files, Please validate that autofixes generated based on these changes are valid. See [the documentation](https://github.com/github/codeql-team/blob/main/docs/best-practices/validating-autofix-for-query-changes.md) (internal access required). If autofix validation is not required, please add the label '${DOES_NOT_REQUIRE_AUTOFIX_LABEL}' to this pull request."

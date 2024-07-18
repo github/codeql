@@ -1,0 +1,41 @@
+# This workflow ensures that if the "No Autofix Validation Required" label is
+# added to a pull request, the "Autofix Validation Required" label is removed.
+name: Autofix Label Manager
+
+on:
+  pull_request_target:
+    types: [labeled]
+
+  # Allows manual triggering of the workflow for testing
+  workflow_dispatch:
+
+jobs:
+  check-to-remove-autofix-label:
+    env:
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      PR_NUMBER: ${{ github.event.number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REQUIRES_AUTOFIX_LABEL: "Autofix Validation Required"
+      DOES_NOT_REQUIRE_AUTOFIX_LABEL: "No Autofix Validation Required"
+      LABEL_ADDED: ${{ github.event.label.name }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if label "No Autofix Validation Required" is added
+        shell: bash
+        run: |
+          if [ "$LABEL_ADDED" != "$DOES_NOT_REQUIRE_AUTOFIX_LABEL" ]; then
+            echo "Label $DOES_NOT_REQUIRE_AUTOFIX_LABEL was not added."
+            exit 0
+          fi
+
+          echo "Label $DOES_NOT_REQUIRE_AUTOFIX_LABEL was added."
+
+          # Check if Label $REQUIRES_AUTOFIX_LABEL exists and remove it
+          REQUIRES_AUTOFIX_LABEL_EXISTS=$(gh api /repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/labels | jq --arg label "Autofix Validation Required" '.[] | select(.name==$label) | .name')
+          if [ "$REQUIRES_AUTOFIX_LABEL_EXISTS" == "$REQUIRES_AUTOFIX_LABEL" ]; then
+            gh api -X DELETE "/repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/labels/$REQUIRES_AUTOFIX_LABEL"
+            echo "$REQUIRES_AUTOFIX_LABEL Label removed."
+          else
+            echo "$REQUIRES_AUTOFIX_LABEL Label does not exist or was already removed."
+          fi
