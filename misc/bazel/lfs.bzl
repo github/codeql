@@ -15,6 +15,20 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
             fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
         return res.stdout.splitlines()
 
+    def _download_aria2c(url, sha256, basename):
+        cmd = [
+            "aria2c",
+            "--split=20",
+            "--min-split-size=10M",
+            "--checksum=sha-256=" + sha256,
+            "--max-connection-per-server=16",
+            "-o",
+            basename,
+            url,
+        ]
+        # repository_ctx.execute(cmd)
+        repository_ctx.download(url, basename)
+
     for src in srcs:
         repository_ctx.watch(src)
     infos = probe(srcs, hash_only = True)
@@ -25,15 +39,20 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
             repository_ctx.symlink(src, src.basename)
         else:
             repository_ctx.report_progress("trying cache for remote %s" % src.basename)
-            res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True, executable = executable)
-            if not res.success:
-                remote.append(src)
+
+            # res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True, executable = executable)
+            # if not res.success:
+            remote.append(src)
         if remote:
             infos = probe(remote)
             for src, info in zip(remote, infos):
                 sha256, _, url = info.partition(" ")
                 repository_ctx.report_progress("downloading remote %s" % src.basename)
-                repository_ctx.download(url, src.basename, sha256 = sha256, executable = executable)
+                _download_aria2c(url, sha256, src.basename)
+                if executable:
+                    repository_ctx.execute(["chmod", "+x", src.basename])
+                # repository_ctx.download(url, src.basename, sha256 = sha256, executable = executable)
+
         if extract:
             for src in srcs:
                 repository_ctx.report_progress("extracting %s" % src.basename)
