@@ -400,20 +400,17 @@ class CastNode extends ExprNode {
   }
 }
 
-private predicate id_member(Member x, Member y) { x = y }
-
-private predicate idOf_member(Member x, int y) = equivalenceRelation(id_member/2)(x, y)
-
-private int summarizedCallableId(SummarizedCallable c) {
-  c =
-    rank[result](SummarizedCallable c0, int b, int i, string s |
-      b = 0 and idOf_member(c0.asCallable(), i) and s = ""
-      or
-      b = 1 and i = 0 and s = c0.asSyntheticCallable()
-    |
-      c0 order by b, i, s
-    )
+/** Holds if `n1` is the qualifier of a call to `clone()` and `n2` is the result. */
+predicate cloneStep(Node n1, Node n2) {
+  exists(MethodCall mc |
+    mc.getMethod() instanceof CloneMethod and
+    n1 = getInstanceArgument(mc) and
+    n2.asExpr() = mc
+  )
 }
+
+bindingset[node1, node2]
+predicate validParameterAliasStep(Node node1, Node node2) { not cloneStep(node1, node2) }
 
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
@@ -448,27 +445,9 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSummarizedCallable().getLocation() or
     result = this.asFieldScope().getLocation()
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, int b, int i |
-        b = 0 and idOf_member(c.asCallable(), i)
-        or
-        b = 1 and i = summarizedCallableId(c.asSummarizedCallable())
-        or
-        b = 2 and idOf_member(c.asFieldScope(), i)
-      |
-        c order by b, i
-      )
-  }
 }
 
 class DataFlowExpr = Expr;
-
-private predicate id_call(Call x, Call y) { x = y }
-
-private predicate idOf_call(Call x, int y) = equivalenceRelation(id_call/2)(x, y)
 
 private newtype TDataFlowCall =
   TCall(Call c) or
@@ -501,19 +480,6 @@ class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int b, int i |
-        b = 0 and idOf_call(c.asCall(), i)
-        or
-        b = 1 and // not guaranteed to be total
-        exists(SummarizedCallable sc | c = TSummaryCall(sc, _) and i = summarizedCallableId(sc))
-      |
-        c order by b, i
-      )
   }
 }
 
@@ -549,16 +515,10 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
-private predicate id(BasicBlock x, BasicBlock y) { x = y }
-
-private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
-
 class NodeRegion instanceof BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { n.asExpr().getBasicBlock() = this }
-
-  int totalOrder() { idOf(this, result) }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */

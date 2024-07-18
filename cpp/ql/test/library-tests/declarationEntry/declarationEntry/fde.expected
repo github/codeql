@@ -6,10 +6,6 @@
 | declarationEntry.c:17:6:17:21 | declaration of myFourthFunction |  | 1 | c_linkage |
 | declarationEntry.cpp:9:6:9:15 | declaration of myFunction |  | 0 |  |
 | declarationEntry.cpp:11:6:11:15 | definition of myFunction |  | 0 |  |
-| declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
-| declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
-| declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
-| declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
 | declarationEntry.cpp:39:7:39:7 | declaration of operator= |  | 0 |  |
 | declarationEntry.cpp:39:7:39:7 | declaration of operator= |  | 0 |  |
 | macro.c:2:1:2:3 | declaration of foo |  | 2 | c_linkage, static |

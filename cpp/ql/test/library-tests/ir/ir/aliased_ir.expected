@@ -5263,20 +5263,23 @@ ir.cpp:
 
 #  486| void Conditional_LValue(bool)
 #  486|   Block 0
-#  486|     v486_1(void)        = EnterFunction          : 
-#  486|     m486_2(unknown)     = AliasedDefinition      : 
-#  486|     m486_3(unknown)     = InitializeNonLocal     : 
-#  486|     m486_4(unknown)     = Chi                    : total:m486_2, partial:m486_3
-#  486|     r486_5(glval<bool>) = VariableAddress[a]     : 
-#  486|     m486_6(bool)        = InitializeParameter[a] : &:r486_5
-#  487|     r487_1(glval<int>)  = VariableAddress[x]     : 
-#  487|     m487_2(int)         = Uninitialized[x]       : &:r487_1
-#  488|     r488_1(glval<int>)  = VariableAddress[y]     : 
-#  488|     m488_2(int)         = Uninitialized[y]       : &:r488_1
-#  489|     r489_1(int)         = Constant[5]            : 
-#  489|     r489_2(glval<bool>) = VariableAddress[a]     : 
-#  489|     r489_3(bool)        = Load[a]                : &:r489_2, m486_6
-#  489|     v489_4(void)        = ConditionalBranch      : r489_3
+#  486|     v486_1(void)        = EnterFunction           : 
+#  486|     m486_2(unknown)     = AliasedDefinition       : 
+#  486|     m486_3(unknown)     = InitializeNonLocal      : 
+#  486|     m486_4(unknown)     = Chi                     : total:m486_2, partial:m486_3
+#  486|     m486_5(int)         = UninitializedGroup[x,y] : 
+#  486|     r486_6(glval<bool>) = VariableAddress[a]      : 
+#  486|     m486_7(bool)        = InitializeParameter[a]  : &:r486_6
+#  487|     r487_1(glval<int>)  = VariableAddress[x]      : 
+#  487|     m487_2(int)         = Uninitialized[x]        : &:r487_1
+#  487|     m487_3(int)         = Chi                     : total:m486_5, partial:m487_2
+#  488|     r488_1(glval<int>)  = VariableAddress[y]      : 
+#  488|     m488_2(int)         = Uninitialized[y]        : &:r488_1
+#  488|     m488_3(int)         = Chi                     : total:m487_3, partial:m488_2
+#  489|     r489_1(int)         = Constant[5]             : 
+#  489|     r489_2(glval<bool>) = VariableAddress[a]      : 
+#  489|     r489_3(bool)        = Load[a]                 : &:r489_2, m486_7
+#  489|     v489_4(void)        = ConditionalBranch       : r489_3
 #-----|   False -> Block 3
 #-----|   True -> Block 2
 
@@ -5285,11 +5288,11 @@ ir.cpp:
 #  489|     r489_6(glval<unknown>) = VariableAddress[#temp489:6] : 
 #  489|     r489_7(glval<int>)     = Load[#temp489:6]            : &:r489_6, m489_5
 #  489|     m489_8(int)            = Store[?]                    : &:r489_7, r489_1
-#  489|     m489_9(unknown)        = Chi                         : total:m486_4, partial:m489_8
+#  489|     m489_9(int)            = Chi                         : total:m488_3, partial:m489_8
 #  490|     v490_1(void)           = NoOp                        : 
-#  486|     v486_7(void)           = ReturnVoid                  : 
-#  486|     v486_8(void)           = AliasedUse                  : ~m489_9
-#  486|     v486_9(void)           = ExitFunction                : 
+#  486|     v486_8(void)           = ReturnVoid                  : 
+#  486|     v486_9(void)           = AliasedUse                  : m486_3
+#  486|     v486_10(void)          = ExitFunction                : 
 
 #  489|   Block 2
 #  489|     r489_10(glval<int>)     = VariableAddress[x]          : 
@@ -14072,21 +14075,24 @@ ir.cpp:
 
 # 2059| void TernaryTestInt(bool, int, int, int)
 # 2059|   Block 0
-# 2059|     v2059_1(void)        = EnterFunction          : 
-# 2059|     m2059_2(unknown)     = AliasedDefinition      : 
-# 2059|     m2059_3(unknown)     = InitializeNonLocal     : 
-# 2059|     m2059_4(unknown)     = Chi                    : total:m2059_2, partial:m2059_3
-# 2059|     r2059_5(glval<bool>) = VariableAddress[a]     : 
-# 2059|     m2059_6(bool)        = InitializeParameter[a] : &:r2059_5
-# 2059|     r2059_7(glval<int>)  = VariableAddress[x]     : 
-# 2059|     m2059_8(int)         = InitializeParameter[x] : &:r2059_7
-# 2059|     r2059_9(glval<int>)  = VariableAddress[y]     : 
-# 2059|     m2059_10(int)        = InitializeParameter[y] : &:r2059_9
-# 2059|     r2059_11(glval<int>) = VariableAddress[z]     : 
-# 2059|     m2059_12(int)        = InitializeParameter[z] : &:r2059_11
-# 2060|     r2060_1(glval<bool>) = VariableAddress[a]     : 
-# 2060|     r2060_2(bool)        = Load[a]                : &:r2060_1, m2059_6
-# 2060|     v2060_3(void)        = ConditionalBranch      : r2060_2
+# 2059|     v2059_1(void)        = EnterFunction           : 
+# 2059|     m2059_2(unknown)     = AliasedDefinition       : 
+# 2059|     m2059_3(unknown)     = InitializeNonLocal      : 
+# 2059|     m2059_4(unknown)     = Chi                     : total:m2059_2, partial:m2059_3
+# 2059|     m2059_5(int)         = UninitializedGroup[x,y] : 
+# 2059|     r2059_6(glval<bool>) = VariableAddress[a]      : 
+# 2059|     m2059_7(bool)        = InitializeParameter[a]  : &:r2059_6
+# 2059|     r2059_8(glval<int>)  = VariableAddress[x]      : 
+# 2059|     m2059_9(int)         = InitializeParameter[x]  : &:r2059_8
+# 2059|     m2059_10(int)        = Chi                     : total:m2059_5, partial:m2059_9
+# 2059|     r2059_11(glval<int>) = VariableAddress[y]      : 
+# 2059|     m2059_12(int)        = InitializeParameter[y]  : &:r2059_11
+# 2059|     m2059_13(int)        = Chi                     : total:m2059_10, partial:m2059_12
+# 2059|     r2059_14(glval<int>) = VariableAddress[z]      : 
+# 2059|     m2059_15(int)        = InitializeParameter[z]  : &:r2059_14
+# 2060|     r2060_1(glval<bool>) = VariableAddress[a]      : 
+# 2060|     r2060_2(bool)        = Load[a]                 : &:r2060_1, m2059_7
+# 2060|     v2060_3(void)        = ConditionalBranch       : r2060_2
 #-----|   False -> Block 3
 #-----|   True -> Block 2
 
@@ -14097,21 +14103,21 @@ ir.cpp:
 # 2060|     r2060_7(glval<int>)  = VariableAddress[z]           : 
 # 2060|     m2060_8(int)         = Store[z]                     : &:r2060_7, r2060_6
 # 2061|     r2061_1(glval<bool>) = VariableAddress[a]           : 
-# 2061|     r2061_2(bool)        = Load[a]                      : &:r2061_1, m2059_6
+# 2061|     r2061_2(bool)        = Load[a]                      : &:r2061_1, m2059_7
 # 2061|     v2061_3(void)        = ConditionalBranch            : r2061_2
 #-----|   False -> Block 6
 #-----|   True -> Block 5
 
 # 2060|   Block 2
 # 2060|     r2060_9(glval<int>)  = VariableAddress[x]           : 
-# 2060|     r2060_10(int)        = Load[x]                      : &:r2060_9, m2059_8
+# 2060|     r2060_10(int)        = Load[x]                      : &:r2060_9, m2059_9
 # 2060|     r2060_11(glval<int>) = VariableAddress[#temp2060:9] : 
 # 2060|     m2060_12(int)        = Store[#temp2060:9]           : &:r2060_11, r2060_10
 #-----|   Goto -> Block 1
 
 # 2060|   Block 3
 # 2060|     r2060_13(glval<int>) = VariableAddress[y]           : 
-# 2060|     r2060_14(int)        = Load[y]                      : &:r2060_13, m2059_10
+# 2060|     r2060_14(int)        = Load[y]                      : &:r2060_13, m2059_12
 # 2060|     r2060_15(glval<int>) = VariableAddress[#temp2060:9] : 
 # 2060|     m2060_16(int)        = Store[#temp2060:9]           : &:r2060_15, r2060_14
 #-----|   Goto -> Block 1
@@ -14123,14 +14129,14 @@ ir.cpp:
 # 2061|     r2061_7(glval<int>)  = VariableAddress[z]           : 
 # 2061|     m2061_8(int)         = Store[z]                     : &:r2061_7, r2061_6
 # 2062|     r2062_1(glval<bool>) = VariableAddress[a]           : 
-# 2062|     r2062_2(bool)        = Load[a]                      : &:r2062_1, m2059_6
+# 2062|     r2062_2(bool)        = Load[a]                      : &:r2062_1, m2059_7
 # 2062|     v2062_3(void)        = ConditionalBranch            : r2062_2
 #-----|   False -> Block 9
 #-----|   True -> Block 8
 
 # 2061|   Block 5
 # 2061|     r2061_9(glval<int>)  = VariableAddress[x]           : 
-# 2061|     r2061_10(int)        = Load[x]                      : &:r2061_9, m2059_8
+# 2061|     r2061_10(int)        = Load[x]                      : &:r2061_9, m2059_9
 # 2061|     r2061_11(glval<int>) = VariableAddress[#temp2061:9] : 
 # 2061|     m2061_12(int)        = Store[#temp2061:9]           : &:r2061_11, r2061_10
 #-----|   Goto -> Block 4
@@ -14149,7 +14155,7 @@ ir.cpp:
 # 2062|     m2062_8(int)         = Store[z]                     : &:r2062_7, r2062_6
 # 2063|     r2063_1(int)         = Constant[7]                  : 
 # 2063|     r2063_2(glval<bool>) = VariableAddress[a]           : 
-# 2063|     r2063_3(bool)        = Load[a]                      : &:r2063_2, m2059_6
+# 2063|     r2063_3(bool)        = Load[a]                      : &:r2063_2, m2059_7
 # 2063|     v2063_4(void)        = ConditionalBranch            : r2063_3
 #-----|   False -> Block 12
 #-----|   True -> Block 11
@@ -14171,11 +14177,11 @@ ir.cpp:
 # 2063|     r2063_6(glval<unknown>) = VariableAddress[#temp2063:6] : 
 # 2063|     r2063_7(glval<int>)     = Load[#temp2063:6]            : &:r2063_6, m2063_5
 # 2063|     m2063_8(int)            = Store[?]                     : &:r2063_7, r2063_1
-# 2063|     m2063_9(unknown)        = Chi                          : total:m2059_4, partial:m2063_8
+# 2063|     m2063_9(int)            = Chi                          : total:m2059_13, partial:m2063_8
 # 2064|     v2064_1(void)           = NoOp                         : 
-# 2059|     v2059_13(void)          = ReturnVoid                   : 
-# 2059|     v2059_14(void)          = AliasedUse                   : ~m2063_9
-# 2059|     v2059_15(void)          = ExitFunction                 : 
+# 2059|     v2059_16(void)          = ReturnVoid                   : 
+# 2059|     v2059_17(void)          = AliasedUse                   : m2059_3
+# 2059|     v2059_18(void)          = ExitFunction                 : 
 
 # 2063|   Block 11
 # 2063|     r2063_10(glval<int>)     = VariableAddress[x]           : 
@@ -14419,18 +14425,21 @@ ir.cpp:
 # 2080|     m2080_2(unknown)                  = AliasedDefinition          : 
 # 2080|     m2080_3(unknown)                  = InitializeNonLocal         : 
 # 2080|     m2080_4(unknown)                  = Chi                        : total:m2080_2, partial:m2080_3
-# 2080|     r2080_5(glval<bool>)              = VariableAddress[a]         : 
-# 2080|     m2080_6(bool)                     = InitializeParameter[a]     : &:r2080_5
-# 2080|     r2080_7(glval<TernaryNonPodObj>)  = VariableAddress[x]         : 
-# 2080|     m2080_8(TernaryNonPodObj)         = InitializeParameter[x]     : &:r2080_7
-# 2080|     r2080_9(glval<TernaryNonPodObj>)  = VariableAddress[y]         : 
-# 2080|     m2080_10(TernaryNonPodObj)        = InitializeParameter[y]     : &:r2080_9
-# 2080|     r2080_11(glval<TernaryNonPodObj>) = VariableAddress[z]         : 
-# 2080|     m2080_12(TernaryNonPodObj)        = InitializeParameter[z]     : &:r2080_11
+# 2080|     m2080_5(unknown)                  = UninitializedGroup[x,y]    : 
+# 2080|     r2080_6(glval<bool>)              = VariableAddress[a]         : 
+# 2080|     m2080_7(bool)                     = InitializeParameter[a]     : &:r2080_6
+# 2080|     r2080_8(glval<TernaryNonPodObj>)  = VariableAddress[x]         : 
+# 2080|     m2080_9(TernaryNonPodObj)         = InitializeParameter[x]     : &:r2080_8
+# 2080|     m2080_10(unknown)                 = Chi                        : total:m2080_5, partial:m2080_9
+# 2080|     r2080_11(glval<TernaryNonPodObj>) = VariableAddress[y]         : 
+# 2080|     m2080_12(TernaryNonPodObj)        = InitializeParameter[y]     : &:r2080_11
+# 2080|     m2080_13(unknown)                 = Chi                        : total:m2080_10, partial:m2080_12
+# 2080|     r2080_14(glval<TernaryNonPodObj>) = VariableAddress[z]         : 
+# 2080|     m2080_15(TernaryNonPodObj)        = InitializeParameter[z]     : &:r2080_14
 # 2081|     r2081_1(glval<TernaryNonPodObj>)  = VariableAddress[z]         : 
 # 2081|     r2081_2(glval<unknown>)           = FunctionAddress[operator=] : 
 # 2081|     r2081_3(glval<bool>)              = VariableAddress[a]         : 
-# 2081|     r2081_4(bool)                     = Load[a]                    : &:r2081_3, m2080_6
+# 2081|     r2081_4(bool)                     = Load[a]                    : &:r2081_3, m2080_7
 # 2081|     v2081_5(void)                     = ConditionalBranch          : r2081_4
 #-----|   False -> Block 3
 #-----|   True -> Block 2
@@ -14444,16 +14453,16 @@ ir.cpp:
 # 2081|     r2081_11(TernaryNonPodObj &)      = Call[operator=]                 : func:r2081_2, this:r2081_1, 0:r2081_10
 # 2081|     m2081_12(unknown)                 = ^CallSideEffect                 : ~m2080_4
 # 2081|     m2081_13(unknown)                 = Chi                             : total:m2080_4, partial:m2081_12
-# 2081|     v2081_14(void)                    = ^IndirectReadSideEffect[-1]     : &:r2081_1, m2080_12
-# 2081|     v2081_15(void)                    = ^BufferReadSideEffect[0]        : &:r2081_10, ~m2081_13
+# 2081|     v2081_14(void)                    = ^IndirectReadSideEffect[-1]     : &:r2081_1, m2080_15
+# 2081|     v2081_15(void)                    = ^BufferReadSideEffect[0]        : &:r2081_10, ~m2080_13
 # 2081|     m2081_16(TernaryNonPodObj)        = ^IndirectMayWriteSideEffect[-1] : &:r2081_1
-# 2081|     m2081_17(TernaryNonPodObj)        = Chi                             : total:m2080_12, partial:m2081_16
+# 2081|     m2081_17(TernaryNonPodObj)        = Chi                             : total:m2080_15, partial:m2081_16
 # 2081|     r2081_18(glval<TernaryNonPodObj>) = CopyValue                       : r2081_11
 # 2082|     r2082_1(glval<TernaryNonPodObj>)  = VariableAddress[z]              : 
 # 2082|     r2082_2(glval<unknown>)           = FunctionAddress[operator=]      : 
 # 2082|     r2082_3(glval<TernaryNonPodObj>)  = VariableAddress[#temp2082:9]    : 
 # 2082|     r2082_4(glval<bool>)              = VariableAddress[a]              : 
-# 2082|     r2082_5(bool)                     = Load[a]                         : &:r2082_4, m2080_6
+# 2082|     r2082_5(bool)                     = Load[a]                         : &:r2082_4, m2080_7
 # 2082|     v2082_6(void)                     = ConditionalBranch               : r2082_5
 #-----|   False -> Block 6
 #-----|   True -> Block 5
@@ -14499,7 +14508,7 @@ ir.cpp:
 # 2083|     r2083_2(glval<unknown>)           = FunctionAddress[operator=]         : 
 # 2083|     r2083_3(glval<TernaryNonPodObj>)  = VariableAddress[#temp2083:9]       : 
 # 2083|     r2083_4(glval<bool>)              = VariableAddress[a]                 : 
-# 2083|     r2083_5(bool)                     = Load[a]                            : &:r2083_4, m2080_6
+# 2083|     r2083_5(bool)                     = Load[a]                            : &:r2083_4, m2080_7
 # 2083|     v2083_6(void)                     = ConditionalBranch                  : r2083_5
 #-----|   False -> Block 9
 #-----|   True -> Block 8
@@ -14514,7 +14523,7 @@ ir.cpp:
 # 2082|     v2082_37(void)                    = Call[TernaryNonPodObj]            : func:r2082_33, this:r2082_31, 0:r2082_36
 # 2082|     m2082_38(unknown)                 = ^CallSideEffect                   : ~m2081_13
 # 2082|     m2082_39(unknown)                 = Chi                               : total:m2081_13, partial:m2082_38
-# 2082|     v2082_40(void)                    = ^BufferReadSideEffect[0]          : &:r2082_36, ~m2080_8
+# 2082|     v2082_40(void)                    = ^BufferReadSideEffect[0]          : &:r2082_36, ~m2080_9
 # 2082|     m2082_41(TernaryNonPodObj)        = ^IndirectMayWriteSideEffect[-1]   : &:r2082_31
 # 2082|     m2082_42(TernaryNonPodObj)        = Chi                               : total:m2082_32, partial:m2082_41
 # 2082|     r2082_43(TernaryNonPodObj)        = Load[#temp2082:13]                : &:r2082_31, m2082_42
@@ -14564,7 +14573,7 @@ ir.cpp:
 # 2084|     r2084_1(glval<TernaryNonPodObj>)  = VariableAddress[z]                 : 
 # 2084|     r2084_2(glval<unknown>)           = FunctionAddress[operator=]         : 
 # 2084|     r2084_3(glval<bool>)              = VariableAddress[a]                 : 
-# 2084|     r2084_4(bool)                     = Load[a]                            : &:r2084_3, m2080_6
+# 2084|     r2084_4(bool)                     = Load[a]                            : &:r2084_3, m2080_7
 # 2084|     v2084_5(void)                     = ConditionalBranch                  : r2084_4
 #-----|   False -> Block 12
 #-----|   True -> Block 11
@@ -14607,7 +14616,7 @@ ir.cpp:
 # 2084|     m2084_12(unknown)                 = ^CallSideEffect                    : ~m2083_29
 # 2084|     m2084_13(unknown)                 = Chi                                : total:m2083_29, partial:m2084_12
 # 2084|     v2084_14(void)                    = ^IndirectReadSideEffect[-1]        : &:r2084_1, m2083_21
-# 2084|     v2084_15(void)                    = ^BufferReadSideEffect[0]           : &:r2084_10, ~m2084_13
+# 2084|     v2084_15(void)                    = ^BufferReadSideEffect[0]           : &:r2084_10, ~m2080_13
 # 2084|     m2084_16(TernaryNonPodObj)        = ^IndirectMayWriteSideEffect[-1]    : &:r2084_1
 # 2084|     m2084_17(TernaryNonPodObj)        = Chi                                : total:m2083_21, partial:m2084_16
 # 2084|     r2084_18(glval<TernaryNonPodObj>) = CopyValue                          : r2084_11
@@ -14640,9 +14649,9 @@ ir.cpp:
 # 2084|     m2084_45(unknown)                 = Chi                                : total:m2084_42, partial:m2084_44
 # 2084|     r2084_46(glval<TernaryNonPodObj>) = CopyValue                          : r2084_31
 # 2085|     v2085_1(void)                     = NoOp                               : 
-# 2080|     v2080_13(void)                    = ReturnVoid                         : 
-# 2080|     v2080_14(void)                    = AliasedUse                         : ~m2084_42
-# 2080|     v2080_15(void)                    = ExitFunction                       : 
+# 2080|     v2080_16(void)                    = ReturnVoid                         : 
+# 2080|     v2080_17(void)                    = AliasedUse                         : ~m2084_42
+# 2080|     v2080_18(void)                    = ExitFunction                       : 
 
 # 2084|   Block 11
 # 2084|     r2084_47(glval<TernaryNonPodObj>) = VariableAddress[x]            : 
@@ -18394,6 +18403,534 @@ ir.cpp:
 # 2555|     v2555_7(void)                 = ReturnVoid                  : 
 # 2555|     v2555_8(void)                 = AliasedUse                  : m2555_3
 # 2555|     v2555_9(void)                 = ExitFunction                : 
+
+# 2559| void p_points_to_x_or_y(int, int)
+# 2559|   Block 0
+# 2559|     v2559_1(void)         = EnterFunction           : 
+# 2559|     m2559_2(unknown)      = AliasedDefinition       : 
+# 2559|     m2559_3(unknown)      = InitializeNonLocal      : 
+# 2559|     m2559_4(unknown)      = Chi                     : total:m2559_2, partial:m2559_3
+# 2559|     m2559_5(int)          = UninitializedGroup[x,y] : 
+# 2559|     r2559_6(glval<int>)   = VariableAddress[a]      : 
+# 2559|     m2559_7(int)          = InitializeParameter[a]  : &:r2559_6
+# 2559|     r2559_8(glval<int>)   = VariableAddress[b]      : 
+# 2559|     m2559_9(int)          = InitializeParameter[b]  : &:r2559_8
+# 2560|     r2560_1(glval<int>)   = VariableAddress[x]      : 
+# 2560|     m2560_2(int)          = Uninitialized[x]        : &:r2560_1
+# 2560|     m2560_3(int)          = Chi                     : total:m2559_5, partial:m2560_2
+# 2561|     r2561_1(glval<int>)   = VariableAddress[y]      : 
+# 2561|     m2561_2(int)          = Uninitialized[y]        : &:r2561_1
+# 2561|     m2561_3(int)          = Chi                     : total:m2560_3, partial:m2561_2
+# 2562|     r2562_1(glval<int *>) = VariableAddress[p]      : 
+# 2562|     m2562_2(int *)        = Uninitialized[p]        : &:r2562_1
+# 2563|     r2563_1(glval<int>)   = VariableAddress[a]      : 
+# 2563|     r2563_2(int)          = Load[a]                 : &:r2563_1, m2559_7
+# 2563|     r2563_3(glval<int>)   = VariableAddress[b]      : 
+# 2563|     r2563_4(int)          = Load[b]                 : &:r2563_3, m2559_9
+# 2563|     r2563_5(bool)         = CompareLT               : r2563_2, r2563_4
+# 2563|     v2563_6(void)         = ConditionalBranch       : r2563_5
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2564|   Block 1
+# 2564|     r2564_1(glval<int>)   = VariableAddress[x] : 
+# 2564|     r2564_2(int *)        = CopyValue          : r2564_1
+# 2564|     r2564_3(glval<int *>) = VariableAddress[p] : 
+# 2564|     m2564_4(int *)        = Store[p]           : &:r2564_3, r2564_2
+#-----|   Goto -> Block 3
+
+# 2566|   Block 2
+# 2566|     r2566_1(glval<int>)   = VariableAddress[y] : 
+# 2566|     r2566_2(int *)        = CopyValue          : r2566_1
+# 2566|     r2566_3(glval<int *>) = VariableAddress[p] : 
+# 2566|     m2566_4(int *)        = Store[p]           : &:r2566_3, r2566_2
+#-----|   Goto -> Block 3
+
+# 2568|   Block 3
+# 2568|     m2568_1(int *)        = Phi                : from 1:m2564_4, from 2:m2566_4
+# 2568|     r2568_2(int)          = Constant[5]        : 
+# 2568|     r2568_3(glval<int *>) = VariableAddress[p] : 
+# 2568|     r2568_4(int *)        = Load[p]            : &:r2568_3, m2568_1
+# 2568|     r2568_5(glval<int>)   = CopyValue          : r2568_4
+# 2568|     m2568_6(int)          = Store[?]           : &:r2568_5, r2568_2
+# 2568|     m2568_7(int)          = Chi                : total:m2561_3, partial:m2568_6
+# 2569|     r2569_1(glval<int>)   = VariableAddress[z] : 
+# 2569|     r2569_2(glval<int>)   = VariableAddress[x] : 
+# 2569|     r2569_3(int)          = Load[x]            : &:r2569_2, ~m2568_7
+# 2569|     m2569_4(int)          = Store[z]           : &:r2569_1, r2569_3
+# 2570|     r2570_1(glval<int>)   = VariableAddress[w] : 
+# 2570|     r2570_2(glval<int>)   = VariableAddress[y] : 
+# 2570|     r2570_3(int)          = Load[y]            : &:r2570_2, ~m2568_7
+# 2570|     m2570_4(int)          = Store[w]           : &:r2570_1, r2570_3
+# 2571|     v2571_1(void)         = NoOp               : 
+# 2559|     v2559_10(void)        = ReturnVoid         : 
+# 2559|     v2559_11(void)        = AliasedUse         : m2559_3
+# 2559|     v2559_12(void)        = ExitFunction       : 
+
+# 2573| int phi_after_while()
+# 2573|   Block 0
+# 2573|     v2573_1(void)         = EnterFunction           : 
+# 2573|     m2573_2(unknown)      = AliasedDefinition       : 
+# 2573|     m2573_3(unknown)      = InitializeNonLocal      : 
+# 2573|     m2573_4(unknown)      = Chi                     : total:m2573_2, partial:m2573_3
+# 2573|     m2573_5(int)          = UninitializedGroup[r,s] : 
+# 2574|     r2574_1(glval<int>)   = VariableAddress[r]      : 
+# 2574|     m2574_2(int)          = Uninitialized[r]        : &:r2574_1
+# 2574|     m2574_3(int)          = Chi                     : total:m2573_5, partial:m2574_2
+# 2575|     r2575_1(glval<int *>) = VariableAddress[rP]     : 
+# 2575|     r2575_2(glval<int>)   = VariableAddress[r]      : 
+# 2575|     r2575_3(int *)        = CopyValue               : r2575_2
+# 2575|     m2575_4(int *)        = Store[rP]               : &:r2575_1, r2575_3
+#-----|   Goto -> Block 1
+
+# 2577|   Block 1
+# 2577|     m2577_1(int)            = Phi                         : from 0:m2574_3, from 2:m2579_7
+# 2577|     m2577_2(unknown)        = Phi                         : from 0:~m2573_4, from 2:~m2577_7
+# 2577|     m2577_3(int *)          = Phi                         : from 0:m2575_4, from 2:m2580_4
+# 2577|     r2577_4(glval<unknown>) = FunctionAddress[predicateA] : 
+# 2577|     r2577_5(bool)           = Call[predicateA]            : func:r2577_4
+# 2577|     m2577_6(unknown)        = ^CallSideEffect             : ~m2577_2
+# 2577|     m2577_7(unknown)        = Chi                         : total:m2577_2, partial:m2577_6
+# 2577|     v2577_8(void)           = ConditionalBranch           : r2577_5
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 2578|   Block 2
+# 2578|     r2578_1(glval<int>)   = VariableAddress[s]  : 
+# 2578|     r2578_2(int)          = Constant[0]         : 
+# 2578|     m2578_3(int)          = Store[s]            : &:r2578_1, r2578_2
+# 2578|     m2578_4(int)          = Chi                 : total:m2577_1, partial:m2578_3
+# 2579|     r2579_1(glval<int>)   = VariableAddress[s]  : 
+# 2579|     r2579_2(int)          = Load[s]             : &:r2579_1, m2578_3
+# 2579|     r2579_3(glval<int *>) = VariableAddress[rP] : 
+# 2579|     r2579_4(int *)        = Load[rP]            : &:r2579_3, m2577_3
+# 2579|     r2579_5(glval<int>)   = CopyValue           : r2579_4
+# 2579|     m2579_6(int)          = Store[?]            : &:r2579_5, r2579_2
+# 2579|     m2579_7(int)          = Chi                 : total:m2578_4, partial:m2579_6
+# 2580|     r2580_1(glval<int>)   = VariableAddress[s]  : 
+# 2580|     r2580_2(int *)        = CopyValue           : r2580_1
+# 2580|     r2580_3(glval<int *>) = VariableAddress[rP] : 
+# 2580|     m2580_4(int *)        = Store[rP]           : &:r2580_3, r2580_2
+#-----|   Goto (back edge) -> Block 1
+
+# 2583|   Block 3
+# 2583|     r2583_1(glval<int>) = VariableAddress[#return] : 
+# 2583|     r2583_2(glval<int>) = VariableAddress[r]       : 
+# 2583|     r2583_3(int)        = Load[r]                  : &:r2583_2, ~m2577_1
+# 2583|     m2583_4(int)        = Store[#return]           : &:r2583_1, r2583_3
+# 2573|     r2573_6(glval<int>) = VariableAddress[#return] : 
+# 2573|     v2573_7(void)       = ReturnValue              : &:r2573_6, m2583_4
+# 2573|     v2573_8(void)       = AliasedUse               : ~m2577_7
+# 2573|     v2573_9(void)       = ExitFunction             : 
+
+# 2588| char* recursive_conditional_call_with_increment(char*, bool)
+# 2588|   Block 0
+# 2588|     v2588_1(void)          = EnterFunction            : 
+# 2588|     m2588_2(unknown)       = AliasedDefinition        : 
+# 2588|     m2588_3(unknown)       = InitializeNonLocal       : 
+# 2588|     m2588_4(unknown)       = Chi                      : total:m2588_2, partial:m2588_3
+# 2588|     r2588_5(glval<char *>) = VariableAddress[d]       : 
+# 2588|     m2588_6(char *)        = InitializeParameter[d]   : &:r2588_5
+# 2588|     r2588_7(char *)        = Load[d]                  : &:r2588_5, m2588_6
+# 2588|     m2588_8(unknown)       = InitializeIndirection[d] : &:r2588_7
+# 2588|     r2588_9(glval<bool>)   = VariableAddress[b]       : 
+# 2588|     m2588_10(bool)         = InitializeParameter[b]   : &:r2588_9
+# 2590|     r2590_1(glval<bool>)   = VariableAddress[b]       : 
+# 2590|     r2590_2(bool)          = Load[b]                  : &:r2590_1, m2588_10
+# 2590|     v2590_3(void)          = ConditionalBranch        : r2590_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2591|   Block 1
+# 2591|     r2591_1(glval<unknown>) = FunctionAddress[recursive_conditional_call_with_increment] : 
+# 2591|     r2591_2(glval<char *>)  = VariableAddress[d]                                         : 
+# 2591|     r2591_3(char *)         = Load[d]                                                    : &:r2591_2, m2588_6
+# 2591|     r2591_4(glval<bool>)    = VariableAddress[b]                                         : 
+# 2591|     r2591_5(bool)           = Load[b]                                                    : &:r2591_4, m2588_10
+# 2591|     r2591_6(char *)         = Call[recursive_conditional_call_with_increment]            : func:r2591_1, 0:r2591_3, 1:r2591_5
+# 2591|     m2591_7(unknown)        = ^CallSideEffect                                            : ~m2588_4
+# 2591|     m2591_8(unknown)        = Chi                                                        : total:m2588_4, partial:m2591_7
+# 2591|     v2591_9(void)           = ^BufferReadSideEffect[0]                                   : &:r2591_3, ~m2588_8
+# 2591|     m2591_10(unknown)       = ^BufferMayWriteSideEffect[0]                               : &:r2591_3
+# 2591|     m2591_11(unknown)       = Chi                                                        : total:m2588_8, partial:m2591_10
+# 2591|     r2591_12(glval<char *>) = VariableAddress[d]                                         : 
+# 2591|     m2591_13(char *)        = Store[d]                                                   : &:r2591_12, r2591_6
+#-----|   Goto -> Block 2
+
+# 2593|   Block 2
+# 2593|     m2593_1(unknown)        = Phi                      : from 0:m2588_8, from 1:m2591_11
+# 2593|     m2593_2(unknown)        = Phi                      : from 0:~m2588_4, from 1:~m2591_8
+# 2593|     m2593_3(char *)         = Phi                      : from 0:m2588_6, from 1:m2591_13
+# 2593|     r2593_4(glval<char *>)  = VariableAddress[d]       : 
+# 2593|     r2593_5(char *)         = Load[d]                  : &:r2593_4, m2593_3
+# 2593|     r2593_6(int)            = Constant[1]              : 
+# 2593|     r2593_7(char *)         = PointerAdd[1]            : r2593_5, r2593_6
+# 2593|     m2593_8(char *)         = Store[d]                 : &:r2593_4, r2593_7
+# 2594|     r2594_1(glval<char *>)  = VariableAddress[#return] : 
+# 2594|     r2594_2(glval<char *>)  = VariableAddress[d]       : 
+# 2594|     r2594_3(char *)         = Load[d]                  : &:r2594_2, m2593_8
+# 2594|     m2594_4(char *)         = Store[#return]           : &:r2594_1, r2594_3
+# 2588|     v2588_11(void)          = ReturnIndirection[d]     : &:r2588_7, m2593_1
+# 2588|     r2588_12(glval<char *>) = VariableAddress[#return] : 
+# 2588|     v2588_13(void)          = ReturnValue              : &:r2588_12, m2594_4
+# 2588|     v2588_14(void)          = AliasedUse               : ~m2593_2
+# 2588|     v2588_15(void)          = ExitFunction             : 
+
+# 2602| Recursive* merge(Recursive*)
+# 2602|   Block 0
+# 2602|     v2602_1(void)                = EnterFunction            : 
+# 2602|     m2602_2(unknown)             = AliasedDefinition        : 
+# 2602|     m2602_3(unknown)             = InitializeNonLocal       : 
+# 2602|     m2602_4(unknown)             = Chi                      : total:m2602_2, partial:m2602_3
+# 2602|     m2602_5(Recursive *)         = UninitializedGroup[a,b]  : 
+# 2602|     m2602_6(unknown)             = Chi                      : total:m2602_4, partial:m2602_5
+# 2602|     r2602_7(glval<Recursive *>)  = VariableAddress[a]       : 
+# 2602|     m2602_8(Recursive *)         = InitializeParameter[a]   : &:r2602_7
+# 2602|     r2602_9(Recursive *)         = Load[a]                  : &:r2602_7, m2602_8
+# 2602|     m2602_10(unknown)            = InitializeIndirection[a] : &:r2602_9
+# 2602|     m2602_11(unknown)            = Chi                      : total:m2602_6, partial:m2602_10
+# 2604|     r2604_1(glval<Recursive *>)  = VariableAddress[b]       : 
+# 2604|     m2604_2(Recursive *)         = Uninitialized[b]         : &:r2604_1
+# 2604|     m2604_3(unknown)             = Chi                      : total:m2602_11, partial:m2604_2
+# 2605|     r2605_1(glval<Recursive **>) = VariableAddress[p]       : 
+# 2605|     r2605_2(glval<Recursive *>)  = VariableAddress[b]       : 
+# 2605|     r2605_3(Recursive **)        = CopyValue                : r2605_2
+# 2605|     m2605_4(Recursive **)        = Store[p]                 : &:r2605_1, r2605_3
+#-----|   Goto -> Block 1
+
+# 2607|   Block 1
+# 2607|     m2607_1(unknown)        = Phi                         : from 0:~m2604_3, from 2:~m2609_7
+# 2607|     m2607_2(Recursive **)   = Phi                         : from 0:m2605_4, from 2:m2610_6
+# 2607|     r2607_3(glval<unknown>) = FunctionAddress[predicateA] : 
+# 2607|     r2607_4(bool)           = Call[predicateA]            : func:r2607_3
+# 2607|     m2607_5(unknown)        = ^CallSideEffect             : ~m2607_1
+# 2607|     m2607_6(unknown)        = Chi                         : total:m2607_1, partial:m2607_5
+# 2607|     v2607_7(void)           = ConditionalBranch           : r2607_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 2609|   Block 2
+# 2609|     r2609_1(glval<Recursive *>)  = VariableAddress[a] : 
+# 2609|     r2609_2(Recursive *)         = Load[a]            : &:r2609_1, m2602_8
+# 2609|     r2609_3(glval<Recursive **>) = VariableAddress[p] : 
+# 2609|     r2609_4(Recursive **)        = Load[p]            : &:r2609_3, m2607_2
+# 2609|     r2609_5(glval<Recursive *>)  = CopyValue          : r2609_4
+# 2609|     m2609_6(Recursive *)         = Store[?]           : &:r2609_5, r2609_2
+# 2609|     m2609_7(unknown)             = Chi                : total:m2607_6, partial:m2609_6
+# 2610|     r2610_1(glval<Recursive *>)  = VariableAddress[a] : 
+# 2610|     r2610_2(Recursive *)         = Load[a]            : &:r2610_1, m2602_8
+# 2610|     r2610_3(glval<Recursive *>)  = FieldAddress[next] : r2610_2
+# 2610|     r2610_4(Recursive **)        = CopyValue          : r2610_3
+# 2610|     r2610_5(glval<Recursive **>) = VariableAddress[p] : 
+# 2610|     m2610_6(Recursive **)        = Store[p]           : &:r2610_5, r2610_4
+#-----|   Goto (back edge) -> Block 1
+
+# 2613|   Block 3
+# 2613|     r2613_1(glval<Recursive *>)  = VariableAddress[#return] : 
+# 2613|     r2613_2(glval<Recursive *>)  = VariableAddress[b]       : 
+# 2613|     r2613_3(Recursive *)         = Load[b]                  : &:r2613_2, ~m2607_6
+# 2613|     m2613_4(Recursive *)         = Store[#return]           : &:r2613_1, r2613_3
+# 2602|     v2602_12(void)               = ReturnIndirection[a]     : &:r2602_9, ~m2607_6
+# 2602|     r2602_13(glval<Recursive *>) = VariableAddress[#return] : 
+# 2602|     v2602_14(void)               = ReturnValue              : &:r2602_13, m2613_4
+# 2602|     v2602_15(void)               = AliasedUse               : ~m2607_6
+# 2602|     v2602_16(void)               = ExitFunction             : 
+
+# 2618| void escaping_pointer(bool)
+# 2618|   Block 0
+# 2618|     v2618_1(void)         = EnterFunction             : 
+# 2618|     m2618_2(unknown)      = AliasedDefinition         : 
+# 2618|     m2618_3(unknown)      = InitializeNonLocal        : 
+# 2618|     m2618_4(unknown)      = Chi                       : total:m2618_2, partial:m2618_3
+# 2618|     m2618_5(unknown)      = UninitializedGroup[l1,l2] : 
+# 2618|     m2618_6(unknown)      = Chi                       : total:m2618_4, partial:m2618_5
+# 2618|     r2618_7(glval<bool>)  = VariableAddress[b]        : 
+# 2618|     m2618_8(bool)         = InitializeParameter[b]    : &:r2618_7
+# 2620|     r2620_1(glval<int *>) = VariableAddress[data]     : 
+# 2620|     m2620_2(int *)        = Uninitialized[data]       : &:r2620_1
+# 2621|     r2621_1(glval<int>)   = VariableAddress[l1]       : 
+# 2621|     m2621_2(int)          = Uninitialized[l1]         : &:r2621_1
+# 2621|     m2621_3(unknown)      = Chi                       : total:m2618_6, partial:m2621_2
+# 2621|     r2621_4(glval<int>)   = VariableAddress[l2]       : 
+# 2621|     m2621_5(int)          = Uninitialized[l2]         : &:r2621_4
+# 2621|     m2621_6(unknown)      = Chi                       : total:m2621_3, partial:m2621_5
+# 2622|     r2622_1(glval<bool>)  = VariableAddress[b]        : 
+# 2622|     r2622_2(bool)         = Load[b]                   : &:r2622_1, m2618_8
+# 2622|     v2622_3(void)         = ConditionalBranch         : r2622_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2624|   Block 1
+# 2624|     r2624_1(glval<int>)   = VariableAddress[l1]   : 
+# 2624|     r2624_2(int *)        = CopyValue             : r2624_1
+# 2624|     r2624_3(glval<int *>) = VariableAddress[data] : 
+# 2624|     m2624_4(int *)        = Store[data]           : &:r2624_3, r2624_2
+#-----|   Goto -> Block 3
+
+# 2628|   Block 2
+# 2628|     r2628_1(glval<int>)   = VariableAddress[l2]   : 
+# 2628|     r2628_2(int *)        = CopyValue             : r2628_1
+# 2628|     r2628_3(glval<int *>) = VariableAddress[data] : 
+# 2628|     m2628_4(int *)        = Store[data]           : &:r2628_3, r2628_2
+#-----|   Goto -> Block 3
+
+# 2630|   Block 3
+# 2630|     m2630_1(int *)          = Phi                            : from 1:m2624_4, from 2:m2628_4
+# 2630|     r2630_2(glval<unknown>) = FunctionAddress[use_const_int] : 
+# 2630|     r2630_3(glval<int *>)   = VariableAddress[data]          : 
+# 2630|     r2630_4(int *)          = Load[data]                     : &:r2630_3, m2630_1
+# 2630|     r2630_5(int *)          = Convert                        : r2630_4
+# 2630|     v2630_6(void)           = Call[use_const_int]            : func:r2630_2, 0:r2630_5
+# 2630|     m2630_7(unknown)        = ^CallSideEffect                : ~m2621_6
+# 2630|     m2630_8(unknown)        = Chi                            : total:m2621_6, partial:m2630_7
+# 2630|     v2630_9(void)           = ^BufferReadSideEffect[0]       : &:r2630_5, ~m2630_8
+# 2631|     v2631_1(void)           = NoOp                           : 
+# 2618|     v2618_9(void)           = ReturnVoid                     : 
+# 2618|     v2618_10(void)          = AliasedUse                     : ~m2630_8
+# 2618|     v2618_11(void)          = ExitFunction                   : 
+
+# 2639| void needs_chi_for_initialize_groups()
+# 2639|   Block 0
+# 2639|     v2639_1(void)           = EnterFunction               : 
+# 2639|     m2639_2(unknown)        = AliasedDefinition           : 
+# 2639|     m2639_3(unknown)        = InitializeNonLocal          : 
+# 2639|     m2639_4(unknown)        = Chi                         : total:m2639_2, partial:m2639_3
+# 2639|     m2639_5(unknown)        = UninitializedGroup          : 
+# 2639|     m2639_6(unknown)        = Chi                         : total:m2639_4, partial:m2639_5
+# 2639|     m2639_7(unknown)        = UninitializedGroup          : 
+# 2639|     m2639_8(unknown)        = Chi                         : total:m2639_6, partial:m2639_7
+# 2641|     r2641_1(glval<unknown>) = FunctionAddress[predicateA] : 
+# 2641|     r2641_2(bool)           = Call[predicateA]            : func:r2641_1
+# 2641|     m2641_3(unknown)        = ^CallSideEffect             : ~m2639_8
+# 2641|     m2641_4(unknown)        = Chi                         : total:m2639_8, partial:m2641_3
+# 2641|     v2641_5(void)           = ConditionalBranch           : r2641_2
+#-----|   False -> Block 4
+#-----|   True -> Block 1
+
+# 2643|   Block 1
+# 2643|     r2643_1(glval<long long *>) = VariableAddress[data]        : 
+# 2643|     r2643_2(glval<unknown>)     = FunctionAddress[malloc]      : 
+# 2643|     r2643_3(unsigned long)      = Constant[100]                : 
+# 2643|     r2643_4(void *)             = Call[malloc]                 : func:r2643_2, 0:r2643_3
+# 2643|     m2643_5(unknown)            = ^CallSideEffect              : ~m2641_4
+# 2643|     m2643_6(unknown)            = Chi                          : total:m2641_4, partial:m2643_5
+# 2643|     m2643_7(unknown)            = ^InitializeDynamicAllocation : &:r2643_4
+# 2643|     m2643_8(unknown)            = Chi                          : total:m2643_6, partial:m2643_7
+# 2643|     r2643_9(long long *)        = Convert                      : r2643_4
+# 2643|     m2643_10(long long *)       = Store[data]                  : &:r2643_1, r2643_9
+# 2644|     r2644_1(glval<long long *>) = VariableAddress[data]        : 
+# 2644|     r2644_2(long long *)        = Load[data]                   : &:r2644_1, m2643_10
+# 2644|     r2644_3(void *)             = Convert                      : r2644_2
+# 2644|     r2644_4(void *)             = Constant[0]                  : 
+# 2644|     r2644_5(bool)               = CompareNE                    : r2644_3, r2644_4
+# 2644|     v2644_6(void)               = ConditionalBranch            : r2644_5
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 2646|   Block 2
+# 2646|     r2646_1(glval<unknown>)     = FunctionAddress[malloc]      : 
+# 2646|     r2646_2(unsigned long)      = Constant[100]                : 
+# 2646|     r2646_3(void *)             = Call[malloc]                 : func:r2646_1, 0:r2646_2
+# 2646|     m2646_4(unknown)            = ^CallSideEffect              : ~m2643_8
+# 2646|     m2646_5(unknown)            = Chi                          : total:m2643_8, partial:m2646_4
+# 2646|     m2646_6(unknown)            = ^InitializeDynamicAllocation : &:r2646_3
+# 2646|     m2646_7(unknown)            = Chi                          : total:m2646_5, partial:m2646_6
+# 2646|     r2646_8(long long *)        = Convert                      : r2646_3
+# 2646|     r2646_9(glval<long long *>) = VariableAddress[data]        : 
+# 2646|     m2646_10(long long *)       = Store[data]                  : &:r2646_9, r2646_8
+#-----|   Goto -> Block 3
+
+# 2648|   Block 3
+# 2648|     m2648_1(unknown)            = Phi                                     : from 1:~m2643_8, from 2:~m2646_7
+# 2648|     m2648_2(long long *)        = Phi                                     : from 1:m2643_10, from 2:m2646_10
+# 2648|     r2648_3(glval<unknown>)     = FunctionAddress[use_const_void_pointer] : 
+# 2648|     r2648_4(glval<long long *>) = VariableAddress[data]                   : 
+# 2648|     r2648_5(long long *)        = Load[data]                              : &:r2648_4, m2648_2
+# 2648|     r2648_6(void *)             = Convert                                 : r2648_5
+# 2648|     v2648_7(void)               = Call[use_const_void_pointer]            : func:r2648_3, 0:r2648_6
+# 2648|     m2648_8(unknown)            = ^CallSideEffect                         : ~m2648_1
+# 2648|     m2648_9(unknown)            = Chi                                     : total:m2648_1, partial:m2648_8
+# 2648|     v2648_10(void)              = ^BufferReadSideEffect[0]                : &:r2648_6, ~m2648_9
+#-----|   Goto -> Block 7
+
+# 2652|   Block 4
+# 2652|     r2652_1(glval<long long *>) = VariableAddress[data]        : 
+# 2652|     r2652_2(glval<unknown>)     = FunctionAddress[malloc]      : 
+# 2652|     r2652_3(unsigned long)      = Constant[100]                : 
+# 2652|     r2652_4(void *)             = Call[malloc]                 : func:r2652_2, 0:r2652_3
+# 2652|     m2652_5(unknown)            = ^CallSideEffect              : ~m2641_4
+# 2652|     m2652_6(unknown)            = Chi                          : total:m2641_4, partial:m2652_5
+# 2652|     m2652_7(unknown)            = ^InitializeDynamicAllocation : &:r2652_4
+# 2652|     m2652_8(unknown)            = Chi                          : total:m2652_6, partial:m2652_7
+# 2652|     r2652_9(long long *)        = Convert                      : r2652_4
+# 2652|     m2652_10(long long *)       = Store[data]                  : &:r2652_1, r2652_9
+# 2653|     r2653_1(glval<long long *>) = VariableAddress[data]        : 
+# 2653|     r2653_2(long long *)        = Load[data]                   : &:r2653_1, m2652_10
+# 2653|     r2653_3(void *)             = Convert                      : r2653_2
+# 2653|     r2653_4(void *)             = Constant[0]                  : 
+# 2653|     r2653_5(bool)               = CompareNE                    : r2653_3, r2653_4
+# 2653|     v2653_6(void)               = ConditionalBranch            : r2653_5
+#-----|   False -> Block 6
+#-----|   True -> Block 5
+
+# 2655|   Block 5
+# 2655|     r2655_1(glval<unknown>)     = FunctionAddress[malloc]      : 
+# 2655|     r2655_2(unsigned long)      = Constant[200]                : 
+# 2655|     r2655_3(void *)             = Call[malloc]                 : func:r2655_1, 0:r2655_2
+# 2655|     m2655_4(unknown)            = ^CallSideEffect              : ~m2652_8
+# 2655|     m2655_5(unknown)            = Chi                          : total:m2652_8, partial:m2655_4
+# 2655|     m2655_6(unknown)            = ^InitializeDynamicAllocation : &:r2655_3
+# 2655|     m2655_7(unknown)            = Chi                          : total:m2655_5, partial:m2655_6
+# 2655|     r2655_8(long long *)        = Convert                      : r2655_3
+# 2655|     r2655_9(glval<long long *>) = VariableAddress[data]        : 
+# 2655|     m2655_10(long long *)       = Store[data]                  : &:r2655_9, r2655_8
+#-----|   Goto -> Block 6
+
+# 2657|   Block 6
+# 2657|     m2657_1(unknown)            = Phi                                     : from 4:~m2652_8, from 5:~m2655_7
+# 2657|     m2657_2(long long *)        = Phi                                     : from 4:m2652_10, from 5:m2655_10
+# 2657|     r2657_3(glval<unknown>)     = FunctionAddress[use_const_void_pointer] : 
+# 2657|     r2657_4(glval<long long *>) = VariableAddress[data]                   : 
+# 2657|     r2657_5(long long *)        = Load[data]                              : &:r2657_4, m2657_2
+# 2657|     r2657_6(void *)             = Convert                                 : r2657_5
+# 2657|     v2657_7(void)               = Call[use_const_void_pointer]            : func:r2657_3, 0:r2657_6
+# 2657|     m2657_8(unknown)            = ^CallSideEffect                         : ~m2657_1
+# 2657|     m2657_9(unknown)            = Chi                                     : total:m2657_1, partial:m2657_8
+# 2657|     v2657_10(void)              = ^BufferReadSideEffect[0]                : &:r2657_6, ~m2657_9
+#-----|   Goto -> Block 7
+
+# 2659|   Block 7
+# 2659|     m2659_1(unknown) = Phi          : from 3:~m2648_9, from 6:~m2657_9
+# 2659|     v2659_2(void)    = NoOp         : 
+# 2639|     v2639_9(void)    = ReturnVoid   : 
+# 2639|     v2639_10(void)   = AliasedUse   : ~m2659_1
+# 2639|     v2639_11(void)   = ExitFunction : 
+
+# 2663| void phi_with_single_input_at_merge(bool)
+# 2663|   Block 0
+# 2663|     v2663_1(void)         = EnterFunction          : 
+# 2663|     m2663_2(unknown)      = AliasedDefinition      : 
+# 2663|     m2663_3(unknown)      = InitializeNonLocal     : 
+# 2663|     m2663_4(unknown)      = Chi                    : total:m2663_2, partial:m2663_3
+# 2663|     r2663_5(glval<bool>)  = VariableAddress[b]     : 
+# 2663|     m2663_6(bool)         = InitializeParameter[b] : &:r2663_5
+# 2665|     r2665_1(glval<int *>) = VariableAddress[data]  : 
+# 2665|     r2665_2(int *)        = Constant[0]            : 
+# 2665|     m2665_3(int *)        = Store[data]            : &:r2665_1, r2665_2
+# 2666|     r2666_1(glval<bool>)  = VariableAddress[b]     : 
+# 2666|     r2666_2(bool)         = Load[b]                : &:r2666_1, m2663_6
+# 2666|     v2666_3(void)         = ConditionalBranch      : r2666_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2667|   Block 1
+# 2667|     r2667_1(glval<int>)   = VariableAddress[intBuffer] : 
+# 2667|     r2667_2(int)          = Constant[8]                : 
+# 2667|     m2667_3(int)          = Store[intBuffer]           : &:r2667_1, r2667_2
+# 2668|     r2668_1(glval<int>)   = VariableAddress[intBuffer] : 
+# 2668|     r2668_2(int *)        = CopyValue                  : r2668_1
+# 2668|     r2668_3(glval<int *>) = VariableAddress[data]      : 
+# 2668|     m2668_4(int *)        = Store[data]                : &:r2668_3, r2668_2
+#-----|   Goto -> Block 2
+
+# 2670|   Block 2
+# 2670|     m2670_1(int)            = Phi                      : from 1:m2667_3
+# 2670|     m2670_2(int *)          = Phi                      : from 0:m2665_3, from 1:m2668_4
+# 2670|     r2670_3(glval<unknown>) = FunctionAddress[use_int] : 
+# 2670|     r2670_4(glval<int *>)   = VariableAddress[data]    : 
+# 2670|     r2670_5(int *)          = Load[data]               : &:r2670_4, m2670_2
+# 2670|     r2670_6(int)            = Load[?]                  : &:r2670_5, ~m2670_1
+# 2670|     v2670_7(void)           = Call[use_int]            : func:r2670_3, 0:r2670_6
+# 2670|     m2670_8(unknown)        = ^CallSideEffect          : ~m2663_4
+# 2670|     m2670_9(unknown)        = Chi                      : total:m2663_4, partial:m2670_8
+# 2671|     v2671_1(void)           = NoOp                     : 
+# 2663|     v2663_7(void)           = ReturnVoid               : 
+# 2663|     v2663_8(void)           = AliasedUse               : ~m2670_9
+# 2663|     v2663_9(void)           = ExitFunction             : 
+
+# 2684| void test(bool)
+# 2684|   Block 0
+# 2684|     v2684_1(void)           = EnterFunction                                     : 
+# 2684|     m2684_2(unknown)        = AliasedDefinition                                 : 
+# 2684|     m2684_3(unknown)        = InitializeNonLocal                                : 
+# 2684|     m2684_4(unknown)        = Chi                                               : total:m2684_2, partial:m2684_3
+# 2684|     m2684_5(unknown)        = UninitializedGroup[#string2686:22,#string2686:27] : 
+# 2684|     m2684_6(unknown)        = Chi                                               : total:m2684_4, partial:m2684_5
+# 2684|     m2684_7(unknown)        = UninitializedGroup[#string2686:22,#string2686:27] : 
+# 2684|     m2684_8(unknown)        = Chi                                               : total:m2684_6, partial:m2684_7
+# 2684|     r2684_9(glval<bool>)    = VariableAddress[b]                                : 
+# 2684|     m2684_10(bool)          = InitializeParameter[b]                            : &:r2684_9
+# 2686|     r2686_1(glval<unknown>) = FunctionAddress[use]                              : 
+# 2686|     r2686_2(glval<bool>)    = VariableAddress[b]                                : 
+# 2686|     r2686_3(bool)           = Load[b]                                           : &:r2686_2, m2684_10
+# 2686|     v2686_4(void)           = ConditionalBranch                                 : r2686_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 2686|   Block 1
+# 2686|     m2686_5(char *)          = Phi                           : from 2:m2686_19, from 3:m2686_23
+# 2686|     r2686_6(glval<char *>)   = VariableAddress[#temp2686:18] : 
+# 2686|     r2686_7(char *)          = Load[#temp2686:18]            : &:r2686_6, m2686_5
+# 2686|     v2686_8(void)            = Call[use]                     : func:r2686_1, 0:r2686_7
+# 2686|     m2686_9(unknown)         = ^CallSideEffect               : ~m2684_8
+# 2686|     m2686_10(unknown)        = Chi                           : total:m2684_8, partial:m2686_9
+# 2686|     v2686_11(void)           = ^BufferReadSideEffect[0]      : &:r2686_7, ~m2686_10
+# 2686|     r2686_12(glval<unknown>) = FunctionAddress[use]          : 
+# 2686|     r2686_13(glval<bool>)    = VariableAddress[b]            : 
+# 2686|     r2686_14(bool)           = Load[b]                       : &:r2686_13, m2684_10
+# 2686|     v2686_15(void)           = ConditionalBranch             : r2686_14
+#-----|   False -> Block 6
+#-----|   True -> Block 5
+
+# 2686|   Block 2
+# 2686|     r2686_16(glval<char[1]>) = StringConstant[]              : 
+# 2686|     r2686_17(char *)         = Convert                       : r2686_16
+# 2686|     r2686_18(glval<char *>)  = VariableAddress[#temp2686:18] : 
+# 2686|     m2686_19(char *)         = Store[#temp2686:18]           : &:r2686_18, r2686_17
+#-----|   Goto -> Block 1
+
+# 2686|   Block 3
+# 2686|     r2686_20(glval<char[1]>) = StringConstant[]              : 
+# 2686|     r2686_21(char *)         = Convert                       : r2686_20
+# 2686|     r2686_22(glval<char *>)  = VariableAddress[#temp2686:18] : 
+# 2686|     m2686_23(char *)         = Store[#temp2686:18]           : &:r2686_22, r2686_21
+#-----|   Goto -> Block 1
+
+# 2686|   Block 4
+# 2686|     m2686_24(char *)        = Phi                           : from 5:m2686_36, from 6:m2686_40
+# 2686|     r2686_25(glval<char *>) = VariableAddress[#temp2686:18] : 
+# 2686|     r2686_26(char *)        = Load[#temp2686:18]            : &:r2686_25, m2686_24
+# 2686|     v2686_27(void)          = Call[use]                     : func:r2686_12, 0:r2686_26
+# 2686|     m2686_28(unknown)       = ^CallSideEffect               : ~m2686_10
+# 2686|     m2686_29(unknown)       = Chi                           : total:m2686_10, partial:m2686_28
+# 2686|     v2686_30(void)          = ^BufferReadSideEffect[0]      : &:r2686_26, ~m2686_29
+# 2686|     r2686_31(bool)          = Constant[0]                   : 
+# 2686|     v2686_32(void)          = ConditionalBranch             : r2686_31
+#-----|   False -> Block 7
+#-----|   True -> Block 8
+
+# 2686|   Block 5
+# 2686|     r2686_33(glval<char[1]>) = StringConstant[]              : 
+# 2686|     r2686_34(char *)         = Convert                       : r2686_33
+# 2686|     r2686_35(glval<char *>)  = VariableAddress[#temp2686:18] : 
+# 2686|     m2686_36(char *)         = Store[#temp2686:18]           : &:r2686_35, r2686_34
+#-----|   Goto -> Block 4
+
+# 2686|   Block 6
+# 2686|     r2686_37(glval<char[1]>) = StringConstant[]              : 
+# 2686|     r2686_38(char *)         = Convert                       : r2686_37
+# 2686|     r2686_39(glval<char *>)  = VariableAddress[#temp2686:18] : 
+# 2686|     m2686_40(char *)         = Store[#temp2686:18]           : &:r2686_39, r2686_38
+#-----|   Goto -> Block 4
+
+# 2687|   Block 7
+# 2687|     v2687_1(void)  = NoOp         : 
+# 2684|     v2684_11(void) = ReturnVoid   : 
+# 2684|     v2684_12(void) = AliasedUse   : ~m2686_29
+# 2684|     v2684_13(void) = ExitFunction : 
+
+# 2684|   Block 8
+# 2684|     v2684_14(void) = Unreached : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

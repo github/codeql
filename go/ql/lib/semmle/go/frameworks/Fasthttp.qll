@@ -252,18 +252,22 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.URI Type.
    */
-  module URI {
+  deprecated module URI {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are part of the incoming URL.
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "URI",
@@ -275,20 +279,24 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.Args Type.
    */
-  module Args {
+  deprecated module Args {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
      *
      * When support for lambdas has been implemented we should model "VisitAll".
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Args",
@@ -397,14 +405,16 @@ module Fasthttp {
    */
   module Request {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::range` instead.
+     *
      * The methods as Remote user controllable source which can be many part of request.
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
@@ -484,11 +494,13 @@ module Fasthttp {
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     *
      * The methods as Remote user controllable source which are generally related to HTTP request.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestCtx",
@@ -503,20 +515,24 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources.
    */
-  module RequestHeader {
+  deprecated module RequestHeader {
     /**
-     * DEPRECATED: Use `RemoteFlowSource` instead.
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
       RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestHeader",

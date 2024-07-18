@@ -11,6 +11,7 @@ private import Node0ToString
 private import ModelUtil
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
 private import semmle.code.cpp.models.interfaces.DataFlow as DF
+private import semmle.code.cpp.dataflow.ExternalFlow as External
 
 cached
 private module Cached {
@@ -1060,16 +1061,6 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSummarizedCallable() or // SummarizedCallable = Function (in CPP)
     result = this.asSourceCallable()
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -1167,16 +1158,6 @@ class DataFlowCall extends TDataFlowCall {
    * Gets the location of this call.
    */
   Location getLocation() { none() }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -1269,15 +1250,6 @@ module IsUnreachableInCall {
     string toString() { result = "NodeRegion" }
 
     predicate contains(Node n) { this = n.getBasicBlock() }
-
-    int totalOrder() {
-      this =
-        rank[result](IRBlock b, int startline, int startcolumn |
-          b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-        |
-          b order by startline, startcolumn
-        )
-    }
   }
 
   predicate isUnreachableInCall(NodeRegion block, DataFlowCall call) {
@@ -1362,9 +1334,9 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
-predicate knownSourceModel(Node source, string model) { none() }
+predicate knownSourceModel(Node source, string model) { External::sourceNode(source, _, model) }
 
-predicate knownSinkModel(Node sink, string model) { none() }
+predicate knownSinkModel(Node sink, string model) { External::sinkNode(sink, _, model) }
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
