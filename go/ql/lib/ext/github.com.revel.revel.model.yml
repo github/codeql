@@ -30,6 +30,8 @@ extensions:
       - ["group:revel", "Request", True, "PostFormValue", "", "", "ReturnValue", "remote", "manual"]
       - ["group:revel", "Request", True, "Referer", "", "", "ReturnValue", "remote", "manual"]
       - ["group:revel", "Request", True, "UserAgent", "", "", "ReturnValue", "remote", "manual"]
+      - ["group:revel", "ServerWebSocket", True, "MessageReceive", "", "", "Argument[0]", "remote", "manual"]
+      - ["group:revel", "ServerWebSocket", True, "MessageReceiveJSON", "", "", "Argument[0]", "remote", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel
