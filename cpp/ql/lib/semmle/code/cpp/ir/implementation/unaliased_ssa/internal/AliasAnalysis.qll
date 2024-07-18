@@ -340,8 +340,7 @@ private predicate resultEscapesNonReturn(Instruction instr) {
 
 /** Holds if `operand` may (transitively) flow to an `AddressOperand` whose use is unmodeled. */
 private predicate consumedAsAddressOperand(Operand operand) {
-  operand instanceof AddressOperand and
-  exists(Instruction use | not use.isResultModeled())
+  exists(Instruction use | use = operand.(AddressOperand).getUse() and not use.isResultModeled())
   or
   exists(Operand address |
     consumedAsAddressOperand(address) and

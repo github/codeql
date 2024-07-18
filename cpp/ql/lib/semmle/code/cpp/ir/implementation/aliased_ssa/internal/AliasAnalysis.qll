@@ -338,10 +338,9 @@ private predicate resultEscapesNonReturn(Instruction instr) {
   not instr.isResultModeled()
 }
 
-/** Holds if `operand` may (transitively) flow to an `AddressOperand` whose use is unmodeled. */
+/** Holds if `operand` may (transitively) flow to an `AddressOperand`. */
 private predicate consumedAsAddressOperand(Operand operand) {
-  operand instanceof AddressOperand and
-  exists(Instruction use | not use.isResultModeled())
+  operand instanceof AddressOperand
   or
   exists(Operand address |
     consumedAsAddressOperand(address) and
@@ -351,7 +350,7 @@ private predicate consumedAsAddressOperand(Operand operand) {
 
 /**
  * Holds if `operand` may originate from a base instruction of an allocation,
- * and that operand may transitively flow to an `AddressOperand` whose use is unmodeled.
+ * and that operand may transitively flow to an `AddressOperand`.
  */
 private predicate propagatedFromAllocationBase(Operand operand, Configuration::Allocation allocation) {
   consumedAsAddressOperand(operand) and
