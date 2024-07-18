@@ -5,8 +5,6 @@ Customizing library models for Java and Kotlin
 
 You can model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
 About this article
@@ -16,7 +14,8 @@ This article contains reference material about how to define custom models for s
 
 The best way to create your own models is using the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extension files in CodeQL model packs and use them without worrying about the syntax.
 
-For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
+For more information, see `Using the CodeQL model editor  <https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/using-the-codeql-model-editor>`__ in the GitHub documentation.
+
 
 About data extensions
 ---------------------

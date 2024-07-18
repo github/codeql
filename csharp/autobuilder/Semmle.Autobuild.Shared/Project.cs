@@ -66,7 +66,7 @@ namespace Semmle.Autobuild.Shared
                     catch  // lgtm[cs/catch-of-all-exceptions]
                            // Generic catch clause - Version constructor throws about 5 different exceptions.
                     {
-                        builder.Logger.Log(Severity.Warning, "Project {0} has invalid tools version {1}", path, toolsVersion);
+                        builder.Logger.LogWarning($"Project {path} has invalid tools version {toolsVersion}");
                     }
                 }
 

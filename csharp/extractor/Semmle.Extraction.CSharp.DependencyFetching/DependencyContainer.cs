@@ -12,12 +12,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Paths to dependencies required for compilation.
         /// </summary>
-        public HashSet<string> Paths { get; } = new();
+        public HashSet<string> Paths { get; } = [];
 
         /// <summary>
         /// Packages that are used as a part of the required dependencies.
         /// </summary>
-        public HashSet<string> Packages { get; } = new();
+        public HashSet<string> Packages { get; } = [];
 
         /// <summary>
         /// If the path specifically adds a .dll we use that, otherwise we as a fallback
@@ -33,9 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         private static string GetPackageName(string package) =>
-            package
-                .Split(Path.DirectorySeparatorChar)
-                .First();
+            package.Split(Path.DirectorySeparatorChar)[0];
 
         /// <summary>
         /// Add a dependency inside a package.

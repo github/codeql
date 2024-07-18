@@ -5,9 +5,6 @@ CodeQL for Java and Kotlin
 
 Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java and Kotlin codebases.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
-
 .. pull-quote:: Enabling Kotlin support
 
    CodeQL treats Java and Kotlin as parts of the same language, so to enable Kotlin support you should enable ``java-kotlin`` as a language.

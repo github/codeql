@@ -2,16 +2,20 @@ Framework name,URL,Package prefixes
 Standard library,https://pkg.go.dev/std, archive/* bufio bytes cmp compress/* container/* context crypto crypto/* database/* debug/* embed encoding encoding/* errors expvar flag fmt go/* hash hash/* html html/* image image/* index/* io io/* log log/* maps math math/* mime mime/* net net/* os os/* path path/* plugin reflect reflect/* regexp regexp/* slices sort strconv strings sync sync/* syscall syscall/* testing testing/* text/* time time/* unicode unicode/* unsafe
 beego,https://beego.me/,github.com/astaxie/beego* github.com/beego/beego*
 Couchbase official client(gocb),https://github.com/couchbase/gocb,github.com/couchbase/gocb* gopkg.in/couchbase/gocb*
+chi,https://go-chi.io/,github.com/go-chi/chi*
 Couchbase unofficial client,http://www.github.com/couchbase/go-couchbase,github.com/couchbaselabs/gocb*
 cristalhq/jwt,https://github.com/cristalhq/jwt,github.com/cristalhq/jwt*
 Echo,https://echo.labstack.com/,github.com/labstack/echo*
 fasthttp,https://github.com/valyala/fasthttp,github.com/valyala/fasthttp*
 Fosite,https://github.com/ory/fosite,github.com/ory/fosite*
 Gin,https://github.com/gin-gonic/gin,github.com/gin-gonic/gin*
+Go JOSE,https://github.com/go-jose/go-jose,github.com/go-jose/go-jose* github.com/square/go-jose* gopkg.in/square/go-jose*
 Go kit,https://gokit.io/,github.com/go-kit/kit*
 go-pg,https://pg.uptrace.dev/,github.com/go-pg/pg*
+go-restful,https://github.com/emicklei/go-restful,github.com/emicklei/go-restful*
 golang.org/x/net,https://pkg.go.dev/golang.org/x/net,golang.org/x/net*
 goproxy,https://github.com/elazarl/goproxy,github.com/elazarl/goproxy*
+gorilla/mux,https://github.com/gorilla/mux,github.com/gorilla/mux*
 Iris,https://www.iris-go.com/,github.com/kataras/iris*
 json-iterator,https://github.com/json-iterator/go,github.com/json-iterator/go*
 jsonpatch,https://github.com/evanphx/json-patch,github.com/evanphx/json-patch*

@@ -233,3 +233,54 @@ void test_operator_new_without_exception_spec() {
   int* p = new(42, std::nothrow) int; // GOOD
   if(p == nullptr) {}
 }
+
+namespace std {
+  void *memset(void *s, int c, size_t n);
+}
+
+// from the qhelp:
+namespace qhelp {
+  // BAD: the allocation will throw an unhandled exception
+  // instead of returning a null pointer.
+  void bad1(std::size_t length) noexcept {
+    int* dest = new int[length];
+    if(!dest) {
+      return;
+    }
+    std::memset(dest, 0, length);
+    // ...
+  }
+
+  // BAD: the allocation won't throw an exception, but
+  // instead return a null pointer. [NOT DETECTED]
+  void bad2(std::size_t length) noexcept {
+    try {
+      int* dest = new(std::nothrow) int[length];
+      std::memset(dest, 0, length);
+      // ...
+    } catch(std::bad_alloc&) {
+      // ...
+    }
+  }
+
+  // GOOD: the allocation failure is handled appropriately.
+  void good1(std::size_t length) noexcept {
+    try {
+      int* dest = new int[length];
+      std::memset(dest, 0, length);
+      // ...
+    } catch(std::bad_alloc&) {
+      // ...
+    }
+  }
+
+  // GOOD: the allocation failure is handled appropriately.
+  void good2(std::size_t length) noexcept {
+    int* dest = new(std::nothrow) int[length];
+    if(!dest) {
+      return;
+    }
+    std::memset(dest, 0, length);
+    // ...
+  }
+}

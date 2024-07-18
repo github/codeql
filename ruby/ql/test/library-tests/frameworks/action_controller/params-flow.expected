@@ -35,7 +35,8 @@ edges
 | filter_flow.rb:83:3:84:5 | self in b [@foo] | filter_flow.rb:86:3:88:5 | self in c [@foo] | provenance |  |
 | filter_flow.rb:86:3:88:5 | self in c [@foo] | filter_flow.rb:87:11:87:14 | self [@foo] | provenance |  |
 | filter_flow.rb:87:11:87:14 | self [@foo] | filter_flow.rb:87:11:87:14 | @foo | provenance |  |
-| filter_flow.rb:91:5:91:8 | [post] self [@foo] | filter_flow.rb:80:5:80:8 | [post] self [@foo] | provenance |  |
+| filter_flow.rb:90:3:92:5 | self in taint_foo [Return] [@foo] | filter_flow.rb:80:5:80:8 | [post] self [@foo] | provenance |  |
+| filter_flow.rb:91:5:91:8 | [post] self [@foo] | filter_flow.rb:90:3:92:5 | self in taint_foo [Return] [@foo] | provenance |  |
 | filter_flow.rb:91:12:91:17 | call to params | filter_flow.rb:91:12:91:23 | ...[...] | provenance |  |
 | filter_flow.rb:91:12:91:23 | ...[...] | filter_flow.rb:91:5:91:8 | [post] self [@foo] | provenance |  |
 | params_flow.rb:3:10:3:15 | call to params | params_flow.rb:3:10:3:19 | ...[...] | provenance |  |
@@ -155,6 +156,7 @@ nodes
 | filter_flow.rb:86:3:88:5 | self in c [@foo] | semmle.label | self in c [@foo] |
 | filter_flow.rb:87:11:87:14 | @foo | semmle.label | @foo |
 | filter_flow.rb:87:11:87:14 | self [@foo] | semmle.label | self [@foo] |
+| filter_flow.rb:90:3:92:5 | self in taint_foo [Return] [@foo] | semmle.label | self in taint_foo [Return] [@foo] |
 | filter_flow.rb:91:5:91:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | filter_flow.rb:91:12:91:17 | call to params | semmle.label | call to params |
 | filter_flow.rb:91:12:91:23 | ...[...] | semmle.label | ...[...] |

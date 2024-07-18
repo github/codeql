@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+String", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option", False, "CreateEquivalenceKeyFromOptions", "(System.String,System.Collections.Immutable.ImmutableDictionary<System.String,Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option", False, "CreateEquivalenceKeyFromOptions", "(System.String,System.Collections.Immutable.ImmutableDictionary<System.String,Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer", False, "AddExplicitDefaultBoolMarshalling", "(Microsoft.CodeAnalysis.Editing.SyntaxGenerator,Microsoft.CodeAnalysis.IMethodSymbol,Microsoft.CodeAnalysis.SyntaxNode,System.String)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
@@ -51,7 +52,6 @@ extensions:
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+Bool", "op_Equality", "(Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+Bool,Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+Bool)", "summary", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+Bool", "op_Inequality", "(Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+Bool,Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+Bool)", "summary", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+String", "String", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+String", "ToString", "()", "summary", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+String", "get_EqualityContract", "()", "summary", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+String", "op_Equality", "(Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+String,Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+String)", "summary", "df-generated"]
       - ["Microsoft.Interop.Analyzers", "ConvertToSourceGeneratedInteropFixer+Option+String", "op_Inequality", "(Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+String,Microsoft.Interop.Analyzers.ConvertToSourceGeneratedInteropFixer+Option+String)", "summary", "df-generated"]

@@ -20,6 +20,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly Lazy<string[]> solutions;
         private readonly Lazy<string[]> dlls;
         private readonly Lazy<string[]> nugetConfigs;
+        private readonly Lazy<string[]> nugetExes;
         private readonly Lazy<string[]> globalJsons;
         private readonly Lazy<string[]> packagesConfigs;
         private readonly Lazy<string[]> razorViews;
@@ -45,6 +46,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             resources = new Lazy<string[]>(() => SelectTextFileNamesByExtension("resource", ".resx"));
 
             rootNugetConfig = new Lazy<string?>(() => all.SelectRootFiles(SourceDir).SelectFileNamesByName("nuget.config").FirstOrDefault());
+            nugetExes = new Lazy<string[]>(() => all.SelectFileNamesByName("nuget.exe").ToArray());
         }
 
         private string[] ReturnAndLogFiles(string filetype, IEnumerable<string> files)
@@ -123,6 +125,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public ICollection<string> Solutions => solutions.Value;
         public IEnumerable<string> Dlls => dlls.Value;
         public ICollection<string> NugetConfigs => nugetConfigs.Value;
+        public ICollection<string> NugetExes => nugetExes.Value;
         public string? RootNugetConfig => rootNugetConfig.Value;
         public IEnumerable<string> GlobalJsons => globalJsons.Value;
         public ICollection<string> PackagesConfigs => packagesConfigs.Value;

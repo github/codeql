@@ -97,8 +97,6 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
 Java and Kotlin built-in support
 ==================================
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 Provided by the current versions of the
 CodeQL query pack ``codeql/java-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src>`__)
 and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib>`__).
@@ -202,6 +200,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    Flask-Admin, Web framework
    Tornado, Web framework
    Twisted, Web framework
+   Gradio, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
    ldap3, Lightweight Directory Access Protocol (LDAP)
    python-ldap, Lightweight Directory Access Protocol (LDAP)
@@ -285,8 +284,6 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
 
 Swift built-in support
 ================================
-
-.. include:: ../reusables/swift-beta-note.rst
 
 Provided by the current versions of the
 CodeQL query pack ``codeql/swift-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src>`__)

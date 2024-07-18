@@ -1511,6 +1511,8 @@ open class KotlinUsesExtractor(
                     }
                 }
             }
+            is IrDynamicType -> {}
+            is IrErrorType -> {}
         }
         return t
     }

@@ -159,11 +159,7 @@ predicate sinkModelTallyPerQuery(string queryName, int alertCount, SinkModel sin
   SinkTallier<RequestForgeryConfig>::getSinkModelCount(alertCount, sinkModel)
   or
   queryName = "java/command-line-injection" and
-  exists(int c1, int c2 |
-    SinkTallier<RemoteUserInputToArgumentToExecFlowConfig>::getSinkModelCount(c1, sinkModel) and
-    SinkTallier<LocalUserInputToArgumentToExecFlowConfig>::getSinkModelCount(c2, sinkModel) and
-    alertCount = c1 + c2
-  )
+  SinkTallier<InputToArgumentToExecFlowConfig>::getSinkModelCount(alertCount, sinkModel)
   or
   queryName = "java/concatenated-sql-query" and
   SinkTallier<UncontrolledStringBuilderSourceFlowConfig>::getSinkModelCount(alertCount, sinkModel)

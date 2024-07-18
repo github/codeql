@@ -55,3 +55,7 @@ struct address {
 void hasExtern() {
   extern int externInFunction;
 }
+
+const char* isStatic() {
+  return __func__;
+}

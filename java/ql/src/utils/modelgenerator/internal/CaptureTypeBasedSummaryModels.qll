@@ -283,20 +283,22 @@ private predicate output(Callable callable, TypeVariable tv, string output) {
   functionalSink(callable, tv, output)
 }
 
-module Printing implements PrintingSig {
-  class Api = TypeBasedFlowTargetApi;
+module ModelPrintingInput implements ModelPrintingSig {
+  class SummaryApi = TypeBasedFlowTargetApi;
+
+  class SourceOrSinkApi = Specific::SourceOrSinkTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
 
-private module ModelPrinting = PrintingImpl<Printing>;
+private module Printing = ModelPrinting<ModelPrintingInput>;
 
 /**
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
-  TypeBasedFlowTargetApi() { Specific::isRelevantForTypeBasedFlowModels(this) }
+class TypeBasedFlowTargetApi extends Specific::SummaryTargetApi {
+  TypeBasedFlowTargetApi() { not Specific::isUninterestingForTypeBasedFlowModels(this) }
 
   /**
    * Gets the string representation of all type based summaries for `this`
@@ -327,7 +329,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
       output(this, tv, output) and
       input != output
     |
-      result = ModelPrinting::asValueModel(this, input, output)
+      result = Printing::asValueModel(this, input, output)
     )
   }
 }

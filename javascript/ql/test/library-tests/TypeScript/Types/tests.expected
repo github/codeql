@@ -692,6 +692,43 @@ getExprType
 | tst.ts:494:24:494:24 | 0 | 0 |
 | tst.ts:494:28:494:33 | "even" | "even" |
 | tst.ts:494:36:494:40 | "odd" | "odd" |
+| tst.ts:498:8:498:11 | TS55 | typeof TS55 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:499:9:499:15 | strings | string[] |
+| tst.ts:499:19:499:32 | (["foo", 123]) | (string \| number)[] |
+| tst.ts:499:19:500:11 | (["foo" ... .filter | { <S extends string \| number>(predicate: (value... |
+| tst.ts:499:19:500:39 | (["foo" ... tring") | string[] |
+| tst.ts:499:20:499:31 | ["foo", 123] | (string \| number)[] |
+| tst.ts:499:21:499:25 | "foo" | "foo" |
+| tst.ts:499:28:499:30 | 123 | 123 |
+| tst.ts:500:6:500:11 | filter | { <S extends string \| number>(predicate: (value... |
+| tst.ts:500:13:500:13 | s | string \| number |
+| tst.ts:500:13:500:38 | s => ty ... string" | (s: string \| number) => s is string |
+| tst.ts:500:18:500:25 | typeof s | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:500:18:500:38 | typeof  ... string" | boolean |
+| tst.ts:500:25:500:25 | s | string \| number |
+| tst.ts:500:31:500:38 | "string" | "string" |
+| tst.ts:502:14:502:16 | str | string |
+| tst.ts:502:21:502:27 | strings | string[] |
+| tst.ts:503:5:503:7 | str | string |
+| tst.ts:503:5:503:19 | str.toLowerCase | () => string |
+| tst.ts:503:5:503:21 | str.toLowerCase() | string |
+| tst.ts:503:9:503:19 | toLowerCase | () => string |
+| tst.ts:506:12:506:13 | f1 | (obj: Record<string, unknown>, key: string) => ... |
+| tst.ts:506:15:506:17 | obj | Record<string, unknown> |
+| tst.ts:506:45:506:47 | key | string |
+| tst.ts:507:9:507:23 | typeof obj[key] | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:507:9:507:36 | typeof  ... string" | boolean |
+| tst.ts:507:16:507:18 | obj | Record<string, unknown> |
+| tst.ts:507:16:507:23 | obj[key] | unknown |
+| tst.ts:507:20:507:22 | key | string |
+| tst.ts:507:29:507:36 | "string" | "string" |
+| tst.ts:508:11:508:13 | str | string |
+| tst.ts:508:17:508:19 | obj | Record<string, unknown> |
+| tst.ts:508:17:508:24 | obj[key] | string |
+| tst.ts:508:17:508:36 | obj[key].toUpperCase | () => string |
+| tst.ts:508:17:508:38 | obj[key ... rCase() | string |
+| tst.ts:508:21:508:23 | key | string |
+| tst.ts:508:26:508:36 | toUpperCase | () => string |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -1178,6 +1215,11 @@ getTypeExprType
 | tst.ts:487:56:487:58 | C[] | C[] |
 | tst.ts:487:76:487:82 | NoInfer | any |
 | tst.ts:487:84:487:84 | C | C |
+| tst.ts:506:20:506:25 | Record | Record<K, T> |
+| tst.ts:506:20:506:42 | Record< ... nknown> | Record<string, unknown> |
+| tst.ts:506:27:506:32 | string | string |
+| tst.ts:506:35:506:41 | unknown | unknown |
+| tst.ts:506:50:506:55 | string | string |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1375,6 +1417,7 @@ unknownType
 | tst.ts:228:12:228:16 | other | unknown |
 | tst.ts:229:16:229:20 | other | unknown |
 | tst.ts:230:20:230:24 | other | unknown |
+| tst.ts:507:16:507:23 | obj[key] | unknown |
 abstractSignature
 | (): HasArea |
 | new (): HasArea |

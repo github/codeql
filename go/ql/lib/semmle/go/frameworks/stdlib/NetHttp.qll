@@ -8,16 +8,6 @@ private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
-  /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
-    UserControlledRequestField() {
-      exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
-        fieldName =
-          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
-      )
-    }
-  }
-
   /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */
   private class StdlibResponseWriter extends Http::ResponseWriter::Range {
     SsaWithFields v;
@@ -123,9 +113,19 @@ module NetHttp {
   private DataFlow::Node getSummaryInputOrOutputNode(
     DataFlow::CallNode call, SummaryComponentStack stack
   ) {
-    exists(int n |
-      stack = SummaryComponentStack::argument(n) and
-      result = call.getArgument(n)
+    exists(int n | result = call.getSyntacticArgument(n) |
+      if result = call.getImplicitVarargsArgument(_)
+      then
+        exists(
+          int lastParamIndex, SummaryComponentStack varArgsSliceArgument,
+          SummaryComponent arrayContentSC, DataFlow::ArrayContent arrayContent
+        |
+          lastParamIndex = call.getCall().getCalleeType().getNumParameter() - 1 and
+          varArgsSliceArgument = SummaryComponentStack::argument(lastParamIndex) and
+          arrayContentSC = SummaryComponent::content(arrayContent) and
+          stack = SummaryComponentStack::push(arrayContentSC, varArgsSliceArgument)
+        )
+      else stack = SummaryComponentStack::argument(n)
     )
     or
     stack = SummaryComponentStack::argument(-1) and

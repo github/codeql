@@ -75,22 +75,27 @@ edges
 | ExternalFlow.cs:118:21:118:30 | call to method Reverse : null [element] : Object | ExternalFlow.cs:118:17:118:17 | access to local variable b : null [element] : Object | provenance |  |
 | ExternalFlow.cs:118:29:118:29 | access to local variable a : null [element] : Object | ExternalFlow.cs:118:21:118:30 | call to method Reverse : null [element] : Object | provenance | MaD:17 |
 | ExternalFlow.cs:120:18:120:18 | access to local variable b : null [element] : Object | ExternalFlow.cs:120:18:120:21 | access to array element | provenance |  |
-| ExternalFlow.cs:205:17:205:18 | access to local variable o2 : Object | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | provenance |  |
+| ExternalFlow.cs:205:17:205:18 | access to local variable o2 : Object | ExternalFlow.cs:206:46:206:47 | access to local variable o2 : Object | provenance |  |
 | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:205:17:205:18 | access to local variable o2 : Object | provenance |  |
-| ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | provenance | MaD:24 |
-| ExternalFlow.cs:211:17:211:18 | access to local variable o1 : Object | ExternalFlow.cs:212:52:212:53 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:206:46:206:47 | access to local variable o2 : Object | ExternalFlow.cs:206:18:206:48 | call to method MixedFlowArgs | provenance | MaD:24 |
+| ExternalFlow.cs:211:17:211:18 | access to local variable o1 : Object | ExternalFlow.cs:212:60:212:61 | access to local variable o1 : Object | provenance |  |
 | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | ExternalFlow.cs:211:17:211:18 | access to local variable o1 : Object | provenance |  |
-| ExternalFlow.cs:212:52:212:53 | access to local variable o1 : Object | ExternalFlow.cs:212:18:212:54 | call to method GeneratedFlowWithGeneratedNeutral | provenance | MaD:25 |
-| ExternalFlow.cs:244:17:244:17 | access to local variable h : HC | ExternalFlow.cs:245:21:245:21 | access to local variable h : HC | provenance |  |
-| ExternalFlow.cs:244:21:244:28 | object creation of type HC : HC | ExternalFlow.cs:244:17:244:17 | access to local variable h : HC | provenance |  |
-| ExternalFlow.cs:245:17:245:17 | access to local variable o : HC | ExternalFlow.cs:246:18:246:18 | access to local variable o | provenance |  |
-| ExternalFlow.cs:245:21:245:21 | access to local variable h : HC | ExternalFlow.cs:245:21:245:39 | call to method ExtensionMethod : HC | provenance | MaD:27 |
-| ExternalFlow.cs:245:21:245:39 | call to method ExtensionMethod : HC | ExternalFlow.cs:245:17:245:17 | access to local variable o : HC | provenance |  |
-| ExternalFlow.cs:262:13:262:13 | [post] access to parameter a : MyInlineArray [element] : Object | ExternalFlow.cs:263:30:263:30 | access to parameter a : MyInlineArray [element] : Object | provenance |  |
-| ExternalFlow.cs:262:20:262:31 | object creation of type Object : Object | ExternalFlow.cs:262:13:262:13 | [post] access to parameter a : MyInlineArray [element] : Object | provenance |  |
-| ExternalFlow.cs:263:17:263:17 | access to local variable b : Object | ExternalFlow.cs:264:18:264:18 | access to local variable b | provenance |  |
-| ExternalFlow.cs:263:21:263:31 | call to method GetFirst : Object | ExternalFlow.cs:263:17:263:17 | access to local variable b : Object | provenance |  |
-| ExternalFlow.cs:263:30:263:30 | access to parameter a : MyInlineArray [element] : Object | ExternalFlow.cs:263:21:263:31 | call to method GetFirst : Object | provenance | MaD:28 |
+| ExternalFlow.cs:212:60:212:61 | access to local variable o1 : Object | ExternalFlow.cs:212:18:212:62 | call to method GeneratedFlowWithGeneratedNeutral | provenance | MaD:25 |
+| ExternalFlow.cs:238:17:238:17 | access to local variable h : HC | ExternalFlow.cs:239:21:239:21 | access to local variable h : HC | provenance |  |
+| ExternalFlow.cs:238:21:238:28 | object creation of type HC : HC | ExternalFlow.cs:238:17:238:17 | access to local variable h : HC | provenance |  |
+| ExternalFlow.cs:239:17:239:17 | access to local variable o : HC | ExternalFlow.cs:240:18:240:18 | access to local variable o | provenance |  |
+| ExternalFlow.cs:239:21:239:21 | access to local variable h : HC | ExternalFlow.cs:239:21:239:39 | call to method ExtensionMethod : HC | provenance | MaD:27 |
+| ExternalFlow.cs:239:21:239:39 | call to method ExtensionMethod : HC | ExternalFlow.cs:239:17:239:17 | access to local variable o : HC | provenance |  |
+| ExternalFlow.cs:256:13:256:13 | [post] access to parameter a : MyInlineArray [element] : Object | ExternalFlow.cs:257:30:257:30 | access to parameter a : MyInlineArray [element] : Object | provenance |  |
+| ExternalFlow.cs:256:20:256:31 | object creation of type Object : Object | ExternalFlow.cs:256:13:256:13 | [post] access to parameter a : MyInlineArray [element] : Object | provenance |  |
+| ExternalFlow.cs:257:17:257:17 | access to local variable b : Object | ExternalFlow.cs:258:18:258:18 | access to local variable b | provenance |  |
+| ExternalFlow.cs:257:21:257:31 | call to method GetFirst : Object | ExternalFlow.cs:257:17:257:17 | access to local variable b : Object | provenance |  |
+| ExternalFlow.cs:257:30:257:30 | access to parameter a : MyInlineArray [element] : Object | ExternalFlow.cs:257:21:257:31 | call to method GetFirst : Object | provenance | MaD:28 |
+| ExternalFlow.cs:278:17:278:17 | access to local variable j : Object | ExternalFlow.cs:279:22:279:22 | access to local variable j : Object | provenance |  |
+| ExternalFlow.cs:278:21:278:32 | object creation of type Object : Object | ExternalFlow.cs:278:17:278:17 | access to local variable j : Object | provenance |  |
+| ExternalFlow.cs:279:13:279:23 | [post] this access : J | ExternalFlow.cs:281:18:281:21 | this access : J | provenance |  |
+| ExternalFlow.cs:279:22:279:22 | access to local variable j : Object | ExternalFlow.cs:279:13:279:23 | [post] this access : J | provenance | MaD:30 |
+| ExternalFlow.cs:281:18:281:21 | this access : J | ExternalFlow.cs:281:18:281:27 | access to property Prop1 | provenance | MaD:29 |
 nodes
 | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | semmle.label | access to local variable arg1 : Object |
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
@@ -186,24 +191,30 @@ nodes
 | ExternalFlow.cs:120:18:120:21 | access to array element | semmle.label | access to array element |
 | ExternalFlow.cs:205:17:205:18 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
 | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
-| ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:206:18:206:48 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
+| ExternalFlow.cs:206:46:206:47 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
 | ExternalFlow.cs:211:17:211:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
 | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:212:18:212:54 | call to method GeneratedFlowWithGeneratedNeutral | semmle.label | call to method GeneratedFlowWithGeneratedNeutral |
-| ExternalFlow.cs:212:52:212:53 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
-| ExternalFlow.cs:244:17:244:17 | access to local variable h : HC | semmle.label | access to local variable h : HC |
-| ExternalFlow.cs:244:21:244:28 | object creation of type HC : HC | semmle.label | object creation of type HC : HC |
-| ExternalFlow.cs:245:17:245:17 | access to local variable o : HC | semmle.label | access to local variable o : HC |
-| ExternalFlow.cs:245:21:245:21 | access to local variable h : HC | semmle.label | access to local variable h : HC |
-| ExternalFlow.cs:245:21:245:39 | call to method ExtensionMethod : HC | semmle.label | call to method ExtensionMethod : HC |
-| ExternalFlow.cs:246:18:246:18 | access to local variable o | semmle.label | access to local variable o |
-| ExternalFlow.cs:262:13:262:13 | [post] access to parameter a : MyInlineArray [element] : Object | semmle.label | [post] access to parameter a : MyInlineArray [element] : Object |
-| ExternalFlow.cs:262:20:262:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:263:17:263:17 | access to local variable b : Object | semmle.label | access to local variable b : Object |
-| ExternalFlow.cs:263:21:263:31 | call to method GetFirst : Object | semmle.label | call to method GetFirst : Object |
-| ExternalFlow.cs:263:30:263:30 | access to parameter a : MyInlineArray [element] : Object | semmle.label | access to parameter a : MyInlineArray [element] : Object |
-| ExternalFlow.cs:264:18:264:18 | access to local variable b | semmle.label | access to local variable b |
+| ExternalFlow.cs:212:18:212:62 | call to method GeneratedFlowWithGeneratedNeutral | semmle.label | call to method GeneratedFlowWithGeneratedNeutral |
+| ExternalFlow.cs:212:60:212:61 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:238:17:238:17 | access to local variable h : HC | semmle.label | access to local variable h : HC |
+| ExternalFlow.cs:238:21:238:28 | object creation of type HC : HC | semmle.label | object creation of type HC : HC |
+| ExternalFlow.cs:239:17:239:17 | access to local variable o : HC | semmle.label | access to local variable o : HC |
+| ExternalFlow.cs:239:21:239:21 | access to local variable h : HC | semmle.label | access to local variable h : HC |
+| ExternalFlow.cs:239:21:239:39 | call to method ExtensionMethod : HC | semmle.label | call to method ExtensionMethod : HC |
+| ExternalFlow.cs:240:18:240:18 | access to local variable o | semmle.label | access to local variable o |
+| ExternalFlow.cs:256:13:256:13 | [post] access to parameter a : MyInlineArray [element] : Object | semmle.label | [post] access to parameter a : MyInlineArray [element] : Object |
+| ExternalFlow.cs:256:20:256:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:257:17:257:17 | access to local variable b : Object | semmle.label | access to local variable b : Object |
+| ExternalFlow.cs:257:21:257:31 | call to method GetFirst : Object | semmle.label | call to method GetFirst : Object |
+| ExternalFlow.cs:257:30:257:30 | access to parameter a : MyInlineArray [element] : Object | semmle.label | access to parameter a : MyInlineArray [element] : Object |
+| ExternalFlow.cs:258:18:258:18 | access to local variable b | semmle.label | access to local variable b |
+| ExternalFlow.cs:278:17:278:17 | access to local variable j : Object | semmle.label | access to local variable j : Object |
+| ExternalFlow.cs:278:21:278:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:279:13:279:23 | [post] this access : J | semmle.label | [post] this access : J |
+| ExternalFlow.cs:279:22:279:22 | access to local variable j : Object | semmle.label | access to local variable j : Object |
+| ExternalFlow.cs:281:18:281:21 | this access : J | semmle.label | this access : J |
+| ExternalFlow.cs:281:18:281:27 | access to property Prop1 | semmle.label | access to property Prop1 |
 subpaths
 | ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object |
 #select
@@ -227,7 +238,8 @@ subpaths
 | ExternalFlow.cs:104:18:104:25 | access to field Field | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:112:18:112:25 | access to property MyProp | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp | $@ | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:120:18:120:21 | access to array element | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | ExternalFlow.cs:120:18:120:21 | access to array element | $@ | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | $@ | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:212:18:212:54 | call to method GeneratedFlowWithGeneratedNeutral | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | ExternalFlow.cs:212:18:212:54 | call to method GeneratedFlowWithGeneratedNeutral | $@ | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:246:18:246:18 | access to local variable o | ExternalFlow.cs:244:21:244:28 | object creation of type HC : HC | ExternalFlow.cs:246:18:246:18 | access to local variable o | $@ | ExternalFlow.cs:244:21:244:28 | object creation of type HC : HC | object creation of type HC : HC |
-| ExternalFlow.cs:264:18:264:18 | access to local variable b | ExternalFlow.cs:262:20:262:31 | object creation of type Object : Object | ExternalFlow.cs:264:18:264:18 | access to local variable b | $@ | ExternalFlow.cs:262:20:262:31 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:206:18:206:48 | call to method MixedFlowArgs | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:18:206:48 | call to method MixedFlowArgs | $@ | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:212:18:212:62 | call to method GeneratedFlowWithGeneratedNeutral | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | ExternalFlow.cs:212:18:212:62 | call to method GeneratedFlowWithGeneratedNeutral | $@ | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:240:18:240:18 | access to local variable o | ExternalFlow.cs:238:21:238:28 | object creation of type HC : HC | ExternalFlow.cs:240:18:240:18 | access to local variable o | $@ | ExternalFlow.cs:238:21:238:28 | object creation of type HC : HC | object creation of type HC : HC |
+| ExternalFlow.cs:258:18:258:18 | access to local variable b | ExternalFlow.cs:256:20:256:31 | object creation of type Object : Object | ExternalFlow.cs:258:18:258:18 | access to local variable b | $@ | ExternalFlow.cs:256:20:256:31 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:281:18:281:27 | access to property Prop1 | ExternalFlow.cs:278:21:278:32 | object creation of type Object : Object | ExternalFlow.cs:281:18:281:27 | access to property Prop1 | $@ | ExternalFlow.cs:278:21:278:32 | object creation of type Object : Object | object creation of type Object : Object |

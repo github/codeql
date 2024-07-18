@@ -121,9 +121,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.0.79"
+version = "1.0.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50d30906286121d95be3d479533b458f87493b30a4b5f79a607db8f5d11aa91f"
+checksum = "41c270e7540d725e65ac7f1b212ac8ce349719624d7bcff99f8e2e488e8cf03f"
 
 [[package]]
 name = "cfg-if"
@@ -203,6 +203,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tracing",
+ "tracing-subscriber",
  "tree-sitter",
 ]
 
@@ -929,9 +930,9 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter"
-version = "0.20.10"
+version = "0.22.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e747b1f9b7b931ed39a548c1fae149101497de3c1fc8d9e18c62c1a66c683d3d"
+checksum = "df7cc499ceadd4dcdf7ec6d4cbc34ece92c3fa07821e287aedecd4416c516dca"
 dependencies = [
  "cc",
  "regex",
@@ -947,8 +948,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-json"
-version = "0.20.0"
-source = "git+https://github.com/tausbn/tree-sitter-json.git?rev=745663ee997f1576fe1e7187e6347e0db36ec7a9#745663ee997f1576fe1e7187e6347e0db36ec7a9"
+version = "0.21.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-json.git?rev=94f5c527b2965465956c2000ed6134dd24daf2a7#94f5c527b2965465956c2000ed6134dd24daf2a7"
 dependencies = [
  "cc",
  "tree-sitter",
@@ -956,8 +957,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-ql"
-version = "0.19.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-ql.git?rev=d08db734f8dc52f6bc04db53a966603122bc6985#d08db734f8dc52f6bc04db53a966603122bc6985"
+version = "0.22.5"
+source = "git+https://github.com/tree-sitter/tree-sitter-ql.git?rev=fa5c3821dd2161f5c8528a8cbdb258daa6dc4de6#fa5c3821dd2161f5c8528a8cbdb258daa6dc4de6"
 dependencies = [
  "cc",
  "tree-sitter",
@@ -966,7 +967,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ql-dbscheme"
 version = "0.0.1"
-source = "git+https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git?rev=63e1344353f63931e88bfbc2faa2e78e1421b213#63e1344353f63931e88bfbc2faa2e78e1421b213"
+source = "git+https://github.com/tree-sitter/tree-sitter-ql-dbscheme.git?rev=5f770f57fa415607ff50e3d237d47c8f11440eb3#5f770f57fa415607ff50e3d237d47c8f11440eb3"
 dependencies = [
  "cc",
  "tree-sitter",

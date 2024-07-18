@@ -39,14 +39,15 @@ class DbRawSqlStoredFlowSource extends DatabaseInputSource {
  * An expression that has a type of `DbDataReader` or a sub-class, representing the result of a
  * data command.
  */
-class DbDataReaderStoredFlowSource extends DatabaseInputSource {
-  DbDataReaderStoredFlowSource() {
-    this.asExpr().getType() = any(SystemDataCommon::DbDataReader dataReader).getASubType*()
+class DbDataReaderParameterStoredFlowSource extends DatabaseInputSource {
+  DbDataReaderParameterStoredFlowSource() {
+    [this.asParameter().getType(), this.asExpr().(MethodCall).getTarget().getReturnType()] =
+      any(SystemDataCommon::DbDataReader dataReader).getASubType*()
   }
 }
 
 /** An expression that accesses a method of `DbDataReader` or a sub-class. */
-class DbDataReaderMethodStoredFlowSource extends DatabaseInputSource {
+deprecated class DbDataReaderMethodStoredFlowSource extends DataFlow::Node {
   DbDataReaderMethodStoredFlowSource() {
     this.asExpr().(MethodCall).getTarget().getDeclaringType() =
       any(SystemDataCommon::DbDataReader dataReader).getASubType*()
@@ -54,7 +55,7 @@ class DbDataReaderMethodStoredFlowSource extends DatabaseInputSource {
 }
 
 /** An expression that accesses a property of `DbDataReader` or a sub-class. */
-class DbDataReaderPropertyStoredFlowSource extends DatabaseInputSource {
+deprecated class DbDataReaderPropertyStoredFlowSource extends DataFlow::Node {
   DbDataReaderPropertyStoredFlowSource() {
     this.asExpr().(PropertyAccess).getTarget().getDeclaringType() =
       any(SystemDataCommon::DbDataReader dataReader).getASubType*()

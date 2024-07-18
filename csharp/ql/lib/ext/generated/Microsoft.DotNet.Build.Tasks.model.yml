@@ -2,6 +2,16 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.DotNet.Build.Tasks", "TpnDocument", False, "Parse", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnDocument", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnSection", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", False, "ParseAll", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", False, "get_SingleLineName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.DotNet.Build.Tasks", "BuildTask", "Execute", "()", "summary", "df-generated"]
@@ -12,12 +22,6 @@ extensions:
       - ["Microsoft.DotNet.Build.Tasks", "RegenerateDownloadTable", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "RegenerateThirdPartyNotices", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "RegenerateThirdPartyNotices", "ExecuteAsync", "(System.Net.Http.HttpClient)", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnDocument", "Parse", "(System.String[])", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnDocument", "ToString", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSection+ByHeaderNameComparer", "Equals", "(Microsoft.DotNet.Build.Tasks.TpnSection,Microsoft.DotNet.Build.Tasks.TpnSection)", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSection+ByHeaderNameComparer", "GetHashCode", "(Microsoft.DotNet.Build.Tasks.TpnSection)", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnSection", "ToString", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", "IsSeparatorLine", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", "ParseAll", "(System.String[])", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", "ToString", "()", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", "get_SingleLineName", "()", "summary", "df-generated"]

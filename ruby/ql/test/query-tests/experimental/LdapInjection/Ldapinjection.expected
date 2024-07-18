@@ -7,7 +7,7 @@ edges
 | LdapInjection.rb:9:12:9:17 | call to params | LdapInjection.rb:9:12:9:29 | ...[...] | provenance |  |
 | LdapInjection.rb:9:12:9:29 | ...[...] | LdapInjection.rb:9:5:9:8 | name | provenance |  |
 | LdapInjection.rb:33:87:33:92 | call to [] [element 0] | LdapInjection.rb:33:87:33:92 | call to [] | provenance |  |
-| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] | provenance |  |
+| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] | provenance | Config |
 | LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] [element 0] | provenance |  |
 | LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:37:41:37:44 | name | provenance |  |
 | LdapInjection.rb:37:5:37:10 | filter | LdapInjection.rb:38:62:38:67 | filter | provenance |  |

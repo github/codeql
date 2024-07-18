@@ -6,6 +6,9 @@ extensions:
     data:
       - ["Microsoft.Apple.Build", "AppleProject", False, "AppleProject", "(System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Apple.Build", "AppleProject", False, "AppleProject", "(System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Apple.Build", "AppleProject", False, "Build", "(System.String,Microsoft.Mobile.Build.Clang.ClangBuildOptions,System.Boolean)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
+      - ["Microsoft.Apple.Build", "AppleProject", False, "Build", "(System.String,Microsoft.Mobile.Build.Clang.ClangBuildOptions,System.String,System.Boolean)", "", "Argument[2]", "Argument[1]", "taint", "df-generated"]
+      - ["Microsoft.Apple.Build", "AppleProject", False, "Build", "(System.String,Microsoft.Mobile.Build.Clang.ClangBuildOptions,System.String,System.Boolean)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["Microsoft.Apple.Build", "AppleSdk", False, "AppleSdk", "(System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Apple.Build", "AppleSdk", False, "get_DeveloperRoot", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Apple.Build", "AppleSdk", False, "get_SdkRoot", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -13,6 +16,4 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.Apple.Build", "AppleProject", "Build", "(System.String,Microsoft.Mobile.Build.Clang.ClangBuildOptions,System.Boolean)", "summary", "df-generated"]
-      - ["Microsoft.Apple.Build", "AppleProject", "Build", "(System.String,Microsoft.Mobile.Build.Clang.ClangBuildOptions,System.String,System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.Apple.Build", "AppleSdk", "GetPlatformName", "(System.String)", "summary", "df-generated"]

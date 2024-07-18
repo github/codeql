@@ -26,8 +26,11 @@ edges
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:153:26:153:26 | keyString | provenance |  |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:162:24:162:24 | keyString | provenance |  |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:164:24:164:24 | keyString | provenance |  |
+| file://:0:0:0:0 | [post] self | misc.swift:30:7:30:7 | self [Return] | provenance |  |
 | file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self | provenance |  |
 | file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self | provenance |  |
+| file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:30:7:30:7 | self [Return] | provenance |  |
+| file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | provenance |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [encryptionKey] | provenance |  |
 | grdb.swift:21:20:21:20 | abc123 | grdb.swift:27:23:27:23 | constString | provenance |  |
 | grdb.swift:21:20:21:20 | abc123 | grdb.swift:31:26:31:26 | constString | provenance |  |
@@ -116,6 +119,8 @@ nodes
 | grdb.swift:29:23:29:23 | constData | semmle.label | constData |
 | grdb.swift:31:26:31:26 | constString | semmle.label | constString |
 | grdb.swift:33:26:33:26 | constData | semmle.label | constData |
+| misc.swift:30:7:30:7 | self [Return] | semmle.label | self [Return] |
+| misc.swift:30:7:30:7 | self [Return] [encryptionKey] | semmle.label | self [Return] [encryptionKey] |
 | misc.swift:30:7:30:7 | value | semmle.label | value |
 | misc.swift:46:19:46:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | misc.swift:46:24:46:24 | abcdef123456 | semmle.label | abcdef123456 |
@@ -150,10 +155,10 @@ nodes
 | sqlite3_c_api.swift:49:36:49:36 | buffer | semmle.label | buffer |
 | sqlite3_c_api.swift:50:38:50:38 | buffer | semmle.label | buffer |
 subpaths
-| misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:53:2:53:2 | [post] config |
-| misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:53:2:53:2 | [post] config [encryptionKey] |
-| misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:57:2:57:18 | [post] getter for .config |
-| misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] |
+| misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] | misc.swift:53:2:53:2 | [post] config |
+| misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:53:2:53:2 | [post] config [encryptionKey] |
+| misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] | misc.swift:57:2:57:18 | [post] getter for .config |
+| misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] |
 #select
 | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:43:13:43:13 | hardcoded_key | hardcoded_key |
 | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:45:23:45:23 | hardcoded_key | hardcoded_key |

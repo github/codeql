@@ -1,0 +1,17 @@
+using System;
+
+namespace My.Qltest
+{
+    public class Library
+    {
+        public static object MixedFlowArgs(object o1, object o2) => throw null;
+
+        public static object GeneratedFlowWithGeneratedNeutral(object o) => throw null;
+
+        public static object GeneratedFlowWithManualNeutral(object o) => throw null;
+
+        public static object StepArgReturnGenerated(object x) => throw null;
+
+        public static object StepArgReturnGeneratedIgnored(object x) => throw null;
+    }
+}

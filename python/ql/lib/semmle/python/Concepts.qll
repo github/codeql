@@ -200,10 +200,11 @@ module Decoding {
 }
 
 private class DecodingAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     exists(Decoding decoding |
       nodeFrom = decoding.getAnInput() and
-      nodeTo = decoding.getOutput()
+      nodeTo = decoding.getOutput() and
+      model = "Decoding-" + decoding.getFormat()
     )
   }
 }
@@ -1026,6 +1027,162 @@ module Http {
     }
 
     /**
+     * A data-flow node that sets a header in an HTTP response.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderWrite::Range` instead.
+     */
+    class ResponseHeaderWrite extends DataFlow::Node instanceof ResponseHeaderWrite::Range {
+      /**
+       * Gets the argument containing the header name.
+       */
+      DataFlow::Node getNameArg() { result = super.getNameArg() }
+
+      /**
+       * Gets the argument containing the header value.
+       */
+      DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling header writes on HTTP responses. */
+    module ResponseHeaderWrite {
+      /**
+       *A data-flow node that sets a header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the header name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument containing the header value.
+         */
+        abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /**
+     * A data-flow node that sets multiple headers in an HTTP response using a dict or a list of tuples.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderBulkWrite::Range` instead.
+     */
+    class ResponseHeaderBulkWrite extends DataFlow::Node instanceof ResponseHeaderBulkWrite::Range {
+      /**
+       * Gets the argument containing the headers dictionary.
+       */
+      DataFlow::Node getBulkArg() { result = super.getBulkArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling bulk header writes on HTTP responses. */
+    module ResponseHeaderBulkWrite {
+      /**
+       * A data-flow node that sets multiple headers in an HTTP response using a dict.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderBulkWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the headers dictionary.
+         */
+        abstract DataFlow::Node getBulkArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      KeyValuePair item;
+
+      HeaderBulkWriteDictLiteral() {
+        exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
+          item = dict.getAnItem()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /** A tuple in a list for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      Tuple item;
+
+      HeaderBulkWriteListLiteral() {
+        exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
+          item = list.getAnElt()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /**
      * A data-flow node that sets a cookie in an HTTP response.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
@@ -1075,6 +1232,27 @@ module Http {
          */
         abstract DataFlow::Node getValueArg();
       }
+    }
+
+    /** A write to a `Set-Cookie` header that sets a cookie directly. */
+    private class CookieHeaderWrite extends CookieWrite::Range instanceof Http::Server::ResponseHeaderWrite
+    {
+      CookieHeaderWrite() {
+        exists(StringLiteral str |
+          str.getText().toLowerCase() = "set-cookie" and
+          DataFlow::exprNode(str)
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
+        )
+      }
+
+      override DataFlow::Node getNameArg() { none() }
+
+      override DataFlow::Node getHeaderArg() {
+        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+      }
+
+      override DataFlow::Node getValueArg() { none() }
     }
 
     /**

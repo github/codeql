@@ -27,16 +27,20 @@ extensions:
       - ["My.Qltest", "G", false, "GeneratedFlow", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "G", false, "GeneratedFlowArgs", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "G", false, "GeneratedFlowArgs", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "value", "df-generated"]
-      - ["My.Qltest", "G", false, "MixedFlowArgs", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
-      - ["My.Qltest", "G", false, "MixedFlowArgs", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "value", "manual"]
-      - ["My.Qltest", "G", false, "GeneratedFlowWithGeneratedNeutral", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
-      - ["My.Qltest", "G", false, "GeneratedFlowWithManualNeutral", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
+      - ["My.Qltest", "Library", false, "MixedFlowArgs", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
+      - ["My.Qltest", "Library", false, "MixedFlowArgs", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "Library", false, "GeneratedFlowWithGeneratedNeutral", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
+      - ["My.Qltest", "Library", false, "GeneratedFlowWithManualNeutral", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "HE", false, "ExtensionMethod", "(My.Qltest.HI)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["My.Qltest", "I", false, "GetFirst", "(My.Qltest.MyInlineArray)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "J", false, "get_Prop1", "()", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "J", false, "SetProp1", "(System.Object)", "", "Argument[0]", "Argument[this]", "value", "manual"]
+      - ["My.Qltest", "J", false, "get_Prop2", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["My.Qltest", "J", false, "SetProp2", "(System.Object)", "", "Argument[0]", "Argument[this]", "value", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
       # "namespace", "type", "name", "signature", "kind", "provenance"
     data:
-      - ["My.Qltest", "G", "GeneratedFlowWithGeneratedNeutral", "(System.Object)", "summary", "df-generated"]
-      - ["My.Qltest", "G", "GeneratedFlowWithManualNeutral", "(System.Object)", "summary", "manual"]
+      - ["My.Qltest", "Library", "GeneratedFlowWithGeneratedNeutral", "(System.Object)", "summary", "df-generated"]
+      - ["My.Qltest", "Library", "GeneratedFlowWithManualNeutral", "(System.Object)", "summary", "manual"]

@@ -13,12 +13,12 @@
   }
 }
 {
-  "markdownMessage": "C# with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
+  "markdownMessage": "C# was extracted with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
   "severity": "note",
   "source": {
     "extractorName": "csharp",
     "id": "csharp/autobuilder/buildless/mode-active",
-    "name": "C# with build-mode set to 'none'"
+    "name": "C# was extracted with build-mode set to 'none'"
   },
   "visibility": {
     "cliSummaryTable": true,

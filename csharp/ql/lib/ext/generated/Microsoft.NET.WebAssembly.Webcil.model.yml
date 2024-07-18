@@ -10,6 +10,7 @@ extensions:
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "GetMetadataReader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "GetMetadataReaderProvider", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "WebcilReader", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "WebcilReader", "(System.IO.Stream,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilWasmWrapper", False, "WebcilWasmWrapper", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -34,6 +35,5 @@ extensions:
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadDebugDirectory", "()", "summary", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadEmbeddedPortablePdbDebugDirectoryData", "(System.Reflection.PortableExecutable.DebugDirectoryEntry)", "summary", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadPdbChecksumDebugDirectoryData", "(System.Reflection.PortableExecutable.DebugDirectoryEntry)", "summary", "df-generated"]
-      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "WebcilReader", "(System.IO.Stream,System.String)", "summary", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilSectionHeader", "WebcilSectionHeader", "(System.Int32,System.Int32,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.NET.WebAssembly.Webcil", "WebcilWasmWrapper", "WriteWasmWrappedWebcil", "(System.IO.Stream)", "summary", "df-generated"]

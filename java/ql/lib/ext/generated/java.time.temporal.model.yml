@@ -4,36 +4,10 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.time.temporal", "Temporal", True, "minus", "(TemporalAmount)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "Temporal", True, "minus", "(long,TemporalUnit)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "Temporal", True, "plus", "(TemporalAmount)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "Temporal", True, "plus", "(long,TemporalUnit)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "Temporal", True, "with", "(TemporalAdjuster)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "Temporal", True, "with", "(TemporalAdjuster)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "Temporal", True, "with", "(TemporalField,long)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "Temporal", True, "with", "(TemporalField,long)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
-      - ["java.time.temporal", "TemporalAccessor", True, "query", "(TemporalQuery)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalAccessor", True, "range", "(TemporalField)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalAdjuster", True, "adjustInto", "(Temporal)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalAmount", True, "addTo", "(Temporal)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalAmount", True, "subtractFrom", "(Temporal)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "adjustInto", "(Temporal,long)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "getBaseUnit", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "getDisplayName", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "getDisplayName", "(Locale)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "getRangeUnit", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "range", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "rangeRefinedBy", "(TemporalAccessor)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalField", True, "resolve", "(Map,TemporalAccessor,ResolverStyle)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "TemporalUnit", True, "addTo", "(Temporal,long)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.time.temporal", "UnsupportedTemporalTypeException", True, "UnsupportedTemporalTypeException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.time.temporal", "UnsupportedTemporalTypeException", True, "UnsupportedTemporalTypeException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.time.temporal", "UnsupportedTemporalTypeException", True, "UnsupportedTemporalTypeException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["java.time.temporal", "WeekFields", False, "dayOfWeek", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "WeekFields", False, "weekBasedYear", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "WeekFields", False, "weekOfMonth", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "WeekFields", False, "weekOfWeekBasedYear", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.time.temporal", "WeekFields", False, "weekOfYear", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

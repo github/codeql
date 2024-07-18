@@ -80,7 +80,7 @@ module TaintFlowMake<
       predicate isAdditionalFlowStep(
         DataFlowLang::Node node1, DataFlowLang::Node node2, string model
       ) {
-        Config::isAdditionalFlowStep(node1, node2) and model = ""
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
     }
 
@@ -106,7 +106,7 @@ module TaintFlowMake<
       predicate isAdditionalFlowStep(
         DataFlowLang::Node node1, DataFlowLang::Node node2, string model
       ) {
-        Config::isAdditionalFlowStep(node1, node2) and model = ""
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
     }
 

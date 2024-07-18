@@ -187,8 +187,9 @@ module MakeConsistency<
   }
 
   query predicate unreachableNodeCCtx(Node n, DataFlowCall call, string msg) {
-    isUnreachableInCall(n, call) and
-    exists(DataFlowCallable c |
+    exists(DataFlowCallable c, NodeRegion nr |
+      isUnreachableInCall(nr, call) and
+      nr.contains(n) and
       c = nodeGetEnclosingCallable(n) and
       not viableCallable(call) = c
     ) and

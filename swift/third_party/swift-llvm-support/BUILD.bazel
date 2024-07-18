@@ -7,11 +7,3 @@ alias(
         "@bazel_tools//src/conditions:darwin": "@swift_prebuilt_darwin_x86_64//:swift-llvm-support",
     }),
 )
-
-alias(
-    name = "swift-resource-dir",
-    actual = select({
-        "@bazel_tools//src/conditions:linux": "@swift_toolchain_linux//:resource-dir",
-        "@bazel_tools//src/conditions:darwin": "@swift_toolchain_macos//:resource-dir",
-    }),
-)

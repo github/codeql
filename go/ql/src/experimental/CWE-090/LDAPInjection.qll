@@ -98,13 +98,13 @@ private class LdapClientDNSink extends LdapSink {
 /**
  * DEPRECATED: Use `LdapInjectionFlow` instead.
  *
- * A taint-tracking configuration for reasoning about when a `RemoteFlowSource`
+ * A taint-tracking configuration for reasoning about when a `ThreatModelFlowSource`
  * flows into an argument or field that is vulnerable to LDAP injection.
  */
 deprecated class LdapInjectionConfiguration extends TaintTracking::Configuration {
   LdapInjectionConfiguration() { this = "Ldap injection" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapSink }
 
@@ -112,7 +112,7 @@ deprecated class LdapInjectionConfiguration extends TaintTracking::Configuration
 }
 
 private module LdapInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof LdapSink }
 
@@ -120,7 +120,7 @@ private module LdapInjectionConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Tracks taint flow for reasoning about when a `RemoteFlowSource` flows
+ * Tracks taint flow for reasoning about when a `ThreatModelFlowSource` flows
  * into an argument or field that is vulnerable to LDAP injection.
  */
 module LdapInjectionFlow = TaintTracking::Global<LdapInjectionConfig>;
