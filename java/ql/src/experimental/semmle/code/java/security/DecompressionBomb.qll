@@ -68,19 +68,9 @@ module XerialSnappy {
     override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
       exists(Call call |
         // Constructors
-        call.getCallee().getDeclaringType() = any(TypeInputStream t) and
+        call.getCallee().getDeclaringType() instanceof TypeInputStream and
         call.getArgument(0) = n1.asExpr() and
         call = n2.asExpr()
-      )
-    }
-  }
-
-  class Sink extends DecompressionBomb::Sink {
-    Sink() {
-      this.asExpr() = any(ReadInputStreamCall r).getQualifier()
-      or
-      exists(ConstructorCall call | call.getConstructedType() instanceof TypeInputStream |
-        this.asExpr() = call.getArgument(0)
       )
     }
   }
@@ -117,7 +107,7 @@ module ApacheCommons {
     /**
      * The types that are responsible for specific compression format of `CompressorInputStream` Class
      */
-    class TypeCompressors extends RefType {
+    class TypeCompressors extends DecompressionBomb::BombTypeInputStream {
       TypeCompressors() {
         this.getASupertype*()
             .hasQualifiedName("org.apache.commons.compress.compressors.gzip",
@@ -166,16 +156,6 @@ module ApacheCommons {
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
       }
     }
-
-    class Sink extends DecompressionBomb::Sink {
-      Sink() {
-        this.asExpr() = any(ReadInputStreamCall r).getQualifier()
-        or
-        exists(ConstructorCall call | call.getConstructedType() instanceof TypeCompressors |
-          this.asExpr() = call.getArgument(0)
-        )
-      }
-    }
   }
 
   /**
@@ -185,7 +165,7 @@ module ApacheCommons {
     /**
      * The types that are responsible for specific compression format of `ArchiveInputStream` Class
      */
-    class TypeArchivers extends RefType {
+    class TypeArchivers extends DecompressionBomb::BombTypeInputStream {
       TypeArchivers() {
         this.getASupertype*()
             .hasQualifiedName("org.apache.commons.compress.archivers.ar", "ArArchiveInputStream") or
@@ -211,16 +191,6 @@ module ApacheCommons {
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
       }
     }
-
-    class Sink extends DecompressionBomb::Sink {
-      Sink() {
-        this.asExpr() = any(ReadInputStreamCall r).getQualifier()
-        or
-        exists(ConstructorCall call | call.getConstructedType() instanceof TypeArchivers |
-          this.asExpr() = call.getArgument(0)
-        )
-      }
-    }
   }
 
   /**
@@ -230,7 +200,7 @@ module ApacheCommons {
     /**
      * A type that is responsible for `ArchiveInputStream` Class
      */
-    class TypeArchivers extends RefType {
+    class TypeArchivers extends DecompressionBomb::BombTypeInputStream {
       TypeArchivers() {
         this.getASupertype*()
             .hasQualifiedName("org.apache.commons.compress.archivers", "ArchiveStreamFactory")
@@ -260,9 +230,9 @@ module ApacheCommons {
         exists(Call call |
           // Constructors
           (
-            call.getCallee().getDeclaringType() = any(TypeCompressors t)
+            call.getCallee().getDeclaringType() instanceof TypeCompressors
             or
-            call.getCallee().getDeclaringType() = any(TypeArchivers t)
+            call.getCallee().getDeclaringType() instanceof TypeArchivers
           ) and
           call.getArgument(0) = n1.asExpr() and
           call = n2.asExpr()
@@ -281,19 +251,6 @@ module ApacheCommons {
           this.getReceiverType() instanceof TypeCompressorInputStream
         ) and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
-      }
-    }
-
-    class Sink extends DecompressionBomb::Sink {
-      Sink() {
-        this.asExpr() = any(ReadInputStreamCall r).getQualifier()
-        or
-        exists(ConstructorCall call |
-          call.getConstructedType() instanceof TypeCompressors or
-          call.getConstructedType() instanceof TypeArchivers
-        |
-          this.asExpr() = call.getArgument(0)
-        )
       }
     }
   }
@@ -355,16 +312,6 @@ module Zip {
     ReadInputStreamCall() {
       this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
-    }
-  }
-
-  class ReadInputStreamSink extends DecompressionBomb::Sink {
-    ReadInputStreamSink() {
-      this.asExpr() = any(ReadInputStreamCall r).getQualifier()
-      or
-      exists(ConstructorCall call | call.getConstructedType() instanceof TypeInputStream |
-        this.asExpr() = call.getArgument(0)
-      )
     }
   }
 
