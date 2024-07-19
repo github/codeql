@@ -12,10 +12,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-@WebServlet(description = "", displayName = "", largeIcon = "", name = "JwtTest1", smallIcon = "", urlPatterns = {}, value = "/Auth", initParams = {}, asyncSupported = false, loadOnStartup = 0)
 public class JwtNoVerifier extends HttpServlet {
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -35,7 +34,7 @@ public class JwtNoVerifier extends HttpServlet {
         out.println("</body></html>");
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
