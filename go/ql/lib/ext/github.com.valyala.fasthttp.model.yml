@@ -1,6 +1,35 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/valyala/fasthttp", "", True, "Get", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "Post", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "Dial", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "DialDualStack", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "DialDualStackTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "", True, "DialTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "Client", True, "Get", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Client", True, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Client", True, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Client", True, "Post", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "HostClient", True, "Get", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "HostClient", True, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "HostClient", True, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "HostClient", True, "Post", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Request", True, "SetHost", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Request", True, "SetHostBytes", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Request", True, "SetRequestURI", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Request", True, "SetRequestURIBytes", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "Request", True, "SetURI", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["github.com/valyala/fasthttp", "TCPDialer", True, "Dial", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "TCPDialer", True, "DialDualStack", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "TCPDialer", True, "DialDualStackTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      - ["github.com/valyala/fasthttp", "TCPDialer", True, "DialTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["github.com/valyala/fasthttp", "URI", False, "SetHost", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
@@ -8,7 +37,6 @@ extensions:
       - ["github.com/valyala/fasthttp", "URI", False, "Update", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
       - ["github.com/valyala/fasthttp", "URI", False, "UpdateBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
       - ["github.com/valyala/fasthttp", "URI", False, "Parse", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
-
   - addsTo:
       pack: codeql/go-all
       extensible: sourceModel
