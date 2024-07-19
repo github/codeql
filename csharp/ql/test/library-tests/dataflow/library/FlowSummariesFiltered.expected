@@ -4202,6 +4202,10 @@
 | System.Collections.Generic;CollectionExtensions;AsReadOnly<T>;(System.Collections.Generic.IList<T>);Argument[0].Element;ReturnValue;taint;df-generated |
 | System.Collections.Generic;CollectionExtensions;AsReadOnly<TKey,TValue>;(System.Collections.Generic.IDictionary<TKey,TValue>);Argument[0].Element;ReturnValue;taint;df-generated |
 | System.Collections.Generic;CollectionExtensions;CopyTo<T>;(System.Collections.Generic.List<T>,System.Span<T>);Argument[0].Element;Argument[1];taint;df-generated |
+| System.Collections.Generic;CollectionExtensions;GetValueOrDefault<TKey,TValue>;(System.Collections.Generic.IReadOnlyDictionary<TKey,TValue>,TKey);Argument[0].Element;ReturnValue;taint;df-generated |
+| System.Collections.Generic;CollectionExtensions;GetValueOrDefault<TKey,TValue>;(System.Collections.Generic.IReadOnlyDictionary<TKey,TValue>,TKey);Argument[1];ReturnValue;taint;df-generated |
+| System.Collections.Generic;CollectionExtensions;GetValueOrDefault<TKey,TValue>;(System.Collections.Generic.IReadOnlyDictionary<TKey,TValue>,TKey,TValue);Argument[0].Element;ReturnValue;taint;df-generated |
+| System.Collections.Generic;CollectionExtensions;GetValueOrDefault<TKey,TValue>;(System.Collections.Generic.IReadOnlyDictionary<TKey,TValue>,TKey,TValue);Argument[1];ReturnValue;taint;df-generated |
 | System.Collections.Generic;CollectionExtensions;GetValueOrDefault<TKey,TValue>;(System.Collections.Generic.IReadOnlyDictionary<TKey,TValue>,TKey,TValue);Argument[2];ReturnValue;taint;df-generated |
 | System.Collections.Generic;CollectionExtensions;Remove<TKey,TValue>;(System.Collections.Generic.IDictionary<TKey,TValue>,TKey,TValue);Argument[0].Element;ReturnValue;taint;df-generated |
 | System.Collections.Generic;CollectionExtensions;TryAdd<TKey,TValue>;(System.Collections.Generic.IDictionary<TKey,TValue>,TKey,TValue);Argument[0].Element;Argument[2];taint;df-generated |
@@ -12159,6 +12163,9 @@
 | System.Threading.Tasks.Dataflow;DataflowBlock;Choose<T1,T2>;(System.Threading.Tasks.Dataflow.ISourceBlock<T1>,System.Action<T1>,System.Threading.Tasks.Dataflow.ISourceBlock<T2>,System.Action<T2>,System.Threading.Tasks.Dataflow.DataflowBlockOptions);Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;Encapsulate<TInput,TOutput>;(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;Encapsulate<TInput,TOutput>;(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>);Argument[1];ReturnValue;taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;LinkTo<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>);Argument[0];Argument[1];taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;LinkTo<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>);Argument[0];ReturnValue;taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;LinkTo<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>);Argument[1];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;LinkTo<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>,System.Predicate<TOutput>);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;LinkTo<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>,System.Threading.Tasks.Dataflow.DataflowLinkOptions,System.Predicate<TOutput>);Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;Post<TInput>;(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,TInput);Argument[1];Argument[0];taint;df-generated |
@@ -12166,10 +12173,14 @@
 | System.Threading.Tasks.Dataflow;DataflowBlock;Receive<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.CancellationToken);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;Receive<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.TimeSpan);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;Receive<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.TimeSpan,System.Threading.CancellationToken);Argument[0];ReturnValue;taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;ReceiveAllAsync<TOutput>;(System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>,System.Threading.CancellationToken);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;ReceiveAsync<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;ReceiveAsync<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.CancellationToken);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;ReceiveAsync<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.TimeSpan);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;DataflowBlock;ReceiveAsync<TOutput>;(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.TimeSpan,System.Threading.CancellationToken);Argument[0];ReturnValue;taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;SendAsync<TInput>;(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,TInput);Argument[1];Argument[0];taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;SendAsync<TInput>;(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,TInput,System.Threading.CancellationToken);Argument[1];Argument[0];taint;df-generated |
+| System.Threading.Tasks.Dataflow;DataflowBlock;TryReceive<TOutput>;(System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>,TOutput);Argument[0];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;IDataflowBlock;get_Completion;();Argument[this];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;IReceivableSourceBlock<TOutput>;TryReceive;(System.Predicate<TOutput>,TOutput);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Threading.Tasks.Dataflow;JoinBlock<T1,T2,T3>;JoinBlock;(System.Threading.Tasks.Dataflow.GroupingDataflowBlockOptions);Argument[0];Argument[this];taint;df-generated |
@@ -12203,6 +12214,7 @@
 | System.Threading.Tasks.Dataflow;TransformManyBlock<TInput,TOutput>;TransformManyBlock;(System.Func<TInput,System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<TOutput>>>,System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Threading.Tasks.Dataflow;WriteOnceBlock<T>;ConsumeMessage;(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Boolean);Argument[this];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;WriteOnceBlock<T>;LinkTo;(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions);Argument[0];ReturnValue;taint;df-generated |
+| System.Threading.Tasks.Dataflow;WriteOnceBlock<T>;LinkTo;(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions);Argument[this];Argument[0];taint;df-generated |
 | System.Threading.Tasks.Dataflow;WriteOnceBlock<T>;LinkTo;(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions);Argument[this];ReturnValue;taint;df-generated |
 | System.Threading.Tasks.Dataflow;WriteOnceBlock<T>;OfferMessage;(System.Threading.Tasks.Dataflow.DataflowMessageHeader,T,System.Threading.Tasks.Dataflow.ISourceBlock<T>,System.Boolean);Argument[1];Argument[this];taint;df-generated |
 | System.Threading.Tasks.Dataflow;WriteOnceBlock<T>;ReleaseReservation;(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<T>);Argument[this];Argument[1];taint;df-generated |

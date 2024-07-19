@@ -599,6 +599,12 @@ extensions:
       - ["System", "WeakReference<T>", False, "TryGetTarget", "(T)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["System", "Environment", False, "GetFolderPath", "(System.Environment+SpecialFolder)", "", "ReturnValue", "environment", "df-generated"]
+      - ["System", "Environment", False, "GetFolderPath", "(System.Environment+SpecialFolder,System.Environment+SpecialFolderOption)", "", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System", "AccessViolationException", "AccessViolationException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
