@@ -113,17 +113,24 @@ namespace Semmle.Util
         public static void DownloadFile(string address, string fileName) =>
            DownloadFileAsync(address, fileName).GetAwaiter().GetResult();
 
+        public static string ConvertPathToSafeRelativePath(string path)
+        {
+            // Remove all leading path separators / or \
+            // For example, UNC paths have two leading \\
+            path = path.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            if (path.Length > 1 && path[1] == ':')
+                path = $"{path[0]}_{path[2..]}";
+
+            return path;
+        }
+
         public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
         {
             var nested = innerpath;
             if (!string.IsNullOrEmpty(outerpath))
             {
-                // Remove all leading path separators / or \
-                // For example, UNC paths have two leading \\
-                innerpath = innerpath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-
-                if (innerpath.Length > 1 && innerpath[1] == ':')
-                    innerpath = innerpath[0] + "_" + innerpath.Substring(2);
+                innerpath = ConvertPathToSafeRelativePath(innerpath);
 
                 nested = Path.Combine(outerpath, innerpath);
             }
@@ -132,14 +139,14 @@ namespace Semmle.Util
                 var directoryName = Path.GetDirectoryName(nested);
                 if (directoryName is null)
                 {
-                    logger.LogWarning("Failed to get directory name from path '" + nested + "'.");
+                    logger.LogWarning($"Failed to get directory name from path '{nested}'.");
                     throw new InvalidOperationException();
                 }
                 Directory.CreateDirectory(directoryName);
             }
             catch (PathTooLongException)
             {
-                logger.LogWarning("Failed to create parent directory of '" + nested + "': Path too long.");
+                logger.LogWarning($"Failed to create parent directory of '{nested}': Path too long.");
                 throw;
             }
             return nested;

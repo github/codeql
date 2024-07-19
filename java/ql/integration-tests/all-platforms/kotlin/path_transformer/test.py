@@ -11,4 +11,4 @@ files = ['test-db/trap/java/src/kotlin_source.kt.trap.gz', 'test-db/src/src/kotl
 exists = list(map(os.path.exists, files))
 if exists != [True] * 2:
     print(exists)
-    raise Exception("Didn't get expected filed")
+    raise Exception("Didn't get expected files")

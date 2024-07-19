@@ -1,4 +1,6 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import semmle.go.security.CommandInjection
 import CommandInjection::Flow::PathGraph
 
@@ -7,7 +9,7 @@ class UntrustedFunction extends Function {
 }
 
 class RemoteSource extends DataFlow::Node, RemoteFlowSource::Range {
-  RemoteSource() { this = any(UntrustedFunction f).getACall() }
+  RemoteSource() { this = any(UntrustedFunction f).getACall().getResult() }
 }
 
 from CommandInjection::Flow::PathNode source, CommandInjection::Flow::PathNode sink

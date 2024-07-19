@@ -310,7 +310,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (runtimeLocation is null)
             {
-                runtimeLocation ??= Runtime.ExecutingRuntime;
+                runtimeLocation = Runtime.ExecutingRuntime;
                 dllLocations.Add(new AssemblyLookupLocation(runtimeLocation, name => !name.StartsWith("Semmle.")));
             }
             else

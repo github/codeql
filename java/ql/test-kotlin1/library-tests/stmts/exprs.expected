@@ -101,7 +101,7 @@
 | stmts.kt:46:1:56:1 | int | TypeAccess |
 | stmts.kt:48:15:48:30 | Exception | TypeAccess |
 | stmts.kt:48:15:48:30 | new Exception(...) | ClassInstanceExpr |
-| stmts.kt:48:26:48:28 | "Foo" | StringLiteral |
+| stmts.kt:48:25:48:29 | "Foo" | StringLiteral |
 | stmts.kt:50:12:50:23 | Exception | TypeAccess |
 | stmts.kt:50:12:50:23 | e | LocalVariableDeclExpr |
 | stmts.kt:51:16:51:16 | 1 | IntegerLiteral |

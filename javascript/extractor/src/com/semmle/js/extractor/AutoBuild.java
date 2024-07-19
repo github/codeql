@@ -151,7 +151,7 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <ul>
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
- *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
+ *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es", ".xsjs", ".xsjslib").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb", ".html.dot", ".jsp").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
@@ -159,6 +159,7 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
  *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
+ *   <li>JSON files whose base name is ".xsaccess".
  *   <li>All extension-less files.
  * </ul>
  *
@@ -393,9 +394,10 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, tsconfig.json files, and
-    // codeql-javascript-*.json files
+    // include .eslintrc files, .xsaccess files, package.json files, 
+    // tsconfig.json files, and codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
+    patterns.add("**/.xsaccess");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");

@@ -42,6 +42,10 @@ edges
 | semantics.rb:29:14:29:14 | [post] y | semantics.rb:31:10:31:10 | y | provenance |  |
 | semantics.rb:29:17:29:17 | [post] z | semantics.rb:32:10:32:10 | z | provenance |  |
 | semantics.rb:29:17:29:17 | [post] z | semantics.rb:32:10:32:10 | z | provenance |  |
+| semantics.rb:36:18:36:29 | ( ... ) | semantics.rb:36:10:36:49 | call to s6 | provenance |  |
+| semantics.rb:36:18:36:29 | ( ... ) | semantics.rb:36:10:36:49 | call to s6 | provenance |  |
+| semantics.rb:36:19:36:28 | call to source | semantics.rb:36:18:36:29 | ( ... ) | provenance |  |
+| semantics.rb:36:19:36:28 | call to source | semantics.rb:36:18:36:29 | ( ... ) | provenance |  |
 | semantics.rb:40:5:40:5 | a | semantics.rb:41:8:41:8 | a | provenance |  |
 | semantics.rb:40:5:40:5 | a | semantics.rb:41:8:41:8 | a | provenance |  |
 | semantics.rb:40:9:40:18 | call to source | semantics.rb:40:5:40:5 | a | provenance |  |
@@ -1145,6 +1149,12 @@ nodes
 | semantics.rb:31:10:31:10 | y | semmle.label | y |
 | semantics.rb:32:10:32:10 | z | semmle.label | z |
 | semantics.rb:32:10:32:10 | z | semmle.label | z |
+| semantics.rb:36:10:36:49 | call to s6 | semmle.label | call to s6 |
+| semantics.rb:36:10:36:49 | call to s6 | semmle.label | call to s6 |
+| semantics.rb:36:18:36:29 | ( ... ) | semmle.label | ( ... ) |
+| semantics.rb:36:18:36:29 | ( ... ) | semmle.label | ( ... ) |
+| semantics.rb:36:19:36:28 | call to source | semmle.label | call to source |
+| semantics.rb:36:19:36:28 | call to source | semmle.label | call to source |
 | semantics.rb:40:5:40:5 | a | semmle.label | a |
 | semantics.rb:40:5:40:5 | a | semmle.label | a |
 | semantics.rb:40:9:40:18 | call to source | semmle.label | call to source |

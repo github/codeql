@@ -119,22 +119,19 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo,
-        any(DataFlowSummarizedCallable sc))
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo,
-          any(DataFlowSummarizedCallable sc))
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo, _)
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo,
-          any(DataFlowSummarizedCallable sc))
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo, _)
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()

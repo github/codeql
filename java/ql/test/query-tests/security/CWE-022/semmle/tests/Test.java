@@ -37,8 +37,46 @@ public class Test {
         getClass().getResource((String) source()); // $ hasTaintFlow
         // "java.lang;ClassLoader;true;getSystemResourceAsStream;(String);;Argument[0];read-file;ai-generated"
         ClassLoader.getSystemResourceAsStream((String) source()); // $ hasTaintFlow
+        // "java.io;File;True;canExecute;();;Argument[this];path-injection;manual"
+        ((File) source()).canExecute(); // $ hasTaintFlow
+        // "java.io;File;True;canRead;();;Argument[this];path-injection;manual"
+        ((File) source()).canRead(); // $ hasTaintFlow
+        // "java.io;File;True;canWrite;();;Argument[this];path-injection;manual"
+        ((File) source()).canWrite(); // $ hasTaintFlow
+        // "java.io;File;True;createNewFile;();;Argument[this];path-injection;ai-manual"
+        ((File) source()).createNewFile(); // $ hasTaintFlow
         // "java.io;File;true;createTempFile;(String,String,File);;Argument[2];create-file;ai-generated"
         File.createTempFile(";", ";", (File) source()); // $ hasTaintFlow
+        // "java.io;File;True;delete;();;Argument[this];path-injection;manual"
+        ((File) source()).delete(); // $ hasTaintFlow
+        // "java.io;File;True;deleteOnExit;();;Argument[this];path-injection;manual"
+        ((File) source()).deleteOnExit(); // $ hasTaintFlow
+        // "java.io;File;True;exists;();;Argument[this];path-injection;manual"
+        ((File) source()).exists(); // $ hasTaintFlow
+        // "java.io:File;True;isDirectory;();;Argument[this];path-injection;manual"
+        ((File) source()).isDirectory(); // $ hasTaintFlow
+        // "java.io:File;True;isFile;();;Argument[this];path-injection;manual"
+        ((File) source()).isFile(); // $ hasTaintFlow
+        // "java.io:File;True;isHidden;();;Argument[this];path-injection;manual"
+        ((File) source()).isHidden(); // $ hasTaintFlow
+        // "java.io;File;True;mkdir;();;Argument[this];path-injection;manual"
+        ((File) source()).mkdir(); // $ hasTaintFlow
+        // "java.io;File;True;mkdirs;();;Argument[this];path-injection;manual"
+        ((File) source()).mkdirs(); // $ hasTaintFlow
+        // "java.io;File;True;renameTo;(File);;Argument[0];path-injection;ai-manual"
+        new File("").renameTo((File) source()); // $ hasTaintFlow
+        // "java.io;File;True;renameTo;(File);;Argument[this];path-injection;ai-manual"
+        ((File) source()).renameTo(null); // $ hasTaintFlow
+        // "java.io;File;True;setExecutable;;;Argument[this];path-injection;manual"
+        ((File) source()).setExecutable(true); // $ hasTaintFlow
+        // "java.io;File;True;setLastModified;;;Argument[this];path-injection;manual"
+        ((File) source()).setLastModified(0); // $ hasTaintFlow
+        // "java.io;File;True;setReadable;;;Argument[this];path-injection;manual"
+        ((File) source()).setReadable(true); // $ hasTaintFlow
+        // "java.io;File;True;setReadOnly;;;Argument[this];path-injection;manual"
+        ((File) source()).setReadOnly(); // $ hasTaintFlow
+        // "java.io;File;True;setWritable;;;Argument[this];path-injection;manual"
+        ((File) source()).setWritable(true); // $ hasTaintFlow
         // "java.io;File;true;renameTo;(File);;Argument[0];create-file;ai-generated"
         new File("").renameTo((File) source()); // $ hasTaintFlow
         // "java.io;FileInputStream;true;FileInputStream;(File);;Argument[0];read-file;ai-generated"

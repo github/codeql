@@ -7,6 +7,7 @@ extensions:
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", False, "FileCopyChecked", "(System.String,System.String,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WebcilConverter", False, "FromPortableExecutable", "(System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WebcilConverter", False, "FromPortableExecutable", "(System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "WebcilConverter", False, "FromPortableExecutable", "(System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

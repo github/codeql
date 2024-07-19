@@ -35,14 +35,14 @@ module ReflectedXss {
   }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /**
    * A third-party controllable input, considered as a flow source for reflected XSS.
    */
-  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink instanceof SharedXss::Sink { }

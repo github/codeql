@@ -110,8 +110,8 @@ namespace Semmle.Extraction.CSharp.Util
                         var match = CheckedRegex().Match(methodName);
                         if (match.Success)
                         {
-                            TryGetOperatorSymbolFromName("op_" + match.Groups[1], out var uncheckedName);
-                            operatorName = "checked " + uncheckedName;
+                            TryGetOperatorSymbolFromName($"op_{match.Groups[1]}", out var uncheckedName);
+                            operatorName = $"checked {uncheckedName}";
                             break;
                         }
                         operatorName = methodName;

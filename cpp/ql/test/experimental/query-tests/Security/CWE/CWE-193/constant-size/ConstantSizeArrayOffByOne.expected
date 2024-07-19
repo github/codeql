@@ -61,7 +61,6 @@ edges
 | test.cpp:289:19:289:25 | buffer3 | test.cpp:277:35:277:35 | p | provenance |  |
 | test.cpp:289:19:289:25 | buffer3 | test.cpp:289:19:289:25 | buffer3 | provenance |  |
 | test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance | Config |
-| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance | Config |
 | test.cpp:306:20:306:23 | arr1 | test.cpp:292:25:292:27 | arr | provenance |  |
 | test.cpp:306:20:306:23 | arr1 | test.cpp:306:20:306:23 | arr1 | provenance |  |
 | test.cpp:309:20:309:23 | arr2 | test.cpp:292:25:292:27 | arr | provenance |  |
@@ -158,7 +157,6 @@ nodes
 | test.cpp:286:19:286:25 | buffer2 | semmle.label | buffer2 |
 | test.cpp:289:19:289:25 | buffer3 | semmle.label | buffer3 |
 | test.cpp:289:19:289:25 | buffer3 | semmle.label | buffer3 |
-| test.cpp:292:25:292:27 | arr | semmle.label | arr |
 | test.cpp:292:25:292:27 | arr | semmle.label | arr |
 | test.cpp:299:16:299:21 | access to array | semmle.label | access to array |
 | test.cpp:306:20:306:23 | arr1 | semmle.label | arr1 |

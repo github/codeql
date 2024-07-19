@@ -25,15 +25,8 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    tracing_subscriber::fmt()
-        .with_target(false)
-        .without_time()
-        .with_level(true)
-        .with_env_filter(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
-        )
-        .init();
+    extractor::set_tracing_level("ruby");
+    tracing::info!("Extraction started");
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
     let mut main_thread_logger = diagnostics.logger();
     let num_threads = match codeql_extractor::options::num_threads() {
@@ -218,7 +211,9 @@ pub fn run(options: Options) -> std::io::Result<()> {
     let path = PathBuf::from("extras");
     let mut trap_writer = trap::Writer::new();
     extractor::populate_empty_location(&mut trap_writer);
-    write_trap(&trap_dir, path, &trap_writer, trap_compression)
+    let res = write_trap(&trap_dir, path, &trap_writer, trap_compression);
+    tracing::info!("Extraction complete");
+    res
 }
 
 lazy_static! {

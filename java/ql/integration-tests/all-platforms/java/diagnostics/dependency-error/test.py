@@ -1,6 +1,7 @@
 import os
 import pathlib
 import shutil
+import re
 
 from create_database_utils import *
 from diagnostics_test_utils import *
@@ -13,4 +14,5 @@ except FileNotFoundError:
 
 run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None)
 
-check_diagnostics()
+# Drop the specific output line here because it varies from version to version of Maven.
+check_diagnostics(replacements = {"Relevant output line: [^\"]*": ""})

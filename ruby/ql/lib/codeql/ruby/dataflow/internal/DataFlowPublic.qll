@@ -689,6 +689,9 @@ class ContentSet extends TContentSet {
   /** Holds if this content set represents all `ElementContent`s. */
   predicate isAnyElement() { this = TAnyElementContent() }
 
+  /** Holds if this content set represents all contents. */
+  predicate isAny() { this = TAnyContent() }
+
   /**
    * Holds if this content set represents a specific known element index, or an
    * unknown element index.
@@ -736,6 +739,9 @@ class ContentSet extends TContentSet {
     or
     this.isAnyElement() and
     result = "any element"
+    or
+    this.isAny() and
+    result = "any"
     or
     exists(Content::KnownElementContent c |
       this.isKnownOrUnknownElement(c) and
@@ -790,13 +796,8 @@ class ContentSet extends TContentSet {
     result = TUnknownElementContent()
   }
 
-  /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() {
-    this.isSingleton(result)
-    or
-    this.isAnyElement() and
-    result instanceof Content::ElementContent
-    or
+  pragma[nomagic]
+  private Content getAnElementReadContent() {
     exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
       result = c or
       result = TSplatContent(c.getIndex().getInt(), _) or
@@ -831,6 +832,19 @@ class ContentSet extends TContentSet {
       includeUnknown = true and
       result = TUnknownElementContent()
     )
+  }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyElement() and
+    result instanceof Content::ElementContent
+    or
+    this.isAny() and
+    exists(result)
+    or
+    result = this.getAnElementReadContent()
   }
 }
 

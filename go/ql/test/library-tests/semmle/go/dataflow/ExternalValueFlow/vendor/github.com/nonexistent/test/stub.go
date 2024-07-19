@@ -8,6 +8,8 @@ func (t *T) StepArgRes1(arg interface{}) (interface{}, interface{}) { return nil
 
 func (t *T) StepArgArg(a1 interface{}, a2 interface{}) {}
 
+func (t *T) StepArgArgIgnored(a1 interface{}, a2 interface{}) {}
+
 func (t *T) StepArgQual(arg interface{}) {}
 
 func (t *T) StepQualRes() interface{} { return nil }

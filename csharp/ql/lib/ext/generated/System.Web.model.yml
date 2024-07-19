@@ -17,13 +17,10 @@ extensions:
     data:
       - ["System.Web", "AspNetHostingPermission", "AspNetHostingPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermission", "AspNetHostingPermission", "(System.Web.AspNetHostingPermissionLevel)", "summary", "df-generated"]
-      - ["System.Web", "AspNetHostingPermission", "Copy", "()", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
-      - ["System.Web", "AspNetHostingPermission", "Intersect", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermission", "IsUnrestricted", "()", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermission", "ToXml", "()", "summary", "df-generated"]
-      - ["System.Web", "AspNetHostingPermission", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermissionAttribute", "AspNetHostingPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "ParseQueryString", "(System.String)", "summary", "df-generated"]

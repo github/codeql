@@ -48,6 +48,6 @@ namespace Semmle.Extraction
         /// </summary>
         TrapStackBehaviour TrapStackBehaviour { get; }
 
-        void DefineLabel(TextWriter trapFile, Extractor extractor);
+        void DefineLabel(TextWriter trapFile);
     }
 }

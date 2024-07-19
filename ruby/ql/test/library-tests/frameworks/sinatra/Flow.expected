@@ -7,6 +7,9 @@ edges
 | app.rb:76:25:76:36 | call to [] [element :foo] | views/index.erb:2:10:2:12 | call to foo | provenance |  |
 | app.rb:76:32:76:35 | @foo | app.rb:76:25:76:36 | call to [] [element :foo] | provenance |  |
 | app.rb:76:32:76:35 | self [@foo] | app.rb:76:32:76:35 | @foo | provenance |  |
+| app.rb:95:10:95:14 | self [@user] | app.rb:95:10:95:14 | @user | provenance |  |
+| app.rb:103:5:103:9 | [post] self [@user] | app.rb:95:10:95:14 | self [@user] | provenance |  |
+| app.rb:103:13:103:22 | call to source | app.rb:103:5:103:9 | [post] self [@user] | provenance |  |
 nodes
 | app.rb:75:5:75:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | app.rb:75:12:75:17 | call to params | semmle.label | call to params |
@@ -14,7 +17,12 @@ nodes
 | app.rb:76:25:76:36 | call to [] [element :foo] | semmle.label | call to [] [element :foo] |
 | app.rb:76:32:76:35 | @foo | semmle.label | @foo |
 | app.rb:76:32:76:35 | self [@foo] | semmle.label | self [@foo] |
+| app.rb:95:10:95:14 | @user | semmle.label | @user |
+| app.rb:95:10:95:14 | self [@user] | semmle.label | self [@user] |
+| app.rb:103:5:103:9 | [post] self [@user] | semmle.label | [post] self [@user] |
+| app.rb:103:13:103:22 | call to source | semmle.label | call to source |
 | views/index.erb:2:10:2:12 | call to foo | semmle.label | call to foo |
 subpaths
 #select
+| app.rb:95:10:95:14 | @user | app.rb:103:13:103:22 | call to source | app.rb:95:10:95:14 | @user | $@ | app.rb:103:13:103:22 | call to source | call to source |
 | views/index.erb:2:10:2:12 | call to foo | app.rb:75:12:75:17 | call to params | views/index.erb:2:10:2:12 | call to foo | $@ | app.rb:75:12:75:17 | call to params | call to params |

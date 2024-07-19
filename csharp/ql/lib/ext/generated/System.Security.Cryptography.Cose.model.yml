@@ -4,6 +4,15 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", False, "CoseHeaderLabel", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", False, "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", False, "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", False, "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.ReadOnlySpan<System.Byte>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", False, "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", False, "get_Keys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", False, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderValue", False, "GetValueAsBytes", "(System.Span<System.Byte>)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Security.Cryptography.Cose", "CoseHeaderValue", False, "GetValueAsString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseMessage", False, "get_Content", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseMessage", False, "get_ProtectedHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseMessage", False, "get_RawProtectedHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -20,7 +29,6 @@ extensions:
       extensible: neutralModel
     data:
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "CoseHeaderLabel", "(System.Int32)", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "CoseHeaderLabel", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "Equals", "(System.Security.Cryptography.Cose.CoseHeaderLabel)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "GetHashCode", "()", "summary", "df-generated"]
@@ -30,10 +38,6 @@ extensions:
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "get_KeyIdentifier", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "op_Equality", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Security.Cryptography.Cose.CoseHeaderLabel)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderLabel", "op_Inequality", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Security.Cryptography.Cose.CoseHeaderLabel)", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Byte[])", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Int32)", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "Add", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.String)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "Contains", "(System.Collections.Generic.KeyValuePair<System.Security.Cryptography.Cose.CoseHeaderLabel,System.Security.Cryptography.Cose.CoseHeaderValue>)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "ContainsKey", "(System.Security.Cryptography.Cose.CoseHeaderLabel)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "GetValueAsBytes", "(System.Security.Cryptography.Cose.CoseHeaderLabel)", "summary", "df-generated"]
@@ -44,8 +48,6 @@ extensions:
       - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "Remove", "(System.Security.Cryptography.Cose.CoseHeaderLabel)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "TryGetValue", "(System.Security.Cryptography.Cose.CoseHeaderLabel,System.Security.Cryptography.Cose.CoseHeaderValue)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "get_Count", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "get_Keys", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderMap", "get_Values", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "Equals", "(System.Security.Cryptography.Cose.CoseHeaderValue)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "FromBytes", "(System.Byte[])", "summary", "df-generated"]
@@ -56,9 +58,7 @@ extensions:
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "FromString", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "GetValueAsBytes", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "GetValueAsBytes", "(System.Span<System.Byte>)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "GetValueAsInt32", "()", "summary", "df-generated"]
-      - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "GetValueAsString", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "get_EncodedValue", "()", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "op_Equality", "(System.Security.Cryptography.Cose.CoseHeaderValue,System.Security.Cryptography.Cose.CoseHeaderValue)", "summary", "df-generated"]
       - ["System.Security.Cryptography.Cose", "CoseHeaderValue", "op_Inequality", "(System.Security.Cryptography.Cose.CoseHeaderValue,System.Security.Cryptography.Cose.CoseHeaderValue)", "summary", "df-generated"]

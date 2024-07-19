@@ -4,13 +4,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "Copy", "()", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
-      - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "Intersect", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "IsUnrestricted", "()", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "PeerCollaborationPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "ToXml", "()", "summary", "df-generated"]
-      - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermission", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
       - ["System.Net.PeerToPeer.Collaboration", "PeerCollaborationPermissionAttribute", "PeerCollaborationPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]

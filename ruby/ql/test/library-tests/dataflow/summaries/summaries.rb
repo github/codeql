@@ -20,7 +20,7 @@ sink(tainted3) # $ hasValueFlow=tainted
 tainted4 = Foo.firstArg(tainted)
 sink(tainted4) # $ hasTaintFlow=tainted
 
-notTainted = Foo.firstArg(nil, tainted))
+notTainted = Foo.firstArg(nil, tainted)
 sink(notTainted)
 
 tainted5 = Foo.secondArg(nil, tainted)

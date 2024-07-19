@@ -100,3 +100,11 @@
 | test.cpp:99:6:99:6 | f | true | 99 | 100 |
 | test.cpp:105:6:105:14 | ... != ... | true | 105 | 106 |
 | test.cpp:111:6:111:14 | ... != ... | true | 111 | 112 |
+| test.cpp:122:9:122:9 | b | true | 123 | 125 |
+| test.cpp:122:9:122:9 | b | true | 125 | 125 |
+| test.cpp:125:13:125:20 | ! ... | true | 125 | 125 |
+| test.cpp:125:14:125:17 | call to safe | false | 125 | 125 |
+| test.cpp:131:6:131:21 | call to __builtin_expect | true | 131 | 132 |
+| test.cpp:135:6:135:21 | call to __builtin_expect | true | 135 | 136 |
+| test.cpp:141:6:141:21 | call to __builtin_expect | true | 141 | 142 |
+| test.cpp:145:6:145:21 | call to __builtin_expect | true | 145 | 146 |

@@ -3,6 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["log", "Logger", True, "SetOutput", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["log", "Logger", True, "SetPrefix", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Writer", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["log", "Logger", True, "SetOutput", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["log", "Logger", True, "SetPrefix", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["log", "Logger", True, "Writer", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

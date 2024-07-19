@@ -4,8 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Transactions", "CommittableTransaction", False, "get_AsyncState", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Transactions", "CommittableTransaction", False, "get_AsyncWaitHandle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Transactions", "Transaction", False, "Clone", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Transactions", "Transaction", False, "EnlistDurable", "(System.Guid,System.Transactions.ISinglePhaseNotification,System.Transactions.EnlistmentOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Transactions", "Transaction", False, "EnlistPromotableSinglePhase", "(System.Transactions.IPromotableSinglePhaseNotification)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -36,14 +34,11 @@ extensions:
       - ["System.Transactions", "CommittableTransaction", "get_CompletedSynchronously", "()", "summary", "df-generated"]
       - ["System.Transactions", "CommittableTransaction", "get_IsCompleted", "()", "summary", "df-generated"]
       - ["System.Transactions", "DependentTransaction", "Complete", "()", "summary", "df-generated"]
-      - ["System.Transactions", "DistributedTransactionPermission", "Copy", "()", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermission", "DistributedTransactionPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
-      - ["System.Transactions", "DistributedTransactionPermission", "Intersect", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermission", "IsUnrestricted", "()", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermission", "ToXml", "()", "summary", "df-generated"]
-      - ["System.Transactions", "DistributedTransactionPermission", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
       - ["System.Transactions", "DistributedTransactionPermissionAttribute", "DistributedTransactionPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
       - ["System.Transactions", "Enlistment", "Done", "()", "summary", "df-generated"]
@@ -75,7 +70,6 @@ extensions:
       - ["System.Transactions", "Transaction", "EnlistDurable", "(System.Guid,System.Transactions.IEnlistmentNotification,System.Transactions.EnlistmentOptions)", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "GetHashCode", "()", "summary", "df-generated"]
-      - ["System.Transactions", "Transaction", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "GetPromotedToken", "()", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "Rollback", "()", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "get_IsolationLevel", "()", "summary", "df-generated"]

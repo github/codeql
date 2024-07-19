@@ -52,7 +52,7 @@ deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration
 private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isSink(DataFlow::Node sink) { exists(sink.(Sink).getReason()) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }

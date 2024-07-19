@@ -527,7 +527,6 @@ public class Main {
       // extract files that are supported, match the layout (if any), pass the includeMatcher,
       // and do not pass the excludeMatcher
       if (fileExtractor.supports(root)
-          && extractorOutputConfig.shouldExtract(root)
           && (explicit || includeMatcher.matches(path) && !excludeMatcher.matches(path))) {
         files.add(normalizeFile(root));
       }

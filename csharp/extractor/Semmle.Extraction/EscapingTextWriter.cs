@@ -56,7 +56,7 @@ namespace Semmle.Extraction
                 default:
                     wrapped.Write(c);
                     break;
-            };
+            }
         }
 
         public void WriteSubId(IEntity entity)

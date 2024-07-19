@@ -11,6 +11,7 @@ extensions:
       - ['testlib', 'Member[ParamDecoratorSource].DecoratedParameter', 'test-source']
       - ['testlib', 'Member[getSource].ReturnValue', 'test-source']
       - ['(testlib)', 'Member[parenthesizedPackageName].ReturnValue', 'test-source']
+      - ['danger-constant', 'Member[danger]', 'test-source']
 
   - addsTo:
       pack: codeql/javascript-all

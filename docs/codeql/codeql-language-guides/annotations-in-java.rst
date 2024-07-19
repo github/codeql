@@ -5,8 +5,6 @@ Annotations in Java and Kotlin
 
 CodeQL databases of Java/Kotlin projects contain information about all annotations attached to program elements.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 About working with annotations
 ------------------------------
 

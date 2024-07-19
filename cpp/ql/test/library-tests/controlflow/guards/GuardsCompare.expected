@@ -44,6 +44,8 @@
 | 34 | j >= 10+0 when ... < ... is false |
 | 42 | 10 < j+1 when ... < ... is false |
 | 42 | 10 >= j+1 when ... < ... is true |
+| 42 | call to getABool != 0 when call to getABool is true |
+| 42 | call to getABool == 0 when call to getABool is false |
 | 42 | j < 10 when ... < ... is true |
 | 42 | j < 10+0 when ... < ... is true |
 | 42 | j >= 10 when ... < ... is false |
@@ -149,16 +151,59 @@
 | 111 | 0.0 == i+0 when ... != ... is false |
 | 111 | i != 0.0+0 when ... != ... is true |
 | 111 | i == 0.0+0 when ... != ... is false |
+| 122 | b != 0 when b is true |
+| 122 | b == 0 when b is false |
+| 125 | ! ... != 0 when ! ... is true |
+| 125 | ! ... == 0 when ! ... is false |
+| 125 | call to safe != 0 when ! ... is false |
+| 125 | call to safe != 0 when call to safe is true |
+| 125 | call to safe == 0 when call to safe is false |
 | 126 | 1 != 0 when 1 is true |
 | 126 | 1 != 0 when ... && ... is true |
 | 126 | 1 == 0 when 1 is false |
 | 126 | call to test3_condition != 0 when ... && ... is true |
 | 126 | call to test3_condition != 0 when call to test3_condition is true |
 | 126 | call to test3_condition == 0 when call to test3_condition is false |
+| 131 | ... + ... != a+0 when call to __builtin_expect is false |
+| 131 | ... + ... == a+0 when call to __builtin_expect is true |
+| 131 | a != ... + ...+0 when call to __builtin_expect is false |
+| 131 | a != b+42 when call to __builtin_expect is false |
+| 131 | a == ... + ...+0 when call to __builtin_expect is true |
+| 131 | a == b+42 when call to __builtin_expect is true |
 | 131 | b != 0 when b is true |
+| 131 | b != a+-42 when call to __builtin_expect is false |
 | 131 | b == 0 when b is false |
+| 131 | b == a+-42 when call to __builtin_expect is true |
+| 131 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 131 | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| 135 | ... + ... != a+0 when call to __builtin_expect is true |
+| 135 | ... + ... == a+0 when call to __builtin_expect is false |
+| 135 | a != ... + ...+0 when call to __builtin_expect is true |
+| 135 | a != b+42 when call to __builtin_expect is true |
+| 135 | a == ... + ...+0 when call to __builtin_expect is false |
+| 135 | a == b+42 when call to __builtin_expect is false |
+| 135 | b != a+-42 when call to __builtin_expect is true |
+| 135 | b == a+-42 when call to __builtin_expect is false |
+| 135 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 135 | call to __builtin_expect == 0 when call to __builtin_expect is false |
 | 137 | 0 != 0 when 0 is true |
 | 137 | 0 == 0 when 0 is false |
+| 141 | 42 != a+0 when call to __builtin_expect is false |
+| 141 | 42 == a+0 when call to __builtin_expect is true |
+| 141 | a != 42 when call to __builtin_expect is false |
+| 141 | a != 42+0 when call to __builtin_expect is false |
+| 141 | a == 42 when call to __builtin_expect is true |
+| 141 | a == 42+0 when call to __builtin_expect is true |
+| 141 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 141 | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| 145 | 42 != a+0 when call to __builtin_expect is true |
+| 145 | 42 == a+0 when call to __builtin_expect is false |
+| 145 | a != 42 when call to __builtin_expect is true |
+| 145 | a != 42+0 when call to __builtin_expect is true |
+| 145 | a == 42 when call to __builtin_expect is false |
+| 145 | a == 42+0 when call to __builtin_expect is false |
+| 145 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 145 | call to __builtin_expect == 0 when call to __builtin_expect is false |
 | 146 | ! ... != 0 when ! ... is true |
 | 146 | ! ... == 0 when ! ... is false |
 | 146 | x != 0 when ! ... is false |

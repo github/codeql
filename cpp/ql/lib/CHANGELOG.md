@@ -1,3 +1,35 @@
+## 1.2.0
+
+### New Features
+
+* The syntax for models-as-data rows has been extended to make it easier to select sources, sinks, and summaries that involve templated functions and classes. Additionally, the syntax has also been extended to make it easier to specify models with arbitrary levels of indirection. See `dataflow/ExternalFlow.qll` for the updated documentation and specification for the model format.
+* It is now possible to extend the classes `AllocationFunction` and `DeallocationFunction` via data extensions. Extensions of these classes should be added to the `lib/ext/allocation` and `lib/ext/deallocation` directories respectively.
+
+### Minor Analysis Improvements
+
+* The queries "Potential double free" (`cpp/double-free`) and "Potential use after free" (`cpp/use-after-free`) now produce fewer false positives.
+* The "Guards" library (`semmle.code.cpp.controlflow.Guards`) now also infers guards from calls to the builtin operation `__builtin_expect`. As a result, some queries may produce fewer false positives.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Features
+
+* Data models can now be added with data extensions. In this way source, sink and summary models can be added in extension `.model.yml` files, rather than by writing classes in QL code. New models should be added in the `lib/ext` folder.
+
+### Minor Analysis Improvements
+
+* A partial model for the `Boost.Asio` network library has been added. This includes sources, sinks and summaries for certain functions in `Boost.Asio`, such as `read_until` and `write`.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
 ## 0.13.1
 
 No user-facing changes.

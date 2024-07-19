@@ -69,45 +69,61 @@
 | test.cpp:8:8:8:9 | t1 | test.cpp:9:8:9:9 | t1 |
 | test.cpp:9:8:9:9 | t1 | test.cpp:11:7:11:8 | t1 |
 | test.cpp:9:8:9:9 | t1 | test.cpp:11:7:11:8 | t1 |
+| test.cpp:10:8:10:9 | t2 | test.cpp:11:7:11:8 | Phi input |
+| test.cpp:10:8:10:9 | t2 | test.cpp:11:7:11:8 | Phi input |
 | test.cpp:10:8:10:9 | t2 | test.cpp:13:10:13:11 | t2 |
-| test.cpp:10:8:10:9 | t2 | test.cpp:15:3:15:6 | Phi |
-| test.cpp:10:8:10:9 | t2 | test.cpp:15:3:15:6 | Phi |
+| test.cpp:11:7:11:8 | Phi input | test.cpp:15:3:15:6 | SSA phi read(t2) |
+| test.cpp:11:7:11:8 | Phi input | test.cpp:15:3:15:6 | SSA phi(*t2) |
 | test.cpp:11:7:11:8 | t1 | test.cpp:21:8:21:9 | t1 |
 | test.cpp:12:5:12:10 | ... = ... | test.cpp:13:10:13:11 | t2 |
 | test.cpp:12:10:12:10 | 0 | test.cpp:12:5:12:10 | ... = ... |
-| test.cpp:13:10:13:11 | t2 | test.cpp:15:3:15:6 | Phi |
-| test.cpp:13:10:13:11 | t2 | test.cpp:15:3:15:6 | Phi |
-| test.cpp:15:3:15:6 | Phi | test.cpp:15:8:15:9 | t2 |
-| test.cpp:15:3:15:6 | Phi | test.cpp:15:8:15:9 | t2 |
-| test.cpp:15:8:15:9 | t2 | test.cpp:23:19:23:19 | Phi |
-| test.cpp:15:8:15:9 | t2 | test.cpp:23:19:23:19 | Phi |
+| test.cpp:13:5:13:8 | Phi input | test.cpp:15:3:15:6 | SSA phi read(t2) |
+| test.cpp:13:5:13:8 | Phi input | test.cpp:15:3:15:6 | SSA phi(*t2) |
+| test.cpp:13:10:13:11 | t2 | test.cpp:13:5:13:8 | Phi input |
+| test.cpp:13:10:13:11 | t2 | test.cpp:13:5:13:8 | Phi input |
+| test.cpp:15:3:15:6 | SSA phi read(t2) | test.cpp:15:8:15:9 | t2 |
+| test.cpp:15:3:15:6 | SSA phi(*t2) | test.cpp:15:8:15:9 | t2 |
+| test.cpp:15:8:15:9 | t2 | test.cpp:23:15:23:16 | Phi input |
+| test.cpp:15:8:15:9 | t2 | test.cpp:23:15:23:16 | Phi input |
 | test.cpp:17:3:17:8 | ... = ... | test.cpp:21:8:21:9 | t1 |
 | test.cpp:17:8:17:8 | 0 | test.cpp:17:3:17:8 | ... = ... |
-| test.cpp:21:8:21:9 | t1 | test.cpp:23:19:23:19 | Phi |
-| test.cpp:21:8:21:9 | t1 | test.cpp:23:19:23:19 | Phi |
+| test.cpp:21:8:21:9 | t1 | test.cpp:23:15:23:16 | Phi input |
+| test.cpp:21:8:21:9 | t1 | test.cpp:23:15:23:16 | Phi input |
 | test.cpp:23:15:23:16 | 0 | test.cpp:23:15:23:16 | 0 |
-| test.cpp:23:15:23:16 | 0 | test.cpp:23:19:23:19 | Phi |
-| test.cpp:23:19:23:19 | Phi | test.cpp:23:19:23:19 | i |
-| test.cpp:23:19:23:19 | Phi | test.cpp:23:19:23:19 | i |
-| test.cpp:23:19:23:19 | Phi | test.cpp:23:23:23:24 | t1 |
-| test.cpp:23:19:23:19 | Phi | test.cpp:23:23:23:24 | t1 |
-| test.cpp:23:19:23:19 | Phi | test.cpp:24:10:24:11 | t2 |
-| test.cpp:23:19:23:19 | Phi | test.cpp:24:10:24:11 | t2 |
+| test.cpp:23:15:23:16 | 0 | test.cpp:23:15:23:16 | Phi input |
+| test.cpp:23:15:23:16 | Phi input | test.cpp:23:19:23:19 | SSA phi read(*t2) |
+| test.cpp:23:15:23:16 | Phi input | test.cpp:23:19:23:19 | SSA phi read(i) |
+| test.cpp:23:15:23:16 | Phi input | test.cpp:23:19:23:19 | SSA phi read(t1) |
+| test.cpp:23:15:23:16 | Phi input | test.cpp:23:19:23:19 | SSA phi read(t2) |
+| test.cpp:23:15:23:16 | Phi input | test.cpp:23:19:23:19 | SSA phi(*i) |
+| test.cpp:23:15:23:16 | Phi input | test.cpp:23:19:23:19 | SSA phi(*t1) |
+| test.cpp:23:19:23:19 | SSA phi read(*t2) | test.cpp:24:10:24:11 | t2 |
+| test.cpp:23:19:23:19 | SSA phi read(i) | test.cpp:23:19:23:19 | i |
+| test.cpp:23:19:23:19 | SSA phi read(t1) | test.cpp:23:23:23:24 | t1 |
+| test.cpp:23:19:23:19 | SSA phi read(t2) | test.cpp:24:10:24:11 | t2 |
+| test.cpp:23:19:23:19 | SSA phi(*i) | test.cpp:23:19:23:19 | i |
+| test.cpp:23:19:23:19 | SSA phi(*t1) | test.cpp:23:23:23:24 | t1 |
 | test.cpp:23:19:23:19 | i | test.cpp:23:27:23:27 | i |
 | test.cpp:23:19:23:19 | i | test.cpp:23:27:23:27 | i |
-| test.cpp:23:23:23:24 | t1 | test.cpp:23:19:23:19 | Phi |
+| test.cpp:23:23:23:24 | t1 | test.cpp:23:27:23:29 | Phi input |
 | test.cpp:23:23:23:24 | t1 | test.cpp:26:8:26:9 | t1 |
 | test.cpp:23:23:23:24 | t1 | test.cpp:26:8:26:9 | t1 |
 | test.cpp:23:27:23:27 | *i | test.cpp:23:27:23:27 | *i |
 | test.cpp:23:27:23:27 | *i | test.cpp:23:27:23:27 | i |
-| test.cpp:23:27:23:27 | i | test.cpp:23:19:23:19 | Phi |
 | test.cpp:23:27:23:27 | i | test.cpp:23:27:23:27 | i |
 | test.cpp:23:27:23:27 | i | test.cpp:23:27:23:27 | i |
-| test.cpp:23:27:23:29 | ... ++ | test.cpp:23:19:23:19 | Phi |
+| test.cpp:23:27:23:27 | i | test.cpp:23:27:23:29 | Phi input |
 | test.cpp:23:27:23:29 | ... ++ | test.cpp:23:27:23:29 | ... ++ |
-| test.cpp:24:5:24:11 | ... = ... | test.cpp:23:19:23:19 | Phi |
-| test.cpp:24:10:24:11 | t2 | test.cpp:23:19:23:19 | Phi |
-| test.cpp:24:10:24:11 | t2 | test.cpp:23:19:23:19 | Phi |
+| test.cpp:23:27:23:29 | ... ++ | test.cpp:23:27:23:29 | Phi input |
+| test.cpp:23:27:23:29 | Phi input | test.cpp:23:19:23:19 | SSA phi read(*t2) |
+| test.cpp:23:27:23:29 | Phi input | test.cpp:23:19:23:19 | SSA phi read(i) |
+| test.cpp:23:27:23:29 | Phi input | test.cpp:23:19:23:19 | SSA phi read(t1) |
+| test.cpp:23:27:23:29 | Phi input | test.cpp:23:19:23:19 | SSA phi read(t2) |
+| test.cpp:23:27:23:29 | Phi input | test.cpp:23:19:23:19 | SSA phi(*i) |
+| test.cpp:23:27:23:29 | Phi input | test.cpp:23:19:23:19 | SSA phi(*t1) |
+| test.cpp:24:5:24:11 | ... = ... | test.cpp:23:27:23:29 | Phi input |
+| test.cpp:24:10:24:11 | t2 | test.cpp:23:27:23:29 | Phi input |
+| test.cpp:24:10:24:11 | t2 | test.cpp:23:27:23:29 | Phi input |
 | test.cpp:24:10:24:11 | t2 | test.cpp:24:5:24:11 | ... = ... |
 | test.cpp:382:48:382:54 | source1 | test.cpp:384:16:384:23 | *& ... |
 | test.cpp:383:12:383:13 | 0 | test.cpp:383:12:383:13 | 0 |

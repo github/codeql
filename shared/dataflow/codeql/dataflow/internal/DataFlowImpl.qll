@@ -348,9 +348,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       not stateBarrier(node2, state2)
     }
 
-    pragma[nomagic]
+    bindingset[n, cc]
+    pragma[inline_late]
     private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
-      isUnreachableInCallCached(n.asNode(), cc.getCall())
+      cc.unreachable(n.asNode())
     }
 
     /**
@@ -525,10 +526,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         feature instanceof FeatureHasSourceCallContext or
         feature instanceof FeatureEqualSourceSinkCallContext
       )
-    }
-
-    private predicate sourceCallCtx(CallContext cc) {
-      if hasSourceCallCtx() then cc instanceof CallContextSomeCall else cc instanceof CallContextAny
     }
 
     private predicate hasSinkCallCtx() {
@@ -1373,6 +1370,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         CcCall ccSomeCall();
 
+        /*
+         * The following `instanceof` predicates are necessary for proper
+         * caching, since we're able to cache predicates, but not the underlying
+         * types.
+         */
+
+        predicate instanceofCc(Cc cc);
+
+        predicate instanceofCcCall(CcCall cc);
+
+        predicate instanceofCcNoCall(CcNoCall cc);
+
         class LocalCc;
 
         DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx);
@@ -1383,15 +1392,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[call, c]
         CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c);
 
-        DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx);
+        DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx);
 
         predicate viableImplNotCallContextReducedReverse(CcNoCall ctx);
 
         bindingset[call, c]
         CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
-        bindingset[node, cc]
-        LocalCc getLocalCc(NodeEx node, Cc cc);
+        bindingset[cc]
+        LocalCc getLocalCc(Cc cc);
 
         bindingset[node1, state1]
         bindingset[node2, state2]
@@ -1435,6 +1444,31 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
+        pragma[nomagic]
+        private predicate compatibleContainer0(ApHeadContent apc, DataFlowType containerType) {
+          exists(DataFlowType containerType0, Content c |
+            PrevStage::storeStepCand(_, _, c, _, _, containerType0) and
+            not isTopType(containerType0) and
+            compatibleTypesCached(containerType0, containerType) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate topTypeContent(ApHeadContent apc) {
+          exists(DataFlowType containerType0, Content c |
+            PrevStage::storeStepCand(_, _, c, _, _, containerType0) and
+            isTopType(containerType0) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        bindingset[apc, containerType]
+        pragma[inline_late]
+        private predicate compatibleContainer(ApHeadContent apc, DataFlowType containerType) {
+          compatibleContainer0(apc, containerType)
+        }
+
         /**
          * Holds if `node` is reachable with access path `ap` from a source.
          *
@@ -1456,7 +1490,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t0, ap, apa) and
           PrevStage::revFlow(node, state, apa) and
-          filter(node, state, t0, ap, t)
+          filter(node, state, t0, ap, t) and
+          (
+            if castingNodeEx(node)
+            then
+              ap instanceof ApNil or
+              compatibleContainer(getHeadContent(ap), node.getDataFlowType()) or
+              topTypeContent(getHeadContent(ap))
+            else any()
+          )
         }
 
         pragma[nomagic]
@@ -1480,7 +1522,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
             fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
-            localCc = getLocalCc(mid, cc)
+            localCc = getLocalCc(cc)
           |
             localStep(mid, state0, node, state, true, _, localCc) and
             t = t0
@@ -1617,7 +1659,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ApOption argAp, Typ t, Ap ap, boolean emptyAp, ApApprox apa, boolean cc
         ) {
           fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
-          (if outercc instanceof CcCall then cc = true else cc = false) and
+          (if instanceofCcCall(outercc) then cc = true else cc = false) and
           if ap instanceof ApNil then emptyAp = true else emptyAp = false
         }
 
@@ -1673,6 +1715,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, ArgNodeEx arg, CcCall ctx
           ) {
             callEdgeArgParamRestricted(call, _, arg, _, _, _) and
+            instanceofCcCall(ctx) and
             result = viableImplCallContextReducedInlineLate(call, ctx)
           }
 
@@ -1688,6 +1731,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           bindingset[call, ctx]
           pragma[inline_late]
           private predicate viableImplNotCallContextReducedInlineLate(DataFlowCall call, Cc ctx) {
+            instanceofCc(ctx) and
             viableImplNotCallContextReduced(call, ctx)
           }
 
@@ -1697,6 +1741,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, ArgNodeEx arg, Cc outercc
           ) {
             callEdgeArgParamRestricted(call, _, arg, _, _, _) and
+            instanceofCc(outercc) and
             viableImplNotCallContextReducedInlineLate(call, outercc)
           }
 
@@ -1764,22 +1809,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[inline]
           predicate fwdFlowIn(
-            DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
-            CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
-            Ap ap, ApApprox apa, boolean cc, boolean allowsFlowThrough
+            DataFlowCall call, ArgNodeEx arg, DataFlowCallable inner, ParamNodeEx p,
+            FlowState state, Cc outercc, CcCall innercc, ParamNodeOption summaryCtx, TypOption argT,
+            ApOption argAp, Typ t, Ap ap, ApApprox apa, boolean cc, boolean allowsFlowThrough
           ) {
-            exists(ArgNodeEx arg |
-              // type flow disabled: linear recursion
-              fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
-                argAp, t, ap, apa, cc, allowsFlowThrough) and
-              fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, pragma[only_bind_into](cc))
-              or
-              // type flow enabled: non-linear recursion
-              exists(boolean emptyAp |
-                fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
-                fwdFlowInValidEdgeTypeFlowEnabled(call, arg, outercc, inner, p, innercc, emptyAp,
-                  apa, cc, allowsFlowThrough)
-              )
+            // type flow disabled: linear recursion
+            fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
+              argAp, t, ap, apa, cc, allowsFlowThrough) and
+            fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, pragma[only_bind_into](cc))
+            or
+            // type flow enabled: non-linear recursion
+            exists(boolean emptyAp |
+              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
+              fwdFlowInValidEdgeTypeFlowEnabled(call, arg, outercc, inner, p, innercc, emptyAp, apa,
+                cc, allowsFlowThrough)
             )
           }
         }
@@ -1792,8 +1835,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           boolean allowsFlowThrough
         ) {
           exists(boolean allowsFlowThrough0 |
-            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, p, state, _, innercc, _, _, _, t, ap,
-              apa, _, allowsFlowThrough0) and
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, _, p, state, _, innercc, _, _, _, t,
+              ap, apa, _, allowsFlowThrough0) and
             if PrevStage::parameterMayFlowThrough(p, apa)
             then allowsFlowThrough = allowsFlowThrough0
             else allowsFlowThrough = false
@@ -1801,19 +1844,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private DataFlowCallable viableImplCallContextReducedReverseRestricted(
-          DataFlowCall call, CcNoCall ctx
+        private DataFlowCall viableImplCallContextReducedReverseRestricted(
+          DataFlowCallable c, CcNoCall ctx
         ) {
-          result = viableImplCallContextReducedReverse(call, ctx) and
-          PrevStage::callEdgeReturn(call, result, _, _, _, _, _)
+          result = viableImplCallContextReducedReverse(c, ctx) and
+          PrevStage::callEdgeReturn(result, c, _, _, _, _, _)
         }
 
-        bindingset[ctx, result]
+        bindingset[c, ctx]
         pragma[inline_late]
-        private DataFlowCallable viableImplCallContextReducedReverseInlineLate(
-          DataFlowCall call, CcNoCall ctx
+        private DataFlowCall viableImplCallContextReducedReverseInlineLate(
+          DataFlowCallable c, CcNoCall ctx
         ) {
-          result = viableImplCallContextReducedReverseRestricted(call, ctx)
+          result = viableImplCallContextReducedReverseRestricted(c, ctx)
         }
 
         bindingset[call]
@@ -1841,6 +1884,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           RetNodeEx ret, FlowState state, CcNoCall cc, ParamNodeOption summaryCtx, TypOption argT,
           ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
+          instanceofCcNoCall(cc) and
           fwdFlow(ret, state, cc, summaryCtx, argT, argAp, t, ap, apa)
         }
 
@@ -1852,7 +1896,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           fwdFlowIntoRet(ret, _, innercc, _, _, _, _, _, apa) and
           inner = ret.getEnclosingCallable() and
           (
-            inner = viableImplCallContextReducedReverseInlineLate(call, innercc) and
+            call = viableImplCallContextReducedReverseInlineLate(inner, innercc) and
             flowOutOfCallApaInlineLate(call, inner, ret, out, allowsFieldFlow, apa)
             or
             flowOutOfCallApaNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, apa,
@@ -1894,12 +1938,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
             Typ t, Ap ap, boolean cc
           ) {
-            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, c, p, state, _, innercc, _, _, _, t,
-              ap, _, cc, _)
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, _, c, p, state, _, innercc, _, _, _,
+              t, ap, _, cc, _)
           }
 
           pragma[nomagic]
           private predicate fwdFlow1Param(ParamNodeEx p, FlowState state, CcCall cc, Typ t0, Ap ap) {
+            instanceofCcCall(cc) and
             fwdFlow1(p, state, cc, _, _, _, t0, _, ap, _)
           }
 
@@ -1966,6 +2011,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ApApprox argApa, Typ t, Ap ap, ApApprox apa
         ) {
           exists(ReturnKindExt kind |
+            instanceofCcCall(ccc) and
             fwdFlow(pragma[only_bind_into](ret), state, ccc,
               TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), TypOption::some(argT),
               pragma[only_bind_into](apSome(argAp)), t, ap, pragma[only_bind_into](apa)) and
@@ -1978,13 +2024,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[inline]
         private predicate fwdFlowThrough0(
-          DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-          TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
-          ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
+          DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
+          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa,
+          RetNodeEx ret, ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp,
+          ApApprox innerArgApa
         ) {
           fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, innerArgT, innerArgAp, innerArgApa, t,
             ap, apa) and
-          fwdFlowIsEntered(call, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
+          fwdFlowIsEntered(call, arg, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
             innerArgAp)
         }
 
@@ -1994,8 +2041,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
           ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _, _,
-            innerArgApa)
+          fwdFlowThrough0(call, _, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _,
+            _, innerArgApa)
         }
 
         private module FwdFlowThroughRestriction implements FwdFlowInInputSig {
@@ -2010,11 +2057,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate fwdFlowIsEntered(
-          DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, ParamNodeEx p, Typ t, Ap ap
+          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx,
+          TypOption argT, ApOption argAp, ParamNodeEx p, Typ t, Ap ap
         ) {
-          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, _, p, _, cc, innerCc, summaryCtx,
-            argT, argAp, t, ap, _, _, true)
+          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, arg, _, p, _, cc, innerCc,
+            summaryCtx, argT, argAp, t, ap, _, _, true)
         }
 
         pragma[nomagic]
@@ -2037,8 +2084,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, FlowState state, CcCall ccc, Ap ap, ApApprox apa, RetNodeEx ret,
           ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, _, state, ccc, _, _, _, _, ap, apa, ret, innerSummaryCtx, innerArgT,
-            innerArgAp, innerArgApa)
+          fwdFlowThrough0(call, _, _, state, ccc, _, _, _, _, ap, apa, ret, innerSummaryCtx,
+            innerArgT, innerArgAp, innerArgApa)
         }
 
         pragma[nomagic]
@@ -2472,6 +2519,274 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           callEdgeReturn(call, c, _, _, _, _, _)
         }
 
+        /**
+         * INTERNAL: Only for debugging.
+         *
+         * Provides a graph representation of the data flow in this stage suitable for use in a `path-problem` query.
+         */
+        additional module Graph {
+          private newtype TStagePathNode =
+            TStagePathNodeMid(
+              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+              ApOption argAp, Typ t, Ap ap
+            ) {
+              fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _) and
+              revFlow(node, state, _, _, ap)
+            } or
+            TStagePathNodeSrcGrp() or
+            TStagePathNodeSinkGrp()
+
+          class StagePathNode extends TStagePathNode {
+            abstract string toString();
+
+            abstract Location getLocation();
+
+            /** Gets the corresponding `Node`, if any. */
+            Node getNode() { none() }
+
+            predicate isSource() { none() }
+
+            predicate isSink() { none() }
+
+            predicate isArbitrarySource() { this instanceof TStagePathNodeSrcGrp }
+
+            predicate isArbitrarySink() { this instanceof TStagePathNodeSinkGrp }
+          }
+
+          class StagePathNodeSrcGrp extends StagePathNode, TStagePathNodeSrcGrp {
+            override string toString() { result = "<any source>" }
+
+            override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+          }
+
+          class StagePathNodeSinkGrp extends StagePathNode, TStagePathNodeSinkGrp {
+            override string toString() { result = "<any sink>" }
+
+            override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+          }
+
+          class StagePathNodeMid extends StagePathNode, TStagePathNodeMid {
+            NodeEx node;
+            FlowState state;
+            Cc cc;
+            ParamNodeOption summaryCtx;
+            TypOption argT;
+            ApOption argAp;
+            Typ t;
+            Ap ap;
+
+            StagePathNodeMid() {
+              this = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            }
+
+            override string toString() {
+              result =
+                node.toString() + " " + cc.toString() + " " + t.toString() + " " + ap.toString()
+            }
+
+            override Location getLocation() { result = node.getLocation() }
+
+            override Node getNode() { result = node.asNode() }
+
+            override predicate isSource() {
+              sourceNode(node, state) and
+              (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
+              summaryCtx = TParamNodeNone() and
+              t = getNodeTyp(node) and
+              ap instanceof ApNil
+            }
+
+            override predicate isSink() {
+              sinkNode(node, state) and
+              (if hasSinkCallCtx() then instanceofCcNoCall(cc) else any()) and
+              ap instanceof ApNil
+            }
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowInStep(
+            ArgNodeEx arg, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
+            ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
+            boolean allowsFlowThrough
+          ) {
+            exists(ApApprox apa, boolean allowsFlowThrough0 |
+              FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, arg, _, p, state, outercc, innercc,
+                summaryCtx, argT, argAp, t, ap, apa, _, allowsFlowThrough0) and
+              if PrevStage::parameterMayFlowThrough(p, apa)
+              then allowsFlowThrough = allowsFlowThrough0
+              else allowsFlowThrough = false
+            )
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowThroughStep0(
+            DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
+            ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa,
+            RetNodeEx ret, ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp,
+            ApApprox innerArgApa
+          ) {
+            fwdFlowThrough0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret,
+              innerSummaryCtx, innerArgT, innerArgAp, innerArgApa)
+          }
+
+          bindingset[node, state, cc, summaryCtx, argT, argAp, t, ap]
+          pragma[inline_late]
+          private StagePathNode mkStagePathNode(
+            NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+            ApOption argAp, Typ t, Ap ap
+          ) {
+            result = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowThroughStep1(
+            StagePathNode pn1, StagePathNode pn2, StagePathNode pn3, DataFlowCall call, Cc cc,
+            FlowState state, CcCall ccc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp,
+            Typ t, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
+          ) {
+            exists(FlowState state0, ArgNodeEx arg, ParamNodeEx p, Typ innerArgT, Ap innerArgAp |
+              fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa,
+                ret, p, innerArgT, innerArgAp, innerArgApa) and
+              revFlow(arg, state0, _, _, _) and
+              pn1 = mkStagePathNode(arg, state0, cc, summaryCtx, argT, argAp, innerArgT, innerArgAp) and
+              pn2 =
+                mkStagePathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
+                  TypOption::some(innerArgT), apSome(innerArgAp), innerArgT, innerArgAp) and
+              pn3 =
+                mkStagePathNode(ret, state, ccc, TParamNodeSome(p.asNode()),
+                  TypOption::some(innerArgT), apSome(innerArgAp), t, ap)
+            )
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowThroughStep2(
+            StagePathNode pn1, StagePathNode pn2, StagePathNode pn3, NodeEx node, Cc cc,
+            FlowState state, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
+            Ap ap
+          ) {
+            exists(
+              DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
+              ApApprox innerArgApa, ApApprox apa
+            |
+              fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, ccc, summaryCtx, argT, argAp, t,
+                ap, apa, ret, innerArgApa) and
+              flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
+              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            )
+          }
+
+          private predicate step(
+            StagePathNode pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
+            TypOption argT, ApOption argAp, Typ t, Ap ap
+          ) {
+            exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
+              pn1 = TStagePathNodeMid(mid, state0, cc, summaryCtx, argT, argAp, t0, ap) and
+              localCc = getLocalCc(cc)
+            |
+              localStep(mid, state0, node, state, true, _, localCc) and
+              t = t0
+              or
+              localStep(mid, state0, node, state, false, t, localCc) and
+              ap instanceof ApNil
+            )
+            or
+            exists(NodeEx mid, FlowState state0, Typ t0 |
+              pn1 = TStagePathNodeMid(mid, state0, _, _, _, _, t0, ap) and
+              cc = ccNone() and
+              summaryCtx = TParamNodeNone() and
+              argT instanceof TypOption::None and
+              argAp = apNone()
+            |
+              jumpStepEx(mid, node) and
+              state = state0 and
+              t = t0
+              or
+              additionalJumpStep(mid, node, _) and
+              state = state0 and
+              t = getNodeTyp(node) and
+              ap instanceof ApNil
+              or
+              additionalJumpStateStep(mid, state0, node, state) and
+              t = getNodeTyp(node) and
+              ap instanceof ApNil
+            )
+            or
+            // store
+            exists(NodeEx mid, Content c, Typ t0, Ap ap0 |
+              pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
+              fwdFlowStore(mid, t0, ap0, c, t, node, state, cc, summaryCtx, argT, argAp) and
+              ap = apCons(c, t0, ap0)
+            )
+            or
+            // read
+            exists(NodeEx mid, Typ t0, Ap ap0, Content c |
+              pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
+              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx, argT, argAp) and
+              fwdFlowConsCand(t0, ap0, c, t, ap)
+            )
+            or
+            // flow into a callable
+            exists(
+              ArgNodeEx arg, boolean allowsFlowThrough, Cc outercc, ParamNodeOption outerSummaryCtx,
+              TypOption outerArgT, ApOption outerArgAp
+            |
+              pn1 =
+                TStagePathNodeMid(arg, state, outercc, outerSummaryCtx, outerArgT, outerArgAp, t, ap) and
+              fwdFlowInStep(arg, node, state, outercc, cc, outerSummaryCtx, outerArgT, outerArgAp,
+                t, ap, allowsFlowThrough) and
+              if allowsFlowThrough = true
+              then (
+                summaryCtx = TParamNodeSome(node.asNode()) and
+                argT = TypOption::some(t) and
+                argAp = apSome(ap)
+              ) else (
+                summaryCtx = TParamNodeNone() and
+                argT instanceof TypOption::None and
+                argAp = apNone()
+              )
+            )
+            or
+            // flow out of a callable
+            exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow, ApApprox apa |
+              pn1 = TStagePathNodeMid(ret, state, innercc, summaryCtx, argT, argAp, t, ap) and
+              fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
+              fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, apa, allowsFieldFlow) and
+              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            )
+            or
+            // flow through a callable
+            fwdFlowThroughStep2(pn1, _, _, node, cc, state, summaryCtx, argT, argAp, t, ap)
+          }
+
+          query predicate subpaths(
+            StagePathNode arg, StagePathNode par, StagePathNode ret, StagePathNode out
+          ) {
+            exists(
+              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+              ApOption argAp, Typ t0, Typ t, Ap ap
+            |
+              fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, argT, argAp, t0, ap) and
+              fwdFlow1(node, state, cc, summaryCtx, argT, argAp, t0, t, ap, _) and
+              out = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            )
+          }
+
+          query predicate edges(StagePathNode pn1, StagePathNode pn2) {
+            exists(
+              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+              ApOption argAp, Typ t0, Typ t, Ap ap
+            |
+              step(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              fwdFlow1(node, state, cc, summaryCtx, argT, argAp, t0, t, ap, _) and
+              pn2 = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            )
+            or
+            pn1.isArbitrarySource() and pn2.isSource()
+            or
+            pn1.isSink() and pn2.isArbitrarySink()
+          }
+        }
+
         additional predicate stats(
           boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
           int tfnodes, int tftuples
@@ -2531,10 +2846,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       CcCall ccSomeCall() { result = true }
 
+      predicate instanceofCc(Cc cc) { any() }
+
+      predicate instanceofCcCall(CcCall cc) { any() }
+
+      predicate instanceofCcNoCall(CcNoCall cc) { any() }
+
       class LocalCc = Unit;
 
-      bindingset[node, cc]
-      LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
+      bindingset[cc]
+      LocalCc getLocalCc(Cc cc) { any() }
 
       DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) { none() }
 
@@ -2544,113 +2865,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[call, c]
       CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) { any() }
 
-      DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
-        none()
-      }
+      DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx) { none() }
 
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) { any() }
 
       bindingset[call, c]
       CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
-    }
-
-    private signature module Level1CallContextInputSig {
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx);
-
-      bindingset[call, ctx]
-      predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx);
-
-      predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable);
-
-      predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable);
-
-      predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call);
-
-      DataFlowCall prunedViableImplInCallContextReverse(
-        DataFlowCallable callable, CallContextReturn ctx
-      );
-    }
-
-    private module Level1CallContext<Level1CallContextInputSig Input> {
-      class Cc = CallContext;
-
-      class CcCall = CallContextCall;
-
-      pragma[inline]
-      predicate matchesCall(CcCall cc, DataFlowCall call) { cc.matchesCall(call) }
-
-      class CcNoCall = CallContextNoCall;
-
-      Cc ccNone() { result instanceof CallContextAny }
-
-      CcCall ccSomeCall() { result instanceof CallContextSomeCall }
-
-      module NoLocalCallContext {
-        class LocalCc = Unit;
-
-        bindingset[node, cc]
-        LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
-
-        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-          result = Input::prunedViableImplInCallContext(call, ctx)
-        }
-
-        bindingset[call, ctx]
-        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
-          Input::noPrunedViableImplInCallContext(call, ctx)
-        }
-
-        bindingset[call, c]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if Input::recordDataFlowCallSiteDispatch(call, c)
-          then result = TSpecificCall(call)
-          else result = TSomeCall()
-        }
-      }
-
-      module LocalCallContext {
-        class LocalCc = LocalCallContext;
-
-        bindingset[node, cc]
-        LocalCc getLocalCc(NodeEx node, Cc cc) {
-          result =
-            getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-              node.getEnclosingCallable())
-        }
-
-        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-          result = Input::prunedViableImplInCallContext(call, ctx)
-        }
-
-        bindingset[call, ctx]
-        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
-          Input::noPrunedViableImplInCallContext(call, ctx)
-        }
-
-        bindingset[call, c]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if
-            Input::recordDataFlowCallSiteDispatch(call, c) or
-            Input::recordDataFlowCallSiteUnreachable(call, c)
-          then result = TSpecificCall(call)
-          else result = TSomeCall()
-        }
-      }
-
-      DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
-        call = Input::prunedViableImplInCallContextReverse(result, ctx)
-      }
-
-      predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
-        ctx instanceof CallContextAny
-      }
-
-      bindingset[call, c]
-      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
-        if Input::reducedViableImplInReturn(c, call)
-        then result = TReturn(c, call)
-        else result = ccNone()
-      }
     }
 
     private module Stage2Param implements MkStage<Stage1>::StageParam {
@@ -2690,11 +2910,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
-      private module Level1CallContextInput implements Level1CallContextInputSig {
-        import CachedCallContextSensitivity
-      }
-
-      import Level1CallContext<Level1CallContextInput>
+      import CachedCallContextSensitivity
       import NoLocalCallContext
 
       bindingset[node1, state1]
@@ -2937,12 +3153,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private import LocalFlowBigStep
 
     pragma[nomagic]
-    private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
+    private predicate castingNodeEx(NodeEx node) {
+      node.asNode() instanceof CastingNode or exists(node.asParamReturnNode())
+    }
 
     private module Stage3Param implements MkStage<Stage2>::StageParam {
       private module PrevStage = Stage2;
 
-      class Typ = DataFlowType;
+      class Typ = Unit;
 
       class Ap = ApproxAccessPathFront;
 
@@ -2950,7 +3168,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
-      Typ getTyp(DataFlowType t) { result = t }
+      Typ getTyp(DataFlowType t) { any() }
 
       bindingset[c, t, tail]
       Ap apCons(Content c, Typ t, Ap tail) { result.getAHead() = c and exists(t) and exists(tail) }
@@ -2968,30 +3186,27 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
-      additional module Level1CallContextInput implements Level1CallContextInputSig {
-        private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
-          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
-          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+        predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
 
-          predicate reducedViableImplInCallContextCand =
-            CachedCallContextSensitivity::reducedViableImplInCallContext/3;
+        predicate reducedViableImplInCallContextCand =
+          CachedCallContextSensitivity::reducedViableImplInCallContext/3;
 
-          predicate reducedViableImplInReturnCand =
-            CachedCallContextSensitivity::reducedViableImplInReturn/2;
-        }
-
-        import CallContextSensitivity<CallContextSensitivityInput>
+        predicate reducedViableImplInReturnCand =
+          CachedCallContextSensitivity::reducedViableImplInReturn/2;
       }
 
-      import Level1CallContext<Level1CallContextInput>
+      import CallContextSensitivity<CallContextSensitivityInput>
       import NoLocalCallContext
 
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
         Typ t, LocalCc lcc
       ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _, _) and
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _, _) and
+        exists(t) and
         exists(lcc)
       }
 
@@ -3014,7 +3229,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         // the cons candidates including types are used to construct subsequent
         // access path approximations.
         t0 = t and
-        (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t0) else any()) and
         (
           notExpectsContent(node)
           or
@@ -3023,11 +3237,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        // We need to typecheck stores here, since reverse flow through a getter
-        // might have a different type here compared to inside the getter.
-        compatibleTypes(typ, contentType)
-      }
+      predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
     }
 
     private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
@@ -3037,7 +3247,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       if castingNodeEx(node)
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          if typeStrongerThanFilter(nt, t0)
+          then t = nt
+          else (
+            compatibleTypesFilter(nt, t0) and t = t0
+          )
         )
       else t = t0
     }
@@ -3136,7 +3350,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate typecheckStore(Typ typ, DataFlowType contentType) {
         // We need to typecheck stores here, since reverse flow through a getter
         // might have a different type here compared to inside the getter.
-        compatibleTypes(typ, contentType)
+        compatibleTypesFilter(typ, contentType)
       }
     }
 
@@ -3360,23 +3574,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
-      additional module Level1CallContextInput implements Level1CallContextInputSig {
-        private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
-          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
-          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+        predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
 
-          predicate reducedViableImplInCallContextCand =
-            Stage3Param::Level1CallContextInput::reducedViableImplInCallContext/3;
+        predicate reducedViableImplInCallContextCand =
+          Stage3Param::reducedViableImplInCallContext/3;
 
-          predicate reducedViableImplInReturnCand =
-            Stage3Param::Level1CallContextInput::reducedViableImplInReturn/2;
-        }
-
-        import CallContextSensitivity<CallContextSensitivityInput>
+        predicate reducedViableImplInReturnCand = Stage3Param::reducedViableImplInReturn/2;
       }
 
-      import Level1CallContext<Level1CallContextInput>
+      import CallContextSensitivity<CallContextSensitivityInput>
       import LocalCallContext
 
       predicate localStep(
@@ -3397,7 +3606,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        compatibleTypes(typ, contentType)
+        compatibleTypesFilter(typ, contentType)
       }
     }
 
@@ -3410,7 +3619,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(AccessPathApprox apa0 |
         Stage5::parameterMayFlowThrough(p, _) and
         Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0) and
-        Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParamNodeSome(p.asNode()), _,
+        Stage5::fwdFlow(n, state, any(Stage5Param::CcCall ccc), TParamNodeSome(p.asNode()), _,
           TAccessPathApproxSome(apa), _, apa0, _)
       )
     }
@@ -3464,6 +3673,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Location getLocation() { result = p.getLocation() }
     }
 
+    pragma[nomagic]
+    private predicate stage5ConsCand(Content c, DataFlowType t, AccessPathFront apf, int len) {
+      Stage5::consCand(c, t, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
+    }
+
     /**
      * Gets the number of length 2 access path approximations that correspond to `apa`.
      */
@@ -3471,11 +3685,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(Content c, int len |
         c = apa.getHead() and
         len = apa.len() and
-        result =
-          strictcount(DataFlowType t, AccessPathFront apf |
-            Stage5::consCand(c, t,
-              any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
-          )
+        result = strictcount(DataFlowType t, AccessPathFront apf | stage5ConsCand(c, t, apf, len))
       )
     }
 
@@ -3587,6 +3797,36 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           head = apa.getHead()
         )
       }
+
+    private module PrunedCallContextSensitivityStage5 {
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = Stage5::relevantCallEdgeIn/2;
+
+        predicate relevantCallEdgeOut = Stage5::relevantCallEdgeOut/2;
+
+        predicate reducedViableImplInCallContextCand =
+          Stage5Param::reducedViableImplInCallContext/3;
+
+        predicate reducedViableImplInReturnCand = Stage5Param::reducedViableImplInReturn/2;
+      }
+
+      import CallContextSensitivity<CallContextSensitivityInput>
+      import LocalCallContext
+    }
+
+    private class CallContext = PrunedCallContextSensitivityStage5::Cc;
+
+    private class CallContextCall = PrunedCallContextSensitivityStage5::CcCall;
+
+    private class CallContextNoCall = PrunedCallContextSensitivityStage5::CcNoCall;
+
+    private predicate callContextNone = PrunedCallContextSensitivityStage5::ccNone/0;
+
+    private predicate callContextSomeCall = PrunedCallContextSensitivityStage5::ccSomeCall/0;
+
+    private predicate sourceCallCtx(CallContext cc) {
+      if hasSourceCallCtx() then cc = callContextSomeCall() else cc = callContextNone()
+    }
 
     private newtype TPathNode =
       TPathNodeMid(
@@ -3967,10 +4207,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       final predicate isSinkGroup(string group) { this = TPathNodeSinkGroup(group) }
     }
 
+    private import codeql.dataflow.test.ProvenancePathGraph as ProvenancePathGraph
+
     /**
      * Provides the query predicates needed to include a graph in a path-problem query.
      */
-    module PathGraph implements PathGraphSig<PathNode> {
+    module PathGraph implements PathGraphSig<PathNode>, ProvenancePathGraph::PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
       query predicate edges(PathNode a, PathNode b, string key, string val) {
         a.(PathNodeImpl).getANonHiddenSuccessor(val) = b and
@@ -4169,9 +4411,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       state = mid.getState() and
       cc = mid.getCallContext() and
       sc = mid.getSummaryCtx() and
-      localCC =
-        getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-          midnode.getEnclosingCallable()) and
+      localCC = PrunedCallContextSensitivityStage5::getLocalCc(cc) and
       t = mid.getType() and
       ap = mid.getAp() and
       summaryLabel = mid.getSummaryLabel()
@@ -4217,7 +4457,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       or
       jumpStepEx(mid.getNodeExOutgoing(), node) and
       state = mid.getState() and
-      cc instanceof CallContextAny and
+      cc = callContextNone() and
       sc instanceof SummaryCtxNone and
       t = mid.getType() and
       ap = mid.getAp() and
@@ -4227,7 +4467,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       or
       additionalJumpStep(mid.getNodeExOutgoing(), node, label) and
       state = mid.getState() and
-      cc instanceof CallContextAny and
+      cc = callContextNone() and
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
       t = node.getDataFlowType() and
@@ -4236,7 +4476,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       summaryLabel = "-"
       or
       additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
-      cc instanceof CallContextAny and
+      cc = callContextNone() and
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
       t = node.getDataFlowType() and
@@ -4306,7 +4546,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Stage5::storeStepCand(mid.getNodeExOutgoing(), _, c, node, contentType, t) and
         state = mid.getState() and
         cc = mid.getCallContext() and
-        compatibleTypes(t0, contentType)
+        compatibleTypesFilter(t0, contentType)
       )
     }
 
@@ -4326,22 +4566,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private module PrunedCallContextSensitivityStage5 {
-      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
-        predicate relevantCallEdgeIn = Stage5::relevantCallEdgeIn/2;
-
-        predicate relevantCallEdgeOut = Stage5::relevantCallEdgeOut/2;
-
-        predicate reducedViableImplInCallContextCand =
-          Stage5Param::Level1CallContextInput::reducedViableImplInCallContext/3;
-
-        predicate reducedViableImplInReturnCand =
-          Stage5Param::Level1CallContextInput::reducedViableImplInReturn/2;
-      }
-
-      import CallContextSensitivity<CallContextSensitivityInput>
-    }
-
     pragma[nomagic]
     private predicate pathOutOfCallable1(
       PathNodeMid mid, DataFlowCall call, ReturnKindExt kind, FlowState state, CallContext cc,
@@ -4351,11 +4575,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pathOutOfCallable0(mid, pos, state, innercc, apa) and
         c = pos.getCallable() and
         kind = pos.getKind() and
-        PrunedCallContextSensitivityStage5::resolveReturn(innercc, c, call)
-      |
-        if PrunedCallContextSensitivityStage5::reducedViableImplInReturn(c, call)
-        then cc = TReturn(c, call)
-        else cc = TAnyCallContext()
+        PrunedCallContextSensitivityStage5::resolveReturn(innercc, c, call) and
+        cc = PrunedCallContextSensitivityStage5::getCallContextReturn(c, call)
       )
     }
 
@@ -4441,11 +4662,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           // never any reason to enter a callable except to find a summary. See also
           // the comment in `PathNodeMid::isAtSink`.
           not Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
-        )
-      |
-        if PrunedCallContextSensitivityStage5::recordDataFlowCallSite(call, callable)
-        then innercc = TSpecificCall(call)
-        else innercc = TSomeCall()
+        ) and
+        innercc = PrunedCallContextSensitivityStage5::getCallContextCall(call, callable)
       )
     }
 
@@ -4723,67 +4941,127 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      *
      * Calculates per-stage metrics for data flow.
      */
-    predicate stageStats(
-      int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
-      int calledges, int tfnodes, int tftuples
-    ) {
-      stage = "1 Fwd" and
-      n = 10 and
-      Stage1::stats(true, nodes, fields, conscand, states, tuples, calledges) and
-      tfnodes = -1 and
-      tftuples = -1
-      or
-      stage = "1 Rev" and
-      n = 15 and
-      Stage1::stats(false, nodes, fields, conscand, states, tuples, calledges) and
-      tfnodes = -1 and
-      tftuples = -1
-      or
-      stage = "2 Fwd" and
-      n = 20 and
-      Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "2 Rev" and
-      n = 25 and
-      Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "3 Fwd" and
-      n = 30 and
-      Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "3 Rev" and
-      n = 35 and
-      Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "4 Fwd" and
-      n = 40 and
-      Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "4 Rev" and
-      n = 45 and
-      Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "5 Fwd" and
-      n = 50 and
-      Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "5 Rev" and
-      n = 55 and
-      Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "6 Fwd" and
-      n = 60 and
-      finalStats(true, nodes, fields, conscand, states, tuples) and
-      calledges = -1 and
-      tfnodes = -1 and
-      tftuples = -1
-      or
-      stage = "6 Rev" and
-      n = 65 and
-      finalStats(false, nodes, fields, conscand, states, tuples) and
-      calledges = -1 and
-      tfnodes = -1 and
-      tftuples = -1
+    predicate stageStats = Debug::stageStats/10;
+
+    private module Stage2alias = Stage2;
+
+    private module Stage3alias = Stage3;
+
+    private module Stage4alias = Stage4;
+
+    private module Stage5alias = Stage5;
+
+    /**
+     * INTERNAL: Only for debugging.
+     *
+     * Contains references to individual pruning stages.
+     */
+    module Debug {
+      module Stage2 = Stage2alias;
+
+      module Stage3 = Stage3alias;
+
+      module Stage4 = Stage4alias;
+
+      module Stage5 = Stage5alias;
+
+      predicate stageStats1(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stage = "1 Fwd" and
+        n = 10 and
+        Stage1::stats(true, nodes, fields, conscand, states, tuples, calledges) and
+        tfnodes = -1 and
+        tftuples = -1
+        or
+        stage = "1 Rev" and
+        n = 15 and
+        Stage1::stats(false, nodes, fields, conscand, states, tuples, calledges) and
+        tfnodes = -1 and
+        tftuples = -1
+      }
+
+      predicate stageStats2(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats1(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "2 Fwd" and
+        n = 20 and
+        Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "2 Rev" and
+        n = 25 and
+        Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats3(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats2(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "3 Fwd" and
+        n = 30 and
+        Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "3 Rev" and
+        n = 35 and
+        Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats4(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats3(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "4 Fwd" and
+        n = 40 and
+        Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "4 Rev" and
+        n = 45 and
+        Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats5(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats4(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "5 Fwd" and
+        n = 50 and
+        Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "5 Rev" and
+        n = 55 and
+        Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats5(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "6 Fwd" and
+        n = 60 and
+        finalStats(true, nodes, fields, conscand, states, tuples) and
+        calledges = -1 and
+        tfnodes = -1 and
+        tftuples = -1
+        or
+        stage = "6 Rev" and
+        n = 65 and
+        finalStats(false, nodes, fields, conscand, states, tuples) and
+        calledges = -1 and
+        tfnodes = -1 and
+        tftuples = -1
+      }
     }
 
     private signature predicate flag();
@@ -4793,22 +5071,32 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate flagDisable() { none() }
 
     module FlowExplorationFwd<explorationLimitSig/0 explorationLimit> {
-      private import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0>
-      import Public
+      private import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0> as F
+      import F::Public
 
-      predicate partialFlow = partialFlowFwd/3;
+      predicate partialFlow = F::partialFlowFwd/3;
     }
 
     module FlowExplorationRev<explorationLimitSig/0 explorationLimit> {
-      private import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0>
-      import Public
+      private import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0> as F
+      import F::Public
 
-      predicate partialFlow = partialFlowRev/3;
+      predicate partialFlow = F::partialFlowRev/3;
     }
 
     private module FlowExploration<
       explorationLimitSig/0 explorationLimit, flag/0 flagFwd, flag/0 flagRev>
     {
+      class CallContext = CachedCallContextSensitivity::Cc;
+
+      class CallContextCall = CachedCallContextSensitivity::CcCall;
+
+      class CallContextNoCall = CachedCallContextSensitivity::CcNoCall;
+
+      predicate callContextNone = CachedCallContextSensitivity::ccNone/0;
+
+      predicate callContextSomeCall = CachedCallContextSensitivity::ccSomeCall/0;
+
       private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2) {
         exists(NodeEx node1, NodeEx node2 |
           jumpStepEx(node1, node2)
@@ -4979,7 +5267,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           flagFwd() and
           sourceNode(node, state) and
-          cc instanceof CallContextAny and
+          cc = callContextNone() and
           sc1 = TSummaryCtx1None() and
           sc2 = TSummaryCtx2None() and
           sc3 = TSummaryCtx3None() and
@@ -5193,7 +5481,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         predicate isSource() {
           sourceNode(node, state) and
-          cc instanceof CallContextAny and
+          cc = callContextNone() and
           sc1 = TSummaryCtx1None() and
           sc2 = TSummaryCtx2None() and
           sc3 = TSummaryCtx3None() and
@@ -5245,7 +5533,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap,
         boolean isStoreStep
       ) {
-        not isUnreachableInCallCached(node.asNode(), cc.(CallContextSpecificCall).getCall()) and
+        not isUnreachableInCall1(node,
+          CachedCallContextSensitivity::LocalCallContext::getLocalCc(cc)) and
         (
           localFlowStepEx(mid.getNodeEx(), node, _) and
           state = mid.getState() and
@@ -5282,7 +5571,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         jumpStepEx(mid.getNodeEx(), node) and
         state = mid.getState() and
-        cc instanceof CallContextAny and
+        cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
@@ -5293,7 +5582,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         additionalJumpStep(mid.getNodeEx(), node, _) and
         state = mid.getState() and
-        cc instanceof CallContextAny and
+        cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
@@ -5304,7 +5593,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         isStoreStep = false
         or
         additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
-        cc instanceof CallContextAny and
+        cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
@@ -5367,7 +5656,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           storeExUnrestricted(midNode, c, node, contentType, t2) and
           ap2.getHead() = c and
           ap2.len() = unbindInt(ap1.len() + 1) and
-          compatibleTypes(t1, contentType)
+          compatibleTypesFilter(t1, contentType)
         )
       }
 
@@ -5419,11 +5708,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           partialPathOutOfCallable0(mid, pos, state, innercc, t, ap) and
           c = pos.getCallable() and
           kind = pos.getKind() and
-          CachedCallContextSensitivity::resolveReturn(innercc, c, call)
-        |
-          if CachedCallContextSensitivity::reducedViableImplInReturn(c, call)
-          then cc = TReturn(c, call)
-          else cc = TAnyCallContext()
+          CachedCallContextSensitivity::resolveReturn(innercc, c, call) and
+          cc = CachedCallContextSensitivity::getCallContextReturn(c, call)
         )
       }
 
@@ -5474,11 +5760,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           sc1 = TSummaryCtx1Param(p) and
           sc2 = TSummaryCtx2Some(state) and
           sc3 = TSummaryCtx3Some(t) and
-          sc4 = TSummaryCtx4Some(ap)
-        |
-          if CachedCallContextSensitivity::recordDataFlowCallSite(call, callable)
-          then innercc = TSpecificCall(call)
-          else innercc = TSomeCall()
+          sc4 = TSummaryCtx4Some(ap) and
+          innercc =
+            CachedCallContextSensitivity::LocalCallContext::getCallContextCall(call, callable)
         )
       }
 

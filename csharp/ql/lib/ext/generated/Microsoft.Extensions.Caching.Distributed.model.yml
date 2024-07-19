@@ -13,6 +13,7 @@ extensions:
       - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", False, "MemoryDistributedCache", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -36,7 +37,6 @@ extensions:
       - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Get", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "GetAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "MemoryDistributedCache", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "MemoryDistributedCache", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Refresh", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "RefreshAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Remove", "(System.String)", "summary", "df-generated"]

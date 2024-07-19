@@ -12,15 +12,6 @@ module Revel {
     result = package(["github.com/revel", "github.com/robfig"] + "/revel", "")
   }
 
-  private class ControllerParams extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
-    ControllerParams() {
-      exists(Field f |
-        this.readsField(_, f) and
-        f.hasQualifiedName(packagePath(), "Controller", "Params")
-      )
-    }
-  }
-
   private class ParamsFixedSanitizer extends TaintTracking::DefaultTaintSanitizer,
     DataFlow::FieldReadNode
   {
@@ -29,41 +20,6 @@ module Revel {
         this.readsField(_, f) and
         f.hasQualifiedName(packagePath(), "Params", "Fixed")
       )
-    }
-  }
-
-  private class RouteMatchParams extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
-    RouteMatchParams() {
-      exists(Field f |
-        this.readsField(_, f) and
-        f.hasQualifiedName(packagePath(), "RouteMatch", "Params")
-      )
-    }
-  }
-
-  /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
-    UserControlledRequestField() {
-      exists(string fieldName |
-        this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
-      |
-        fieldName in [
-            "Header", "ContentType", "AcceptLanguages", "Locale", "URL", "Form", "MultipartForm"
-          ]
-      )
-    }
-  }
-
-  private class UserControlledRequestMethod extends RemoteFlowSource::Range,
-    DataFlow::MethodCallNode
-  {
-    UserControlledRequestMethod() {
-      this.getTarget()
-          .hasQualifiedName(packagePath(), "Request",
-            [
-              "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
-              "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
-            ])
     }
   }
 

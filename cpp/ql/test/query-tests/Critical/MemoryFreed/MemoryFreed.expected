@@ -115,6 +115,8 @@
 | test_free.cpp:344:26:344:28 | ptr |
 | test_free.cpp:345:26:345:28 | ptr |
 | test_free.cpp:346:26:346:28 | ptr |
+| test_free.cpp:356:19:356:19 | a |
+| test_free.cpp:357:19:357:19 | a |
 | virtual.cpp:18:10:18:10 | a |
 | virtual.cpp:19:10:19:10 | c |
 | virtual.cpp:38:10:38:10 | b |

@@ -6,8 +6,8 @@ import java.nio.file.Files;
 
 public class ImplOfExternalSPI extends AbstractImplOfExternalSPI {
 
-  // sink=p;AbstractImplOfExternalSPI;true;accept;(File);;Argument[0];path-injection;df-generated
-  // neutral=p;AbstractImplOfExternalSPI;accept;(File);summary;df-generated
+  // sink=p;ImplOfExternalSPI;true;accept;(File);;Argument[0];path-injection;df-generated
+  // neutral=p;ImplOfExternalSPI;accept;(File);summary;df-generated
   @Override
   public boolean accept(File pathname) {
     try {

@@ -7,6 +7,6 @@ extensions:
       - ["database/sql", "Conn", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql", "DB", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql", "DB", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
-      - ["database/sql", "Scanner", True, "Scan", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["database/sql", "Scanner", True, "Scan", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
       - ["database/sql", "Tx", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql", "Tx", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
