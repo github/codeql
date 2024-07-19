@@ -30,7 +30,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
       neutralModel(namespace, type, name, signature, kind, provenance) and
       c.asFunction() = interpretElement(namespace, type, false, name, signature, "").asEntity()
     ) and
-    // isExact has not been implemented yet.
+    // isExact is not needed for Go.
     isExact = false
   }
 
@@ -315,7 +315,7 @@ module Private {
      * and with provenance `provenance`.
      */
     predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
-      Input::neutralElement(c, kind, provenance, false)
+      Input::neutralElement(c, kind, provenance, _)
     }
   }
 

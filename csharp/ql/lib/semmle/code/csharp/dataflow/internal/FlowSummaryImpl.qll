@@ -18,7 +18,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
 
   predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
     interpretNeutral(c, kind, provenance) and
-    // isExact has not been implemented yet.
+    // isExact is not needed for C#.
     isExact = false
   }
 
