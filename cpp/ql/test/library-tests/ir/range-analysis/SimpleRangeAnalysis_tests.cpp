@@ -46,7 +46,7 @@ int test4() {
   }
   range(total); // $ MISSING: range=>=0
   range(i); // $ range===2
-  range(total + i); // $ range="<=Phi: i+2" MISSING: range===i+2 range=>=2 range=>=i+0 
+  range(total + i); // $ range="<=Phi: i+2" MISSING: range===i+2 range=>=2 range=>=i+0
   return total + i;
 }
 
@@ -210,7 +210,7 @@ int test14(int x) {
   int x3 = (int)(unsigned int)x;
   range(x3);
   char c0 = x;
-  range(c0); 
+  range(c0);
   unsigned short s0 = x;
   range(s0);
   range(x0 + x1 + x2 + x3 + c0 + s0); // $ overflow=+ overflow=+-
@@ -218,7 +218,7 @@ int test14(int x) {
 }
 
 long long test15(long long x) {
-  return (x > 0 && (range(x), x == (int)x)) ? // $ range=>=1 
+  return (x > 0 && (range(x), x == (int)x)) ? // $ range=>=1
     (range(x), x) : // $ range=>=1
     (range(x), -1);
 }
@@ -228,7 +228,7 @@ int test_unary(int a) {
   int total = 0;
 
   if (3 <= a && a <= 11) {
-    range(a); // $ range=<=11 range=>=3 
+    range(a); // $ range=<=11 range=>=3
     int b = +a;
     range(b); // $ range=<=11 range=>=3
     int c = -a;
@@ -467,7 +467,7 @@ int test_mult04(int a, int b) {
     range(a); // $ range=<=0 range=>=-17
     range(b); // $ range=<=0 range=>=-13
     int r = a*b;  // 0 .. 221
-    range(r); // $ range=<=221 range=>=0 
+    range(r); // $ range=<=221 range=>=0
     total += r;
     range(total); // $ range="<=Phi: - ...+221"
   }
@@ -741,8 +741,8 @@ unsigned long mult_rounding() {
   range(y); // $ range===1000000003
   range(x); // $ range===1000000003
   xy = x * y;
-  range(xy); // $ range===1000000006000000000
-  return xy; // BUG: upper bound should be >= 1000000006000000009UL
+  range(xy); // $ range===1000000006000000009
+  return xy;
 }
 
 unsigned long mult_overflow() {
@@ -1030,7 +1030,7 @@ void test_negate_signed(int s) {
   }
 }
 
-// By setting the guard after the use in another guard we 
+// By setting the guard after the use in another guard we
 // don't get the useful information
 void test_guard_after_use(int pos, int size, int offset) {
   if (pos + offset >= size) { // $ overflow=+-
@@ -1040,12 +1040,12 @@ void test_guard_after_use(int pos, int size, int offset) {
     return;
   }
   range(pos + 1); // $ overflow=+ range="==InitializeParameter: pos+1" MISSING: range="<=InitializeParameter: size-1"
-} 
+}
 
 int cond();
 
 
-// This is basically what we get when we have a loop that calls 
+// This is basically what we get when we have a loop that calls
 // realloc in some iterations
 void alloc_in_loop(int origLen) {
   if (origLen <= 10) {
@@ -1066,12 +1066,12 @@ void alloc_in_loop(int origLen) {
   }
 }
 
-// This came from a case where it handled the leftovers before an unrolled loop 
+// This came from a case where it handled the leftovers before an unrolled loop
 void mask_at_start(int len) {
   if (len < 0) {
     return;
   }
-  int leftOver = len & 63; 
+  int leftOver = len & 63;
   for (int i = 0; i < leftOver; i++) {
     range(i); // $ range=<=62 range=>=0  range="<=Store: ... & ... | Store: leftOver-1" range="<=InitializeParameter: len-1"
   }

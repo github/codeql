@@ -34,7 +34,7 @@ class PhpEmalloc extends AllocationFunction {
   override int getSizeArg() { result = 0 }
 }
 
-predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
+predicate bounded(Instruction i, Bound b, QlBuiltins::BigInt delta, boolean upper) {
   // TODO: reason
   semBounded(getSemanticExpr(i), b, delta, upper, _)
 }
@@ -45,17 +45,17 @@ module ArraySizeConfig implements ProductFlow::ConfigSig {
   }
 
   predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) {
-    exists(PointerAddInstruction pai, int delta |
+    exists(PointerAddInstruction pai, QlBuiltins::BigInt delta |
       isSinkPair1(sink1, sink2, pai, delta) and
       (
-        delta = 0 and
+        delta = 0.toBigInt() and
         exists(DataFlow::Node paiNode, DataFlow::Node derefNode |
           DataFlow::localFlow(paiNode, derefNode) and
           paiNode.asInstruction() = pai and
           derefNode.asOperand() instanceof AddressOperand
         )
         or
-        delta >= 1
+        delta >= 1.toBigInt()
       )
     )
   }
@@ -65,7 +65,7 @@ module ArraySizeFlow = ProductFlow::Global<ArraySizeConfig>;
 
 pragma[nomagic]
 predicate isSinkPair1(
-  DataFlow::Node sink1, DataFlow::Node sink2, PointerAddInstruction pai, int delta
+  DataFlow::Node sink1, DataFlow::Node sink2, PointerAddInstruction pai, QlBuiltins::BigInt delta
 ) {
   exists(Instruction index, ValueNumberBound b |
     pai.getRight() = index and

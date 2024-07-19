@@ -21,7 +21,8 @@ import semmle.code.java.dataflow.RangeAnalysis
 /** Holds if `cond` always evaluates to `isTrue`. */
 predicate constCond(BinaryExpr cond, boolean isTrue, Reason reason) {
   exists(
-    ComparisonExpr comp, Expr lesser, Expr greater, Bound b, int d1, int d2, Reason r1, Reason r2
+    ComparisonExpr comp, Expr lesser, Expr greater, Bound b, QlBuiltins::BigInt d1,
+    QlBuiltins::BigInt d2, Reason r1, Reason r2
   |
     comp = cond and
     lesser = comp.getLesserOperand() and
@@ -49,7 +50,9 @@ predicate constCond(BinaryExpr cond, boolean isTrue, Reason reason) {
     lhs = eq.getLeftOperand() and
     rhs = eq.getRightOperand()
   |
-    exists(Bound b, int d1, int d2, boolean upper, Reason r1, Reason r2 |
+    exists(
+      Bound b, QlBuiltins::BigInt d1, QlBuiltins::BigInt d2, boolean upper, Reason r1, Reason r2
+    |
       bounded(lhs, b, d1, upper, r1) and
       bounded(rhs, b, d2, upper.booleanNot(), r2) and
       isTrue = eq.polarity().booleanNot() and
@@ -65,7 +68,7 @@ predicate constCond(BinaryExpr cond, boolean isTrue, Reason reason) {
       upper = false and d1 > d2 // lhs >= b + d1 > b + d2 >= rhs
     )
     or
-    exists(Bound b, int d, Reason r1, Reason r2, Reason r3, Reason r4 |
+    exists(Bound b, QlBuiltins::BigInt d, Reason r1, Reason r2, Reason r3, Reason r4 |
       bounded(lhs, b, d, true, r1) and
       bounded(lhs, b, d, false, r2) and
       bounded(rhs, b, d, true, r3) and

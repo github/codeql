@@ -30,8 +30,8 @@ VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
  * Holds if `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
-predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
-  exists(VariableAccess va, Expr size, int delta |
+predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, QlBuiltins::BigInt state) {
+  exists(VariableAccess va, Expr size, QlBuiltins::BigInt delta |
     size = alloc.getSizeExpr() and
     // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
     va = unique( | | getAVariableAccess(size)) and
@@ -44,7 +44,8 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
 }
 
 predicate isSinkPairImpl(
-  CallInstruction c, DataFlow::Node bufSink, DataFlow::Node sizeSink, int delta, Expr eBuf
+  CallInstruction c, DataFlow::Node bufSink, DataFlow::Node sizeSink, QlBuiltins::BigInt delta,
+  Expr eBuf
 ) {
   exists(
     int bufIndex, int sizeIndex, Instruction sizeInstr, Instruction bufInstr, ArrayFunction func
@@ -109,9 +110,9 @@ module ValidState {
    * while(unknown()) { size++; }
    * ```
    */
-  private predicate validStateImpl(PathNode n, int value) {
+  private predicate validStateImpl(PathNode n, QlBuiltins::BigInt value) {
     // If the dataflow node depends recursively on itself we restrict the range.
-    (inLoop(n) implies value = [-2 .. 2]) and
+    (inLoop(n) implies value = ([-2 .. 2]).toBigInt()) and
     (
       // For the dataflow source we have an allocation such as `malloc(size + k)`,
       // and the value of the flow-state is then `k`.
@@ -129,7 +130,7 @@ module ValidState {
       //
       // So we find a valid flow-state at the sink's predecessor, and use the definition
       // of our sink predicate to compute the valid flow-states at the sink.
-      exists(int delta, PathNode n0 |
+      exists(QlBuiltins::BigInt delta, PathNode n0 |
         n0.getASuccessor() = n and
         validStateImpl(n0, value) and
         isSinkPairImpl(_, _, n.getNode(), delta, _) and
@@ -144,13 +145,13 @@ module ValidState {
       // `AddInstruction` to the flow-state of any predecessor node.
       // For case 2 we simply propagate the valid flow-states from the predecessor node to
       // the next one.
-      exists(PathNode n0, DataFlow::Node node0, DataFlow::Node node, int value0 |
+      exists(PathNode n0, DataFlow::Node node0, DataFlow::Node node, QlBuiltins::BigInt value0 |
         n0.getASuccessor() = n and
         validStateImpl(n0, value0) and
         node = n.getNode() and
         node0 = n0.getNode()
       |
-        exists(int delta |
+        exists(QlBuiltins::BigInt delta |
           isAdditionalFlowStep2(node0, node, delta) and
           value0 = value + delta
         )
@@ -161,7 +162,7 @@ module ValidState {
     )
   }
 
-  predicate validState(DataFlow::Node n, int value) {
+  predicate validState(DataFlow::Node n, QlBuiltins::BigInt value) {
     validStateImpl(any(PathNode pn | pn.getNode() = n), value)
   }
 }
@@ -174,7 +175,7 @@ import ValidState
  * 1. `node1` is the dataflow node that represents `op1`, and
  * 2. the value of `op2` can be upper bounded by `delta.`
  */
-predicate isAdditionalFlowStep2(DataFlow::Node node1, DataFlow::Node node2, int delta) {
+predicate isAdditionalFlowStep2(DataFlow::Node node1, DataFlow::Node node2, QlBuiltins::BigInt delta) {
   exists(AddInstruction add, Operand op |
     add.hasOperands(node1.asOperand(), op) and
     semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
@@ -185,7 +186,7 @@ predicate isAdditionalFlowStep2(DataFlow::Node node1, DataFlow::Node node2, int 
 module StringSizeConfig implements ProductFlow::StateConfigSig {
   class FlowState1 = Unit;
 
-  class FlowState2 = int;
+  class FlowState2 = QlBuiltins::BigInt;
 
   predicate isSourcePair(
     DataFlow::Node bufSource, FlowState1 state1, DataFlow::Node sizeSource, FlowState2 state2
@@ -206,7 +207,7 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
   ) {
     exists(state1) and
     validState(sizeSink, state2) and
-    exists(int delta |
+    exists(QlBuiltins::BigInt delta |
       isSinkPairImpl(_, bufSink, sizeSink, delta, _) and
       delta > state2
     )
@@ -220,7 +221,7 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
   ) {
     validState(node2, state2) and
-    exists(int delta |
+    exists(QlBuiltins::BigInt delta |
       isAdditionalFlowStep2(node1, node2, delta) and
       state1 = state2 + delta
     )
@@ -239,11 +240,11 @@ module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
  * the columns down to the underlying `DataFlow::Node` in order to deduplicate the flow
  * state.
  */
-int getOverflow(
+QlBuiltins::BigInt getOverflow(
   DataFlow::Node source1, DataFlow::Node source2, DataFlow::Node sink1, DataFlow::Node sink2,
   CallInstruction c, Expr buffer
 ) {
-  result > 0 and
+  result > 0.toBigInt() and
   exists(
     StringSizeFlow::PathNode1 pathSource1, StringSizeFlow::PathNode2 pathSource2,
     StringSizeFlow::PathNode1 pathSink1, StringSizeFlow::PathNode2 pathSink2
@@ -259,14 +260,14 @@ int getOverflow(
 
 from
   StringSizeFlow::PathNode1 source1, StringSizeFlow::PathNode2 source2,
-  StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, int overflow, CallInstruction c,
-  Expr buffer, string element
+  StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, QlBuiltins::BigInt overflow,
+  CallInstruction c, Expr buffer, string element
 where
   StringSizeFlow::flowPath(source1, source2, sink1, sink2) and
   overflow =
     max(getOverflow(source1.getNode(), source2.getNode(), sink1.getNode(), sink2.getNode(), c,
           buffer)
     ) and
-  if overflow = 1 then element = " element." else element = " elements."
+  if overflow = 1.toBigInt() then element = " element." else element = " elements."
 select c.getUnconvertedResultExpression(), source1, sink1,
   "This write may overflow $@ by " + overflow + element, buffer, buffer.toString()
