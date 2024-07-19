@@ -1,24 +1,28 @@
+WARNING: type 'FlowState' has been deprecated and may be removed in future (Auth0NoVerifier.ql:62,21-40)
+WARNING: type 'MethodAccess' has been deprecated and may be removed in future (Auth0NoVerifier.ql:33,28-40)
+WARNING: type 'MethodAccess' has been deprecated and may be removed in future (Auth0NoVerifier.ql:43,24-36)
+WARNING: type 'MethodAccess' has been deprecated and may be removed in future (Auth0NoVerifier.ql:53,24-36)
 edges
-| JwtNoVerifier.java:43:28:43:55 | getParameter(...) : String | JwtNoVerifier.java:44:39:44:47 | JwtToken2 : String |
-| JwtNoVerifier.java:44:39:44:47 | JwtToken2 : String | JwtNoVerifier.java:73:38:73:55 | token : String |
-| JwtNoVerifier.java:73:38:73:55 | token : String | JwtNoVerifier.java:74:37:74:41 | token : String |
-| JwtNoVerifier.java:74:26:74:42 | decode(...) : DecodedJWT | JwtNoVerifier.java:75:28:75:30 | jwt : DecodedJWT |
-| JwtNoVerifier.java:74:37:74:41 | token : String | JwtNoVerifier.java:74:26:74:42 | decode(...) : DecodedJWT |
-| JwtNoVerifier.java:75:16:75:31 | of(...) : Optional [<element>] : DecodedJWT | JwtNoVerifier.java:75:37:75:40 | item : DecodedJWT |
-| JwtNoVerifier.java:75:28:75:30 | jwt : DecodedJWT | JwtNoVerifier.java:75:16:75:31 | of(...) : Optional [<element>] : DecodedJWT |
-| JwtNoVerifier.java:75:37:75:40 | item : DecodedJWT | JwtNoVerifier.java:75:45:75:48 | item : DecodedJWT |
-| JwtNoVerifier.java:75:45:75:48 | item : DecodedJWT | JwtNoVerifier.java:75:45:75:69 | getClaim(...) |
+| JwtNoVerifier.java:42:28:42:55 | getParameter(...) : String | JwtNoVerifier.java:43:39:43:47 | JwtToken2 : String | provenance | Src:MaD:44684  |
+| JwtNoVerifier.java:43:39:43:47 | JwtToken2 : String | JwtNoVerifier.java:72:38:72:55 | token : String | provenance |  |
+| JwtNoVerifier.java:72:38:72:55 | token : String | JwtNoVerifier.java:73:37:73:41 | token : String | provenance |  |
+| JwtNoVerifier.java:73:26:73:42 | decode(...) : DecodedJWT | JwtNoVerifier.java:74:28:74:30 | jwt : DecodedJWT | provenance |  |
+| JwtNoVerifier.java:73:37:73:41 | token : String | JwtNoVerifier.java:73:26:73:42 | decode(...) : DecodedJWT | provenance | Config |
+| JwtNoVerifier.java:74:16:74:31 | of(...) : Optional [<element>] : DecodedJWT | JwtNoVerifier.java:74:37:74:40 | item : DecodedJWT | provenance | MaD:43977 |
+| JwtNoVerifier.java:74:28:74:30 | jwt : DecodedJWT | JwtNoVerifier.java:74:16:74:31 | of(...) : Optional [<element>] : DecodedJWT | provenance | MaD:43979 |
+| JwtNoVerifier.java:74:37:74:40 | item : DecodedJWT | JwtNoVerifier.java:74:45:74:48 | item : DecodedJWT | provenance |  |
+| JwtNoVerifier.java:74:45:74:48 | item : DecodedJWT | JwtNoVerifier.java:74:45:74:69 | getClaim(...) | provenance | Config |
 nodes
-| JwtNoVerifier.java:43:28:43:55 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JwtNoVerifier.java:44:39:44:47 | JwtToken2 : String | semmle.label | JwtToken2 : String |
-| JwtNoVerifier.java:73:38:73:55 | token : String | semmle.label | token : String |
-| JwtNoVerifier.java:74:26:74:42 | decode(...) : DecodedJWT | semmle.label | decode(...) : DecodedJWT |
-| JwtNoVerifier.java:74:37:74:41 | token : String | semmle.label | token : String |
-| JwtNoVerifier.java:75:16:75:31 | of(...) : Optional [<element>] : DecodedJWT | semmle.label | of(...) : Optional [<element>] : DecodedJWT |
-| JwtNoVerifier.java:75:28:75:30 | jwt : DecodedJWT | semmle.label | jwt : DecodedJWT |
-| JwtNoVerifier.java:75:37:75:40 | item : DecodedJWT | semmle.label | item : DecodedJWT |
-| JwtNoVerifier.java:75:45:75:48 | item : DecodedJWT | semmle.label | item : DecodedJWT |
-| JwtNoVerifier.java:75:45:75:69 | getClaim(...) | semmle.label | getClaim(...) |
+| JwtNoVerifier.java:42:28:42:55 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JwtNoVerifier.java:43:39:43:47 | JwtToken2 : String | semmle.label | JwtToken2 : String |
+| JwtNoVerifier.java:72:38:72:55 | token : String | semmle.label | token : String |
+| JwtNoVerifier.java:73:26:73:42 | decode(...) : DecodedJWT | semmle.label | decode(...) : DecodedJWT |
+| JwtNoVerifier.java:73:37:73:41 | token : String | semmle.label | token : String |
+| JwtNoVerifier.java:74:16:74:31 | of(...) : Optional [<element>] : DecodedJWT | semmle.label | of(...) : Optional [<element>] : DecodedJWT |
+| JwtNoVerifier.java:74:28:74:30 | jwt : DecodedJWT | semmle.label | jwt : DecodedJWT |
+| JwtNoVerifier.java:74:37:74:40 | item : DecodedJWT | semmle.label | item : DecodedJWT |
+| JwtNoVerifier.java:74:45:74:48 | item : DecodedJWT | semmle.label | item : DecodedJWT |
+| JwtNoVerifier.java:74:45:74:69 | getClaim(...) | semmle.label | getClaim(...) |
 subpaths
 #select
-| JwtNoVerifier.java:75:45:75:69 | getClaim(...) | JwtNoVerifier.java:43:28:43:55 | getParameter(...) : String | JwtNoVerifier.java:75:45:75:69 | getClaim(...) | This parses a $@, but the signature is not verified. | JwtNoVerifier.java:43:28:43:55 | getParameter(...) | JWT |
+| JwtNoVerifier.java:74:45:74:69 | getClaim(...) | JwtNoVerifier.java:42:28:42:55 | getParameter(...) : String | JwtNoVerifier.java:74:45:74:69 | getClaim(...) | This parses a $@, but the signature is not verified. | JwtNoVerifier.java:42:28:42:55 | getParameter(...) | JWT |
