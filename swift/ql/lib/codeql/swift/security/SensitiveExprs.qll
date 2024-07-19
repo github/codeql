@@ -65,8 +65,9 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
 
   override string getRegexp() {
     // we've had good results for the e-mail heuristic in Swift, which isn't part of the default regex. Add it in.
-    result = HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::private())
-      .replaceAll(".*(", ".*(e(mail|_mail)|")
+    result =
+      HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::private())
+          .replaceAll(".*(", ".*(e(mail|_mail)|")
   }
 }
 
