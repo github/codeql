@@ -156,11 +156,18 @@ private module Cached {
   }
 
   /**
+   * A sanitizer in all global taint flow configurations but not in local taint.
+   */
+  cached
+  abstract class DefaultTaintSanitizer extends DataFlow::Node { }
+
+  /**
    * Holds if `node` should be a sanitizer in all global taint flow configurations
    * but not in local taint.
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
