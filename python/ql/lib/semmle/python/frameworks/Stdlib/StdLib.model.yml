@@ -63,8 +63,6 @@ extensions:
       - ["logging.LogRecord", "Member[getMessage]", "Argument[self]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/mimetypes.html#mimetypes.guess_type
       - ["mimetypes", "Member[guess_type]", "Argument[0,url:]", "ReturnValue", "taint"]
-      # See https://docs.python.org/3/library/multiprocessing.html#multiprocessing.connection.Listener
-      - ["multiprocessing.connection.Listener!", "Subclass.Call", "Argument[3,authkey:]", "ReturnValue", "taint"]
       # See https://github.com/python/cpython/blob/main/Lib/nturl2path.py
       #   No user-facing documentation, unfortunately.
       - ["nturl2path", "Member[pathname2url]", "Argument[0,p:]", "ReturnValue", "taint"]
