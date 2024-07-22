@@ -30,8 +30,18 @@ predicate baseType(AllocationExpr alloc, Type base) {
 }
 
 predicate decideOnSize(Type t, int size) {
-  // If the codebase has more than one type with the same name, it can have more than one size.
+  // If the codebase has more than one type with the same name, it can have more than one size. For
+  // most purposes in this query, we use the smallest.
   size = min(t.getSize())
+}
+
+predicate mayHaveVarSize(Type t) {
+  // a member (normally at the end of the type) that looks like it may be intended have variable size.
+  exists(MemberVariable mv, ArrayType at |
+    mv.getDeclaringType() = t and
+    mv.getUnspecifiedType() = at and
+    not at.getArraySize() > 1
+  )
 }
 
 from AllocationExpr alloc, Type base, int basesize, int allocated
@@ -45,7 +55,8 @@ where
     size = 0 or
     (allocated / size) * size = allocated
   ) and
-  not basesize > allocated // covered by SizeCheck.ql
+  not basesize > allocated and // covered by SizeCheck.ql
+  not mayHaveVarSize(base.getUnspecifiedType()) // exclude variable size types
 select alloc,
   "Allocated memory (" + allocated.toString() + " bytes) is not a multiple of the size of '" +
     base.getName() + "' (" + basesize.toString() + " bytes)."

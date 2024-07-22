@@ -79,8 +79,8 @@ typedef struct _MyFixedStruct {
 } MyFixedStruct;
 
 void varStructTests() {
-    MyVarStruct1 *a = malloc(sizeof(MyVarStruct1) + 127); // GOOD [FALSE POSITIVE]
-    MyVarStruct2 *b = malloc(sizeof(MyVarStruct2) + 127); // GOOD [FALSE POSITIVE]
-    MyVarStruct3 *c = malloc(sizeof(MyVarStruct3) + 127); // GOOD [FALSE POSITIVE]
+    MyVarStruct1 *a = malloc(sizeof(MyVarStruct1) + 127); // GOOD
+    MyVarStruct2 *b = malloc(sizeof(MyVarStruct2) + 127); // GOOD
+    MyVarStruct3 *c = malloc(sizeof(MyVarStruct3) + 127); // GOOD
     MyFixedStruct *d = malloc(sizeof(MyFixedStruct) + 127); // BAD --- Not a multiple of sizeof(MyFixedStruct)
 }
