@@ -15,6 +15,7 @@
 
 import cpp
 import semmle.code.cpp.models.Models
+import semmle.code.cpp.commons.Buffer
 
 predicate baseType(AllocationExpr alloc, Type base) {
   exists(PointerType pointer |
@@ -35,15 +36,6 @@ predicate decideOnSize(Type t, int size) {
   size = min(t.getSize())
 }
 
-predicate mayHaveVarSize(Type t) {
-  // a member (normally at the end of the type) that looks like it may be intended have variable size.
-  exists(MemberVariable mv, ArrayType at |
-    mv.getDeclaringType() = t and
-    mv.getUnspecifiedType() = at and
-    not at.getArraySize() > 1
-  )
-}
-
 from AllocationExpr alloc, Type base, int basesize, int allocated
 where
   baseType(alloc, base) and
@@ -56,7 +48,7 @@ where
     (allocated / size) * size = allocated
   ) and
   not basesize > allocated and // covered by SizeCheck.ql
-  not mayHaveVarSize(base.getUnspecifiedType()) // exclude variable size types
+  not memberMayBeVarSize(base.getUnspecifiedType(), _) // exclude variable size types
 select alloc,
   "Allocated memory (" + allocated.toString() + " bytes) is not a multiple of the size of '" +
     base.getName() + "' (" + basesize.toString() + " bytes)."
