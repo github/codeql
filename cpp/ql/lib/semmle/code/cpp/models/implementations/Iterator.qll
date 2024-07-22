@@ -93,7 +93,7 @@ private class StdReverseIterator extends Iterator, Class {
 }
 
 private class StdIstreamBufIterator extends Iterator, Class {
-  StdIstreamBufIterator() { this.hasQualifiedName(["std", "bsl"], ["istreambuf_iterator"]) }
+  StdIstreamBufIterator() { this.hasQualifiedName(["std", "bsl"], "istreambuf_iterator") }
 
   override Type getValueType() { result = this.getTemplateArgument(1).(Type).getUnderlyingType() }
 }
