@@ -229,14 +229,14 @@ private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMem
 }
 
 /** A data flow source of remote user input (ASP.NET query collection). */
-class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFlow::ExprNode {
+class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFlow::Node {
   AspNetCoreQueryRemoteFlowSource() {
     exists(ValueOrRefType t |
       t instanceof MicrosoftAspNetCoreHttpHttpRequest or
       t instanceof MicrosoftAspNetCoreHttpQueryCollection or
       t instanceof MicrosoftAspNetCoreHttpQueryString
     |
-      this.getExpr().(Call).getTarget().getDeclaringType() = t or
+      this.asExpr().(Call).getTarget().getDeclaringType() = t or
       this.asExpr().(Access).getTarget().getDeclaringType() = t
     )
     or
@@ -245,7 +245,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
           .getDeclaringType()
           .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
       c.getTarget().getName() = "TryGetValue" and
-      this.asExpr() = c.getArgumentForName("value")
+      this.asDefinition().getTargetAccess() = c.getArgument(1)
     )
   }
 
