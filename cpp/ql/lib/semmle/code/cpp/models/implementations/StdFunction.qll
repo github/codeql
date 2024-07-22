@@ -1,5 +1,5 @@
 /**
- * Provides models for C++ containers `std::array`, `std::vector`, `std::deque`, `std::list` and `std::forward_list`.
+ * Provides models for C++ `std::function` class.
  */
 
 import semmle.code.cpp.models.interfaces.SideEffect

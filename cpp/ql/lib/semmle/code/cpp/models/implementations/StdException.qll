@@ -1,5 +1,5 @@
 /**
- * Provides models for the C++ `std::pair` class.
+ * Provides models for the C++ `std::exception` class and subclasses.
  */
 
 import semmle.code.cpp.models.interfaces.Taint
