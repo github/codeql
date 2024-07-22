@@ -175,7 +175,7 @@ template<typename F> F *test_template_platement_new() {
   char buffer[1024];
 
   try {
-    return new (buffer) F; // GOOD: `F` constructor might throw (when `F` is `Foo`) [FALSE POSITIVE]
+    return new (buffer) F; // GOOD: `F` constructor might throw (when `F` is `Bar`)
   } catch (...) {
     return 0;
   }
