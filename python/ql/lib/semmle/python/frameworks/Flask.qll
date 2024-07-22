@@ -627,7 +627,7 @@ module Flask {
           str.getText().toLowerCase() = "strict" and
           v instanceof Http::Server::CookieWrite::SameSiteStrict
           or
-          str.getText().toLowerCase() = "strict" and
+          str.getText().toLowerCase() = "lax" and
           v instanceof Http::Server::CookieWrite::SameSiteLax
           or
           str.getText().toLowerCase() = "none" and
