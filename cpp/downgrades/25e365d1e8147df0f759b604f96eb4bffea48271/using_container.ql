@@ -8,7 +8,7 @@ class Element extends @element {
 
 from UsingEntry u, Element parent, int kind
 where
-  usings(u, target, _, kind) and
+  usings(u, _, _, kind) and
   using_container(parent, u) and
   kind != 3
 select parent, u
