@@ -11,7 +11,7 @@
 ### New Features
 
 * Kotlin support is now out of beta, and generally available
-* Kotlin versions up to 2.0.2\ *x* are now supported.
+* Kotlin versions up to 2.0.2*x* are now supported.
 
 ### Minor Analysis Improvements
 
