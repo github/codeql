@@ -620,7 +620,7 @@ class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
 /**
  * Gets the overlap relationship between the definition location `def` and the use location `use`.
  */
-Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
+private Overlap getOverlapImpl(MemoryLocation def, MemoryLocation use) {
   exists(Overlap overlap |
     // Compute the overlap based only on the extent.
     overlap = getExtentOverlap(def, use) and
@@ -641,6 +641,25 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
         result instanceof MustTotallyOverlap
       else result = overlap
   )
+}
+
+/**
+ * Gets the overlap relationship between the definition location `def` and the use location `use`.
+ *
+ * If `def` overlaps with too many `use`s this predicate has no results for `def`.
+ */
+Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
+  not defHasTooManyUses(def) and
+  result = getOverlapImpl(def, use)
+}
+
+/**
+ * Holds if `def` has too many uses. When this predicate holds the enclosing
+ * function's `def/use` information will not propagate correctly and analysis
+ * result may be unsound.
+ */
+predicate defHasTooManyUses(MemoryLocation def) {
+  strictcount(MemoryLocation use_ | exists(getOverlapImpl(def, use_))) > 1024
 }
 
 /**

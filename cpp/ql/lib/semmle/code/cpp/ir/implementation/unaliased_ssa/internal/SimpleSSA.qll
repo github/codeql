@@ -131,6 +131,8 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   none() // Avoid compiler error in SSAConstruction
 }
 
+predicate defHasTooManyUses(MemoryLocation def) { none() }
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   result = getMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()))
 }
