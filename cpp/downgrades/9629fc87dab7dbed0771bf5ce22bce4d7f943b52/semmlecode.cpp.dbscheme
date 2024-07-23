@@ -1365,8 +1365,6 @@ funbind(
 @assign_expr = @assignexpr | @assign_op_expr | @blockassignexpr
 
 /*
-  Binary encoding of the allocator form.
-
   case @allocator.form of
     0 = plain
   | 1 = alignment
@@ -1385,13 +1383,11 @@ expr_allocator(
 );
 
 /*
-  Binary encoding of the deallocator form.
-
   case @deallocator.form of
     0 = plain
   | 1 = size
   | 2 = alignment
-  | 4 = destroying_delete
+  | 3 = size_and_alignment
   ;
 */
 
