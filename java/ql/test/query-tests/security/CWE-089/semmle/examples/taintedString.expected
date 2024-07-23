@@ -64,10 +64,37 @@
 | Test.java:213:22:213:32 | bindingVars | 8 | Test.java:221:81:221:102 | ... + ... |
 | Test.java:213:22:213:32 | bindingVars | 8 | Test.java:221:81:221:111 | ... + ... |
 | Test.java:213:22:213:32 | bindingVars | 8 | Test.java:221:95:221:102 | category |
-| Test.java:227:21:227:24 | main | 1 | Test.java:228:11:228:14 | args |
-| Test.java:227:21:227:24 | main | 3 | Test.java:230:8:230:11 | args |
-| Test.java:227:21:227:24 | main | 5 | Test.java:232:14:232:17 | args |
-| Test.java:227:21:227:24 | main | 6 | Test.java:233:15:233:18 | args |
+| Test.java:227:22:227:30 | allowlist | 1 | Test.java:228:20:228:23 | args |
+| Test.java:227:22:227:30 | allowlist | 1 | Test.java:228:20:228:26 | ...[...] |
+| Test.java:227:22:227:30 | allowlist | 6 | Test.java:233:26:233:32 | tainted |
+| Test.java:227:22:227:30 | allowlist | 15 | Test.java:242:61:242:64 | args |
+| Test.java:227:22:227:30 | allowlist | 15 | Test.java:242:61:242:67 | ...[...] |
+| Test.java:227:22:227:30 | allowlist | 16 | Test.java:243:7:243:15 | allowlist |
+| Test.java:227:22:227:30 | allowlist | 16 | Test.java:243:26:243:32 | tainted |
+| Test.java:227:22:227:30 | allowlist | 17 | Test.java:244:20:245:15 | ... + ... |
+| Test.java:227:22:227:30 | allowlist | 17 | Test.java:244:20:245:36 | ... + ... |
+| Test.java:227:22:227:30 | allowlist | 18 | Test.java:245:9:245:15 | tainted |
+| Test.java:227:22:227:30 | allowlist | 19 | Test.java:246:48:246:52 | query |
+| Test.java:227:22:227:30 | allowlist | 27 | Test.java:254:26:254:32 | tainted |
+| Test.java:227:22:227:30 | allowlist | 36 | Test.java:263:53:263:56 | args |
+| Test.java:227:22:227:30 | allowlist | 36 | Test.java:263:53:263:59 | ...[...] |
+| Test.java:227:22:227:30 | allowlist | 37 | Test.java:264:37:264:48 | allowedArray |
+| Test.java:227:22:227:30 | allowlist | 38 | Test.java:265:7:265:15 | allowlist |
+| Test.java:227:22:227:30 | allowlist | 38 | Test.java:265:26:265:32 | tainted |
+| Test.java:227:22:227:30 | allowlist | 39 | Test.java:266:20:267:15 | ... + ... |
+| Test.java:227:22:227:30 | allowlist | 39 | Test.java:266:20:267:36 | ... + ... |
+| Test.java:227:22:227:30 | allowlist | 40 | Test.java:267:9:267:15 | tainted |
+| Test.java:227:22:227:30 | allowlist | 41 | Test.java:268:48:268:52 | query |
+| Test.java:227:22:227:30 | allowlist | 51 | Test.java:278:26:278:32 | tainted |
+| Test.java:227:22:227:30 | allowlist | 52 | Test.java:279:20:280:15 | ... + ... |
+| Test.java:227:22:227:30 | allowlist | 52 | Test.java:279:20:280:36 | ... + ... |
+| Test.java:227:22:227:30 | allowlist | 53 | Test.java:280:9:280:15 | tainted |
+| Test.java:227:22:227:30 | allowlist | 54 | Test.java:281:48:281:52 | query |
+| Test.java:286:21:286:24 | main | 1 | Test.java:287:11:287:14 | args |
+| Test.java:286:21:286:24 | main | 3 | Test.java:289:8:289:11 | args |
+| Test.java:286:21:286:24 | main | 5 | Test.java:291:14:291:17 | args |
+| Test.java:286:21:286:24 | main | 6 | Test.java:292:15:292:18 | args |
+| Test.java:286:21:286:24 | main | 7 | Test.java:293:13:293:16 | args |
 | Validation.java:6:21:6:35 | checkIdentifier | 1 | Validation.java:7:23:7:24 | id |
 | Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:14 | id |
 | Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:24 | charAt(...) |

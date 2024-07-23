@@ -1,3 +1,8 @@
+| allowlist | 7 | Test.java:234:20:234:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 17 | Test.java:244:20:244:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 28 | Test.java:255:20:255:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 39 | Test.java:266:20:266:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 52 | Test.java:279:20:279:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
 | bindingVars | 5 | Test.java:218:20:218:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
 | bindingVars | 7 | Test.java:220:11:220:16 | prefix |
 | bindingVars | 8 | Test.java:221:34:221:39 | prefix |

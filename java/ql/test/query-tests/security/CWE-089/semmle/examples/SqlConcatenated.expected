@@ -10,3 +10,8 @@
 | Test.java:108:47:108:61 | querySbToString | Query built by concatenation with $@, which may be untrusted. | Test.java:104:19:104:30 | categoryName | this expression |
 | Test.java:118:47:118:62 | querySb2ToString | Query built by concatenation with $@, which may be untrusted. | Test.java:114:46:114:57 | categoryName | this expression |
 | Test.java:221:81:221:111 | ... + ... | Query built by concatenation with $@, which may be untrusted. | Test.java:221:95:221:102 | category | this expression |
+| Test.java:236:48:236:52 | query | Query built by concatenation with $@, which may be untrusted. | Test.java:235:9:235:15 | tainted | this expression |
+| Test.java:246:48:246:52 | query | Query built by concatenation with $@, which may be untrusted. | Test.java:245:9:245:15 | tainted | this expression |
+| Test.java:257:48:257:52 | query | Query built by concatenation with $@, which may be untrusted. | Test.java:256:9:256:15 | tainted | this expression |
+| Test.java:268:48:268:52 | query | Query built by concatenation with $@, which may be untrusted. | Test.java:267:9:267:15 | tainted | this expression |
+| Test.java:281:48:281:52 | query | Query built by concatenation with $@, which may be untrusted. | Test.java:280:9:280:15 | tainted | this expression |
