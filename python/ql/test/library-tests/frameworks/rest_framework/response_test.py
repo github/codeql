@@ -15,8 +15,8 @@ def plain_text_response(request): # $ requestHandler
     # this response is not the standard way to use the Djagno REST framework, but it
     # certainly is possible -- notice that the response contains double quotes
     data = 'this response will contain double quotes since it was a string'
-    resp = Response(data, None, None, None, None, "text/plain") # $ HttpResponse mimetype=text/plain responseBody=data
-    resp = Response(data=data, content_type="text/plain") # $ HttpResponse mimetype=text/plain responseBody=data
+    resp = Response(data, None, None, None, None, "text/plain") # $ HttpResponse
+    resp = Response(data=data, content_type="text/plain") # $ HttpResponse
     return resp
 
 ################################################################################
