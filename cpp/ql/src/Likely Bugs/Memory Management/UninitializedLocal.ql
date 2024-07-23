@@ -74,7 +74,8 @@ class MustFlow extends MustFlowConfiguration {
 
   override predicate isSource(Instruction source) {
     source instanceof UninitializedInstruction and
-    exists(Type t | t = source.getResultType() | not allocatedType(t))
+    exists(Type t | t = source.getResultType() | not allocatedType(t)) and
+    not source.hasIncompleteDefUse()
   }
 
   override predicate isSink(Operand sink) { isSinkImpl(sink.getDef(), _) }
