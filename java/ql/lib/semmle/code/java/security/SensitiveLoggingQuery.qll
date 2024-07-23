@@ -30,9 +30,7 @@ class CredentialExpr extends VarAccess {
 }
 
 class CredentialExprSource extends SensitiveLoggerSource {
-  CredentialExprSource(){
-    this.asExpr() instanceof CredentialExpr
-  }
+  CredentialExprSource() { this.asExpr() instanceof CredentialExpr }
 }
 
 /** An instantiation of a (reflexive, transitive) subtype of `java.lang.reflect.Type`. */
