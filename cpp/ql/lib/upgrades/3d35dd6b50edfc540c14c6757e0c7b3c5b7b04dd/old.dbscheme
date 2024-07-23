@@ -485,17 +485,10 @@ namespace_decls(
     int bodylocation: @location_default ref
 );
 
-case @using.kind of
-  1 = @using_declaration
-| 2 = @using_directive
-| 3 = @using_enum_declaration
-;
-
 usings(
     unique int id: @using,
     int element_id: @element ref,
-    int location: @location_default ref,
-    int kind: int ref
+    int location: @location_default ref
 );
 
 /** The element which contains the `using` declaration. */
