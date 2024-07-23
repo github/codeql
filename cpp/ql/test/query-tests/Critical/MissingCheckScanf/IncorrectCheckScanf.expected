@@ -5,3 +5,5 @@
 | test.cpp:443:11:443:15 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
 | test.cpp:501:13:501:17 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
 | test.cpp:512:13:512:17 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
+| test.cpp:525:10:525:15 | call to sscanf | The result of scanf is only checked against 0, but it can also return EOF. |
+| test.cpp:541:10:541:15 | call to sscanf | The result of scanf is only checked against 0, but it can also return EOF. |
