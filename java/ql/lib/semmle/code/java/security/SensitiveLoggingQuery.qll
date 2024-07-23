@@ -29,7 +29,7 @@ class CredentialExpr extends VarAccess {
   }
 }
 
-class CredentialExprSource extends SensitiveLoggerSource {
+private class CredentialExprSource extends SensitiveLoggerSource {
   CredentialExprSource() { this.asExpr() instanceof CredentialExpr }
 }
 
