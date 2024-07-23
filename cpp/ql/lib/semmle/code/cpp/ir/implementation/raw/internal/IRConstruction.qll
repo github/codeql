@@ -185,6 +185,8 @@ predicate hasInstruction(TStageInstruction instr) { any() }
 
 predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
+predicate hasIncompleteDefUse(Instruction func) { none() }
+
 predicate hasConflatedMemoryResult(Instruction instruction) {
   instruction instanceof AliasedDefinitionInstruction
   or

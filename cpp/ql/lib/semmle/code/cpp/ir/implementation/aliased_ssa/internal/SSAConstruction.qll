@@ -336,6 +336,14 @@ private module Cached {
     )
   }
 
+  cached
+  predicate hasIncompleteDefUse(Instruction instr) {
+    exists(Alias::MemoryLocation def |
+      instr = getDefinitionOrChiInstruction(_, _, def, _) and
+      Alias::defHasTooManyUses(def)
+    )
+  }
+
   /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
