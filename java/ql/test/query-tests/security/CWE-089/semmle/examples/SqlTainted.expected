@@ -14,9 +14,7 @@ edges
 | Test.java:60:29:60:46 | toString(...) : String | Test.java:62:47:62:61 | querySbToString | provenance |  Sink:MaD:43208 |
 | Test.java:183:33:183:45 | args : String[] | Test.java:209:47:209:68 | queryWithUserTableName | provenance |  Sink:MaD:43208 |
 | Test.java:213:34:213:46 | args : String[] | Test.java:221:81:221:111 | ... + ... | provenance |  Sink:MaD:43208 |
-| Test.java:227:32:227:44 | args : String[] | Test.java:236:48:236:52 | query | provenance |  Sink:MaD:43208 |
 | Test.java:227:32:227:44 | args : String[] | Test.java:246:48:246:52 | query | provenance |  Sink:MaD:43208 |
-| Test.java:227:32:227:44 | args : String[] | Test.java:257:48:257:52 | query | provenance |  Sink:MaD:43208 |
 | Test.java:227:32:227:44 | args : String[] | Test.java:268:48:268:52 | query | provenance |  Sink:MaD:43208 |
 | Test.java:227:32:227:44 | args : String[] | Test.java:281:48:281:52 | query | provenance |  Sink:MaD:43208 |
 | Test.java:286:26:286:38 | args : String[] | Test.java:287:11:287:14 | args : String[] | provenance |  |
@@ -48,9 +46,7 @@ nodes
 | Test.java:213:34:213:46 | args : String[] | semmle.label | args : String[] |
 | Test.java:221:81:221:111 | ... + ... | semmle.label | ... + ... |
 | Test.java:227:32:227:44 | args : String[] | semmle.label | args : String[] |
-| Test.java:236:48:236:52 | query | semmle.label | query |
 | Test.java:246:48:246:52 | query | semmle.label | query |
-| Test.java:257:48:257:52 | query | semmle.label | query |
 | Test.java:268:48:268:52 | query | semmle.label | query |
 | Test.java:281:48:281:52 | query | semmle.label | query |
 | Test.java:286:26:286:38 | args : String[] | semmle.label | args : String[] |
@@ -70,8 +66,6 @@ subpaths
 | Test.java:78:46:78:50 | query | Test.java:286:26:286:38 | args : String[] | Test.java:78:46:78:50 | query | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
 | Test.java:209:47:209:68 | queryWithUserTableName | Test.java:286:26:286:38 | args : String[] | Test.java:209:47:209:68 | queryWithUserTableName | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
 | Test.java:221:81:221:111 | ... + ... | Test.java:286:26:286:38 | args : String[] | Test.java:221:81:221:111 | ... + ... | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
-| Test.java:236:48:236:52 | query | Test.java:286:26:286:38 | args : String[] | Test.java:236:48:236:52 | query | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
 | Test.java:246:48:246:52 | query | Test.java:286:26:286:38 | args : String[] | Test.java:246:48:246:52 | query | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
-| Test.java:257:48:257:52 | query | Test.java:286:26:286:38 | args : String[] | Test.java:257:48:257:52 | query | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
 | Test.java:268:48:268:52 | query | Test.java:286:26:286:38 | args : String[] | Test.java:268:48:268:52 | query | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
 | Test.java:281:48:281:52 | query | Test.java:286:26:286:38 | args : String[] | Test.java:281:48:281:52 | query | This query depends on a $@. | Test.java:286:26:286:38 | args | user-provided value |
