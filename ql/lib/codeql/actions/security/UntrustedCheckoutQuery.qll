@@ -242,7 +242,7 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string line |
       this.getScript().splitAt("\n") = line and
-      line.regexpMatch(".*gh\\s+pr\\s+checkout.*") and
+      line.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(line) or containsPullRequestNumber(line))
         or
