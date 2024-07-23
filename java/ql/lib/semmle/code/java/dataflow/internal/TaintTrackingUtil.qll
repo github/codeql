@@ -694,8 +694,10 @@ abstract class ListOfConstantsComparison extends Guard {
     outcome = [true, false]
   }
 
+  /** Gets the expression that is compared to a list of constants. */
   Expr getExpr() { result = e }
 
+  /** Gets the value of `this` when `e` is in the list of constants. */
   boolean getOutcome() { result = outcome }
 }
 
