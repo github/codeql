@@ -28,6 +28,9 @@
 | test.cpp:199:10:199:12 | cpy |
 | test.cpp:213:7:213:7 | a |
 | test.cpp:219:7:219:7 | a |
+| test.cpp:228:14:228:18 | data1 |
+| test.cpp:236:14:236:18 | data1 |
+| test.cpp:237:14:237:18 | data2 |
 | test_free.cpp:11:10:11:10 | a |
 | test_free.cpp:14:10:14:10 | a |
 | test_free.cpp:16:10:16:10 | a |
