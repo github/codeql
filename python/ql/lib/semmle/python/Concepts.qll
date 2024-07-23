@@ -1254,13 +1254,13 @@ module Http {
           exists(this.getHeaderArg()) and
           (
             exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*secure;.*") and
+              sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
               b = true
             )
             or
             exists(StringLiteral sl |
-              not sl.getText().regexpMatch("(?i).*;\\s*secure;.*") and
+              not sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
               DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
               b = false
             )
@@ -1274,13 +1274,13 @@ module Http {
           exists(this.getHeaderArg()) and
           (
             exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*httponly;.*") and
+              sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
               b = true
             )
             or
             exists(StringLiteral sl |
-              not sl.getText().regexpMatch("(?i).*;\\s*httponly;.*") and
+              not sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
               DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
               b = false
             )
@@ -1294,25 +1294,25 @@ module Http {
           exists(this.getHeaderArg()) and
           (
             exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*samesite=strict;.*") and
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=strict(;.*|\\s*)") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
               v instanceof SameSiteStrict
             )
             or
             exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*samesite=lax;.*") and
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=lax(;.*|\\s*)") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
               v instanceof SameSiteLax
             )
             or
             exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*samesite=none;.*") and
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=none(;.*|\\s*)") and
               TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
               v instanceof SameSiteNone
             )
             or
             exists(StringLiteral sl |
-              not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none);.*") and
+              not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none)(;.*|\\s*)") and
               DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
               v instanceof SameSiteLax // Lax is the default
             )
