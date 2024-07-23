@@ -11,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -50,7 +50,7 @@ abstract class Test {
 			PreparedStatement statement = connection.prepareStatement(query3);
 			ResultSet results = statement.executeQuery();
 		}
-		// BAD: an injection using a StringBuilder instead of string append 
+		// BAD: an injection using a StringBuilder instead of string append
 		{
 			String category = args[1];
 			StringBuilder querySb = new StringBuilder();
@@ -88,7 +88,7 @@ abstract class Test {
 			ResultSet results = statement.executeQuery(query1);
 		}
 	}
-	
+
 	private static void unescaped() throws IOException, SQLException {
 		// BAD: the category might have SQL special characters in it
 		{
@@ -97,7 +97,7 @@ abstract class Test {
 					+ categoryName + "' ORDER BY PRICE";
 			ResultSet results = statement.executeQuery(queryFromField);
 		}
-		// BAD: unescaped code using a StringBuilder 
+		// BAD: unescaped code using a StringBuilder
 		{
 			StringBuilder querySb = new StringBuilder();
 			querySb.append("SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='");
@@ -107,7 +107,7 @@ abstract class Test {
 			Statement statement = connection.createStatement();
 			ResultSet results = statement.executeQuery(querySbToString);
 		}
-		// BAD: a StringBuilder with appends of + operations 
+		// BAD: a StringBuilder with appends of + operations
 		{
 			StringBuilder querySb2 = new StringBuilder();
 			querySb2.append("SELECT ITEM,PRICE FROM PRODUCT ");
@@ -118,7 +118,7 @@ abstract class Test {
 			ResultSet results = statement.executeQuery(querySb2ToString);
 		}
 	}
-	
+
 	private static void good(String[] args) throws IOException, SQLException {
 		// GOOD: use a prepared query
 		{
@@ -127,9 +127,9 @@ abstract class Test {
 			PreparedStatement statement = connection.prepareStatement(query2);
 			statement.setString(1, category);
 			ResultSet results = statement.executeQuery();
-		}		
+		}
 	}
-	
+
 	private static void controlledStrings()  throws IOException, SQLException {
 		// GOOD: integers cannot have special characters in them
 		{
@@ -179,7 +179,7 @@ abstract class Test {
 			ResultSet results = statement.executeQuery(queryWithDoubleToString);
 		}
 	}
-	
+
 	private static void tableNames(String[] args) throws IOException, SQLException {
 		// GOOD: table names cannot be replaced by a wildcard
 		{
@@ -224,6 +224,65 @@ abstract class Test {
 		}
 	}
 
+	private static void allowlist(String[] args) throws IOException, SQLException {
+		String tainted = args[1];
+		// GOOD: an allowlist is used with constant strings
+		{
+			Statement statement = connection.createStatement();
+			List<String> allowlist = List.of("allowed1", "allowed2", "allowed3");
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = statement.executeQuery(query);
+			}
+		}
+		// BAD: an allowlist is used but one of the entries is not a compile-time constant
+		{
+			Statement statement = connection.createStatement();
+			List<String> allowlist = List.of("allowed1", "allowed2", args[2]);
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = statement.executeQuery(query);
+			}
+		}
+		// GOOD: an allowlist is used with constant strings
+		{
+			Statement statement = connection.createStatement();
+			String[] allowedArray = {"allowed1", "allowed2", "allowed3"};
+			List<String> allowlist = List.of(allowedArray);
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = statement.executeQuery(query);
+			}
+		}
+		// BAD: an allowlist is used but one of the entries is not a compile-time constant
+		{
+			Statement statement = connection.createStatement();
+			String[] allowedArray = {"allowed1", "allowed2", args[2]};
+			List<String> allowlist = List.of(allowedArray);
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = statement.executeQuery(query);
+			}
+		}
+		// GOOD: an allowlist is used with constant string, but we currently miss this case
+		{
+			Statement statement = connection.createStatement();
+			List<String> allowlist = new ArrayList<String>();
+			allowlist.add("allowed1");
+			allowlist.add("allowed2");
+			allowlist.add("allowed3");
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = statement.executeQuery(query);
+			}
+		}
+	}
+
 	public static void main(String[] args) throws IOException, SQLException {
 		tainted(args);
 		unescaped();
@@ -231,6 +290,6 @@ abstract class Test {
 		controlledStrings();
 		tableNames(args);
 		bindingVars(args);
+		allowlist(args);
 	}
 }
-
