@@ -498,7 +498,7 @@ void multiple_checks() {
 
 	{
 		int i;
-		int res = scanf("%d", &i); // [FALSE POSITIVE]
+		int res = scanf("%d", &i);
 
 		if (res >= 1) {
 			if (res != 0) {
@@ -509,7 +509,7 @@ void multiple_checks() {
 
 	{
 		int i;
-		int res = scanf("%d", &i); // [FALSE POSITIVE]
+		int res = scanf("%d", &i);
 
 		if (res == 1) {
 			if (res != 0) {
@@ -522,7 +522,7 @@ void multiple_checks() {
 void switch_cases(const char *data) {
 	float a, b, c;
 
-	switch (sscanf(data, "%f %f %f", &a, &b, &c)) { // [FALSE POSITIVE]
+	switch (sscanf(data, "%f %f %f", &a, &b, &c)) {
 		case 2:
 			use(a); // GOOD
 			use(b); // GOOD
@@ -538,7 +538,7 @@ void switch_cases(const char *data) {
 
 	float d, e, f;
 
-	switch (sscanf(data, "%f %f %f", &d, &e, &f)) { // [REPORTED HERE]
+	switch (sscanf(data, "%f %f %f", &d, &e, &f)) {
 		case 2:
 			use(d); // GOOD
 			use(e); // GOOD
