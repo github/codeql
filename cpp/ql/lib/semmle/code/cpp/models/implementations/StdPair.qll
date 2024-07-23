@@ -77,7 +77,14 @@ private class StdPairConstructor extends Constructor, TaintFunction, AliasFuncti
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    i = [0, 1] and buffer = false
+    // All the constructor parameters are references with the exception of this one:
+    // ```
+    // template<class... Args1, class... Args2>
+    // pair(std::piecewise_construct_t, std::tuple<Args1...> first_args, std::tuple<Args2...> second_args);
+    // ```
+    // So we need to check that the parameters are actually references
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
   }
 }
 
