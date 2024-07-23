@@ -66,7 +66,7 @@ deprecated class SensitiveLoggerConfiguration extends TaintTracking::Configurati
 
 /** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
 module SensitiveLoggerConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { sourc instanceof SensitiveLoggerSource }
+  predicate isSource(DataFlow::Node source) { source instanceof SensitiveLoggerSource }
 
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "log-injection") }
 
