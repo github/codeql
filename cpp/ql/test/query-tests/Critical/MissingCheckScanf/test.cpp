@@ -473,3 +473,48 @@ void check_for_negative_test() {
 	}
 	use(value);
 }
+
+void multiple_checks() {
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 0) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value [FALSE POSITIVE]
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res < 0) return;
+		if (res != 0) {
+			use(i); // GOOD: checks return value [FALSE POSITIVE]
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i); // [FALSE POSITIVE]
+
+		if (res >= 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i); // [FALSE POSITIVE]
+
+		if (res == 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+}
