@@ -38,7 +38,7 @@ predicate hasAlert(Http::Server::CookieWrite cookie, string alert) {
     or
     numProblems = 2 and
     alert =
-      strictconcat(string prob, int idx | hasProblem(cookie, prob, idx) | " and ", prob order by idx)
+      strictconcat(string prob, int idx | hasProblem(cookie, prob, idx) | prob, " and " order by idx)
         + " attributes"
     or
     numProblems = 3 and
