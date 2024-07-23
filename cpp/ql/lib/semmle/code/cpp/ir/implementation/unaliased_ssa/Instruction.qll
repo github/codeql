@@ -290,6 +290,14 @@ class Instruction extends Construction::TStageInstruction {
   final predicate isGLValue() { this.getResultLanguageType().hasType(_, true) }
 
   /**
+   * Holds if this instruction defines a memory location that overlaps with too
+   * many uses of other memory locations, and therefore has been excluded from
+   * the IR def-use chain analysis. As a result, not all uses of the memory
+   * location defined by this instruction may be available.
+   */
+  final predicate hasIncompleteDefUse() { Construction::hasIncompleteDefUse(this) }
+
+  /**
    * Gets the size of the result produced by this instruction, in bytes. If the
    * result does not have a known constant size, this predicate does not hold.
    *
