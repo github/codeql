@@ -933,11 +933,15 @@ module DefUse {
   bindingset[index, block]
   pragma[inline_late]
   private int getNonChiOffset(int index, OldBlock block) {
-    exists(IRFunction func | func = block.getEnclosingIRFunction() |
+    exists(OldIR::IRFunction func, Instruction i, OldBlock entryBlock |
+      func = block.getEnclosingIRFunction() and
+      i = block.getInstruction(index) and
+      entryBlock = func.getEntryBlock()
+    |
       if
-        getNewBlock(block) = func.getEntryBlock() and
-        not block.getInstruction(index) instanceof InitializeNonLocalInstruction and
-        not block.getInstruction(index) instanceof AliasedDefinitionInstruction
+        block = entryBlock and
+        not i instanceof InitializeNonLocalInstruction and
+        not i instanceof AliasedDefinitionInstruction
       then result = 2 * (index + count(VariableGroup vg | vg.getIRFunction() = func))
       else result = 2 * index
     )
