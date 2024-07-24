@@ -232,6 +232,7 @@ predicate nullCheckInThrowingNew(NewOrNewArrayExpr newExpr, GuardCondition guard
 from NewOrNewArrayExpr newExpr, Element element, string msg, string elementString
 where
   not newExpr.isFromUninstantiatedTemplate(_) and
+  not newExpr.isFromTemplateInstantiation(_) and
   (
     noThrowInTryBlock(newExpr, element) and
     msg = "This allocation cannot throw. $@ is unnecessary." and
