@@ -224,7 +224,11 @@ private class StdStringPlus extends StdStringTaintFunction, SideEffectFunction, 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    i = [0, 1] and buffer = false
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
+    or
+    this.getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = true
   }
 
   override predicate parameterNeverEscapes(int index) { index = [0, 1] }
