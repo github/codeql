@@ -927,6 +927,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
        * candidate for the origin of a summary.
        */
       pragma[nomagic]
+      pragma[no_dynamic_join_order]
       predicate parameterMayFlowThrough(ParamNodeEx p, Ap ap) {
         exists(DataFlowCallable c, ReturnKindExt kind |
           throughFlowNodeCand(p) and
