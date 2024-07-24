@@ -133,4 +133,4 @@ _config = {"sleep_timer": 5, "mysql_password": password}
 
 # since we have taint-step from store of `password`, we will consider any item in the
 # dictionary to be a password :(
-print(_config["sleep_timer"]) # $ SPURIOUS: SensitiveUse=password
+print(_config["sleep_timer"])

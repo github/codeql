@@ -22,9 +22,9 @@ def test_construction():
     ensure_tainted(
         tainted_string, # $ tainted
         tainted_list, # $ tainted
-        tainted_tuple, # $ tainted
+        tainted_tuple[0], # $ tainted
         tainted_set, # $ tainted
-        tainted_dict, # $ tainted
+        tainted_dict["key"], # $ tainted
     )
 
     ensure_tainted(
@@ -37,13 +37,22 @@ def test_construction():
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted
         frozenset(tainted_list), # $ tainted
-        dict(tainted_dict), # $ tainted
+        dict(tainted_dict)["key"], # $ tainted
         dict(k = tainted_string)["k"], # $ tainted
         dict(dict(k = tainted_string))["k"], # $ tainted
         dict(["k", tainted_string]), # $ tainted
     )
 
     ensure_not_tainted(
+        tainted_tuple,
+        tainted_tuple[1],
+
+        tainted_dict,
+        tainted_dict["different_key"],
+        
+        dict(tainted_dict),
+        dict(tainted_dict)["different_key"],
+        
         dict(k = tainted_string)["k1"]
     )
 
