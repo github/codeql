@@ -11,6 +11,7 @@ private import Node0ToString
 private import ModelUtil
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
 private import semmle.code.cpp.models.interfaces.DataFlow as DF
+private import semmle.code.cpp.dataflow.ExternalFlow as External
 
 cached
 private module Cached {
@@ -1333,9 +1334,9 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
-predicate knownSourceModel(Node source, string model) { none() }
+predicate knownSourceModel(Node source, string model) { External::sourceNode(source, _, model) }
 
-predicate knownSinkModel(Node sink, string model) { none() }
+predicate knownSinkModel(Node sink, string model) { External::sinkNode(sink, _, model) }
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

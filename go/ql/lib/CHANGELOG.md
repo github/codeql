@@ -1,3 +1,9 @@
+## 1.1.3
+
+### Minor Analysis Improvements
+
+* There was a bug which meant that the built-in function `clear` was considered as a sanitizer in some cases when it shouldn't have been. This has now been fixed, which may lead to more alerts.
+
 ## 1.1.2
 
 ### Minor Analysis Improvements

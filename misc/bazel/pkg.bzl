@@ -140,6 +140,16 @@ def _zipmerge_impl(ctx):
         executable = ctx.executable._zipmerge,
         inputs = depset(zips, transitive = transitive_zips),
         arguments = args,
+        # Disable remote caching for zipmerge:
+        # * One of the inputs to zipmerge (often the larger one) comes from a lazy-lfs rule.
+        #   Those are retrieved by bazel even in the presence of a build cache, so downloading the whole zipmerged
+        #   artifact is slower than downloading the smaller bazel-produced zip and rerunning zipmerge on that
+        #   and the (already-present) LFS artifact.
+        # * This prevents unnecessary cache usage - every change to the Swift extractor would otherwise
+        #   trigger a build of a >500MB zip file that'd quickly fill up the cache.
+        execution_requirements = {
+            "no-remote-cache": "1",
+        },
     )
 
     return [
