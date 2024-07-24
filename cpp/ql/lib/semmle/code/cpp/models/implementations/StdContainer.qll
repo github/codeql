@@ -92,7 +92,11 @@ class StdSequenceContainerPush extends MemberFunction, SideEffectFunction, Alias
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    i = 0 and buffer = false
+    // the `std::vector<bool>` specialization doesn't take a reference as a
+    // parameter. So we need to check that the parameter is actually a
+    // reference.
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
   }
 }
 
@@ -471,8 +475,6 @@ private class InitializerListConstructor extends Constructor, SideEffectFunction
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = -1 and buffer = false and mustWrite = true
   }
-
-  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) { none() }
 }
 
 /**
