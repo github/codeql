@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      # Note these sinks do not use the sink kind `regex-use[0]` because they should be considered as sinks for regex injection but not polynomial ReDoS.
       - ["org.apache.commons.lang3", "RegExUtils", False, "removeAll", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "removeFirst", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "removePattern", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
