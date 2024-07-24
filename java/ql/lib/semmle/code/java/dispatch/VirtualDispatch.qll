@@ -120,6 +120,7 @@ private module Dispatch {
    * Gets a viable implementation of the method called in the given method access.
    */
   cached
+  pragma[no_dynamic_join_order]
   Method viableImpl_v2(MethodCall ma) {
     result = viableImpl_v2_cand(pragma[only_bind_into](ma)) and
     exists(Method def, RefType t, boolean exact |
