@@ -16,5 +16,5 @@ def good2():
 
 @app.route("/bad1")
     resp = make_response()
-    resp.set_cookie("name", value="value", samesite='None') # BAD: the SameSite attribute is set to 'None'; and the 'Secure' and 'HttpOnly' attributes are set to False by default.
+    resp.set_cookie("name", value="value", samesite='None') # BAD: the SameSite attribute is set to 'None' and the 'Secure' and 'HttpOnly' attributes are set to False by default.
     return resp
