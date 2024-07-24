@@ -16,6 +16,7 @@ extensions:
     # source: https://boostsecurityio.github.io/lotp/
     data:
       - ["ant"]
+      - ["asv"]
       - ["awk\\s+-f"]
       - ["bundle"]
       - ["cargo"]
