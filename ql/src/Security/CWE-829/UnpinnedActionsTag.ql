@@ -3,7 +3,7 @@
  * @description Using a tag for a 3rd party Action that is not pinned to a commit can lead to executing an untrusted Action through a supply chain attack.
  * @kind problem
  * @security-severity 5.0
- * @problem.severity warning
+ * @problem.severity recommendation
  * @precision high
  * @id actions/unpinned-tag
  * @tags security

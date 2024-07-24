@@ -3,7 +3,7 @@
  * @description Workflows should contain permissions to provide a clear understanding has permissions to run the workflow.
  * @kind problem
  * @security-severity 5.0
- * @problem.severity warning
+ * @problem.severity recommendation
  * @precision high
  * @id actions/missing-workflow-permissions
  * @tags actions
