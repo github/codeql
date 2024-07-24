@@ -49,7 +49,7 @@ class Test extends HttpServlet {
 		try {
 			doSomeWork();
 		} catch (Throwable ex) {
-			// BAD: printing an exception message back to the response
+			// BAD: Exception message seldom contains stack traces so wont trigger that query, but will trigger exposing sensitive information query
 			response.sendError(
 				HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 				ex.getMessage());
