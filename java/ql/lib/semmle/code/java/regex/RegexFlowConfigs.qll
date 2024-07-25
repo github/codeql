@@ -20,8 +20,10 @@ private class ExploitableStringLiteral extends StringLiteral {
  * if no such argument exists.
  *
  * Note that `regex-use` is deliberately not a possible value for `kind` here,
- * as it is used for regular expression injection sinks that should not be used
- * as polynomial ReDoS sinks.
+ * as it is used for regular expression injection sinks that need to be selected
+ * separately from existing `regex-use[0]` sinks.
+ * TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query
+ * can also use the `regex-use` sinks.
  */
 private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
   sinkModel(_, _, _, _, _, _, _, kind, _, _) and
