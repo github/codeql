@@ -534,7 +534,7 @@ newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
-  string toString() { result = "DataFlowType" }
+  string toString() { result = "" }
 }
 
 /** A node that performs a type cast. */
@@ -577,9 +577,6 @@ DataFlowType getNodeType(Node node) {
   result = TAnyFlow() and
   exists(node)
 }
-
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { none() }
 
 //--------
 // Extra flow
