@@ -17,11 +17,12 @@ with open(ca_cert_file, 'rb') as f:
     cert_pem = f.read().decode('ascii')
 
 # This starts an HTTP proxy server on http://localhost:9430
+environment = os.environ.copy()
+environment["PROXY_USER"] = "proxy"
+environment["PROXY_PASSWORD"] = "password"
+
 proxy_server_process = subprocess.Popen(
-    [sys.executable, mitm_proxy.__file__, "9430", "certs/ca-cert.pem", "certs/ca-key.pem"], env={
-        "PROXY_USER": "proxy",
-        "PROXY_PASSWORD": "password"
-    })
+    [sys.executable, mitm_proxy.__file__, "9430", "certs/ca-cert.pem", "certs/ca-key.pem"], env=environment)
 
 try:
     run_codeql_database_create([], lang="java", extra_env={
