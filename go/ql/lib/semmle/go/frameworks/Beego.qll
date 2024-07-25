@@ -33,13 +33,6 @@ module Beego {
     result = package(v2modulePath(), "server/web/context")
   }
 
-  /** Gets the path for the logs package of beego. */
-  string logsPackagePath() {
-    result = package(v1modulePath(), "logs")
-    or
-    result = package(v2modulePath(), "core/logs")
-  }
-
   /** Gets the path for the utils package of beego. */
   string utilsPackagePath() {
     result = package(v1modulePath(), "utils")
@@ -170,36 +163,6 @@ module Beego {
     // because there are better methods to do this. Assume the Content-Type could
     // be anything.
     override string getAContentType() { none() }
-  }
-
-  private string getALogFunctionName() {
-    result =
-      [
-        "Alert", "Critical", "Debug", "Emergency", "Error", "Info", "Informational", "Notice",
-        "Trace", "Warn", "Warning"
-      ]
-  }
-
-  private class ToplevelBeegoLoggers extends LoggerCall::Range, DataFlow::CallNode {
-    ToplevelBeegoLoggers() {
-      this.getTarget().hasQualifiedName([packagePath(), logsPackagePath()], getALogFunctionName())
-    }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
-  private class BeegoLoggerMethods extends LoggerCall::Range, DataFlow::MethodCallNode {
-    BeegoLoggerMethods() {
-      this.getTarget().hasQualifiedName(logsPackagePath(), "BeeLogger", getALogFunctionName())
-    }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
-  private class UtilLoggers extends LoggerCall::Range, DataFlow::CallNode {
-    UtilLoggers() { this.getTarget().hasQualifiedName(utilsPackagePath(), "Display") }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {

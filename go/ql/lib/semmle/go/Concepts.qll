@@ -373,6 +373,23 @@ module LoggerCall {
   }
 }
 
+private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode messageComponent;
+
+  DefaultLoggerCall() {
+    sinkNode(messageComponent, "log-injection") and
+    this = messageComponent.getCall()
+  }
+
+  override DataFlow::Node getAMessageComponent() {
+    not messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = messageComponent
+    or
+    messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
+  }
+}
+
 /**
  * A function that encodes data into a binary or textual format.
  *
