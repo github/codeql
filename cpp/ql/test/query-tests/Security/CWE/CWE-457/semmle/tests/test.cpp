@@ -591,5 +591,5 @@ void test47() {
 	float y = 2.0f;
 	int quo;
 	std::remquo(x, y, &quo);
-	use(quo); // GOOD [FALSE POSITIVE]
+	use(quo); // GOOD
 }
