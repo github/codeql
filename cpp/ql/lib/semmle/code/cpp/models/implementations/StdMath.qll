@@ -101,4 +101,8 @@ private class Nan extends Function, SideEffectFunction, AliasFunction {
   override predicate parameterNeverEscapes(int index) { index = 0 }
 
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = true
+  }
 }
