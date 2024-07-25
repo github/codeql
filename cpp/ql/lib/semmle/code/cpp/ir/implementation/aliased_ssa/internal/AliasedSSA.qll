@@ -227,7 +227,7 @@ private newtype TMemoryLocation =
   TAllAliasedMemory(IRFunction irFunc, Boolean isMayAccess)
 
 /**
- * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * A memory location accessed by a memory operand or memory result. In this implementation, the location is
  * one of the following:
  * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
  * unknown.
@@ -885,7 +885,7 @@ private predicate useOverlapWithBusyDef(MemoryLocation0 use) {
 final private class FinalMemoryLocation = MemoryLocation0;
 
 /**
- * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * A memory location accessed by a memory operand or memory result. In this implementation, the location is
  * one of the following:
  * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
  * unknown.
