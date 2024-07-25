@@ -564,5 +564,20 @@ void test45() {
   }
 
   *rP = NULL;
-  use(r); // GOOD [FALSE POSITIVE]
+  use(r); // GOOD
+}
+
+void test46()
+{
+  LinkedList *r, **rP = &r;
+
+  while (getBool())
+  {
+    LinkedList *s = nullptr;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = nullptr;
+  use(r);
 }

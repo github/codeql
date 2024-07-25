@@ -22649,6 +22649,616 @@ ir.cpp:
 # 2556|                 Type = [LongType] unsigned long
 # 2556|                 ValueCategory = prvalue(load)
 # 2557|     getStmt(1): [ReturnStmt] return ...
+# 2559| [TopLevelFunction] void p_points_to_x_or_y(int, int)
+# 2559|   <params>: 
+# 2559|     getParameter(0): [Parameter] a
+# 2559|         Type = [IntType] int
+# 2559|     getParameter(1): [Parameter] b
+# 2559|         Type = [IntType] int
+# 2559|   getEntryPoint(): [BlockStmt] { ... }
+# 2560|     getStmt(0): [DeclStmt] declaration
+# 2560|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2560|           Type = [IntType] int
+# 2561|     getStmt(1): [DeclStmt] declaration
+# 2561|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2561|           Type = [IntType] int
+# 2562|     getStmt(2): [DeclStmt] declaration
+# 2562|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p
+# 2562|           Type = [IntPointerType] int *
+# 2563|     getStmt(3): [IfStmt] if (...) ... 
+# 2563|       getCondition(): [LTExpr] ... < ...
+# 2563|           Type = [BoolType] bool
+# 2563|           ValueCategory = prvalue
+# 2563|         getLesserOperand(): [VariableAccess] a
+# 2563|             Type = [IntType] int
+# 2563|             ValueCategory = prvalue(load)
+# 2563|         getGreaterOperand(): [VariableAccess] b
+# 2563|             Type = [IntType] int
+# 2563|             ValueCategory = prvalue(load)
+# 2563|       getThen(): [BlockStmt] { ... }
+# 2564|         getStmt(0): [ExprStmt] ExprStmt
+# 2564|           getExpr(): [AssignExpr] ... = ...
+# 2564|               Type = [IntPointerType] int *
+# 2564|               ValueCategory = lvalue
+# 2564|             getLValue(): [VariableAccess] p
+# 2564|                 Type = [IntPointerType] int *
+# 2564|                 ValueCategory = lvalue
+# 2564|             getRValue(): [AddressOfExpr] & ...
+# 2564|                 Type = [IntPointerType] int *
+# 2564|                 ValueCategory = prvalue
+# 2564|               getOperand(): [VariableAccess] x
+# 2564|                   Type = [IntType] int
+# 2564|                   ValueCategory = lvalue
+# 2565|       getElse(): [BlockStmt] { ... }
+# 2566|         getStmt(0): [ExprStmt] ExprStmt
+# 2566|           getExpr(): [AssignExpr] ... = ...
+# 2566|               Type = [IntPointerType] int *
+# 2566|               ValueCategory = lvalue
+# 2566|             getLValue(): [VariableAccess] p
+# 2566|                 Type = [IntPointerType] int *
+# 2566|                 ValueCategory = lvalue
+# 2566|             getRValue(): [AddressOfExpr] & ...
+# 2566|                 Type = [IntPointerType] int *
+# 2566|                 ValueCategory = prvalue
+# 2566|               getOperand(): [VariableAccess] y
+# 2566|                   Type = [IntType] int
+# 2566|                   ValueCategory = lvalue
+# 2568|     getStmt(4): [ExprStmt] ExprStmt
+# 2568|       getExpr(): [AssignExpr] ... = ...
+# 2568|           Type = [IntType] int
+# 2568|           ValueCategory = lvalue
+# 2568|         getLValue(): [PointerDereferenceExpr] * ...
+# 2568|             Type = [IntType] int
+# 2568|             ValueCategory = lvalue
+# 2568|           getOperand(): [VariableAccess] p
+# 2568|               Type = [IntPointerType] int *
+# 2568|               ValueCategory = prvalue(load)
+# 2568|         getRValue(): [Literal] 5
+# 2568|             Type = [IntType] int
+# 2568|             Value = [Literal] 5
+# 2568|             ValueCategory = prvalue
+# 2569|     getStmt(5): [DeclStmt] declaration
+# 2569|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 2569|           Type = [IntType] int
+# 2569|         getVariable().getInitializer(): [Initializer] initializer for z
+# 2569|           getExpr(): [VariableAccess] x
+# 2569|               Type = [IntType] int
+# 2569|               ValueCategory = prvalue(load)
+# 2570|     getStmt(6): [DeclStmt] declaration
+# 2570|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 2570|           Type = [IntType] int
+# 2570|         getVariable().getInitializer(): [Initializer] initializer for w
+# 2570|           getExpr(): [VariableAccess] y
+# 2570|               Type = [IntType] int
+# 2570|               ValueCategory = prvalue(load)
+# 2571|     getStmt(7): [ReturnStmt] return ...
+# 2573| [TopLevelFunction] int phi_after_while()
+# 2573|   <params>: 
+# 2573|   getEntryPoint(): [BlockStmt] { ... }
+# 2574|     getStmt(0): [DeclStmt] declaration
+# 2574|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+# 2574|           Type = [IntType] int
+# 2575|     getStmt(1): [DeclStmt] declaration
+# 2575|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rP
+# 2575|           Type = [IntPointerType] int *
+# 2575|         getVariable().getInitializer(): [Initializer] initializer for rP
+# 2575|           getExpr(): [AddressOfExpr] & ...
+# 2575|               Type = [IntPointerType] int *
+# 2575|               ValueCategory = prvalue
+# 2575|             getOperand(): [VariableAccess] r
+# 2575|                 Type = [IntType] int
+# 2575|                 ValueCategory = lvalue
+# 2577|     getStmt(2): [WhileStmt] while (...) ...
+# 2577|       getCondition(): [FunctionCall] call to predicateA
+# 2577|           Type = [BoolType] bool
+# 2577|           ValueCategory = prvalue
+# 2577|       getStmt(): [BlockStmt] { ... }
+# 2578|         getStmt(0): [DeclStmt] declaration
+# 2578|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2578|               Type = [IntType] int
+# 2578|             getVariable().getInitializer(): [Initializer] initializer for s
+# 2578|               getExpr(): [Literal] 0
+# 2578|                   Type = [IntType] int
+# 2578|                   Value = [Literal] 0
+# 2578|                   ValueCategory = prvalue
+# 2579|         getStmt(1): [ExprStmt] ExprStmt
+# 2579|           getExpr(): [AssignExpr] ... = ...
+# 2579|               Type = [IntType] int
+# 2579|               ValueCategory = lvalue
+# 2579|             getLValue(): [PointerDereferenceExpr] * ...
+# 2579|                 Type = [IntType] int
+# 2579|                 ValueCategory = lvalue
+# 2579|               getOperand(): [VariableAccess] rP
+# 2579|                   Type = [IntPointerType] int *
+# 2579|                   ValueCategory = prvalue(load)
+# 2579|             getRValue(): [VariableAccess] s
+# 2579|                 Type = [IntType] int
+# 2579|                 ValueCategory = prvalue(load)
+# 2580|         getStmt(2): [ExprStmt] ExprStmt
+# 2580|           getExpr(): [AssignExpr] ... = ...
+# 2580|               Type = [IntPointerType] int *
+# 2580|               ValueCategory = lvalue
+# 2580|             getLValue(): [VariableAccess] rP
+# 2580|                 Type = [IntPointerType] int *
+# 2580|                 ValueCategory = lvalue
+# 2580|             getRValue(): [AddressOfExpr] & ...
+# 2580|                 Type = [IntPointerType] int *
+# 2580|                 ValueCategory = prvalue
+# 2580|               getOperand(): [VariableAccess] s
+# 2580|                   Type = [IntType] int
+# 2580|                   ValueCategory = lvalue
+# 2583|     getStmt(3): [ReturnStmt] return ...
+# 2583|       getExpr(): [VariableAccess] r
+# 2583|           Type = [IntType] int
+# 2583|           ValueCategory = prvalue(load)
+# 2588| [TopLevelFunction] char* recursive_conditional_call_with_increment(char*, bool)
+# 2588|   <params>: 
+# 2588|     getParameter(0): [Parameter] d
+# 2588|         Type = [CharPointerType] char *
+# 2588|     getParameter(1): [Parameter] b
+# 2588|         Type = [BoolType] bool
+# 2589|   getEntryPoint(): [BlockStmt] { ... }
+# 2590|     getStmt(0): [IfStmt] if (...) ... 
+# 2590|       getCondition(): [VariableAccess] b
+# 2590|           Type = [BoolType] bool
+# 2590|           ValueCategory = prvalue(load)
+# 2590|       getThen(): [BlockStmt] { ... }
+# 2591|         getStmt(0): [ExprStmt] ExprStmt
+# 2591|           getExpr(): [AssignExpr] ... = ...
+# 2591|               Type = [CharPointerType] char *
+# 2591|               ValueCategory = lvalue
+# 2591|             getLValue(): [VariableAccess] d
+# 2591|                 Type = [CharPointerType] char *
+# 2591|                 ValueCategory = lvalue
+# 2591|             getRValue(): [FunctionCall] call to recursive_conditional_call_with_increment
+# 2591|                 Type = [CharPointerType] char *
+# 2591|                 ValueCategory = prvalue
+# 2591|               getArgument(0): [VariableAccess] d
+# 2591|                   Type = [CharPointerType] char *
+# 2591|                   ValueCategory = prvalue(load)
+# 2591|               getArgument(1): [VariableAccess] b
+# 2591|                   Type = [BoolType] bool
+# 2591|                   ValueCategory = prvalue(load)
+# 2593|     getStmt(1): [ExprStmt] ExprStmt
+# 2593|       getExpr(): [PostfixIncrExpr] ... ++
+# 2593|           Type = [CharPointerType] char *
+# 2593|           ValueCategory = prvalue
+# 2593|         getOperand(): [VariableAccess] d
+# 2593|             Type = [CharPointerType] char *
+# 2593|             ValueCategory = lvalue
+# 2594|     getStmt(2): [ReturnStmt] return ...
+# 2594|       getExpr(): [VariableAccess] d
+# 2594|           Type = [CharPointerType] char *
+# 2594|           ValueCategory = prvalue(load)
+# 2597| [CopyAssignmentOperator] Recursive& Recursive::operator=(Recursive const&)
+# 2597|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Recursive &
+# 2597| [MoveAssignmentOperator] Recursive& Recursive::operator=(Recursive&&)
+# 2597|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] Recursive &&
+# 2602| [TopLevelFunction] Recursive* merge(Recursive*)
+# 2602|   <params>: 
+# 2602|     getParameter(0): [Parameter] a
+# 2602|         Type = [PointerType] Recursive *
+# 2603|   getEntryPoint(): [BlockStmt] { ... }
+# 2604|     getStmt(0): [DeclStmt] declaration
+# 2604|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2604|           Type = [PointerType] Recursive *
+# 2605|     getStmt(1): [DeclStmt] declaration
+# 2605|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p
+# 2605|           Type = [PointerType] Recursive **
+# 2605|         getVariable().getInitializer(): [Initializer] initializer for p
+# 2605|           getExpr(): [AddressOfExpr] & ...
+# 2605|               Type = [PointerType] Recursive **
+# 2605|               ValueCategory = prvalue
+# 2605|             getOperand(): [VariableAccess] b
+# 2605|                 Type = [PointerType] Recursive *
+# 2605|                 ValueCategory = lvalue
+# 2607|     getStmt(2): [WhileStmt] while (...) ...
+# 2607|       getCondition(): [FunctionCall] call to predicateA
+# 2607|           Type = [BoolType] bool
+# 2607|           ValueCategory = prvalue
+# 2608|       getStmt(): [BlockStmt] { ... }
+# 2609|         getStmt(0): [ExprStmt] ExprStmt
+# 2609|           getExpr(): [AssignExpr] ... = ...
+# 2609|               Type = [PointerType] Recursive *
+# 2609|               ValueCategory = lvalue
+# 2609|             getLValue(): [PointerDereferenceExpr] * ...
+# 2609|                 Type = [PointerType] Recursive *
+# 2609|                 ValueCategory = lvalue
+# 2609|               getOperand(): [VariableAccess] p
+# 2609|                   Type = [PointerType] Recursive **
+# 2609|                   ValueCategory = prvalue(load)
+# 2609|             getRValue(): [VariableAccess] a
+# 2609|                 Type = [PointerType] Recursive *
+# 2609|                 ValueCategory = prvalue(load)
+# 2610|         getStmt(1): [ExprStmt] ExprStmt
+# 2610|           getExpr(): [AssignExpr] ... = ...
+# 2610|               Type = [PointerType] Recursive **
+# 2610|               ValueCategory = lvalue
+# 2610|             getLValue(): [VariableAccess] p
+# 2610|                 Type = [PointerType] Recursive **
+# 2610|                 ValueCategory = lvalue
+# 2610|             getRValue(): [AddressOfExpr] & ...
+# 2610|                 Type = [PointerType] Recursive **
+# 2610|                 ValueCategory = prvalue
+# 2610|               getOperand(): [PointerFieldAccess] next
+# 2610|                   Type = [PointerType] Recursive *
+# 2610|                   ValueCategory = lvalue
+# 2610|                 getQualifier(): [VariableAccess] a
+# 2610|                     Type = [PointerType] Recursive *
+# 2610|                     ValueCategory = prvalue(load)
+# 2613|     getStmt(3): [ReturnStmt] return ...
+# 2613|       getExpr(): [VariableAccess] b
+# 2613|           Type = [PointerType] Recursive *
+# 2613|           ValueCategory = prvalue(load)
+# 2616| [TopLevelFunction] void use_const_int(int const*)
+# 2616|   <params>: 
+# 2616|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2616|         Type = [PointerType] const int *
+# 2618| [TopLevelFunction] void escaping_pointer(bool)
+# 2618|   <params>: 
+# 2618|     getParameter(0): [Parameter] b
+# 2618|         Type = [BoolType] bool
+# 2619|   getEntryPoint(): [BlockStmt] { ... }
+# 2620|     getStmt(0): [DeclStmt] declaration
+# 2620|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of data
+# 2620|           Type = [IntPointerType] int *
+# 2621|     getStmt(1): [DeclStmt] declaration
+# 2621|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l1
+# 2621|           Type = [IntType] int
+# 2621|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of l2
+# 2621|           Type = [IntType] int
+# 2622|     getStmt(2): [IfStmt] if (...) ... 
+# 2622|       getCondition(): [VariableAccess] b
+# 2622|           Type = [BoolType] bool
+# 2622|           ValueCategory = prvalue(load)
+# 2623|       getThen(): [BlockStmt] { ... }
+# 2624|         getStmt(0): [ExprStmt] ExprStmt
+# 2624|           getExpr(): [AssignExpr] ... = ...
+# 2624|               Type = [IntPointerType] int *
+# 2624|               ValueCategory = lvalue
+# 2624|             getLValue(): [VariableAccess] data
+# 2624|                 Type = [IntPointerType] int *
+# 2624|                 ValueCategory = lvalue
+# 2624|             getRValue(): [AddressOfExpr] & ...
+# 2624|                 Type = [IntPointerType] int *
+# 2624|                 ValueCategory = prvalue
+# 2624|               getOperand(): [VariableAccess] l1
+# 2624|                   Type = [IntType] int
+# 2624|                   ValueCategory = lvalue
+# 2627|       getElse(): [BlockStmt] { ... }
+# 2628|         getStmt(0): [ExprStmt] ExprStmt
+# 2628|           getExpr(): [AssignExpr] ... = ...
+# 2628|               Type = [IntPointerType] int *
+# 2628|               ValueCategory = lvalue
+# 2628|             getLValue(): [VariableAccess] data
+# 2628|                 Type = [IntPointerType] int *
+# 2628|                 ValueCategory = lvalue
+# 2628|             getRValue(): [AddressOfExpr] & ...
+# 2628|                 Type = [IntPointerType] int *
+# 2628|                 ValueCategory = prvalue
+# 2628|               getOperand(): [VariableAccess] l2
+# 2628|                   Type = [IntType] int
+# 2628|                   ValueCategory = lvalue
+# 2630|     getStmt(3): [ExprStmt] ExprStmt
+# 2630|       getExpr(): [FunctionCall] call to use_const_int
+# 2630|           Type = [VoidType] void
+# 2630|           ValueCategory = prvalue
+# 2630|         getArgument(0): [VariableAccess] data
+# 2630|             Type = [IntPointerType] int *
+# 2630|             ValueCategory = prvalue(load)
+# 2630|         getArgument(0).getFullyConverted(): [CStyleCast] (const int *)...
+# 2630|             Conversion = [PointerConversion] pointer conversion
+# 2630|             Type = [PointerType] const int *
+# 2630|             ValueCategory = prvalue
+# 2631|     getStmt(4): [ReturnStmt] return ...
+# 2636| [TopLevelFunction] void* malloc(unsigned long)
+# 2636|   <params>: 
+# 2636|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2636|         Type = [LongType] unsigned long
+# 2637| [TopLevelFunction] void use_const_void_pointer(void const*)
+# 2637|   <params>: 
+# 2637|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2637|         Type = [PointerType] const void *
+# 2639| [TopLevelFunction] void needs_chi_for_initialize_groups()
+# 2639|   <params>: 
+# 2640|   getEntryPoint(): [BlockStmt] { ... }
+# 2641|     getStmt(0): [IfStmt] if (...) ... 
+# 2641|       getCondition(): [FunctionCall] call to predicateA
+# 2641|           Type = [BoolType] bool
+# 2641|           ValueCategory = prvalue
+# 2642|       getThen(): [BlockStmt] { ... }
+# 2643|         getStmt(0): [DeclStmt] declaration
+# 2643|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of data
+# 2643|               Type = [PointerType] int64_t *
+# 2643|             getVariable().getInitializer(): [Initializer] initializer for data
+# 2643|               getExpr(): [FunctionCall] call to malloc
+# 2643|                   Type = [VoidPointerType] void *
+# 2643|                   ValueCategory = prvalue
+# 2643|                 getArgument(0): [Literal] 100
+# 2643|                     Type = [IntType] int
+# 2643|                     Value = [Literal] 100
+# 2643|                     ValueCategory = prvalue
+# 2643|                 getArgument(0).getFullyConverted(): [CStyleCast] (unsigned long)...
+# 2643|                     Conversion = [IntegralConversion] integral conversion
+# 2643|                     Type = [LongType] unsigned long
+# 2643|                     Value = [CStyleCast] 100
+# 2643|                     ValueCategory = prvalue
+# 2643|               getExpr().getFullyConverted(): [CStyleCast] (int64_t *)...
+# 2643|                   Conversion = [PointerConversion] pointer conversion
+# 2643|                   Type = [PointerType] int64_t *
+# 2643|                   ValueCategory = prvalue
+# 2644|         getStmt(1): [IfStmt] if (...) ... 
+# 2644|           getCondition(): [NEExpr] ... != ...
+# 2644|               Type = [BoolType] bool
+# 2644|               ValueCategory = prvalue
+# 2644|             getLeftOperand(): [VariableAccess] data
+# 2644|                 Type = [PointerType] int64_t *
+# 2644|                 ValueCategory = prvalue(load)
+# 2644|             getRightOperand(): [Literal] 0
+# 2644|                 Type = [IntType] int
+# 2644|                 Value = [Literal] 0
+# 2644|                 ValueCategory = prvalue
+# 2644|             getLeftOperand().getFullyConverted(): [CStyleCast] (void *)...
+# 2644|                 Conversion = [PointerConversion] pointer conversion
+# 2644|                 Type = [VoidPointerType] void *
+# 2644|                 ValueCategory = prvalue
+# 2644|             getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2644|                 Type = [VoidPointerType] void *
+# 2644|                 Value = [ParenthesisExpr] 0
+# 2644|                 ValueCategory = prvalue
+# 2644|               getExpr(): [CStyleCast] (void *)...
+# 2644|                   Conversion = [IntegralToPointerConversion] integral to pointer conversion
+# 2644|                   Type = [VoidPointerType] void *
+# 2644|                   Value = [CStyleCast] 0
+# 2644|                   ValueCategory = prvalue
+# 2645|           getThen(): [BlockStmt] { ... }
+# 2646|             getStmt(0): [ExprStmt] ExprStmt
+# 2646|               getExpr(): [AssignExpr] ... = ...
+# 2646|                   Type = [PointerType] int64_t *
+# 2646|                   ValueCategory = lvalue
+# 2646|                 getLValue(): [VariableAccess] data
+# 2646|                     Type = [PointerType] int64_t *
+# 2646|                     ValueCategory = lvalue
+# 2646|                 getRValue(): [FunctionCall] call to malloc
+# 2646|                     Type = [VoidPointerType] void *
+# 2646|                     ValueCategory = prvalue
+# 2646|                   getArgument(0): [Literal] 100
+# 2646|                       Type = [IntType] int
+# 2646|                       Value = [Literal] 100
+# 2646|                       ValueCategory = prvalue
+# 2646|                   getArgument(0).getFullyConverted(): [CStyleCast] (unsigned long)...
+# 2646|                       Conversion = [IntegralConversion] integral conversion
+# 2646|                       Type = [LongType] unsigned long
+# 2646|                       Value = [CStyleCast] 100
+# 2646|                       ValueCategory = prvalue
+# 2646|                 getRValue().getFullyConverted(): [CStyleCast] (int64_t *)...
+# 2646|                     Conversion = [PointerConversion] pointer conversion
+# 2646|                     Type = [PointerType] int64_t *
+# 2646|                     ValueCategory = prvalue
+# 2648|         getStmt(2): [ExprStmt] ExprStmt
+# 2648|           getExpr(): [FunctionCall] call to use_const_void_pointer
+# 2648|               Type = [VoidType] void
+# 2648|               ValueCategory = prvalue
+# 2648|             getArgument(0): [VariableAccess] data
+# 2648|                 Type = [PointerType] int64_t *
+# 2648|                 ValueCategory = prvalue(load)
+# 2648|             getArgument(0).getFullyConverted(): [CStyleCast] (const void *)...
+# 2648|                 Conversion = [PointerConversion] pointer conversion
+# 2648|                 Type = [PointerType] const void *
+# 2648|                 ValueCategory = prvalue
+# 2651|       getElse(): [BlockStmt] { ... }
+# 2652|         getStmt(0): [DeclStmt] declaration
+# 2652|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of data
+# 2652|               Type = [PointerType] int64_t *
+# 2652|             getVariable().getInitializer(): [Initializer] initializer for data
+# 2652|               getExpr(): [FunctionCall] call to malloc
+# 2652|                   Type = [VoidPointerType] void *
+# 2652|                   ValueCategory = prvalue
+# 2652|                 getArgument(0): [Literal] 100
+# 2652|                     Type = [IntType] int
+# 2652|                     Value = [Literal] 100
+# 2652|                     ValueCategory = prvalue
+# 2652|                 getArgument(0).getFullyConverted(): [CStyleCast] (unsigned long)...
+# 2652|                     Conversion = [IntegralConversion] integral conversion
+# 2652|                     Type = [LongType] unsigned long
+# 2652|                     Value = [CStyleCast] 100
+# 2652|                     ValueCategory = prvalue
+# 2652|               getExpr().getFullyConverted(): [CStyleCast] (int64_t *)...
+# 2652|                   Conversion = [PointerConversion] pointer conversion
+# 2652|                   Type = [PointerType] int64_t *
+# 2652|                   ValueCategory = prvalue
+# 2653|         getStmt(1): [IfStmt] if (...) ... 
+# 2653|           getCondition(): [NEExpr] ... != ...
+# 2653|               Type = [BoolType] bool
+# 2653|               ValueCategory = prvalue
+# 2653|             getLeftOperand(): [VariableAccess] data
+# 2653|                 Type = [PointerType] int64_t *
+# 2653|                 ValueCategory = prvalue(load)
+# 2653|             getRightOperand(): [Literal] 0
+# 2653|                 Type = [IntType] int
+# 2653|                 Value = [Literal] 0
+# 2653|                 ValueCategory = prvalue
+# 2653|             getLeftOperand().getFullyConverted(): [CStyleCast] (void *)...
+# 2653|                 Conversion = [PointerConversion] pointer conversion
+# 2653|                 Type = [VoidPointerType] void *
+# 2653|                 ValueCategory = prvalue
+# 2653|             getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2653|                 Type = [VoidPointerType] void *
+# 2653|                 Value = [ParenthesisExpr] 0
+# 2653|                 ValueCategory = prvalue
+# 2653|               getExpr(): [CStyleCast] (void *)...
+# 2653|                   Conversion = [IntegralToPointerConversion] integral to pointer conversion
+# 2653|                   Type = [VoidPointerType] void *
+# 2653|                   Value = [CStyleCast] 0
+# 2653|                   ValueCategory = prvalue
+# 2654|           getThen(): [BlockStmt] { ... }
+# 2655|             getStmt(0): [ExprStmt] ExprStmt
+# 2655|               getExpr(): [AssignExpr] ... = ...
+# 2655|                   Type = [PointerType] int64_t *
+# 2655|                   ValueCategory = lvalue
+# 2655|                 getLValue(): [VariableAccess] data
+# 2655|                     Type = [PointerType] int64_t *
+# 2655|                     ValueCategory = lvalue
+# 2655|                 getRValue(): [FunctionCall] call to malloc
+# 2655|                     Type = [VoidPointerType] void *
+# 2655|                     ValueCategory = prvalue
+# 2655|                   getArgument(0): [Literal] 200
+# 2655|                       Type = [IntType] int
+# 2655|                       Value = [Literal] 200
+# 2655|                       ValueCategory = prvalue
+# 2655|                   getArgument(0).getFullyConverted(): [CStyleCast] (unsigned long)...
+# 2655|                       Conversion = [IntegralConversion] integral conversion
+# 2655|                       Type = [LongType] unsigned long
+# 2655|                       Value = [CStyleCast] 200
+# 2655|                       ValueCategory = prvalue
+# 2655|                 getRValue().getFullyConverted(): [CStyleCast] (int64_t *)...
+# 2655|                     Conversion = [PointerConversion] pointer conversion
+# 2655|                     Type = [PointerType] int64_t *
+# 2655|                     ValueCategory = prvalue
+# 2657|         getStmt(2): [ExprStmt] ExprStmt
+# 2657|           getExpr(): [FunctionCall] call to use_const_void_pointer
+# 2657|               Type = [VoidType] void
+# 2657|               ValueCategory = prvalue
+# 2657|             getArgument(0): [VariableAccess] data
+# 2657|                 Type = [PointerType] int64_t *
+# 2657|                 ValueCategory = prvalue(load)
+# 2657|             getArgument(0).getFullyConverted(): [CStyleCast] (const void *)...
+# 2657|                 Conversion = [PointerConversion] pointer conversion
+# 2657|                 Type = [PointerType] const void *
+# 2657|                 ValueCategory = prvalue
+# 2659|     getStmt(1): [ReturnStmt] return ...
+# 2661| [TopLevelFunction] void use_int(int)
+# 2661|   <params>: 
+# 2661|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2661|         Type = [IntType] int
+# 2663| [TopLevelFunction] void phi_with_single_input_at_merge(bool)
+# 2663|   <params>: 
+# 2663|     getParameter(0): [Parameter] b
+# 2663|         Type = [BoolType] bool
+# 2664|   getEntryPoint(): [BlockStmt] { ... }
+# 2665|     getStmt(0): [DeclStmt] declaration
+# 2665|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of data
+# 2665|           Type = [IntPointerType] int *
+# 2665|         getVariable().getInitializer(): [Initializer] initializer for data
+# 2665|           getExpr(): [Literal] 0
+# 2665|               Type = [NullPointerType] decltype(nullptr)
+# 2665|               Value = [Literal] 0
+# 2665|               ValueCategory = prvalue
+# 2665|           getExpr().getFullyConverted(): [CStyleCast] (int *)...
+# 2665|               Conversion = [PointerConversion] pointer conversion
+# 2665|               Type = [IntPointerType] int *
+# 2665|               Value = [CStyleCast] 0
+# 2665|               ValueCategory = prvalue
+# 2666|     getStmt(1): [IfStmt] if (...) ... 
+# 2666|       getCondition(): [VariableAccess] b
+# 2666|           Type = [BoolType] bool
+# 2666|           ValueCategory = prvalue(load)
+# 2666|       getThen(): [BlockStmt] { ... }
+# 2667|         getStmt(0): [DeclStmt] declaration
+# 2667|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of intBuffer
+# 2667|               Type = [IntType] int
+# 2667|             getVariable().getInitializer(): [Initializer] initializer for intBuffer
+# 2667|               getExpr(): [Literal] 8
+# 2667|                   Type = [IntType] int
+# 2667|                   Value = [Literal] 8
+# 2667|                   ValueCategory = prvalue
+# 2668|         getStmt(1): [ExprStmt] ExprStmt
+# 2668|           getExpr(): [AssignExpr] ... = ...
+# 2668|               Type = [IntPointerType] int *
+# 2668|               ValueCategory = lvalue
+# 2668|             getLValue(): [VariableAccess] data
+# 2668|                 Type = [IntPointerType] int *
+# 2668|                 ValueCategory = lvalue
+# 2668|             getRValue(): [AddressOfExpr] & ...
+# 2668|                 Type = [IntPointerType] int *
+# 2668|                 ValueCategory = prvalue
+# 2668|               getOperand(): [VariableAccess] intBuffer
+# 2668|                   Type = [IntType] int
+# 2668|                   ValueCategory = lvalue
+# 2670|     getStmt(2): [ExprStmt] ExprStmt
+# 2670|       getExpr(): [FunctionCall] call to use_int
+# 2670|           Type = [VoidType] void
+# 2670|           ValueCategory = prvalue
+# 2670|         getArgument(0): [PointerDereferenceExpr] * ...
+# 2670|             Type = [IntType] int
+# 2670|             ValueCategory = prvalue(load)
+# 2670|           getOperand(): [VariableAccess] data
+# 2670|               Type = [IntPointerType] int *
+# 2670|               ValueCategory = prvalue(load)
+# 2671|     getStmt(3): [ReturnStmt] return ...
+# 2673| [TopLevelFunction] void use(char const*)
+# 2673|   <params>: 
+# 2673|     getParameter(0): [Parameter] fmt
+# 2673|         Type = [PointerType] const char *
+# 2684| [TopLevelFunction] void test(bool)
+# 2684|   <params>: 
+# 2684|     getParameter(0): [Parameter] b
+# 2684|         Type = [BoolType] bool
+# 2685|   getEntryPoint(): [BlockStmt] { ... }
+# 2686|     getStmt(0): [DoStmt] do (...) ...
+# 2686|       getCondition(): [Literal] 0
+# 2686|           Type = [IntType] int
+# 2686|           Value = [Literal] 0
+# 2686|           ValueCategory = prvalue
+# 2686|       getStmt(): [BlockStmt] { ... }
+# 2686|         getStmt(0): [ExprStmt] ExprStmt
+# 2686|           getExpr(): [FunctionCall] call to use
+# 2686|               Type = [VoidType] void
+# 2686|               ValueCategory = prvalue
+# 2686|             getArgument(0): [ConditionalExpr] ... ? ... : ...
+# 2686|                 Type = [PointerType] const char *
+# 2686|                 ValueCategory = prvalue
+# 2686|               getCondition(): [VariableAccess] b
+# 2686|                   Type = [BoolType] bool
+# 2686|                   ValueCategory = prvalue(load)
+# 2686|               getThen(): 
+# 2686|                   Type = [ArrayType] const char[1]
+# 2686|                   Value = [StringLiteral] ""
+# 2686|                   ValueCategory = lvalue
+# 2686|               getElse(): 
+# 2686|                   Type = [ArrayType] const char[1]
+# 2686|                   Value = [StringLiteral] ""
+# 2686|                   ValueCategory = lvalue
+# 2686|               getThen().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2686|                   Type = [PointerType] const char *
+# 2686|                   ValueCategory = prvalue
+# 2686|               getElse().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2686|                   Type = [PointerType] const char *
+# 2686|                   ValueCategory = prvalue
+# 2686|         getStmt(1): [ExprStmt] ExprStmt
+# 2686|           getExpr(): [FunctionCall] call to use
+# 2686|               Type = [VoidType] void
+# 2686|               ValueCategory = prvalue
+# 2686|             getArgument(0): [ConditionalExpr] ... ? ... : ...
+# 2686|                 Type = [PointerType] const char *
+# 2686|                 ValueCategory = prvalue
+# 2686|               getCondition(): [VariableAccess] b
+# 2686|                   Type = [BoolType] bool
+# 2686|                   ValueCategory = prvalue(load)
+# 2686|               getThen(): 
+# 2686|                   Type = [ArrayType] const char[1]
+# 2686|                   Value = [StringLiteral] ""
+# 2686|                   ValueCategory = lvalue
+# 2686|               getElse(): 
+# 2686|                   Type = [ArrayType] const char[1]
+# 2686|                   Value = [StringLiteral] ""
+# 2686|                   ValueCategory = lvalue
+# 2686|               getThen().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2686|                   Type = [PointerType] const char *
+# 2686|                   ValueCategory = prvalue
+# 2686|               getElse().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2686|                   Type = [PointerType] const char *
+# 2686|                   ValueCategory = prvalue
+# 2686|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2686|           Conversion = [BoolConversion] conversion to bool
+# 2686|           Type = [BoolType] bool
+# 2686|           Value = [CStyleCast] 0
+# 2686|           ValueCategory = prvalue
+# 2687|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

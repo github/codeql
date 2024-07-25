@@ -11,6 +11,7 @@ private import Node0ToString
 private import ModelUtil
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
 private import semmle.code.cpp.models.interfaces.DataFlow as DF
+private import semmle.code.cpp.dataflow.ExternalFlow as External
 
 cached
 private module Cached {
@@ -993,9 +994,6 @@ DataFlowType getNodeType(Node n) {
   result instanceof VoidType // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(DataFlowType t) { none() } // stub implementation
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -1096,7 +1094,11 @@ class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+final private class TypeFinal = Type;
+
+class DataFlowType extends TypeFinal {
+  string toString() { result = "" }
+}
 
 cached
 private newtype TDataFlowCall =
@@ -1333,9 +1335,9 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
-predicate knownSourceModel(Node source, string model) { none() }
+predicate knownSourceModel(Node source, string model) { External::sourceNode(source, _, model) }
 
-predicate knownSinkModel(Node sink, string model) { none() }
+predicate knownSinkModel(Node sink, string model) { External::sinkNode(sink, _, model) }
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

@@ -40,7 +40,8 @@ predicate ignoreInstruction(Instruction instr) {
     instr instanceof AliasedDefinitionInstruction or
     instr instanceof AliasedUseInstruction or
     instr instanceof InitializeNonLocalInstruction or
-    instr instanceof ReturnIndirectionInstruction
+    instr instanceof ReturnIndirectionInstruction or
+    instr instanceof UninitializedGroupInstruction
   )
 }
 
