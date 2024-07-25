@@ -24,7 +24,7 @@ storing them.</p>
 
 <sample src="CleartextStorage.c" />
 
-<p>Note that for the good example to work we need to link against an encryption library (in this case libsodium),
+<p>Note that for the 'GOOD' example to work we need to link against an encryption library (in this case libsodium),
 initialize it with a call to <code>sodium_init</code>, and create the key and nonce with
 <code>crypto_secretbox_keygen</code> and <code>randombytes_buf</code> respectively. We also need to store those
 details securely so they can be used for decryption.</p>

@@ -20,7 +20,7 @@ In the 'GOOD' case, the database (and thus the credentials) are encrypted.</p>
 
 <sample src="CleartextSqliteDatabase.c" />
 
-<p>Note that for the good example to work we need to provide a secret key. Secure key generation and storage is required.</p>
+<p>Note that for the 'GOOD' example to work we need to provide a secret key. Secure key generation and storage is required.</p>
 
 </example>
 <references>
