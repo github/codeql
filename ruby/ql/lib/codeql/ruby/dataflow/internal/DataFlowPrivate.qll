@@ -2077,9 +2077,6 @@ DataFlowType getNodeType(Node n) {
   result = TUnknownDataFlowType()
 }
 
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { none() }
-
 pragma[inline]
 private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
   t1 != TUnknownDataFlowType() and
@@ -2183,8 +2180,6 @@ class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 /**

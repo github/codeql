@@ -76,9 +76,6 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
 
     DataFlowCallable getEnclosingCallable();
-
-    /** Gets a best-effort total ordering. */
-    int totalorder();
   }
 
   class DataFlowCallable {
@@ -87,9 +84,6 @@ signature module InputSig<LocationSig Location> {
 
     /** Gets the location of this callable. */
     Location getLocation();
-
-    /** Gets a best-effort total ordering. */
-    int totalorder();
   }
 
   class ReturnKind {
@@ -129,8 +123,6 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this element. */
     string toString();
   }
-
-  string ppReprType(DataFlowType t);
 
   /**
    * Holds if `t1` and `t2` are compatible types.
@@ -266,8 +258,6 @@ signature module InputSig<LocationSig Location> {
   class NodeRegion {
     /** Holds if this region contains `n`. */
     predicate contains(Node n);
-
-    int totalOrder();
   }
 
   /**

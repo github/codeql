@@ -29,8 +29,6 @@ jobs:
           key: all-queries
       - name: check formatting
         run: find shared */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 -n 3000 -P 10 codeql query format -q --check-only
-      - name: Omit DatabaseQualityDiagnostics.ql from compile checking # Remove me once CodeQL 2.18.0 is released!
-        run: mv java/ql/src/Telemetry/DatabaseQualityDiagnostics.ql{,.hidden}
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
@@ -41,6 +39,3 @@ jobs:
         if : ${{ github.event_name != 'pull_request' }}
         shell: bash
         run: codeql query compile -q -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" --compilation-cache-size=500
-      - name: Restore DatabaseQualityDiagnostics.ql after compile checking # Remove me once CodeQL 2.18.0 is released
-        run: mv java/ql/src/Telemetry/DatabaseQualityDiagnostics.ql{.hidden,}
-

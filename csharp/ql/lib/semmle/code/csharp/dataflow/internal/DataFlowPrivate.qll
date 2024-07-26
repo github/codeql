@@ -2379,15 +2379,6 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
-
-  int totalOrder() {
-    this =
-      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
-        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        b order by startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -2452,9 +2443,6 @@ DataFlowType getNodeType(Node n) {
     n.(LocalFunctionCreationPreNode).getUnderlyingControlFlowNode().getAstNode()
   ] = result.getADelegateCreation()
 }
-
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends Gvn::GvnType {
   DataFlowNullType() { this = Gvn::getGlobalValueNumber(any(NullType nt)) }

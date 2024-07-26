@@ -34,7 +34,6 @@ import semmle.go.frameworks.Afero
 import semmle.go.frameworks.AwsLambda
 import semmle.go.frameworks.Beego
 import semmle.go.frameworks.BeegoOrm
-import semmle.go.frameworks.Chi
 import semmle.go.frameworks.Couchbase
 import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
@@ -49,7 +48,6 @@ import semmle.go.frameworks.Gogf
 import semmle.go.frameworks.GoJose
 import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro
-import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.Gqlgen
 import semmle.go.frameworks.Iris
 import semmle.go.frameworks.Jwt

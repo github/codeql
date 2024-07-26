@@ -10,7 +10,7 @@ go_library(
     ],
     importpath = "github.com/github/codeql-go/extractor/util",
     visibility = ["//visibility:public"],
-    deps = ["//go/extractor/vendor/golang.org/x/mod/semver"],
+    deps = ["@org_golang_x_mod//semver:go_default_library"],
 )
 
 go_test(
@@ -20,5 +20,5 @@ go_test(
         "util_test.go",
     ],
     embed = [":util"],
-    deps = ["//go/extractor/vendor/golang.org/x/mod/semver"],
+    deps = ["@org_golang_x_mod//semver:go_default_library"],
 )

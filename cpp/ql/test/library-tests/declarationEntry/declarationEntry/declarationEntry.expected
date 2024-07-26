@@ -15,10 +15,6 @@
 | declarationEntry.cpp:20:6:20:11 | myEnum | declarationEntry.cpp:18:6:18:11 | declaration of myEnum | 1 | 1 |
 | declarationEntry.cpp:20:6:20:11 | myEnum | declarationEntry.cpp:20:6:20:11 | definition of myEnum | 1 | 1 |
 | declarationEntry.cpp:27:20:27:20 | T | declarationEntry.cpp:27:20:27:20 | definition of T | 1 | 1 |
-| declarationEntry.cpp:28:7:28:7 | operator= | declarationEntry.cpp:28:7:28:7 | declaration of operator= | 1 | 1 |
-| declarationEntry.cpp:28:7:28:7 | operator= | declarationEntry.cpp:28:7:28:7 | declaration of operator= | 1 | 1 |
-| declarationEntry.cpp:28:7:28:7 | operator= | declarationEntry.cpp:28:7:28:7 | declaration of operator= | 1 | 1 |
-| declarationEntry.cpp:28:7:28:7 | operator= | declarationEntry.cpp:28:7:28:7 | declaration of operator= | 1 | 1 |
 | declarationEntry.cpp:28:7:28:21 | myTemplateClass<T> | declarationEntry.cpp:28:7:28:21 | definition of myTemplateClass<T> | 1 | 1 |
 | declarationEntry.cpp:28:7:28:21 | myTemplateClass<int> | declarationEntry.cpp:28:7:28:21 | definition of myTemplateClass<T> | 1 | 0 |
 | declarationEntry.cpp:28:7:28:21 | myTemplateClass<short> | declarationEntry.cpp:28:7:28:21 | definition of myTemplateClass<T> | 1 | 0 |
