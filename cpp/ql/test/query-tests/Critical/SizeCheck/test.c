@@ -60,7 +60,7 @@ void test_union() {
 }
 
 // --- custom allocators ---
- 
+
 void *MyMalloc1(size_t size) { return malloc(size); }
 void *MyMalloc2(size_t size);
 

@@ -119,7 +119,7 @@ private class UrlSummaries extends SummaryModelCsv {
         ";URL;true;resourceValues(forKeys:);;;Argument[-1];ReturnValue;taint",
         ";URL;true;setResourceValues(_:);;;Argument[0];Argument[-1];taint",
         ";URL;true;setTemporaryResourceValue(_:forKey:);;;Argument[-1..0];Argument[-1];taint",
-        ";URL;true;withUnsafeFileSystemRepresentation(_:);;;Argument[-1],Argument[0].Parameter[0];ReturnValue;taint",
+        ";URL;true;withUnsafeFileSystemRepresentation(_:);;;Argument[-1];Argument[0].Parameter[0].OptionalSome.CollectionElement;taint",
         ";URL;true;withUnsafeFileSystemRepresentation(_:);;;Argument[0].ReturnValue;ReturnValue;taint",
         ";URL;true;resolvingSymlinksInPath();;;Argument[-1];ReturnValue;taint",
         ";URL;true;appendPathComponent(_:);;;Argument[-1..0];Argument[-1];taint",

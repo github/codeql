@@ -856,6 +856,16 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
   }
 
   /**
+   * Holds if the deallocation function is a destroying delete.
+   */
+  predicate isDestroyingDeleteDeallocation() {
+    exists(int form |
+      expr_deallocator(underlyingElement(this), _, form) and
+      form.bitAnd(4) != 0 // Bit two is the "destroying delete" bit
+    )
+  }
+
+  /**
    * Gets the type that is being allocated.
    *
    * For example, for `new int` the result is `int`.
@@ -1022,6 +1032,16 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
     exists(int form |
       expr_deallocator(underlyingElement(this), _, form) and
       form.bitAnd(2) != 0 // Bit one is the "alignment" bit
+    )
+  }
+
+  /**
+   * Holds if the deallocation function is a destroying delete.
+   */
+  predicate isDestroyingDeleteDeallocation() {
+    exists(int form |
+      expr_deallocator(underlyingElement(this), _, form) and
+      form.bitAnd(4) != 0 // Bit two is the "destroying delete" bit
     )
   }
 

@@ -3,6 +3,8 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * An instantiation of `std::pair<T1, T2>`.
@@ -37,7 +39,9 @@ class StdPairCopyishConstructor extends Constructor, TaintFunction {
 /**
  * Additional model for `std::pair` constructors.
  */
-private class StdPairConstructor extends Constructor, TaintFunction {
+private class StdPairConstructor extends Constructor, TaintFunction, AliasFunction,
+  SideEffectFunction
+{
   StdPairConstructor() { this.getDeclaringType() instanceof StdPair }
 
   /**
@@ -58,5 +62,78 @@ private class StdPairConstructor extends Constructor, TaintFunction {
       or
       output.isQualifierObject()
     )
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    // All the constructor parameters are references with the exception of this one:
+    // ```
+    // template<class... Args1, class... Args2>
+    // pair(std::piecewise_construct_t, std::tuple<Args1...> first_args, std::tuple<Args2...> second_args);
+    // ```
+    // So we need to check that the parameters are actually references
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
+  }
+}
+
+private class StdPairDestructor extends Destructor, AliasFunction, SideEffectFunction {
+  StdPairDestructor() { this.getDeclaringType() instanceof StdPair }
+
+  private Type getFirstType() { result = this.getDeclaringType().getTemplateArgument(0) }
+
+  private Type getSecondType() { result = this.getDeclaringType().getTemplateArgument(0) }
+
+  private Type getAType() { result = [this.getFirstType(), this.getSecondType()] }
+
+  /**
+   * Gets the destructor associated with the base type of this pair
+   */
+  private Destructor getADestructor() { result.getDeclaringType() = this.getAType() }
+
+  override predicate hasOnlySpecificReadSideEffects() {
+    this.getADestructor().(SideEffectFunction).hasOnlySpecificReadSideEffects()
+    or
+    // If there's no declared destructor for the base type then it won't have
+    // any strange read side effects.
+    not exists(this.getADestructor())
+  }
+
+  override predicate hasOnlySpecificWriteSideEffects() {
+    this.getADestructor().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
+    or
+    // If there's no declared destructor for the base type then it won't have
+    // any strange write side effects.
+    not exists(this.getADestructor())
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate parameterNeverEscapes(int index) {
+    this.getADestructor().(AliasFunction).parameterNeverEscapes(index)
+    or
+    // If there's no declared destructor for the base type then it won't cause
+    // anything to escape.
+    not exists(this.getADestructor()) and
+    index = -1
   }
 }

@@ -3445,9 +3445,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       AccessPathApproxConsNil() { this = TConsNil(c, t) }
 
+      private string ppTyp() { result = t.toString() and result != "" }
+
       override string toString() {
-        // The `concat` becomes "" if `ppReprType` has no result.
-        result = "[" + c.toString() + "]" + concat(" : " + ppReprType(t))
+        // The `concat` becomes "" if `ppTyp` has no result.
+        result = "[" + c.toString() + "]" + concat(" : " + this.ppTyp())
       }
 
       override Content getHead() { result = c }
@@ -3668,7 +3670,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       ParamNodeEx getParamNode() { result = p }
 
-      override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
+      private string ppTyp() { result = t.toString() and result != "" }
+
+      override string toString() { result = p + concat(" : " + this.ppTyp()) + " " + ap }
 
       Location getLocation() { result = p.getLocation() }
     }
@@ -3935,10 +3939,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override int length() { result = 1 + tail_.length() }
 
+      private string ppTyp() { result = t.toString() and result != "" }
+
       private string toStringImpl(boolean needsSuffix) {
         tail_ = TAccessPathNil() and
         needsSuffix = false and
-        result = head_.toString() + "]" + concat(" : " + ppReprType(t))
+        result = head_.toString() + "]" + concat(" : " + this.ppTyp())
         or
         result = head_ + ", " + tail_.(AccessPathCons).toStringImpl(needsSuffix)
         or
@@ -4087,9 +4093,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private string ppType() {
         this instanceof PathNodeSink and result = ""
         or
-        exists(DataFlowType t | t = this.(PathNodeMid).getType() |
-          // The `concat` becomes "" if `ppReprType` has no result.
-          result = concat(" : " + ppReprType(t))
+        exists(string t | t = this.(PathNodeMid).getType().toString() |
+          if t = "" then result = "" else result = " : " + t
         )
       }
 
@@ -5402,9 +5407,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private string ppType() {
             this instanceof PartialPathNodeRev and result = ""
             or
-            exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
-              // The `concat` becomes "" if `ppReprType` has no result.
-              result = concat(" : " + ppReprType(t))
+            exists(string t | t = this.(PartialPathNodeFwd).getType().toString() |
+              if t = "" then result = "" else result = " : " + t
             )
           }
 

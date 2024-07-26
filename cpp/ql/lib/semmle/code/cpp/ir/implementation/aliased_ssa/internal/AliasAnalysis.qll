@@ -338,6 +338,56 @@ private predicate resultEscapesNonReturn(Instruction instr) {
   not instr.isResultModeled()
 }
 
+/** Holds if `operand` may (transitively) flow to an `AddressOperand`. */
+private predicate consumedAsAddressOperand(Operand operand) {
+  operand instanceof AddressOperand
+  or
+  exists(Operand address |
+    consumedAsAddressOperand(address) and
+    operandIsPropagated(operand, _, address.getDef())
+  )
+}
+
+/**
+ * Holds if `operand` may originate from a base instruction of an allocation,
+ * and that operand may transitively flow to an `AddressOperand`.
+ */
+private predicate propagatedFromAllocationBase(Operand operand, Configuration::Allocation allocation) {
+  consumedAsAddressOperand(operand) and
+  (
+    not exists(Configuration::getOldAllocation(allocation)) and
+    operand.getDef() = allocation.getABaseInstruction()
+    or
+    exists(Operand address |
+      operandIsPropagated(address, _, operand.getDef()) and
+      propagatedFromAllocationBase(address, allocation)
+    )
+  )
+}
+
+private predicate propagatedFromNonAllocationBase(Operand operand) {
+  exists(Instruction def |
+    def = operand.getDef() and
+    not operandIsPropagated(_, _, def) and
+    not def = any(Configuration::Allocation allocation).getABaseInstruction()
+  )
+  or
+  exists(Operand address |
+    operandIsPropagated(address, _, operand.getDef()) and
+    propagatedFromNonAllocationBase(address)
+  )
+}
+
+/**
+ * Holds if we cannot see all producers of an operand for which allocation also flows into.
+ */
+private predicate operandConsumesEscaped(Configuration::Allocation allocation) {
+  exists(AddressOperand address |
+    propagatedFromAllocationBase(address, allocation) and
+    propagatedFromNonAllocationBase(address)
+  )
+}
+
 /**
  * Holds if the address of `allocation` escapes outside the domain of the analysis. This can occur
  * either because the allocation's address is taken within the function and escapes, or because the
@@ -346,12 +396,14 @@ private predicate resultEscapesNonReturn(Instruction instr) {
 predicate allocationEscapes(Configuration::Allocation allocation) {
   allocation.alwaysEscapes()
   or
-  exists(IREscapeAnalysisConfiguration config |
-    config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
+  exists(IREscapeAnalysisConfiguration config | config.useSoundEscapeAnalysis() |
+    resultEscapesNonReturn(allocation.getABaseInstruction())
+    or
+    operandConsumesEscaped(allocation)
   )
   or
   Configuration::phaseNeedsSoundEscapeAnalysis() and
-  resultEscapesNonReturn(allocation.getABaseInstruction())
+  (resultEscapesNonReturn(allocation.getABaseInstruction()) or operandConsumesEscaped(allocation))
 }
 
 /**
