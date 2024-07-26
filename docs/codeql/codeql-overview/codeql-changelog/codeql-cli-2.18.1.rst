@@ -162,7 +162,7 @@ C/C++
 *   The class :code:`NewArrayExpr` adds a predicate :code:`getArraySize()` to allow a more convenient way to access the static size of the array when the extent is missing.
 
 Java and Kotlin
-""""
+"""""""""""""""
 
 *   Kotlin support is now out of beta, and generally available
 *   Kotlin versions up to 2.0.2*x* are now supported.
