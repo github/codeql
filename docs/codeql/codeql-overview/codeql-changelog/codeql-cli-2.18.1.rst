@@ -161,7 +161,7 @@ C/C++
 *   Added subclasses of :code:`BuiltInOperations` for :code:`__builtin_has_attribute`, :code:`__builtin_is_corresponding_member`, :code:`__builtin_is_pointer_interconvertible_with_class`, :code:`__is_assignable_no_precondition_check`, :code:`__is_bounded_array`, :code:`__is_convertible`, :code:`__is_corresponding_member`, :code:`__is_nothrow_convertible`, :code:`__is_pointer_interconvertible_with_class`, :code:`__is_referenceable`, :code:`__is_same_as`, :code:`__is_trivially_copy_assignable`, :code:`__is_unbounded_array`, :code:`__is_valid_winrt_type`, :code:`_is_win_class`, :code:`__is_win_interface`, :code:`__reference_binds_to_temporary`, :code:`__reference_constructs_from_temporary`, and :code:`__reference_converts_from_temporary`.
 *   The class :code:`NewArrayExpr` adds a predicate :code:`getArraySize()` to allow a more convenient way to access the static size of the array when the extent is missing.
 
-Java
+Java and Kotlin
 """"
 
 *   Kotlin support is now out of beta, and generally available
