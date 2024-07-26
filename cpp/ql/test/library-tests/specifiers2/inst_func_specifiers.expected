@@ -1,0 +1,2 @@
+| cpp20.cpp:15:8:15:23 | TestExplicitBool<char> | file://:0:0:0:0 | char | cpp20.cpp:17:5:17:20 | TestExplicitBool | explicit, extern, public |
+| cpp20.cpp:15:8:15:23 | TestExplicitBool<int> | file://:0:0:0:0 | int | cpp20.cpp:17:5:17:20 | TestExplicitBool | extern, public |

@@ -146,3 +146,8 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
 }
 
 predicate phaseNeedsSoundEscapeAnalysis() { none() }
+
+UnaliasedSsa::Allocation getOldAllocation(VariableAllocation allocation) {
+  UnaliasedSsa::canReuseSsaForVariable(allocation.getIRVariable()) and
+  result = allocation.getIRVariable()
+}
