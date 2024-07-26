@@ -227,13 +227,15 @@ private newtype TMemoryLocation =
   TAllAliasedMemory(IRFunction irFunc, Boolean isMayAccess)
 
 /**
- * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * A memory location accessed by a memory operand or memory result. In this implementation, the location is
  * one of the following:
  * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
  * unknown.
  * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
+ *
+ * Some of these memory locations will be filtered out for performance reasons before being passed to SSA construction.
  */
-abstract class MemoryLocation extends TMemoryLocation {
+abstract private class MemoryLocation0 extends TMemoryLocation {
   final string toString() {
     if this.isMayAccess()
     then result = "?" + this.toStringInternal()
@@ -294,9 +296,9 @@ abstract class MemoryLocation extends TMemoryLocation {
  * represented by a `MemoryLocation` that totally overlaps all other
  * `MemoryLocations` in the set.
  */
-abstract class VirtualVariable extends MemoryLocation { }
+abstract class VirtualVariable extends MemoryLocation0 { }
 
-abstract class AllocationMemoryLocation extends MemoryLocation {
+abstract class AllocationMemoryLocation extends MemoryLocation0 {
   Allocation var;
   boolean isMayAccess;
 
@@ -424,7 +426,7 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
  * `{a, b}` into a memory location that represents _all_ of the allocations
  * in the set.
  */
-class GroupedMemoryLocation extends TGroupedMemoryLocation, MemoryLocation {
+class GroupedMemoryLocation extends TGroupedMemoryLocation, MemoryLocation0 {
   VariableGroup vg;
   boolean isMayAccess;
   boolean isAll;
@@ -528,7 +530,7 @@ class GroupedVirtualVariable extends GroupedMemoryLocation, VirtualVariable {
 /**
  * An access to memory that is not known to be confined to a specific `IRVariable`.
  */
-class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
+class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation0 {
   IRFunction irFunc;
   boolean isMayAccess;
 
@@ -555,7 +557,7 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
  * An access to memory that is not known to be confined to a specific `IRVariable`, but is known to
  * not access memory on the current function's stack frame.
  */
-class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
+class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation0 {
   IRFunction irFunc;
   boolean isMayAccess;
 
@@ -589,7 +591,7 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 /**
  * An access to all aliased memory.
  */
-class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
+class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation0 {
   IRFunction irFunc;
   boolean isMayAccess;
 
@@ -620,7 +622,7 @@ class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
 /**
  * Gets the overlap relationship between the definition location `def` and the use location `use`.
  */
-Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
+Overlap getOverlap(MemoryLocation0 def, MemoryLocation0 use) {
   exists(Overlap overlap |
     // Compute the overlap based only on the extent.
     overlap = getExtentOverlap(def, use) and
@@ -648,7 +650,7 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
  * based only on the set of memory locations accessed. Handling of "may" accesses and read-only
  * locations occurs in `getOverlap()`.
  */
-private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
+private Overlap getExtentOverlap(MemoryLocation0 def, MemoryLocation0 use) {
   // The def and the use must have the same virtual variable, or no overlap is possible.
   (
     // AllAliasedMemory must totally overlap any location within the same virtual variable.
@@ -861,6 +863,40 @@ predicate canReuseSsaForOldResult(Instruction instr) { OldSsa::canReuseSsaForMem
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
+/** Gets the number of overlapping uses of `def`. */
+private int numberOfOverlappingUses(MemoryLocation0 def) {
+  result = strictcount(MemoryLocation0 use | exists(getOverlap(def, use)))
+}
+
+/**
+ * Holds if `def` is a busy definition. That is, it has a large number of
+ * overlapping uses.
+ */
+private predicate isBusyDef(MemoryLocation0 def) { numberOfOverlappingUses(def) > 1024 }
+
+/** Holds if `use` is a use that overlaps with a busy definition. */
+private predicate useOverlapWithBusyDef(MemoryLocation0 use) {
+  exists(MemoryLocation0 def |
+    exists(getOverlap(def, use)) and
+    isBusyDef(def)
+  )
+}
+
+final private class FinalMemoryLocation = MemoryLocation0;
+
+/**
+ * A memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * one of the following:
+ * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
+ * unknown.
+ * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
+ *
+ * Compared to `MemoryLocation0`, this class does not contain memory locations that represent uses of busy definitions.
+ */
+class MemoryLocation extends FinalMemoryLocation {
+  MemoryLocation() { not useOverlapWithBusyDef(this) }
+}
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   not canReuseSsaForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
@@ -905,9 +941,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
   )
 }
 
-MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+private MemoryLocation0 getOperandMemoryLocation0(MemoryOperand operand, boolean isMayAccess) {
   not canReuseSsaForOldResult(operand.getAnyDef()) and
-  exists(MemoryAccessKind kind, boolean isMayAccess |
+  exists(MemoryAccessKind kind |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
@@ -945,6 +981,19 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
       kind instanceof NonLocalMemoryAccess and
       result = TAllNonLocalMemory(operand.getEnclosingIRFunction(), isMayAccess)
     )
+  )
+}
+
+MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  exists(MemoryLocation0 use0, boolean isMayAccess |
+    use0 = getOperandMemoryLocation0(operand, isMayAccess)
+  |
+    result = use0
+    or
+    // If `use0` overlaps with a busy definition we turn it into a use
+    // of `UnknownMemoryLocation`.
+    not use0 instanceof MemoryLocation and
+    result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
   )
 }
 
