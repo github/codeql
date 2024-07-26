@@ -51,6 +51,12 @@ private class Remquo extends Function, SideEffectFunction {
   override predicate hasOnlySpecificReadSideEffects() { any() }
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    this.getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = false and
+    mustWrite = true
+  }
 }
 
 private class Fma extends Function, SideEffectFunction {
@@ -95,4 +101,8 @@ private class Nan extends Function, SideEffectFunction, AliasFunction {
   override predicate parameterNeverEscapes(int index) { index = 0 }
 
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = true
+  }
 }

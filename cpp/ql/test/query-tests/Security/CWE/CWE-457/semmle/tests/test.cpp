@@ -581,3 +581,15 @@ void test46()
   *rP = nullptr;
   use(r);
 }
+
+namespace std {
+	float remquo(float, float, int*);
+}
+
+void test47() {
+	float x = 1.0f;
+	float y = 2.0f;
+	int quo;
+	std::remquo(x, y, &quo);
+	use(quo); // GOOD
+}
