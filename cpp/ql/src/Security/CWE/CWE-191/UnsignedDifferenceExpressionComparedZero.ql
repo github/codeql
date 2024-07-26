@@ -5,7 +5,7 @@
  * @id cpp/unsigned-difference-expression-compared-zero
  * @problem.severity warning
  * @security-severity 9.8
- * @precision medium
+ * @precision high
  * @tags security
  *       correctness
  *       external/cwe/cwe-191

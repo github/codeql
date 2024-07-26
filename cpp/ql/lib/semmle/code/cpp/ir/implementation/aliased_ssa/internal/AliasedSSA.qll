@@ -7,7 +7,7 @@ private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConst
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
-private import AliasConfiguration
+import AliasConfiguration
 private import codeql.util.Boolean
 
 private class IntValue = Ints::IntValue;

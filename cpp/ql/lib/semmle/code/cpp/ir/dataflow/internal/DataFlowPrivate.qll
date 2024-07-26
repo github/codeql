@@ -994,9 +994,6 @@ DataFlowType getNodeType(Node n) {
   result instanceof VoidType // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(DataFlowType t) { none() } // stub implementation
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -1097,7 +1094,11 @@ class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+final private class TypeFinal = Type;
+
+class DataFlowType extends TypeFinal {
+  string toString() { result = "" }
+}
 
 cached
 private newtype TDataFlowCall =
