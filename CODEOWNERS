@@ -1,6 +1,7 @@
 /cpp/ @github/codeql-c-analysis
-/cpp/autobuilder/ @github/codeql-c-extractor
 /csharp/ @github/codeql-csharp
+/csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor
+/csharp/autobuilder/Semmle.Autobuild.Cpp.Tests @github/codeql-c-extractor
 /go/ @github/codeql-go
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript

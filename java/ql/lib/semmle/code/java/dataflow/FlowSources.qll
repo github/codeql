@@ -126,7 +126,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
       m.getMethod() instanceof ReverseDnsMethod and
       not exists(MethodCall l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
-        l.getMethod().getName() = "getLocalHost"
+        (l.getMethod().getName() = "getLocalHost" or l.getMethod().getName() = "getLoopbackAddress")
       )
     )
   }
@@ -301,7 +301,7 @@ class EnvReadMethod extends Method {
 
 /** The type `java.net.InetAddress`. */
 class TypeInetAddr extends RefType {
-  TypeInetAddr() { this.getQualifiedName() = "java.net.InetAddress" }
+  TypeInetAddr() { this.hasQualifiedName("java.net", "InetAddress") }
 }
 
 /** A reverse DNS method. */

@@ -42,7 +42,7 @@ endmacro()
 macro(generate_and_include)
     file(REMOVE "${BAZEL_WORKSPACE}/.bazel-cmake/BUILD.bazel")
     # use aquery to only get targets compatible with the current platform
-    bazel_even_if_failing(aquery "kind(\"cc_test|cc_binary\", ${ARGN})" ${BAZEL_BUILD_OPTIONS} --output=jsonproto OUTPUT_VARIABLE BAZEL_AQUERY_RESULT)
+    bazel_even_if_failing(aquery "kind(\"cc_test|cc_binary\",${ARGN})" ${BAZEL_BUILD_OPTIONS} --output=jsonproto OUTPUT_VARIABLE BAZEL_AQUERY_RESULT)
     string(JSON BAZEL_JSON_TARGETS GET "${BAZEL_AQUERY_RESULT}" targets)
     string(JSON LAST_IDX LENGTH "${BAZEL_JSON_TARGETS}")
     math(EXPR LAST_IDX "${LAST_IDX} - 1")

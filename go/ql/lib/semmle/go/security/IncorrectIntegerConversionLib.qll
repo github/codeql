@@ -422,7 +422,7 @@ class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
   TypeAssertionCheck() {
     exists(TypeAssertExpr tae |
       this = DataFlow::exprNode(tae.getExpr()) and
-      it = tae.getTypeExpr().getType()
+      it = tae.getTypeExpr().getType().getUnderlyingType()
     )
   }
 
@@ -442,7 +442,7 @@ class TypeSwitchVarFlowStateTransformer extends DataFlow::SsaNode, FlowStateTran
   TypeSwitchVarFlowStateTransformer() {
     exists(IR::TypeSwitchImplicitVariableInstruction insn, LocalVariable lv | insn.writes(lv, _) |
       this.getSourceVariable() = lv and
-      it = lv.getType()
+      it = lv.getType().getUnderlyingType()
     )
   }
 
@@ -572,7 +572,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
  * Tracks taint flow from an integer obtained from parsing a string that flows
  * to a type conversion to a smaller integer type, which could cause data loss.
  */
-module Flow = TaintTracking::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
+module Flow = DataFlow::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
 
 /** Gets a string describing the size of the integer parsed. */
 deprecated string describeBitSize(int bitSize, int intTypeBitSize) {

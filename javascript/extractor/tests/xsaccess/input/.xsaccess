@@ -1,0 +1,3 @@
+{
+  "exposed": true // Expose data via http
+}

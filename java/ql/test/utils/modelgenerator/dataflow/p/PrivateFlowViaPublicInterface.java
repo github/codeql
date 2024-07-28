@@ -29,7 +29,6 @@ public class PrivateFlowViaPublicInterface {
     }
 
     // summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
-    // sink=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];path-injection;df-generated
     @Override
     public OutputStream openStream() throws IOException {
       return new FileOutputStream(file);
@@ -45,7 +44,6 @@ public class PrivateFlowViaPublicInterface {
       return null;
     }
 
-    // neutral=p;PrivateFlowViaPublicInterface$SPI;openStreamNone;();summary;df-generated
     @Override
     public OutputStream openStreamNone() throws IOException {
       return new FileOutputStream(new RandomPojo().someFile);

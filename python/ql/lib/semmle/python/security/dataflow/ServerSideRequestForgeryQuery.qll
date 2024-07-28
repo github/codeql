@@ -74,7 +74,7 @@ predicate fullyControlledRequest(Http::Client::Request request) {
 }
 
 /**
- * DEPRECATED: Use `FullServerSideRequestForgeryFlow` module instead.
+ * DEPRECATED: Use `PartialServerSideRequestForgeryFlow` module instead.
  *
  * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
  *

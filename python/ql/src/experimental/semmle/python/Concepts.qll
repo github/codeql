@@ -15,6 +15,39 @@ private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 private import semmle.python.Concepts
 
+/**
+ * A data-flow node that executes an operating system command,
+ * on a remote server likely by SSH connections.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RemoteCommandExecution::Range` instead.
+ */
+class RemoteCommandExecution extends DataFlow::Node instanceof RemoteCommandExecution::Range {
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
+
+  /** Gets the argument that specifies the command to be executed. */
+  DataFlow::Node getCommand() { result = super.getCommand() }
+}
+
+/** Provides classes for modeling new remote server command execution APIs. */
+module RemoteCommandExecution {
+  /**
+   * A data-flow node that executes an operating system command,
+   * on a remote server likely by SSH connections.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RemoteCommandExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the command to be executed. */
+    abstract DataFlow::Node getCommand();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
+  }
+}
+
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
   /**
@@ -214,45 +247,6 @@ class SqlEscape extends DataFlow::Node instanceof SqlEscape::Range {
    * Gets the argument containing the raw SQL statement.
    */
   DataFlow::Node getAnInput() { result = super.getAnInput() }
-}
-
-/** Provides classes for modeling HTTP Header APIs. */
-module HeaderDeclaration {
-  /**
-   * A data-flow node that collects functions setting HTTP Headers.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `HeaderDeclaration` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /**
-     * Gets the argument containing the header name.
-     */
-    abstract DataFlow::Node getNameArg();
-
-    /**
-     * Gets the argument containing the header value.
-     */
-    abstract DataFlow::Node getValueArg();
-  }
-}
-
-/**
- * A data-flow node that collects functions setting HTTP Headers.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `HeaderDeclaration::Range` instead.
- */
-class HeaderDeclaration extends DataFlow::Node instanceof HeaderDeclaration::Range {
-  /**
-   * Gets the argument containing the header name.
-   */
-  DataFlow::Node getNameArg() { result = super.getNameArg() }
-
-  /**
-   * Gets the argument containing the header value.
-   */
-  DataFlow::Node getValueArg() { result = super.getValueArg() }
 }
 
 /** Provides classes for modeling Csv writer APIs. */

@@ -135,6 +135,8 @@ private class SummarizedSyntheticCallableAdapter extends SummarizedCallable, TSy
       model = sc
     )
   }
+
+  override predicate hasExactModel() { any() }
 }
 
 deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

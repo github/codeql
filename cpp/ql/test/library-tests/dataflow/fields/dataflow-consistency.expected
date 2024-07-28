@@ -184,6 +184,7 @@ postWithInFlow
 | simple.cpp:65:7:65:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | simple.cpp:83:12:83:13 | f1 [post update] | PostUpdateNode should not be the target of local flow. |
 | simple.cpp:92:7:92:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:118:7:118:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | struct_init.c:24:11:24:12 | ab [inner post update] | PostUpdateNode should not be the target of local flow. |
 | struct_init.c:36:17:36:24 | nestedAB [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge

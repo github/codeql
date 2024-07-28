@@ -8,6 +8,7 @@ extensions:
       - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "ImmutableEquatableArray", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["SourceGenerators", "TypeRef", False, "TypeRef", "(Microsoft.CodeAnalysis.ITypeSymbol)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -21,7 +22,6 @@ extensions:
       - ["SourceGenerators", "TypeRef", "Equals", "(SourceGenerators.TypeRef)", "summary", "df-generated"]
       - ["SourceGenerators", "TypeRef", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["SourceGenerators", "TypeRef", "GetHashCode", "()", "summary", "df-generated"]
-      - ["SourceGenerators", "TypeRef", "TypeRef", "(Microsoft.CodeAnalysis.ITypeSymbol)", "summary", "df-generated"]
       - ["SourceGenerators", "TypeRef", "get_CanBeNull", "()", "summary", "df-generated"]
       - ["SourceGenerators", "TypeRef", "get_FullyQualifiedName", "()", "summary", "df-generated"]
       - ["SourceGenerators", "TypeRef", "get_IsValueType", "()", "summary", "df-generated"]

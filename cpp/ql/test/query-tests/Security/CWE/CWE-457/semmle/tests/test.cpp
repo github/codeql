@@ -564,5 +564,5 @@ void test45() {
   }
 
   *rP = NULL;
-  use(r); // GOOD [FALSE POSITIVE]
+  use(r); // GOOD
 }

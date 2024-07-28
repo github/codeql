@@ -3,7 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["encoding", "BinaryMarshaler", True, "MarshalBinary", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding", "BinaryUnmarshaler", True, "UnmarshalBinary", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["encoding", "TextMarshaler", True, "MarshalText", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding", "TextUnmarshaler", True, "UnmarshalText", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["encoding", "BinaryMarshaler", True, "MarshalBinary", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding", "BinaryUnmarshaler", True, "UnmarshalBinary", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding", "TextMarshaler", True, "MarshalText", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding", "TextUnmarshaler", True, "UnmarshalText", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

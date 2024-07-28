@@ -1,0 +1,15 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
+
+codeql_pkg_files(
+    name = "resources",
+    srcs = glob(
+        ["**/*"],
+        exclude = [
+            "tools/*.sh",
+            "BUILD.bazel",
+        ],
+    ),
+    exes = glob(["tools/*.sh"]),
+    strip_prefix = "",
+    visibility = ["//javascript:__pkg__"],
+)

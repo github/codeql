@@ -6,6 +6,7 @@ import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.PathCreation
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A method that returns the name of an archive entry.
@@ -39,7 +40,10 @@ module ZipSlipConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof PathInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof SimpleTypeSanitizer or
+    node instanceof PathInjectionSanitizer
+  }
 }
 
 /** Tracks flow from archive entries to file creation. */

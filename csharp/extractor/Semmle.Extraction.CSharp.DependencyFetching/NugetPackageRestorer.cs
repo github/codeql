@@ -98,12 +98,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"Checking NuGet feed responsiveness: {checkNugetFeedResponsiveness}");
             compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", checkNugetFeedResponsiveness ? "1" : "0"));
 
+            HashSet<string>? explicitFeeds = null;
+
             try
             {
-                if (checkNugetFeedResponsiveness && !CheckFeeds())
+                if (checkNugetFeedResponsiveness && !CheckFeeds(out explicitFeeds))
                 {
                     // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds();
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds(explicitFeeds);
                     return unresponsiveMissingPackageLocation is null
                         ? []
                         : [unresponsiveMissingPackageLocation];
@@ -163,7 +165,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             LogAllUnusedPackages(dependencies);
 
             var missingPackageLocation = checkNugetFeedResponsiveness
-                ? DownloadMissingPackagesFromSpecificFeeds()
+                ? DownloadMissingPackagesFromSpecificFeeds(explicitFeeds)
                 : DownloadMissingPackages();
 
             if (missingPackageLocation is not null)
@@ -173,13 +175,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return assemblyLookupLocations;
         }
 
-        private List<string> GetReachableFallbackNugetFeeds()
+        private List<string> GetReachableFallbackNugetFeeds(HashSet<string>? feedsFromNugetConfigs)
         {
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
             if (fallbackFeeds.Count == 0)
             {
                 fallbackFeeds.Add(PublicNugetOrgFeed);
-                logger.LogInfo($"No fallback Nuget feeds specified. Using default feed: {PublicNugetOrgFeed}");
+                logger.LogInfo($"No fallback Nuget feeds specified. Adding default feed: {PublicNugetOrgFeed}");
+
+                var shouldAddNugetConfigFeeds = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.AddNugetConfigFeedsToFallback);
+                logger.LogInfo($"Adding feeds from nuget.config to fallback restore: {shouldAddNugetConfigFeeds}");
+
+                if (shouldAddNugetConfigFeeds && feedsFromNugetConfigs?.Count > 0)
+                {
+                    // There are some feeds in `feedsFromNugetConfigs` that have already been checked for reachability, we could skip those.
+                    // But we might use different responsiveness testing settings when we try them in the fallback logic, so checking them again is safer.
+                    fallbackFeeds.UnionWith(feedsFromNugetConfigs);
+                    logger.LogInfo($"Using Nuget feeds from nuget.config files as fallback feeds: {string.Join(", ", feedsFromNugetConfigs.OrderBy(f => f))}");
+                }
             }
 
             logger.LogInfo($"Checking fallback Nuget feed reachability on feeds: {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
@@ -193,6 +206,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Reachable fallback Nuget feeds: {string.Join(", ", reachableFallbackFeeds.OrderBy(f => f))}");
             }
+
+            compilationInfoContainer.CompilationInfos.Add(("Reachable fallback Nuget feed count", reachableFallbackFeeds.Count.ToString()));
 
             return reachableFallbackFeeds;
         }
@@ -210,10 +225,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var nugetSourceFailures = 0;
             var assets = new Assets(logger);
+
+            var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
+
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, TargetWindows: isWindows));
                     if (res.Success)
                     {
                         successCount++;
@@ -243,6 +261,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var nugetSourceFailures = 0;
             ConcurrentBag<DependencyContainer> collectedDependencies = [];
+
+            var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
+
             var sync = new object();
             var projectGroups = projects.GroupBy(Path.GetDirectoryName);
             Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
@@ -251,7 +272,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
                     {
@@ -272,9 +293,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds()
+        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(HashSet<string>? feedsFromNugetConfigs)
         {
-            var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
+            var reachableFallbackFeeds = GetReachableFallbackNugetFeeds(feedsFromNugetConfigs);
             if (reachableFallbackFeeds.Count > 0)
             {
                 return DownloadMissingPackages(fallbackNugetFeeds: reachableFallbackFeeds);
@@ -523,7 +544,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             TryChangeProjectFile(tempDir, PackageReferenceVersion(), $"Version=\"{newVersion}\"", "package reference version");
         }
 
-        private bool TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
+        private void TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
         {
             try
             {
@@ -533,7 +554,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (csprojs.Length != 1)
                 {
                     logger.LogError($"Could not find the .csproj file in {projectDir.FullName}, count = {csprojs.Length}");
-                    return false;
+                    return;
                 }
 
                 var csproj = csprojs[0];
@@ -542,18 +563,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (matches.Count == 0)
                 {
                     logger.LogError($"Could not find the {patternName} in {csproj.FullName}");
-                    return false;
+                    return;
                 }
 
                 content = pattern.Replace(content, replacement, 1);
                 File.WriteAllText(csproj.FullName, content);
-                return true;
             }
             catch (Exception exc)
             {
                 logger.LogError($"Failed to change the {patternName} in {projectDir.FullName}: {exc}");
             }
-            return false;
         }
 
         private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
@@ -623,13 +642,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return (timeoutMilliSeconds, tryCount);
         }
 
-        private bool CheckFeeds()
+        private bool CheckFeeds(out HashSet<string> explicitFeeds)
         {
             logger.LogInfo("Checking Nuget feeds...");
-            var (explicitFeeds, allFeeds) = GetAllFeeds();
+            (explicitFeeds, var allFeeds) = GetAllFeeds();
 
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
-                .ToHashSet() ?? [];
+                .ToHashSet();
 
             if (excludedFeeds.Count > 0)
             {
@@ -764,7 +783,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), sb.ToString(), subfolderName);
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), sb.ToString(), subfolderName);
         }
     }
 }

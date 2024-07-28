@@ -272,3 +272,9 @@ class MySubclass2 extends MySubclass {
 sink(new MySubclass2().baseclassSource()); // NOT OK
 
 sink(testlib.parenthesizedPackageName()); // NOT OK
+
+function dangerConstant() {
+  sink("danger-constant".danger); // NOT OK
+  sink("danger-constant".safe); // OK
+  sink("danger-constant"); // OK
+}

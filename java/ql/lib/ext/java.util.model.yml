@@ -428,6 +428,7 @@ extensions:
       - ["java.util", "Arrays", "toString", "(Object[])", "summary", "manual"]
       - ["java.util", "Calendar", "getInstance", "()", "summary", "manual"]
       - ["java.util", "Collection", "contains", "(Object)", "summary", "manual"]
+      - ["java.util", "Collection", "containsAll", "(Collection)", "summary", "manual"]
       - ["java.util", "Collection", "isEmpty", "()", "summary", "manual"]
       - ["java.util", "Collection", "size", "()", "summary", "manual"]
       - ["java.util", "Collections", "emptyList", "()", "summary", "manual"]

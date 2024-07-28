@@ -27,8 +27,7 @@ private module Cached {
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     localAdditionalTaintStep(nodeFrom, nodeTo, model)
     or
-    any(AdditionalTaintStep a).step(nodeFrom, nodeTo) and
-    model = "AdditionalTaintStep"
+    any(AdditionalTaintStep a).hasStep(nodeFrom, nodeTo, model)
   }
 
   /**

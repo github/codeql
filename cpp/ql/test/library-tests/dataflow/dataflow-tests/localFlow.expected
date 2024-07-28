@@ -1,6 +1,6 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:4,6-14)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:4,31-39)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:6,3-11)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localFlow.ql:4,6-14)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localFlow.ql:4,31-39)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localFlow.ql:6,3-11)
 | example.c:15:37:15:37 | b | example.c:15:37:15:37 | b |
 | example.c:15:37:15:37 | b | example.c:19:6:19:6 | b |
 | example.c:15:44:15:46 | pos | example.c:24:24:24:26 | pos |

@@ -8,6 +8,6 @@
 
 import internal.CaptureModels
 
-from DataFlowTargetApi api, string source
+from DataFlowSourceTargetApi api, string source
 where source = captureSource(api)
 select source order by source

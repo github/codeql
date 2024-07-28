@@ -195,7 +195,14 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   or
   // This format was supported until Rails 2.3.8
   call = activeRecordQueryBuilderCall(["all", "find", "first", "last"]) and
-  sink = call.getKeywordArgument("conditions")
+  exists(DataFlow::LocalSourceNode sn |
+    sn = call.getKeywordArgument("conditions").getALocalSource()
+  |
+    sink = sn.(DataFlow::ArrayLiteralNode).getElement(0)
+    or
+    sn.(DataFlow::LiteralNode).asLiteralAstNode() instanceof StringlikeLiteral and
+    sink = sn
+  )
   or
   call = activeRecordQueryBuilderCall("reload") and
   sink = call.getKeywordArgument("lock")

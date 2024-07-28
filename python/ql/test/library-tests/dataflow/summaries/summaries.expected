@@ -42,7 +42,7 @@ edges
 | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | provenance |  |
 | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist [List element] | summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | provenance |  |
 | summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist [List element] | provenance |  |
-| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist | provenance | AdditionalTaintStep |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist | provenance | Decoding-JSON |
 | summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | provenance | json.loads |
 | summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | provenance |  |
 nodes

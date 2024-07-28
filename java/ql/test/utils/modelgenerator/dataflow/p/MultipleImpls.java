@@ -18,6 +18,7 @@ public class MultipleImpls {
   // implements in different library should not count as impl
   public static class Strat3 implements Callable<String> {
 
+    // neutral=p;MultipleImpls$Strat3;call;();summary;df-generated
     @Override
     public String call() throws Exception {
       return null;

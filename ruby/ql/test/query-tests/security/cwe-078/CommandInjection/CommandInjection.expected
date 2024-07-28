@@ -1,3 +1,6 @@
+models
+| 1 | Sink: Terrapin::CommandLine!; Method[new].Argument[0]; command-injection |
+| 2 | Sink: Terrapin::CommandLine!; Method[new].Argument[1]; command-injection |
 edges
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:7:10:7:15 | #{...} | provenance |  |
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:8:16:8:18 | cmd | provenance |  |
@@ -21,9 +24,9 @@ edges
 | CommandInjection.rb:103:9:103:12 | file | CommandInjection.rb:104:16:104:28 | "cat #{...}" | provenance | AdditionalTaintStep |
 | CommandInjection.rb:103:16:103:21 | call to params | CommandInjection.rb:103:16:103:28 | ...[...] | provenance |  |
 | CommandInjection.rb:103:16:103:28 | ...[...] | CommandInjection.rb:103:9:103:12 | file | provenance |  |
-| CommandInjection.rb:111:33:111:38 | call to params | CommandInjection.rb:111:33:111:44 | ...[...] | provenance |  Sink:MaD:46 |
+| CommandInjection.rb:111:33:111:38 | call to params | CommandInjection.rb:111:33:111:44 | ...[...] | provenance |  Sink:MaD:1 |
 | CommandInjection.rb:113:44:113:49 | call to params | CommandInjection.rb:113:44:113:54 | ...[...] | provenance |  |
-| CommandInjection.rb:113:44:113:54 | ...[...] | CommandInjection.rb:113:41:113:56 | "#{...}" | provenance | AdditionalTaintStep Sink:MaD:47 |
+| CommandInjection.rb:113:44:113:54 | ...[...] | CommandInjection.rb:113:41:113:56 | "#{...}" | provenance | AdditionalTaintStep Sink:MaD:2 |
 nodes
 | CommandInjection.rb:6:9:6:11 | cmd | semmle.label | cmd |
 | CommandInjection.rb:6:15:6:20 | call to params | semmle.label | call to params |
