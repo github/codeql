@@ -378,11 +378,6 @@ module Zip {
         call.getCallee().hasName("getInputStream") and
         call.getQualifier() = this.asExpr()
       )
-      or
-      exists(ConstructorCall call |
-        call.getConstructedType() instanceof TypeZipFile and
-        call.getAnArgument() = this.asExpr()
-      )
     }
   }
 
