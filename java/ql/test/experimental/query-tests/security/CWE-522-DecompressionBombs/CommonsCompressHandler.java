@@ -58,15 +58,6 @@ public class CommonsCompressHandler {
         new XZCompressorInputStream(in); // $ hasTaintFlow="in"
         new ZCompressorInputStream(in); // $ hasTaintFlow="in"
         new ZstdCompressorInputStream(in); // $ hasTaintFlow="in"
-
-        int buffersize = 4096;
-        final byte[] buffer = new byte[buffersize];
-        int n = 0;
-        while (-1 != (n = gzIn.read(buffer))) {
-            out.write(buffer, 0, n);
-        }
-        out.close();
-        gzIn.close();
     }
 
     static void commonsCompressArchiveInputStream2(InputStream inputStream) {
