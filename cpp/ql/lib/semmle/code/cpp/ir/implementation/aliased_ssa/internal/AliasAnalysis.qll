@@ -106,8 +106,7 @@ private predicate operandEscapesDomain(Operand operand) {
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUse() instanceof ReturnValueInstruction and
-  not operand.getUse() instanceof ReturnIndirectionInstruction and
-  not operand instanceof PhiInputOperand
+  not operand.getUse() instanceof ReturnIndirectionInstruction
 }
 
 /**
@@ -191,6 +190,11 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset, Instr
     // A copy propagates the source value.
     operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
   )
+  or
+  operand = instr.(PhiInstruction).getAnInputOperand() and
+  // Using `unknown` ensures termination since we cannot keep incrementing a bit offset
+  // through the back edge of a loop (or through recursion).
+  bitOffset = Ints::unknown()
 }
 
 private predicate operandEscapesNonReturn(Operand operand) {
@@ -211,9 +215,6 @@ private predicate operandEscapesNonReturn(Operand operand) {
   )
   or
   isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUse())
-  or
-  operand instanceof PhiInputOperand and
-  resultEscapesNonReturn(operand.getUse())
   or
   operandEscapesDomain(operand)
 }
@@ -236,9 +237,6 @@ private predicate operandMayReachReturn(Operand operand) {
   operand.getUse() instanceof ReturnValueInstruction
   or
   isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUse())
-  or
-  operand instanceof PhiInputOperand and
-  resultMayReachReturn(operand.getUse())
 }
 
 private predicate operandReturned(Operand operand, IntValue bitOffset) {

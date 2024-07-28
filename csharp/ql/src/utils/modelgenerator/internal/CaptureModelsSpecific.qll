@@ -82,9 +82,19 @@ private Callable liftedImpl(Callable api) {
   not exists(getARelevantOverrideeOrImplementee(result))
 }
 
-private predicate hasManualModel(Callable api) {
+private predicate hasManualSummaryModel(Callable api) {
   api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
   api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+}
+
+private predicate hasManualSourceModel(Callable api) {
+  api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel())
+}
+
+private predicate hasManualSinkModel(Callable api) {
+  api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
 }
 
 /**
@@ -102,18 +112,46 @@ predicate isUninterestingForDataFlowModels(CS::Callable api) { isHigherOrder(api
 predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
 
 /**
- * A class of callables that are potentially relevant for generating summary, source, sink
- * and neutral models.
+ * A class of callables that are potentially relevant for generating source or
+ * sink models.
+ */
+class SourceOrSinkTargetApi extends Callable {
+  SourceOrSinkTargetApi() { relevant(this) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating sink models.
+ */
+class SinkTargetApi extends SourceOrSinkTargetApi {
+  SinkTargetApi() { not hasManualSinkModel(this) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating source models.
+ */
+class SourceTargetApi extends SourceOrSinkTargetApi {
+  SourceTargetApi() {
+    not hasManualSourceModel(this) and
+    // Do not generate source models for overridable callables
+    // as virtual dispatch implies that too many methods
+    // will be considered sources.
+    not this.(Overridable).overridesOrImplements(_)
+  }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating summary or
+ * neutral models.
  *
  * In the Standard library and 3rd party libraries it is the callables (or callables that have a
  * super implementation) that can be called from outside the library itself.
  */
-class TargetApiSpecific extends Callable {
+class SummaryTargetApi extends Callable {
   private Callable lift;
 
-  TargetApiSpecific() {
+  SummaryTargetApi() {
     lift = liftedImpl(this) and
-    not hasManualModel(lift)
+    not hasManualSummaryModel(lift)
   }
 
   /**
@@ -129,10 +167,6 @@ class TargetApiSpecific extends Callable {
    */
   predicate isRelevant() { relevant(this) }
 }
-
-string asPartialModel(TargetApiSpecific api) { result = ExternalFlow::asPartialModel(api.lift()) }
-
-string asPartialNeutralModel(TargetApiSpecific api) { result = ExternalFlow::getSignature(api) }
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.
@@ -237,23 +271,33 @@ private predicate isRelevantMemberAccess(DataFlow::Node node) {
 
 predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
-private class ManualNeutralSinkCallable extends Callable {
-  ManualNeutralSinkCallable() {
-    this =
-      any(FlowSummaryImpl::Public::NeutralCallable nc |
-        nc.hasManualModel() and nc.getKind() = "sink"
-      )
-  }
-}
-
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
 predicate apiSource(DataFlow::Node source) {
-  (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
-    relevant(enclosing) and
-    not enclosing instanceof ManualNeutralSinkCallable
+  isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode
+}
+
+private predicate uniquelyCalls(DataFlowCallable dc1, DataFlowCallable dc2) {
+  exists(DataFlowCall call |
+    dc1 = call.getEnclosingCallable() and
+    dc2 = unique(DataFlowCallable dc0 | dc0 = viableCallable(call) | dc0)
+  )
+}
+
+bindingset[dc1, dc2]
+private predicate uniquelyCallsPlus(DataFlowCallable dc1, DataFlowCallable dc2) =
+  fastTC(uniquelyCalls/2)(dc1, dc2)
+
+/**
+ * Holds if it is not relevant to generate a source model for `api`, even
+ * if flow is detected from a node within `source` to a sink within `api`.
+ */
+bindingset[sourceEnclosing, api]
+predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) {
+  not exists(DataFlowCallable dc1, DataFlowCallable dc2 | uniquelyCallsPlus(dc1, dc2) or dc1 = dc2 |
+    dc1.getUnderlyingCallable() = api and
+    dc2.getUnderlyingCallable() = sourceEnclosing
   )
 }
 
@@ -280,4 +324,4 @@ predicate isRelevantSinkKind(string kind) { any() }
  * Holds if `kind` is a relevant source kind for creating source models.
  */
 bindingset[kind]
-predicate isRelevantSourceKind(string kind) { not kind = "file" }
+predicate isRelevantSourceKind(string kind) { any() }

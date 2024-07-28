@@ -53,6 +53,7 @@ func GetEnvGoVersion() string {
 		out, err := cmd.CombinedOutput()
 
 		if err != nil {
+			log.Println(string(out))
 			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
 		}
 

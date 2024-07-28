@@ -1,3 +1,24 @@
+## 1.1.3
+
+### Minor Analysis Improvements
+
+* There was a bug which meant that the built-in function `clear` was considered as a sanitizer in some cases when it shouldn't have been. This has now been fixed, which may lead to more alerts.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* DataFlow queries which previously used `RemoteFlowSource` to define their sources have been modified to instead use `ThreatModelFlowSource`. This means these queries will now respect threat model configurations. The default threat model configuration is equivalent to `RemoteFlowSource`, so there should be no change in results for users using the default.
+* Added the `ThreatModelFlowSource` class to `FlowSources.qll`. The `ThreatModelFlowSource` class can be used to include sources which match the current *threat model* configuration. This is the first step in supporting threat modeling for Go.
+
+### Bug Fixes
+
+* Fixed dataflow via global variables other than via a direct write: for example, via a side-effect on a global, such as `io.copy(SomeGlobal, ...)` or via assignment to a field or array or slice cell of a global. This means that any data-flow query may return more results where global variables are involved.
+
+## 1.1.1
+
+No user-facing changes.
+
 ## 1.1.0
 
 ### New Features

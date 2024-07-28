@@ -381,7 +381,7 @@ ssa.cpp:
 #-----|   Goto -> Block 1
 
 #   69|   Block 1
-#   69|     m69_1(unknown)    = Phi                : from 0:~m68_4, from 2:~m70_10
+#   69|     m69_1(unknown)    = Phi                : from 0:m68_10, from 2:m70_10
 #   69|     m69_2(char *)     = Phi                : from 0:m68_8, from 2:m70_6
 #   69|     m69_3(int)        = Phi                : from 0:m68_6, from 2:m69_8
 #   69|     r69_4(glval<int>) = VariableAddress[n] : 
@@ -411,9 +411,9 @@ ssa.cpp:
 
 #   71|   Block 3
 #   71|     v71_1(void)  = NoOp                 : 
-#   68|     v68_11(void) = ReturnIndirection[p] : &:r68_9, m68_10
+#   68|     v68_11(void) = ReturnIndirection[p] : &:r68_9, m69_1
 #   68|     v68_12(void) = ReturnVoid           : 
-#   68|     v68_13(void) = AliasedUse           : ~m69_1
+#   68|     v68_13(void) = AliasedUse           : m68_3
 #   68|     v68_14(void) = ExitFunction         : 
 
 #   75| void ScalarPhi(bool)

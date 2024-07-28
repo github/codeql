@@ -4,7 +4,6 @@ private import codeql.util.Location
 private import codeql.util.Option
 private import codeql.util.Unit
 private import codeql.util.Option
-private import codeql.util.internal.MakeSets
 
 module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
@@ -288,7 +287,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
       not expectsContent(node, _) and
       if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
-      then compatibleTypes(t, getNodeDataFlowType(node))
+      then compatibleTypesFilter(t, getNodeDataFlowType(node))
       else any()
     }
 
@@ -502,24 +501,21 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private module CallSetsInput implements MkSetsInputSig {
-      class Key = TCallEdge;
-
-      class Value = DataFlowCall;
-
-      DataFlowCall getAValue(TCallEdge ctxEdge) {
-        exists(DataFlowCall ctx, DataFlowCallable c |
-          ctxEdge = TMkCallEdge(ctx, c) and
-          reducedViableImplInCallContext(result, c, ctx)
-        )
-      }
-
-      int totalorder(DataFlowCall e) { result = callOrder(e) }
+    private DataFlowCall getACallWithReducedViableImpl(TCallEdge ctxEdge) {
+      exists(DataFlowCall ctx, DataFlowCallable c |
+        ctxEdge = TMkCallEdge(ctx, c) and
+        reducedViableImplInCallContext(result, c, ctx)
+      )
     }
 
-    private module CallSets = MakeSets<CallSetsInput>;
+    private module CallSets =
+      QlBuiltins::InternSets<TCallEdge, DataFlowCall, getACallWithReducedViableImpl/1>;
 
-    private module CallSetOption = Option<CallSets::ValueSet>;
+    private class CallSet0 extends CallSets::Set {
+      string toString() { result = "CallSet" }
+    }
+
+    private module CallSetOption = Option<CallSet0>;
 
     /**
      * A set of call sites for which dispatch is affected by the call context.
@@ -528,26 +524,23 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     private class CallSet = CallSetOption::Option;
 
-    private module DispatchSetsInput implements MkSetsInputSig {
-      class Key = TCallEdge;
-
-      class Value = TCallEdge;
-
-      TCallEdge getAValue(TCallEdge ctxEdge) {
-        exists(DataFlowCall ctx, DataFlowCallable c, DataFlowCall call, DataFlowCallable tgt |
-          ctxEdge = mkCallEdge(ctx, c) and
-          result = mkCallEdge(call, tgt) and
-          viableImplInCallContextExtIn(call, ctx) = tgt and
-          reducedViableImplInCallContext(call, c, ctx)
-        )
-      }
-
-      int totalorder(TCallEdge e) { result = edgeOrder(e) }
+    private TCallEdge getAReducedViableEdge(TCallEdge ctxEdge) {
+      exists(DataFlowCall ctx, DataFlowCallable c, DataFlowCall call, DataFlowCallable tgt |
+        ctxEdge = mkCallEdge(ctx, c) and
+        result = mkCallEdge(call, tgt) and
+        viableImplInCallContextExtIn(call, ctx) = tgt and
+        reducedViableImplInCallContext(call, c, ctx)
+      )
     }
 
-    private module DispatchSets = MakeSets<DispatchSetsInput>;
+    private module DispatchSets =
+      QlBuiltins::InternSets<TCallEdge, TCallEdge, getAReducedViableEdge/1>;
 
-    private module DispatchSetsOption = Option<DispatchSets::ValueSet>;
+    private class DispatchSet0 extends DispatchSets::Set {
+      string toString() { result = "DispatchSet" }
+    }
+
+    private module DispatchSetsOption = Option<DispatchSet0>;
 
     /**
      * A set of call edges that are allowed in the call context. This applies to
@@ -561,7 +554,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     private class DispatchSet = DispatchSetsOption::Option;
 
     private predicate relevantCtx(TCallEdge ctx) {
-      exists(CallSets::getValueSet(ctx)) or exists(getUnreachableSet(ctx))
+      exists(CallSets::getSet(ctx)) or exists(getUnreachableSet(ctx))
     }
 
     pragma[nomagic]
@@ -570,14 +563,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ) {
       relevantCtx(ctx) and
       (
-        CallSets::getValueSet(ctx) = calls.asSome()
+        CallSets::getSet(ctx) = calls.asSome()
         or
-        not exists(CallSets::getValueSet(ctx)) and calls.isNone()
+        not exists(CallSets::getSet(ctx)) and calls.isNone()
       ) and
       (
-        DispatchSets::getValueSet(ctx) = tgts.asSome()
+        DispatchSets::getSet(ctx) = tgts.asSome()
         or
-        not exists(DispatchSets::getValueSet(ctx)) and tgts.isNone()
+        not exists(DispatchSets::getSet(ctx)) and tgts.isNone()
       ) and
       (
         getUnreachableSet(ctx) = unreachable.asSome()
@@ -887,6 +880,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate nodeDataFlowType(Node n, DataFlowType t) { t = getNodeType(n) }
 
     cached
+    predicate compatibleTypesCached(DataFlowType t1, DataFlowType t2) { compatibleTypes(t1, t2) }
+
+    private predicate relevantType(DataFlowType t) { t = getNodeType(_) }
+
+    cached
+    predicate isTopType(DataFlowType t) {
+      strictcount(DataFlowType t0 | relevantType(t0)) =
+        strictcount(DataFlowType t0 | relevantType(t0) and compatibleTypesCached(t, t0))
+    }
+
+    cached
+    predicate typeStrongerThanCached(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+
+    cached
     predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
     cached
@@ -1118,7 +1125,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(ParameterPosition ppos |
         viableParam(call, ppos, p) and
         argumentPositionMatch(call, arg, ppos) and
-        compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
+        compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
         golangSpecificParamArgFilter(call, p, arg)
       )
     }
@@ -1271,10 +1278,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           then
             // normal flow through
             read = TReadStepTypesNone() and
-            compatibleTypes(getNodeDataFlowType(p), getNodeDataFlowType(node))
+            compatibleTypesFilter(getNodeDataFlowType(p), getNodeDataFlowType(node))
             or
             // getter
-            compatibleTypes(read.getContentType(), getNodeDataFlowType(node))
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(node))
           else any()
         }
 
@@ -1307,7 +1314,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
             readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
               read.getContentType()) and
             Cand::parameterValueFlowReturnCand(p, _, true) and
-            compatibleTypes(getNodeDataFlowType(p), read.getContainerType())
+            compatibleTypesFilter(getNodeDataFlowType(p), read.getContainerType())
           )
           or
           parameterValueFlow0_0(TReadStepTypesNone(), p, node, read, model)
@@ -1368,11 +1375,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           |
             // normal flow through
             read = TReadStepTypesNone() and
-            compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(out))
+            compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(out))
             or
             // getter
-            compatibleTypes(getNodeDataFlowType(arg), read.getContainerType()) and
-            compatibleTypes(read.getContentType(), getNodeDataFlowType(out))
+            compatibleTypesFilter(getNodeDataFlowType(arg), read.getContainerType()) and
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(out))
           )
         }
 
@@ -1501,40 +1508,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     newtype TCallEdge =
       TMkCallEdge(DataFlowCall call, DataFlowCallable tgt) { viableCallableExt(call) = tgt }
 
-    cached
-    int edgeOrder(TCallEdge edge) {
-      edge =
-        rank[result](TCallEdge e, DataFlowCall call, DataFlowCallable tgt |
-          e = TMkCallEdge(call, tgt)
-        |
-          e order by call.totalorder(), tgt.totalorder()
-        )
+    private NodeRegion getAnUnreachableRegion(TCallEdge edge) {
+      exists(DataFlowCall call, DataFlowCallable tgt |
+        edge = mkCallEdge(call, tgt) and
+        getNodeRegionEnclosingCallable(result) = tgt and
+        isUnreachableInCallCached(result, call)
+      )
     }
 
-    cached
-    int callOrder(DataFlowCall call) { result = call.totalorder() }
-
-    private module UnreachableSetsInput implements MkSetsInputSig {
-      class Key = TCallEdge;
-
-      class Value = NodeRegion;
-
-      NodeRegion getAValue(TCallEdge edge) {
-        exists(DataFlowCall call, DataFlowCallable tgt |
-          edge = mkCallEdge(call, tgt) and
-          getNodeRegionEnclosingCallable(result) = tgt and
-          isUnreachableInCallCached(result, call)
-        )
-      }
-
-      int totalorder(NodeRegion nr) { result = nr.totalOrder() }
-    }
-
-    private module UnreachableSets = MakeSets<UnreachableSetsInput>;
+    private module UnreachableSets =
+      QlBuiltins::InternSets<TCallEdge, NodeRegion, getAnUnreachableRegion/1>;
 
     /** A set of nodes that is unreachable in some call context. */
     cached
-    class UnreachableSet instanceof UnreachableSets::ValueSet {
+    class UnreachableSet instanceof UnreachableSets::Set {
       cached
       string toString() { result = "Unreachable" }
 
@@ -1548,7 +1535,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    UnreachableSet getUnreachableSet(TCallEdge edge) { result = UnreachableSets::getValueSet(edge) }
+    UnreachableSet getUnreachableSet(TCallEdge edge) { result = UnreachableSets::getSet(edge) }
 
     private module UnreachableSetOption = Option<UnreachableSet>;
 
@@ -1565,7 +1552,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     newtype TLocalFlowCallContext =
       TAnyLocalCall() or
-      TSpecificLocalCall(UnreachableSets::ValueSet ns)
+      TSpecificLocalCall(UnreachableSets::Set ns)
 
     cached
     newtype TReturnKindExt =
@@ -1622,7 +1609,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   bindingset[t1, t2]
   pragma[inline_late]
-  private predicate typeStrongerThan0(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+  predicate compatibleTypesFilter(DataFlowType t1, DataFlowType t2) {
+    compatibleTypesCached(t1, t2)
+  }
+
+  bindingset[t1, t2]
+  pragma[inline_late]
+  predicate typeStrongerThanFilter(DataFlowType t1, DataFlowType t2) {
+    typeStrongerThanCached(t1, t2)
+  }
 
   private predicate callEdge(DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p) {
     viableParamArg(call, p, arg) and
@@ -1703,7 +1698,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           nodeDataFlowType(arg, at) and
           nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
-          typeStrongerThan0(pt, at)
+          typeStrongerThanFilter(pt, at)
         )
         or
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
@@ -1714,7 +1709,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
-          typeStrongerThan0(at, pt)
+          typeStrongerThanFilter(at, pt)
         )
         or
         exists(ParamNode p |
@@ -1754,7 +1749,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         nodeDataFlowType(arg, at) and
         nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
-        typeStrongerThan0(at, pt)
+        typeStrongerThanFilter(at, pt)
       )
       or
       exists(ArgNode arg |
@@ -1823,8 +1818,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * stronger then compatibility is checked and `t1` is returned.
      */
     bindingset[t1, t2]
+    pragma[inline_late]
     DataFlowType getStrongestType(DataFlowType t1, DataFlowType t2) {
-      if typeStrongerThan(t2, t1) then result = t2 else (compatibleTypes(t1, t2) and result = t1)
+      if typeStrongerThanCached(t2, t1)
+      then result = t2
+      else (
+        compatibleTypesFilter(t1, t2) and result = t1
+      )
     }
 
     /**
@@ -1945,7 +1945,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(DataFlowType t1, DataFlowType t2 |
         typeFlowArgType(arg, t1, cc) and
         relevantArgParamIn(arg, p, t2) and
-        compatibleTypes(t1, t2)
+        compatibleTypesFilter(t1, t2)
       )
     }
 
@@ -1989,7 +1989,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(DataFlowType t1, DataFlowType t2 |
         typeFlowParamType(p, t1, false) and
         relevantArgParamOut(arg, p, t2) and
-        compatibleTypes(t1, t2)
+        compatibleTypesFilter(t1, t2)
       )
     }
 

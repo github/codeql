@@ -32,7 +32,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// A list of solutions or projects which failed to build.
         /// </summary>
-        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
+        public List<IProjectOrSolution> FailedProjectsOrSolutions { get; } = [];
 
         public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
@@ -60,7 +60,7 @@ namespace Semmle.Autobuild.Shared
             // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
             // `nuget` command, and if that fails, attempt to download `nuget.exe` from nuget.org
             var nuget = builder.GetFilename("nuget.exe").Select(t => t.Item1).FirstOrDefault() ?? "nuget";
-            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".nuget", "nuget.exe");
+            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out _), ".nuget", "nuget.exe");
             var nugetDownloaded = false;
 
             var ret = BuildScript.Success;
@@ -126,11 +126,11 @@ namespace Semmle.Autobuild.Shared
                 var platform = projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null;
                 var configuration = projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null;
 
-                command.Argument("/t:" + target);
+                command.Argument($"/t:{target}");
                 if (platform is not null)
-                    command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
+                    command.Argument($"/p:Platform=\"{platform}\"");
                 if (configuration is not null)
-                    command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
+                    command.Argument($"/p:Configuration=\"{configuration}\"");
 
                 // append the build script which invokes msbuild to the overall build script `ret`;
                 // we insert a check that building the current project or solution was successful:

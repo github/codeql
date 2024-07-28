@@ -1,3 +1,24 @@
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* The heuristic to enable certain Android queries has been improved. Now it ignores Android Manifests which don't define an activity, content provider or service. We also only consider files which are under a folder containing such an Android Manifest for these queries. This should remove some false positive alerts.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The query `java/weak-cryptographic-algorithm` no longer alerts about `RSA/ECB` algorithm strings.
+
+### Minor Analysis Improvements
+
+* The query `java/tainted-permissions-check` now uses threat models. This means that `local` sources are no longer included by default for this query, but can be added by enabling the `local` threat model.
+* Added more `org.apache.commons.io.FileUtils`-related sinks to the path injection query.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 ### Minor Analysis Improvements

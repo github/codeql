@@ -216,7 +216,7 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 Type getNodeType(Node n) {
-  suppressUnusedNode(n) and
+  exists(n) and
   result instanceof VoidType // stub implementation
 }
 
@@ -227,12 +227,9 @@ string ppReprType(Type t) { none() } // stub implementation
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(Type t1, Type t2) {
-  any() // stub implementation
+  t1 instanceof VoidType and t2 instanceof VoidType // stub implementation
 }
-
-private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -242,17 +239,7 @@ class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 
-class DataFlowCallable extends Function {
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
-}
+class DataFlowCallable extends Function { }
 
 class DataFlowExpr = Expr;
 
@@ -272,24 +259,12 @@ class DataFlowCall extends Expr instanceof Call {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
-  }
 }
 
 class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // stub implementation
