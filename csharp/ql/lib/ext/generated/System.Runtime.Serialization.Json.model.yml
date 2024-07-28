@@ -4,17 +4,24 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "DataContractJsonSerializer", "(System.Type,System.Runtime.Serialization.Json.DataContractJsonSerializerSettings)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "GetSerializationSurrogateProvider", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "SetSerializationSurrogateProvider", "(System.Runtime.Serialization.ISerializationSurrogateProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", False, "get_DateTimeFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializerExtensions", False, "GetSerializationSurrogateProvider", "(System.Runtime.Serialization.Json.DataContractJsonSerializer)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializerExtensions", False, "SetSerializationSurrogateProvider", "(System.Runtime.Serialization.Json.DataContractJsonSerializer,System.Runtime.Serialization.ISerializationSurrogateProvider)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Json", "IXmlJsonWriterInitializer", True, "SetOutput", "(System.IO.Stream,System.Text.Encoding,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "IXmlJsonWriterInitializer", True, "SetOutput", "(System.IO.Stream,System.Text.Encoding,System.Boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonReader", "(System.Byte[],System.Int32,System.Int32,System.Xml.XmlDictionaryReaderQuotas)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonReader", "(System.Byte[],System.Xml.XmlDictionaryReaderQuotas)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Boolean)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Boolean,System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Boolean,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", False, "CreateJsonWriter", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Boolean,System.String)", "", "Argument[4]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
@@ -23,7 +30,6 @@ extensions:
     data:
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.Runtime.Serialization.Json.DataContractJsonSerializerSettings)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.String,System.Collections.Generic.IEnumerable<System.Type>)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "DataContractJsonSerializer", "(System.Type,System.Xml.XmlDictionaryString)", "summary", "df-generated"]
@@ -51,4 +57,3 @@ extensions:
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "get_SerializeReadOnlyTypes", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "DataContractJsonSerializer", "get_UseSimpleDictionaryFormat", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", "CreateJsonReader", "(System.IO.Stream,System.Xml.XmlDictionaryReaderQuotas)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization.Json", "JsonReaderWriterFactory", "CreateJsonWriter", "(System.IO.Stream)", "summary", "df-generated"]

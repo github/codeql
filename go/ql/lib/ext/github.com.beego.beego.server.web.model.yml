@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["beego", "github.com/astaxie/beego"]
+      - ["beego", "github.com/beego/beego"]
+      - ["beego", "github.com/beego/beego/server/web"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["group:beego", "", False, "HTML2str", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "Htmlquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "Htmlunquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "MapGet", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:beego", "", False, "ParseForm", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["group:beego", "", False, "Str2html", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "Substr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:beego", "Controller", True, "ParseForm", "", "", "Argument[0]", "remote", "manual"]
+      - ["group:beego", "Controller", True, "GetFile", "", "", "ReturnValue[0..1]", "remote", "manual"]
+      - ["group:beego", "Controller", True, "GetFiles", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:beego", "Controller", True, "GetString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:beego", "Controller", True, "GetStrings", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["group:beego", "Controller", True, "Input", "", "", "ReturnValue[0]", "remote", "manual"]

@@ -7,6 +7,7 @@ on:
       - .github/workflows/ruby-build.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "shared/tree-sitter-extractor/**"
     branches:
       - main
       - "rc/*"
@@ -16,6 +17,7 @@ on:
       - .github/workflows/ruby-build.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "shared/tree-sitter-extractor/**"
     branches:
       - main
       - "rc/*"

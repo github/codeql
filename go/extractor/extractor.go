@@ -193,10 +193,20 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	log.Println("Starting to extract packages.")
 
 	sep := regexp.QuoteMeta(string(filepath.Separator))
-	// if a path matches this regexp, we don't want to extract this package. Currently, it checks
-	//   - that the path does not contain a `..` segment, and
-	//   - the path does not contain a `vendor` directory.
-	noExtractRe := regexp.MustCompile(`.*(^|` + sep + `)(\.\.|vendor)($|` + sep + `).*`)
+
+	// Construct a list of directory segments to exclude from extraction, starting with ".."
+	excludedDirs := []string{`\.\.`}
+
+	// If CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
+	// otherwise (the default) is to exclude them from extraction
+	includeVendor := os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true"
+	if !includeVendor {
+		excludedDirs = append(excludedDirs, "vendor")
+	}
+
+	// If a path matches this regexp, we don't extract this package. It checks whether the path
+	// contains one of the `excludedDirs`.
+	noExtractRe := regexp.MustCompile(`.*(^|` + sep + `)(` + strings.Join(excludedDirs, "|") + `)($|` + sep + `).*`)
 
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {

@@ -1191,6 +1191,41 @@ module Make<LocationSig Location, InputSig<Location> Input> {
             )
         ).toString()
     }
+
+    module Mermaid {
+      private string nodeId(RelevantNode n) { nodes(n, "semmle.order", result) }
+
+      private string nodes() {
+        result =
+          concat(RelevantNode n, string id, string text |
+            id = nodeId(n) and
+            text = n.toString()
+          |
+            id + "[\"" + text + "\"]", "\n" order by id
+          )
+      }
+
+      private string edge(RelevantNode pred, RelevantNode succ, string ord) {
+        edges(pred, succ, "semmle.order", ord) and
+        exists(string label |
+          edges(pred, succ, "semmle.label", label) and
+          if label = ""
+          then result = nodeId(pred) + " --> " + nodeId(succ)
+          else result = nodeId(pred) + " -- " + label + " --> " + nodeId(succ)
+        )
+      }
+
+      private string edges() {
+        result =
+          concat(RelevantNode pred, RelevantNode succ, string edge, string ord |
+            edge = edge(pred, succ, ord)
+          |
+            edge, "\n" order by ord
+          )
+      }
+
+      query predicate mermaid(string s) { s = "flowchart TD\n" + nodes() + "\n\n" + edges() }
+    }
   }
 
   /** Provides the input to `ViewCfgQuery`. */
@@ -1263,6 +1298,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     import TestOutput<RelevantNode>
+    import Mermaid
   }
 
   /** Provides a set of consistency queries. */

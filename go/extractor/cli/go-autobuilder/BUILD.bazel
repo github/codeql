@@ -14,7 +14,6 @@ go_library(
         "//go/extractor/project",
         "//go/extractor/toolchain",
         "//go/extractor/util",
-        "//go/extractor/vendor/golang.org/x/mod/semver",
     ],
 )
 

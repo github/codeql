@@ -1,0 +1,83 @@
+diff --git a/nodejs/extensions.bzl b/nodejs/extensions.bzl
+index 1de6f363..1d9d21f0 100644
+--- a/nodejs/extensions.bzl
++++ b/nodejs/extensions.bzl
+@@ -1,6 +1,12 @@
+ "extensions for bzlmod"
+ 
+-load(":repositories.bzl", "DEFAULT_NODE_REPOSITORY", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
++load(
++    ":repositories.bzl",
++    "DEFAULT_NODE_REPOSITORY",
++    "DEFAULT_NODE_URL",
++    "DEFAULT_NODE_VERSION",
++    "nodejs_register_toolchains",
++)
+ 
+ def _toolchain_extension(module_ctx):
+     registrations = {}
+@@ -8,33 +14,37 @@ def _toolchain_extension(module_ctx):
+         for toolchain in mod.tags.toolchain:
+             if toolchain.name != DEFAULT_NODE_REPOSITORY and not mod.is_root:
+                 fail("Only the root module may provide a name for the node toolchain.")
+-
+             if toolchain.name in registrations.keys():
+                 if toolchain.name == DEFAULT_NODE_REPOSITORY:
+                     # Prioritize the root-most registration of the default node toolchain version and
+                     # ignore any further registrations (modules are processed breadth-first)
+                     continue
+-                if toolchain.node_version == registrations[toolchain.name].node_version and toolchain.node_version_from_nvmrc == registrations[toolchain.name].node_version_from_nvmrc:
++                if (toolchain.node_version != registrations[toolchain.name].node_version or
++                    toolchain.node_version_from_nvmrc != registrations[toolchain.name].node_version_from_nvmrc):
++                    fail("Multiple conflicting toolchains declared for name {} ({} and {})".format(
++                        toolchain.name,
++                        toolchain.node_version,
++                        registrations[toolchain.name].node_version,
++                    ))
++                elif toolchain.node_urls != registrations[toolchain.name].node_urls:
++                    fail("Multiple toolchains with conflicting urls declared for name {} ({} and {})".format(
++                        toolchain.name,
++                        toolchain.node_urls,
++                        registrations[toolchain.name].node_urls,
++                    ))
++                else:
+                     # No problem to register a matching toolchain twice
+                     continue
+-                fail("Multiple conflicting toolchains declared for name {} ({} and {})".format(
+-                    toolchain.name,
+-                    toolchain.node_version,
+-                    registrations[toolchain.name],
+-                ))
+             else:
+-                registrations[toolchain.name] = struct(
+-                    node_version = toolchain.node_version,
+-                    node_version_from_nvmrc = toolchain.node_version_from_nvmrc,
+-                    include_headers = toolchain.include_headers,
+-                )
++                registrations[toolchain.name] = toolchain
+ 
+-    for k, v in registrations.items():
++    for k, t in registrations.items():
+         nodejs_register_toolchains(
+             name = k,
+-            node_version = v.node_version,
+-            node_version_from_nvmrc = v.node_version_from_nvmrc,
+-            include_headers = v.include_headers,
++            node_version = t.node_version,
++            node_version_from_nvmrc = t.node_version_from_nvmrc,
++            node_urls = t.node_urls,
++            include_headers = t.include_headers,
+             register = False,
+         )
+ 
+@@ -62,6 +72,10 @@ If set then the version found in the .nvmrc file is used instead of the one spec
+ This setting creates a dependency on a c++ toolchain.
+ """,
+             ),
++            "node_urls": attr.string_list(
++                doc = "Custom list of URL formats to use to download NodeJS, containing {version} and {filename}",
++                default = [DEFAULT_NODE_URL],
++            ),
+         }),
+     },
+ )

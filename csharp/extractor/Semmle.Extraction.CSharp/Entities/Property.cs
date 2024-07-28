@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<PropertyDeclarationSyntax>()
                     .Select(s => s.GetLocation())
                     .Concat(Symbol.Locations)
-                    .First();
+                    .Best();
             }
         }
 

@@ -13,8 +13,8 @@ namespace Semmle.Extraction.CSharp
     {
         private bool init;
 
-        public TracingAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
-            : base(pm, logger, addAssemblyTrapPrefix, pathTransformer)
+        public TracingAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
         {
         }
 
@@ -25,7 +25,8 @@ namespace Semmle.Extraction.CSharp
         /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
         public bool BeginInitialize(IEnumerable<string> roslynArgs)
         {
-            return init = LogRoslynArgs(roslynArgs, Extraction.Extractor.Version);
+            LogExtractorInfo();
+            return init = LogRoslynArgs(roslynArgs);
         }
 
         /// <summary>
@@ -46,12 +47,12 @@ namespace Semmle.Extraction.CSharp
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new TracingExtractor(cwd, args, GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
-            LogDiagnostics();
+            this.ExtractionContext = new ExtractionContext(cwd, args, GetOutputName(compilation, commandLineArguments), [], Logger, PathTransformer, ExtractorMode.None, options.QlTest);
+            var errorCount = LogDiagnostics();
 
             SetReferencePaths();
 
-            CompilationErrors += FilteredDiagnostics.Count();
+            CompilationErrors += errorCount;
         }
 
         /// <summary>
@@ -59,10 +60,9 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
         /// <returns>A Boolean indicating whether the same arguments have been logged previously.</returns>
-        private bool LogRoslynArgs(IEnumerable<string> roslynArgs, string extractorVersion)
+        private bool LogRoslynArgs(IEnumerable<string> roslynArgs)
         {
-            LogExtractorInfo(extractorVersion);
-            Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
+            Logger.LogInfo($"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
 
             var tempFile = Extractor.GetCSharpArgsLogPath(Path.GetRandomFileName());
 
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp
             var argsFile = Extractor.GetCSharpArgsLogPath(hash);
 
             if (argsWritten)
-                Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
+                Logger.LogInfo($"  Arguments have been written to {argsFile}");
 
             if (File.Exists(argsFile))
             {
@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp
                 }
                 catch (IOException e)
                 {
-                    Logger.Log(Severity.Warning, $"  Failed to remove {tempFile}: {e.Message}");
+                    Logger.LogWarning($"  Failed to remove {tempFile}: {e.Message}");
                 }
                 return false;
             }
@@ -98,7 +98,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (IOException e)
             {
-                Logger.Log(Severity.Warning, $"  Failed to move {tempFile} to {argsFile}: {e.Message}");
+                Logger.LogWarning($"  Failed to move {tempFile} to {argsFile}: {e.Message}");
             }
 
             return true;
@@ -107,11 +107,8 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Determine the path of the output dll/exe.
         /// </summary>
-        /// <param name="compilation">Information about the compilation.</param>
-        /// <param name="cancel">Cancellation token required.</param>
-        /// <returns>The filename.</returns>
-        private static string GetOutputName(CSharpCompilation compilation,
-            CSharpCommandLineArguments commandLineArguments)
+        internal static string GetOutputName(CSharpCompilation compilation,
+            CommandLineArguments commandLineArguments)
         {
             // There's no apparent way to access the output filename from the compilation,
             // so we need to re-parse the command line arguments.
@@ -130,34 +127,34 @@ namespace Semmle.Extraction.CSharp
                     return Path.ChangeExtension(entryPointFile, ".exe");
                 }
 
-                var entryPointFilename = entry.Locations.First().SourceTree!.FilePath;
+                var entryPointFilename = entry.Locations.Best().SourceTree!.FilePath;
                 return Path.ChangeExtension(entryPointFilename, ".exe");
             }
 
             return Path.Combine(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
         }
 
-#nullable disable warnings
-
-        /// <summary>
-        /// Logs detailed information about this invocation,
-        /// in the event that errors were detected.
-        /// </summary>
-        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
-        private void LogDiagnostics()
+        private int LogDiagnostics()
         {
-            foreach (var error in FilteredDiagnostics)
+            var filteredDiagnostics = compilation!
+                .GetDiagnostics()
+                .Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id))
+                .ToList();
+
+            foreach (var error in filteredDiagnostics)
             {
-                Logger.Log(Severity.Error, "  Compilation error: {0}", error);
+                Logger.LogError($"  Compilation error: {error}");
             }
 
-            if (FilteredDiagnostics.Any())
+            if (filteredDiagnostics.Count != 0)
             {
                 foreach (var reference in compilation.References)
                 {
-                    Logger.Log(Severity.Info, "  Resolved reference {0}", reference.Display);
+                    Logger.LogInfo($"  Resolved reference {reference.Display}");
                 }
             }
+
+            return filteredDiagnostics.Count;
         }
 
         private static readonly HashSet<string> errorsToIgnore = new HashSet<string>
@@ -166,17 +163,5 @@ namespace Semmle.Extraction.CSharp
             "CS1589",   // XML referencing not supported
             "CS1569"    // Error writing XML documentation
         };
-
-        private IEnumerable<Diagnostic> FilteredDiagnostics
-        {
-            get
-            {
-                return extractor is null || extractor.Mode.HasFlag(ExtractorMode.Standalone) || compilation is null ? Enumerable.Empty<Diagnostic>() :
-                    compilation.
-                    GetDiagnostics().
-                    Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));
-            }
-        }
-#nullable restore warnings
     }
 }

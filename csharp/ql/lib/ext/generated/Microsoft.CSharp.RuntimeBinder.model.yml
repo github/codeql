@@ -9,17 +9,18 @@ extensions:
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "GetMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "Invoke", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "InvokeConstructor", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "InvokeMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Collections.Generic.IEnumerable<System.Type>,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "InvokeMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Collections.Generic.IEnumerable<System.Type>,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[4].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "IsEvent", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "SetIndex", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "SetMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", False, "UnaryOperation", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Linq.Expressions.ExpressionType,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "CSharpArgumentInfo", False, "Create", "(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.CSharp.RuntimeBinder", "Binder", "Convert", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Type)", "summary", "df-generated"]
-      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "IsEvent", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type)", "summary", "df-generated"]
-      - ["Microsoft.CSharp.RuntimeBinder", "CSharpArgumentInfo", "Create", "(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags,System.String)", "summary", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderException", "RuntimeBinderException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderException", "RuntimeBinderException", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderException", "RuntimeBinderException", "(System.String,System.Exception)", "summary", "df-generated"]

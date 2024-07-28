@@ -7,7 +7,6 @@ codeql_csharp_binary(
     name = "Semmle.Autobuild.Cpp",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
     ]),
     visibility = ["//visibility:public"],
     deps = [

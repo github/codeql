@@ -575,3 +575,25 @@ public class Inheritance
         public override string Prop { get { return tainted; } }
     }
 }
+
+public class MemberFlow
+{
+    public class C
+    {
+        public string Prop { get; set; }
+
+        public string Field;
+    }
+
+    // summary=Models;MemberFlow;false;M1;(Models.MemberFlow+C);;Argument[0];ReturnValue;taint;df-generated
+    public string M1(C c)
+    {
+        return c.Prop;
+    }
+
+    // summary=Models;MemberFlow;false;M2;(Models.MemberFlow+C);;Argument[0];ReturnValue;taint;df-generated
+    public string M2(C c)
+    {
+        return c.Field;
+    }
+}

@@ -7,7 +7,6 @@ codeql_csharp_library(
     name = "Semmle.Extraction.CSharp.DependencyFetching",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
         "SourceGenerators/**/*.cs",
     ]),
     allow_unsafe_blocks = True,

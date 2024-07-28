@@ -7,7 +7,6 @@ codeql_csharp_binary(
     name = "Semmle.Extraction.CSharp.Standalone",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
     ]),
     visibility = ["//csharp:__subpackages__"],
     deps = [

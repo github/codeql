@@ -83,7 +83,7 @@ void test_guard_and_reassign() {
   if(!guarded(x)) {
     x = 0;
   }
-  sink(x); // $ SPURIOUS: ast,ir
+  sink(x); // $ SPURIOUS: ast
 }
 
 void test_phi_read_guard(bool b) {
@@ -98,7 +98,7 @@ void test_phi_read_guard(bool b) {
       return;
   }
   
-  sink(x); // $ SPURIOUS: ast,ir
+  sink(x); // $ SPURIOUS: ast
 }
 
 bool unsafe(int);

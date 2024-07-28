@@ -886,15 +886,22 @@ private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) 
 
 private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import swift as S
+  private import codeql.swift.controlflow.ControlFlowGraph as Cfg
   private import codeql.swift.controlflow.BasicBlocks as B
 
   class BasicBlock instanceof B::BasicBlock {
     string toString() { result = super.toString() }
 
+    ControlFlowNode getNode(int i) { result = super.getNode(i) }
+
+    int length() { result = super.length() }
+
     Callable getEnclosingCallable() { result = super.getScope() }
 
     Location getLocation() { result = super.getLocation() }
   }
+
+  class ControlFlowNode = Cfg::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
     result.(B::BasicBlock).immediatelyDominates(bb)
@@ -1303,14 +1310,10 @@ DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
 }
 
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { none() }
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 abstract class PostUpdateNodeImpl extends Node {
@@ -1375,8 +1378,6 @@ class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 /**

@@ -7,6 +7,7 @@
 
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
@@ -96,7 +97,7 @@ private class Sprintf extends FormattingFunction {
 /**
  * Implements `Snprintf`.
  */
-private class SnprintfImpl extends Snprintf {
+private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction {
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
@@ -143,6 +144,26 @@ private class SnprintfImpl extends Snprintf {
   }
 
   override int getSizeParameterIndex() { result = 1 }
+
+  override predicate parameterNeverEscapes(int index) {
+    // We don't know how many parameters are passed to the function since it's varargs, but they also don't escape.
+    index = this.getFormatParameterIndex()
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = this.getOutputParameterIndex(false) and buffer = true and mustWrite = false
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    // We don't know how many parameters are passed to the function since it's varargs, but they also have read side effects.
+    i = this.getFormatParameterIndex() and buffer = true
+  }
 }
 
 /**

@@ -1,7 +1,7 @@
 edges
 | UntrustedData.cs:9:13:9:16 | access to local variable name : String | UntrustedData.cs:13:28:13:31 | access to local variable name | provenance |  Sink:MaD:2159 |
 | UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | UntrustedData.cs:9:13:9:16 | access to local variable name : String | provenance |  |
-| UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | UntrustedData.cs:9:20:9:50 | access to indexer : String | provenance | MaD:11390 |
+| UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | UntrustedData.cs:9:20:9:50 | access to indexer : String | provenance | MaD:11546 |
 | UntrustedData.cs:9:20:9:50 | access to indexer : String | UntrustedData.cs:9:13:9:16 | access to local variable name : String | provenance |  |
 nodes
 | UntrustedData.cs:9:13:9:16 | access to local variable name : String | semmle.label | access to local variable name : String |

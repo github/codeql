@@ -63,13 +63,7 @@
 | scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:95:8:95:8 | I | Class |
 | scopes.cpp:77:8:77:8 | H<T> | Class | scopes.cpp:76:18:76:18 | T |  |
 | scopes.cpp:77:8:77:8 | H<T> | Class | scopes.cpp:79:5:79:5 | t |  |
-| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | H |  |
-| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | operator= |  |
-| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | operator= |  |
 | scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:79:5:79:5 | t |  |
-| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | H |  |
-| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | operator= |  |
-| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | operator= |  |
 | scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:79:5:79:5 | t |  |
 | scopes.cpp:85:12:85:14 | One::Two | Namespace | scopes.cpp:87:8:87:13 | myEnum |  |
 | scopes.cpp:95:8:95:8 | I | Class | scopes.cpp:95:8:95:8 | operator= |  |

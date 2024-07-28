@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Dynamic", "BinaryOperationBinder", True, "FallbackBinaryOperation", "(System.Dynamic.DynamicMetaObject,System.Dynamic.DynamicMetaObject,System.Dynamic.DynamicMetaObject)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Dynamic", "BindingRestrictions", False, "Combine", "(System.Collections.Generic.IList<System.Dynamic.DynamicMetaObject>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "GetExpressionRestriction", "(System.Linq.Expressions.Expression)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "GetInstanceRestriction", "(System.Linq.Expressions.Expression,System.Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Dynamic", "BindingRestrictions", False, "GetInstanceRestriction", "(System.Linq.Expressions.Expression,System.Object)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
@@ -32,7 +33,6 @@ extensions:
       - ["System.Dynamic", "BinaryOperationBinder", "FallbackBinaryOperation", "(System.Dynamic.DynamicMetaObject,System.Dynamic.DynamicMetaObject)", "summary", "df-generated"]
       - ["System.Dynamic", "BinaryOperationBinder", "get_Operation", "()", "summary", "df-generated"]
       - ["System.Dynamic", "BinaryOperationBinder", "get_ReturnType", "()", "summary", "df-generated"]
-      - ["System.Dynamic", "BindingRestrictions", "Combine", "(System.Collections.Generic.IList<System.Dynamic.DynamicMetaObject>)", "summary", "df-generated"]
       - ["System.Dynamic", "CallInfo", "CallInfo", "(System.Int32,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
       - ["System.Dynamic", "CallInfo", "CallInfo", "(System.Int32,System.String[])", "summary", "df-generated"]
       - ["System.Dynamic", "CallInfo", "Equals", "(System.Object)", "summary", "df-generated"]

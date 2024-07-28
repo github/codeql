@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.ApiGraphs
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -136,5 +137,35 @@ module ServerSideRequestForgery {
         else fstring.getValue(any(int i | i >= 1)) = this.asExpr()
       )
     }
+  }
+
+  /** A validation that a string does not contain certain characters, considered as a sanitizer. */
+  private class StringRestrictionSanitizerGuard extends Sanitizer {
+    StringRestrictionSanitizerGuard() {
+      this = DataFlow::BarrierGuard<stringRestriction/3>::getABarrierNode()
+    }
+  }
+
+  private predicate stringRestriction(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    exists(DataFlow::MethodCallNode call, DataFlow::Node strNode |
+      call.asCfgNode() = g and strNode.asCfgNode() = node
+    |
+      branch = true and
+      call.calls(strNode,
+        ["isalnum", "isalpha", "isdecimal", "isdigit", "isidentifier", "isnumeric", "isspace"])
+      or
+      branch = true and
+      call = API::moduleImport("re").getMember(["match", "fullmatch"]).getACall() and
+      strNode = [call.getArg(1), call.getArgByName("string")]
+      or
+      branch = true and
+      call =
+        API::moduleImport("re")
+            .getMember("compile")
+            .getReturn()
+            .getMember(["match", "fullmatch"])
+            .getACall() and
+      strNode = [call.getArg(0), call.getArgByName("string")]
+    )
   }
 }
