@@ -57,73 +57,40 @@ module JwtAuth0 {
   }
 }
 
-module JwtDecodeConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
-
-  predicate isSource(DataFlow::Node source, FlowState state) {
-    (
-      exists(Variable v |
-        source.asExpr() = v.getInitializer() and
-        v.getType().hasName("String")
-      )
-      or
-      source instanceof RemoteFlowSource
-    ) and
-    not FlowToJwtVerify::flow(source, _) and
-    state = "Auth0" and
-    not state = "Auth0Verify"
+module JwtDecodeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource and
+    not FlowToJwtVerify::flow(source, _)
   }
 
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink.asExpr() = any(JwtAuth0::GetPayload a) and
-    state = "Auth0" and
-    not state = "Auth0Verify"
-  }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(JwtAuth0::GetPayload a) }
 
-  predicate isAdditionalFlowStep(
-    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
-  ) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // Decode Should be one of the middle nodes
     exists(JwtAuth0::Decode a |
       nodeFrom.asExpr() = a.getArgument(0) and
-      nodeTo.asExpr() = a and
-      stateTo = "Auth0" and
-      stateFrom = "Auth0"
+      nodeTo.asExpr() = a
     )
     or
     exists(JwtAuth0::Verify a |
       nodeFrom.asExpr() = a.getArgument(0) and
-      nodeTo.asExpr() = a and
-      stateTo = "Auth0Verify" and
-      stateFrom = "Auth0Verify"
+      nodeTo.asExpr() = a
     )
     or
     exists(JwtAuth0::GetPayload a |
       nodeFrom.asExpr() = a.getQualifier() and
-      nodeTo.asExpr() = a and
-      stateTo = "Auth0" and
-      stateFrom = "Auth0"
+      nodeTo.asExpr() = a
     )
   }
-
-  predicate isBarrier(DataFlow::Node sanitizer, FlowState state) { none() }
 }
 
 module FlowToJwtVerifyConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    // source instanceof DataFlow::Node
-    exists(Variable v |
-      source.asExpr() = v.getInitializer() and
-      v.getType().hasName("String")
-    )
-  }
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(JwtAuth0::Verify a).getArgument(0) }
-
-  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 }
 
-module JwtDecode = TaintTracking::GlobalWithState<JwtDecodeConfig>;
+module JwtDecode = TaintTracking::Global<JwtDecodeConfig>;
 
 module FlowToJwtVerify = TaintTracking::Global<FlowToJwtVerifyConfig>;
 
