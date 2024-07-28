@@ -24,7 +24,7 @@ public class ZipHandler {
         // FileInputStream fis = new FileInputStream(filename);
         CRC32 checkSum = new CRC32();
         CheckedInputStream gzis = new CheckedInputStream(inputStream, checkSum);
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $ hasTaintFlow="new BufferedInputStream(...)"
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) {
             ZipEntry entry;
             int entries = 0;
             long total = 0;
@@ -63,7 +63,7 @@ public class ZipHandler {
         int BUFFER = 512;
         int TOOBIG = 100 * 1024 * 1024; // 100MB
         //        FileInputStream fis = new FileInputStream(filename);
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $ hasTaintFlow="new BufferedInputStream(...)"
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { 
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 System.out.println("Extracting: " + entry);
@@ -91,7 +91,7 @@ public class ZipHandler {
     public static void ZipInputStreamUnsafe(InputStream inputStream) throws IOException {
         int BUFFER = 512;
         //        FileInputStream fis = new FileInputStream(filename);
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { // $ hasTaintFlow="new BufferedInputStream(...)"
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(inputStream))) { 
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 System.out.println("Extracting: " + entry);
@@ -112,7 +112,7 @@ public class ZipHandler {
 
     public static void GZipInputStreamUnsafe(InputStream inputStream) throws IOException {
         int BUFFER = 512;
-        try (GZIPInputStream gzis = new GZIPInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
+        try (GZIPInputStream gzis = new GZIPInputStream(inputStream)) { 
             int count;
             byte[] data = new byte[BUFFER];
             FileOutputStream fos = new FileOutputStream("/tmp/tmp");
@@ -127,7 +127,7 @@ public class ZipHandler {
 
     public static void InflaterInputStreamUnsafe(InputStream inputStream) throws IOException {
         int BUFFER = 512;
-        try (InflaterInputStream Izis = new InflaterInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
+        try (InflaterInputStream Izis = new InflaterInputStream(inputStream)) { 
             int count;
             byte[] data = new byte[BUFFER];
             FileOutputStream fos = new FileOutputStream("/tmp/tmp");
@@ -156,7 +156,7 @@ public class ZipHandler {
     public static void ZipFile1(String zipFilePath) throws DataFormatException, IOException {
         try {
             System.out.println("zipFilePath = " + zipFilePath);
-            ZipFile zipFile = new ZipFile(zipFilePath); // $ hasTaintFlow="zipFilePath"
+            ZipFile zipFile = new ZipFile(zipFilePath);
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();

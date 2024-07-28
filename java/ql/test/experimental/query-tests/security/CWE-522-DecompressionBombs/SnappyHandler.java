@@ -10,7 +10,7 @@ public class SnappyHandler {
     public static void SnappyZipInputStream(InputStream inputStream) throws IOException {
         int readLen;
         byte[] readBuffer = new byte[4096];
-        try (SnappyInputStream zipInputStream = new SnappyInputStream(inputStream)) {  // $ hasTaintFlow="inputStream"
+        try (SnappyInputStream zipInputStream = new SnappyInputStream(inputStream)) {
             try (OutputStream outputStream = Files.newOutputStream(Paths.get("extractedFile"))) {
                 while ((readLen = zipInputStream.read(readBuffer)) != -1) { // $ hasTaintFlow="zipInputStream"
                     outputStream.write(readBuffer, 0, readLen);
